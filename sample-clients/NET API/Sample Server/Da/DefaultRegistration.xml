@@ -1,0 +1,8 @@
+<ListOfRegisteredServers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://opcfoundation.org/ConfigTool">
+  <Server>
+    <ProgId>OPCSample.NET.DaServer.Wrapped</ProgId>
+    <Clsid>c044c3a5-a1dc-4bbd-b775-5edd631fd133</Clsid>
+    <WrapperClsid>OPC.DaWrapper.1</WrapperClsid>
+    <ServerClsid>OPCSample.NET.DaServer</ServerClsid>
+  </Server>
+</ListOfRegisteredServers>

@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0A6AABF-C3B1-4110-96BA-6708B1FF0657}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpcNetApi.Com</AssemblyName>
+    <IntermediateOutputPath>$(SolutionDir)build\obj\Net20\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)..\Keys\OPC Key Pair.master (COM).snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OpcCom</RootNamespace>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\Net20\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\Net20\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>$(SolutionDir)build\bin\Net20\$(Platform)\$(Configuration)\OpcNetApi.Com.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ae\OpcCom.Ae.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.ResultIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.Subscription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\..\include\AssemblyVersionInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da20\OpcCom.Da20.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da20\OpcCom.Da20.Subscription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da\OpcCom.Da.Browse.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da\OpcCom.Da.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da\OpcCom.Da.ResultIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da\OpcCom.Da.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Da\OpcCom.Da.Subscription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dx\OpcCom.Dx.Interop.cs" />
+    <Compile Include="Dx\OpcCom.Dx.ResultIDs.cs" />
+    <Compile Include="Dx\OpcCom.Dx.Server.cs" />
+    <Compile Include="Hda\OpcCom.Hda.Browser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Hda\OpcCom.Hda.DataCallback.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Hda\OpcCom.Hda.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Hda\OpcCom.Hda.Request.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Hda\OpcCom.Hda.ResultIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Hda\OpcCom.Hda.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.ConnectionPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.EnumGuid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.EnumString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Factory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.ServerEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wrapper\OpcCom.Da.Wrapper.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wrapper\OpcCom.IOPCWrappedServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\NetRcw\OPC COM RCW %28Net20%29.csproj">
+      <Project>{efb1fc1b-1345-44cc-ae91-57311b8ac60e}</Project>
+      <Name>OPC COM RCW %28Net20%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\OPC NET API %28Net20%29.csproj">
+      <Project>{18ea7e2e-1486-47fc-91ef-54e4ef1a0b02}</Project>
+      <Name>OPC NET API %28Net20%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

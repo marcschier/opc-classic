@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3044BE93-8C15-4CB0-AC22-782094E05344}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>.\OpcHdaSampleClient.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpcHdaSampleClient</AssemblyName>
+    <AssemblyOriginatorKeyFile>OPC Key Pair.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Opc.Hda.SampleClient</RootNamespace>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <StartupObject>Opc.Hda.SampleClient.MainForm</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\OPC NET API.csproj">
+      <Name>OPC NET API</Name>
+      <Project>{98B6E5A1-6FED-434E-B568-9C68D5F9959C}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\COM Wrapper\OPC NET COM Wrapper.csproj">
+      <Name>OPC NET COM Wrapper</Name>
+      <Project>{170A5455-A090-4F26-810F-15F71BBF87E6}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\OPC NET Common Controls.csproj">
+      <Name>OPC NET Common Controls</Name>
+      <Project>{AC5779F3-2523-42A6-8AC6-02F21A320E7C}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XML Wrapper\OPC NET XML Wrapper.csproj">
+      <Name>OPC NET XML Wrapper</Name>
+      <Project>{82283125-79FD-4A52-948A-A928CC51C07B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\ScPL\ScPL Plotting Controls.csproj">
+      <Name>ScPL Plotting Controls</Name>
+      <Project>{E6867FF5-74EC-4464-8958-D71CB46232F3}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\AggregateListViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\AggregateListViewDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\AnnotationValueEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\AnnotationValuesCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\AttributeFilterEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\AttributesSelectCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\AttributesSelectDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\AttributesViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\AttributesViewDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\TimeCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Edit\DeleteValuesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\InsertAnnotationsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\InsertValuesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\ReadAnnotationsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\ReadAttributesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\ReadValuesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Edit\ReplaceValuesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ItemEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ItemListCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ItemTimeEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ItemTimesCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ItemValueEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ItemValuesCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ItemValuesDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ResultListCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ResultViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\BrowseFiltersDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\BrowseItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\BrowseTreeCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Server\ServerStatusCtrl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Server\ServerStatusDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\RunTestDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\TestCase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test\TestEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test\TimestampEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trend\SubscriptionEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendCreateDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendItemsCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendSelectItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trend\TrendTreeCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="Common\AggregateListViewCtrl.resx">
+      <DependentUpon>AggregateListViewCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AggregateListViewDlg.resx">
+      <DependentUpon>AggregateListViewDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AnnotationValueEditDlg.resx">
+      <DependentUpon>AnnotationValueEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AnnotationValuesCtrl.resx">
+      <DependentUpon>AnnotationValuesCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AttributeFilterEditDlg.resx">
+      <DependentUpon>AttributeFilterEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AttributesSelectCtrl.resx">
+      <DependentUpon>AttributesSelectCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AttributesSelectDlg.resx">
+      <DependentUpon>AttributesSelectDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AttributesViewCtrl.resx">
+      <DependentUpon>AttributesViewCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\AttributesViewDlg.resx">
+      <DependentUpon>AttributesViewDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\TimeCtrl.resx">
+      <DependentUpon>TimeCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\DeleteValuesDlg.resx">
+      <DependentUpon>DeleteValuesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\InsertAnnotationsDlg.resx">
+      <DependentUpon>InsertAnnotationsDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\InsertValuesDlg.resx">
+      <DependentUpon>InsertValuesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\ReadAnnotationsDlg.resx">
+      <DependentUpon>ReadAnnotationsDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\ReadAttributesDlg.resx">
+      <DependentUpon>ReadAttributesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\ReadValuesDlg.resx">
+      <DependentUpon>ReadValuesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Edit\ReplaceValuesDlg.resx">
+      <DependentUpon>ReplaceValuesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemEditDlg.resx">
+      <DependentUpon>ItemEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemListCtrl.resx">
+      <DependentUpon>ItemListCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemTimeEditDlg.resx">
+      <DependentUpon>ItemTimeEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemTimesCtrl.resx">
+      <DependentUpon>ItemTimesCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemValueEditDlg.resx">
+      <DependentUpon>ItemValueEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemValuesCtrl.resx">
+      <DependentUpon>ItemValuesCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemValuesDlg.resx">
+      <DependentUpon>ItemValuesDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ResultListCtrl.resx">
+      <DependentUpon>ResultListCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ResultViewCtrl.resx">
+      <DependentUpon>ResultViewCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\BrowseFiltersDlg.resx">
+      <DependentUpon>BrowseFiltersDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\BrowseItemsDlg.resx">
+      <DependentUpon>BrowseItemsDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\BrowseTreeCtrl.resx">
+      <DependentUpon>BrowseTreeCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerStatusCtrl.resx">
+      <DependentUpon>ServerStatusCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerStatusDlg.resx">
+      <DependentUpon>ServerStatusDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test\RunTestDlg.resx">
+      <DependentUpon>RunTestDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test\TestEditDlg.resx">
+      <DependentUpon>TestEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test\TimestampEditDlg.resx">
+      <DependentUpon>TimestampEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\SubscriptionEditDlg.resx">
+      <DependentUpon>SubscriptionEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendCreateDlg.resx">
+      <DependentUpon>TrendCreateDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendEditCtrl.resx">
+      <DependentUpon>TrendEditCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendEditDlg.resx">
+      <DependentUpon>TrendEditDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendItemsCtrl.resx">
+      <DependentUpon>TrendItemsCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendSelectItemsDlg.resx">
+      <DependentUpon>TrendSelectItemsDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trend\TrendTreeCtrl.resx">
+      <DependentUpon>TrendTreeCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="OpcHdaSampleClient.ico" />
+    <Content Include="Test\Aggregate Data 1.xml" />
+    <Content Include="Test\Aggregate Data 2.xml" />
+    <Content Include="Test\Opc.Hda.SampleClient.config" />
+    <Content Include="Test\OPCSample.OpcHdaServer.config" />
+    <Content Include="Test\Raw Data 1.xml" />
+    <Content Include="Test\TestCase.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="app.config" />
+    <None Include="OPC Key Pair.snk" />
+    <None Include="Test\TestCase.xsx">
+      <DependentUpon>TestCase.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>cscript ..\..\..\..\..\Scripts\CopyKeyFile.vbs "$(ProjectDir)" ..\..\..\..\..\..\</PreBuildEvent>
+    <PostBuildEvent>cscript ..\..\..\..\..\Scripts\CopyOutput.vbs "$(ProjectDir)" ..\..\..\..\..\..\ "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

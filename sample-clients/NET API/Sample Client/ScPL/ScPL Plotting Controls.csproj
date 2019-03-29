@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6867FF5-74EC-4464-8958-D71CB46232F3}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>scpl</AssemblyName>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)Keys\OPC COM Samples Key.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>scpl</RootNamespace>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <IntermediateOutputPath>$(SolutionDir)build\obj\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ArrayAdapterDT.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Axis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BasePlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Bitmap.PlotSurface2D.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FontScaler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistogramPlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IDataAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMeshAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IMeshPlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IPlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ISequenceAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LabelAxis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Legend.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LinearAxis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LinePlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LogAxis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Marker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PhysicalAxis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlotSurface2D.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlotSurface3D.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PointD.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PointPlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SinusoidalAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StepPlot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TimeAxis.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Windows.PlotSurface2D.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="XMLAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Windows.PlotSurface2D.resx">
+      <DependentUpon>Windows.PlotSurface2D.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OPC Key Pair.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

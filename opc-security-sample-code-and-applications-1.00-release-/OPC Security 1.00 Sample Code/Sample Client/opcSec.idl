@@ -1,0 +1,80 @@
+// opcSec.IDL
+// REVISION:        08/03/00 11:27 (PST)
+// VERSIONINFO	    1.00
+// 08/03/00 dj  finalized for spec release 1.00
+//
+
+import "oaidl.idl" ;
+
+
+//****************************************************
+//Interface Definition
+//****************************************************
+[
+    object,
+    uuid(7AA83A01-6C77-11d3-84F9-00008630A38B),
+    helpstring("optional OPC server interface to access OPC extended security with NT credentials"),
+    pointer_default(unique)
+]
+interface IOPCSecurityNT : IUnknown
+{
+    [
+        helpstring("query if current server configuration makes NT credentials available")
+    ]
+    HRESULT IsAvailableNT([out] BOOL *pbAvailable);
+
+    [
+        helpstring("query minimal server requirements for DCOM impersonation level")
+    ]
+    HRESULT QueryMinImpersonationLevel([out] DWORD *pdwMinImpLevel);
+
+    [
+        helpstring("Notify current OPC session of change in user credentials in proxy blanket")
+    ]
+    HRESULT ChangeUser(void);
+
+};
+
+[
+    object,
+    uuid(7AA83A02-6C77-11d3-84F9-00008630A38B),
+    helpstring("optional OPC server interface to access OPC extended security with private credentials"),
+    pointer_default(unique)
+]
+interface IOPCSecurityPrivate : IUnknown
+{
+    [
+        helpstring("query if current server configuration makes private credentials available")
+    ]
+    HRESULT IsAvailablePriv([out] BOOL *pbAvailable);
+
+    [
+        helpstring("Logon current OPC session using these private credentials; this commonly disables server's use of NT credentials")
+    ]
+    HRESULT Logon([in, string] LPCWSTR szUserID, [in, string] LPCWSTR szPassword);
+
+    [
+        helpstring("Clear previous credential and revert to default (initial state before first logon call)")
+    ]
+    HRESULT Logoff(void);
+};
+
+//****************************************************
+// This TYPELIB is generated as a convenience to users of high level tools
+// which are capable of using or browsing TYPELIBs. 
+// 'Smart Pointers' in VC6 is one example.
+//****************************************************
+[
+    uuid(7AA83AFF-6C77-11d3-84F9-00008630A38B),
+    version(1.00),
+    helpstring("OPC Security 1.00 Custom Interface Type Library")
+]
+library opcSec
+{
+    importlib("stdole32.tlb");
+    importlib("stdole2.tlb");
+
+    interface IOPCSecurityNT;
+    interface IOPCSecurityPrivate;
+};
+

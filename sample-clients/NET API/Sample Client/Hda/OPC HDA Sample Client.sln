@@ -1,0 +1,61 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPC HDA Sample Client", "OPC HDA Sample Client.csproj", "{3044BE93-8C15-4CB0-AC22-782094E05344}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPC NET API", "..\..\OPC NET API.csproj", "{98B6E5A1-6FED-434E-B568-9C68D5F9959C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPC NET COM Wrapper", "..\..\COM Wrapper\OPC NET COM Wrapper.csproj", "{170A5455-A090-4F26-810F-15F71BBF87E6}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPC NET XML Wrapper", "..\..\XML Wrapper\OPC NET XML Wrapper.csproj", "{82283125-79FD-4A52-948A-A928CC51C07B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPC NET Common Controls", "..\Common\OPC NET Common Controls.csproj", "{AC5779F3-2523-42A6-8AC6-02F21A320E7C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScPL Plotting Controls", "..\ScPl\ScPL Plotting Controls.csproj", "{E6867FF5-74EC-4464-8958-D71CB46232F3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{3044BE93-8C15-4CB0-AC22-782094E05344}.Debug.ActiveCfg = Debug|.NET
+		{3044BE93-8C15-4CB0-AC22-782094E05344}.Debug.Build.0 = Debug|.NET
+		{3044BE93-8C15-4CB0-AC22-782094E05344}.Release.ActiveCfg = Release|.NET
+		{3044BE93-8C15-4CB0-AC22-782094E05344}.Release.Build.0 = Release|.NET
+		{98B6E5A1-6FED-434E-B568-9C68D5F9959C}.Debug.ActiveCfg = Debug|.NET
+		{98B6E5A1-6FED-434E-B568-9C68D5F9959C}.Debug.Build.0 = Debug|.NET
+		{98B6E5A1-6FED-434E-B568-9C68D5F9959C}.Release.ActiveCfg = Release|.NET
+		{98B6E5A1-6FED-434E-B568-9C68D5F9959C}.Release.Build.0 = Release|.NET
+		{170A5455-A090-4F26-810F-15F71BBF87E6}.Debug.ActiveCfg = Debug|.NET
+		{170A5455-A090-4F26-810F-15F71BBF87E6}.Debug.Build.0 = Debug|.NET
+		{170A5455-A090-4F26-810F-15F71BBF87E6}.Release.ActiveCfg = Release|.NET
+		{170A5455-A090-4F26-810F-15F71BBF87E6}.Release.Build.0 = Release|.NET
+		{82283125-79FD-4A52-948A-A928CC51C07B}.Debug.ActiveCfg = Debug|.NET
+		{82283125-79FD-4A52-948A-A928CC51C07B}.Debug.Build.0 = Debug|.NET
+		{82283125-79FD-4A52-948A-A928CC51C07B}.Release.ActiveCfg = Release|.NET
+		{82283125-79FD-4A52-948A-A928CC51C07B}.Release.Build.0 = Release|.NET
+		{AC5779F3-2523-42A6-8AC6-02F21A320E7C}.Debug.ActiveCfg = Debug|.NET
+		{AC5779F3-2523-42A6-8AC6-02F21A320E7C}.Debug.Build.0 = Debug|.NET
+		{AC5779F3-2523-42A6-8AC6-02F21A320E7C}.Release.ActiveCfg = Release|.NET
+		{AC5779F3-2523-42A6-8AC6-02F21A320E7C}.Release.Build.0 = Release|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Debug.ActiveCfg = Debug|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Debug.Build.0 = Debug|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Release.ActiveCfg = Release|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

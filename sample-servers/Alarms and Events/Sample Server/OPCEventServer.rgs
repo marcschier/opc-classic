@@ -1,0 +1,25 @@
+HKCR
+{
+	OPCSample.OPCEventServer.1 = s 'OPC Event Server Sample'
+	{
+		CLSID = s '{65168852-5783-11D1-84A0-00608CB8A7E9}'
+	}
+	OPCSample.OPCEventServer = s 'OPC Event Server Sample'
+	{
+		CLSID = s '{65168852-5783-11D1-84A0-00608CB8A7E9}'
+		CurVer = s 'OPCSample.OPCEventServer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {65168852-5783-11D1-84A0-00608CB8A7E9} = s 'OPC Event Server Sample'
+		{
+			ProgID = s 'OPCSample.OPCEventServer.1'
+			VersionIndependentProgID = s 'OPCSample.OPCEventServer'
+			val AppID = s '{EA35CE59-59D6-11D1-84A0-00608CB8A7E9}'
+			LocalServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

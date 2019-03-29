@@ -1,0 +1,447 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>scpl</name>
+    </assembly>
+    <members>
+        <member name="M:scpl.ArrayAdapter.#ctor(System.Double[],System.Double[],System.Boolean)">
+            <summary>
+            Causes the data to be replicated if DoClone is true. 
+            Otherwise the original data is used. if DoClone is false and the data changes
+            or goes out of scope before the plot is drawn, results are unpredictable.
+            </summary>
+        </member>
+        <member name="M:scpl.ArrayAdapter.#ctor(System.Double[],System.Double[],System.Boolean,System.Boolean)">
+            <summary>
+            Causes the data to be replicated if DoClone is true. 
+            Otherwise the original data is used. if DoClone is false and the data changes
+            or goes out of scope before the plot is drawn, results are unpredictable.
+            </summary>
+        </member>
+        <member name="M:scpl.ArrayAdapter.ArrayMinMax(System.Double[],System.Object@,System.Object@)">
+            <summary>
+            double[] is a reference type and can be null, if it is then I reckon the best
+            values for min and max are also null. double is a value type so can't be set
+            to null. So min an max return object, and we understand that if it is not null
+            it is a boxed double (same trick I use lots elsewhere in the lib). The 
+            wonderful comment I didn't write at the top should explain everything.
+            </summary>
+        </member>
+        <member name="T:scpl.ArrayAdapterDT">
+            <summary>
+            Summary description for ArrayAdapterDT.
+            </summary>
+        </member>
+        <member name="T:scpl.Axis">
+            <summary>
+             Contains all general axis data except the physical extents of the axis.
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.Clone">
+            <summary>
+            Deep copy of Axis. Include check to see that this isn't being called by
+            a derived type... the derived type should provide it's own clone method.
+            </summary>
+            <returns>A copy of the Axis Class</returns>
+        </member>
+        <member name="M:scpl.Axis.DoClone(scpl.Axis,scpl.Axis)">
+            <summary>
+            Helper method for Clone. Does all the copying - can be called by derived
+            types so they don't need to implement this part of the copying themselves.
+            also useful in constructor of derived types that takes Axis class.
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.Init">
+            <summary>
+            Helper function for constructors.
+            Do initialization here so that Clear() method is handled properly
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.#ctor">
+            <summary>
+            Default Constructor
+            </summary>
+        </member>
+        <member name="M:scpl.Axis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor that takes only world min and max values
+            </summary>
+            <param name="worldMin">The minimum world coordinate</param>
+            <param name="worldMax">The maximum world coordinate</param>
+        </member>
+        <member name="M:scpl.Axis.OutOfRange(System.Double)">
+            <summary>
+            Determines whether a world value is between WorldMin and WorldMax
+            </summary>
+            <param name="coord">the world value to test</param>
+            <returns>true if within limits, false otherwise</returns>
+        </member>
+        <member name="M:scpl.Axis.DrawLabel(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw Axis Label
+            </summary>
+            <param name="g">The GDI+ drawing surface on which to draw</param>
+            <param name="offset">offset calculated by derived class that makes sure axis label
+            misses tick labels.</param>
+            <param name="axisPhysMin">The minimum physical extent of the axis</param>
+            <param name="axisPhysMax">The maximum physical extent of the axis</param>
+            <returns>boxed RectangleF indicating bounding box of label. null if no label printed.</returns>
+        </member>
+        <member name="M:scpl.Axis.DrawTick(System.Drawing.Graphics,System.Double,System.Double,System.String,System.Drawing.Point,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draws a tick on the axis
+            </summary>
+            <param name="g">The drawing surface</param>
+            <param name="w">The tick position in world coordinates</param>
+            <param name="size">The size of the tick (in pixels)</param>
+            <param name="text">The text associated with the tick</param>
+            <param name="textOffset">The Offset to draw from the auto calculated position</param>
+            <param name="axisPhysMin">The minimum physical extent of the axis</param>
+            <param name="axisPhysMax">The maximum physical extent of the axis</param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn </returns>
+        </member>
+        <member name="M:scpl.Axis.Draw(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw the axis
+            </summary>
+            <param name="g">The drawing surface on which to draw</param>
+            <param name="physicalMin">The minimum physical extent of the axis</param>
+            <param name="physicalMax">The maximum physical extent of the axis</param>
+            <returns>TODO:fill in.</returns>
+        </member>
+        <member name="P:scpl.Axis.TickTextNextToAxis">
+            <summary>
+            If true, the text associated with the ticks will appear on the opposite side of the axis to the tick.
+            If false, the text will appear at the end of the tick.
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.Reversed">
+            <summary>
+            Reverse the display of the axis so that the values are
+            printed from right to left instead of left to right
+            </summary>
+        </member>
+        <member name="P:scpl.Axis.NumberFormat">
+            <summary>
+            The .NET number format to use for labeling the axis
+            </summary>
+        </member>
+        <member name="T:scpl.BasePlot">
+            <summary>
+            Summary description for BasePlot.
+            </summary>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.#ctor(System.Int32,System.Int32)">
+            <summary>
+            </summary>
+            <param name="xSize">width of the bitmap</param>
+            <param name="ySize">height of the bitmap</param>
+        </member>
+        <member name="M:scpl.Bitmap.PlotSurface2D.Add(scpl.IPlot)">
+            <summary>
+            Add a plot to the plot surface.
+            </summary>
+            <param name="p">the plot to add.</param>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Title">
+            <summary>
+            get/set the plot title string.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.TitleFont">
+            <summary>
+            get/set the plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.Bitmap.PlotSurface2D.Bitmap">
+            <summary>
+            get/set the bitmap
+            </summary>
+        </member>
+        <member name="T:scpl.FontScaler">
+            <summary>
+            Summary description for FontScaler.
+            </summary>
+        </member>
+        <member name="M:scpl.LabelAxis.Clone">
+            <summary>
+            Deep copy of LinearAxis.
+            </summary>
+            <returns>A copy of the LinearAxis Class</returns>
+        </member>
+        <member name="M:scpl.LabelAxis.DoClone(scpl.LabelAxis,scpl.LabelAxis)">
+            <summary>
+            Helper method for Clone.
+            </summary>
+        </member>
+        <member name="T:scpl.Legend">
+            <summary>
+            Summary description for Legend.
+            </summary>
+        </member>
+        <member name="T:scpl.LinearAxis">
+            <summary>
+            Linear Axis class
+            </summary>
+        </member>
+        <member name="M:scpl.LinearAxis.Clone">
+            <summary>
+            Deep copy of LinearAxis.
+            </summary>
+            <returns>A copy of the LinearAxis Class</returns>
+        </member>
+        <member name="M:scpl.LinearAxis.DoClone(scpl.LinearAxis,scpl.LinearAxis)">
+            <summary>
+            Helper method for Clone.
+            </summary>
+        </member>
+        <member name="M:scpl.LinearAxis.#ctor(System.Double,System.Double)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="worldMin">the minimum world coordinate</param>
+            <param name="worldMax">the maximum world coordinate</param>
+        </member>
+        <member name="M:scpl.LinearAxis.Draw(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw the axis
+            </summary>
+            <param name="g">The drawing surface on which to draw</param>
+            <param name="physicalMin">The minimum physical extent of the axis</param>
+            <param name="physicalMax">The maximum physical extent of the axis</param>
+            <returns>The bounding box of the axis. Currently ignores tick marks.</returns>
+        </member>
+        <member name="M:scpl.LinearAxis.DrawTicks(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw the ticks
+            </summary>
+            <param name="g">The drawing surface on which to draw</param>
+            <param name="physicalMin"> </param>
+            <param name="physicalMax"> </param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn </returns>
+        </member>
+        <member name="M:scpl.LogAxis.Clone">
+            <summary>
+            Deep Copy of the LogAxis
+            </summary>
+            <returns>A Copy of the LogAxis Class</returns>
+        </member>
+        <member name="M:scpl.LogAxis.DoClone(scpl.LogAxis,scpl.LogAxis)">
+            <summary>
+            Helper method for Clone (actual implementation)
+            </summary>
+            <param name="a"></param>
+            <param name="b"></param>
+        </member>
+        <member name="M:scpl.LogAxis.DrawTicks(System.Drawing.Graphics,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draw the ticks
+            </summary>
+            <param name="g">The drawing surface on which to draw</param>
+            <param name="physicalMin">The minimum physical extent of the axis</param>
+            <param name="physicalMax">The maximum physical extent of the axis</param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn </returns>
+        </member>
+        <member name="F:scpl.LogAxis.m_d5Log">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:scpl.LogAxis.DetermineTickSpacing">
+            <summary>
+            Override to determine the tick spacing for the LogAxis class
+            </summary>
+            <returns>The tick spacing (in decades!)</returns>
+        </member>
+        <member name="M:scpl.LogAxis.DrawTick(System.Drawing.Graphics,System.Double,System.Double,System.String,System.Drawing.Point,System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            Draws a tick on the axis
+            </summary>
+            <param name="g">The drawing surface</param>
+            <param name="w">The tick position in world coordinates</param>
+            <param name="size">The size of the tick (in pixels)</param>
+            <param name="text">The text associated with the tick</param>
+            <param name="textOffset">The Offset to draw from the auto calculated position</param>
+            <param name="axisPhysMin">The minimum physical extent of the axis</param>
+            <param name="axisPhysMax">The maximum physical extent of the axis</param>
+            <returns> An ArrayList containing the offset from the axis required for an axis label
+            to miss this tick, followed by a bounding rectangle for the tick and tickLabel drawn </returns>
+        </member>
+        <member name="P:scpl.LogAxis.SmallTickPositions">
+            <summary>
+            Determine the small tick positions for the Log Axis.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickPositions">
+            <summary>
+            Override for the logic of the large ticks for the log axis
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickStep">
+            <summary>
+            Accessors for the Step in the large ticks.
+            The step is expressed in decades for the Log scale.
+            </summary>
+        </member>
+        <member name="P:scpl.LogAxis.LargeTickValue">
+            <summary>
+            Position for a large tick.
+            </summary>
+        </member>
+        <member name="T:scpl.MarkerType">
+            <summary>
+            Enumeration for the Marker Types
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Cross1">
+            <summary>
+            A simple cross marker (x).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Cross2">
+            <summary>
+            Another simple cross marker (+).
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Circle">
+            <summary>
+            A circle marker.
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Square">
+            <summary>
+            A square marker.
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.Triangle">
+            <summary>
+            A triangle marker.
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledCircle">
+            <summary>
+            A filled circle
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledSquare">
+            <summary>
+            A filled square
+            </summary>
+        </member>
+        <member name="F:scpl.MarkerType.FilledTriangle">
+            <summary>
+            A filled triangle
+            </summary>
+        </member>
+        <member name="T:scpl.Marker">
+            <summary>
+            Summary description for Marker.
+            </summary>
+        </member>
+        <member name="P:scpl.Marker.Type">
+            <summary>
+            Get/Set the Marker Type
+            </summary>
+        </member>
+        <member name="T:scpl.PhysicalAxis">
+            <summary>
+            Unfortunately, C# doesn't have templates. If it did, I would derive PhysicalAxis from
+            the templated Axis type (LinearAxis etc). Instead, use a has-a relationship with an
+            Axis superclass.
+            </summary>
+        </member>
+        <member name="M:scpl.PhysicalAxis.init">
+            <summary>
+            helper function for constructors
+            </summary>
+        </member>
+        <member name="T:scpl.PlotSurface2D">
+            <summary>
+            Graphics g
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface2D.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:scpl.PlotSurface2D.Draw(System.Drawing.Graphics,System.Drawing.Rectangle)">
+            <summary>
+            Draw the plot on the drawing surface
+            </summary>
+            <param name="g">The GDI+ drawing surface on which to render.</param>
+            <param name="bounds">The bounding rectangle on the drawing surface to be considered the plot area.</param>
+        </member>
+        <member name="M:scpl.PlotSurface2D.SaveAsFile(System.String,System.Int32,System.Int32,System.Drawing.Imaging.ImageFormat)">
+            <summary>
+            Save Methods
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.Title">
+            <summary>
+            get/set the plot title.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.TitleFont">
+            <summary>
+            get/set the plot title font.
+            </summary>
+        </member>
+        <member name="P:scpl.PlotSurface2D.ImageFormatDefault">
+            <summary>
+            get/set the File Format to use for the default.
+            </summary>
+        </member>
+        <member name="T:scpl.PointD">
+            <summary>
+            TODO: add additional functionality to make just like PointF.
+            </summary>
+        </member>
+        <member name="T:scpl.SinusoidalAdapter">
+            <summary>
+            Simple Data Adapter for making Sinusoidal Data
+            expand... just enough for an example.
+            </summary>
+        </member>
+        <member name="T:scpl.Windows.PlotSurface2D">
+            <summary>
+            PlotSurface2D Windows Control.
+            </summary>
+        </member>
+        <member name="F:scpl.Windows.PlotSurface2D.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:scpl.Windows.PlotSurface2D.Add(scpl.IPlot)">
+            <summary>
+            Add a plot to the plot surface.
+            </summary>
+            <param name="p">the plot to add.</param>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.Title">
+            <summary>
+            get/set the plot title string.
+            </summary>
+        </member>
+        <member name="P:scpl.Windows.PlotSurface2D.TitleFont">
+            <summary>
+            get/set the plot title font.
+            </summary>
+        </member>
+    </members>
+</doc>

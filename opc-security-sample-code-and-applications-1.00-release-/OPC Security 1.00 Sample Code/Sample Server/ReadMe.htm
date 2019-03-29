@@ -1,0 +1,201 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="Microsoft Developer Studio">
+<meta name="AUTHOR" content="David JENNI, Microsoft Corp.">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>OPC Security Sample Code Readme</title>
+
+<style>
+body        { margin-left:0.5cm; margin-top:0.5cm; margin-bottom:0.7cm; width:800; }
+
+body,p,h1,h2,h3,h4,ul,ol,li,div,td,th,address,blockquote,nobr,i
+            { font-family:Tahoma,Verdana,Arial,Helvetica,sans-serif;font-size:10pt; }
+h1          { font-size:1.6em;  }
+h2          { font-size:1.4em; color:purple; }
+h3          { font-size:1.2em; font-weight:bold; background-color:#E0F0F0; padding:0.1cm;padding-left:0.3cm;}
+h4          { font-size:1.0em; font-weight:bold; }
+
+pre         { font-family:Courier New,Courier; font-size:.8em; color:#0000C0; background-color:#FFFFE0; margin-left:0.5cm; }
+
+A:link      { color:#FF6600; text-decoration: none }
+A:visited   { color:#FF6600; text-decoration: none; }
+A:active    { color:#0000C0; text-decoration: none; }
+A:hover     { color:#0000C0; text-decoration: underline }
+A:an        { color:#000000; text-decoration:none; }
+
+.detail     {color:000000; font-family: "Verdana","Arial","Helvetica"; font-size:0.6em}
+.intro      {color:999999; line-height: 1.75; font-family: "Verdana","Arial","Helvetica"; font-size:0.8em; font-weight: bold}
+.footer     {color:000000; font-family: "Verdana","Arial","Helvetica"; font-size:7pt;}
+
+td          { vertical-align:top; }
+td.header,tr.header
+            { background-color="#4284ff";font-size:0.8em; }
+td.header   { padding:0.3cm;padding-left:0.5cm; }
+</style>
+</head>
+<body>
+
+<h2>
+<img src="opc_logo.gif" width=144 height=56 border="0">
+OPC Security Sample Code Readme
+</h2>
+
+<p class="intro">
+Sample source code for a server and client implementing the new OPC Security Custom Interfaces.
+</p>
+
+<p>
+<table border="0" width="640" cellspacing="3" cellpadding="0" align="center">
+<tr>
+  <td width="75%">
+    <p>This sample source code is a possible implementation of the OPC Security Custom Interfaces, but does
+    by no means represent a full industrial-strength OPC server; it is presented for educational purposes only.
+    This is a result of our OPC Security work group's effort to validate the specification and deliver a
+    basic server to demonstrate the principles. 
+    </p>
+    <p>
+    Both the server and client source code is based on Al Chisholm's Data Access 2.0 server and client test sample code as supplied by the
+    <a href="http://www.opcfoundation.org">OPC Foundation</a>, thank you Al. The server is a simple Win32 application
+    without fancy UI or advanced configuration dialogs. In fact, most configuration has to be done by changing program code;
+    only exception is the ACL configuration, <a href="#Deployment">see below</a>.
+    </p>
+    <p>
+    The client, in turn, is an even simpler Win32 console application with a basic text menu prompt.
+    </p>
+  </td>
+  <td width="2%">&nbsp;
+  </td>
+  <td width="23%" cellpadding="3" style="background-color:#E0F0F0;padding:0.4cm;">
+    <b>Contents:</b>
+    <ul>
+        <li><a href="#Deliverables">Deliverables</a></li>
+        <li><a href="#Environment">Environment</a></li>
+        <li><a href="#Installation">Installation</a></li>
+        <li><a href="#Deployment">Deployment</a></li>
+    </ul>
+  </td>
+</tr>
+</table>
+</p>
+
+<br>
+<a name="Deliverables">
+<h3>Deliverables:</h3>
+</a>
+<p>
+<ol>
+    <li>opcSec_PS: Source code for the new OPC Security proxy DLL</li>
+    <li>da2SrvSec: Source code of the modified DataAccess2 sample server, for both DLL and EXE server versions</li>
+    <li>opcTestSec.zip: Source code of the modified DataAccess2 test client as available by the OPC Foundation</li>
+</ol>
+All modifications to Al's original source code files are tagged with <i>%OPC_SEC_MODIFIED%</i> and <i>%END_OPC_SEC_MODIFIED%</i>
+markup comment lines. In addition to these changes, we added a few OPC security specific files:
+<ul>
+    <li>opcSec.idl: provides the new security interfaces</li>
+    <li>AccessCheck.cpp: does basic ACL work and access caching</li>
+    <li>AccessCheck.h</li>
+    <li>I_Security.cpp: implements the OPC security custom interface using NT credentials</li>
+    <li>PrivateSecurity.cpp: implements the OPC security custom interface using private credentials</li>
+    <li>SecurityDescriptor.cpp:  borrowed from Microsoft's ATL code to keep source code as generic C++ code</li>
+    <li>SecurityDescriptor.h</li>
+</ul>
+</p>
+
+<a name="Environment">
+<h3>Environment:</h3>
+</a>
+<p>
+Throughout our work, we have been deploying the samples on Windows NT4 SP5 and Win2000 workstations and servers,
+the clients were also deployed on Windows 9X. Part of our group did also successfully implement and test 
+an InProc server for Windows CE V2.12. The enclosed source code does <b>not</b> include that source tree.
+</p>
+<p>
+To build the supplied source code, you will need a VisualStudio/ Visual C++ V6.0. The source code by itself will most likely compile
+on older versions (though never tried!), but the project files are incompatible for VC++ 5.0 and older.
+</p>
+<p>
+To run the samples, you must have OPC DataAcccess 2.0 installed on both your server and client machines, namely the standard
+OPC proxy DLLs <b>opcproxy.dll</b> and <b>opccmn_ps.dll</b>
+</p>
+
+<a name="Installation">
+<h3>Installation:</h3>
+</a>
+<h4>Security Proxy DLL:</h4>
+<p>
+<ul>
+    <li>Expand the opcSec_PS.zip file.</li>
+    <li>Open and build the VC6 project file <b>opcSec_PS.dsp</b> found in subdirectory <b>opcSec_PS</b>.
+        You only need to build the release version only, since all code is generated.</li>
+    <li>Register the proxy DLL by means of the regsvr32 utility:
+    <pre>D:\...\opcSec_PS\Release> <b>regsvr32 opcSec_PS.dll</b></pre></li>
+</ul>
+Remember that this quick registration from within a user/project directory is <b>not recommended</b>
+for any real-world installation at customer sites!
+The installation should be done as specified in section,
+6.5, "Installing OPC Binaries" in the <i>OPC Common Definitions and Interfaces document</i>.
+</p>
+<p>
+Please also note that this proxy DLL opcSec_PS.dll must be registered locally on both server and client machines
+when deployed in a remote scenario!
+</p>
+<h4>Server:</h4>
+<ul>
+    <li>Expand the opcSecSrv.zip file.</li>
+    <li>Open and build the VC6 workspace file <b>Server.dsw</b> found in subdirectory <b>ds2SrvSec</b></li>
+    <li>Register the EXE server by running it with an call parameter <i>-RegServer</i>
+    <pre>D:\...\da2SrvSec\Debug> <b>opc_exe.exe -RegServer</b></pre></li>
+    <li>Register the DLL server by means of the regsvr32 utility:
+    <pre>D:\...\da2SrvSec\Debug> <b>regsvr32 opc_dll.dll</b></pre></li>
+</ul>
+<h4>Client:</h4>
+<ul>
+    <li>Expand the opcTestSec.zip file.</li>
+    <li>Open and build the VC6 workspace file <b>opcTest.dsw</b> found in subdirectory <b>opcTestSec</b></li>
+</ul>
+
+
+<a name="Deployment">
+<h3>Deployment:</h3>
+</a>
+<h4>Server Configuration:</h4>
+<p>
+The security enhanced sample server can understand a very basic text file to configure the global access control list (ACL)
+for all OPC read and write accesses. The server looks for a file <b>ACL.INI</b> in the same directory where the EXE file is located.
+Copy the file ACL.INI from the source directory to the sub directory with the executable and modify at your discretion.
+</p>
+<p>All lines starting with <b>#</b> as first non-whitespace character are treated as comment lines.
+Each line made up of three columns contains one access control entry. The fields are <i>AccessVerb</i>, <i>UserName</i> and <i>AccessDirection</i>,
+see supplied ACL.ini file and sample below:
+<pre>
+# line format:
+# DENY|ALLOW domain\user RW
+deny  opcdomain\user1   RW
+allow opcdomain\user2   RW
+allow redmond\davidjen  RW
+</pre>
+</p>
+<p>
+The server has the original items still built in, please check with the source code.
+</p>
+
+<hr align="center" width="100%" size="1"/>
+
+<table border="0" width="100%" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td width="67%" valign="top" align="left">
+        <p class="footer">&copy; 1999,2000 <a href="http://www.opcfoundation.org">The OPC Foundation</a><br/>
+        OPC Security work group
+        </p>
+    </td>
+    <td width="33%" valign="top" align="right">
+        <p class="footer">
+            OPC Security V1.0<br/>
+            08/03/00 by <a href="mailto:davidjen@microsoft.com">David JENNI</a>
+        </p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

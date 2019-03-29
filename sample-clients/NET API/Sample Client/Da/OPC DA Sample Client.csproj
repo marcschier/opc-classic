@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{93559F35-12E1-406A-B851-F34B31B4393F}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>OpcDaSampleClient.ico</ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OpcDaSampleClient</AssemblyName>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)Keys\OPC COM Samples Key.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Opc.Da.SampleClient</RootNamespace>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <StartupObject>Opc.Da.SampleClient.MainForm</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <IntermediateOutputPath>$(SolutionDir)build\obj\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>$(SolutionDir)build\bin\$(Platform)\$(Configuration)\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpcComRcw, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpcComRcw.2.1.107\lib\net20\OpcComRcw.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpcNetApi, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpcNetApi.2.1.107\lib\net20\OpcNetApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpcNetApi.Com, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpcNetApi.Com.2.1.107\lib\net20\OpcNetApi.Com.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpcNetApi.Xml, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpcNetApi.Xml.2.1.107\lib\net20\OpcNetApi.Xml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Common\OPC NET Common Controls.csproj">
+      <Name>OPC NET Common Controls</Name>
+      <Project>{AC5779F3-2523-42A6-8AC6-02F21A320E7C}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AsyncRequestDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browse\BrowseFiltersDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browse\BrowseItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browse\BrowseTreeCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Browse\PropertyFiltersCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Browse\PropertyListViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemValue\ItemValueEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemValue\ItemValueListEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemValue\ItemValueListEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Item\ItemEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ItemListEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Item\ItemListEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReadItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResultListViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Server\SelectServerDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server\ServerStatusCtrl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Server\ServerStatusDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Subscription\SubscriptionAddItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Subscription\SubscriptionCreateDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Subscription\SubscriptionEditCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Subscription\SubscriptionListEditDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Subscription\SubscriptionsTreeCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UpdatesListViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WriteItemsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="AsyncRequestDlg.resx">
+      <DependentUpon>AsyncRequestDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browse\BrowseFiltersDlg.resx">
+      <DependentUpon>BrowseFiltersDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browse\BrowseItemsDlg.resx">
+      <DependentUpon>BrowseItemsDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browse\BrowseTreeCtrl.resx">
+      <DependentUpon>BrowseTreeCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browse\PropertyFiltersCtrl.resx">
+      <DependentUpon>PropertyFiltersCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browse\PropertyListViewCtrl.resx">
+      <DependentUpon>PropertyListViewCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemValue\ItemValueEditCtrl.resx">
+      <DependentUpon>ItemValueEditCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemValue\ItemValueListEditCtrl.resx">
+      <DependentUpon>ItemValueListEditCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemValue\ItemValueListEditDlg.resx">
+      <DependentUpon>ItemValueListEditDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemEditCtrl.resx">
+      <DependentUpon>ItemEditCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemListEditCtrl.resx">
+      <DependentUpon>ItemListEditCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Item\ItemListEditDlg.resx">
+      <DependentUpon>ItemListEditDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsEditDlg.resx">
+      <DependentUpon>OptionsEditDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReadItemsDlg.resx">
+      <DependentUpon>ReadItemsDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultListViewCtrl.resx">
+      <DependentUpon>ResultListViewCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\SelectServerDlg.resx">
+      <DependentUpon>SelectServerDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerStatusCtrl.resx">
+      <DependentUpon>ServerStatusCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Server\ServerStatusDlg.resx">
+      <DependentUpon>ServerStatusDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscription\SubscriptionAddItemsDlg.resx">
+      <DependentUpon>SubscriptionAddItemsDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscription\SubscriptionCreateDlg.resx">
+      <DependentUpon>SubscriptionCreateDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscription\SubscriptionEditCtrl.resx">
+      <DependentUpon>SubscriptionEditCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscription\SubscriptionListEditDlg.resx">
+      <DependentUpon>SubscriptionListEditDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subscription\SubscriptionsTreeCtrl.resx">
+      <DependentUpon>SubscriptionsTreeCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdatesListViewCtrl.resx">
+      <DependentUpon>UpdatesListViewCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WriteItemsDlg.resx">
+      <DependentUpon>WriteItemsDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="Config Files\COM\Opc.Da.SampleClient.config" />
+    <Content Include="Config Files\COM\OPC.DaWrapper.config" />
+    <Content Include="Config Files\COM\OPCSample.OpcDa20Server.config" />
+    <Content Include="Config Files\COM\OPCSample.OpcDa30Server.config" />
+    <Content Include="Config Files\COM\OPCSample.OpcDaServer.config" />
+    <Content Include="Config Files\XML\Opc.Da.SampleClient.config" />
+    <Content Include="Config Files\XML\opcfoundation.org.XmlDaSampleServer-Service.config" />
+    <Content Include="Config Files\XML\XmlDaSampleServer-Service.config" />
+    <Content Include="OpcDaSampleClient.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OPC Key Pair.snk" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

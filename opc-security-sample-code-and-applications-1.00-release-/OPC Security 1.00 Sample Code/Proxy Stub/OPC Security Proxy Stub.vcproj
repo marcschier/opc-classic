@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="OPC Security Proxy Stub"
+	ProjectGUID="{A5024009-6EAB-4bb7-8E71-C1091C420F5E}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_WIN32_DCOM;REGISTER_PROXY_DLL"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="FALSE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="attrib -R ..\..\Bin\$(TargetFileName)
+attrib -R ..\..\Include\$(TargetFileName)
+copy &quot;$(TargetPath)&quot; ..\..\Bin\$(TargetFileName)
+copy &quot;$(TargetPath)&quot; ..\..\Include\$(TargetFileName)
+
+attrib -R ..\..\Include\OpcSec*.*
+attrib -R ..\..\Include\OpcErrSec*.*
+copy OpcSec.idl ..\..\Include\
+copy OpcSec.h ..\..\Include\
+copy OpcSec_i.c ..\..\Include\
+copy OpcErrSec.h ..\..\Include\
+
+regsvr32 /s /c &quot;$(TargetPath)&quot;
+echo $(TargetPath) registration time &gt; .\build.timestamp
+echo &quot;$(TargetPath)&quot; registered.
+
+"
+				Outputs=".\build.timestamp"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="rpcrt4.lib"
+				OutputFile="$(OutDir)/opcsec_ps.dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/opcsec_ps.pdb"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/opcsec_ps.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\$(InputName).tlb"
+				HeaderFileName=".\$(InputName).h"
+				InterfaceIdentifierFileName=".\$(InputName)_i.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="if not exist ..\..\Include mkdir ..\..\Include
+if not exist ..\..\Bin mkdir ..\..\Bin
+"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				OmitFramePointers="TRUE"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_WIN32_DCOM;REGISTER_PROXY_DLL"
+				StringPooling="TRUE"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="FALSE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="attrib -R ..\..\Bin\$(TargetFileName)
+attrib -R ..\..\Include\$(TargetFileName)
+copy &quot;$(TargetPath)&quot; ..\..\Bin\$(TargetFileName)
+copy &quot;$(TargetPath)&quot; ..\..\Include\$(TargetFileName)
+
+attrib -R ..\..\Include\OpcSec*.*
+attrib -R ..\..\Include\OpcErrSec*.*
+copy OpcSec.idl ..\..\Include\
+copy OpcSec.h ..\..\Include\
+copy OpcSec_i.c ..\..\Include\
+copy OpcErrSec.h ..\..\Include\
+
+regsvr32 /s /c &quot;$(TargetPath)&quot;
+echo $(TargetPath) registration time &gt; .\build.timestamp
+echo &quot;$(TargetPath)&quot; registered.
+
+"
+				Outputs=".\build.timestamp"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="rpcrt4.lib"
+				OutputFile="$(OutDir)/opcsec_ps.dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/opcsec_ps.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\$(InputName).tlb"
+				HeaderFileName=".\$(InputName).h"
+				InterfaceIdentifierFileName=".\$(InputName)_i.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				CommandLine="if not exist ..\..\Include mkdir ..\..\Include
+if not exist ..\..\Bin mkdir ..\..\Bin
+"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
+			<File
+				RelativePath="OpcErrSec.mc">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="MC $(InputName)
+"
+						Outputs="$(InputName).h;$(InputName).rc"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="MC $(InputName)
+"
+						Outputs="$(InputName).h;$(InputName).rc"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="OpcSec.idl">
+			</File>
+			<File
+				RelativePath="OpcSec_i.c">
+			</File>
+			<File
+				RelativePath="OpcSec_p.c">
+			</File>
+			<File
+				RelativePath="dlldata.c">
+			</File>
+			<File
+				RelativePath="opcsec_ps.def">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc">
+			<File
+				RelativePath="OpcErrSec.h">
+			</File>
+			<File
+				RelativePath="OpcSec.h">
+			</File>
+			<File
+				RelativePath="resource.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			<File
+				RelativePath="opcsec_ps.rc">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

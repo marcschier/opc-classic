@@ -1,0 +1,467 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>OPC Data eXchange 1.00 Samples Readme</title>
+</head>
+
+<body>
+
+<table cellSpacing="4" cellPadding="4" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td valign="middle" align="left">
+        <p style="tab-stops:292.5pt 315.0pt 319.5pt" align="center"><font face="Arial" size="4" color="#800000"><b>OPC
+        Data eXchange Sample Code</b></font></p>
+        <p class="head1" align="center"><font face="Arial" color="#800000" size="3"><b>August
+        19, 2003</b></font></p>
+        <p><font face="Verdana" size="2"><a name="Overview"></a></font><b><font size="3" face="Arial">Overview</font></b></p>
+        <p><font face="Verdana" size="2">The latest version of this document always on the OPC foundation
+        <a href="http://www.opcfoundation.org/Downloads/Data%20eXchange/OPC%20DX%201.00%20Sample%20Code.htm">website</a>.</font></p>
+        <p><font face="Verdana" size="2">Any use of the <i>OPC Data eXchange Sample
+        Code</i>  is subject to the terms the <a href="http://opcfoundation.org/Downloads/LicenseAgreement.asp">OPC
+        Foundation License Agreement</a>.</font></p>
+        <p><font face="Verdana" size="2">The <i>OPC Data eXchange Sample
+        Code</i> consists of an C# client application and a C++ server
+        application. These applications implement the Data eXchange Interface Specification
+        1.00. These samples are intended to demonstrate
+        the correct operation of the specification and to serve as starting
+        point for vendors who wish to develop their own implementations.</font></p>
+        <p><font face="Verdana" size="2"><span style="mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">The
+        sample client is written completely with .NET technologies; as a result,
+        it also demonstrates how to build .NET applications that interoperate
+        with existing OPC compliant COM servers. Part of the sample client
+        includes some higher-level .NET classes that hide the details of
+        .NET-COM interoperability from the application developer. These classes
+        will be superceded by the <i>Unified Data Access .NET Interface </i>initiative
+        which combines access to XML-DA and COM-DA servers into a single set of
+        .NET interfaces.</span></font></p>
+        <p><font face="Verdana" size="2"><a name="Version"></a></font><b><font size="3" face="Arial">Version
+        History</font></b></p>
+        <table border="1" width="100%" cellspacing="0" cellpadding="2" height="240">
+          <tr>
+            <td align="center" bgcolor="#000080" width="10%" height="16">
+              <b><font color="#FFFFFF" face="Verdana" size="2">Date</font></b>
+            </td>
+            <td align="center" bgcolor="#000080" width="10%" height="16"><b><font color="#FFFFFF" face="Verdana" size="2">Version</font></b></td>
+            <td align="center" bgcolor="#000080" height="16">
+              <p align="center"><b><font color="#FFFFFF" face="Verdana" size="2">Description</font></b></p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">2003-02-02</font></td>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">1.10.1.00</font></td>
+            <td align="left" height="16"><font face="Verdana" size="2">First release.</font></td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">2003-03-03</font></td>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">1.10.1.01</font></td>
+            <td align="left" height="16"><font face="Verdana" size="2">Updated to use the
+              latest version of the OPC Core Components.</font></td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">2003-03-04</font></td>
+            <td align="center" width="10%" height="16"><font face="Verdana" size="2">1.10.1.02</font></td>
+            <td align="left" height="16"><font face="Verdana" size="2">Fixed problem with DX
+              .NET wrapper.</font></td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" valign="top" height="48"><font face="Verdana" size="2">2003-06-05</font></td>
+            <td align="center" width="10%" valign="top" height="48"><font face="Verdana" size="2">1.10.1.12</font></td>
+            <td align="left" height="48"><p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Released with numerous
+              minor bug fixes in the common DA server code base.</font></p>
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Updated
+              to compile with .NET Wrappers distributed in Core Components 1.12.</font></p>
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Updated
+              source projects for use with VS .NET 2003</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" valign="top" height="32"><font face="Verdana" size="2">2003-06-30</font></td>
+            <td align="center" width="10%" valign="top" height="32"><font face="Verdana" size="2">1.00.1.20</font></td>
+            <td align="left" height="32">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Released with
+              support for the .NET 1.1 Wrappers distributed in Core Components
+              2.00.</font></p>
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Fixed
+              some memory leaks and allocation problems.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" width="10%" valign="top" height="32"><font face="Verdana" size="2">2003-08-12</font></td>
+            <td align="center" width="10%" valign="top" height="32"><font face="Verdana" size="2">1.00.1.21</font></td>
+            <td align="left" height="32">
+              <font face="Verdana" size="2">The group count is now properly
+              decremented when a group is removed.</font>
+              <p style="MARGIN-TOP: 0px"><font face="Verdana" size="2">The
+              server sends only one update if an item goes into an error state.</font>
+            </td>
+          </tr>
+          <tr>
+                <TD vAlign="top" align="center" height="16"><FONT face="Verdana" size="2">2003-08-19</FONT></TD>
+                <TD vAlign="top" align="center" height="16"><font face="Verdana" size="2">1.00.1.22</font></TD>
+                <TD align="left" height="16"><font face="Verdana" size="2">Fixed
+                  a bug introduced in release 1.00.1.21 that disabled item
+                  sampling rates.</font>
+                </TD>
+          </tr>
+        </table>
+        <p><font face="Verdana" size="2"><a name="Distribution"></a></font><b><font face="Arial" size="3">Distribution</font></b></p>
+        <p><font face="Verdana" size="2">The sample code is distributed in two ways:<o:p>
+        &nbsp;</font></p>
+        <table border="1" width="100%" cellspacing="0" cellpadding="2">
+          <tr>
+            <td align="left" bgcolor="#000080" width="25%">
+              <p align="center"><b><font color="#FFFFFF" face="Verdana" size="2">File</font></b>
+            </td>
+            <td align="left" bgcolor="#000080">
+              <p align="center"><b><font color="#FFFFFF" face="Verdana" size="2">Description</font></b></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%"><a href="http://www.opcfoundation.org/Downloads/Default.asp?URL=Data eXchange/OPC DX 1.00 Sample Binaries.msi"><font face="Verdana" size="2">OPC
+              DX 1.00 Sample Binaries</font></a></td>
+            <td align="left"><font face="Verdana" size="2">Installs
+              only the binaries and any runtime configuration files.</font></td>
+          </tr>
+          <tr>
+            <td width="25%"><a href="http://www.opcfoundation.org/Downloads/Default.asp?URL=Data eXchange/OPC DX 1.00 Sample Code.msi"><font face="Verdana" size="2">OPC
+              DX 1.00 Sample Code</font></a></td>
+            <td align="left"><font face="Verdana" size="2">Installs the
+              binaries all source files.&nbsp;
+              </font></td>
+          </tr>
+        </table>
+        <p><font face="Verdana" size="2"><o:p></o:p><a name="SystemRequirements"></a></font><b><font size="3" face="Arial">System
+        Requirements</font></b></p>
+        <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="OperatingSystems"></a>Operating
+        Systems</font></b></p>
+        <p class="MsoBodyText"><font face="Verdana" size="2">All source code
+        provided by the OPC Foundation is only supported on Windows 2000 SP3 and
+        Windows XP SP1. That said; the source code has been designed to be
+        portable to other operating systems. For this reason vendors are
+        encouraged to report fixes required to port the samples to other
+        operating systems so they can be incorporated into the baseline and to
+        improve the portability of future sample code.</font></p>
+        <p class="MsoBodyText"><font face="Verdana" size="2">All .NET components
+        require that the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=262D25E3-F589-4842-8157-034D1E7CF3A3&amp;displaylang=en">.NET
+        Framework Redistributable 1.1</a> or the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=9B3A2CA6-3647-4070-9F41-A333C6B9181D&amp;displaylang=en">.NET
+        Framework SDK Version 1.1</a> is present on the target system. The .NET
+        framework does not support Windows 95. All previously released OPC
+        foundation binaries that require the .NET Framework 1.0 will run on
+        systems with only the .NET Framework 1.1 installed. For this reason,
+        users of OPC sample code should never need to install .NET Framework 1.0
+        on a machine.</font></p>
+        <p class="MsoBodyText"><span style="mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"><font face="Verdana" size="2">All
+        C++/COM applications are compiled as UNICODE applications and will not
+        run on Windows 98 or Windows ME unless they are recompiled.&nbsp;</font></span></p>
+        <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="Installers"></a>Installers</font></b></p>
+        <p class="MsoBodyText"><font face="Verdana" size="2">The installer
+        packages are self-installing files; however, they require that Windows
+        Installer 2.0 be present on the system (it is standard on Windows 2000
+        SP3 and Windows XP). The Windows Installer 2.0 support files for other
+        operating systems can be downloaded from Microsoft's website at:</font></p>
+        <p class="MsoBodyText" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; TEXT-INDENT: 25px"><span class="MsoHyperlink"><font face="Verdana" size="2"><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=4b6140f9-2d36-4977-8fa1-6f8a0f5dca8f&amp;DisplayLang=en" target="_top">Download
+        Windows Installer 2.0 Redistributable for Windows NT 4.0 and 2000</a><O:P>
+        &nbsp;</font></span></p>
+        <p class="MsoBodyText" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; TEXT-INDENT: 25px"><span class="MsoHyperlink"><font face="Verdana" size="2"><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=cebbacd8-c094-4255-b702-de3bb768148f&amp;DisplayLang=en" target="_top">Download
+        Windows Installer 2.0 Redistributable for Windows 95, 98 and ME</a></font></span></p>
+        <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="SourceCode"></a>Source
+        Code</font></b></p>
+        <p><span class="MsoHyperlink"><font face="Verdana" size="2"><span style="COLOR: windowtext; TEXT-DECORATION: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">All
+        source code projects require Visual Studio .NET 2003.</span>&nbsp;</font></span>
+        <p><span class="MsoHyperlink"><font face="Verdana" size="2"><span style="COLOR: windowtext; TEXT-DECORATION: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">Visual
+        Studio .NET 2003 can be installed along side both Visual Studio .NET
+        2002 and Visual Studio 6.0. Existing projects for older development
+        environments do not need to be upgraded in order to use sample code
+        distributed by the OPC Foundation.&nbsp;</span></font></span></p>
+        <p><font face="Verdana" size="2"><a name="Installation"></a></font><b><font face="Arial" size="3">Installation</font></b></p>
+        <p><b><font face="Verdana" size="2">Binaries</font></b></p>
+        <p style="mso-pagination: none; mso-layout-grid-align: none; text-autospace: none"><font face="Verdana" size="2"><span style="mso-fareast-font-family: Times New Roman"><o:p></span>The
+        binaries installation consists of these files:
+        </font></p>
+        <table border="1" width="100%" cellspacing="0" cellpadding="2" height="108">
+          <tr>
+            <td align="left" bgcolor="#000080" width="25%" height="16">
+              <p align="center" style="margin-top: 0; margin-bottom: 0"><b><font color="#FFFFFF" face="Verdana" size="2">File</font></b>
+            </td>
+            <td align="left" bgcolor="#000080" height="16">
+              <p align="center" style="margin-top: 0; margin-bottom: 0"><b><font color="#FFFFFF" face="Verdana" size="2">Description</font></b></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxServer.exe</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">An
+              OPC DA 2.05a/3.00 Data Access and DX 1.00 server simulator.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxServer.device.xml</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">The
+              DA
+              configuration file for the sample server that defines the address
+              space.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxServer.config.xml</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">The
+              DX configuration file for the sample server.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxSource1.exe</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">An
+              OPC DA 2.05a/3.00 Data Access sample source server.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxSource1.config.</font><font face="Verdana" size="2">xml</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">The
+              DA
+              configuration file for the sample source server that defines the address
+              space.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxSource2.exe</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">An
+              OPC DA 2.05a/3.00 Data Access sample source server.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="25%" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">OpcDxSource2.config.</font><font face="Verdana" size="2">xml</font></p>
+            </td>
+            <td align="left" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">The
+              DA
+              configuration file for the sample source server that defines the address
+              space.</font></p>
+            </td>
+          </tr>
+        </table>
+        <p><b><font face="Verdana" size="2">Source Code</font></b></p>
+        <p class="MsoNormal"><span style="font-size: 10.0pt; font-family: Verdana">The
+        source code for the C++ server and C# client applications are
+        installed by default in the directory:</span></p>
+        <p class="MsoNormal" style="text-indent: 25"><span style="font-size: 10.0pt; font-family: Verdana"><b>$(ProgramFiles)\OPC
+        Foundation\Data eXchange 1.00</b></span></p>
+        <p class="MsoNormal" style="text-indent: 0; margin-left: 0"><span class="MsoHyperlink"><font face="Verdana" size="2"><span style="color: windowtext; text-decoration: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">The
+        source code installation will fail if the OPC Core Components
+        Redistributable has not been installed. This package can be installed
+        either as part of the DX 1.00 Sample Binaries or as a separate package
+        which is available on the OPC website.&nbsp;</span></font></span></p>
+        <p style="text-indent: 0; margin-left: 0"><span style="font-size: 10.0pt; font-family: Verdana">The
+        source code installation consists of the following key projects in the <i>'Source'</i> sub directory:</span></p>
+        <table border="1" width="887" cellspacing="0" cellpadding="2" height="111">
+          <tr>
+            <td align="left" bgcolor="#000080" width="272" height="16">
+              <p align="center" style="margin-top: 0; margin-bottom: 0"><b><font color="#FFFFFF" face="Verdana" size="2">File</font></b>
+            </td>
+            <td align="left" bgcolor="#000080" height="16" width="601">
+              <p align="center" style="margin-top: 0; margin-bottom: 0"><b><font color="#FFFFFF" face="Verdana" size="2">Description</font></b></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Common\NET Interop API</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that encapsulates the OPC Common Interfaces.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="14">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data Access\NET Interop API</font></p>
+            </td>
+            <td align="left" height="14" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that encapsulates the OPC Data Access 2.00 and 3.00
+              Interfaces.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data Access\Sample
+              Controls</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that contains several common UI components for DA
+              clients.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data Access\Sample
+              Server Classes</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C++ class library used to implement the Data Access 2.05a and 3.00
+              specifications.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="14">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data
+              eXchange\NET Interop API</font></p>
+            </td>
+            <td align="left" height="14" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that encapsulates the OPC Data eXchange 1.00 COM Interfaces.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="14">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data
+              eXchange\Sample
+              Client</font></p>
+            </td>
+            <td align="left" height="14" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# Data eXchange 1.00 client application.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data
+              eXchange\Sample
+              Server</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C++ COM server that implements the Data eXchange 1.00
+              specification.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data
+              eXchange\Sample Source Server</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C++ COM server that implements the Data Access 2.05a and 3.00
+              specifications.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Data
+              eXchange\Sample
+              Server Classes</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C++ class library used to implement the Data eXchange 1.00
+              specification.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="14">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Shared\NET Interop API</font></p>
+            </td>
+            <td align="left" height="14" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that provides basic .NET-COM interoperability
+              services.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="14">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Shared\Sample
+              Controls</font></p>
+            </td>
+            <td align="left" height="14" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C# assembly that contains several common UI components for generic
+              clients.</font></p>
+            </td>
+          </tr>
+          <tr>
+            <td width="272" height="16">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">Shared\Sample
+              Utility Classes</font></p>
+            </td>
+            <td align="left" height="16" width="601">
+              <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">A
+              C++ class library that contains utility functions and classes such
+              as lists and strings.</font></p>
+            </td>
+          </tr>
+        </table>
+        <p><b><font face="Arial" size="3"><a name="Usage"></a>Usage</font></b></p>
+        <p><b><font face="Verdana" size="2">Server</font></b></p>
+        <p><font size="2"><span style="mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"><font face="Verdana">The
+        sample server opens and reads two XML files that must be located in the
+        same directory as itself.<span style="mso-spacerun: yes; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">
+        </span>The XML files must have the same base name as the server (i.e. '</font></span></font><font face="Verdana" size="2">OpcDxServer'<span style="mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA">).
+        When executed, the server parses the 'device.xml' file a constructs its
+        DA address space
+        from the items defined within it. The server these parses the
+        'config.xml' and initializes the DX configuration from its contents.</span></font></p>
+        <p><font face="Verdana" size="2"><span style="mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA"><b>Client</b></span></font></p>
+        <p><font face="Verdana" size="2">The sample client can be started from
+        the programs menu. By default, it will connect to the sample server when
+        the ‘connect’ button is clicked. The sample server comes with a
+        standard configuration file that contains two source servers and four
+        connections. When the client connects the source servers should start
+        automatically and the DX target items should immediately start receiving
+        updates.&nbsp;</font></p>
+        <p><font face="Verdana" size="2">The client displays the the DX server
+        configuration in the left hand tree view. The configuration can be
+        modified by right clicking on a node in this view and selecting and
+        operation.</font></p>
+        <p><b><font face="Arial" size="3"><a name="ProblemReporting"></a>Problem Reporting</font></b></p>
+        <p><font face="Verdana" size="2">As part of a broader initiative to
+        increase adoption of OPC specifications and to improve service to
+        members, the OPC Foundation intends to maintain binaries and sample code
+        over time following a model similar to Open Source projects. Vendors are
+        encouraged to report problems, bug fixes, enhancements and any other
+        comments about the components supplied by the OPC Foundation. To support
+        this effort, the OPC Foundation has technical staff prepared to review
+        and incorporate feedback into the baseline and release new versions of
+        the components and sample code in a timely manner for the benefit of all
+        members.</font></p>
+        <p><font face="Verdana" size="2">Please note that this support is intended for OPC Foundation members who are incorporating OPC
+        support into their products.</font></p>
+        <p><font face="Verdana" size="2">Problems related to a particular
+        download should be posted to the appropriate group on the <a href="http://opcfoundation.org/forum">OPC
+        Foundation Message Board</a>.</font></p>
+      </td>
+    </tr>
+    <tr align="middle">
+      <td>
+        <hr align="center" width="100%" SIZE="1">
+        <font face="Verdana, Arial, Helvetica, sans-serif" size="1">Please send
+        website comments or report any problems to: <a href="mailto:webmaster@opcfoundation.org?Subject=OPC website comments">webmaster@opcfoundation.org</a></font></td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+
+</html>

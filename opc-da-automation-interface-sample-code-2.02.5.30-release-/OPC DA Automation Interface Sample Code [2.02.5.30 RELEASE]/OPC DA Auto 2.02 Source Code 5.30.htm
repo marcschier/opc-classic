@@ -1,0 +1,1174 @@
+<html>
+  <head>
+    <title>OPC Data Access 3.00 Samples Readme</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+  </head>
+  <body>
+    <table cellSpacing="4" cellPadding="4" width="100%" border="0">
+      <tbody>
+        <tr>
+          <td>
+            <p class="head1" align="center"><font color="#990000" size="4" face="Arial"><b>OPC
+            DA Auto Wrapper Source Code</b></font></p>
+            <p class="head1" align="center">
+			<font face="Arial" color="#800000" size="3"><b>November 25, 2005</b></font></p>
+            <p><font face="Verdana" size="2"><a name="Overview"></a></font><b><font size="3" face="Arial">Overview</font></b></p>
+            <p><font face="Verdana" size="2">The latest version of this document always on the 
+                OPC foundation <a href="http://www.opcfoundation.org/Downloads/Data%20Access/OPC%20DA%20Auto%202.02%20Source%20Code.htm">
+                  website</a>.</font></p>
+            <p><font face="Verdana" size="2">Any use of the <i>OPC DA Auto Wrapper Source Code</i>
+            is 
+                subject to the terms the <a href="http://opcfoundation.org/Downloads/LicenseAgreement.asp">
+                  OPC Foundation License Agreement</a>.</font></p>
+            <p><font face="Verdana" size="2">The <i>OPC DA Auto Wrapper Source Code</i>
+            consists of a ATL COM server that implements the Data Access
+            Automation Interface 2.02 and two test client applications: one written
+            with Visual Basic 6.0, the other written with Visual Basic .NET.</font></p>
+            <p><font face="Verdana" size="2">This code base was derived from the
+            original automation wrapper code, however, it incorporates numerous
+            bug fixes and design changes provided by various OPC Foundation
+            members.</font></p>
+            <p><font face="Verdana" size="2"><o:p></o:p><a name="SystemRequirements"></a></font><b><font size="3" face="Arial">
+            The DA Auto Wrapper and the <a href="http://www.opcfoundation.org/WebUI/DownloadFile.aspx/NET%20API/OPC%20.NET%20API%201.10%20Readme%201.01.htm?RI=137">.NET API</a></font></b></p>
+            <p class="MsoBodyText"><font face="Verdana" size="2">Both the DA
+            Automation Wrapper and the OPC .NET API allow .NET based OPC client
+            applications to communicate with existing COM based OPC servers.
+            Users should keep in mind that the DA Automation Wrapper is intended
+            to used only as a way to facilitate porting of existing VB 6.0
+            applications to VB .NET. The OPC Foundation recommends that any new
+            VB .NET client development use the .NET API for the following
+            reasons:</font></p>
+            <ul>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it provides
+                almost all of the features of the DA automation wrapper;</font></li>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it supports
+                Data Access 3.00 and XML Data Access 1.00 servers;</font></li>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it takes
+                full advantage of new .NET features such as object serialization;</font></li>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it requires
+                one less layer of code between the application and the server;</font></li>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it provides a
+                common API framework for all specifications;</font></li>
+              <li>
+                <p class="MsoBodyText"><font face="Verdana" size="2">it will be
+                the starting point for the Unified Architecture (UA) .NET
+                API;&nbsp;</font></li>
+            </ul>
+            <p class="MsoBodyText"><font face="Verdana" size="2">This document
+            includes a detailed <a href="#NetApiMappings">mapping</a> of the
+            automation interface objects onto their equivalents in the .NET API.</font></p>
+            <p><font face="Verdana" size="2"><a name="Version"></a></font><b><font size="3" face="Arial">Terms
+            of Use</font></b></p>
+            <p><font face="Verdana" size="2">The following terms of use are in
+            addition to the standard <a href="http://opcfoundation.org/Downloads/LicenseAgreement.asp">
+                  OPC Foundation License Agreement</a>.</font></p>
+            <p><font face="Verdana" size="2">The OPC Foundation does not
+            distribute the binary version of the Automation Wrapper directly to
+            end-users. It is up to OPC vendors to incorporate the binary into
+            the installation program for their products. Furthermore, OPC
+            vendors must be the first point of contact for any problems or
+            issues related to the wrapper raised by an end-user. End-users who
+            contact the OPC Foundation directly for support with the wrapper
+            will be directed back to the vendor that supplied the binary.&nbsp;</font></p>
+            <p><font face="Verdana" size="2">In addition, the OPC vendors that
+            choose to distribute the binary with their product must assume all
+            warrantee and liability obligations associated with the use of the
+            wrapper. In other words, the OPC Foundation maintains the source
+            code and does some testing to make sure it is functional , however,
+            any rigorous testing is the responsibility of OPC vendors who
+            distribute the wrapper.</font></p>
+            <p><font face="Verdana" size="2">That said, the OPC Foundation will endeavor
+            to release updated versions of the wrapper in a timely manner
+            whenever it receives a fix for the wrapper from an OPC vendor.&nbsp;</font></p>
+            <p><font face="Verdana" size="2"><a name="Version"></a></font><b><font size="3" face="Arial">Version 
+                  History</font></b></p>
+            <table border="1" width="100%" cellspacing="0" cellpadding="2" height="34">
+              <tr>
+                <td align="center" bgcolor="#000080" width="99" height="16">
+                  <b><font color="#ffffff" face="Verdana" size="2">Date</font></b>
+                </td>
+                <td align="center" bgcolor="#000080" width="90" height="16"><b><font color="#ffffff" face="Verdana" size="2">Version</font></b></td>
+                <td align="center" bgcolor="#000080" height="16">
+                  <p align="center"><b><font color="#ffffff" face="Verdana" size="2">Description</font></b></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="7"><font face="Verdana" size="2">2003-11-24</font></td>
+                <td align="center" width="90" height="7"><font face="Verdana" size="2">2.02.4.00</font></td>
+                <td align="left" height="7"><font face="Verdana" size="2">Beta release to
+                  the DA Automation working group.&nbsp;</font></td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="7"><font face="Verdana" size="2">2003-11-25</font></td>
+                <td align="center" width="90" height="7"><font face="Verdana" size="2">2.02.4.01</font></td>
+                <td align="left" height="7"><font face="Verdana" size="2">Removed
+                  test code that forced wrapper to use DA 1.0 interfaces if
+                  available.</font></td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="7" valign="top"><font face="Verdana" size="2">2003-12-17</font></td>
+                <td align="center" width="90" height="7" valign="top"><font face="Verdana" size="2">2.02.4.03</font></td>
+                <td align="left" height="7">
+                  <p style="margin: 0"><font face="Verdana" size="2">Cleaned up
+                  the trace mechanism (now will not create any files if tracing
+                  is disabled).</font></p>
+                  <p style="margin: 0"><font face="Verdana" size="2">Handles
+                  VT_BYREF | VARIANT parameters passed by VB.&nbsp;</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="7" valign="top"><font face="Verdana" size="2">2004-03-14</font></td>
+                <td align="center" width="90" height="7" valign="top"><font face="Verdana" size="2">2.02.4.04</font></td>
+                <td align="left" height="7">
+                  <font face="Verdana" size="2">Fixed problems with beta release
+                  reported by members.</font>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="6" valign="top"><font face="Verdana" size="2">2004-04-29</font></td>
+                <td align="center" width="90" height="6" valign="top"><font face="Verdana" size="2">2.02.5.00</font></td>
+                <td align="left" height="6">
+                  <p style="word-spacing: 0; margin-bottom: 0"><font face="Verdana" size="2">First
+                  release to all members.<br>Now
+                  deletes all registry keys used by trace on uninstall.<br>
+                  Added mechanism to attach wrapper to an existing OPC server
+                  instance.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="6" valign="top"><font face="Verdana" size="2">2004-09-28</font></td>
+                <td align="center" width="90" height="6" valign="top"><font face="Verdana" size="2">2.02.5.10</font></td>
+                <td align="left" height="6">
+                  <p style="word-spacing: 0; margin-bottom: 0"><font face="Verdana" size="2">Fixed
+                  bug in OPCBrowser.<font SIZE="2">ShowLeafs</font>.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="6" valign="top"><font face="Verdana" size="2">2004-11-07</font></td>
+                <td align="center" width="90" height="6" valign="top"><font face="Verdana" size="2">2.02.5.12</font></td>
+                <td align="left" height="6">
+                  <p style="word-spacing: 0; margin-bottom: 0"><font face="Verdana" size="2">Fixed
+                  problem in OPCItems.AddItems where errors code were not
+                  checked propertly.<br>
+                  Fixed trace problem when EXEs do not have version resource
+                  blocks.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="6" valign="top"><font face="Verdana" size="2">2005-03-11</font></td>
+                <td align="center" width="90" height="6" valign="top"><font face="Verdana" size="2">2.02.5.20</font></td>
+                <td align="left" height="6">
+                  <p style="word-spacing: 0; margin-bottom: 0"><font face="Verdana" size="2">Fixed
+                  memory leak in OPCGroups::Remove.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" width="99" height="6" valign="top"><font face="Verdana" size="2">2005-11-25</font></td>
+                <td align="center" width="90" height="6" valign="top"><font face="Verdana" size="2">2.02.5.30</font></td>
+                <td align="left" height="6">
+                  <p style="word-spacing: 0; margin-bottom: 0">
+					<font face="Verdana" size="2">Changed browsing feature to 
+					use IOPCServerList2. This means that the wrapper now 
+					enumerates DA 1.0a servers correctly. </font></p>
+                </td>
+              </tr>
+            </table>
+            <p><font face="Verdana" size="2"><a name="Distribution"></a></font><b><font face="Arial" size="3">Distribution</font></b></p>
+            <p><font face="Verdana" size="2">The source code is distributed in
+            this way:<o:p>
+                &nbsp;</font></p>
+            <table border="1" width="889" cellspacing="0" cellpadding="2">
+              <tr>
+                <td align="left" bgcolor="#000080" width="234">
+                  <p align="center"><b><font color="#ffffff" face="Verdana" size="2">File</font></b></p>
+                </td>
+                <td align="left" bgcolor="#000080" width="641">
+                  <p align="center"><b><font color="#ffffff" face="Verdana" size="2">Description</font></b></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="234"><font face="Verdana" size="2">
+				<a href="http://www.opcfoundation.org/WebUI/Downloads.aspx?CM=1&SE1=Title&FV1=Custom&FT1=%Auto%&SE2=Version&FV2=Custom&FT2=2.02.5.30">OPC 
+                      DA Auto 2.02 Merge Module</a></font></td>
+                <td align="left" width="641"><font face="Verdana" size="2">Installs the
+                  binaries and runtime configuration files.</font></td>
+              </tr>
+              <tr>
+                <td width="234"><font face="Verdana" size="2">
+				<a href="http://www.opcfoundation.org/WebUI/Downloads.aspx?CM=1&SE1=Title&FV1=Custom&FT1=%Auto%&SE2=Version&FV2=Custom&FT2=2.02.5.30">OPC 
+                      DA Auto 2.02 Source Code</a></font></td>
+                <td align="left" width="641"><font face="Verdana" size="2">Installs the binaries,
+                  runtime configuration files and all source.</font></td>
+              </tr>
+            </table>
+            <p><font face="Verdana" size="2"><o:p></o:p><a name="SystemRequirements"></a></font><b><font size="3" face="Arial">System 
+                  Requirements</font></b></p>
+            <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="OperatingSystems"></a>Operating 
+                  Systems</font></b></p>
+            <p class="MsoBodyText"><font face="Verdana" size="2">The DA
+            Automation Wrapper is intended to run on all Windows systems that
+            support DCOM, however, the OPC Foundation only tests the wrapper on
+            Windows XP and Windows 2000. Vendors are asked to submit any fixes
+            required for other platforms.</font></p>
+            <p class="MsoBodyText"><font face="Verdana" size="2">All source code provided by 
+                the OPC Foundation is only supported on Windows 2000 SP4 and Windows XP SP1. 
+                That said; the source code has been designed to be portable to other operating 
+                systems. For this reason vendors are encouraged to report fixes required to 
+                port the samples to other operating systems so they can be incorporated into 
+                the baseline and to improve the portability of future sample code.</font></p>
+            <p class="MsoBodyText"><font face="Verdana" size="2">All .NET components require 
+                that the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=262D25E3-F589-4842-8157-034D1E7CF3A3&amp;displaylang=en">
+                  .NET Framework Redistributable 1.1</a> or the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=9B3A2CA6-3647-4070-9F41-A333C6B9181D&amp;displaylang=en">
+                  .NET Framework SDK Version 1.1</a> is present on the target system. The .NET 
+                framework does not support Windows 95. All previously released OPC foundation 
+                binaries that require the .NET Framework 1.0 will run on systems with only the 
+                .NET Framework 1.1 installed. For this reason, users of OPC sample code should 
+                never need to install .NET Framework 1.0 on a machine.</font></p>
+            <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="Installers"></a>Installers</font></b></p>
+            <p class="MsoBodyText"><font face="Verdana" size="2">The installer packages are 
+                self-installing files; however, they require that Windows Installer 2.0 be 
+                present on the system (it is standard on Windows 2000 SP3 and Windows XP). The 
+                Windows Installer 2.0 support files for other operating systems can be 
+                downloaded from Microsoft's website at:</font></p>
+            <p class="MsoBodyText" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; TEXT-INDENT: 25px"><span class="MsoHyperlink"><font face="Verdana" size="2"><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=4b6140f9-2d36-4977-8fa1-6f8a0f5dca8f&amp;DisplayLang=en"
+                    target="_top">Download Windows Installer 2.0 Redistributable for Windows NT 4.0 
+                    and 2000</a><O:P>
+                  &nbsp;</font></span></p>
+            <p class="MsoBodyText" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px; TEXT-INDENT: 25px"><span class="MsoHyperlink"><font face="Verdana" size="2"><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=cebbacd8-c094-4255-b702-de3bb768148f&amp;DisplayLang=en"
+                    target="_top">Download Windows Installer 2.0 Redistributable for Windows 95, 98 
+                    and ME</a></font></span></p>
+            <p class="MsoBodyText"><b><font face="Verdana" size="2"><a name="SourceCode"></a>Source 
+                  Code</font></b></p>
+            <p><span class="MsoHyperlink"><font face="Verdana" size="2"><span style="color: windowtext; text-decoration: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">The
+            </span><span style="COLOR: windowtext; TEXT-DECORATION: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">source code projects require
+            either Visual Studio 6.0 or Visual Studio .NET 2003.</span>&nbsp;</font></span>
+            <p><span class="MsoHyperlink"><font face="Verdana" size="2"><span style="COLOR: windowtext; TEXT-DECORATION: none; mso-fareast-font-family: Times New Roman; mso-ansi-language: EN-US; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; text-underline: none">Visual
+        Studio .NET 2003 can be installed along side both Visual Studio .NET
+        2002 and Visual Studio 6.0. Existing projects for older development
+        environments do not need to be upgraded in order to use sample code
+        distributed by the OPC Foundation.&nbsp;</span></font></span></p>
+            <p><font face="Verdana" size="2"><a name="Installation"></a></font><b><font face="Arial" size="3">Installation</font></b></p>
+            <p><b><font face="Verdana" size="2">Binaries</font></b></p>
+            <p style="mso-pagination: none; mso-layout-grid-align: none"><font face="Verdana" size="2"><span style="mso-fareast-font-family: Times New Roman"><o:p>
+                </span>The binaries installation consists of these files: </font>
+            </p>
+            <table border="1" width="100%" cellspacing="0" cellpadding="2">
+              <tr>
+                <td align="left" bgcolor="#000080" width="25%">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">File</font></b></p>
+                </td>
+                <td align="left" bgcolor="#000080">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">Description</font></b></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="25%">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">OPCDAAuto.dll</font></p>
+                </td>
+                <td align="left">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">The
+                  DA Automation Wrapper.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="25%">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">OpcDaAutoClient.exe</font></p>
+                </td>
+                <td align="left">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">A
+                  sample client written with Visual Basic 6.0.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="25%">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">VbNetSampleClient.exe</font></p>
+                </td>
+                <td align="left">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">A
+                  sample client written with Visual Basic .NET.</font></p>
+                </td>
+              </tr>
+            </table>
+            <p><b><font face="Verdana" size="2">Source Code</font></b></p>
+            <p class="MsoNormal"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">The
+        source code for the C++ server and C# client applications are
+        installed by default in the directory:</span></p>
+            <p class="MsoNormal" style="TEXT-INDENT: 25px"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana"><b>$(ProgramFiles)\OPC
+            Foundation\DA Automation 2.02</b></span></p>
+            <p style="MARGIN-LEFT: 0px; TEXT-INDENT: 0px"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Verdana">The
+        source code installation consists of the following key projects in the <i>'Source'</i> sub directory:</span></p>
+            <table border="1" width="887" cellspacing="0" cellpadding="2" height="109">
+              <tr>
+                <td align="left" bgcolor="#000080" width="315" height="16">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">File</font></b></p>
+                </td>
+                <td align="left" bgcolor="#000080" height="16" width="558">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">Description</font></b></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="315" height="14">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">Data
+                  Access\Automation\Wrapper</font></p>
+                </td>
+                <td align="left" height="14" width="558">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">An
+                  ATL COM server that implements the DA Automation 2.02
+                  specifications.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="315" height="16">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">Data
+                  Access\Automation\Sample Client (VB6)</font></p>
+                </td>
+                <td align="left" height="16" width="558">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">A
+                  VB 6.0 project that uses the DA Automation Wrapper.</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="315" height="16">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">Data
+                  Access\Automation\Sample Client</font></p>
+                </td>
+                <td align="left" height="16" width="558">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">A
+                  VB .NET client application that uses the DA Automation
+                  Wrapper.&nbsp;&nbsp;</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="315" height="16">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">Data
+                  Access\Automation\Sample Controls</font></p>
+                </td>
+                <td align="left" height="16" width="558">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">A
+                  C# control library that is used by the VB .NET client
+                  application.</font></p>
+                </td>
+              </tr>
+            </table>
+            <p><b><font face="Arial" size="3"><a name="Usage"></a>Usage</font></b></p>
+            <p><b><font face="Verdana" size="2">VB .NET Memory Management</font></b></p>
+            <p><font face="Verdana" size="2">The .NET runtime environment
+            manages COM object references differently from VB 6.0. Specifically,
+            setting an object explicitly to <i>Nothing</i> will not release a
+            COM server in VB .NET like it does in VB 6.0. As a result, users of
+            the automation wrapper in VB .NET will likely find that COM servers
+            are not being released when they expect. This will appear to be a
+            reference count problem in the VB client, however, it may not be a
+            concern since the .NET runtime environment is supposed to clean up
+            the references automatically when the memory is 'needed'.
+            Applications developers that do not wish to trust the .NET runtime
+            environment may use the&nbsp; <i>Marshal.</i><font SIZE="2"><i>ReleaseComObject</i>
+            </font>method to explicitly release COM servers.</font></p>
+            <p><b><font face="Verdana" size="2">OPCActivator</font></b></p>
+            <p><font face="Verdana" size="2">The default behavior of <i>CoCreateInstanceEx</i>
+            is not suitable for some DCOM applications that have specialized
+            security, licensing or network protocol requirements. As a result,
+            the DA Automation wrapper includes an object called <i>OPCActivator.
+            </i>This object allows VB applications to use vendor specific code
+            to instantiate the DCOM server and then create a new instance of an <i>OPCServer</i>
+            object that wraps an existing DCOM server instead of creating a new
+            instance.&nbsp;</font></p>
+            <p><b><font face="Verdana" size="2">Trace Log</font></b></p>
+            <p style="margin-bottom: 0"><font face="Verdana" size="2">The
+            automation wrapper logs events to an HTML file in the working
+            directory of the process that loads it. The log file name
+            contain&nbsp; executable name with '_OPCDAAuto_LOG.htm' appended to it. The content of these files is
+            controlled with registry entries contained in the following key:</font></p>
+            <p style="text-indent: 25px; margin-top: 10" align="left"><font face="Verdana" size="2"><b>HKEY_LOCAL_MACHINE\SOFTWARE\OPC
+            Foundation\OPCDAAuto\Trace&nbsp;\&lt;Executable Name&gt;</b></font></p>
+            <table border="1" width="887" cellspacing="0" cellpadding="2">
+              <tr>
+                <td align="left" bgcolor="#000080" width="119" height="16">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">Value</font></b></p>
+                </td>
+                <td align="left" bgcolor="#000080" height="16" width="754">
+                  <p align="center" style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><b><font color="#ffffff" face="Verdana" size="2">Purpse</font></b></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="119" height="14">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">MaxEntries</font></p>
+                </td>
+                <td align="left" height="14" width="754">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">The
+                  maximum number of entries that will be stored in the log
+                  (default=10000)</font></p>
+                </td>
+              </tr>
+              <tr>
+                <td width="119" height="16" valign="top">
+                  <p style="MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px"><font face="Verdana" size="2">TraceLevel</font></p>
+                </td>
+                <td align="left" height="16" width="754">
+                  <p style="margin-top: 0px; margin-bottom: 10px"><font face="Verdana" size="2">A
+                  bit mask indicating what types of data will be stored in the
+                  log (default = 0x0000).&nbsp;</font></p>
+                  <p style="margin-top: 0; margin-bottom: 0"><font face="Verdana" size="2">The
+                  bits are:</font></p>
+                  <p style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0001
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  any error messages.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0002
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  additional detail about errors conditions.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0004
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  any warning/informational messages.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0008
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  additional detail about warning/informational conditions.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0010
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  entry/exit from public functions.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0020
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  before/after remote server calls.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0040
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  in/out function parameters.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font face="Verdana"><font SIZE="2">0x0080
+                  </font><font SIZE="2" COLOR="#008000">// additional detail
+                  about in/out function parameters (e.g. array contents).</font></font></p>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0100
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  any other information.</font></p>
+                  </font>
+                  <p style="margin-left: 25; margin-top: 0; margin-bottom: 0"><font SIZE="2" face="Verdana">0x0200
+                  </font><font SIZE="2" COLOR="#008000"><font face="Verdana">//
+                  additional detail about any other information.</font></font>
+                </td>
+              </tr>
+            </table>
+            <p><b><font face="Arial" size="3"><a name="NetApiMappings"></a>DA
+            Automation to .NET API Mappings</font></b></p>
+            <p><b><font face="Verdana" size="2"><a name="OPCServer"></a>OPCServer</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/ Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">StartTime</p>
+                </td>
+                <td rowspan="8">Opc.Da.Server.GetStatus</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">CurrentTime&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">LastUpdateTime&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">MajorVersion&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">MinorVersion&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">BuildNumber&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">VendorInfo&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">ServerState&nbsp;</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">LocaleID&nbsp;</p>
+                </td>
+                <td>Opc.Server.Locale</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Bandwidth&nbsp;</p>
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">OPCGroups&nbsp;</p>
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">PublicGroupNames&nbsp;</p>
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">ServerName</p>
+                </td>
+                <td>Opc.Server.Name</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">ServerNode&nbsp;</p>
+                </td>
+                <td>Opc.Server.URL</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">ClientName&nbsp;</p>
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">GetOPCServers&nbsp;</p>
+                </td>
+                <td>OpcCom.ServerEnumerator</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Connect&nbsp;</p>
+                </td>
+                <td>Opc.Server.Connect</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Disconnect</p>
+                </td>
+                <td>Opc.Server.Disconnect</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">CreateBrowser</p>
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">GetErrorString</p>
+                </td>
+                <td>Opc.Server.GetErrorString</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">QueryAvailableLocaleIDs</p>
+                </td>
+                <td>Opc.Server.SupportedLocales</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">QueryAvailableProperties</p>
+                </td>
+                <td>Opc.Da.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">GetItemProperties</p>
+                </td>
+                <td>Opc.Da.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">LookupItemIDs</p>
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">ServerShutDown</p>
+                </td>
+                <td>Opc.Server.ServerShutdown</td>
+              </tr>
+            </table>
+            <p><b><font face="Verdana" size="2"><a name="OPCBrowser"></a>OPCBrowser</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Organization&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            Filter&nbsp;
+                </td>
+                <td>Opc.Da.BrowseFilters</td>
+              </tr>
+              <tr>
+                <td>
+            DataType&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            AccessRights&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            CurrentPosition&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            Count&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            Item&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            ShowBranches&nbsp;
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+              <tr>
+                <td>
+            ShowLeafs&nbsp;
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+              <tr>
+                <td>
+            MoveUp&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            MoveToRoot&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            MoveDown&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            MoveTo&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            GetItemID&nbsp;
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+              <tr>
+                <td>
+            GetAccessPaths
+                </td>
+                <td>Opc.Da.Server.Browse</td>
+              </tr>
+            </table>
+            <p><b><font face="Verdana" size="2"><a name="OPCGroups"></a>OPCGroups</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Parent&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultGroupIsActive&nbsp;
+                </td>
+                <td>Opc.Da.SubscriptionState</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultGroupUpdateRate&nbsp;
+                </td>
+                <td>Opc.Da.SubscriptionState</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultGroupDeadband&nbsp;
+                </td>
+                <td>Opc.Da.SubscriptionState</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultGroupLocaleID&nbsp;
+                </td>
+                <td>Opc.Da.SubscriptionState</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultGroupTimeBias&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            Count&nbsp;
+                </td>
+                <td>Opc.Da.Server.Subscriptions.Count</td>
+              </tr>
+              <tr>
+                <td>
+            Item&nbsp;
+                </td>
+                <td>Opc.Da.Server.Subscriptions</td>
+              </tr>
+              <tr>
+                <td>
+            GetOPCGroup&nbsp;
+                </td>
+                <td>Opc.Da.SubscriptionCollection.Item</td>
+              </tr>
+              <tr>
+                <td>
+            Add&nbsp;
+                </td>
+                <td>Opc.Da.Server.CreateSubscription</td>
+              </tr>
+              <tr>
+                <td>
+            Remove&nbsp;
+                </td>
+                <td>Opc.Da.Server.CancelSubscription</td>
+              </tr>
+              <tr>
+                <td>
+            RemoveAll&nbsp;
+                </td>
+                <td>Opc.Da.Server.CancelSubscription</td>
+              </tr>
+              <tr>
+                <td>
+            ConnectPublicGroup&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            RemovePublicGroup&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            GlobalDataChange
+                </td>
+                <td>Not Supported</td>
+              </tr>
+            </table>
+            <p><b><font face="Verdana" size="2"><a name="OPCGroup"></a>OPCGroup</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Parent&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Server</td>
+              </tr>
+              <tr>
+                <td>
+            Name&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Locale</td>
+              </tr>
+              <tr>
+                <td>
+            IsPublic&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            IsActive&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Active</td>
+              </tr>
+              <tr>
+                <td>
+            IsSubscribed&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Enabled</td>
+              </tr>
+              <tr>
+                <td>
+            ClientHandle&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.ClientHandle</td>
+              </tr>
+              <tr>
+                <td>
+            ServerHandle&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.ServerHandle</td>
+              </tr>
+              <tr>
+                <td>
+            LocaleID&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Locale</td>
+              </tr>
+              <tr>
+                <td>
+            TimeBias&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            DeadBand&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Deadband</td>
+              </tr>
+              <tr>
+                <td>
+            UpdateRate&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.UpdateRate</td>
+              </tr>
+              <tr>
+                <td>
+            OPCItems&nbsp;
+                </td>
+                <td>Not Required</td>
+              </tr>
+              <tr>
+                <td>
+            SyncRead&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Read</td>
+              </tr>
+              <tr>
+                <td>
+            SyncWrite&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Write</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncRead&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Read</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncWrite&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Write</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncRefresh&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Refresh</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncCancel&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Cancel</td>
+              </tr>
+              <tr>
+                <td>
+            DataChange&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.DataChanged</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncReadComplete&nbsp;
+                </td>
+                <td>Opc.Da.ReadCompleteEventHandler</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncWriteComplete&nbsp;
+                </td>
+                <td>Opc.Da.WriteCompleteEventHandler</td>
+              </tr>
+              <tr>
+                <td>
+            AsyncCancelComplete&nbsp;
+                </td>
+                <td>Opc.Da.CancelCompleteEventHandler</td>
+              </tr>
+            </table>
+            <p><b><font face="Verdana" size="2"><a name="OPCItems"></a>OPCItems</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Parent&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Server</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultRequestedDataType&nbsp;
+                </td>
+                <td>Opc.Da.Item</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultAccessPath&nbsp;
+                </td>
+                <td>Opc.Da.Item</td>
+              </tr>
+              <tr>
+                <td>
+            DefaultIsActive&nbsp;
+                </td>
+                <td>Opc.Da.Item</td>
+              </tr>
+              <tr>
+                <td>
+            Count&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Items.Count</td>
+              </tr>
+              <tr>
+                <td>
+            Item&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Items</td>
+              </tr>
+              <tr>
+                <td>
+            GetOPCItem&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Items</td>
+              </tr>
+              <tr>
+                <td>
+            AddItem&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.AddItems</td>
+              </tr>
+              <tr>
+                <td>
+            AddItems&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.AddItems</td>
+              </tr>
+              <tr>
+                <td>
+            Remove&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.RemoveItems</td>
+              </tr>
+              <tr>
+                <td>
+            Validate&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.AddItems</td>
+              </tr>
+              <tr>
+                <td>
+            SetActive&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.ModifyItems</td>
+              </tr>
+              <tr>
+                <td>
+            SetClientHandles&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.ModifyItems</td>
+              </tr>
+              <tr>
+                <td>
+            SetDataTypes
+                </td>
+                <td>Opc.Da.Subscription.ModifyItems</td>
+              </tr>
+            </table>
+            <p>&nbsp;<b><font face="Verdana" size="2"><a name="OPCItem"></a>OPCItem</font></b></p>
+            <table border="1" cellspacing="0" cellpadding="2" width="500">
+              <tr>
+                <td bgcolor="#000080" align="center" height="16"><font color="#FFFFFF" face="Verdana" size="2"><b>Existing
+                  Property/Method&nbsp;</b></font></td>
+                <td bgcolor="#000080" align="center" height="16"><b><font color="#FFFFFF" face="Verdana" size="2">.NET
+                  API Equivalent</font></b></td>
+              </tr>
+              <tr>
+                <td>
+            <p class="MsoBodyText">Parent&nbsp;
+                </td>
+                <td>Not Supported</td>
+              </tr>
+              <tr>
+                <td>
+            ClientHandle&nbsp;
+                </td>
+                <td>Opc.Da.Item.ClientHandle&nbsp;</td>
+              </tr>
+              <tr>
+                <td>
+            ServerHandle&nbsp;
+                </td>
+                <td>Opc.Da.Item.ServerHandle</td>
+              </tr>
+              <tr>
+                <td>
+            AccessPath&nbsp;
+                </td>
+                <td>Opc.Da.Item.ItemPath</td>
+              </tr>
+              <tr>
+                <td>
+            AccessRights&nbsp;
+                </td>
+                <td>Opc.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            IsActive&nbsp;
+                </td>
+                <td>Opc.Da.Item.Active</td>
+              </tr>
+              <tr>
+                <td>
+            RequestedDataType&nbsp;
+                </td>
+                <td>Opc.Da.Item.ReqType</td>
+              </tr>
+              <tr>
+                <td>
+            Value&nbsp;
+                </td>
+                <td>Opc.Da.ItemValue.Value</td>
+              </tr>
+              <tr>
+                <td>
+            Quality&nbsp;
+                </td>
+                <td>Opc.Da.ItemValue.Quality</td>
+              </tr>
+              <tr>
+                <td>
+            TimeStamp&nbsp;
+                </td>
+                <td>Opc.Da.ItemValue.Timestamp</td>
+              </tr>
+              <tr>
+                <td>
+            CanonicalDataType&nbsp;
+                </td>
+                <td>Opc.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            EUType&nbsp;
+                </td>
+                <td>Opc.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            EUInfo&nbsp;
+                </td>
+                <td>Opc.Server.GetProperties</td>
+              </tr>
+              <tr>
+                <td>
+            Read&nbsp;
+                </td>
+                <td>Opc.Da.Subscription.Read</td>
+              </tr>
+              <tr>
+                <td>
+            Write
+                </td>
+                <td>Opc.Da.Subscription.Write</td>
+              </tr>
+            </table>
+            <p><b><font face="Arial" size="3"><a name="ProblemReporting"></a>Problem Reporting</font></b></p>
+            <p><font face="Verdana" size="2">As part of a broader initiative to increase 
+                adoption of OPC specifications and to improve service to members, the OPC 
+                Foundation intends to maintain binaries and sample code over time following a 
+                model similar to Open Source projects. Vendors are encouraged to report 
+                problems, bug fixes, enhancements and any other comments about the components 
+                supplied by the OPC Foundation. To support this effort, the OPC Foundation has 
+                technical staff prepared to review and incorporate feedback into the baseline 
+                and release new versions of the components and sample code in a timely manner 
+                for the benefit of all members.</font></p>
+            <p><font face="Verdana" size="2">Please note that this support is intended for OPC 
+                Foundation members who are incorporating OPC support into their products.</font></p>
+            <p><font face="Verdana" size="2">Problems related to a particular download should 
+                be posted to the appropriate group on the <a href="http://opcfoundation.org/forum">
+                  OPC Foundation Message Board</a>.</font></p>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <hr align="center" width="100%" SIZE="1">
+            <font face="Verdana, Arial, Helvetica, sans-serif" size="1">Please send website 
+              comments or report any problems to: <a href="mailto:webmaster@opcfoundation.org?Subject=OPC website comments">
+                webmaster@opcfoundation.org</a></font></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

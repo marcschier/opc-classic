@@ -1,0 +1,56 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scpl2k3", "scpl2k3.csproj", "{E6867FF5-74EC-4464-8958-D71CB46232F3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScPlDemo2K3", "..\demos\cs\ScPlDemo2K3.csproj", "{7427C7A7-6CB0-4CB3-A0DB-F11603C5C29A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ScPlVBDemo2K3", "..\demos\vb\ScPlVBDemo2K3.vbproj", "{D2C1F5C4-702F-4A67-B957-D2F68F96A765}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 4
+		SccProjectUniqueName0 = scpl2k3.csproj
+		SccLocalPath0 = .
+		CanCheckoutShared = false
+		SccLocalPath1 = .
+		CanCheckoutShared = false
+		SolutionUniqueID = {D8403984-FD30-40C3-98E0-6B5F3B14A5F0}
+		SccProjectUniqueName2 = ..\\demos\\cs\\ScPlDemo2K3.csproj
+		SccProjectName2 = \u0022$/Grasp/scpl/demos\u0022,\u0020ZYBAAAAA
+		SccLocalPath2 = ..\\demos
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection2 = cs\\
+		SccProjectUniqueName3 = ..\\demos\\vb\\ScPlVBDemo2K3.vbproj
+		SccProjectName3 = \u0022$/Grasp/scpl/demos\u0022,\u0020ZYBAAAAA
+		SccLocalPath3 = ..\\demos
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection3 = vb\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Debug.ActiveCfg = Debug|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Debug.Build.0 = Debug|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Release.ActiveCfg = Release|.NET
+		{E6867FF5-74EC-4464-8958-D71CB46232F3}.Release.Build.0 = Release|.NET
+		{7427C7A7-6CB0-4CB3-A0DB-F11603C5C29A}.Debug.ActiveCfg = Debug|.NET
+		{7427C7A7-6CB0-4CB3-A0DB-F11603C5C29A}.Debug.Build.0 = Debug|.NET
+		{7427C7A7-6CB0-4CB3-A0DB-F11603C5C29A}.Release.ActiveCfg = Release|.NET
+		{7427C7A7-6CB0-4CB3-A0DB-F11603C5C29A}.Release.Build.0 = Release|.NET
+		{D2C1F5C4-702F-4A67-B957-D2F68F96A765}.Debug.ActiveCfg = Debug|.NET
+		{D2C1F5C4-702F-4A67-B957-D2F68F96A765}.Debug.Build.0 = Debug|.NET
+		{D2C1F5C4-702F-4A67-B957-D2F68F96A765}.Release.ActiveCfg = Release|.NET
+		{D2C1F5C4-702F-4A67-B957-D2F68F96A765}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

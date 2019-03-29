@@ -1,0 +1,43 @@
+<project SchemaVersion="1.3">
+    <assemblies>
+        <assembly location="..\Core\bin\Debug\OpcNetApi.dll" documentation="..\Core\bin\Debug\OpcNetApi.xml" />
+        <assembly location="..\COM Wrapper\bin\Debug\OpcNetApi.Com.dll" documentation="..\COM Wrapper\bin\Debug\OpcNetApi.Com.xml" />
+        <assembly location="..\XML Wrapper\bin\Debug\OpcNetApi.Xml.dll" documentation="..\XML Wrapper\bin\Debug\OpcNetApi.Xml.xml" />
+    </assemblies>
+    <documenters>
+        <documenter name="JavaDoc">
+            <property name="OutputDirectory" value=".\doc\" />
+        </documenter>
+        <documenter name="LaTeX">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="TextFileFullName" value="Documentation.tex" />
+            <property name="TexFileBaseName" value="Documentation" />
+            <property name="LatexCompiler" value="latex" />
+            <property name="TexFileFullPath" value=".\doc\Documentation.tex" />
+        </documenter>
+        <documenter name="MSDN">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="OPC .NET API Help File" />
+            <property name="Title" value="OPC .NET API" />
+            <property name="OutputTarget" value="HtmlHelp" />
+            <property name="RootPageContainsNamespaces" value="True" />
+            <property name="FooterHtml" value="&lt;A HREF='OPC NET API 1.00 Overview.mhtml'&gt;OPC .NET  API Overview Document&lt;/A&gt;" />
+            <property name="FilesToInclude" value="OPC .NET API 3.00 Overview.mhtml" />
+            <property name="AssemblyVersionInfo" value="AssemblyVersion" />
+            <property name="CopyrightText" value="Copyright 2003-2011 OPC Foundation" />
+            <property name="CopyrightHref" value="http://www.opcfoundation.org" />
+        </documenter>
+        <documenter name="VS.NET 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="Documentation" />
+            <property name="Title" value="An NDoc documented library" />
+        </documenter>
+        <documenter name="XML">
+            <property name="OutputFile" value=".\doc\doc.xml" />
+        </documenter>
+        <documenter name="MSDN 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+        </documenter>
+    </documenters>
+</project>

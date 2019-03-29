@@ -1,0 +1,9 @@
+LIBRARY         OPC_BATCH_DLL
+DESCRIPTION     'OPC Batch Server DLL'
+
+EXPORTS
+
+	DllCanUnloadNow PRIVATE
+	DllGetClassObject PRIVATE
+	DllRegisterServer PRIVATE
+	DllUnregisterServer PRIVATE

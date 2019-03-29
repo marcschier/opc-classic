@@ -1,0 +1,94 @@
+
+
+/* this ALWAYS GENERATED file contains the definitions for the interfaces */
+
+
+ /* File created by MIDL compiler version 8.00.0603 */
+/* at Fri Mar 29 17:12:35 2019
+ */
+/* Compiler settings for OpcHdaServer.idl:
+    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
+    protocol : dce , ms_ext, c_ext, robust
+    error checks: allocation ref bounds_check enum stub_data 
+    VC __declspec() decoration level: 
+         __declspec(uuid()), __declspec(selectany), __declspec(novtable)
+         DECLSPEC_UUID(), MIDL_INTERFACE()
+*/
+/* @@MIDL_FILE_HEADING(  ) */
+
+#pragma warning( disable: 4049 )  /* more than 64k source lines */
+
+
+/* verify that the <rpcndr.h> version is high enough to compile this file*/
+#ifndef __REQUIRED_RPCNDR_H_VERSION__
+#define __REQUIRED_RPCNDR_H_VERSION__ 500
+#endif
+
+#include "rpc.h"
+#include "rpcndr.h"
+
+#ifndef __RPCNDR_H_VERSION__
+#error this stub requires an updated version of <rpcndr.h>
+#endif // __RPCNDR_H_VERSION__
+
+
+#ifndef __OpcHdaServer_h__
+#define __OpcHdaServer_h__
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1020)
+#pragma once
+#endif
+
+/* Forward Declarations */ 
+
+#ifndef __OpcHdaServer_FWD_DEFINED__
+#define __OpcHdaServer_FWD_DEFINED__
+
+#ifdef __cplusplus
+typedef class OpcHdaServer OpcHdaServer;
+#else
+typedef struct OpcHdaServer OpcHdaServer;
+#endif /* __cplusplus */
+
+#endif 	/* __OpcHdaServer_FWD_DEFINED__ */
+
+
+/* header files for imported files */
+#include "opccomn.h"
+#include "opchda.h"
+
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
+
+
+#ifndef __OpcHdaServerLib_LIBRARY_DEFINED__
+#define __OpcHdaServerLib_LIBRARY_DEFINED__
+
+/* library OpcHdaServerLib */
+/* [version][uuid] */ 
+
+
+EXTERN_C const IID LIBID_OpcHdaServerLib;
+
+EXTERN_C const CLSID CLSID_OpcHdaServer;
+
+#ifdef __cplusplus
+
+class DECLSPEC_UUID("6A5EEDEC-1509-4627-997F-993CCB65AB7C")
+OpcHdaServer;
+#endif
+#endif /* __OpcHdaServerLib_LIBRARY_DEFINED__ */
+
+/* Additional Prototypes for ALL interfaces */
+
+/* end of Additional Prototypes */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+

@@ -1,0 +1,473 @@
+<?xml version ="1.0"?>
+<!-- (c) Copyright 2000 The OPC Foundation - ALL RIGHTS RESERVED.
+
+ DISCLAIMER:
+  This sample code is provided by the OPC Foundation solely to assist 
+  in understanding the OPC Batch Specification and may be used
+  as set forth in the License Grant section of the OPC Specification.
+  This code is provided as-is and without warranty or support of any sort
+  and is subject to the Warranty and Liability Disclaimers which appear
+  in the printed OPC Specification.
+
+ CREDITS:
+  This code was generously provided to the OPC Foundation by
+  Dave Emerson  -  Yokogawa Corporation of America
+  James Wang - Yokogawa Corporation of America: Added XML file interface and 
+               updated to V2Draft3.
+-->
+
+<!-- OPC Batch Schema
+      This schema provides an XML representation of the OPC Batch v2.0 
+	namespace.  This is for use with the sample OPC Batch Server.
+-->
+
+<!--  
+Revision History
+
+	OPCBVx-yy.xdr
+
+	where 
+	    x is the OPC Batch custom interface version number
+	    yy is a sequential number to identify different schemas for the same
+		version of the OPC Batch custom interface spec.
+
+	Ver	Date		Person		Note
+	01	25-Sep-2000	Dave Emerson	Added support for OPC V2 properties,
+							OPCBMasterRecipeModel and 
+							OPCBBatchArchiveModel
+
+Structure Overview:
+
+	OPCB 
+		OPCBPhysicalModel
+			Property
+			PhysicalModelItem
+				Property
+				PhysicalModelItem
+		OPCBMasterRecipeModel
+			Property
+			MasterRecipeModelItem
+				Property
+				OPCBParameters
+					Property
+					ParameterItem
+						Property
+				OPCBResults
+					Property
+					ResultItem
+						Property
+				MasterRecipeModelItem
+		OPCBBatchModel
+			Property
+			BatchModelItem
+				Property
+				OPCBParameters
+					Property
+					ParameterItem
+						Property
+				OPCBResults
+					Property
+					ResultItem
+						Property
+				BatchModelItem
+		OPCBBatchArchiveModel
+			Property
+			BatchArchiveModelItem
+				Property
+				OPCBParameters
+					Property
+					ParameterItem
+						Property
+				OPCBResults
+					Property
+					ResultItem
+						Property
+				BatchArchiveModelItem
+		IOPCEnumerationSets
+			EnumerationSet
+				EnumerationSetNumber
+				EnumerationSetString
+				EnumerationSetShortString
+				EnumerationSetSet
+				Enumeration
+					EnumerationValue
+					EnumerationString
+					EnumerationShortString
+		IOPCBatchServer
+			Delimiter
+-->
+
+<Schema name = "OPCBv2-1.xdr"
+	 xmlns = "urn:schemas-microsoft-com:xml-data"
+	 xmlns:dt = "urn:schemas-microsoft-com:datatypes">
+
+<!-- OPC Batch Root -->
+
+	<ElementType name = "OPCB" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "OPCBPhysicalModel"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBMasterRecipeModel"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBBatchModel"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBBatchArchiveModel"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "IOPCEnumerationSets"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "IOPCBatchServer"		minOccurs = "0" maxOccurs = "1"/>
+	</ElementType>
+
+
+	<ElementType name = "OPCBPhysicalModel" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "PhysicalModelItem"		minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "PhysicalModelItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "PhysicalModelItem"		minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+
+	<ElementType name = "OPCBMasterRecipeModel" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "MasterRecipeModelItem"	minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "MasterRecipeModelItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBParameters"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "OPCBResults"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "MasterRecipeModelItem"	minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+
+	<ElementType name = "OPCBBatchModel" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "BatchModelItem"		minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "BatchModelItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBParameters"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "OPCBResults"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "BatchModelItem"		minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+
+	<ElementType name = "OPCBBatchArchiveModel" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "BatchArchiveModelItem"	minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "BatchArchiveModelItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBParameters"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "OPCBResults"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "BatchArchiveModelItem"	minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+
+	<ElementType name = "OPCBParameters" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ParameterItem"		minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "ParameterItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+	</ElementType>
+
+	<ElementType name = "OPCBResults" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ResultItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "ResultItem" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Property"			minOccurs = "0" maxOccurs = "1"/>
+	</ElementType>
+
+	<ElementType name = "OPCBBatchIDList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "BatchID"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "BatchID" 	content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+<!--	IOPCEnumerationSets
+		EnumerationSet
+			EnumerationSetNumber
+			EnumerationSetString
+			EnumerationSetShortString
+			Enumeration
+				EnumerationValue
+				EnumerationString
+				EnumerationShortString
+-->
+	<ElementType name = "IOPCEnumerationSets" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "EnumerationSet"	minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "EnumerationSet" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "EnumerationSetNumber"		minOccurs = "1" maxOccurs = "1"/>
+		<element type = "EnumerationSetString"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EnumerationSetShortString"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EnumerationSetSize"		minOccurs = "1" maxOccurs = "1"/>
+		<element type = "Enumeration"				minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "Enumeration" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "EnumerationValue"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EnumerationString"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EnumerationShortString"		minOccurs = "0" maxOccurs = "1"/>
+	</ElementType>
+
+	<ElementType name = "EnumerationSetNumber"	content = "textOnly" dt:type = "number" model = "closed"/>
+	<ElementType name = "EnumerationSetString"	content = "textOnly" dt:type = "string" model = "closed"/>
+	<ElementType name = "EnumerationSetShortString"	content = "textOnly" dt:type = "string" model = "closed"/>
+	<ElementType name = "EnumerationSetSize"		content = "textOnly" dt:type = "string" model = "closed"/>
+	<ElementType name = "EnumerationValue"		content = "textOnly" dt:type = "number" model = "closed"/>
+	<ElementType name = "EnumerationString"		content = "textOnly" dt:type = "string" model = "closed"/>
+	<ElementType name = "EnumerationShortString"	content = "textOnly" dt:type = "string" model = "closed"/>
+
+<!--	IOPCBatchServer
+		Delimiter
+-->
+	<ElementType name = "IOPCBatchServer" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "Delimiter"				minOccurs = "0" maxOccurs = "1"/>
+	</ElementType>
+
+	<ElementType name = "Delimiter"			content = "textOnly" dt:type = "string" model = "closed"/>
+
+
+<!-- common property element used for Physical and Batch model items -->
+
+	<ElementType name = "Property" content = "eltOnly" order = "seq" model = "closed">
+
+		<element type = "ItemName"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemID"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemCDT"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemValue"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemQuality"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemTimeStamp"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemAccessRights"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemScanRate"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ItemDescription"			minOccurs = "0" maxOccurs = "1"/>
+
+		<element type = "ID"					minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Value"					minOccurs = "0" maxOccurs = "1"/>
+		<element type = "AccessRights"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EU"					minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Description"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "HighValueLimit"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "LowValueLimit"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "TimeZone"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ConditionStatus"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBPhysicalModelLevel"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBBatchModelLevel"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "RelatedBatchIDs"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "Version"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EquipmentClass"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Location"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "MaximumUserCount"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "CurrentUserCount"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "CurrentUserList"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "AllocatedEquipmentList"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "RequesterList"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "RequestedList"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "SharedByList"			minOccurs = "0" maxOccurs = "*"/>
+		<element type = "EquipmentState"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EquipmentMode"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "UpstreamEquipmentList"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "DownstreamEquipmentList"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "EquipmentProceduralElementList"	minOccurs = "0" maxOccurs = "*"/>
+		<element type = "CurrentProcedureList"		minOccurs = "0" maxOccurs = "*"/>
+		<element type = "TrainList"				minOccurs = "0" maxOccurs = "*"/>
+		<element type = "DeviceDataSource"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "DeviceDataServer"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "CampaignID"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "LotIDList"				minOccurs = "0" maxOccurs = "*"/>
+		<element type = "ControlRecipeID"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ControlRecipeVersion"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "MasterRecipeID"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "MasterRecipeVersion"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ProductID"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Grade"					minOccurs = "0" maxOccurs = "1"/>
+		<element type = "BatchSize"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Priority"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ExecutionState"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "IEC61512-1State"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ExecutionMode"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "IEC61512-1Mode"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ScheduledStartTime"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ActualStartTime"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EstimatedEndTime"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ActualEndTime"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "OPCBPhysicalModelReference"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EquipmentProceduralElement"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ParameterCount"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ParameterType"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ValidValues"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ScalingRule"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ExpressionRule"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ResultCount"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EnumerationSetID"			minOccurs = "0" maxOccurs = "1"/>
+
+<!-- OPCB v2 properties  -->
+
+		<element type = "OPCBMasterRecipeModelLevel"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ProcedureLogic"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ProcedureLogicSchema"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EquipmentCandidateList"		minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EquipmentClassCandidateList"	minOccurs = "0" maxOccurs = "1"/>
+		<element type = "VersionDate"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ApprovalDate"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "EffectiveDate"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ExpirationDate"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Author"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ApprovedBy"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "UsageConstraint"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "RecipeStatus"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "RE_Use"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "DerivedRE"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "DerivedVersion"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "Scalable"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ExpectedDuration"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "ActualDuration"			minOccurs = "0" maxOccurs = "1"/>
+		<element type = "TrainList2"				minOccurs = "0" maxOccurs = "1"/>
+		<element type = "TrainList2Schema"			minOccurs = "0" maxOccurs = "1"/>
+
+<!-- define vendor specific properties here   -->
+
+
+	</ElementType>
+
+
+	<ElementType name = "ItemName" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemID" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemCDT" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemValue" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemQuality" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemTimeStamp" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemAccessRights" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemScanRate" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ItemDescription" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+	<ElementType name = "ID" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Value" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "AccessRights" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EU" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Description" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "HighValueLimit" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "LowValueLimit" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "TimeZone" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ConditionStatus" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "OPCBPhysicalModelLevel" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "OPCBBatchModelLevel" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "RelatedBatchIDs" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "Version" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EquipmentClass" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Location" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "MaximumUserCount" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "CurrentUserCount" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+	<ElementType name = "CurrentUserList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name =  "AllocatedEquipmentList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "RequesterList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "RequestedList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "SharedByList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "EquipmentState" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EquipmentMode" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "UpstreamEquipmentList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "DownstreamEquipmentList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "EquipmentProceduralElementList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "CurrentProcedureList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "TrainList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "DeviceDataSource" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "DeviceDataServer" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "CampaignID" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "LotIDList" content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "ControlRecipeID" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ControlRecipeVersion" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "MasterRecipeID" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "MasterRecipeVersion" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ProductID" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Grade" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "BatchSize" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Priority" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ExecutionState" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "IEC61512-1State" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ExecutionMode" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "IEC61512-1Mode" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ScheduledStartTime" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ActualStartTime" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EstimatedEndTime" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ActualEndTime" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "OPCBPhysicalModelReference" 	content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EquipmentProceduralElement" 	content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ParameterCount" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ParameterType" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ValidValues"				 content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"			minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+	<ElementType name = "ScalingRule" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ExpressionRule" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ResultCount" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EnumerationSetID" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+<!-- OPCB v2 properties  -->
+	<ElementType name = "OPCBMasterRecipeModelLevel" 	content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ProcedureLogic" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ProcedureLogicSchema" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+	<ElementType name = "EquipmentCandidateList" 		content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"				minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "EquipmentClassCandidateList" 	content = "eltOnly" order = "seq" model = "closed">
+		<element type = "ListItem"				minOccurs = "0" maxOccurs = "*"/>
+	</ElementType>
+
+	<ElementType name = "VersionDate" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ApprovalDate" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "EffectiveDate" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ExpirationDate" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Author" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ApprovedBy" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "UsageConstraint" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "RecipeStatus" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "RE_Use" 					content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "DerivedRE" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "DerivedVersion" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "Scalable" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ExpectedDuration" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "ActualDuration" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "TrainList2" 				content = "textOnly"  dt:type = "string"  model = "closed"/>
+	<ElementType name = "TrainList2Schema" 			content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+
+	<ElementType name = "ListItem" 		content = "textOnly"  dt:type = "string"  model = "closed"/>
+
+<!-- define vendor specific elements here   -->
+
+
+
+</Schema>

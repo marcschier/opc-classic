@@ -1,0 +1,708 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""OPCBClient.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "OPCBClient.ico"
+IDR_OPCBCLTYPE          ICON    DISCARDABLE     "OPCBClientDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Connect to Server...",        ID_FILE_CONNECTTOSERVER
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "Edit"
+    BEGIN
+        MENUITEM "Copy\tCtrl+C",                ID_EDIT_COPY
+    END
+    POPUP "Test"
+    BEGIN
+        POPUP "IUnknown"
+        BEGIN
+            MENUITEM "QueryInterface",              ID_TEST_IUNKNOWN_QUERYINTERFACE
+
+            MENUITEM "AddRef",                      ID_TEST_IUNKNOWN_ADDREF
+            MENUITEM "Release",                     ID_TEST_IUNKNOWN_RELEASE
+        END
+        POPUP "IOPCCommon"
+        BEGIN
+            MENUITEM "SetLocaleID",                 ID_TEST_IOPCCOMMON_SETLOCALEID
+
+            MENUITEM "GetLocaleID",                 ID_TEST_IOPCCOMMON_GETLOCALEID
+
+            MENUITEM "QueryAvailableLocaleIDs",     ID_TEST_IOPCCOMMON_QUERYAVAILABLELOCALEIDS
+
+            MENUITEM "GetErrorString",              ID_TEST_IOPCCOMMON_GETERRORSTRING
+
+            MENUITEM "SetClientName",               ID_TEST_IOPCCOMMON_SETCLIENTNAME
+
+        END
+        POPUP "IOPCServer"
+        BEGIN
+            MENUITEM "AddGroup",                    ID_TEST_IOPCSERVER_ADDGROUP
+
+            MENUITEM "GetErrorString",              ID_TEST_IOPCSERVER_GETERRORSTRING
+
+            MENUITEM "GetGroupByName",              ID_TEST_IOPCSERVER_GETGROUPBYNAME
+
+            MENUITEM "RemoveGroup",                 ID_TEST_IOPCSERVER_REMOVEGROUP
+
+            MENUITEM "CreateGroupEnumerator",       ID_TEST_IOPCSERVER_CREATEGROUPENUMERATOR
+
+            MENUITEM "GetStatus",                   ID_TEST_IOPCSERVER_GETSTATUS
+
+            MENUITEM "CreateEnumerator",            ID_TEST_IOPCSERVER_CREATEENUMERATOR
+
+        END
+        POPUP "IOPCServerPublicGroups", GRAYED
+        BEGIN
+            MENUITEM "GetPublicGroupByName",        ID_TEST_IOPCSERVERPUBLICGROUPS_GETPUBLICGROUPBYNAME
+
+            MENUITEM "RemovePublicGroup",           ID_TEST_IOPCSERVERPUBLICGROUPS_REMOVEPUBLICGROUP
+
+        END
+        POPUP "IOPCBrowseServerAddressSpace"
+        BEGIN
+            MENUITEM "QueryOrganization",           ID_TEST_IOPCBROWSESERVERADDRESSSPACE_QUERYORGANIZATION
+
+            MENUITEM "ChangeBrowsePosition",        ID_TEST_IOPCBROWSESERVERADDRESSSPACE_CHANGEBROWSEPOSITION
+
+            MENUITEM "BrowseOPCItemIDs",            ID_TEST_IOPCBROWSESERVERADDRESSSPACE_BROWSEOPCITEMIDS
+
+            MENUITEM "GetItemID",                   ID_TEST_IOPCBROWSESERVERADDRESSSPACE_GETITEMID
+
+            MENUITEM "BrowseAccessPaths",           ID_TEST_IOPCBROWSESERVERADDRESSSPACE_BROWSEACCESSPATHS
+
+            MENUITEM SEPARATOR
+            MENUITEM "Show Tree",                   ID_TEST_IOPCBROWSESERVERADDRESSSPACE_SHOWTREE
+
+        END
+        POPUP "IPersistFile", GRAYED
+        BEGIN
+            MENUITEM "IsDirty",                     ID_TEST_IPERSISTFILE_ISDIRTY
+
+            MENUITEM "Load",                        ID_TEST_IPERSISTFILE_LOAD
+
+            MENUITEM "Save",                        ID_TEST_IPERSISTFILE_SAVE
+
+            MENUITEM "SaveCompleted",               ID_TEST_IPERSISTFILE_SAVECOMPLETED
+
+            MENUITEM "GetCurFileName",              ID_TEST_IPERSISTFILE_GETCURFILENAME
+
+        END
+        POPUP "IConnectionPointContainer"
+        BEGIN
+            MENUITEM "EnumConnectionPoints",        ID_TEST_ICONNECTIONPOINTCONTAINER_ENUMCONNECTIONPOINTS
+
+            MENUITEM "FindConnectionPoint",         ID_TEST_ICONNECTIONPOINTCONTAINER_FINDCONNECTIONPOINT
+
+            MENUITEM "Unadvise IOPCShutdown ",      ID_TEST_UNADVISE
+        END
+        POPUP "IOPCItemProperties"
+        BEGIN
+            MENUITEM "QueryAvailableProperties",    ID_TEST_IOPCITEMPROPERTIES_QUERYAVAILABLEPROPERTIES
+
+            MENUITEM "GetItemProperties",           ID_TEST_IOPCITEMPROPERTIES_GETITEMPROPERTIES
+
+            MENUITEM "LookupItemIDs",               ID_TEST_IOPCITEMPROPERTIES_LOOKUPITEMIDS
+
+        END
+        POPUP "IOPCEnumerationSets"
+        BEGIN
+            MENUITEM "QueryEnumerationSets",        ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATIONSETS
+
+            MENUITEM "QueryEnumeration",            ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATION
+
+            MENUITEM "QueryEnumerationList",        ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATIONLIST
+
+        END
+        POPUP "IEnumOPCBatchSummary"
+        BEGIN
+            MENUITEM "Next",                        ID_TEST_IENUMOPCBATCHSUMMARY_NEXT
+
+            MENUITEM "Skip",                        ID_TEST_IENUMOPCBATCHSUMMARY_SKIP
+
+            MENUITEM "Reset",                       ID_TEST_IENUMOPCBATCHSUMMARY_RESET
+
+            MENUITEM "Clone",                       ID_TEST_IENUMOPCBATCHSUMMARY_CLONE
+
+        END
+        POPUP "IOPCBatchServer"
+        BEGIN
+            MENUITEM "GetDelimiter",                ID_TEST_IOPCBATCHSERVER_GETDELIMITER
+
+            MENUITEM "CreateEnumerator",            ID_TEST_IOPCBATCHSERVER_CREATEENUMERATOR
+
+        END
+        POPUP "IOPCBatchServer2"
+        BEGIN
+            MENUITEM "CreateFilteredEnumerator",    ID_TEST_IOPCBATCHSERV2_CREATEFILTENUM
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Parameters and Results",      ID_TEST_PARAMETERS_RESULTS
+    END
+    POPUP "View"
+    BEGIN
+        MENUITEM "Clear ",                      ID_VIEW_CLEAR
+        MENUITEM "Scroll Down",                 ID_VIEW_SCROLLDOWN, CHECKED
+    END
+    POPUP "Options"
+    BEGIN
+        MENUITEM "Verbose Output",              ID_OPTIONS_VERBOSEOUTPUT
+        , CHECKED
+        MENUITEM "Show Path",                   ID_OPTIONS_SHOWPATH, CHECKED
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR, CHECKED
+        MENUITEM "Log to File",                 ID_OPTIONS_LOGTOFILE
+        , CHECKED
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About OPCBClient...",        ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 108
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About OPCBClient"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "OPCBClient Version 2.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2001 The OPC Foundation",IDC_STATIC,40,25,
+                    166,8
+    LTEXT           "Built to operate with version 2.0 of the sample batch server.",
+                    IDC_STATIC,40,40,189,11
+    LTEXT           "Not Supported:",IDC_STATIC,40,58,49,8
+    LTEXT           "IOPCServerPublicGroups",IDC_STATIC,50,73,89,8
+    LTEXT           "IPersistFile",IDC_STATIC,50,84,89,8
+    DEFPUSHBUTTON   "OK",IDOK,185,7,50,14,WS_GROUP
+END
+
+IDD_DIAG_SERVERS DIALOG DISCARDABLE  0, 0, 177, 182
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select OPC Server to Connect"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&OPC Servers:",IDC_STATIC,14,14,83,8,WS_TABSTOP
+    LISTBOX         IDC_LIST_SERVER,13,25,87,81,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "&Server Mode",IDC_STATIC,14,114,65,55,WS_GROUP | 
+                    WS_TABSTOP
+    CONTROL         "In Process",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,21,126,48,10
+    CONTROL         "Local",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,21,138,33,
+                    10
+    CONTROL         "Remote",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,21,150,
+                    40,10
+    LTEXT           "S&tation Name:",IDC_STATIC,86,130,44,8
+    EDITTEXT        IDC_EDIT_STATION,85,141,72,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    DEFPUSHBUTTON   "&Connect",IDOK,120,18,50,14
+    PUSHBUTTON      "Ca&ncel",IDCANCEL,120,35,50,14
+END
+
+IDD_DIALOG_EDIT DIALOG DISCARDABLE  0, 0, 186, 68
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Static",IDC_EDIT_LABEL,7,19,111,20,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_GENERAL,7,46,172,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+IDD_DIAG_BROWSER DIALOG DISCARDABLE  0, 0, 259, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Browse Server Address Space"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_ITEMID,7,19,175,40,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Browse Option:",IDC_STATIC,7,57,175,76
+    CONTROL         "Option1",IDC_OPTION1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,29,77,73,10
+    CONTROL         "Option2",IDC_OPTION2,"Button",BS_AUTORADIOBUTTON,29,95,
+                    73,10
+    CONTROL         "Option3",IDC_OPTION3,"Button",BS_AUTORADIOBUTTON,29,113,
+                    73,10
+    DEFPUSHBUTTON   "OK",IDOK,202,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,202,30,50,14
+    LTEXT           "Current Item:",IDC_STATIC,7,7,47,8
+END
+
+IDD_DIALOG_PARAM_RESULTS DIALOG DISCARDABLE  0, 0, 238, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Parameters and Results Anonymous Access"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Enter RPE &Item ID:",IDC_STATIC,7,11,61,8
+    EDITTEXT        IDC_EDIT_ITEMID,7,23,160,14,ES_AUTOHSCROLL
+    GROUPBOX        "Select information to display",IDC_STATIC,7,44,115,45
+    CONTROL         "&Parameters",IDC_CHECK_PARAMETERS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,60,51,10
+    CONTROL         "&Results",IDC_CHECK_RESULTS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,75,39,10
+    DEFPUSHBUTTON   "OK",IDOK,181,7,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,181,24,50,14
+END
+
+IDD_DIALOG_FILTER DIALOG DISCARDABLE  0, 0, 218, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Batch Filter Parameters"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_BATCHID,47,45,107,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DESCR,47,66,107,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MINSIZE,47,87,107,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAXSIZE,47,108,107,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_MODEL_SELECT,48,129,107,32,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,161,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,161,24,50,14
+    LTEXT           "Batch ID",IDC_STATIC,6,45,32,12
+    LTEXT           "Description",IDC_STATIC,6,66,38,12
+    LTEXT           "Min Size",IDC_STATIC,6,87,30,12
+    LTEXT           "Max Size",IDC_STATIC,6,108,32,12
+    LTEXT           "Model",IDC_STATIC,6,129,28,12
+    CONTROL         "Check1",IDC_CHECK_UNFILTERED,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,13,9,9
+    LTEXT           "Unfiltered batch summary list",IDC_STATIC,24,13,126,11
+    LTEXT           "Filters:",IDC_STATIC,13,30,82,13
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "OPCBClient MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "OPCBClient\0"
+            VALUE "LegalCopyright", "Copyright (C) 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "OPCBClient.EXE\0"
+            VALUE "ProductName", "OPCBClient Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 101
+    END
+
+    IDD_DIAG_SERVERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 170
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_DIALOG_EDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 61
+    END
+
+    IDD_DIAG_BROWSER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+    END
+
+    IDD_DIALOG_PARAM_RESULTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 231
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DIALOG_FILTER, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 211
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DIALOG_FILTER DLGINIT
+BEGIN
+    IDC_MODEL_SELECT, 0x403, 15, 0
+0x504f, 0x4243, 0x6142, 0x6374, 0x4d68, 0x646f, 0x6c65, "\000" 
+    IDC_MODEL_SELECT, 0x403, 22, 0
+0x504f, 0x4243, 0x6142, 0x6374, 0x4168, 0x6372, 0x6968, 0x6576, 0x6f4d, 
+0x6564, 0x006c, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "OPCBClient\n\nOPCBCl\n\n\nOPCBClient.Document\nOPCBCl Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "OPCBClient"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_CONNECT         "Make a new connection to an OPC Batch Server."
+    ID_OPTIONS_VERBOSEOUTPUT "Display verbose output."
+    ID_OPTIONS_SHOWPATH     "Display the complete item path on the status bar."
+    ID_TEST_IUNKNOWN_QUERYINTERFACE "Call IUnknown::QueryInterface."
+    ID_TEST_IUNKNOWN_ADDREF "Call IUnknown::AddRef"
+    ID_TEST_IUNKNOWN_RELEASE "Call IUnknown::Release"
+    ID_TEST_IOPCCOMMON_SETLOCALEID "Call IOPCCommon::SetLocaleID"
+    ID_TEST_IOPCCOMMON_GETLOCALEID "Call IOPCCommon::GetLocaleID"
+    ID_TEST_IOPCCOMMON_QUERYAVAILABLELOCALIDS 
+                            "Call IOPCCommon::QueryAvailableLocaleIDs"
+    ID_TEST_IOPCCOMMON_GETERRORSTRING "Call IOPCCommon::GetErrorString"
+    ID_TEST_IOPCCOMMON_SETCLIENTNAME "Call IOPCCommon::SetClientName"
+    ID_TEST_IOPCSERVER_ADDGROUP "Call IOPCServer::AddGroup"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TEST_IOPCSERVER_GETERRORSTRING "Call IOPCServer::GetErrorString"
+    ID_TEST_IOPCSERVER_GETGROUPBYNAME "Call IOPCServer::GetGroupByName"
+    ID_TEST_IOPCSERVER_REMOVEGROUP "Call IOPCServer::RemoveGroup"
+    ID_TEST_IOPCSERVER_CREATEGROUPENUMERATOR 
+                            "Call IOPCServer::CreateGroupEnumerator"
+    ID_TEST_IOPCSERVER_GETSTATUS "Call IOPCServer::GetStatus"
+    ID_TEST_IOPCSERVER_CREATEENUMERATOR "Call IOPCServer::CreateEnumerator"
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_QUERYORGANIZATION 
+                            "Call IOPCBrowseServerAddressSpace::QueryOrganization"
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_CHANGEBROWSEPOSITION 
+                            "Call IOPCBrowseServerAddressSpace::ChangeBrowsePosition"
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_BROWSEOPCITEMIDS 
+                            "Call IOPCBrowseServerAddressSpace::BrowseOPCItemIDs"
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_GETITEMID 
+                            "Call IOPCBrowseServerAddressSpace::GetItemID"
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_BROWSEACCESSPATHS 
+                            "Call IOPCBrowseServerAddressSpace::BrowseAccessPaths"
+    ID_TEST_IPERSISTFILE_ISDIRTY "Call IPersistFile::IsDirty"
+    ID_TEST_IPERSISTFILE_LOAD "Call IPersistFile::Load"
+    ID_TEST_IPERSISTFILE_SAVE "Call IPersistFile::Save"
+    ID_TEST_IPERSISTFILE_SAVECOMPLETED "Call IPersistFile::SaveCompleted"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TEST_IPERSISTFILE_GETCURFILENAME "Call IPersistFile::GetCurFileName"
+    ID_TEST_ICONNECTIONPOINTCONTAINER_ENUMCONNECTIONPOINTS 
+                            "Call IConnectionPointContainer::EnumConnectionPoints"
+    ID_TEST_ICONNECTIONPOINTCONTAINER_FINDCONNECTIONPOINT 
+                            "Call IConnectionPointContainer::FindConnectionPoint"
+    ID_TEST_IOPCITEMPROPERTIES_QUERYAVAILABLEPROPERTIES 
+                            "Call IOPCItemProperties::QueryAvailableProperties"
+    ID_TEST_IOPCITEMPROPERTIES_GETITEMPROPERTIES 
+                            "Call IOPCItemProperties::GetItemProperties"
+    ID_TEST_IOPCITEMPROPERTIES_LOOKUP "Call IOPCItemProperties::LookupItemIDs"
+    ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATIONSETS 
+                            "Call IOPCEnumerationsSets::QueryEnumerationSets"
+    ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATION 
+                            "Call IOPCEnumerationsSets::QueryEnumeration"
+    ID_TEST_IOPCENUMERATIONSETS_QUERYENUMERATIONLIST 
+                            "Call IOPCEnumerationsSets::QueryEnumerationList"
+    ID_TEST_IENUMOPCBATCHSUMMARY_NEXT "Call IEnumOPCBatchSummary::Next"
+    ID_TEST_IENUMOPCBATCHSUMMARY_SKIP "Call IEnumOPCBatchSummary::Skip"
+    ID_TEST_IENUMOPCBATCHSUMMARY_RESET "Call IEnumOPCBatchSummary::Reset"
+    ID_TEST_IENUMOPCBATCHSUMMARY_CLONE "Call IEnumOPCBatchSummary::Clone"
+    ID_TEST_IOPCSERVERPUBLICGROUPS_GETPUBLICGROUPBYNAME 
+                            "Call IOPCServerPublicGroups::GetPublicGroupByName"
+    ID_TEST_IOPCSERVERPUBLICGROUPS_REMOVEPUBLICGROUP 
+                            "Call IOPCServerPublicGroups::RemovePublicGroup"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_CONNECTTOSERVER "Make a new connection to an OPC Batch server."
+    ID_TEST_UNADVISE        "Unadvise IOPCShutdown connection point monitoring.\nUnadvise"
+    ID_VIEW_CLEAR           "Clear the items in the Debug window."
+    ID_VIEW_SCROLLDOWN      "Scroll items in the Debug list from top to bottom."
+    ID_TEST_IOPCBROWSESERVERADDRESSSPACE_SHOWTREE 
+                            "Display tree branches and leaves from current browse position."
+    ID_OPTIONS_LOGTOFILE    "Write output to file."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "OPCBClient.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
