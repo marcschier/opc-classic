@@ -428,8 +428,8 @@ void COPCEventSubscriptionMgt::SendEvents( ON_EVENT_Q& q, BOOL bRefresh )
 	BOOL bLastRefresh = ( dwCount == q.size() ) && bRefresh;
 	SubscribedEventClass *pEvents = new SubscribedEventClass[ dwCount ];
 	OnEventClass **ppDequed = new OnEventClass*[ dwCount ];
-
-	for( DWORD i= 0; i < dwCount; i++ )
+    DWORD i;
+	for( i = 0; i < dwCount; i++ )
 	{
 		pEvents[i].copy(*q.front(), m_ReturnedAttributesSet);  // copy the struct to array to be sent
 		ppDequed[i] = q.front();  // save pointer in our private array so we can call Release after data is sent
@@ -660,6 +660,7 @@ HRESULT COPCEventSubscriptionMgt::GetFilter(
 	*pdwHighSeverity = m_dwHighSeverity;
 	*pdwNumAreas = m_AreaVector.size();
 	*pdwNumSources = m_GenIDVector.size();
+    DWORD i;
 
 	try
 	{
@@ -670,7 +671,7 @@ HRESULT COPCEventSubscriptionMgt::GetFilter(
 		if( *pdwNumSources )
 			*ppszSourceList = (LPWSTR *)CoTaskAlloc( *pdwNumSources * sizeof(LPWSTR) );
 
-		for( DWORD i = 0; i < *pdwNumCategories; i++ )
+		for( i = 0; i < *pdwNumCategories; i++ )
 			(*ppdwEventCategories)[i] = m_EventCategoryVector[i];
 		
 		for( i = 0; i < *pdwNumAreas; i++ )
@@ -701,8 +702,6 @@ HRESULT COPCEventSubscriptionMgt::GetFilter(
 	return S_OK;
 }
 
-
-
        
 HRESULT COPCEventSubscriptionMgt::SelectReturnedAttributes( 
             /* [in] */ DWORD dwEventCategory,
@@ -710,11 +709,11 @@ HRESULT COPCEventSubscriptionMgt::SelectReturnedAttributes(
             /* [size_is][in] */ DWORD __RPC_FAR *dwAttributeIDs)
 {
 	ThreadSafe<CComAutoCriticalSection> AutoLock(m_csData);  // calls Lock() and Unlock() in constructor/destructor
-	if( dwEventCategory == 0 || dwEventCategory > theCategoriesMap.size() )
+    DWORD i;
+    if( dwEventCategory == 0 || dwEventCategory > theCategoriesMap.size() )
 		return E_INVALIDARG;
 
-
-	for( DWORD i = 0; i < dwCount; i++ )
+	for( i = 0; i < dwCount; i++ )
 	{
 		if( dwAttributeIDs[i] >= (theAttributesVector.size() + nStdAttrs()) )
 			return E_INVALIDARG;

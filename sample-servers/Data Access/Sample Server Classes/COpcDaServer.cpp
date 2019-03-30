@@ -1392,10 +1392,11 @@ HRESULT COpcDaServer::Browse(
 
     if (bReturnAllProperties || dwPropertyCount > 0)
     {
+        DWORD ii;
         // create item id array.
         LPWSTR* szItemIDs = OpcArrayAlloc(LPWSTR, *pdwCount);
 
-        for (DWORD ii = 0; ii < *pdwCount; ii++)
+        for (ii = 0; ii < *pdwCount; ii++)
         {
             szItemIDs[ii] = (*ppBrowseElements)[ii].szItemID;
         }

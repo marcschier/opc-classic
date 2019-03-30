@@ -313,6 +313,7 @@ bool COpcTextReader::FindWhitespace(COpcText& cToken)
     OPC_ASSERT(m_uLength != 0);
 
     UINT uPosition = 0;
+    UINT ii;
 
     // skip leading non-whitespace
     if (cToken.GetSkipLeading())
@@ -339,7 +340,7 @@ bool COpcTextReader::FindWhitespace(COpcText& cToken)
     } 
 
     // read until a non-whitespace.
-    for (UINT ii = uPosition; ii < m_uEndOfData; ii++)
+    for (ii = uPosition; ii < m_uEndOfData; ii++)
     {
         if (CheckForHalt(cToken, ii))
         {
@@ -371,6 +372,7 @@ bool COpcTextReader::FindNonWhitespace(COpcText& cToken)
 
     // skip leading whitespace
     UINT uPosition = SkipWhitespace(cToken);
+    UINT ii;
 
     // check if there is still data left to read.
     if (uPosition >= m_uEndOfData)
@@ -379,7 +381,7 @@ bool COpcTextReader::FindNonWhitespace(COpcText& cToken)
     } 
 
     // read until a whitespace.
-    for (UINT ii = uPosition; ii < m_uEndOfData; ii++)
+    for (ii = uPosition; ii < m_uEndOfData; ii++)
     {
         if (CheckForHalt(cToken, ii))
         {
@@ -411,6 +413,7 @@ bool COpcTextReader::FindDelimited(COpcText& cToken)
 
     // skip leading whitespace
     UINT uPosition = SkipWhitespace(cToken);
+    UINT ii;
 
     // check if there is still data left to read.
     if (uPosition >= m_uEndOfData)
@@ -419,7 +422,7 @@ bool COpcTextReader::FindDelimited(COpcText& cToken)
     } 
 
     // read until a delimiter.
-    for (UINT ii = uPosition; ii < m_uEndOfData; ii++)
+    for (ii = uPosition; ii < m_uEndOfData; ii++)
     {
         // check if search halted.
         if (CheckForHalt(cToken, ii))
@@ -464,6 +467,7 @@ bool COpcTextReader::FindEnclosed(COpcText& cToken)
 
     // skip leading whitespace
     UINT uPosition = SkipWhitespace(cToken);
+    UINT ii;
 
     // check if there is still data left to read.
     if (uPosition >= m_uEndOfData)
@@ -472,7 +476,7 @@ bool COpcTextReader::FindEnclosed(COpcText& cToken)
     } 
 
     // read until finding the start delimiter,
-    for (UINT ii = uPosition; ii < m_uEndOfData; ii++)
+    for (ii = uPosition; ii < m_uEndOfData; ii++)
     {
         // check if search halted.
         if (CheckForHalt(cToken, ii))
@@ -564,7 +568,8 @@ bool COpcTextReader::GetNext(COpcText& cToken)
 
     UINT uEndOfToken = cToken.GetEnd() + 1;
     UINT uDataLeft   = m_uEndOfData - uEndOfToken;
-  
+    UINT ii;
+
     // extract the delimiter if extracting token.
 
     // new line delimiter found.
@@ -591,7 +596,7 @@ bool COpcTextReader::GetNext(COpcText& cToken)
     }
 
     // move leftover data to the start of the buffer
-    for (UINT ii = 0; ii < uDataLeft; ii++)
+    for (ii = 0; ii < uDataLeft; ii++)
     {
         m_szBuf[ii] = m_szBuf[uEndOfToken+ii];
     }

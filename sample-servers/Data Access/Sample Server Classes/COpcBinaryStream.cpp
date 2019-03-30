@@ -295,8 +295,8 @@ bool COpcBinaryStream::WriteByteString(
 	else
 	{
 		LPWSTR szBuffer = OpcArrayAlloc(WCHAR, (uLength+1)*2);
-
-		for (UINT ii = 0; ii < uLength; ii++)
+        UINT ii;
+		for (ii = 0; ii < uLength; ii++)
 		{
 			swprintf(szBuffer+ii*2, L"%02X", pString[ii]);
 		}

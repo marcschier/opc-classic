@@ -68,6 +68,8 @@ HRESULT COpcEnumUnknown::Next(
     ULONG*     pceltFetched
 )
 {
+    UINT ii;
+
     // check for invalid arguments.
     if (rgelt == NULL || pceltFetched == NULL)
     {
@@ -83,7 +85,7 @@ HRESULT COpcEnumUnknown::Next(
     }
 
     // copy strings.
-    for (UINT ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
+    for (ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
     {
         rgelt[*pceltFetched] = m_pUnknowns[ii];
         if (m_pUnknowns[ii] != NULL) m_pUnknowns[ii]->AddRef();

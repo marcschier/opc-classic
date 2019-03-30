@@ -87,7 +87,8 @@ HRESULT COpcEnumCPs::Next(
     }
     
     // read connection points.
-    for (ULONG ii = 0; ii < cConnections; ii++)
+    ULONG ii;
+    for (ii = 0; ii < cConnections; ii++)
     {
         // end of list reached before count reached.
         if (m_pos == NULL)

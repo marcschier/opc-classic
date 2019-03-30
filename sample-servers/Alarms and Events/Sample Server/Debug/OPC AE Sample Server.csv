@@ -1,9 +1,0 @@
-EventType 1=simple 2=tracking 4=condition,Source,ConditionName,SubconditionName,SubconditionDef,Active,Message,EventCategory,Severity (0-1000),ConditionQuality,AckRequired,ActorID,Areas,Attribute1,Attribute2,Attribute3
-4,FIC1001,PVLEVEL,HIHI,FIC1001 > 99,1,FIC1001Limit is HIHI,Level,500,0,1,,boiler1\makeup;water1\boiler1,optional1,optional2,optional3
-4,FIC1002,DEVIATION,LO,FIC1002.SP - FIC1002.PV > 10,1,FIC1002 Deviation is Low,Deviation,200,0,1,,boiler2\makeup;water2\boiler,optional1,optional2,optional3
-4,FIC1001,PVLEVEL,HIHI,FIC1001 > 99,0,FIC1001 Limit is Normal,Level,500,0,1,,boiler1\makeup;water1\boiler1,optional1,optional2,optional3
-4,FIC1002,DEVIATION,LO,FIC1002.SP - FIC1002.PV > 10,0,FIC1002 Deviation is Normal,Deviation,200,0,1,,boiler2\makeup;water2\boiler,optional1,optional2,optional3
-2,FIC1001,,,,1,FIC1001 Setpoint changed Tracking Event,Operator Process Change,100,0,0,,boiler1\makeup;water1\boiler1,optional1,optional2,optional3
-1,FIC1001,,,,1,FIC1001 Simple Event,System Configuration,50,0,0,,boiler1\makeup;water1\boiler1,optional1,optional2,optional3
-4,FIC1001,PVLEVEL,LOLO,FIC1001 < 10,1,FIC1001Limit is LOLO,Level,500,0,1,,boiler1\makeup;water1\boiler1,optional1,optional2,optional3
-4,FIC1002,DEVIATION,HI,FIC1002.SP - FIC1002.PV > 90,1,FIC1002 Deviation is HI,Deviation,200,0,1,,boiler2\makeup;water2\boiler,optional1,optional2,optional3

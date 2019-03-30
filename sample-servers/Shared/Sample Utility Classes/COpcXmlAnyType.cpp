@@ -201,14 +201,15 @@ template<> void OpcXml::Clear(AnyType& cValue)
 // ReadSimpleArray
 static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cValue)
 {
-	switch (cValue.eType)
+    int ii;
+    switch (cValue.eType)
 	{
 		case OpcXml::XML_SBYTE:    
 		{ 	
-			cValue.psbyteValue = OpcArrayAlloc(OpcXml::SByte, cValue.iLength);
+            cValue.psbyteValue = OpcArrayAlloc(OpcXml::SByte, cValue.iLength);
 			memset(cValue.psbyteValue, 0, sizeof(OpcXml::SByte)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.psbyteValue[ii])) break; 
 			}
@@ -221,7 +222,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pbyteValue = OpcArrayAlloc(OpcXml::Byte, cValue.iLength);
 			memset(cValue.pbyteValue, 0, sizeof(OpcXml::Byte)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pbyteValue[ii])) break; 
 			}
@@ -234,7 +235,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pshortValue = OpcArrayAlloc(OpcXml::Short, cValue.iLength);
 			memset(cValue.pshortValue, 0, sizeof(OpcXml::Short)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pshortValue[ii])) break; 
 			}
@@ -247,7 +248,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pushortValue = OpcArrayAlloc(OpcXml::UShort, cValue.iLength);
 			memset(cValue.pushortValue, 0, sizeof(OpcXml::UShort)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pushortValue[ii])) break; 
 			}
@@ -260,7 +261,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pintValue = OpcArrayAlloc(OpcXml::Int, cValue.iLength);
 			memset(cValue.pintValue, 0, sizeof(OpcXml::Int)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pintValue[ii])) break; 
 			}
@@ -273,7 +274,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.puintValue = OpcArrayAlloc(OpcXml::UInt, cValue.iLength);
 			memset(cValue.puintValue, 0, sizeof(OpcXml::UInt)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.puintValue[ii])) break;  
 			}
@@ -286,7 +287,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.plongValue = OpcArrayAlloc(OpcXml::Long, cValue.iLength);
 			memset(cValue.plongValue, 0, sizeof(OpcXml::Long)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.plongValue[ii])) break;
 			}
@@ -299,7 +300,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pulongValue = OpcArrayAlloc(OpcXml::ULong, cValue.iLength);
 			memset(cValue.pulongValue, 0, sizeof(OpcXml::ULong)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pulongValue[ii])) break; 
 			}
@@ -312,7 +313,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pfloatValue = OpcArrayAlloc(OpcXml::Float, cValue.iLength);
 			memset(cValue.pfloatValue, 0, sizeof(OpcXml::Float)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pfloatValue[ii])) break; 
 			}
@@ -325,7 +326,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pdoubleValue = OpcArrayAlloc(OpcXml::Double, cValue.iLength);
 			memset(cValue.pdoubleValue, 0, sizeof(OpcXml::Double)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pdoubleValue[ii])) break;
 			}
@@ -338,7 +339,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pdecimalValue = OpcArrayAlloc(OpcXml::Decimal, cValue.iLength);
 			memset(cValue.pdecimalValue, 0, sizeof(OpcXml::Decimal)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+            for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pdecimalValue[ii])) break;
 			}
@@ -351,7 +352,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pboolValue = OpcArrayAlloc(OpcXml::Boolean, cValue.iLength);
 			memset(cValue.pboolValue, 0, sizeof(OpcXml::Boolean)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+			for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pboolValue[ii])) break;
 			}
@@ -364,7 +365,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pdateTimeValue = OpcArrayAlloc(OpcXml::DateTime, cValue.iLength);
 			memset(cValue.pdateTimeValue, 0, sizeof(OpcXml::DateTime)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+			for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pdateTimeValue[ii])) break;
 			}
@@ -377,7 +378,7 @@ static bool ReadSimpleArray(COpcXmlElementList& cElements, OpcXml::AnyType& cVal
 			cValue.pstringValue = OpcArrayAlloc(OpcXml::String, cValue.iLength);
 			memset(cValue.pstringValue, 0, sizeof(OpcXml::String)*cValue.iLength);
 
-			for (int ii = 0; ii < cValue.iLength; ii++)
+			for (ii = 0; ii < cValue.iLength; ii++)
 			{
 				if (!OpcXml::ReadXml(cElements[ii], cValue.pstringValue[ii])) break;
 			}
@@ -434,8 +435,9 @@ static bool ReadHexBinary(LPCWSTR wszBuffer, BYTE* pBuffer, UINT uLength)
 static bool WriteHexBinary(COpcString& cBuffer, BYTE* pBuffer, UINT uLength)
 {
 	LPWSTR szBuffer = OpcArrayAlloc(WCHAR, (uLength+1)*2);
+    UINT ii = 0;
 
-	for (UINT ii = 0; ii < uLength; ii++)
+	for (ii = 0; ii < uLength; ii++)
 	{
 		swprintf(szBuffer+ii*2, L"%02X", pBuffer[ii]);
 	}

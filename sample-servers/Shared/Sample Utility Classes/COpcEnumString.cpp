@@ -82,7 +82,8 @@ HRESULT COpcEnumString::Next(
     }
 
     // copy strings.
-    for (UINT ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
+    UINT ii;
+    for (ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
     {
         rgelt[*pceltFetched] = (LPWSTR)CoTaskMemAlloc((wcslen(m_pStrings[ii])+1)*sizeof(WCHAR));
 

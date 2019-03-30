@@ -21,5 +21,7 @@
 *.user
 /**/packages/**
 /**/packages.config
+/**/Release/**
+/**/Debug/**
 # Ignore editor backup files
 *~

@@ -450,9 +450,10 @@ COpcString& COpcString::Trim()
 
     UINT uStart = 0;
     UINT uEnd   = GetLength();
+    UINT ii;
 
     // remove leading whitespace.
-    for (UINT ii = 0; ii < uEnd; ii++)
+    for (ii = 0; ii < uEnd; ii++)
     {
         if (!_istspace((*this)[ii]))
         {

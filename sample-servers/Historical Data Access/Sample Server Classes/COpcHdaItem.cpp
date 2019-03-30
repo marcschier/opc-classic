@@ -1099,11 +1099,12 @@ void COpcHdaItem::FixBoundingTimes()
 
 	if (m_cValues.GetCount() > 0)
 	{
+        UINT ii;
 		m_llStartTime = m_cValues[0].llTimestamp;
 		m_llEndTime   = m_cValues.GetLastValue().llTimestamp;
 
 		// determine first useable value.
-		for (UINT ii = 0; ii < m_cValues.GetCount(); ii++)
+		for (ii = 0; ii < m_cValues.GetCount(); ii++)
 		{
 			if (IsUseableData(m_cValues[ii]))
 			{

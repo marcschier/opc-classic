@@ -457,6 +457,7 @@ HRESULT OpcRegisterServer(
 {
 
     HRESULT hResult = S_OK;
+    UINT ii;
 
     TRY
     {
@@ -509,7 +510,7 @@ HRESULT OpcRegisterServer(
         hResult = S_OK;
 
         // add clsid and prog id registy keys for each class.
-        for (UINT ii = 0; pClasses[ii].tsClassName != NULL; ii++)
+        for (ii = 0; pClasses[ii].tsClassName != NULL; ii++)
         {    
             COpcString cSubKey;
             COpcString cValue;
@@ -656,8 +657,9 @@ HRESULT OpcUnregisterServer(
     const TClassCategories*    pCategories
 )
 {  
+    int ii;
     // remove categories.
-    for (int ii = 0; pCategories[ii].pClsid != NULL; ii++)
+    for (ii = 0; pCategories[ii].pClsid != NULL; ii++)
     {
         UnregisterClsidInCategory(*(pCategories[ii].pClsid), *(pCategories[ii].pCategory));
     }

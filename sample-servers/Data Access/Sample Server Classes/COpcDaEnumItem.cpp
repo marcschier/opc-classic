@@ -125,7 +125,8 @@ HRESULT COpcDaEnumItem::Next(
     *ppItemArray = (OPCITEMATTRIBUTES*)OpcArrayAlloc(OPCITEMATTRIBUTES, celt);
     memset(*ppItemArray, 0, celt*sizeof(OPCITEMATTRIBUTES));
 
-    for (UINT ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
+    UINT ii;
+    for (ii = m_uIndex; ii < m_uCount && *pceltFetched < celt; ii++)
     {
         Copy((*ppItemArray)[*pceltFetched], m_pItems[ii]);
         (*pceltFetched)++;

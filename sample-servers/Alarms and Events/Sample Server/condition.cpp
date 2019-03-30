@@ -323,8 +323,8 @@ OPCCONDITIONSTATE *OPCCondition::CoTaskAllocConditionState( DWORD dwNumAttrs, DW
 		rtn = (OPCCONDITIONSTATE *)CoTaskAlloc( sizeof(OPCCONDITIONSTATE) );
 		rtn->wState = NewState();
 
-
-		OPCSubcondition test( SubconditionName() );
+        DWORD i;
+        OPCSubcondition test( SubconditionName() );
 		SUBCONDITION_VECTOR::const_iterator it = find( 
 						m_Subconditions.begin(), m_Subconditions.end(), test );
 		_ASSERTE( it != m_Subconditions.end() );
@@ -359,7 +359,7 @@ OPCCONDITIONSTATE *OPCCondition::CoTaskAllocConditionState( DWORD dwNumAttrs, DW
 		rtn->pszSCDefinitions = (LPWSTR *)CoTaskAlloc( rtn->dwNumSCs * sizeof( LPWSTR ) );
 		rtn->pdwSCSeverities = (DWORD *)CoTaskAlloc( rtn->dwNumSCs * sizeof(DWORD) );
 		rtn->pszSCDescriptions = (LPWSTR *)CoTaskAlloc( rtn->dwNumSCs * sizeof(LPWSTR) );
-		for( DWORD i = 0; i < rtn->dwNumSCs; i++ )
+        for( i = 0; i < rtn->dwNumSCs; i++ )
 		{
 			rtn->pszSCNames[i] = NullOrCoTaskAlloc( m_Subconditions[i].Name() );
 			rtn->pszSCDescriptions[i] = NullOrCoTaskAlloc( m_Subconditions[i].Message() );
@@ -371,7 +371,7 @@ OPCCONDITIONSTATE *OPCCondition::CoTaskAllocConditionState( DWORD dwNumAttrs, DW
 		rtn->dwNumEventAttrs = dwNumAttrs;
 		rtn->pEventAttributes = pComVar;
 		rtn->pErrors = (HRESULT *)CoTaskAlloc( dwNumAttrs * sizeof(HRESULT) );
-		for( i = 0; i < dwNumAttrs; i++ )
+        for( i = 0; i < dwNumAttrs; i++ )
 		{
 			switch( pdwAttrIDs[i] )
 			{

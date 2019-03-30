@@ -300,7 +300,7 @@ void COpcDaGroup::Update(LONGLONG uTick, UINT uInterval)
 	INT iDelta = (INT)((llNow - llThen)/10000 - (INT)m_dwUpdateRate);
 
 	TCHAR tsBuffer[500];
-	_stprintf(tsBuffer, _T("Expected: %d Actual: %d Delta: %d Ticks: %d\r\n"), m_dwUpdateRate, (INT)((llNow - llThen)/10000), iDelta, uTick);
+	_stprintf(tsBuffer, _T("Expected: %d Actual: %d Delta: %d Ticks: %lld\r\n"), m_dwUpdateRate, (INT)((llNow - llThen)/10000), iDelta, uTick);
 	OutputDebugString(tsBuffer);
 
     // create samples to return to client.
@@ -1714,8 +1714,8 @@ HRESULT COpcDaGroup::Read(
 	bool bError = false;
 
     COpcArray<OPCHANDLE> cItems;
-
-    for (DWORD ii = 0; ii < dwCount; ii++)
+    DWORD ii;
+    for (ii = 0; ii < dwCount; ii++)
     {
 		// lookup item by server handle.
 		COpcDaGroupItem* pItem = FindItem(phServer[ii]);
@@ -1807,8 +1807,8 @@ HRESULT COpcDaGroup::Write(
     COpcArray<VARIANT>   cValues;
 
     bool bError = false;
-
-    for (DWORD ii = 0; ii < dwCount; ii++)
+    DWORD ii;
+    for (ii = 0; ii < dwCount; ii++)
     {
         // lookup item by server handle.
 		COpcDaGroupItem* pItem = FindItem(phServer[ii]);
@@ -2070,7 +2070,8 @@ HRESULT COpcDaGroup::ReadMaxAge(
 
     COpcArray<OPCHANDLE> cItems;
 
-    for (DWORD ii = 0; ii < dwCount; ii++)
+    DWORD ii;
+    for (ii = 0; ii < dwCount; ii++)
     {
 		// lookup item by server handle.
 		COpcDaGroupItem* pItem = FindItem(phServer[ii]);
@@ -2164,7 +2165,8 @@ HRESULT COpcDaGroup::WriteVQT(
 
     bool bError = false;
 
-    for (DWORD ii = 0; ii < dwCount; ii++)
+    DWORD ii;
+    for (ii = 0; ii < dwCount; ii++)
     {
         // lookup item by server handle.
 		COpcDaGroupItem* pItem = FindItem(phServer[ii]);

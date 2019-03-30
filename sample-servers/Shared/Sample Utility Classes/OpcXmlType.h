@@ -92,7 +92,7 @@ typedef enum Type
     XML_STRING   = 0x000D,
     XML_DATETIME = 0x000E,
     XML_ANY_TYPE = 0x000F
-};
+} Type;
 
 //==============================================================================
 // CLASS:   QName

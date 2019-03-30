@@ -603,8 +603,8 @@ HRESULT COpcDaCacheItem::ToEnumValue(
 
         int*  pSrc = (int*)cSrcArray.GetData();
         BSTR* pDst = (BSTR*)cDstArray.GetData();
-        
-        for (UINT ii = 0; ii < uLength; ii++)
+        UINT ii;
+        for (ii = 0; ii < uLength; ii++)
         {
             pDst[ii] = FindEnumValue(cEnumValues, pSrc[ii]);
 
@@ -662,8 +662,8 @@ HRESULT COpcDaCacheItem::FromEnumValue(
 
         BSTR* pSrc = (BSTR*)cSrcArray.GetData();
         int*  pDst = (int*)cDstArray.GetData();
-        
-        for (UINT ii = 0; ii < uLength; ii++)
+        UINT ii;
+        for (ii = 0; ii < uLength; ii++)
         {
             pDst[ii] = FindEnumIndex(cEnumValues, pSrc[ii]);
 

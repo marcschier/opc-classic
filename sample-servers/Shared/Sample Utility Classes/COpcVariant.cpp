@@ -1376,14 +1376,15 @@ void OpcWriteVariant(VARIANT& cDst, const COpcStringArray& cSrc)
 // OpcWriteVariant
 void OpcWriteVariant(VARIANT& cDst, const LPCWSTR* pszStrings)
 {
-	VariantClear(&cDst);
+    UINT uLength;
+    VariantClear(&cDst);
 
 	if (pszStrings == NULL)
 	{
 		return;
 	}
 
-	for (UINT uLength = 0; pszStrings[uLength] != NULL; uLength++);
+	for (uLength = 0; pszStrings[uLength] != NULL; uLength++);
 
 	if (uLength > 0)
 	{

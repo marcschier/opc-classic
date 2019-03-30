@@ -608,8 +608,10 @@ HRESULT COpcComModule::RegisterFromFiles(HINSTANCE hModule)
 	}
 
     // replace the class and category tables with the auto generated ones.
-    for (UINT uClassCount = 0; pClassesFromFile[uClassCount].tsClassName != NULL; uClassCount++);            
-    for (UINT uCategoryCount = 0; m_pCategories[uCategoryCount].pClsid != NULL; uCategoryCount++);
+    UINT uClassCount;
+    for (uClassCount = 0; pClassesFromFile[uClassCount].tsClassName != NULL; uClassCount++);            
+    UINT uCategoryCount;
+    for (uCategoryCount = 0; m_pCategories[uCategoryCount].pClsid != NULL; uCategoryCount++);
   
     TClassCategories* pCategoriesFromFile = OpcArrayAlloc(TClassCategories, uClassCount*uCategoryCount+1);
     memset(pCategoriesFromFile, 0, (uClassCount*uCategoryCount+1)*sizeof(TClassCategories));
