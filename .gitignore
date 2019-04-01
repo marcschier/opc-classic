@@ -23,5 +23,6 @@
 /**/packages.config
 /**/Release/**
 /**/Debug/**
+/**/BuildOutput/**
 # Ignore editor backup files
 *~
