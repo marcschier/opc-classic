@@ -290,13 +290,22 @@ DWORD COpcComModule::WinMain(
             COpcString cFlags = ((COpcString&)cText).ToLower();
 
             // register module as local server.
-            if (cFlags== _T("regserver")) return RegisterServer(false);
-        
+            if (cFlags == _T("regserver"))
+            {
+                return RegisterServer(false);
+            }
+
             // register module as service.
-            if (cFlags== _T("service")) return RegisterServer(true);
-        
+            if (cFlags== _T("service")) 
+            {
+                return RegisterServer(true);
+            }
+
             // unregister module.
-            if (cFlags == _T("unregserver")) return UnregisterServer();
+            if (cFlags == _T("unregserver")) 
+            {
+                return UnregisterServer();
+            }
         }
     }
 

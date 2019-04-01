@@ -64,9 +64,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="build.timestamp" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="OpcDaServer.binary.xml">
       <Filter>Configuration Files</Filter>
     </CustomBuild>

@@ -61,7 +61,6 @@
     <None Include="Data\Aggregate Calculations.xls">
       <Filter>Data</Filter>
     </None>
-    <None Include="build.timestamp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Data\Aggregate Data 1.csv">

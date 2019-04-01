@@ -228,9 +228,6 @@ RemovePrincipalFromNamedValueSD (
     DWORD fAceType
     );
 
-BOOL
-IsLegacySecurityModel ();
-
 DWORD
 GetCurrentUserSID (
     PSID *Sid

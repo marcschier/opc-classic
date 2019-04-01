@@ -230,30 +230,6 @@
 #endif
 
 #ifndef UNDER_CE
-BOOL Is_Win98_or_Later()
-{
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx (&osvi);
-	BOOL bRtn = 
-		(osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) &&
-		( (osvi.dwMajorVersion > 4) ||
-		( (osvi.dwMajorVersion == 4) && (osvi.dwMinorVersion > 0) ) );
-	return bRtn;
-}
-
-
-BOOL Is_Win2000_or_Later() 
-{
-	OSVERSIONINFO osvi;
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx (&osvi);
-	BOOL bRtn = 
-		(osvi.dwPlatformId == VER_PLATFORM_WIN32_NT) &&
-		( (osvi.dwMajorVersion >= 5) );
-	return bRtn;
-}
-
 
 typedef DWORD (WINAPI* LONGPATHPROC)( LPCTSTR, LPTSTR, DWORD );
 
@@ -533,13 +509,9 @@ bool tstring::GetModuleFileName( HMODULE hMod )
 	sz[0] = _T('\0');
 	DWORD size = ::GetModuleFileName( hMod, sz, _MAX_PATH );
 #ifndef UNDER_CE
-	if( Is_Win98_or_Later() || Is_Win2000_or_Later() )
-	{
-		MyGetLongPathName( sz, sz, _MAX_PATH );
-		*this = sz;
-		return( size != 0 );
-	}
-#endif	
+	MyGetLongPathName( sz, sz, _MAX_PATH );
+	*this = sz;
+#else
 	// make sure we get the long file name !!!
 	WIN32_FIND_DATA data;
 	HANDLE h=FindFirstFile(sz,&data);
@@ -560,7 +532,7 @@ bool tstring::GetModuleFileName( HMODULE hMod )
 	}
 	else
 		*this = sz;
-	
+#endif
 	return( size != 0 );
 }
 

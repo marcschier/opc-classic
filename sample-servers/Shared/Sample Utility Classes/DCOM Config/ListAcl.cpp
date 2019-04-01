@@ -87,7 +87,7 @@ void DisplayAccess(
     )
 {
 
-    BOOL fLegacy = IsLegacySecurityModel();
+    BOOL fLegacy = FALSE;
 
     if(!fLegacy)
     {

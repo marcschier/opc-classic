@@ -55,15 +55,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
-      <Command>if exist "$(OutDir)$(TargetName).exe"  "$(OutDir)$(TargetName).exe" /UnregServer
-copy ".\$(TargetName).config.xml" "$(OutDir)$(TargetName).config.xml"
-attrib -R "$(OutDir)$(TargetName).config.xml"
-"$(OutDir)$(TargetName).exe" /RegServer
-echo Registered Server at $(OutDir)$(TargetName).exe"
-
-echo $(TargetName).exe registration time &gt; .\build.timestamp
-</Command>
-      <Outputs>.\build.timestamp;%(Outputs)</Outputs>
+      <Message>Performing registration</Message>
+      <Command>
+        if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
+        if exist "$(TargetPath)" "$(TargetPath)" /RegServer
+        echo $(TargetName).exe registration time &gt; $(OutDir)build.timestamp
+      </Command>
+      <Outputs>$(OutDir)build.timestamp;%(Outputs)</Outputs>    
     </CustomBuildStep>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -83,8 +81,8 @@ echo $(TargetName).exe registration time &gt; .\build.timestamp
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
+      <MinimalRebuild />
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -98,19 +96,21 @@ echo $(TargetName).exe registration time &gt; .\build.timestamp
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CustomBuildStep>
-      <Command>if exist "$(OutDir)$(TargetName).exe"  "$(OutDir)$(TargetName).exe" /UnregServer
-copy ".\$(TargetName).config.xml" "$(OutDir)$(TargetName).config.xml"
-attrib -R "$(OutDir)$(TargetName).config.xml"
-"$(OutDir)$(TargetName).exe" /RegServer
-echo Registered Server at $(OutDir)$(TargetName).exe"
-
-echo $(TargetName).exe registration time &gt; .\build.timestamp
-</Command>
-      <Outputs>.\build.timestamp;%(Outputs)</Outputs>
+      <Message>Performing registration</Message>
+      <Command>
+        if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
+        if exist "$(TargetPath)" "$(TargetPath)" /RegServer
+        echo $(TargetName).exe registration time &gt; $(OutDir)build.timestamp
+      </Command>
+      <Outputs>$(OutDir)build.timestamp;%(Outputs)</Outputs>    
     </CustomBuildStep>
     <Midl>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -132,6 +132,7 @@ echo $(TargetName).exe registration time &gt; .\build.timestamp
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
+      <MinimalRebuild />
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

@@ -53,13 +53,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
-      <Command>if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
-"$(TargetPath)" /RegServer
-echo $(TargetName).exe registration time &gt; .\build.timestamp
-echo Registered Server at "$(TargetPath)"
-
-</Command>
-      <Outputs>.\build.timestamp;%(Outputs)</Outputs>
+      <Message>Performing registration</Message>
+      <Command>
+        if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
+        if exist "$(TargetPath)" "$(TargetPath)" /RegServer
+        echo $(TargetName).exe registration time &gt; $(OutDir)build.timestamp
+      </Command>
+      <Outputs>$(OutDir)build.timestamp;%(Outputs)</Outputs>    
     </CustomBuildStep>
     <Midl>
       <AdditionalIncludeDirectories>..\..\Include;$(CommonProgramFiles)\OPC Foundation\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -71,12 +71,11 @@ echo Registered Server at "$(TargetPath)"
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\Sample Device;..\Sample Server Classes;..\..\Shared\Sample Utility Classes;..\..\Include;$(CommonProgramFiles)\OPC Foundation\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_WIN32_DCOM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild />
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;rpcrt4.lib.;%(AdditionalDependencies)</AdditionalDependencies>
@@ -87,17 +86,21 @@ echo Registered Server at "$(TargetPath)"
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CustomBuildStep>
-      <Command>if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
-"$(TargetPath)" /RegServer
-echo $(TargetName).exe registration time &gt; .\build.timestamp
-echo Registered Server at "$(TargetPath)"
-
-</Command>
-      <Outputs>.\build.timestamp;%(Outputs)</Outputs>
+      <Message>Performing registration</Message>
+      <Command>
+        if exist "$(TargetPath)" "$(TargetPath)" /UnregServer
+        if exist "$(TargetPath)" "$(TargetPath)" /RegServer
+        echo $(TargetName).exe registration time &gt; $(OutDir)build.timestamp
+      </Command>
+      <Outputs>$(OutDir)build.timestamp;%(Outputs)</Outputs>    
     </CustomBuildStep>
     <Midl>
       <AdditionalIncludeDirectories>..\..\Include;$(CommonProgramFiles)\OPC Foundation\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -112,6 +115,7 @@ echo Registered Server at "$(TargetPath)"
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild />
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;rpcrt4.lib.;%(AdditionalDependencies)</AdditionalDependencies>
