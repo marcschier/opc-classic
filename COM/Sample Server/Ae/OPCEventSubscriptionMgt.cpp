@@ -183,7 +183,7 @@
 // OPCEventSubscriptionMgt.cpp : Implementation of COPCEventSubscriptionMgt
 #include "stdafx.h"
 #include "global.h"
-#include "OPC_AE_SampleServer.h"
+#include "OpcAeServer.h"
 #include "OPCEventSubscriptionMgt.h"
 #include "OPCEventServer.h"
 #include "ConditionMap.h"

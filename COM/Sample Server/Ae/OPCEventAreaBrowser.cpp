@@ -119,7 +119,7 @@
 //*************************************************************************          
 // OPCEventAreaBrowser.cpp : Implementation of COPCEventAreaBrowser
 #include "stdafx.h"
-#include "OPC_AE_SampleServer.h"
+#include "OpcAeServer.h"
 #include "OPCEventAreaBrowser.h"
 #include "QueryContainers.h"
 #include "MatchPattern.h"

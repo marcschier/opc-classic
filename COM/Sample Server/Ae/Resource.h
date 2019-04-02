@@ -1,9 +1,9 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Developer Studio generated include file.
-// Used by OPC_AE_SampleServer.rc
+// Used by OpcAeServer.rc
 //
 #define IDS_PROJNAME                    100
-#define IDR_OPC_AE_SampleServer         100
+#define IDR_OPCAESERVER         100
 #define IDR_OPCEVENTSERVER              201
 
 // Next default values for new objects

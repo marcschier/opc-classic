@@ -1,0 +1,155 @@
+﻿// 
+// Copyright (c) 2013 Vikram Roopchand
+// 
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v10.html
+// 
+
+namespace org.jinterop.dcom.core {
+    using System;
+    using System.Collections;
+    using ndr;
+
+    /// <summary>
+    /// Represents array of network address and security bindings.
+    /// </summary>
+    [Serializable]
+    internal sealed class JIDualStringArray {
+
+        /// <summary>
+        /// String bindings
+        /// </summary>
+        public JIStringBinding[] StringBindings { get; private set; }
+
+        /// <summary>
+        /// Security bindings
+        /// </summary>
+        public JISecurityBinding[] SecurityBindings { get; private set; }
+
+        /// <summary>
+        /// Length
+        /// </summary>
+        public int Length { get; private set; } = 0;
+
+        /// <summary>
+        /// Create array
+        /// </summary>
+        private JIDualStringArray() {}
+
+        /// <summary>
+        /// Will get called from Oxid Resolver
+        /// </summary>
+        /// <param name="port"></param>
+        internal JIDualStringArray(int port) {
+            //create bindings here.
+            StringBindings = new JIStringBinding[2]; //only 1
+            StringBindings[0] = new JIStringBinding(port, false);
+
+            Length = StringBindings[0].Length;
+
+            StringBindings[1] = new JIStringBinding(port, true);
+
+            Length = Length + StringBindings[1].Length + 2; //null termination
+
+            _secOffset = Length;
+
+            SecurityBindings = new JISecurityBinding[1]; //support only winnt NTLM
+            SecurityBindings[0] = new JISecurityBinding(0x0a, 0xffff, "");
+            Length = Length + SecurityBindings[0].Length;
+
+            Length = Length + 2 + 2 + 2; //null termination, 2 bytes for num entries and 2 bytes for sec offset.
+        }
+
+        /// <summary>
+        /// Decode
+        /// </summary>
+        /// <param name="ndr"></param>
+        /// <returns></returns>
+        internal static JIDualStringArray decode(NetworkDataRepresentation ndr) {
+            var dualStringArray = new JIDualStringArray();
+
+            //first extract number of entries
+            var numEntries = ndr.readUnsignedShort();
+
+            //return empty
+            if (numEntries == 0) {
+                return dualStringArray;
+            }
+
+            //extract security offset
+            var securityOffset = ndr.readUnsignedShort();
+
+            var listOfStringBindings = new ArrayList();
+            var listOfSecurityBindings = new ArrayList();
+
+            var stringbinding = true;
+            while (true) {
+                if (stringbinding) {
+                    var s = JIStringBinding.decode(ndr);
+                    if (s == null) {
+                        stringbinding = false;
+                        //null termination
+                        dualStringArray.Length = dualStringArray.Length + 2;
+                        dualStringArray._secOffset = dualStringArray.Length;
+                        continue;
+                    }
+
+                    listOfStringBindings.Add(s);
+                    dualStringArray.Length = dualStringArray.Length + s.Length;
+                }
+                else {
+                    var s = JISecurityBinding.decode(ndr);
+                    if (s == null) {
+                        //null termination
+                        dualStringArray.Length = dualStringArray.Length + 2;
+                        break;
+                    }
+
+                    listOfSecurityBindings.Add(s);
+                    dualStringArray.Length = dualStringArray.Length + s.Length;
+                }
+
+            }
+
+            // 2 bytes for num entries and 2 bytes for sec offset.
+            dualStringArray.Length = dualStringArray.Length + 2 + 2;
+
+            dualStringArray.StringBindings = (JIStringBinding[])listOfStringBindings.ToArray(typeof(JIStringBinding));
+            dualStringArray.SecurityBindings = (JISecurityBinding[])listOfSecurityBindings.ToArray(typeof(JISecurityBinding));
+            return dualStringArray;
+        }
+
+        /// <summary>
+        /// Encode
+        /// </summary>
+        /// <param name="ndr"></param>
+        public void encode(NetworkDataRepresentation ndr) {
+            //fill num entries
+            //this is total length/2. since they are all shorts
+            ndr.writeUnsignedShort((Length - 4) / 2);
+            ndr.writeUnsignedShort(_secOffset / 2);
+
+            var i = 0;
+            if (StringBindings != null) {
+                while (i < StringBindings.Length) {
+                    StringBindings[i].encode(ndr);
+                    i++;
+                }
+                ndr.writeUnsignedShort(0);
+            }
+
+            i = 0;
+            if (SecurityBindings != null) {
+                while (i < SecurityBindings.Length) {
+                    SecurityBindings[i].encode(ndr);
+                    i++;
+                }
+                ndr.writeUnsignedShort(0);
+            }
+        }
+
+        private int _secOffset;
+    }
+}

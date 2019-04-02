@@ -161,7 +161,7 @@
 //*************************************************************************          
 // OPCEventServer.cpp : Implementation of COPCEventServer
 #include "stdafx.h"
-#include "OPC_AE_SampleServer.h"
+#include "OpcAeServer.h"
 #include "OPCEventServer.h"
 #include "global.h"
 #include "QueryContainers.h"
