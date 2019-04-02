@@ -98,11 +98,12 @@ namespace Opc.Ae.SampleClient
 		{
 			try
 			{
-				SecurityPermission permission = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
-				
-				if (!SecurityManager.IsGranted(permission))
-				{
-					string msg = "";
+                SecurityPermission permission = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
+                var permissionSet = new PermissionSet(PermissionState.None);
+                permissionSet.AddPermission(permission);
+                if (!permissionSet.IsSubsetOf(AppDomain.CurrentDomain.PermissionSet)) 
+                {
+                    string msg = "";
 
 					msg += "This application requires permission to access unmanaged code ";
 					msg += "in order to connect to COM-DA servers directly.\r\n\r\n";

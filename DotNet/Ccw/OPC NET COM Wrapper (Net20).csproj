@@ -2,24 +2,23 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <ProjectType>Local</ProjectType>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{98B6E5A1-6FED-434E-B568-9C68D5F9959C}</ProjectGuid>
+    <ProjectGuid>{D0A6AABF-C3B1-4110-96BA-6708B1FF0657}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>OpcNetApi</AssemblyName>
-    <IntermediateOutputPath>$(SolutionDir)BuildOutput\obj\Net40\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <AssemblyName>OpcNetApi.Com</AssemblyName>
+    <IntermediateOutputPath>$(SolutionDir)BuildOutput\obj\Net20\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>Opc</RootNamespace>
+    <RootNamespace>OpcCom</RootNamespace>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -29,8 +28,7 @@
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -48,7 +46,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>$(SolutionDir)BuildOutput\bin\Net40\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>$(SolutionDir)BuildOutput\bin\Net20\$(Platform)\$(Configuration)\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -70,14 +68,14 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>$(SolutionDir)BuildOutput\bin\Net40\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>$(SolutionDir)BuildOutput\bin\Net20\$(Platform)\$(Configuration)\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>$(SolutionDir)BuildOutput\bin\Net40\$(Platform)\$(Configuration)\OpcNetApi.xml</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)BuildOutput\bin\Net20\$(Platform)\$(Configuration)\OpcNetApi.Com.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -99,180 +97,104 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Web.Services">
-      <Name>System.Web.Services</Name>
-    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ae\Opc.Ae.Attribute.cs">
+    <Compile Include="Ae\OpcCom.Ae.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ae\Opc.Ae.BrowseElement.cs">
+    <Compile Include="Ae\OpcCom.Ae.ResultIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ae\Opc.Ae.Category.cs">
+    <Compile Include="Ae\OpcCom.Ae.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ae\Opc.Ae.Condition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ae\Opc.Ae.IServer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ae\Opc.Ae.ISubscription.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ae\Opc.Ae.ItemUrl.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ae\Opc.Ae.Server.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Ae\Opc.Ae.Subscription.cs">
+    <Compile Include="Ae\OpcCom.Ae.Subscription.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\..\include\AssemblyVersionInfo.cs">
+    <Compile Include="..\AssemblyVersionInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cpx\BinaryReader.cs">
+    <Compile Include="Da20\OpcCom.Da20.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cpx\BinaryStream.cs">
+    <Compile Include="Da20\OpcCom.Da20.Subscription.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cpx\BinaryWriter.cs">
+    <Compile Include="Da\OpcCom.Da.Browse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cpx\ComplexItem.cs">
+    <Compile Include="Da\OpcCom.Da.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cpx\OPCBinary.cs">
+    <Compile Include="Da\OpcCom.Da.ResultIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.Browse.cs">
+    <Compile Include="Da\OpcCom.Da.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.IServer.cs">
+    <Compile Include="Da\OpcCom.Da.Subscription.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.ISubscription.cs">
+    <Compile Include="Dx\OpcCom.Dx.Interop.cs" />
+    <Compile Include="Dx\OpcCom.Dx.ResultIDs.cs" />
+    <Compile Include="Dx\OpcCom.Dx.Server.cs" />
+    <Compile Include="Hda\OpcCom.Hda.Browser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.Item.cs">
+    <Compile Include="Hda\OpcCom.Hda.DataCallback.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.PropertyID.cs">
+    <Compile Include="Hda\OpcCom.Hda.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.Quality.cs">
+    <Compile Include="Hda\OpcCom.Hda.Request.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.Server.cs">
+    <Compile Include="Hda\OpcCom.Hda.ResultIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Opc.Da.Subscription.cs">
+    <Compile Include="Hda\OpcCom.Hda.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.DXConnection.cs">
+    <Compile Include="OpcCom.ConnectionPoint.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.DXConnectionQuery.cs">
+    <Compile Include="OpcCom.EnumGuid.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.GeneralResponse.cs">
+    <Compile Include="OpcCom.EnumString.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.IServer.cs">
+    <Compile Include="OpcCom.Factory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.ItemIdentifer.cs">
+    <Compile Include="OpcCom.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.Server.cs">
+    <Compile Include="OpcCom.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dx\Opc.Dx.SourceServer.cs">
+    <Compile Include="OpcCom.ServerEnumerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hda\Opc.Hda.Aggregate.cs">
+    <Compile Include="Wrapper\OpcCom.Da.Wrapper.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hda\Opc.Hda.Annotation.cs">
+    <Compile Include="Wrapper\OpcCom.IOPCWrappedServer.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Hda\Opc.Hda.Attribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.IBrowser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.IServer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.Item.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.Server.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.Time.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Hda\Opc.Hda.Trend.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Collections.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.ConnectData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Convert.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Factory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.IDiscovery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.IServer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.ItemIdentifer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Namespace.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.ResultID.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Server.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Opc.Type.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Content Include="Cpx\OPCBinary.xsd">
-      <SubType>
-      </SubType>
-    </Content>
-    <None Include="Cpx\OPCBinary.xsx">
-      <DependentUpon>OPCBinary.xsd</DependentUpon>
-    </None>
-    <EmbeddedResource Include="Resources\Strings.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\NetRcw\OPC COM RCW %28Net20%29.csproj">
+      <Project>{efb1fc1b-1345-44cc-ae91-57311b8ac60e}</Project>
+      <Name>OPC COM RCW %28Net20%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -285,12 +207,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\NetRcw\OPC COM RCW %28Net40%29.csproj">
-      <Project>{75a956d6-285b-46c9-b713-1500582f8c62}</Project>
-      <Name>OPC COM RCW %28Net40%29</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

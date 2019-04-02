@@ -62,24 +62,3 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion(AssemblyVersionInfo.CurrentVersion)]
 [assembly: AssemblyFileVersion(AssemblyVersionInfo.CurrentFileVersion)]
-
-/// <summary>
-/// Defines string constants for SDK version information.
-/// </summary>
-internal static class AssemblyVersionInfo
-{
-    /// <summary>
-    /// The current copy right notice.
-    /// </summary>
-    public const string Copyright = "Copyright © 2010-2014 OPC Foundation, Inc";
-
-    /// <summary>
-    /// The current build version.
-    /// </summary>
-    public const string CurrentVersion = "2.00.106.0";
-
-    /// <summary>
-    /// The current build file version.
-    /// </summary>
-    public const string CurrentFileVersion = "2.00.106.0";
-}

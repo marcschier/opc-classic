@@ -4,21 +4,21 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{82283125-79FD-4A52-948A-A928CC51C07B}</ProjectGuid>
+    <ProjectGuid>{170A5455-A090-4F26-810F-15F71BBF87E6}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>OpcNetApi.Xml</AssemblyName>
+    <AssemblyName>OpcNetApi.Com</AssemblyName>
     <IntermediateOutputPath>$(SolutionDir)BuildOutput\obj\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>OpcXml</RootNamespace>
+    <RootNamespace>OpcCom</RootNamespace>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -60,7 +60,7 @@
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>$(SolutionDir)BuildOutput\bin\$(Platform)\$(Configuration)\OpcNetApi.Xml.xml</DocumentationFile>
+    <DocumentationFile>$(SolutionDir)BuildOutput\bin\$(Platform)\$(Configuration)\OpcNetApi.Com.xml</DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
     <FileAlignment>4096</FileAlignment>
     <NoStdLib>false</NoStdLib>
@@ -82,68 +82,104 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Web">
-      <Name>System.Web</Name>
-    </Reference>
-    <Reference Include="System.Web.Services">
-      <Name>System.Web.Services</Name>
-    </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ae\OpcCom.Ae.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.ResultIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Ae\OpcCom.Ae.Subscription.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="..\..\include\AssemblyVersionInfo.cs">
+    <Compile Include="..\AssemblyVersionInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Browse.cs">
+    <Compile Include="Da20\OpcCom.Da20.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.IServer.cs">
+    <Compile Include="Da20\OpcCom.Da20.Subscription.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.ItemList.cs">
+    <Compile Include="Da\OpcCom.Da.Browse.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Property.cs">
+    <Compile Include="Da\OpcCom.Da.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Request.cs">
+    <Compile Include="Da\OpcCom.Da.ResultIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Server.cs">
+    <Compile Include="Da\OpcCom.Da.Server.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Subscription.cs">
+    <Compile Include="Da\OpcCom.Da.Subscription.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da.Type.cs">
+    <Compile Include="Dx\OpcCom.Dx.Interop.cs" />
+    <Compile Include="Dx\OpcCom.Dx.ResultIDs.cs" />
+    <Compile Include="Dx\OpcCom.Dx.Server.cs" />
+    <Compile Include="Hda\OpcCom.Hda.Browser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\OpcXml.Da10.Proxy.cs">
-      <SubType>code</SubType>
-    </Compile>
-    <Compile Include="Da\Wrapper\OpcXml.Da.Wrapper.RemoteSubscription.cs">
+    <Compile Include="Hda\OpcCom.Hda.DataCallback.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Wrapper\OpcXml.Da.Wrapper.Server.cs">
+    <Compile Include="Hda\OpcCom.Hda.Interop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Da\Wrapper\OpcXml.Da.Wrapper.Subscription.cs">
+    <Compile Include="Hda\OpcCom.Hda.Request.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OpcXml.Factory.cs">
+    <Compile Include="Hda\OpcCom.Hda.ResultIDs.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="Resources\Strings.fr.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Strings.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <Compile Include="Hda\OpcCom.Hda.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.ConnectionPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.EnumGuid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.EnumString.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Factory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Interop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpcCom.ServerEnumerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wrapper\OpcCom.Da.Wrapper.Server.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Wrapper\OpcCom.IOPCWrappedServer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\NetRcw\OPC COM RCW.csproj">
+      <Project>{75a956d6-285b-46c9-b713-1500582f8c62}</Project>
+      <Name>OPC COM RCW</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

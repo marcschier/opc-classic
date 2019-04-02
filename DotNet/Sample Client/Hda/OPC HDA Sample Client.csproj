@@ -11,7 +11,8 @@
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>OpcHdaSampleClient</AssemblyName>
-    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -26,8 +27,9 @@
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <IntermediateOutputPath>$(SolutionDir)BuildOutput\obj\$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>$(SolutionDir)BuildOutput\bin\$(Platform)\$(Configuration)\</OutputPath>
@@ -53,6 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>$(SolutionDir)BuildOutput\bin\$(Platform)\$(Configuration)\</OutputPath>
@@ -78,20 +81,9 @@
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpcComRcw, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpcComRcw.2.1.107\lib\net20\OpcComRcw.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OpcNetApi, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpcNetApi.2.1.107\lib\net20\OpcNetApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OpcNetApi.Com, Version=2.1.0.0, Culture=neutral, PublicKeyToken=9a40e993cbface53, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpcNetApi.Com.2.1.107\lib\net20\OpcNetApi.Com.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -113,6 +105,18 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\Api\OpcNetApi.csproj">
+      <Project>{98b6e5a1-6fed-434e-b568-9c68d5f9959c}</Project>
+      <Name>OpcNetApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Ccw\OpcNetApi.Com.csproj">
+      <Project>{170a5455-a090-4f26-810f-15f71bbf87e6}</Project>
+      <Name>OpcNetApi.Com</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Rcw\OpcComRcw.csproj">
+      <Project>{75a956d6-285b-46c9-b713-1500582f8c62}</Project>
+      <Name>OpcComRcw</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\OPC NET Common Controls.csproj">
       <Name>OPC NET Common Controls</Name>
       <Project>{AC5779F3-2523-42A6-8AC6-02F21A320E7C}</Project>
@@ -393,7 +397,7 @@
     <Content Include="Test\TestCase.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="OPC Key Pair.snk" />
+    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

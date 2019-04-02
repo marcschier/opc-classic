@@ -13,4 +13,9 @@ internal static class AssemblyVersionInfo
     /// The current build file version.
     /// </summary>
     public const string CurrentFileVersion = "0.0";
+
+    /// <summary>
+    /// The current build version.
+    /// </summary>
+    public const string CurrentVersion = "0.0";
 }

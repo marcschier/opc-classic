@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET DLL Server Wrappers", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{85240195-1926-47DD-9362-6A64C32C0D94}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC Sample Utility Classes", "COM\Shared\Utils\OPC Sample Utility Classes.vcxproj", "{268AE545-D614-4B66-AEF3-C5B85919AD9D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC Utils", "COM\Shared\Utils\OPC Sample Utility Classes.vcxproj", "{268AE545-D614-4B66-AEF3-C5B85919AD9D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC DA Sample Server Classes", "COM\Sample Server\Da\Classes\OPC DA Sample Server Classes.vcxproj", "{A03F86A2-F0B8-40D3-AE60-2E1AE1ECB150}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC DA Classes", "COM\Sample Server\Da\Classes\OPC DA Sample Server Classes.vcxproj", "{A03F86A2-F0B8-40D3-AE60-2E1AE1ECB150}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC DA Sample Device", "COM\Sample Server\Da\Device\OPC DA Sample Device.vcxproj", "{7D074CE4-0D1A-4103-BECA-DBDF20781250}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC DA Device", "COM\Sample Server\Da\Device\OPC DA Sample Device.vcxproj", "{7D074CE4-0D1A-4103-BECA-DBDF20781250}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC DA Sample Server", "COM\Sample Server\Da\Server\OPC DA Sample Server.vcxproj", "{A18BEF28-A117-4410-97EF-6689D33B7FAB}"
 EndProject
@@ -29,7 +29,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC AE Sample Server", "COM
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC HDA Sample Server", "COM\Sample Server\Hda\Server\OPC HDA Sample Server.vcxproj", "{94C7C6CD-0BF5-47E5-BE1B-BFEEB1EB2B45}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC HDA Sample Server Classes", "COM\Sample Server\Hda\Classes\OPC HDA Sample Server Classes.vcxproj", "{EC52271A-4956-4E24-AD8E-47C45A561835}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OPC HDA Classes", "COM\Sample Server\Hda\Classes\OPC HDA Sample Server Classes.vcxproj", "{EC52271A-4956-4E24-AD8E-47C45A561835}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Da", "Da", "{D49E3D0C-4DB6-4AE3-BFB8-32D041AE477E}"
 EndProject
