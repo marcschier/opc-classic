@@ -12,27 +12,32 @@
 // 
 
 
-namespace rpc.pdu
-{
+namespace rpc.pdu {
+    using SharpCifs.Dcerpc.Ndr;
+    using rpc.core;
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    /// <summary>
+    /// Auth pdu
+    /// </summary>
+    public class Auth3Pdu : ConnectionOrientedPdu {
 
-	public class Auth3Pdu : ConnectionOrientedPdu
-	{
+        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+        public const int AUTH3_TYPE = 0x10;
 
-		public const int AUTH3_TYPE = 0x10;
-
-		public Auth3Pdu()
-		{
-			//Really useless value
-			CallId = 0;
-		}
+        /// <inheritdoc/>
         public override int Type => AUTH3_TYPE;
 
-        protected internal override void writeBody(NetworkDataRepresentation ndr)
-		{
-			ndr.writeUnsignedLong(0);
-		}
-	}
+        /// <summary>
+        /// Create pdu
+        /// </summary>
+        public Auth3Pdu() {
+            //Really useless value
+            CallId = 0;
+        }
 
+        /// <inheritdoc/>
+        protected internal override void WriteBody(NdrCodec ndr) {
+            ndr.WriteUnsignedLong(0);
+        }
+    }
 }

@@ -7,28 +7,21 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-
 namespace org.jinterop.dcom.core {
-
     using rpc.core;
 
     /// <summary>
-    ///<para>Wrapper for class identifier to a COM Object.
-    /// </para>
-    /// <para>
+    /// Wrapper for class identifier to a COM Object.
+    /// </summary>
+    /// <remarks>
     /// Definition from MSDN: <i> A universally unique identifier (UUID) that 
     /// identifies a type of Component Object Model (COM) object. Each type of 
     /// COM object item has its CLSID in the registry so that it can be loaded 
     /// and used by other applications. For example, a spreadsheet may create 
     /// worksheet items, chart items, and macrosheet items. Each of these item 
     /// types has its own CLSID that uniquely identifies it to the system. </i>
-    /// 
-    /// </para>
-    /// <para>
     /// For example Microsoft Office Excel Application has clsid of "00024500-0000-0000-C000-000000000046".
-    ///  </para>
-    /// @since 1.0
-    /// </summary>
+    /// </remarks>
     public class JIClsid {
 
         /// <summary>
@@ -36,7 +29,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="uuid"></param>
         private JIClsid(string uuid) {
-            _nestedUUID.parse(uuid);
+            _nestedUUID.Parse(uuid);
         }
 
         /// <summary>

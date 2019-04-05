@@ -11,74 +11,78 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
+    using System.Collections.Generic;
 
+    /// <summary>
+    /// Port
+    /// </summary>
+    public class Port : NdrOp {
 
-namespace rpc.core
-{
+        /// <summary>
+        /// Port specification
+        /// </summary>
+        public string PortSpec { get; set; }
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+        /// <summary>
+        /// Create
+        /// </summary>
+        public Port() : 
+            this(null) {
+        }
 
-	public class Port : NdrObject
-	{
+        /// <summary>
+        /// Create port
+        /// </summary>
+        /// <param name="portSpec"></param>
+        public Port(string portSpec) {
+            PortSpec = portSpec;
+        }
 
-		public string portSpec;
+        /// <override/>
+        public override void Read(NdrCodec ndr) {
+            var length = ndr.ReadUnsignedShort();
+            if (length > 0) {
+                var buf = ndr.Buffer;
+                var portSpec = new char[length - 1];
+                ndr.ReadCharacterArray(portSpec, 0, portSpec.Length);
+                ndr.ReadUnsignedSmall(); // null terminator
+                PortSpec = new string(portSpec);
+            }
+            else {
+                PortSpec = null;
+            }
+        }
 
-		public Port() : this(null)
-		{
-		}
+        /// <override/>
+        public override void Write(NdrCodec ndr) {
+            char[] spec;
+            if (PortSpec != null) {
+                spec = new char[PortSpec.Length + 1];
+                PortSpec.CopyTo(0, spec, 0, PortSpec.Length - 0);
+            }
+            else {
+                spec = new char[0];
+            }
+            ndr.WriteUnsignedShort(spec.Length);
+            if (spec.Length > 0) {
+                ndr.WriteCharacterArray(spec, 0, spec.Length);
+            }
+        }
 
-		public Port(string portSpec)
-		{
-			this.portSpec = portSpec;
-		}
+        /// <override/>
+        public override bool Equals(object obj) {
+            if (!(obj is Port other)) {
+                return false;
+            }
+            return (PortSpec != null) ?
+                PortSpec.Equals(other.PortSpec) : other.PortSpec == null;
+        }
 
-		public override void read(NetworkDataRepresentation ndr)
-		{
-			var length = ndr.readUnsignedShort();
-			if (length > 0)
-			{
-				var buf = ndr.Buffer;
-				var portSpec = new char[length - 1];
-				ndr.readCharacterArray(portSpec, 0, portSpec.Length);
-				ndr.readUnsignedSmall(); // null terminator
-				this.portSpec = new string(portSpec);
-			}
-			else
-			{
-				portSpec = null;
-			}
-		}
-
-		public override void write(NetworkDataRepresentation ndr)
-		{
-			char[] spec;
-			if (portSpec != null)
-			{
-				spec = new char[portSpec.Length + 1];
-				portSpec.CopyTo(0, spec, 0, portSpec.Length - 0);
-			}
-			else
-			{
-				spec = new char[0];
-			}
-			ndr.writeUnsignedShort(spec.Length);
-			if (spec.Length > 0)
-			{
-				ndr.writeCharacterArray(spec, 0, spec.Length);
-			}
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (!(obj is Port))
-			{
-				return false;
-			}
-			return (portSpec != null) ? portSpec.Equals(((Port) obj).portSpec) : ((Port) obj).portSpec == null;
-		}
-
-	}
-
+        /// <override/>
+        public override int GetHashCode() {
+            return EqualityComparer<string>.Default.GetHashCode(PortSpec);
+        }
+    }
 }

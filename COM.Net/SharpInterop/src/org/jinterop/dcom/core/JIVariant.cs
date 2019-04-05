@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -283,7 +283,7 @@ namespace org.jinterop.dcom.core {
             }
             else {
                 try {
-                    object oo = outTypesMap[c];
+                    var oo = outTypesMap[c];
                     if (oo != null) {
                         //we will always send a single dimension array.
                         object x = System.Array.CreateInstance(c, 1);
@@ -1112,7 +1112,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList defferedPointers, int flag) {
+        internal void encode(NdrCodec ndr, IList defferedPointers, int flag) {
             _member.Deffered = true; 
             // this is since this could be part of an array or a struct...for normal calls
             // as soon as this call finishes a call will be given from JICallobject for it's variantbody.
@@ -1127,7 +1127,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal static JIVariant decode(NetworkDataRepresentation ndr, IList defferedPointers, 
+        internal static JIVariant decode(NdrCodec ndr, IList defferedPointers, 
             int flag, IDictionary additionalData) {
             var variant = new JIVariant();
             var @ref = new JIPointer(typeof(JIVariantBody)) {

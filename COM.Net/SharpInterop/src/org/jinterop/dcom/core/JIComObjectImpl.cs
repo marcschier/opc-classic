@@ -186,12 +186,6 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         public string InterfaceIdentifier => _ptr.IID;
 
-        //	public JIComServer getAssociatedComServer()
-        //	{
-        //		checkLocal();
-        //		return session.getStub();
-        //	}
-
         /// <summary>
         /// Dispatch is supported
         /// </summary>

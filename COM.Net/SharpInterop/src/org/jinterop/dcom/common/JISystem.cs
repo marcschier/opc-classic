@@ -39,7 +39,7 @@ namespace org.jinterop.dcom.common {
 		private static string pathToDB;
 		private static Locale locale = Locale.Default;
 		private static ResourceBundle resourceBundle;
-		private static Properties mapOfProgIdsVsClsids = new Properties();
+		private static SharpCifs.Util.Sharpen.Properties mapOfProgIdsVsClsids = new SharpCifs.Util.Sharpen.Properties();
 		private static ArrayList socketQueue = new ArrayList();
 		private static JIComVersion comVersion = new JIComVersion();
         private static readonly IDictionary mapOfHostnamesVsIPs = new Hashtable();
@@ -324,7 +324,7 @@ namespace org.jinterop.dcom.common {
 
 		private static void logSystemPropertiesAndVersion()
 		{
-			var pr = System.Properties;
+			var pr = System.SharpCifs.Util.Sharpen.Properties;
 			IEnumerator itr = pr.Keys.GetEnumerator();
 			var str = "";
 			string jinteropVersion = typeof(JISystem).Assembly.ImplementationVersion;

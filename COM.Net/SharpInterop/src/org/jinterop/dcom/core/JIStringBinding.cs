@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -78,9 +78,9 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIStringBinding decode(NetworkDataRepresentation ndr) {
+        internal static JIStringBinding decode(NdrCodec ndr) {
             var stringBinding = new JIStringBinding {
-                TowerId = ndr.readUnsignedShort()
+                TowerId = ndr.ReadUnsignedShort()
             };
 
             //hit the end , security bindings start.
@@ -92,7 +92,7 @@ namespace org.jinterop.dcom.core {
             // a '0' will be represented as 30
             var retVal = -1;
             var buffer = new StringBuilder();
-            while ((retVal = ndr.readUnsignedShort()) != 0) {
+            while ((retVal = ndr.ReadUnsignedShort()) != 0) {
                 //even though this is a unicode string , but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
                 buffer.Append(StringHelperClass.NewString(new sbyte[] { (sbyte)retVal }));
@@ -108,15 +108,15 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        public void encode(NetworkDataRepresentation ndr) {
-            ndr.writeUnsignedShort(TowerId);
+        public void encode(NdrCodec ndr) {
+            ndr.WriteUnsignedShort(TowerId);
             //now to write the network address.
             var i = 0;
             while (i < NetworkAddress.Length) {
-                ndr.writeUnsignedShort(NetworkAddress[i]);
+                ndr.WriteUnsignedShort(NetworkAddress[i]);
                 i++;
             }
-            ndr.writeUnsignedShort(0); //null termination
+            ndr.WriteUnsignedShort(0); //null termination
         }
     }
 }

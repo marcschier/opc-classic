@@ -19,17 +19,17 @@
 				var comObject = comServer.createInstance();
 				var h = 0;
 
-	//			SSPIJNIClient jniClient = SSPIJNIClient.getInstance();
-	//			byte[] type1Message = jniClient.invokePrepareSSORequest();
-	//			jcifs.util.Hexdump.hexdump(System.out, type1Message, 0, type1Message.length);
-	//			int h = 0;
-	//			
-	//			jniClient.invokeUnInitialize();
-	//			
-	//			type1Message = new Type1Message().toByteArray();
-	//			jcifs.util.Hexdump.hexdump(System.out, type1Message, 0, type1Message.length);
-			}
-			catch (Exception e)
+                //			SSPIJNIClient jniClient = SSPIJNIClient.getInstance();
+                //			byte[] type1Message = jniClient.invokePrepareSSORequest();
+                //			Utils.HexString(type1Message, 0, type1Message.length);
+                //			int h = 0;
+                //			
+                //			jniClient.invokeUnInitialize();
+                //			
+                //			type1Message = new Type1Message().toByteArray();
+                //			Utils.HexString(type1Message, 0, type1Message.length);
+            }
+            catch (Exception e)
 			{
 				// TODO Auto-generated catch block
 				Console.WriteLine(e.ToString());

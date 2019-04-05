@@ -11,18 +11,17 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.pdu {
 
+    /// <summary>
+    /// Cancel
+    /// </summary>
+	public class CancelCoPdu : ConnectionOrientedPdu {
 
-namespace rpc.pdu
-{
+        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+        public const int CANCEL_TYPE = 0x12;
 
-	public class CancelCoPdu : ConnectionOrientedPdu
-	{
-
-		public const int CANCEL_TYPE = 0x12;
-
+        /// <inheritdoc/>
         public override int Type => CANCEL_TYPE;
-
     }
-
 }

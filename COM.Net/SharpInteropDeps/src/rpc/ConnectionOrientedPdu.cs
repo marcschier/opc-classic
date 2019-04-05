@@ -1,6 +1,4 @@
-﻿using System;
-
-// 
+﻿// 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
 // 
 // j-Interop (Pure Java implementation of DCOM protocol)
@@ -13,223 +11,267 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
+    using SharpCifs.Dcerpc.Ndr;
+    using System;
 
-	using Format = ndr.Format;
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    /// <summary>
+    /// A connection oriented pdu
+    /// </summary>
+    public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
 
-	public abstract class ConnectionOrientedPdu : NdrObject, ProtocolDataUnit
-	{
+        /// <summary>
+        /// Flag indicating the PDU is the first fragment.
+        /// </summary>
+        public const int PFC_FIRST_FRAG = 0x01;
 
-		public const int CONNECTION_ORIENTED_MAJOR_VERSION = 5;
+        /// <summary>
+        /// Flag indicating the PDU is the last fragment.
+        /// </summary>
+        public const int PFC_LAST_FRAG = 0x02;
 
-		public const int MUST_RECEIVE_FRAGMENT_SIZE = 7160;
+        /// <summary>
+        /// Flag indicating a cancel was pending at the sender.
+        /// </summary>
+        public const int PFC_PENDING_CANCEL = 0x04;
 
-		/// <summary>
-		/// Flag indicating the PDU is the first fragment.
-		/// </summary>
-		public const int PFC_FIRST_FRAG = 0x01;
+        /// <summary>
+        /// Flag indicating support for concurrent multiplexing of a
+        /// single connection.
+        /// </summary>
+        public const int PFC_CONC_MPX = 0x10;
 
-		/// <summary>
-		/// Flag indicating the PDU is the last fragment.
-		/// </summary>
-		public const int PFC_LAST_FRAG = 0x02;
+        /// <summary>
+        /// Flag for fault PDUs; if set, indicates that the call definitely
+        /// did not execute.
+        /// </summary>
+        public const int PFC_DID_NOT_EXECUTE = 0x20;
 
-		/// <summary>
-		/// Flag indicating a cancel was pending at the sender.
-		/// </summary>
-		public const int PFC_PENDING_CANCEL = 0x04;
+        /// <summary>
+        /// Flag for request PDU indicating oneway call semantics; no response will
+        /// be provided by the server.
+        /// </summary>
+        public const int PFC_MAYBE = 0x40;
 
-		/// <summary>
-		/// Flag indicating support for concurrent multiplexing of a
-		/// single connection.
-		/// </summary>
-		public const int PFC_CONC_MPX = 0x10;
+        /// <summary>
+        /// Flag indicating a valid object UUID was specified and is present
+        /// in the optional object field.  If not set, the object field is
+        /// omitted.
+        /// </summary>
+        public const int PFC_OBJECT_UUID = 0x80;
 
-		/// <summary>
-		/// Flag for fault PDUs; if set, indicates that the call definitely
-		/// did not execute.
-		/// </summary>
-		public const int PFC_DID_NOT_EXECUTE = 0x20;
+        /// <summary>
+        /// Type
+        /// </summary>
+        public abstract int Type { get; }
 
-		/// <summary>
-		/// Flag for request PDU indicating oneway call semantics; no response will
-		/// be provided by the server.
-		/// </summary>
-		public const int PFC_MAYBE = 0x40;
-
-		/// <summary>
-		/// Flag indicating a valid object UUID was specified and is present
-		/// in the optional object field.  If not set, the object field is
-		/// omitted.
-		/// </summary>
-		public const int PFC_OBJECT_UUID = 0x80;
-
-		public const int MAJOR_VERSION_OFFSET = 0;
-
-		public const int MINOR_VERSION_OFFSET = 1;
-
-		public const int TYPE_OFFSET = 2;
-
-		public const int FLAGS_OFFSET = 3;
-
-		public const int DATA_REPRESENTATION_OFFSET = 4;
-
-		public const int FRAG_LENGTH_OFFSET = 8;
-
-		public const int AUTH_LENGTH_OFFSET = 10;
-
-		public const int CALL_ID_OFFSET = 12;
-
-		public const int HEADER_LENGTH = 16;
-
-		private int minorVersion;
-
-		private int flags = PFC_FIRST_FRAG | PFC_LAST_FRAG;
-
-		protected internal static int callIdCounter;
-
-		private int callId = callIdCounter;
-
-		private bool useCallIdCounter = true;
-
-		private int fragLength;
-
-		private int authLength;
-
-		private Format format;
-
+        /// <summary>
+        /// Major version
+        /// </summary>
         public virtual int MajorVersion => CONNECTION_ORIENTED_MAJOR_VERSION;
 
+        /// <summary>
+        /// Minor version
+        /// </summary>
         public virtual int MinorVersion {
-            get => minorVersion;
-            set => minorVersion = value;
+            get => _minorVersion;
+            set => _minorVersion = value;
         }
 
-
-        public virtual Format Format {
-            get => format ?? (format = Format.DEFAULT_FORMAT);
-            set => format = value;
+        /// <summary>
+        /// Format
+        /// </summary>
+        public virtual NdrFormat Format {
+            get => _format ?? (_format = NdrFormat.DEFAULT_FORMAT);
+            set => _format = value;
         }
 
-
+        /// <summary>
+        /// Get flags
+        /// </summary>
         public virtual int Flags {
-            get => flags;
-            set => flags = value;
+            get => _flags;
+            set => _flags = value;
         }
 
+        /// <summary>
+        /// Test flag
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        public virtual bool GetFlag(int flag) {
+            return (Flags & flag) != 0;
+        }
 
-        public virtual bool getFlag(int flag)
-		{
-			return (Flags & flag) != 0;
-		}
+        /// <summary>
+        /// Set flag
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <param name="value"></param>
+        public virtual void SetFlag(int flag, bool value) {
+            Flags = value ? (Flags | flag) : (Flags & ~flag);
+        }
 
-		public virtual void setFlag(int flag, bool value)
-		{
-			Flags = value ? (Flags | flag) : (Flags & ~flag);
-		}
-
-		public virtual int CallId {
-            get => callId;
+        /// <summary>
+        /// Call id
+        /// </summary>
+        public virtual int CallId {
+            get => _callId;
             set {
-                useCallIdCounter = false;
-                callId = value;
+                _useCallIdCounter = false;
+                _callId = value;
             }
         }
 
-
+        /// <summary>
+        /// Fragment length
+        /// </summary>
         public virtual int FragmentLength {
-            get => fragLength;
-            set => fragLength = value;
+            get => _fragLength;
+            set => _fragLength = value;
         }
 
-
+        /// <summary>
+        /// Auth length
+        /// </summary>
         public virtual int AuthenticatorLength {
-            get => authLength;
-            set => authLength = value;
+            get => _authLength;
+            set => _authLength = value;
         }
 
 
-        public override void decode(NetworkDataRepresentation ndr, NdrBuffer src)
-		{
-			ndr.Buffer = src;
-			readPdu(ndr);
-		}
+        /// <summary>
+        /// Decode
+        /// </summary>
+        /// <param name="ndr"></param>
+        /// <param name="src"></param>
+        public override void Decode(NdrCodec ndr, NdrBuffer src) {
+            ndr.Buffer = src;
+            ReadPdu(ndr);
+        }
 
-		public override void encode(NetworkDataRepresentation ndr, NdrBuffer dst)
-		{
-			ndr.Buffer = dst;
-			Format = Format;
-			writePdu(ndr);
-			var buffer = ndr.Buffer;
-			var length = buffer.Length;
-			FragmentLength = length;
-			// write the header lengths, now that we know them.
-			buffer.Index = FRAG_LENGTH_OFFSET;
-			ndr.writeUnsignedShort(length);
-			ndr.writeUnsignedShort(AuthenticatorLength);
-			buffer.Index = length;
-		}
+        /// <summary>
+        /// Encode
+        /// </summary>
+        /// <param name="ndr"></param>
+        /// <param name="dst"></param>
+        public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+            ndr.Buffer = dst;
+            Format = Format;
+            WritePdu(ndr);
+            var buffer = ndr.Buffer;
+            var length = buffer.Length;
+            FragmentLength = length;
+            // write the header lengths, now that we know them.
+            buffer.Index = FRAG_LENGTH_OFFSET;
+            ndr.WriteUnsignedShort(length);
+            ndr.WriteUnsignedShort(AuthenticatorLength);
+            buffer.Index = length;
+        }
 
-		protected internal virtual void readPdu(NetworkDataRepresentation ndr)
-		{
-			readHeader(ndr);
-			readBody(ndr);
-		}
+        /// <summary>
+        /// Read pdu
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void ReadPdu(NdrCodec ndr) {
+            ReadHeader(ndr);
+            ReadBody(ndr);
+        }
 
-		protected internal virtual void writePdu(NetworkDataRepresentation ndr)
-		{
-			writeHeader(ndr);
-			writeBody(ndr);
-		}
+        /// <summary>
+        /// Write pdu
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void WritePdu(NdrCodec ndr) {
+            WriteHeader(ndr);
+            WriteBody(ndr);
+        }
 
-		protected internal virtual void readHeader(NetworkDataRepresentation ndr)
-		{
-			if (ndr.readUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION)
-			{
-				throw new InvalidOperationException("Version mismatch.");
-			}
-			// read minor version
-			MinorVersion = ndr.readUnsignedSmall();
-			if (Type != ndr.readUnsignedSmall())
-			{
-				throw new ArgumentException("Incorrect PDU type.");
-			}
-			Flags = ndr.readUnsignedSmall();
-			var format = ndr.readFormat(false);
-			Format = format;
-			Format = format;
-			FragmentLength = ndr.readUnsignedShort();
-			AuthenticatorLength = ndr.readUnsignedShort();
-			callId = (int) ndr.readUnsignedLong();
-		}
+        /// <summary>
+        /// Read header
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void ReadHeader(NdrCodec ndr) {
+            if (ndr.ReadUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION) {
+                throw new InvalidOperationException("Version mismatch.");
+            }
+            // read minor version
+            MinorVersion = ndr.ReadUnsignedSmall();
+            if (Type != ndr.ReadUnsignedSmall()) {
+                throw new ArgumentException("Incorrect PDU type.");
+            }
+            Flags = ndr.ReadUnsignedSmall();
+            var format = ndr.ReadFormat(false);
+            Format = format;
+            Format = format;
+            FragmentLength = ndr.ReadUnsignedShort();
+            AuthenticatorLength = ndr.ReadUnsignedShort();
+            _callId = ndr.ReadUnsignedLong();
+        }
 
-		protected internal virtual void writeHeader(NetworkDataRepresentation ndr)
-		{
-			ndr.writeUnsignedSmall((short) MajorVersion);
-			ndr.writeUnsignedSmall((short) MinorVersion);
-			ndr.writeUnsignedSmall((short) Type);
-			ndr.writeUnsignedSmall((short) Flags);
-			ndr.writeFormat(false);
-			// skip the fragment and auth lengths, since we don't have them yet.
-			ndr.writeUnsignedShort(0);
-			ndr.writeUnsignedShort(0);
-			ndr.writeUnsignedLong(useCallIdCounter ? callIdCounter++: callId);
-		}
+        /// <summary>
+        /// Write header
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void WriteHeader(NdrCodec ndr) {
+            ndr.WriteUnsignedSmall((short)MajorVersion);
+            ndr.WriteUnsignedSmall((short)MinorVersion);
+            ndr.WriteUnsignedSmall((short)Type);
+            ndr.WriteUnsignedSmall((short)Flags);
+            ndr.WriteFormat(false);
+            // skip the fragment and auth lengths, since we don't have them yet.
+            ndr.WriteUnsignedShort(0);
+            ndr.WriteUnsignedShort(0);
+            ndr.WriteUnsignedLong(_useCallIdCounter ? s_callIdCounter++ : _callId);
+        }
 
-		protected internal virtual void readBody(NetworkDataRepresentation ndr)
-		{
-		}
+        /// <summary>
+        /// Read body
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void ReadBody(NdrCodec ndr) {
+            // override
+        }
 
-		protected internal virtual void writeBody(NetworkDataRepresentation ndr)
-		{
-		}
+        /// <summary>
+        /// Write body
+        /// </summary>
+        /// <param name="ndr"></param>
+        protected internal virtual void WriteBody(NdrCodec ndr) {
+            // override
+        }
 
-		public abstract int Type {get;}
+        /// <private/>
+        public const int CONNECTION_ORIENTED_MAJOR_VERSION = 5;
+        /// <private/>
+        public const int MUST_RECEIVE_FRAGMENT_SIZE = 7160;
+        /// <private/>
+        public const int MAJOR_VERSION_OFFSET = 0;
+        /// <private/>
+        public const int MINOR_VERSION_OFFSET = 1;
+        /// <private/>
+        public const int TYPE_OFFSET = 2;
+        /// <private/>
+        public const int FLAGS_OFFSET = 3;
+        /// <private/>
+        public const int DATA_REPRESENTATION_OFFSET = 4;
+        /// <private/>
+        public const int FRAG_LENGTH_OFFSET = 8;
+        /// <private/>
+        public const int AUTH_LENGTH_OFFSET = 10;
+        /// <private/>
+        public const int CALL_ID_OFFSET = 12;
+        /// <private/>
+        public const int HEADER_LENGTH = 16;
 
-	}
-
+        /// <summary> Call id counter </summary>
+        protected internal static int s_callIdCounter;
+        private int _minorVersion;
+        private int _flags = PFC_FIRST_FRAG | PFC_LAST_FRAG;
+        private int _callId = s_callIdCounter;
+        private bool _useCallIdCounter = true;
+        private int _fragLength;
+        private int _authLength;
+        private NdrFormat _format;
+    }
 }

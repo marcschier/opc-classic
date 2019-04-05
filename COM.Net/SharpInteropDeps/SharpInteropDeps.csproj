@@ -5,4 +5,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Port of J-Interop to .net Core</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpCifs.STD1.3\SharpCifs.STD1.3.csproj" />
+  </ItemGroup>
 </Project>

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpInterop", "SharpIntero
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpInteropDeps", "SharpInteropDeps\SharpInteropDeps.csproj", "{97DB7468-A447-436C-800D-E755CEA52F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpCifs.STD1.3", "SharpCifs.STD1.3\SharpCifs.STD1.3.csproj", "{19D5580A-27C8-42D0-B5F1-4ECFABB816E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{97DB7468-A447-436C-800D-E755CEA52F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97DB7468-A447-436C-800D-E755CEA52F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97DB7468-A447-436C-800D-E755CEA52F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D5580A-27C8-42D0-B5F1-4ECFABB816E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D5580A-27C8-42D0-B5F1-4ECFABB816E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D5580A-27C8-42D0-B5F1-4ECFABB816E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D5580A-27C8-42D0-B5F1-4ECFABB816E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

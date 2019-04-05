@@ -13,118 +13,108 @@
 
 
 
-namespace rpc
-{
+namespace rpc {
+    using SharpCifs.Dcerpc.Ndr;
+    using rpc.core;
+    using System;
+    using System.IO;
+    using SharpCifs.Util.Sharpen;
 
+    /// <summary>
+    /// Stub
+    /// </summary>
+    public abstract class Stub {
 
-	using NdrObject = ndr.NdrObject;
-	using PresentationSyntax = core.PresentationSyntax;
-	using UUID = core.UUID;
-
-	public abstract class Stub
-	{
-
-		private TransportFactory transportFactory;
-
-		private Endpoint endpoint;
-
-		private string @object;
-
-		private string address;
-
-		private Properties properties;
-
-		public virtual string Address {
-            get => address;
+        /// <summary>
+        /// Address
+        /// </summary>
+        public virtual string Address {
+            get => _address;
             set {
-                if ((value == null) ? address == null : value.Equals(address)) {
+                if ((value == null) ? _address == null : value.Equals(_address)) {
                     return;
                 }
-                address = value;
+                _address = value;
                 try {
-                    detach();
+                    Detach();
                 }
                 catch (IOException) {
                 }
             }
         }
 
+        /// <summary>
+        /// Object
+        /// </summary>
+        public string Object { get; set; }
 
-        public virtual string Object {
-            get => @object;
-            set => @object = value;
+        /// <summary>
+        /// Transport factory
+        /// </summary>
+        public TransportFactory TransportFactory { get; set; }
+
+        /// <summary>
+        /// SharpCifs.Util.Sharpen.Properties
+        /// </summary>
+        public Properties Properties { get; set; }
+
+        /// <summary>
+        /// Endpoint
+        /// </summary>
+        protected IEndpoint Endpoint { get; set; }
+
+        /// <summary>
+        /// Detach
+        /// </summary>
+        /// <exception cref="IOException"></exception>
+        protected void Detach() {
+            var endpoint = Endpoint;
+            if (endpoint == null) {
+                return;
+            }
+            try {
+                endpoint.Detach();
+            }
+            finally {
+                Endpoint = null;
+            }
         }
 
-
-        public virtual TransportFactory TransportFactory {
-            get =>
-                //        return (transportFactory != null) ? transportFactory :
-                //                (transportFactory = TransportFactory.getInstance());
-                transportFactory; //Will never be null
-            set => transportFactory = value;
+        /// <summary>
+        /// Attach
+        /// </summary>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="T:rpc.RpcException"></exception>
+        protected void Attach() {
+            var endpoint = Endpoint;
+            if (endpoint != null) {
+                return;
+            }
+            var address = Address;
+            if (address == null) {
+                throw new RpcException("No address specified.");
+            }
+            Endpoint = TransportFactory.CreateTransport(address, Properties).Attach(new PresentationSyntax(Syntax));
         }
 
-
-        public virtual Properties Properties {
-            get => properties;
-            set => properties = value;
+        /// <summary>
+        /// call
+        /// </summary>
+        /// <param name="semantics"></param>
+        /// <param name="ndrobj"></param>
+        /// <exception cref="IOException"></exception>
+        public virtual void Call(int semantics, NdrOp ndrobj) {
+            Attach();
+            var obj = Object;
+            var uuid = (obj == null) ? null : new UUID(obj);
+            Endpoint.Call(semantics, uuid, ndrobj.Opnum, ndrobj);
         }
 
+        /// <summary>
+        /// Syntax
+        /// </summary>
+        protected internal abstract string Syntax { get; }
 
-        protected internal virtual Endpoint Endpoint {
-            get => endpoint;
-            set => endpoint = value;
-        }
-
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: protected void detach() throws java.io.IOException
-        protected internal virtual void detach()
-		{
-			var endpoint = Endpoint;
-			if (endpoint == null)
-			{
-				return;
-			}
-			try
-			{
-				endpoint.detach();
-			}
-			finally
-			{
-				Endpoint = null;
-			}
-		}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: protected void attach() throws java.io.IOException
-		protected internal virtual void attach()
-		{
-			var endpoint = Endpoint;
-			if (endpoint != null)
-			{
-				return;
-			}
-			var address = Address;
-			if (address == null)
-			{
-				throw new RpcException("No address specified.");
-			}
-			Endpoint = TransportFactory.createTransport(address, Properties).attach(new PresentationSyntax(Syntax));
-		}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void call(int semantics, ndr.NdrObject ndrobj) throws java.io.IOException
-		public virtual void call(int semantics, NdrObject ndrobj)
-		{
-			attach();
-			string @object = object;
-			var uuid = (@object == null) ? null : new UUID(@object);
-			Endpoint.call(semantics, uuid, ndrobj.Opnum, ndrobj);
-		}
-
-		protected internal abstract string Syntax {get;}
-
-	}
-
+        private string _address;
+    }
 }

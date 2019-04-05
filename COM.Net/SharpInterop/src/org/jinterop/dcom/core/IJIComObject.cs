@@ -71,7 +71,7 @@ namespace org.jinterop.dcom.core {
         /// <P>Increases the reference count on the COM server by 5
         /// (currently hard coded). The developer should refrain from calling this API, 
         /// as referencing is maintained internally by the system though he is not 
-        /// obligated to do so. If the <seealso cref="#release()"/> is not called in conjunction 
+        /// obligated to do so. If the <seealso cref="release()"/> is not called in conjunction 
         /// with <code>addRef</code> then the COM Instance will not get garbage collected 
         /// at the server. 
         /// </P> </summary>

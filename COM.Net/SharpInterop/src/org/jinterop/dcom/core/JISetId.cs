@@ -17,13 +17,13 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Identifier
         /// </summary>
-        internal sbyte[] SetID { get; }
+        internal byte[] SetID { get; }
 
         /// <summary>
         /// Create
         /// </summary>
         /// <param name="setid"></param>
-        internal JISetId(sbyte[] setid) {
+        internal JISetId(byte[] setid) {
             SetID = setid;
         }
 

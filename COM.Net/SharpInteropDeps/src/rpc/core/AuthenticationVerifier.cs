@@ -1,6 +1,4 @@
-﻿using System;
-
-// 
+﻿// 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
 // 
 // j-Interop (Pure Java implementation of DCOM protocol)
@@ -13,85 +11,127 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
+    using System.Linq;
+    using System;
 
+    /// <summary>
+    /// Verifier
+    /// </summary>
+    public class AuthenticationVerifier : NdrOp {
 
-namespace rpc.core
-{
+        /// <summary>
+        /// Service
+        /// </summary>
+        public int AuthenticationService { get; set; }
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+        /// <summary>
+        /// Protection level
+        /// </summary>
+        public ProtectionLevel Protection { get; set; }
 
-	public class AuthenticationVerifier : NdrObject
-	{
+        /// <summary>
+        /// Context
+        /// </summary>
+        public int ContextId { get; set; }
 
-		public int authenticationService;
+        /// <summary>
+        /// Body
+        /// </summary>
+        public byte[] Body { get; set; }
 
-		public int protectionLevel;
+        /// <summary>
+        /// Create verifier
+        /// </summary>
+        public AuthenticationVerifier() : 
+            this(Security.AUTHENTICATION_SERVICE_NONE, 
+                ProtectionLevel.PROTECTION_LEVEL_NONE, 0, null) {
+        }
 
-		public int contextId;
+        /// <summary>
+        /// Create verifier
+        /// </summary>
+        /// <param name="authenticatorLength"></param>
+        public AuthenticationVerifier(int authenticatorLength) : 
+            this(Security.AUTHENTICATION_SERVICE_NONE,
+                ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength) {
+        }
 
-		public sbyte[] body;
+        /// <summary>
+        /// Create verifier
+        /// </summary>
+        /// <param name="authenticationService"></param>
+        /// <param name="protectionLevel"></param>
+        /// <param name="contextId"></param>
+        /// <param name="authenticatorLength"></param>
+        public AuthenticationVerifier(int authenticationService,
+            ProtectionLevel protectionLevel, int contextId, int authenticatorLength) :
+            this(authenticationService, protectionLevel, contextId, 
+                new byte[authenticatorLength]) {
+        }
 
-		public AuthenticationVerifier() : this(Security_Fields.AUTHENTICATION_SERVICE_NONE, Security_Fields.PROTECTION_LEVEL_NONE, 0, null)
-		{
-		}
+        /// <summary>
+        /// Create verifier
+        /// </summary>
+        /// <param name="authenticationService"></param>
+        /// <param name="protectionLevel"></param>
+        /// <param name="contextId"></param>
+        /// <param name="body"></param>
+        public AuthenticationVerifier(int authenticationService,
+            ProtectionLevel protectionLevel, int contextId, byte[] body) {
+            AuthenticationService = authenticationService;
+            Protection = protectionLevel;
+            ContextId = contextId;
+            Body = body;
+        }
 
-		public AuthenticationVerifier(int authenticatorLength) : this(Security_Fields.AUTHENTICATION_SERVICE_NONE, Security_Fields.PROTECTION_LEVEL_NONE, 0, authenticatorLength)
-		{
-		}
+        /// <inheritdoc/>
+        public override void Decode(NdrCodec ndr, NdrBuffer src) {
+            src.Align(4);
+            AuthenticationService = src.Dec_ndr_small();
+            Protection = (ProtectionLevel)src.Dec_ndr_small();
+            src.Dec_ndr_small(); // padding count
+            ContextId = src.Dec_ndr_long();
+            Array.Copy(src.Buf, src.Index, Body, 0, Body.Length);
+            src.Index += Body.Length;
+        }
 
-		public AuthenticationVerifier(int authenticationService, int protectionLevel, int contextId, int authenticatorLength) : this(authenticationService, protectionLevel, contextId, new sbyte[authenticatorLength])
-		{
-		}
+        /// <inheritdoc/>
+        public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+            var padding = dst.Align(4, 0);
+            dst.Enc_ndr_small(AuthenticationService);
+            dst.Enc_ndr_small((int)Protection);
+            dst.Enc_ndr_small(padding);
+            dst.Enc_ndr_small(0); //Reserved
+            dst.Enc_ndr_long(ContextId);
+            Array.Copy(Body, 0, dst.Buf, dst.Index, Body.Length);
+            //dst.index += body.length;
+            dst.Advance(Body.Length);
+        }
 
-		public AuthenticationVerifier(int authenticationService, int protectionLevel, int contextId, sbyte[] body)
-		{
-			this.authenticationService = authenticationService;
-			this.protectionLevel = protectionLevel;
-			this.contextId = contextId;
-			this.body = body;
-		}
+        /// <inheritdoc/>
+        public override bool Equals(object obj) {
+            if (!(obj is AuthenticationVerifier other)) {
+                return false;
+            }
+            if (AuthenticationService != other.AuthenticationService || 
+                Protection != other.Protection ||
+                ContextId != other.ContextId) {
+                return false;
+            } 
+            if (Body == null) {
+                return other.Body == null;
+            }
+            if (other.Body == null) {
+                return false;
+            }
+            return Body.SequenceEqual(other.Body);
+        }
 
-		public override void decode(NetworkDataRepresentation ndr, NdrBuffer src)
-		{
-			src.align(4);
-			authenticationService = src.dec_ndr_small();
-			protectionLevel = src.dec_ndr_small();
-			src.dec_ndr_small(); // padding count
-			contextId = src.dec_ndr_long();
-			Array.Copy(src.Buffer, src.Index, body, 0, body.Length);
-			src.index += body.Length;
-		}
-
-		public override void encode(NetworkDataRepresentation ndr, NdrBuffer dst)
-		{
-			var padding = dst.align(4, (sbyte) 0);
-			dst.enc_ndr_small(authenticationService);
-			dst.enc_ndr_small(protectionLevel);
-			dst.enc_ndr_small(padding);
-			dst.enc_ndr_small(0); //Reserved
-			dst.enc_ndr_long(contextId);
-			Array.Copy(body, 0, dst.Buffer, dst.Index, body.Length);
-			//dst.index += body.length;
-			dst.advance(body.Length);
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (!(obj is AuthenticationVerifier))
-			{
-				return false;
-			}
-			var other = (AuthenticationVerifier) obj;
-			return authenticationService == other.authenticationService && protectionLevel == other.protectionLevel && contextId == other.contextId && Arrays.Equals(body, other.body);
-		}
-
-		public override int GetHashCode()
-		{
-			return authenticationService ^ protectionLevel ^ contextId;
-		}
-
-	}
-
+        /// <inheritdoc/>
+        public override int GetHashCode() {
+            return AuthenticationService ^ (int)Protection ^ ContextId;
+        }
+    }
 }

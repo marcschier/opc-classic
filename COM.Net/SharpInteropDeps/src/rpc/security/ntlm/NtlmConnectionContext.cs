@@ -1,6 +1,4 @@
-﻿using System;
-
-// 
+﻿// 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
 // 
 // j-Interop (Pure Java implementation of DCOM protocol)
@@ -13,165 +11,142 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.security.ntlm {
+    using System;
+    using System.IO;
+    using rpc.core;
+    using rpc.pdu;
+    using SharpCifs.Util.Sharpen;
 
+    /// <summary>
+    /// Connection context
+    /// </summary>
+    public class NtlmConnectionContext : IConnectionContext {
 
-namespace rpc.security.ntlm
-{
+        /// <summary>
+        /// Connection
+        /// </summary>
+        public IConnection Connection { get; private set; }
 
+        /// <summary>
+        /// Established
+        /// </summary>
+        public bool Established { get; private set; }
 
-	using PresentationContext = core.PresentationContext;
-	using PresentationResult = core.PresentationResult;
-	using AlterContextPdu = pdu.AlterContextPdu;
-	using AlterContextResponsePdu = pdu.AlterContextResponsePdu;
-	using Auth3Pdu = pdu.Auth3Pdu;
-	using BindAcknowledgePdu = pdu.BindAcknowledgePdu;
-	using BindNoAcknowledgePdu = pdu.BindNoAcknowledgePdu;
-	using BindPdu = pdu.BindPdu;
-	using FaultCoPdu = pdu.FaultCoPdu;
-	using ShutdownPdu = pdu.ShutdownPdu;
-
-	public class NtlmConnectionContext : ConnectionContext
-	{
-
-		private int maxTransmitFragment = ConnectionContext_Fields.DEFAULT_MAX_TRANSMIT_FRAGMENT;
-
-		private int maxReceiveFragment = ConnectionContext_Fields.DEFAULT_MAX_RECEIVE_FRAGMENT;
-
-		private NtlmConnection connection;
-
-		private bool established;
-
-		private int transmitLength;
-
-		private int receiveLength;
-
-		private int assocGroupId;
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init2(rpc.core.PresentationContext context, java.util.Properties properties) throws java.io.IOException
-		public virtual ConnectionOrientedPdu init2(PresentationContext context, Properties properties)
-		{
-			established = false;
-			if (properties != null)
-			{
-				string maxTransmit = properties.getProperty(ConnectionContext_Fields.MAX_TRANSMIT_FRAGMENT);
-				if (maxTransmit != null)
-				{
-					maxTransmitFragment = int.Parse(maxTransmit);
-				}
-				string maxReceive = properties.getProperty(ConnectionContext_Fields.MAX_RECEIVE_FRAGMENT);
-				if (maxReceive != null)
-				{
-					maxReceiveFragment = int.Parse(maxReceive);
-				}
-			}
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="properties"></param>
+        /// <exception cref="IOException"></exception>
+        /// <returns></returns>
+        public virtual ConnectionOrientedPdu Init2(PresentationContext context, Properties properties) {
+            Established = false;
+            if (properties != null) {
+                var maxTransmit = (string)properties.GetProperty(rpc.Connection.MAX_TRANSMIT_FRAGMENT);
+                if (maxTransmit != null) {
+                    _maxTransmitFragment = int.Parse(maxTransmit);
+                }
+                var maxReceive = (string)properties.GetProperty(rpc.Connection.MAX_RECEIVE_FRAGMENT);
+                if (maxReceive != null) {
+                    _maxReceiveFragment = int.Parse(maxReceive);
+                }
+            }
             var pdu = new BindPdu {
                 ContextList = new PresentationContext[] { context },
-                MaxTransmitFragment = maxTransmitFragment,
-                MaxReceiveFragment = maxReceiveFragment
+                MaxTransmitFragment = _maxTransmitFragment,
+                MaxReceiveFragment = _maxReceiveFragment
             };
-            connection = new NtlmConnection(properties);
-			assocGroupId = 0;
-			return pdu;
-		}
+            Connection = new NtlmConnection(properties);
+            _assocGroupId = 0;
+            return pdu;
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.Properties properties) throws java.io.IOException
-		public virtual ConnectionOrientedPdu init(PresentationContext context, Properties properties)
-		{
+        /// <inheritdoc/>
+        public virtual ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
 
-			var pdu = (BindPdu)init2(context, properties);
-			pdu.resetCallIdCounter();
-			return pdu;
-		}
+            var pdu = (BindPdu)Init2(context, properties);
+            pdu.ResetCallIdCounter();
+            return pdu;
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu alter(rpc.core.PresentationContext context) throws java.io.IOException
-		public virtual ConnectionOrientedPdu alter(PresentationContext context)
-		{
-			established = false;
+        /// <inheritdoc/>
+        public virtual ConnectionOrientedPdu Alter(PresentationContext context) {
+            Established = false;
             var pdu = new AlterContextPdu {
                 ContextList = new PresentationContext[] { context },
-                AssociationGroupId = assocGroupId
+                AssociationGroupId = _assocGroupId
             };
             return pdu;
-		}
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu accept(rpc.ConnectionOrientedPdu pdu) throws java.io.IOException
-		public virtual ConnectionOrientedPdu accept(ConnectionOrientedPdu pdu)
-		{
-			PresentationResult[] results = null;
-			switch (pdu.Type)
-			{
-			case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
-				var bindAck = (BindAcknowledgePdu) pdu;
-				results = bindAck.ResultList;
-				if (results == null)
-				{
-					throw new BindException("No presentation context results.");
-				}
-				for (var i = results.Length - 1; i >= 0; i--)
-				{
-					if (results[i].result != PresentationResult.ACCEPTANCE)
-					{
-						throw new PresentationException("Context rejected.", results[i]);
-					}
-				}
-				transmitLength = bindAck.MaxReceiveFragment;
-				receiveLength = bindAck.MaxTransmitFragment;
-				established = true;
-				connection.TransmitLength = transmitLength;
-				connection.ReceiveLength = receiveLength;
-				assocGroupId = bindAck.AssociationGroupId;
-				return new Auth3Pdu();
-			case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
-				var alterContextResponse = (AlterContextResponsePdu) pdu;
-				results = alterContextResponse.ResultList;
-				if (results == null)
-				{
-					throw new BindException("No presentation context results.");
-				}
-				for (var i = results.Length - 1; i >= 0; i--)
-				{
-					if (results[i].result != PresentationResult.ACCEPTANCE)
-					{
-						throw new PresentationException("Context rejected.", results[i]);
-					}
-				}
-				established = true;
-				//return new Auth3Pdu();
-				return null;
-			case BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE:
-				throw new BindException("Unable to bind.", ((BindNoAcknowledgePdu) pdu).RejectReason);
-			case FaultCoPdu.FAULT_TYPE:
-				throw new FaultException("Fault occurred.", ((FaultCoPdu) pdu).Status);
-			case ShutdownPdu.SHUTDOWN_TYPE:
-				throw new RpcException("Server shutdown connection.");
-			case BindPdu.BIND_TYPE:
-				established = false;
-				//CHECK PRESENTATION CONTEXT
-				//CHALLENGE
-				throw new Exception();
-			case AlterContextPdu.ALTER_CONTEXT_TYPE:
-				established = false;
-				//CHECK PRESENTATION CONTEXT
-				//CHALLENGE
-				throw new Exception();
-			case Auth3Pdu.AUTH3_TYPE:
-				//AUTHENTICATE
-				//TWEAK CONNECTION
-				established = true;
-				return null;
-			default:
-				throw new RpcException("Unknown/unacceptable PDU type.");
-			}
-		}
+        /// <inheritdoc/>
+        public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+            PresentationResult[] results = null;
+            switch (pdu.Type) {
+                case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
+                    var bindAck = (BindAcknowledgePdu)pdu;
+                    results = bindAck.ResultList;
+                    if (results == null) {
+                        throw new BindException("No presentation context results.");
+                    }
+                    for (var i = results.Length - 1; i >= 0; i--) {
+                        if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                            throw new PresentationException("Context rejected.", results[i]);
+                        }
+                    }
+                    _transmitLength = bindAck.MaxReceiveFragment;
+                    _receiveLength = bindAck.MaxTransmitFragment;
+                    Established = true;
+                    ((NtlmConnection)Connection).TransmitLength = _transmitLength;
+                    ((NtlmConnection)Connection).ReceiveLength = _receiveLength;
+                    _assocGroupId = bindAck.AssociationGroupId;
+                    return new Auth3Pdu();
+                case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
+                    var alterContextResponse = (AlterContextResponsePdu)pdu;
+                    results = alterContextResponse.ResultList;
+                    if (results == null) {
+                        throw new BindException("No presentation context results.");
+                    }
+                    for (var i = results.Length - 1; i >= 0; i--) {
+                        if (results[i].Result != PresentationResultCode.ACCEPTANCE) {
+                            throw new PresentationException("Context rejected.", results[i]);
+                        }
+                    }
+                    Established = true;
+                    //return new Auth3Pdu();
+                    return null;
+                case BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE:
+                    throw new BindException("Unable to bind.", ((BindNoAcknowledgePdu)pdu).RejectReason);
+                case FaultCoPdu.FAULT_TYPE:
+                    throw new FaultException("Fault occurred.", ((FaultCoPdu)pdu).Status);
+                case ShutdownPdu.SHUTDOWN_TYPE:
+                    throw new RpcException("Server shutdown connection.");
+                case BindPdu.BIND_TYPE:
+                    Established = false;
+                    //CHECK PRESENTATION CONTEXT
+                    //CHALLENGE
+                    throw new Exception();
+                case AlterContextPdu.ALTER_CONTEXT_TYPE:
+                    Established = false;
+                    //CHECK PRESENTATION CONTEXT
+                    //CHALLENGE
+                    throw new Exception();
+                case Auth3Pdu.AUTH3_TYPE:
+                    //AUTHENTICATE
+                    //TWEAK CONNECTION
+                    Established = true;
+                    return null;
+                default:
+                    throw new RpcException("Unknown/unacceptable PDU type.");
+            }
+        }
 
-        public virtual Connection Connection => connection;
-
-        public virtual bool Established => established;
-
+        private int _maxTransmitFragment = rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
+        private int _maxReceiveFragment = rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
+        private int _transmitLength;
+        private int _receiveLength;
+        private int _assocGroupId;
     }
 
 }

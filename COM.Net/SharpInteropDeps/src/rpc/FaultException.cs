@@ -11,88 +11,117 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc {
 
+    /// <summary>
+    /// Fault
+    /// </summary>
+    public class FaultException : RpcException {
 
-namespace rpc
-{
+        /// <summary>
+        /// Fault code
+        /// </summary>
+        public FaultCode Code { get; }
 
-	public class FaultException : RpcException, FaultCodes
-	{
+        /// <summary>
+        /// Stub
+        /// </summary>
+        public byte[] Stub { get; }
 
-		private readonly sbyte[] stub;
-		public int status = -1;
-		public FaultException() : base()
-		{
-			stub = null;
-		}
+        /// <summary>
+        /// Create fault
+        /// </summary>
+        public FaultException() {
+            Stub = null;
+        }
 
-		public FaultException(string message) : base(message_Renamed)
-		{
-			stub = null;
-		}
+        /// <summary>
+        /// Create fault
+        /// </summary>
+        /// <param name="message"></param>
+        public FaultException(string message) : base(message) {
+            Stub = null;
+            Code = FaultCode.UNKNOWN;
+        }
 
-		public FaultException(string message, int status) : base(message(message_Renamed, status))
-		{
-			this.status = status;
-			stub = null;
-		}
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="status"></param>
+        public FaultException(string message, FaultCode status) : 
+            base(ToString(message, status)) {
+            Code = status;
+            Stub = null;
+        }
 
-		public FaultException(string message, int status, sbyte[] stub) : base(message(message_Renamed, status))
-		{
-			this.status = status;
-			this.stub = stub;
-		}
+        /// <summary>
+        /// Crate exception
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="status"></param>
+        /// <param name="stub"></param>
+        public FaultException(string message, FaultCode status, byte[] stub) :
+            base(ToString(message, status)) {
+            Code = status;
+            Stub = stub;
+        }
 
-        public virtual sbyte[] Stub => stub;
+        /// <summary>
+        /// Convert to string
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        private static string ToString(string message, FaultCode status) {
+            return !string.IsNullOrEmpty(message) ? message + 
+                " (" + ToString(status) + ")" : ToString(status);
+        }
 
-        private static string message(string message, int status)
-		{
-			return (message_Renamed != null) ? message_Renamed + " (" + message(status) + ")" : message(status);
-		}
-
-		private static string message(int status)
-		{
-			switch (status)
-			{
-			case FaultCodes_Fields.RPC_VERSION_MISMATCH:
-				return "RPC_VERSION_MISMATCH";
-			case FaultCodes_Fields.UNSPECIFIED_REJECTION:
-				return "UNSPECIFIED_REJECTION";
-			case FaultCodes_Fields.BAD_ACTIVITY_ID:
-				return "BAD_ACTIVITY_ID";
-			case FaultCodes_Fields.WHO_ARE_YOU_FAILED:
-				return "WHO_ARE_YOU_FAILED";
-			case FaultCodes_Fields.MANAGER_NOT_ENTERED:
-				return "MANAGER_NOT_ENTERED";
-			case FaultCodes_Fields.OPERATION_RANGE_ERROR:
-				return "OPERATION_RANGE_ERROR";
-			case FaultCodes_Fields.UNKNOWN_INTERFACE:
-				return "UNKNOWN_INTERFACE";
-			case FaultCodes_Fields.WRONG_BOOT_TIME:
-				return "WRONG_BOOT_TIME";
-			case FaultCodes_Fields.YOU_CRASHED:
-				return "YOU_CRASHED";
-			case FaultCodes_Fields.PROTOCOL_ERROR:
-				return "PROTOCOL_ERROR";
-			case FaultCodes_Fields.OUTPUT_ARGUMENTS_TOO_BIG:
-				return "OUTPUT_ARGUMENTS_TOO_BIG";
-			case FaultCodes_Fields.SERVER_TOO_BUSY:
-				return "SERVER_TOO_BUSY";
-			case FaultCodes_Fields.UNSUPPORTED_TYPE:
-				return "UNSUPPORTED_TYPE";
-			case FaultCodes_Fields.INVALID_PRESENTATION_CONTEXT_ID:
-				return "INVALID_PRESENTATION_CONTEXT_ID";
-			case FaultCodes_Fields.UNSUPPORTED_AUTHENTICATION_LEVEL:
-				return "UNSUPPORTED_AUTHENTICATION_LEVEL";
-			case FaultCodes_Fields.INVALID_CHECKSUM:
-				return "INVALID_CHECKSUM";
-			case FaultCodes_Fields.INVALID_CRC:
-				return "INVALID_CRC";
-			default:
-				return "unknown";
-			}
-		}
-
-	}
-
+        /// <summary>
+        /// TODO: As extension
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        private static string ToString(FaultCode status) {
+            switch (status) {
+                case FaultCode.RPC_VERSION_MISMATCH:
+                    return "RPC_VERSION_MISMATCH";
+                case FaultCode.UNSPECIFIED_REJECTION:
+                    return "UNSPECIFIED_REJECTION";
+                case FaultCode.BAD_ACTIVITY_ID:
+                    return "BAD_ACTIVITY_ID";
+                case FaultCode.WHO_ARE_YOU_FAILED:
+                    return "WHO_ARE_YOU_FAILED";
+                case FaultCode.MANAGER_NOT_ENTERED:
+                    return "MANAGER_NOT_ENTERED";
+                case FaultCode.OPERATION_RANGE_ERROR:
+                    return "OPERATION_RANGE_ERROR";
+                case FaultCode.UNKNOWN_INTERFACE:
+                    return "UNKNOWN_INTERFACE";
+                case FaultCode.WRONG_BOOT_TIME:
+                    return "WRONG_BOOT_TIME";
+                case FaultCode.YOU_CRASHED:
+                    return "YOU_CRASHED";
+                case FaultCode.PROTOCOL_ERROR:
+                    return "PROTOCOL_ERROR";
+                case FaultCode.OUTPUT_ARGUMENTS_TOO_BIG:
+                    return "OUTPUT_ARGUMENTS_TOO_BIG";
+                case FaultCode.SERVER_TOO_BUSY:
+                    return "SERVER_TOO_BUSY";
+                case FaultCode.UNSUPPORTED_TYPE:
+                    return "UNSUPPORTED_TYPE";
+                case FaultCode.INVALID_PRESENTATION_CONTEXT_ID:
+                    return "INVALID_PRESENTATION_CONTEXT_ID";
+                case FaultCode.UNSUPPORTED_AUTHENTICATION_LEVEL:
+                    return "UNSUPPORTED_AUTHENTICATION_LEVEL";
+                case FaultCode.INVALID_CHECKSUM:
+                    return "INVALID_CHECKSUM";
+                case FaultCode.INVALID_CRC:
+                    return "INVALID_CRC";
+                default:
+                    return "unknown";
+            }
+        }
+    }
 }

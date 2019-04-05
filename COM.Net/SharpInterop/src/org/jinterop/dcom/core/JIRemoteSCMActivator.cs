@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -20,7 +20,7 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIRemoteSCMActivator {
 
-        internal class RemoteCreateInstance : NdrObject, JIIServerActivation {
+        internal class RemoteCreateInstance : NdrOp, JIIServerActivation {
             private readonly JIRemoteSCMActivator outerInstance;
 
 
@@ -63,31 +63,31 @@ namespace org.jinterop.dcom.core {
             public override int Opnum => 4;
 
             /// <inheritdoc/>
-            public override void write(NetworkDataRepresentation ndr) {
+            public override void Write(NdrCodec ndr) {
                 var orpcThis = new JIOrpcThis();
                 orpcThis.encode(ndr);
 
-                ndr.writeUnsignedLong(0); // pUnkOuter, setting it to NULL.
-                ndr.writeUnsignedLong(0x00020000);
+                ndr.WriteUnsignedLong(0); // pUnkOuter, setting it to NULL.
+                ndr.WriteUnsignedLong(0x00020000);
 
                 var index = ndr.Buffer.Index; //recording where we have to write length
-                ndr.writeUnsignedLong(0); //Len 1
+                ndr.WriteUnsignedLong(0); //Len 1
 
                 //alignment may kick in
                 var index2 = ndr.Buffer.Index; //recording where we have to write length
-                ndr.writeUnsignedLong(0); //Len 2
+                ndr.WriteUnsignedLong(0); //Len 2
 
                 var countFromIndex = ndr.Buffer.Index; //recording from where we have to write
-                ndr.writeUnsignedLong(0x574f454d); // Signature MEOW
-                ndr.writeUnsignedLong(4); // OBJREF_CUSTOM
+                ndr.WriteUnsignedLong(0x574f454d); // Signature MEOW
+                ndr.WriteUnsignedLong(4); // OBJREF_CUSTOM
 
-                //now we will write the Custom Interface pointer to Activation Properties.
+                //now we will write the Custom Interface pointer to Activation SharpCifs.Util.Sharpen.Properties.
                 try {
                     //IID_IActivationPropertiesIn
                     var iid_IActivationPropertiesIn = new UUID("000001a2-0000-0000-c000-000000000046");
-                    iid_IActivationPropertiesIn.encode(ndr, ndr.Buffer);
+                    iid_IActivationPropertiesIn.Encode(ndr, ndr.Buffer);
                     var clsid_IActivationPropertiesIn = new UUID("00000338-0000-0000-c000-000000000046");
-                    clsid_IActivationPropertiesIn.encode(ndr, ndr.Buffer);
+                    clsid_IActivationPropertiesIn.Encode(ndr, ndr.Buffer);
 
                 }
                 catch (NdrException e) {
@@ -96,15 +96,15 @@ namespace org.jinterop.dcom.core {
                 }
 
                 var countEntirePayload = ndr.Buffer.Index; //Entire length of Payload for Custom Marshalling
-                ndr.writeUnsignedLong(0); //extension
+                ndr.WriteUnsignedLong(0); //extension
                 var writeCountEntirePayloadLength_Here = ndr.Buffer.Index;
-                ndr.writeUnsignedLong(0); //write here (reserved from objref_custom)
+                ndr.WriteUnsignedLong(0); //write here (reserved from objref_custom)
 
-                //Activation Properties Blob 
+                //Activation SharpCifs.Util.Sharpen.Properties Blob 
                 var writeActivationPayload = ndr.Buffer.Index;
-                ndr.writeUnsignedLong(0); //payload to be written here
+                ndr.WriteUnsignedLong(0); //payload to be written here
 
-                ndr.writeUnsignedLong(0); //reserved
+                ndr.WriteUnsignedLong(0); //reserved
                 var countActivationPayload = ndr.Buffer.Index; //Only Activation Payload
 
                 var tempStruct = CustomHeader;
@@ -138,36 +138,36 @@ namespace org.jinterop.dcom.core {
                 addCommonTypeHeaderAndEncode(ndr, tempStruct, lentempStruct);
 
                 //now update the length in Common header struct.
-                writeEncodingLength(countActivationPayload, countActivationPayload + 16, ndr); // Len for Activation Properties Blob
+                writeEncodingLength(countActivationPayload, countActivationPayload + 16, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
 
-                writeEncodingLength(countActivationPayload, writeActivationPayload, ndr); // Len for Activation Properties Blob
-                writeEncodingLength(countEntirePayload, writeCountEntirePayloadLength_Here, ndr); // Len for Activation Properties Blob
+                writeEncodingLength(countActivationPayload, writeActivationPayload, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
+                writeEncodingLength(countEntirePayload, writeCountEntirePayloadLength_Here, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
                 writeEncodingLength(countFromIndex, index, ndr); // Len 1 for the Custom Object Ref
                 writeEncodingLength(countFromIndex, index2, ndr); //Len 2 for the Custom Object Ref
             }
 
-            internal virtual void writeEncodingLength(int countFromIndex, int writeAtIndex, NetworkDataRepresentation ndr) {
+            internal virtual void writeEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr) {
                 var length = ndr.Buffer.Index - countFromIndex;
                 var temp = ndr.Buffer.Index;
                 ndr.Buffer.Index = writeAtIndex;
-                ndr.writeUnsignedLong(length);
+                ndr.WriteUnsignedLong(length);
                 ndr.Buffer.Index = temp;
             }
 
-            internal virtual int getLength(int fromIndex, NetworkDataRepresentation ndr) {
+            internal virtual int getLength(int fromIndex, NdrCodec ndr) {
                 return ndr.Buffer.Index - fromIndex;
             }
 
-            internal virtual void writeLength(int lenVal, int writeAtIndex, NetworkDataRepresentation ndr) {
+            internal virtual void writeLength(int lenVal, int writeAtIndex, NdrCodec ndr) {
                 var temp = ndr.Buffer.Index;
                 ndr.Buffer.Index = writeAtIndex;
-                ndr.writeUnsignedLong(lenVal);
+                ndr.WriteUnsignedLong(lenVal);
                 ndr.Buffer.Index = temp;
             }
 
             //Pass the length from outside as to calculate it we need to encode the struct and that mutates the internal data structs
             //will return total length of the structure including common header and padding.
-            internal virtual int addCommonTypeHeaderAndEncode(NetworkDataRepresentation ndr, JIStruct @struct, int lengthOfStruct) {
+            internal virtual int addCommonTypeHeaderAndEncode(NdrCodec ndr, JIStruct @struct, int lengthOfStruct) {
                 //			will add the common type header and write on wire
 
                 //common header has to be a multiple of 8 bytes. If not it has to be padded at the end.
@@ -176,16 +176,16 @@ namespace org.jinterop.dcom.core {
                 var startI = ndr.Buffer.Index;
 
                 //2.2.6.1 Common Type Header for the Serialization Stream (MS-RPCE)
-                ndr.writeUnsignedSmall(0x01); //version
-                ndr.writeUnsignedSmall(0x10); //endianness
-                ndr.writeUnsignedShort(0x08); //common header length
+                ndr.WriteUnsignedSmall(0x01); //version
+                ndr.WriteUnsignedSmall(0x10); //endianness
+                ndr.WriteUnsignedShort(0x08); //common header length
                 ndr.writeUnsignedLong(0xCCCCCCCC); //Filler
 
                 //now comes the length of the entire CustomHeader without the Common Type Header and this length and Filler.
                 var writeAtIndex = ndr.Buffer.Index;
-                ndr.writeUnsignedLong(0); //write here
+                ndr.WriteUnsignedLong(0); //write here
 
-                ndr.writeUnsignedLong(0); //filler, set to NULL
+                ndr.WriteUnsignedLong(0); //filler, set to NULL
 
                 var countFromIndex = ndr.Buffer.Index;
 
@@ -223,7 +223,7 @@ namespace org.jinterop.dcom.core {
             internal virtual JIStruct CustomHeader {
                 get {
                     var @struct = _getCustomHeader();
-                    var ndr = new NetworkDataRepresentation {
+                    var ndr = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     int lenOfStruct = outerInstance.getLengthOfStruct(@struct);
@@ -285,7 +285,7 @@ namespace org.jinterop.dcom.core {
                 }, true)));
 
                     //now come their sizes including their Common headers.
-                    var ndr2 = new NetworkDataRepresentation {
+                    var ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     JIStruct tempStruct = outerInstance.SpecialPropertyData;
@@ -293,7 +293,7 @@ namespace org.jinterop.dcom.core {
                     tempStruct = outerInstance.SpecialPropertyData;
                     var lenSpecialSystemProp = addCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                    ndr2 = new NetworkDataRepresentation {
+                    ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     tempStruct = outerInstance.InstantiationInfoData;
@@ -301,7 +301,7 @@ namespace org.jinterop.dcom.core {
                     tempStruct = outerInstance.InstantiationInfoData;
                     var lenInstantiationInfoProp = addCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                    ndr2 = new NetworkDataRepresentation {
+                    ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     tempStruct = outerInstance.SecurityInfoData;
@@ -309,7 +309,7 @@ namespace org.jinterop.dcom.core {
                     tempStruct = outerInstance.SecurityInfoData;
                     var lenSecurityInfoProp = addCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                    ndr2 = new NetworkDataRepresentation {
+                    ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     tempStruct = outerInstance.ServerLocationInfo;
@@ -317,7 +317,7 @@ namespace org.jinterop.dcom.core {
                     tempStruct = outerInstance.ServerLocationInfo;
                     var lenServerLocationProp = addCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
-                    ndr2 = new NetworkDataRepresentation {
+                    ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     tempStruct = outerInstance.ScmRequestInfoData;
@@ -495,7 +495,7 @@ namespace org.jinterop.dcom.core {
                     JIStruct @struct = outerInstance._getInstantiationInfoData();
                     int lenOfStruct = outerInstance.getLengthOfStruct(@struct);
                     @struct = outerInstance._getInstantiationInfoData();
-                    var ndr = new NetworkDataRepresentation {
+                    var ndr = new NdrCodec {
                         Buffer = new NdrBuffer(new sbyte[512], 0)
                     };
                     var len = addCommonTypeHeaderAndEncode(ndr, @struct, lenOfStruct);
@@ -566,7 +566,7 @@ namespace org.jinterop.dcom.core {
 
             //discard this struct after use and create a new one
             internal virtual int getLengthOfStruct(JIStruct @struct) {
-                var ndr = new NetworkDataRepresentation {
+                var ndr = new NdrCodec {
                     Buffer = new NdrBuffer(new sbyte[512], 0)
                 };
                 var startI = ndr.Buffer.Index;
@@ -598,17 +598,17 @@ namespace org.jinterop.dcom.core {
 
             //Skip common header and return total length of the object buffer inside. We will need to skip the
             //padded bytes as well once we have analyzed the complete objectBuffer.
-            internal virtual int skipCommonHeader(NetworkDataRepresentation ndr) {
-                ndr.readUnsignedSmall(); //version
-                ndr.readUnsignedSmall(); //endianness
-                ndr.readUnsignedShort(); //common header length
-                ndr.readUnsignedLong(); //Filler
-                var retlength = ndr.readUnsignedLong();
-                ndr.readUnsignedLong(); //reserved
+            internal virtual int skipCommonHeader(NdrCodec ndr) {
+                ndr.ReadUnsignedSmall(); //version
+                ndr.ReadUnsignedSmall(); //endianness
+                ndr.ReadUnsignedShort(); //common header length
+                ndr.ReadUnsignedLong(); //Filler
+                var retlength = ndr.ReadUnsignedLong();
+                ndr.ReadUnsignedLong(); //reserved
                 return retlength;
             }
 
-            internal virtual void skipBytes(int objectBufferLength, int startIndex, NetworkDataRepresentation ndr) {
+            internal virtual void skipBytes(int objectBufferLength, int startIndex, NdrCodec ndr) {
                 var bytesRead = ndr.Buffer.Index - startIndex;
                 if (objectBufferLength > bytesRead) {
                     ndr.readOctetArray(new sbyte[objectBufferLength - bytesRead], 0, objectBufferLength - bytesRead);
@@ -617,7 +617,7 @@ namespace org.jinterop.dcom.core {
 
 
 
-            public virtual void read(NetworkDataRepresentation ndr) {
+            public virtual void read(NdrCodec ndr) {
 
                 JIOrpcThat.decode(ndr);
 
@@ -628,16 +628,16 @@ namespace org.jinterop.dcom.core {
 
                 //Class not registered or any other exception probably.
                 if (ppActProperties == null) {
-                    var hResult = ndr.readUnsignedLong();
+                    var hResult = ndr.ReadUnsignedLong();
                     throw new JIRuntimeException(hResult);
                 }
 
-                // we should now be standing at the Activation Properties Blob right now. 	
-                var totalLength = ndr.readUnsignedLong();
-                ndr.readUnsignedLong(); //reserved
+                // we should now be standing at the Activation SharpCifs.Util.Sharpen.Properties Blob right now. 	
+                var totalLength = ndr.ReadUnsignedLong();
+                ndr.ReadUnsignedLong(); //reserved
 
                 //Custom Header begins
-                //lets check what all has been returned back to us. We are only interested in two Properties (ScmReply and PropsOut)
+                //lets check what all has been returned back to us. We are only interested in two SharpCifs.Util.Sharpen.Properties (ScmReply and PropsOut)
                 //Must contain the following properties
                 //			ScmReplyInfoData 2.2.22.2.8 Required
                 //			PropsOutInfo 2.2.22.2.9 Required
@@ -680,7 +680,7 @@ namespace org.jinterop.dcom.core {
 
                 outerInstance.skipBytes(objectBufferLength, startIndex, ndr);
 
-                //now we need to check for the indexes of our relevant Properties
+                //now we need to check for the indexes of our relevant SharpCifs.Util.Sharpen.Properties
 
                 var clsidProps = (UUID[])((JIArray)((JIPointer)@struct.getMember(6)).Referent).ArrayInstance;
 
@@ -751,7 +751,7 @@ namespace org.jinterop.dcom.core {
                             @struct = (JIStruct)((JIPointer)@struct.getMember(1)).getReferent();
 
                             //now we need to get the IPID and Dual String Array.
-                            var ndr2 = new NetworkDataRepresentation();
+                            var ndr2 = new NdrCodec();
                             var buffer = new NdrBuffer(new sbyte[8], 0);
                             buffer.buf[0] = unchecked((sbyte)(((sbyte?)@struct.getMember(0)) & 0xFF));
                             buffer.buf[1] = unchecked((sbyte)(((sbyte?)@struct.getMember(1)) & 0xFF));
@@ -840,7 +840,7 @@ namespace org.jinterop.dcom.core {
                 isActivationSuccessful = true;
             }
 
-            internal virtual JIStruct decodeStruct(JIStruct @struct, NetworkDataRepresentation ndr) {
+            internal virtual JIStruct decodeStruct(JIStruct @struct, NdrCodec ndr) {
                 IList listOfDefferedPointers = new ArrayList();
                 IDictionary additionalData = new Hashtable();
                 @struct = @struct.decode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL, additionalData);

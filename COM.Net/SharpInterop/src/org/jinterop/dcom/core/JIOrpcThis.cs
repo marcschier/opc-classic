@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
@@ -38,17 +38,17 @@ namespace org.jinterop.dcom.core {
 
         public string CasualityIdentifier { get; private set; } = null;
 
-        public void encode(NetworkDataRepresentation ndr) {
-            ndr.writeUnsignedShort(version.MajorVersion); //COM Major version
-            ndr.writeUnsignedShort(version.MinorVersion); //COM minor version
-            ndr.writeUnsignedLong(ORPCFlags); // No Flags
-            ndr.writeUnsignedLong(0); // Reserved ...always 0.
+        public void encode(NdrCodec ndr) {
+            ndr.WriteUnsignedShort(version.MajorVersion); //COM Major version
+            ndr.WriteUnsignedShort(version.MinorVersion); //COM minor version
+            ndr.WriteUnsignedLong(ORPCFlags); // No Flags
+            ndr.WriteUnsignedLong(0); // Reserved ...always 0.
 
             //the order here is important since the cid is always filled from the ctor hence will never be null.
             var cid2 = cidForCallback.get() == null ? CasualityIdentifier : (string)cidForCallback.get();
             var uuid = new UUID(cid2);
             try {
-                uuid.encode(ndr, ndr.Buffer);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIOrpcThis", "encode", e);
@@ -56,25 +56,25 @@ namespace org.jinterop.dcom.core {
 
             var i = 0;
             if (ExtentArray != null && ExtentArray.Length != 0) {
-                ndr.writeUnsignedLong(ExtentArray.Length);
-                ndr.writeUnsignedLong(0);
+                ndr.WriteUnsignedLong(ExtentArray.Length);
+                ndr.WriteUnsignedLong(0);
                 while (i < ExtentArray.Length) {
                     var arryy = ExtentArray[i];
                     uuid = new UUID(arryy.GUID);
                     try {
-                        uuid.encode(ndr, ndr.Buffer);
+                        uuid.Encode(ndr, ndr.Buffer);
                     }
                     catch (NdrException e) {
                         Log.Logger.Error(e, "JIOrpcThis", "encode", e);
                     }
 
-                    ndr.writeUnsignedLong(arryy.SizeOfData);
+                    ndr.WriteUnsignedLong(arryy.SizeOfData);
                     ndr.writeOctetArray(arryy.Data, 0, arryy.SizeOfData);
                     i++;
                 }
             }
             else {
-                ndr.writeUnsignedLong(0);
+                ndr.WriteUnsignedLong(0);
             }
         }
 
@@ -83,7 +83,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIOrpcThis decode(NetworkDataRepresentation ndr) {
+        internal static JIOrpcThis decode(NdrCodec ndr) {
             var retval = new JIOrpcThis();
             IDictionary map = new Hashtable();
             var majorVersion = (int)(short?)JIMarshalUnMarshalHelper.deSerialize(
@@ -100,7 +100,7 @@ namespace org.jinterop.dcom.core {
 
             var uuid = new UUID();
             try {
-                uuid.decode(ndr, ndr.Buffer);
+                uuid.Decode(ndr, ndr.Buffer);
                 retval.CasualityIdentifier = uuid.ToString();
             }
             catch (NdrException e) {

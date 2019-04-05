@@ -34,15 +34,15 @@ namespace org.jinterop.dcom.transport {
 		  private const string IID2 = "IID2";
 
 		  private bool established;
-		  private Properties properties;
+		  private SharpCifs.Util.Sharpen.Properties properties;
 		  private IList listOfInterfacesSupported = Collections.synchronizedList(new ArrayList());
 
 		  // this returns null, so that a recieve is performed first.
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.Properties properties) throws java.io.IOException
-		  public ConnectionOrientedPdu init(PresentationContext context, Properties properties)
+//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.SharpCifs.Util.Sharpen.Properties properties) throws java.io.IOException
+		  public ConnectionOrientedPdu init(PresentationContext context, SharpCifs.Util.Sharpen.Properties properties)
 		  {
-			  base.init2(context,properties);
+			  base.Init2(context,properties);
 			  this.properties = properties;
 			  listOfInterfacesSupported.Add(((string)properties.getProperty(IID)).ToUpper());
 			  listOfInterfacesSupported.Add(((string)properties.getProperty(IID2)).ToUpper() + ":0.0");
@@ -69,7 +69,7 @@ namespace org.jinterop.dcom.transport {
 						  var contains = false;
 						  lock (listOfInterfacesSupported)
 						  {
-							  contains = listOfInterfacesSupported.Contains(presentationContext.abstractSyntax.ToString().ToUpper());
+							  contains = listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
 						  }
 						  if (!contains)
 						  {
@@ -105,7 +105,7 @@ namespace org.jinterop.dcom.transport {
 						  var contains = false;
 						  lock (listOfInterfacesSupported)
 						  {
-							  contains = listOfInterfacesSupported.Contains(presentationContext.abstractSyntax.ToString().ToUpper());
+							  contains = listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
 						  }
 						  if (!contains)
 						  {
@@ -131,7 +131,7 @@ namespace org.jinterop.dcom.transport {
 
 				  break;
 				  default:
-					  reply = base.accept(reply);
+					  reply = base.Accept(reply);
 				  break;
 			  }
 

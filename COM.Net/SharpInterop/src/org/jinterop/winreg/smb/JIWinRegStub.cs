@@ -13,7 +13,7 @@ namespace org.jinterop.winreg.smb {
 
 
 
-    using SmbException = jcifs.smb.SmbException;
+    using SmbException = SharpCifs.smb.SmbException;
 
     using IJIAuthInfo = dcom.common.IJIAuthInfo;
     using JIErrorCodes = dcom.common.JIErrorCodes;
@@ -21,7 +21,7 @@ namespace org.jinterop.winreg.smb {
     using JIRuntimeException = dcom.common.JIRuntimeException;
     using JISystem = dcom.common.JISystem;
 
-    using Endpoint = rpc.Endpoint;
+    using Endpoint = rpc.IEndpoint;
     using Stub = rpc.Stub;
 
     /// <summary>
@@ -44,8 +44,8 @@ namespace org.jinterop.winreg.smb {
 			}
 
 			base.TransportFactory = new rpc.ncacn_np.TransportFactory();
-			base.Properties = new Properties();
-			base.Properties.setProperty("rpc.ncacn_np.username", authInfo.UserName);
+			base.SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties();
+			base.SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ncacn_np.username", authInfo.UserName);
 			string password = null;
 			try
 			{
@@ -77,8 +77,8 @@ namespace org.jinterop.winreg.smb {
 				password_.Append(ch);
 			}
 
-			base.Properties.setProperty("rpc.ncacn_np.password", password_.ToString());
-			base.Properties.setProperty("rpc.ncacn_np.domain", authInfo.Domain);
+			base.SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ncacn_np.password", password_.ToString());
+			base.SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ncacn_np.domain", authInfo.Domain);
 			serverName = serverName.Trim();
 			serverName = InetAddress.getByName(serverName).HostAddress;
 			base.Address = "ncacn_np:" + serverName + "[\\PIPE\\winreg]";
@@ -90,8 +90,8 @@ namespace org.jinterop.winreg.smb {
 		public JIWinRegStub(string serverName) : base()
 		{
 			base.TransportFactory = new rpc.ncacn_np.TransportFactory();
-			base.Properties = new Properties();
-			base.Properties.setProperty("rpc.ntlm.sso", "true");
+			base.SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties();
+			base.SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");
 			serverName = serverName.Trim();
 			serverName = InetAddress.getByName(serverName).HostAddress;
 			base.Address = "ncacn_np:" + serverName + "[\\PIPE\\winreg]";
@@ -581,7 +581,7 @@ namespace org.jinterop.winreg.smb {
 		{
 			try
 			{
-				base.detach();
+				base.Detach();
 			}
 			catch (IOException e)
 			{

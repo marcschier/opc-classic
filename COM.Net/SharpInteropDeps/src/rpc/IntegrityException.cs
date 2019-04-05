@@ -11,25 +11,17 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc {
 
-namespace rpc
-{
+    /// <inheritdoc/>
+    public class IntegrityException : RpcException {
 
+        /// <inheritdoc/>
+        public IntegrityException() {
+        }
 
-	public class IntegrityException : RpcException
-	{
-
-		/// 
-		private const long serialVersionUID = 6809424276771390469L;
-
-		public IntegrityException() : base()
-		{
-		}
-
-		public IntegrityException(string message) : base(message)
-		{
-		}
-
-	}
-
+        /// <inheritdoc/>
+        public IntegrityException(string message) : base(message) {
+        }
+    }
 }

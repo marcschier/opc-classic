@@ -11,54 +11,34 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
 
-namespace rpc.core
-{
+    /// <summary>
+    /// Protocol version
+    /// </summary>
+    public class ProtocolVersion : NdrOp {
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+        /// <summary>
+        /// Major version
+        /// </summary>
+        public int MajorVersion { get; set; }
 
-	public class ProtocolVersion : NdrObject
-	{
+        /// <summary>
+        /// Minor version
+        /// </summary>
+        public int MinorVersion { get; set; }
 
-		internal int majorVersion, minorVersion;
+        /// <inheritdoc/>
+        public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+            dst.Enc_ndr_small(MajorVersion);
+            dst.Enc_ndr_small(MinorVersion);
+        }
 
-		public virtual int getMajorVersion()
-		{
-			return majorVersion;
-		}
-
-		public virtual void setMajorVersion(short majorVersion)
-		{
-			this.majorVersion = majorVersion;
-		}
-
-		public virtual int getMinorVersion()
-		{
-			return minorVersion;
-		}
-
-		public virtual void setMinorVersion(short minorVersion)
-		{
-			this.minorVersion = minorVersion;
-		}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void encode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer dst) throws ndr.NdrException
-		public override void encode(NetworkDataRepresentation ndr, NdrBuffer dst)
-		{
-			dst.enc_ndr_small(majorVersion);
-			dst.enc_ndr_small(minorVersion);
-		}
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void decode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer src) throws ndr.NdrException
-		public override void decode(NetworkDataRepresentation ndr, NdrBuffer src)
-		{
-			majorVersion = src.dec_ndr_small();
-			minorVersion = src.dec_ndr_small();
-		}
-	}
-
+        /// <inheritdoc/>
+        public override void Decode(NdrCodec ndr, NdrBuffer src) {
+            MajorVersion = src.Dec_ndr_small();
+            MinorVersion = src.Dec_ndr_small();
+        }
+    }
 }

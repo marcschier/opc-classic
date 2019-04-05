@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
     /// Users can implement this class to provide for custom handling of there objects
@@ -19,13 +19,13 @@ namespace org.jinterop.dcom.core {
         /// Write
         /// </summary>
         /// <param name="ndr"></param>
-        public abstract void writeObject(NetworkDataRepresentation ndr);
+        public abstract void writeObject(NdrCodec ndr);
 
         /// <summary>
         /// Read
         /// </summary>
         /// <param name="ndr"></param>
-        public abstract void readObject(NetworkDataRepresentation ndr);
+        public abstract void readObject(NdrCodec ndr);
 
         /// <summary>
         /// Create
@@ -42,12 +42,12 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override void write(NetworkDataRepresentation ndr) {
+        public override void Write(NdrCodec ndr) {
             writeObject(ndr);
         }
 
         /// <inheritdoc/>
-        public override void read(NetworkDataRepresentation ndr) {
+        public override void Read(NdrCodec ndr) {
             readObject(ndr);
         }
     }

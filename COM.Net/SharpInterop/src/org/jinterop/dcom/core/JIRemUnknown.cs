@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
@@ -16,7 +16,7 @@ namespace org.jinterop.dcom.core {
     /// <summary>
     /// Remote unknown
     /// </summary>
-    internal sealed class JIRemUnknown : NdrObject {
+    internal sealed class JIRemUnknown : NdrOp {
 
         /// <summary>
         /// Iunknown
@@ -45,7 +45,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override void write(NetworkDataRepresentation ndr) {
+        public override void Write(NdrCodec ndr) {
             var orpcthis = new JIOrpcThis();
             orpcthis.encode(ndr);
 
@@ -58,9 +58,9 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemUnknown write");
             }
 
-            ndr.writeUnsignedShort(1); //1 interfaces. (requested IID)
-            ndr.writeUnsignedShort(0); //byte alignment
-            ndr.writeUnsignedLong(1); //length of the array
+            ndr.WriteUnsignedShort(1); //1 interfaces. (requested IID)
+            ndr.WriteUnsignedShort(0); //byte alignment
+            ndr.WriteUnsignedLong(1); //length of the array
             uuid = new UUID(_requestedIID);
             try {
                 uuid.encode(ndr, ndr.buf);
@@ -70,28 +70,28 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemUnknown Performing a QueryInterface for " + _requestedIID);
             }
 
-            ndr.writeUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
             //TODO Index Matching , there seems to be a bug in
             // the jarapac system, it only reads upto (length - 6) bytes and one has to have another
             // call after that or incomplete request will go. in case no param is present just put an unsigned long = 0.
         }
 
         /// <inheritdoc/>
-        public override void read(NetworkDataRepresentation ndr) {
+        public override void Read(NdrCodec ndr) {
             JIOrpcThat.decode(ndr);
-            ndr.readUnsignedLong(); //size will be one
-            var hresult1 = ndr.readUnsignedLong();
+            ndr.ReadUnsignedLong(); //size will be one
+            var hresult1 = ndr.ReadUnsignedLong();
             if (hresult1 != 0) {
                 //something happened.
                 throw new JIRuntimeException(hresult1);
             }
             //array length
-            ndr.readUnsignedLong();
+            ndr.ReadUnsignedLong();
             //and now the JIInterfacePointer itself.
             InterfacePointer = JIInterfacePointer.decode(
                 ndr, new ArrayList(), JIFlags.FLAG_NULL, new Hashtable());
             //final hresult
-            hresult1 = ndr.readUnsignedLong();
+            hresult1 = ndr.ReadUnsignedLong();
             if (hresult1 != 0) {
                 //something happened.
                 throw new JIRuntimeException(hresult1);

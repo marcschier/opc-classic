@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.core {
     /// </code>
     /// </summary>
     [Serializable]
-    public class JICallBuilder : NdrObject {
+    public class JICallBuilder : NdrOp {
 
         internal const string CURRENTSESSION = "CURRENTSESSION";
         internal const string COMOBJECTS = "COMOBJECTS";
@@ -690,11 +690,11 @@ namespace org.jinterop.dcom.core {
 
         //All Methods are 0 index based
 
-        internal virtual void write2(NetworkDataRepresentation ndr) {
+        internal virtual void write2(NdrCodec ndr) {
             //reset buffer size here...
             //calculate rough length required length + 16 for the last bytes
             //plus adding 30 more for the verifier etc. 
-            ndr.Buffer.buf = new sbyte[bufferLength() + 16 + 30];
+            ndr.Buffer.buf = new byte[bufferLength() + 16 + 30];
             JIOrpcThat.encode(ndr);
             writePacket(ndr);
         }
@@ -702,12 +702,12 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// @exclude
         /// </summary>
-        public override void write(NetworkDataRepresentation ndr) {
+        public override void Write(NdrCodec ndr) {
 
             //reset buffer size here...
             //calculate rough length required length + 16 for the last bytes
             //plus adding 30 more for the verifier etc. 
-            ndr.Buffer.buf = new sbyte[bufferLength() + 16];
+            ndr.Buffer.buf = new byte[bufferLength() + 16];
 
             var orpcthis = new JIOrpcThis();
             orpcthis.encode(ndr);
@@ -715,18 +715,18 @@ namespace org.jinterop.dcom.core {
             writePacket(ndr);
 
             //when it ends add 16 zeros.
-            ndr.writeUnsignedLong(0);
-            ndr.writeUnsignedLong(0);
-            ndr.writeUnsignedLong(0);
-            ndr.writeUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
         }
 
-        private void writePacket(NetworkDataRepresentation ndr) {
+        private void writePacket(NdrCodec ndr) {
             if (_session == null) {
                 throw new InvalidOperationException("Programming Error ! Session not attached with this call ! ... Please rectify ! ");
             }
 
-            object[] inparams = _inParams.ToArray();
+            var inparams = _inParams.ToArray();
 
             var index = 0;
             if (inparams != null) {
@@ -787,7 +787,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// @exclude
         /// </summary>
-        public override void read(NetworkDataRepresentation ndr) {
+        public override void Read(NdrCodec ndr) {
             //		if (opnum == 10) FOR TESTING ONLY
             //		{
             //			byte[] buffer = new byte[360];
@@ -810,9 +810,9 @@ namespace org.jinterop.dcom.core {
             if (!readOnlyHRESULT) {
                 if (splCOMVersion) {
                     //during handshake and no other time. Kept for OxidResolver methods.
-                    serverAlive2 = new JIComVersion(ndr.readUnsignedShort(), ndr.readUnsignedShort());
+                    serverAlive2 = new JIComVersion(ndr.ReadUnsignedShort(), ndr.ReadUnsignedShort());
                     new JIPointer(new JIPointer(typeof(JIDualStringArray))).decode(ndr, new ArrayList(), JIFlags.FLAG_NULL, new Hashtable());
-                    ndr.readUnsignedLong();
+                    ndr.ReadUnsignedLong();
                 }
                 else {
                     var orpcThat = JIOrpcThat.decode(ndr);
@@ -828,14 +828,14 @@ namespace org.jinterop.dcom.core {
         /// @exclude 
         /// </summary>
         /// <param name="ndr"> </param>
-        internal virtual void read2(NetworkDataRepresentation ndr) {
+        internal virtual void read2(NdrCodec ndr) {
             JIOrpcThis.decode(ndr);
             readPacket(ndr, true);
             //readResult(ndr);
             //hresult = 0;
         }
 
-        private void readPacket(NetworkDataRepresentation ndr, bool fromCallback) {
+        private void readPacket(NdrCodec ndr, bool fromCallback) {
 
             if (_session == null) {
                 throw new InvalidOperationException("Programming Error ! Session not attached with this call ! ... Please rectify ! ");
@@ -922,9 +922,9 @@ namespace org.jinterop.dcom.core {
             _executed = true;
         }
 
-        private void readResult(NetworkDataRepresentation ndr) {
+        private void readResult(NdrCodec ndr) {
             //last has to be the result.
-            _hresult = ndr.readUnsignedLong();
+            _hresult = ndr.ReadUnsignedLong();
 
             if (_hresult != 0) {
                 //something exception occured at server, set up results
@@ -936,7 +936,7 @@ namespace org.jinterop.dcom.core {
 
         private int bufferLength() {
             var length = 0;
-            object[] inparams = _inParams.ToArray();
+            var inparams = _inParams.ToArray();
             for (var i = 0; i < inparams.Length; i++) {
                 if (inparams[i] == null) {
                     length = length + 4;

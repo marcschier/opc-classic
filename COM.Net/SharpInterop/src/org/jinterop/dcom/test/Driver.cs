@@ -1,7 +1,7 @@
 ﻿namespace org.jinterop.dcom.test {
 
 
-    using Encdec = jcifs.util.Encdec;
+    using Encdec = SharpCifs.util.Encdec;
 
     using JISystem = common.JISystem;
     using IJIUnsigned = core.IJIUnsigned;

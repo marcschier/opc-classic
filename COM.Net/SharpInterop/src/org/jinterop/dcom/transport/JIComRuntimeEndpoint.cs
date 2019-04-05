@@ -11,9 +11,9 @@
 namespace org.jinterop.dcom.transport {
 
 
-    using NdrBuffer = ndr.NdrBuffer;
-    using NdrObject = ndr.NdrObject;
-    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NdrBuffer = SharpCifs.Dcerpc.Ndr.NdrBuffer;
+    using NdrOp = SharpCifs.Dcerpc.Ndr.NdrOp;
+    using NdrCodec = SharpCifs.Dcerpc.Ndr.NdrCodec;
 
     using IJICOMRuntimeWorker = common.IJICOMRuntimeWorker;
     using JIErrorCodes = common.JIErrorCodes;
@@ -24,7 +24,7 @@ namespace org.jinterop.dcom.transport {
     using ConnectionOrientedPdu = rpc.ConnectionOrientedPdu;
     using FaultException = rpc.FaultException;
     using RpcException = rpc.RpcException;
-    using Transport = rpc.Transport;
+    using ITransport = rpc.ITransport;
     using PresentationContext = rpc.core.PresentationContext;
     using PresentationResult = rpc.core.PresentationResult;
     using PresentationSyntax = rpc.core.PresentationSyntax;
@@ -39,6 +39,7 @@ namespace org.jinterop.dcom.transport {
     using ResponseCoPdu = rpc.pdu.ResponseCoPdu;
     using ShutdownPdu = rpc.pdu.ShutdownPdu;
     using Serilog;
+    using System;
 
     /// <summary>
     /// @exclude
@@ -48,18 +49,18 @@ namespace org.jinterop.dcom.transport {
     public sealed class JIComRuntimeEndpoint : ConnectionOrientedEndpoint
 	{
 
-		internal JIComRuntimeEndpoint(Transport transport, PresentationSyntax syntax) : base(transport,syntax)
+		internal JIComRuntimeEndpoint(ITransport transport, PresentationSyntax syntax) : base(transport,syntax)
 		{
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrObject ndrobj) throws java.io.IOException
-		public void call(int semantics, UUID @object, int opnum, NdrObject ndrobj)
+//ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrOp ndrobj) throws java.io.IOException
+		public void call(int semantics, UUID @object, int opnum, NdrOp ndrobj)
 		{
 			throw new JIRuntimeException(JIErrorCodes.JI_ILLEGAL_CALL);
 		}
 
-		//use this oxidObject, it is actually OxidResolverImpl extends NdrObject.
+		//use this oxidObject, it is actually OxidResolverImpl extends NdrOp.
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void processRequests(org.jinterop.dcom.common.IJICOMRuntimeWorker workerObject, String baseIID, java.util.List listOfSupportedInterfaces) throws java.io.IOException
 		public void processRequests(IJICOMRuntimeWorker workerObject, string baseIID, IList listOfSupportedInterfaces)
@@ -69,19 +70,19 @@ namespace org.jinterop.dcom.transport {
             //this iid is the component IID just in case.
             if (baseIID != null)
 			{
-				Transport.Properties.setProperty("IID2", baseIID);
+				Transport.SharpCifs.Util.Sharpen.Properties.setProperty("IID2", baseIID);
 			}
 
-			Transport.Properties.put("LISTOFSUPPORTEDINTERFACES",listOfSupportedInterfaces);
+			Transport.SharpCifs.Util.Sharpen.Properties.put("LISTOFSUPPORTEDINTERFACES",listOfSupportedInterfaces);
 
-			bind(); // will bind to the server and perform the initial bind\bind ack.
+			Bind(); // will bind to the server and perform the initial bind\bind ack.
 
 			while (true)
 			{
 
 				  // first recieve and then answer
 				  ConnectionOrientedPdu response = null;
-				  var request = receive();
+				  var request = Receive();
 
 				  if (!workerObject.Resolver)
 				  {
@@ -89,21 +90,18 @@ namespace org.jinterop.dcom.transport {
 				  }
                 Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] request : " + Thread.CurrentThread.Name + " , " + request + " workerObject is resolver: " + workerObject.Resolver);
                 NdrBuffer buffer = null;
-				  var ndr = new NetworkDataRepresentation();
-				  workerObject.CurrentIID = currentIID;
+				  var ndr = new NdrCodec();
+				  workerObject.CurrentIID = CurrentIID;
 				  if (request is RequestCoPdu)
 				  {
 					  buffer = new NdrBuffer(((RequestCoPdu) request).Stub, 0);
 					  if (buffer.buf != null)
 					  {
-						//if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Verbose))
-						//{
-						//	var byteArrayOutputStream = new ByteArrayOutputStream();
-						//	jcifs.util.Hexdump.hexdump(new PrintStream(byteArrayOutputStream), buffer.buf, 0, buffer.buf.length);
-						//	Log.Logger.Verbose("\n" + byteArrayOutputStream.ToString());
-						//}
-					  }
-					  ndr.Format = ((RequestCoPdu) request).Format;
+                            var byteArrayOutputStream = Utils.HexString(buffer.Buf, 0, buffer.Buf.Length);
+                            Log.Logger.Verbose("\n" + byteArrayOutputStream.ToString());
+                        }
+                    }
+                    ndr.Format = ((RequestCoPdu) request).Format;
 					  workerObject.Opnum = ((RequestCoPdu) request).Opnum;
 					  //sets the current object, this is used to identify the JILocalCoClass to work on.
 					  //for most cases this will be null , till there is an actual COM interface request.
@@ -112,13 +110,13 @@ namespace org.jinterop.dcom.transport {
 					  try
 					  {
 
-						  ((NdrObject)workerObject).decode(ndr, buffer);
+						  ((NdrOp)workerObject).Decode(ndr, buffer);
                         var responseCoPdu = new ResponseCoPdu {
                             ContextId = ((RequestCoPdu)request).ContextId,
                             Format = ((RequestCoPdu)request).Format,
                             CallId = ((RequestCoPdu)request).CallId
                         };
-                        ((NdrObject)workerObject).encode(ndr,null);
+                        ((NdrOp)workerObject).Encode(ndr,null);
 						  var length = ndr.Buffer.length > ndr.Buffer.index ? ndr.Buffer.length : ndr.Buffer.index;
 	//					  length = length + 4;
 						  responseCoPdu.AllocationHint = length + 4;
@@ -154,20 +152,20 @@ namespace org.jinterop.dcom.transport {
 						   */
 						  //this call is only valid when the workerObject is RemUnknownObject.
 						  //so the context us NTLMConnectionContext
-						  if (context is JIComRuntimeNTLMConnectionContext)
+						  if (Context is JIComRuntimeNTLMConnectionContext)
 						  {
-							  ((JIComRuntimeNTLMConnectionContext)context).updateListOfInterfacesSupported(workerObject.QIedIIDs);
+							  ((JIComRuntimeNTLMConnectionContext)Context).updateListOfInterfacesSupported(workerObject.QIedIIDs);
 						  }
 
 
 							switch (request.Type)
 							{
 								  case BindPdu.BIND_TYPE:
-										  currentIID = ((BindPdu)request).ContextList[0].abstractSyntax.Uuid.ToString();
+										  CurrentIID = ((BindPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
 									  break;
 								  case AlterContextPdu.ALTER_CONTEXT_TYPE:
 										  //we need to record the iid now if this is successful and subsequent calls will now be for this iid.
-										  currentIID = ((AlterContextPdu)request).ContextList[0].abstractSyntax.Uuid.ToString();
+										  CurrentIID = ((AlterContextPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
 									  break;
 								  default:
 									  //nothing
@@ -176,7 +174,7 @@ namespace org.jinterop.dcom.transport {
 
 					  }
 
-					  response = context.accept(request);
+					  response = Context.accept(request);
 
 					  if (!workerObject.Resolver)
 					  {
@@ -186,13 +184,13 @@ namespace org.jinterop.dcom.transport {
 						  if (response is BindAcknowledgePdu)
 						  {
 							  result = ((BindAcknowledgePdu)response).ResultList;
-							  successful = result[0].result == PresentationResult.ACCEPTANCE;
+							  successful = result[0].Result == PresentationResult.ACCEPTANCE;
 							  context = ((BindPdu)request).ContextList[0]; //am expecting only one
 						  }
 						  else
 						  {
 							  result = ((AlterContextResponsePdu)response).ResultList;
-							  successful = result[0].result == PresentationResult.ACCEPTANCE;
+							  successful = result[0].Result == PresentationResult.ACCEPTANCE;
 							  context = ((AlterContextPdu)request).ContextList[0]; //am expecting only one
 						  }
 

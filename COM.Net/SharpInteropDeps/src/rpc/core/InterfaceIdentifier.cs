@@ -11,60 +11,57 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc.core
-{
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
 
-	using NdrObject = ndr.NdrObject;
+    /// <summary>
+    /// Interface id
+    /// </summary>
+    public class InterfaceIdentifier : NdrOp {
 
-	public class InterfaceIdentifier : NdrObject
-	{
+        /// <summary>
+        /// Id
+        /// </summary>
+        public UUID Uuid { get; set; }
 
-		internal UUID uuid;
-		internal int majorVersion, minorVersion;
+        /// <summary>
+        /// Major
+        /// </summary>
+        public int MajorVersion { get; set; }
 
-		public InterfaceIdentifier(string syntax)
-		{
-			parse(syntax);
-		}
+        /// <summary>
+        /// Minor
+        /// </summary>
+        public int MinorVersion { get; set; }
 
-		public InterfaceIdentifier(UUID uuid, int majorVersion, int minorVersion)
-		{
-			Uuid = uuid;
-			MajorVersion = majorVersion;
-			MinorVersion = minorVersion;
-		}
-
-		public virtual UUID Uuid {
-            get => uuid;
-            set => uuid = value;
+        /// <summary>
+        /// Create id
+        /// </summary>
+        /// <param name="syntax"></param>
+        public InterfaceIdentifier(string syntax) {
+            var tokenizer = new StringTokenizer(syntax, ":.");
+            Uuid.Parse(tokenizer.NextToken());
+            MajorVersion = int.Parse(tokenizer.NextToken());
+            MinorVersion = int.Parse(tokenizer.NextToken());
         }
 
-
-        public virtual int MajorVersion {
-            get => majorVersion;
-            set => majorVersion = value;
+        /// <summary>
+        /// Create id
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="majorVersion"></param>
+        /// <param name="minorVersion"></param>
+        public InterfaceIdentifier(UUID uuid, int majorVersion,
+            int minorVersion) {
+            Uuid = uuid;
+            MajorVersion = majorVersion;
+            MinorVersion = minorVersion;
         }
 
-
-        public virtual int MinorVersion {
-            get => minorVersion;
-            set => minorVersion = value;
+        /// <override/>
+        public override string ToString() {
+            return Uuid + ":" + MajorVersion + "." + MinorVersion;
         }
-
-
-        public override string ToString()
-		{
-			return Uuid.ToString() + ":" + MajorVersion + "." + MinorVersion;
-		}
-
-		public virtual void parse(string syntax)
-		{
-			var tokenizer = new StringTokenizer(syntax, ":.");
-			Uuid.parse(tokenizer.nextToken());
-			MajorVersion = int.Parse(tokenizer.nextToken());
-			MinorVersion = int.Parse(tokenizer.nextToken());
-		}
-
-	}
-
+    }
 }

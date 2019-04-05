@@ -10,29 +10,29 @@
 namespace org.jinterop.dcom.core
 {
     using Serilog;
-    using System.Collections;
-    using JIErrorCodes = common.JIErrorCodes;
-	using JIException = common.JIException;
-	using JISystem = common.JISystem;
+    using System;
+    using System.Threading;
+    using SharpCifs.Util.Sharpen;
+    using org.jinterop.dcom.common;
+	using rpc;
+    using System.Collections.Generic;
 
-	using Security = rpc.Security;
-
-	//import com.iwombat.foundation.IdentifierFactory;
-	//import com.iwombat.util.GUIDUtil;
+    //import com.iwombat.foundation.IdentifierFactory;
+    //import com.iwombat.util.GUIDUtil;
 
 
-	/// <summary>
-	/// Thread for Oxid Resolver. Creates and accepts socket
-	/// connections for resolving oxids. Gets started once for each instance
-	/// of the library.
-	/// Please note that the <b>"Server"</b> Service should be running on the 
+    /// <summary>
+    /// Thread for Oxid Resolver. Creates and accepts socket
+    /// connections for resolving oxids. Gets started once for each instance
+    /// of the library.
+    /// Please note that the <b>"Server"</b> Service should be running on the 
     /// machine where the COM server is running. 
-	/// </summary>
-	internal sealed class JIComOxidRuntime
+    /// </summary>
+    internal sealed class JIComOxidRuntime
 	{
 
-		private static Properties defaults = new Properties();
-		private static Properties defaults2 = new Properties();
+		private static SharpCifs.Util.Sharpen.Properties defaults = new SharpCifs.Util.Sharpen.Properties();
+		private static SharpCifs.Util.Sharpen.Properties defaults2 = new SharpCifs.Util.Sharpen.Properties();
 		private static bool stopSystem;
 		private static bool resolverStarted;
         private static Hashtable mapOfIPIDVsComponent = new Hashtable(); //java client , com server
@@ -49,7 +49,7 @@ namespace org.jinterop.dcom.core
 		private static Hashtable mapOfAddressVsStub = new Hashtable(); //java client , com server, so that we don't have to keep doing bind everytime.
 
 
-		private static IList listOfExportedJavaComponents = new ArrayList();
+		private static List<object> listOfExportedJavaComponents = new List<object>();
 
 		internal static readonly object mutex = new object(); //for access to the sockets
 		private static readonly object mutex2 = new object(); //for access to the maps
@@ -66,7 +66,7 @@ namespace org.jinterop.dcom.core
 		//one per session.
 		private class PingSetHolder
 		{
-			internal sbyte[] setId;
+			internal byte[] setId;
 			internal string username;
 			internal string password;
 			internal string domain;
@@ -76,9 +76,9 @@ namespace org.jinterop.dcom.core
 			internal bool isSSO;
 			internal int seqNum = 1;
 			//JISession session  = null;
-			internal IDictionary currentSetOIDs = new Hashtable(); //list of JIObjectId, this list is iterated and if the IPID ref count is 0 ,
+			internal Hashtable currentSetOIDs = new Hashtable(); //list of JIObjectId, this list is iterated and if the IPID ref count is 0 ,
 													//it is added as a delete in set and a complex ping is sent.
-			internal IDictionary pingedOnce = new Hashtable();
+			internal Hashtable pingedOnce = new Hashtable();
 			public override string ToString()
 			{
 				return "SetID[" + setId + "] , currentSetOIDs[" + currentSetOIDs + "]";
@@ -166,7 +166,7 @@ namespace org.jinterop.dcom.core
 			{
                 Log.Logger.Information("destroySessionOIDs for session: " + sessionId);
 
-                IList oids = (ArrayList)mapOfSessionIdsVsOIDs.Remove(sessionId);
+                IList oids = (ArrayList)mapOfSessionIdsVsOIDs.GetAndRemove(sessionId);
 				if (oids == null || oids.Count == 0)
 				{
 					return;
@@ -176,7 +176,7 @@ namespace org.jinterop.dcom.core
 				{
 					var oid = (JIObjectId)oids[i];
 					//remove all
-					var component = (JILocalCoClass)mapOfOIDVsComponents.Remove(oid);
+					var component = (JILocalCoClass)mapOfOIDVsComponents.GetAndRemove(oid);
 					var details = (JIComOxidDetails)mapOfJavaVsOxidDetails[component];
 					if (details != null)
 					{
@@ -433,7 +433,7 @@ namespace org.jinterop.dcom.core
 			//remove the socket for this session associated with ping timer
 			lock (mutex4)
 			{
-				var stub = (JIComOxidStub)mapOfAddressVsStub.Remove(session.TargetServer);
+				var stub = (JIComOxidStub)mapOfAddressVsStub.GetAndRemove(session.TargetServer);
 				if (stub != null)
 				{
 					stub.close();
@@ -504,7 +504,7 @@ namespace org.jinterop.dcom.core
 						{
 							JISystem.internal_setSocket(socket);
 							//now create the JIComOxidRuntimeHelper Object and start it.
-							var properties = new Properties(defaults);
+							var properties = new SharpCifs.Util.Sharpen.Properties(defaults);
 							properties.put("IID","99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper()); //IOxidResolver
 							var oxidResolver = new JIComOxidRuntimeHelper(properties);
 							oxidResolver.startOxid(socket.LocalPort, socket.Port);
@@ -589,10 +589,10 @@ namespace org.jinterop.dcom.core
 	//			String ipid = GUIDUtil.guidStringFromHexString(IdentifierFactory.createUniqueIdentifier().toHexString()); 
 				string ipid = UUID.randomUUID().ToString();
 				var iid = component.CoClassUnderRealIID ? component.CoClassIID : JiIUnknown.IID; //has to be IUnknown's IID.
-				var bytes = new sbyte[8];
+				var bytes = new byte[8];
 				randomGen.NextBytes(bytes);
 				var oxid = new JIOxid(bytes);
-				var bytes2 = new sbyte[8];
+				var bytes2 = new byte[8];
 				randomGen.NextBytes(bytes2);
 
 				var oid = new JIObjectId(bytes2,false);
@@ -603,7 +603,7 @@ namespace org.jinterop.dcom.core
 				var objref = new JIStdObjRef(ipid,oxid,oid);
 				ptr = new JIInterfacePointer(iid,OxidResolverPort,objref);
 
-				var properties = new Properties(defaults2);
+				var properties = new SharpCifs.Util.Sharpen.Properties(defaults2);
 				properties.put("IID","00000131-0000-0000-C000-000000000046:0.0".ToUpper()); //IRemUnknown
 
 				properties.put("rpc.ntlm.domain",session.TargetServer);

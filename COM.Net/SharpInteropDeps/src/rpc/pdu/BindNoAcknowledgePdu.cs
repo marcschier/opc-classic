@@ -11,87 +11,59 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.pdu {
+    using SharpCifs.Dcerpc.Ndr;
+    using rpc.core;
 
+    /// <summary>
+    /// Bind nack
+    /// </summary>
+    public class BindNoAcknowledgePdu : ConnectionOrientedPdu {
 
-namespace rpc.pdu
-{
+        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+        public const int BIND_NO_ACKNOWLEDGE_TYPE = 0x0d;
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
-	using ProtocolVersion = core.ProtocolVersion;
-
-	public class BindNoAcknowledgePdu : ConnectionOrientedPdu
-	{
-
-		public const int BIND_NO_ACKNOWLEDGE_TYPE = 0x0d;
-
-		public const int REASON_NOT_SPECIFIED = 0;
-
-		public const int TEMPORARY_CONGESTION = 1;
-
-		public const int LOCAL_LIMIT_EXCEEDED = 2;
-
-		public const int CALLED_PADDR_UNKNOWN = 3; // not used
-
-		public const int PROTOCOL_VERSION_NOT_SUPPORTED = 4;
-
-		public const int DEFAULT_CONTEXT_NOT_SUPPORTED = 5; // not used
-
-		public const int USER_DATA_NOT_READABLE = 6; // not used
-
-		public const int NO_PSAP_AVAILABLE = 7; // not used
-
-		private ProtocolVersion[] versionList;
-
-		private int rejectReason;
-
+        /// <inheritdoc/>
         public override int Type => BIND_NO_ACKNOWLEDGE_TYPE;
 
-        public virtual int RejectReason {
-            get => rejectReason;
-            set => rejectReason = value;
+        /// <summary>
+        /// Reject reason
+        /// </summary>
+        public BindNoAcknowledgeReason RejectReason { get; set; }
+
+        /// <summary>
+        /// Version list
+        /// </summary>
+        public ProtocolVersion[] VersionList { get; set; }
+
+        /// <inheritdoc/>
+        protected internal override void ReadBody(NdrCodec ndr) {
+            var reason = ndr.ReadUnsignedSmall();
+            RejectReason = (BindNoAcknowledgeReason)reason;
+            ProtocolVersion[] versionList = null;
+            if (RejectReason == BindNoAcknowledgeReason.PROTOCOL_VERSION_NOT_SUPPORTED) {
+                var count = ndr.ReadUnsignedSmall();
+                versionList = new ProtocolVersion[count];
+                for (var i = 0; i < count; i++) {
+                    versionList[i] = new ProtocolVersion();
+                    versionList[i].Read(ndr);
+                }
+            }
+            VersionList = versionList;
         }
 
-
-        public virtual ProtocolVersion[] VersionList {
-            get => versionList;
-            set => versionList = value;
+        /// <inheritdoc/>
+        protected internal override void WriteBody(NdrCodec ndr) {
+            var reason = (short)RejectReason;
+            ndr.WriteUnsignedSmall(reason);
+            if (RejectReason != BindNoAcknowledgeReason.PROTOCOL_VERSION_NOT_SUPPORTED) {
+                return;
+            }
+            var versionList = VersionList;
+            var count = (versionList != null) ? versionList.Length : 0;
+            for (var i = 0; i < count; i++) {
+                versionList[i].Write(ndr);
+            }
         }
-
-
-        protected internal override void readBody(NetworkDataRepresentation ndr)
-		{
-			var reason = ndr.readUnsignedSmall();
-			RejectReason = reason;
-			ProtocolVersion[] versionList = null;
-			if (reason == PROTOCOL_VERSION_NOT_SUPPORTED)
-			{
-				var count = ndr.readUnsignedSmall();
-				versionList = new ProtocolVersion[count];
-				for (var i = 0; i < count; i++)
-				{
-					versionList[i] = new ProtocolVersion();
-					versionList[i].read(ndr);
-				}
-			}
-			VersionList = versionList;
-		}
-
-		protected internal override void writeBody(NetworkDataRepresentation ndr)
-		{
-			var reason = RejectReason;
-			ndr.writeUnsignedSmall((short) reason);
-			if (reason != PROTOCOL_VERSION_NOT_SUPPORTED)
-			{
-				return;
-			}
-			var versionList = VersionList;
-			var count = (versionList != null) ? versionList.Length : 0;
-			for (var i = 0; i < count; i++)
-			{
-				versionList[i].write(ndr);
-			}
-		}
-
-	}
-
+    }
 }

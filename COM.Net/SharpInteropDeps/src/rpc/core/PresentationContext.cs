@@ -11,78 +11,97 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.core {
+    using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
 
-namespace rpc.core
-{
+    /// <summary>
+    /// Presentation layer context
+    /// </summary>
+    public class PresentationContext : NdrOp {
 
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+        /// <summary>
+        /// Context
+        /// </summary>
+        public int ContextId { get; set; }
 
-	public class PresentationContext : NdrObject
-	{
+        /// <summary>
+        /// Syntax
+        /// </summary>
+        public PresentationSyntax AbstractSyntax { get; set; }
 
-		public int contextId;
+        /// <summary>
+        /// Transfer syntax
+        /// </summary>
+        public PresentationSyntax[] TransferSyntaxes { get; set; }
 
-		public PresentationSyntax abstractSyntax;
+        /// <summary>
+        /// Create default context
+        /// </summary>
+        public PresentationContext() : 
+            this(0, new PresentationSyntax(), new PresentationSyntax[] {
+                new PresentationSyntax(NdrCodec.NDR_SYNTAX)
+            }) {
+        }
 
-		public PresentationSyntax[] transferSyntaxes;
+        /// <summary>
+        /// Create context
+        /// </summary>
+        /// <param name="contextId"></param>
+        /// <param name="abstractSyntax"></param>
+        public PresentationContext(int contextId, PresentationSyntax abstractSyntax) : 
+            this(contextId, abstractSyntax, new PresentationSyntax[] {
+                new PresentationSyntax(NdrCodec.NDR_SYNTAX)
+            }) {
+        }
 
-		public PresentationContext() : this(0, new PresentationSyntax(), new PresentationSyntax[] {new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX)})
-		{
-		}
+        /// <summary>
+        /// Create context
+        /// </summary>
+        /// <param name="contextId"></param>
+        /// <param name="abstractSyntax"></param>
+        /// <param name="transferSyntaxes"></param>
+        public PresentationContext(int contextId, PresentationSyntax abstractSyntax,
+            PresentationSyntax[] transferSyntaxes) {
+            ContextId = contextId;
+            AbstractSyntax = abstractSyntax;
+            TransferSyntaxes = transferSyntaxes;
+        }
 
-		public PresentationContext(int contextId, PresentationSyntax abstractSyntax) : this(contextId, abstractSyntax, new PresentationSyntax[] {new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX)})
-		{
-		}
+        /// <inheritdoc/>
+        public override void Read(NdrCodec ndr) {
+            ndr.Buffer.Align(4);
+            ContextId = ndr.ReadUnsignedShort();
+            var count = ndr.ReadUnsignedSmall();
 
-		public PresentationContext(int contextId, PresentationSyntax abstractSyntax, PresentationSyntax[] transferSyntaxes)
-		{
-			this.contextId = contextId;
-			this.abstractSyntax = abstractSyntax;
-			this.transferSyntaxes = transferSyntaxes;
-		}
+            try {
+                AbstractSyntax.Decode(ndr, ndr.Buffer);
+                TransferSyntaxes = new PresentationSyntax[count];
+                for (var i = 0; i < count; i++) {
+                    TransferSyntaxes[i] = new PresentationSyntax();
+                    TransferSyntaxes[i].Decode(ndr, ndr.Buffer);
+                }
+            }
+            catch (NdrException ex) {
+                Log.Logger.Verbose(ex, "Read presentation context failed");
+            }
+        }
 
-		public override void read(NetworkDataRepresentation ndr)
-		{
-			ndr.Buffer.align(4);
-			contextId = ndr.readUnsignedShort();
-			var count = ndr.readUnsignedSmall();
+        /// <inheritdoc/>
+        public override void Write(NdrCodec ndr) {
+            ndr.Buffer.Align(4, unchecked((byte)0xcc));
+            ndr.WriteUnsignedShort(ContextId);
+            ndr.WriteUnsignedShort((short)TransferSyntaxes.Length);
 
-			try
-			{
-				abstractSyntax.decode(ndr, ndr.Buffer);
-				   transferSyntaxes = new PresentationSyntax[count];
-				for (var i = 0; i < count; i++)
-				{
-					transferSyntaxes[i] = new PresentationSyntax();
-					transferSyntaxes[i].decode(ndr, ndr.Buffer);
-				}
-			}
-			catch (NdrException)
-			{
-			}
-		}
-
-		public override void write(NetworkDataRepresentation ndr)
-		{
-			ndr.Buffer.align(4, unchecked((sbyte)0xcc));
-			ndr.writeUnsignedShort(contextId);
-			ndr.writeUnsignedShort((short) transferSyntaxes.Length);
-
-			try
-			{
-				abstractSyntax.encode(ndr, ndr.Buffer);
-				for (var i = 0; i < transferSyntaxes.Length; i++)
-				{
-					transferSyntaxes[i].encode(ndr, ndr.Buffer);
-				}
-			}
-			catch (NdrException)
-			{
-			}
-		}
-
-	}
-
+            try {
+                AbstractSyntax.Encode(ndr, ndr.Buffer);
+                for (var i = 0; i < TransferSyntaxes.Length; i++) {
+                    TransferSyntaxes[i].Encode(ndr, ndr.Buffer);
+                }
+            }
+            catch (NdrException ex) {
+                Log.Logger.Verbose(ex, "Write presentation context failed");
+            }
+        }
+    }
 }

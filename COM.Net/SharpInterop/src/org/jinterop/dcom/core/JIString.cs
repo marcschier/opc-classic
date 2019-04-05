@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using System.Collections;
     using System;
@@ -124,7 +124,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG) {
+        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
             JIMarshalUnMarshalHelper.serialize(ndr, _member.GetType(), _member, defferedPointers, Type | FLAG);
         }
 
@@ -136,7 +136,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIString decode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
+        internal JIString decode(NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
             var newString = new JIString(Type) {
                 _member = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, _member, defferedPointers, Type | FLAG, additionalData)
             };

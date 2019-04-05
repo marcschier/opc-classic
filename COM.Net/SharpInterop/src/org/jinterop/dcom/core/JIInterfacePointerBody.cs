@@ -7,8 +7,9 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
+    using Serilog;
     using System;
 
     /// <summary>
@@ -63,7 +64,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Oid
         /// </summary>
-        internal virtual sbyte[] OID => _stdObjRef.ObjectId;
+        internal virtual byte[] OID => _stdObjRef.ObjectId;
 
         /// <summary>
         /// String bindings
@@ -107,21 +108,21 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="Flags"></param>
         /// <returns></returns>
-        internal static JIInterfacePointerBody decode(NetworkDataRepresentation ndr, int Flags) {
+        internal static JIInterfacePointerBody decode(NdrCodec ndr, int Flags) {
             if ((Flags & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) == 
                          JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
                 return decode2(ndr);
             }
 
-            var length = ndr.readUnsignedLong();
-            ndr.readUnsignedLong(); //length
+            var length = ndr.ReadUnsignedLong();
+            ndr.ReadUnsignedLong(); //length
 
             var ptr = new JIInterfacePointerBody {
                 _length = length
             };
             //check for MEOW
-            var b = new sbyte[4];
-            ndr.readOctetArray(b, 0, 4);
+            var b = new byte[4];
+            ndr.ReadOctetArray(b, 0, 4);
 
             var i = 0;
             while (i != 4) {
@@ -134,10 +135,10 @@ namespace org.jinterop.dcom.core {
 
             //TODO only STDOBJREF supported for now
 
-            if ((ptr._objectType = ndr.readUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
+            if ((ptr._objectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 try {
                     var ipid2 = new rpc.core.UUID();
-                    ipid2.decode(ndr, ndr.Buffer);
+                    ipid2.Decode(ndr, ndr.Buffer);
                     ptr._iid = ipid2.ToString();
                 }
                 catch (NdrException e) {
@@ -147,7 +148,7 @@ namespace org.jinterop.dcom.core {
                 //now for CLSID 
                 try {
                     var ipid2 = new rpc.core.UUID();
-                    ipid2.decode(ndr, ndr.Buffer);
+                    ipid2.Decode(ndr, ndr.Buffer);
                     ptr._customCLSID = ipid2.ToString();
                 }
                 catch (NdrException e) {
@@ -155,30 +156,17 @@ namespace org.jinterop.dcom.core {
                 }
 
                 //extension
-                ndr.readUnsignedLong();
+                ndr.ReadUnsignedLong();
 
                 //reserved
-                ndr.readUnsignedLong();
+                ndr.ReadUnsignedLong();
 
-                //We copy everything into the custom byte[] and return
-                //IID, CLSID, NULL
-                //				byte[] header = new byte[16 + 16 + 4];
-                //				ndr.readOctetArray(header, 0, header.length);
-                //				System.out.println(ff++);
-                //				jcifs.util.Hexdump.hexdump(System.out, header, 0, header.length);
-                //				System.out.println();
-                //				int index = ndr.getBuffer().index;
-                //				//Header, length, size(length) 
-                //				ptr.customObjRefDefn = new byte[header.length + ndr.readUnsignedLong() + 4];
-                //				System.arraycopy(header, 0, ptr.customObjRefDefn, 0, header.length);
-                //				ndr.getBuffer().setIndex(index);
-                //				ndr.readOctetArray(ptr.customObjRefDefn, header.length, ptr.customObjRefDefn.length - header.length);
                 return ptr;
             }
 
             try {
                 var ipid2 = new rpc.core.UUID();
-                ipid2.decode(ndr, ndr.Buffer);
+                ipid2.Decode(ndr, ndr.Buffer);
                 ptr._iid = ipid2.ToString();
             }
             catch (NdrException e) {
@@ -196,12 +184,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIInterfacePointerBody decode2(NetworkDataRepresentation ndr) {
+        internal static JIInterfacePointerBody decode2(NdrCodec ndr) {
             var ptr = new JIInterfacePointerBody();
 
             //check for MEOW
-            var b = new sbyte[4];
-            ndr.readOctetArray(b, 0, 4);
+            var b = new byte[4];
+            ndr.ReadOctetArray(b, 0, 4);
 
             var i = 0;
             while (i != 4) {
@@ -213,13 +201,13 @@ namespace org.jinterop.dcom.core {
             }
 
             //TODO only STDOBJREF supported for now
-            if ((ptr._objectType = ndr.readUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
+            if ((ptr._objectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 return null;
             }
 
             try {
                 var ipid2 = new rpc.core.UUID();
-                ipid2.decode(ndr, ndr.Buffer);
+                ipid2.Decode(ndr, ndr.Buffer);
                 ptr._iid = ipid2.ToString();
             }
             catch (NdrException e) {
@@ -236,7 +224,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="flags"></param>
-        internal virtual void encode(NetworkDataRepresentation ndr, int flags) {
+        internal virtual void encode(NdrCodec ndr, int flags) {
 
             //now for length
             //the length for STDOBJREF is fixed 40 bytes : 4,4,8,8,16.
@@ -247,23 +235,23 @@ namespace org.jinterop.dcom.core {
                 length = 40 + 4 + 4 + 16 + _resolverAddr.Length;
             }
 
-            ndr.writeUnsignedLong(length);
-            ndr.writeUnsignedLong(length);
+            ndr.WriteUnsignedLong(length);
+            ndr.WriteUnsignedLong(length);
 
             //for OBJREF_CUSTOM we will correct this length after the custom object has been marshalled.
             //this object is marshalled 4 + 4 + 40 bytes after this point. The length of the length itself is not included. 
 
-            ndr.writeOctetArray(JIInterfacePointer.OBJREF_SIGNATURE, 0, 4);
+            ndr.WriteOctetArray(JIInterfacePointer.OBJREF_SIGNATURE, 0, 4);
 
             if (CustomObjRef) {
-                ndr.writeUnsignedLong(JIInterfacePointer.OBJREF_CUSTOM);
+                ndr.WriteUnsignedLong(JIInterfacePointer.OBJREF_CUSTOM);
                 try {
                     var ipid2 = new rpc.core.UUID(_iid);
-                    ipid2.encode(ndr, ndr.Buffer);
+                    ipid2.Encode(ndr, ndr.Buffer);
                     ipid2 = new rpc.core.UUID(_customCLSID);
-                    ipid2.encode(ndr, ndr.Buffer);
-                    ndr.writeUnsignedLong(0); //extension
-                    ndr.writeUnsignedLong(0); //reserved, now the spec say that this is ignored by the server but the
+                    ipid2.Encode(ndr, ndr.Buffer);
+                    ndr.WriteUnsignedLong(0); //extension
+                    ndr.WriteUnsignedLong(0); //reserved, now the spec say that this is ignored by the server but the
                                               //the WMIO marshaller puts the length of the entire buffer here. If this is the case then we will have to go
                                               //4 bytes back and rewrite this with total lengths in the custom marshaller.
                 }
@@ -277,7 +265,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //std ref
-            ndr.writeUnsignedLong(JIInterfacePointer.SORF_OXRES1);
+            ndr.WriteUnsignedLong(JIInterfacePointer.SORF_OXRES1);
 
             try {
                 var ipid2 = new rpc.core.UUID(_iid);
@@ -289,7 +277,7 @@ namespace org.jinterop.dcom.core {
                     ipid2 = new rpc.core.UUID(impls.automation.IJIDispatch_Fields.IID);
                 }
 
-                ipid2.encode(ndr, ndr.Buffer);
+                ipid2.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 // TODO Auto-generated catch block

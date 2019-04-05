@@ -21,14 +21,14 @@ namespace org.jinterop.dcom.core {
         /// Create
         /// </summary>
         /// <param name="oxid"></param>
-        internal JIOxid(sbyte[] oxid) {
+        internal JIOxid(byte[] oxid) {
             _oxid = oxid;
         }
 
         /// <summary>
         /// Oxid
         /// </summary>
-        internal sbyte[] OXID => _oxid;
+        internal byte[] OXID => _oxid;
 
         /// <inheritdoc/>
         public override int GetHashCode() {
@@ -48,6 +48,6 @@ namespace org.jinterop.dcom.core {
             return _oxid.SequenceEqual(other.OXID);
         }
 
-        internal sbyte[] _oxid;
+        internal byte[] _oxid;
     }
 }

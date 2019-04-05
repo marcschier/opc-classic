@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using System;
@@ -48,9 +48,9 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        internal static void encode(NetworkDataRepresentation ndr) {
-            ndr.writeUnsignedLong(0);
-            ndr.writeUnsignedLong(0);
+        internal static void encode(NdrCodec ndr) {
+            ndr.WriteUnsignedLong(0);
+            ndr.WriteUnsignedLong(0);
         }
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIOrpcThat decode(NetworkDataRepresentation ndr) {
+        internal static JIOrpcThat decode(NdrCodec ndr) {
             var orpcthat = new JIOrpcThat {
-                _flags = ndr.readUnsignedLong()
+                _flags = ndr.ReadUnsignedLong()
             };
 
             //to throw JIRuntimeException from here.

@@ -12,7 +12,7 @@ namespace org.jinterop.dcom.transport
 {
 
 	using ConnectionOrientedEndpoint = rpc.ConnectionOrientedEndpoint;
-	using Transport = rpc.Transport;
+	using ITransport = rpc.ITransport;
 	using PresentationSyntax = rpc.core.PresentationSyntax;
 
 	/// <summary>
@@ -23,7 +23,7 @@ namespace org.jinterop.dcom.transport
 	public sealed class JIComEndpoint : ConnectionOrientedEndpoint
 	{
 
-	  internal JIComEndpoint(Transport transport, PresentationSyntax syntax) : base(transport,syntax)
+	  internal JIComEndpoint(ITransport transport, PresentationSyntax syntax) : base(transport,syntax)
 	  {
 	  }
 
@@ -31,7 +31,7 @@ namespace org.jinterop.dcom.transport
 //ORIGINAL LINE: public void rebindEndPoint() throws java.io.IOException
 	  public void rebindEndPoint()
 	  {
-		  rebind();
+		  Rebind();
 	  }
 	}
 

@@ -9,7 +9,7 @@
 
 namespace org.jinterop.dcom.core {
     using System;
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
     /// Provides a way to express parameters for a particular method. These are only <code>[in]</code>
@@ -42,7 +42,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal object[] read(NetworkDataRepresentation ndr) {
+        internal object[] read(NdrCodec ndr) {
             _callObject.read2(ndr);
             return _callObject.Results;
         }

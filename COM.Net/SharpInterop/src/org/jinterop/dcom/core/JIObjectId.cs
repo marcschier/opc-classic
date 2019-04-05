@@ -22,7 +22,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Object id
         /// </summary>
-        internal sbyte[] OID { get; }
+        internal byte[] OID { get; }
 
         /// <summary>
         /// Returns whether object expired
@@ -42,7 +42,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="oid"></param>
         /// <param name="dontping"></param>
-        internal JIObjectId(sbyte[] oid, bool dontping) {
+        internal JIObjectId(byte[] oid, bool dontping) {
             OID = oid;
             _dontping = dontping;
             if (dontping) {

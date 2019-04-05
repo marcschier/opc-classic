@@ -11,41 +11,27 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    /// <summary>
+    /// Security constants
+    /// </summary>
+    public static class Security {
 
-	public interface Security
-	{
+        /// <summary>
+        /// User name key
+        /// </summary>
+        public const string USERNAME = "rpc.security.username";
 
-		int VerifierLength {get;}
+        /// <summary>
+        /// Password key
+        /// </summary>
+        public const string PASSWORD = "rpc.security.password";
 
-		int AuthenticationService {get;}
-
-		int ProtectionLevel {get;}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void processIncoming(ndr.NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented) throws java.io.IOException;
-		void processIncoming(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void processOutgoing(ndr.NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented) throws java.io.IOException;
-		void processOutgoing(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
-
-	}
-
-	public static class Security_Fields
-	{
-		public const string USERNAME = "rpc.security.username";
-		public const string PASSWORD = "rpc.security.password";
-		public const int AUTHENTICATION_SERVICE_NONE = 0;
-		public const int PROTECTION_LEVEL_NONE = 1;
-		public const int PROTECTION_LEVEL_CONNECT = 2;
-		public const int PROTECTION_LEVEL_CALL = 3;
-		public const int PROTECTION_LEVEL_PACKET = 4;
-		public const int PROTECTION_LEVEL_INTEGRITY = 5;
-		public const int PROTECTION_LEVEL_PRIVACY = 6;
-	}
+        /// <summary>
+        /// No service
+        /// </summary>
+        public const int AUTHENTICATION_SERVICE_NONE = 0;
+    }
 
 }

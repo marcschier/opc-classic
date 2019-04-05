@@ -11,89 +11,81 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc.core
-{
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    /// <summary>
+    /// Presentation syntax
+    /// </summary>
+    public class PresentationSyntax : NdrOp {
 
-	public class PresentationSyntax : NdrObject
-	{
+        /// <summary>
+        /// Uuuid
+        /// </summary>
+        public UUID Uuid { get; set; }
 
-		private const int UUID_INDEX = 0;
+        /// <summary>
+        /// Version
+        /// </summary>
+        public int Version { get; set; }
 
-		private const int VERSION_INDEX = 1;
+        /// <summary>
+        /// Major
+        /// </summary>
+        public int MajorVersion => Version & 0xffff;
 
-		internal UUID uuid;
-		internal int version;
+        /// <summary>
+        /// Minor
+        /// </summary>
+        public int MinorVersion => (Version >> 16) & 0xffff;
 
-		public PresentationSyntax()
-		{
-		}
-
-		public PresentationSyntax(string syntax) : this()
-		{
-			parse(syntax);
-		}
-
-		public PresentationSyntax(UUID uuid, int majorVersion, int minorVersion) : this()
-		{
-			Uuid = uuid;
-			setVersion(majorVersion, minorVersion);
-		}
-
-		public virtual UUID Uuid {
-            get => uuid;
-            set => uuid = value;
+        /// <summary>
+        /// Create syntax
+        /// </summary>
+        public PresentationSyntax() {
         }
 
-
-        public virtual int Version {
-            get => version;
-            set => version = value;
+        /// <summary>
+        /// Create presentation syntax
+        /// </summary>
+        /// <param name="syntax"></param>
+        public PresentationSyntax(string syntax) : this() {
+            var tokenizer = new StringTokenizer(syntax, ":.");
+            Uuid = new UUID();
+            Uuid.Parse(tokenizer.NextToken());
+            Version = (int.Parse(tokenizer.NextToken()) & 0xffff) |
+                (int.Parse(tokenizer.NextToken()) << 16);
         }
 
+        /// <summary>
+        /// Create syntax
+        /// </summary>
+        /// <param name="uuid"></param>
+        /// <param name="majorVersion"></param>
+        /// <param name="minorVersion"></param>
+        public PresentationSyntax(UUID uuid, int majorVersion, int minorVersion) : this() {
+            Uuid = uuid;
+            Version = (majorVersion & 0xffff) | (minorVersion << 16);
+        }
 
-        public virtual int MajorVersion => version & 0xffff;
+        /// <inheritdoc/>
+        public override void Encode(NdrCodec ndr, NdrBuffer dst) {
+            Uuid.Encode(ndr, dst);
+            dst.Enc_ndr_long(Version);
+        }
 
-        public virtual int MinorVersion => (version >> 16) & 0xffff;
+        /// <inheritdoc/>
+        public override void Decode(NdrCodec ndr, NdrBuffer src) {
+            Uuid = new UUID();
+            Uuid.Decode(ndr, src);
+            Version = src.Dec_ndr_long();
+        }
 
-        public virtual void setVersion(int majorVersion, int minorVersion)
-		{
-			Version = (majorVersion & 0xffff) | (minorVersion << 16);
-		}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void encode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer dst) throws ndr.NdrException
-		public override void encode(NetworkDataRepresentation ndr, NdrBuffer dst)
-		{
-			uuid.encode(ndr, dst);
-			dst.enc_ndr_long(version);
-		}
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void decode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer src) throws ndr.NdrException
-		public override void decode(NetworkDataRepresentation ndr, NdrBuffer src)
-		{
-			uuid = new UUID();
-			uuid.decode(ndr, src);
-			version = src.dec_ndr_long();
-		}
-
-		public override string ToString()
-		{
-			return Uuid.ToString() + ":" + MajorVersion + "." + MinorVersion;
-		}
-
-		public virtual void parse(string syntax)
-		{
-			var tokenizer = new StringTokenizer(syntax, ":.");
-			uuid = new UUID();
-			uuid.parse(tokenizer.nextToken());
-			setVersion(int.Parse(tokenizer.nextToken()), int.Parse(tokenizer.nextToken()));
-		}
-
-	}
+        /// <inheritdoc/>
+        public override string ToString() {
+            return Uuid + ":" + MajorVersion + "." + MinorVersion;
+        }
+    }
 
 }

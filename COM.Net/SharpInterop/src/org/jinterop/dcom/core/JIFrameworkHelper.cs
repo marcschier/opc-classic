@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using Serilog;
     using System;
@@ -47,7 +47,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="oxid"> </param>
         /// <returns></returns>
-        internal static JISession resolveSessionForOXID(sbyte[] oxid) {
+        internal static JISession resolveSessionForOXID(byte[] oxid) {
             return JISession.resolveSessionForOxid(new JIOxid(oxid));
         }
 
@@ -159,8 +159,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="ipAddress"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static IJIComObject instantiateComObject(JISession session, sbyte[] rawBytes, string ipAddress) {
-            var ndr = new NetworkDataRepresentation();
+        public static IJIComObject instantiateComObject(JISession session, byte[] rawBytes, string ipAddress) {
+            var ndr = new NdrCodec();
             var ndrBuffer = new NdrBuffer(rawBytes, 0);
             ndr.Buffer = ndrBuffer;
             ndrBuffer.length = rawBytes.Length;

@@ -11,22 +11,23 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.ncacn_np {
+    using SharpCifs.Util.Sharpen;
 
+    /// <summary>
+    /// Transport factory
+    /// </summary>
+    public class TransportFactory : rpc.TransportFactory {
 
-namespace rpc.ncacn_np
-{
-
-
-	public class TransportFactory : rpc.TransportFactory
-	{
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.Properties properties) throws rpc.ProviderException
-		public override Transport createTransport(string address, Properties properties)
-		{
-			return new RpcTransport(address, properties);
-		}
-
-	}
-
+        /// <summary>
+        /// Create transport
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="properties"></param>
+        /// <exception cref="ProviderException"></exception>
+        /// <returns></returns>
+        public override ITransport CreateTransport(string address, Properties properties) {
+            return new RpcTransport(address, properties);
+        }
+    }
 }

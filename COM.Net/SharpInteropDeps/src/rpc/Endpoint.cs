@@ -11,35 +11,28 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
+    using System;
 
-	using NdrObject = ndr.NdrObject;
-	using PresentationSyntax = core.PresentationSyntax;
-	using UUID = core.UUID;
+    /// <summary>
+    /// Endpoint type
+    /// </summary>
+    [Flags]
+    public enum Endpoint {
 
-	public interface Endpoint
-	{
+        /// <summary>
+        /// Maybe
+        /// </summary>
+        MAYBE = 0x01,
 
-		Transport Transport {get;}
+        /// <summary>
+        /// Idempotent
+        /// </summary>
+        IDEMPOTENT = 0x02,
 
-		PresentationSyntax Syntax {get;}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrObject ndrobj) throws java.io.IOException;
-		void call(int semantics, UUID @object, int opnum, NdrObject ndrobj);
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void detach() throws java.io.IOException;
-		void detach();
-
-	}
-
-	public static class Endpoint_Fields
-	{
-		public const int MAYBE = 0x01;
-		public const int IDEMPOTENT = 0x02;
-		public const int BROADCAST = 0x04;
-	}
-
+        /// <summary>
+        /// Broadcast
+        /// </summary>
+        BROADCAST = 0x04,
+    }
 }

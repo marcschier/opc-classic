@@ -12,7 +12,7 @@ namespace org.jinterop.dcom.transport {
 
 
     using SelectorManager = niosupport.SelectorManager;
-    using Transport = rpc.Transport;
+    using ITransport = rpc.ITransport;
 
     /// <summary>
     /// Factory for <seealso cref="JIComTransport"/>
@@ -34,10 +34,10 @@ namespace org.jinterop.dcom.transport {
 		}
 
 		/// <seealso cref= rpc.TransportFactory#createTransport(java.lang.String,
-		///      java.util.Properties) </seealso>
+		///      java.util.SharpCifs.Util.Sharpen.Properties) </seealso>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.Properties properties) throws rpc.ProviderException
-		public Transport createTransport(string address, Properties properties)
+//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
+		public ITransport createTransport(string address, SharpCifs.Util.Sharpen.Properties properties)
 		{
 			return new JIComTransport(address, selectorManager, properties);
 		}

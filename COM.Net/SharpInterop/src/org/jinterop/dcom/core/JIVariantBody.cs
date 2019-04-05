@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using Serilog;
     using System;
@@ -446,7 +446,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal virtual void encode(NetworkDataRepresentation ndr, IList defferedPointers, int flag) {
+        internal virtual void encode(NdrCodec ndr, IList defferedPointers, int flag) {
 
             {
                 //		try
@@ -471,8 +471,8 @@ namespace org.jinterop.dcom.core {
                 //			}
 
                 //just a place holder for length
-                ndr.writeUnsignedLong(-1); // was 0xffffffff
-                ndr.writeUnsignedLong(0);
+                ndr.WriteUnsignedLong(-1); // was 0xffffffff
+                ndr.WriteUnsignedLong(0);
 
                 //Type
                 var varType = getVarType(_object != null ? _object.GetType() : _nestedArraysRealClass, _object);
@@ -482,25 +482,25 @@ namespace org.jinterop.dcom.core {
                             JIFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT) {
                     varType = _isByRef ? 0x4000 | JIVariant.VT_DISPATCH : JIVariant.VT_DISPATCH;
                 }
-                ndr.writeUnsignedShort(varType);
+                ndr.WriteUnsignedShort(varType);
 
                 //reserved bytes
-                ndr.writeUnsignedSmall(0xCC);
-                ndr.writeUnsignedSmall(0xCC);
-                ndr.writeUnsignedSmall(0xCC);
-                ndr.writeUnsignedSmall(0xCC);
-                ndr.writeUnsignedSmall(0xCC);
-                ndr.writeUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
+                ndr.WriteUnsignedSmall(0xCC);
 
                 if (_object != null) {
-                    ndr.writeUnsignedLong(varType);
+                    ndr.WriteUnsignedLong(varType);
                 }
                 else {
                     if (!_isByRef) {
-                        ndr.writeUnsignedLong(JIVariant.VT_ARRAY);
+                        ndr.WriteUnsignedLong(JIVariant.VT_ARRAY);
                     }
                     else {
-                        ndr.writeUnsignedLong(JIVariant.VT_BYREF_VT_ARRAY);
+                        ndr.WriteUnsignedLong(JIVariant.VT_BYREF_VT_ARRAY);
                     }
                 }
 
@@ -521,7 +521,7 @@ namespace org.jinterop.dcom.core {
                             byRefFlag = 4;
                         }
                     }
-                    ndr.writeUnsignedLong(byRefFlag);
+                    ndr.WriteUnsignedLong(byRefFlag);
                 }
 
                 //we should not use the deffered pointers here, but pass our own one, so that only they are written...
@@ -550,7 +550,7 @@ namespace org.jinterop.dcom.core {
                     value++;
                 }
                 ndr.Buffer.Index = start;
-                ndr.writeUnsignedLong(value);
+                ndr.WriteUnsignedLong(value);
                 ndr.Buffer.Index = currentIndex;
 
                 Log.Logger.Verbose("Variant length is " + length + " , value " + value + " , variant type" + _type);
@@ -758,7 +758,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal static JIVariantBody decode(NetworkDataRepresentation ndr, IList defferedPointers, int flag, IDictionary additionalData) {
+        internal static JIVariantBody decode(NdrCodec ndr, IList defferedPointers, int flag, IDictionary additionalData) {
             //bool readLong = false;
             var index = (double)ndr.Buffer.Index;
             if (index % 8.0 != 0) {
@@ -767,17 +767,17 @@ namespace org.jinterop.dcom.core {
             }
 
             var start = ndr.Buffer.Index;
-            var length = ndr.readUnsignedLong(); //read the potential length
-            ndr.readUnsignedLong(); //read the reserved byte
+            var length = ndr.ReadUnsignedLong(); //read the potential length
+            ndr.ReadUnsignedLong(); //read the reserved byte
 
-            var variantType = ndr.readUnsignedShort(); //varType
+            var variantType = ndr.ReadUnsignedShort(); //varType
 
             //read reserved bytes
-            ndr.readUnsignedShort();
-            ndr.readUnsignedShort();
-            ndr.readUnsignedShort();
+            ndr.ReadUnsignedShort();
+            ndr.ReadUnsignedShort();
+            ndr.ReadUnsignedShort();
 
-            ndr.readUnsignedLong(); //32 bit varType
+            ndr.ReadUnsignedLong(); //32 bit varType
 
             JIVariantBody variant = null;
 
@@ -964,13 +964,13 @@ namespace org.jinterop.dcom.core {
             return type;
         }
 
-        private static object getDecodedValue(NetworkDataRepresentation ndr, IList defferedPointers, int type, bool isByRef, IDictionary additionalData, int flag) {
+        private static object getDecodedValue(NdrCodec ndr, IList defferedPointers, int type, bool isByRef, IDictionary additionalData, int flag) {
 
             object obj = null;
             var c = getVarClass(type);
             if (c != null) {
                 if (isByRef) {
-                    ndr.readUnsignedLong(); //Read the Pointer
+                    ndr.ReadUnsignedLong(); //Read the Pointer
                 }
                 if (c.Equals(typeof(SCODE))) {
                     obj = JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?), null, flag, additionalData);
@@ -1012,20 +1012,20 @@ namespace org.jinterop.dcom.core {
         /// <param name="additionalData"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        private static JIStruct getDecodedValueAsArray(NetworkDataRepresentation ndr, 
+        private static JIStruct getDecodedValueAsArray(NdrCodec ndr, 
             IList defferedPointers, int type, bool isByRef, IDictionary additionalData, int flag) {
             //int newFLAG = flag;
             if (isByRef) {
-                ndr.readUnsignedLong(); //read the pointer
+                ndr.ReadUnsignedLong(); //read the pointer
                 type = type & ~JIVariant.VT_BYREF; //so that actual type can be determined
             }
 
             //read pointer referent id
-            if (ndr.readUnsignedLong() == 0) {
+            if (ndr.ReadUnsignedLong() == 0) {
                 return null;
             }
 
-            ndr.readUnsignedLong(); //1
+            ndr.ReadUnsignedLong(); //1
 
             var safeArray = new JIStruct();
             try {
@@ -1103,7 +1103,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="obj"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        private void setValue(NetworkDataRepresentation ndr, object obj, IList defferedPointers, int flag) {
+        private void setValue(NdrCodec ndr, object obj, IList defferedPointers, int flag) {
             if (_isNull) {
                 return; //null , is only 20 bytes
             }
@@ -1121,8 +1121,8 @@ namespace org.jinterop.dcom.core {
             }
             else {
 
-                ndr.writeUnsignedLong(new object().GetHashCode()); //pointer referentId
-                ndr.writeUnsignedLong(1);
+                ndr.WriteUnsignedLong(new object().GetHashCode()); //pointer referentId
+                ndr.WriteUnsignedLong(1);
 
                 JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIStruct), _safeArrayStruct, defferedPointers, flag);
             }

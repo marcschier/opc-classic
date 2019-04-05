@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -80,16 +80,16 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIStdObjRef decode(NetworkDataRepresentation ndr) {
+        internal static JIStdObjRef decode(NdrCodec ndr) {
             var objRef = new JIStdObjRef {
-                Flags = ndr.readUnsignedLong(),
-                PublicRefs = ndr.readUnsignedLong(),
+                Flags = ndr.ReadUnsignedLong(),
+                PublicRefs = ndr.ReadUnsignedLong(),
                 Oxid = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8),
                 ObjectId = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8)
             };
             try {
                 var ipid2 = new UUID();
-                ipid2.decode(ndr, ndr.Buffer);
+                ipid2.Decode(ndr, ndr.Buffer);
                 objRef.Ipid = ipid2.ToString();
             }
             catch (NdrException e) {
@@ -98,14 +98,14 @@ namespace org.jinterop.dcom.core {
             return objRef;
         }
 
-        public void encode(NetworkDataRepresentation ndr) {
-            ndr.writeUnsignedLong(Flags);
-            ndr.writeUnsignedLong(PublicRefs);
+        public void encode(NdrCodec ndr) {
+            ndr.WriteUnsignedLong(Flags);
+            ndr.WriteUnsignedLong(PublicRefs);
             JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, Oxid);
             JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, ObjectId);
             try {
                 var ipid = new UUID(Ipid);
-                ipid.encode(ndr, ndr.Buffer);
+                ipid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
 

@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
@@ -17,7 +17,7 @@ namespace org.jinterop.dcom.core {
     /// <summary>
     /// Partially implements IOxidResolver interface, used only for ResolveOxid calls.
     /// </summary>
-    internal sealed class JIOxidResolver : NdrObject {
+    internal sealed class JIOxidResolver : NdrOp {
 
         /// <summary>
         /// Bindings
@@ -41,7 +41,7 @@ namespace org.jinterop.dcom.core {
         public override int Opnum => 4;
 
         /// <inheritdoc/>
-        public override void write(NetworkDataRepresentation ndr) {
+        public override void Write(NdrCodec ndr) {
             JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, _odix);
             JIMarshalUnMarshalHelper.serialize(ndr, typeof(short?),
                 (short)1, new ArrayList(), JIFlags.FLAG_NULL);
@@ -50,13 +50,13 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override void read(NetworkDataRepresentation ndr) {
-            ndr.readUnsignedLong(); //pointer
-            ndr.readUnsignedLong(); //some length component, irrelevant for us right now
+        public override void Read(NdrCodec ndr) {
+            ndr.ReadUnsignedLong(); //pointer
+            ndr.ReadUnsignedLong(); //some length component, irrelevant for us right now
             OxidBindings = JIDualStringArray.decode(ndr);
             try {
                 var ipid2 = new UUID();
-                ipid2.decode(ndr, ndr.Buffer);
+                ipid2.Decode(ndr, ndr.Buffer);
                 IPID = ipid2.ToString();
             }
             catch (NdrException e) {
@@ -64,13 +64,13 @@ namespace org.jinterop.dcom.core {
             }
 
             //read the auth hint
-            var authenticationHint = ndr.readUnsignedLong();
+            var authenticationHint = ndr.ReadUnsignedLong();
             var comVersion = new JIComVersion {
-                MajorVersion = ndr.readUnsignedShort(),
-                MinorVersion = ndr.readUnsignedShort()
+                MajorVersion = ndr.ReadUnsignedShort(),
+                MinorVersion = ndr.ReadUnsignedShort()
             };
 
-            var hresult = ndr.readUnsignedLong();
+            var hresult = ndr.ReadUnsignedLong();
 
             if (hresult != 0) {
                 throw new JIRuntimeException(hresult);

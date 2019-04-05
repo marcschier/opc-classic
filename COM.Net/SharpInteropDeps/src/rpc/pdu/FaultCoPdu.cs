@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-
+﻿
 // 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
 // 
@@ -15,249 +13,210 @@ using System.Collections;
 // 
 
 
+namespace rpc.pdu {
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
+    using System;
+    using System.IO;
 
-namespace rpc.pdu
-{
+    /// <summary>
+    /// Fault pdu
+    /// </summary>
+    public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable<FaultCoPdu> {
 
+        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+        public const int FAULT_TYPE = 0x03;
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
-
-	public class FaultCoPdu : ConnectionOrientedPdu, FaultCodes, Fragmentable
-	{
-
-		public const int FAULT_TYPE = 0x03;
-
-		private sbyte[] stub;
-
-		private int allocationHint;
-
-		private int contextId;
-
-		private int cancelCount;
-
-		private int status = FaultCodes_Fields.UNSPECIFIED_REJECTION;
-
+        /// <inheritdoc/>
         public override int Type => FAULT_TYPE;
 
-        public virtual sbyte[] Stub {
-            get => stub;
-            set => stub = value;
+        /// <summary>
+        /// Stub
+        /// </summary>
+        public byte[] Stub { get; set; }
+
+        /// <summary>
+        /// Hint
+        /// </summary>
+        public int AllocationHint { get; set; }
+
+        /// <summary>
+        /// Context
+        /// </summary>
+        public int ContextId { get; set; }
+
+        /// <summary>
+        /// Cancel counter
+        /// </summary>
+        public int CancelCount { get; set; }
+
+        /// <summary>
+        /// Status
+        /// </summary>
+        public FaultCode Status { get; set; } = FaultCode.UNSPECIFIED_REJECTION;
+
+        /// <inheritdoc/>
+        protected internal override void ReadPdu(NdrCodec ndr) {
+            ReadHeader(ndr);
+            ReadBody(ndr);
+            ReadStub(ndr);
         }
 
-
-        public virtual int AllocationHint {
-            get => allocationHint;
-            set => allocationHint = value;
+        /// <inheritdoc/>
+        protected internal override void WritePdu(NdrCodec ndr) {
+            WriteHeader(ndr);
+            WriteBody(ndr);
+            WriteStub(ndr);
         }
 
-
-        public virtual int ContextId {
-            get => contextId;
-            set => contextId = value;
+        /// <inheritdoc/>
+        protected internal override void ReadBody(NdrCodec ndr) {
+            AllocationHint = ndr.ReadUnsignedLong();
+            ContextId = ndr.ReadUnsignedShort();
+            CancelCount = ndr.ReadUnsignedSmall();
+            Status = (FaultCode)ndr.ReadUnsignedLong();
         }
 
-
-        public virtual int CancelCount {
-            get => cancelCount;
-            set => cancelCount = value;
+        /// <inheritdoc/>
+        protected internal override void WriteBody(NdrCodec ndr) {
+            ndr.WriteUnsignedLong(AllocationHint);
+            ndr.WriteUnsignedShort(ContextId);
+            ndr.WriteUnsignedSmall((short)CancelCount);
+            ndr.WriteUnsignedLong((int)Status);
         }
 
-
-        public virtual int Status {
-            get => status;
-            set => status = value;
+        /// <inheritdoc/>
+        protected internal void ReadStub(NdrCodec ndr) {
+            var buf = ndr.Buffer;
+            buf.Align(8);
+            byte[] stub = null;
+            var length = FragmentLength - buf.Index;
+            if (length > 0) {
+                stub = new byte[length];
+                ndr.ReadOctetArray(stub, 0, length);
+            }
+            Stub = stub;
         }
 
+        /// <inheritdoc/>
+        protected internal void WriteStub(NdrCodec ndr) {
+            var buf = ndr.Buffer;
+            buf.Align(8, 0);
+            var stub = Stub;
+            if (stub != null) {
+                ndr.WriteOctetArray(stub, 0, stub.Length);
+            }
+        }
 
-        protected internal override void readPdu(NetworkDataRepresentation ndr)
-		{
-			readHeader(ndr);
-			readBody(ndr);
-			readStub(ndr);
-		}
+        /// <inheritdoc/>
+        public Iterator<FaultCoPdu> GetFragments(int size) {
+            var stub = Stub;
+            if (stub == null) {
+                return new FaultCoPdu[] { this }.Iterator();
+            }
+            var stubSize = size - 24;
+            if (stub.Length <= stubSize) {
+                return new FaultCoPdu[] { this }.Iterator();
+            }
+            return new FragmentIterator(this, stubSize);
+        }
 
-		protected internal override void writePdu(NetworkDataRepresentation ndr)
-		{
-			writeHeader(ndr);
-			writeBody(ndr);
-			writeStub(ndr);
-		}
+        /// <inheritdoc/>
+        public FaultCoPdu Reassemble(Iterator<FaultCoPdu> fragments) {
+            if (!fragments.HasNext()) {
+                throw new IOException("No fragments available.");
+            }
+            try {
+                var pdu = fragments.Next();
+                var stub = pdu.Stub;
+                if (stub == null) {
+                    stub = new byte[0];
+                }
+                while (fragments.HasNext()) {
+                    var fragment_Renamed = fragments.Next();
+                    var fragmentStub = fragment_Renamed.Stub;
+                    if (fragmentStub != null && fragmentStub.Length > 0) {
+                        var tmp = new byte[stub.Length + fragmentStub.Length];
+                        Array.Copy(stub, 0, tmp, 0, stub.Length);
+                        Array.Copy(fragmentStub, 0, tmp, stub.Length, fragmentStub.Length);
+                        stub = tmp;
+                    }
+                }
+                var length = stub.Length;
+                if (length > 0) {
+                    pdu.Stub = stub;
+                    pdu.AllocationHint = length;
+                }
+                else {
+                    pdu.Stub = null;
+                    pdu.AllocationHint = 0;
+                }
+                pdu.SetFlag(PFC_FIRST_FRAG, true);
+                pdu.SetFlag(PFC_LAST_FRAG, true);
+                return pdu;
+            }
+            catch (Exception) {
+                throw new IOException("Unable to assemble PDU fragments.");
+            }
+        }
 
-		protected internal override void readBody(NetworkDataRepresentation ndr)
-		{
-			AllocationHint = ndr.readUnsignedLong();
-			ContextId = ndr.readUnsignedShort();
-			CancelCount = ndr.readUnsignedSmall();
-			Status = (int) ndr.readUnsignedLong();
-		}
+        /// <inheritdoc/>
+        public FaultCoPdu Clone() {
+            try {
+                return (FaultCoPdu)base.MemberwiseClone(); // TODO : Deep clone
+            }
+            catch (Exception) {
+                throw new InvalidOperationException();
+            }
+        }
 
-		protected internal override void writeBody(NetworkDataRepresentation ndr)
-		{
-			ndr.writeUnsignedLong(AllocationHint);
-			ndr.writeUnsignedShort(ContextId);
-			ndr.writeUnsignedSmall((short) CancelCount);
-			ndr.writeUnsignedLong(Status);
-		}
+        private class FragmentIterator : Iterator<FaultCoPdu> {
 
-		protected internal virtual void readStub(NetworkDataRepresentation ndr)
-		{
-			var buf = ndr.Buffer;
-			buf.align(8);
-			sbyte[] stub = null;
-			var length = FragmentLength - buf.Index;
-			if (length > 0)
-			{
-				stub = new sbyte[length];
-				ndr.readOctetArray(stub, 0, length);
-			}
-			Stub = stub;
-		}
+            public FragmentIterator(FaultCoPdu outerInstance, int stubSize) {
+                _outerInstance = outerInstance;
+                _stubSize = stubSize;
+            }
 
-		protected internal virtual void writeStub(NetworkDataRepresentation ndr)
-		{
-			var buf = ndr.Buffer;
-			buf.align(8, (sbyte) 0);
-			var stub = Stub;
-			if (stub != null)
-			{
-				ndr.writeOctetArray(stub, 0, stub.Length);
-			}
-		}
+            /// <inheritdoc/>
+            public override bool HasNext() {
+                return _index < _outerInstance.Stub.Length;
+            }
 
-		public virtual IEnumerator fragment(int size)
-		{
-			var stub = Stub;
-			if (stub == null)
-			{
-				return Arrays.asList(new FaultCoPdu[] {this}).GetEnumerator();
-			}
-			var stubSize = size - 24;
-			if (stub.Length <= stubSize)
-			{
-				return Arrays.asList(new FaultCoPdu[] {this}).GetEnumerator();
-			}
-			return new FragmentIterator(this, stubSize);
-		}
+            /// <inheritdoc/>
+            public override FaultCoPdu Next() {
+                if (_index >= _outerInstance.Stub.Length) {
+                    throw new NoSuchElementException();
+                }
+                var fragment = _outerInstance.Clone();
+                var allocation = _outerInstance.Stub.Length - _index;
+                fragment.AllocationHint = allocation;
+                if (_stubSize < allocation) {
+                    allocation = _stubSize;
+                }
+                var fragmentStub = new byte[allocation];
+                Array.Copy(_outerInstance.Stub, _index, fragmentStub, 0, allocation);
+                fragment.Stub = fragmentStub;
+                var flags = _outerInstance.Flags & ~(PFC_FIRST_FRAG | PFC_LAST_FRAG);
+                if (_index == 0) {
+                    flags |= PFC_FIRST_FRAG;
+                }
+                _index += allocation;
+                if (_index >= _outerInstance.Stub.Length) {
+                    flags |= PFC_LAST_FRAG;
+                }
+                fragment.Flags = flags;
+                return fragment;
+            }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Fragmentable assemble(java.util.Iterator fragments) throws java.io.IOException
-		public virtual Fragmentable assemble(IEnumerator fragments)
-		{
-			if (!fragments.hasNext())
-			{
-				throw new IOException("No fragments available.");
-			}
-			try
-			{
-				var pdu = (FaultCoPdu) fragments.next();
-				var stub = pdu.Stub;
-				if (stub == null)
-				{
-					stub = new sbyte[0];
-				}
-				while (fragments.hasNext())
-				{
-					var fragment_Renamed = (FaultCoPdu) fragments.next();
-					var fragmentStub = fragment_Renamed.Stub;
-					if (fragmentStub != null && fragmentStub.Length > 0)
-					{
-						var tmp = new sbyte[stub.Length + fragmentStub.Length];
-						Array.Copy(stub, 0, tmp, 0, stub.Length);
-						Array.Copy(fragmentStub, 0, tmp, stub.Length, fragmentStub.Length);
-						stub = tmp;
-					}
-				}
-				var length = stub.Length;
-				if (length > 0)
-				{
-					pdu.Stub = stub;
-					pdu.AllocationHint = length;
-				}
-				else
-				{
-					pdu.Stub = null;
-					pdu.AllocationHint = 0;
-				}
-				pdu.setFlag(PFC_FIRST_FRAG, true);
-				pdu.setFlag(PFC_LAST_FRAG, true);
-				return pdu;
-			}
-			catch (Exception)
-			{
-				throw new IOException("Unable to assemble PDU fragments.");
-			}
-		}
+            public override void Remove() {
+                throw new NotSupportedException();
+            }
 
-		public virtual object clone()
-		{
-			try
-			{
-				return base.clone();
-			}
-			catch (Exception)
-			{
-				throw new InvalidOperationException();
-			}
-		}
+            private readonly FaultCoPdu _outerInstance;
+            private readonly int _stubSize;
+            private int _index;
+        }
 
-		private class FragmentIterator : IEnumerator
-		{
-			private readonly FaultCoPdu outerInstance;
-
-
-			internal int stubSize;
-
-			internal int index;
-
-			public FragmentIterator(FaultCoPdu outerInstance, int stubSize)
-			{
-				this.outerInstance = outerInstance;
-				this.stubSize = stubSize;
-			}
-
-			public virtual bool hasNext()
-			{
-				return index < outerInstance.stub.Length;
-			}
-
-			public virtual object next()
-			{
-				if (index >= outerInstance.stub.Length)
-				{
-					throw new NoSuchElementException();
-				}
-				var fragment = (FaultCoPdu) FaultCoPdu.this.clone();
-				var allocation = outerInstance.stub.Length - index;
-				fragment.AllocationHint = allocation;
-				if (stubSize < allocation)
-				{
-					allocation = stubSize;
-				}
-				var fragmentStub = new sbyte[allocation];
-				Array.Copy(outerInstance.stub, index, fragmentStub, 0, allocation);
-				fragment.Stub = fragmentStub;
-				var flags = outerInstance.Flags & ~(PFC_FIRST_FRAG | PFC_LAST_FRAG);
-				if (index == 0)
-				{
-					flags |= PFC_FIRST_FRAG;
-				}
-				index += allocation;
-				if (index >= outerInstance.stub.Length)
-				{
-					flags |= PFC_LAST_FRAG;
-				}
-				fragment.Flags = flags;
-				return fragment;
-			}
-
-			public virtual void remove()
-			{
-				throw new NotSupportedException();
-			}
-
-		}
-
-	}
+    }
 
 }

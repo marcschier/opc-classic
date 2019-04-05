@@ -7,6 +7,8 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+using System;
+
 namespace org.jinterop.dcom.core {
 
 
@@ -78,8 +80,8 @@ namespace org.jinterop.dcom.core {
                             else if (c.Equals(typeof(char?))) {
                                 c = typeof(char);
                             }
-                            else if (c.Equals(typeof(sbyte?))) {
-                                c = typeof(sbyte);
+                            else if (c.Equals(typeof(byte?))) {
+                                c = typeof(byte);
                             }
                             else if (c.Equals(typeof(short?))) {
                                 c = typeof(short);

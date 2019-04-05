@@ -9,8 +9,8 @@
 
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
+    using Serilog;
     using System;
-
 
     /// <summary>
     /// Stores the oxid details in memory.
@@ -18,6 +18,17 @@ namespace org.jinterop.dcom.core {
     internal sealed class JIComOxidDetails {
         private ThreadGroup remUnknownThread;
 
+        /// <summary>
+        /// Create details
+        /// </summary>
+        /// <param name="javaInstance"></param>
+        /// <param name="oxid"></param>
+        /// <param name="oid"></param>
+        /// <param name="iid"></param>
+        /// <param name="ipid"></param>
+        /// <param name="ptr"></param>
+        /// <param name="helper"></param>
+        /// <param name="protectionLevel"></param>
         internal JIComOxidDetails(JILocalCoClass javaInstance, JIOxid oxid, 
             JIObjectId oid, string iid, string ipid, JIInterfacePointer ptr,
             JIComOxidRuntimeHelper helper, int protectionLevel) {
@@ -30,29 +41,58 @@ namespace org.jinterop.dcom.core {
             COMRuntimeHelper = helper;
         }
 
+        /// <summary>
+        /// Port for unknown
+        /// </summary>
         internal int PortForRemUnknown { set; get; } = -1;
 
-        internal string IID { get; } = null;
+        /// <summary>
+        /// IId
+        /// </summary>
+        internal string IID { get; }
 
-        internal string Ipid { get; } = null;
+        /// <summary>
+        /// Ipid
+        /// </summary>
+        internal string Ipid { get; }
 
-        internal string RemUnknownIpid { get; set; } = null;
+        /// <summary>
+        /// Unknown ipid
+        /// </summary>
+        internal string RemUnknownIpid { get; set; }
 
-        internal JIObjectId Oid { get; } = null;
+        /// <summary>
+        /// Oid
+        /// </summary>
+        internal JIObjectId Oid { get; }
 
-        internal JIOxid Oxid { get; } = null;
+        /// <summary>
+        /// Oxid
+        /// </summary>
+        internal JIOxid Oxid { get; }
 
-        internal JILocalCoClass Referent { get; } = null;
+        /// <summary>
+        /// Referent
+        /// </summary>
+        internal JILocalCoClass Referent { get; }
 
+        /// <summary>
+        /// Runtime helper
+        /// </summary>
+        internal JIComOxidRuntimeHelper COMRuntimeHelper { get; }
 
-        internal JIComOxidRuntimeHelper COMRuntimeHelper { get; } = null;
-
+        /// <summary>
+        /// Protection level
+        /// </summary>
         internal int ProtectionLevel { get; } = 2;
 
         internal ThreadGroup RemUnknownThreadGroup {
             set => remUnknownThread = value;
         }
 
+        /// <summary>
+        /// Interrupt unknown thread group thread
+        /// </summary>
         internal void interruptRemUnknownThreadGroup() {
             if (remUnknownThread != null) {
                 try {
@@ -65,5 +105,4 @@ namespace org.jinterop.dcom.core {
             }
         }
     }
-
 }

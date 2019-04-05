@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using System;
     using System.Collections;
@@ -131,7 +131,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> </param>
         public void removeMember(int index) {
-            object member = Members.Remove(index);
+            object member = Members.GetAndRemoveAt(index);
             if (member is JIArray) {
                 //we need to remove it's max count values also.
                 //JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
@@ -173,7 +173,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG) {
+        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
             //first write all Max counts and then the rest of the structs
             for (var i = 0; i < ArrayMaxCounts.Count; i++) {
                 JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), (int?)ArrayMaxCounts[i], null, FLAG);
@@ -204,7 +204,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIStruct decode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
+        internal JIStruct decode(NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
             var retVal = new JIStruct();
             var listOfMaxCounts2 = new ArrayList();
             //first read all Max counts and then the rest of the structs

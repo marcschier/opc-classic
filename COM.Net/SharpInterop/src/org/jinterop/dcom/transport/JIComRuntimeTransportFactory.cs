@@ -9,7 +9,7 @@
 
 
 namespace org.jinterop.dcom.transport {
-    using Transport = rpc.Transport;
+    using ITransport = rpc.ITransport;
 
     /// <summary>
     /// @exclude
@@ -25,8 +25,8 @@ namespace org.jinterop.dcom.transport {
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.Properties properties) throws rpc.ProviderException
-		public Transport createTransport(string address, Properties properties)
+//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
+		public ITransport createTransport(string address, SharpCifs.Util.Sharpen.Properties properties)
 		{
 				return new JIComRuntimeTransport(address, properties);
 		}

@@ -34,13 +34,13 @@ namespace org.jinterop.dcom.transport {
 
 
 		  private bool established;
-		  private Properties properties;
+		  private SharpCifs.Util.Sharpen.Properties properties;
 		  // this returns null, so that a recieve is performed first.
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.Properties properties) throws java.io.IOException
-		  public ConnectionOrientedPdu init(PresentationContext context, Properties properties)
+//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.SharpCifs.Util.Sharpen.Properties properties) throws java.io.IOException
+		  public ConnectionOrientedPdu init(PresentationContext context, SharpCifs.Util.Sharpen.Properties properties)
 		  {
-			  base.init(context,properties);
+			  base.Init(context,properties);
 			  this.properties = properties;
 			  return null;
 		  }
@@ -60,7 +60,7 @@ namespace org.jinterop.dcom.transport {
 					  for (var i = 0; i < presentationContexts.Length;i++)
 					  {
 						  var presentationContext = presentationContexts[i];
-						  if (!presentationContext.abstractSyntax.ToString().ToUpper().Equals(properties.getProperty(IID), StringComparison.CurrentCultureIgnoreCase))
+						  if (!presentationContext.AbstractSyntax.ToString().ToUpper().Equals(properties.getProperty(IID), StringComparison.CurrentCultureIgnoreCase))
 						  {
 							  //create a fault PDU stating the syntax is not supported.
 							  result[0] = new PresentationResult(PresentationResult.PROVIDER_REJECTION,PresentationResult.ABSTRACT_SYNTAX_NOT_SUPPORTED,new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
@@ -86,7 +86,7 @@ namespace org.jinterop.dcom.transport {
 					  for (var i = 0; i < presentationContexts.Length;i++)
 					  {
 						  var presentationContext = presentationContexts[i];
-						  if (!presentationContext.abstractSyntax.ToString().ToUpper().Equals(properties.getProperty(IID), StringComparison.CurrentCultureIgnoreCase))
+						  if (!presentationContext.AbstractSyntax.ToString().ToUpper().Equals(properties.getProperty(IID), StringComparison.CurrentCultureIgnoreCase))
 						  {
 							  //create a fault PDU stating the syntax is not supported.
 							  result[0] = new PresentationResult(PresentationResult.PROVIDER_REJECTION,PresentationResult.ABSTRACT_SYNTAX_NOT_SUPPORTED,new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
@@ -107,7 +107,7 @@ namespace org.jinterop.dcom.transport {
 
 				  break;
 				  default:
-					  reply = base.accept(reply);
+					  reply = base.Accept(reply);
 				  break;
 			  }
 

@@ -18,7 +18,6 @@ namespace org.jinterop.dcom.common {
     /// </summary>
     [Serializable]
     public sealed class JIComVersion {
-        private const long serialVersionUID = -1252228963385487909L;
 
         /// <summary>
         /// Create version

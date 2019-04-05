@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using System.Collections;
     using System;
@@ -117,7 +117,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList defferedPointers, int flag) {
+        internal void encode(NdrCodec ndr, IList defferedPointers, int flag) {
 
             flag = flag | _flags;
             if (Null) {
@@ -171,7 +171,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIPointer decode(NetworkDataRepresentation ndr, IList defferedPointers, int flag,
+        internal JIPointer decode(NdrCodec ndr, IList defferedPointers, int flag,
             IDictionary additionalData) {
             //shallowClone();
             flag = flag | _flags;

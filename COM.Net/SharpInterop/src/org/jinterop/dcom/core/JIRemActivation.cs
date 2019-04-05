@@ -8,14 +8,14 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
     using System;
     using System.Collections;
 
-    internal sealed class JIRemActivation : NdrObject, JIIServerActivation {
+    internal sealed class JIRemActivation : NdrOp, JIIServerActivation {
 
         /// <summary>
         /// That
@@ -76,13 +76,13 @@ namespace org.jinterop.dcom.core {
         public override int Opnum => 0;
 
         /// <inheritdoc/>
-        public override void write(NetworkDataRepresentation ndr) {
+        public override void Write(NdrCodec ndr) {
             var orpcThis = new JIOrpcThis();
             orpcThis.encode(ndr);
 
             //JIClsid of the component being activated.
             var uuid = new UUID();
-            uuid.parse(_clsid.ToString());
+            uuid.Parse(_clsid.ToString());
             try {
                 uuid.encode(ndr, ndr.buf);
             }
@@ -90,21 +90,21 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivation write", e);
             }
             if (_monikerName == null) {
-                ndr.writeUnsignedLong(0);
+                ndr.WriteUnsignedLong(0);
             }
             else {
-                ndr.writeCharacterArray(_monikerName.ToCharArray(), 0, _monikerName.Length); // Object Name
+                ndr.WriteCharacterArray(_monikerName.ToCharArray(), 0, _monikerName.Length); // Object Name
             }
 
-            ndr.writeUnsignedLong(0); // Minterface pointer
-            ndr.writeUnsignedLong(ClientImpersonationLevel); // impersonation level
-            ndr.writeUnsignedLong(Mode); //mode, when object name , interface pointer are not null , this is passed directly to IPersistFile:Load
-            ndr.writeUnsignedLong(2); //No. of IIDs requested.
-            ndr.writeUnsignedLong(new object().GetHashCode());
-            ndr.writeUnsignedLong(2); //Array length
+            ndr.WriteUnsignedLong(0); // Minterface pointer
+            ndr.WriteUnsignedLong(ClientImpersonationLevel); // impersonation level
+            ndr.WriteUnsignedLong(Mode); //mode, when object name , interface pointer are not null , this is passed directly to IPersistFile:Load
+            ndr.WriteUnsignedLong(2); //No. of IIDs requested.
+            ndr.WriteUnsignedLong(new object().GetHashCode());
+            ndr.WriteUnsignedLong(2); //Array length
 
             //IID of IUnknown , this is hard coded here, standard way of COM is to first get a handle to the IUnknown
-            uuid.parse("00000000-0000-0000-c000-000000000046");
+            uuid.Parse("00000000-0000-0000-c000-000000000046");
             try {
                 uuid.encode(ndr, ndr.buf);
             }
@@ -113,7 +113,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //checking for IDispatch support
-            uuid.parse("00020400-0000-0000-c000-000000000046");
+            uuid.Parse("00020400-0000-0000-c000-000000000046");
             try {
                 uuid.encode(ndr, ndr.buf);
             }
@@ -121,19 +121,19 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivation write");
             }
 
-            ndr.writeUnsignedLong(1); //Protocol Sequences available
-            ndr.writeUnsignedLong(1); //Array length
-            ndr.writeUnsignedShort(7); //TCP
+            ndr.WriteUnsignedLong(1); //Protocol Sequences available
+            ndr.WriteUnsignedLong(1); //Array length
+            ndr.WriteUnsignedShort(7); //TCP
             var address = JISession.LocalhostAddressAsIPbytes;
-            ndr.writeUnsignedShort(address[0]);
-            ndr.writeUnsignedShort(address[1]);
-            ndr.writeUnsignedShort(address[2]);
-            ndr.writeUnsignedShort(address[3]);
-            ndr.writeUnsignedShort(0);
+            ndr.WriteUnsignedShort(address[0]);
+            ndr.WriteUnsignedShort(address[1]);
+            ndr.WriteUnsignedShort(address[2]);
+            ndr.WriteUnsignedShort(address[3]);
+            ndr.WriteUnsignedShort(0);
         }
 
         /// <inheritdoc/>
-        public override void read(NetworkDataRepresentation ndr) {
+        public override void Read(NdrCodec ndr) {
 
             //first take out JIOrpcThat
             ORPCThat = JIOrpcThat.decode(ndr);
@@ -141,10 +141,10 @@ namespace org.jinterop.dcom.core {
             //now fill the oxid
             Oxid = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8);
 
-            var skipdual = ndr.readUnsignedLong();
+            var skipdual = ndr.ReadUnsignedLong();
 
             if (skipdual != 0) {
-                ndr.readUnsignedLong();
+                ndr.ReadUnsignedLong();
                 //now fill the dual string array for oxid bindings, the call to IRemUnknown will be
                 //directed to this address and the port in that address.
                 DualStringArrayForOxid = JIDualStringArray.decode(ndr);
@@ -156,7 +156,7 @@ namespace org.jinterop.dcom.core {
             //server implementation dependent.
             try {
                 var ipid2 = new UUID();
-                ipid2.decode(ndr, ndr.Buffer);
+                ipid2.Decode(ndr, ndr.Buffer);
                 IPID = ipid2.ToString();
             }
             catch (NdrException e) {
@@ -164,14 +164,14 @@ namespace org.jinterop.dcom.core {
             }
 
             //read the auth hint
-            AuthenticationHint = ndr.readUnsignedLong();
+            AuthenticationHint = ndr.ReadUnsignedLong();
 
             ComVersion = new JIComVersion {
-                MajorVersion = ndr.readUnsignedShort(),
-                MinorVersion = ndr.readUnsignedShort()
+                MajorVersion = ndr.ReadUnsignedShort(),
+                MinorVersion = ndr.ReadUnsignedShort()
             };
 
-            _hresult = ndr.readUnsignedLong();
+            _hresult = ndr.ReadUnsignedLong();
 
             if (_hresult != 0) {
                 //System.out.println("EXCEPTION FROM SERVER ! --> " + "0x" + Long.toHexString(hresult).substring(8));

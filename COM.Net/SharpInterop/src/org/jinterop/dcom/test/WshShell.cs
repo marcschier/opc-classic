@@ -72,7 +72,7 @@
 
 
 
-				Console.WriteLine(comServer.Properties);
+				Console.WriteLine(comServer.SharpCifs.Util.Sharpen.Properties);
 
 
 

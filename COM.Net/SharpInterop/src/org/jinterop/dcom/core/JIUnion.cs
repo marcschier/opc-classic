@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -126,7 +126,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="listOfDefferedPointers"></param>
         /// <param name="FLAGS"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList listOfDefferedPointers, int FLAGS) {
+        internal void encode(NdrCodec ndr, IList listOfDefferedPointers, int FLAGS) {
             if (_dsVsMember.Count == 0 || _dsVsMember.Count > 1) {
                 throw new JIRuntimeException(JIErrorCodes.JI_UNION_DISCRMINANT_SERIALIZATION_ERROR);
             }
@@ -152,7 +152,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAGS"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIUnion decode(NetworkDataRepresentation ndr, IList listOfDefferedPointers, int FLAGS, IDictionary additionalData) {
+        internal JIUnion decode(NdrCodec ndr, IList listOfDefferedPointers, int FLAGS, IDictionary additionalData) {
             //first read discriminant, and then call the appropriate deserializer of the member
             if (_dsVsMember.Count == 0) {
                 throw new JIRuntimeException(JIErrorCodes.JI_UNION_DISCRMINANT_DESERIALIZATION_ERROR);

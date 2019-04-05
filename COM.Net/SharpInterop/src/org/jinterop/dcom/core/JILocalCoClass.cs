@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using org.jinterop.dcom.impls;
     using rpc.core;
@@ -183,7 +183,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// called from com runtime.
         /// </summary>
-        internal sbyte[] ObjectId { set; get; } = null;
+        internal byte[] ObjectId { set; get; } = null;
 
         /// <summary>
         /// Interface pointer
@@ -258,7 +258,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="Opnum"> </param>
         /// <param name="ndr"></param>
         /// <exception cref="JIException"> </exception>
-        internal object[] invokeMethod(string IPID, int Opnum, NetworkDataRepresentation ndr) {
+        internal object[] invokeMethod(string IPID, int Opnum, NdrCodec ndr) {
             IPID = IPID.ToUpper();
             //somehow identify the method from the Opnum
             //this will come from the IDL.

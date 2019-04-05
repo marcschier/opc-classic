@@ -18,7 +18,7 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIRemUnknownServer : Stub {
 
-        private static Properties defaults = new Properties();
+        private static SharpCifs.Util.Sharpen.Properties defaults = new SharpCifs.Util.Sharpen.Properties();
         static JIRemUnknownServer() {
 
             defaults.put("rpc.ntlm.lanManagerKey", "false");
@@ -41,7 +41,7 @@ namespace org.jinterop.dcom.core {
                     _timeoutModifiedfrom0 = true;
                 }
 
-                Properties.setProperty("rpc.socketTimeout", value.ToString());
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", value.ToString());
             }
         }
 
@@ -62,29 +62,29 @@ namespace org.jinterop.dcom.core {
 
             _session = session;
             TransportFactory = JIComTransportFactory.SingleTon;
-            Properties = new Properties(defaults);
-            Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+            SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties(defaults);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
             if (session.NTLMv2Enabled) {
-                Properties.setProperty("rpc.ntlm.ntlmv2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlmv2", "true");
             }
 
             if (session.SSOEnabled) {
-                Properties.setProperty("rpc.ntlm.sso", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");
             }
             else {
-                Properties.setProperty("rpc.security.username", session.UserName);
-                Properties.setProperty("rpc.security.password", session.Password);
-                Properties.setProperty("rpc.ntlm.domain", session.Domain);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.username", session.UserName);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.password", session.Password);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.domain", session.Domain);
             }
 
             //now set the NTLMv2 Session Security.
             if (session.SessionSecurityEnabled) {
-                Properties.setProperty("rpc.ntlm.seal", "true");
-                Properties.setProperty("rpc.ntlm.sign", "true");
-                Properties.setProperty("rpc.ntlm.keyExchange", "true");
-                Properties.setProperty("rpc.ntlm.keyLength", "128");
-                Properties.setProperty("rpc.ntlm.ntlm2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.seal", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sign", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyExchange", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyLength", "128");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlm2", "true");
             }
 
             // Now will setup syntax for IRemUnknown and the address. 
@@ -120,11 +120,11 @@ namespace org.jinterop.dcom.core {
 
                 try {
 
-                    attach();
+                    Attach();
                     if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
                         //first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
-                        Endpoint.Syntax.setVersion(0, 0);
+                        Endpoint.Syntax.Version = 0;
                         ((JIComEndpoint)Endpoint).rebindEndPoint();
                     }
 
@@ -133,7 +133,7 @@ namespace org.jinterop.dcom.core {
 
                 }
                 catch (FaultException e) {
-                    throw new JIException(e.status, e);
+                    throw new JIException(e._code, e);
                 }
                 catch (IOException e) {
                     throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -171,7 +171,7 @@ namespace org.jinterop.dcom.core {
 
         internal void closeStub() {
             try {
-                detach();
+                Detach();
             }
             catch (IOException) {
             }

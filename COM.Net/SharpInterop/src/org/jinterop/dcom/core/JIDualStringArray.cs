@@ -10,7 +10,7 @@
 namespace org.jinterop.dcom.core {
     using System;
     using System.Collections;
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
     /// Represents array of network address and security bindings.
@@ -67,11 +67,11 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIDualStringArray decode(NetworkDataRepresentation ndr) {
+        internal static JIDualStringArray decode(NdrCodec ndr) {
             var dualStringArray = new JIDualStringArray();
 
             //first extract number of entries
-            var numEntries = ndr.readUnsignedShort();
+            var numEntries = ndr.ReadUnsignedShort();
 
             //return empty
             if (numEntries == 0) {
@@ -79,7 +79,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //extract security offset
-            var securityOffset = ndr.readUnsignedShort();
+            var securityOffset = ndr.ReadUnsignedShort();
 
             var listOfStringBindings = new ArrayList();
             var listOfSecurityBindings = new ArrayList();
@@ -125,11 +125,11 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        public void encode(NetworkDataRepresentation ndr) {
+        public void encode(NdrCodec ndr) {
             //fill num entries
             //this is total length/2. since they are all shorts
-            ndr.writeUnsignedShort((Length - 4) / 2);
-            ndr.writeUnsignedShort(_secOffset / 2);
+            ndr.WriteUnsignedShort((Length - 4) / 2);
+            ndr.WriteUnsignedShort(_secOffset / 2);
 
             var i = 0;
             if (StringBindings != null) {
@@ -137,7 +137,7 @@ namespace org.jinterop.dcom.core {
                     StringBindings[i].encode(ndr);
                     i++;
                 }
-                ndr.writeUnsignedShort(0);
+                ndr.WriteUnsignedShort(0);
             }
 
             i = 0;
@@ -146,7 +146,7 @@ namespace org.jinterop.dcom.core {
                     SecurityBindings[i].encode(ndr);
                     i++;
                 }
-                ndr.writeUnsignedShort(0);
+                ndr.WriteUnsignedShort(0);
             }
         }
 

@@ -1,11 +1,11 @@
 ﻿namespace org.jinterop.dcom.test {
 
 
-    using UniAddress = jcifs.UniAddress;
-    using NtlmPasswordAuthentication = jcifs.smb.NtlmPasswordAuthentication;
-    using SmbAuthException = jcifs.smb.SmbAuthException;
-    using SmbException = jcifs.smb.SmbException;
-    using SmbSession = jcifs.smb.SmbSession;
+    using UniAddress = SharpCifs.UniAddress;
+    using NtlmPasswordAuthentication = SharpCifs.smb.NtlmPasswordAuthentication;
+    using SmbAuthException = SharpCifs.smb.SmbAuthException;
+    using SmbException = SharpCifs.smb.SmbException;
+    using SmbSession = SharpCifs.smb.SmbSession;
 
     using JIComServer = core.JIComServer;
 
@@ -24,11 +24,11 @@
 	//	 NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "vikram_roopchand", "Dilbert007" );
 	//
 	//	 SmbSession.logon( mydomaincontoller, mycreds );
-		//	 Config.setProperty("jcifs.smb.client.laddr","10.24.10.65");
-		//	 Config.setProperty("jcifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-	//		 System.setProperty("jcifs.smb.client.laddr","10.24.10.65");
-	//		 System.setProperty("jcifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-	//		 System.setProperty("jcifs.netbios.hostname","itl-hw-lt15522.ad.infosys.com");
+		//	 Config.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
+		//	 Config.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
+	//		 System.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
+	//		 System.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
+	//		 System.setProperty("SharpCifs.netbios.hostname","itl-hw-lt15522.ad.infosys.com");
 
 			 //NtlmChallenge challenge = SmbSession.getChallengeForDomain();
 

@@ -11,12 +11,12 @@ namespace org.jinterop.dcom.core
 {
 
 
-	using SmbAuthException = jcifs.smb.SmbAuthException;
-	using SmbException = jcifs.smb.SmbException;
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+	using SmbAuthException = SharpCifs.smb.SmbAuthException;
+	using SmbException = SharpCifs.smb.SmbException;
+	using NdrBuffer = SharpCifs.Dcerpc.Ndr.NdrBuffer;
+	using NdrException = SharpCifs.Dcerpc.Ndr.NdrException;
+	using NdrOp = SharpCifs.Dcerpc.Ndr.NdrOp;
+	using NdrCodec = SharpCifs.Dcerpc.Ndr.NdrCodec;
 
 	using IJICOMRuntimeWorker = common.IJICOMRuntimeWorker;
 	using JIErrorCodes = common.JIErrorCodes;
@@ -50,10 +50,10 @@ namespace org.jinterop.dcom.core
 
 
 
-		internal JIComOxidRuntimeHelper(Properties properties)
+		internal JIComOxidRuntimeHelper(SharpCifs.Util.Sharpen.Properties properties)
 		{
             TransportFactory = JIComRuntimeTransportFactory.SingleTon;
-            Properties = properties;
+            SharpCifs.Util.Sharpen.Properties = properties;
             Address = "127.0.0.1[135]"; //this is never consulted so , putting localhost here.
 		}
 
@@ -85,8 +85,8 @@ namespace org.jinterop.dcom.core
 				try
 				{
                     Log.Logger.Information("started startOxid thread: " + Thread.CurrentThread.Name);
-                    attach();
-					((JIComRuntimeEndpoint)Endpoint).processRequests(new OxidResolverImpl(Properties),null,new ArrayList());
+                    Attach();
+					((JIComRuntimeEndpoint)Endpoint).processRequests(new OxidResolverImpl(SharpCifs.Util.Sharpen.Properties),null,new ArrayList());
 				}
 				catch (Exception e)
 				{
@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core
 				{
 					try
 					{
-						((JIComRuntimeEndpoint)Endpoint).detach();
+						((JIComRuntimeEndpoint)Endpoint).Detach();
 					}
 					catch (IOException)
 					{
@@ -172,11 +172,11 @@ namespace org.jinterop.dcom.core
                         //now create the JIComOxidRuntimeHelper Object and start it. We need a new one since the old one is already attached to the listener.
                         //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
                         //ORIGINAL LINE: final JIComOxidRuntimeHelper remUnknownHelper = new JIComOxidRuntimeHelper(getProperties());
-                        var remUnknownHelper = new JIComOxidRuntimeHelper(Properties);
+                        var remUnknownHelper = new JIComOxidRuntimeHelper(SharpCifs.Util.Sharpen.Properties);
 						lock (JIComOxidRuntime.mutex)
 						{
 							JISystem.internal_setSocket(socket);
-							remUnknownHelper.attach();
+							remUnknownHelper.Attach();
 						}
 
                         //now start a new thread with this socket 
@@ -245,7 +245,7 @@ namespace org.jinterop.dcom.core
 					{
 						try
 						{
-							remUnknownHelper.detach();
+							remUnknownHelper.Detach();
 						}
 						catch (IOException)
 						{
@@ -259,13 +259,13 @@ namespace org.jinterop.dcom.core
 
 	//This object should have serialized access only , i.e at a time only 1 read --> write , cycle should happen
 	// it is not multithreaded safe.
-	internal class OxidResolverImpl : NdrObject, IJICOMRuntimeWorker
+	internal class OxidResolverImpl : NdrOp, IJICOMRuntimeWorker
 	{
 		//override read\write\opnum etc. here, use the util apis to decompose this.
 		private int opnum = -1;
 		private NdrBuffer buffer;
-		private readonly Properties p;
-		public OxidResolverImpl(Properties p) : base()
+		private readonly SharpCifs.Util.Sharpen.Properties p;
+		public OxidResolverImpl(SharpCifs.Util.Sharpen.Properties p) : base()
 		{
 			this.p = p;
 		}
@@ -287,12 +287,12 @@ namespace org.jinterop.dcom.core
         }
 
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			ndr.Buffer = buffer; //this buffer is prepared via read.
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			//will read according to the opnum. The setOpnum should have been called before this
 			//call.	
@@ -325,12 +325,12 @@ namespace org.jinterop.dcom.core
 		private Random random = new Random();
 
 
-		private NdrBuffer SimplePing(NetworkDataRepresentation ndr)
+		private NdrBuffer SimplePing(NdrCodec ndr)
 		{
 			Log.Logger.Information("Oxid Object: SimplePing");
 			var b = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8); //setid
 			JIComOxidRuntime.addUpdateSets(new JISetId(b),new ArrayList(),new ArrayList());
-			buffer = new NdrBuffer(new sbyte[16],0);
+			buffer = new NdrBuffer(new byte[16],0);
 			buffer.enc_ndr_long(0);
 			buffer.enc_ndr_long(0);
 			buffer.enc_ndr_long(0);
@@ -338,7 +338,7 @@ namespace org.jinterop.dcom.core
 			return buffer;
 		}
 
-		private NdrBuffer ComplexPing(NetworkDataRepresentation ndr)
+		private NdrBuffer ComplexPing(NdrCodec ndr)
 		{
             Log.Logger.Information("Oxid Object: ComplexPing");
             var b = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8); //setid
@@ -361,15 +361,15 @@ namespace org.jinterop.dcom.core
 				listOfDels.Add(new JIObjectId(JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8),false));
 			}
 
-			if (Arrays.Equals(b,new sbyte[]{0,0,0,0,0,0,0,0}))
+			if (Arrays.Equals(b,new byte[]{0,0,0,0,0,0,0,0}))
 			{
 				random.NextBytes(b);
 			}
 
 			JIComOxidRuntime.addUpdateSets(new JISetId(b),listOfAdds,listOfDels);
 
-			buffer = new NdrBuffer(new sbyte[32],0);
-            var ndr2 = new NetworkDataRepresentation {
+			buffer = new NdrBuffer(new byte[32],0);
+            var ndr2 = new NdrCodec {
                 Buffer = buffer
             };
 
@@ -379,10 +379,10 @@ namespace org.jinterop.dcom.core
 			return buffer;
 		}
 
-		private NdrBuffer ServerAlive(NetworkDataRepresentation ndr)
+		private NdrBuffer ServerAlive(NdrCodec ndr)
 		{
             Log.Logger.Information("Oxid Object: ServerAlive");
-            var buffer = new sbyte[32]; //16 + 16=just in case
+            var buffer = new byte[32]; //16 + 16=just in case
 			var ndrBuffer = new NdrBuffer(buffer,0);
 			ndrBuffer.enc_ndr_long(0);
 			ndrBuffer.enc_ndr_long(0);
@@ -390,7 +390,7 @@ namespace org.jinterop.dcom.core
 			ndrBuffer.enc_ndr_long(0);
 			return ndrBuffer;
 		}
-		private NdrBuffer ServerAlive2(NetworkDataRepresentation ndr)
+		private NdrBuffer ServerAlive2(NdrCodec ndr)
 		{
             Log.Logger.Information("Oxid Object: ServerAlive2");
             //there is no in params for this.
@@ -411,11 +411,11 @@ namespace org.jinterop.dcom.core
 
             var dualStringArray = new JIDualStringArray(-1);
 
-			var buffer = new sbyte[dualStringArray.Length + 4 + 16 + 16]; //just in case - 2 unknown 8 bytes - COMVERSION
+			var buffer = new byte[dualStringArray.Length + 4 + 16 + 16]; //just in case - 2 unknown 8 bytes - COMVERSION
 			var ndrBuffer = new NdrBuffer(buffer,0);
 
 
-            var ndr2 = new NetworkDataRepresentation {
+            var ndr2 = new NdrCodec {
                 Buffer = ndrBuffer
             };
 
@@ -436,7 +436,7 @@ namespace org.jinterop.dcom.core
 			return ndrBuffer;
 		}
 		//will prepare a NdrBuffer for reply to this call 
-		private NdrBuffer ResolveOxid2(NetworkDataRepresentation ndr)
+		private NdrBuffer ResolveOxid2(NdrCodec ndr)
 		{
             Log.Logger.Information("Oxid Object: ResolveOxid2");
             //System.err.println("VIKRAM: resolve oxid thread Id = " + Thread.currentThread().getId());
@@ -513,13 +513,13 @@ namespace org.jinterop.dcom.core
 			var authnHint = new int?(details.ProtectionLevel);
 
 
-			var buffer = new sbyte[4 + 4 + dualStringArray.Length + 16 + 4 + 2 + 2 + 4 + 16];
+			var buffer = new byte[4 + 4 + dualStringArray.Length + 16 + 4 + 2 + 2 + 4 + 16];
 
 			//have all data now prepare the response
 			//the response expected here is defines the byte array size.
 			var ndrBuffer = new NdrBuffer(buffer,0);
 
-            var ndr2 = new NetworkDataRepresentation {
+            var ndr2 = new NdrCodec {
                 Buffer = ndrBuffer
             };
 
@@ -565,7 +565,7 @@ namespace org.jinterop.dcom.core
 
 	//This object should have serialized access only , i.e at a time only 1 read --> write , cycle should happen
 	//it is not multithreaded safe.
-	internal class RemUnknownObject : NdrObject, IJICOMRuntimeWorker
+	internal class RemUnknownObject : NdrOp, IJICOMRuntimeWorker
 	{
 		//override read\write\opnum etc. here, use the util apis to decompose this.
 		private int opnum = -1;
@@ -604,7 +604,7 @@ namespace org.jinterop.dcom.core
         }
 
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			ndr.Buffer = buffer; //this buffer is prepared via read.
 		}
@@ -628,7 +628,7 @@ namespace org.jinterop.dcom.core
 		private IDictionary mapOfIpidsVsRef = new Hashtable();
 		private bool workerOver_Renamed;
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			//will read according to the opnum. The setOpnum should have been called before this
 			//call.	
@@ -653,7 +653,7 @@ namespace org.jinterop.dcom.core
 						break;
 					case 4: //addref
 							JIOrpcThis.decode(ndr);
-							var length = ndr.readUnsignedShort();
+							var length = ndr.ReadUnsignedShort();
 
 							var retvals = new int[length];
 							var array = (JIArray)JIMarshalUnMarshalHelper.deSerialize(ndr, remInterfaceRefArray, new ArrayList(), JIFlags.FLAG_REPRESENTATION_ARRAY, new Hashtable());
@@ -675,14 +675,14 @@ namespace org.jinterop.dcom.core
                             retvals[i] = 0x1;
 
 
-                            int total = (int)(int?)mapOfIpidsVsRef[ipidref] + publicRefs + privateRefs;
+                            var total = (int)(int?)mapOfIpidsVsRef[ipidref] + publicRefs + privateRefs;
 								mapOfIpidsVsRef[ipidref] = total;
 							}
 
 
 							//preparing the response
-							buffer = new NdrBuffer(new sbyte[length * 4 + 16],0);
-                        var ndr2 = new NetworkDataRepresentation {
+							buffer = new NdrBuffer(new byte[length * 4 + 16],0);
+                        var ndr2 = new NdrCodec {
                             Buffer = buffer
                         };
                         JIOrpcThat.encode(ndr2);
@@ -699,7 +699,7 @@ namespace org.jinterop.dcom.core
 
 
 						JIOrpcThis.decode(ndr);
-						length = ndr.readUnsignedShort();
+						length = ndr.ReadUnsignedShort();
 						array = (JIArray)JIMarshalUnMarshalHelper.deSerialize(ndr, remInterfaceRefArray, new ArrayList(), JIFlags.FLAG_REPRESENTATION_ARRAY, new Hashtable());
 						//saving the ipids with there references. considering public + private references together for now.
 						structs = (JIStruct[])array.ArrayInstance;
@@ -713,7 +713,7 @@ namespace org.jinterop.dcom.core
 								continue;
 							}
 
-							int total = (int)(int?)mapOfIpidsVsRef[ipidref] - publicRefs - privateRefs;
+							var total = (int)(int?)mapOfIpidsVsRef[ipidref] - publicRefs - privateRefs;
 							if (total == 0)
 							{
 								mapOfIpidsVsRef.Remove(ipidref);
@@ -732,7 +732,7 @@ namespace org.jinterop.dcom.core
 
 						//I have 1 OID == 1 IPID == 1 java instance.
 						buffer = new NdrBuffer(new sbyte[32],0);
-                        ndr2 = new NetworkDataRepresentation {
+                        ndr2 = new NdrCodec {
                             Buffer = buffer
                         };
                         JIOrpcThat.encode(ndr2);
@@ -754,7 +754,7 @@ namespace org.jinterop.dcom.core
 				}
 				sbyte[] b = null;
 				object result = null;
-				var ndr2 = new NetworkDataRepresentation();
+				var ndr2 = new NdrCodec();
 				var hresult = 0;
 				object[] retArray = null;
 				try
@@ -883,7 +883,7 @@ namespace org.jinterop.dcom.core
 		}
 
 
-		private NdrBuffer QueryInterface(NetworkDataRepresentation ndr)
+		private NdrBuffer QueryInterface(NdrCodec ndr)
 		{
             //now to decompose all
             Log.Logger.Verbose("Within RemUnknownObject: QueryInterface");
@@ -894,7 +894,7 @@ namespace org.jinterop.dcom.core
 			var ipid = new UUID();
 			try
 			{
-				ipid.decode(ndr,ndr.Buffer);
+				ipid.Decode(ndr,ndr.Buffer);
 			}
 			catch (NdrException e)
 			{
@@ -926,7 +926,7 @@ namespace org.jinterop.dcom.core
 			var buffer = new NdrBuffer(b,0);
 
             //start with response
-            var ndr2 = new NetworkDataRepresentation {
+            var ndr2 = new NdrCodec {
                 Buffer = buffer
             };
 

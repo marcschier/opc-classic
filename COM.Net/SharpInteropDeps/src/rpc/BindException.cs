@@ -11,56 +11,64 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
+    using rpc.pdu;
 
-	using BindNoAcknowledgePdu = pdu.BindNoAcknowledgePdu;
+    /// <inheritdoc/>
+    public class BindException : RpcException {
 
-	public class BindException : RpcException
-	{
+        /// <inheritdoc/>
+        public BindException() {
+        }
 
-		public BindException() : base()
-		{
-		}
+        /// <inheritdoc/>
+        public BindException(string message) : 
+            base(message) {
+        }
 
-		public BindException(string message) : base(message_Renamed)
-		{
-		}
+        /// <inheritdoc/>
+        public BindException(string message, BindNoAcknowledgeReason rejectReason) : 
+            base(ToString(message, rejectReason)) {
+        }
 
-		public BindException(string message, int rejectReason) : base(message(message_Renamed, rejectReason))
-		{
-		}
+        /// <summary>
+        /// Combine to string
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        private static string ToString(string message,
+            BindNoAcknowledgeReason reason) {
+            return !string.IsNullOrEmpty(message) ? 
+                message + " (" + ToString(reason) + ")" : ToString(reason);
+        }
 
-		private static string message(string message, int reason)
-		{
-			return (message_Renamed != null) ? message_Renamed + " (" + message(reason) + ")" : message(reason);
-		}
-
-		private static string message(int reason)
-		{
-			switch (reason)
-			{
-			case BindNoAcknowledgePdu.REASON_NOT_SPECIFIED:
-				return "REASON_NOT_SPECIFIED";
-			case BindNoAcknowledgePdu.TEMPORARY_CONGESTION:
-				return "TEMPORARY_CONGESTION";
-			case BindNoAcknowledgePdu.LOCAL_LIMIT_EXCEEDED:
-				return "LOCAL_LIMIT_EXCEEDED";
-			case BindNoAcknowledgePdu.CALLED_PADDR_UNKNOWN:
-				return "CALLED_PADDR_UNKNOWN";
-			case BindNoAcknowledgePdu.PROTOCOL_VERSION_NOT_SUPPORTED:
-				return "PROTOCOL_VERSION_NOT_SUPPORTED";
-			case BindNoAcknowledgePdu.DEFAULT_CONTEXT_NOT_SUPPORTED:
-				return "DEFAULT_CONTEXT_NOT_SUPPORTED";
-			case BindNoAcknowledgePdu.USER_DATA_NOT_READABLE:
-				return "USER_DATA_NOT_READABLE";
-			case BindNoAcknowledgePdu.NO_PSAP_AVAILABLE:
-				return "NO_PSAP_AVAILABLE";
-			default:
-				return "unknown";
-			}
-		}
-
-	}
-
+        /// <summary>
+        /// TODO Move to extension
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        private static string ToString(BindNoAcknowledgeReason reason) {
+            switch (reason) {
+                case BindNoAcknowledgeReason.REASON_NOT_SPECIFIED:
+                    return "REASON_NOT_SPECIFIED";
+                case BindNoAcknowledgeReason.TEMPORARY_CONGESTION:
+                    return "TEMPORARY_CONGESTION";
+                case BindNoAcknowledgeReason.LOCAL_LIMIT_EXCEEDED:
+                    return "LOCAL_LIMIT_EXCEEDED";
+                case BindNoAcknowledgeReason.CALLED_PADDR_UNKNOWN:
+                    return "CALLED_PADDR_UNKNOWN";
+                case BindNoAcknowledgeReason.PROTOCOL_VERSION_NOT_SUPPORTED:
+                    return "PROTOCOL_VERSION_NOT_SUPPORTED";
+                case BindNoAcknowledgeReason.DEFAULT_CONTEXT_NOT_SUPPORTED:
+                    return "DEFAULT_CONTEXT_NOT_SUPPORTED";
+                case BindNoAcknowledgeReason.USER_DATA_NOT_READABLE:
+                    return "USER_DATA_NOT_READABLE";
+                case BindNoAcknowledgeReason.NO_PSAP_AVAILABLE:
+                    return "NO_PSAP_AVAILABLE";
+                default:
+                    return "unknown";
+            }
+        }
+    }
 }

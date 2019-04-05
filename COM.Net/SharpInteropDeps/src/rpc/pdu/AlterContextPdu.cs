@@ -11,84 +11,71 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace rpc.pdu {
+    using rpc.core;
+    using SharpCifs.Dcerpc.Ndr;
 
+    /// <summary>
+    /// Alter context pdu
+    /// </summary>
+    public class AlterContextPdu : ConnectionOrientedPdu {
 
-namespace rpc.pdu
-{
+        /// <summary> Type info - TODO - move to PduTypes.cs </summary>
+        public const int ALTER_CONTEXT_TYPE = 0x0e;
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
-	using PresentationContext = core.PresentationContext;
-
-	public class AlterContextPdu : ConnectionOrientedPdu
-	{
-
-		public const int ALTER_CONTEXT_TYPE = 0x0e;
-
-		private PresentationContext[] contextList;
-
-		private int maxTransmitFragment = -1;
-
-		private int maxReceiveFragment = -1;
-
-		private int associationGroupId;
-
+        /// <inheritdoc/>
         public override int Type => ALTER_CONTEXT_TYPE;
 
-        public virtual int MaxTransmitFragment {
-            get => maxTransmitFragment;
-            set => maxTransmitFragment = value;
+        /// <summary>
+        /// Max transmit
+        /// </summary>
+        public int MaxTransmitFragment { get; set; } = -1;
+
+        /// <summary>
+        /// Max receive
+        /// </summary>
+        public int MaxReceiveFragment { get; set; } = -1;
+
+        /// <summary>
+        /// Association group
+        /// </summary>
+        public int AssociationGroupId { get; set; }
+
+        /// <summary>
+        /// Context list
+        /// </summary>
+        public PresentationContext[] ContextList { get; set; }
+
+
+        /// <inheritdoc/>
+        protected internal override void ReadBody(NdrCodec ndr) {
+            MaxTransmitFragment = ndr.ReadUnsignedShort();
+            MaxReceiveFragment = ndr.ReadUnsignedShort();
+            AssociationGroupId = ndr.ReadUnsignedLong();
+            var count = ndr.ReadUnsignedSmall();
+            var contextList = new PresentationContext[count];
+            for (var i = 0; i < count; i++) {
+                contextList[i] = new PresentationContext();
+                contextList[i].Read(ndr);
+            }
+            ContextList = contextList;
         }
 
-
-        public virtual int MaxReceiveFragment {
-            get => maxReceiveFragment;
-            set => maxReceiveFragment = value;
+        /// <inheritdoc/>
+        protected internal override void WriteBody(NdrCodec ndr) {
+            var maxTransmitFragment = MaxTransmitFragment;
+            var maxReceiveFragment = MaxReceiveFragment;
+            ndr.WriteUnsignedShort((maxTransmitFragment == -1) ? 
+                ndr.Buffer.GetCapacity() : maxTransmitFragment);
+            ndr.WriteUnsignedShort((maxReceiveFragment == -1) ? 
+                ndr.Buffer.GetCapacity() : maxReceiveFragment);
+            ndr.WriteUnsignedLong(AssociationGroupId);
+            var contextList = ContextList;
+            var count = contextList.Length;
+            ndr.WriteUnsignedSmall((short)count);
+            for (var i = 0; i < count; i++) {
+                contextList[i].Write(ndr);
+            }
         }
-
-
-        public virtual int AssociationGroupId {
-            get => associationGroupId;
-            set => associationGroupId = value;
-        }
-
-
-        public virtual PresentationContext[] ContextList {
-            get => contextList;
-            set => contextList = value;
-        }
-
-
-        protected internal override void readBody(NetworkDataRepresentation ndr)
-		{
-			MaxTransmitFragment = ndr.readUnsignedShort();
-			MaxReceiveFragment = ndr.readUnsignedShort();
-			AssociationGroupId = (int) ndr.readUnsignedLong();
-			var count = ndr.readUnsignedSmall();
-			var contextList = new PresentationContext[count];
-			for (var i = 0; i < count; i++)
-			{
-				contextList[i] = new PresentationContext();
-				contextList[i].read(ndr);
-			}
-			ContextList = contextList;
-		}
-
-		protected internal override void writeBody(NetworkDataRepresentation ndr)
-		{
-			var maxTransmitFragment = MaxTransmitFragment;
-			var maxReceiveFragment = MaxReceiveFragment;
-			ndr.writeUnsignedShort((maxTransmitFragment == -1) ? ndr.Buffer.Capacity : maxTransmitFragment);
-			ndr.writeUnsignedShort((maxReceiveFragment == -1) ? ndr.Buffer.Capacity : maxReceiveFragment);
-			ndr.writeUnsignedLong(AssociationGroupId);
-			var contextList = ContextList;
-			var count = contextList.Length;
-			ndr.writeUnsignedSmall((short) count);
-			for (var i = 0; i < count; i++)
-			{
-				contextList[i].write(ndr);
-			}
-		}
-
-	}
-
+    }
 }

@@ -12,9 +12,9 @@ namespace org.jinterop.winreg {
 
 
 
-    using Encdec = jcifs.util.Encdec;
-    using NdrObject = ndr.NdrObject;
-    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using Encdec = SharpCifs.util.Encdec;
+    using NdrOp = SharpCifs.Dcerpc.Ndr.NdrOp;
+    using NdrCodec = SharpCifs.Dcerpc.Ndr.NdrCodec;
 
     using JIErrorCodes = dcom.common.JIErrorCodes;
     using JIException = dcom.common.JIException;
@@ -271,20 +271,20 @@ namespace org.jinterop.winreg {
 		public const int REG_OPTION_VOLATILE = 1;
 	}
 
-	public class IJIWinReg_closeKey : NdrObject
+	public class IJIWinReg_closeKey : NdrOp
 	{
 		public JIPolicyHandle key;
         public virtual int Opnum => 5;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			ndr.writeOctetArray(key.handle,0,20);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -294,30 +294,30 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_openHKLM : NdrObject
+	public class IJIWinReg_openHKLM : NdrOp
 	{
         public virtual int Opnum => 2;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			//it's a pointer
 
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 
 			//system name
-			ndr.writeUnsignedShort(40736);
+			ndr.WriteUnsignedShort(40736);
 
 			//length
-			ndr.writeUnsignedShort(1);
+			ndr.WriteUnsignedShort(1);
 
-			ndr.writeUnsignedLong(0x2000000);
+			ndr.WriteUnsignedLong(0x2000000);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -327,30 +327,30 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_openHKCU : NdrObject
+	public class IJIWinReg_openHKCU : NdrOp
 	{
         public virtual int Opnum => 1;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			//it's a pointer
 
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 
 			//system name
-			ndr.writeUnsignedShort(49736);
+			ndr.WriteUnsignedShort(49736);
 
 			//length
-			ndr.writeUnsignedShort(1);
+			ndr.WriteUnsignedShort(1);
 
-			ndr.writeUnsignedLong(0x2000000);
+			ndr.WriteUnsignedLong(0x2000000);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -360,30 +360,30 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_openHKU : NdrObject
+	public class IJIWinReg_openHKU : NdrOp
 	{
         public virtual int Opnum => 4;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			//it's a pointer
 
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 
 			//system name
-			ndr.writeUnsignedShort(49736);
+			ndr.WriteUnsignedShort(49736);
 
 			//length
-			ndr.writeUnsignedShort(1);
+			ndr.WriteUnsignedShort(1);
 
-			ndr.writeUnsignedLong(0x2000000);
+			ndr.WriteUnsignedLong(0x2000000);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -393,30 +393,30 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_openHKCR : NdrObject
+	public class IJIWinReg_openHKCR : NdrOp
 	{
         public virtual int Opnum => 0;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			//it's a pointer
 
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 
 			//system name
-			ndr.writeUnsignedShort(49736);
+			ndr.WriteUnsignedShort(49736);
 
 			//length
-			ndr.writeUnsignedShort(1);
+			ndr.WriteUnsignedShort(1);
 
-			ndr.writeUnsignedLong(0x2000000);
+			ndr.WriteUnsignedLong(0x2000000);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -426,7 +426,7 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_deleteValueOrKey : NdrObject
+	public class IJIWinReg_deleteValueOrKey : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string valueName;
@@ -442,40 +442,40 @@ namespace org.jinterop.winreg {
             }
 		}
 
-		public virtual void write(NetworkDataRepresentation ndr)
+		public virtual void write(NdrCodec ndr)
 		{
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((valueName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((valueName.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((valueName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((valueName.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(valueName.Length + 1);
+			ndr.WriteUnsignedLong(valueName.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(valueName.Length + 1);
+			ndr.WriteUnsignedLong(valueName.Length + 1);
 
 			var i = 0;
 			while (i < valueName.Length)
 			{
-				ndr.writeUnsignedShort(valueName[i]);
+				ndr.WriteUnsignedShort(valueName[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -485,52 +485,52 @@ namespace org.jinterop.winreg {
 
 	}
 
-	public class IJIWinReg_saveFile : NdrObject
+	public class IJIWinReg_saveFile : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string fileName;
         public virtual int Opnum => 20;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((fileName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((fileName.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((fileName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((fileName.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(fileName.Length + 1);
+			ndr.WriteUnsignedLong(fileName.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(fileName.Length + 1);
+			ndr.WriteUnsignedLong(fileName.Length + 1);
 
 			var i = 0;
 			while (i < fileName.Length)
 			{
-				ndr.writeUnsignedShort(fileName[i]);
+				ndr.WriteUnsignedShort(fileName[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
 			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -540,7 +540,7 @@ namespace org.jinterop.winreg {
 
 	}
 
-	public class IJIWinReg_createKey : NdrObject
+	public class IJIWinReg_createKey : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string key;
@@ -549,36 +549,36 @@ namespace org.jinterop.winreg {
 		public int actiontaken = -1;
         public virtual int Opnum => 6;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 
 			var i = 0;
 			while (i < key.Length)
 			{
-				ndr.writeUnsignedShort(key[i]);
+				ndr.WriteUnsignedShort(key[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
@@ -588,28 +588,28 @@ namespace org.jinterop.winreg {
 			//write the class
 			var clazz = "REG_SZ";
 			//clazz len , since it is uint16
-			ndr.writeUnsignedShort((clazz.Length + 1) * 2);
+			ndr.WriteUnsignedShort((clazz.Length + 1) * 2);
 			//clazz size, since it is uint16
-			ndr.writeUnsignedShort((clazz.Length + 1) * 2);
+			ndr.WriteUnsignedShort((clazz.Length + 1) * 2);
 
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(clazz.Length + 1);
+			ndr.WriteUnsignedLong(clazz.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(clazz.Length + 1);
+			ndr.WriteUnsignedLong(clazz.Length + 1);
 
 			i = 0;
 			while (i < clazz.Length)
 			{
-				ndr.writeUnsignedShort(clazz[i]);
+				ndr.WriteUnsignedShort(clazz[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 
 			//now align for int
 			index = (double)ndr.Buffer.Index;
@@ -618,24 +618,24 @@ namespace org.jinterop.winreg {
 			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
 			//options
-			ndr.writeUnsignedLong(options);
+			ndr.WriteUnsignedLong(options);
 
-			ndr.writeUnsignedLong(accessMask);
+			ndr.WriteUnsignedLong(accessMask);
 
 			//ptr to sec desc , null
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//pointer to action taken
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
 			//pointer to action taken
-			ndr.readUnsignedLong();
-			actiontaken = ndr.readUnsignedLong();
-			var hresult = ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			actiontaken = ndr.ReadUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -645,7 +645,7 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_setValue : NdrObject
+	public class IJIWinReg_setValue : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string valueName;
@@ -656,36 +656,36 @@ namespace org.jinterop.winreg {
 		public int dword;
         public virtual int Opnum => 22;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((valueName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((valueName.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((valueName.Length + 1) * 2);
+			ndr.WriteUnsignedShort((valueName.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(valueName.Length + 1);
+			ndr.WriteUnsignedLong(valueName.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(valueName.Length + 1);
+			ndr.WriteUnsignedLong(valueName.Length + 1);
 
 			var i = 0;
 			while (i < valueName.Length)
 			{
-				ndr.writeUnsignedShort(valueName[i]);
+				ndr.WriteUnsignedShort(valueName[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
@@ -693,7 +693,7 @@ namespace org.jinterop.winreg {
 			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
 			//write the type.
-			ndr.writeUnsignedLong(clazzType);
+			ndr.WriteUnsignedLong(clazzType);
 
 			i = 0;
 			if (lengthInBytes != 0)
@@ -704,16 +704,16 @@ namespace org.jinterop.winreg {
 					case IJIWinReg_Fields.REG_SZ: //for strings, strings are null terminated, length in bytes will NOT include the null termination
 						//character
 						//writing the max count
-						ndr.writeUnsignedLong((lengthInBytes + 1) * 2);
+						ndr.WriteUnsignedLong((lengthInBytes + 1) * 2);
 
 						while (i < data.Length)
 						{
-							ndr.writeUnsignedShort(data[i]);
+							ndr.WriteUnsignedShort(data[i]);
 							i++;
 						}
 
 						//null termination
-						ndr.writeUnsignedShort(0);
+						ndr.WriteUnsignedShort(0);
 
 						//now align for int
 						index = (double)ndr.Buffer.Index;
@@ -721,43 +721,43 @@ namespace org.jinterop.winreg {
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
 						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
-						ndr.writeUnsignedLong((lengthInBytes + 1) * 2);
+						ndr.WriteUnsignedLong((lengthInBytes + 1) * 2);
 
 					break;
 					case IJIWinReg_Fields.REG_DWORD:
-						ndr.writeUnsignedLong(lengthInBytes);
-						ndr.writeUnsignedLong(dword);
-						ndr.writeUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(dword);
+						ndr.WriteUnsignedLong(lengthInBytes);
 					break;
 					case IJIWinReg_Fields.REG_NONE:
 						data = new sbyte[0];
 						lengthInBytes = 0;
 						goto case IJIWinReg_Fields.REG_BINARY;
 					case IJIWinReg_Fields.REG_BINARY:
-						ndr.writeUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(lengthInBytes);
 						ndr.writeOctetArray(data,0,lengthInBytes);
 						index = (double)ndr.Buffer.Index;
 						k = 0;
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
 						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
-						ndr.writeUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(lengthInBytes);
 					break;
 					case IJIWinReg_Fields.REG_MULTI_SZ: //for strings, strings are null terminated, length in bytes will NOT include the null termination
 						//character
 						//writing the max count , this will be computed before hand
-						ndr.writeUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(lengthInBytes);
 
 						for (i = 0; i < data2.Length;i++)
 						{
 							for (var j = 0; j < data2[i].Length;j++)
 							{
-								ndr.writeUnsignedShort(data2[i][j]);
+								ndr.WriteUnsignedShort(data2[i][j]);
 							}
 							//null termination for each string
-							ndr.writeUnsignedShort(0);
+							ndr.WriteUnsignedShort(0);
 						}
 						//null termination for the multi sz.
-						ndr.writeUnsignedShort(0);
+						ndr.WriteUnsignedShort(0);
 
 						//now align for int
 						index = (double)ndr.Buffer.Index;
@@ -765,7 +765,7 @@ namespace org.jinterop.winreg {
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
 						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
-						ndr.writeUnsignedLong(lengthInBytes);
+						ndr.WriteUnsignedLong(lengthInBytes);
 
 					break;
 
@@ -777,17 +777,17 @@ namespace org.jinterop.winreg {
 			else
 			{
 				//for data
-				ndr.writeUnsignedLong(0);
+				ndr.WriteUnsignedLong(0);
 				//for length
-				ndr.writeUnsignedLong(0);
+				ndr.WriteUnsignedLong(0);
 			}
 
 
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -797,75 +797,75 @@ namespace org.jinterop.winreg {
 
 	}
 
-	public class IJIWinReg_enumKey : NdrObject
+	public class IJIWinReg_enumKey : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public int index = -1;
 		public string[] retval = new string[2];
         public virtual int Opnum => 9;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
-			ndr.writeUnsignedLong(index);
+			ndr.WriteUnsignedLong(index);
 
 			//buffer len , since it is uint16
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 			//buffer size, since it is uint16
-			ndr.writeUnsignedShort(2048);
+			ndr.WriteUnsignedShort(2048);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(1024);
+			ndr.WriteUnsignedLong(1024);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 
 			//pointer
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//buffer len , since it is uint16
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 			//buffer size, since it is uint16
-			ndr.writeUnsignedShort(2048);
+			ndr.WriteUnsignedShort(2048);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(1024);
+			ndr.WriteUnsignedLong(1024);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 
 			//pointer for time
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			//buffer len , since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 			//buffer size, since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 
 			//it's a pointer
 			//referent
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//max count
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//offset
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var actuallength = ndr.readUnsignedLong(); //actuallength
+			var actuallength = ndr.ReadUnsignedLong(); //actuallength
 			var bytes = new sbyte[0];
 			if (actuallength != 0)
 			{
@@ -875,13 +875,13 @@ namespace org.jinterop.winreg {
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
-				var retVal = ndr.readUnsignedShort();
+				var retVal = ndr.ReadUnsignedShort();
 				bytes[i] = (sbyte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
 			{
-				ndr.readUnsignedShort();
+				ndr.ReadUnsignedShort();
 			}
 
 			retval[0] = StringHelperClass.NewString(bytes);
@@ -891,22 +891,22 @@ namespace org.jinterop.winreg {
 
 	//			it's a pointer
 			//referent
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
 	//			buffer len , since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 			//buffer size, since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 
 			//it's a pointer
 			//referent
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//max count
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//offset
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			actuallength = ndr.readUnsignedLong(); //actuallength
+			actuallength = ndr.ReadUnsignedLong(); //actuallength
 			bytes = new sbyte[0];
 			if (actuallength != 0)
 			{
@@ -916,13 +916,13 @@ namespace org.jinterop.winreg {
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
-				var retVal = ndr.readUnsignedShort();
+				var retVal = ndr.ReadUnsignedShort();
 				bytes[i] = (sbyte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
 			{
-				ndr.readUnsignedShort();
+				ndr.ReadUnsignedShort();
 			}
 
 			retval[1] = StringHelperClass.NewString(bytes);
@@ -931,11 +931,11 @@ namespace org.jinterop.winreg {
 			l = (l = Math.Round(ndr.Buffer.Index % 4.0)) == 0 ? 0 : 4 - l;
 			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
 			//now to read the time
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -945,68 +945,68 @@ namespace org.jinterop.winreg {
 
 	}
 
-	public class IJIWinReg_enumValue : NdrObject
+	public class IJIWinReg_enumValue : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public int index = -1;
 		public object[] retval = new object[2];
         public virtual int Opnum => 10;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
-			ndr.writeUnsignedLong(index);
+			ndr.WriteUnsignedLong(index);
 
 			//buffer len , since it is uint16
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 			//buffer size, since it is uint16
-			ndr.writeUnsignedShort(2048);
+			ndr.WriteUnsignedShort(2048);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(1024);
+			ndr.WriteUnsignedLong(1024);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 
 			//pointer
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 
 
 
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			//buffer len , since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 			//buffer size, since it is uint16
-			ndr.readUnsignedShort();
+			ndr.ReadUnsignedShort();
 
 			//it's a pointer
 			//referent
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//max count
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 			//offset
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var actuallength = ndr.readUnsignedLong(); //actuallength
+			var actuallength = ndr.ReadUnsignedLong(); //actuallength
 			var bytes = new sbyte[0];
 			if (actuallength != 0)
 			{
@@ -1016,13 +1016,13 @@ namespace org.jinterop.winreg {
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
-				var retVal = ndr.readUnsignedShort();
+				var retVal = ndr.ReadUnsignedShort();
 				bytes[i] = (sbyte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
 			{
-				ndr.readUnsignedShort();
+				ndr.ReadUnsignedShort();
 			}
 
 			retval[0] = StringHelperClass.NewString(bytes);
@@ -1032,20 +1032,20 @@ namespace org.jinterop.winreg {
 
 	//			it's a pointer
 			//referent
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var type = ndr.readUnsignedLong();
+			var type = ndr.ReadUnsignedLong();
 			retval[1] = type;
 
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -1055,7 +1055,7 @@ namespace org.jinterop.winreg {
 
 	}
 
-	public class IJIWinReg_openKey : NdrObject
+	public class IJIWinReg_openKey : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string key;
@@ -1063,36 +1063,36 @@ namespace org.jinterop.winreg {
 
         public virtual int Opnum => 15;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 
 			var i = 0;
 			while (i < key.Length)
 			{
-				ndr.writeUnsignedShort(key[i]);
+				ndr.WriteUnsignedShort(key[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
@@ -1100,15 +1100,15 @@ namespace org.jinterop.winreg {
 			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
 			//reserved
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 
-			ndr.writeUnsignedLong(accessMask);
+			ndr.WriteUnsignedLong(accessMask);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			ndr.readOctetArray(policyhandle,0,20);
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);
@@ -1118,7 +1118,7 @@ namespace org.jinterop.winreg {
 		public sbyte[] policyhandle = new sbyte[20];
 	}
 
-	public class IJIWinReg_queryValue : NdrObject
+	public class IJIWinReg_queryValue : NdrOp
 	{
 		public JIPolicyHandle parentKey;
 		public string key = "";
@@ -1128,36 +1128,36 @@ namespace org.jinterop.winreg {
 		public sbyte[][] buffer2 = new sbyte[2048][];
         public virtual int Opnum => 17;
 
-        public virtual void write(NetworkDataRepresentation ndr)
+        public virtual void write(NdrCodec ndr)
 		{
 
 			//write parent handle
 			ndr.writeOctetArray(parentKey.handle,0,20);
 
 			//key len , since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 			//key size, since it is uint16
-			ndr.writeUnsignedShort((key.Length + 1) * 2);
+			ndr.WriteUnsignedShort((key.Length + 1) * 2);
 
 			//it's a pointer
 			//referent
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 			//offset
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(0);
 			//actual count
-			ndr.writeUnsignedLong(key.Length + 1);
+			ndr.WriteUnsignedLong(key.Length + 1);
 
 			var i = 0;
 			while (i < key.Length)
 			{
-				ndr.writeUnsignedShort(key[i]);
+				ndr.WriteUnsignedShort(key[i]);
 				i++;
 			}
 
 			//null termination
-			ndr.writeUnsignedShort(0);
+			ndr.WriteUnsignedShort(0);
 
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
@@ -1165,48 +1165,48 @@ namespace org.jinterop.winreg {
 			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
 
 			//pointer to type
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 
 			//pointer to data
-			ndr.writeUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(new object().GetHashCode());
 			//max count
-			ndr.writeUnsignedLong(bufferLength);
-			ndr.writeUnsignedLong(0); //offset
-			ndr.writeUnsignedLong(0); //actual
+			ndr.WriteUnsignedLong(bufferLength);
+			ndr.WriteUnsignedLong(0); //offset
+			ndr.WriteUnsignedLong(0); //actual
 
 			//pointer to size
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(bufferLength);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(bufferLength);
 
 			//pointer to length
-			ndr.writeUnsignedLong(new object().GetHashCode());
-			ndr.writeUnsignedLong(0);
+			ndr.WriteUnsignedLong(new object().GetHashCode());
+			ndr.WriteUnsignedLong(0);
 		}
 
-		public virtual void read(NetworkDataRepresentation ndr)
+		public virtual void read(NdrCodec ndr)
 		{
 			var i = 0;
 			//pointer
-			ndr.readUnsignedLong();
-			type = ndr.readUnsignedLong(); //type
+			ndr.ReadUnsignedLong();
+			type = ndr.ReadUnsignedLong(); //type
 			var retval = new sbyte[bufferLength];
 			//StringBuffer buffer = new StringBuffer();
 			//pointer to data
-			ndr.readUnsignedLong();
-			var maxcount = ndr.readUnsignedLong(); //maxcount
-			var offset = ndr.readUnsignedLong(); //offset
+			ndr.ReadUnsignedLong();
+			var maxcount = ndr.ReadUnsignedLong(); //maxcount
+			var offset = ndr.ReadUnsignedLong(); //offset
 			switch (type)
 			{
 				case IJIWinReg_Fields.REG_EXPAND_SZ: //for environment variable strings
 				case IJIWinReg_Fields.REG_SZ:
 
-					var actuallength = (int)Math.Round((double)ndr.readUnsignedLong() / 2.0); //actuallength
+					var actuallength = (int)Math.Round((double)ndr.ReadUnsignedLong() / 2.0); //actuallength
 
 					//last 2 bytes , null termination will be eaten outside the loop
 					while (i < actuallength - 1)
 					{
-						var retVal = ndr.readUnsignedShort();
+						var retVal = ndr.ReadUnsignedShort();
 						//even though this is a unicode string , but will not have anything else
 						//other than ascii charset, which is supported by all encodings.
 						//buffer.append(new String(new byte[]{(byte)retVal}));
@@ -1215,29 +1215,29 @@ namespace org.jinterop.winreg {
 					}
 					if (actuallength != 0)
 					{
-						ndr.readUnsignedShort();
+						ndr.ReadUnsignedShort();
 					}
 
 				break;
 				case IJIWinReg_Fields.REG_DWORD:
-					i = ndr.readUnsignedLong();
-					var value = ndr.readUnsignedLong();
+					i = ndr.ReadUnsignedLong();
+					var value = ndr.ReadUnsignedLong();
 					Encdec.enc_uint32le(value, retval, 0);
 				break;
 				case IJIWinReg_Fields.REG_NONE:
 				case IJIWinReg_Fields.REG_BINARY:
-					i = ndr.readUnsignedLong();
+					i = ndr.ReadUnsignedLong();
 					ndr.readOctetArray(retval,0,i);
 				break;
 				case IJIWinReg_Fields.REG_MULTI_SZ:
 
-					actuallength = (int)Math.Round((double)ndr.readUnsignedLong() / 2.0); //actuallength
+					actuallength = (int)Math.Round((double)ndr.ReadUnsignedLong() / 2.0); //actuallength
 					int kk = 0, ll = 0;
 					i = 0;
 					//last 2 bytes , null termination will be eaten outside the loop
 					while (i < actuallength - 1)
 					{
-						var retVal = ndr.readUnsignedShort();
+						var retVal = ndr.ReadUnsignedShort();
 						if (retVal == 0)
 						{
 							//reached end of one string
@@ -1256,7 +1256,7 @@ namespace org.jinterop.winreg {
 					}
 					if (actuallength != 0)
 					{
-						ndr.readUnsignedShort();
+						ndr.ReadUnsignedShort();
 					}
 
 					break;
@@ -1270,14 +1270,14 @@ namespace org.jinterop.winreg {
 			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
 
 			//pointer to size
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
 
 			//pointer to length
-			ndr.readUnsignedLong();
-			ndr.readUnsignedLong();
+			ndr.ReadUnsignedLong();
+			ndr.ReadUnsignedLong();
 
-			var hresult = ndr.readUnsignedLong();
+			var hresult = ndr.ReadUnsignedLong();
 			if (hresult != 0)
 			{
 				throw new JIRuntimeException(hresult);

@@ -11,23 +11,20 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
 
-	public class ProviderException : RpcException
-	{
+    /// <summary>
+    /// Provider exception
+    /// </summary>
+    public class ProviderException : RpcException {
 
-		/// 
-		private const long serialVersionUID = -1110150203054594627L;
+        /// <inheritdoc/>
+        public ProviderException() {
+        }
 
-		public ProviderException() : base()
-		{
-		}
-
-		public ProviderException(string message) : base(message)
-		{
-		}
-
-	}
-
+        /// <inheritdoc/>
+        public ProviderException(string message) : 
+            base(message) {
+        }
+    }
 }

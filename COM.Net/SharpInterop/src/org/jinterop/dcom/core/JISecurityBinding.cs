@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Text;
 
@@ -51,9 +51,9 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JISecurityBinding decode(NetworkDataRepresentation ndr) {
+        internal static JISecurityBinding decode(NdrCodec ndr) {
             var securityBinding = new JISecurityBinding {
-                _authnSvc = ndr.readUnsignedShort()
+                _authnSvc = ndr.ReadUnsignedShort()
             };
 
             if (securityBinding._authnSvc == 0) {
@@ -61,13 +61,13 @@ namespace org.jinterop.dcom.core {
                 return null;
             }
 
-            securityBinding._authzSvc = ndr.readUnsignedShort();
+            securityBinding._authzSvc = ndr.ReadUnsignedShort();
 
             //now to read the String till a null termination character.
             // a '0' will be represented as 30
             var retVal = -1;
             var buffer = new StringBuilder();
-            while ((retVal = ndr.readUnsignedShort()) != 0) {
+            while ((retVal = ndr.ReadUnsignedShort()) != 0) {
                 //even though this is a unicode string , but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
                 buffer.Append(StringHelperClass.NewString(new sbyte[] { (sbyte)retVal }));
@@ -82,17 +82,17 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        public void encode(NetworkDataRepresentation ndr) {
-            ndr.writeUnsignedShort(_authnSvc);
-            ndr.writeUnsignedShort(_authzSvc);
+        public void encode(NdrCodec ndr) {
+            ndr.WriteUnsignedShort(_authnSvc);
+            ndr.WriteUnsignedShort(_authzSvc);
 
             //now to write the network address.
             var i = 0;
             while (i < _princName.Length) {
-                ndr.writeUnsignedShort(_princName[i]);
+                ndr.WriteUnsignedShort(_princName[i]);
                 i++;
             }
-            ndr.writeUnsignedShort(0); //null termination
+            ndr.WriteUnsignedShort(0); //null termination
         }
 
 

@@ -11,20 +11,31 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
+    /// <summary>
+    /// Constants
+    /// </summary>
+    public static class Connection {
 
-	public interface Connection
-	{
+        /// <summary>
+        /// Key to read max fragments
+        /// </summary>
+        public const string MAX_TRANSMIT_FRAGMENT = "rpc.connectionContext.maxTransmitFragment";
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void transmit(ConnectionOrientedPdu pdu, Transport transport) throws java.io.IOException;
-		void transmit(ConnectionOrientedPdu pdu, Transport transport);
+        /// <summary>
+        /// Key to read max fragments
+        /// </summary>
+        public const string MAX_RECEIVE_FRAGMENT = "rpc.connectionContext.maxReceiveFragment";
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public ConnectionOrientedPdu receive(Transport transport) throws java.io.IOException;
-		ConnectionOrientedPdu receive(Transport transport);
+        /// <summary>
+        /// Default
+        /// </summary>
+        public const int DEFAULT_MAX_TRANSMIT_FRAGMENT = 4280;
 
-	}
+        /// <summary>
+        /// Default
+        /// </summary>
+        public const int DEFAULT_MAX_RECEIVE_FRAGMENT = 4280;
+    }
 
 }

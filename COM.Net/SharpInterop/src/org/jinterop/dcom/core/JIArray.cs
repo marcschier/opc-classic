@@ -11,7 +11,7 @@ namespace org.jinterop.dcom.core {
     using System;
     using System.Collections;
     using org.jinterop.dcom.common;
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
     ///<para>Represents a C++ array which can display both <i>conformant and standard</i> 
@@ -375,7 +375,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="array"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NetworkDataRepresentation ndr, object array, IList defferedPointers, int flag) {
+        internal void encode(NdrCodec ndr, object array, IList defferedPointers, int flag) {
             //	ArrayList listofDefferedPointers = new ArrayList();
 
             if (_isConformantProxy) {
@@ -428,7 +428,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal object decode(NetworkDataRepresentation ndr, Type arrayType, int dimension, 
+        internal object decode(NdrCodec ndr, Type arrayType, int dimension, 
             IList defferedPointers, int flag, IDictionary additionalData) {
             var retVal = new JIArray {
                 _isConformantProxy = _isConformantProxy,
@@ -525,7 +525,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        private object recurseDecode(JIArray retVal, NetworkDataRepresentation ndr, Type arrayType,
+        private object recurseDecode(JIArray retVal, NdrCodec ndr, Type arrayType,
             int dimension, IList defferedPointers, int flag, IDictionary additionalData) {
             object array = null;
             var c = arrayType;
@@ -634,7 +634,7 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override string ToString() {
-            string retVal = "[Type: " + ArrayClass + " , ";
+            var retVal = "[Type: " + ArrayClass + " , ";
             if (ArrayInstance == null) {
                 retVal += "memberArray is null , ";
             }

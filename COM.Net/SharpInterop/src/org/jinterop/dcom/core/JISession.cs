@@ -8,7 +8,7 @@
 // 
 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
@@ -41,7 +41,7 @@ namespace org.jinterop.dcom.core {
                             //get from hash map and call release ref on that object
                             IPID_SessionID_Holder holder = null;
                             lock (_mapOfObjects) {
-                                holder = (IPID_SessionID_Holder)_mapOfObjects.Remove(r);
+                                holder = (IPID_SessionID_Holder)_mapOfObjects.GetAndRemove(r);
                                 if (holder == null) {
                                     continue;
                                 }
@@ -148,7 +148,7 @@ namespace org.jinterop.dcom.core {
             catch (UnknownHostException) {
             }
 
-            System.setProperty("jcifs.smb.client.domain", "JIDomain"); //is being put in for completing type2 message
+            System.setProperty("SharpCifs.smb.client.domain", "JIDomain"); //is being put in for completing type2 message
                                                                        //somehow windows is not taking empty domain name.
 
             //start the cleanup thread.

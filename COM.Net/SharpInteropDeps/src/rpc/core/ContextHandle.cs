@@ -11,35 +11,32 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc.core
-{
+namespace rpc.core {
+    using SharpCifs.Dcerpc.Ndr;
 
-	using NdrObject = ndr.NdrObject;
+    /// <summary>
+    /// Context handle
+    /// </summary>
+    public class ContextHandle : NdrOp {
 
-	public class ContextHandle : NdrObject
-	{
+        /// <summary>
+        /// Attributes
+        /// </summary>
+        public int Attributes { get; set; }
 
-		internal int attributes;
-		internal UUID uuid;
+        /// <summary>
+        /// id
+        /// </summary>
+        public UUID Uuid { get; set; }
 
-		public ContextHandle(int attributes, UUID uuid)
-		{
-			Attributes = attributes;
-			Uuid = uuid;
-		}
-
-		public virtual int Attributes {
-            get => attributes;
-            set => attributes = value;
+        /// <summary>
+        /// Create handle
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="uuid"></param>
+        public ContextHandle(int attributes, UUID uuid) {
+            Attributes = attributes;
+            Uuid = uuid;
         }
-
-
-        public virtual UUID Uuid {
-            get => uuid;
-            set => uuid = value;
-        }
-
-
     }
-
 }

@@ -48,7 +48,7 @@
 			//JIArray array = new JIArray(new short[]{0});
 			JISystem.AutoRegisteration = true;
 			JISystem.InBuiltLogHandler = false;
-			//Config.setProperty("jcifs.smb.client.domain","ITLINFOSYS");
+			//Config.setProperty("SharpCifs.smb.client.domain","ITLINFOSYS");
 			 session = JISession.createSession("FDGNT","roopchand","QweQwe007");
 			 //session = JISession.createSession("10.74.85.56","itl-hw-38602a\\Vikram","Infosys@123");
 			//session = JISession.createSession("federation","administrator","enterprise");

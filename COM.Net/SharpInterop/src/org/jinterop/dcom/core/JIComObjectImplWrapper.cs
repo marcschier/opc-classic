@@ -16,6 +16,7 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     [Serializable]
     public class JIComObjectImplWrapper : IJIComObject {
+
         /// <summary>
         /// Com object
         /// </summary>
@@ -31,7 +32,6 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
 		public virtual IJIComObject queryInterface(string iid) {
-
             return comObject.queryInterface(iid);
         }
 

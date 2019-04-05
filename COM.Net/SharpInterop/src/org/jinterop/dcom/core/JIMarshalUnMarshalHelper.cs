@@ -12,9 +12,9 @@ namespace org.jinterop.dcom.core {
 
 
 
-    using Encdec = jcifs.util.Encdec;
-    using NdrException = ndr.NdrException;
-    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using Encdec = SharpCifs.util.Encdec;
+    using NdrException = SharpCifs.Dcerpc.Ndr.NdrException;
+    using NdrCodec = SharpCifs.Dcerpc.Ndr.NdrCodec;
 
     using JIErrorCodes = common.JIErrorCodes;
     using JIException = common.JIException;
@@ -53,7 +53,7 @@ namespace org.jinterop.dcom.core {
 			mapOfSerializers[typeof(float?)] = new FloatImpl();
 			mapOfSerializers[typeof(string)] = new StringImpl();
 			mapOfSerializers[typeof(UUID)] = new UUIDImpl();
-			mapOfSerializers[typeof(sbyte?)] = new ByteImpl();
+			mapOfSerializers[typeof(byte?)] = new ByteImpl();
 			mapOfSerializers[typeof(long?)] = new LongImpl(); //LONG , 8 bytes, written as 4+4 in LE.
 			mapOfSerializers[typeof(char?)] = new CharacterImpl();
 			mapOfSerializers[typeof(JIInterfacePointer)] = new MInterfacePointerImpl();
@@ -72,10 +72,10 @@ namespace org.jinterop.dcom.core {
 
 		}
 
-		internal static sbyte[] readOctetArrayLE(NetworkDataRepresentation ndr, int length)
+		internal static byte[] readOctetArrayLE(NdrCodec ndr, int length)
 		{
-			var bytes = new sbyte[8];
-			ndr.readOctetArray(bytes,0,8);
+			var bytes = new byte[8];
+			ndr.ReadOctetArray(bytes,0,8);
 			for (var i = 0;i < 4; i++)
 			{
 				var t = bytes[i];
@@ -85,15 +85,15 @@ namespace org.jinterop.dcom.core {
 			return bytes;
 		}
 
-		internal static void writeOctetArrayLE(NetworkDataRepresentation ndr, sbyte[] b)
+		internal static void writeOctetArrayLE(NdrCodec ndr, byte[] b)
 		{
 			for (var i = 0;i < b.Length; i++)
 			{
-				ndr.writeUnsignedSmall(b[b.Length - i - 1]);
+				ndr.WriteUnsignedSmall(b[b.Length - i - 1]);
 			}
 		}
 
-		internal static void serialize(NetworkDataRepresentation ndr, Type c, object value, IList defferedPointers, int FLAG)
+		internal static void serialize(NdrCodec ndr, Type c, object value, IList defferedPointers, int FLAG)
 		{
 			if (c.Equals(typeof(JIArray)))
 			{
@@ -174,7 +174,7 @@ namespace org.jinterop.dcom.core {
 			}
 		}
 
-		internal static void alignMemberWhileEncoding(NetworkDataRepresentation ndr, Type c, object obj)
+		internal static void alignMemberWhileEncoding(NdrCodec ndr, Type c, object obj)
 		{
 			var index = (double)ndr.Buffer.Index;
 			if (c.Equals(typeof(JIStruct)))
@@ -211,7 +211,7 @@ namespace org.jinterop.dcom.core {
 			}
 		}
 
-		internal static void alignMemberWhileDecoding(NetworkDataRepresentation ndr, Type c, object obj)
+		internal static void alignMemberWhileDecoding(NdrCodec ndr, Type c, object obj)
 		{
 			var index = (double)ndr.Buffer.Index;
 			if (c.Equals(typeof(JIStruct)))
@@ -249,7 +249,7 @@ namespace org.jinterop.dcom.core {
 		}
 
 
-		internal static object deSerialize(NetworkDataRepresentation ndr, object obj, IList defferedPointers, int FLAG, IDictionary additionalData)
+		internal static object deSerialize(NdrCodec ndr, object obj, IList defferedPointers, int FLAG, IDictionary additionalData)
 		{
 			var c = obj is Type ? (Type)obj : obj.GetType();
             if (c.Equals(typeof(JIArray))) {
@@ -324,8 +324,8 @@ namespace org.jinterop.dcom.core {
 
 		private interface SerializerDeserializer
 		{
-			void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG);
-			object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG);
+			void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG);
+			object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG);
 			int getLengthInBytes(object value, int FLAG);
 		}
 
@@ -333,12 +333,12 @@ namespace org.jinterop.dcom.core {
 		private class PointerImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -353,12 +353,12 @@ namespace org.jinterop.dcom.core {
 		private class JIUnsignedIntImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
                 serialize(ndr,typeof(int?), (int)((JIUnsignedInteger)value).Value, null,FLAG);
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				var b = (int?)deSerialize(ndr,typeof(int?),null,FLAG,additionalData);
 				return JIUnsignedFactory.getUnsigned((long)((int)b & 0xFFFFFFFFL), JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
@@ -374,12 +374,12 @@ namespace org.jinterop.dcom.core {
 		private class JIDualStringArrayImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				return JIDualStringArray.decode(ndr);
 			}
@@ -394,12 +394,12 @@ namespace org.jinterop.dcom.core {
 		private class JIUnsignedByteImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
                 serialize(ndr,typeof(sbyte?), (sbyte)((JIUnsignedByte)value).Value, null,FLAG);
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				var b = (sbyte?)deSerialize(ndr,typeof(sbyte?),null,FLAG,additionalData);
 				return JIUnsignedFactory.getUnsigned((short)((sbyte)b & 0xFF), JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE);
@@ -415,12 +415,12 @@ namespace org.jinterop.dcom.core {
 		private class JIUnsignedShortImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
                 serialize(ndr,typeof(short?), (short)((JIUnsignedShort)value).Value, null,FLAG);
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				var b = (short?)deSerialize(ndr,typeof(short?),null,FLAG,additionalData);
 				return JIUnsignedFactory.getUnsigned((int)((short)b & 0xFFFF), JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
@@ -550,12 +550,12 @@ namespace org.jinterop.dcom.core {
 		private class StructImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -570,12 +570,12 @@ namespace org.jinterop.dcom.core {
 		private class UnionImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -592,7 +592,7 @@ namespace org.jinterop.dcom.core {
 		{
 
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				var ptr = ((IJIComObject)value).internal_getInterfacePointer();
 				serialize(ndr, typeof(JIInterfacePointer), ptr, defferedPointers, FLAG);
@@ -610,14 +610,14 @@ namespace org.jinterop.dcom.core {
 					var currentIndex = ndr.Buffer.Index;
 					var totalLength = currentIndex - index + 48;
 					ndr.Buffer.Index = ndr.Buffer.Index - totalLength - 8;
-					ndr.writeUnsignedLong(totalLength + 4);
-					ndr.writeUnsignedLong(totalLength + 4);
+					ndr.WriteUnsignedLong(totalLength + 4);
+					ndr.WriteUnsignedLong(totalLength + 4);
 					ndr.Buffer.Index = currentIndex;
 	//				Hexdump.hexdump(System.out, ndr.getBuffer().getBuffer(), 0, ndr.getBuffer().getIndex());
 				}
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				var session = (JISession)additionalData[JICallBuilder.CURRENTSESSION];
 				var ptr = (JIInterfacePointer)deSerialize(ndr, typeof(JIInterfacePointer), defferedPointers, FLAG, additionalData);
@@ -665,12 +665,12 @@ namespace org.jinterop.dcom.core {
 
 		private class JIVariant2Impl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -685,12 +685,12 @@ namespace org.jinterop.dcom.core {
 		private class JIVariantImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -712,13 +712,13 @@ namespace org.jinterop.dcom.core {
 
 		private class CharacterImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
-				ndr.writeUnsignedSmall((char)(char?)value);
+				ndr.WriteUnsignedSmall((char)(char?)value);
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
-				var c = new char?((char)ndr.readUnsignedSmall());
+				var c = new char?((char)ndr.ReadUnsignedSmall());
 				return c;
 			}
 
@@ -731,13 +731,13 @@ namespace org.jinterop.dcom.core {
 
 		private class ByteImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
-				ndr.writeUnsignedSmall((sbyte)(sbyte?)value);
+				ndr.WriteUnsignedSmall((sbyte)(sbyte?)value);
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
-				var c = new sbyte?((sbyte)ndr.readUnsignedSmall());
+				var c = new sbyte?((sbyte)ndr.ReadUnsignedSmall());
 				return c;
 			}
 
@@ -750,19 +750,19 @@ namespace org.jinterop.dcom.core {
 
 		private class ShortImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
 					value = short.MinValue;
 				}
-				ndr.writeUnsignedShort((short)(short?)value);
+				ndr.WriteUnsignedShort((short)(short?)value);
 
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
-				var s = new short?((short)ndr.readUnsignedShort());
+				var s = new short?((short)ndr.ReadUnsignedShort());
 				return s;
 			}
 
@@ -777,7 +777,7 @@ namespace org.jinterop.dcom.core {
 
 		private class BooleanImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
@@ -786,25 +786,25 @@ namespace org.jinterop.dcom.core {
 
 				if ((FLAG & JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL)
 				{
-					ndr.writeUnsignedShort((bool)(bool?)value == true ? 0xFFFF: 0x0000);
+					ndr.WriteUnsignedShort((bool)(bool?)value == true ? 0xFFFF: 0x0000);
 				}
 				else
 				{
-					ndr.writeBoolean((bool)(bool?)value);
+					ndr.WriteBoolean((bool)(bool?)value);
 				}
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				bool? b = null;
 				if ((FLAG & JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL) == JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL)
 				{
-					var s = ndr.readUnsignedShort();
+					var s = ndr.ReadUnsignedShort();
 					b = s != 0 ? true:false;
 				}
 				else
 				{
-					b = Convert.ToBoolean(ndr.readBoolean());
+					b = Convert.ToBoolean(ndr.ReadBoolean());
 				}
 
 				return b;
@@ -820,17 +820,17 @@ namespace org.jinterop.dcom.core {
 
 		private class IntegerImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
 					value = int.MinValue;
 				}
-				ndr.writeUnsignedLong((int)(int?)value);
+				ndr.WriteUnsignedLong((int)(int?)value);
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
-				return ndr.readUnsignedLong();
+				return ndr.ReadUnsignedLong();
 			}
 			public virtual int getLengthInBytes(object value, int FLAG)
 			{
@@ -843,7 +843,7 @@ namespace org.jinterop.dcom.core {
 
 		private class LongImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
@@ -854,7 +854,7 @@ namespace org.jinterop.dcom.core {
 				ndr.Buffer.advance(8);
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				ndr.Buffer.align(8);
 				var b = new long?(Encdec.dec_uint64le(ndr.Buffer.Buffer,ndr.Buffer.Index));
@@ -871,7 +871,7 @@ namespace org.jinterop.dcom.core {
 
 		private class DoubleImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
@@ -883,7 +883,7 @@ namespace org.jinterop.dcom.core {
 				ndr.Buffer.advance(8);
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				ndr.Buffer.align(8);
 				var b = new double?(Encdec.dec_doublele(ndr.Buffer.Buffer,ndr.Buffer.Index));
@@ -903,7 +903,7 @@ namespace org.jinterop.dcom.core {
 
 		private class JICurrencyImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				var currency = (JICurrency)value;
 
@@ -950,7 +950,7 @@ namespace org.jinterop.dcom.core {
 				serialize(ndr,typeof(JIStruct),@struct,null,FLAG);
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				//first align
 				var index = (double)ndr.Buffer.Index;
@@ -958,9 +958,9 @@ namespace org.jinterop.dcom.core {
 				ndr.readOctetArray(new sbyte[(int)i],0,(int)i);
 
 				//now read the low byte
-				var lowbyte = ndr.readUnsignedLong();
+				var lowbyte = ndr.ReadUnsignedLong();
 				//hibyte
-				var hibyte = ndr.readUnsignedLong();
+				var hibyte = ndr.ReadUnsignedLong();
 				if (hibyte < 0)
 				{
 					lowbyte = -1 * Math.Abs(lowbyte);
@@ -982,7 +982,7 @@ namespace org.jinterop.dcom.core {
 		//will only get called from a variant.
 		private class DateImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 	//			if (value == null && FLAG == JIFlags.FLAG_REPRESENTATION_ARRAY)
 	//			{
@@ -994,7 +994,7 @@ namespace org.jinterop.dcom.core {
 				ndr.Buffer.advance(8);
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				ndr.Buffer.align(8);
 				var b = new DateTime(convertWindowsTimeToMilliseconds(Encdec.dec_doublele(ndr.Buffer.Buffer,ndr.Buffer.Index)));
@@ -1008,22 +1008,22 @@ namespace org.jinterop.dcom.core {
 				}
 			}
 
-			 /// <summary>
-			 ///FROM JACAOB 1.10. www.danadler.com.
-			 /// Convert a COM time from functions Date(), Time(), Now() to a
-			 /// Java time (milliseconds). Visual Basic time values are based to
-			 /// 30.12.1899, Java time values are based to 1.1.1970 (= 0
-			 /// milliseconds). The difference is added to the Visual Basic value to
-			 /// get the corresponding Java value. The Visual Basic double value
-			 /// reads: <day count delta since 30.12.1899>.<1 day percentage
-			 /// fraction>, e.g. "38100.6453" means: 38100 days since 30.12.1899 plus
-			 /// (24 hours * 0.6453). Example usage:
-			 /// <code>Date javaDate = new Date(toMilliseconds (vbDate));</code>.
-			 /// </summary>
-			 /// <param name="comTime">
-			 ///            COM time. </param>
-			 /// <returns> Java time. </returns>
-			internal virtual long convertWindowsTimeToMilliseconds(double comTime)
+            /// <summary>
+            ///FROM JACAOB 1.10. www.danadler.com.
+            /// Convert a COM time from functions Date(), Time(), Now() to a
+            /// Java time (milliseconds). Visual Basic time values are based to
+            /// 30.12.1899, Java time values are based to 1.1.1970 (= 0
+            /// milliseconds). The difference is added to the Visual Basic value to
+            /// get the corresponding Java value. The Visual Basic double value
+            /// reads: &lt;day count delta since 30.12.1899&gt;.&lt;1 day percentage
+            /// fraction&gt;, e.g. "38100.6453" means: 38100 days since 30.12.1899 plus
+            /// (24 hours * 0.6453). Example usage:
+            /// <code>Date javaDate = new Date(toMilliseconds (vbDate));</code>.
+            /// </summary>
+            /// <param name="comTime">
+            ///            COM time. </param>
+            /// <returns> Java time. </returns>
+            internal virtual long convertWindowsTimeToMilliseconds(double comTime)
 			{
 				long result = 0;
 
@@ -1063,7 +1063,7 @@ namespace org.jinterop.dcom.core {
 
 		private class FloatImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if (value == null)
 				{
@@ -1074,7 +1074,7 @@ namespace org.jinterop.dcom.core {
 				ndr.Buffer.advance(4);
 
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				ndr.Buffer.align(4);
 				var b = new float?(Encdec.dec_floatle(ndr.Buffer.Buffer,ndr.Buffer.Index));
@@ -1094,7 +1094,7 @@ namespace org.jinterop.dcom.core {
 
 		private class StringImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				if ((FLAG & JIFlags.FLAG_REPRESENTATION_VALID_STRING) != JIFlags.FLAG_REPRESENTATION_VALID_STRING)
 				{
@@ -1120,17 +1120,17 @@ namespace org.jinterop.dcom.core {
 					}
 					//NDR representation Max count , then offset, then, actual count
 					//length of String (Maximum count)
-					ndr.writeUnsignedLong(strBytes.Length / 2);
+					ndr.WriteUnsignedLong(strBytes.Length / 2);
 					//last index of String (length in bytes)
-					ndr.writeUnsignedLong(strBytes.Length);
+					ndr.WriteUnsignedLong(strBytes.Length);
 					//length of String Again !! (Actual count)
-					ndr.writeUnsignedLong(strBytes.Length / 2);
+					ndr.WriteUnsignedLong(strBytes.Length / 2);
 					//write an array of unsigned shorts
 					var i = 0;
 					while (i < strBytes.Length)
 					{
 						//ndr.writeUnsignedShort(str.charAt(i));
-						ndr.writeUnsignedSmall(strBytes[i]);
+						ndr.WriteUnsignedSmall(strBytes[i]);
 						i++;
 					}
 
@@ -1142,22 +1142,22 @@ namespace org.jinterop.dcom.core {
 					// the String is written as "short" so length is strlen/2+1
 					var strlen = (int)Math.Round(str.Length / 2.0);
 
-					ndr.writeUnsignedLong(strlen + 1);
-					ndr.writeUnsignedLong(0);
-					ndr.writeUnsignedLong(strlen + 1);
+					ndr.WriteUnsignedLong(strlen + 1);
+					ndr.WriteUnsignedLong(0);
+					ndr.WriteUnsignedLong(strlen + 1);
 					if (str.Length != 0)
 					{
-						ndr.writeCharacterArray(str.ToCharArray(),0,str.Length);
+						ndr.WriteCharacterArray(str.ToCharArray(),0,str.Length);
 						//odd length
 						if (str.Length % 2 != 0)
 						{
 							//add a 0
-							ndr.writeUnsignedSmall(0);
+							ndr.WriteUnsignedSmall(0);
 						}
 					}
 
 					//null termination
-					ndr.writeUnsignedShort(0);
+					ndr.WriteUnsignedShort(0);
 				}
 				else
 				{
@@ -1175,15 +1175,15 @@ namespace org.jinterop.dcom.core {
 						}
 
 						//bytes + 1
-						ndr.writeUnsignedLong(strBytes.Length / 2 + 1);
-						ndr.writeUnsignedLong(0);
-						ndr.writeUnsignedLong(strBytes.Length / 2 + 1);
+						ndr.WriteUnsignedLong(strBytes.Length / 2 + 1);
+						ndr.WriteUnsignedLong(0);
+						ndr.WriteUnsignedLong(strBytes.Length / 2 + 1);
 						//write an array of unsigned shorts
 						var i = 0;
 						while (i < strBytes.Length)
 						{
 							//ndr.writeUnsignedShort(str.charAt(i));
-							ndr.writeUnsignedSmall(strBytes[i]);
+							ndr.WriteUnsignedSmall(strBytes[i]);
 							i++;
 						}
 
@@ -1200,7 +1200,7 @@ namespace org.jinterop.dcom.core {
 	//					}
 
 						//null termination
-						ndr.writeUnsignedShort(0);
+						ndr.WriteUnsignedShort(0);
 
 					}
 				}
@@ -1208,7 +1208,7 @@ namespace org.jinterop.dcom.core {
 
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				if ((FLAG & JIFlags.FLAG_REPRESENTATION_VALID_STRING) != JIFlags.FLAG_REPRESENTATION_VALID_STRING)
 				{
@@ -1224,14 +1224,14 @@ namespace org.jinterop.dcom.core {
 					if ((FLAG & JIFlags.FLAG_REPRESENTATION_STRING_BSTR) == JIFlags.FLAG_REPRESENTATION_STRING_BSTR)
 					{
 						//Read for user
-						ndr.readUnsignedLong(); //eating max length
-						ndr.readUnsignedLong(); //eating length in bytes
-						var actuallength = ndr.readUnsignedLong() * 2;
+						ndr.ReadUnsignedLong(); //eating max length
+						ndr.ReadUnsignedLong(); //eating length in bytes
+						var actuallength = ndr.ReadUnsignedLong() * 2;
 						var buffer = new sbyte[actuallength];
 						var i = 0;
 						while (i < actuallength)
 						{
-							retVal = ndr.readUnsignedSmall();
+							retVal = ndr.ReadUnsignedSmall();
 							buffer[i] = (sbyte)retVal;
 							i++;
 						}
@@ -1244,18 +1244,18 @@ namespace org.jinterop.dcom.core {
 					if ((FLAG & JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR)
 					{
 						{
-							var actuallength = ndr.readUnsignedLong(); //max length
+							var actuallength = ndr.ReadUnsignedLong(); //max length
 							if (actuallength == 0)
 							{
 								return null;
 							}
 
-							ndr.readUnsignedLong(); //eating offset
-							ndr.readUnsignedLong(); //eating actuallength again
+							ndr.ReadUnsignedLong(); //eating offset
+							ndr.ReadUnsignedLong(); //eating actuallength again
 							//now read array.
 							var ret = new char[actuallength * 2 - 2];
 							//read including the unsigned short (null chars)
-							ndr.readCharacterArray(ret,0,actuallength * 2 - 2);
+							ndr.ReadCharacterArray(ret,0,actuallength * 2 - 2);
 							if (ret[ret.Length - 1] == '0')
 							{
 								retString = new string(ret,0,ret.Length - 1);
@@ -1265,7 +1265,7 @@ namespace org.jinterop.dcom.core {
 								retString = new string(ret);
 							}
 
-							ndr.readUnsignedShort();
+							ndr.ReadUnsignedShort();
 						}
 					}
 					else
@@ -1274,25 +1274,25 @@ namespace org.jinterop.dcom.core {
 					{
 
 						{
-							var maxlength = ndr.readUnsignedLong();
+							var maxlength = ndr.ReadUnsignedLong();
 							if (maxlength == 0)
 							{
 								return null;
 							}
-							ndr.readUnsignedLong(); //eating offset
-							var actuallength = ndr.readUnsignedLong() * 2;
+							ndr.ReadUnsignedLong(); //eating offset
+							var actuallength = ndr.ReadUnsignedLong() * 2;
 							var buffer = new sbyte[actuallength - 2];
 							var i = 0;
 							//last 2 bytes , null termination will be eaten outside the loop
 							while (i < actuallength - 2)
 							{
-								retVal = ndr.readUnsignedSmall();
+								retVal = ndr.ReadUnsignedSmall();
 								buffer[i] = (sbyte)retVal;
 								i++;
 							}
 							if (actuallength != 0)
 							{
-								ndr.readUnsignedShort();
+								ndr.ReadUnsignedShort();
 							}
 
 							retString = StringHelperClass.NewString(buffer, "UTF-16LE");
@@ -1348,12 +1348,12 @@ namespace org.jinterop.dcom.core {
 
 		private class JIStringImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -1380,23 +1380,23 @@ namespace org.jinterop.dcom.core {
 
 		private class UUIDImpl : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				try
 				{
-					((UUID)value).encode(ndr,ndr.Buffer);
+					((UUID)value).Encode(ndr,ndr.Buffer);
 				}
 				catch (NdrException e)
 				{
 					Log.Logger.Error(e, "UUIDImpl","serializeData",e);
 				}
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				var ret = new UUID();
 				try
 				{
-					ret.decode(ndr,ndr.Buffer);
+					ret.Decode(ndr,ndr.Buffer);
 				}
 				catch (NdrException e)
 				{
@@ -1416,12 +1416,12 @@ namespace org.jinterop.dcom.core {
 		private class MInterfacePointerImpl : SerializerDeserializer
 		{
 
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
 
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				throw new InvalidOperationException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_INCORRECT_CALL));
 			}
@@ -1434,11 +1434,11 @@ namespace org.jinterop.dcom.core {
 
 		private class MInterfacePointerImpl2 : SerializerDeserializer
 		{
-			public virtual void serializeData(NetworkDataRepresentation ndr, object value, IList defferedPointers, int FLAG)
+			public virtual void serializeData(NdrCodec ndr, object value, IList defferedPointers, int FLAG)
 			{
 				((JIInterfacePointerBody)value).encode(ndr,FLAG);
 			}
-			public virtual object deserializeData(NetworkDataRepresentation ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
+			public virtual object deserializeData(NdrCodec ndr, IList defferedPointers, IDictionary additionalData, int FLAG)
 			{
 				return JIInterfacePointerBody.decode(ndr,FLAG);
 			}

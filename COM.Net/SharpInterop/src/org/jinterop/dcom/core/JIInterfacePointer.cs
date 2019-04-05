@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections;
     using System.Linq;
@@ -75,13 +75,13 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Oid
         /// </summary>
-        public sbyte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
+        public byte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
             .getObjectReference(OBJREF_STANDARD)).ObjectId;
 
         /// <summary>
         /// Oxid
         /// </summary>
-        internal sbyte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
+        internal byte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
             .getObjectReference(OBJREF_STANDARD)).Oxid;
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal static JIInterfacePointer decode(NetworkDataRepresentation ndr,
+        internal static JIInterfacePointer decode(NdrCodec ndr,
             IList defferedPointers, int FLAG, IDictionary additionalData) {
             var ptr = new JIInterfacePointer();
             if ((FLAG & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) == JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
@@ -173,7 +173,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG) {
+        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
             if ((FLAG & JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) ==
                         JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) {
                 //just encode a null.
@@ -227,7 +227,7 @@ namespace org.jinterop.dcom.core {
         //	}
         //	static bool inTest = true;
 
-        internal static readonly sbyte[] OBJREF_SIGNATURE = { 0x4d, 0x45, 0x4f, 0x57 }; // 'MEOW'
+        internal static readonly byte[] OBJREF_SIGNATURE = { 0x4d, 0x45, 0x4f, 0x57 }; // 'MEOW'
         internal const int OBJREF_STANDARD = 0x1; // standard marshaled objref
         internal const int OBJREF_HANDLER = 0x2; // handler marshaled objref
         internal const int OBJREF_CUSTOM = 0x4; // custom marshaled objref

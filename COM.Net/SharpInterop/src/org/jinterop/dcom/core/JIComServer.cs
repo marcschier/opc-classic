@@ -8,53 +8,31 @@
 // 
 
 namespace org.jinterop.dcom.core {
-
-
-    using JIDefaultAuthInfoImpl = common.JIDefaultAuthInfoImpl;
-    using JIErrorCodes = common.JIErrorCodes;
-    using JIException = common.JIException;
-    using JIRuntimeException = common.JIRuntimeException;
-    using JISystem = common.JISystem;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
-    using JIComEndpoint = transport.JIComEndpoint;
-    using JIComTransportFactory = transport.JIComTransportFactory;
-    using IJIWinReg = winreg.IJIWinReg;
-    using JIPolicyHandle = winreg.JIPolicyHandle;
-    using JIWinRegFactory = winreg.JIWinRegFactory;
-
-    using Endpoint = rpc.Endpoint;
-    using FaultException = rpc.FaultException;
-    using Stub = rpc.Stub;
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.transport;
+    using org.jinterop.winreg;
+    using rpc;
     using Serilog;
     using System;
     using System.IO;
 
-
     /// <summary>
     /// Startup class representing a COM Server.
-    ///  <para>
     /// Sample Usage :-
-    ///  
     ///  <code>
+    ///   <seealso cref="JISession"/> session = JISession.createSession("DOMAIN","USERNAME","PASSWORD"); 
+    ///   JIComServer excelServer = new JIComServer(JIProgId.valueOf("Excel.Application"),address,session); 
+    ///   IJIComObject comObject = excelServer.createInstance(); 
+    ///   //Obtaining the IJIDispatch (if supported) 
+    ///   <seealso cref="impls.automation.IJIDispatch"/> dispatch = 
+    ///     (IJIDispatch)<seealso cref="impls.JIObjectFactory"/>.narrowObject(comObject.queryInterface(IJIDispatch.IID)); 
+    ///   </code>
     /// 
-    ///  <seealso cref="JISession"/> session = JISession.createSession("DOMAIN","USERNAME","PASSWORD"); 
-    /// JIComServer excelServer = new JIComServer(JIProgId.valueOf("Excel.Application"),address,session); 
-    ///  IJIComObject comObject = excelServer.createInstance(); 
-    ///  //Obtaining the IJIDispatch (if supported) 
-    ///  <seealso cref="IJIDispatch"/> dispatch = (IJIDispatch)<seealso cref="JIObjectFactory"/>.narrowObject(comObject.queryInterface(IJIDispatch.IID)); 
-    ///  </code>
-    /// 
-    /// </para>
-    ///  <para>Each instance of this class is associated with a single session only.
-    /// 
-    /// @since 1.0
-    /// 
-    /// </para>
+    /// Each instance of this class is associated with a single session only.
     /// </summary>
     public sealed class JIComServer : Stub {
 
-        private static Properties defaults = new Properties();
+        private static SharpCifs.Util.Sharpen.Properties defaults = new SharpCifs.Util.Sharpen.Properties();
         static JIComServer() {
 
             defaults.put("rpc.ntlm.lanManagerKey", "false");
@@ -132,16 +110,16 @@ namespace org.jinterop.dcom.core {
 
             TransportFactory = JIComTransportFactory.SingleTon;
             //now read the session and prepare information for the stub.
-            Properties = new Properties(defaults);
-            Properties.setProperty("rpc.security.username", session.UserName);
-            Properties.setProperty("rpc.security.password", session.Password);
-            Properties.setProperty("rpc.ntlm.domain", session.Domain);
-            Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+            SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties(defaults);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.username", session.UserName);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.password", session.Password);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.domain", session.Domain);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
             if (session.NTLMv2Enabled) {
-                Properties.setProperty("rpc.ntlm.ntlmv2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlmv2", "true");
             }
             if (session.SSOEnabled) {
-                Properties.setProperty("rpc.ntlm.sso", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");
             }
 
 
@@ -230,16 +208,16 @@ namespace org.jinterop.dcom.core {
             try {
 
                 Syntax = "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0";
-                attach();
+                Attach();
                 //first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
-                Endpoint.Syntax.setVersion(0, 0);
+                Endpoint.Syntax.Version = 0;
                 ((JIComEndpoint)Endpoint).rebindEndPoint();
 
                 call(Endpoint.IDEMPOTENT, oxidResolver);
             }
             catch (FaultException e) {
-                throw new JIException(e.status, e);
+                throw new JIException(e._code, e);
             }
             catch (IOException e) {
                 throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -310,11 +288,11 @@ namespace org.jinterop.dcom.core {
 
             //now set the NTLMv2 Session Security.
             if (session.SessionSecurityEnabled) {
-                Properties.setProperty("rpc.ntlm.seal", "true");
-                Properties.setProperty("rpc.ntlm.sign", "true");
-                Properties.setProperty("rpc.ntlm.keyExchange", "true");
-                Properties.setProperty("rpc.ntlm.keyLength", "128");
-                Properties.setProperty("rpc.ntlm.ntlm2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.seal", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sign", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyExchange", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyLength", "128");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlm2", "true");
             }
 
 
@@ -440,21 +418,21 @@ namespace org.jinterop.dcom.core {
         private void initialise(JIClsid clsid, string address, JISession session) {
             TransportFactory = JIComTransportFactory.SingleTon;
             //now read the session and prepare information for the stub.
-            Properties = new Properties(defaults);
-            Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+            SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties(defaults);
+            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
             Address = address;
 
             if (session.NTLMv2Enabled) {
-                Properties.setProperty("rpc.ntlm.ntlmv2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlmv2", "true");
             }
 
             if (session.SSOEnabled) {
-                Properties.setProperty("rpc.ntlm.sso", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");
             }
             else {
-                Properties.setProperty("rpc.security.username", session.UserName);
-                Properties.setProperty("rpc.security.password", session.Password);
-                Properties.setProperty("rpc.ntlm.domain", session.Domain);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.username", session.UserName);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.password", session.Password);
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.domain", session.Domain);
             }
 
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
@@ -564,12 +542,12 @@ namespace org.jinterop.dcom.core {
             var attachcomplete = false;
             try {
                 Syntax = "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0";
-                attach();
+                Attach();
                 // socket to COM server is established
                 attachcomplete = true;
                 //first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
-                Endpoint.Syntax.setVersion(0, 0);
+                Endpoint.Syntax.Version = 0;
                 ((JIComEndpoint)Endpoint).rebindEndPoint();
 
                 //3.2.4.1.1.1 Determining RPC Binding Information for Activation
@@ -599,7 +577,7 @@ namespace org.jinterop.dcom.core {
                     //use SCMActivator
                     Syntax = "000001A0-0000-0000-C000-000000000046:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("000001A0-0000-0000-C000-000000000046");
-                    Endpoint.Syntax.setVersion(0, 0);
+                    Endpoint.Syntax.Version = 0;
                     ((JIComEndpoint)Endpoint).rebindEndPoint();
                     serverActivation = new JIRemoteSCMActivator.RemoteCreateInstance(new JIRemoteSCMActivator(), session.TargetServer, clsid);
                     call(Endpoint.IDEMPOTENT, (JIRemoteSCMActivator.RemoteCreateInstance)serverActivation);
@@ -609,7 +587,7 @@ namespace org.jinterop.dcom.core {
                     //setup syntax for IRemoteActivation
                     Syntax = "4d9f4ab8-7d1c-11cf-861e-0020af6e7c57:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("4d9f4ab8-7d1c-11cf-861e-0020af6e7c57");
-                    Endpoint.Syntax.setVersion(0, 0);
+                    Endpoint.Syntax.Version = 0;
                     ((JIComEndpoint)Endpoint).rebindEndPoint();
                     serverActivation = new JIRemActivation(clsid);
                     call(Endpoint.IDEMPOTENT, (JIRemActivation)serverActivation);
@@ -617,7 +595,7 @@ namespace org.jinterop.dcom.core {
             }
             catch (FaultException e) {
                 serverActivation = null;
-                throw new JIException(e.status, e);
+                throw new JIException(e._code, e);
             }
             catch (IOException e) {
                 serverActivation = null;
@@ -631,7 +609,7 @@ namespace org.jinterop.dcom.core {
                 //the only time remactivation will be null will be case of an exception.
                 if (attachcomplete && serverActivation == null) {
                     try {
-                        detach();
+                        Detach();
                     }
                     catch (IOException e) {
                         Log.Logger.Warning(e, "Unable to detach during init");
@@ -690,11 +668,11 @@ namespace org.jinterop.dcom.core {
             //and currently only TCPIP is supported.
             //now set the NTLMv2 Session Security.
             if (session.SessionSecurityEnabled) {
-                Properties.setProperty("rpc.ntlm.seal", "true");
-                Properties.setProperty("rpc.ntlm.sign", "true");
-                Properties.setProperty("rpc.ntlm.keyExchange", "true");
-                Properties.setProperty("rpc.ntlm.keyLength", "128");
-                Properties.setProperty("rpc.ntlm.ntlm2", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.seal", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sign", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyExchange", "true");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyLength", "128");
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlm2", "true");
             }
 
 
@@ -732,7 +710,7 @@ namespace org.jinterop.dcom.core {
                     session.Stub2.call(Endpoint.IDEMPOTENT, reqUnknown);
                 }
                 catch (FaultException e) {
-                    throw new JIException(e.status, e);
+                    throw new JIException(e._code, e);
                 }
                 catch (IOException e) {
                     throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -756,7 +734,7 @@ namespace org.jinterop.dcom.core {
                         session.Stub2.call(Endpoint.IDEMPOTENT, dispatch);
                     }
                     catch (FaultException e) {
-                        throw new JIException(e.status, e);
+                        throw new JIException(e._code, e);
                     }
                     catch (IOException e) {
                         throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -919,11 +897,11 @@ namespace org.jinterop.dcom.core {
 
                 try {
 
-                    attach();
+                    Attach();
                     if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
                         //first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
-                        Endpoint.Syntax.setVersion(0, 0);
+                        Endpoint.Syntax.Version = 0;
                         ((JIComEndpoint)Endpoint).rebindEndPoint();
                     }
 
@@ -932,7 +910,7 @@ namespace org.jinterop.dcom.core {
 
                 }
                 catch (FaultException e) {
-                    throw new JIException(e.status, e);
+                    throw new JIException(e._code, e);
                 }
                 catch (IOException e) {
                     throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -977,7 +955,7 @@ namespace org.jinterop.dcom.core {
 
         internal void closeStub() {
             try {
-                detach();
+                Detach();
             }
             catch (Exception) {
                 //			No need to print this out.
@@ -994,7 +972,7 @@ namespace org.jinterop.dcom.core {
                     timeoutModifiedfrom0 = true;
                 }
 
-                Properties.setProperty("rpc.socketTimeout", value.ToString());
+                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", value.ToString());
             }
         }
 

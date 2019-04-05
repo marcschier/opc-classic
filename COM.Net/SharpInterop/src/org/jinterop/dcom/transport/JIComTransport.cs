@@ -11,7 +11,7 @@
 namespace org.jinterop.dcom.transport {
 
 
-    using NdrBuffer = ndr.NdrBuffer;
+    using NdrBuffer = SharpCifs.Dcerpc.Ndr.NdrBuffer;
 
     using JISystem = common.JISystem;
     using ChannelListener = niosupport.ChannelListener;
@@ -19,10 +19,10 @@ namespace org.jinterop.dcom.transport {
     using ChannelWrapperFactory = niosupport.ChannelWrapperFactory;
     using SelectorManager = niosupport.SelectorManager;
 
-    using Endpoint = rpc.Endpoint;
+    using IEndpoint = rpc.IEndpoint;
     using ProviderException = rpc.ProviderException;
     using RpcException = rpc.RpcException;
-    using Transport = rpc.Transport;
+    using ITransport = rpc.ITransport;
     using PresentationSyntax = rpc.core.PresentationSyntax;
     using Serilog;
 
@@ -32,7 +32,7 @@ namespace org.jinterop.dcom.transport {
     /// @exclude
     /// @since 1.0
     /// </summary>
-    internal sealed class JIComTransport : Transport
+    internal sealed class JIComTransport : ITransport
 	{
 		public const string PROTOCOL = "ncacn_ip_tcp";
 
@@ -75,11 +75,11 @@ namespace org.jinterop.dcom.transport {
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public JIComTransport(String address, org.jinterop.dcom.transport.niosupport.SelectorManager selectorManager, java.util.Properties properties) throws rpc.ProviderException
-		public JIComTransport(string address, SelectorManager selectorManager, Properties properties)
+//ORIGINAL LINE: public JIComTransport(String address, org.jinterop.dcom.transport.niosupport.SelectorManager selectorManager, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
+		public JIComTransport(string address, SelectorManager selectorManager, SharpCifs.Util.Sharpen.Properties properties)
 		{
 			this.selectorManager = selectorManager;
-			Properties = properties;
+			SharpCifs.Util.Sharpen.Properties = properties;
 
 			parse(address);
 		}
@@ -125,16 +125,16 @@ namespace org.jinterop.dcom.transport {
 			host = server;
 		}
 
-        /// <seealso cref= rpc.Transport#getProtocol() </seealso>
+        /// <seealso cref= rpc.ITransport#getProtocol() </seealso>
         public string Protocol => PROTOCOL;
 
-        /// <seealso cref= rpc.Transport#getProperties() </seealso>
-        public Properties Properties { get; }
+        /// <seealso cref= rpc.ITransport#getProperties() </seealso>
+        public SharpCifs.Util.Sharpen.Properties SharpCifs.Util.Sharpen.Properties { get; }
 
-        /// <seealso cref= rpc.Transport#attach(rpc.core.PresentationSyntax) </seealso>
+        /// <seealso cref= rpc.ITransport#attach(rpc.core.PresentationSyntax) </seealso>
         //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
         //ORIGINAL LINE: public rpc.Endpoint attach(rpc.core.PresentationSyntax syntax) throws java.io.IOException
-        public Endpoint attach(PresentationSyntax syntax)
+        public IEndpoint Attach(PresentationSyntax syntax)
 		{
 			if (attached)
 			{
@@ -173,7 +173,7 @@ namespace org.jinterop.dcom.transport {
 			{
 				try
 				{
-					close();
+					Close();
 				}
 				catch (Exception)
 				{ // ignored
@@ -212,10 +212,10 @@ namespace org.jinterop.dcom.transport {
 			}
 		}
 
-		/// <seealso cref= rpc.Transport#close() </seealso>
+		/// <seealso cref= rpc.ITransport#close() </seealso>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void close() throws java.io.IOException
-		public void close()
+		public void Close()
 		{
 			try
 			{
@@ -232,10 +232,10 @@ namespace org.jinterop.dcom.transport {
 			}
 		}
 
-		/// <seealso cref= rpc.Transport#send(ndr.NdrBuffer) </seealso>
+		/// <seealso cref= rpc.ITransport#send(ndr.NdrBuffer) </seealso>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void send(ndr.NdrBuffer buffer) throws java.io.IOException
-		public void send(NdrBuffer buffer)
+		public void Send(NdrBuffer buffer)
 		{
 			if (!attached)
 			{
@@ -249,10 +249,10 @@ namespace org.jinterop.dcom.transport {
 			channelWrapper.writeAll(byteBuffer);
 		}
 
-		/// <seealso cref= rpc.Transport#receive(ndr.NdrBuffer) </seealso>
+		/// <seealso cref= rpc.ITransport#receive(ndr.NdrBuffer) </seealso>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void receive(ndr.NdrBuffer buffer) throws java.io.IOException
-		public void receive(NdrBuffer buffer)
+		public void Receive(NdrBuffer buffer)
 		{
 			if (!attached)
 			{
@@ -308,7 +308,7 @@ namespace org.jinterop.dcom.transport {
 				var timeout = 0;
 				try
 				{
-					timeout = int.Parse(Properties.getProperty("rpc.socketTimeout", "0"));
+					timeout = int.Parse(SharpCifs.Util.Sharpen.Properties.getProperty("rpc.socketTimeout", "0"));
 				}
 				catch (System.FormatException)
 				{ // ignored

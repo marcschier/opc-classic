@@ -9,7 +9,7 @@
 
 namespace org.jinterop.dcom.core
 {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;

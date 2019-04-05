@@ -11,23 +11,20 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-namespace rpc
-{
+namespace rpc {
+    using System.IO;
 
-	public class RpcException : IOException
-	{
+    /// <summary>
+    /// Base rpc related exception
+    /// </summary>
+    public class RpcException : IOException {
 
-		/// 
-		private const long serialVersionUID = -6529915206074406077L;
+        /// <inheritdoc/>
+        public RpcException() {
+        }
 
-		public RpcException() : base()
-		{
-		}
-
-		public RpcException(string message) : base(message)
-		{
-		}
-
-	}
-
+        /// <inheritdoc/>
+        public RpcException(string message) : base(message) {
+        }
+    }
 }

@@ -13,91 +13,142 @@
 
 
 
-namespace rpc.core
-{
+namespace rpc.core {
+    using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
+    using System.Text;
 
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    /// <summary>
+    /// Presentation result
+    /// </summary>
+    public class PresentationResult : NdrOp {
 
-	public class PresentationResult : NdrObject
-	{
+        /// <summary>
+        /// Result
+        /// </summary>
+        public PresentationResultCode Result { get; set; }
 
-		public const int ACCEPTANCE = 0;
+        /// <summary>
+        /// Reason code
+        /// </summary>
+        public PresentationResultReason Reason { get; set; }
 
-		public const int USER_REJECTION = 1;
+        /// <summary>
+        /// Transfer syntax
+        /// </summary>
+        public PresentationSyntax TransferSyntax { get; set; }
 
-		public const int PROVIDER_REJECTION = 2;
+        /// <summary>
+        /// Create default result
+        /// </summary>
+        public PresentationResult() : 
+            this(new PresentationSyntax(NdrCodec.NDR_SYNTAX)) {
+        }
 
-		public const int REASON_NOT_SPECIFIED = 0;
+        /// <summary>
+        /// Create result
+        /// </summary>
+        /// <param name="transferSyntax"></param>
+        public PresentationResult(PresentationSyntax transferSyntax) : 
+            this(PresentationResultCode.ACCEPTANCE, 
+                PresentationResultReason.REASON_NOT_SPECIFIED, transferSyntax) {
+        }
 
-		public const int ABSTRACT_SYNTAX_NOT_SUPPORTED = 1;
+        /// <summary>
+        /// Create result
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="reason"></param>
+        public PresentationResult(PresentationResultCode result, 
+            PresentationResultReason reason) :
+            this(result, reason, null) {
+        }
 
-		public const int PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED = 2;
+        /// <summary>
+        /// Create result
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="reason"></param>
+        /// <param name="transferSyntax"></param>
+        public PresentationResult(PresentationResultCode result, 
+            PresentationResultReason reason, PresentationSyntax transferSyntax) {
+            Result = result;
+            Reason = reason;
+            TransferSyntax = transferSyntax;
+        }
 
-		public const int LOCAL_LIMIT_EXCEEDED = 3;
+        /// <inheritdoc/>
+        public override void Read(NdrCodec ndr) {
+            ndr.Buffer.Align(4);
+            Result = (PresentationResultCode)ndr.ReadUnsignedShort();
+            Reason = (PresentationResultReason)ndr.ReadUnsignedShort();
+            //commenting this since the entire packet should be decoded VRC
+            //if (Result == PresentationResultCode.ACCEPTANCE) 
+            {
+                TransferSyntax = new PresentationSyntax();
+                try {
+                    TransferSyntax.Decode(ndr, ndr.Buffer);
+                }
+                catch (NdrException ex) {
+                    Log.Logger.Verbose(ex, "Read presentation result failed");
+                }
+            }
+        }
 
-		public int result;
+        /// <inheritdoc/>
+        public override void Write(NdrCodec ndr) {
+            ndr.Buffer.Align(4, 0);
+            ndr.WriteUnsignedShort((int)Result);
+            ndr.WriteUnsignedShort((int)Reason);
+            // commenting this since the entire packet should be written VRC
+            // if (Result == PresentationResultCode.ACCEPTANCE && TransferSyntax != null)
+            if (TransferSyntax != null)
+            {
+                try {
+                    TransferSyntax.Encode(ndr, ndr.Buffer);
+                }
+                catch (NdrException ex) {
+                    Log.Logger.Verbose(ex, "Write presentation result failed");
+                }
+            }
+        }
 
-		public int reason;
-
-		public PresentationSyntax transferSyntax;
-
-		public PresentationResult() : this(ACCEPTANCE, REASON_NOT_SPECIFIED, new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX))
-		{
-		}
-
-		public PresentationResult(PresentationSyntax transferSyntax) : this(ACCEPTANCE, REASON_NOT_SPECIFIED, transferSyntax)
-		{
-		}
-
-		public PresentationResult(int result, int reason) : this(result, reason, null)
-		{
-		}
-
-		public PresentationResult(int result, int reason, PresentationSyntax transferSyntax)
-		{
-			this.result = result;
-			this.reason = reason;
-			this.transferSyntax = transferSyntax;
-		}
-
-		public override void read(NetworkDataRepresentation ndr)
-		{
-			ndr.Buffer.align(4);
-			result = ndr.readUnsignedShort();
-			reason = ndr.readUnsignedShort();
-			//if (result == ACCEPTANCE) //commenting this since the entire packet should be decoded VRC
-			{
-				transferSyntax = new PresentationSyntax();
-				try
-				{
-					transferSyntax.decode(ndr, ndr.Buffer);
-				}
-				catch (NdrException)
-				{
-				}
-			}
-		}
-
-		public override void write(NetworkDataRepresentation ndr)
-		{
-			ndr.Buffer.align(4, (sbyte) 0);
-			ndr.writeUnsignedShort(result);
-			ndr.writeUnsignedShort(reason);
-			//if (result == ACCEPTANCE && transferSyntax != null)
-			if (transferSyntax != null) //commenting this since the entire packet should be written VRC
-			{
-				try
-				{
-					transferSyntax.encode(ndr, ndr.Buffer);
-				}
-				catch (NdrException)
-				{
-				}
-			}
-		}
-
-	}
-
+        /// <inheritdoc/>
+        public override string ToString() {
+            var str = new StringBuilder();
+            switch (Result) {
+                case PresentationResultCode.ACCEPTANCE:
+                    str.Append("ACCEPTANCE");
+                    break;
+                case PresentationResultCode.USER_REJECTION:
+                    str.Append("USER_REJECTION");
+                    break;
+                case PresentationResultCode.PROVIDER_REJECTION:
+                    str.Append("PROVIDER_REJECTION");
+                    break;
+                default:
+                    str.Append("unknown");
+                    break;
+            }
+            str.Append("; ");
+            switch (Reason) {
+                case PresentationResultReason.REASON_NOT_SPECIFIED:
+                    str.Append("REASON_NOT_SPECIFIED");
+                    break;
+                case PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED:
+                    str.Append("ABSTRACT_SYNTAX_NOT_SUPPORTED");
+                    break;
+                case PresentationResultReason.PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED:
+                    str.Append("PROPOSED_TRANSFER_SYNTAXES_NOT_SUPPORTED");
+                    break;
+                case PresentationResultReason.LOCAL_LIMIT_EXCEEDED:
+                    str.Append("LOCAL_LIMIT_EXCEEDED");
+                    break;
+                default:
+                    str.Append("unknown");
+                    break;
+            }
+            return str.ToString();
+        }
+    }
 }

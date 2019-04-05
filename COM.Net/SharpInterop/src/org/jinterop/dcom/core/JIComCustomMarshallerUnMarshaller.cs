@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 namespace org.jinterop.dcom.core {
-    using ndr;
+    using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections;
 
@@ -60,7 +60,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"> </param>
         /// <param name="defferedPointers"> </param>
         /// <param name="FLAG"> </param>
-        public abstract void encode(NetworkDataRepresentation ndr, IList defferedPointers, int FLAG);
+        public abstract void encode(NdrCodec ndr, IList defferedPointers, int FLAG);
 
         /// <summary>
         /// Implement for custom decoding. Called by the framework. 
@@ -72,7 +72,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="additionalData">
         /// </param>
         public abstract JIComCustomMarshallerUnMarshaller decode(IJIComObject newMe, 
-            NetworkDataRepresentation ndr, IList defferedPointers, int FLAG, IDictionary additionalData);
+            NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData);
 
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="value"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        protected internal virtual void serialize(NetworkDataRepresentation ndr, Type c,
+        protected internal virtual void serialize(NdrCodec ndr, Type c,
             object value, IList defferedPointers, int FLAG) {
             JIMarshalUnMarshalHelper.serialize(ndr, c, value, defferedPointers, FLAG);
         }
@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        protected internal virtual object deSerialize(NetworkDataRepresentation ndr, object obj,
+        protected internal virtual object deSerialize(NdrCodec ndr, object obj,
             IList defferedPointers, int FLAG, IDictionary additionalData) {
             return JIMarshalUnMarshalHelper.deSerialize(ndr, obj, defferedPointers, FLAG, additionalData);
         }
