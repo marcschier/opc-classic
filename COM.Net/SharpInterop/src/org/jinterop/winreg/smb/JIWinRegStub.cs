@@ -36,8 +36,7 @@ namespace org.jinterop.winreg.smb {
 		//"ncacn_np:" + servername + "[\\PIPE\\winreg]"
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public JIWinRegStub(org.jinterop.dcom.common.IJIAuthInfo authInfo, String serverName) throws java.net.UnknownHostException
-		public JIWinRegStub(IJIAuthInfo authInfo, string serverName) : base()
-		{
+		public JIWinRegStub(IJIAuthInfo authInfo, string serverName) 		{
 			if (authInfo == null)
 			{
 				throw new System.ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
@@ -87,8 +86,7 @@ namespace org.jinterop.winreg.smb {
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public JIWinRegStub(String serverName) throws java.net.UnknownHostException
-		public JIWinRegStub(string serverName) : base()
-		{
+		public JIWinRegStub(string serverName) 		{
 			base.TransportFactory = new rpc.ncacn_np.TransportFactory();
 			base.SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties();
 			base.SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");

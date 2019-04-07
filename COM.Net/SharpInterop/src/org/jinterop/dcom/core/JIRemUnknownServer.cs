@@ -1,15 +1,16 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
     using org.jinterop.dcom.transport;
     using rpc;
+    using SharpCifs.Util.Sharpen;
     using System;
     using System.IO;
 
@@ -18,15 +19,14 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIRemUnknownServer : Stub {
 
-        private static SharpCifs.Util.Sharpen.Properties defaults = new SharpCifs.Util.Sharpen.Properties();
+        private static Properties defaults = new Properties();
         static JIRemUnknownServer() {
-
-            defaults.put("rpc.ntlm.lanManagerKey", "false");
-            defaults.put("rpc.ntlm.sign", "false");
-            defaults.put("rpc.ntlm.seal", "false");
-            defaults.put("rpc.ntlm.keyExchange", "false");
-            defaults.put("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
-            defaults.put("rpc.socketTimeout", 0.ToString());
+            defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            defaults.SetProperty("rpc.ntlm.sign", "false");
+            defaults.SetProperty("rpc.ntlm.seal", "false");
+            defaults.SetProperty("rpc.ntlm.keyExchange", "false");
+            defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+            defaults.SetProperty("rpc.socketTimeout", 0.ToString());
         }
 
         /// <summary>
@@ -40,8 +40,7 @@ namespace org.jinterop.dcom.core {
                 else {
                     _timeoutModifiedfrom0 = true;
                 }
-
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", value.ToString());
+                Properties.SetProperty("rpc.socketTimeout", value.ToString());
             }
         }
 
@@ -51,43 +50,46 @@ namespace org.jinterop.dcom.core {
         protected override string Syntax { get; }
 
         /// <summary>
-        /// Interface pointer to the initialized COM server , must be called immediately after the JIComServer has been 
-        /// initialized. And closeStub must be called where we call closeStub of JIComServer.
+        /// Interface pointer to the initialized COM server, must be
+        /// called immediately after the JIComServer has been
+        /// initialized. And closeStub must be called where we
+        /// call closeStub of JIComServer.
         /// </summary>
         /// <param name="session"> </param>
         /// <param name="remUnknownIpid"> </param>
         /// <param name="address"> in the "ncacn_ip_tcp:host[port]" format </param>
         /// <exception cref="JIException"> </exception>
-        internal JIRemUnknownServer(JISession session, string remUnknownIpid, string address) {
+        internal JIRemUnknownServer(JISession session, string remUnknownIpid,
+            string address) {
 
             _session = session;
             TransportFactory = JIComTransportFactory.SingleTon;
-            SharpCifs.Util.Sharpen.Properties = new SharpCifs.Util.Sharpen.Properties(defaults);
-            SharpCifs.Util.Sharpen.Properties.setProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
+            Properties = new Properties(defaults);
+            Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
             if (session.NTLMv2Enabled) {
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlmv2", "true");
+                Properties.SetProperty("rpc.ntlm.ntlmv2", "true");
             }
 
             if (session.SSOEnabled) {
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sso", "true");
+                Properties.SetProperty("rpc.ntlm.sso", "true");
             }
             else {
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.username", session.UserName);
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.security.password", session.Password);
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.domain", session.Domain);
+                Properties.SetProperty("rpc.security.username", session.UserName);
+                Properties.SetProperty("rpc.security.password", session.Password);
+                Properties.SetProperty("rpc.ntlm.domain", session.Domain);
             }
 
             //now set the NTLMv2 Session Security.
             if (session.SessionSecurityEnabled) {
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.seal", "true");
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.sign", "true");
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyExchange", "true");
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.keyLength", "128");
-                SharpCifs.Util.Sharpen.Properties.setProperty("rpc.ntlm.ntlm2", "true");
+                Properties.SetProperty("rpc.ntlm.seal", "true");
+                Properties.SetProperty("rpc.ntlm.sign", "true");
+                Properties.SetProperty("rpc.ntlm.keyExchange", "true");
+                Properties.SetProperty("rpc.ntlm.keyLength", "128");
+                Properties.SetProperty("rpc.ntlm.ntlm2", "true");
             }
 
-            // Now will setup syntax for IRemUnknown and the address. 
+            // Now will setup syntax for IRemUnknown and the address.
             Syntax = "00000143-0000-0000-c000-000000000046:0.0";
             //and currently only TCPIP is supported.
             Address = address;
@@ -99,11 +101,12 @@ namespace org.jinterop.dcom.core {
         /// Execute a Method on the COM Interface identified by the IID
         /// <param name="obj"> </param>
         /// <param name="targetIID"></param>
+        /// <param name="socketTimeout"></param>
+        /// </summary>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        internal object[] call(JICallBuilder obj, string targetIID, int socketTimeout) {
+        internal object[] Call(JICallBuilder obj, string targetIID, int socketTimeout) {
             lock (_mutex) {
-
                 if (_session.SessionInDestroy && !obj._fromDestroySession) {
                     throw new JIException(JIErrorCodes.JI_SESSION_DESTROYED);
                 }
@@ -111,17 +114,16 @@ namespace org.jinterop.dcom.core {
                 if (socketTimeout != 0) {
                     SocketTimeOut = socketTimeout;
                 }
-                else //for cases where it was something earlier, but is now being set to 0.
-                {
+                else {
+                    //for cases where it was something earlier, but is now being set to 0.
                     if (_timeoutModifiedfrom0) {
                         SocketTimeOut = socketTimeout;
                     }
                 }
-
                 try {
-
                     Attach();
-                    if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
+                    if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID,
+                        StringComparison.CurrentCultureIgnoreCase)) {
                         //first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
                         Endpoint.Syntax.Version = 0;
@@ -129,11 +131,10 @@ namespace org.jinterop.dcom.core {
                     }
 
                     Object = obj.ParentIpid;
-                    call(Endpoint.IDEMPOTENT, obj);
-
+                    Call(Semantics.IDEMPOTENT, obj);
                 }
                 catch (FaultException e) {
-                    throw new JIException(e._code, e);
+                    throw new JIException((int)e.Code, e);
                 }
                 catch (IOException e) {
                     throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
@@ -144,7 +145,6 @@ namespace org.jinterop.dcom.core {
 
                 return obj.Results;
             }
-
         }
 
         /// <summary>
@@ -152,16 +152,17 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="obj"></param>
         /// <exception cref="JIException"></exception>
-        internal void addRef_ReleaseRef(JICallBuilder obj) {
+        internal void AddRef_ReleaseRef(JICallBuilder obj) {
             lock (_mutex) {
                 if (_remunknownIPID == null) {
                     return;
                 }
-                //now also set the Object ID for IRemUnknown call this will be the IPID of the returned JIRemActivation or IOxidResolver
+                // now also set the Object ID for IRemUnknown call this will be the
+                // IPID of the returned JIRemActivation or IOxidResolver
                 obj.ParentIpid = _remunknownIPID;
-                obj.attachSession(_session);
+                obj.AttachSession(_session);
                 try {
-                    call(obj, JIRemUnknown.IID_IUnknown, _session.GlobalSocketTimeout);
+                    Call(obj, JIRemUnknown.IID_IUnknown, _session.GlobalSocketTimeout);
                 }
                 catch (JIRuntimeException e1) {
                     throw new JIException(e1);
@@ -169,7 +170,10 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal void closeStub() {
+        /// <summary>
+        /// Close
+        /// </summary>
+        internal void CloseStub() {
             try {
                 Detach();
             }

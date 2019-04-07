@@ -15,8 +15,8 @@
 			{
 
 				var session = JISession.createSession();
-				var comServer = new JIComServer(JIClsid.valueOf("00024500-0000-0000-C000-000000000046"), session);
-				var comObject = comServer.createInstance();
+				var comServer = new JIComServer(JIClsid.ValueOf("00024500-0000-0000-C000-000000000046"), session);
+				var comObject = comServer.CreateInstance();
 				var h = 0;
 
                 //			SSPIJNIClient jniClient = SSPIJNIClient.getInstance();

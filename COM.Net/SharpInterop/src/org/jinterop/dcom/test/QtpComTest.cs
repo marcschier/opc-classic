@@ -58,9 +58,9 @@
 
 						Console.WriteLine(comServer.SharpCifs.Util.Sharpen.Properties);
 
-						unknown = comServer.createInstance();
+						unknown = comServer.CreateInstance();
 
-						dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+						dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 						//System.out.println(((JIVariant)dispatch.get("Version")).getObjectAsString().getString());
 

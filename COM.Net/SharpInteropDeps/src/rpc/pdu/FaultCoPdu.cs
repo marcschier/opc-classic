@@ -1,28 +1,27 @@
-﻿
-// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
+//
 
 namespace rpc.pdu {
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     /// <summary>
     /// Fault pdu
     /// </summary>
-    public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable<FaultCoPdu> {
+    public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable {
 
         /// <summary> Type info - TODO - move to PduTypes.cs </summary>
         public const int FAULT_TYPE = 0x03;
@@ -109,32 +108,32 @@ namespace rpc.pdu {
         }
 
         /// <inheritdoc/>
-        public Iterator<FaultCoPdu> GetFragments(int size) {
+        public Iterator<ConnectionOrientedPdu> GetFragments(int size) {
             var stub = Stub;
             if (stub == null) {
-                return new FaultCoPdu[] { this }.Iterator();
+                return new List<ConnectionOrientedPdu> { this }.Iterator();
             }
             var stubSize = size - 24;
             if (stub.Length <= stubSize) {
-                return new FaultCoPdu[] { this }.Iterator();
+                return new List<ConnectionOrientedPdu> { this }.Iterator();
             }
             return new FragmentIterator(this, stubSize);
         }
 
         /// <inheritdoc/>
-        public FaultCoPdu Reassemble(Iterator<FaultCoPdu> fragments) {
+        public ConnectionOrientedPdu Reassemble(Iterator<ConnectionOrientedPdu> fragments) {
             if (!fragments.HasNext()) {
                 throw new IOException("No fragments available.");
             }
             try {
-                var pdu = fragments.Next();
+                var pdu = (FaultCoPdu)fragments.Next();
                 var stub = pdu.Stub;
                 if (stub == null) {
                     stub = new byte[0];
                 }
                 while (fragments.HasNext()) {
-                    var fragment_Renamed = fragments.Next();
-                    var fragmentStub = fragment_Renamed.Stub;
+                    var fragment = (FaultCoPdu)fragments.Next();
+                    var fragmentStub = fragment.Stub;
                     if (fragmentStub != null && fragmentStub.Length > 0) {
                         var tmp = new byte[stub.Length + fragmentStub.Length];
                         Array.Copy(stub, 0, tmp, 0, stub.Length);
@@ -161,16 +160,16 @@ namespace rpc.pdu {
         }
 
         /// <inheritdoc/>
-        public FaultCoPdu Clone() {
+        public ConnectionOrientedPdu Clone() {
             try {
-                return (FaultCoPdu)base.MemberwiseClone(); // TODO : Deep clone
+                return (ConnectionOrientedPdu)base.MemberwiseClone(); // TODO : Deep clone
             }
             catch (Exception) {
                 throw new InvalidOperationException();
             }
         }
 
-        private class FragmentIterator : Iterator<FaultCoPdu> {
+        private class FragmentIterator : Iterator<ConnectionOrientedPdu> {
 
             public FragmentIterator(FaultCoPdu outerInstance, int stubSize) {
                 _outerInstance = outerInstance;
@@ -183,11 +182,11 @@ namespace rpc.pdu {
             }
 
             /// <inheritdoc/>
-            public override FaultCoPdu Next() {
+            public override ConnectionOrientedPdu Next() {
                 if (_index >= _outerInstance.Stub.Length) {
                     throw new NoSuchElementException();
                 }
-                var fragment = _outerInstance.Clone();
+                var fragment = (FaultCoPdu)_outerInstance.Clone();
                 var allocation = _outerInstance.Stub.Length - _index;
                 fragment.AllocationHint = allocation;
                 if (_stubSize < allocation) {
@@ -216,7 +215,5 @@ namespace rpc.pdu {
             private readonly int _stubSize;
             private int _index;
         }
-
     }
-
 }

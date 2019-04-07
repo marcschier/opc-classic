@@ -1,17 +1,17 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
-    using System.Collections;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Class representing a COM string. The Wide Char (<code>LPWSTR</code>) and the <code>BSTR</code> are
@@ -46,7 +46,7 @@ namespace org.jinterop.dcom.core {
         /// if <code>type</code> is not a string flag.</exception>
         public JIString(int type) {
             Type = type;
-            if (type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR || 
+            if (type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ||
                 type == JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
                 _member = new JIPointer(typeof(string), true);
             }
@@ -71,12 +71,12 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JIFlags.FLAG_REPRESENTATION_STRING_BSTR"> </seealso>
         /// <seealso cref="JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR"> </seealso>
         /// <seealso cref="JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR"> </seealso>
-        /// <exception cref="ArgumentException"> 
+        /// <exception cref="ArgumentException">
         /// if <code>type</code> is not a string flag. </exception>
         public JIString(string str, int type) {
             str = str ?? "";
             Type = type;
-            if (type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR || 
+            if (type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ||
                 type == JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR) {
                 _member = new JIPointer(str, true);
                 Variant = null;
@@ -84,7 +84,7 @@ namespace org.jinterop.dcom.core {
             }
             else if (type == JIFlags.FLAG_REPRESENTATION_STRING_BSTR) {
                 _member = new JIPointer(str, false);
-                _member.setReferent(0x72657355); //"User" in LEndian.
+                _member.SetReferent(0x72657355); //"User" in LEndian.
                 Variant = new JIVariant(this);
                 VariantByRef = new JIVariant(this, true);
             }
@@ -104,10 +104,10 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// String encapsulated by this object. The encoding scheme 
+        /// String encapsulated by this object. The encoding scheme
         /// for <code>LPWSTR</code> and <code>BSTR</code> strings is "UTF-16LE".
         /// </summary>
-        public string String => _member.getReferent()?.ToString();
+        public string String => _member.GetReferent()?.ToString();
 
         /// <summary>
         /// Type representing this object.
@@ -124,8 +124,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
-            JIMarshalUnMarshalHelper.serialize(ndr, _member.GetType(), _member, defferedPointers, Type | FLAG);
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int FLAG) {
+            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, defferedPointers, Type | FLAG);
         }
 
         /// <summary>
@@ -136,9 +136,9 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIString decode(NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
+        internal JIString Decode(NdrCodec ndr, List<object> defferedPointers, int FLAG, IDictionary<object, object> additionalData) {
             var newString = new JIString(Type) {
-                _member = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, _member, defferedPointers, Type | FLAG, additionalData)
+                _member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, _member, defferedPointers, Type | FLAG, additionalData)
             };
             return newString;
         }

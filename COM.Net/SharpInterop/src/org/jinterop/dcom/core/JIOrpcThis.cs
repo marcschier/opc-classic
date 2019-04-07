@@ -1,11 +1,12 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
+
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
@@ -122,9 +123,9 @@ namespace org.jinterop.dcom.core {
                  */
 
                 var orpcextent = new JIStruct();
-                orpcextent.addMember(typeof(UUID));
-                orpcextent.addMember(typeof(int?)); //length
-                orpcextent.addMember(new JIArray(typeof(sbyte?), null, 1, true));
+                orpcextent.AddMember(typeof(UUID));
+                orpcextent.AddMember(typeof(int?)); //length
+                orpcextent.AddMember(new JIArray(typeof(sbyte?), null, 1, true));
                 //create the orpcextentarray struct
                 /*
                  *    typedef struct tagORPC_EXTENT_ARRAY
@@ -137,10 +138,10 @@ namespace org.jinterop.dcom.core {
                  */
 
 
-                orpcextentarray.addMember(typeof(int?));
-                orpcextentarray.addMember(typeof(int?));
+                orpcextentarray.AddMember(typeof(int?));
+                orpcextentarray.AddMember(typeof(int?));
                 //this is since the pointer is [unique]
-                orpcextentarray.addMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
+                orpcextentarray.AddMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
             }
             catch (JIException) {
                 //this won't fail...i am certain :)...
@@ -156,7 +157,7 @@ namespace org.jinterop.dcom.core {
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(
                     ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, map);
                 //this should replace the value in the original place.
-                ((JIPointer)listOfDefferedPointers[x]).replaceSelfWithNewPointer(replacement); 
+                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                 x++;
                 listOfDefferedPointers.AddRange(x, newList);
             }
@@ -164,16 +165,16 @@ namespace org.jinterop.dcom.core {
             var extentArrays = new ArrayList();
             //now read whether extend array exists or not
             if (!orpcextentarrayptr.Null) {
-                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.getReferent()).getMember(2)).getReferent()).ArrayInstance;
+                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.GetReferent()).GetMember(2)).GetReferent()).ArrayInstance;
                 for (var i = 0; i < pointers.Length; i++) {
                     if (pointers[i].Null) {
                         continue;
                     }
 
-                    var orpcextent2 = (JIStruct)pointers[i].getReferent();
-                    var byteArray = (sbyte?[])((JIArray)orpcextent2.getMember(2)).ArrayInstance;
+                    var orpcextent2 = (JIStruct)pointers[i].GetReferent();
+                    var byteArray = (sbyte?[])((JIArray)orpcextent2.GetMember(2)).ArrayInstance;
 
-                    extentArrays.Add(new JIOrpcExtentArray(((UUID)orpcextent2.getMember(0)).ToString(), byteArray.Length, byteArray));
+                    extentArrays.Add(new JIOrpcExtentArray(((UUID)orpcextent2.GetMember(0)).ToString(), byteArray.Length, byteArray));
                 }
 
             }

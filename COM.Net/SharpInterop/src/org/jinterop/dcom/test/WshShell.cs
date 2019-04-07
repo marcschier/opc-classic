@@ -76,9 +76,9 @@
 
 
 
-				unknown = comServer.createInstance();
+				unknown = comServer.CreateInstance();
 
-				dispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+				dispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 
 

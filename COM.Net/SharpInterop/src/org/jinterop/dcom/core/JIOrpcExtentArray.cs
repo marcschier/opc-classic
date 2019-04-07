@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using System;
@@ -22,7 +22,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="guid"></param>
         /// <param name="size"></param>
         /// <param name="data"></param>
-		internal JIOrpcExtentArray(string guid, int size, sbyte?[] data) {
+		internal JIOrpcExtentArray(string guid, int size, byte[] data) {
             GUID = guid;
             SizeOfData = size;
             _data = data;
@@ -31,26 +31,26 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Guid
         /// </summary>
-        public string GUID { get; };
+        public string GUID { get; }
 
         /// <summary>
         /// Size
         /// </summary>
-        public int SizeOfData { get; };
+        public int SizeOfData { get; }
 
         /// <summary>
         /// Data
         /// </summary>
-        public sbyte[] Data {
+        public byte[] Data {
             get {
-                var newData = new sbyte[_data.Length];
+                var newData = new byte[_data.Length];
                 for (var i = 0; i < _data.Length; i++) {
-                    newData[i] = (sbyte)_data[i];
+                    newData[i] = (byte)_data[i];
                 }
                 return newData;
             }
         }
 
-        private readonly sbyte?[] _data;
+        private readonly byte[] _data;
     }
 }

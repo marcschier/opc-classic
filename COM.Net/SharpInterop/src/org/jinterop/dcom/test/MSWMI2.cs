@@ -33,11 +33,11 @@
 			session = JISession.createSession(args[1],args[2],args[3]);
 	//		session.useSessionSecurity(true);
 	//		session.setGlobalSocketTimeout(5000);
-			comStub = new JIComServer(JIClsid.valueOf("76a64158-cb41-11d1-8b02-00600806d9b6"),address,session);
-			var unknown = comStub.createInstance();
-			comObject = (IJIComObject)unknown.queryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
+			comStub = new JIComServer(JIClsid.ValueOf("76a64158-cb41-11d1-8b02-00600806d9b6"),address,session);
+			var unknown = comStub.CreateInstance();
+			comObject = (IJIComObject)unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
 			//This will obtain the dispatch interface
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 		}
 
 
@@ -55,7 +55,7 @@
 			var variant = wbemObjectSet_dispatch.get("_NewEnum");
 			var object2 = variant.ObjectAsComObject;
 
-			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.queryInterface(impls.automation.IJIEnumVariant_Fields.IID));
+			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.QueryInterface(impls.automation.IJIEnumVariant_Fields.IID));
 
 			var Count = wbemObjectSet_dispatch.get("Count");
 			var count = Count.ObjectAsInt;

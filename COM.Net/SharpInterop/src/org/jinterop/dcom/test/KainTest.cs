@@ -27,8 +27,8 @@
 //ORIGINAL LINE: public void startWord() throws org.jinterop.dcom.common.JIException
 		public virtual void startWord()
 		{
-			unknown = comServer.createInstance();
-			var dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			unknown = comServer.CreateInstance();
+			var dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

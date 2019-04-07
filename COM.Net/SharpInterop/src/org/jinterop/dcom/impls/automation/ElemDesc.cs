@@ -48,8 +48,8 @@ namespace org.jinterop.dcom.impls.automation {
 				paramDesc = null;
 				return;
 			}
-			typeDesc = new TypeDesc((JIStruct)values.getMember(0));
-			paramDesc = new ParamDesc((JIStruct)values.getMember(1));
+			typeDesc = new TypeDesc((JIStruct)values.GetMember(0));
+			paramDesc = new ParamDesc((JIStruct)values.GetMember(1));
 		}
 
 		internal ElemDesc(JIPointer ptrValues) : this(ptrValues.Null ? null : (JIStruct)ptrValues.Referent)

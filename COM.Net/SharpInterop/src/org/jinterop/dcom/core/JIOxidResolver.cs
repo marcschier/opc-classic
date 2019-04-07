@@ -1,18 +1,18 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
-    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Partially implements IOxidResolver interface, used only for ResolveOxid calls.
@@ -33,7 +33,7 @@ namespace org.jinterop.dcom.core {
         /// Create resolver
         /// </summary>
         /// <param name="oxid"></param>
-        internal JIOxidResolver(sbyte[] oxid) {
+        internal JIOxidResolver(byte[] oxid) {
             _odix = oxid;
         }
 
@@ -42,18 +42,19 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override void Write(NdrCodec ndr) {
-            JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, _odix);
-            JIMarshalUnMarshalHelper.serialize(ndr, typeof(short?),
-                (short)1, new ArrayList(), JIFlags.FLAG_NULL);
-            JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIArray),
-                new JIArray(new short?[] { 7 }, true), new ArrayList(), JIFlags.FLAG_REPRESENTATION_ARRAY);
+            JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, _odix);
+            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?),
+                (short)1, new List<object>(), JIFlags.FLAG_NULL);
+            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray),
+                new JIArray(new short?[] { 7 }, true), new List<object>(),
+                JIFlags.FLAG_REPRESENTATION_ARRAY);
         }
 
         /// <inheritdoc/>
         public override void Read(NdrCodec ndr) {
             ndr.ReadUnsignedLong(); //pointer
             ndr.ReadUnsignedLong(); //some length component, irrelevant for us right now
-            OxidBindings = JIDualStringArray.decode(ndr);
+            OxidBindings = JIDualStringArray.Decode(ndr);
             try {
                 var ipid2 = new UUID();
                 ipid2.Decode(ndr, ndr.Buffer);
@@ -76,6 +77,6 @@ namespace org.jinterop.dcom.core {
                 throw new JIRuntimeException(hresult);
             }
         }
-        private readonly sbyte[] _odix;
+        private readonly byte[] _odix;
     }
 }

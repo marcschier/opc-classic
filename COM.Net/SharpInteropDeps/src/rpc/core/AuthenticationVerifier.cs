@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -44,8 +44,8 @@ namespace rpc.core {
         /// <summary>
         /// Create verifier
         /// </summary>
-        public AuthenticationVerifier() : 
-            this(Security.AUTHENTICATION_SERVICE_NONE, 
+        public AuthenticationVerifier() :
+            this(Security.AUTHENTICATION_SERVICE_NONE,
                 ProtectionLevel.PROTECTION_LEVEL_NONE, 0, null) {
         }
 
@@ -53,7 +53,7 @@ namespace rpc.core {
         /// Create verifier
         /// </summary>
         /// <param name="authenticatorLength"></param>
-        public AuthenticationVerifier(int authenticatorLength) : 
+        public AuthenticationVerifier(int authenticatorLength) :
             this(Security.AUTHENTICATION_SERVICE_NONE,
                 ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength) {
         }
@@ -67,7 +67,7 @@ namespace rpc.core {
         /// <param name="authenticatorLength"></param>
         public AuthenticationVerifier(int authenticationService,
             ProtectionLevel protectionLevel, int contextId, int authenticatorLength) :
-            this(authenticationService, protectionLevel, contextId, 
+            this(authenticationService, protectionLevel, contextId,
                 new byte[authenticatorLength]) {
         }
 
@@ -115,11 +115,11 @@ namespace rpc.core {
             if (!(obj is AuthenticationVerifier other)) {
                 return false;
             }
-            if (AuthenticationService != other.AuthenticationService || 
+            if (AuthenticationService != other.AuthenticationService ||
                 Protection != other.Protection ||
                 ContextId != other.ContextId) {
                 return false;
-            } 
+            }
             if (Body == null) {
                 return other.Body == null;
             }

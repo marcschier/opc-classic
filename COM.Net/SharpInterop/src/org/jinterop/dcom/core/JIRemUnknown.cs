@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
@@ -52,7 +52,7 @@ namespace org.jinterop.dcom.core {
             //now write the IPID
             var uuid = new UUID(_ipidOfIUnknown);
             try {
-                uuid.encode(ndr, ndr.buf);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIRemUnknown write");
@@ -63,17 +63,18 @@ namespace org.jinterop.dcom.core {
             ndr.WriteUnsignedLong(1); //length of the array
             uuid = new UUID(_requestedIID);
             try {
-                uuid.encode(ndr, ndr.buf);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
-
-                Log.Logger.Error(e, "JIRemUnknown Performing a QueryInterface for " + _requestedIID);
+                Log.Logger.Error(e, "JIRemUnknown Performing a QueryInterface for " +
+                    _requestedIID);
             }
 
             ndr.WriteUnsignedLong(0);
-            //TODO Index Matching , there seems to be a bug in
+            // TODO Index Matching , there seems to be a bug in
             // the jarapac system, it only reads upto (length - 6) bytes and one has to have another
-            // call after that or incomplete request will go. in case no param is present just put an unsigned long = 0.
+            // call after that or incomplete request will go.
+            // in case no param is present just put an unsigned long = 0.
         }
 
         /// <inheritdoc/>
@@ -88,7 +89,7 @@ namespace org.jinterop.dcom.core {
             //array length
             ndr.ReadUnsignedLong();
             //and now the JIInterfacePointer itself.
-            InterfacePointer = JIInterfacePointer.decode(
+            InterfacePointer = JIInterfacePointer.Decode(
                 ndr, new ArrayList(), JIFlags.FLAG_NULL, new Hashtable());
             //final hresult
             hresult1 = ndr.ReadUnsignedLong();

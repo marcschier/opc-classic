@@ -43,7 +43,7 @@ namespace org.jinterop.dcom.impls.automation {
             callObject.addInParamAsInt(celt,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(new JIArray(typeof(JIVariant),null,1,true,true),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return result;
 		}
 
@@ -55,7 +55,7 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 1
             };
             callObject.addInParamAsInt(celt,JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -65,7 +65,7 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 2
             };
-            var result = comObject.call(callObject);
+            var result = ComObject.Call(callObject);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -76,7 +76,7 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 3
             };
             callObject.addOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (IJIEnumVariant)JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 

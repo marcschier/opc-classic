@@ -25,8 +25,8 @@
 		{
 			session = JISession.createSession(args[1],args[2],args[3]);
 			comServer = new JIComServer(JIProgId.valueOf("StdCollection.VBCollection"),address,session);
-			var @object = comServer.createInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(@object.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			var @object = comServer.CreateInstance();
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(@object.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 		}
 
@@ -50,7 +50,7 @@
 			var object2 = variant.ObjectAsComObject;
 			//IJIComObject enumObject = (IJIComObject)object2.queryInterface(IJIEnumVARIANT.IID);
 
-			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.queryInterface(impls.automation.IJIEnumVariant_Fields.IID));
+			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.QueryInterface(impls.automation.IJIEnumVariant_Fields.IID));
 
 			for (i = 0; i < 10; i++)
 			{

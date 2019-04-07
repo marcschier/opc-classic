@@ -1,17 +1,17 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.common {
     using System;
 
     /// <summary>
-    /// Exception class for the framework. Developers are expected to catch 
+    /// Exception class for the framework. Developers are expected to catch
     /// or re-throw these exceptions and not create one themselves.
     /// </summary>
     public class JIException : Exception {
@@ -19,28 +19,28 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Create exception
         /// </summary>
-        public JIException(int errorCode, string message) : 
+        public JIException(int errorCode, string message) :
             this(errorCode, message, null) {
         }
 
         /// <summary>
         /// Create exception
         /// </summary>
-        public JIException(int errorCode) : 
+        public JIException(int errorCode) :
             this(errorCode, (Exception)null) {
         }
 
         /// <summary>
         /// Create exception
         /// </summary>
-        public JIException(int errorCode, Exception cause) : 
+        public JIException(int errorCode, Exception cause) :
             this(errorCode, null, cause) {
         }
 
         /// <summary>
         /// Create exception
         /// </summary>
-        public JIException(JIRuntimeException exception) : 
+        public JIException(JIRuntimeException exception) :
             this(exception.HResult, null, exception) {
         }
 
@@ -60,7 +60,7 @@ namespace org.jinterop.dcom.common {
             _message ?? (_message = JISystem.getLocalizedMessage(_errorCode));
 
         /// <summary>
-        /// Returns the error code associated with this exception. Please refer 
+        /// Returns the error code associated with this exception. Please refer
         /// <code>JIErrorCodes</code> for a complete list of errors.
         /// </summary>
         /// <returns> int representing the error code. </returns>

@@ -1,17 +1,17 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
-    using System.Collections;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Representation of a COM pointer.
@@ -33,11 +33,12 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Creates an instance of this class where the referent is of the type <code>value</code>.
-        /// Used when deserializing this pointer.
+        /// Creates an instance of this class where the referent is of the type
+        /// <code>value</code>. Used when deserializing this pointer.
         /// </summary>
         /// <param name="value"> <code>null</code> is acceptable </param>
-        /// <param name="isReferenceTypePtr"> <code>true</code> if a referent identifier will not precede this ptr. </param>
+        /// <param name="isReferenceTypePtr"> <code>true</code> if a referent identifier
+        /// will not precede this ptr. </param>
         public JIPointer(Type value, bool isReferenceTypePtr) {
             //null pointer.
             if (value == null) {
@@ -53,10 +54,10 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Some COM servers send referentId (pointer) as null but the referent is not. 
+        /// Some COM servers send referentId (pointer) as null but the referent is not.
         /// To be used only when you know this is the case. Better leave it unsed.
         /// </summary>
-        public void treatNullSpecially() {
+        public void TreatNullSpecially() {
             _nullSpecial = true;
         }
 
@@ -100,14 +101,14 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Set reference type pointer
         /// </summary>
-        internal void setIsReferenceTypePtr() {
+        internal void SetIsReferenceTypePtr() {
             Reference = true;
         }
 
         /// <summary>
         /// Returns the referent encapsulated by this pointer.
         /// </summary>
-        public object getReferent() {
+        public object GetReferent() {
             return Null ? null : _referent;
         }
 
@@ -117,11 +118,11 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NdrCodec ndr, IList defferedPointers, int flag) {
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
 
             flag = flag | _flags;
             if (Null) {
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), 0, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag);
                 return;
             }
             //it is deffered or part of an array, this logic will not get called twice since the
@@ -130,7 +131,7 @@ namespace org.jinterop.dcom.core {
 						(flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER*/
             {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
                 Deffered = false;
                 Reference = true;
                 //			try{
@@ -144,21 +145,21 @@ namespace org.jinterop.dcom.core {
 
             if (!Null && !Reference) {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
             }
 
             try {
                 if (!Null && _referent.GetType().Equals(typeof(JIVariant)) && ((JIVariant)_referent).IsArray) {
                     //write the length first before all elements
                     //ndr.writeUnsignedLong(((Object[])(((JIVariant)referent).getObject())).length);
-                    JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
                 }
             }
             catch (JIException e) {
                 throw new JIRuntimeException(e.ErrorCode);
             }
 
-            JIMarshalUnMarshalHelper.serialize(ndr, _referent.GetType(), _referent, defferedPointers, flag);
+            JIMarshalUnMarshalHelper.Serialize(ndr, _referent.GetType(), _referent, defferedPointers, flag);
         }
 
 
@@ -171,8 +172,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIPointer decode(NdrCodec ndr, IList defferedPointers, int flag,
-            IDictionary additionalData) {
+        internal JIPointer Decode(NdrCodec ndr, List<object> defferedPointers, int flag,
+            IDictionary<object, object> additionalData) {
             //shallowClone();
             flag = flag | _flags;
 
@@ -186,7 +187,7 @@ namespace org.jinterop.dcom.core {
             if (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)
             /*|| (flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER */
             {
-                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?),
+                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?),
                     defferedPointers, flag, additionalData);
                 retVal._referent = _referent; //will only be the class or object
                 if (retVal._referentId == 0 && !_nullSpecial) {
@@ -205,7 +206,7 @@ namespace org.jinterop.dcom.core {
 
             if (!Reference) {
                 //referentId = ndr.readUnsignedLong();
-                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?), 
+                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?),
                     defferedPointers, flag, additionalData);
                 retVal._referent = _referent; //will only be the class or object
                 if (retVal._referentId == 0 && !_nullSpecial) {
@@ -215,7 +216,8 @@ namespace org.jinterop.dcom.core {
                     return retVal;
                 }
             }
-            retVal._referent = JIMarshalUnMarshalHelper.deSerialize(ndr, _referent, defferedPointers, flag, additionalData);
+            retVal._referent = JIMarshalUnMarshalHelper.Deserialize(ndr, _referent,
+                defferedPointers, flag, additionalData);
             return retVal;
         }
 
@@ -228,7 +230,7 @@ namespace org.jinterop.dcom.core {
         /// Set referent id
         /// </summary>
         /// <param name="value"></param>
-        internal void setReferent(int value) {
+        internal void SetReferent(int value) {
             _referentId = value;
         }
 
@@ -253,10 +255,10 @@ namespace org.jinterop.dcom.core {
                     return kPointerSize;
                 }
                 if (_referent is Type) {
-                    return 4 + JIMarshalUnMarshalHelper.getLengthInBytes((Type)_referent, 
+                    return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes((Type)_referent,
                         _referent, JIFlags.FLAG_NULL);
                 }
-                return 4 + JIMarshalUnMarshalHelper.getLengthInBytes(_referent.GetType(),
+                return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes(_referent.GetType(),
                     _referent, JIFlags.FLAG_NULL);
             }
         }
@@ -265,7 +267,7 @@ namespace org.jinterop.dcom.core {
         /// Internal replace
         /// </summary>
         /// <param name="replacement"></param>
-        internal void replaceSelfWithNewPointer(JIPointer replacement) {
+        internal void ReplaceSelfWithNewPointer(JIPointer replacement) {
             Deffered = replacement.Deffered;
             Null = replacement.Null;
             Reference = replacement.Reference;

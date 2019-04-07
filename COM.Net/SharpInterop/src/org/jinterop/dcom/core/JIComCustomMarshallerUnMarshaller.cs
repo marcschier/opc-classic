@@ -1,15 +1,16 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Must be implemented by Classes providing marshall, unmarshall support
@@ -22,13 +23,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         public string CLSID { get; }
 
-
         /// <summary>
         /// Create marshaller
         /// </summary>
         /// <param name="clsid"></param>
         /// <param name="comObject"></param>
-		public JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject) :
+		protected JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject) :
             this(clsid, comObject, false) {
         }
 
@@ -38,10 +38,11 @@ namespace org.jinterop.dcom.core {
         /// <param name="clsid"></param>
         /// <param name="comObject"></param>
         /// <param name="isTemplate"></param>
-		public JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject, bool isTemplate) {
+		protected JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject, bool isTemplate) {
             CLSID = clsid;
             if (isTemplate) {
-                _me = new JIComObjectImpl(comObject.AssociatedSession, comObject.internal_getInterfacePointer());
+                _me = new JIComObjectImpl(comObject.AssociatedSession,
+                    comObject.Internal_getInterfacePointer());
                 ((JIComObjectImpl)_me).CustomObject = this;
             }
             else {
@@ -59,21 +60,20 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"> </param>
         /// <param name="defferedPointers"> </param>
-        /// <param name="FLAG"> </param>
-        public abstract void encode(NdrCodec ndr, IList defferedPointers, int FLAG);
+        /// <param name="flag"> </param>
+        public abstract void Encode(NdrCodec ndr, List<object> defferedPointers, int flag);
 
         /// <summary>
-        /// Implement for custom decoding. Called by the framework. 
+        /// Implement for custom decoding. Called by the framework.
         /// </summary>
         /// <param name="newMe"></param>
         /// <param name="ndr"> </param>
         /// <param name="defferedPointers"> </param>
-        /// <param name="FLAG"> </param>
+        /// <param name="flag"> </param>
         /// <param name="additionalData">
         /// </param>
-        public abstract JIComCustomMarshallerUnMarshaller decode(IJIComObject newMe, 
-            NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData);
-
+        public abstract JIComCustomMarshallerUnMarshaller Decode(IJIComObject newMe,
+            NdrCodec ndr, List<object> defferedPointers, int flag, IDictionary<object, object> additionalData);
 
         /// <summary>
         /// Serialize
@@ -82,10 +82,10 @@ namespace org.jinterop.dcom.core {
         /// <param name="c"></param>
         /// <param name="value"></param>
         /// <param name="defferedPointers"></param>
-        /// <param name="FLAG"></param>
-        protected internal virtual void serialize(NdrCodec ndr, Type c,
-            object value, IList defferedPointers, int FLAG) {
-            JIMarshalUnMarshalHelper.serialize(ndr, c, value, defferedPointers, FLAG);
+        /// <param name="flag"></param>
+        protected void Serialize(NdrCodec ndr, Type c,
+            object value, List<object> defferedPointers, int flag) {
+            JIMarshalUnMarshalHelper.Serialize(ndr, c, value, defferedPointers, flag);
         }
 
         /// <summary>
@@ -94,12 +94,13 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="obj"></param>
         /// <param name="defferedPointers"></param>
-        /// <param name="FLAG"></param>
+        /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        protected internal virtual object deSerialize(NdrCodec ndr, object obj,
-            IList defferedPointers, int FLAG, IDictionary additionalData) {
-            return JIMarshalUnMarshalHelper.deSerialize(ndr, obj, defferedPointers, FLAG, additionalData);
+        protected virtual object Deserialize(NdrCodec ndr, object obj,
+            List<object> defferedPointers, int flag, IDictionary<object, object> additionalData) {
+            return JIMarshalUnMarshalHelper.Deserialize(ndr, obj, defferedPointers,
+                flag, additionalData);
         }
 
         /// <summary>
@@ -107,10 +108,10 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="c"></param>
         /// <param name="obj"></param>
-        /// <param name="FLAG"></param>
+        /// <param name="flag"></param>
         /// <returns></returns>
-        protected internal static int getLengthInBytes(Type c, object obj, int FLAG) {
-            return JIMarshalUnMarshalHelper.getLengthInBytes(c, obj, FLAG);
+        protected static int GetLengthInBytes(Type c, object obj, int flag) {
+            return JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, flag);
         }
 
         private readonly IJIComObject _me;

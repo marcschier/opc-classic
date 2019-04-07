@@ -1,15 +1,17 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
+
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
+    using SharpCifs.Util.Sharpen;
     using System.Linq;
 
     /// <summary>
@@ -17,14 +19,14 @@ namespace org.jinterop.dcom.core {
     /// class directly, but always as an implementation of <code>IJIComObject</code> interface.
     /// Sample Usage:-
     /// <code>
-    /// IJIComObject connectionPointContainer = (IJIComObject)ieObject.queryInterface("B196B284-BAB4-101A-B69C-00AA00341D07"); 
-    /// JICallBuilder object = new JICallBuilder(connectionPointContainer.getIpid(),true); 
+    /// IJIComObject connectionPointContainer = (IJIComObject)ieObject.queryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
+    /// JICallBuilder object = new JICallBuilder(connectionPointContainer.getIpid(),true);
     /// object.setOpnum(1);
-    /// object.addInParamAsUUID("34A715A0-6587-11D0-924A-0020AFC7AC4D",JIFlags.FLAG_NULL); 
-    /// object.addOutParamAsObject(JIInterfacePointer.class,JIFlags.FLAG_NULL); 
+    /// object.addInParamAsUUID("34A715A0-6587-11D0-924A-0020AFC7AC4D",JIFlags.FLAG_NULL);
+    /// object.addOutParamAsObject(JIInterfacePointer.class,JIFlags.FLAG_NULL);
     /// Object[] objects = (Object[])connectionPointContainer.call(object); //find connection point
     /// JIInterfacePointer connectionPtr = (JIInterfacePointer)objects[0];
-    /// IJIComObject connectionPointer = JIObjectFactory.createCOMInstance(connectionPointContainer,connectionPtr); 
+    /// IJIComObject connectionPointer = JIObjectFactory.createCOMInstance(connectionPointContainer,connectionPtr);
     /// </code>
     /// </summary>
     [Serializable]
@@ -33,13 +35,13 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Custom object
         /// </summary>
-        internal bool CustomObjRef => ((JIInterfacePointerBody)_member.getReferent())
+        internal bool CustomObjRef => ((JIInterfacePointerBody)_member.GetReferent())
             .CustomObjRef;
 
         /// <summary>
         /// Custom class id
         /// </summary>
-        internal string CustomCLSID => ((JIInterfacePointerBody)_member.getReferent())
+        internal string CustomCLSID => ((JIInterfacePointerBody)_member.GetReferent())
             .CustomCLSID;
 
         /// <summary>
@@ -52,48 +54,48 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Object type
         /// </summary>
-        internal int ObjectType => ((JIInterfacePointerBody)_member.getReferent()).ObjectType;
+        internal int ObjectType => ((JIInterfacePointerBody)_member.GetReferent()).ObjectType;
 
         /// <summary>
         /// Object reference of specified type
         /// </summary>
         /// <param name="objectType"></param>
-        internal object getObjectReference(int objectType) {
-            return ((JIInterfacePointerBody)_member.getReferent()).getObjectReference(objectType);
+        internal object GetObjectReference(int objectType) {
+            return ((JIInterfacePointerBody)_member.GetReferent()).GetObjectReference(objectType);
         }
 
         /// <summary>
         /// Returns the Interface Identifier for this MIP.
         /// </summary>
-        public string IID => ((JIInterfacePointerBody)_member.getReferent()).IID;
+        public string IID => ((JIInterfacePointerBody)_member.GetReferent()).IID;
 
         /// <summary>
         /// IP Id
         /// </summary>
-        public string IPID => ((JIInterfacePointerBody)_member.getReferent()).IPID;
+        public string IPID => ((JIInterfacePointerBody)_member.GetReferent()).IPID;
 
         /// <summary>
         /// Oid
         /// </summary>
-        public byte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
-            .getObjectReference(OBJREF_STANDARD)).ObjectId;
+        public byte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.GetReferent())
+            .GetObjectReference(OBJREF_STANDARD)).ObjectId;
 
         /// <summary>
         /// Oxid
         /// </summary>
-        internal byte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.getReferent())
-            .getObjectReference(OBJREF_STANDARD)).Oxid;
+        internal byte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.GetReferent())
+            .GetObjectReference(OBJREF_STANDARD)).Oxid;
 
         /// <summary>
         /// String bindings
         /// </summary>
-        internal JIDualStringArray StringBindings => ((JIInterfacePointerBody)_member.getReferent())
+        internal JIDualStringArray StringBindings => ((JIInterfacePointerBody)_member.GetReferent())
             .StringBindings;
 
         /// <summary>
         /// Length
         /// </summary>
-        internal int Length => ((JIInterfacePointerBody)_member.getReferent()).Length;
+        internal int Length => ((JIInterfacePointerBody)_member.GetReferent()).Length;
 
         /// <summary>
         /// Hidden constructor
@@ -121,7 +123,8 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override string ToString() {
-            var retVal = "JIInterfacePointer[IID:" + IID + " , ObjRef: " + getObjectReference(OBJREF_STANDARD) + "]";
+            var retVal = "JIInterfacePointer[IID:" + IID + " , ObjRef: " +
+                GetObjectReference(OBJREF_STANDARD) + "]";
             return retVal;
         }
 
@@ -131,7 +134,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="src"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool isOxidEqual(JIInterfacePointer src, JIInterfacePointer target) {
+        public static bool IsOxidEqual(JIInterfacePointer src, JIInterfacePointer target) {
             if (src == null) {
                 throw new ArgumentNullException(nameof(src));
             }
@@ -149,15 +152,16 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal static JIInterfacePointer decode(NdrCodec ndr,
-            IList defferedPointers, int FLAG, IDictionary additionalData) {
+        internal static JIInterfacePointer Decode(NdrCodec ndr,
+            List<object> defferedPointers, int FLAG, IDictionary<object, object> additionalData) {
             var ptr = new JIInterfacePointer();
-            if ((FLAG & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) == JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
-                ptr._member = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr,
+            if ((FLAG & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) ==
+                        JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
+                ptr._member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr,
                     new JIPointer(typeof(JIInterfacePointerBody), true), defferedPointers, FLAG, additionalData);
             }
             else {
-                ptr._member = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr,
+                ptr._member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr,
                     new JIPointer(typeof(JIInterfacePointerBody)), defferedPointers, FLAG, additionalData);
             }
             //the pointer is null, no point of it's wrapper being present, so return null from here as well
@@ -173,59 +177,15 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int FLAG) {
             if ((FLAG & JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) ==
                         JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) {
                 //just encode a null.
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), 0, defferedPointers, FLAG);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, FLAG);
                 return;
             }
-            JIMarshalUnMarshalHelper.serialize(ndr, _member.GetType(), _member, defferedPointers, FLAG);
+            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, defferedPointers, FLAG);
         }
-
-        //    public static void main(String[] args) {
-        //
-        //
-        //		byte[] buffer = new byte[183];
-        //		FileInputStream inputStream;
-        //		try {
-        //			inputStream = new FileInputStream("F:/tmp/experiment/rawip2");
-        //			inputStream.read(new byte[13],0,13);
-        //			inputStream.read(buffer,0,183);
-        //		} catch (Exception e) {
-        //			// TODO Auto-generated catch block
-        //			e.printStackTrace();
-        //		}
-        //		NetworkDataRepresentation ndr = new NetworkDataRepresentation();
-        //		NdrBuffer ndrBuffer = new NdrBuffer(buffer,0);
-        //		ndr.setBuffer(ndrBuffer);
-        //		ndrBuffer.length = 183;
-        //
-        //    	JIInterfacePointer ptr = JIInterfacePointer.decode(ndr, new ArrayList(), 0, new HashMap());
-        //    	try {
-        //    		JISystem.getLogger().setLevel(Level.FINEST);
-        //			JISystem.setInBuiltLogHandler(false);
-        //
-        //		} catch (SecurityException e1) {
-        //			// TODO Auto-generated catch block
-        //			e1.printStackTrace();
-        //		} catch (IOException e1) {
-        //			// TODO Auto-generated catch block
-        //			e1.printStackTrace();
-        //		}
-        //
-        //    	JISession session = JISession.createSession("deepspace9", "administrator", "enterprise");
-        //    	session.useSessionSecurity(true);
-        //    	try {
-        //    		JIComServer comServer = new JIComServer(session,ptr,null);
-        //			IJIComObject comObject = comServer.getInstance();
-        //			comObject.queryInterface("87bc18dc-c8b3-11d5-ae96-00b0d0e93ca1");
-        //		} catch (JIException e) {
-        //			// TODO Auto-generated catch block
-        //			e.printStackTrace();
-        //		}
-        //	}
-        //	static bool inTest = true;
 
         internal static readonly byte[] OBJREF_SIGNATURE = { 0x4d, 0x45, 0x4f, 0x57 }; // 'MEOW'
         internal const int OBJREF_STANDARD = 0x1; // standard marshaled objref

@@ -32,10 +32,10 @@
 		internal virtual void doStuff()
 		{
 			//this will return a reference to the IUnknown of the Shell coclass.
-			var comUnknown = (IJIComObject)comServer.createInstance();
+			var comUnknown = (IJIComObject)comServer.CreateInstance();
 
 			//now we query for the IShellDispatch interface
-			var shellDispatch = (IJIComObject)comUnknown.queryInterface("D8F015C0-C278-11CE-A49E-444553540000");
+			var shellDispatch = (IJIComObject)comUnknown.QueryInterface("D8F015C0-C278-11CE-A49E-444553540000");
 
 			var callObject = new JICallBuilder();
 	//		callObject.setOpnum(5);
@@ -50,20 +50,20 @@
 			callObject.Opnum = 2;
 			callObject.addInParamAsVariant(new JIVariant(2),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = shellDispatch.call(callObject);
+			var result = shellDispatch.Call(callObject);
 			var folder = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
             };
             callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			result = folder.call(callObject);
+			result = folder.Call(callObject);
 			Console.WriteLine("Current Folder: " + result[0]);
 
 			callObject.reInit();
 			callObject.Opnum = 1;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			result = folder.call(callObject);
+			result = folder.Call(callObject);
 			var test = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
 	//		Not implemented by shell
@@ -76,20 +76,20 @@
 			callObject.reInit();
 			callObject.Opnum = 3;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			result = folder.call(callObject);
+			result = folder.Call(callObject);
 			test = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
 			callObject.reInit();
 			callObject.Opnum = 4;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			result = folder.call(callObject);
+			result = folder.Call(callObject);
 			var folderItems = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
             };
             callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			result = folderItems.call(callObject);
+			result = folderItems.Call(callObject);
 
 			var count = (int)(int?)result[0];
 
@@ -99,7 +99,7 @@
 				callObject.Opnum = 3;
 				callObject.addInParamAsVariant(new JIVariant(i),JIFlags.FLAG_NULL);
 				callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-				result = folderItems.call(callObject);
+				result = folderItems.Call(callObject);
 				var folderItem = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
 
@@ -107,13 +107,13 @@
                     Opnum = 2
                 };
                 callObject2.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-				result = folderItem.call(callObject2);
+				result = folderItem.Call(callObject2);
 				Console.WriteLine("Name of Object: " + result[0]);
 
 				callObject2.reInit();
 				callObject2.Opnum = 4;
 				callObject2.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-				result = folderItem.call(callObject2);
+				result = folderItem.Call(callObject2);
 				Console.WriteLine("Path of the Object: " + result[0]);
 
 
@@ -123,7 +123,7 @@
                 };
                 //VARIANT_BOOL is Boolean
                 callObject2.addOutParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
-				result = folderItem.call(callObject2);
+				result = folderItem.Call(callObject2);
 
 				var isFileSystemObject = (bool)(bool?)result[0];
 
@@ -141,7 +141,7 @@
                     Opnum = 13
                 };
                 callObject2.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
-				result = folderItem.call(callObject2);
+				result = folderItem.Call(callObject2);
 				Console.Write(" and size(in bytes) is: " + (int)(int?)result[0] + "\n");
 
 			}

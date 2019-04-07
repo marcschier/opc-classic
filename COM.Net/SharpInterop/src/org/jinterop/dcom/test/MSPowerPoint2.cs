@@ -27,8 +27,8 @@
 //ORIGINAL LINE: public void startPowerPoint() throws org.jinterop.dcom.common.JIException
 		public virtual void startPowerPoint()
 		{
-			unknown = comStub.createInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			unknown = comStub.CreateInstance();
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

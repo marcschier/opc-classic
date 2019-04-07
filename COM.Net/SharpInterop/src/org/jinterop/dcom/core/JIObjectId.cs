@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using Serilog;
     using System;
@@ -28,7 +28,7 @@ namespace org.jinterop.dcom.core {
         /// Returns whether object expired
         /// </summary>
         /// <returns></returns>
-        internal bool hasExpired() {
+        internal bool HasExpired() {
             // TODO: Make configurable
             // 8 minutes interval...giving COM Client some grace period.
             if ((DateTimeHelperClass.CurrentUnixTimeMillis() - _lastPingTime) > 8 * 60 * 1000) {
@@ -53,28 +53,28 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Update last ping
         /// </summary>
-        internal void updateLastPingTime() {
+        internal void UpdateLastPingTime() {
             _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
         }
 
         /// <summary>
         /// Reset ref count
         /// </summary>
-        internal void setIPIDRefCountTo0() {
+        internal void SetIPIDRefCountTo0() {
             IPIDRefCount = 0;
         }
 
         /// <summary>
         /// Decrement ref count
         /// </summary>
-        internal void decrementIPIDRefCountBy1() {
+        internal void DecrementIPIDRefCountBy1() {
             IPIDRefCount--;
         }
 
         /// <summary>
         /// Increment ref count
         /// </summary>
-        internal void incrementIPIDRefCountBy1() {
+        internal void IncrementIPIDRefCountBy1() {
             IPIDRefCount++;
         }
 
@@ -99,7 +99,7 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public override string ToString() {
             return "{ IPID ref count is " + IPIDRefCount + " } and OID in bytes[] " +
-                OID + " , hasExpired " + hasExpired() + " } ";
+                OID + " , hasExpired " + HasExpired() + " } ";
         }
 
         internal readonly bool _dontping;

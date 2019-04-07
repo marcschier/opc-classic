@@ -1,16 +1,15 @@
-﻿
-// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc {
     using System;
@@ -54,7 +53,8 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public virtual void Call(int semantics, UUID objectId, int opnum, NdrOp ndrobj) {
+        public virtual void Call(EndpointSemantics semantics, UUID objectId,
+            int opnum, NdrOp ndrobj) {
             Bind();
             var request = new RequestCoPdu {
                 ContextId = _contextIdToUse
@@ -72,7 +72,7 @@ namespace rpc {
             request.AllocationHint = buffer.Length;
             request.Opnum = opnum;
             request.Object = objectId;
-            if ((semantics & (int)Endpoint.MAYBE) != 0) {
+            if ((semantics & EndpointSemantics.MAYBE) != 0) {
                 request.SetFlag(ConnectionOrientedPdu.PFC_MAYBE, true);
             }
             Send(request);
@@ -147,7 +147,7 @@ namespace rpc {
                             if ((pdu = Context.Accept(recieved)) != null) {
                                 switch (pdu.Type) {
                                     case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
-                                        if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ != 
+                                        if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
                                             PresentationResultCode.PROVIDER_REJECTION) {
                                             CurrentIID = ((BindPdu)recieved).ContextList[0]
                                                 .AbstractSyntax.Uuid.ToString();
@@ -224,15 +224,15 @@ namespace rpc {
                     if ((pdu = Context.Accept(recieved)) != null) {
                         switch (pdu.Type) {
                             case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
-                                if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ != 
+                                if (((BindAcknowledgePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
                                     PresentationResultCode.PROVIDER_REJECTION) {
                                     CurrentIID = ((BindPdu)recieved).ContextList[0].AbstractSyntax.Uuid.ToString();
                                 }
                                 break;
                             case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
-                                // we need to record the iid now if this is successful and subsequent calls 
+                                // we need to record the iid now if this is successful and subsequent calls
                                 // will now be for this iid.
-                                if (((AlterContextResponsePdu)pdu).ResultList[0].Result /*was: Reason*/ != 
+                                if (((AlterContextResponsePdu)pdu).ResultList[0].Result /*was: Reason*/ !=
                                     PresentationResultCode.PROVIDER_REJECTION) {
                                     CurrentIID = ((AlterContextPdu)recieved).ContextList[0].AbstractSyntax.Uuid.ToString();
                                 }
@@ -275,7 +275,8 @@ namespace rpc {
                 return new BasicConnectionContext();
             }
             try {
-                return (IConnectionContext)Type.GetType(context).newInstance();
+                return (IConnectionContext)Type.GetType(context)
+                    .GetConstructor(Type.EmptyTypes).Invoke(new object[0]);
             }
             catch (Exception ex) {
                 throw new ProviderException(ex.Message);
@@ -283,7 +284,6 @@ namespace rpc {
         }
 
         private bool _bound;
-      //  private readonly int _callId;
         private int _contextIdCounter;
         private int _contextIdToUse;
         private readonly Hashtable _uuidsVsContextIds = new Hashtable();

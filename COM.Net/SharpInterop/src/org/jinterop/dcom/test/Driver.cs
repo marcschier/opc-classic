@@ -197,7 +197,7 @@
 				 // System.out.println(rrr.getClass().getSimpleName());
 				  Console.WriteLine(rrr.GetType());
 				  //Object hhhhh = Integer.class.cast(rrr);
-				  var un = JIUnsignedFactory.getUnsigned(100, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+				  var un = JIUnsignedFactory.GetUnsigned(100, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 				  Console.WriteLine(un.GetType());
 				  Type xx = typeof(void);
 				  var y = new int?(123);

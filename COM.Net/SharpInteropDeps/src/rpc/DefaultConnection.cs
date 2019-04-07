@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc {
     using rpc.core;
@@ -28,7 +28,7 @@ namespace rpc {
         /// <summary>
         /// Create connection
         /// </summary>
-        public DefaultConnection() : 
+        public DefaultConnection() :
             this(ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE,
                 ConnectionOrientedPdu.MUST_RECEIVE_FRAGMENT_SIZE) {
         }
@@ -45,9 +45,8 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public void Transmit<TPdu>(TPdu pdu, ITransport transport)
-            where TPdu : ConnectionOrientedPdu {
-            if (!(pdu is IFragmentable<TPdu> fpdu)) {
+        public void Transmit(ConnectionOrientedPdu pdu, ITransport transport) {
+            if (!(pdu is IFragmentable fpdu)) {
                 TransmitPdu(pdu, transport);
                 return;
             }
@@ -58,22 +57,20 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public TPdu Receive<TPdu>(ITransport transport)
-            where TPdu : ConnectionOrientedPdu {
-            var fragment = ReceivePdu(transport);
-            if (!(fragment is IFragmentable<TPdu> fpdu) || 
-                fragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
-                return fragment as TPdu;
+        public ConnectionOrientedPdu Receive(ITransport transport) {
+            var pdu = ReceivePdu(transport);
+            if (!(pdu is IFragmentable fpdu) ||
+                pdu.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+                return pdu;
             }
-            return fpdu.Reassemble(new FragmentReceiveIterator<TPdu>(this, transport, (TPdu)fpdu));
+            return fpdu.Reassemble(
+                new FragmentReceiveIterator(this, transport, pdu));
         }
 
         /// <summary>
         /// Iterator receiving fragments
         /// </summary>
-        /// <typeparam name="TPdu"></typeparam>
-        private class FragmentReceiveIterator<TPdu> : Iterator<TPdu>
-            where TPdu : ConnectionOrientedPdu {
+        private class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu> {
 
             /// <summary>
             /// Create iterator
@@ -81,8 +78,8 @@ namespace rpc {
             /// <param name="outerInstance"></param>
             /// <param name="transport"></param>
             /// <param name="fragment"></param>
-            public FragmentReceiveIterator(DefaultConnection outerInstance, 
-                ITransport transport, TPdu fragment) {
+            public FragmentReceiveIterator(DefaultConnection outerInstance,
+                ITransport transport, ConnectionOrientedPdu fragment) {
                 _outerInstance = outerInstance;
                 _transport = transport;
                 _fragment = fragment;
@@ -95,7 +92,7 @@ namespace rpc {
             }
 
             /// <inheritdoc/>
-            public override TPdu Next() {
+            public override ConnectionOrientedPdu Next() {
                 if (_currentFragment == null) {
                     throw new NoSuchElementException();
                 }
@@ -108,9 +105,9 @@ namespace rpc {
                     }
                     else {
                         try {
-                            Log.Logger.Verbose("[Fragmented Packet] [" + packetIndex++ + 
+                            Log.Logger.Verbose("[Fragmented Packet] [" + packetIndex++ +
                                 "] recieved , fragment decomposition is below:- ");
-                            _currentFragment = (TPdu)_outerInstance.ReceivePdu(_transport);
+                            _currentFragment = _outerInstance.ReceivePdu(_transport);
                         }
                         catch (InvalidCastException e) {
                             throw new IOException("invalid pdu received", e);
@@ -134,7 +131,7 @@ namespace rpc {
             private readonly ITransport _transport;
             private readonly ConnectionOrientedPdu _fragment;
             private int packetIndex;
-            private TPdu _currentFragment;
+            private ConnectionOrientedPdu _currentFragment;
         }
 
         /// <summary>
@@ -147,7 +144,7 @@ namespace rpc {
             _transmitBuffer.Reset();
             fragment.Encode(_ndr, _transmitBuffer);
             ProcessOutgoing();
-            Log.Logger.Verbose("[TRANSMIT BUFFER]:-\n" + 
+            Log.Logger.Verbose("[TRANSMIT BUFFER]:-\n" +
                 Utils.HexString(_transmitBuffer.Buf, 0, _transmitBuffer.Length));
             transport.Send(_transmitBuffer);
         }
@@ -166,7 +163,7 @@ namespace rpc {
 
             if (bytesRemainingInRecieveBuffer) {
                 //Vikram - 26th Feb 2013.
-                //receiver buffer always falls on the boundary of a new Fragment. 
+                //receiver buffer always falls on the boundary of a new Fragment.
                 //
                 //Vikram - 26th Feb 2013, commenting belwo as we were getting packets which are 2 bytes in length causing this logic to fail
                 //and thus read was set to true (since the receiveBuffer.length was less than or equal to ConnectionOrientedPdu.TYPE_OFFSET)
@@ -219,7 +216,7 @@ namespace rpc {
             var frag = new byte[2]; //short
             _receiveBuffer.ReadOctetArray(frag, 0, frag.Length);
             fragmentLength = (frag[0] & 0xFF) | ((frag[1] & 0xFF) << 8); //receiveBuffer.dec_ndr_short(); is looping over.
-                                                                         //			fragmentLength = receiveBuffer.dec_ndr_short(); 
+                                                                         //			fragmentLength = receiveBuffer.dec_ndr_short();
             Log.Logger.Verbose("\n" + " length of the fragment " + fragmentLength + "\n" +
                 " size in bytes of the buffer [] " + _receiveBuffer.Buf.Length);
 
@@ -241,7 +238,7 @@ namespace rpc {
                     Log.Logger.Verbose("\n" + " About to read more bytes from socket , current counter is: " + counter);
                     _receiveBuffer.Reset();
                     // now read again so as to take it from network buffer to your buffer
-                    // this may actually read 2 or more packets , one is this partial one (now complete) 
+                    // this may actually read 2 or more packets , one is this partial one (now complete)
                     // and one may be some other one, like a request packet.
                     // or it may not ...and reads only the partial packet.
                     transport.Receive(_receiveBuffer);
@@ -357,7 +354,7 @@ namespace rpc {
         }
 
         /// <summary>
-        /// Process incoming 
+        /// Process incoming
         /// </summary>
         /// <exception cref="IOException"></exception>
         /// <param name="buffer"></param>
@@ -570,7 +567,7 @@ namespace rpc {
                 var verifier = new AuthenticationVerifier(length);
                 verifier.Decode(_ndr, buffer);
                 buffer.Index = index + 2; // auth padding
-                length = index - buffer.Dec_ndr_small(); 
+                length = index - buffer.Dec_ndr_small();
                 buffer.Index = ConnectionOrientedPdu.FRAG_LENGTH_OFFSET;
                 buffer.Enc_ndr_short(length);
                 buffer.Enc_ndr_short(0);
@@ -664,7 +661,7 @@ namespace rpc {
             var isFragmented = true;
             buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
             var flags = ndr.ReadUnsignedSmall();
-            if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG && 
+            if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG &&
                 (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG) {
                 isFragmented = false;
             }
@@ -716,7 +713,7 @@ namespace rpc {
             var isFragmented = true;
             buffer.Index = ConnectionOrientedPdu.FLAGS_OFFSET;
             var flags = ndr.ReadUnsignedSmall();
-            if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG && 
+            if ((flags & ConnectionOrientedPdu.PFC_FIRST_FRAG) == ConnectionOrientedPdu.PFC_FIRST_FRAG &&
                 (flags & ConnectionOrientedPdu.PFC_LAST_FRAG) == ConnectionOrientedPdu.PFC_LAST_FRAG) {
                 isFragmented = false;
             }

@@ -1,16 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
+//
 
 namespace rpc.pdu {
     using rpc.core;
@@ -23,7 +22,7 @@ namespace rpc.pdu {
     /// <summary>
     /// Request pdu
     /// </summary>
-    public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable<RequestCoPdu> {
+    public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable {
 
         /// <summary> Type info - TODO - move to PduTypes.cs </summary>
         public const int REQUEST_TYPE = 0x00;
@@ -135,25 +134,26 @@ namespace rpc.pdu {
         }
 
         /// <inheritdoc/>
-        public Iterator<RequestCoPdu> GetFragments(int size) {
+        public Iterator<ConnectionOrientedPdu> GetFragments(int size) {
             var stub = Stub;
             if (stub == null) {
-                return new RequestCoPdu[] { this }.Iterator();
+                return new ConnectionOrientedPdu[] { this }.Iterator();
             }
 
-            // subtracting 8 bytes for authentication header and 16 
+            // subtracting 8 bytes for authentication header and 16
             // for the authentication verifier size, someone forgot the
             // poor guys..
             var stubSize = size - (GetFlag(PFC_OBJECT_UUID) ? 40 : 24) - 8 - 16;
             if (stub.Length <= stubSize) {
-                return new RequestCoPdu[] { this }.Iterator();
+                return new ConnectionOrientedPdu[] { this }.Iterator();
             }
-            Log.Logger.Verbose("In fragment of RequestCoPdu, this packet will be fragmented while sending...");
+            Log.Logger.Verbose(
+                "In fragment of RequestCoPdu, this packet will be fragmented while sending...");
             return new FragmentIterator(this, stubSize);
         }
 
         /// <inheritdoc/>
-        public RequestCoPdu Reassemble(Iterator<RequestCoPdu> fragments) {
+        public ConnectionOrientedPdu Reassemble(Iterator<ConnectionOrientedPdu> fragments) {
             if (!fragments.HasNext()) {
                 throw new IOException("No fragments available.");
             }
@@ -192,16 +192,16 @@ namespace rpc.pdu {
         }
 
         /// <inheritdoc/>
-        public RequestCoPdu Clone() {
+        public ConnectionOrientedPdu Clone() {
             try {
-                return (RequestCoPdu)base.MemberwiseClone();
+                return (ConnectionOrientedPdu)base.MemberwiseClone();
             }
             catch (Exception) {
                 throw new InvalidOperationException();
             }
         }
 
-        private class FragmentIterator : Iterator<RequestCoPdu> {
+        private class FragmentIterator : Iterator<ConnectionOrientedPdu> {
 
             public FragmentIterator(RequestCoPdu outerInstance, int stubSize) {
                 _outerInstance = outerInstance;
@@ -214,11 +214,11 @@ namespace rpc.pdu {
             }
 
             /// <inheritdoc/>
-            public override RequestCoPdu Next() {
+            public override ConnectionOrientedPdu Next() {
                 if (_index >= _outerInstance.Stub.Length) {
                     throw new NoSuchElementException();
                 }
-                var fragment = _outerInstance.Clone();
+                var fragment = (RequestCoPdu)_outerInstance.Clone();
                 var allocation = _outerInstance.Stub.Length - _index;
                 fragment.AllocationHint = allocation;
                 if (_stubSize < allocation) {
@@ -255,5 +255,4 @@ namespace rpc.pdu {
 
         private UUID _object;
     }
-
 }

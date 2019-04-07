@@ -31,9 +31,9 @@
 			session.useNTLMv2(true);
 			session.useSessionSecurity(true);
 			comServer = new JIComServer(JIProgId.valueOf("InternetExplorer.Application"),address,session);
-			ieObject = comServer.createInstance();
-			var ieObjectWebBrowser2 = (IJIComObject)ieObject.queryInterface("D30C1661-CDAF-11D0-8A3E-00C04FC9E26E");
-			ieObjectDispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)ieObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			ieObject = comServer.CreateInstance();
+			var ieObjectWebBrowser2 = (IJIComObject)ieObject.QueryInterface("D30C1661-CDAF-11D0-8A3E-00C04FC9E26E");
+			ieObjectDispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)ieObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 		}
 
@@ -111,203 +111,203 @@
 			var javaComponent = new JILocalCoClass(new JILocalInterfaceDefinition("34A715A0-6587-11D0-924A-0020AFC7AC4D"),typeof(DWebBrowserEvents2));
 
 			var propertyChangeObject = new JILocalParamsDescriptor();
-			propertyChangeObject.addInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
+			propertyChangeObject.AddInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
 			var methodDescriptor = new JILocalMethodDescriptor("PropertyChange",0x70,propertyChangeObject);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 
 			var navigateObject = new JILocalParamsDescriptor();
-			navigateObject.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			navigateObject.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			navigateObject.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("BeforeNavigate2",0xFA,navigateObject);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var StatusTextChange = new JILocalParamsDescriptor();
-			StatusTextChange.addInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
+			StatusTextChange.AddInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("StatusTextChange",0x66,StatusTextChange);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var ProgressChange = new JILocalParamsDescriptor();
-			ProgressChange.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			ProgressChange.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			ProgressChange.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			ProgressChange.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("ProgressChange",0x6c,ProgressChange);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var CommandStateChange = new JILocalParamsDescriptor();
-			CommandStateChange.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			CommandStateChange.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			CommandStateChange.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			CommandStateChange.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("CommandStateChange",0x69,CommandStateChange);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var DownloadBegin = new JILocalParamsDescriptor();
 			methodDescriptor = new JILocalMethodDescriptor("DownloadBegin",0x6a,DownloadBegin);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var DownloadComplete = new JILocalParamsDescriptor();
 			methodDescriptor = new JILocalMethodDescriptor("DownloadComplete",0x68,DownloadComplete);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var TitleChange = new JILocalParamsDescriptor();
-			TitleChange.addInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
+			TitleChange.AddInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("TitleChange",0x71,TitleChange);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var NewWindow2 = new JILocalParamsDescriptor();
-			NewWindow2.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NewWindow2.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NewWindow2.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NewWindow2.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("NewWindow2",0xfb,NewWindow2);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var NavigateComplete2 = new JILocalParamsDescriptor();
-			NavigateComplete2.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			NavigateComplete2.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NavigateComplete2.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			NavigateComplete2.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("NavigateComplete2",0xfc,NavigateComplete2);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var DocumentComplete = new JILocalParamsDescriptor();
-			DocumentComplete.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			DocumentComplete.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			DocumentComplete.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			DocumentComplete.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("DocumentComplete",0x103,DocumentComplete);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnQuit = new JILocalParamsDescriptor();
 			methodDescriptor = new JILocalMethodDescriptor("OnQuit",0xfd,OnQuit);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnVisible = new JILocalParamsDescriptor();
-			OnVisible.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnVisible.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnVisible",0xfe,OnVisible);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnToolBar = new JILocalParamsDescriptor();
-			OnToolBar.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnToolBar.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnToolBar",0xff,OnToolBar);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnMenuBar = new JILocalParamsDescriptor();
-			OnMenuBar.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnMenuBar.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnMenuBar",0x100,OnMenuBar);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnStatusBar = new JILocalParamsDescriptor();
-			OnStatusBar.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnStatusBar.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnStatusBar",0x101,OnStatusBar);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnFullScreen = new JILocalParamsDescriptor();
-			OnFullScreen.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnFullScreen.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnFullScreen",0x102,OnFullScreen);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var OnTheaterMode = new JILocalParamsDescriptor();
-			OnTheaterMode.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			OnTheaterMode.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("OnTheaterMode",0x104,OnTheaterMode);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowSetResizable = new JILocalParamsDescriptor();
-			WindowSetResizable.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			WindowSetResizable.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowSetResizable",0x106,WindowSetResizable);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowSetLeft = new JILocalParamsDescriptor();
-			WindowSetLeft.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowSetLeft.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowSetLeft",0x108,WindowSetLeft);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowSetTop = new JILocalParamsDescriptor();
-			WindowSetTop.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowSetTop.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowSetTop",0x109,WindowSetTop);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowSetWidth = new JILocalParamsDescriptor();
-			WindowSetWidth.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowSetWidth.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowSetWidth",0x10a,WindowSetWidth);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowSetHeight = new JILocalParamsDescriptor();
-			WindowSetHeight.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowSetHeight.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowSetHeight",0x10b,WindowSetHeight);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowClosing = new JILocalParamsDescriptor();
-			WindowClosing.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
-			WindowClosing.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			WindowClosing.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			WindowClosing.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowClosing",0x107,WindowClosing);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var ClientToHostWindow = new JILocalParamsDescriptor();
-			ClientToHostWindow.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			ClientToHostWindow.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			ClientToHostWindow.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			ClientToHostWindow.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("ClientToHostWindow",0x10c,ClientToHostWindow);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var SetSecureLockIcon = new JILocalParamsDescriptor();
-			SetSecureLockIcon.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			SetSecureLockIcon.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("SetSecureLockIcon",0x10d,SetSecureLockIcon);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var FileDownload = new JILocalParamsDescriptor();
-			FileDownload.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
-			FileDownload.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			FileDownload.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			FileDownload.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("FileDownload",0x10e,FileDownload);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var NavigateError = new JILocalParamsDescriptor();
-			NavigateError.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			NavigateError.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NavigateError.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NavigateError.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NavigateError.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NavigateError.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			NavigateError.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NavigateError.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NavigateError.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NavigateError.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("NavigateError",0x10f,NavigateError);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var NewWindow3 = new JILocalParamsDescriptor();
-			NewWindow3.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NewWindow3.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			NewWindow3.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			NewWindow3.addInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
-			NewWindow3.addInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
+			NewWindow3.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NewWindow3.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			NewWindow3.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			NewWindow3.AddInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
+			NewWindow3.AddInParamAsType(typeof(JIString),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("NewWindow3",0x111,NewWindow3);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var PrintTemplateInstantiation = new JILocalParamsDescriptor();
-			PrintTemplateInstantiation.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			PrintTemplateInstantiation.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("PrintTemplateInstantiation",0xe1,PrintTemplateInstantiation);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var PrintTemplateTeardown = new JILocalParamsDescriptor();
-			PrintTemplateTeardown.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			PrintTemplateTeardown.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("PrintTemplateTeardown",0xe2,PrintTemplateTeardown);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var SetPhishingFilterStatus = new JILocalParamsDescriptor();
-			SetPhishingFilterStatus.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			SetPhishingFilterStatus.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("SetPhishingFilterStatus",0x11A,SetPhishingFilterStatus);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var WindowStateChanged = new JILocalParamsDescriptor();
-			WindowStateChanged.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			WindowStateChanged.addInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowStateChanged.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			WindowStateChanged.AddInParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("WindowStateChanged",0x11B,WindowStateChanged);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 
 			var UpdatePageStatus = new JILocalParamsDescriptor();
-			UpdatePageStatus.addInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			UpdatePageStatus.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-			UpdatePageStatus.addInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			UpdatePageStatus.AddInParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			UpdatePageStatus.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+			UpdatePageStatus.AddInParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("UpdatePageStatus",0xe3,UpdatePageStatus);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			var PrivacyImpactedStateChange = new JILocalParamsDescriptor();
-			PrivacyImpactedStateChange.addInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+			PrivacyImpactedStateChange.AddInParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 			methodDescriptor = new JILocalMethodDescriptor("PrivacyImpactedStateChange",0x110,PrivacyImpactedStateChange);
-			javaComponent.InterfaceDefinition.addMethodDescriptor(methodDescriptor);
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 
 			var list = new ArrayList();

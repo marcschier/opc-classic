@@ -1,17 +1,17 @@
 ﻿// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 // Contributors:
 // Vikram Roopchand  - Moving to EPL from LGPL v1.
-// 
+//
 
 namespace SharpCifs.Dcerpc.Ndr {
 
@@ -38,14 +38,14 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <summary>
         /// Syntax
         /// </summary>
-        public static readonly string NDR_SYNTAX = 
+        public static readonly string NDR_SYNTAX =
             NDR_UUID + ":" + NDR_MAJOR_VERSION + "." + NDR_MINOR_VERSION;
 
         /// <summary>
         /// Buffer
         /// </summary>
         public NdrBuffer Buffer { get; set; }
-        
+
         /// <summary>
         /// Format
         /// </summary>
@@ -126,7 +126,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <param name="connectionless"></param>
         /// <returns></returns>
         public NdrFormat ReadFormat(bool connectionless) {
-            var format = NdrFormat.readFormat(Buffer.Buf, Buffer.Index, connectionless);
+            var format = NdrFormat.ReadFormat(Buffer.Buf, Buffer.Index, connectionless);
             Buffer.Index += 4;
             return format;
         }
@@ -136,7 +136,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// </summary>
         /// <param name="format"></param>
         public void WriteFormat(NdrFormat format) {
-            format.writeFormat(Buffer.Buf, Buffer.Index, false);
+            format.WriteFormat(Buffer.Buf, Buffer.Index, false);
             Buffer.Index += 4;
         }
 
@@ -147,7 +147,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         public void WriteFormat(bool connectionless) {
             var index = Buffer.Index;
             Buffer.Index += connectionless ? 3 : 4;
-            Format.writeFormat(Buffer.Buf, index, connectionless);
+            Format.WriteFormat(Buffer.Buf, index, connectionless);
         }
 
         /// <summary>

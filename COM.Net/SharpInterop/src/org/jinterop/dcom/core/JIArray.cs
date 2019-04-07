@@ -1,26 +1,27 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using org.jinterop.dcom.common;
     using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
-    ///<para>Represents a C++ array which can display both <i>conformant and standard</i> 
-    /// behaviors. Since this class forms a wrapper on the actual array, the developer 
-    /// is expected to provide complete and final arrays (of Objects) to this class. 
+    ///<para>Represents a C++ array which can display both <i>conformant and standard</i>
+    /// behaviors. Since this class forms a wrapper on the actual array, the developer
+    /// is expected to provide complete and final arrays (of Objects) to this class.
     /// Modifying the wrapped array afterwards <b>will</b> have unexpected results.
-    ///  </para> 
+    ///  </para>
     /// <para>
-    /// <i>Please refer to <b>MSExcel</b> examples for more details on how to use this 
+    /// <i>Please refer to <b>MSExcel</b> examples for more details on how to use this
     /// class.</i>
     /// </para>
     ///  <para>
@@ -30,13 +31,6 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     [Serializable]
     public sealed class JIArray {
-        private bool _isConformant;
-        private bool _isVarying;
-        private bool _isConformantProxy;
-        private bool _isVaryingProxy;
-        private object _template;
-        private readonly bool _isArrayOfCOMObjects_56DCOM;
-        private int _sizeOfNestedArrayInBytes; //used in both encoding and decoding.
 
         /// <summary>
         /// Private constructor
@@ -44,12 +38,12 @@ namespace org.jinterop.dcom.core {
         private JIArray() {}
 
         /// <summary>
-        /// Creates an array object of the type specified by <code>clazz</code>. This is used 
-        /// to prepare a template for decoding an array of that type. Used only for setting as an 
-        /// <code>[out]</code> parameter in a JICallBuilder. 
-        /// For example:- 
-        /// This call creates a template for a single dimension Integer array of size 10. 
-        /// <code> 
+        /// Creates an array object of the type specified by <code>clazz</code>. This is used
+        /// to prepare a template for decoding an array of that type. Used only for setting as an
+        /// <code>[out]</code> parameter in a JICallBuilder.
+        /// For example:-
+        /// This call creates a template for a single dimension Integer array of size 10.
+        /// <code>
         /// JIArray array = new JIArray(Integer.class,new int[]{10},1,false);
         /// </code>
         /// </summary>
@@ -61,7 +55,7 @@ namespace org.jinterop.dcom.core {
         /// is not equal to the <code>dimension</code> parameter. </exception>
         public JIArray(Type clazz, int[] upperBounds, int dimension, bool isConformant) {
             ArrayClass = clazz;
-            init2(upperBounds, dimension, isConformant, false);
+            Init2(upperBounds, dimension, isConformant, false);
         }
 
         /// <summary>
@@ -76,57 +70,57 @@ namespace org.jinterop.dcom.core {
         /// and its length is not equal to the <code>dimension</code> parameter. </exception>
         public JIArray(Type clazz, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
             ArrayClass = clazz;
-            init2(upperBounds, dimension, isConformant, isVarying);
+            Init2(upperBounds, dimension, isConformant, isVarying);
         }
 
         /// <summary>
-        /// Creates an array object with members of the type <code>template</code>. 
+        /// Creates an array object with members of the type <code>template</code>.
         /// This constructor is used to prepare a template for decoding an array and is
-        /// exclusively for composites like <code>JIStruct</code>, <code>JIPointer</code>, 
-        /// <code>JIUnion</code>, <code>JIString</code> where more information on the 
+        /// exclusively for composites like <code>JIStruct</code>, <code>JIPointer</code>,
+        /// <code>JIUnion</code>, <code>JIString</code> where more information on the
         /// structure of the composite is required before trying to deserialize it.
         /// Sample Usage:-
-        ///  
+        ///
         /// <code>
-        ///   JIStruct safeArrayBounds = new JIStruct(); 
-        ///   safeArrayBounds.addMember(Integer.class); 
-        ///   safeArrayBounds.addMember(Integer.class); 
-        ///   //arraydesc 
-        ///   JIStruct arrayDesc = new JIStruct(); 
-        ///   //typedesc 
-        ///   JIStruct typeDesc = new JIStruct(); 
+        ///   JIStruct safeArrayBounds = new JIStruct();
+        ///   safeArrayBounds.addMember(Integer.class);
+        ///   safeArrayBounds.addMember(Integer.class);
+        ///   //arraydesc
+        ///   JIStruct arrayDesc = new JIStruct();
+        ///   //typedesc
+        ///   JIStruct typeDesc = new JIStruct();
         ///   arrayDesc.addMember(typeDesc);
         ///   arrayDesc.addMember(Short.class);
         ///   arrayDesc.addMember(<b>new JIArray(safeArrayBounds,new int[]{1},1,true)</b>);
         /// </code>
         /// </summary>
-        /// <param name="template"> can be only of the type <code>JIStruct</code>, <code>JIPointer</code>, 
+        /// <param name="template"> can be only of the type <code>JIStruct</code>, <code>JIPointer</code>,
         /// <code>JIUnion</code>, <code>JIString</code> </param>
         /// <param name="upperBounds"> highest index for each dimension. </param>
         /// <param name="dimension"> number of dimensions </param>
         /// <param name="isConformant"> declares whether the array is <i>conformant</i> or not. </param>
         /// <exception cref="ArgumentException"> if <code>upperBounds</code> is supplied and its length
         /// is not equal to the <code>dimension</code> parameter. </exception>
-        /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the 
+        /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
         /// specified types. </exception>
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant) {
             if (template == null) {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
             }
-            if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) && 
+            if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) &&
                 !template.GetType().Equals(typeof(JIPointer)) && !template.GetType().Equals(typeof(JIString))) {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
             }
             _template = template;
             ArrayClass = template.GetType();
-            init2(upperBounds, dimension, isConformant, false);
+            Init2(upperBounds, dimension, isConformant, false);
         }
 
 
         /// <summary>
         /// Refer to <seealso cref="JIArray(object, int[], int, bool)"/> for details.
         /// </summary>
-        /// <param name="template"> can be only of the type <code>JIStruct</code>, <code>JIPointer</code>, 
+        /// <param name="template"> can be only of the type <code>JIStruct</code>, <code>JIPointer</code>,
         /// <code>JIUnion</code>, <code>JIString</code> </param>
         /// <param name="upperBounds"> highest index for each dimension. </param>
         /// <param name="dimension"> number of dimensions </param>
@@ -134,7 +128,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="isVarying"> declares whether the array is <i>varying</i> or not. </param>
         /// <exception cref="ArgumentException"> if <code>upperBounds</code> is supplied and its length
         /// is not equal to the <code>dimension</code> parameter. </exception>
-        /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the 
+        /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
         /// specified types. </exception>
         //for structs, pointers , unions.
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
@@ -142,27 +136,34 @@ namespace org.jinterop.dcom.core {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
             }
 
-            if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) && 
+            if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) &&
                 !template.GetType().Equals(typeof(JIPointer)) && !template.GetType().Equals(typeof(JIString))) {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
             }
 
             if (JISystem.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(JIPointer))) {
-                if (((JIPointer)template).getReferent().GetType() == typeof(IJIComObject)) {
+                if (((JIPointer)template).GetReferent().GetType() == typeof(IJIComObject)) {
                     //in this case this pointer will be a reference type pointer and not deffered one.
                     //change in MS specs since DCOM 5.4
                     _isArrayOfCOMObjects_56DCOM = true;
-                    ((JIPointer)template).setIsReferenceTypePtr();
+                    ((JIPointer)template).SetIsReferenceTypePtr();
                 }
             }
 
             _template = template;
             ArrayClass = template.GetType();
 
-            init2(upperBounds, dimension, isConformant, isVarying);
+            Init2(upperBounds, dimension, isConformant, isVarying);
         }
 
-        private void init2(int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
+        /// <summary>
+        /// Init
+        /// </summary>
+        /// <param name="upperBounds"></param>
+        /// <param name="dimension"></param>
+        /// <param name="isConformant"></param>
+        /// <param name="isVarying"></param>
+        private void Init2(int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
             UpperBounds = upperBounds;
             Dimensions = dimension;
             _isConformant = isConformant;
@@ -173,7 +174,8 @@ namespace org.jinterop.dcom.core {
             if (upperBounds != null) {
                 //have to supply the upperbounds for each dimension , no gaps in between
                 if (upperBounds.Length != dimension) {
-                    throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_UPPERBNDS_DIM_NOTMATCH));
+                    throw new ArgumentException(JISystem.getLocalizedMessage(
+                        JIErrorCodes.JI_ARRAY_UPPERBNDS_DIM_NOTMATCH));
                 }
             }
 
@@ -187,68 +189,76 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Creates an object with <i>array</i> parameter as the nested Array. 
+        /// Creates an object with <i>array</i> parameter as the nested Array.
         /// This constructor is used when the developer wants to send an array to
         /// COM server.
-        /// Sample Usage :- 
+        /// Sample Usage :-
         /// <code>
-        /// JIArray array = new JIArray(new JIString[]{new JIString(name)},true); 
+        /// JIArray array = new JIArray(new JIString[]{new JIString(name)},true);
         /// </code>
         /// </summary>
         /// <param name="array"> Array of any type. Primitive arrays are not allowed. </param>
         /// <param name="isConformant"> declares whether the array is <code>conformant</code> or not. </param>
-        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or 
+        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or
         /// is of primitive type or is an array of <code>java.lang.Object</code>. </exception>
         public JIArray(object array, bool isConformant) {
             _isConformant = isConformant;
             _isConformantProxy = isConformant;
-            init(array);
+            Init(array);
         }
 
         /// <summary>
-        /// Refer <seealso cref="JIArray(Object, bool)"/> 
+        /// Refer <seealso cref="JIArray(object, bool)"/>
         /// </summary>
         /// <param name="array"> Array of any type. Primitive arrays are not allowed. </param>
         /// <param name="isConformant"> declares whether the array is <code>conformant</code> or not. </param>
         /// <param name="isVarying"> declares whether the array is <code>varying</code> or not. </param>
-        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or 
+        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or
         /// is of primitive type or is an array of <code>java.lang.Object</code>. </exception>
         public JIArray(object array, bool isConformant, bool isVarying) {
             _isConformant = isConformant;
             _isConformantProxy = isConformant;
             _isVarying = isVarying;
             _isVaryingProxy = isVarying;
-            init(array);
+            Init(array);
         }
 
         /// <summary>
-        /// Creates an object with <i>array</i> parameter as the nested Array. 
-        /// This constructor forms a <code>non-conformant</code> array and is used 
+        /// Creates an object with <i>array</i> parameter as the nested Array.
+        /// This constructor forms a <code>non-conformant</code> array and is used
         /// when the developer wants to send an array to COM server.
-        /// Sample Usage :- 
+        /// Sample Usage :-
         /// <code>
-        /// JIArray array = new JIArray(new JIString[]{new JIString(name)},true); 
+        /// JIArray array = new JIArray(new JIString[]{new JIString(name)},true);
         /// </code>
         /// </summary>
         /// <param name="array"> Array of any type. Primitive arrays are not allowed. </param>
-        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or 
+        /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or
         /// is of primitive type or is an array of <code>java.lang.Object</code>. </exception>
         public JIArray(object array) {
-            init(array);
+            Init(array);
         }
 
-        private void init(object array) {
+        /// <summary>
+        /// Init
+        /// </summary>
+        /// <param name="array"></param>
+        private void Init(object array) {
             if (!array.GetType().IsArray) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_PARAM_ONLY));
+                throw new ArgumentException(JISystem.getLocalizedMessage(
+                    JIErrorCodes.JI_ARRAY_PARAM_ONLY));
             }
             if (array.GetType().IsPrimitive) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_PRIMITIVE_NOTACCEPT));
+                throw new ArgumentException(JISystem.getLocalizedMessage(
+                    JIErrorCodes.JI_ARRAY_PRIMITIVE_NOTACCEPT));
             }
 
             //bad way...but what the heck...
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
+            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
+            // yield results identical to the Java Class.getName method:
             if (array.GetType().ToString().IndexOf("java.lang.Object", StringComparison.Ordinal) != -1) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_TYPE_INCORRECT));
+                throw new ArgumentException(JISystem.getLocalizedMessage(
+                    JIErrorCodes.JI_ARRAY_TYPE_INCORRECT));
             }
             ArrayInstance = array;
 
@@ -284,12 +294,12 @@ namespace org.jinterop.dcom.core {
                 UpperBounds[i] = (int)(int?)upperBounds2[i];
             }
             Dimensions++; //since it starts from -1.
-            _sizeOfNestedArrayInBytes = computeLengthArray(array);
+            _sizeOfNestedArrayInBytes = ComputeLengthArray(array);
         }
 
-        private int computeLengthArray(object array) {
+        private int ComputeLengthArray(object array) {
             var length = 0;
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always 
+            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
             // yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var o = (object[])array;
@@ -297,13 +307,13 @@ namespace org.jinterop.dcom.core {
                 if (name[1] != '[') {
                     var o1 = (object[])array;
                     for (var j = 0; j < o1.Length; j++) {
-                        length = length + JIMarshalUnMarshalHelper.getLengthInBytes(
+                        length = length + JIMarshalUnMarshalHelper.GetLengthInBytes(
                             o1.GetType().GetElementType(), o1[j], JIFlags.FLAG_NULL);
                     }
                     return length;
                 }
                 // JAVA TO C# CONVERTER WARNING
-                length = length + computeLengthArray(o[i] /*Array.get(array, i)*/);
+                length = length + ComputeLengthArray(o[i] /*Array.get(array, i)*/);
             }
 
             return length;
@@ -312,7 +322,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Returns the nested Array.
         /// </summary>
-        /// <returns> array Object which can be type casted based on value 
+        /// <returns> array Object which can be type casted based on value
         /// returned by <seealso cref="ArrayClass"/>. </returns>
         public object ArrayInstance { get; private set; } = null;
 
@@ -339,12 +349,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         internal int SizeOfAllElementsInBytes {
             get {
-                //int length = numElementsInAllDimensions * 
+                //int length = numElementsInAllDimensions *
                 // JIMarshalUnMarshalHelper.getLengthInBytes(clazz,((Object[])memberArray)[0],JIFlags.FLAG_NULL);
 
                 //this means that decode has created this array, and we need to compute the size to stay consistent.
                 if (_sizeOfNestedArrayInBytes == -1) {
-                    _sizeOfNestedArrayInBytes = computeLengthArray(ArrayInstance);
+                    _sizeOfNestedArrayInBytes = ComputeLengthArray(ArrayInstance);
                 }
                 return _sizeOfNestedArrayInBytes;
             }
@@ -375,14 +385,14 @@ namespace org.jinterop.dcom.core {
         /// <param name="array"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NdrCodec ndr, object array, IList defferedPointers, int flag) {
+        internal void Encode(NdrCodec ndr, object array, List<object> defferedPointers, int flag) {
             //	ArrayList listofDefferedPointers = new ArrayList();
 
             if (_isConformantProxy) {
                 //first write the max counts ...First to last dimension.
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
-                    JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag);
                     i++;
                 }
 
@@ -393,8 +403,8 @@ namespace org.jinterop.dcom.core {
                 //write the offset and the actual count
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
-                    JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), 0, defferedPointers, flag); //offset
-                    JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag); //actual count
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag); //offset
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag); //actual count
                     i++;
                 }
 
@@ -408,13 +418,13 @@ namespace org.jinterop.dcom.core {
                 if (name[1] != '[') {
                     var o1 = (object[])array;
                     for (var j = 0; j < o1.Length; j++) {
-                        JIMarshalUnMarshalHelper.serialize(ndr, ArrayClass, o1[j],
+                        JIMarshalUnMarshalHelper.Serialize(ndr, ArrayClass, o1[j],
                             defferedPointers, flag | JIFlags.FLAG_REPRESENTATION_ARRAY);
                     }
                     return;
                 }
                 // JAVA TO C# CONVERTER WARNING
-                encode(ndr, o[i] /*Array.get(array, i)*/, defferedPointers, flag);
+                Encode(ndr, o[i] /*Array.get(array, i)*/, defferedPointers, flag);
             }
         }
 
@@ -428,8 +438,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal object decode(NdrCodec ndr, Type arrayType, int dimension, 
-            IList defferedPointers, int flag, IDictionary additionalData) {
+        internal object Decode(NdrCodec ndr, Type arrayType, int dimension,
+            IList defferedPointers, int flag, IDictionary<object, object> additionalData) {
             var retVal = new JIArray {
                 _isConformantProxy = _isConformantProxy,
                 _isVaryingProxy = _isVaryingProxy
@@ -477,7 +487,7 @@ namespace org.jinterop.dcom.core {
 
                 while (i < dimension) {
                     JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?), defferedPointers, flag, null); // offset
-					retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.deSerialize(ndr, 
+					retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.deSerialize(ndr,
                         typeof(int?), defferedPointers, flag, additionalData)); //actual count
                     i++;
                 }
@@ -504,12 +514,12 @@ namespace org.jinterop.dcom.core {
             retVal._isConformant = _isConformant;
             retVal._isVarying = _isVarying;
             retVal._template = _template;
-            retVal.ArrayInstance = recurseDecode(retVal, ndr, arrayType, dimension, defferedPointers, flag, additionalData);
+            retVal.ArrayInstance = RecurseDecode(retVal, ndr, arrayType, dimension, defferedPointers, flag, additionalData);
             retVal.ArrayClass = ArrayClass;
             retVal.Dimensions = Dimensions;
-            retVal._sizeOfNestedArrayInBytes = -1; 
+            retVal._sizeOfNestedArrayInBytes = -1;
             // setting here so that when a call actually comes for it's lenght
-            // the getLength will compute. This is required since while decoding 
+            // the getLength will compute. This is required since while decoding
             // many pointers are still not complete and their length cannot be decided.
             return retVal;
         }
@@ -525,8 +535,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        private object recurseDecode(JIArray retVal, NdrCodec ndr, Type arrayType,
-            int dimension, IList defferedPointers, int flag, IDictionary additionalData) {
+        private object RecurseDecode(JIArray retVal, NdrCodec ndr, Type arrayType,
+            int dimension, IList defferedPointers, int flag, IDictionary<object, object> additionalData) {
             object array = null;
             var c = arrayType;
             for (var j = 0; j < dimension; j++) {
@@ -555,7 +565,7 @@ namespace org.jinterop.dcom.core {
                     }
                 }
                 else {
-                    ((Array)array).SetValue(recurseDecode(retVal, ndr, arrayType, 
+                    ((Array)array).SetValue(RecurseDecode(retVal, ndr, arrayType,
                         dimension - 1, defferedPointers, flag, additionalData), i);
                 }
             }
@@ -566,7 +576,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         ///	Reverses Array elements for IJIDispatch.
         /// </summary>
-        internal int reverseArrayForDispatch() {
+        internal int ReverseArrayForDispatch() {
             if (ArrayInstance == null) {
                 return 0;
             }
@@ -582,12 +592,12 @@ namespace org.jinterop.dcom.core {
             return i;
         }
 
-        internal IList ConformantMaxCounts { get; private set; } = new ArrayList();
+        internal List<object> ConformantMaxCounts { get; private set; } = new List<object>();
 
-        internal IList MaxCountAndUpperBounds {
+        internal List<object> MaxCountAndUpperBounds {
             set {
                 ConformantMaxCounts = value;
-                //	if (upperBounds == null) this will always be null since this api will get called from a decode and 
+                //	if (upperBounds == null) this will always be null since this api will get called from a decode and
                 //in that the upperBounds is always null, since one does not know the dim expected.
                 if (ConformantMaxCounts.Count > 0) {
                     //max elements will come now.
@@ -610,25 +620,25 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal int NumElementsInAllDimensions { get; private set; } = 0;
+        internal int NumElementsInAllDimensions { get; private set; }
 
         /// <summary>
-        /// Used only from the JIVariant.getDecodedValueAsArray. It is required 
-        /// when the real class of the array is determined after the SafeArray Struct has been 
-        /// processed. SA in COM can contain these along with normal types as well :- 
-        /// FADF_BSTR 0x0100 An array of BSTRs. 
-        /// FADF_UNKNOWN 0x0200 An array of IUnknown*.   
-        /// FADF_DISPATCH 0x0400 An array of IDispatch*.  
-        /// FADF_VARIANT 0x0800 An array of VARIANTs. 
+        /// Used only from the JIVariant.getDecodedValueAsArray. It is required
+        /// when the real class of the array is determined after the SafeArray Struct has been
+        /// processed. SA in COM can contain these along with normal types as well :-
+        /// FADF_BSTR 0x0100 An array of BSTRs.
+        /// FADF_UNKNOWN 0x0200 An array of IUnknown*.
+        /// FADF_DISPATCH 0x0400 An array of IDispatch*.
+        /// FADF_VARIANT 0x0800 An array of VARIANTs.
         /// I have noticed that the "type" of the array doesn't always convey the right thing,
         /// so this "feature" flag of the SA shas to be looked into.
-        /// As can be seen above except only BSTR require a template others do not. But the logic 
+        /// As can be seen above except only BSTR require a template others do not. But the logic
         /// for the JIString(BSTR) already works fine. So I will use this
-        /// flag only to set the JIVariant.class , whereever the "type" does not specify it but 
-        /// the "feature" does.    
+        /// flag only to set the JIVariant.class , whereever the "type" does not specify it but
+        /// the "feature" does.
         /// </summary>
         /// <param name="c"> </param>
-        internal void updateClazz(Type c) {
+        internal void UpdateClazz(Type c) {
             ArrayClass = c;
         }
 
@@ -651,5 +661,13 @@ namespace org.jinterop.dcom.core {
 
             return retVal + "]";
         }
+
+        private bool _isConformant;
+        private bool _isVarying;
+        private bool _isConformantProxy;
+        private bool _isVaryingProxy;
+        private object _template;
+        private readonly bool _isArrayOfCOMObjects_56DCOM;
+        private int _sizeOfNestedArrayInBytes; //used in both encoding and decoding.
     }
 }

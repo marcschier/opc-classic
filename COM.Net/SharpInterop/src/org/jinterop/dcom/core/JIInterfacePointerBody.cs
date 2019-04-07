@@ -1,11 +1,12 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
+
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
@@ -26,24 +27,24 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Custom object
         /// </summary>
-        internal virtual bool CustomObjRef => _objectType == JIInterfacePointer.OBJREF_CUSTOM;
+        internal bool CustomObjRef => _objectType == JIInterfacePointer.OBJREF_CUSTOM;
 
         /// <summary>
         /// Custom class id
         /// </summary>
-        internal virtual string CustomCLSID => _customCLSID;
+        internal string CustomCLSID => _customCLSID;
 
         /// <summary>
         /// Object type
         /// </summary>
-        internal virtual int ObjectType => _objectType;
+        internal int ObjectType => _objectType;
 
         /// <summary>
         /// Returns object reference
         /// </summary>
         /// <param name="type"></param>
         /// <returns>object reference</returns>
-        internal virtual object getObjectReference(int type) {
+        internal object GetObjectReference(int type) {
             if (type == JIInterfacePointer.OBJREF_STANDARD) {
                 return _stdObjRef;
             }
@@ -54,27 +55,27 @@ namespace org.jinterop.dcom.core {
         /// Returns the Interface Identifier for this MIP.
         /// </summary>
         /// <returns> String representation of 128 bit uuid. </returns>
-        internal virtual string IID => _iid;
+        internal string IID => _iid;
 
         /// <summary>
         /// Ip id
         /// </summary>
-        internal virtual string IPID => _stdObjRef.Ipid;
+        internal string IPID => _stdObjRef.Ipid;
 
         /// <summary>
         /// Oid
         /// </summary>
-        internal virtual byte[] OID => _stdObjRef.ObjectId;
+        internal byte[] OID => _stdObjRef.ObjectId;
 
         /// <summary>
         /// String bindings
         /// </summary>
-        internal virtual JIDualStringArray StringBindings => _resolverAddr;
+        internal JIDualStringArray StringBindings => _resolverAddr;
 
         /// <summary>
         /// Length
         /// </summary>
-        internal virtual int Length => _length;
+        internal int Length => _length;
 
         /// <summary>
         /// Called from Oxid Resolver master, the resolver address are put in here itself
@@ -97,7 +98,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="interfacePointer"></param>
         internal JIInterfacePointerBody(string iid, JIInterfacePointer interfacePointer) {
             _iid = iid;
-            _stdObjRef = (JIStdObjRef)interfacePointer.getObjectReference(JIInterfacePointer.OBJREF_STANDARD);
+            _stdObjRef = (JIStdObjRef)interfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD);
             _resolverAddr = interfacePointer.StringBindings;
             _length = 40 + 4 + 4 + 16 + _resolverAddr.Length;
         }
@@ -108,10 +109,10 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="Flags"></param>
         /// <returns></returns>
-        internal static JIInterfacePointerBody decode(NdrCodec ndr, int Flags) {
-            if ((Flags & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) == 
+        internal static JIInterfacePointerBody Decode(NdrCodec ndr, int Flags) {
+            if ((Flags & JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) ==
                          JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2) {
-                return decode2(ndr);
+                return Decode2(ndr);
             }
 
             var length = ndr.ReadUnsignedLong();
@@ -145,7 +146,7 @@ namespace org.jinterop.dcom.core {
                     Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
                 }
 
-                //now for CLSID 
+                //now for CLSID
                 try {
                     var ipid2 = new rpc.core.UUID();
                     ipid2.Decode(ndr, ndr.Buffer);
@@ -173,8 +174,8 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
             }
 
-            ptr._stdObjRef = JIStdObjRef.decode(ndr);
-            ptr._resolverAddr = JIDualStringArray.decode(ndr);
+            ptr._stdObjRef = JIStdObjRef.Decode(ndr);
+            ptr._resolverAddr = JIDualStringArray.Decode(ndr);
             return ptr;
         }
 
@@ -184,7 +185,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIInterfacePointerBody decode2(NdrCodec ndr) {
+        internal static JIInterfacePointerBody Decode2(NdrCodec ndr) {
             var ptr = new JIInterfacePointerBody();
 
             //check for MEOW
@@ -214,8 +215,8 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
             }
 
-            ptr._stdObjRef = JIStdObjRef.decode(ndr);
-            ptr._resolverAddr = JIDualStringArray.decode(ndr);
+            ptr._stdObjRef = JIStdObjRef.Decode(ndr);
+            ptr._resolverAddr = JIDualStringArray.Decode(ndr);
             return ptr;
         }
 
@@ -224,7 +225,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="flags"></param>
-        internal virtual void encode(NdrCodec ndr, int flags) {
+        internal virtual void Encode(NdrCodec ndr, int flags) {
 
             //now for length
             //the length for STDOBJREF is fixed 40 bytes : 4,4,8,8,16.
@@ -239,7 +240,7 @@ namespace org.jinterop.dcom.core {
             ndr.WriteUnsignedLong(length);
 
             //for OBJREF_CUSTOM we will correct this length after the custom object has been marshalled.
-            //this object is marshalled 4 + 4 + 40 bytes after this point. The length of the length itself is not included. 
+            //this object is marshalled 4 + 4 + 40 bytes after this point. The length of the length itself is not included.
 
             ndr.WriteOctetArray(JIInterfacePointer.OBJREF_SIGNATURE, 0, 4);
 
@@ -285,9 +286,9 @@ namespace org.jinterop.dcom.core {
                 Console.Write(e.StackTrace);
             }
 
-            _stdObjRef.encode(ndr);
+            _stdObjRef.Encode(ndr);
 
-            _resolverAddr.encode(ndr);
+            _resolverAddr.Encode(ndr);
         }
 
         private string _iid;

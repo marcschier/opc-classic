@@ -27,17 +27,17 @@
 			//instead of this the ProgID "TestCOMServer.ITestCOMServer"	can be used as well.
 			//comStub = new JIComServer(JIProgId.valueOf(session,"TestCOMServer.ITestCOMServer"),address,session);
 			//CLSID of ITestCOMServer
-			comStub = new JIComServer(JIClsid.valueOf("44A9CD09-0D9B-4FD2-9B8A-0151F2E0CAD1"),address,session);
+			comStub = new JIComServer(JIClsid.ValueOf("44A9CD09-0D9B-4FD2-9B8A-0151F2E0CAD1"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void execute() throws org.jinterop.dcom.common.JIException
 		public virtual void execute()
 		{
-			unknown = comStub.createInstance();
+			unknown = comStub.CreateInstance();
 			//CLSID of IITestCOMServer
-			var comObject = (IJIComObject)unknown.queryInterface("4AE62432-FD04-4BF9-B8AC-56AA12A47FF9");
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			var comObject = (IJIComObject)unknown.QueryInterface("4AE62432-FD04-4BF9-B8AC-56AA12A47FF9");
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 			//Now call via automation
 			object[] results = dispatch.callMethodA("Add",new object[]{ 1, 2, new JIVariant(0,true)});
@@ -52,7 +52,7 @@
 			callObject.addInParamAsPointer(new JIPointer(0),JIFlags.FLAG_NULL);
 			//Since the retval is a top level pointer , it will get replaced with it's base type.
 			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
-			results = comObject.call(callObject);
+			results = comObject.Call(callObject);
 			Console.WriteLine(results[0]);
 			JISession.destroySession(dispatch.AssociatedSession);
 		}

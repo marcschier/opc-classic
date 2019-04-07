@@ -52,9 +52,9 @@ namespace org.jinterop.dcom.impls.automation {
 				return;
 			}
 
-			lpVarValue = (JIPointer)values.getMember(0);
+			lpVarValue = (JIPointer)values.GetMember(0);
 			//lpVarValue = (JIVariant)values.getMember(0);
-			wPARAMFlags = (short)(short?)values.getMember(1);
+			wPARAMFlags = (short)(short?)values.GetMember(1);
 		}
 
 	}

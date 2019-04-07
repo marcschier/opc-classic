@@ -1,16 +1,16 @@
 ﻿
-// 
+//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace rpc.security.ntlm {
@@ -157,14 +157,14 @@ namespace rpc.security.ntlm {
                 if (_useNtlmV2) {
                     RANDOM.NextBytes(clientNonce);
                     try {
-                        var lmv2Response = Responses.GetLMv2Response(target, 
+                        var lmv2Response = Responses.GetLMv2Response(target,
                             _credentials.GetUsername(), _credentials.GetPassword(), type2.GetChallenge(), clientNonce);
-                        var retval = Responses.GetNTLMv2Response(target, 
-                            _credentials.GetUsername(), _credentials.GetPassword(), type2.GetTargetInformation(), 
+                        var retval = Responses.GetNTLMv2Response(target,
+                            _credentials.GetUsername(), _credentials.GetPassword(), type2.GetTargetInformation(),
                             type2.GetChallenge(), clientNonce);
                         var ntlmv2Response = retval[0];
                         blob = retval[1];
-                        type3 = new Type3Message(flags, lmv2Response, ntlmv2Response, 
+                        type3 = new Type3Message(flags, lmv2Response, ntlmv2Response,
                             target, _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
                     }
                     catch (Exception e) {
@@ -192,7 +192,7 @@ namespace rpc.security.ntlm {
                             throw new Exception("Exception occured while forming Session Security Type3Response", e);
                         }
 
-                        type3 = new Type3Message(flags, lmResponse, ntResponse, target, 
+                        type3 = new Type3Message(flags, lmResponse, ntResponse, target,
                             _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
                     }
                     else //Plain NTLMv1 response
@@ -202,7 +202,7 @@ namespace rpc.security.ntlm {
                             .GetPreNtlmResponse(_credentials.GetPassword(), challenge);
                         var ntResponse = NtlmPasswordAuthentication
                             .GetNtlmResponse(_credentials.GetPassword(), challenge);
-                        type3 = new Type3Message(flags, lmResponse, ntResponse, target, 
+                        type3 = new Type3Message(flags, lmResponse, ntResponse, target,
                             _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
                         if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != 0) {
                             throw new Exception("Key Exchange not supported by Library !");
@@ -253,26 +253,26 @@ namespace rpc.security.ntlm {
             }
         }
 
-        /// <summary>
-        /// Get authentication sources
-        /// </summary>
-        protected internal virtual AuthenticationSource AuthenticationSource {
-            get {
-                if (_authenticationSource != null) {
-                    return _authenticationSource;
-                }
-                var sourceClass = (_properties != null) ? (string)_properties.GetProperty("rpc.ntlm.authenticationSource") : null;
-                if (sourceClass == null) {
-                    return _authenticationSource = AuthenticationSource.DefaultInstance;
-                }
-                try {
-                    return _authenticationSource = (AuthenticationSource)Type.GetType(sourceClass).newInstance();
-                }
-                catch (Exception ex) {
-                    throw new ArgumentException("Invalid authentication source: " + ex);
-                }
-            }
-        }
+  //      /// <summary>
+  //      /// Get authentication sources
+  //      /// </summary>
+  //      protected internal virtual AuthenticationSource AuthenticationSource {
+  //          get {
+  //              if (_authenticationSource != null) {
+  //                  return _authenticationSource;
+  //              }
+  //              var sourceClass = (_properties != null) ? (string)_properties.GetProperty("rpc.ntlm.authenticationSource") : null;
+  //              if (sourceClass == null) {
+  //                  return _authenticationSource = AuthenticationSource.DefaultInstance;
+  //              }
+  //              try {
+  //                  return _authenticationSource = (AuthenticationSource)Type.GetType(sourceClass).newInstance();
+  //              }
+  //              catch (Exception ex) {
+  //                  throw new ArgumentException("Invalid authentication source: " + ex);
+  //              }
+  //          }
+  //      }
 
         private int DefaultFlags {
             get {
@@ -398,7 +398,7 @@ namespace rpc.security.ntlm {
                 sessionResponseUserSessionKey = new byte[16];
             }
             else if (_useNtlmV2) {
-                //TODO this needs to be checked here since the key logic will be totally different 
+                //TODO this needs to be checked here since the key logic will be totally different
                 //and we have to get the key out of Type3 message response (blob of the NTLMv2 response.)
             }
             else {
@@ -408,7 +408,7 @@ namespace rpc.security.ntlm {
                 byte[] challenge = { 1, 2, 3, 4, 5, 6, 7, 8 }; //challenge is fixed
                 Array.Copy(challenge, 0, servernonce, 0, challenge.Length);
                 //first 8 bytes only , the rest are all 0x00 and not required.
-                Array.Copy(type3Message.GetLMResponse(), 0, servernonce, 8, 8); 
+                Array.Copy(type3Message.GetLMResponse(), 0, servernonce, 8, 8);
                 try {
                     sessionResponseUserSessionKey = ntlmKeyFactory
                         .GetNTLM2SessionResponseUserSessionKey(_credentials.GetPassword(), servernonce);
@@ -430,13 +430,13 @@ namespace rpc.security.ntlm {
         }
 
         private static readonly bool _unicodeSupported = Config.GetBoolean("SharpCifs.smb.client.useUnicode", true);
-        private static readonly int BASICFLAGS = 
-            NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm | 
-            NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign | 
+        private static readonly int BASICFLAGS =
+            NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
+            NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
             (_unicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : 0);
         private NtlmPasswordAuthentication _credentials;
-        private AuthenticationSource _authenticationSource;
-        private Properties _properties;
+      //  private AuthenticationSource _authenticationSource;
+        private readonly Properties _properties;
         private readonly bool _lanManagerKey;
         private readonly bool _seal;
         private readonly bool _sign;

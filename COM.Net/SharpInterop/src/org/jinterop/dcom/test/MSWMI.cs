@@ -36,10 +36,10 @@
 			session.useSessionSecurity(true);
 			session.GlobalSocketTimeout = 5000;
 			comStub = new JIComServer(JIProgId.valueOf("WbemScripting.SWbemLocator"),address,session);
-			var unknown = comStub.createInstance();
-			comObject = (IJIComObject)unknown.queryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
+			var unknown = comStub.CreateInstance();
+			comObject = (IJIComObject)unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
 			//This will obtain the dispatch interface
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(comObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 		}
 
 
@@ -66,9 +66,9 @@
 			callObject.addInParamAsPointer(null,JIFlags.FLAG_NULL);
 			callObject.Opnum = 0;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var wbemServices = JIObjectFactory.narrowObject((IJIComObject)((object[])comObject.call(callObject))[0]);
+			var wbemServices = JIObjectFactory.narrowObject((IJIComObject)((object[])comObject.Call(callObject))[0]);
 			wbemServices.InstanceLevelSocketTimeout = 1000;
-			wbemServices.registerUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper(this));
+			wbemServices.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper(this));
 
 			//Lets have a look at both.
 			var wbemServices_dispatch = (IJIDispatch)JIObjectFactory.narrowObject(results[0].ObjectAsComObject);
@@ -80,9 +80,9 @@
 			Console.WriteLine(object2.DispatchSupported);
 			Console.WriteLine(object2.DispatchSupported);
 
-			object2.registerUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper2(this));
+			object2.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper2(this));
 
-			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.queryInterface(impls.automation.IJIEnumVariant_Fields.IID));
+			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.QueryInterface(impls.automation.IJIEnumVariant_Fields.IID));
 
 			//This will return back a dispatch of ISWbemObjectSet
 
@@ -94,7 +94,7 @@
 			callObject.addInParamAsPointer(null,JIFlags.FLAG_NULL);
 			callObject.Opnum = 4;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var wbemObjectSet = JIObjectFactory.narrowObject((IJIComObject)((object[])wbemServices.call(callObject))[0]);
+			var wbemObjectSet = JIObjectFactory.narrowObject((IJIComObject)((object[])wbemServices.Call(callObject))[0]);
 
 			//okay seen enough of the other usage, lets just stick to disptach, it's lot simpler
 			var Count = wbemObjectSet_dispatch.get("Count");

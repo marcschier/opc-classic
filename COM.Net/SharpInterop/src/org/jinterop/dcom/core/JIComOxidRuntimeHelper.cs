@@ -265,8 +265,7 @@ namespace org.jinterop.dcom.core
 		private int opnum = -1;
 		private NdrBuffer buffer;
 		private readonly SharpCifs.Util.Sharpen.Properties p;
-		public OxidResolverImpl(SharpCifs.Util.Sharpen.Properties p) : base()
-		{
+		public OxidResolverImpl(SharpCifs.Util.Sharpen.Properties p) 		{
 			this.p = p;
 		}
 
@@ -328,7 +327,7 @@ namespace org.jinterop.dcom.core
 		private NdrBuffer SimplePing(NdrCodec ndr)
 		{
 			Log.Logger.Information("Oxid Object: SimplePing");
-			var b = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8); //setid
+			var b = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr,8); //setid
 			JIComOxidRuntime.addUpdateSets(new JISetId(b),new ArrayList(),new ArrayList());
 			buffer = new NdrBuffer(new byte[16],0);
 			buffer.enc_ndr_long(0);
@@ -341,24 +340,24 @@ namespace org.jinterop.dcom.core
 		private NdrBuffer ComplexPing(NdrCodec ndr)
 		{
             Log.Logger.Information("Oxid Object: ComplexPing");
-            var b = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8); //setid
-			JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null); //seqId.
-			var lengthAdds = (short?)JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
-			var lengthDels = (short?)JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
-			JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null);
+            var b = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr,8); //setid
+			JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null); //seqId.
+			var lengthAdds = (short?)JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
+			var lengthDels = (short?)JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
+			JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null);
 
-			JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null); //length
+			JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null); //length
 			var listOfAdds = new ArrayList();
 			for (var i = 0; i < (int)lengthAdds; i++)
 			{
-				listOfAdds.Add(new JIObjectId(JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8),false));
+				listOfAdds.Add(new JIObjectId(JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr,8),false));
 			}
 
-			JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null); //length
+			JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(int?),null,JIFlags.FLAG_NULL,null); //length
 			var listOfDels = new ArrayList();
 			for (var i = 0; i < (int)lengthDels; i++)
 			{
-				listOfDels.Add(new JIObjectId(JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8),false));
+				listOfDels.Add(new JIObjectId(JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr,8),false));
 			}
 
 			if (Arrays.Equals(b,new byte[]{0,0,0,0,0,0,0,0}))
@@ -373,9 +372,9 @@ namespace org.jinterop.dcom.core
                 Buffer = buffer
             };
 
-            JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr2,b);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(short?), (short)0, null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL); //hresult
+            JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr2,b);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(short?), (short)0, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL); //hresult
 			return buffer;
 		}
 
@@ -425,14 +424,14 @@ namespace org.jinterop.dcom.core
 
             //Vikram June 19th 2013: Forcing the JILocalCoClass's server to 5.4. This is so that we stay at 5.4 DCOM until we upgrade the 
             //local server to 5.7 as well.
-            JIMarshalUnMarshalHelper.serialize(ndr2,typeof(short?), (short)5, null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(short?), (short)4, null,JIFlags.FLAG_NULL);
+            JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(short?), (short)5, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(short?), (short)4, null,JIFlags.FLAG_NULL);
 
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), dualStringArray.Length, null,JIFlags.FLAG_NULL);
-			dualStringArray.encode(ndr2);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), dualStringArray.Length, null,JIFlags.FLAG_NULL);
+			dualStringArray.Encode(ndr2);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL);
 			return ndrBuffer;
 		}
 		//will prepare a NdrBuffer for reply to this call 
@@ -441,13 +440,13 @@ namespace org.jinterop.dcom.core
             Log.Logger.Information("Oxid Object: ResolveOxid2");
             //System.err.println("VIKRAM: resolve oxid thread Id = " + Thread.currentThread().getId());
             //first read the OXID, then consult the oxid master about it's details.
-            var oxid = new JIOxid(JIMarshalUnMarshalHelper.readOctetArrayLE(ndr,8));
+            var oxid = new JIOxid(JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr,8));
 
 			//now get the RequestedProtoSeq length.
-			var length = (int)(short?)JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
+			var length = (int)(short?)JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(short?),null,JIFlags.FLAG_NULL,null);
 
 			//now for the array.
-			var array = (JIArray)JIMarshalUnMarshalHelper.deSerialize(ndr,new JIArray(typeof(short?),null,1,true),null,JIFlags.FLAG_REPRESENTATION_ARRAY,null);
+			var array = (JIArray)JIMarshalUnMarshalHelper.Deserialize(ndr,new JIArray(typeof(short?),null,1,true),null,JIFlags.FLAG_REPRESENTATION_ARRAY,null);
 
 			//now query the Resolver master for this data.
 			var details = JIComOxidRuntime.getOxidDetails(oxid);
@@ -523,21 +522,21 @@ namespace org.jinterop.dcom.core
                 Buffer = ndrBuffer
             };
 
-            JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), new object().GetHashCode(), null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), (dualStringArray.Length - 4) / 2, null,JIFlags.FLAG_NULL);
-			dualStringArray.encode(ndr2);
+            JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), new object().GetHashCode(), null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), (dualStringArray.Length - 4) / 2, null,JIFlags.FLAG_NULL);
+			dualStringArray.Encode(ndr2);
 
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(UUID), uuid,null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), authnHint,null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(UUID), uuid,null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), authnHint,null,JIFlags.FLAG_NULL);
 	//		JIMarshalUnMarshalHelper.serialize(ndr2,Short.class, new Short((short)JISystem.getCOMVersion().getMajorVersion()),null,JIFlags.FLAG_NULL);
 	//		JIMarshalUnMarshalHelper.serialize(ndr2,Short.class, new Short((short)JISystem.getCOMVersion().getMinorVersion()),null,JIFlags.FLAG_NULL);
 
 			//Vikram June 19th 2013: Forcing the JILocalCoClass's server to 5.4. This is so that we stay at 5.4 DCOM until we upgrade the 
 			//local server to 5.7 as well.
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(short?), (short)5, null,JIFlags.FLAG_NULL);
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(short?), (short)4, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(short?), (short)5, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(short?), (short)4, null,JIFlags.FLAG_NULL);
 
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL); //hresult
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), 0, null,JIFlags.FLAG_NULL); //hresult
 
 
 			return ndrBuffer;
@@ -614,9 +613,9 @@ namespace org.jinterop.dcom.core
 		{
 			try
 			{
-				remInterfaceRef.addMember(typeof(UUID));
-				remInterfaceRef.addMember(typeof(int?));
-				remInterfaceRef.addMember(typeof(int?));
+				remInterfaceRef.AddMember(typeof(UUID));
+				remInterfaceRef.AddMember(typeof(int?));
+				remInterfaceRef.AddMember(typeof(int?));
 			}
 			catch (JIException shouldnothappen)
 			{
@@ -661,9 +660,9 @@ namespace org.jinterop.dcom.core
 							var structs = (JIStruct[])array.ArrayInstance;
 							for (var i = 0;i < length;i++)
 							{
-								var ipidref = ((UUID)structs[i].getMember(0)).ToString().ToUpper();
-								var publicRefs = (int)(int?)structs[i].getMember(1);
-								var privateRefs = (int)(int?)structs[i].getMember(2);
+								var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
+								var publicRefs = (int)(int?)structs[i].GetMember(1);
+								var privateRefs = (int)(int?)structs[i].GetMember(2);
 
                             if (!mapOfIpidsVsRef.Contains(ipidref)) {
                                 //this would be strange, since all the ipids we give should be part of the map already.
@@ -705,9 +704,9 @@ namespace org.jinterop.dcom.core
 						structs = (JIStruct[])array.ArrayInstance;
 						for (var i = 0;i < length;i++)
 						{
-							var ipidref = ((UUID)structs[i].getMember(0)).ToString().ToUpper();
-							var publicRefs = (int)(int?)structs[i].getMember(1);
-							var privateRefs = (int)(int?)structs[i].getMember(2);
+							var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
+							var publicRefs = (int)(int?)structs[i].GetMember(1);
+							var privateRefs = (int)(int?)structs[i].GetMember(2);
 							if (!mapOfIpidsVsRef.Contains(ipidref))
 							{
 								continue;
@@ -759,7 +758,7 @@ namespace org.jinterop.dcom.core
 				object[] retArray = null;
 				try
 				{
-					result = component.invokeMethod(ipid,opnum,ndr);
+					result = component.InvokeMethod(ipid,opnum,ndr);
 				}
 				catch (JIException e)
 				{
@@ -771,7 +770,7 @@ namespace org.jinterop.dcom.core
 
 				//now if opnum was 6 then this is a dispatch call , so response has to be dispatch response
 				//not the normal one.
-				if (component.getInterfaceDefinitionFromIPID(ipid).DispInterface && opnum == 6)
+				if (component.GetInterfaceDefinitionFromIPID(ipid).DispInterface && opnum == 6)
 				{
 					var result2 = result;
 					//orpcthat
@@ -783,15 +782,15 @@ namespace org.jinterop.dcom.core
 					var excepInfo = new JIStruct();
 					try
 					{
-						excepInfo.addMember((short)0);
-						excepInfo.addMember((short)0);
-						excepInfo.addMember(new JIString(""));
-						excepInfo.addMember(new JIString(""));
-						excepInfo.addMember(new JIString(""));
-						excepInfo.addMember(0);
-						excepInfo.addMember(new JIPointer(null,true));
-						excepInfo.addMember(new JIPointer(null,true));
-						excepInfo.addMember(0);
+						excepInfo.AddMember((short)0);
+						excepInfo.AddMember((short)0);
+						excepInfo.AddMember(new JIString(""));
+						excepInfo.AddMember(new JIString(""));
+						excepInfo.AddMember(new JIString(""));
+						excepInfo.AddMember(0);
+						excepInfo.AddMember(new JIPointer(null,true));
+						excepInfo.AddMember(new JIPointer(null,true));
+						excepInfo.AddMember(0);
 					}
 					catch (JIException e)
 					{ //not expecting any here
@@ -846,7 +845,7 @@ namespace org.jinterop.dcom.core
 				//JIOrpcThat.encode(ndr2);
 				//have to create a call Object, since these return types could be structs , unions etc. having deffered pointers 
 				var callObject = new JICallBuilder();
-				callObject.attachSession(component.Session);
+				callObject.AttachSession(component.Session);
 				if (result != null)
 				{
 
@@ -872,7 +871,7 @@ namespace org.jinterop.dcom.core
 
 				}
 				callObject.write2(ndr2);
-				JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), hresult, null,JIFlags.FLAG_NULL);
+				JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), hresult, null,JIFlags.FLAG_NULL);
 
 
 
@@ -915,11 +914,11 @@ namespace org.jinterop.dcom.core
 
             Log.Logger.Verbose("RemUnknownObject: [QI] JIJavcCoClass is " + component.CoClassIID);
 
-            (int)(int?)JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(int?),null, JIFlags.FLAG_NULL,null); //refs , don't really care about this.
+            (int)(int?)JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(int?),null, JIFlags.FLAG_NULL,null); //refs , don't really care about this.
 
-			var length = (int)(short?)JIMarshalUnMarshalHelper.deSerialize(ndr,typeof(short?),null, JIFlags.FLAG_NULL,null); //length of the requested Interfaces
+			var length = (int)(short?)JIMarshalUnMarshalHelper.Deserialize(ndr,typeof(short?),null, JIFlags.FLAG_NULL,null); //length of the requested Interfaces
 
-			var array = (JIArray)JIMarshalUnMarshalHelper.deSerialize(ndr,new JIArray(typeof(UUID),null,1,true),null,JIFlags.FLAG_REPRESENTATION_ARRAY,null);
+			var array = (JIArray)JIMarshalUnMarshalHelper.Deserialize(ndr,new JIArray(typeof(UUID),null,1,true),null,JIFlags.FLAG_REPRESENTATION_ARRAY,null);
 
 			//now to build the buffer and export the IIDs with new IPIDs
 			var b = new sbyte[8 + 4 + 4 + length * (4 + 4 + 40) + 16];
@@ -933,9 +932,9 @@ namespace org.jinterop.dcom.core
             JIOrpcThat.encode(ndr2);
 
 			//pointer
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), new object().GetHashCode(), null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), new object().GetHashCode(), null,JIFlags.FLAG_NULL);
 			//length of array
-			JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), length, null,JIFlags.FLAG_NULL);
+			JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), length, null,JIFlags.FLAG_NULL);
 
 			var arrayOfUUIDs = (object[])array.ArrayInstance;
 
@@ -948,7 +947,7 @@ namespace org.jinterop.dcom.core
 					var hresult = 0;
 	//				String ipid2 = GUIDUtil.guidStringFromHexString(IdentifierFactory.createUniqueIdentifier().toHexString());
 					string ipid2 = java.util.UUID.randomUUID().ToString();
-					if (!component.isPresent(iid.ToString()))
+					if (!component.IsPresent(iid.ToString()))
 					{
 						hresult = JIErrorCodes.E_NOINTERFACE;
 	//					ipid2 = GUIDUtil.guidStringFromHexString("00000000000000000000000000000000");
@@ -959,7 +958,7 @@ namespace org.jinterop.dcom.core
 						string tmpIpid = null;
 						try
 						{
-							tmpIpid = component.getIpidFromIID(iid.ToString());
+							tmpIpid = component.GetIpidFromIID(iid.ToString());
 						}
 						catch (Exception e)
 						{
@@ -969,7 +968,7 @@ namespace org.jinterop.dcom.core
 						if (tmpIpid == null)
 						{
                             Log.Logger.Verbose("RemUnknownObject: [QI] tmpIpid is null for iid " + iid);
-                            component.exportInstance(iid.ToString(), ipid2);
+                            component.ExportInstance(iid.ToString(), ipid2);
 						}
 						else
 						{
@@ -978,8 +977,8 @@ namespace org.jinterop.dcom.core
 						}
 					}
 					//hresult
-					JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), hresult, null,JIFlags.FLAG_NULL);
-					JIMarshalUnMarshalHelper.serialize(ndr2,typeof(int?), unchecked((int)0xCCCCCCCC), null,JIFlags.FLAG_NULL);
+					JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), hresult, null,JIFlags.FLAG_NULL);
+					JIMarshalUnMarshalHelper.Serialize(ndr2,typeof(int?), unchecked((int)0xCCCCCCCC), null,JIFlags.FLAG_NULL);
 
 					//now generate the IPID and export a java instance with this.
 					JIStdObjRef objRef = null;
@@ -991,7 +990,7 @@ namespace org.jinterop.dcom.core
 					{
 						objRef = new JIStdObjRef(ipid2);
 					}
-					objRef.encode(ndr2);
+					objRef.Encode(ndr2);
 
 					//add it to the exported Ipids map
 					if (hresult == 0)

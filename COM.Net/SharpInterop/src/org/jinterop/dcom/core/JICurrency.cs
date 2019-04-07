@@ -1,12 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
+//
 
 namespace org.jinterop.dcom.core {
     using System;
@@ -18,17 +17,27 @@ namespace org.jinterop.dcom.core {
     /// is extremely useful for calculations involving money, or for any fixed-point calculation where accuracy
     /// is important. It is one of the possible types for the VARIANT data type of Automation.
     /// If the absolute value of the fractional part is greater than 10,000, the appropriate adjustment
-    /// is made to the units, as shown in the third of the following examples. 
+    /// is made to the units, as shown in the third of the following examples.
     /// Note that the units and fractional part are specified by signed long values. The fourth of the following
-    /// examples shows what happens when the parameters have different signs. 
+    /// examples shows what happens when the parameters have different signs.
     /// <code>
-    /// COleCurrency curA;           // value: 0.0000 
-    /// curA.SetCurrency(4, 500);    // value: 4.0500 
-    /// curA.SetCurrency(2, 11000);  // value: 3.1000 
-    /// curA.SetCurrency(2, -50);    // value: 1.9950 
+    /// COleCurrency curA;           // value: 0.0000
+    /// curA.SetCurrency(4, 500);    // value: 4.0500
+    /// curA.SetCurrency(2, 11000);  // value: 3.1000
+    /// curA.SetCurrency(2, -50);    // value: 1.9950
     /// </code>
     /// </summary>
     public sealed class JICurrency {
+
+        /// <summary>
+        /// Returns the units value.
+        /// </summary>
+        public int Units { get; } = 0;
+
+        /// <summary>
+        /// Returns the fractionalUnits value.
+        /// </summary>
+        public int FractionalUnits { get; } = 0;
 
         /// <summary>
         /// Create currency
@@ -60,15 +69,5 @@ namespace org.jinterop.dcom.core {
             Units = units;
             FractionalUnits = fractionalUnits;
         }
-
-        /// <summary>
-        /// Returns the units value. 
-        /// </summary>
-        public int Units { get; } = 0;
-
-        /// <summary>
-        /// Returns the fractionalUnits value. 
-        /// </summary>
-        public int FractionalUnits { get; } = 0;
     }
 }

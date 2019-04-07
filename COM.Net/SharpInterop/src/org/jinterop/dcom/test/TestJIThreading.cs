@@ -143,11 +143,11 @@
 
 					// I'm not really sure what the deal is with this
 					// Create an intermediary instance?
-					var unknown = baseComServer.createInstance();
+					var unknown = baseComServer.CreateInstance();
 
-					var baseComObject = (IJIComObject) unknown.queryInterface(comObjectId);
+					var baseComObject = (IJIComObject) unknown.QueryInterface(comObjectId);
 
-					var baseDispatch = (IJIDispatch) JIObjectFactory.narrowObject(baseComObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+					var baseDispatch = (IJIDispatch) JIObjectFactory.narrowObject(baseComObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 					var connectServer = (JIVariant) baseDispatch.callMethodA("ConnectServer", new object[] { new JIString(host)
 								   , JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), 0, JIVariant.CreateOPTIONAL_PARAM()

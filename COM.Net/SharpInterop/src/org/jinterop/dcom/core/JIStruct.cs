@@ -1,21 +1,22 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
     /// This class represents the <code>Struct</code> data type.
-    /// for conformant and conformant+varying arrays the maxcount etc. 
+    /// for conformant and conformant+varying arrays the maxcount etc.
     /// should come at the begining of the struct.
     /// </summary>
     [Serializable]
@@ -27,22 +28,121 @@ namespace org.jinterop.dcom.core {
         public static readonly JIStruct MEMBER_IS_EMPTY = new JIStruct();
 
         /// <summary>
-        /// Adds the object as a member of this structure. This object is appended to the list of members within. 
+        /// Returns the total number of members.
         /// </summary>
-        /// <param name="member"> </param>
-        /// <exception cref="JIException"></exception>
-        public void addMember(object member) {
-            //null has to be allowed for members who would like to send null...NPE should not be thrown
-            addMember(Members.Count, member);
+        public int Size => Members.Count;
+
+        /// <summary>
+        /// Returns all members as java.util.List.
+        /// </summary>
+        public IList Members { get; } = new ArrayList();
+
+        /// <summary>
+        /// Length
+        /// </summary>
+        internal int Length {
+            get {
+                var length = 0;
+                var i = 0;
+                while (i < Members.Count) {
+                    var o = Members[i];
+                    if (o is Type) {
+                        length += JIMarshalUnMarshalHelper.GetLengthInBytes((Type)o, o, JIFlags.FLAG_NULL);
+                    }
+                    else {
+                        length += JIMarshalUnMarshalHelper.GetLengthInBytes(o.GetType(), o, JIFlags.FLAG_NULL);
+                    }
+                    i++;
+                }
+                return length;
+            }
         }
 
         /// <summary>
-        /// Adds object as member to the index specified. 
+        /// Max counts
+        /// </summary>
+        internal List<object> ArrayMaxCounts { get; } = new List<object>();
+
+        /// <summary>
+        /// Alignment
+        /// </summary>
+        internal int Alignment {
+            get {
+                var alignment = 0;
+
+                for (var i = 0; i < Members.Count; i++) {
+                    var c = Members[i].GetType();
+                    var isClass = false;
+                    if (c.Equals(typeof(Type))) {
+                        isClass = true;
+                        c = (Type)Members[i];
+                    }
+
+                    if (c.Equals(typeof(int?)) ||
+                        c.Equals(typeof(float?)) ||
+                        c.Equals(typeof(string)) ||
+                        c.Equals(typeof(JIString)) ||
+                        c.Equals(typeof(JIPointer)) ||
+                        c.Equals(typeof(JIUnsignedInteger)) ||
+                        c.Equals(typeof(JIVariant))) {
+                        //align with 4 bytes
+                        alignment = alignment <= 4 ? 4 : alignment;
+                    }
+                    else if (c.Equals(typeof(double?)) || c.Equals(typeof(DateTime)) || c.Equals(typeof(long?))) {
+                        //align with 8
+                        alignment = alignment <= 8 ? 8 : alignment;
+                    }
+                    else if (c.Equals(typeof(short?)) || c.Equals(typeof(JIUnsignedShort))) {
+                        //align with 2
+                        alignment = alignment <= 2 ? 2 : alignment;
+                    }
+                    else if (c.Equals(typeof(JIStruct))) {
+                        if (!isClass) {
+                            var align = ((JIStruct)Members[i]).Alignment;
+                            alignment = alignment <= align ? align : alignment;
+                        }
+                    }
+                    else if (c.Equals(typeof(JIUnion))) {
+                        if (!isClass) {
+                            var align = ((JIUnion)Members[i]).Alignment;
+                            alignment = alignment <= align ? align : alignment;
+                        }
+                    }
+                    if (alignment == 8) {
+                        break;
+                    }
+                }
+
+                return alignment;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the member at the specified index from the member list.
+        /// </summary>
+        /// <param name="position"> Zero based index </param>
+        public object GetMember(int position) {
+            return Members[position];
+        }
+
+        /// <summary>
+        /// Adds the object as a member of this structure. This object
+        /// is appended to the list of members within.
+        /// </summary>
+        /// <param name="member"> </param>
+        /// <exception cref="JIException"></exception>
+        public void AddMember(object member) {
+            //null has to be allowed for members who would like to send null...NPE should not be thrown
+            AddMember(Members.Count, member);
+        }
+
+        /// <summary>
+        /// Adds object as member to the index specified.
         /// </summary>
         /// <param name="position"> Zero based index </param>
         /// <param name="member"> </param>
         /// <exception cref="JIException"></exception>
-        public void addMember(int position, object member) {
+        public void AddMember(int position, object member) {
             //null has to be allowed for members who would like to send null...NPE should not be thrown
             member = member ?? 0;
             var memberClass = member.GetType();
@@ -53,7 +153,8 @@ namespace org.jinterop.dcom.core {
 
             //arrays can only be the last element of this struct.
             if (memberClass.Equals(typeof(JIArray))) {
-                //this condition will also allow that if another nested struct has an array , this new array is added at the
+                //this condition will also allow that if another nested struct has an array,
+                // this new array is added at the
                 // very end.
                 if (position != Members.Count) {
                     throw new JIException(JIErrorCodes.JI_STRUCT_ARRAY_ONLY_AT_END);
@@ -120,17 +221,17 @@ namespace org.jinterop.dcom.core {
             //			((IJIComObject)member).getInterfacePointer().Deffered = true;
             //		}
             else if (memberClass.Equals(typeof(IJIComObject))) {
-                ((IJIComObject)member).internal_setDeffered(true);
+                ((IJIComObject)member).Internal_setDeffered(true);
             }
             //else the pointer will be serialized "inplace".
             Members.Insert(position, member);
         }
 
         /// <summary>
-        /// Removes the member from the specified index. 
+        /// Removes the member from the specified index.
         /// </summary>
         /// <param name="index"> </param>
-        public void removeMember(int index) {
+        public void RemoveMember(int index) {
             object member = Members.GetAndRemoveAt(index);
             if (member is JIArray) {
                 //we need to remove it's max count values also.
@@ -148,35 +249,16 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-
-        /// <summary>
-        /// Returns all members as java.util.List. 
-        /// </summary>
-        public IList Members { get; } = new ArrayList();
-
-        /// <summary>
-        /// Retrieves the member at the specified index from the member list. 
-        /// </summary>
-        /// <param name="position"> Zero based index </param>
-        public object getMember(int position) {
-            return Members[position];
-        }
-
-        /// <summary>
-        /// Returns the total number of members.
-        /// </summary>
-        public int Size => Members.Count;
-
         /// <summary>
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="FLAG"></param>
-        internal void encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
+        internal void Encode(NdrCodec ndr, IList defferedPointers, int FLAG) {
             //first write all Max counts and then the rest of the structs
             for (var i = 0; i < ArrayMaxCounts.Count; i++) {
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(int?), (int?)ArrayMaxCounts[i], null, FLAG);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), (int?)ArrayMaxCounts[i], null, FLAG);
             }
 
             for (var i = 0; i < Members.Count; i++) {
@@ -204,13 +286,15 @@ namespace org.jinterop.dcom.core {
         /// <param name="FLAG"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIStruct decode(NdrCodec ndr, IList defferedPointers, int FLAG, IDictionary additionalData) {
+        internal JIStruct Decode(NdrCodec ndr, IList defferedPointers, int FLAG,
+            IDictionary<object, object> additionalData) {
             var retVal = new JIStruct();
             var listOfMaxCounts2 = new ArrayList();
             //first read all Max counts and then the rest of the structs
             for (var i = 0; i < _listOfDimensions.Count; i++) {
                 for (var j = 0; j < (int)(int?)_listOfDimensions[i]; j++) {
-                    listOfMaxCounts2.Add(JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?), null, FLAG, additionalData));
+                    listOfMaxCounts2.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
+                        typeof(int?), null, FLAG, additionalData));
                 }
             }
             var i = 0;
@@ -237,7 +321,7 @@ namespace org.jinterop.dcom.core {
                     }
                 }
                 try {
-                    retVal.addMember(o1); //listOfMembers.add(o);
+                    retVal.AddMember(o1); //listOfMembers.add(o);
                 }
                 catch (JIException e) {
                     throw new JIRuntimeException(e.ErrorCode);
@@ -247,86 +331,6 @@ namespace org.jinterop.dcom.core {
 
             //do not copy other members since the addMember above will take care of all the conditions.
             return retVal;
-        }
-
-        /// <summary>
-        /// Length
-        /// </summary>
-        internal int Length {
-            get {
-                var length = 0;
-                var i = 0;
-                while (i < Members.Count) {
-                    var o = Members[i];
-                    if (o is Type) {
-                        length += JIMarshalUnMarshalHelper.getLengthInBytes((Type)o, o, JIFlags.FLAG_NULL);
-                    }
-                    else {
-                        length += JIMarshalUnMarshalHelper.getLengthInBytes(o.GetType(), o, JIFlags.FLAG_NULL);
-                    }
-                    i++;
-                }
-                return length;
-            }
-        }
-
-        /// <summary>
-        /// Max counts
-        /// </summary>
-        internal IList ArrayMaxCounts { get; } = new ArrayList();
-
-        /// <summary>
-        /// Alignment
-        /// </summary>
-        internal int Alignment {
-            get {
-                var alignment = 0;
-
-                for (var i = 0; i < Members.Count; i++) {
-                    var c = Members[i].GetType();
-                    var isClass = false;
-                    if (c.Equals(typeof(Type))) {
-                        isClass = true;
-                        c = (Type)Members[i];
-                    }
-
-                    if (c.Equals(typeof(int?)) ||
-                        c.Equals(typeof(float?)) ||
-                        c.Equals(typeof(string)) ||
-                        c.Equals(typeof(JIString)) ||
-                        c.Equals(typeof(JIPointer)) ||
-                        c.Equals(typeof(JIUnsignedInteger)) ||
-                        c.Equals(typeof(JIVariant))) {
-                        //align with 4 bytes
-                        alignment = alignment <= 4 ? 4 : alignment;
-                    }
-                    else if (c.Equals(typeof(double?)) || c.Equals(typeof(DateTime)) || c.Equals(typeof(long?))) {
-                        //align with 8
-                        alignment = alignment <= 8 ? 8 : alignment;
-                    }
-                    else if (c.Equals(typeof(short?)) || c.Equals(typeof(JIUnsignedShort))) {
-                        //align with 2
-                        alignment = alignment <= 2 ? 2 : alignment;
-                    }
-                    else if (c.Equals(typeof(JIStruct))) {
-                        if (!isClass) {
-                            var align = ((JIStruct)Members[i]).Alignment;
-                            alignment = alignment <= align ? align : alignment;
-                        }
-                    }
-                    else if (c.Equals(typeof(JIUnion))) {
-                        if (!isClass) {
-                            var align = ((JIUnion)Members[i]).Alignment;
-                            alignment = alignment <= align ? align : alignment;
-                        }
-                    }
-                    if (alignment == 8) {
-                        break;
-                    }
-                }
-
-                return alignment;
-            }
         }
 
         private IList _listOfDimensions = new ArrayList();

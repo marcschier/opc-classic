@@ -1,18 +1,19 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using org.jinterop.dcom.common;
     using Serilog;
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using org.jinterop.dcom.impls.automation;
 
     /// <summary>
@@ -134,7 +135,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        ///Setting up a <code>VARIANT</code> with a SCODE value and it's errorCode. 
+        ///Setting up a <code>VARIANT</code> with a SCODE value and it's errorCode.
         ///Used via serializing the <code>VARIANT</code>.
         /// </summary>
         /// <param name="value"> </param>
@@ -196,18 +197,18 @@ namespace org.jinterop.dcom.core {
                 //array in the right format before returning it to the user. That is he must get Int[] within a JIArray
                 //back.
                 if (_safeArrayStruct != null) {
-                    retVal = (JIArray)((JIPointer)_safeArrayStruct.getMember(7)).getReferent();
+                    retVal = (JIArray)((JIPointer)_safeArrayStruct.GetMember(7)).GetReferent();
 
                     if (_is2Dimensional) {
                         var obj3 = (object[])retVal.ArrayInstance; //these will all be variants
                                                                    //correct the array here , i.e reform the 2 dimensional array before returning back.
-                        var safeArrayBound = (JIArray)_safeArrayStruct.getMember(8);
+                        var safeArrayBound = (JIArray)_safeArrayStruct.GetMember(8);
 
                         var safeArrayBound2 = (JIStruct[])safeArrayBound.ArrayInstance;
                         //should only be 2 since we support only 2 dim.
 
-                        var firstDim = (int)(int?)safeArrayBound2[0].getMember(0);
-                        var secondDim = (int)(int?)safeArrayBound2[1].getMember(0);
+                        var firstDim = (int)(int?)safeArrayBound2[0].GetMember(0);
+                        var secondDim = (int)(int?)safeArrayBound2[1].GetMember(0);
 
                         object obj = System.Array.CreateInstance(_nestedArraysRealClass, new int[] { firstDim, secondDim });
                         var obj2 = (object[][])obj;
@@ -455,7 +456,7 @@ namespace org.jinterop.dcom.core {
                 var index = (double)ndr.Buffer.Index;
                 if (index % 8.0 != 0) {
                     long i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
-                    ndr.writeOctetArray(new sbyte[(int)i], 0, (int)i);
+                    ndr.WriteOctetArray(new byte[(int)i], 0, (int)i);
                 }
 
                 var start = ndr.Buffer.Index;
@@ -687,17 +688,17 @@ namespace org.jinterop.dcom.core {
             //proper type 3 elements and not EMPTY,NULL,SCODE since these are parts of Variant.
             //and not simple types like Integer, JIUnsignedXXX or Float etc.
             if (_type3.Contains(c)) {
-                length = JIMarshalUnMarshalHelper.getLengthInBytes(c, obj, _flag);
+                length = JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, _flag);
             }
             else if (c.Equals(typeof(long?)) || c.Equals(typeof(double?)) || c.Equals(typeof(DateTime)) || c.Equals(typeof(JICurrency))) {
                 length = 8;
             }
             else if (c.Equals(typeof(JIString))) {
-                length = JIMarshalUnMarshalHelper.getLengthInBytes(c, obj, _flag);
+                length = JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, _flag);
             }
             else if (obj is IJIComObject) {
                 // for Interface pointers without
-                double value = ((IJIComObject)obj).internal_getInterfacePointer().Length;
+                double value = ((IJIComObject)obj).Internal_getInterfacePointer().Length;
                 value = value + 4 + 4 + 4; //20 of variant , 4 of the ptr, 4 of max count, 4 of actual count
             }
             return length;
@@ -712,7 +713,7 @@ namespace org.jinterop.dcom.core {
                 //now the array will be of variants, nestedArraysRealClass identifies the class itself
                 //for iteration we need the variants and then there members.
 
-                var objArray = (JIArray)((JIPointer)_safeArrayStruct.getMember(7)).getReferent();
+                var objArray = (JIArray)((JIPointer)_safeArrayStruct.GetMember(7)).GetReferent();
                 var array = (object[])objArray.ArrayInstance;
 
                 double length = 20; //variant
@@ -724,7 +725,7 @@ namespace org.jinterop.dcom.core {
                 length += 44;
 
 
-                var isVariantArray = ((short)(short?)_safeArrayStruct.getMember(1) & JIVariant.FADF_VARIANT) == JIVariant.FADF_VARIANT ? true : false;
+                var isVariantArray = ((short)(short?)_safeArrayStruct.GetMember(1) & JIVariant.FADF_VARIANT) == JIVariant.FADF_VARIANT ? true : false;
 
                 if (array != null) {
                     length += 4; //for max count of the array.
@@ -758,12 +759,13 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal static JIVariantBody decode(NdrCodec ndr, IList defferedPointers, int flag, IDictionary additionalData) {
+        internal static JIVariantBody Decode(NdrCodec ndr, List<object> defferedPointers,
+            int flag, IDictionary<object, object> additionalData) {
             //bool readLong = false;
             var index = (double)ndr.Buffer.Index;
             if (index % 8.0 != 0) {
                 long i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
-                ndr.readOctetArray(new sbyte[(int)i], 0, (int)i);
+                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
             }
 
             var start = ndr.Buffer.Index;
@@ -781,11 +783,11 @@ namespace org.jinterop.dcom.core {
 
             JIVariantBody variant = null;
 
-            IList varDefferedPointers = new ArrayList();
+            var varDefferedPointers = new List<object>();
             if ((variantType & JIVariant.VT_ARRAY) == 0x2000) {
                 var isByRef = (variantType & JIVariant.VT_BYREF) == 0 ? false : true;
                 //the struct may be null if the array has nothing
-                var safeArray = getDecodedValueAsArray(ndr, varDefferedPointers, variantType & ~JIVariant.VT_ARRAY, isByRef, additionalData, flag);
+                var safeArray = GetDecodedValueAsArray(ndr, varDefferedPointers, variantType & ~JIVariant.VT_ARRAY, isByRef, additionalData, flag);
                 var type2 = variantType;
                 if (isByRef) {
                     type2 = type2 & ~JIVariant.VT_BYREF; //so that actual type can be determined
@@ -808,7 +810,7 @@ namespace org.jinterop.dcom.core {
                 }
 
                 if (safeArray != null) {
-                    variant = new JIVariantBody(safeArray, (Type)JIVariant.getSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.getMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
+                    variant = new JIVariantBody(safeArray, (Type)JIVariant.getSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.GetMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
                 }
                 else {
                     variant = new JIVariantBody(null, (Type)JIVariant.getSupportedClass(type2 & ~JIVariant.VT_ARRAY), false, isByRef, flagofFlags);
@@ -819,7 +821,7 @@ namespace org.jinterop.dcom.core {
             }
             else {
                 var isByRef = (variantType & JIVariant.VT_BYREF) == 0 ? false : true;
-                variant = new JIVariantBody(getDecodedValue(ndr, varDefferedPointers, variantType, isByRef, additionalData, flag), isByRef, variantType);
+                variant = new JIVariantBody(GetDecodedValue(ndr, varDefferedPointers, variantType, isByRef, additionalData, flag), isByRef, variantType);
                 var type2 = variantType & 0x0FFF;
                 if (type2 == JIVariant.VT_INT) {
                     variant._flag = JIFlags.FLAG_REPRESENTATION_VT_INT;
@@ -837,7 +839,7 @@ namespace org.jinterop.dcom.core {
 
                 var newList = new ArrayList();
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, (JIPointer)varDefferedPointers[x], newList, flag, additionalData);
-                ((JIPointer)varDefferedPointers[x]).replaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                ((JIPointer)varDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                 x++;
                 varDefferedPointers.AddRange(x, newList);
             }
@@ -850,16 +852,16 @@ namespace org.jinterop.dcom.core {
                 length = length * 8 + start;
                 if (index < length) {
                     var safeArrayStruct = variant._safeArrayStruct;
-                    var size = (int?)safeArrayStruct.getMember(2);
+                    var size = (int?)safeArrayStruct.GetMember(2);
                     long i = 0;
                     if ((int)size == 8) {
                         if (index % 8.0 != 0) {
                             i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
                             if (index + i <= length) {
-                                ndr.readOctetArray(new sbyte[(int)i], 0, (int)i);
+                                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
                             }
                             else {
-                                ndr.readOctetArray(new sbyte[(length - (int)index)], 0, (int)(length - (int)index));
+                                ndr.ReadOctetArray(new byte[(length - (int)index)], 0, (int)(length - (int)index));
                             }
                         }
                     }
@@ -869,10 +871,10 @@ namespace org.jinterop.dcom.core {
                         if (index % 4.0 != 0) {
                             i = (i = Math.Round(index % 4.0)) == 0 ? 0 : 4 - i;
                             if (index + i <= length) {
-                                ndr.readOctetArray(new sbyte[(int)i], 0, (int)i);
+                                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
                             }
                             else {
-                                ndr.readOctetArray(new sbyte[(length - (int)index)], 0, (int)(length - (int)index));
+                                ndr.ReadOctetArray(new byte[(length - (int)index)], 0, (int)(length - (int)index));
                             }
                         }
                     }
@@ -887,7 +889,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIRuntimeException(e.ErrorCode);
                 }
                 var variantMain = new JIVariant(array, variant._isByRef, variant._flag);
-                variant = (JIVariantBody)variantMain._member.getReferent();
+                variant = (JIVariantBody)variantMain._member.GetReferent();
             }
 
             return variant;
@@ -964,7 +966,8 @@ namespace org.jinterop.dcom.core {
             return type;
         }
 
-        private static object getDecodedValue(NdrCodec ndr, IList defferedPointers, int type, bool isByRef, IDictionary additionalData, int flag) {
+        private static object GetDecodedValue(NdrCodec ndr, List<object> defferedPointers,
+            int type, bool isByRef, IDictionary<object, object> additionalData, int flag) {
 
             object obj = null;
             var c = getVarClass(type);
@@ -973,7 +976,7 @@ namespace org.jinterop.dcom.core {
                     ndr.ReadUnsignedLong(); //Read the Pointer
                 }
                 if (c.Equals(typeof(SCODE))) {
-                    obj = JIMarshalUnMarshalHelper.deSerialize(ndr, typeof(int?), null, flag, additionalData);
+                    obj = JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?), null, flag, additionalData);
                     obj = new SCODE((int)(int?)obj);
                     type = JIVariant.VT_ERROR;
                 }
@@ -990,13 +993,13 @@ namespace org.jinterop.dcom.core {
                 }
                 else if (c.Equals(typeof(JIString))) {
                     obj = new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-                    obj = ((JIString)obj).decode(ndr, null, flag, additionalData);
+                    obj = ((JIString)obj).Decode(ndr, null, flag, additionalData);
                 }
                 else if (c.Equals(typeof(bool?))) {
-                    obj = JIMarshalUnMarshalHelper.deSerialize(ndr, c, defferedPointers, flag | JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL, additionalData);
+                    obj = JIMarshalUnMarshalHelper.Deserialize(ndr, c, defferedPointers, flag | JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL, additionalData);
                 }
                 else {
-                    obj = JIMarshalUnMarshalHelper.deSerialize(ndr, c, defferedPointers, flag, additionalData);
+                    obj = JIMarshalUnMarshalHelper.Deserialize(ndr, c, defferedPointers, flag, additionalData);
                 }
             }
             return obj;
@@ -1012,8 +1015,9 @@ namespace org.jinterop.dcom.core {
         /// <param name="additionalData"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        private static JIStruct getDecodedValueAsArray(NdrCodec ndr, 
-            IList defferedPointers, int type, bool isByRef, IDictionary additionalData, int flag) {
+        private static JIStruct GetDecodedValueAsArray(NdrCodec ndr,
+            List<object> defferedPointers, int type, bool isByRef,
+            IDictionary<object, object> additionalData, int flag) {
             //int newFLAG = flag;
             if (isByRef) {
                 ndr.ReadUnsignedLong(); //read the pointer
@@ -1029,18 +1033,18 @@ namespace org.jinterop.dcom.core {
 
             var safeArray = new JIStruct();
             try {
-                safeArray.addMember(typeof(short?)); //dim
+                safeArray.AddMember(typeof(short?)); //dim
 
                 var safeArrayBound = new JIStruct();
-                safeArrayBound.addMember(typeof(int?));
-                safeArrayBound.addMember(typeof(int?)); //starts at 0
+                safeArrayBound.AddMember(typeof(int?));
+                safeArrayBound.AddMember(typeof(int?)); //starts at 0
 
-                safeArray.addMember(typeof(short?)); //flags
-                safeArray.addMember(typeof(int?)); //size
-                safeArray.addMember(typeof(short?)); //locks
-                safeArray.addMember(typeof(short?)); //locks
-                safeArray.addMember(typeof(int?)); //safearrayunion
-                safeArray.addMember(typeof(int?)); //size in safearrayunion
+                safeArray.AddMember(typeof(short?)); //flags
+                safeArray.AddMember(typeof(int?)); //size
+                safeArray.AddMember(typeof(short?)); //locks
+                safeArray.AddMember(typeof(short?)); //locks
+                safeArray.AddMember(typeof(int?)); //safearrayunion
+                safeArray.AddMember(typeof(int?)); //size in safearrayunion
 
                 var c = (Type)JIVariant.supportedTypes_classes[type];
                 if (c == null) {
@@ -1061,28 +1065,28 @@ namespace org.jinterop.dcom.core {
                 JIArray values = null;
                 if (c == typeof(JIString)) {
                     values = new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), null, 1, true);
-                    safeArray.addMember(new JIPointer(values)); //single dimension array, will convert it into the
+                    safeArray.AddMember(new JIPointer(values)); //single dimension array, will convert it into the
                                                                 //[] or [][] after inspecting dimension read.
                 }
                 else {
                     values = new JIArray(c, null, 1, true);
-                    safeArray.addMember(new JIPointer(values)); //single dimension array, will convert it into the
+                    safeArray.AddMember(new JIPointer(values)); //single dimension array, will convert it into the
                                                                 //[] or [][] after inspecting dimension read.
                 }
 
-                safeArray.addMember(new JIArray(safeArrayBound, null, 1, true));
+                safeArray.AddMember(new JIArray(safeArrayBound, null, 1, true));
 
-                safeArray = (JIStruct)JIMarshalUnMarshalHelper.deSerialize(ndr, safeArray, defferedPointers, flag, additionalData);
+                safeArray = (JIStruct)JIMarshalUnMarshalHelper.Deserialize(ndr, safeArray, defferedPointers, flag, additionalData);
 
                 //now set the right class after examining the flags , only set for JIVariant.class now., the BSTR would already be set previously.
-                var features = (short?)safeArray.getMember(1);
+                var features = (short?)safeArray.GetMember(1);
                 //this condition is being kept in the front since the feature flags can be a combination of FADF_VARIANT and the
                 //other flags , in which case the Variant takes priority (since they will all be wrapped as variants).
                 if (((short)features & JIVariant.FADF_VARIANT) == JIVariant.FADF_VARIANT) {
-                    values.updateClazz(typeof(JIVariant));
+                    values.UpdateClazz(typeof(JIVariant));
                 }
                 else if ((((short)features & JIVariant.FADF_DISPATCH) == JIVariant.FADF_DISPATCH) || (((short)features & JIVariant.FADF_UNKNOWN) == JIVariant.FADF_UNKNOWN)) {
-                    values.updateClazz(typeof(IJIComObject));
+                    values.UpdateClazz(typeof(IJIComObject));
                 }
                 //For JIStrings , it will be done before these above conditions are examined.
 
@@ -1103,7 +1107,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="obj"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        private void setValue(NdrCodec ndr, object obj, IList defferedPointers, int flag) {
+        private void setValue(NdrCodec ndr, object obj, List<object> defferedPointers, int flag) {
             if (_isNull) {
                 return; //null , is only 20 bytes
             }
@@ -1117,14 +1121,14 @@ namespace org.jinterop.dcom.core {
                 if (obj is IJIComObject) {
                     c = typeof(IJIComObject);
                 }
-                JIMarshalUnMarshalHelper.serialize(ndr, c, obj, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, c, obj, defferedPointers, flag);
             }
             else {
 
                 ndr.WriteUnsignedLong(new object().GetHashCode()); //pointer referentId
                 ndr.WriteUnsignedLong(1);
 
-                JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIStruct), _safeArrayStruct, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIStruct), _safeArrayStruct, defferedPointers, flag);
             }
         }
 
@@ -1156,7 +1160,7 @@ namespace org.jinterop.dcom.core {
                         length = ArrayLengthForVarType * 8;
                     }
                     catch (JIException e) {
-                        throw new Exception(e);
+                        throw new Exception("", e);
                     }
 
                     return length;
@@ -1175,7 +1179,7 @@ namespace org.jinterop.dcom.core {
                     }
                 }
 
-                return 24 + JIMarshalUnMarshalHelper.getLengthInBytes(c, _object, _flag);
+                return 24 + JIMarshalUnMarshalHelper.GetLengthInBytes(c, _object, _flag);
             }
         }
 
@@ -1211,7 +1215,7 @@ namespace org.jinterop.dcom.core {
         private readonly bool _isScode;
         private readonly bool _isNull;
         private readonly Type _nestedArraysRealClass;
-        private static ArrayList _type3 = new ArrayList();
+        private static List<object> _type3 = new List<object>();
         private bool _isByRef;
         internal int _flag;
     }

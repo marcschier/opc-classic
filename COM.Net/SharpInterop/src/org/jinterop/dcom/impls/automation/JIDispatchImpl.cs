@@ -50,7 +50,7 @@ namespace org.jinterop.dcom.impls.automation {
         public const int FLAG_TYPEINFO_SUPPORTED = 1;
 		public const int FLAG_TYPEINFO_NOTSUPPORTED = 0;
 
-        public IJIComObject COMObject => comObject;
+        public IJIComObject COMObject => ComObject;
 
         //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
         //ORIGINAL LINE: public int getTypeInfoCount() throws org.jinterop.dcom.common.JIException
@@ -63,7 +63,7 @@ namespace org.jinterop.dcom.impls.automation {
                 };
                 obj.addInParamAsInt(0, JIFlags.FLAG_NULL);
 				obj.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-				var result = comObject.call(obj);
+				var result = ComObject.Call(obj);
 				return (int)(int?)result[0];
 			}
 		}
@@ -99,7 +99,7 @@ namespace org.jinterop.dcom.impls.automation {
 			obj.addOutParamAsObject(new JIArray(typeof(int?),null,1,true),JIFlags.FLAG_NULL);
 
 
-			var result = comObject.call(obj);
+			var result = ComObject.Call(obj);
 
 			if (result == null && obj.Error)
 			{
@@ -172,7 +172,7 @@ namespace org.jinterop.dcom.impls.automation {
 
 			obj.addOutParamAsObject(arrayOut,JIFlags.FLAG_NULL);
 
-			var result = comObject.call(obj);
+			var result = ComObject.Call(obj);
 
 			if (obj.HRESULT != 0) //exception occured
 			{
@@ -209,7 +209,7 @@ namespace org.jinterop.dcom.impls.automation {
 			obj.addInParamAsInt(0x400,JIFlags.FLAG_NULL);
 			obj.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			//obj.setUpParams(new Object[]{new Integer(typeInfo),new Integer(0x400)},new Object[]{MInterfacePointer.class},JIFlags.FLAG_NULL,JIFlags.FLAG_NULL);
-			var result = comObject.call(obj);
+			var result = ComObject.Call(obj);
 			return (IJITypeInfo)JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 
@@ -240,7 +240,7 @@ namespace org.jinterop.dcom.impls.automation {
 			//bool isLastAptr = false;
 			if (arrayOfVariantsInParams != null)
 			{
-				lengthVar = JIFrameworkHelper.reverseArrayForDispatch(arrayOfVariantsInParams);
+				lengthVar = JIFrameworkHelper.ReverseArrayForDispatch(arrayOfVariantsInParams);
 				variants = (JIVariant[])arrayOfVariantsInParams.ArrayInstance;
 				for (var i = 0;i < variants.Length;i++)
 				{
@@ -260,13 +260,13 @@ namespace org.jinterop.dcom.impls.automation {
 			var lengthPtr = 0;
 			if (arrayOfNamedDispIds != null)
 			{
-				lengthPtr = JIFrameworkHelper.reverseArrayForDispatch(arrayOfNamedDispIds);
+				lengthPtr = JIFrameworkHelper.ReverseArrayForDispatch(arrayOfNamedDispIds);
 			}
 
-			dispParams.addMember(new JIPointer(arrayOfVariantsInParams)); //should be an array of variants
-			dispParams.addMember(new JIPointer(arrayOfNamedDispIds)); //if there, this should be an array of variants , these too.
-			dispParams.addMember(lengthVar);
-			dispParams.addMember(lengthPtr);
+			dispParams.AddMember(new JIPointer(arrayOfVariantsInParams)); //should be an array of variants
+			dispParams.AddMember(new JIPointer(arrayOfNamedDispIds)); //if there, this should be an array of variants , these too.
+			dispParams.AddMember(lengthVar);
+			dispParams.AddMember(lengthPtr);
 
 
 			obj.addInParamAsInt(dispId,JIFlags.FLAG_NULL);
@@ -311,7 +311,7 @@ namespace org.jinterop.dcom.impls.automation {
 			object[] result = null;
 			try
 			{
-				result = comObject.call(obj);
+				result = ComObject.Call(obj);
 			}
 			catch (JIException e)
 			{
@@ -319,13 +319,13 @@ namespace org.jinterop.dcom.impls.automation {
                 if (results != null) {
                     //catching here so that an extended message could be sent out
                     var excepInfoRet = (JIStruct)results[1];
-                    var text1 = ((JIString)excepInfoRet.getMember(2)).String + " ";
-                    var text2 = ((JIString)excepInfoRet.getMember(3)).String + " [ ";
-                    var text3 = ((JIString)excepInfoRet.getMember(4)).String + " ] ";
+                    var text1 = ((JIString)excepInfoRet.GetMember(2)).String + " ";
+                    var text2 = ((JIString)excepInfoRet.GetMember(3)).String + " [ ";
+                    var text3 = ((JIString)excepInfoRet.GetMember(4)).String + " ] ";
                     LastExcepInfo.excepDesc = text2;
                     LastExcepInfo.excepHelpfile = text3;
                     LastExcepInfo.excepSource = text1;
-                    LastExcepInfo.errorCode = (int)(short?)excepInfoRet.getMember(0) != 0 ? (int)(short?)excepInfoRet.getMember(0) : (int)(int?)excepInfoRet.getMember(8);
+                    LastExcepInfo.errorCode = (int)(short?)excepInfoRet.GetMember(0) != 0 ? (int)(short?)excepInfoRet.GetMember(0) : (int)(int?)excepInfoRet.GetMember(8);
 
 
                     var automationException = new JIAutomationException(e) {
@@ -681,15 +681,15 @@ namespace org.jinterop.dcom.impls.automation {
 		{
 			try
 			{
-				excepInfo.addMember(typeof(short?));
-				excepInfo.addMember(typeof(short?));
-				excepInfo.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
-				excepInfo.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
-				excepInfo.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
-				excepInfo.addMember(typeof(int?));
-				excepInfo.addMember(new JIPointer(null,true));
-				excepInfo.addMember(new JIPointer(null,true));
-				excepInfo.addMember(typeof(int?));
+				excepInfo.AddMember(typeof(short?));
+				excepInfo.AddMember(typeof(short?));
+				excepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
+				excepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
+				excepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
+				excepInfo.AddMember(typeof(int?));
+				excepInfo.AddMember(new JIPointer(null,true));
+				excepInfo.AddMember(new JIPointer(null,true));
+				excepInfo.AddMember(typeof(int?));
 			}
 			catch (JIException e)
 			{

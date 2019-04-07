@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -78,7 +78,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIStringBinding decode(NdrCodec ndr) {
+        internal static JIStringBinding Decode(NdrCodec ndr) {
             var stringBinding = new JIStringBinding {
                 TowerId = ndr.ReadUnsignedShort()
             };
@@ -93,9 +93,9 @@ namespace org.jinterop.dcom.core {
             var retVal = -1;
             var buffer = new StringBuilder();
             while ((retVal = ndr.ReadUnsignedShort()) != 0) {
-                //even though this is a unicode string , but will not have anything else
+                //even though this is a unicode string, but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
-                buffer.Append(StringHelperClass.NewString(new sbyte[] { (sbyte)retVal }));
+                buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
             }
 
             stringBinding.NetworkAddress = buffer.ToString();
@@ -108,7 +108,7 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        public void encode(NdrCodec ndr) {
+        public void Encode(NdrCodec ndr) {
             ndr.WriteUnsignedShort(TowerId);
             //now to write the network address.
             var i = 0;

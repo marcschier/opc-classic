@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
@@ -29,7 +29,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ptr"></param>
         /// <param name="helper"></param>
         /// <param name="protectionLevel"></param>
-        internal JIComOxidDetails(JILocalCoClass javaInstance, JIOxid oxid, 
+        internal JIComOxidDetails(JILocalCoClass javaInstance, JIOxid oxid,
             JIObjectId oid, string iid, string ipid, JIInterfacePointer ptr,
             JIComOxidRuntimeHelper helper, int protectionLevel) {
             Referent = javaInstance;

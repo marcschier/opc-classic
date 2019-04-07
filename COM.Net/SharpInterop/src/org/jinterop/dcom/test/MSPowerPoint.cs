@@ -20,15 +20,15 @@
 		public MSPowerPoint(string address, string[] args)
 		{
 			var session = JISession.createSession(args[1],args[2],args[3]);
-			comStub = new JIComServer(JIClsid.valueOf("91493441-5A91-11CF-8700-00AA0060263B"),address,session);
+			comStub = new JIComServer(JIClsid.ValueOf("91493441-5A91-11CF-8700-00AA0060263B"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void startPowerPoint() throws org.jinterop.dcom.common.JIException
 		public virtual void startPowerPoint()
 		{
-			unknown = comStub.createInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			unknown = comStub.CreateInstance();
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

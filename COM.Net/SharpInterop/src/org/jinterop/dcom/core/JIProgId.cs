@@ -52,7 +52,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="progId"></param>
         private JIProgId(string progId) {
             this.progId = progId;
-            clsid = JIClsid.valueOf(JISystem.getClsidFromProgId(progId));
+            clsid = JIClsid.ValueOf(JISystem.getClsidFromProgId(progId));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace org.jinterop.dcom.core {
             winreg.winreg_CloseKey(handle);
             winreg.closeConnection();
             //seperate the {}
-            clsid = JIClsid.valueOf(StringHelperClass.SubstringSpecial(key,
+            clsid = JIClsid.ValueOf(StringHelperClass.SubstringSpecial(key,
                 key.IndexOf("{", StringComparison.Ordinal) + 1, key.IndexOf("}", StringComparison.Ordinal)));
             clsid.AutoRegistration = autoRegister;
             JISystem.internal_setClsidtoProgId(progId, clsid.CLSID);

@@ -1,31 +1,19 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.common {
 
     /// <summary>
-    ///<para>Class implemented for defining system wide changes. 
-    /// 
-    /// </para>
-    /// <para>A note on logging: The framework exposes JRE based logger "org.jinterop". Applications need to 
-    /// attach their own handler to this logger. If you would like to set the in-built handler, which 
-    /// writes to a file <code>j-Interop.log</code> in the <code>java.io.tmpdir</code> directory, please use 
-    /// the <seealso cref="setInBuiltLogHandler(bool)"/>. Please note that the <code>level</code> for the logger 
-    /// and all other configuration parameters should be set directly on the logger instance, 
-    /// using <code>LogManager.getLogger("org.jinterop")</code></para>
-    /// 
-    /// <para><b>Note</b>: Methods starting with <i>internal_</i> keyword are internal to the framework 
+    /// Class implemented for defining system wide changes.
+    /// <para><b>Note</b>: Methods starting with <i>internal_</i> keyword are internal to the framework
     /// and must not be called by the developer.
-    /// 
-    /// @since 1.0
-    /// 
     /// </para>
     /// </summary>
     public sealed class JISystem
@@ -46,14 +34,14 @@ namespace org.jinterop.dcom.common {
 
         /// <summary>
         /// Returns the framework logger identified by the name "org.jinterop".
-        /// 
+        ///
         /// @return
         /// </summary>
         public static Logger Logger { get; } = Logger.getLogger("org.jinterop");
 
         /// <summary>
-        /// Sets the COM version which the library would use for communicating with COM servers. 
-        /// Default is 5.2. 
+        /// Sets the COM version which the library would use for communicating with COM servers.
+        /// Default is 5.2.
         /// </summary>
         public static JIComVersion COMVersion {
             set => comVersion = value;
@@ -62,7 +50,7 @@ namespace org.jinterop.dcom.common {
 
 
         /// <summary>
-        /// Sets the locale, this locale will be used to retrieve the resource bundle for Error Messages. 
+        /// Sets the locale, this locale will be used to retrieve the resource bundle for Error Messages.
         /// </summary>
         /// <param name="locale"> default is <code>Locale.getDefault()</code>. </param>
         public static Locale Locale {
@@ -73,7 +61,7 @@ namespace org.jinterop.dcom.common {
 
         /// <summary>
         /// Returns the ResourceBundle associated with current locale.
-        /// 
+        ///
         /// @return
         /// </summary>
         public static ResourceBundle ErrorMessages
@@ -98,7 +86,7 @@ namespace org.jinterop.dcom.common {
 						}
 					}
 				}
-    
+
 				return resourceBundle;
 			}
 		}
@@ -106,7 +94,7 @@ namespace org.jinterop.dcom.common {
 		/// <summary>
 		/// Returns the localized error messages for the error code.
 		/// </summary>
-		/// <param name="code"> error code 
+		/// <param name="code"> error code
 		/// </param>
 		public static string getLocalizedMessage(int code)
 		{
@@ -133,7 +121,7 @@ namespace org.jinterop.dcom.common {
 		}
 
 		/// <summary>
-		/// Queries the property file maintaining the <code>PROGID</code> Vs <code>CLSID</code> mappings 
+		/// Queries the property file maintaining the <code>PROGID</code> Vs <code>CLSID</code> mappings
 		/// and returns the <code>CLSID</code> if found or null otherwise.
 		/// </summary>
 		/// <param name="progId"> user friendly string such as "Excel.Application".
@@ -247,7 +235,7 @@ namespace org.jinterop.dcom.common {
 		//should be called from system shut down only
 		/// <summary>
 		/// Should be called from system shut down only
-		/// 
+		///
 		/// @exclude
 		/// </summary>
 		public static void internal_writeProgIdsToFile()
@@ -293,7 +281,7 @@ namespace org.jinterop.dcom.common {
 		public static object internal_getSocket()
 		{
 			{
-			//synchronized (socketQueue) 
+			//synchronized (socketQueue)
 				return socketQueue.Remove(0);
 			}
 		}
@@ -305,7 +293,7 @@ namespace org.jinterop.dcom.common {
 		public static void internal_setSocket(object socket)
 		{
 			{
-			//synchronized (socketQueue) 
+			//synchronized (socketQueue)
 				socketQueue.Add(socket);
 			}
 		}
@@ -343,11 +331,11 @@ namespace org.jinterop.dcom.common {
 
 		/// <summary>
 		///Indicates to the framework, if Windows Registry settings for DLL\OCX
-		/// component identified by this object should be modified to add a <code>Surrogate</code> 
+		/// component identified by this object should be modified to add a <code>Surrogate</code>
 		/// automatically. A <code>Surrogate</code> is a process which provides resources
 		/// such as memory and cpu for a DLL\OCX to execute.
-		/// <para> This API overrides the instance specific flags set on JIClsid or JIProgID. 
-		/// 
+		/// <para> This API overrides the instance specific flags set on JIClsid or JIProgID.
+		///
 		/// </para>
 		/// </summary>
 		/// <param name="autoRegisteration"> <code>true</code> if auto registration should be done by the framework. </param>
@@ -357,19 +345,19 @@ namespace org.jinterop.dcom.common {
 
         /// <summary>
         ///Returns true is auto registration is enabled.
-        /// 
+        ///
         /// @return
         /// </summary>
         public static bool AutoRegistrationSet { get; private set; } = false;
 
         /// <summary>
-        ///<para>Sometimes the DCOM runtime of Windows will not send a ping on time to the Framework. 
+        ///<para>Sometimes the DCOM runtime of Windows will not send a ping on time to the Framework.
         /// It is not very abnormal, since Windows can sometimes resort to mechanisms other than
         /// DCOM to keep a reference count for the instances they imported. In case of j-Interop
-        /// framework, if a ping is not received in 8 minutes , the Java Local Class is collected for 
+        /// framework, if a ping is not received in 8 minutes , the Java Local Class is collected for
         /// GC. And if the COM server requires a reference to it or acts on a previously obtained reference
-        /// , it is sent back an <i>Exception</i>. Please use this flag to set the Auto Collection status 
-        /// to ON or OFF. By Default, it is ON. </para>  
+        /// , it is sent back an <i>Exception</i>. Please use this flag to set the Auto Collection status
+        /// to ON or OFF. By Default, it is ON. </para>
         /// </summary>
         /// <param name="autoCollection"> <code>false</code> if auto collection should be turned off. </param>
         public static bool JavaCoClassAutoCollection {
@@ -377,13 +365,13 @@ namespace org.jinterop.dcom.common {
         }
 
         /// <summary>
-        /// Status of autoCollection flag.   
+        /// Status of autoCollection flag.
         /// </summary>
         /// <returns> <code>true</code> if autoCollection is enabled, <code>false</code> otherwise. </returns>
         public static bool JavaCoClassAutoCollectionSet { get; private set; } = true;
 
         /// <summary>
-        /// Used to set the in built log handler. 
+        /// Used to set the in built log handler.
         /// </summary>
         /// <param name="useParentHandlers"> true if parent handlers should be used. </param>
         /// <exception cref="IOException"> </exception>
@@ -408,11 +396,11 @@ namespace org.jinterop.dcom.common {
 		/// the host name and ignores the I.P addresses supplied in the interface reference of a COM object. If this hostname
 		/// is not reachable from the machine where library is currently running (such as a Linux machine with no name mappings)
 		/// then the call to this COM server would fail with an <code>UnknownHostException</code>. To avoid that either add the
-		/// binding in the host machine or add the binding here. 
+		/// binding in the host machine or add the binding here.
 		/// <para>
-		/// This method stores the name vs I.P binding in a <code>Map</code>. Providing the same <code>hostname</code> will overwrite 
+		/// This method stores the name vs I.P binding in a <code>Map</code>. Providing the same <code>hostname</code> will overwrite
 		/// the binding specified before.
-		/// 
+		///
 		/// </para>
 		/// </summary>
 		/// <param name="hostname"> name of target machine. </param>
@@ -429,10 +417,10 @@ namespace org.jinterop.dcom.common {
 				{
 					throw new System.ArgumentException();
 				}
-        
+
 				//just check the validity of IP
 				InetAddress.getByName(IP.Trim());
-        
+
 				mapOfHostnamesVsIPs[hostname.Trim().ToUpper()] = IP.Trim();
 			}
 		}

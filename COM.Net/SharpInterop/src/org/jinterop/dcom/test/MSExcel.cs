@@ -36,8 +36,8 @@
 //ORIGINAL LINE: public void startExcel() throws org.jinterop.dcom.common.JIException
 		public virtual void startExcel()
 		{
-			unknown = comServer.createInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			unknown = comServer.CreateInstance();
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 			var typeInfo = dispatch.getTypeInfo(0);
 			typeInfo.getFuncDesc(0);
 		}

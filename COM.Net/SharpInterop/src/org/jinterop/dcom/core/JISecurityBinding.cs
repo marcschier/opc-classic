@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -44,14 +44,15 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Private constructor
         /// </summary>
-        private JISecurityBinding() {}
+        private JISecurityBinding() {
+        }
 
         /// <summary>
         /// Decode
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JISecurityBinding decode(NdrCodec ndr) {
+        internal static JISecurityBinding Decode(NdrCodec ndr) {
             var securityBinding = new JISecurityBinding {
                 _authnSvc = ndr.ReadUnsignedShort()
             };
@@ -70,7 +71,7 @@ namespace org.jinterop.dcom.core {
             while ((retVal = ndr.ReadUnsignedShort()) != 0) {
                 //even though this is a unicode string , but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
-                buffer.Append(StringHelperClass.NewString(new sbyte[] { (sbyte)retVal }));
+                buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
             }
             securityBinding._princName = buffer.ToString();
             // 2 bytes for authnsvc, 2 for authzsvc , each character is 2 bytes (short) and last 2 bytes for null termination
@@ -82,7 +83,7 @@ namespace org.jinterop.dcom.core {
         /// Encode
         /// </summary>
         /// <param name="ndr"></param>
-        public void encode(NdrCodec ndr) {
+        public void Encode(NdrCodec ndr) {
             ndr.WriteUnsignedShort(_authnSvc);
             ndr.WriteUnsignedShort(_authzSvc);
 
@@ -100,6 +101,5 @@ namespace org.jinterop.dcom.core {
         private int _authnSvc; // Cannot be zero.
         private int _authzSvc; // Must not be zero.
         private string _princName; // Zero terminated.
-
     }
 }

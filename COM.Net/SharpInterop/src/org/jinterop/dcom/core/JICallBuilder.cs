@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -17,51 +17,34 @@ namespace org.jinterop.dcom.core {
 
     /// <summary>
     /// Class used for setting up information such as <code>[in]</code>,
-    /// <code>[out]</code> parameters and the method number for executing 
-    /// a call to the COM server. 
+    /// <code>[out]</code> parameters and the method number for executing
+    /// a call to the COM server.
     /// Sample Usage :-
     /// <code>
-    ///  JICallBuilder obj = new JICallBuilder(); 
-    ///  obj.reInit(); 
+    ///  JICallBuilder obj = new JICallBuilder();
+    ///  obj.reInit();
     ///  obj.setOpnum(0); //0 based index, can be obtained from the IDL or the Type Library of COM server.
-    /// 
-    ///  obj.addInParamAsString(new JIString("j-Interop Rocks !"), JIFlags.FLAG_NULL); 
-    ///  obj.addInParamAsInt(100, JIFlags.FLAG_NULL); 
-    ///  //handle is previously obtained <seealso cref="IJIComObject"/> 
-    ///  Object[] result = comObject.call(obj); 
+    ///
+    ///  obj.addInParamAsString(new JIString("j-Interop Rocks !"), JIFlags.FLAG_NULL);
+    ///  obj.addInParamAsInt(100, JIFlags.FLAG_NULL);
+    ///  //handle is previously obtained <seealso cref="IJIComObject"/>
+    ///  Object[] result = comObject.call(obj);
     /// </code>
-    /// [out] parameters can be added in a similar way. 
+    /// [out] parameters can be added in a similar way.
     /// <code>
-    ///  obj.addOutParamAsType(JIVariant.class,JIFlags.FLAG_NULL); 
-    ///  obj.addOutParamAsObject(new JIPointer(Short.class,true),JIFlags.FLAG_NULL); 
+    ///  obj.addOutParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
+    ///  obj.addOutParamAsObject(new JIPointer(Short.class,true),JIFlags.FLAG_NULL);
     /// </code>
     /// </summary>
     [Serializable]
     public class JICallBuilder : NdrOp {
 
-        internal const string CURRENTSESSION = "CURRENTSESSION";
-        internal const string COMOBJECTS = "COMOBJECTS";
-
-        private int _opnum = -1;
-        private object[] _outparams;
-        private readonly bool _dispatchNotSupported;
-        private string _enclosingParentsIPID;
-        private ArrayList _inparamFlags = new ArrayList();
-        private ArrayList _outparamFlags = new ArrayList();
-        private ArrayList _inParams = new ArrayList();
-        private ArrayList _outParams = new ArrayList();
-        private int _hresult;
-        private bool _executed;
-        private object[] _resultsOfException;
-        private JISession _session;
-        internal bool _fromDestroySession;
-
         /// <summary>
         /// Constructs a builder object.
         /// </summary>
-        /// <param name="dispatchNotSupported"> <code>true</code> if <code>IDispatch</code> is 
+        /// <param name="dispatchNotSupported"> <code>true</code> if <code>IDispatch</code> is
         /// not supported by the <code>IJIComObject</code> on which this builder would
-        /// act. Use <seealso cref="IJIComObject.DispatchSupported"/> to find out if 
+        /// act. Use <seealso cref="IJIComObject.DispatchSupported"/> to find out if
         /// dispatch is supported on the COM Object. </param>
         public JICallBuilder(bool dispatchNotSupported) : this() {
             _dispatchNotSupported = dispatchNotSupported;
@@ -77,9 +60,9 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Reinitializes all members of this object. It is ready to be used again on a 
-        /// fresh <code><seealso cref="IJIComObject.call(JICallBuilder)"/></code> after this step. 
-        /// 
+        /// Reinitializes all members of this object. It is ready to be used again on a
+        /// fresh <code><seealso cref="IJIComObject.Call(JICallBuilder)"/></code> after this step.
+        ///
         /// </summary>
         //after reinit, except parent, nothing is available.
         public virtual void reInit() {
@@ -99,17 +82,7 @@ namespace org.jinterop.dcom.core {
         }
 
 
-        //	/**Add IN parameter as <code>JIInterfacePointer</code> at the end of the Parameter list.
-        //	 * 
-        //	 * @param value
-        //	 * @param flags from JIFlags (if need be)
-        //	 */
-        //	public void addInParamAsInterfacePointer(JIInterfacePointer interfacePointer, int flags)
-        //	{
-        //		insertInParamAsInterfacePointerAt(inParams.size(),interfacePointer,flags);
-        //	}
-
-        /// <summary>
+         /// <summary>
         /// Add <code>[in]</code> parameter as <code>IJIComObject</code> at the end of the Parameter list.
         /// </summary>
         /// <param name="comObject"> </param>
@@ -453,8 +426,8 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Add <code>[out]</code> parameter at the end of the out parameter list. Typically callers are  
-        /// composite in nature JIStruct, JIUnions, JIPointer and JIString . 
+        /// Add <code>[out]</code> parameter at the end of the out parameter list. Typically callers are
+        /// composite in nature JIStruct, JIUnions, JIPointer and JIString .
         /// </summary>
         /// <param name="outparam"> </param>
         /// <param name="flags"> </param>
@@ -463,7 +436,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// insert an <code>[out]</code> parameter at the specified index in the out parameter list. 
+        /// insert an <code>[out]</code> parameter at the specified index in the out parameter list.
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <param name="classOrInstance"> can be either a Class or an Object </param>
@@ -494,7 +467,7 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// Add <code>[out]</code> parameter as <code>Object[]</code> at the end of the Parameter list.
-        /// The array is iterated and all members appended to the list. 
+        /// The array is iterated and all members appended to the list.
         /// </summary>
         /// <param name="values"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
@@ -507,7 +480,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the results as an <code>Object[]</code>. 
+        /// Returns the results as an <code>Object[]</code>.
         /// This array has to be iterated over to get the individual values.
         /// only valid before the interpretation of read, after that has actual values
         /// </summary>
@@ -519,7 +492,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>int</code> at the index from the result list. 
+        /// Returns the value as <code>int</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual int getResultAsIntAt(int index) {
@@ -528,7 +501,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>float</code> at the index from the result list. 
+        /// Returns the value as <code>float</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual float getResultAsFloatAt(int index) {
@@ -537,7 +510,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>bool</code> at the index from the result list. 
+        /// Returns the value as <code>bool</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual bool getResultAsBooleanAt(int index) {
@@ -546,7 +519,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>short</code> at the index from the result list. 
+        /// Returns the value as <code>short</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual short getResultAsShortAt(int index) {
@@ -555,7 +528,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>double</code> at the index from the result list. 
+        /// Returns the value as <code>double</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual double getResultAsDoubleAt(int index) {
@@ -564,7 +537,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>char</code> at the index from the result list. 
+        /// Returns the value as <code>char</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual char getResultAsCharacterAt(int index) {
@@ -573,7 +546,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>JIString</code> at the index from the result list. 
+        /// Returns the value as <code>JIString</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual JIString getResultAsStringAt(int index) {
@@ -582,7 +555,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>JIVariant</code> at the index from the result list. 
+        /// Returns the value as <code>JIVariant</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual JIVariant getResultAsVariantAt(int index) {
@@ -591,7 +564,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>String representation of the UUID</code> at the index from the result list. 
+        /// Returns the value as <code>String representation of the UUID</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual string getResultAsUUIDStrAt(int index) {
@@ -600,7 +573,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>JIPointer</code> at the index from the result list. 
+        /// Returns the value as <code>JIPointer</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual JIPointer getResultAsPointerAt(int index) {
@@ -609,7 +582,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>JIStruct</code> at the index from the result list. 
+        /// Returns the value as <code>JIStruct</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual JIStruct getResultAsStructAt(int index) {
@@ -618,7 +591,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the value as <code>JIArray</code> at the index from the result list. 
+        /// Returns the value as <code>JIArray</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
         public virtual JIArray getResultAsArrayAt(int index) {
@@ -627,7 +600,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the results incase an exception occured. 
+        /// Returns the results incase an exception occured.
         /// </summary>
         public virtual object[] ResultsInCaseOfException {
             get {
@@ -652,12 +625,12 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the entire <code>[in]</code> parameters list. 
+        /// Returns the entire <code>[in]</code> parameters list.
         /// </summary>
         public virtual object[] InParams => _inParams.ToArray();
 
         /// <summary>
-        /// Returns the entire <code>[out]</code> parameters list. 
+        /// Returns the entire <code>[out]</code> parameters list.
         /// </summary>
         public virtual object[] OutParams => _outParams.ToArray();
 
@@ -672,7 +645,7 @@ namespace org.jinterop.dcom.core {
         public virtual int?[] OutparamFlags => (int?[])_outparamFlags.ToArray(typeof(int?));
 
         /// <summary>
-        /// Returns the opnum of the API which will be invoked at the <code>COM</code> server. 
+        /// Returns the opnum of the API which will be invoked at the <code>COM</code> server.
         /// </summary>
         public override int Opnum {
             get =>
@@ -693,8 +666,8 @@ namespace org.jinterop.dcom.core {
         internal virtual void write2(NdrCodec ndr) {
             //reset buffer size here...
             //calculate rough length required length + 16 for the last bytes
-            //plus adding 30 more for the verifier etc. 
-            ndr.Buffer.buf = new byte[bufferLength() + 16 + 30];
+            //plus adding 30 more for the verifier etc.
+            ndr.Buffer.Buf = new byte[bufferLength() + 16 + 30];
             JIOrpcThat.encode(ndr);
             writePacket(ndr);
         }
@@ -706,8 +679,8 @@ namespace org.jinterop.dcom.core {
 
             //reset buffer size here...
             //calculate rough length required length + 16 for the last bytes
-            //plus adding 30 more for the verifier etc. 
-            ndr.Buffer.buf = new byte[bufferLength() + 16];
+            //plus adding 30 more for the verifier etc.
+            ndr.Buffer.Buf = new byte[bufferLength() + 16];
 
             var orpcthis = new JIOrpcThis();
             orpcthis.encode(ndr);
@@ -751,20 +724,20 @@ namespace org.jinterop.dcom.core {
                     var x = 0;
 
                     while (x < listOfDefferedPointers.Count) {
-                        //					thought of this today morning...change the logic here...the defeered pointers need to be 
+                        //					thought of this today morning...change the logic here...the defeered pointers need to be
                         //					completely serialized here. If they are also having nested deffered pointers then  those pointers
                         //					should be "inserted" just after the current pointer itself.
                         //					change the logic below to send out a new list and insert that list after the current x.
                         //					consider the case when there is a Struct having a nested pointer to another struct and this struct
                         //					itself having a pointer.
-                        //					
+                        //
                         //					Inparams order:- for 2 params.
-                        //					int f,Struct{int i;			 
+                        //					int f,Struct{int i;
                         //								 Struct *ptr;
                         //								 Struct *ptr2;
                         //								 int j;
                         //								}
-                        //					
+                        //
                         //					while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
                         //					the deffered pointers , we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
                         //					in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
@@ -799,7 +772,7 @@ namespace org.jinterop.dcom.core {
             //				// TODO Auto-generated catch block
             //				e.printStackTrace();
             //			}
-            //			
+            //
             //			NdrBuffer ndrBuffer = new NdrBuffer(buffer,0);
             //			ndr.setBuffer(ndrBuffer);
             //			NetworkDataRepresentation ndr2 = new NetworkDataRepresentation();
@@ -824,8 +797,8 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// called by only COMRuntime and NO ONE ELSE.
-        /// 
-        /// @exclude 
+        ///
+        /// @exclude
         /// </summary>
         /// <param name="ndr"> </param>
         internal virtual void read2(NdrCodec ndr) {
@@ -869,7 +842,7 @@ namespace org.jinterop.dcom.core {
 
                         var newList = new ArrayList();
                         var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, (int)(int?)_outparamFlags[index], additionalData);
-                        ((JIPointer)listOfDefferedPointers[x]).replaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                        ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                         x++;
                         listOfDefferedPointers.AddRange(x, newList);
                     }
@@ -877,7 +850,7 @@ namespace org.jinterop.dcom.core {
                 }
 
 
-                //now create the right COM Objects, it is required here only and no place else. 
+                //now create the right COM Objects, it is required here only and no place else.
                 for (var i = 0; i < comObjects.Count; i++) {
                     var comObjectImpl = (JIComObjectImpl)comObjects[i];
                     try {
@@ -888,23 +861,23 @@ namespace org.jinterop.dcom.core {
                             newsession.GlobalSocketTimeout = _session.GlobalSocketTimeout;
                             newsession.useSessionSecurity(_session.SessionSecurityEnabled);
                             newsession.useNTLMv2(_session.NTLMv2Enabled);
-                            var comServer = new JIComServer(newsession, comObjectImpl.internal_getInterfacePointer(), null);
+                            var comServer = new JIComServer(newsession, comObjectImpl.Internal_getInterfacePointer(), null);
                             comObject = comServer.Instance;
-                            JIFrameworkHelper.link2Sessions(_session, newsession);
+                            JIFrameworkHelper.Link2Sessions(_session, newsession);
                         }
                         else {
-                            if (comObjectImpl.internal_getInterfacePointer().CustomObjRef) {
+                            if (comObjectImpl.Internal_getInterfacePointer().CustomObjRef) {
                                 continue;
                             }
-                            comObject = JIFrameworkHelper.instantiateComObject2(_session, comObjectImpl.internal_getInterfacePointer());
+                            comObject = JIFrameworkHelper.InstantiateComObject2(_session, comObjectImpl.Internal_getInterfacePointer());
                         }
 
-                        comObjectImpl.replaceMembers(comObject);
-                        JIFrameworkHelper.addComObjectToSession(comObjectImpl.AssociatedSession, comObjectImpl);
+                        comObjectImpl.ReplaceMembers(comObject);
+                        JIFrameworkHelper.AddComObjectToSession(comObjectImpl.AssociatedSession, comObjectImpl);
                         //Why did I put this here. We should do an addRef regardless of whether we give a pointer to COM or it gives us one.
                         //					if (!fromCallback)
                         {
-                            comObjectImpl.addRef();
+                            comObjectImpl.AddRef();
                         }
 
                     }
@@ -942,7 +915,7 @@ namespace org.jinterop.dcom.core {
                     length = length + 4;
                     continue;
                 }
-                var length2 = JIMarshalUnMarshalHelper.getLengthInBytes(inparams[i].GetType(), inparams[i], JIFlags.FLAG_NULL);
+                var length2 = JIMarshalUnMarshalHelper.GetLengthInBytes(inparams[i].GetType(), inparams[i], JIFlags.FLAG_NULL);
                 length = length + length2;
             }
 
@@ -950,9 +923,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        ///Returns true incase the Call resulted in an exception, use getHRESULT to get the error code.
-        /// 
-        /// @return
+        /// Returns true incase the Call resulted in an exception, use getHRESULT to get the error code.
         /// </summary>
         public virtual bool Error {
             get {
@@ -961,7 +932,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal virtual void attachSession(JISession session) {
+        internal virtual void AttachSession(JISession session) {
             _session = session;
         }
 
@@ -981,6 +952,22 @@ namespace org.jinterop.dcom.core {
         internal virtual JIComVersion internal_getComVersion() {
             return serverAlive2;
         }
-    }
 
+        internal const string CURRENTSESSION = "CURRENTSESSION";
+        internal const string COMOBJECTS = "COMOBJECTS";
+
+        private int _opnum = -1;
+        private object[] _outparams;
+        private readonly bool _dispatchNotSupported;
+        private string _enclosingParentsIPID;
+        private ArrayList _inparamFlags = new ArrayList();
+        private ArrayList _outparamFlags = new ArrayList();
+        private ArrayList _inParams = new ArrayList();
+        private ArrayList _outParams = new ArrayList();
+        private int _hresult;
+        private bool _executed;
+        private object[] _resultsOfException;
+        private JISession _session;
+        internal bool _fromDestroySession;
+    }
 }

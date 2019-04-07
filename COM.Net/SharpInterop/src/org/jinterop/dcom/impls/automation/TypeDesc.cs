@@ -47,8 +47,8 @@ namespace org.jinterop.dcom.impls.automation {
 				return;
 			}
 
-			vt = (short)(short?)values.getMember(1);
-			var union = (JIUnion)values.getMember(0);
+			vt = (short)(short?)values.GetMember(1);
+			var union = (JIUnion)values.GetMember(0);
 
 			if (vt.Equals(VT_PTR) || vt.Equals(VT_SAFEARRAY))
 			{

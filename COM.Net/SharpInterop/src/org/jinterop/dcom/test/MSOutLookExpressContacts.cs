@@ -30,22 +30,22 @@
 //ORIGINAL LINE: void doStuff() throws org.jinterop.dcom.common.JIException
 		internal virtual void doStuff()
 		{
-			var unknown = (IJIComObject)comServer.createInstance();
-			var application = (IJIComObject)unknown.queryInterface("00063001-0000-0000-C000-000000000046");
+			var unknown = (IJIComObject)comServer.CreateInstance();
+			var application = (IJIComObject)unknown.QueryInterface("00063001-0000-0000-C000-000000000046");
 
             var callObject = new JICallBuilder(!application.DispatchSupported) {
                 Opnum = 12
             };
             callObject.addInParamAsString("MAPI", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var res = application.call(callObject);
+			var res = application.Call(callObject);
 
 			var @namespace = JIObjectFactory.narrowObject((IJIComObject)res[0]);
             callObject = new JICallBuilder {
                 Opnum = 16
             };
             callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			res = @namespace.call(callObject);
+			res = @namespace.Call(callObject);
 
 			if (res[0] == null)
 			{
@@ -58,7 +58,7 @@
                 Opnum = 4
             };
             callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			res = folder.call(callObject);
+			res = folder.Call(callObject);
 
 			if ((int)(int?)res[0] != 2)
 			{
@@ -69,7 +69,7 @@
 			callObject.reInit();
 			callObject.Opnum = 10;
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			res = folder.call(callObject);
+			res = folder.Call(callObject);
 			if (res[0] == null)
 			{
 				Console.WriteLine("Unable to get Contact Items.");
@@ -81,7 +81,7 @@
                 Opnum = 12
             };
             callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			res = items.call(callObject);
+			res = items.Call(callObject);
 
 			while (true)
 			{
@@ -112,7 +112,7 @@
                     Opnum = 14
                 };
                 callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-				res = items.call(callObject);
+				res = items.Call(callObject);
 			}
 
 		}

@@ -34,8 +34,8 @@ namespace org.jinterop.dcom.impls.automation {
 				lLbound = -1;
 				return;
 			}
-			cElements = (int)(int?)values.getMember(0);
-			lLbound = (int)(int?)values.getMember(0);
+			cElements = (int)(int?)values.GetMember(0);
+			lLbound = (int)(int?)values.GetMember(0);
 		}
 	}
 

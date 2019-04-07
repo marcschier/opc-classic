@@ -1,19 +1,20 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
 
     internal sealed class JIRemActivation : NdrOp, JIIServerActivation {
 
@@ -25,7 +26,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Oxid
         /// </summary>
-        public sbyte[] Oxid { get; private set; }
+        public byte[] Oxid { get; private set; }
 
         /// <summary>
         /// Authentication hint
@@ -66,7 +67,7 @@ namespace org.jinterop.dcom.core {
         /// Set file moniker
         /// </summary>
         /// <param name="name"></param>
-        public void setfileMonikerAtServer(string name) {
+        public void SetfileMonikerAtServer(string name) {
             if (name != null && !name.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
                 _monikerName = name;
             }
@@ -84,7 +85,7 @@ namespace org.jinterop.dcom.core {
             var uuid = new UUID();
             uuid.Parse(_clsid.ToString());
             try {
-                uuid.encode(ndr, ndr.buf);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIRemActivation write", e);
@@ -106,7 +107,7 @@ namespace org.jinterop.dcom.core {
             //IID of IUnknown , this is hard coded here, standard way of COM is to first get a handle to the IUnknown
             uuid.Parse("00000000-0000-0000-c000-000000000046");
             try {
-                uuid.encode(ndr, ndr.buf);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIRemActivatio write");
@@ -115,7 +116,7 @@ namespace org.jinterop.dcom.core {
             //checking for IDispatch support
             uuid.Parse("00020400-0000-0000-c000-000000000046");
             try {
-                uuid.encode(ndr, ndr.buf);
+                uuid.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIRemActivation write");
@@ -139,7 +140,7 @@ namespace org.jinterop.dcom.core {
             ORPCThat = JIOrpcThat.decode(ndr);
 
             //now fill the oxid
-            Oxid = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8);
+            Oxid = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
 
             var skipdual = ndr.ReadUnsignedLong();
 
@@ -147,7 +148,7 @@ namespace org.jinterop.dcom.core {
                 ndr.ReadUnsignedLong();
                 //now fill the dual string array for oxid bindings, the call to IRemUnknown will be
                 //directed to this address and the port in that address.
-                DualStringArrayForOxid = JIDualStringArray.decode(ndr);
+                DualStringArrayForOxid = JIDualStringArray.Decode(ndr);
             }
 
             //get the IPID which will be the "Object" in the call to IRemUknown. This is the IPID of the
@@ -181,15 +182,16 @@ namespace org.jinterop.dcom.core {
             //int numRet = ndr.readUnsignedLong();//Number of interface pointers returned. Currently only 2.
 
             var array = new JIArray(typeof(JIInterfacePointer), null, 1, true);
-            var listOfDefferedPointers = new ArrayList();
-            array = (JIArray)JIMarshalUnMarshalHelper.deSerialize(ndr, array, listOfDefferedPointers, JIFlags.FLAG_NULL, new Hashtable());
+            var listOfDefferedPointers = new List<object>();
+            array = (JIArray)JIMarshalUnMarshalHelper.Deserialize(ndr, array,
+                listOfDefferedPointers, JIFlags.FLAG_NULL, new Hashtable());
             var x = 0;
 
             while (x < listOfDefferedPointers.Count) {
 
-                var newList = new ArrayList();
-                var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, null);
-                ((JIPointer)listOfDefferedPointers[x]).replaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                var newList = new List<object>();
+                var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, null);
+                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                 x++;
                 listOfDefferedPointers.AddRange(x, newList);
             }
@@ -203,12 +205,12 @@ namespace org.jinterop.dcom.core {
                 var ptr = arrayObjs[1];
                 _dispIpid = ptr.IPID;
                 _dispOid = ptr.OID;
-                _dispRefs = ((JIStdObjRef)ptr.getObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
+                _dispRefs = ((JIStdObjRef)ptr.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
             }
 
             array = new JIArray(typeof(int?), null, 1, true);
             //ignore the retvals
-            JIMarshalUnMarshalHelper.deSerialize(ndr, array, null, JIFlags.FLAG_NULL, null);
+            JIMarshalUnMarshalHelper.Deserialize(ndr, array, null, JIFlags.FLAG_NULL, null);
 
             ActivationSuccessful = true;
 
@@ -243,6 +245,6 @@ namespace org.jinterop.dcom.core {
         internal bool _isDual;
         internal string _dispIpid;
         internal int _dispRefs = 5;
-        internal sbyte[] _dispOid;
+        internal byte[] _dispOid;
     }
 }

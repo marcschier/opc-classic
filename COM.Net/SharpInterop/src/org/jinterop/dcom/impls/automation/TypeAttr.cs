@@ -175,24 +175,24 @@ namespace org.jinterop.dcom.impls.automation {
 				return;
 			}
 
-			guid = ((rpc.core.UUID)filledStruct.getMember(0)).ToString();
-			lcid = (int)(int?)filledStruct.getMember(1);
-			dwReserved = (int)(int?)filledStruct.getMember(2);
-			memidConstructor = (int)(int?)filledStruct.getMember(3);
-			memidDestructor = (int)(int?)filledStruct.getMember(4);
-			lpstrSchema = (JIPointer)filledStruct.getMember(5);
-			cbSizeInstance = (int)(int?)filledStruct.getMember(6);
-			typekind = (int)(int?)filledStruct.getMember(7);
-			cFuncs = (short)(short?)filledStruct.getMember(8);
-			cVars = (short)(short?)filledStruct.getMember(9);
-			cImplTypes = (short)(short?)filledStruct.getMember(10);
-			cbSizeVft = (short)(short?)filledStruct.getMember(11);
-			cbAlignment = (short)(short?)filledStruct.getMember(12);
-			wTypeFlags = (short)(short?)filledStruct.getMember(13);
-			wMajorVerNum = (short)(short?)filledStruct.getMember(14);
-			wMinorVerNum = (short)(short?)filledStruct.getMember(15);
-			tdescAlias = new TypeDesc((JIStruct)filledStruct.getMember(16));
-			idldescType = new IdlDesc((JIStruct)filledStruct.getMember(17));
+			guid = ((rpc.core.UUID)filledStruct.GetMember(0)).ToString();
+			lcid = (int)(int?)filledStruct.GetMember(1);
+			dwReserved = (int)(int?)filledStruct.GetMember(2);
+			memidConstructor = (int)(int?)filledStruct.GetMember(3);
+			memidDestructor = (int)(int?)filledStruct.GetMember(4);
+			lpstrSchema = (JIPointer)filledStruct.GetMember(5);
+			cbSizeInstance = (int)(int?)filledStruct.GetMember(6);
+			typekind = (int)(int?)filledStruct.GetMember(7);
+			cFuncs = (short)(short?)filledStruct.GetMember(8);
+			cVars = (short)(short?)filledStruct.GetMember(9);
+			cImplTypes = (short)(short?)filledStruct.GetMember(10);
+			cbSizeVft = (short)(short?)filledStruct.GetMember(11);
+			cbAlignment = (short)(short?)filledStruct.GetMember(12);
+			wTypeFlags = (short)(short?)filledStruct.GetMember(13);
+			wMajorVerNum = (short)(short?)filledStruct.GetMember(14);
+			wMinorVerNum = (short)(short?)filledStruct.GetMember(15);
+			tdescAlias = new TypeDesc((JIStruct)filledStruct.GetMember(16));
+			idldescType = new IdlDesc((JIStruct)filledStruct.GetMember(17));
 
 		}
 

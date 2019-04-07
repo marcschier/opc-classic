@@ -44,9 +44,9 @@ namespace org.jinterop.dcom.impls.automation {
                 return;
             }
 
-            typeDesc = new TypeDesc((JIStruct)values.getMember(0));
-            cDims = (short)(short?)values.getMember(1);
-            var arry = (JIArray)values.getMember(2);
+            typeDesc = new TypeDesc((JIStruct)values.GetMember(0));
+            cDims = (short)(short?)values.GetMember(1);
+            var arry = (JIArray)values.GetMember(2);
             var arry2 = (object[])arry.ArrayInstance;
 
             if (arry2 != null) {

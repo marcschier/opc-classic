@@ -118,8 +118,8 @@
 			var @struct = new JIStruct();
 			try
 			{
-				@struct.addMember(typeof(int?)); //Low date time
-				@struct.addMember(typeof(int?)); //High date time
+				@struct.AddMember(typeof(int?)); //Low date time
+				@struct.AddMember(typeof(int?)); //High date time
 				return @struct;
 			}
 			catch (JIException)
@@ -138,24 +138,24 @@
 			var @struct = new JIStruct();
 			try
 			{
-				@struct.addMember(typeof(short?));
-				@struct.addMember(typeof(short?));
-				@struct.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
-				@struct.addMember(fileTimeOutStruct());
-				@struct.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
-				@struct.addMember(typeof(int?));
-				@struct.addMember(typeof(int?));
-				@struct.addMember(typeof(int?));
-				@struct.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
-				@struct.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
-				@struct.addMember(typeof(short?));
-				@struct.addMember(typeof(short?));
-				@struct.addMember(typeof(int?));
-				@struct.addMember(fileTimeOutStruct());
-				@struct.addMember(typeof(int?));
-				@struct.addMember(typeof(int?));
-				@struct.addMember(new JIPointer(new JIArray(typeof(JIVariant),null,1,true)));
-				@struct.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				@struct.AddMember(typeof(short?));
+				@struct.AddMember(typeof(short?));
+				@struct.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				@struct.AddMember(fileTimeOutStruct());
+				@struct.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				@struct.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				@struct.AddMember(typeof(short?));
+				@struct.AddMember(typeof(short?));
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(fileTimeOutStruct());
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(typeof(int?));
+				@struct.AddMember(new JIPointer(new JIArray(typeof(JIVariant),null,1,true)));
+				@struct.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
 				return @struct;
 			}
 			catch (JIException)
@@ -168,15 +168,15 @@
 		{
 			//Define the onEvent method for this interface
 			var oeParams = new JILocalParamsDescriptor();
-			oeParams.addInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-			oeParams.addInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-			oeParams.addInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-			oeParams.addInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-			oeParams.addInParamAsObject(new JIArray(outStruct(),null,1,true), JIFlags.FLAG_NULL);
+			oeParams.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+			oeParams.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+			oeParams.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+			oeParams.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+			oeParams.AddInParamAsObject(new JIArray(outStruct(),null,1,true), JIFlags.FLAG_NULL);
 			var oeMethod = new JILocalMethodDescriptor("onEvent",0,oeParams);
 			//This identify the JIOPCEventSink and not the interface
 			var def = new JILocalInterfaceDefinition(LOCAL_CLASS_IID,false);
-			def.addMethodDescriptor(oeMethod);
+			def.AddMethodDescriptor(oeMethod);
 			var coClass = (instance == null) ? new JILocalCoClass(def,typeof(JIOPCEventSink)) : new JILocalCoClass(def,instance);
 			var list = new ArrayList();
 			//Supported interface

@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.winreg {
@@ -22,11 +22,11 @@ namespace org.jinterop.winreg {
 
     /// <summary>
     /// Perform C-R-U-D on the Windows Registry.
-    /// 
+    ///
     /// <para>This interface uses "Windows Remote Registry" and "Server" services and these must be running on target workstation.
-    /// 
+    ///
     /// @since 1.0
-    /// 
+    ///
     /// </para>
     /// </summary>
     public interface IJIWinReg
@@ -120,7 +120,7 @@ namespace org.jinterop.winreg {
 		/// <exception cref="JIException"> </exception>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public byte[] winreg_QueryValue(JIPolicyHandle handle,int bufferSize) throws org.jinterop.dcom.common.JIException;
-		sbyte[] winreg_QueryValue(JIPolicyHandle handle, int bufferSize);
+		byte[] winreg_QueryValue(JIPolicyHandle handle, int bufferSize);
 
 		/// <summary>
 		/// Query the key-value for it's value.Please put buffer size more than the estimated expected value.
@@ -159,7 +159,7 @@ namespace org.jinterop.winreg {
 		/// <exception cref="JIException"> </exception>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void winreg_SetValue(JIPolicyHandle handle,String valueName,byte[][] data) throws org.jinterop.dcom.common.JIException;
-		void winreg_SetValue(JIPolicyHandle handle, string valueName, sbyte[][] data);
+		void winreg_SetValue(JIPolicyHandle handle, string valueName, byte[][] data);
 
 		/// <summary>
 		///Sets an empty name-value for a REG_NONE type.
@@ -184,7 +184,7 @@ namespace org.jinterop.winreg {
 		/// <exception cref="JIException"> </exception>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void winreg_SetValue(JIPolicyHandle handle,String valueName, byte[] data, bool binary,bool expand_sz) throws org.jinterop.dcom.common.JIException;
-		void winreg_SetValue(JIPolicyHandle handle, string valueName, sbyte[] data, bool binary, bool expand_sz);
+		void winreg_SetValue(JIPolicyHandle handle, string valueName, byte[] data, bool binary, bool expand_sz);
 
 		/// <summary>
 		///Sets name-value for a REG_DWORD type.
@@ -291,7 +291,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_openHKLM : NdrOp
@@ -324,7 +324,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_openHKCU : NdrOp
@@ -357,7 +357,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_openHKU : NdrOp
@@ -390,7 +390,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_openHKCR : NdrOp
@@ -423,7 +423,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_deleteValueOrKey : NdrOp
@@ -523,7 +523,7 @@ namespace org.jinterop.winreg {
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			ndr.WriteUnsignedLong(0);
 		}
@@ -583,7 +583,7 @@ namespace org.jinterop.winreg {
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			//write the class
 			var clazz = "REG_SZ";
@@ -615,7 +615,7 @@ namespace org.jinterop.winreg {
 			index = (double)ndr.Buffer.Index;
 			k = 0;
 			k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			//options
 			ndr.WriteUnsignedLong(options);
@@ -642,7 +642,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_setValue : NdrOp
@@ -651,8 +651,8 @@ namespace org.jinterop.winreg {
 		public string valueName;
 		public int clazzType = -1;
 		public int lengthInBytes = -1;
-		public sbyte[] data; //should be in the right encoding for Strings.
-		public sbyte[][] data2; //reg_
+		public byte[] data; //should be in the right encoding for Strings.
+		public byte[][] data2; //reg_
 		public int dword;
         public virtual int Opnum => 22;
 
@@ -690,7 +690,7 @@ namespace org.jinterop.winreg {
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			//write the type.
 			ndr.WriteUnsignedLong(clazzType);
@@ -719,7 +719,7 @@ namespace org.jinterop.winreg {
 						index = (double)ndr.Buffer.Index;
 						k = 0;
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+						ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 						ndr.WriteUnsignedLong((lengthInBytes + 1) * 2);
 
@@ -730,7 +730,7 @@ namespace org.jinterop.winreg {
 						ndr.WriteUnsignedLong(lengthInBytes);
 					break;
 					case IJIWinReg_Fields.REG_NONE:
-						data = new sbyte[0];
+						data = new byte[0];
 						lengthInBytes = 0;
 						goto case IJIWinReg_Fields.REG_BINARY;
 					case IJIWinReg_Fields.REG_BINARY:
@@ -739,7 +739,7 @@ namespace org.jinterop.winreg {
 						index = (double)ndr.Buffer.Index;
 						k = 0;
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+						ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 						ndr.WriteUnsignedLong(lengthInBytes);
 					break;
 					case IJIWinReg_Fields.REG_MULTI_SZ: //for strings, strings are null terminated, length in bytes will NOT include the null termination
@@ -763,7 +763,7 @@ namespace org.jinterop.winreg {
 						index = (double)ndr.Buffer.Index;
 						k = 0;
 						k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-						ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+						ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 						ndr.WriteUnsignedLong(lengthInBytes);
 
@@ -866,17 +866,17 @@ namespace org.jinterop.winreg {
 			ndr.ReadUnsignedLong();
 
 			var actuallength = ndr.ReadUnsignedLong(); //actuallength
-			var bytes = new sbyte[0];
+			var bytes = new byte[0];
 			if (actuallength != 0)
 			{
-				bytes = new sbyte[actuallength - 1];
+				bytes = new byte[actuallength - 1];
 			}
 			var i = 0;
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
 				var retVal = ndr.ReadUnsignedShort();
-				bytes[i] = (sbyte)retVal;
+				bytes[i] = (byte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
@@ -887,7 +887,7 @@ namespace org.jinterop.winreg {
 			retval[0] = StringHelperClass.NewString(bytes);
 
 			long l = (l = Math.Round(ndr.Buffer.Index % 4.0)) == 0 ? 0 : 4 - l;
-			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
+			ndr.readOctetArray(new byte[(int)l],0,(int)l);
 
 	//			it's a pointer
 			//referent
@@ -907,17 +907,17 @@ namespace org.jinterop.winreg {
 			ndr.ReadUnsignedLong();
 
 			actuallength = ndr.ReadUnsignedLong(); //actuallength
-			bytes = new sbyte[0];
+			bytes = new byte[0];
 			if (actuallength != 0)
 			{
-				bytes = new sbyte[actuallength - 1];
+				bytes = new byte[actuallength - 1];
 			}
 			i = 0;
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
 				var retVal = ndr.ReadUnsignedShort();
-				bytes[i] = (sbyte)retVal;
+				bytes[i] = (byte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
@@ -929,7 +929,7 @@ namespace org.jinterop.winreg {
 
 			l = 0;
 			l = (l = Math.Round(ndr.Buffer.Index % 4.0)) == 0 ? 0 : 4 - l;
-			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
+			ndr.readOctetArray(new byte[(int)l],0,(int)l);
 			//now to read the time
 			ndr.ReadUnsignedLong();
 			ndr.ReadUnsignedLong();
@@ -1007,17 +1007,17 @@ namespace org.jinterop.winreg {
 			ndr.ReadUnsignedLong();
 
 			var actuallength = ndr.ReadUnsignedLong(); //actuallength
-			var bytes = new sbyte[0];
+			var bytes = new byte[0];
 			if (actuallength != 0)
 			{
-				bytes = new sbyte[actuallength - 1];
+				bytes = new byte[actuallength - 1];
 			}
 			var i = 0;
 			//last 2 bytes , null termination will be eaten outside the loop
 			while (i < actuallength - 1)
 			{
 				var retVal = ndr.ReadUnsignedShort();
-				bytes[i] = (sbyte)retVal;
+				bytes[i] = (byte)retVal;
 				i++;
 			}
 			if (actuallength != 0)
@@ -1028,7 +1028,7 @@ namespace org.jinterop.winreg {
 			retval[0] = StringHelperClass.NewString(bytes);
 
 			long l = (l = Math.Round(ndr.Buffer.Index % 4.0)) == 0 ? 0 : 4 - l;
-			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
+			ndr.readOctetArray(new byte[(int)l],0,(int)l);
 
 	//			it's a pointer
 			//referent
@@ -1097,7 +1097,7 @@ namespace org.jinterop.winreg {
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			//reserved
 			ndr.WriteUnsignedLong(0);
@@ -1115,7 +1115,7 @@ namespace org.jinterop.winreg {
 			}
 		}
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 	public class IJIWinReg_queryValue : NdrOp
@@ -1124,8 +1124,8 @@ namespace org.jinterop.winreg {
 		public string key = "";
 		public int bufferLength = -1;
 		public int type = -1;
-		public sbyte[] buffer;
-		public sbyte[][] buffer2 = new sbyte[2048][];
+		public byte[] buffer;
+		public byte[][] buffer2 = new byte[2048][];
         public virtual int Opnum => 17;
 
         public virtual void write(NdrCodec ndr)
@@ -1162,7 +1162,7 @@ namespace org.jinterop.winreg {
 			//now align for int
 			var index = (double)ndr.Buffer.Index;
 			long k = (k = Math.Round(index % 4.0)) == 0 ? 0 : 4 - k;
-			ndr.writeOctetArray(new sbyte[(int)k],0,(int)k);
+			ndr.writeOctetArray(new byte[(int)k],0,(int)k);
 
 			//pointer to type
 			ndr.WriteUnsignedLong(new object().GetHashCode());
@@ -1190,7 +1190,7 @@ namespace org.jinterop.winreg {
 			//pointer
 			ndr.ReadUnsignedLong();
 			type = ndr.ReadUnsignedLong(); //type
-			var retval = new sbyte[bufferLength];
+			var retval = new byte[bufferLength];
 			//StringBuffer buffer = new StringBuffer();
 			//pointer to data
 			ndr.ReadUnsignedLong();
@@ -1210,7 +1210,7 @@ namespace org.jinterop.winreg {
 						//even though this is a unicode string , but will not have anything else
 						//other than ascii charset, which is supported by all encodings.
 						//buffer.append(new String(new byte[]{(byte)retVal}));
-						retval[i] = (sbyte)retVal;
+						retval[i] = (byte)retVal;
 						i++;
 					}
 					if (actuallength != 0)
@@ -1241,15 +1241,15 @@ namespace org.jinterop.winreg {
 						if (retVal == 0)
 						{
 							//reached end of one string
-							buffer2[kk] = new sbyte[ll];
+							buffer2[kk] = new byte[ll];
 							Array.Copy(retval,0,buffer2[kk],0,ll);
 							kk++;
 							ll = -1; //it will become 0 next
-							retval = new sbyte[bufferLength];
+							retval = new byte[bufferLength];
 						}
 						else
 						{
-							retval[ll] = (sbyte)retVal;
+							retval[ll] = (byte)retVal;
 						}
 						i++;
 						ll++;
@@ -1267,7 +1267,7 @@ namespace org.jinterop.winreg {
 			}
 
 			long l = (l = Math.Round(ndr.Buffer.Index % 4.0)) == 0 ? 0 : 4 - l;
-			ndr.readOctetArray(new sbyte[(int)l],0,(int)l);
+			ndr.readOctetArray(new byte[(int)l],0,(int)l);
 
 			//pointer to size
 			ndr.ReadUnsignedLong();
@@ -1284,13 +1284,13 @@ namespace org.jinterop.winreg {
 			}
 
             if (type != IJIWinReg_Fields.REG_MULTI_SZ) {
-                buffer = new sbyte[i];
+                buffer = new byte[i];
                 Array.Copy(retval, 0, buffer, 0, i);
             }
             //key = buffer.toString();
         }
 
-		public sbyte[] policyhandle = new sbyte[20];
+		public byte[] policyhandle = new byte[20];
 	}
 
 }

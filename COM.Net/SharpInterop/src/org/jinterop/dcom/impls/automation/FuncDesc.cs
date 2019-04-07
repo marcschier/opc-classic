@@ -132,9 +132,9 @@ namespace org.jinterop.dcom.impls.automation {
 				return;
 			}
 			values = filledStruct;
-			memberId = (int)(int?)values.getMember(0);
-			lprgscode = (JIPointer)values.getMember(1);
-			var ptr = (JIPointer)values.getMember(2);
+			memberId = (int)(int?)values.GetMember(0);
+			lprgscode = (JIPointer)values.GetMember(1);
+			var ptr = (JIPointer)values.GetMember(2);
 			JIArray arrayOfElemDesc = null;
 			if (!ptr.Null)
 			{
@@ -151,15 +151,15 @@ namespace org.jinterop.dcom.impls.automation {
 			}
 
 			lprgelemdescParam = new JIPointer(arrayOfElemDesc);
-			funcKind = (int)(int?)values.getMember(3);
-			invokeKind = (int)(int?)values.getMember(4);
-			callConv = (int)(int?)values.getMember(5);
-			cParams = (short)(short?)values.getMember(6);
-			cParamsOpt = (short)(short?)values.getMember(7);
-			oVft = (short)(short?)values.getMember(8);
-			cScodes = (short)(short?)values.getMember(9);
-			elemdescFunc = new ElemDesc((JIStruct)values.getMember(10));
-			wFuncFlags = (short)(short?)values.getMember(11);
+			funcKind = (int)(int?)values.GetMember(3);
+			invokeKind = (int)(int?)values.GetMember(4);
+			callConv = (int)(int?)values.GetMember(5);
+			cParams = (short)(short?)values.GetMember(6);
+			cParamsOpt = (short)(short?)values.GetMember(7);
+			oVft = (short)(short?)values.GetMember(8);
+			cScodes = (short)(short?)values.GetMember(9);
+			elemdescFunc = new ElemDesc((JIStruct)values.GetMember(10));
+			wFuncFlags = (short)(short?)values.GetMember(11);
 		}
 
 	}

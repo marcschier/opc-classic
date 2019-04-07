@@ -1,69 +1,41 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
-using System;
+//
 
 namespace org.jinterop.dcom.core {
-
+    using System;
 
     /// <summary>
     /// Describe a method of the COM <code>IDL</code> to be used in Callback implementations.
     /// Framework uses java reflection to invoke methods requested by COM clients so it is
     /// absolutely essential that java methods in the implementation class conform exactly to
     /// what is described in this object.
-    /// <para>
     /// <i>Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
     /// and MSShell examples for more details on how to use this class.</i>
-    /// 
-    /// @since 2.0 (formerly JIMethodDescriptor)
-    /// </para>
     /// </summary>
-    public sealed class JILocalMethodDescriptor
-	{
-        private JILocalParamsDescriptor parameters;
+    public sealed class JILocalMethodDescriptor {
 
-		/// <summary>
-		///Creates the method descriptor. The method number is set by the order in which this instance is
-		/// added to the <code>JILocalInterfaceDefinition</code>. This number is incremented by 1 for each subsequent
-		/// and new addition into interface definition.
-		/// </summary>
-		/// <param name="methodName"> name of the method. </param>
-		/// <param name="parameters"> pass <code>null</code> if the method has no parameters. </param>
-		public JILocalMethodDescriptor(string methodName, JILocalParamsDescriptor parameters)
-		{
-			MethodName = methodName;
-			ParameterObject = parameters;
-		}
-
-		/// <summary>
-		/// Creates the method descriptor.
-		/// </summary>
-		/// <param name="methodName"> name of the method. </param>
-		/// <param name="dispId"> <code>DISPID</code> of this method as in the <code>IDL</code> or the TypeLibrary. </param>
-		/// <param name="parameters"> pass <code>null</code> if the method has no parameters. </param>
-		public JILocalMethodDescriptor(string methodName, int dispId, JILocalParamsDescriptor parameters)
-		{
-			MethodName = methodName;
-			MethodDispID = dispId;
-			ParameterObject = parameters;
-		}
-
+        /// <summary>
+        /// Method number
+        /// </summary>
         internal int MethodNum { set; get; } = -1;
 
-        private JILocalParamsDescriptor ParameterObject {
+        /// <summary>
+        /// Param object
+        /// </summary>
+        internal JILocalParamsDescriptor ParameterObject {
             set {
 
                 if (value == null) {
                     return;
                 }
 
-                parameters = value;
+                _parameters = value;
                 var @params = value.InParams;
                 InparametersAsClass = new Type[@params.Length];
 
@@ -98,7 +70,7 @@ namespace org.jinterop.dcom.core {
                             else if (c.Equals(typeof(double?))) {
                                 c = typeof(double);
                             }
-                            else if (c.Equals(typeof(Void))) {
+                            else if (c.Equals(typeof(void))) {
                                 c = typeof(void);
                             }
                         }
@@ -110,29 +82,48 @@ namespace org.jinterop.dcom.core {
                 }
 
             }
-            get => parameters;
+            get => _parameters;
         }
 
         /// <summary>
-        ///Returns the method name.
-        /// 
-        /// @return
+        /// Returns the method name.
         /// </summary>
         public string MethodName { get; } = null;
 
-
         /// <summary>
-        ///Gets the <code>DISPID</code> of this method.
-        /// 
-        /// @return
+        /// Gets the <code>DISPID</code> of this method.
         /// </summary>
         public int MethodDispID { get; } = -1;
 
-
         /// <summary>
-        /// @exclude
-        /// @return
+        /// In params
         /// </summary>
         internal Type[] InparametersAsClass { get; private set; } = new Type[0];
+
+        /// <summary>
+        ///Creates the method descriptor. The method number is set by the order in which this instance is
+        /// added to the <code>JILocalInterfaceDefinition</code>. This number is incremented by 1 for each subsequent
+        /// and new addition into interface definition.
+        /// </summary>
+        /// <param name="methodName"> name of the method. </param>
+        /// <param name="parameters"> pass <code>null</code> if the method has no parameters. </param>
+        public JILocalMethodDescriptor(string methodName, JILocalParamsDescriptor parameters) {
+            MethodName = methodName;
+            ParameterObject = parameters;
+        }
+
+        /// <summary>
+        /// Creates the method descriptor.
+        /// </summary>
+        /// <param name="methodName"> name of the method. </param>
+        /// <param name="dispId"> <code>DISPID</code> of this method as in the <code>IDL</code> or the TypeLibrary. </param>
+        /// <param name="parameters"> pass <code>null</code> if the method has no parameters. </param>
+        public JILocalMethodDescriptor(string methodName, int dispId, JILocalParamsDescriptor parameters) {
+            MethodName = methodName;
+            MethodDispID = dispId;
+            ParameterObject = parameters;
+        }
+
+        private JILocalParamsDescriptor _parameters;
     }
 }

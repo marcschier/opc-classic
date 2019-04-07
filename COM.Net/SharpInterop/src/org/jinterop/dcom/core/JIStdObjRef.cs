@@ -1,17 +1,15 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
-    using org.jinterop.dcom.common;
-    using org.jinterop.winreg;
     using System;
     using Serilog;
 
@@ -31,12 +29,12 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Oxid
         /// </summary>
-        public sbyte[] Oxid { get; private set; }
+        public byte[] Oxid { get; private set; }
 
         /// <summary>
         /// Object id
         /// </summary>
-        public sbyte[] ObjectId { get; private set; }
+        public byte[] ObjectId { get; private set; }
 
         /// <summary>
         /// Ip id
@@ -63,15 +61,15 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// This is used to instantiate an empty StdObjRef for 
+        /// This is used to instantiate an empty StdObjRef for
         /// cases where the interface is not supported.
         /// </summary>
         /// <param name="ipid"></param>
         internal JIStdObjRef(string ipid) {
             Ipid = ipid;
             Flags = 0x0;
-            Oxid = new sbyte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-            ObjectId = new sbyte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+            Oxid = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+            ObjectId = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
             PublicRefs = 0;
         }
 
@@ -80,12 +78,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <returns></returns>
-        internal static JIStdObjRef decode(NdrCodec ndr) {
+        internal static JIStdObjRef Decode(NdrCodec ndr) {
             var objRef = new JIStdObjRef {
                 Flags = ndr.ReadUnsignedLong(),
                 PublicRefs = ndr.ReadUnsignedLong(),
-                Oxid = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8),
-                ObjectId = JIMarshalUnMarshalHelper.readOctetArrayLE(ndr, 8)
+                Oxid = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8),
+                ObjectId = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8)
             };
             try {
                 var ipid2 = new UUID();
@@ -98,11 +96,15 @@ namespace org.jinterop.dcom.core {
             return objRef;
         }
 
-        public void encode(NdrCodec ndr) {
+        /// <summary>
+        /// Encode
+        /// </summary>
+        /// <param name="ndr"></param>
+        public void Encode(NdrCodec ndr) {
             ndr.WriteUnsignedLong(Flags);
             ndr.WriteUnsignedLong(PublicRefs);
-            JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, Oxid);
-            JIMarshalUnMarshalHelper.writeOctetArrayLE(ndr, ObjectId);
+            JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, Oxid);
+            JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, ObjectId);
             try {
                 var ipid = new UUID(Ipid);
                 ipid.Encode(ndr, ndr.Buffer);
@@ -113,6 +115,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString() {
             var retVal = "IPID: " + Ipid; //+ " , OID: " + oidString;
             return retVal;

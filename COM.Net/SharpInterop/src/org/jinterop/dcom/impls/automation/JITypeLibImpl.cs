@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.impls.automation {
 			//this.comObject = comObject;
 		}
 
-        public IJIComObject COMObject => comObject;
+        public IJIComObject COMObject => ComObject;
 
         //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
         //ORIGINAL LINE: public int getTypeInfoCount() throws org.jinterop.dcom.common.JIException
@@ -49,7 +49,7 @@ namespace org.jinterop.dcom.impls.automation {
                     Opnum = 0
                 };
                 callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-				var result = comObject.call(callObject);
+				var result = ComObject.Call(callObject);
 				return (int)(int?)result[0];
 			}
 		}
@@ -63,7 +63,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 
@@ -76,7 +76,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (int)(int?)result[0];
 		}
 
@@ -89,7 +89,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsUUID(uuid,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 
@@ -102,16 +102,16 @@ namespace org.jinterop.dcom.impls.automation {
             };
 
             var tlibattr = new JIStruct();
-			tlibattr.addMember(typeof(UUID));
-			tlibattr.addMember(typeof(int?));
-			tlibattr.addMember(typeof(int?));
-			tlibattr.addMember(typeof(short?));
-			tlibattr.addMember(typeof(short?));
-			tlibattr.addMember(typeof(short?));
+			tlibattr.AddMember(typeof(UUID));
+			tlibattr.AddMember(typeof(int?));
+			tlibattr.AddMember(typeof(int?));
+			tlibattr.AddMember(typeof(short?));
+			tlibattr.AddMember(typeof(short?));
+			tlibattr.AddMember(typeof(short?));
 
 			callObject.addOutParamAsObject(new JIPointer(tlibattr),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL); //CLEANUPSTORAGE
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			var i = 0;
 		}
 
@@ -128,7 +128,7 @@ namespace org.jinterop.dcom.impls.automation {
 			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			callObject.Opnum = 6;
-			return comObject.call(callObject);
+			return ComObject.Call(callObject);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -147,7 +147,7 @@ namespace org.jinterop.dcom.impls.automation {
 			callObject.addOutParamAsType(typeof(short?),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 
-			return comObject.call(callObject);
+			return ComObject.Call(callObject);
 		}
 	}
 

@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc.core {
     using Serilog;
@@ -38,7 +38,7 @@ namespace rpc.core {
         /// <summary>
         /// Create default context
         /// </summary>
-        public PresentationContext() : 
+        public PresentationContext() :
             this(0, new PresentationSyntax(), new PresentationSyntax[] {
                 new PresentationSyntax(NdrCodec.NDR_SYNTAX)
             }) {
@@ -49,7 +49,7 @@ namespace rpc.core {
         /// </summary>
         /// <param name="contextId"></param>
         /// <param name="abstractSyntax"></param>
-        public PresentationContext(int contextId, PresentationSyntax abstractSyntax) : 
+        public PresentationContext(int contextId, PresentationSyntax abstractSyntax) :
             this(contextId, abstractSyntax, new PresentationSyntax[] {
                 new PresentationSyntax(NdrCodec.NDR_SYNTAX)
             }) {

@@ -41,8 +41,8 @@ namespace org.jinterop.dcom.impls.automation {
 				wIDLFlags = -1;
 				return;
 			}
-			dwReserved = (JIPointer)values.getMember(0);
-			wIDLFlags = (short)(short?)values.getMember(1);
+			dwReserved = (JIPointer)values.GetMember(0);
+			wIDLFlags = (short)(short?)values.GetMember(1);
 		}
 
 	}

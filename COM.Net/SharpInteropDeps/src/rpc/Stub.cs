@@ -1,17 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
-
+//
 
 namespace rpc {
     using SharpCifs.Dcerpc.Ndr;
@@ -103,7 +101,7 @@ namespace rpc {
         /// <param name="semantics"></param>
         /// <param name="ndrobj"></param>
         /// <exception cref="IOException"></exception>
-        public virtual void Call(int semantics, NdrOp ndrobj) {
+        public virtual void Call(Semantics semantics, NdrOp ndrobj) {
             Attach();
             var obj = Object;
             var uuid = (obj == null) ? null : new UUID(obj);
@@ -113,7 +111,7 @@ namespace rpc {
         /// <summary>
         /// Syntax
         /// </summary>
-        protected internal abstract string Syntax { get; }
+        protected abstract string Syntax { get; }
 
         private string _address;
     }

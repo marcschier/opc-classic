@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
 
@@ -89,13 +89,13 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Flag representing <code>VARIANT_BOOL</code>, a <code>bool</code> is
         /// 2 bytes for a <code>VARIANT</code> and 1 byte for normal calls.
-        /// Use this when setting array of <code>bool</code>s 
+        /// Use this when setting array of <code>bool</code>s
         /// within <code>VARIANT</code>s.
         /// </summary>
         public const int FLAG_REPRESENTATION_VARIANT_BOOL = 8192;
 
         /// <summary>
-        /// Represents an internal flag, which will disallow direct Strings 
+        /// Represents an internal flag, which will disallow direct Strings
         /// from being marshalled or unmarshalled. Come via JIString only.
         /// </summary>
         internal const int FLAG_REPRESENTATION_VALID_STRING = 16384;
@@ -106,15 +106,15 @@ namespace org.jinterop.dcom.core {
         internal const int FLAG_REPRESENTATION_INTERFACEPTR_DECODE2 = 32768;
 
         /// <summary>
-        /// Used in JIVariant when sending a IUnknown Pointer. 
+        /// Used in JIVariant when sending a IUnknown Pointer.
         /// This is also how COM runtime does it.
-        /// A little strange to expect this behaviour since essentially all 
+        /// A little strange to expect this behaviour since essentially all
         /// objects derieve from IUnknown so why replace the IID ?
         /// </summary>
         internal const int FLAG_REPRESENTATION_USE_IUNKNOWN_IID = 65536;
 
         /// <summary>
-        /// Used in JIVariant when sending a IDispatch Pointer. 
+        /// Used in JIVariant when sending a IDispatch Pointer.
         /// This is also how COM runtime does it.
         /// </summary>
         internal const int FLAG_REPRESENTATION_USE_IDISPATCH_IID = 131072;

@@ -36,7 +36,7 @@ namespace org.jinterop.dcom.impls {
         /// <exception cref="JIException"> </exception>
         /// <exception cref="System.ArgumentException"> if any parameter is <code>null</code> or <code>sourceUUID</code> is empty. </exception>
         public static string attachEventHandler(IJIComObject comObject, string sourceUUID, IJIComObject eventListener) {
-            return JIFrameworkHelper.attachEventHandler(comObject, sourceUUID, eventListener);
+            return JIFrameworkHelper.AttachEventHandler(comObject, sourceUUID, eventListener);
 
         }
         /// <summary>
@@ -47,7 +47,7 @@ namespace org.jinterop.dcom.impls {
         /// <param name="identifier"> </param>
         /// <exception cref="JIException"> </exception>
         public static void detachEventHandler(IJIComObject comObject, string identifier) {
-            JIFrameworkHelper.detachEventHandler(comObject, identifier);
+            JIFrameworkHelper.DetachEventHandler(comObject, identifier);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace org.jinterop.dcom.impls {
         /// </param>
         /// <exception cref="JIException"> </exception>
         public static IJIComObject buildObject(JISession session, JILocalCoClass javaComponent) {
-            return JIFrameworkHelper.instantiateLocalComObject(session, javaComponent);
+            return JIFrameworkHelper.InstantiateLocalComObject(session, javaComponent);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace org.jinterop.dcom.impls {
         /// <param name="javaComponent"> </param>
         /// <exception cref="JIException"> </exception>
         public static void releaseObject(JISession session, JILocalCoClass javaComponent) {
-            JIFrameworkHelper.releaseLocalComponent(session, javaComponent);
+            JIFrameworkHelper.ReleaseLocalComponent(session, javaComponent);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace org.jinterop.dcom.impls {
         /// <exception cref="JIException"> </exception>
         /// <exception cref="System.ArgumentException"> if <code>rawBytes</code> is an invalid representation. </exception>
         public static IJIComObject buildObject(JISession session, byte[] rawBytes) {
-            return narrowObject(JIFrameworkHelper.instantiateComObject(session, rawBytes, null));
+            return narrowObject(JIFrameworkHelper.InstantiateComObject(session, rawBytes, null));
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace org.jinterop.dcom.impls {
         /// <exception cref="JIException"> </exception>
         /// <exception cref="System.ArgumentException"> if <code>rawBytes</code> is an invalid representation. </exception>
         public static IJIComObject buildObject(JISession session, byte[] rawBytes, string ipAddress) {
-            return narrowObject(JIFrameworkHelper.instantiateComObject(session, rawBytes, ipAddress));
+            return narrowObject(JIFrameworkHelper.InstantiateComObject(session, rawBytes, ipAddress));
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace org.jinterop.dcom.impls {
         /// <exception cref="System.ArgumentException"> if <code>comObject</code> is <code>null</code> or a local reference. </exception>
         /// <seealso cref="IJIComObject.LocalReference"></seealso>
         public static IJIComObject narrowObject(JISession session, IJIComObject comObject) {
-            return narrowObject(JIFrameworkHelper.instantiateComObject(session, comObject));
+            return narrowObject(JIFrameworkHelper.InstantiateComObject(session, comObject));
         }
     }
 

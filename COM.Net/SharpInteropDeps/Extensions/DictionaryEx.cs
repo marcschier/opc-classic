@@ -1,7 +1,7 @@
 ﻿
 
 
-namespace System.Collections {
+namespace System.Collections.Generic {
     using System;
     using System.Text;
 
@@ -16,8 +16,8 @@ namespace System.Collections {
         /// <param name="dictionary"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static object GetAndRemove(this IDictionary dictionary, object key) {
-            if (dictionary.Contains(key)) {
+        public static object GetAndRemove(this IDictionary<object, object> dictionary, object key) {
+            if (dictionary.ContainsKey(key)) {
                 var value = dictionary[key];
                 dictionary.Remove(key);
                 return value;
@@ -30,7 +30,7 @@ namespace System.Collections {
         /// <param name="list"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static object GetAndRemoveAt(this IList list, int index) {
+        public static object GetAndRemoveAt(this IList<object> list, int index) {
             if (index < list.Count) {
                 var value = list[index];
                 list.Remove(index);

@@ -1,17 +1,17 @@
 ﻿// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 // Contributors:
 // Vikram Roopchand  - Moving to EPL from LGPL v1.
-// 
+//
 
 namespace SharpCifs.Dcerpc.Ndr {
 
@@ -63,7 +63,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <summary>
         /// Default
         /// </summary>
-        public static readonly int DEFAULT_DATA_REPRESENTATION = 
+        public static readonly int DEFAULT_DATA_REPRESENTATION =
             LITTLE_ENDIAN | ASCII_CHARACTER | IEEE_FLOATING_POINT;
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <param name="index"></param>
         /// <param name="connectionless"></param>
         /// <returns></returns>
-        public static NdrFormat readFormat(byte[] src, int index, bool connectionless) {
+        public static NdrFormat ReadFormat(byte[] src, int index, bool connectionless) {
             var value = src[index++] << 24;
             value |= (src[index++] & 0xff) << 16;
             value |= (src[index++] & 0xff) << 8;
@@ -111,12 +111,12 @@ namespace SharpCifs.Dcerpc.Ndr {
         }
 
         /// <summary>
-        /// Write 
+        /// Write
         /// </summary>
         /// <param name="dest"></param>
         /// <param name="index"></param>
         /// <param name="connectionless"></param>
-        public virtual void writeFormat(byte[] dest, int index, bool connectionless) {
+        public virtual void WriteFormat(byte[] dest, int index, bool connectionless) {
             var val = DataRepresentation;
             dest[index++] = unchecked((byte)((val >> 24) & 0xff));
             dest[index++] = unchecked((byte)((val >> 16) & 0xff));

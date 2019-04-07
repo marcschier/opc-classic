@@ -1,20 +1,21 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using rpc.core;
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
     using Serilog;
     using System;
-    using System.Collections;
+    using System.Collections.Generic;
     using org.jinterop.dcom.impls.automation;
     using System.Reflection;
 
@@ -137,21 +138,21 @@ namespace org.jinterop.dcom.core {
         public static readonly int VT_BYREF_VT_UINT = VT_BYREF | VT_UINT; //0x00004017;
 
         /// <summary> array is allocated on the stack </summary>
-        public const int FADF_AUTO = 0x0001; 
+        public const int FADF_AUTO = 0x0001;
         /// <summary> array is staticly allocated </summary>
-        public const int FADF_STATIC = 0x0002; 
+        public const int FADF_STATIC = 0x0002;
         /// <summary> array is embedded in a structure </summary>
         public const int FADF_EMBEDDED = 0x0004;
         /// <summary> may not be resized or reallocated </summary>
         public const int FADF_FIXEDSIZE = 0x0010;
         /// <summary>  an array of records </summary>
-        public const int FADF_RECORD = 0x0020; 
+        public const int FADF_RECORD = 0x0020;
         /// <summary> with FADF_DISPATCH, FADF_UNKNOWN </summary>
-        public const int FADF_HAVEIID = 0x0040; 
+        public const int FADF_HAVEIID = 0x0040;
         /// <summary> array has a VT type </summary>
-        public const int FADF_HAVEVARTYPE = 0x0080; 
+        public const int FADF_HAVEVARTYPE = 0x0080;
         /// <summary> an array of BSTRs </summary>
-        public const int FADF_BSTR = 0x0100; 
+        public const int FADF_BSTR = 0x0100;
         /// <summary> an array of IUnknown* </summary>
         public const int FADF_UNKNOWN = 0x0200;
         /// <summary> an array of IDispatch* </summary>
@@ -159,7 +160,7 @@ namespace org.jinterop.dcom.core {
         /// <summary> an array of VARIANTs </summary>
         public const int FADF_VARIANT = 0x0800;
         /// <summary> reserved bits </summary>
-        public const int FADF_RESERVED = 0xF008; 
+        public const int FADF_RESERVED = 0xF008;
 
         internal static Hashtable supportedTypes = new Hashtable();
         internal static Hashtable supportedTypes_classes = new Hashtable();
@@ -185,9 +186,9 @@ namespace org.jinterop.dcom.core {
             outTypesMap[typeof(DateTime)] = DateTime.Now;
             outTypesMap[typeof(char)] = '9';
             outTypesMap[typeof(char?)] = '9';
-            outTypesMap[typeof(JIUnsignedByte)] = JIUnsignedFactory.getUnsigned((short)0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE);
-            outTypesMap[typeof(JIUnsignedShort)] = JIUnsignedFactory.getUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
-            outTypesMap[typeof(JIUnsignedInteger)] = JIUnsignedFactory.getUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+            outTypesMap[typeof(JIUnsignedByte)] = JIUnsignedFactory.GetUnsigned((short)0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE);
+            outTypesMap[typeof(JIUnsignedShort)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
+            outTypesMap[typeof(JIUnsignedInteger)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
             outTypesMap[typeof(long)] = 0;
             outTypesMap[typeof(long?)] = 0;
             supportedTypes[typeof(object)] = VT_VARIANT;
@@ -206,8 +207,8 @@ namespace org.jinterop.dcom.core {
             //		supportedTypes.put(IJIUnknown.class,new Integer(VT_UNKNOWN));
             //		supportedTypes.put(IJIDispatch.class,new Integer(VT_DISPATCH));
             supportedTypes[typeof(Scode)] = VT_ERROR;
-            supportedTypes[typeof(JIVariant.Empty)] = VT_EMPTY;
-            supportedTypes[typeof(JIVariant.Null)] = VT_NULL;
+            supportedTypes[typeof(Empty)] = VT_EMPTY;
+            supportedTypes[typeof(Null)] = VT_NULL;
             supportedTypes[typeof(JIVariantBody.SCODE)] = VT_ERROR;
             supportedTypes[typeof(JIVariantBody.EMPTY)] = VT_EMPTY;
             supportedTypes[typeof(JIVariantBody.NULL)] = VT_NULL;
@@ -412,12 +413,12 @@ namespace org.jinterop.dcom.core {
                     retVal = VT_DISPATCH;
                 }
             }
-            else if (retVal == VT_I4 && 
+            else if (retVal == VT_I4 &&
                 (flag & JIFlags.FLAG_REPRESENTATION_VT_INT) == JIFlags.FLAG_REPRESENTATION_VT_INT) {
                 // means that if retval came back as VT_I4, we should make that VT_INT
                 retVal = VT_INT;
             }
-            else if (retVal == VT_UI4 && 
+            else if (retVal == VT_UI4 &&
                 (flag & JIFlags.FLAG_REPRESENTATION_VT_UINT) == JIFlags.FLAG_REPRESENTATION_VT_UINT) {
                 retVal = VT_UINT;
             }
@@ -447,7 +448,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// EMPTY <code>VARIANT</code>. 
+        /// EMPTY <code>VARIANT</code>.
         /// This is not Thread Safe, hence a new instance must be taken each time.
         /// </summary>
         public static JIVariant CreateEMPTY() {
@@ -456,7 +457,7 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// EMPTY BYREF <code>VARIANT</code>.
-        /// This is not Thread Safe, hence a new instance must be taken each time. Used for a 
+        /// This is not Thread Safe, hence a new instance must be taken each time. Used for a
         /// <code>[out] VARIANT*</code> .
         /// </summary>
         public static JIVariant CreateEMPTY_BYREF() {
@@ -469,25 +470,25 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         public static JIVariant CreateOUT_IUNKNOWN() {
             var retval = new JIVariant(new JIComObjectImpl(null, new JIInterfacePointer(null, -1, null)), true) {
-                Flag = 
-                    JIFlags.FLAG_REPRESENTATION_IUNKNOWN_NULL_FOR_OUT | 
+                Flag =
+                    JIFlags.FLAG_REPRESENTATION_IUNKNOWN_NULL_FOR_OUT |
                     JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT
             };
             return retval;
         }
 
         /// <summary>
-        /// <code>VARIANT</code> for <code>([out] IDispatch*)</code>. 
+        /// <code>VARIANT</code> for <code>([out] IDispatch*)</code>.
         /// This is not Thread Safe , hence a new instance must be taken each time.
         /// </summary>
         /// <remarks>
-        /// Note that this must also be used when the interface pointer is a 
+        /// Note that this must also be used when the interface pointer is a
         /// subclass of <code>IDispatch</code> i.e. supports automation (or is a
         /// <code>dispinterface</code>).
         /// </remarks>
         public static JIVariant CreateOUT_IDISPATCH() {
             var retval = new JIVariant(new JIComObjectImpl(null, new JIInterfacePointer(null, -1, null)), true) {
-                Flag = 
+                Flag =
                     JIFlags.FLAG_REPRESENTATION_IDISPATCH_NULL_FOR_OUT |
                     JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT
             };
@@ -543,11 +544,11 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         public int Flag {
             set {
-                var variantBody = (JIVariantBody)_member.getReferent();
+                var variantBody = (JIVariantBody)_member.GetReferent();
                 variantBody._flag |= value;
             }
             get {
-                var variantBody = (JIVariantBody)_member.getReferent();
+                var variantBody = (JIVariantBody)_member.GetReferent();
                 return variantBody._flag;
             }
         }
@@ -561,7 +562,7 @@ namespace org.jinterop.dcom.core {
                 if (_member == null) {
                     return true;
                 }
-                var variantBody = (JIVariantBody)_member.getReferent();
+                var variantBody = (JIVariantBody)_member.GetReferent();
                 return variantBody == null ? true : variantBody.IsNull;
             }
         }
@@ -571,7 +572,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="variant"> </param>
         public JIVariant(JIVariant variant) :
-            this(true, variant) { 
+            this(true, variant) {
         }
 
         /// <summary>
@@ -655,7 +656,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="value"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. BSTR* </param>
         public JIVariant(string value, bool isByRef = false) :
-            this(new JIString(value), isByRef) { 
+            this(new JIString(value), isByRef) {
         }
 
         /// <summary>
@@ -664,7 +665,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="value"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. IJIComObject** </param>
         public JIVariant(IJIComObject value, bool isByRef = false) :
-            this(isByRef, value) { 
+            this(isByRef, value) {
             if (value is IJIDispatch) {
                 Flag = JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID;
             }
@@ -674,7 +675,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Setting up a <code>VARIANT</code> with a <code>SCODE</code> value and it's <code>errorCode</code>. 
+        /// Setting up a <code>VARIANT</code> with a <code>SCODE</code> value and it's <code>errorCode</code>.
         /// Used via serializing the <code>VARIANT</code>.
         /// </summary>
         /// <param name="value"> </param>
@@ -689,7 +690,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. Date* </param>
-        public JIVariant(DateTime value, bool isByRef = false) : 
+        public JIVariant(DateTime value, bool isByRef = false) :
             this(isByRef, value) {
         }
 
@@ -698,7 +699,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. Date* </param>
-        public JIVariant(JICurrency value, bool isByRef = false) : 
+        public JIVariant(JICurrency value, bool isByRef = false) :
             this(isByRef, value) {
         }
 
@@ -708,7 +709,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="number"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. </param>
         public JIVariant(IJIUnsigned number, bool isByRef = false) :
-            this(isByRef, (object)number) { 
+            this(isByRef, (object)number) {
         }
 
         /// <summary>
@@ -717,7 +718,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="array"> </param>
         /// <param name="flag"> JIFlag value </param>
-        public JIVariant(JIArray array, int flag) : 
+        public JIVariant(JIArray array, int flag) :
             this(array, false, flag) {
         }
 
@@ -768,7 +769,7 @@ namespace org.jinterop.dcom.core {
                 // 	}
                 // }
             }
-            _member.setReferent(0x72657355); //"User" in LEndian.
+            _member.SetReferent(0x72657355); //"User" in LEndian.
         }
 
         private static readonly IList arryInits = new ArrayList();
@@ -787,7 +788,7 @@ namespace org.jinterop.dcom.core {
 
             if (array == null) {
                 _member = new JIPointer(new JIVariantBody(null, false));
-                _member.setReferent(0x72657355); //"User" in LEndian.
+                _member.SetReferent(0x72657355); //"User" in LEndian.
                 return;
             }
 
@@ -830,7 +831,7 @@ namespace org.jinterop.dcom.core {
 
             var safeArray = new JIStruct();
             try {
-                safeArray.addMember((short)array.Dimensions); //dim
+                safeArray.AddMember((short)array.Dimensions); //dim
                 var elementSize = -1;
                 short flags = FADF_HAVEVARTYPE;
                 if (c == typeof(JIVariant)) {
@@ -858,7 +859,7 @@ namespace org.jinterop.dcom.core {
                     }
                     else {
                         //JStruct and JIUnions are expected to be encapsulated within pointers...they usually are :)
-                        elementSize = JIMarshalUnMarshalHelper.getLengthInBytes(c, null, c == typeof(bool?) ? JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL : JIFlags.FLAG_NULL); //All other types, basic types
+                        elementSize = JIMarshalUnMarshalHelper.GetLengthInBytes(c, null, c == typeof(bool?) ? JIFlags.FLAG_REPRESENTATION_VARIANT_BOOL : JIFlags.FLAG_NULL); //All other types, basic types
                     }
                 }
 
@@ -869,50 +870,50 @@ namespace org.jinterop.dcom.core {
                 var arrayOfSafeArrayBounds = new JIStruct[array.Dimensions];
                 for (var i = 0; i < array.Dimensions; i++) {
                     safeArrayBound = new JIStruct();
-                    safeArrayBound.addMember(upperBounds[i]);
-                    safeArrayBound.addMember(0); //starts at 0
+                    safeArrayBound.AddMember(upperBounds[i]);
+                    safeArrayBound.AddMember(0); //starts at 0
                     arrayOfSafeArrayBounds[i] = safeArrayBound;
                 }
 
                 var arrayOfSafeArrayBounds2 = new JIArray(arrayOfSafeArrayBounds, true);
 
-                safeArray.addMember(flags); //flags
+                safeArray.AddMember(flags); //flags
                 if (elementSize > 0) {
-                    safeArray.addMember(elementSize);
+                    safeArray.AddMember(elementSize);
                 }
                 else {
-                    elementSize = JIMarshalUnMarshalHelper.getLengthInBytes(c, null, flag);
-                    safeArray.addMember(elementSize); //size
+                    elementSize = JIMarshalUnMarshalHelper.GetLengthInBytes(c, null, flag);
+                    safeArray.AddMember(elementSize); //size
                 }
 
-                safeArray.addMember((short)0); //locks
-                safeArray.addMember((short)getSupportedType(c, flag)); //variant array, safearrayunion
+                safeArray.AddMember((short)0); //locks
+                safeArray.AddMember((short)getSupportedType(c, flag)); //variant array, safearrayunion
                                                                        //peculiarity here, windows seems to be sending the signed type in VarType32...
                 if (c == typeof(JIUnsignedByte)) {
-                    safeArray.addMember(getSupportedType(typeof(sbyte?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(sbyte?), flag)); //safearrayunion
                 }
                 else if (c == typeof(JIUnsignedShort)) {
-                    safeArray.addMember(getSupportedType(typeof(short?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(short?), flag)); //safearrayunion
                 }
                 else if (c == typeof(JIUnsignedInteger)) {
-                    safeArray.addMember(getSupportedType(typeof(int?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(int?), flag)); //safearrayunion
                 }
                 else if (c == typeof(bool?)) {
-                    safeArray.addMember(getSupportedType(typeof(short?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(short?), flag)); //safearrayunion
                 }
                 else if (c == typeof(double?)) {
-                    safeArray.addMember(getSupportedType(typeof(long?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(long?), flag)); //safearrayunion
                 }
                 else if (c == typeof(float?)) {
-                    safeArray.addMember(getSupportedType(typeof(int?), flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(typeof(int?), flag)); //safearrayunion
                 }
                 else {
-                    safeArray.addMember(getSupportedType(c, flag)); //safearrayunion
+                    safeArray.AddMember(getSupportedType(c, flag)); //safearrayunion
                 }
-                safeArray.addMember(array2.NumElementsInAllDimensions); //size in safearrayunion
+                safeArray.AddMember(array2.NumElementsInAllDimensions); //size in safearrayunion
                 var ptr2RealArray = new JIPointer(array2);
-                safeArray.addMember(ptr2RealArray);
-                safeArray.addMember(arrayOfSafeArrayBounds2);
+                safeArray.AddMember(ptr2RealArray);
+                safeArray.AddMember(arrayOfSafeArrayBounds2);
             }
             catch (JIException e) {
                 throw new JIRuntimeException(e.ErrorCode);
@@ -920,7 +921,7 @@ namespace org.jinterop.dcom.core {
 
             variant2 = new JIVariantBody(safeArray, c, is2Dim, isByRef, flag);
             _member = new JIPointer(variant2, false);
-            _member.setReferent(0x72657355); //"User" in LEndian.
+            _member.SetReferent(0x72657355); //"User" in LEndian.
         }
 
         /// <summary>
@@ -930,7 +931,7 @@ namespace org.jinterop.dcom.core {
         public object Object {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).Object;
+                return ((JIVariantBody)_member.GetReferent()).Object;
             }
         }
 
@@ -941,7 +942,7 @@ namespace org.jinterop.dcom.core {
         public int ObjectAsInt {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsInt;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsInt;
             }
         }
 
@@ -952,7 +953,7 @@ namespace org.jinterop.dcom.core {
         public float ObjectAsFloat {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsFloat;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsFloat;
             }
         }
 
@@ -963,7 +964,7 @@ namespace org.jinterop.dcom.core {
         public int ObjectAsSCODE {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsSCODE;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsSCODE;
             }
         }
 
@@ -974,7 +975,7 @@ namespace org.jinterop.dcom.core {
         public double ObjectAsDouble {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsDouble;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsDouble;
             }
         }
 
@@ -985,7 +986,7 @@ namespace org.jinterop.dcom.core {
         public short ObjectAsShort {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsShort;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsShort;
             }
         }
 
@@ -996,7 +997,7 @@ namespace org.jinterop.dcom.core {
         public bool ObjectAsBoolean {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsBoolean;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsBoolean;
             }
         }
 
@@ -1007,7 +1008,7 @@ namespace org.jinterop.dcom.core {
         public JIString ObjectAsString {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsString;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsString;
             }
         }
 
@@ -1018,7 +1019,7 @@ namespace org.jinterop.dcom.core {
         public string ObjectAsString2 {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsString.String;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsString.String;
             }
         }
 
@@ -1029,7 +1030,7 @@ namespace org.jinterop.dcom.core {
         public DateTime ObjectAsDate {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsDate;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsDate;
             }
         }
 
@@ -1040,7 +1041,7 @@ namespace org.jinterop.dcom.core {
         public char ObjectAsChar {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsChar;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsChar;
             }
         }
 
@@ -1048,14 +1049,14 @@ namespace org.jinterop.dcom.core {
         /// Retrieves the contained object as <code>IJIComObject</code>.
         /// Return value must be "narrowed" to get the expected type.
         /// for example :- If expected type is an <code>IJIDispatch</code>,
-        /// then the return value must pass through 
+        /// then the return value must pass through
         /// <code>JIObjectFactory.narrowInstance(IJIComObject)</code> to get to the right type.
         /// </summary>
         /// <exception cref="JIException"> </exception>
         public IJIComObject ObjectAsComObject {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsComObject;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsComObject;
             }
         }
 
@@ -1066,7 +1067,7 @@ namespace org.jinterop.dcom.core {
         public JIVariant ObjectAsVariant {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsVariant;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsVariant;
             }
         }
 
@@ -1080,7 +1081,7 @@ namespace org.jinterop.dcom.core {
         public JIArray ObjectAsArray {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).Array;
+                return ((JIVariantBody)_member.GetReferent()).Array;
             }
         }
 
@@ -1091,7 +1092,7 @@ namespace org.jinterop.dcom.core {
         public long ObjectAsLong {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsLong;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsLong;
             }
         }
 
@@ -1102,7 +1103,7 @@ namespace org.jinterop.dcom.core {
         public IJIUnsigned ObjectAsUnsigned {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).ObjectAsUnsigned;
+                return ((JIVariantBody)_member.GetReferent()).ObjectAsUnsigned;
             }
         }
 
@@ -1112,11 +1113,11 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void encode(NdrCodec ndr, IList defferedPointers, int flag) {
-            _member.Deffered = true; 
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
+            _member.Deffered = true;
             // this is since this could be part of an array or a struct...for normal calls
             // as soon as this call finishes a call will be given from JICallobject for it's variantbody.
-            JIMarshalUnMarshalHelper.serialize(ndr, _member.GetType(), _member, defferedPointers, flag);
+            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, defferedPointers, flag);
         }
 
         /// <summary>
@@ -1127,14 +1128,14 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal static JIVariant decode(NdrCodec ndr, IList defferedPointers, 
-            int flag, IDictionary additionalData) {
+        internal static JIVariant Decode(NdrCodec ndr, List<object> defferedPointers,
+            int flag, IDictionary<object, object> additionalData) {
             var variant = new JIVariant();
             var @ref = new JIPointer(typeof(JIVariantBody)) {
                 Deffered = true //this is since this could be part of an array or a struct...for normal calls
             };
             //as soon as this call finishes a call will be given from JICallobject for it's variantbody.
-            variant._member = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(
+            variant._member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(
                 ndr, @ref, defferedPointers, flag, additionalData);
             return variant;
         }
@@ -1146,7 +1147,7 @@ namespace org.jinterop.dcom.core {
         public bool IsArray {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).IsArray;
+                return ((JIVariantBody)_member.GetReferent()).IsArray;
             }
         }
 
@@ -1157,7 +1158,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"> </exception>
         internal int getLengthInBytes(int flag) {
             checkValidity();
-            return JIMarshalUnMarshalHelper.getLengthInBytes(_member.GetType(), _member, flag);
+            return JIMarshalUnMarshalHelper.GetLengthInBytes(_member.GetType(), _member, flag);
         }
 
         /// <summary>
@@ -1167,7 +1168,7 @@ namespace org.jinterop.dcom.core {
         public bool IsByRef {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).IsByRef;
+                return ((JIVariantBody)_member.GetReferent()).IsByRef;
             }
         }
 
@@ -1179,9 +1180,9 @@ namespace org.jinterop.dcom.core {
         /// switch(variant.getType())
         /// {
         /// 	case JIVariant.VT_VARIANT: value = variant.getObjectAsVariant();
-        ///  break; 
-        ///  case JIVariant.VT_NULL: ... 
-        ///  break; 
+        ///  break;
+        ///  case JIVariant.VT_NULL: ...
+        ///  break;
         /// }
         /// </code>
         /// </summary>
@@ -1189,7 +1190,7 @@ namespace org.jinterop.dcom.core {
         public int Type {
             get {
                 checkValidity();
-                return ((JIVariantBody)_member.getReferent()).Type;
+                return ((JIVariantBody)_member.GetReferent()).Type;
             }
         }
 

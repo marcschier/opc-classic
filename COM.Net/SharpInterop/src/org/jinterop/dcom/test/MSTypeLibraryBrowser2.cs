@@ -40,8 +40,8 @@
 //ORIGINAL LINE: public void start() throws org.jinterop.dcom.common.JIException
 		public virtual void start()
 		{
-			unknown = comServer.createInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			unknown = comServer.CreateInstance();
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 			var typeLib = (IJITypeLib)((object[])dispatch.getTypeInfo(0).ContainingTypeLib)[0];
 			var result = typeLib.getDocumentation(-1);
 			Console.WriteLine("Name: " + ((JIString)result[0]).String);

@@ -26,8 +26,8 @@
 //ORIGINAL LINE: public void getOPC() throws org.jinterop.dcom.common.JIException
 		public virtual void getOPC()
 		{
-			unknown = comStub.createInstance();
-			opcServer = (IJIComObject)unknown.queryInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
+			unknown = comStub.CreateInstance();
+			opcServer = (IJIComObject)unknown.QueryInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
 		}
 
 
@@ -53,7 +53,7 @@
 			callObject.addInParamAsUUID("39C13A50-011E-11D0-9675-0020AFD8ADB3", JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
 
-			var result = opcServer.call(callObject);
+			var result = opcServer.Call(callObject);
 
 
 

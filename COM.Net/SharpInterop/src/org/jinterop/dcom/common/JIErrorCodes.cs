@@ -1,16 +1,16 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.common {
 
     /// <summary>
-    /// All errorcodes. ErrorCodes begining with "JI" are j-Interop error codes. 
+    /// All errorcodes. ErrorCodes begining with "JI" are j-Interop error codes.
     /// </summary>
     public static class JIErrorCodes {
 
@@ -20,13 +20,13 @@ namespace org.jinterop.dcom.common {
         public const int ERROR_INVALID_FUNCTION = 0x00000001;
 
         /// <summary>
-        /// The system cannot find the file specified. 
+        /// The system cannot find the file specified.
         /// </summary>
 
         public const int ERROR_FILE_NOT_FOUND = 0x00000002;
 
         /// <summary>
-        /// The system cannot find the path specified. 
+        /// The system cannot find the path specified.
         /// </summary>
         public const int ERROR_PATH_NOT_FOUND = 0x00000003;
 
@@ -50,12 +50,12 @@ namespace org.jinterop.dcom.common {
         public const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154);
 
         /// <summary>
-        /// Interface not registered 
+        /// Interface not registered
         /// </summary>
         public const int REGDB_E_IIDNOTREG = unchecked((int)0x80040155);
 
         /// <summary>
-        /// Access is denied. 
+        /// Access is denied.
         /// </summary>
         public const int ERROR_ACCESS_DENIED = 0x00000005;
 
@@ -70,18 +70,18 @@ namespace org.jinterop.dcom.common {
         public const int E_NOTIMPL = unchecked((int)0x80004001);
 
         /// <summary>
-        /// Not enough storage is available to complete this operation. 
+        /// Not enough storage is available to complete this operation.
         /// </summary>
         public const int E_OUTOFMEMORY = unchecked((int)0x8007000E);
 
 
         /// <summary>
-        /// The parameter is incorrect. 
+        /// The parameter is incorrect.
         /// </summary>
         public const int E_INVALIDARG = unchecked((int)0x80070057);
 
         /// <summary>
-        /// The RPC server is unavailable. 
+        /// The RPC server is unavailable.
         /// </summary>
         public const int RPC_SERVER_UNAVAILABLE = unchecked((int)0x800706BA);
 
@@ -91,7 +91,7 @@ namespace org.jinterop.dcom.common {
         public const int E_NOINTERFACE = unchecked((int)0x80004002);
 
         /// <summary>
-        /// Access is denied. 
+        /// Access is denied.
         /// </summary>
         public const int E_ACCESSDENIED = unchecked((int)0x80070005);
 
@@ -101,22 +101,22 @@ namespace org.jinterop.dcom.common {
         public const int CO_E_BAD_SERVER_NAME = unchecked((int)0x80004014);
 
         /// <summary>
-        /// The server process could not be started.  The pathname may be incorrect. 
+        /// The server process could not be started.  The pathname may be incorrect.
         /// </summary>
         public const int CO_E_CREATEPROCESS_FAILURE = unchecked((int)0x80004018);
 
         /// <summary>
-        /// The server process could not be started as the configured identity.  The pathname may be incorrect or unavailable. 
+        /// The server process could not be started as the configured identity.  The pathname may be incorrect or unavailable.
         /// </summary>
         public const int CO_E_RUNAS_CREATEPROCESS_FAILURE = unchecked((int)0x80004019);
 
         /// <summary>
-        /// The server process could not be started because the configured identity is incorrect.  Check the username and password. 
+        /// The server process could not be started because the configured identity is incorrect.  Check the username and password.
         /// </summary>
         public const int CO_E_RUNAS_LOGON_FAILURE = unchecked((int)0x8000401A);
 
         /// <summary>
-        /// The client is not allowed to launch this server. 
+        /// The client is not allowed to launch this server.
         /// </summary>
         public const int CO_E_LAUNCH_PERMSSION_DENIED = unchecked((int)0x8000401B);
 
@@ -131,77 +131,77 @@ namespace org.jinterop.dcom.common {
         public const int RPC_E_SYS_CALL_FAILED = unchecked((int)0x80010100);
 
         /// <summary>
-        /// Unknown interface. 
+        /// Unknown interface.
         /// </summary>
         public const int DISP_E_UNKNOWNINTERFACE = unchecked((int)0x80020001);
 
         /// <summary>
-        /// Member not found. 
+        /// Member not found.
         /// </summary>
         public const int DISP_E_MEMBERNOTFOUND = unchecked((int)0x80020003);
 
         /// <summary>
-        /// Parameter not found. 
+        /// Parameter not found.
         /// </summary>
         public const int DISP_E_PARAMNOTFOUND = unchecked((int)0x80020004);
 
         /// <summary>
-        /// Type mismatch.  
+        /// Type mismatch.
         /// </summary>
         public const int DISP_E_TYPEMISMATCH = unchecked((int)0x80020005);
 
         /// <summary>
-        /// No named arguments. 
+        /// No named arguments.
         /// </summary>
         public const int DISP_E_NONAMEDARGS = unchecked((int)0x80020007);
 
         /// <summary>
-        /// Bad variable type. 
+        /// Bad variable type.
         /// </summary>
         public const int DISP_E_BADVARTYPE = unchecked((int)0x80020008);
 
         /// <summary>
-        /// Exception occurred. 
+        /// Exception occurred.
         /// </summary>
         public const int DISP_E_EXCEPTION = unchecked((int)0x80020009);
 
         /// <summary>
-        /// Invalid index. 
+        /// Invalid index.
         /// </summary>
         public const int DISP_E_BADINDEX = unchecked((int)0x8002000B);
 
         /// <summary>
-        /// Invalid number of parameters. 
+        /// Invalid number of parameters.
         /// </summary>
         public const int DISP_E_BADPARAMCOUNT = unchecked((int)0x8002000E);
 
         /// <summary>
-        /// Parameter not optional. 
+        /// Parameter not optional.
         /// </summary>
         public const int DISP_E_PARAMNOTOPTIONAL = unchecked((int)0x8002000F);
 
         /// <summary>
-        /// The requested object or interface does not exist. 
+        /// The requested object or interface does not exist.
         /// </summary>
         public const int RPC_E_INVALID_IPID = unchecked((int)0x80010113);
 
         /// <summary>
-        /// The requested object does not exist. 
+        /// The requested object does not exist.
         /// </summary>
         public const int RPC_E_INVALID_OBJECT = unchecked((int)0x80010114);
 
         /// <summary>
-        /// The marshaled interface data packet (OBJREF) has an invalid or unknown format. 
+        /// The marshaled interface data packet (OBJREF) has an invalid or unknown format.
         /// </summary>
         public const int RPC_E_INVALID_OBJREF = unchecked((int)0x8001011D);
 
         /// <summary>
-        /// An internal error occurred. 
+        /// An internal error occurred.
         /// </summary>
         public const int RPC_E_UNEXPECTED = unchecked((int)0x8001FFFF);
 
         /// <summary>
-        /// Call was rejected by callee. 
+        /// Call was rejected by callee.
         /// </summary>
         public const int RPC_E_CALL_REJECTED = unchecked((int)0x80010001);
 
@@ -221,12 +221,12 @@ namespace org.jinterop.dcom.common {
         public const int TYPE_E_ELEMENTNOTFOUND = unchecked((int)0x8002802B);
 
         /// <summary>
-        /// COM server could not establish call back connection. 
+        /// COM server could not establish call back connection.
         /// </summary>
         public const int E_NOINTERFACE_CALLBACK = unchecked((int)0x80040202);
 
         /// <summary>
-        /// The object exporter was not found. 
+        /// The object exporter was not found.
         /// </summary>
         public const int RPC_E_INVALID_OXID = unchecked((int)0x80070776);
 
@@ -251,7 +251,7 @@ namespace org.jinterop.dcom.common {
         public const int RPC_S_ACCESS_VIOLATION = unchecked((int)0xC0000005);
 
         /// <summary>
-        /// The server threw an exception. 
+        /// The server threw an exception.
         /// </summary>
         public const int RPC_E_SERVERFAULT = unchecked((int)0x80010105);
 
@@ -266,7 +266,7 @@ namespace org.jinterop.dcom.common {
         public const int RPC_E_DISCONNECTED = unchecked((int)0x80010108);
 
         /// <summary>
-        /// The version of OLE on the client and server machines does not match. 
+        /// The version of OLE on the client and server machines does not match.
         /// </summary>
         public const int RPC_E_VERSION_MISMATCH = unchecked((int)0x80010110);
 
@@ -296,7 +296,7 @@ namespace org.jinterop.dcom.common {
         public const int JI_OBJECT_ALREADY_INSTANTIATED = 0x00001001;
 
         /// <summary>
-        /// This API cannot be invoked right now, further operations are required before the system is ready to 
+        /// This API cannot be invoked right now, further operations are required before the system is ready to
         /// give out results through this API.
         /// </summary>
         public const int JI_API_INCORRECTLY_CALLED = 0x00001002;
@@ -332,7 +332,7 @@ namespace org.jinterop.dcom.common {
         public const int JI_UTIL_FLAG_ERROR = 0x00001008;
 
         /// <summary>
-        /// Internal Library Error. This method should not have been called. Please check the parameters which you have passed to JICallBuilder. 
+        /// Internal Library Error. This method should not have been called. Please check the parameters which you have passed to JICallBuilder.
         /// They have been sent incorrectly.
         /// </summary>
         public const int JI_UTIL_INCORRECT_CALL = 0x00001009;
@@ -378,7 +378,7 @@ namespace org.jinterop.dcom.common {
         public const int JI_COMFACTORY_ILLEGAL_ARG = 0x00001011;
 
         /// <summary>
-        /// The template cannot be null. 
+        /// The template cannot be null.
         /// </summary>
         public const int JI_ARRAY_TEMPLATE_NULL = 0x00001012;
 
@@ -488,7 +488,7 @@ namespace org.jinterop.dcom.common {
         public const int JI_VARIANT_VARARRAYS_2DIMRES = 0x00001027;
 
         /// <summary>
-        /// The upperbounds is to be specified for all dimensions or not specified at all. 
+        /// The upperbounds is to be specified for all dimensions or not specified at all.
         /// </summary>
         public const int JI_ARRAY_UPPERBNDS_DIM_NOTMATCH = 0x00001028;
 
@@ -528,12 +528,12 @@ namespace org.jinterop.dcom.common {
         public const int JI_WINREG_EXCEPTION4 = 0x00001035;
 
         /// <summary>
-        /// Illegal values sent as parameters, please check "data". 
+        /// Illegal values sent as parameters, please check "data".
         /// </summary>
         public const int JI_WINREG_EXCEPTION5 = 0x00001036;
 
         /// <summary>
-        /// JILocalMethodDescriptor is being added to a JILocalInterfaceDefinition supporting dispInterface, but it itself does not have a 
+        /// JILocalMethodDescriptor is being added to a JILocalInterfaceDefinition supporting dispInterface, but it itself does not have a
         /// dispId.
         /// </summary>
         public const int JI_METHODDESC_DISPID_MISSING = 0x00001037;
@@ -569,7 +569,7 @@ namespace org.jinterop.dcom.common {
         public const int JI_JAVACOCLASS_ALREADY_EXPORTED = 0x00001043;
 
         /// <summary>
-        /// JIInterfacePointer is not a valid parameter, please use JIVariant(IJIComObject,...).   
+        /// JIInterfacePointer is not a valid parameter, please use JIVariant(IJIComObject,...).
         /// </summary>
         public const int JI_VARIANT_TYPE_INCORRECT = 0x00001044;
 

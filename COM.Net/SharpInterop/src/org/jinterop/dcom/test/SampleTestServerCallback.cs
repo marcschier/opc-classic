@@ -42,8 +42,8 @@
 			  var structArray = (JIStruct[]) array.ArrayInstance;
 			  for (var i = 0; i < (int)size.Value; i++)
 			  {
-				append("C:\\Test\\callback_j.log", "Member 0= " + structArray[i].getMember(0).ToString() + "\n");
-				Console.WriteLine("Array elt=" + i + ",Member 0= " + structArray[i].getMember(0).ToString() + "\n");
+				append("C:\\Test\\callback_j.log", "Member 0= " + structArray[i].GetMember(0).ToString() + "\n");
+				Console.WriteLine("Array elt=" + i + ",Member 0= " + structArray[i].GetMember(0).ToString() + "\n");
 			  }
 			}
 
@@ -55,26 +55,26 @@
 			   var interfaceDefinition = new JILocalInterfaceDefinition("D3F9CE10-686C-11d2-97BF-006008BD50B1", false); //IStatisUpdateMeSink
 
 			  var VarData = new JIStruct(); // Will add in the struct later on
-			  VarData.addMember(typeof(JIUnsignedInteger));
-			  VarData.addMember(typeof(float?));
-			  VarData.addMember(typeof(float?));
-			  VarData.addMember(typeof(JIUnsignedShort));
-			  VarData.addMember(typeof(float?));
-			  VarData.addMember(typeof(DateTime));
-			  VarData.addMember(typeof(JIUnsignedShort));
+			  VarData.AddMember(typeof(JIUnsignedInteger));
+			  VarData.AddMember(typeof(float?));
+			  VarData.AddMember(typeof(float?));
+			  VarData.AddMember(typeof(JIUnsignedShort));
+			  VarData.AddMember(typeof(float?));
+			  VarData.AddMember(typeof(DateTime));
+			  VarData.AddMember(typeof(JIUnsignedShort));
 
 			  var NonVariableData = new JIStruct(); // Will add in the struct later on
-			  NonVariableData.addMember(typeof(JIUnsignedInteger));
-			  NonVariableData.addMember(typeof(JIUnsignedInteger));
-			  NonVariableData.addMember(typeof(JIUnsignedByte));
-			  NonVariableData.addMember(new JIPointer(new JIArray(VarData, null, 1, true),true)); //since this is an embedded pointer
+			  NonVariableData.AddMember(typeof(JIUnsignedInteger));
+			  NonVariableData.AddMember(typeof(JIUnsignedInteger));
+			  NonVariableData.AddMember(typeof(JIUnsignedByte));
+			  NonVariableData.AddMember(new JIPointer(new JIArray(VarData, null, 1, true),true)); //since this is an embedded pointer
 			  var NonVariableDataArray = new JIArray(NonVariableData, null, 1, true);
 
 			  var updateParamObj = new JILocalParamsDescriptor();
-			  updateParamObj.addInParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
-			  updateParamObj.addInParamAsObject(NonVariableDataArray, JIFlags.FLAG_NULL);
+			  updateParamObj.AddInParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+			  updateParamObj.AddInParamAsObject(NonVariableDataArray, JIFlags.FLAG_NULL);
 			  var methodDescriptor = new JILocalMethodDescriptor("UpdateMe", updateParamObj);
-			  interfaceDefinition.addMethodDescriptor(methodDescriptor);
+			  interfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 			  return interfaceDefinition;
 			}
@@ -86,8 +86,8 @@
 
 			  var session = JISession.createSession(args[1], args[2], args[3]);
 			  var comStub = new JIComServer(JIProgId.valueOf("TstMarsh.Test"), args[0], session);
-			  var unknown = comStub.createInstance();
-			  var ITest = (IJIComObject) unknown.queryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
+			  var unknown = comStub.CreateInstance();
+			  var ITest = (IJIComObject) unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
 
 			  //Create the Java Server class. This contains the instance to be called by the COM Server
 			  //
@@ -106,7 +106,7 @@
             javaCallback.addInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
 			  javaCallback.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack about to call this...");
-			  results = ITest.call(javaCallback); //<== same exception is thrown here as well
+			  results = ITest.Call(javaCallback); //<== same exception is thrown here as well
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
 			  var staticSession = (int)(int?)results[0];
 
@@ -117,7 +117,7 @@
 			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  javaCallback.addInParamAsInt(rate, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.SetSomethingInSomethingsRate about to be called");
-			  results = ITest.call(javaCallback);
+			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.SetSomethingInSomethingsRate succeeded");
 
 			  //start the session
@@ -125,7 +125,7 @@
 			  javaCallback.Opnum = 6;
 			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.StartSomething about to be called");
-			  results = ITest.call(javaCallback);
+			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.StartSomething succeeded");
 
 			  //stop the session
@@ -134,7 +134,7 @@
 			  javaCallback.Opnum = 7;
 			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.StopSomething about to be called");
-			  results = ITest.call(javaCallback);
+			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.StopSomething succeeded");
 
 			  //destroy the session
@@ -143,7 +143,7 @@
 			  javaCallback.Opnum = 1;
 			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.DestroySomething about to be called");
-			  results = ITest.call(javaCallback);
+			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.DestroySomething succeeded");
 
 			  JISession.destroySession(session);
@@ -156,8 +156,8 @@
 
 			  var session = JISession.createSession(args[1], args[2], args[3]);
 			  var comStub = new JIComServer(JIProgId.valueOf("TstMarsh.Test"), args[0], session);
-			  var unknown = comStub.createInstance();
-			  var ITest = (IJIComObject) unknown.queryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
+			  var unknown = comStub.CreateInstance();
+			  var ITest = (IJIComObject) unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
 
 			  //Create the Java Server class. This contains the instance to be called by the COM Server
 			  //
@@ -176,7 +176,7 @@
             };
             javaCallback.addInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
 			  javaCallback.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
-			  results = ITest.call(javaCallback); //<== same exception is thrown here as well
+			  results = ITest.Call(javaCallback); //<== same exception is thrown here as well
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
 			  var staticSession = (int)(int?)results[0];
 
@@ -186,7 +186,7 @@
 			  javaCallback.Opnum = 1;
 			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.UnDoSomething about to be called");
-			  results = ITest.call(javaCallback);
+			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.UnDoSomething succeeded");
 
 			  JISession.destroySession(session);

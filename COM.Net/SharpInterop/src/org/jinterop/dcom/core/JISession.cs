@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -19,12 +19,17 @@ namespace org.jinterop.dcom.core {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Representation of an active session with a COM server. All interface references being given out by
-    /// the framework for a particular COM server are maintained by the session and an <code>IJIComObject</code>
-    /// is associated with a single session only. Sessions are also responsible for the clean up once the system
-    /// shuts down or <code>IJIComObject</code> go out of reference scope.
-    /// Please make sure that you call <seealso cref="destroySession(JISession)"/> after you are done using the session.
-    /// This will ensure that any open sockets to COM server are closed.
+    /// Representation of an active session with a COM server.
+    /// All interface references being given out by
+    /// the framework for a particular COM server are maintained by
+    /// the session and an <code>IJIComObject</code>
+    /// is associated with a single session only. Sessions are
+    /// also responsible for the clean up once the system
+    /// shuts down or <code>IJIComObject</code> go out of
+    /// reference scope. Please make sure that you call
+    /// <seealso cref="destroySession(JISession)"/>
+    /// after you are done using the session. This will ensure
+    /// that any open sockets to COM server are closed.
     /// </summary>
     public sealed class JISession {
 
@@ -160,7 +165,7 @@ namespace org.jinterop.dcom.core {
             JIComOxidRuntime.startResolver();
             JIComOxidRuntime.startResolverTimer();
             OxidResolverPort = JIComOxidRuntime.OxidResolverPort;
-            // This schedule used to be every 2 mins. 
+            // This schedule used to be every 2 mins.
             _releaseRefsTimer.scheduleAtFixedRate(new Release_References_TimerTask(), 0, 2 * 60 * 1000);
 
             Runtime.Runtime.addShutdownHook(new Thread(new RunnableAnonymousInnerClassHelper2(), "jI_ShutdownHook"));
@@ -192,9 +197,9 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Cancels the existing timer used to schedule collection of un-referenced COM Objects 
-        /// and then restarts the same with the new frequency. Default timer schedules the GC task 
-        /// every 2 mins.  
+        /// Cancels the existing timer used to schedule collection of un-referenced COM Objects
+        /// and then restarts the same with the new frequency. Default timer schedules the GC task
+        /// every 2 mins.
         /// </summary>
         public static int ReleaseRefTimerFrequency {
             set {
@@ -219,7 +224,7 @@ namespace org.jinterop.dcom.core {
                         var session = (JISession)listOfSessionsClone[i];
                         Log.Logger.Information("Release_References_TimerTask:[RUN] Ipid Vs Count Map size " +
                             session._mapOfIPIDsVsRefcounts.Count + " listOfDeferencedIpids size " + session._listOfDeferencedIpids.Count);
-                        Log.Logger.Information("Release_References_TimerTask:[RUN] Session:  " + 
+                        Log.Logger.Information("Release_References_TimerTask:[RUN] Session:  " +
                             session.SessionIdentifier + " , listOfDeferencedIpids: " + session._listOfDeferencedIpids);
 
                         //now iterate over each sessions listOfDereferencedIpids and send a call to release for the entire lot.
@@ -284,7 +289,7 @@ namespace org.jinterop.dcom.core {
                     _targetServer = value;
                     //will change the localhost to the actual address as well
                     if (LocalhostAddressAsIPString.Equals("127.0.0.1", StringComparison.CurrentCultureIgnoreCase) ||
-                        LocalhostAddressAsIPString.Equals("0.0.0.0", StringComparison.CurrentCultureIgnoreCase)) { 
+                        LocalhostAddressAsIPString.Equals("0.0.0.0", StringComparison.CurrentCultureIgnoreCase)) {
                         //TODO: Bug in JDK , time to find alternate logic.
                         LocalhostAddressAsIPString = getLocalHost(value);
                     }
@@ -324,13 +329,13 @@ namespace org.jinterop.dcom.core {
         private JISession() { }
 
         /// <summary>
-        /// Creates a session with the <code>authInfo</code> of the user. 
+        /// Creates a session with the <code>authInfo</code> of the user.
         /// This session is not yet attached to a COM server.
         /// </summary>
         /// <param name="authInfo"></param>
         /// <exception cref="ArgumentException"> if <code>authInfo</code> is <code>null</code>. </exception>
-        /// <seealso cref="JIComServer.JIComServer(JIClsid, JISession)"> </seealso>
-        /// <seealso cref="JIComServer.JIComServer(JIProgId, JISession)"> </seealso>
+        /// <seealso cref="JIComServer(JIClsid, JISession)"> </seealso>
+        /// <seealso cref="JIComServer(JIProgId, JISession)"> </seealso>
         public static JISession createSession(IJIAuthInfo authInfo) {
             if (authInfo == null) {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
@@ -371,7 +376,7 @@ namespace org.jinterop.dcom.core {
                 _username = username,
                 _password = password,
                 _domain = domain,
-                SessionIdentifier = username.GetHashCode() ^ password.GetHashCode() ^ domain.GetHashCode() ^ 
+                SessionIdentifier = username.GetHashCode() ^ password.GetHashCode() ^ domain.GetHashCode() ^
                     new object().GetHashCode() ^ _randomGen.Next()
             };
             lock (_mutex) {
@@ -398,15 +403,15 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// <b>Native</b> Single Sign On capable session. 
+        /// <b>Native</b> Single Sign On capable session.
         /// <b>Warning:</b> <ul><li>This method works <b>only</b> on Microsoft Windows Platform.</li>
         /// <li>It does <b>not</b> support NTLMv2 or NTLM1 Session Security.</li>
         /// <li>It supports only NTLM1 Authentication.</li>
         /// <li>This session <b>cannot</b> be used with <code>JIComServer(ProgId,...)</code> ctors. JCIFS will
-        /// fail to setup a connection with Windows Registry if GUEST account is disabled.</li></ul> 
+        /// fail to setup a connection with Windows Registry if GUEST account is disabled.</li></ul>
         /// </summary>
-        /// <seealso cref="JIComServer.JIComServer(JIClsid, JISession)"></seealso>
-        /// <seealso cref="JIComServer.JIComServer(JIProgId, JISession)"></seealso>
+        /// <seealso cref="JIComServer(JIClsid, JISession)"></seealso>
+        /// <seealso cref="JIComServer(JIProgId, JISession)"></seealso>
         public static JISession createSession() {
             if (!System.getProperty("os.name").ToLower().StartsWith("windows", StringComparison.Ordinal)) {
                 throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_WIN_ONLY));
@@ -516,7 +521,7 @@ namespace org.jinterop.dcom.core {
                 if (list.Count > 0) {
                     var array = new JIArray(list.ToArray(typeof(JIStruct)), true);
                     try {
-                        session._stub.closeStub(); //close the existing connection
+                        session._stub.CloseStub(); //close the existing connection
                         session.releaseRefs(array, true);
                     }
                     catch (JIException e) {
@@ -537,8 +542,8 @@ namespace org.jinterop.dcom.core {
                         _mapOfOxidsVsJISessions.Remove(new JIOxid(session._stub.ServerInterfacePointer.OXID));
                     }
                 }
-                session._stub.closeStub();
-                session.Stub2.closeStub();
+                session._stub.CloseStub();
+                session.Stub2.CloseStub();
             }
 
             postDestroy(session);
@@ -588,7 +593,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="comObject"></param>
         /// <param name="oid"></param>
-        internal void addToSession(IJIComObject comObject, sbyte[] oid) {
+        internal void addToSession(IJIComObject comObject, byte[] oid) {
             //nothing will be done if the session is being destroyed.
             if (SessionInDestroy) {
                 return;
@@ -596,12 +601,12 @@ namespace org.jinterop.dcom.core {
             addWeakReference(comObject, oid);
 
             // setting if NO PING flag has been set to true.
-            addToSession(comObject.Ipid, oid, ((JIStdObjRef)comObject.internal_getInterfacePointer()
-                .getObjectReference(JIInterfacePointer.OBJREF_STANDARD)).Flags == 0x00001000);
+            addToSession(comObject.Ipid, oid, ((JIStdObjRef)comObject.Internal_getInterfacePointer()
+                .GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).Flags == 0x00001000);
             Log.Logger.Information(" for IID: " + comObject.InterfaceIdentifier + " session: " + SessionIdentifier);
 
-            var refcount = ((JIStdObjRef)comObject.internal_getInterfacePointer()
-                .getObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
+            var refcount = ((JIStdObjRef)comObject.Internal_getInterfacePointer()
+                .GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
             updateReferenceForIPID(comObject.Ipid, refcount);
         }
 
@@ -614,7 +619,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"></exception>
         internal void addRef_ReleaseRef(string IPID, JICallBuilder obj, int refcount) {
             updateReferenceForIPID(IPID, refcount);
-            Stub2.addRef_ReleaseRef(obj);
+            Stub2.AddRef_ReleaseRef(obj);
         }
 
         /// <summary>
@@ -735,7 +740,7 @@ namespace org.jinterop.dcom.core {
             //length
             obj.addInParamAsShort((short)1, JIFlags.FLAG_NULL);
             //ipid to addfref on
-            var array = new JIArray(new rpc.core.UUID[] { new rpc.core.UUID(IPID) }, true);
+            var array = new JIArray(new UUID[] { new UUID(IPID) }, true);
             obj.addInParamAsArray(array, JIFlags.FLAG_NULL);
             //TODO requesting 5 for now, will later build caching mechnaism to exhaust 5 refs first before asking for more
             // same with release.
@@ -749,11 +754,11 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Dreference 
+        /// Dreference
         /// </summary>
         /// <param name="IPID"></param>
         private void addDereferencedIpids(string IPID) {
-            Log.Logger.Information("addDereferencedIpids for session : " + 
+            Log.Logger.Information("addDereferencedIpids for session : " +
                 SessionIdentifier + " , IPID is: " + IPID);
             lock (_mutex) {
                 if (!_listOfDeferencedIpids.Contains(IPID)) {
@@ -770,7 +775,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"></exception>
         /// <returns></returns>
         private void releaseRefs(JIArray arrayOfStructs, bool fromDestroy) {
-            Log.Logger.Information("In releaseRefs for session : " + SessionIdentifier + 
+            Log.Logger.Information("In releaseRefs for session : " + SessionIdentifier +
                 " , array length is: " + (short)((object[])arrayOfStructs.ArrayInstance).Length);
             var obj = new JICallBuilder(true) {
                 Opnum = 2 //release
@@ -779,7 +784,7 @@ namespace org.jinterop.dcom.core {
             obj.addInParamAsShort((short)((object[])arrayOfStructs.ArrayInstance).Length, JIFlags.FLAG_NULL);
             obj.addInParamAsArray(arrayOfStructs, JIFlags.FLAG_NULL);
             obj._fromDestroySession = fromDestroy;
-            _stub.addRef_ReleaseRef(obj);
+            _stub.AddRef_ReleaseRef(obj);
             //ignore the results
         }
 
@@ -808,9 +813,9 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         private JIStruct prepareForReleaseRef(string IPID, int refcount) {
             var remInterface = new JIStruct();
-            remInterface.addMember(new rpc.core.UUID(IPID));
-            remInterface.addMember(refcount);
-            remInterface.addMember(0); //private refs = 0
+            remInterface.AddMember(new UUID(IPID));
+            remInterface.AddMember(refcount);
+            remInterface.AddMember(0); //private refs = 0
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
                 Log.Logger.Warning("prepareForReleaseRef: Releasing " + refcount +
                     "references of IPID: " + IPID + " session: " + SessionIdentifier);
@@ -886,7 +891,7 @@ namespace org.jinterop.dcom.core {
         /// The class level and the method level settings in case of <code>IJIComObject</code> override this timeout. </para>
         /// </summary>
         /// <seealso cref="IJIComObject.setInstanceLevelSocketTimeout(int)"> </seealso>
-        /// <seealso cref="IJIComObject.call(JICallBuilder, int)"> </seealso>
+        /// <seealso cref="IJIComObject.Call(JICallBuilder, int)"> </seealso>
         public int GlobalSocketTimeout { set; get; }
 
         /// <summary>
@@ -916,7 +921,7 @@ namespace org.jinterop.dcom.core {
         /// the use of NTLMv2 security <b>cannot</b> be enabled or disabled.
         /// </para>
         /// <para>
-        /// 
+        ///
         /// </para>
         /// </summary>
         /// <param name="enable"> <code>true</code> to enable. </param>

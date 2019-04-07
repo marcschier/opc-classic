@@ -60,12 +60,12 @@ namespace org.jinterop.dcom.impls.automation {
 				return;
 			}
 
-			memberId = (int)(int?)filledStruct.getMember(0);
-			lpstrSchema = (JIPointer)filledStruct.getMember(1);
-			u = (JIUnion)filledStruct.getMember(2);
-			elemdescVar = new ElemDesc((JIStruct)filledStruct.getMember(3));
-			wVarFlags = (short)(short?)filledStruct.getMember(4);
-			varkind = (int)(int?)filledStruct.getMember(5);
+			memberId = (int)(int?)filledStruct.GetMember(0);
+			lpstrSchema = (JIPointer)filledStruct.GetMember(1);
+			u = (JIUnion)filledStruct.GetMember(2);
+			elemdescVar = new ElemDesc((JIStruct)filledStruct.GetMember(3));
+			wVarFlags = (short)(short?)filledStruct.GetMember(4);
+			varkind = (int)(int?)filledStruct.GetMember(5);
 		}
 
 

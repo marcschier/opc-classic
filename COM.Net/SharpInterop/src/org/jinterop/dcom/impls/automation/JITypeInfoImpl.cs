@@ -60,8 +60,8 @@ namespace org.jinterop.dcom.impls.automation {
 
 			//now to prepare out params
 			var funcDescStruct = new JIStruct();
-			funcDescStruct.addMember(typeof(int?));
-			funcDescStruct.addMember(new JIPointer(new JIArray(typeof(int?),null,1,true)));
+			funcDescStruct.AddMember(typeof(int?));
+			funcDescStruct.AddMember(new JIPointer(new JIArray(typeof(int?),null,1,true)));
 			//first read the pointer representation. Do not want to use funcdesc but only describe
 			//it. This should show the flexibility of the API.
 			//TODO have to make a Pointer type which only reads the representation.
@@ -70,9 +70,9 @@ namespace org.jinterop.dcom.impls.automation {
 			//CLEANLOCALSTORAGE --> this is wrong, since CLEANLOCALSTORAGE is a struct, but it has always
 			//come null and even if something comes, I don't know which pointer PVOID stands for.
 			var cleanlocalstorage = new JIStruct();
-			cleanlocalstorage.addMember(typeof(int?));
-			cleanlocalstorage.addMember(typeof(int?));
-			cleanlocalstorage.addMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
 			obj.addOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
 
 
@@ -90,41 +90,41 @@ namespace org.jinterop.dcom.impls.automation {
 
 			//SAFEARRAYBOUNDS
 			var safeArrayBounds = new JIStruct();
-			safeArrayBounds.addMember(typeof(int?));
-			safeArrayBounds.addMember(typeof(int?));
+			safeArrayBounds.AddMember(typeof(int?));
+			safeArrayBounds.AddMember(typeof(int?));
 
 			//arraydesc
 			var arrayDesc = new JIStruct();
 			//typedesc
 			var typeDesc = new JIStruct();
 
-			arrayDesc.addMember(typeDesc);
-			arrayDesc.addMember(typeof(short?));
-			arrayDesc.addMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
+			arrayDesc.AddMember(typeDesc);
+			arrayDesc.AddMember(typeof(short?));
+			arrayDesc.AddMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
 
 			var forTypeDesc = new JIUnion(typeof(short?));
 			var ptrToTypeDesc = new JIPointer(typeDesc);
 			var ptrToArrayDesc = new JIPointer(arrayDesc);
 
-			forTypeDesc.addMember(TypeDesc.VT_PTR,ptrToTypeDesc);
-			forTypeDesc.addMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
-			forTypeDesc.addMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
-			forTypeDesc.addMember(TypeDesc.VT_USERDEFINED,typeof(int?));
-			typeDesc.addMember(forTypeDesc);
-			typeDesc.addMember(typeof(short?)); //VARTYPE
+			forTypeDesc.AddMember(TypeDesc.VT_PTR,ptrToTypeDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_USERDEFINED,typeof(int?));
+			typeDesc.AddMember(forTypeDesc);
+			typeDesc.AddMember(typeof(short?)); //VARTYPE
 
 			//PARAMDESC
 			var paramDesc2 = new JIStruct();
-			paramDesc2.addMember(typeof(int?));
-			paramDesc2.addMember(typeof(JIVariant));
+			paramDesc2.AddMember(typeof(int?));
+			paramDesc2.AddMember(typeof(JIVariant));
 			var paramDesc = new JIStruct();
-			paramDesc.addMember(new JIPointer(paramDesc2,false));
-			paramDesc.addMember(typeof(short?));
+			paramDesc.AddMember(new JIPointer(paramDesc2,false));
+			paramDesc.AddMember(typeof(short?));
 
-			elemDesc.addMember(typeDesc);
-			elemDesc.addMember(paramDesc);
+			elemDesc.AddMember(typeDesc);
+			elemDesc.AddMember(paramDesc);
 
-			funcDescStruct.addMember(new JIPointer(new JIArray(elemDesc,null,1,true)));
+			funcDescStruct.AddMember(new JIPointer(new JIArray(elemDesc,null,1,true)));
 			//obj.addOutParamAsObject(new Pointer(new JIArray(elemDesc,null,1,true)), JIFlags.FLAG_NULL);
 
 	//		obj.addOutParamAsObject(Integer.class,JIFlags.FLAG_NULL);
@@ -140,21 +140,21 @@ namespace org.jinterop.dcom.impls.automation {
 	//		obj.addOutParamAsObject(elemDesc,JIFlags.FLAG_NULL);
 	//		obj.addOutParamAsObject(Short.class,JIFlags.FLAG_NULL);
 
-			funcDescStruct.addMember(typeof(int?));
-			funcDescStruct.addMember(typeof(int?));
-			funcDescStruct.addMember(typeof(int?));
+			funcDescStruct.AddMember(typeof(int?));
+			funcDescStruct.AddMember(typeof(int?));
+			funcDescStruct.AddMember(typeof(int?));
 
-			funcDescStruct.addMember(typeof(short?));
-			funcDescStruct.addMember(typeof(short?));
+			funcDescStruct.AddMember(typeof(short?));
+			funcDescStruct.AddMember(typeof(short?));
 
-			funcDescStruct.addMember(typeof(short?));
-			funcDescStruct.addMember(typeof(short?));
+			funcDescStruct.AddMember(typeof(short?));
+			funcDescStruct.AddMember(typeof(short?));
 
-			funcDescStruct.addMember(elemDesc);
-			funcDescStruct.addMember(typeof(short?));
+			funcDescStruct.AddMember(elemDesc);
+			funcDescStruct.AddMember(typeof(short?));
 
 
-			var result = comObject.call(obj);
+			var result = ComObject.Call(obj);
 			var funcDesc = new FuncDesc((JIPointer)result[0]);
 			return funcDesc;
 		}
@@ -179,60 +179,60 @@ namespace org.jinterop.dcom.impls.automation {
 				//come null and even if something comes, I don't know which pointer PVOID stands for.
 				obj.addOutParamAsObject(new JIPointer(typeof(int?)),JIFlags.FLAG_NULL);
     
-				typeAttr.addMember(typeof(UUID));
-				typeAttr.addMember(typeof(int?));
-				typeAttr.addMember(typeof(int?));
+				typeAttr.AddMember(typeof(UUID));
+				typeAttr.AddMember(typeof(int?));
+				typeAttr.AddMember(typeof(int?));
     
-				typeAttr.addMember(typeof(int?));
-				typeAttr.addMember(typeof(int?));
+				typeAttr.AddMember(typeof(int?));
+				typeAttr.AddMember(typeof(int?));
     
-				typeAttr.addMember(new JIPointer(new JIString(null,JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+				typeAttr.AddMember(new JIPointer(new JIString(null,JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
     
-				typeAttr.addMember(typeof(int?));
+				typeAttr.AddMember(typeof(int?));
     
-				typeAttr.addMember(typeof(int?));
+				typeAttr.AddMember(typeof(int?));
     
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
-				typeAttr.addMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
+				typeAttr.AddMember(typeof(short?));
     
 				var typeDesc = new JIStruct();
 				var arrayDesc = new JIStruct();
 				var safeArrayBounds = new JIStruct();
     
-				safeArrayBounds.addMember(typeof(int?));
-				safeArrayBounds.addMember(typeof(int?));
+				safeArrayBounds.AddMember(typeof(int?));
+				safeArrayBounds.AddMember(typeof(int?));
     
-				arrayDesc.addMember(typeDesc);
-				arrayDesc.addMember(typeof(short?));
-				arrayDesc.addMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
+				arrayDesc.AddMember(typeDesc);
+				arrayDesc.AddMember(typeof(short?));
+				arrayDesc.AddMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
     
 				var forTypeDesc = new JIUnion(typeof(short?));
 				var ptrToTypeDesc = new JIPointer(typeDesc);
 				var ptrToArrayDesc = new JIPointer(arrayDesc);
     
-				forTypeDesc.addMember(TypeDesc.VT_PTR,ptrToTypeDesc);
-				forTypeDesc.addMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
-				forTypeDesc.addMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
-				forTypeDesc.addMember(TypeDesc.VT_USERDEFINED,typeof(int?));
-				typeDesc.addMember(forTypeDesc);
-				typeDesc.addMember(typeof(short?)); //VARTYPE
+				forTypeDesc.AddMember(TypeDesc.VT_PTR,ptrToTypeDesc);
+				forTypeDesc.AddMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
+				forTypeDesc.AddMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
+				forTypeDesc.AddMember(TypeDesc.VT_USERDEFINED,typeof(int?));
+				typeDesc.AddMember(forTypeDesc);
+				typeDesc.AddMember(typeof(short?)); //VARTYPE
     
-				typeAttr.addMember(typeDesc);
+				typeAttr.AddMember(typeDesc);
     
     
 				var paramDesc = new JIStruct();
-				paramDesc.addMember(new JIPointer(typeof(JIVariant),false));
-				paramDesc.addMember(typeof(short?));
+				paramDesc.AddMember(new JIPointer(typeof(JIVariant),false));
+				paramDesc.AddMember(typeof(short?));
     
-				typeAttr.addMember(paramDesc);
+				typeAttr.AddMember(paramDesc);
     
-				var result = comObject.call(obj);
+				var result = ComObject.Call(obj);
 				var attr = new TypeAttr((JIPointer)result[0]);
 				return attr;
 			}
@@ -248,7 +248,7 @@ namespace org.jinterop.dcom.impls.automation {
 				callObject.addOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
 				callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 				callObject.Opnum = 15;
-				var result = comObject.call(callObject);
+				var result = ComObject.Call(callObject);
 				var retVal = new object[2];
 				retVal[0] = (IJITypeLib) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 				retVal[1] = result[1];
@@ -280,7 +280,7 @@ namespace org.jinterop.dcom.impls.automation {
 			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(typeof(short?),JIFlags.FLAG_NULL);
 			callObject.Opnum = 10;
-			return comObject.call(callObject);
+			return ComObject.Call(callObject);
 		}
 
 	//	HRESULT GetDocumentation(
@@ -302,7 +302,7 @@ namespace org.jinterop.dcom.impls.automation {
 			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			callObject.Opnum = 9;
-			return comObject.call(callObject);
+			return ComObject.Call(callObject);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -320,68 +320,68 @@ namespace org.jinterop.dcom.impls.automation {
 			//CLEANLOCALSTORAGE --> this is wrong, since CLEANLOCALSTORAGE is a struct, but it has always
 			//come null and even if something comes, I don't know which pointer PVOID stands for.
 			var cleanlocalstorage = new JIStruct();
-			cleanlocalstorage.addMember(typeof(int?));
-			cleanlocalstorage.addMember(typeof(int?));
-			cleanlocalstorage.addMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
+			cleanlocalstorage.AddMember(typeof(int?));
 			callObject.addOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
 
-			vardesc.addMember(typeof(int?)); //memberid
-			vardesc.addMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
+			vardesc.AddMember(typeof(int?)); //memberid
+			vardesc.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
 
 			var union = new JIUnion(typeof(int?));
-			union.addMember(VarDesc.VAR_PERINSTANCE, typeof(int?));
-			union.addMember(VarDesc.VAR_DISPATCH, typeof(int?));
-			union.addMember(VarDesc.VAR_STATIC, typeof(int?));
-			union.addMember(VarDesc.VAR_CONST, typeof(JIVariant));
-			vardesc.addMember(union);
+			union.AddMember(VarDesc.VAR_PERINSTANCE, typeof(int?));
+			union.AddMember(VarDesc.VAR_DISPATCH, typeof(int?));
+			union.AddMember(VarDesc.VAR_STATIC, typeof(int?));
+			union.AddMember(VarDesc.VAR_CONST, typeof(JIVariant));
+			vardesc.AddMember(union);
 
 			var elemDesc = new JIStruct();
 
 			//SAFEARRAYBOUNDS
 			var safeArrayBounds = new JIStruct();
-			safeArrayBounds.addMember(typeof(int?));
-			safeArrayBounds.addMember(typeof(int?));
+			safeArrayBounds.AddMember(typeof(int?));
+			safeArrayBounds.AddMember(typeof(int?));
 
 			//arraydesc
 			var arrayDesc = new JIStruct();
 			//typedesc
 			var typeDesc = new JIStruct();
 
-			arrayDesc.addMember(typeDesc);
-			arrayDesc.addMember(typeof(short?));
-			arrayDesc.addMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
+			arrayDesc.AddMember(typeDesc);
+			arrayDesc.AddMember(typeof(short?));
+			arrayDesc.AddMember(new JIArray(safeArrayBounds,new int[]{1},1,true));
 
 			var forTypeDesc = new JIUnion(typeof(short?));
 			var ptrToTypeDesc = new JIPointer(typeDesc);
 			var ptrToArrayDesc = new JIPointer(arrayDesc);
 
-			forTypeDesc.addMember(TypeDesc.VT_PTR,ptrToTypeDesc);
-			forTypeDesc.addMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
-			forTypeDesc.addMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
-			forTypeDesc.addMember(TypeDesc.VT_USERDEFINED,typeof(int?));
-			typeDesc.addMember(forTypeDesc);
-			typeDesc.addMember(typeof(short?)); //VARTYPE
+			forTypeDesc.AddMember(TypeDesc.VT_PTR,ptrToTypeDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
+			forTypeDesc.AddMember(TypeDesc.VT_USERDEFINED,typeof(int?));
+			typeDesc.AddMember(forTypeDesc);
+			typeDesc.AddMember(typeof(short?)); //VARTYPE
 
 			//PARAMDESC
 			var paramDesc2 = new JIStruct();
-			paramDesc2.addMember(typeof(int?));
-			paramDesc2.addMember(typeof(JIVariant));
+			paramDesc2.AddMember(typeof(int?));
+			paramDesc2.AddMember(typeof(JIVariant));
 			var paramDesc = new JIStruct();
-			paramDesc.addMember(new JIPointer(paramDesc2,false));
-			paramDesc.addMember(typeof(short?));
+			paramDesc.AddMember(new JIPointer(paramDesc2,false));
+			paramDesc.AddMember(typeof(short?));
 	//		JIStruct paramDesc = new JIStruct();
 	//		paramDesc.addMember(new JIPointer(JIVariant.class,false));
 	//		//paramDesc.addMember(JIVariant.class);
 	//		paramDesc.addMember(Short.class);
 
-			elemDesc.addMember(typeDesc);
-			elemDesc.addMember(paramDesc);
+			elemDesc.AddMember(typeDesc);
+			elemDesc.AddMember(paramDesc);
 
-			vardesc.addMember(elemDesc);
-			vardesc.addMember(typeof(short?));
-			vardesc.addMember(typeof(int?));
+			vardesc.AddMember(elemDesc);
+			vardesc.AddMember(typeof(short?));
+			vardesc.AddMember(typeof(int?));
 
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 
 			return new VarDesc((JIPointer)result[0]);
 
@@ -409,7 +409,7 @@ namespace org.jinterop.dcom.impls.automation {
 			callObject.addOutParamAsObject(new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),null,1,true,true),JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 
-			return comObject.call(callObject);
+			return ComObject.Call(callObject);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -421,7 +421,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			return (int)(int?)((object[])comObject.call(callObject))[0];
+			return (int)(int?)((object[])ComObject.Call(callObject))[0];
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -433,7 +433,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			return (int)(int?)((object[])comObject.call(callObject))[0];
+			return (int)(int?)((object[])ComObject.Call(callObject))[0];
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -445,7 +445,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(hrefType,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 
@@ -498,7 +498,7 @@ namespace org.jinterop.dcom.impls.automation {
 
             callObject.addInParamAsUUID(riid,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
 
@@ -511,7 +511,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
 			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			var result = comObject.call(callObject);
+			var result = ComObject.Call(callObject);
 			return (JIString)result[0];
 		}
 	}

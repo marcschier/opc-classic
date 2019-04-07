@@ -1,17 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
-
+//
 
 namespace rpc.core {
     using Serilog;
@@ -41,7 +39,7 @@ namespace rpc.core {
         /// <summary>
         /// Create default result
         /// </summary>
-        public PresentationResult() : 
+        public PresentationResult() :
             this(new PresentationSyntax(NdrCodec.NDR_SYNTAX)) {
         }
 
@@ -49,8 +47,8 @@ namespace rpc.core {
         /// Create result
         /// </summary>
         /// <param name="transferSyntax"></param>
-        public PresentationResult(PresentationSyntax transferSyntax) : 
-            this(PresentationResultCode.ACCEPTANCE, 
+        public PresentationResult(PresentationSyntax transferSyntax) :
+            this(PresentationResultCode.ACCEPTANCE,
                 PresentationResultReason.REASON_NOT_SPECIFIED, transferSyntax) {
         }
 
@@ -59,7 +57,7 @@ namespace rpc.core {
         /// </summary>
         /// <param name="result"></param>
         /// <param name="reason"></param>
-        public PresentationResult(PresentationResultCode result, 
+        public PresentationResult(PresentationResultCode result,
             PresentationResultReason reason) :
             this(result, reason, null) {
         }
@@ -70,7 +68,7 @@ namespace rpc.core {
         /// <param name="result"></param>
         /// <param name="reason"></param>
         /// <param name="transferSyntax"></param>
-        public PresentationResult(PresentationResultCode result, 
+        public PresentationResult(PresentationResultCode result,
             PresentationResultReason reason, PresentationSyntax transferSyntax) {
             Result = result;
             Reason = reason;
@@ -83,7 +81,7 @@ namespace rpc.core {
             Result = (PresentationResultCode)ndr.ReadUnsignedShort();
             Reason = (PresentationResultReason)ndr.ReadUnsignedShort();
             //commenting this since the entire packet should be decoded VRC
-            //if (Result == PresentationResultCode.ACCEPTANCE) 
+            //if (Result == PresentationResultCode.ACCEPTANCE)
             {
                 TransferSyntax = new PresentationSyntax();
                 try {

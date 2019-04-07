@@ -41,9 +41,9 @@
 		{
 			var arry123 = new JIArray(new sbyte?[10][0],true);
 			var struct123 = new JIStruct();
-			struct123.addMember(arry123);
-			struct123.addMember(0, 1);
-			struct123.addMember(0,new JIPointer(arry123));
+			struct123.AddMember(arry123);
+			struct123.AddMember(0, 1);
+			struct123.AddMember(0,new JIPointer(arry123));
 
 			//JIArray array = new JIArray(new short[]{0});
 			JISystem.AutoRegisteration = true;
@@ -94,8 +94,8 @@
 
 
 				var bundle = JISystem.ErrorMessages;
-				var unknown = stub.createInstance();
-				var dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+				var unknown = stub.CreateInstance();
+				var dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 				var variants = dispatch.callMethodA("GetDispatch");
 
 	//			dispatch.callMethodA("TestVariant1", new Object[]{variants[1]} );
@@ -126,7 +126,7 @@
 				//JIVariant t1234 = dispatch.callMethodA("GetStooges");
 
 			   // dispatch.callMethod("testArrayOfVariants",new Object[]{new JIArray(new JIVariant[]{new JIVariant(new JIArray(new JIString[]{new JIString("ab"),new JIString("cd")}))},true)});
-				var handle2 = (IJIComObject)unknown.queryInterface("620012E2-69E3-4DC0-B553-AE252524D2F6");
+				var handle2 = (IJIComObject)unknown.QueryInterface("620012E2-69E3-4DC0-B553-AE252524D2F6");
                 //IJIComObject handle3 = (IJIComObject)unknown.queryInterface(IJITypeLib.IID);
                 //JIArray arry34 = new JIArray(new JIVariant[]{new JIVariant(new JIString("40807810804000300798")),new JIVariant(new JIString("1"))},true);
                 //JIVariant[] c2 = dispatch.callMethodA("Request", new Object[]{new JIString("rtrtr"),new JIVariant(new JIVariant(arry34)),JIVariant.EMPTY()_BYREF,JIVariant.EMPTY()_BYREF} );
@@ -137,7 +137,7 @@
                 };
                 callObject.addInParamAsPointer(new JIPointer(new JIArray(new JIVariant[]{}, true)), JIFlags.FLAG_NULL);
 				//callObject.addInParamAsArray(new JIArray(new JIVariant[]{new JIVariant(new JIArray(new JIString[]{new JIString("ab"),new JIString("cd")}))},true), JIFlags.FLAG_NULL);
-				var r = handle2.call(callObject);
+				var r = handle2.Call(callObject);
 
 
 				object[] t123 = dispatch.callMethodA("GetFlavorsWithPrices", new object[]{JIVariant.CreateEMPTY_BYREF()});
@@ -147,7 +147,7 @@
 				//dispatch.callMethodA("Request", new Object[]{new Integer(8194),arry34,JIVariant.EMPTY()_BYREF,JIVariant.EMPTY()_BYREF} );
 				object[] ret0 = dispatch.callMethodA("LongArray", new object[]{new JIVariant(new JIArray(new int?[]{ 1, new int?(2), 4 },true), true)});
 				var ret01 = ((JIVariant)ret0[1]).ObjectAsArray;
-				ret0 = dispatch.callMethodA("ReadAsicRegisterBlock", new object[]{new JIString("Chonap"),new JIString("Cho"),new JIVariant(new JIArray(new JIUnsignedShort[]{(JIUnsignedShort)JIUnsignedFactory.getUnsigned(4000, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT),(JIUnsignedShort)JIUnsignedFactory.getUnsigned(4001, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT)},true),true),new JIVariant(new JIArray(new JIUnsignedInteger[]{(JIUnsignedInteger)JIUnsignedFactory.getUnsigned(9999, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT),(JIUnsignedInteger)JIUnsignedFactory.getUnsigned(9999, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT)},true),true), false,true});
+				ret0 = dispatch.callMethodA("ReadAsicRegisterBlock", new object[]{new JIString("Chonap"),new JIString("Cho"),new JIVariant(new JIArray(new JIUnsignedShort[]{(JIUnsignedShort)JIUnsignedFactory.GetUnsigned(4000, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT),(JIUnsignedShort)JIUnsignedFactory.GetUnsigned(4001, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT)},true),true),new JIVariant(new JIArray(new JIUnsignedInteger[]{(JIUnsignedInteger)JIUnsignedFactory.GetUnsigned(9999, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT),(JIUnsignedInteger)JIUnsignedFactory.GetUnsigned(9999, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT)},true),true), false,true});
 				ret01 = ((JIVariant)ret0[1]).ObjectAsArray;
 
 				ret0 = dispatch.callMethodA("testSA1", new object[]{new JIVariant(new JIArray(new bool?[]{false,true},true),true),new JIVariant(new JIArray(new float?[]{ 123.4, new float?(123.4)},true),true),new JIVariant(new JIArray(new double?[]{ 123.4, new double?(123.4)},true),true)});
@@ -168,31 +168,31 @@
 
 				//IJIComObject handle2 = (IJIComObject)unknown.queryInterface("A12E7F85-B011-4AB3-A924-215F67A725D5");
 
-				dispatch.callMethod("testUnsignedInt", new object[]{JIUnsignedFactory.getUnsigned((short)-200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE)});
+				dispatch.callMethod("testUnsignedInt", new object[]{JIUnsignedFactory.GetUnsigned((short)-200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE)});
 
 				var filetime = new JIStruct();
-				filetime.addMember(typeof(int?));
-				filetime.addMember(typeof(int?));
+				filetime.AddMember(typeof(int?));
+				filetime.AddMember(typeof(int?));
 
 				var ONEVENTSTRUCT = new JIStruct();
-				ONEVENTSTRUCT.addMember(typeof(short?));
-				ONEVENTSTRUCT.addMember(typeof(short?));
-				ONEVENTSTRUCT.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
-				ONEVENTSTRUCT.addMember(filetime);
-				ONEVENTSTRUCT.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
-				ONEVENTSTRUCT.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
-				ONEVENTSTRUCT.addMember(typeof(short?));
-				ONEVENTSTRUCT.addMember(typeof(short?));
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(filetime);
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(typeof(int?));
-				ONEVENTSTRUCT.addMember(new JIPointer(typeof(JIVariant)));
-				ONEVENTSTRUCT.addMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+				ONEVENTSTRUCT.AddMember(typeof(short?));
+				ONEVENTSTRUCT.AddMember(typeof(short?));
+				ONEVENTSTRUCT.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+				ONEVENTSTRUCT.AddMember(filetime);
+				ONEVENTSTRUCT.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+				ONEVENTSTRUCT.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+				ONEVENTSTRUCT.AddMember(typeof(short?));
+				ONEVENTSTRUCT.AddMember(typeof(short?));
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(filetime);
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(typeof(int?));
+				ONEVENTSTRUCT.AddMember(new JIPointer(typeof(JIVariant)));
+				ONEVENTSTRUCT.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
 
 				callObject = new JICallBuilder();
 	//			callObject.setOpnum(3);
@@ -210,8 +210,8 @@
 			//Integer
 				callObject.reInit();
 				callObject.Opnum = 147;
-				callObject.addInParamAsUnsigned(JIUnsignedFactory.getUnsigned((short)200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE),JIFlags.FLAG_NULL);
-				handle2.call(callObject);
+				callObject.addInParamAsUnsigned(JIUnsignedFactory.GetUnsigned((short)200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE),JIFlags.FLAG_NULL);
+				handle2.Call(callObject);
 
 				var aIn = new JIArray(new JIVariant[] {new JIVariant(new JIString("40807810804000300798")),new JIVariant(new JIString("1"))},true);
 				   var varArray = new JIVariant(aIn);
@@ -233,7 +233,7 @@
 				callObject.addOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 				callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 
-				var t = handle2.call(callObject);
+				var t = handle2.Call(callObject);
 
 				//since this is a byRef (check using the isByReflagSet())
 				var arrt = ((JIVariant)t[0]).ObjectAsVariant.ObjectAsArray;
@@ -243,7 +243,7 @@
 
 				callObject.addInParamAsPointer(new JIPointer(new JIString("123",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)),JIFlags.FLAG_NULL);
 				callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR),JIFlags.FLAG_NULL);
-				var t2 = handle2.call(callObject);
+				var t2 = handle2.Call(callObject);
 
 				callObject.reInit();
 				callObject.Opnum = 143;
@@ -263,7 +263,7 @@
 				callObject.addInParamAsUUID("620012E2-69E3-4DC0-B553-AE252524D2F6", JIFlags.FLAG_NULL);
 				callObject.addOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
 
-				t2 = handle2.call(callObject);
+				t2 = handle2.Call(callObject);
 
 
 	//			JIVariant variantDate = new JIVariant(new Date(),true);
@@ -291,7 +291,7 @@
 				//JIArray arrtt = (c[2]).getObjectAsVariant().getObjectAsArray();
 				//System.out.println(arrtt);
 
-				var handle = (IJIComObject)unknown.queryInterface("620012E2-69E3-4DC0-B553-AE252524D2F6");
+				var handle = (IJIComObject)unknown.QueryInterface("620012E2-69E3-4DC0-B553-AE252524D2F6");
 				var callObject2 = new JICallBuilder();
 
 
@@ -438,49 +438,49 @@
 				obj.reInit();
 				obj.Opnum = 49;
 				obj.addInParamAsPointer(new JIPointer(new JIPointer(100)),JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 				obj.reInit();
 				obj.Opnum = 53;
 				obj.addInParamAsPointer(new JIPointer(100),JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 
 				obj.reInit();
 				obj.Opnum = 134;
 				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 				obj.reInit();
 				obj.Opnum = 135;
 				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
 				obj.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 				obj.reInit();
 				obj.Opnum = 136;
 				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 				obj.reInit();
 				obj.Opnum = 137;
 				obj.addInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
 				obj.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 				object[] ret = dispatch.callMethodA("testBSTR01",new object[]{new JIVariant(new JIString("Hello"),true)});
 
 				obj.reInit();
 				obj.Opnum = 138;
 				obj.addInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-				handle.call(obj);
+				handle.Call(obj);
 
 	//			 ret = dispatch.callMethodA("testBSTR02",new Object[]{new JIVariant(new JIString("Hello"),true)});
 
 				obj.reInit();
 				obj.Opnum = 139;
 				obj.addInParamAsPointer(new JIPointer(new JIString("Hello")), JIFlags.FLAG_NULL);
-				handle.call(obj);
+				handle.Call(obj);
 
 		//		ret = dispatch.callMethodA("testBSTR03",new Object[]{new JIVariant(new JIString("Hello"),true)});
 
@@ -552,12 +552,12 @@
 				var component = new JILocalCoClass(interfaceDefinition,typeof(Test));
 				var runtimeObject = new JILocalParamsDescriptor();
 				var methodDescriptor = new JILocalMethodDescriptor("test",1,runtimeObject);
-				interfaceDefinition.addMethodDescriptor(methodDescriptor);
+				interfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 				var objMyCOM = JIObjectFactory.buildObject(session,component);
 				obj.addInParamAsVariant(new JIVariant(objMyCOM),JIFlags.FLAG_NULL);
 				obj.addOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-				result = handle.call(obj);
+				result = handle.Call(obj);
 
 	//			obj.reInit();
 	//			obj.setOpnum(4);

@@ -25,9 +25,9 @@
 			session = JISession.createSession(args[1],args[2],args[3]);
 			session.useSessionSecurity(true);
 			var comServer = new JIComServer(JIProgId.valueOf("SYSINFO.SysInfo"),args[0],session);
-			sysInfoServer = comServer.createInstance();
-			sysInfoObject = (IJIComObject)sysInfoServer.queryInterface("6FBA474C-43AC-11CE-9A0E-00AA0062BB4C");
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(sysInfoObject.queryInterface(impls.automation.IJIDispatch_Fields.IID));
+			sysInfoServer = comServer.CreateInstance();
+			sysInfoObject = (IJIComObject)sysInfoServer.QueryInterface("6FBA474C-43AC-11CE-9A0E-00AA0062BB4C");
+			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(sysInfoObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 		}
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -51,8 +51,8 @@
 			//6FBA474D-43AC-11CE-9A0E-00AA0062BB4C
 
 			var javaComponent = new JILocalCoClass(new JILocalInterfaceDefinition("6FBA474D-43AC-11CE-9A0E-00AA0062BB4C"),typeof(SysInfoEvents));
-			javaComponent.InterfaceDefinition.addMethodDescriptor(new JILocalMethodDescriptor("PowerStatusChanged",8,null));
-			javaComponent.InterfaceDefinition.addMethodDescriptor(new JILocalMethodDescriptor("TimeChanged",3,null));
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(new JILocalMethodDescriptor("PowerStatusChanged",8,null));
+			javaComponent.InterfaceDefinition.AddMethodDescriptor(new JILocalMethodDescriptor("TimeChanged",3,null));
 			identifier = JIObjectFactory.attachEventHandler(sysInfoServer,"6FBA474D-43AC-11CE-9A0E-00AA0062BB4C",JIObjectFactory.buildObject(session,javaComponent));
 			try
 			{
