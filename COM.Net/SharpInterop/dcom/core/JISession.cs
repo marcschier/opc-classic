@@ -738,14 +738,14 @@ namespace org.jinterop.dcom.core {
                 Opnum = 2 //release
             };
             //length
-            obj.addInParamAsShort((short)1, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort((short)1, JIFlags.FLAG_NULL);
             //ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(IPID) }, true);
-            obj.addInParamAsArray(array, JIFlags.FLAG_NULL);
+            obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             //TODO requesting 5 for now, will later build caching mechnaism to exhaust 5 refs first before asking for more
             // same with release.
-            obj.addInParamAsInt(numinstances, JIFlags.FLAG_NULL);
-            obj.addInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
+            obj.AddInParamAsInt(numinstances, JIFlags.FLAG_NULL);
+            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
                 Log.Logger.Warning("releaseRef: Releasing numinstances " + numinstances + " references of IPID: " + IPID + " session: " + SessionIdentifier);
                 debug_delIpids(IPID, numinstances);
@@ -781,8 +781,8 @@ namespace org.jinterop.dcom.core {
                 Opnum = 2 //release
             };
             //length
-            obj.addInParamAsShort((short)((object[])arrayOfStructs.ArrayInstance).Length, JIFlags.FLAG_NULL);
-            obj.addInParamAsArray(arrayOfStructs, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort((short)((object[])arrayOfStructs.ArrayInstance).Length, JIFlags.FLAG_NULL);
+            obj.AddInParamAsArray(arrayOfStructs, JIFlags.FLAG_NULL);
             obj._fromDestroySession = fromDestroy;
             _stub.AddRef_ReleaseRef(obj);
             //ignore the results

@@ -47,11 +47,11 @@
             var callObject = new JICallBuilder {
                 Opnum = 1 //obtained from the IDL or TypeLib.
             };
-            callObject.addInParamAsInt(1,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(2,JIFlags.FLAG_NULL);
-			callObject.addInParamAsPointer(new JIPointer(0),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(1,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(2,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsPointer(new JIPointer(0),JIFlags.FLAG_NULL);
 			//Since the retval is a top level pointer , it will get replaced with it's base type.
-			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 			results = comObject.Call(callObject);
 			Console.WriteLine(results[0]);
 			JISession.destroySession(dispatch.AssociatedSession);

@@ -36,15 +36,15 @@
             var callObject = new JICallBuilder(!application.DispatchSupported) {
                 Opnum = 12
             };
-            callObject.addInParamAsString("MAPI", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsString("MAPI", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var res = application.Call(callObject);
 
 			var @namespace = JIObjectFactory.narrowObject((IJIComObject)res[0]);
             callObject = new JICallBuilder {
                 Opnum = 16
             };
-            callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			res = @namespace.Call(callObject);
 
 			if (res[0] == null)
@@ -57,7 +57,7 @@
             callObject = new JICallBuilder {
                 Opnum = 4
             };
-            callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			res = folder.Call(callObject);
 
 			if ((int)(int?)res[0] != 2)
@@ -66,9 +66,9 @@
 				return;
 			}
 
-			callObject.reInit();
+			callObject.ReInit();
 			callObject.Opnum = 10;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			res = folder.Call(callObject);
 			if (res[0] == null)
 			{
@@ -80,7 +80,7 @@
             callObject = new JICallBuilder {
                 Opnum = 12
             };
-            callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			res = items.Call(callObject);
 
 			while (true)
@@ -111,7 +111,7 @@
                 callObject = new JICallBuilder {
                     Opnum = 14
                 };
-                callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+                callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 				res = items.Call(callObject);
 			}
 

@@ -48,7 +48,7 @@ namespace org.jinterop.dcom.impls.automation {
                 var callObject = new JICallBuilder(true) {
                     Opnum = 0
                 };
-                callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+                callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 				var result = ComObject.Call(callObject);
 				return (int)(int?)result[0];
 			}
@@ -61,8 +61,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 1
             };
-            callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
@@ -74,8 +74,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 2
             };
-            callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (int)(int?)result[0];
 		}
@@ -87,8 +87,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 3
             };
-            callObject.addInParamAsUUID(uuid,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsUUID(uuid,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
@@ -109,8 +109,8 @@ namespace org.jinterop.dcom.impls.automation {
 			tlibattr.AddMember(typeof(short?));
 			tlibattr.AddMember(typeof(short?));
 
-			callObject.addOutParamAsObject(new JIPointer(tlibattr),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL); //CLEANUPSTORAGE
+			callObject.AddOutParamAsObject(new JIPointer(tlibattr),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL); //CLEANUPSTORAGE
 			var result = ComObject.Call(callObject);
 			var i = 0;
 		}
@@ -121,12 +121,12 @@ namespace org.jinterop.dcom.impls.automation {
 		public object[] getDocumentation(int memberId)
 		{
 			var callObject = new JICallBuilder(true);
-			callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(0xb,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(0xb,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			callObject.Opnum = 6;
 			return ComObject.Call(callObject);
 		}
@@ -138,14 +138,14 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 8
             };
-            callObject.addInParamAsString(nameBuf.String,nameBuf.Type);
-			callObject.addInParamAsInt(hashValue,JIFlags.FLAG_NULL);
-			callObject.addInParamAsShort(found,JIFlags.FLAG_NULL);
+            callObject.AddInParamAsString(nameBuf.String,nameBuf.Type);
+			callObject.AddInParamAsInt(hashValue,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsShort(found,JIFlags.FLAG_NULL);
 
-			callObject.addOutParamAsObject(new JIArray(typeof(IJIComObject),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIArray(typeof(int?),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(short?),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIArray(typeof(IJIComObject),null,1,true,true),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIArray(typeof(int?),null,1,true,true),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(short?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 
 			return ComObject.Call(callObject);
 		}

@@ -62,7 +62,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="clazz"> </param>
         /// <param name="flags"> </param>
         public void AddInParamAsType(Type clazz, int flags) {
-            _callObject.addOutParamAsType(clazz, flags);
+            _callObject.AddOutParamAsType(clazz, flags);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="param"> </param>
         /// <param name="flags"> </param>
         public void AddInParamAsObject(object param, int flags) {
-            _callObject.addOutParamAsObject(param, flags);
+            _callObject.AddOutParamAsObject(param, flags);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="params"> </param>
         /// <param name="flags"> </param>
         internal void SetInParams(object[] @params, int flags) {
-            _callObject.setOutParams(@params, flags);
+            _callObject.SetOutParams(@params, flags);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
         public void RemoveInParamAt(int index, int flags) {
-            _callObject.removeOutParamAt(index, flags);
+            _callObject.RemoveOutParamAt(index, flags);
         }
 
         private readonly JICallBuilder _callObject = new JICallBuilder();

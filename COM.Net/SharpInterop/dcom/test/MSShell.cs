@@ -46,23 +46,23 @@
 	//		callObject.setOpnum(7);
 	//		result = shellDispatch.call(callObject);
 
-			callObject.reInit();
+			callObject.ReInit();
 			callObject.Opnum = 2;
-			callObject.addInParamAsVariant(new JIVariant(2),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsVariant(new JIVariant(2),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = shellDispatch.Call(callObject);
 			var folder = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
             };
-            callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			result = folder.Call(callObject);
 			Console.WriteLine("Current Folder: " + result[0]);
 
-			callObject.reInit();
+			callObject.ReInit();
 			callObject.Opnum = 1;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			result = folder.Call(callObject);
 			var test = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
@@ -73,32 +73,32 @@
 	//		result = folder.call(callObject);
 	//		test = JIObjectFactory.createCOMInstance(shellDispatch,(JIInterfacePointer)result[0]);
 
-			callObject.reInit();
+			callObject.ReInit();
 			callObject.Opnum = 3;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			result = folder.Call(callObject);
 			test = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
-			callObject.reInit();
+			callObject.ReInit();
 			callObject.Opnum = 4;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			result = folder.Call(callObject);
 			var folderItems = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
             };
-            callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			result = folderItems.Call(callObject);
 
 			var count = (int)(int?)result[0];
 
 			for (var i = 0;i < count;i++)
 			{
-				callObject.reInit();
+				callObject.ReInit();
 				callObject.Opnum = 3;
-				callObject.addInParamAsVariant(new JIVariant(i),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsVariant(new JIVariant(i),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 				result = folderItems.Call(callObject);
 				var folderItem = JIObjectFactory.narrowObject((IJIComObject)result[0]);
 
@@ -106,23 +106,23 @@
                 var callObject2 = new JICallBuilder {
                     Opnum = 2
                 };
-                callObject2.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+                callObject2.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 				result = folderItem.Call(callObject2);
 				Console.WriteLine("Name of Object: " + result[0]);
 
-				callObject2.reInit();
+				callObject2.ReInit();
 				callObject2.Opnum = 4;
-				callObject2.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+				callObject2.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 				result = folderItem.Call(callObject2);
 				Console.WriteLine("Path of the Object: " + result[0]);
 
 
-				callObject2.reInit();
+				callObject2.ReInit();
                 callObject2 = new JICallBuilder {
                     Opnum = 9
                 };
                 //VARIANT_BOOL is Boolean
-                callObject2.addOutParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
+                callObject2.AddOutParamAsType(typeof(bool?),JIFlags.FLAG_NULL);
 				result = folderItem.Call(callObject2);
 
 				var isFileSystemObject = (bool)(bool?)result[0];
@@ -136,11 +136,11 @@
 					Console.Write(" and is not part of file system\n");
 				}
 
-				callObject2.reInit();
+				callObject2.ReInit();
                 callObject2 = new JICallBuilder {
                     Opnum = 13
                 };
-                callObject2.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
+                callObject2.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 				result = folderItem.Call(callObject2);
 				Console.Write(" and size(in bytes) is: " + (int)(int?)result[0] + "\n");
 

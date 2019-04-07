@@ -61,8 +61,8 @@ namespace org.jinterop.dcom.impls.automation {
                 var obj = new JICallBuilder(true) {
                     Opnum = 0
                 };
-                obj.addInParamAsInt(0, JIFlags.FLAG_NULL);
-				obj.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+                obj.AddInParamAsInt(0, JIFlags.FLAG_NULL);
+				obj.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 				var result = ComObject.Call(obj);
 				return (int)(int?)result[0];
 			}
@@ -92,11 +92,11 @@ namespace org.jinterop.dcom.impls.automation {
 
             var name = new JIString(apiName.Trim(),JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
 			var array = new JIArray(new JIPointer[]{new JIPointer(name)},true);
-			obj.addInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
-			obj.addInParamAsArray(array,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(1,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(0x800,JIFlags.FLAG_NULL);
-			obj.addOutParamAsObject(new JIArray(typeof(int?),null,1,true),JIFlags.FLAG_NULL);
+			obj.AddInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
+			obj.AddInParamAsArray(array,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(1,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(0x800,JIFlags.FLAG_NULL);
+			obj.AddOutParamAsObject(new JIArray(typeof(int?),null,1,true),JIFlags.FLAG_NULL);
 
 
 			var result = ComObject.Call(obj);
@@ -165,12 +165,12 @@ namespace org.jinterop.dcom.impls.automation {
 
 			var array = new JIArray(pointers,true);
 			var arrayOut = new JIArray(typeof(int?),null,1,true);
-			obj.addInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
-			obj.addInParamAsArray(array,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(apiName.Length,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(0x800,JIFlags.FLAG_NULL);
+			obj.AddInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
+			obj.AddInParamAsArray(array,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(apiName.Length,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(0x800,JIFlags.FLAG_NULL);
 
-			obj.addOutParamAsObject(arrayOut,JIFlags.FLAG_NULL);
+			obj.AddOutParamAsObject(arrayOut,JIFlags.FLAG_NULL);
 
 			var result = ComObject.Call(obj);
 
@@ -205,9 +205,9 @@ namespace org.jinterop.dcom.impls.automation {
             var obj = new JICallBuilder(true) {
                 Opnum = 1
             };
-            obj.addInParamAsInt(typeInfo,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(0x400,JIFlags.FLAG_NULL);
-			obj.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            obj.AddInParamAsInt(typeInfo,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(0x400,JIFlags.FLAG_NULL);
+			obj.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			//obj.setUpParams(new Object[]{new Integer(typeInfo),new Integer(0x400)},new Object[]{MInterfacePointer.class},JIFlags.FLAG_NULL,JIFlags.FLAG_NULL);
 			var result = ComObject.Call(obj);
 			return (IJITypeInfo)JIObjectFactory.narrowObject((IJIComObject)result[0]);
@@ -269,11 +269,11 @@ namespace org.jinterop.dcom.impls.automation {
 			dispParams.AddMember(lengthPtr);
 
 
-			obj.addInParamAsInt(dispId,JIFlags.FLAG_NULL);
-			obj.addInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
-			obj.addInParamAsInt(0x800,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(dispId,JIFlags.FLAG_NULL);
+			obj.AddInParamAsUUID(UUID.NIL_UUID,JIFlags.FLAG_NULL);
+			obj.AddInParamAsInt(0x800,JIFlags.FLAG_NULL);
 			obj.addInParamAsInt(dispatchFlags ^ 0xFFFFFFF0,JIFlags.FLAG_NULL);
-			obj.addInParamAsStruct(dispParams,JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
+			obj.AddInParamAsStruct(dispParams,JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
 			//now add the extra params if exist.
 			if (listOfVariantPtrs.Count > 0)
@@ -281,14 +281,14 @@ namespace org.jinterop.dcom.impls.automation {
 				//write length
 				obj.addInParamAsInt(listOfPositions.Count,JIFlags.FLAG_NULL);
 				//then write the array
-				obj.addInParamAsArray(new JIArray(listOfPositions.ToArray(typeof(int?)),true),JIFlags.FLAG_NULL);
+				obj.AddInParamAsArray(new JIArray(listOfPositions.ToArray(typeof(int?)),true),JIFlags.FLAG_NULL);
 				//now write the array of variant ptrs
-				obj.addInParamAsArray(new JIArray(listOfVariantPtrs.ToArray(typeof(JIVariant)),true),JIFlags.FLAG_NULL);
+				obj.AddInParamAsArray(new JIArray(listOfVariantPtrs.ToArray(typeof(JIVariant)),true),JIFlags.FLAG_NULL);
 			}
 
-			obj.addInParamAsObject(null,JIFlags.FLAG_NULL); //results --> currently all are null and this param is not required as the outparam carries this info.
-			obj.addInParamAsObject(null,JIFlags.FLAG_NULL); //excepinfo --> currently all are null and this param is not required as the excepinfo is built here.
-			obj.addInParamAsObject(null,JIFlags.FLAG_NULL); //augerr --> currently all are null and this param is not required as the excepinfo is built here.
+			obj.AddInParamAsObject(null,JIFlags.FLAG_NULL); //results --> currently all are null and this param is not required as the outparam carries this info.
+			obj.AddInParamAsObject(null,JIFlags.FLAG_NULL); //excepinfo --> currently all are null and this param is not required as the excepinfo is built here.
+			obj.AddInParamAsObject(null,JIFlags.FLAG_NULL); //augerr --> currently all are null and this param is not required as the excepinfo is built here.
 
 			var outparams = new object[4];
 			if (outParamType == null)
@@ -306,7 +306,7 @@ namespace org.jinterop.dcom.impls.automation {
 
 
 
-			obj.setOutParams(outparams,JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
+			obj.SetOutParams(outparams,JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
 			object[] result = null;
 			try

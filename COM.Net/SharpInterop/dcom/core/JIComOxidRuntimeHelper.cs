@@ -751,13 +751,13 @@ namespace org.jinterop.dcom.core {
                     if (retArray != null) {
                         //serialize all members sequentially.
                         for (var i = 0; i < retArray.Length; i++) {
-                            callObject.addInParamAsObject(retArray[i], JIFlags.FLAG_NULL);
+                            callObject.AddInParamAsObject(retArray[i], JIFlags.FLAG_NULL);
                         }
                     }
                     else {
                         //serialize all members sequentially.
                         for (var i = 0; i < ((object[])result).Length; i++) {
-                            callObject.addInParamAsObject(((object[])result)[i], JIFlags.FLAG_NULL);
+                            callObject.AddInParamAsObject(((object[])result)[i], JIFlags.FLAG_NULL);
                         }
 
                     }
@@ -765,7 +765,7 @@ namespace org.jinterop.dcom.core {
 
 
                 }
-                callObject.write2(ndr2);
+                callObject.Write2(ndr2);
                 JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int?), hresult, null, JIFlags.FLAG_NULL);
 
 

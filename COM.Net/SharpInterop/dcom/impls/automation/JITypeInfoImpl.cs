@@ -56,7 +56,7 @@ namespace org.jinterop.dcom.impls.automation {
             var obj = new JICallBuilder(true) {
                 Opnum = 2
             };
-            obj.addInParamAsInt(index,JIFlags.FLAG_NULL);
+            obj.AddInParamAsInt(index,JIFlags.FLAG_NULL);
 
 			//now to prepare out params
 			var funcDescStruct = new JIStruct();
@@ -65,7 +65,7 @@ namespace org.jinterop.dcom.impls.automation {
 			//first read the pointer representation. Do not want to use funcdesc but only describe
 			//it. This should show the flexibility of the API.
 			//TODO have to make a Pointer type which only reads the representation.
-			obj.addOutParamAsObject(new JIPointer(funcDescStruct),JIFlags.FLAG_NULL);
+			obj.AddOutParamAsObject(new JIPointer(funcDescStruct),JIFlags.FLAG_NULL);
 
 			//CLEANLOCALSTORAGE --> this is wrong, since CLEANLOCALSTORAGE is a struct, but it has always
 			//come null and even if something comes, I don't know which pointer PVOID stands for.
@@ -73,7 +73,7 @@ namespace org.jinterop.dcom.impls.automation {
 			cleanlocalstorage.AddMember(typeof(int?));
 			cleanlocalstorage.AddMember(typeof(int?));
 			cleanlocalstorage.AddMember(typeof(int?));
-			obj.addOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
+			obj.AddOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
 
 
 
@@ -173,11 +173,11 @@ namespace org.jinterop.dcom.impls.automation {
 
                 var typeAttr = new JIStruct();
 				var mainPtr = new JIPointer(typeAttr);
-				obj.addOutParamAsObject(mainPtr,JIFlags.FLAG_NULL);
+				obj.AddOutParamAsObject(mainPtr,JIFlags.FLAG_NULL);
     
 				//CLEANLOCALSTORAGE --> this is wrong, since CLEANLOCALSTORAGE is a struct, but it has always
 				//come null and even if something comes, I don't know which pointer PVOID stands for.
-				obj.addOutParamAsObject(new JIPointer(typeof(int?)),JIFlags.FLAG_NULL);
+				obj.AddOutParamAsObject(new JIPointer(typeof(int?)),JIFlags.FLAG_NULL);
     
 				typeAttr.AddMember(typeof(UUID));
 				typeAttr.AddMember(typeof(int?));
@@ -245,8 +245,8 @@ namespace org.jinterop.dcom.impls.automation {
 			get
 			{
 				var callObject = new JICallBuilder(true);
-				callObject.addOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
 				callObject.Opnum = 15;
 				var result = ComObject.Call(callObject);
 				var retVal = new object[2];
@@ -273,12 +273,12 @@ namespace org.jinterop.dcom.impls.automation {
 			}
 
 			var callObject = new JICallBuilder(true);
-			callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(invKind,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(1,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(typeof(short?),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(invKind,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(1,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(typeof(short?),JIFlags.FLAG_NULL);
 			callObject.Opnum = 10;
 			return ComObject.Call(callObject);
 		}
@@ -295,12 +295,12 @@ namespace org.jinterop.dcom.impls.automation {
 		public object[] getDocumentation(int memberId)
 		{
 			var callObject = new JICallBuilder(true);
-			callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(0xb,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(0xb,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			callObject.Opnum = 9;
 			return ComObject.Call(callObject);
 		}
@@ -312,18 +312,18 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 3
             };
-            callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
 
 			//now build the vardesc
 			var vardesc = new JIStruct();
-			callObject.addOutParamAsObject(new JIPointer(vardesc),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(vardesc),JIFlags.FLAG_NULL);
 			//CLEANLOCALSTORAGE --> this is wrong, since CLEANLOCALSTORAGE is a struct, but it has always
 			//come null and even if something comes, I don't know which pointer PVOID stands for.
 			var cleanlocalstorage = new JIStruct();
 			cleanlocalstorage.AddMember(typeof(int?));
 			cleanlocalstorage.AddMember(typeof(int?));
 			cleanlocalstorage.AddMember(typeof(int?));
-			callObject.addOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(cleanlocalstorage),JIFlags.FLAG_NULL);
 
 			vardesc.AddMember(typeof(int?)); //memberid
 			vardesc.AddMember(new JIPointer(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)));
@@ -403,11 +403,11 @@ namespace org.jinterop.dcom.impls.automation {
             //		callObject.addInParamAsStruct(struct,JIFlags.FLAG_NULL);
 
 
-            callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(maxNames,JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(maxNames,JIFlags.FLAG_NULL);
 
-			callObject.addOutParamAsObject(new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),null,1,true,true),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 
 			return ComObject.Call(callObject);
 		}
@@ -419,8 +419,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 5
             };
-            callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			return (int)(int?)((object[])ComObject.Call(callObject))[0];
 		}
 
@@ -431,8 +431,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 6
             };
-            callObject.addInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			return (int)(int?)((object[])ComObject.Call(callObject))[0];
 		}
 
@@ -443,8 +443,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 11
             };
-            callObject.addInParamAsInt(hrefType,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(hrefType,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
@@ -496,8 +496,8 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 13
             };
 
-            callObject.addInParamAsUUID(riid,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsUUID(riid,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}
@@ -509,8 +509,8 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 14
             };
-            callObject.addInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (JIString)result[0];
 		}

@@ -50,8 +50,8 @@
             };
             object[] results;
 		short i = 3;
-		callObject.addInParamAsShort(i, JIFlags.FLAG_NULL);
-		callObject.addOutParamAsType(typeof(short?), JIFlags.FLAG_NULL); //Short
+		callObject.AddInParamAsShort(i, JIFlags.FLAG_NULL);
+		callObject.AddOutParamAsType(typeof(short?), JIFlags.FLAG_NULL); //Short
 		results = comObject.Call(callObject);
 		Console.WriteLine("ITestServer.AskTestServerToSquare succeeded, input=" + i + " output=" + results[0]);
 	  }
@@ -74,7 +74,7 @@
             };
             object[] results;
 
-		  callObject.addOutParamAsObject(new JIArray(typeof(sbyte?), new int[]{50},1,false), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIArray(typeof(sbyte?), new int[]{50},1,false), JIFlags.FLAG_NULL);
 		  results = comObject.Call(callObject);
 
 		  var arrayOfResults = (JIArray)results[0];
@@ -96,7 +96,7 @@
                 Opnum = 7
             };
             object[] results;
-		  callObject.addInParamAsString("AHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
+		  callObject.AddInParamAsString("AHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
 
 		  results = comObject.Call(callObject);
 	  }
@@ -117,8 +117,8 @@
 			  intAry[j] = j;
 		  }
 		  var ary = new JIArray(intAry, true);
-		  callObject.addInParamAsInt(i, JIFlags.FLAG_NULL);
-		  callObject.addInParamAsArray(ary, JIFlags.FLAG_NULL);
+		  callObject.AddInParamAsInt(i, JIFlags.FLAG_NULL);
+		  callObject.AddInParamAsArray(ary, JIFlags.FLAG_NULL);
 		  results = comObject.Call(callObject);
 	  }
 
@@ -132,8 +132,8 @@
             };
             object[] results;
 
-		  callObject.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-		  callObject.addOutParamAsObject(new JIPointer(new JIArray(typeof(int?), null, 1, true)), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIPointer(new JIArray(typeof(int?), null, 1, true)), JIFlags.FLAG_NULL);
 		  results = comObject.Call(callObject);
 
 		  var arrayOfResults = (JIArray)((JIPointer)results[1]).Referent;
@@ -161,7 +161,7 @@
 			@struct.AddMember(typeof(int?));
 			@struct.AddMember(typeof(float?));
 			@struct.AddMember(longArray);
-			callObject.addOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
 
 			results = comObject.Call(callObject);
 			Console.WriteLine(results[0]);
@@ -181,7 +181,7 @@
 			@struct.AddMember(typeof(int?));
 			@struct.AddMember(typeof(double?));
 			@struct.AddMember(typeof(float?));
-			callObject.addOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
 
 			results = comObject.Call(callObject);
 			Console.WriteLine(results[0]);
@@ -210,14 +210,14 @@
             };
             object[] results;
 
-			callObject.addOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
 
 			var @struct = new JIStruct();
 			@struct.AddMember(typeof(int?));
 			@struct.AddMember(typeof(double?));
 			@struct.AddMember(typeof(float?));
 			var DataArray = new JIArray(@struct, null, 1, true);
-			callObject.addOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
 			results = comObject.Call(callObject);
 			Console.WriteLine(((JIUnsignedShort)results[0]).Value);
 		}
@@ -238,7 +238,7 @@
 			@struct.AddMember(typeof(JIUnsignedShort));
 			var longArray = new JIArray(typeof(int?), null, 1, true);
 			@struct.AddMember(new JIPointer(longArray));
-			callObject.addOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIPointer(@struct), JIFlags.FLAG_NULL);
 
 			results = comObject.Call(callObject);
 			Console.WriteLine(results[0]);
@@ -267,7 +267,7 @@
 		  StructStruct.AddMember(typeof(double?));
 		  StructStruct.AddMember(@struct);
 
-		 callObject.addOutParamAsObject(new JIPointer(StructStruct), JIFlags.FLAG_NULL);
+		 callObject.AddOutParamAsObject(new JIPointer(StructStruct), JIFlags.FLAG_NULL);
 
 		  results = comObject.Call(callObject);
 		  Console.WriteLine(results[0]);
@@ -298,8 +298,8 @@
 		  StructStruct.AddMember(@struct);
 
 		  var DataArray = new JIArray(StructStruct, null, 1, true);
-		  callObject.addOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
-		  callObject.addOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
 
 		  results = comObject.Call(callObject);
 		  Console.WriteLine(((JIUnsignedShort)results[0]).Value);
@@ -328,7 +328,7 @@
 		  var structArray = new JIArray(simpleStruct, null, 1, true);
 		  simpleArrayStruct.AddMember(new JIPointer(structArray));
 
-		  callObject.addOutParamAsObject(new JIPointer(simpleArrayStruct), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIPointer(simpleArrayStruct), JIFlags.FLAG_NULL);
 
 		  results = comObject.Call(callObject);
 		  Console.WriteLine(results[0]);
@@ -360,8 +360,8 @@
 		  simpleArrayStruct.AddMember(new JIPointer(structArray)); //try no pointer next
 
 		  var DataArray = new JIArray(simpleArrayStruct, null, 1, true);
-		  callObject.addOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
-		  callObject.addOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIPointer(DataArray), JIFlags.FLAG_NULL);
 
 		  results = comObject.Call(callObject);
 		  Console.WriteLine(((JIUnsignedShort)results[0]).Value);
@@ -395,8 +395,8 @@
 			var DataArray = new JIStruct[1];
 			DataArray[0] = simpleArrayStruct;
 			short size = 1;
-			callObject.addInParamAsShort(size, JIFlags.FLAG_NULL);
-			callObject.addInParamAsArray(new JIArray(DataArray, true), JIFlags.FLAG_NULL);
+			callObject.AddInParamAsShort(size, JIFlags.FLAG_NULL);
+			callObject.AddInParamAsArray(new JIArray(DataArray, true), JIFlags.FLAG_NULL);
 
 			results = comObject.Call(callObject);
 			Console.WriteLine("SetSimpleArrayStructArray worked!");
@@ -433,8 +433,8 @@
 
 
 		  var DataArray = new JIArray(pointStruct, null, 1, true);
-		  callObject.addOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
-		  callObject.addOutParamAsObject(new JIPointer(DataArray, false), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+		  callObject.AddOutParamAsObject(new JIPointer(DataArray, false), JIFlags.FLAG_NULL);
 
 
 		  results = comObject.Call(callObject);
@@ -476,8 +476,8 @@
 			pointAry[0] = pointStruct;
 
 			var ary = new JIArray(pointAry,true);
-			callObject.addInParamAsShort((short)1, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
-			callObject.addInParamAsArray(ary, JIFlags.FLAG_NULL);
+			callObject.AddInParamAsShort((short)1, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
+			callObject.AddInParamAsArray(ary, JIFlags.FLAG_NULL);
 
 			results = comObject.Call(callObject);
 			Console.WriteLine("SetStaticStruct worked!");

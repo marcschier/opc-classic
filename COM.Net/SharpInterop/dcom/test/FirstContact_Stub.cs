@@ -135,7 +135,7 @@
                 var callObject = new JICallBuilder {
                     Opnum = 156
                 };
-                callObject.addInParamAsPointer(new JIPointer(new JIArray(new JIVariant[]{}, true)), JIFlags.FLAG_NULL);
+                callObject.AddInParamAsPointer(new JIPointer(new JIArray(new JIVariant[]{}, true)), JIFlags.FLAG_NULL);
 				//callObject.addInParamAsArray(new JIArray(new JIVariant[]{new JIVariant(new JIArray(new JIString[]{new JIString("ab"),new JIString("cd")}))},true), JIFlags.FLAG_NULL);
 				var r = handle2.Call(callObject);
 
@@ -208,9 +208,9 @@
 				//Long
 				//Short
 			//Integer
-				callObject.reInit();
+				callObject.ReInit();
 				callObject.Opnum = 147;
-				callObject.addInParamAsUnsigned(JIUnsignedFactory.GetUnsigned((short)200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsUnsigned(JIUnsignedFactory.GetUnsigned((short)200, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE),JIFlags.FLAG_NULL);
 				handle2.Call(callObject);
 
 				var aIn = new JIArray(new JIVariant[] {new JIVariant(new JIString("40807810804000300798")),new JIVariant(new JIString("1"))},true);
@@ -221,17 +221,17 @@
 				var vOpt = new JIVariant(8194);
 
 	//		    callObject.addInParamAsInt(8194,JIFlags.FLAG_NULL);
-				callObject.addInParamAsShort((short)8194,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsShort((short)8194,JIFlags.FLAG_NULL);
 	//		    callObject.addInParamAsVariant(vOpt,JIFlags.FLAG_NULL);
-				callObject.addInParamAsVariant(varArray,JIFlags.FLAG_NULL);
-				callObject.addInParamAsVariant(JIVariant.CreateEMPTY_BYREF(),JIFlags.FLAG_NULL);
-				callObject.addInParamAsVariant(JIVariant.CreateEMPTY_BYREF(),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsVariant(varArray,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsVariant(JIVariant.CreateEMPTY_BYREF(),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsVariant(JIVariant.CreateEMPTY_BYREF(),JIFlags.FLAG_NULL);
 	//		 callObject.addInParamAsVariant(vOut,JIFlags.FLAG_NULL);
 	//		 callObject.addInParamAsVariant(vExc,JIFlags.FLAG_NULL);
 
-				callObject.addOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 
 				var t = handle2.Call(callObject);
 
@@ -241,27 +241,27 @@
 
 				callObject.Opnum = 16;
 
-				callObject.addInParamAsPointer(new JIPointer(new JIString("123",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsPointer(new JIPointer(new JIString("123",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR)),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR),JIFlags.FLAG_NULL);
 				var t2 = handle2.Call(callObject);
 
-				callObject.reInit();
+				callObject.ReInit();
 				callObject.Opnum = 143;
 
-				callObject.addInParamAsString("123",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
-				callObject.addInParamAsBoolean(true,JIFlags.FLAG_NULL);
-				callObject.addInParamAsInt(10,JIFlags.FLAG_NULL);
-				callObject.addInParamAsInt(20,JIFlags.FLAG_NULL);
-				callObject.addInParamAsInt(10,JIFlags.FLAG_NULL);
-				callObject.addInParamAsFloat(20,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsString("123",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
+				callObject.AddInParamAsBoolean(true,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsInt(10,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsInt(20,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsInt(10,JIFlags.FLAG_NULL);
+				callObject.AddInParamAsFloat(20,JIFlags.FLAG_NULL);
 
 	//	        callObject.addInParamAsPointer ( new JIPointer(new Integer(10)),JIFlags.FLAG_NULL );
 	//	        callObject.addInParamAsPointer ( new JIPointer(new Float(20.2)),JIFlags.FLAG_NULL );
-				callObject.addInParamAsInt(0x800,JIFlags.FLAG_NULL);
-				callObject.addOutParamAsObject(new JIPointer(typeof(int?),false),JIFlags.FLAG_NULL);
-				callObject.addOutParamAsObject(new JIPointer(typeof(int?),false),JIFlags.FLAG_NULL);
-				callObject.addInParamAsUUID("620012E2-69E3-4DC0-B553-AE252524D2F6", JIFlags.FLAG_NULL);
-				callObject.addOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+				callObject.AddInParamAsInt(0x800,JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsObject(new JIPointer(typeof(int?),false),JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsObject(new JIPointer(typeof(int?),false),JIFlags.FLAG_NULL);
+				callObject.AddInParamAsUUID("620012E2-69E3-4DC0-B553-AE252524D2F6", JIFlags.FLAG_NULL);
+				callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
 
 				t2 = handle2.Call(callObject);
 
@@ -435,51 +435,51 @@
 	//			obj.addOutParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
 	//			result = handle.call(obj);
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 49;
-				obj.addInParamAsPointer(new JIPointer(new JIPointer(100)),JIFlags.FLAG_NULL);
+				obj.AddInParamAsPointer(new JIPointer(new JIPointer(100)),JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 53;
-				obj.addInParamAsPointer(new JIPointer(100),JIFlags.FLAG_NULL);
+				obj.AddInParamAsPointer(new JIPointer(100),JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 134;
-				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
+				obj.AddInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 135;
-				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
-				obj.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+				obj.AddInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
+				obj.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 136;
-				obj.addInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
+				obj.AddInParamAsComObject(dispatch,JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 137;
-				obj.addInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-				obj.addOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+				obj.AddInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+				obj.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
 				object[] ret = dispatch.callMethodA("testBSTR01",new object[]{new JIVariant(new JIString("Hello"),true)});
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 138;
-				obj.addInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+				obj.AddInParamAsString("Hello", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
 				handle.Call(obj);
 
 	//			 ret = dispatch.callMethodA("testBSTR02",new Object[]{new JIVariant(new JIString("Hello"),true)});
 
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 139;
-				obj.addInParamAsPointer(new JIPointer(new JIString("Hello")), JIFlags.FLAG_NULL);
+				obj.AddInParamAsPointer(new JIPointer(new JIString("Hello")), JIFlags.FLAG_NULL);
 				handle.Call(obj);
 
 		//		ret = dispatch.callMethodA("testBSTR03",new Object[]{new JIVariant(new JIString("Hello"),true)});
@@ -545,7 +545,7 @@
 
 				var jj = 0;
 				//Just testing
-				obj.reInit();
+				obj.ReInit();
 				obj.Opnum = 4;
 
 				var interfaceDefinition = new JILocalInterfaceDefinition("620012E2-69E3-4DC0-B553-AE252524D2F6");
@@ -555,8 +555,8 @@
 				interfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
 				var objMyCOM = JIObjectFactory.buildObject(session,component);
-				obj.addInParamAsVariant(new JIVariant(objMyCOM),JIFlags.FLAG_NULL);
-				obj.addOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
+				obj.AddInParamAsVariant(new JIVariant(objMyCOM),JIFlags.FLAG_NULL);
+				obj.AddOutParamAsType(typeof(JIVariant),JIFlags.FLAG_NULL);
 				result = handle.Call(obj);
 
 	//			obj.reInit();

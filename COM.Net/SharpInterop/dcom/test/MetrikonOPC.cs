@@ -41,17 +41,17 @@
                 Opnum = 0
             };
 
-            callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
-			callObject.addInParamAsInt(unchecked((int)0xFFFFFFFF), JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(1000,JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(1234,JIFlags.FLAG_NULL);
-			callObject.addInParamAsPointer(new JIPointer(0), JIFlags.FLAG_NULL);
-			callObject.addInParamAsPointer(new JIPointer(0.0),JIFlags.FLAG_NULL);
-			callObject.addInParamAsInt(0, JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			callObject.addInParamAsUUID("39C13A50-011E-11D0-9675-0020AFD8ADB3", JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR);
+			callObject.AddInParamAsInt(unchecked((int)0xFFFFFFFF), JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(1000,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(1234,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsPointer(new JIPointer(0), JIFlags.FLAG_NULL);
+			callObject.AddInParamAsPointer(new JIPointer(0.0),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsInt(0, JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+			callObject.AddInParamAsUUID("39C13A50-011E-11D0-9675-0020AFD8ADB3", JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
 
 			var result = opcServer.Call(callObject);
 

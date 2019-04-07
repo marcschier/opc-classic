@@ -124,18 +124,18 @@ namespace org.jinterop.dcom.core {
             };
 
             //length
-            obj.addInParamAsShort((short)1, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort((short)1, JIFlags.FLAG_NULL);
             //ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
-            obj.addInParamAsArray(array, JIFlags.FLAG_NULL);
+            obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             //TODO requesting 5 for now, will later build caching mechnaism to exhaust
             //5 refs first before asking for more
             // same with release.
-            obj.addInParamAsInt(5, JIFlags.FLAG_NULL);
-            obj.addInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
+            obj.AddInParamAsInt(5, JIFlags.FLAG_NULL);
+            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
 
-            obj.addOutParamAsType(typeof(short?), JIFlags.FLAG_NULL); //size
-            obj.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Hresult for size
+            obj.AddOutParamAsType(typeof(short?), JIFlags.FLAG_NULL); //size
+            obj.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Hresult for size
             Log.Logger.Warning("addRef: Adding 5 references for " + _ptr.IPID + " session: " +
                 _session.SessionIdentifier);
 
@@ -144,8 +144,8 @@ namespace org.jinterop.dcom.core {
             //		session.getStub2().addRef_ReleaseRef(obj);
             _session.addRef_ReleaseRef(_ptr.IPID, obj, 5);
 
-            if (obj.getResultAsIntAt(1) != 0) {
-                throw new JIException(obj.getResultAsIntAt(1), (Exception)null);
+            if (obj.GetResultAsIntAt(1) != 0) {
+                throw new JIException(obj.GetResultAsIntAt(1), (Exception)null);
             }
         }
 
@@ -157,14 +157,14 @@ namespace org.jinterop.dcom.core {
                 Opnum = 2 //release
             };
             //length
-            obj.addInParamAsShort((short)1, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort((short)1, JIFlags.FLAG_NULL);
             //ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
-            obj.addInParamAsArray(array, JIFlags.FLAG_NULL);
+            obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             //TODO requesting 5 for now, will later build caching mechnaism to exhaust 5 refs first before asking for more
             // same with release.
-            obj.addInParamAsInt(5, JIFlags.FLAG_NULL);
-            obj.addInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
+            obj.AddInParamAsInt(5, JIFlags.FLAG_NULL);
+            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
                 Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
                // JISession.debug_delIpids(_ptr.IPID, 5);

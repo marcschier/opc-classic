@@ -103,8 +103,8 @@
             var javaCallback = new JICallBuilder(true) {
                 Opnum = 0
             };
-            javaCallback.addInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
-			  javaCallback.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
+            javaCallback.AddInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
+			  javaCallback.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack about to call this...");
 			  results = ITest.Call(javaCallback); //<== same exception is thrown here as well
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
@@ -112,36 +112,36 @@
 
 			  // set the refresh rate
 			  var rate = 4000;
-			  javaCallback.reInit();
+			  javaCallback.ReInit();
 			  javaCallback.Opnum = 4;
-			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
-			  javaCallback.addInParamAsInt(rate, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(rate, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.SetSomethingInSomethingsRate about to be called");
 			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.SetSomethingInSomethingsRate succeeded");
 
 			  //start the session
-			  javaCallback.reInit();
+			  javaCallback.ReInit();
 			  javaCallback.Opnum = 6;
-			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.StartSomething about to be called");
 			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.StartSomething succeeded");
 
 			  //stop the session
 			  Thread.Sleep(10000);
-			  javaCallback.reInit();
+			  javaCallback.ReInit();
 			  javaCallback.Opnum = 7;
-			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.StopSomething about to be called");
 			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.StopSomething succeeded");
 
 			  //destroy the session
 			  Thread.Sleep(1000);
-			  javaCallback.reInit();
+			  javaCallback.ReInit();
 			  javaCallback.Opnum = 1;
-			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.DestroySomething about to be called");
 			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.DestroySomething succeeded");
@@ -174,17 +174,17 @@
             var javaCallback = new JICallBuilder(true) {
                 Opnum = 8
             };
-            javaCallback.addInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
-			  javaCallback.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
+            javaCallback.AddInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
+			  javaCallback.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Long
 			  results = ITest.Call(javaCallback); //<== same exception is thrown here as well
 			  Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
 			  var staticSession = (int)(int?)results[0];
 
 			  Thread.Sleep(30000);
 
-			  javaCallback.reInit();
+			  javaCallback.ReInit();
 			  javaCallback.Opnum = 1;
-			  javaCallback.addInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+			  javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
 			  Console.WriteLine("ITest.UnDoSomething about to be called");
 			  results = ITest.Call(javaCallback);
 			  Console.WriteLine("ITest.UnDoSomething succeeded");

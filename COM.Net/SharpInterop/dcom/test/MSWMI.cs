@@ -56,16 +56,16 @@
 			//OR
 			//Make a direct call like below , in this case you would get back an interface pointer to ISWbemServices , NOT to it's IDispatch
 			var callObject = new JICallBuilder();
-			callObject.addInParamAsString(address,JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsInt(0,JIFlags.FLAG_NULL);
-			callObject.addInParamAsPointer(null,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsString(address,JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsInt(0,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsPointer(null,JIFlags.FLAG_NULL);
 			callObject.Opnum = 0;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var wbemServices = JIObjectFactory.narrowObject((IJIComObject)((object[])comObject.Call(callObject))[0]);
 			wbemServices.InstanceLevelSocketTimeout = 1000;
 			wbemServices.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper(this));
@@ -89,11 +89,11 @@
 			//OR
 			//It returns back the pointer to ISWbemObjectSet
 			callObject = new JICallBuilder();
-			callObject.addInParamAsString("Win32_Process",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.addInParamAsInt(0,JIFlags.FLAG_NULL);
-			callObject.addInParamAsPointer(null,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsString("Win32_Process",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+			callObject.AddInParamAsInt(0,JIFlags.FLAG_NULL);
+			callObject.AddInParamAsPointer(null,JIFlags.FLAG_NULL);
 			callObject.Opnum = 4;
-			callObject.addOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var wbemObjectSet = JIObjectFactory.narrowObject((IJIComObject)((object[])wbemServices.Call(callObject))[0]);
 
 			//okay seen enough of the other usage, lets just stick to disptach, it's lot simpler

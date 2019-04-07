@@ -40,9 +40,9 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 0
             };
-            callObject.addInParamAsInt(celt,JIFlags.FLAG_NULL);
-			callObject.addOutParamAsObject(new JIArray(typeof(JIVariant),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.addOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(celt,JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsObject(new JIArray(typeof(JIVariant),null,1,true,true),JIFlags.FLAG_NULL);
+			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return result;
 		}
@@ -54,7 +54,7 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 1
             };
-            callObject.addInParamAsInt(celt,JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(celt,JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 		}
 
@@ -75,7 +75,7 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 3
             };
-            callObject.addOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(typeof(IJIComObject),JIFlags.FLAG_NULL);
 			var result = ComObject.Call(callObject);
 			return (IJIEnumVariant)JIObjectFactory.narrowObject((IJIComObject)result[0]);
 		}

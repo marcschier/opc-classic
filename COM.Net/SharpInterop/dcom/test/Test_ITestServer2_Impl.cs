@@ -59,7 +59,7 @@
 
 				//send it directly without IDispatch interface, please note that the "dispatchNotSupported" flag of JICallBuilder is "false".
 				var callObject = new JICallBuilder(false);
-				callObject.addInParamAsComObject(iTestServer2, JIFlags.FLAG_NULL);
+				callObject.AddInParamAsComObject(iTestServer2, JIFlags.FLAG_NULL);
 				callObject.Opnum = 0;
 				testServer1Intf.Call(callObject);
 

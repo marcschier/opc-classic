@@ -217,7 +217,7 @@ namespace org.jinterop.dcom.core {
             var @object = new JICallBuilder(true) {
                 Opnum = 3
             };
-            @object.addInParamAsInt((int)(int?)connectionInfo[1], JIFlags.FLAG_NULL);
+            @object.AddInParamAsInt((int)(int?)connectionInfo[1], JIFlags.FLAG_NULL);
             connectionPointer.Call(@object);
             //now release the connectionPointer.
             connectionPointer.Release();
@@ -248,15 +248,15 @@ namespace org.jinterop.dcom.core {
             var @object = new JICallBuilder(true) {
                 Opnum = 1
             };
-            @object.addInParamAsUUID(sourceUUID, JIFlags.FLAG_NULL);
-            @object.addOutParamAsObject(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            @object.AddInParamAsUUID(sourceUUID, JIFlags.FLAG_NULL);
+            @object.AddOutParamAsObject(typeof(IJIComObject), JIFlags.FLAG_NULL);
             var objects = (object[])connectionPointContainer.Call(@object); //find connection point
             var connectionPointer = (IJIComObject)objects[0];
 
-            @object.reInit();
+            @object.ReInit();
             @object.Opnum = 2;
-            @object.addInParamAsComObject(eventListener, JIFlags.FLAG_NULL);
-            @object.addOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+            @object.AddInParamAsComObject(eventListener, JIFlags.FLAG_NULL);
+            @object.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
             var obj = connectionPointer.Call(@object);
 
             //used to unadvise from the connectionpoint
