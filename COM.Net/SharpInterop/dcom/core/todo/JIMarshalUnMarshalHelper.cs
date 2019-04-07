@@ -930,7 +930,7 @@ namespace org.jinterop.dcom.core {
                 long result = 0;
 
                 // code from jacobgen:
-                comTime = comTime - 25569D;
+                comTime -= 25569D;
                 var cal = new DateTime();
                 result = Math.Round(86400000L * comTime) - cal.get(DateTime.ZONE_OFFSET);
                 cal = new DateTime(new DateTime(result));
@@ -1182,11 +1182,11 @@ namespace org.jinterop.dcom.core {
                 var length = 4 + 4 + 4; //max len, offset ,actual length
 
                 if (!((flag & JIFlags.FLAG_REPRESENTATION_STRING_BSTR) == JIFlags.FLAG_REPRESENTATION_STRING_BSTR)) {
-                    length = length + 2; //adding null termination
+                    length += 2; //adding null termination
                 }
 
                 if ((flag & JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR) {
-                    length = length + ((string)value).Length; //this is only a character array, no unicode, each char is writen in 1 byte "abcd" --> ab, cd ,00 ; "abcde" --> ab,cd,e0, 00
+                    length += ((string)value).Length; //this is only a character array, no unicode, each char is writen in 1 byte "abcd" --> ab, cd ,00 ; "abcde" --> ab,cd,e0, 00
                     if (!(((string)value).Length % 2 == 0)) //odd
                     {
                         length++;
@@ -1197,7 +1197,7 @@ namespace org.jinterop.dcom.core {
                     //				{
                     //					int i = 0;
                     //				}
-                    length = length + ((string)value).Length * 2; //these are both unicode (utf-16le)
+                    length += ((string)value).Length * 2; //these are both unicode (utf-16le)
                 }
 
 
@@ -1225,7 +1225,7 @@ namespace org.jinterop.dcom.core {
 
 
                 //for LPWSTR and BSTR adding 2 for the null character.
-                length = length + (((JIString)value).Type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ? 0 : 2);
+                length += (((JIString)value).Type == JIFlags.FLAG_REPRESENTATION_STRING_LPCTSTR ? 0 : 2);
                 //Pointer referentId --> USER
                 return length + JIMarshalUnMarshalHelper.GetLengthInBytes(typeof(string), ((JIString)value).String, ((JIString)value).Type | flag);
             }

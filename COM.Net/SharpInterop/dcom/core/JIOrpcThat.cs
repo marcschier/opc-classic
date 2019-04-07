@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
@@ -41,10 +41,14 @@ namespace org.jinterop.dcom.core {
             }
         }
 
+        private JIOrpcExtentArray[] extentArray = null;
+
         /// <summary>
         /// Exten array
         /// </summary>
-        private JIOrpcExtentArray[] ExtentArray { set; get; } = null;
+        private void SetExtentArray(JIOrpcExtentArray[] value) {
+            extentArray = value;
+        }
 
         /// <summary>
         /// Encode
@@ -66,11 +70,11 @@ namespace org.jinterop.dcom.core {
             };
 
             //to throw JIRuntimeException from here.
-            if (orpcthat._flags != (int)JIOrpcFlags.ORPCF_NULL && 
-                orpcthat._flags != (int)JIOrpcFlags.ORPCF_LOCAL && 
+            if (orpcthat._flags != (int)JIOrpcFlags.ORPCF_NULL &&
+                orpcthat._flags != (int)JIOrpcFlags.ORPCF_LOCAL &&
                 orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED1 &&
                 orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED2 &&
-                orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED3 && 
+                orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED3 &&
                 orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED4) {
                 throw new JIRuntimeException(orpcthat._flags);
             }
@@ -123,7 +127,7 @@ namespace org.jinterop.dcom.core {
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, map);
                 ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                 x++;
-                listOfDefferedPointers.AddRange(x, newList);
+                listOfDefferedPointers.InsertRange(x, newList);
             }
 
             var extentArrays = new List<object>();
@@ -144,7 +148,7 @@ namespace org.jinterop.dcom.core {
 
             }
 
-            orpcthat.ExtentArray = extentArrays.Cast<JIOrpcExtentArray>().ToArray();
+            orpcthat.SetExtentArray(extentArrays.Cast<JIOrpcExtentArray>().ToArray());
 
             return orpcthat;
         }

@@ -43,7 +43,7 @@
 
 						session = JISession.createSession(domain,username,password);
 
-						comServer = new JIComServer(JIProgId.valueOf("QuickTest.Application"), address, session);
+						comServer = new JIComServer(JIProgId.ValueOf("QuickTest.Application"), address, session);
 
 	//                    session.setGlobalSocketTimeout(30000);
 

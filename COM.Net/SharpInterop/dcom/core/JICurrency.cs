@@ -49,7 +49,7 @@ namespace org.jinterop.dcom.core {
             }
 
             if (value.EndsWith(".", StringComparison.Ordinal)) {
-                value = value + "0";
+                value += "0";
             }
 
             var str = value.Split("\\.", true);

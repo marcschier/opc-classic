@@ -232,17 +232,17 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> </param>
         public void RemoveMember(int index) {
-            object member = Members.GetAndRemoveAt(index);
+            var member = Members.GetAndRemoveAt(index);
             if (member is JIArray) {
                 //we need to remove it's max count values also.
                 //JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
-                ArrayMaxCounts.removeAll(((JIArray)member).ConformantMaxCounts);
+                ArrayMaxCounts.RemoveAll(((JIArray)member).ConformantMaxCounts);
 
             }
             else if (member is JIStruct && ((JIStruct)member)._arrayAdded) {
                 //we need to remove it's max count values also.
                 //JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
-                ArrayMaxCounts.removeAll(((JIStruct)member).ArrayMaxCounts);
+                ArrayMaxCounts.RemoveAll(((JIStruct)member).ArrayMaxCounts);
             }
             if (ArrayMaxCounts.Count == 0) {
                 _arrayAdded = false;
@@ -291,14 +291,18 @@ namespace org.jinterop.dcom.core {
             var retVal = new JIStruct();
             var listOfMaxCounts2 = new List<object>();
             //first read all Max counts and then the rest of the structs
-            for (var i = 0; i < _listOfDimensions.Count; i++) {
-                for (var j = 0; j < (int)(int?)_listOfDimensions[i]; j++) {
+            int j;
+            int i;
+            for (i = 0; i < _listOfDimensions.Count; i++)
+            {
+                for (j = 0; j < (int)(int?)_listOfDimensions[i]; j++)
+                {
                     listOfMaxCounts2.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
                         typeof(int?), null, FLAG, additionalData));
                 }
             }
-            var i = 0;
-            var j = 0; //index only for the conformant \ varying arrays
+            i = 0;
+            j = 0; //index only for the conformant \ varying arrays
             while (i < Members.Count) {
                 var o = Members[i];
                 List<object> maxCountTemp = null;
@@ -308,7 +312,7 @@ namespace org.jinterop.dcom.core {
                         //read before.
                         ((JIArray)o).Conformant = false;
                         maxCountTemp = ((JIArray)o).ConformantMaxCounts;
-                        ((JIArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.subList(j, (int)(int?)_listOfDimensions[j]);
+                        ((JIArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, (int)_listOfDimensions[j]);
                         j++;
                     }
                 }
@@ -333,7 +337,7 @@ namespace org.jinterop.dcom.core {
             return retVal;
         }
 
-        private List<object> _listOfDimensions = new List<object>();
+        private readonly List<object> _listOfDimensions = new List<object>();
         private bool _arrayAdded;
     }
 }

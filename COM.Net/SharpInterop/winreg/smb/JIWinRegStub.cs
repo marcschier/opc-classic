@@ -429,10 +429,10 @@ namespace org.jinterop.winreg.smb {
 			for (var i = 0;i < totalStrings;i++)
 			{
 				var j = data[i].Length;
-				length = length + (j + 1) * 2; //including null termination
+				length += (j + 1) * 2; //including null termination
 			}
 
-			length = length + 2; //final termination
+			length += 2; //final termination
 
             var setvalue = new IJIWinReg_setValue {
                 clazzType = IJIWinReg_Fields.REG_MULTI_SZ,

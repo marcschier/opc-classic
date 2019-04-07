@@ -20,7 +20,7 @@
 		public KainTest(string address, string[] args)
 		{
 			var session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("Word.Application"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("Word.Application"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

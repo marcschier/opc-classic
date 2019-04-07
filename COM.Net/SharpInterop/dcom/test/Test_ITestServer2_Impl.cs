@@ -43,14 +43,14 @@
 				Log.Logger.Level = Level.ALL;
 				var session1 = JISession.createSession(args[1],args[2],args[3]);
 				var session2 = JISession.createSession(args[1],args[2],args[3]);
-				var testServer1 = new JIComServer(JIProgId.valueOf("TestJavaServer.TestServer1"),args[0],session1);
+				var testServer1 = new JIComServer(JIProgId.ValueOf("TestJavaServer.TestServer1"),args[0],session1);
 				var unkTestServer1 = testServer1.CreateInstance();
 				var testServer1Intf = JIObjectFactory.narrowObject(unkTestServer1.QueryInterface("2A93A24D-59FE-4DE0-B67E-B8D41C9F57F8"));
 				var dispatch1 = (IJIDispatch)JIObjectFactory.narrowObject(unkTestServer1.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 
 				//First lets call the ITestServer1.Call_TestServer2_Java using the Dispatch interface
 				//Acquire a reference to ITestServer2
-				var testServer2 = new JIComServer(JIProgId.valueOf("TestJavaServer.TestServer2"),args[0],session2);
+				var testServer2 = new JIComServer(JIProgId.ValueOf("TestJavaServer.TestServer2"),args[0],session2);
 				var unkTestServer2 = testServer2.CreateInstance();
 				//Get the interface pointer to ITestServer2
 				var iTestServer2 = (IJIComObject)JIObjectFactory.narrowObject(unkTestServer2.QueryInterface("9CCC5120-457D-49F3-8113-90F7E97B54A7"));

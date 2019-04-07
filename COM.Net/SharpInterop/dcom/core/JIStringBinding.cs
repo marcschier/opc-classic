@@ -48,7 +48,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="port"></param>
         /// <param name="hostname"></param>
         internal JIStringBinding(int port, bool hostname) {
-            string hostaddress = null;
+            string hostaddress;
             if (!hostname) {
                 //single binding with our IP address
                 hostaddress = JISession.LocalhostAddressAsIPString;
@@ -90,9 +90,10 @@ namespace org.jinterop.dcom.core {
 
             //now to read the String till a null termination character.
             // a '0' will be represented as 30
-            var retVal = -1;
             var buffer = new StringBuilder();
-            while ((retVal = ndr.ReadUnsignedShort()) != 0) {
+            int retVal;
+            while ((retVal = ndr.ReadUnsignedShort()) != 0)
+            {
                 //even though this is a unicode string, but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
                 buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));

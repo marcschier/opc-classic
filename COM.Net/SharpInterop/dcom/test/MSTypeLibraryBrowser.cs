@@ -24,7 +24,7 @@
 		public MSTypeLibraryBrowser(string address, string[] args)
 		{
 			var session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("InternetExplorer.Application"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("InternetExplorer.Application"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

@@ -23,7 +23,7 @@
 		internal MSOutLookExpressContacts(string[] args)
 		{
 			session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("Outlook.Application"),args[0],session);
+			comServer = new JIComServer(JIProgId.ValueOf("Outlook.Application"),args[0],session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

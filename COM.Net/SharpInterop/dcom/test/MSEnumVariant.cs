@@ -24,7 +24,7 @@
 		public MSEnumVariant(string address, string[] args)
 		{
 			session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("StdCollection.VBCollection"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("StdCollection.VBCollection"),address,session);
 			var @object = comServer.CreateInstance();
 			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(@object.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 

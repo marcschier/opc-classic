@@ -120,7 +120,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
 
-            flag = flag | _flags;
+            flag |= _flags;
             if (Null) {
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag);
                 return;
@@ -175,7 +175,7 @@ namespace org.jinterop.dcom.core {
         internal JIPointer Decode(NdrCodec ndr, List<object> defferedPointers, int flag,
             IDictionary<object, object> additionalData) {
             //shallowClone();
-            flag = flag | _flags;
+            flag |= _flags;
 
             var retVal = new JIPointer {
                 Flags = _flags,

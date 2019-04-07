@@ -19,7 +19,7 @@
 		public MetrikonOPC(string address, string[] args)
 		{
 			var session = JISession.createSession(args[1],args[2],args[3]);
-			comStub = new JIComServer(JIProgId.valueOf("Matrikon.OPC.Simulation"),address,session);
+			comStub = new JIComServer(JIProgId.ValueOf("Matrikon.OPC.Simulation"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

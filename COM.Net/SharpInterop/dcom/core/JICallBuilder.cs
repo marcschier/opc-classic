@@ -705,15 +705,15 @@ namespace org.jinterop.dcom.core {
 
             var index = 0;
             if (inparams != null) {
-                //			if (JISystem.getLogger().isLoggable(Level.FINEST))
-                //			{
-                //				String str = "";
-                //				for (int i = 0;i < inparams.length;i++)
-                //				{
-                //					str = str + "In Param:[" + i + "] " + inparams[i] + "\n";
-                //				}
-                //				JISystem.getLogger().finest(str);
-                //			}
+        //	if (JISystem.getLogger().isLoggable(Level.FINEST))
+        //	{
+        //		String str = "";
+        //		for (int i = 0;i < inparams.length;i++)
+        //		{
+        //			str = str + "In Param:[" + i + "] " + inparams[i] + "\n";
+        //		}
+        //		JISystem.getLogger().finest(str);
+        //	}
                 while (index < inparams.Length) {
                     var listOfDefferedPointers = new List<object>();
                     if (inparams[index] == null) {
@@ -726,31 +726,30 @@ namespace org.jinterop.dcom.core {
                     var x = 0;
 
                     while (x < listOfDefferedPointers.Count) {
-                        //					thought of this today morning...change the logic here...the defeered pointers need to be
-                        //					completely serialized here. If they are also having nested deffered pointers then  those pointers
-                        //					should be "inserted" just after the current pointer itself.
-                        //					change the logic below to send out a new list and insert that list after the current x.
-                        //					consider the case when there is a Struct having a nested pointer to another struct and this struct
-                        //					itself having a pointer.
-                        //
-                        //					Inparams order:- for 2 params.
-                        //					int f,Struct{int i;
-                        //								 Struct *ptr;
-                        //								 Struct *ptr2;
-                        //								 int j;
-                        //								}
-                        //
-                        //					while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
-                        //					the deffered pointers , we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
-                        //					in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
-                        //					after the pointer 2 referent. But that is what is against the rules of DCERPC, in this case the referent of pointer 1 (struct with the pointer to another struct)
-                        //					should be serialized in place (following th rules of the struct serialization ofcourse) and should not go to the end of the list.
-
-                        //JIMarshalUnMarshalHelper.serialize(ndr,JIPointer.class,(JIPointer)listOfDefferedPointers.get(x),listOfDefferedPointers,inparamFlags);
+        //	thought of this today morning...change the logic here...the defeered pointers need to be
+        //	completely serialized here. If they are also having nested deffered pointers then  those pointers
+        //	should be "inserted" just after the current pointer itself.
+        //	change the logic below to send out a new list and insert that list after the current x.
+        //	consider the case when there is a Struct having a nested pointer to another struct and this struct
+        //	itself having a pointer.
+        //
+        //	Inparams order:- for 2 params.
+        //	int f,Struct{int i;
+        //				 Struct *ptr;
+        //				 Struct *ptr2;
+        //				 int j;
+        //				}
+        //
+        //	while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
+        //	the deffered pointers , we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
+        //	in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
+        //	after the pointer 2 referent. But that is what is against the rules of DCERPC, in this case the referent of pointer 1 (struct with the pointer to another struct)
+        //	should be serialized in place (following th rules of the struct serialization ofcourse) and should not go to the end of the list.
+                        //JIMarshalUnMarshalHelper.Serialize(ndr,JIPointer.class,(JIPointer)listOfDefferedPointers.get(x),listOfDefferedPointers,inparamFlags);
                         var newList = new List<object>();
                         JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIPointer), (JIPointer)listOfDefferedPointers[x], newList, (int)_inparamFlags[index]);
                         x++; //incrementing index
-                        listOfDefferedPointers.AddRange(x, newList);
+                        listOfDefferedPointers.InsertRange(x, newList);
                     }
                     index++;
                 }
@@ -763,30 +762,13 @@ namespace org.jinterop.dcom.core {
         /// @exclude
         /// </summary>
         public override void Read(NdrCodec ndr) {
-            //		if (opnum == 10) FOR TESTING ONLY
-            //		{
-            //			byte[] buffer = new byte[360];
-            //			FileInputStream inputStream;
-            //			try {
-            //				inputStream = new FileInputStream("c:/temp/ONEEVENTSTRUCT");
-            //				inputStream.read(buffer,0,360);
-            //			} catch (Exception e) {
-            //				// TODO Auto-generated catch block
-            //				e.printStackTrace();
-            //			}
-            //
-            //			NdrBuffer ndrBuffer = new NdrBuffer(buffer,0);
-            //			ndr.setBuffer(ndrBuffer);
-            //			NetworkDataRepresentation ndr2 = new NetworkDataRepresentation();
-            //			ndr2.setBuffer(ndrBuffer);
-            //			read2(ndr2);
-            //		}
             //interpret based on the out params flags
             if (!readOnlyHRESULT) {
                 if (splCOMVersion) {
                     //during handshake and no other time. Kept for OxidResolver methods.
                     serverAlive2 = new JIComVersion(ndr.ReadUnsignedShort(), ndr.ReadUnsignedShort());
-                    new JIPointer(new JIPointer(typeof(JIDualStringArray))).Decode(ndr, new List<object>(), JIFlags.FLAG_NULL, new Hashtable());
+                    new JIPointer(new JIPointer(typeof(JIDualStringArray))).Decode(ndr,
+                        new List<object>(), JIFlags.FLAG_NULL, new Hashtable());
                     ndr.ReadUnsignedLong();
                 }
                 else {
@@ -813,7 +795,8 @@ namespace org.jinterop.dcom.core {
         private void ReadPacket(NdrCodec ndr, bool fromCallback) {
 
             if (_session == null) {
-                throw new InvalidOperationException("Programming Error ! Session not attached with this call ! ... Please rectify ! ");
+                throw new InvalidOperationException(
+                    "Programming Error ! Session not attached with this call ! ... Please rectify ! ");
             }
 
             var index = 0;
@@ -838,16 +821,20 @@ namespace org.jinterop.dcom.core {
             if (_outparams != null && _outparams.Length > 0) {
                 while (index < _outparams.Length) {
                     var listOfDefferedPointers = new List<object>();
-                    results.Add(JIMarshalUnMarshalHelper.Deserialize(ndr, _outparams[index], listOfDefferedPointers, (int)_outparamFlags[index], additionalData));
-                    var x = 0;
+                    results.Add(JIMarshalUnMarshalHelper.Deserialize(ndr, _outparams[index],
+                        listOfDefferedPointers, (int)_outparamFlags[index], additionalData));
 
+                    var x = 0;
                     while (x < listOfDefferedPointers.Count) {
 
                         var newList = new List<object>();
-                        var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, (int)_outparamFlags[index], additionalData);
-                        ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                        var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr,
+                            (JIPointer)listOfDefferedPointers[x], newList, (int)_outparamFlags[index], additionalData);
+
+                        //this should replace the value in the original place.
+                        ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                         x++;
-                        listOfDefferedPointers.AddRange(x, newList);
+                        listOfDefferedPointers.InsertRange(x, newList);
                     }
                     index++;
                 }
@@ -915,11 +902,11 @@ namespace org.jinterop.dcom.core {
             var inparams = _inParams.ToArray();
             for (var i = 0; i < inparams.Length; i++) {
                 if (inparams[i] == null) {
-                    length = length + 4;
+                    length += 4;
                     continue;
                 }
                 var length2 = JIMarshalUnMarshalHelper.GetLengthInBytes(inparams[i].GetType(), inparams[i], JIFlags.FLAG_NULL);
-                length = length + length2;
+                length += length2;
             }
 
             return length + 2048; //2K extra for alignments, if any.

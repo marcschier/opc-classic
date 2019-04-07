@@ -132,7 +132,7 @@
 					//this.session.setGlobalSocketTimeout( 60000 );
 
 					// by name, requires local access (for registry search), or a populated progIdVsClsidDB.properties
-					var progId = JIProgId.valueOf(comServerName);
+					var progId = JIProgId.ValueOf(comServerName);
 
 					var baseComServer = new JIComServer(progId, host, session);
 

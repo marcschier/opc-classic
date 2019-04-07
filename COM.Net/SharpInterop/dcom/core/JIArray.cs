@@ -179,7 +179,7 @@ namespace org.jinterop.dcom.core {
             }
 
             for (var i = 0; upperBounds != null && i < upperBounds.Length; i++) {
-                NumElementsInAllDimensions = NumElementsInAllDimensions + upperBounds[i];
+                NumElementsInAllDimensions += upperBounds[i];
                 if (isConformant) {
                     ConformantMaxCounts.Add(upperBounds[i]);
                 }
@@ -270,7 +270,7 @@ namespace org.jinterop.dcom.core {
                 name = name.Substring(1);
                 var x = ((object[])subArray).Length;
                 upperBounds2.Add(x);
-                NumElementsInAllDimensions = NumElementsInAllDimensions * x;
+                NumElementsInAllDimensions *= x;
                 if (_isConformant) {
                     ConformantMaxCounts.Add(x);
                 }
@@ -306,13 +306,13 @@ namespace org.jinterop.dcom.core {
                 if (name[1] != '[') {
                     var o1 = (object[])array;
                     for (var j = 0; j < o1.Length; j++) {
-                        length = length + JIMarshalUnMarshalHelper.GetLengthInBytes(
+                        length += JIMarshalUnMarshalHelper.GetLengthInBytes(
                             o1.GetType().GetElementType(), o1[j], JIFlags.FLAG_NULL);
                     }
                     return length;
                 }
                 // JAVA TO C# CONVERTER WARNING
-                length = length + ComputeLengthArray(o[i] /*Array.get(array, i)*/);
+                length += ComputeLengthArray(o[i] /*Array.get(array, i)*/);
             }
 
             return length;
@@ -462,7 +462,7 @@ namespace org.jinterop.dcom.core {
                     i = 0;
                     while (i < retVal.ConformantMaxCounts.Count) {
                         retVal.UpperBounds[i] = (int)(int?)retVal.ConformantMaxCounts[i];
-                        retVal.NumElementsInAllDimensions = retVal.NumElementsInAllDimensions * retVal.UpperBounds[i];
+                        retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                         i++;
                     }
                     if (i == 0) {
@@ -500,7 +500,7 @@ namespace org.jinterop.dcom.core {
                     i = 0;
                     while (i < retVal.ConformantMaxCounts.Count) {
                         retVal.UpperBounds[i] = (int)(int?)retVal.ConformantMaxCounts[i];
-                        retVal.NumElementsInAllDimensions = retVal.NumElementsInAllDimensions * retVal.UpperBounds[i];
+                        retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                         i++;
                     }
                     if (i == 0) {
@@ -579,9 +579,11 @@ namespace org.jinterop.dcom.core {
             if (ArrayInstance == null) {
                 return 0;
             }
-            var i = 0;
+
             var stack = new Stack<object>();
-            for (i = 0; i < ((object[])ArrayInstance).Length; i++) {
+            int i;
+            for (i = 0; i < ((object[])ArrayInstance).Length; i++)
+            {
                 stack.Push(((object[])ArrayInstance)[i]);
             }
             i = 0;
@@ -605,7 +607,7 @@ namespace org.jinterop.dcom.core {
                     var i = 0;
                     while (i < ConformantMaxCounts.Count) {
                         UpperBounds[i] = (int)(int?)ConformantMaxCounts[i];
-                        NumElementsInAllDimensions = NumElementsInAllDimensions * UpperBounds[i];
+                        NumElementsInAllDimensions *= UpperBounds[i];
                         i++;
                     }
                     if (i == 0) {

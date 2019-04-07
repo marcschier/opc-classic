@@ -1,19 +1,20 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
     using org.jinterop.winreg;
+    using SharpCifs.Util.Sharpen;
     using System;
 
     /// <summary>
     /// Wrapper class used to define user friendly <code>ProgID</code>.
-    /// Definition from MSDN: 
+    /// Definition from MSDN:
     /// <i>
     /// A ProgID, or programmatic identifier, is a registry entry that can be associated
     /// with a CLSID. The format of a ProgID is &lt;Vendor&gt;.&lt;Component&gt;.&lt;Version&gt;,
@@ -40,7 +41,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Returns the status of the auto registration flag for the component identified 
+        /// Returns the status of the auto registration flag for the component identified
         /// by this object.
         /// </summary>
         /// <returns> <code>true</code> if the auto registration flag is set. </returns>
@@ -66,7 +67,7 @@ namespace org.jinterop.dcom.core {
         /// Get id from winreg
         /// </summary>
         /// <exception cref="JIException"></exception>
-        private void getIdFromWinReg() {
+        private void GetIdFromWinReg() {
             IJIWinReg winreg;
             //winreg = JIWinRegFactory.getSingleTon().getWinreg(new JIDefaultAuthInfoImpl(session.getDomain(),session.getUserName(),session.getPassword()),server,true);
             //System.out.println("Encoding the password...");
@@ -123,7 +124,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="progId"> user-friendly string representation such as "Excel.Application"
         /// </param>
-        public static JIProgId valueOf(string progId) {
+        public static JIProgId ValueOf(string progId) {
             return new JIProgId(progId);
         }
 
@@ -134,7 +135,7 @@ namespace org.jinterop.dcom.core {
         public virtual JIClsid CorrespondingCLSID {
             get {
                 if (clsid == null) {
-                    getIdFromWinReg();
+                    GetIdFromWinReg();
                 }
                 return clsid;
             }

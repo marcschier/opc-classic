@@ -30,22 +30,22 @@ namespace SharpCifs.Util.Sharpen
             EpochTicks = time.Ticks;
         }
 
-        public static void Add<T>(this IList<T> list, int index, T item)
+        public static void Add<T>(this List<T> list, int index, T item)
         {
             list.Insert(index, item);
         }
 
-        public static void AddFirst<T>(this IList<T> list, T item)
+        public static void AddFirst<T>(this List<T> list, T item)
         {
             list.Insert(0, item);
         }
 
-        public static void AddLast<T>(this IList<T> list, T item)
+        public static void AddLast<T>(this List<T> list, T item)
         {
             list.Add(item);
         }
 
-        public static void RemoveLast<T>(this IList<T> list)
+        public static void RemoveLast<T>(this List<T> list)
         {
             if (list.Count > 0)
                 list.Remove(list.Count - 1);
@@ -147,7 +147,7 @@ namespace SharpCifs.Util.Sharpen
         }
 
 
-        public static bool AddItem<T>(this IList<T> list, T item)
+        public static bool AddItem<T>(this List<T> list, T item)
         {
             list.Add(item);
             return true;
@@ -187,7 +187,7 @@ namespace SharpCifs.Util.Sharpen
             return new CultureInfo("en-US");
         }
 
-        public static T GetFirst<T>(this IList<T> list)
+        public static T GetFirst<T>(this List<T> list)
         {
             return ((list.Count == 0) ? default(T) : list[0]);
         }
@@ -198,7 +198,7 @@ namespace SharpCifs.Util.Sharpen
             return r;
         }
 
-        public static T GetLast<T>(this IList<T> list)
+        public static T GetLast<T>(this List<T> list)
         {
             return ((list.Count == 0) ? default(T) : list[list.Count - 1]);
         }
@@ -270,7 +270,7 @@ namespace SharpCifs.Util.Sharpen
 
         public static T Last<T>(this ICollection<T> col)
         {
-            IList<T> list = col as IList<T>;
+            List<T> list = col as List<T>;
             if (list != null)
             {
                 return list[list.Count - 1];
@@ -339,7 +339,7 @@ namespace SharpCifs.Util.Sharpen
             return reader.Read(data, 0, data.Length);
         }
 
-        public static T Remove<T>(this IList<T> list, T item)
+        public static T Remove<T>(this List<T> list, T item)
         {
             int index = list.IndexOf(item);
             if (index == -1)
@@ -351,7 +351,7 @@ namespace SharpCifs.Util.Sharpen
             return local;
         }
 
-        public static T Remove<T>(this IList<T> list, int i)
+        public static T Remove<T>(this List<T> list, int i)
         {
             T old;
             try
@@ -366,7 +366,7 @@ namespace SharpCifs.Util.Sharpen
             return old;
         }
 
-        public static T RemoveFirst<T>(this IList<T> list)
+        public static T RemoveFirst<T>(this List<T> list)
         {
             return list.Remove(0);
         }
@@ -407,7 +407,7 @@ namespace SharpCifs.Util.Sharpen
             return string.Compare(str, toOffset, other, ooffset, len) == 0;
         }
 
-        public static T Set<T>(this IList<T> list, int index, T item)
+        public static T Set<T>(this List<T> list, int index, T item)
         {
             T old = list[index];
             list[index] = item;
@@ -448,7 +448,7 @@ namespace SharpCifs.Util.Sharpen
             return col.Any(n => (ReferenceEquals(n, item)) || n.Equals(item));
         }
 
-        public static void Sort<T>(this IList<T> list)
+        public static void Sort<T>(this List<T> list)
         {
             List<T> sorted = new List<T>(list);
             sorted.Sort();
@@ -458,7 +458,7 @@ namespace SharpCifs.Util.Sharpen
             }
         }
 
-        public static void Sort<T>(this IList<T> list, IComparer<T> comparer)
+        public static void Sort<T>(this List<T> list, IComparer<T> comparer)
         {
             List<T> sorted = new List<T>(list);
             sorted.Sort(comparer);
@@ -505,7 +505,7 @@ namespace SharpCifs.Util.Sharpen
             return list.ToArray();
         }
 
-        public static IList<T> SubList<T>(this IList<T> list, int start, int len)
+        public static List<T> SubList<T>(this List<T> list, int start, int len)
         {
             List<T> sublist = new List<T>(len);
             for (int i = start; i < (start + len); i++)
@@ -561,7 +561,7 @@ namespace SharpCifs.Util.Sharpen
             return Convert.ToString(val, bas);
         }
 
-        public static IList<TU> UpcastTo<T, TU>(this IList<T> s) where T : TU
+        public static List<TU> UpcastTo<T, TU>(this List<T> s) where T : TU
         {
             List<TU> list = new List<TU>(s.Count);
             for (int i = 0; i < s.Count; i++)

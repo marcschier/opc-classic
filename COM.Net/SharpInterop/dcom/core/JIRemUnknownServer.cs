@@ -19,14 +19,14 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIRemUnknownServer : Stub {
 
-        private static Properties defaults = new Properties();
+        private static Properties _defaults = new Properties();
         static JIRemUnknownServer() {
-            defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
-            defaults.SetProperty("rpc.ntlm.sign", "false");
-            defaults.SetProperty("rpc.ntlm.seal", "false");
-            defaults.SetProperty("rpc.ntlm.keyExchange", "false");
-            defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
-            defaults.SetProperty("rpc.socketTimeout", 0.ToString());
+            _defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            _defaults.SetProperty("rpc.ntlm.sign", "false");
+            _defaults.SetProperty("rpc.ntlm.seal", "false");
+            _defaults.SetProperty("rpc.ntlm.keyExchange", "false");
+            _defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+            _defaults.SetProperty("rpc.socketTimeout", 0.ToString());
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace org.jinterop.dcom.core {
 
             _session = session;
             TransportFactory = JIComTransportFactory.SingleTon;
-            Properties = new Properties(defaults);
+            Properties = new Properties(_defaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
             if (session.NTLMv2Enabled) {
@@ -181,7 +181,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        private JISession _session;
+        private readonly JISession _session;
         private readonly string _remunknownIPID;
         private readonly object _mutex = new object();
         private bool _timeoutModifiedfrom0;

@@ -403,7 +403,7 @@ namespace org.jinterop.dcom.core {
                         break;
                     default: //others are normal API calls ...Opnum - 6 is there real Opnum. 0,1,2 and 3,4,5,6
                         isStandardCall = true;
-                        Opnum = Opnum - 4; //adjust for only IDispatch(3,4,5,6) , IUnknown(0,1,2) will get adjusted below.
+                        Opnum -= 4; //adjust for only IDispatch(3,4,5,6) , IUnknown(0,1,2) will get adjusted below.
                         Log.Logger.Information("Standard call came: Opnum is " + Opnum);
 
                         break;

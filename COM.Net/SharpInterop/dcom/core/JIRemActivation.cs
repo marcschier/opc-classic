@@ -41,7 +41,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Activation result
         /// </summary>
-        public int Hresult => _hresult;
+        public int Hresult { get; private set; } = -1;
 
         /// <summary>
         /// Mode
@@ -172,11 +172,11 @@ namespace org.jinterop.dcom.core {
                 MinorVersion = ndr.ReadUnsignedShort()
             };
 
-            _hresult = ndr.ReadUnsignedLong();
+            Hresult = ndr.ReadUnsignedLong();
 
-            if (_hresult != 0) {
+            if (Hresult != 0) {
                 //System.out.println("EXCEPTION FROM SERVER ! --> " + "0x" + Long.toHexString(hresult).substring(8));
-                throw new JIRuntimeException(_hresult);
+                throw new JIRuntimeException(Hresult);
             }
 
             //int numRet = ndr.readUnsignedLong();//Number of interface pointers returned. Currently only 2.
@@ -193,7 +193,7 @@ namespace org.jinterop.dcom.core {
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, null);
                 ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                 x++;
-                listOfDefferedPointers.AddRange(x, newList);
+                listOfDefferedPointers.InsertRange(x, newList);
             }
             var arrayObjs = (JIInterfacePointer[])array.ArrayInstance;
             MInterfacePointer = arrayObjs[0];
@@ -240,8 +240,7 @@ namespace org.jinterop.dcom.core {
         public int DispRefs => _dispRefs;
 
         private string _monikerName;
-        private UUID _clsid;
-        private int _hresult = -1;
+        private readonly UUID _clsid;
         internal bool _isDual;
         internal string _dispIpid;
         internal int _dispRefs = 5;

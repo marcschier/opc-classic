@@ -35,7 +35,7 @@
 					{
 
 						var session = JISession.createSession(args[1],args[2],args[3]);
-						var comServer = new JIComServer(JIProgId.valueOf("MSMQ.MSMQQueueInfo"),args[0],session);
+						var comServer = new JIComServer(JIProgId.ValueOf("MSMQ.MSMQQueueInfo"),args[0],session);
 						var unknown = comServer.CreateInstance();
 						var dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 						//JISession.destroySession(session);

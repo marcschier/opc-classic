@@ -58,7 +58,7 @@ namespace org.jinterop.dcom.core {
 
             SecurityBindings = new JISecurityBinding[1]; //support only winnt NTLM
             SecurityBindings[0] = new JISecurityBinding(0x0a, 0xffff, "");
-            Length = Length + SecurityBindings[0].Length;
+            Length += SecurityBindings[0].Length;
             //null termination, 2 bytes for num entries and 2 bytes for sec offset.
             Length = Length + 2 + 2 + 2;
         }
@@ -92,24 +92,24 @@ namespace org.jinterop.dcom.core {
                     if (s == null) {
                         stringbinding = false;
                         //null termination
-                        dualStringArray.Length = dualStringArray.Length + 2;
+                        dualStringArray.Length += 2;
                         dualStringArray._secOffset = dualStringArray.Length;
                         continue;
                     }
 
                     listOfStringBindings.Add(s);
-                    dualStringArray.Length = dualStringArray.Length + s.Length;
+                    dualStringArray.Length += s.Length;
                 }
                 else {
                     var s = JISecurityBinding.Decode(ndr);
                     if (s == null) {
                         //null termination
-                        dualStringArray.Length = dualStringArray.Length + 2;
+                        dualStringArray.Length += 2;
                         break;
                     }
 
                     listOfSecurityBindings.Add(s);
-                    dualStringArray.Length = dualStringArray.Length + s.Length;
+                    dualStringArray.Length += s.Length;
                 }
             }
 

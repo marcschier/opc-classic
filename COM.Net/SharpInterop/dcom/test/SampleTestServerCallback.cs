@@ -85,7 +85,7 @@
 			{
 
 			  var session = JISession.createSession(args[1], args[2], args[3]);
-			  var comStub = new JIComServer(JIProgId.valueOf("TstMarsh.Test"), args[0], session);
+			  var comStub = new JIComServer(JIProgId.ValueOf("TstMarsh.Test"), args[0], session);
 			  var unknown = comStub.CreateInstance();
 			  var ITest = (IJIComObject) unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
 
@@ -155,7 +155,7 @@
 			{
 
 			  var session = JISession.createSession(args[1], args[2], args[3]);
-			  var comStub = new JIComServer(JIProgId.valueOf("TstMarsh.Test"), args[0], session);
+			  var comStub = new JIComServer(JIProgId.ValueOf("TstMarsh.Test"), args[0], session);
 			  var unknown = comStub.CreateInstance();
 			  var ITest = (IJIComObject) unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
 

@@ -35,7 +35,7 @@
 			session = JISession.createSession(args[1],args[2],args[3]);
 			session.useSessionSecurity(true);
 			session.GlobalSocketTimeout = 5000;
-			comStub = new JIComServer(JIProgId.valueOf("WbemScripting.SWbemLocator"),address,session);
+			comStub = new JIComServer(JIProgId.ValueOf("WbemScripting.SWbemLocator"),address,session);
 			var unknown = comStub.CreateInstance();
 			comObject = (IJIComObject)unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
 			//This will obtain the dispatch interface

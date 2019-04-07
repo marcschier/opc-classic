@@ -20,7 +20,6 @@ namespace org.jinterop.dcom.core {
     [Serializable]
     internal sealed class JIOrpcThis {
 
-
         private static ThreadLocal cidForCallback = new ThreadLocal();
         private JIComVersion version = JISystem.COMVersion;
 
@@ -161,7 +160,7 @@ namespace org.jinterop.dcom.core {
                 //this should replace the value in the original place.
                 ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                 x++;
-                listOfDefferedPointers.AddRange(x, newList);
+                listOfDefferedPointers.InsertRange(x, newList);
             }
 
             var extentArrays = new List<object>();

@@ -22,7 +22,7 @@
 		public MSADO(string address, string[] args)
 		{
 			session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("ADODB.Connection"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("ADODB.Connection"),address,session);
 		}
 
 

@@ -225,7 +225,7 @@
 				  var str = "123.9".Split("\\.", true);
 				  var a = ~int.MinValue;
 				  Console.WriteLine(a);
-				  a = a + 1;
+				  a += 1;
 				  Console.WriteLine(a);
 				  if (a == int.MaxValue)
 				  {
@@ -441,7 +441,7 @@
 					Console.WriteLine(o1.GetType().GetElementType());
 					return length;
 				}
-				length = length + computeLengthArray(Array.get(array,i));
+				length += computeLengthArray(Array.get(array,i));
 			}
 
 			return length;

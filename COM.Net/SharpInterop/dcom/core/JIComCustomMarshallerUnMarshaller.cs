@@ -38,7 +38,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="clsid"></param>
         /// <param name="comObject"></param>
         /// <param name="isTemplate"></param>
-		protected JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject, bool isTemplate) {
+		protected JIComCustomMarshallerUnMarshaller(string clsid,
+            IJIComObject comObject, bool isTemplate) {
             CLSID = clsid;
             if (isTemplate) {
                 _me = new JIComObjectImpl(comObject.AssociatedSession,
@@ -73,7 +74,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="additionalData">
         /// </param>
         public abstract JIComCustomMarshallerUnMarshaller Decode(IJIComObject newMe,
-            NdrCodec ndr, List<object> defferedPointers, int flag, IDictionary<object, object> additionalData);
+            NdrCodec ndr, List<object> defferedPointers, int flag,
+            IDictionary<object, object> additionalData);
 
         /// <summary>
         /// Serialize

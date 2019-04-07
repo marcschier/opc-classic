@@ -30,7 +30,7 @@
 		public MSExcel3(string address, string[] args)
 		{
 			var session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("Excel.Application"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("Excel.Application"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:

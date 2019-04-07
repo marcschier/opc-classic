@@ -30,7 +30,7 @@
 			session = JISession.createSession(args[1],args[2],args[3]);
 			session.useNTLMv2(true);
 			session.useSessionSecurity(true);
-			comServer = new JIComServer(JIProgId.valueOf("InternetExplorer.Application"),address,session);
+			comServer = new JIComServer(JIProgId.ValueOf("InternetExplorer.Application"),address,session);
 			ieObject = comServer.CreateInstance();
 			var ieObjectWebBrowser2 = (IJIComObject)ieObject.QueryInterface("D30C1661-CDAF-11D0-8A3E-00C04FC9E26E");
 			ieObjectDispatch = (IJIDispatch)JIObjectFactory.narrowObject((IJIComObject)ieObject.QueryInterface(impls.automation.IJIDispatch_Fields.IID));

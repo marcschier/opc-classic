@@ -208,7 +208,7 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     x++; //incrementing index
-                    listOfDefferedPointers.AddRange(x, newList);
+                    listOfDefferedPointers.InsertRange(x, newList);
                 }
 
                 if (padding != 0) {
@@ -556,24 +556,24 @@ namespace org.jinterop.dcom.core {
                 var startI = ndr.Buffer.Index;
 
                 var x = 0;
-                IList listOfDefferedPointers = new ArrayList();
+                var listOfDefferedPointers = new List<object>();
                 @struct.Encode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL);
                 while (x < listOfDefferedPointers.Count) {
-                    var newList = new ArrayList();
+                    var newList = new List<object>();
                     var referent = ((JIPointer)listOfDefferedPointers[x]).GetReferent();
                     if (referent is JIStruct) {
-                        JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIStruct), referent, newList, JIFlags.FLAG_NULL);
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIStruct), referent, newList, JIFlags.FLAG_NULL);
                     }
                     else {
                         if (referent is JIString) {
-                            JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIString), referent, newList, JIFlags.FLAG_NULL);
+                            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIString), referent, newList, JIFlags.FLAG_NULL);
                         }
                         else {
-                            JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIArray), referent, newList, JIFlags.FLAG_NULL);
+                            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray), referent, newList, JIFlags.FLAG_NULL);
                         }
                     }
                     x++; //incrementing index
-                    listOfDefferedPointers.AddRange(x, newList);
+                    listOfDefferedPointers.InsertRange(x, newList);
                 }
 
                 return ndr.Buffer.Index - startI;
@@ -817,7 +817,7 @@ namespace org.jinterop.dcom.core {
                     }
                     else {
                         var skip = new byte[clsidPropsLengths[i]];
-                        ndr.readOctetArray(skip, 0, skip.Length);
+                        ndr.ReadOctetArray(skip, 0, skip.Length);
                     }
                 }
 
@@ -825,16 +825,16 @@ namespace org.jinterop.dcom.core {
             }
 
             internal virtual JIStruct decodeStruct(JIStruct @struct, NdrCodec ndr) {
-                IList listOfDefferedPointers = new ArrayList();
+                var listOfDefferedPointers = new List<object>();
                 var additionalData = new Hashtable();
                 @struct = @struct.Decode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL, additionalData);
                 var x = 0;
                 while (x < listOfDefferedPointers.Count) {
-                    var newList = new ArrayList();
-                    var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, additionalData);
+                    var newList = new List<object>();
+                    var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, additionalData);
                     ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                     x++; //incrementing index
-                    listOfDefferedPointers.AddRange(x, newList);
+                    listOfDefferedPointers.InsertRange(x, newList);
                 }
 
                 return @struct;

@@ -165,7 +165,7 @@ namespace org.jinterop.dcom.core {
                     address = addr;
                 }
                 //use 135
-                address = address + "[135]";
+                address += "[135]";
             }
             else {
                 var idx = address.IndexOf("[", StringComparison.Ordinal);

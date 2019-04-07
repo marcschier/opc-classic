@@ -57,7 +57,7 @@
 			//stub = new JIComServer(JIProgId.valueOf(session,"VirtualServer.Application"),address,session);
 
 			// stub = new JIComServer(JIProgId.valueOf(session,"ArrayTry.myarray"),address,session);
-			stub = new JIComServer(JIProgId.valueOf("ATLDemo.TestSafeArray"),address,session);
+			stub = new JIComServer(JIProgId.ValueOf("ATLDemo.TestSafeArray"),address,session);
 			//stub = new JIComServer(JIProgId.valueOf(session,"SafeArrayDemo.SafeArrayTest"),address,session);
 			 //stub = new JIComServer(JIProgId.valueOf(session,"Project1.Class1"),address,session);
 			 //stub = new JIComServer(JIProgId.valueOf(session,"TLI.TLIApplication"),address,session);

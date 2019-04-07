@@ -51,7 +51,7 @@ namespace org.jinterop.dcom.test {
 				JISystem.AutoRegisteration = true;
 				var session3 = JISession.createSession(domain,username,password);
 				session3.useSessionSecurity(true);
-				var virtualServer = new JIComServer(JIProgId.valueOf("VirtualServer.Application"),args[0],session3);
+				var virtualServer = new JIComServer(JIProgId.ValueOf("VirtualServer.Application"),args[0],session3);
 				var unkVirtualServer = virtualServer.CreateInstance();
 				var dispatchVirtualServer = (IJIDispatch)JIObjectFactory.narrowObject(unkVirtualServer.QueryInterface(impls.automation.IJIDispatch_Fields.IID));
 

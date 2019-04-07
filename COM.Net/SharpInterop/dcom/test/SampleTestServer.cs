@@ -35,7 +35,7 @@
 	  {
 		this.address = address;
 		session = JISession.createSession(args[1], args[2], args[3]);
-		comStub = new JIComServer(JIProgId.valueOf("SampleTestServer.TestServer"), address, session);
+		comStub = new JIComServer(JIProgId.ValueOf("SampleTestServer.TestServer"), address, session);
 		var unknown = comStub.CreateInstance();
 		comObject = (IJIComObject) unknown.QueryInterface("1F438B1C-02BA-462E-A971-8E0640C141E5"); //ITestServer
 	  }

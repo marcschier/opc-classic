@@ -23,7 +23,7 @@
 		internal MSShell(string[] args)
 		{
 			session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.valueOf("Shell.Application"),args[0],session);
+			comServer = new JIComServer(JIProgId.ValueOf("Shell.Application"),args[0],session);
 		}
 
 

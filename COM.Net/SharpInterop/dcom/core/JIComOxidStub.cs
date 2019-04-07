@@ -24,15 +24,15 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIComOxidStub : Stub {
 
-        private static Properties defaults = new Properties();
+        private static Properties _defaults = new Properties();
 
         static JIComOxidStub() {
 
-            defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
-            defaults.SetProperty("rpc.ntlm.sign", "false");
-            defaults.SetProperty("rpc.ntlm.seal", "false");
-            defaults.SetProperty("rpc.ntlm.keyExchange", "false");
-            defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+            _defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            _defaults.SetProperty("rpc.ntlm.sign", "false");
+            _defaults.SetProperty("rpc.ntlm.seal", "false");
+            _defaults.SetProperty("rpc.ntlm.keyExchange", "false");
+            _defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
         }
 
         /// <inheritdoc/>
@@ -50,7 +50,7 @@ namespace org.jinterop.dcom.core {
         public JIComOxidStub(string address, string domain, string username,
             string password, bool useNTLMv2, bool isSSO) {
             TransportFactory = JIComTransportFactory.SingleTon;
-            Properties = new Properties(defaults);
+            Properties = new Properties(_defaults);
             if (isSSO) {
                 Properties.SetProperty("rpc.ntlm.sso", "true");
             }

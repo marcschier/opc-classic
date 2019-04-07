@@ -526,7 +526,7 @@ namespace org.jinterop.dcom.core {
                 }
 
                 //we should not use the deffered pointers here, but pass our own one, so that only they are written...
-                IList varDefferedPointers = new ArrayList();
+                var varDefferedPointers = new List<object>();
 
                 //we should use flag here, since the decision should be based on this only.
                 setValue(ndr, _object, varDefferedPointers, flag);
@@ -535,10 +535,10 @@ namespace org.jinterop.dcom.core {
                 //as in varType.
                 var x = 0;
                 while (x < varDefferedPointers.Count) {
-                    var newList = new ArrayList();
-                    JIMarshalUnMarshalHelper.serialize(ndr, typeof(JIPointer), (JIPointer)varDefferedPointers[x], newList, flag);
+                    var newList = new List<object>();
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIPointer), (JIPointer)varDefferedPointers[x], newList, flag);
                     x++; //incrementing index
-                    varDefferedPointers.AddRange(x, newList);
+                    varDefferedPointers.InsertRange(x, newList);
                 }
 
                 var currentIndex = 0;
@@ -718,7 +718,7 @@ namespace org.jinterop.dcom.core {
 
                 double length = 20; //variant
                 if (_isByRef) {
-                    length = length + 4; //byref
+                    length += 4; //byref
                 }
 
                 //SafeArray is 44
@@ -790,10 +790,10 @@ namespace org.jinterop.dcom.core {
                 var safeArray = GetDecodedValueAsArray(ndr, varDefferedPointers, variantType & ~JIVariant.VT_ARRAY, isByRef, additionalData, flag);
                 var type2 = variantType;
                 if (isByRef) {
-                    type2 = type2 & ~JIVariant.VT_BYREF; //so that actual type can be determined
+                    type2 &= ~JIVariant.VT_BYREF; //so that actual type can be determined
                 }
 
-                type2 = type2 & 0x0FFF;
+                type2 &= 0x0FFF;
                 var flagofFlags = flag;
                 if (type2 == JIVariant.VT_INT) {
                     flagofFlags |= JIFlags.FLAG_REPRESENTATION_VT_INT;
@@ -837,11 +837,11 @@ namespace org.jinterop.dcom.core {
             var x = 0;
             while (x < varDefferedPointers.Count) {
 
-                var newList = new ArrayList();
-                var replacement = (JIPointer)JIMarshalUnMarshalHelper.deSerialize(ndr, (JIPointer)varDefferedPointers[x], newList, flag, additionalData);
+                var newList = new List<object>();
+                var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)varDefferedPointers[x], newList, flag, additionalData);
                 ((JIPointer)varDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
                 x++;
-                varDefferedPointers.AddRange(x, newList);
+                varDefferedPointers.InsertRange(x, newList);
             }
 
             if (variant._isArray && variant._safeArrayStruct != null) {
@@ -903,7 +903,7 @@ namespace org.jinterop.dcom.core {
         private static Type getVarClass(int type) {
             Type c = null;
             //now first to check if this is a pointer or not.
-            type = type & 0x0FFF; //0x4XXX & 0x0FFF = real type
+            type &= 0x0FFF; //0x4XXX & 0x0FFF = real type
             switch (type) {
                 case 0: //VT_EMPTY , Not specified.
                     c = typeof(EMPTY);
@@ -961,7 +961,7 @@ namespace org.jinterop.dcom.core {
             }
             if (_isByRef && type != 0 && !c.Equals(typeof(JIArray))) {
                 //then it is a pointer. have to set it correctly
-                type = type | 0x4000;
+                type |= 0x4000;
             }
             return type;
         }
@@ -1021,7 +1021,7 @@ namespace org.jinterop.dcom.core {
             //int newFLAG = flag;
             if (isByRef) {
                 ndr.ReadUnsignedLong(); //read the pointer
-                type = type & ~JIVariant.VT_BYREF; //so that actual type can be determined
+                type &= ~JIVariant.VT_BYREF; //so that actual type can be determined
             }
 
             //read pointer referent id
