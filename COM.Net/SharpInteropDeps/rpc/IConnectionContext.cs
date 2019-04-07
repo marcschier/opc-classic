@@ -1,0 +1,60 @@
+﻿// 
+// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
+// 
+// j-Interop (Pure Java implementation of DCOM protocol)
+// 
+// Copyright (c) 2013 Vikram Roopchand
+// 
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v10.html
+// 
+
+namespace rpc {
+    using rpc.core;
+    using SharpCifs.Util.Sharpen;
+    using System.IO;
+
+    /// <summary>
+    /// Connection context
+    /// </summary>
+    public interface IConnectionContext {
+
+        /// <summary>
+        /// Connectrion
+        /// </summary>
+        IConnection Connection { get; }
+
+        /// <summary>
+        /// Whether it is established
+        /// </summary>
+        bool Established { get; }
+
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="properties"></param>
+        /// <exception cref="IOException"></exception>
+        /// <returns></returns>
+        ConnectionOrientedPdu Init(PresentationContext context, 
+            Properties properties);
+
+        /// <summary>
+        /// Alter
+        /// </summary>
+        /// <param name="context"></param>
+        /// <exception cref="IOException"></exception>
+        /// <returns></returns>
+        ConnectionOrientedPdu Alter(PresentationContext context);
+
+        /// <summary>
+        /// Accept
+        /// </summary>
+        /// <param name="pdu"></param>
+        /// <exception cref="IOException"></exception>
+        /// <returns></returns>
+        ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu);
+    }
+}

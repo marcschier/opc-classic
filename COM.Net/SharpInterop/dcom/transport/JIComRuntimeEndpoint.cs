@@ -1,0 +1,242 @@
+﻿// 
+// Copyright (c) 2013 Vikram Roopchand
+// 
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v10.html
+// 
+
+
+namespace org.jinterop.dcom.transport {
+
+
+    using NdrBuffer = SharpCifs.Dcerpc.Ndr.NdrBuffer;
+    using NdrOp = SharpCifs.Dcerpc.Ndr.NdrOp;
+    using NdrCodec = SharpCifs.Dcerpc.Ndr.NdrCodec;
+
+    using IJICOMRuntimeWorker = common.IJICOMRuntimeWorker;
+    using JIErrorCodes = common.JIErrorCodes;
+    using JIRuntimeException = common.JIRuntimeException;
+    using JISystem = common.JISystem;
+
+    using ConnectionOrientedEndpoint = rpc.ConnectionOrientedEndpoint;
+    using ConnectionOrientedPdu = rpc.ConnectionOrientedPdu;
+    using FaultException = rpc.FaultException;
+    using RpcException = rpc.RpcException;
+    using ITransport = rpc.ITransport;
+    using PresentationContext = rpc.core.PresentationContext;
+    using PresentationResult = rpc.core.PresentationResult;
+    using PresentationSyntax = rpc.core.PresentationSyntax;
+    using UUID = rpc.core.UUID;
+    using AlterContextPdu = rpc.pdu.AlterContextPdu;
+    using AlterContextResponsePdu = rpc.pdu.AlterContextResponsePdu;
+    using Auth3Pdu = rpc.pdu.Auth3Pdu;
+    using BindAcknowledgePdu = rpc.pdu.BindAcknowledgePdu;
+    using BindPdu = rpc.pdu.BindPdu;
+    using FaultCoPdu = rpc.pdu.FaultCoPdu;
+    using RequestCoPdu = rpc.pdu.RequestCoPdu;
+    using ResponseCoPdu = rpc.pdu.ResponseCoPdu;
+    using ShutdownPdu = rpc.pdu.ShutdownPdu;
+    using Serilog;
+    using System;
+
+    /// <summary>
+    /// @exclude
+    /// @since 1.0
+    /// 
+    /// </summary>
+    public sealed class JIComRuntimeEndpoint : ConnectionOrientedEndpoint
+	{
+
+		internal JIComRuntimeEndpoint(ITransport transport, PresentationSyntax syntax) : base(transport,syntax)
+		{
+		}
+
+//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+//ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrOp ndrobj) throws java.io.IOException
+		public void call(int semantics, UUID @object, int opnum, NdrOp ndrobj)
+		{
+			throw new JIRuntimeException(JIErrorCodes.JI_ILLEGAL_CALL);
+		}
+
+		//use this oxidObject, it is actually OxidResolverImpl extends NdrOp.
+//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+//ORIGINAL LINE: public void processRequests(org.jinterop.dcom.common.IJICOMRuntimeWorker workerObject, String baseIID, java.util.List listOfSupportedInterfaces) throws java.io.IOException
+		public void processRequests(IJICOMRuntimeWorker workerObject, string baseIID, IList listOfSupportedInterfaces)
+		{
+
+            Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] started new thread " + Thread.CurrentThread.Name);
+            //this iid is the component IID just in case.
+            if (baseIID != null)
+			{
+				Transport.SharpCifs.Util.Sharpen.Properties.setProperty("IID2", baseIID);
+			}
+
+			Transport.SharpCifs.Util.Sharpen.Properties.put("LISTOFSUPPORTEDINTERFACES",listOfSupportedInterfaces);
+
+			Bind(); // will bind to the server and perform the initial bind\bind ack.
+
+			while (true)
+			{
+
+				  // first recieve and then answer
+				  ConnectionOrientedPdu response = null;
+				  var request = Receive();
+
+				  if (!workerObject.Resolver)
+				  {
+					  var j = 0;
+				  }
+                Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] request : " + Thread.CurrentThread.Name + " , " + request + " workerObject is resolver: " + workerObject.Resolver);
+                NdrBuffer buffer = null;
+				  var ndr = new NdrCodec();
+				  workerObject.CurrentIID = CurrentIID;
+				  if (request is RequestCoPdu)
+				  {
+					  buffer = new NdrBuffer(((RequestCoPdu) request).Stub, 0);
+					  if (buffer.buf != null)
+					  {
+                            var byteArrayOutputStream = Utils.HexString(buffer.Buf, 0, buffer.Buf.Length);
+                            Log.Logger.Verbose("\n" + byteArrayOutputStream.ToString());
+                        }
+                    }
+                    ndr.Format = ((RequestCoPdu) request).Format;
+					  workerObject.Opnum = ((RequestCoPdu) request).Opnum;
+					  //sets the current object, this is used to identify the JILocalCoClass to work on.
+					  //for most cases this will be null , till there is an actual COM interface request.
+					  workerObject.CurrentObjectID = ((RequestCoPdu) request).Object;
+
+					  try
+					  {
+
+						  ((NdrOp)workerObject).Decode(ndr, buffer);
+                        var responseCoPdu = new ResponseCoPdu {
+                            ContextId = ((RequestCoPdu)request).ContextId,
+                            Format = ((RequestCoPdu)request).Format,
+                            CallId = ((RequestCoPdu)request).CallId
+                        };
+                        ((NdrOp)workerObject).Encode(ndr,null);
+						  var length = ndr.Buffer.length > ndr.Buffer.index ? ndr.Buffer.length : ndr.Buffer.index;
+	//					  length = length + 4;
+						  responseCoPdu.AllocationHint = length + 4;
+						  var responsebytes = new sbyte[length + 4];
+						  Array.Copy(ndr.Buffer.Buffer, 0, responsebytes, 0, responsebytes.Length - 4);
+						  responseCoPdu.Stub = responsebytes;
+	//					  responseCoPdu.setStub(ndr.getBuffer().getBuffer());
+						  response = responseCoPdu;
+
+
+
+					  }
+					  catch (JIRuntimeException e)
+					  {
+						  Log.Logger.Error(e, "JIComRuntimeEndpoint","processRequests",e);
+                        //create a fault PDU
+                        response = new FaultCoPdu {
+                            CallId = ((RequestCoPdu)request).CallId
+                        };
+                        ((FaultCoPdu)response).Status = e.HResult;
+					  }
+				  }
+				  else if (request is BindPdu || request is AlterContextPdu)
+				  {
+
+					  if (!workerObject.Resolver)
+					  {
+						  //this list will be clear after this call.
+						  /* Basically the cycle expected is like this...first a bind call comes, then a RemQI, that populates the
+						   * list internally (Remunknownobject), then an alter context comes for the QIed interface, this clears the set
+						   * object (if any) , then a normal request comes through.
+						   *
+						   */
+						  //this call is only valid when the workerObject is RemUnknownObject.
+						  //so the context us NTLMConnectionContext
+						  if (Context is JIComRuntimeNTLMConnectionContext)
+						  {
+							  ((JIComRuntimeNTLMConnectionContext)Context).updateListOfInterfacesSupported(workerObject.QIedIIDs);
+						  }
+
+
+							switch (request.Type)
+							{
+								  case BindPdu.BIND_TYPE:
+										  CurrentIID = ((BindPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
+									  break;
+								  case AlterContextPdu.ALTER_CONTEXT_TYPE:
+										  //we need to record the iid now if this is successful and subsequent calls will now be for this iid.
+										  CurrentIID = ((AlterContextPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
+									  break;
+								  default:
+									  //nothing
+							  break;
+							}
+
+					  }
+
+					  response = Context.accept(request);
+
+					  if (!workerObject.Resolver)
+					  {
+						  PresentationResult[] result = null;
+						  PresentationContext context = null;
+						  var successful = false;
+						  if (response is BindAcknowledgePdu)
+						  {
+							  result = ((BindAcknowledgePdu)response).ResultList;
+							  successful = result[0].Result == PresentationResult.ACCEPTANCE;
+							  context = ((BindPdu)request).ContextList[0]; //am expecting only one
+						  }
+						  else
+						  {
+							  result = ((AlterContextResponsePdu)response).ResultList;
+							  successful = result[0].Result == PresentationResult.ACCEPTANCE;
+							  context = ((AlterContextPdu)request).ContextList[0]; //am expecting only one
+						  }
+
+	//					  if (successful)
+	//					  {
+	//						  //now select the Interface from the request and set that as the object expected to come.
+	//						  workerObject.setCurrentJavaInstanceFromIID(context.abstractSyntax.toString().toUpperCase());
+	//						  //set the component null;
+	//					  }
+
+					  }
+				  }
+				  else if (request is FaultCoPdu)
+				  {
+					   // TODO to throw or not to throw ...that is the question :)...i think it should be logged , but not thrown
+					   // otherwise this thread will be terminated and further access will be blocked for the com server.
+					   // TODO write logging code here and comment this code.
+						var fault = (FaultCoPdu) request;
+						throw new FaultException("Received fault.", fault.Status, fault.Stub);
+				  }
+				  else if (request is ShutdownPdu)
+				  {
+						throw new RpcException("Received shutdown request from server.");
+				  }
+				  else if (request is Auth3Pdu)
+				  {
+	//				  try {
+	//					Thread.sleep(1000);
+	//				} catch (InterruptedException e) {
+	//					// TODO Auto-generated catch block
+	//					e.printStackTrace();
+	//				}
+						continue; //don't do anything here, the server will send another request
+				  }
+                Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] response : " + Thread.CurrentThread.Name + " , " + response);
+                //now send the response.
+                send(response);
+
+				  if (workerObject.workerOver())
+				  {
+					  Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] Worker is over, all IPID references have been released. Thread " + Thread.CurrentThread.Name + " will now exit.");
+					  break;
+				  }
+			}
+
+		}
+	}
+
+}
