@@ -5,10 +5,18 @@
 //	This class is used to replace calls to Java's System.currentTimeMillis with the C# equivalent.
 //	Unix time is defined as the number of seconds that have elapsed since midnight UTC, 1 January 1970.
 //---------------------------------------------------------------------------------------------------------
+/// <summary>
+/// 
+/// </summary>
 public static class DateTimeHelperClass
 {
+
 	private static readonly System.DateTime Jan1st1970 = new System.DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
-	public static long CurrentUnixTimeMillis()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public static long CurrentUnixTimeMillis()
 	{
 		return (long)(System.DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
 	}
