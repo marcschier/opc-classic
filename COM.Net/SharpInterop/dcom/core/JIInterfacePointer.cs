@@ -35,7 +35,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Custom object
         /// </summary>
-        internal bool CustomObjRef => ((JIInterfacePointerBody)_member.GetReferent())
+        internal bool IsCustomObjRef => ((JIInterfacePointerBody)_member.GetReferent())
             .CustomObjRef;
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace org.jinterop.dcom.core {
                     new JIPointer(typeof(JIInterfacePointerBody)), defferedPointers, FLAG, additionalData);
             }
             //the pointer is null, no point of it's wrapper being present, so return null from here as well
-            if (ptr._member.Null) {
+            if (ptr._member.IsNull) {
                 ptr = null;
             }
             return ptr;

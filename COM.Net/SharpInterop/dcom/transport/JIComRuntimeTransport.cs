@@ -62,7 +62,7 @@ namespace org.jinterop.dcom.transport {
 			IEndpoint endPoint = null;
 			try
 			{
-				socket = (Socket)JISystem.internal_getSocket();
+				socket = (Socket)JISystem.Internal_getSocket();
 				output = null;
 				input = null;
 				attached = true;

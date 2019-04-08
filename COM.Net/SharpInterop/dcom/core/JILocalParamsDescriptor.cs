@@ -8,31 +8,35 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using System;
     using SharpCifs.Dcerpc.Ndr;
+    using System;
 
     /// <summary>
-    /// Provides a way to express parameters for a particular method. These are only <code>[in]</code>
-    /// parameters, the <code>[out]</code> parameters are decided at the implementation level. If the <code>IDL</code>
-    /// method being described by this class is returning multiple objects then use the return type of the implementation
+    /// Provides a way to express parameters for a particular method. 
+    /// These are only <code>[in]</code> parameters, the <code>[out]</code>
+    /// parameters are decided at the implementation level. If the <code>IDL</code>
+    /// method being described by this class is returning multiple 
+    /// objects then use the return type of the implementation
     /// as an <code>Object[]</code>
-    /// For example:-
-    ///
-    /// IDL from Microsoft Internet Explorer is:-
+    /// For example:
+    /// IDL from Microsoft Internet Explorer is:
     /// <code>
-    /// [id(0x000000fb), helpstring("A new, hidden, non-navigated WebBrowser window is needed.")]
-    ///    void NewWindow2(   [in, out] IDispatch** ppDisp,
-    ///                       [in, out] VARIANT_BOOL* Cancel);
+    /// [id(0x000000fb), 
+    /// helpstring("A new, hidden, non-navigated WebBrowser window is needed.")]
+    ///    void NewWindow2([in, out] IDispatch** ppDisp,
+    ///                    [in, out] VARIANT_BOOL* Cancel);
     /// </code>
-    /// Corresponding <code>JILocalParamsDescriptor</code> would be :-
+    /// Corresponding <code>JILocalParamsDescriptor</code> would be :
     /// <code>
-    /// 		JILocalParamsDescriptor paramObject = new JILocalParamsDescriptor();
-    /// 		paramObject.addInParamAsObject(new JIPointer(IJIComObject.class,false), JIFlags.FLAG_NULL);
-    /// 		paramObject.addInParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
+    ///  JILocalParamsDescriptor paramObject = new JILocalParamsDescriptor();
+    ///  paramObject.addInParamAsObject(new JIPointer(IJIComObject.class,false),
+    ///     JIFlags.FLAG_NULL);
+    ///  paramObject.addInParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
     /// </code>
-    /// and the Java implementation must return an <code>Object[]</code> in this case, for returning the 2 parameters back.
-    /// <para><i>Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
-    /// and MSShell examples for more details on how to use this class.</i></para>
+    /// and the Java implementation must return an <code>Object[]</code> 
+    /// in this case, for returning the 2 parameters back.
+    /// Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
+    /// and MSShell examples for more details on how to use this class.
     /// </summary>
     [Serializable]
     public sealed class JILocalParamsDescriptor {
@@ -42,9 +46,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         internal object[] InParams => _callObject.OutParams;
 
-        internal JISession Session {
-            set => _callObject.AttachSession(value);
-        }
+        /// <summary>
+        /// Set current session
+        /// </summary>
+        /// <param name="value"></param>
+        internal void SetSession(JISession value) =>
+            _callObject.AttachSession(value);
 
         /// <summary>
         /// Read
@@ -57,42 +64,41 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Add <code>[in]</code> parameter of the type <code>clazz</code> at the end of the out parameter list.
+        /// Add <code>[in]</code> parameter of the type
+        /// <code>clazz</code> at the end of the out parameter list.
         /// </summary>
-        /// <param name="clazz"> </param>
+        /// <param name="type"> </param>
         /// <param name="flags"> </param>
-        public void AddInParamAsType(Type clazz, int flags) {
-            _callObject.AddOutParamAsType(clazz, flags);
-        }
+        public void AddInParamAsType(Type type, int flags) => 
+            _callObject.AddOutParamAsType(type, flags);
 
         /// <summary>
-        /// Add <code>[in]</code> parameter at the end of the out parameter list. Typically callers are
-        /// composite in nature <code>JIStruct</code> , <code>JIUnions</code> , <code>JIPointer</code>
+        /// Add <code>[in]</code> parameter at the end of the
+        /// out parameter list. Typically callers are
+        /// composite in nature <code>JIStruct</code>,
+        /// <code>JIUnions</code> , <code>JIPointer</code>
         /// and <code>JIString</code> .
         /// </summary>
         /// <param name="param"> </param>
         /// <param name="flags"> </param>
-        public void AddInParamAsObject(object param, int flags) {
+        public void AddInParamAsObject(object param, int flags) => 
             _callObject.AddOutParamAsObject(param, flags);
-        }
 
         /// <summary>
         /// set params
         /// </summary>
         /// <param name="params"> </param>
         /// <param name="flags"> </param>
-        internal void SetInParams(object[] @params, int flags) {
+        internal void SetInParams(object[] @params, int flags) => 
             _callObject.SetOutParams(@params, flags);
-        }
 
         /// <summary>
         /// Removes <code>[in]</code> parameter at the specified index from the parameter list.
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public void RemoveInParamAt(int index, int flags) {
+        public void RemoveInParamAt(int index, int flags) =>
             _callObject.RemoveOutParamAt(index, flags);
-        }
 
         private readonly JICallBuilder _callObject = new JICallBuilder();
     }

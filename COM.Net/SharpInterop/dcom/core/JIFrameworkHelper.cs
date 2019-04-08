@@ -86,7 +86,7 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         internal static IJIComObject InstantiateComObject2(JISession session, JIInterfacePointer ptr) {
             if (ptr == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COMFACTORY_ILLEGAL_ARG));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COMFACTORY_ILLEGAL_ARG));
             }
 
             IJIComObject retval = null;
@@ -186,11 +186,11 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         public static IJIComObject InstantiateComObject(JISession session, IJIComObject comObject) {
             if (comObject.AssociatedSession != null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_SESSION_ALREADY_ATTACHED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_SESSION_ALREADY_ATTACHED));
             }
 
             if (comObject.LocalReference) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COMOBJ_LOCAL_REF));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COMOBJ_LOCAL_REF));
             }
 
             return InstantiateComObject(session, comObject.Internal_getInterfacePointer());
@@ -205,7 +205,7 @@ namespace org.jinterop.dcom.core {
         public static void DetachEventHandler(IJIComObject comObject, string identifier) {
             var connectionInfo = comObject.Internal_getConnectionInfo(identifier);
             if (connectionInfo == null) {
-                throw new JIException(JIErrorCodes.JI_CALLBACK_INVALID_ID);
+                throw new JIException((int)JIErrorCodes.JI_CALLBACK_INVALID_ID);
             }
 
             Log.Logger.Information("Detaching event handler for  comObject: " +
@@ -236,7 +236,7 @@ namespace org.jinterop.dcom.core {
                 comObject == null ||
                 sourceUUID == null ||
                 sourceUUID.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_CALLBACK_INVALID_PARAMS));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_CALLBACK_INVALID_PARAMS));
             }
 
             Log.Logger.Information("Attaching event handler for  comObject: " +

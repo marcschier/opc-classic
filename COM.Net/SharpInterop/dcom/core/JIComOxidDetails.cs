@@ -8,7 +8,6 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using org.jinterop.dcom.common;
     using Serilog;
     using System;
 
@@ -16,7 +15,6 @@ namespace org.jinterop.dcom.core {
     /// Stores the oxid details in memory.
     /// </summary>
     internal sealed class JIComOxidDetails {
-        private ThreadGroup remUnknownThread;
 
         /// <summary>
         /// Create details
@@ -31,13 +29,13 @@ namespace org.jinterop.dcom.core {
         /// <param name="protectionLevel"></param>
         internal JIComOxidDetails(JILocalCoClass javaInstance, JIOxid oxid,
             JIObjectId oid, string iid, string ipid, JIInterfacePointer ptr,
-            JIComOxidRuntimeHelper helper, int protectionLevel) {
+            JIComOxidRuntimeHelper helper, rpc.ProtectionLevel protectionLevel) {
             Referent = javaInstance;
             Ipid = ipid;
             Oxid = oxid;
             Oid = oid;
             IID = iid;
-            ProtectionLevel = protectionLevel;
+            AuthHint = protectionLevel;
             COMRuntimeHelper = helper;
         }
 
@@ -84,19 +82,23 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Protection level
         /// </summary>
-        internal int ProtectionLevel { get; } = 2;
+        internal rpc.ProtectionLevel AuthHint { get; } =
+            rpc.ProtectionLevel.PROTECTION_LEVEL_CONNECT;
 
-        internal ThreadGroup RemUnknownThreadGroup {
-            set => remUnknownThread = value;
-        }
+        /// <summary>
+        /// Set thread group
+        /// </summary>
+        /// <param name="value"></param>
+        internal void SetRemUnknownThreadGroup(ThreadGroup value) =>
+            _remUnknownThread = value;
 
         /// <summary>
         /// Interrupt unknown thread group thread
         /// </summary>
-        internal void interruptRemUnknownThreadGroup() {
-            if (remUnknownThread != null) {
+        internal void InterruptRemUnknownThreadGroup() {
+            if (_remUnknownThread != null) {
                 try {
-                    remUnknownThread.interrupt();
+                    _remUnknownThread.interrupt();
                     // remUnknownThread.destroy();
                 }
                 catch (Exception e) {
@@ -104,5 +106,8 @@ namespace org.jinterop.dcom.core {
                 }
             }
         }
+
+        private ThreadGroup _remUnknownThread;
+
     }
 }

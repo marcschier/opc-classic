@@ -42,13 +42,9 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override void Write(NdrCodec ndr) {
-            WriteObject(ndr);
-        }
+        public override void Write(NdrCodec ndr) => WriteObject(ndr);
 
         /// <inheritdoc/>
-        public override void Read(NdrCodec ndr) {
-            ReadObject(ndr);
-        }
+        public override void Read(NdrCodec ndr) => ReadObject(ndr);
     }
 }

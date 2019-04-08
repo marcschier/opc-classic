@@ -23,7 +23,7 @@ namespace org.jinterop.dcom.core {
         internal JIUnsignedShort(int? shortValue) {
             if (shortValue == null || shortValue < 0) {
                 throw new ArgumentException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
             }
             _value = shortValue;
         }

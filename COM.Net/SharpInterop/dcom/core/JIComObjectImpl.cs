@@ -9,9 +9,9 @@
 
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
-    using SharpCifs.Util.Sharpen;
     using rpc.core;
     using Serilog;
+    using SharpCifs.Util.Sharpen;
     using System;
 
     /// <summary>
@@ -35,12 +35,14 @@ namespace org.jinterop.dcom.core {
         public bool LocalReference { get; }
 
         /// <inheritdoc/>
-        public JIComCustomMarshallerUnMarshaller CustomObject { get; set; } = null;
+        public JIComCustomMarshallerUnMarshaller CustomObject { get; set; }
 
         /// <inheritdoc/>
         public int LengthOfInterfacePointer => _ptr.Length;
+
         /// <inheritdoc/>
         public string Ipid => _ptr.IPID;
+
         /// <inheritdoc/>
         public JISession AssociatedSession => _session;
 
@@ -124,7 +126,7 @@ namespace org.jinterop.dcom.core {
             };
 
             //length
-            obj.AddInParamAsShort((short)1, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort(1, JIFlags.FLAG_NULL);
             //ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
@@ -157,7 +159,7 @@ namespace org.jinterop.dcom.core {
                 Opnum = 2 //release
             };
             //length
-            obj.AddInParamAsShort((short)1, JIFlags.FLAG_NULL);
+            obj.AddInParamAsShort(1, JIFlags.FLAG_NULL);
             //ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
@@ -167,7 +169,7 @@ namespace org.jinterop.dcom.core {
             obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
                 Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
-               // JISession.debug_delIpids(_ptr.IPID, 5);
+                // JISession.debug_delIpids(_ptr.IPID, 5);
             }
             // TODO??
             //		session.getStub2().addRef_ReleaseRef(obj);
@@ -198,18 +200,14 @@ namespace org.jinterop.dcom.core {
             obj.AttachSession(_session);
             obj.ParentIpid = _ptr.IPID;
             // Call is always made on your stub.
-            if (socketTimeout != 0) //using instance level timeout
-            {
+            if (socketTimeout != 0) { //using instance level timeout
                 return _session.Stub.Call(obj, _ptr.IID, socketTimeout);
             }
             return _session.Stub.Call(obj, _ptr.IID);
         }
 
         /// <inheritdoc/>
-        public JIInterfacePointer Internal_getInterfacePointer() {
-            return _ptr ?? _session.Stub.ServerInterfacePointer;
-        }
-
+        public JIInterfacePointer Internal_getInterfacePointer() => _ptr ?? _session.Stub.ServerInterfacePointer;
 
         /// <inheritdoc/>
         public string Internal_setConnectionInfo(IJIComObject connectionPoint, int? cookie) {
@@ -243,15 +241,11 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public void Internal_setDeffered(bool deffered) {
-            _ptr.Deffered = deffered;
-        }
+        public void Internal_setDeffered(bool deffered) => _ptr.Deffered = deffered;
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return "IJIComObject[" + Internal_getInterfacePointer() + " , session: " +
+        public override string ToString() => "IJIComObject[" + Internal_getInterfacePointer() + " , session: " +
                 AssociatedSession.SessionIdentifier + ", isLocal: " + LocalReference + "]";
-        }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) {
@@ -262,9 +256,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() {
-            return Ipid.GetHashCode();
-        }
+        public override int GetHashCode() => Ipid.GetHashCode();
 
         /// <summary>
         /// Replace members
@@ -281,11 +273,11 @@ namespace org.jinterop.dcom.core {
         private void CheckLocal() {
             if (_session == null) {
                 throw new InvalidOperationException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_SESSION_NOT_ATTACHED));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_SESSION_NOT_ATTACHED));
             }
             if (LocalReference) {
                 throw new InvalidOperationException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.E_NOTIMPL));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.E_NOTIMPL));
             }
         }
 

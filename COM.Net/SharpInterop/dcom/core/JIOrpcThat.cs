@@ -133,10 +133,10 @@ namespace org.jinterop.dcom.core {
             var extentArrays = new List<object>();
             //now read whether extend array exists or not
             //int ptr = ndr.readUnsignedLong();
-            if (!orpcextentarrayptr.Null) {
+            if (!orpcextentarrayptr.IsNull) {
                 var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.GetReferent()).GetMember(2)).GetReferent()).ArrayInstance;
                 for (var i = 0; i < pointers.Length; i++) {
-                    if (pointers[i].Null) {
+                    if (pointers[i].IsNull) {
                         continue;
                     }
 

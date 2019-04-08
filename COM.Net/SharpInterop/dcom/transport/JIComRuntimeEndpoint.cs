@@ -55,15 +55,15 @@ namespace org.jinterop.dcom.transport {
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrOp ndrobj) throws java.io.IOException
-		public void call(int semantics, UUID @object, int opnum, NdrOp ndrobj)
+		public void Call(int semantics, UUID @object, int opnum, NdrOp ndrobj)
 		{
-			throw new JIRuntimeException(JIErrorCodes.JI_ILLEGAL_CALL);
+			throw new JIRuntimeException((int)JIErrorCodes.JI_ILLEGAL_CALL);
 		}
 
 		//use this oxidObject, it is actually OxidResolverImpl extends NdrOp.
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void processRequests(org.jinterop.dcom.common.IJICOMRuntimeWorker workerObject, String baseIID, java.util.List listOfSupportedInterfaces) throws java.io.IOException
-		public void processRequests(IJICOMRuntimeWorker workerObject, string baseIID, IList listOfSupportedInterfaces)
+		public void ProcessRequests(IJICOMRuntimeWorker workerObject, string baseIID, IList listOfSupportedInterfaces)
 		{
 
             Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] started new thread " + Thread.CurrentThread.Name);
@@ -229,7 +229,7 @@ namespace org.jinterop.dcom.transport {
                 //now send the response.
                 send(response);
 
-				  if (workerObject.workerOver())
+				  if (workerObject.WorkerOver())
 				  {
 					  Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] Worker is over, all IPID references have been released. Thread " + Thread.CurrentThread.Name + " will now exit.");
 					  break;

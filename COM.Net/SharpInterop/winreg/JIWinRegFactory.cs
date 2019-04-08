@@ -31,7 +31,7 @@ namespace org.jinterop.winreg
 
 		private JIWinRegFactory()
 		{
-		};
+		}
 
 		private static JIWinRegFactory factory;
 

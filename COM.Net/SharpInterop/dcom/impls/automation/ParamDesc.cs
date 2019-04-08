@@ -9,23 +9,19 @@
 
 
 namespace org.jinterop.dcom.impls.automation {
-
-    using JIPointer = core.JIPointer;
-    using JIStruct = core.JIStruct;
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.core;
+    using rpc.core;
+    using System;
 
     /// <summary>
     /// Implements the <i>PARAMDESC</i> structure of COM Automation. Contains
     /// information needed for transferring a structure element, parameter,
     /// or function return value between processes.
-    /// 
-    /// @since 1.0
-    /// 
     /// </summary>
     [Serializable]
 	public sealed class ParamDesc
 	{
-
-		private const long serialVersionUID = 7181403713923608809L;
 		public const short PARAMFLAG_NONE = 0x00;
 		public const short PARAMFLAG_FIN = 0x01;
 		public const short PARAMFLAG_FOUT = 0x02;
@@ -35,14 +31,17 @@ namespace org.jinterop.dcom.impls.automation {
 		public const short PARAMFLAG_FHASDEFAULT = 0x20;
 		public const short PARAMFLAG_FHASCUSTDATA = 0x40;
 
-
-		public readonly JIPointer lpVarValue;
-
-		/// <summary>
-		/// IN, OUT, etc
-		/// </summary>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
+        public readonly JIPointer lpVarValue;
 		public readonly short wPARAMFlags;
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Create param description
+        /// </summary>
+        /// <param name="values"></param>
 		internal ParamDesc(JIStruct values)
 		{
 			if (values == null)
@@ -53,10 +52,7 @@ namespace org.jinterop.dcom.impls.automation {
 			}
 
 			lpVarValue = (JIPointer)values.GetMember(0);
-			//lpVarValue = (JIVariant)values.getMember(0);
 			wPARAMFlags = (short)(short?)values.GetMember(1);
 		}
-
 	}
-
 }

@@ -40,7 +40,7 @@ namespace org.jinterop.dcom.core {
         /// <code>clazz</code> are <code>null</code>. </exception>
         public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, Type clazz) {
             if (interfaceDefinition == null || clazz == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             _identifier = clazz.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
             Init(interfaceDefinition, clazz, null, false);
@@ -54,12 +54,12 @@ namespace org.jinterop.dcom.core {
         /// the <code>interfaceDefinition</code> fully. </param>
         /// <param name="useInterfaceDefinitionIID"> <code>true</code> if the <code>IID</code> of <code>interfaceDefinition</code>
         /// should be used as to create the local COM Object. Use this when a reference other than <code>IUnknown*</code> is required.
-        /// For all <seealso cref="JIObjectFactory.attachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
+        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
         /// <code>false</code> since the <code>IConnectionPoint::Advise</code> method takes in a <code>IUnknown*</code> reference. </param>
         /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>clazz</code> are <code>null</code>. </exception>
         public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, Type clazz, bool useInterfaceDefinitionIID) {
             if (interfaceDefinition == null || clazz == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             _identifier = clazz.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
             Init(interfaceDefinition, clazz, null, useInterfaceDefinitionIID);
@@ -75,7 +75,7 @@ namespace org.jinterop.dcom.core {
         /// are <code>null</code>. </exception>
         public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, object instance) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
             Init(interfaceDefinition, null, instance, false);
@@ -89,12 +89,12 @@ namespace org.jinterop.dcom.core {
         /// the <code>interfaceDefinition</code> fully. </param>
         /// <param name="useInterfaceDefinitionIID"> <code>true</code> if the <code>IID</code> of <code>interfaceDefinition</code>
         /// should be used as to create the local COM Object. Use this when a reference other than <code>IUnknown*</code> is required.
-        /// For all <seealso cref="JIObjectFactory.attachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
+        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
         /// <code>false</code> since the <code>IConnectionPoint::Advise</code> method takes in a <code>IUnknown*</code> reference. </param>
         /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>instance</code> are <code>null</code>. </exception>
         public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, object instance, bool useInterfaceDefinitionIID) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
             Init(interfaceDefinition, null, instance, useInterfaceDefinitionIID);
@@ -147,7 +147,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>instance</code> are <code>null</code>. </exception>
         public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition, object instance) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             interfaceDefinition._instance = instance;
             var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
@@ -166,7 +166,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>clazz</code> are <code>null</code>. </exception>
         public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition, Type clazz) {
             if (interfaceDefinition == null || clazz == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
             interfaceDefinition._clazz = clazz;
             var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
@@ -274,7 +274,7 @@ namespace org.jinterop.dcom.core {
 
             var iid = (string)ipidVsIID[IPID];
             if (iid == null) {
-                throw new JIException(JIErrorCodes.RPC_E_INVALID_OBJECT);
+                throw new JIException((int)JIErrorCodes.RPC_E_INVALID_OBJECT);
             }
 
             var interfaceDefinitionOfClass = (JILocalInterfaceDefinition)mapOfIIDsToInterfaceDefinitions[iid];
@@ -300,7 +300,7 @@ namespace org.jinterop.dcom.core {
                         ((object[])retVal)[0] = 0; //not supported
                         break;
                     case 4: //getTypeInfo
-                        throw new JIException(JIErrorCodes.E_NOTIMPL);
+                        throw new JIException((int)JIErrorCodes.E_NOTIMPL);
                     case 5: //getIDOfNames
                         var paramObject = new JILocalParamsDescriptor();
 
@@ -318,7 +318,7 @@ namespace org.jinterop.dcom.core {
                         var apiName = (JIString)arrayObj[0];
                         var info = interfaceDefinitionOfClass.GetMethodDescriptor(apiName.String);
                         if (info == null) {
-                            dispIds[0] = JIErrorCodes.DISP_E_UNKNOWNNAME;
+                            dispIds[0] = (int)JIErrorCodes.DISP_E_UNKNOWNNAME;
                         }
                         else {
                             dispIds[0] = info.MethodNum;
@@ -336,9 +336,8 @@ namespace org.jinterop.dcom.core {
 
                         break;
                     case 6: //invoke of IDispatch
-                        paramObject = new JILocalParamsDescriptor {
-                            Session = Session
-                        };
+                        paramObject = new JILocalParamsDescriptor();
+                        paramObject.SetSession(Session);
                         paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsType(typeof(UUID), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
@@ -362,14 +361,14 @@ namespace org.jinterop.dcom.core {
                         info = interfaceDefinitionOfClass.GetMethodDescriptorForDispId(dispId);
                         if (info == null) {
                             Log.Logger.Error("MethodDescriptor not found for DispId :- " + dispId);
-                            throw new JIException(JIErrorCodes.DISP_E_MEMBERNOTFOUND);
+                            throw new JIException((int)JIErrorCodes.DISP_E_MEMBERNOTFOUND);
                         }
 
                         dispParams = (JIStruct)retresults[4];
                         var ptrToParamsArray = (JIPointer)dispParams.GetMember(0);
 
                         @params = new object[0];
-                        if (!ptrToParamsArray.Null) {
+                        if (!ptrToParamsArray.IsNull) {
                             //form the real array
                             array = (JIArray)ptrToParamsArray.GetReferent();
                             var variants = (object[])array.ArrayInstance;
@@ -413,9 +412,9 @@ namespace org.jinterop.dcom.core {
             if (isStandardCall) {
                 methodDescriptor = interfaceDefinitionOfClass.GetMethodDescriptor(Opnum - 3); //adjust for IUnknown
                 if (methodDescriptor == null) {
-                    throw new JIException(JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
+                    throw new JIException((int)JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
                 }
-                methodDescriptor.ParameterObject.Session = Session;
+                methodDescriptor.ParameterObject.SetSession(Session);
                 @params = methodDescriptor.ParameterObject.Read(ndr);
                 execute = true;
             }
@@ -446,27 +445,27 @@ namespace org.jinterop.dcom.core {
                 }
                 catch (ArgumentException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException(JIErrorCodes.E_INVALIDARG);
+                    throw new JIException((int)JIErrorCodes.E_INVALIDARG);
                 }
                 catch (MethodAccessException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod", e);
-                    throw new JIException(JIErrorCodes.ERROR_ACCESS_DENIED);
+                    throw new JIException((int)JIErrorCodes.ERROR_ACCESS_DENIED);
                 }
                 catch (TargetInvocationException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException(JIErrorCodes.E_UNEXPECTED, e);
+                    throw new JIException((int)JIErrorCodes.E_UNEXPECTED, e);
                 }
                 catch (SecurityException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException(JIErrorCodes.ERROR_ACCESS_DENIED, e);
+                    throw new JIException((int)JIErrorCodes.ERROR_ACCESS_DENIED, e);
                 }
                 catch (MissingMethodException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException(JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
+                    throw new JIException((int)JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
                 }
                 catch (InstantiationException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException(JIErrorCodes.E_UNEXPECTED, e);
+                    throw new JIException((int)JIErrorCodes.E_UNEXPECTED, e);
                 }
             }
             return (object[])retVal;

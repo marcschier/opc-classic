@@ -9,6 +9,7 @@
 
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
+    using System;
 
     /// <summary>
     /// Class representing the unsigned c++ integer.
@@ -20,8 +21,8 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="intValue"></param>
 		internal JIUnsignedInteger(long? intValue) {
-            if (intValue == null || (long)intValue < 0) {
-                throw new System.ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+            if (intValue == null || intValue < 0) {
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
             }
             value = intValue;
         }

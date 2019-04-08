@@ -39,7 +39,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Returns the discriminant Vs there members Map.
         /// </summary>
-        public Hashtable Members => _dsVsMember;
+        public Hashtable Members { get; } = new Hashtable();
 
         /// <summary>
         /// Private
@@ -64,7 +64,7 @@ namespace org.jinterop.dcom.core {
                 !discriminantClass.Equals(typeof(bool?)) &&
                 !discriminantClass.Equals(typeof(char?))) {
                 //has to be from one of these. Rule from IDL.
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UNION_INCORRECT_DISC));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNION_INCORRECT_DISC));
             }
             _discriminantClass = discriminantClass;
         }
@@ -81,7 +81,7 @@ namespace org.jinterop.dcom.core {
         public void AddMember(object discriminant, object member) {
             if (discriminant == null || member == null) {
                 throw new ArgumentException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_UNION_NULL_DISCRMINANT));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNION_NULL_DISCRMINANT));
             }
             if (!discriminant.GetType().Equals(_discriminantClass)) {
                 throw new JIException(JIErrorCodes.JI_UNION_DISCRMINANT_MISMATCH);
@@ -92,7 +92,7 @@ namespace org.jinterop.dcom.core {
             else if (member.GetType().Equals(typeof(JIString))) {
                 ((JIString)member).Deffered = true;
             }
-            _dsVsMember[discriminant] = member;
+            Members[discriminant] = member;
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace org.jinterop.dcom.core {
         /// is <code>null</code> </exception>
         public void AddMember(object discriminant, JIStruct member) {
             if (discriminant == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UNION_NULL_DISCRMINANT));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNION_NULL_DISCRMINANT));
             }
             if (!discriminant.GetType().Equals(_discriminantClass)) {
                 throw new JIException(JIErrorCodes.JI_UNION_DISCRMINANT_MISMATCH);
@@ -114,7 +114,7 @@ namespace org.jinterop.dcom.core {
             if (member == null) {
                 member = JIStruct.MEMBER_IS_EMPTY;
             }
-            _dsVsMember[discriminant] = member;
+            Members[discriminant] = member;
             //do not need a seperate list of pointers like the struct,
             //since based on the discriminant only 1 pointer
             //(if present) can be deserialized\serialized.
@@ -126,7 +126,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="discriminant"> </param>
         public void RemoveMember(object discriminant) {
-            _dsVsMember.Remove(discriminant);
+            Members.Remove(discriminant);
         }
 
         /// <summary>
@@ -136,17 +136,17 @@ namespace org.jinterop.dcom.core {
         /// <param name="listOfDefferedPointers"></param>
         /// <param name="FLAGS"></param>
         internal void Encode(NdrCodec ndr, List<object> listOfDefferedPointers, int FLAGS) {
-            if (_dsVsMember.Count == 0 || _dsVsMember.Count > 1) {
-                throw new JIRuntimeException(
+            if (Members.Count == 0 || Members.Count > 1) {
+                throw new JIRuntimeException((int)
                     JIErrorCodes.JI_UNION_DISCRMINANT_SERIALIZATION_ERROR);
             }
 
             //first write the discriminant and then the member
-            var keys = _dsVsMember.Keys.Iterator();
+            var keys = Members.Keys.Iterator();
             JIMarshalUnMarshalHelper.Serialize(ndr, _discriminantClass,
                 keys.Next(), listOfDefferedPointers, FLAGS);
 
-            keys = _dsVsMember.Values.Iterator();
+            keys = Members.Values.Iterator();
             var value = keys.Next();
 
             //will not write empty union members
@@ -167,7 +167,7 @@ namespace org.jinterop.dcom.core {
         internal JIUnion Decode(NdrCodec ndr, List<object> listOfDefferedPointers,
             int FLAGS, IDictionary<object, object> additionalData) {
             // first read discriminant, and then call the appropriate deserializer of the member
-            if (_dsVsMember.Count == 0) {
+            if (Members.Count == 0) {
                 throw new JIRuntimeException(JIErrorCodes.JI_UNION_DISCRMINANT_DESERIALIZATION_ERROR);
             }
 
@@ -180,7 +180,7 @@ namespace org.jinterop.dcom.core {
             var key = JIMarshalUnMarshalHelper.Deserialize(ndr, _discriminantClass,
                 listOfDefferedPointers, FLAGS, additionalData);
             //next thing to be deserialized is the member
-            var value = _dsVsMember[key];
+            var value = Members[key];
             //should allow null since this could be a "default"
             if (value == null) {
                 value = JIStruct.MEMBER_IS_EMPTY;
@@ -188,11 +188,11 @@ namespace org.jinterop.dcom.core {
 
             //will not write empty union members
             if (!value.Equals(JIStruct.MEMBER_IS_EMPTY)) {
-                retVal._dsVsMember[key] = JIMarshalUnMarshalHelper.Deserialize(
+                retVal.Members[key] = JIMarshalUnMarshalHelper.Deserialize(
                     ndr, value, listOfDefferedPointers, FLAGS, additionalData);
             }
             else {
-                retVal._dsVsMember[key] = value;
+                retVal.Members[key] = value;
             }
 
             return retVal;
@@ -204,7 +204,7 @@ namespace org.jinterop.dcom.core {
         internal int Length {
             get {
                 var length = 0;
-                foreach (var o in _dsVsMember.Keys) {
+                foreach (var o in Members.Keys) {
                     var temp = JIMarshalUnMarshalHelper.GetLengthInBytes(
                         o.GetType(), o, JIFlags.FLAG_NULL);
                     length = length > temp ? length : temp; //length of the largest member
@@ -234,10 +234,9 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override string ToString() {
-            return "[" + _dsVsMember + "]";
+            return "[" + Members + "]";
         }
 
-        private Hashtable _dsVsMember = new Hashtable();
         private Type _discriminantClass;
     }
 }

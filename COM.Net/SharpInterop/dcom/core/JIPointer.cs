@@ -44,7 +44,7 @@ namespace org.jinterop.dcom.core {
             if (value == null) {
                 value = typeof(int?);
                 isReferenceTypePtr = true;
-                Null = true;
+                IsNull = true;
             }
             //Should not defer since the enclosing struct,union,array will defer it by itself
             // this is important since , ptr to a ptr to a ptr (and more) will need to
@@ -73,7 +73,7 @@ namespace org.jinterop.dcom.core {
                 //since a null is being sent for a pointer, it has to be shown as 0x0.
                 value = 0;
                 isReferenceTypePtr = true;
-                Null = true;
+                IsNull = true;
             }
 
             //		if (value.getClass().equals(JIArray.class))
@@ -109,7 +109,7 @@ namespace org.jinterop.dcom.core {
         /// Returns the referent encapsulated by this pointer.
         /// </summary>
         public object GetReferent() {
-            return Null ? null : _referent;
+            return IsNull ? null : _referent;
         }
 
         /// <summary>
@@ -121,13 +121,13 @@ namespace org.jinterop.dcom.core {
         internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
 
             flag |= _flags;
-            if (Null) {
+            if (IsNull) {
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag);
                 return;
             }
             //it is deffered or part of an array, this logic will not get called twice since the
             //deffered list will come in withb FLAG_NULL
-            if (!Null && (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)) /*||
+            if (!IsNull && (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)) /*||
 						(flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER*/
             {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
@@ -143,13 +143,13 @@ namespace org.jinterop.dcom.core {
                 return;
             }
 
-            if (!Null && !Reference) {
+            if (!IsNull && !Reference) {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
             }
 
             try {
-                if (!Null && _referent.GetType().Equals(typeof(JIVariant)) && ((JIVariant)_referent).IsArray) {
+                if (!IsNull && _referent.GetType().Equals(typeof(JIVariant)) && ((JIVariant)_referent).IsArray) {
                     //write the length first before all elements
                     //ndr.writeUnsignedLong(((Object[])(((JIVariant)referent).getObject())).length);
                     JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
@@ -179,7 +179,7 @@ namespace org.jinterop.dcom.core {
 
             var retVal = new JIPointer {
                 Flags = _flags,
-                Null = Null,
+                IsNull = IsNull,
                 _nullSpecial = _nullSpecial
             };
 
@@ -193,7 +193,7 @@ namespace org.jinterop.dcom.core {
                 if (retVal._referentId == 0 && !_nullSpecial) {
                     //null pointer
                     // just return
-                    retVal.Null = true;
+                    retVal.IsNull = true;
                     retVal.Deffered = false;
                     return retVal;
                 }
@@ -212,7 +212,7 @@ namespace org.jinterop.dcom.core {
                 if (retVal._referentId == 0 && !_nullSpecial) {
                     //null pointer
                     // just return
-                    retVal.Null = true;
+                    retVal.IsNull = true;
                     return retVal;
                 }
             }
@@ -251,7 +251,7 @@ namespace org.jinterop.dcom.core {
         internal int Length {
             get {
                 //4 for pointer
-                if (Null) {
+                if (IsNull) {
                     return kPointerSize;
                 }
                 if (_referent is Type) {
@@ -269,7 +269,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="replacement"></param>
         internal void ReplaceSelfWithNewPointer(JIPointer replacement) {
             Deffered = replacement.Deffered;
-            Null = replacement.Null;
+            IsNull = replacement.IsNull;
             Reference = replacement.Reference;
             _referent = replacement._referent;
         }
@@ -278,7 +278,7 @@ namespace org.jinterop.dcom.core {
         /// Returns status if this pointer is <code>null</code>.
         /// </summary>
         /// <returns> <code>true</code> if the pointer is <code>null</code>. </returns>
-        public bool Null { get; private set; } = false;
+        public bool IsNull { get; private set; }
 
         /// <summary>
         /// Set value

@@ -55,7 +55,7 @@ namespace org.jinterop.dcom.core {
             }
             else {
                 throw new ArgumentException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
             }
             Variant = null;
             VariantByRef = null;
@@ -89,7 +89,7 @@ namespace org.jinterop.dcom.core {
                 VariantByRef = new JIVariant(this, true);
             }
             else {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
             }
             _member.Flags = type | JIFlags.FLAG_REPRESENTATION_VALID_STRING;
 

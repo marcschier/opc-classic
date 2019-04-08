@@ -76,17 +76,17 @@ namespace org.jinterop.dcom.core {
         public byte[] Call(bool isSimplePing, byte[] setId,
             List<object> listOfAdds, List<object> listOfDels, int seqNum) {
             var pingObject = new JiComOxidPingObject {
-                setId = setId,
-                listOfAdds = listOfAdds,
-                listOfDels = listOfDels,
-                seqNum = seqNum
+                _setId = setId,
+                _listOfAdds = listOfAdds,
+                _listOfDels = listOfDels,
+                _seqNum = seqNum
             };
 
             if (isSimplePing) {
-                pingObject.opnum = 1;
+                pingObject._opnum = 1;
             }
             else {
-                pingObject.opnum = 2;
+                pingObject._opnum = 2;
             }
 
             try {
@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //returns setId.
-            return pingObject.setId;
+            return pingObject._setId;
         }
 
         /// <summary>

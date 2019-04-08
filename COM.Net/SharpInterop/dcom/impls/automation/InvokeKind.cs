@@ -7,44 +7,34 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace org.jinterop.dcom.impls.automation {
 
-namespace org.jinterop.dcom.impls.automation
-{
+    /// <summary>
+    /// Implements the <i>INVOKEKIND</i> structure of COM Automation.
+    /// </summary>
+    public enum InvokeKind {
 
-	/// <summary>
-	/// Implements the <i>INVOKEKIND</i> structure of COM Automation.
-	/// 
-	/// @since 2.0 (formerly INVOKEKIND)
-	/// </summary>
-	public interface InvokeKind
-	{
+        /// <summary>
+        ///  The member is called using a normal function invocation syntax
+        /// </summary>
+        INVOKE_FUNC = 1,
 
-		/// <summary>
-		///  The member is called using a normal function invocation syntax
-		/// </summary>
+        /// <summary>
+        /// The function is invoked using a normal property-access syntax.
+        /// </summary>
+        INVOKE_PROPERTYGET = 2,
 
-		/// <summary>
-		/// The function is invoked using a normal property-access syntax.
-		/// </summary>
+        /// <summary>
+        /// The function is invoked using a property value assignment syntax.
+        /// Syntactically, a typical programming language might represent
+        /// changing a property in the same way as assignment.
+        /// For example:object.property : = value.
+        /// </summary>
+        INVOKE_PROPERTYPUT = 4,
 
-		/// <summary>
-		/// The function is invoked using a property value assignment syntax.
-		/// Syntactically, a typical programming language might represent
-		/// changing a property in the same way as assignment.
-		/// For example:object.property : = value.
-		/// </summary>
-
-		/// <summary>
-		///  The function is invoked using a property reference assignment syntax.
-		/// </summary>
-	}
-
-	public static class InvokeKind_Fields
-	{
-		public static readonly int? INVOKE_FUNC = 1;
-		public static readonly int? INVOKE_PROPERTYGET = 2;
-		public static readonly int? INVOKE_PROPERTYPUT = 4;
-		public static readonly int? INVOKE_PROPERTYPUTREF = 8;
-	}
-
+        /// <summary>
+        ///  The function is invoked using a property reference assignment syntax.
+        /// </summary>
+        INVOKE_PROPERTYPUTREF = 8,
+    }
 }

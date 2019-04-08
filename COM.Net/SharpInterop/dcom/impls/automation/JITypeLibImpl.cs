@@ -9,146 +9,117 @@
 
 
 namespace org.jinterop.dcom.impls.automation {
-    using IJIComObject = core.IJIComObject;
-    using JIArray = core.JIArray;
-    using JICallBuilder = core.JICallBuilder;
-    using JIComObjectImplWrapper = core.JIComObjectImplWrapper;
-    using JIFlags = core.JIFlags;
-    using JIPointer = core.JIPointer;
-    using JIString = core.JIString;
-    using JIStruct = core.JIStruct;
+    using org.jinterop.dcom.core;
+    using rpc.core;
+    using System;
 
-    using UUID = rpc.core.UUID;
     /// <summary>
-    /// @exclude
-    /// @since 1.0
+    /// Type lib
     /// </summary>
     [Serializable]
-	internal sealed class JITypeLibImpl : JIComObjectImplWrapper, IJITypeLib
-	{
+    internal sealed class JITypeLibImpl : JIComObjectImplWrapper, IJITypeLib {
 
-		/// 
-		private const long serialVersionUID = -7090247136574816759L;
+        /// <summary>
+        /// Create type lib
+        /// </summary>
+        /// <param name="comObject"></param>
+        internal JITypeLibImpl(IJIComObject comObject) : 
+            base(comObject) {
+        }
 
-		//IJIComObject comObject = null;
-		//JIRemUnknown unknown = null;
-		internal JITypeLibImpl(IJIComObject comObject) : base(comObject) //, JIRemUnknown unknown
-		{
-			//this.comObject = comObject;
-		}
-
-        public IJIComObject COMObject => ComObject;
-
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public int getTypeInfoCount() throws org.jinterop.dcom.common.JIException
-        public int TypeInfoCount
-		{
-			get
-			{
+        /// <inheritdoc/>
+        public int TypeInfoCount {
+            get {
                 var callObject = new JICallBuilder(true) {
                     Opnum = 0
                 };
-                callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-				var result = ComObject.Call(callObject);
-				return (int)(int?)result[0];
-			}
-		}
+                callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                var result = ComObject.Call(callObject);
+                return (int)(int?)result[0];
+            }
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public IJITypeInfo getTypeInfo(int index) throws org.jinterop.dcom.common.JIException
-		public IJITypeInfo getTypeInfo(int index)
-		{
+        /// <inheritdoc/>
+        public IJITypeInfo GetTypeInfo(int index) {
             var callObject = new JICallBuilder(true) {
                 Opnum = 1
             };
-            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = ComObject.Call(callObject);
-			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
-		}
+            callObject.AddInParamAsInt(index, JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            var result = ComObject.Call(callObject);
+            return (IJITypeInfo)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public int getTypeInfoType(int index) throws org.jinterop.dcom.common.JIException
-		public int getTypeInfoType(int index)
-		{
+        /// <inheritdoc/>
+        public int GetTypeInfoType(int index) {
             var callObject = new JICallBuilder(true) {
                 Opnum = 2
             };
-            callObject.AddInParamAsInt(index,JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
-			var result = ComObject.Call(callObject);
-			return (int)(int?)result[0];
-		}
+            callObject.AddInParamAsInt(index, JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+            var result = ComObject.Call(callObject);
+            return (int)(int?)result[0];
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public IJITypeInfo getTypeInfoOfGuid(String uuid) throws org.jinterop.dcom.common.JIException
-		public IJITypeInfo getTypeInfoOfGuid(string uuid)
-		{
+        /// <inheritdoc/>
+        public IJITypeInfo GetTypeInfoOfGuid(string uuid) {
             var callObject = new JICallBuilder(true) {
                 Opnum = 3
             };
-            callObject.AddInParamAsUUID(uuid,JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var result = ComObject.Call(callObject);
-			return (IJITypeInfo) JIObjectFactory.narrowObject((IJIComObject)result[0]);
-		}
+            callObject.AddInParamAsUUID(uuid, JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            var result = ComObject.Call(callObject);
+            return (IJITypeInfo)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void getLibAttr() throws org.jinterop.dcom.common.JIException
-		public void getLibAttr()
-		{
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public void getLibAttr() throws org.jinterop.dcom.common.JIException
+        public void GetLibAttr() {
             var callObject = new JICallBuilder(true) {
                 Opnum = 4
             };
 
             var tlibattr = new JIStruct();
-			tlibattr.AddMember(typeof(UUID));
-			tlibattr.AddMember(typeof(int?));
-			tlibattr.AddMember(typeof(int?));
-			tlibattr.AddMember(typeof(short?));
-			tlibattr.AddMember(typeof(short?));
-			tlibattr.AddMember(typeof(short?));
+            tlibattr.AddMember(typeof(UUID));
+            tlibattr.AddMember(typeof(int?));
+            tlibattr.AddMember(typeof(int?));
+            tlibattr.AddMember(typeof(short?));
+            tlibattr.AddMember(typeof(short?));
+            tlibattr.AddMember(typeof(short?));
 
-			callObject.AddOutParamAsObject(new JIPointer(tlibattr),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL); //CLEANUPSTORAGE
-			var result = ComObject.Call(callObject);
-			var i = 0;
-		}
+            callObject.AddOutParamAsObject(new JIPointer(tlibattr), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //CLEANUPSTORAGE
+            var result = ComObject.Call(callObject);
+        }
 
+        /// <inheritdoc/>
+        public object[] GetDocumentation(int memberId) {
+            var callObject = new JICallBuilder(true);
+            callObject.AddInParamAsInt(memberId, JIFlags.FLAG_NULL);
+            callObject.AddInParamAsInt(0xb, JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
+            callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(typeof(int?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
+            callObject.Opnum = 6;
+            return ComObject.Call(callObject);
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public Object[] getDocumentation(int memberId) throws org.jinterop.dcom.common.JIException
-		public object[] getDocumentation(int memberId)
-		{
-			var callObject = new JICallBuilder(true);
-			callObject.AddInParamAsInt(memberId,JIFlags.FLAG_NULL);
-			callObject.AddInParamAsInt(0xb,JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
-			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsObject(typeof(int?),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
-			callObject.Opnum = 6;
-			return ComObject.Call(callObject);
-		}
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public Object[] findName(org.jinterop.dcom.core.JIString nameBuf,int hashValue,short found) throws org.jinterop.dcom.common.JIException
-		public object[] findName(JIString nameBuf, int hashValue, short found)
-		{
+        /// <inheritdoc/>
+        public object[] FindName(JIString nameBuf, int hashValue, short found) {
             var callObject = new JICallBuilder(true) {
                 Opnum = 8
             };
-            callObject.AddInParamAsString(nameBuf.String,nameBuf.Type);
-			callObject.AddInParamAsInt(hashValue,JIFlags.FLAG_NULL);
-			callObject.AddInParamAsShort(found,JIFlags.FLAG_NULL);
+            callObject.AddInParamAsString(nameBuf.String, nameBuf.Type);
+            callObject.AddInParamAsInt(hashValue, JIFlags.FLAG_NULL);
+            callObject.AddInParamAsShort(found, JIFlags.FLAG_NULL);
 
-			callObject.AddOutParamAsObject(new JIArray(typeof(IJIComObject),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsObject(new JIArray(typeof(int?),null,1,true,true),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsType(typeof(short?),JIFlags.FLAG_NULL);
-			callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIArray(typeof(IJIComObject), null, 1, true, true), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIArray(typeof(int?), null, 1, true, true), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(short?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
 
-			return ComObject.Call(callObject);
-		}
-	}
-
+            return ComObject.Call(callObject);
+        }
+    }
 }

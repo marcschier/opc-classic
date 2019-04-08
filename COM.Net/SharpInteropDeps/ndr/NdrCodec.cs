@@ -60,65 +60,49 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// Read boolean
         /// </summary>
         /// <returns></returns>
-        public bool ReadBoolean() {
-            return Buffer.Dec_ndr_small() != 0;
-        }
+        public bool ReadBoolean() => Buffer.Dec_ndr_small() != 0;
 
         /// <summary>
         /// Write boolean
         /// </summary>
         /// <param name="value"></param>
-        public void WriteBoolean(bool value) {
-            Buffer.Enc_ndr_small(value ? 1 : 0);
-        }
+        public void WriteBoolean(bool value) => Buffer.Enc_ndr_small(value ? 1 : 0);
 
         /// <summary>
         /// Read unsigned small
         /// </summary>
         /// <returns></returns>
-        public int ReadUnsignedSmall() {
-            return Buffer.Dec_ndr_small();
-        }
+        public int ReadUnsignedSmall() => Buffer.Dec_ndr_small();
 
         /// <summary>
         /// read unsigned short
         /// </summary>
         /// <returns></returns>
-        public int ReadUnsignedShort() {
-            return Buffer.Dec_ndr_short();
-        }
+        public int ReadUnsignedShort() => Buffer.Dec_ndr_short();
 
         /// <summary>
         /// Read unsigned long
         /// </summary>
         /// <returns></returns>
-        public int ReadUnsignedLong() {
-            return Buffer.Dec_ndr_long();
-        }
+        public int ReadUnsignedLong() => Buffer.Dec_ndr_long();
 
         /// <summary>
         /// Write unsigned small
         /// </summary>
         /// <param name="value"></param>
-        public void WriteUnsignedSmall(int value) {
-            Buffer.Enc_ndr_small(value);
-        }
+        public void WriteUnsignedSmall(int value) => Buffer.Enc_ndr_small(value);
 
         /// <summary>
         /// Write unsigned short
         /// </summary>
         /// <param name="value"></param>
-        public void WriteUnsignedShort(int value) {
-            Buffer.Enc_ndr_short(value);
-        }
+        public void WriteUnsignedShort(int value) => Buffer.Enc_ndr_short(value);
 
         /// <summary>
         /// Write unsigned long
         /// </summary>
         /// <param name="value"></param>
-        public void WriteUnsignedLong(int value) {
-            Buffer.Enc_ndr_long(value);
-        }
+        public void WriteUnsignedLong(int value) => Buffer.Enc_ndr_long(value);
 
         /// <summary>
         /// Read format
@@ -190,9 +174,8 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <param name="b"></param>
         /// <param name="i"></param>
         /// <param name="l"></param>
-        public void WriteOctetArray(byte[] b, int i, int l) {
+        public void WriteOctetArray(byte[] b, int i, int l) => 
             Buffer.WriteOctetArray(b, i, l);
-        }
 
         /// <summary>
         /// Read octet array
@@ -200,8 +183,38 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <param name="b"></param>
         /// <param name="i"></param>
         /// <param name="l"></param>
-        public void ReadOctetArray(byte[] b, int i, int l) {
+        public void ReadOctetArray(byte[] b, int i, int l) => 
             Buffer.ReadOctetArray(b, i, l);
+
+
+        /// <summary>
+        /// Skip to alignment boundary
+        /// </summary>
+        /// <param name="alignment"></param>
+        public void SkipAligned(int alignment) {
+            var index = Buffer.Index;
+            var skip = index % alignment;
+            if (skip == 0) {
+                return;
+            }
+            // Skip remainder
+            skip = alignment - skip;
+            ReadOctetArray(new byte[skip], 0, skip);
+        }
+
+        /// <summary>
+        /// Fill to alignment boundary
+        /// </summary>
+        /// <param name="alignment"></param>
+        public void FillAligned(int alignment) {
+            var index = Buffer.Index;
+            var skip = index % alignment;
+            if (skip == 0) {
+                return;
+            }
+            // Skip remainder
+            skip = alignment - skip;
+            WriteOctetArray(new byte[skip], 0, skip);
         }
     }
 }

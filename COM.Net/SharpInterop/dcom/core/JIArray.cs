@@ -8,10 +8,10 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using System;
-    using System.Collections.Generic;
     using org.jinterop.dcom.common;
     using SharpCifs.Dcerpc.Ndr;
+    using System;
+    using System.Collections.Generic;
 
     /// <summary>
     ///<para>Represents a C++ array which can display both <i>conformant and standard</i>
@@ -34,7 +34,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Private constructor
         /// </summary>
-        private JIArray() {}
+        private JIArray() { }
 
         /// <summary>
         /// Creates an array object of the type specified by <code>clazz</code>. This is used
@@ -104,11 +104,11 @@ namespace org.jinterop.dcom.core {
         /// specified types. </exception>
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant) {
             if (template == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
             }
             if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) &&
                 !template.GetType().Equals(typeof(JIPointer)) && !template.GetType().Equals(typeof(JIString))) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
             }
             _template = template;
             ArrayClass = template.GetType();
@@ -132,12 +132,12 @@ namespace org.jinterop.dcom.core {
         //for structs, pointers , unions.
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
             if (template == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
             }
 
             if (!template.GetType().Equals(typeof(JIStruct)) && !template.GetType().Equals(typeof(JIUnion)) &&
                 !template.GetType().Equals(typeof(JIPointer)) && !template.GetType().Equals(typeof(JIString))) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_INCORRECT_TEMPLATE_PARAM));
             }
 
             if (JISystem.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(JIPointer))) {
@@ -173,7 +173,7 @@ namespace org.jinterop.dcom.core {
             if (upperBounds != null) {
                 //have to supply the upperbounds for each dimension , no gaps in between
                 if (upperBounds.Length != dimension) {
-                    throw new ArgumentException(JISystem.getLocalizedMessage(
+                    throw new ArgumentException(JISystem.GetLocalizedMessage(
                         JIErrorCodes.JI_ARRAY_UPPERBNDS_DIM_NOTMATCH));
                 }
             }
@@ -234,9 +234,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="array"> Array of any type. Primitive arrays are not allowed. </param>
         /// <exception cref="ArgumentException"> if the <code>array</code> is not an array or
         /// is of primitive type or is an array of <code>java.lang.Object</code>. </exception>
-        public JIArray(object array) {
-            Init(array);
-        }
+        public JIArray(object array) => Init(array);
 
         /// <summary>
         /// Init
@@ -244,11 +242,11 @@ namespace org.jinterop.dcom.core {
         /// <param name="array"></param>
         private void Init(object array) {
             if (!array.GetType().IsArray) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_ARRAY_PARAM_ONLY));
             }
             if (array.GetType().IsPrimitive) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_ARRAY_PRIMITIVE_NOTACCEPT));
             }
 
@@ -256,7 +254,7 @@ namespace org.jinterop.dcom.core {
             //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
             // yield results identical to the Java Class.getName method:
             if (array.GetType().ToString().IndexOf("java.lang.Object", StringComparison.Ordinal) != -1) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_ARRAY_TYPE_INCORRECT));
             }
             ArrayInstance = array;
@@ -486,7 +484,7 @@ namespace org.jinterop.dcom.core {
 
                 while (i < dimension) {
                     JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?), defferedPointers, flag, null); // offset
-					retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
+                    retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
                         typeof(int?), defferedPointers, flag, additionalData)); //actual count
                     i++;
                 }
@@ -582,8 +580,7 @@ namespace org.jinterop.dcom.core {
 
             var stack = new Stack<object>();
             int i;
-            for (i = 0; i < ((object[])ArrayInstance).Length; i++)
-            {
+            for (i = 0; i < ((object[])ArrayInstance).Length; i++) {
                 stack.Push(((object[])ArrayInstance)[i]);
             }
             i = 0;
@@ -639,9 +636,7 @@ namespace org.jinterop.dcom.core {
         /// the "feature" does.
         /// </summary>
         /// <param name="c"> </param>
-        internal void UpdateClazz(Type c) {
-            ArrayClass = c;
-        }
+        internal void UpdateClazz(Type c) => ArrayClass = c;
 
         /// <inheritdoc/>
         public override string ToString() {

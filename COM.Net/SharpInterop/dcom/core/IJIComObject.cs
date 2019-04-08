@@ -20,13 +20,13 @@ namespace org.jinterop.dcom.core {
     /// <seealso cref="QueryInterface"/> or returned as <code>[out]</code> parameters
     /// to calls (directly as <code>IJIComObject</code>(s) or part of <code>JIVariant</code>
     /// (s)). </li>
-    /// <li>From raw bytes using <seealso cref="JIObjectFactory.buildObject(JISession, byte[])"/></li>
+    /// <li>From raw bytes using <seealso cref="JIObjectFactory.BuildObject(JISession, byte[])"/></li>
     /// <li>As references to local Java-COM interfaces (which are then used for event handling).
-    /// See <seealso cref="JIObjectFactory.buildObject(JISession, JILocalCoClass)"/>
+    /// See <seealso cref="JIObjectFactory.BuildObject(JISession, JILocalCoClass)"/>
     /// for more details.</li>
     /// </ul>
     /// All references obtained by any mechanism stated above <b>must</b> be <i>narrowed</i>
-    /// using <seealso cref="JIObjectFactory.narrowObject(IJIComObject)"/>
+    /// using <seealso cref="JIObjectFactory.NarrowObject(IJIComObject)"/>
     /// before being casted to the expected type.
     /// </para>
     /// <para>
@@ -91,7 +91,7 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// Returns <code>true</code> if this COM object represents a local Java reference obtained by
-        /// <seealso cref="JIObjectFactory.buildObject(JISession, JILocalCoClass)"/>.
+        /// <seealso cref="JIObjectFactory.BuildObject(JISession, JILocalCoClass)"/>.
         /// </summary>
         /// <returns> <code>true</code> if this is a local reference,
         /// <code>false</code> otherwise. </returns>
@@ -131,7 +131,7 @@ namespace org.jinterop.dcom.core {
         /// IJIEnumVariant enumVariant = (IJIEnumVariant)JIObjectFactory.narrowObject(object2.queryInterface(IJIEnumVariant.IID));
         /// </code>
         /// </para>
-        /// <seealso cref="JIObjectFactory.narrowObject(IJIComObject)"></seealso>
+        /// <seealso cref="JIObjectFactory.NarrowObject(IJIComObject)"></seealso>
         /// </summary>
         /// <param name="iid"> string representation of the IID. </param>
         /// <exception cref="JIException"> </exception>

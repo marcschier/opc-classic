@@ -7,7 +7,6 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-
 namespace org.jinterop.dcom.common {
     using System;
 
@@ -25,9 +24,7 @@ namespace org.jinterop.dcom.common {
         /// Create exception
         /// </summary>
         /// <param name="hresult"></param>
-        public JIRuntimeException(int hresult) {
-            HResult = hresult;
-        }
+        public JIRuntimeException(int hresult) => HResult = hresult;
 
         /// <summary>
         /// Create exception
@@ -35,9 +32,7 @@ namespace org.jinterop.dcom.common {
         /// <param name="hresult"></param>
         /// <param name="parameters"></param>
 		public JIRuntimeException(int hresult, params object[] parameters) :
-            this(hresult) {
-            Parameters = parameters;
-        }
+            this(hresult) => Parameters = parameters;
 
         /// <summary>
         /// Params
@@ -47,7 +42,6 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Get message
         /// </summary>
-        public override string Message => JISystem.getLocalizedMessage(HResult);
+        public override string Message => JISystem.GetLocalizedMessage(HResult);
     }
-
 }

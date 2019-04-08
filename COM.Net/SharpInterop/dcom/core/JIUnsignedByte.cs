@@ -18,7 +18,7 @@ namespace org.jinterop.dcom.core {
         internal JIUnsignedByte(short? byteValue) {
             if (byteValue == null || (short)byteValue < 0) {
                 throw new System.ArgumentException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
             }
             _value = byteValue;
         }

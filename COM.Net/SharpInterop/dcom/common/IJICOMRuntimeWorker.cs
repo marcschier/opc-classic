@@ -45,6 +45,6 @@ namespace org.jinterop.dcom.common {
         /// Worker
         /// </summary>
         /// <returns></returns>
-        bool workerOver();
+        bool WorkerOver();
     }
 }

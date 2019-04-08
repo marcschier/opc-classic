@@ -56,14 +56,14 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="ArgumentException"> if a method by the same name already exists. </exception>
         public void AddMethodDescriptor(JILocalMethodDescriptor methodDescriptor) {
             if (_nameVsMethodInfo.Contains(methodDescriptor.MethodName)) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_CALLBACK_OVERLOADS_NOTALLOWED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_CALLBACK_OVERLOADS_NOTALLOWED));
             }
             methodDescriptor.MethodNum = _nextNum;
             _nextNum++;
             _opnumVsMethodInfo[methodDescriptor.MethodNum] = methodDescriptor;
             if (DispInterface) {
                 if (methodDescriptor.MethodDispID == -1) {
-                    throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_METHODDESC_DISPID_MISSING));
+                    throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_METHODDESC_DISPID_MISSING));
                 }
                 _dispIdVsMethodInfo[methodDescriptor.MethodDispID] = methodDescriptor;
             }

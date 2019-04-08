@@ -18,6 +18,7 @@ namespace org.jinterop.dcom.core {
     using System.Collections.Generic;
     using SharpCifs.Util.Sharpen;
     using System.Net;
+    using System.Linq;
 
     /// <summary>
     /// Startup class representing a COM Server.
@@ -78,15 +79,15 @@ namespace org.jinterop.dcom.core {
         /// If this IP is not found then the "machine name" binding will be used. If this param is <code>null</code> then the first binding obtained from the interface pointer is used. </param>
         internal JIComServer(JISession session, JIInterfacePointer interfacePointer, string ipAddress) {
             if (interfacePointer == null || session == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
             }
 
             if (session.Stub != null) {
-                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
 
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
-                JISystem.internal_dumpMap();
+                JISystem.Internal_dumpMap();
             }
 
             //		ipAddress="192.168.1.104";
@@ -160,7 +161,7 @@ namespace org.jinterop.dcom.core {
             //and currently only TCPIP is supported.
             var address = binding.NetworkAddress;
             if (address.IndexOf("[", StringComparison.Ordinal) == -1) { //this does not contain the port
-                var addr = JISystem.getIPForHostName(address); //to use the binding supplied by the user.
+                var addr = JISystem.GetIPForHostName(address); //to use the binding supplied by the user.
                 if (addr != null) {
                     address = addr;
                 }
@@ -170,7 +171,7 @@ namespace org.jinterop.dcom.core {
             else {
                 var idx = address.IndexOf("[", StringComparison.Ordinal);
                 var host = binding.NetworkAddress.Substring(0, idx);
-                var addr = JISystem.getIPForHostName(host); //to use the binding supplied by the user.
+                var addr = JISystem.GetIPForHostName(host); //to use the binding supplied by the user.
                 if (addr != null) {
                     address = addr + address.Substring(idx);
                 }
@@ -196,7 +197,7 @@ namespace org.jinterop.dcom.core {
                 throw new JIException((int)e.Code, e);
             }
             catch (IOException e) {
-                throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
+                throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
             }
             catch (JIRuntimeException e1) {
                 throw new JIException(e1);
@@ -265,7 +266,7 @@ namespace org.jinterop.dcom.core {
             address = binding.NetworkAddress; //this will always have the port.
             var index = address.IndexOf("[", StringComparison.Ordinal);
             var hostname = binding.NetworkAddress.Substring(0, index);
-            var ipAddr = JISystem.getIPForHostName(hostname); //to use the binding supplied by the user.
+            var ipAddr = JISystem.GetIPForHostName(hostname); //to use the binding supplied by the user.
             if (ipAddr != null) {
                 address = ipAddr + address.Substring(index);
             }
@@ -324,20 +325,20 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="UnknownHostException"> </exception>
         public JIComServer(JIProgId progId, string address, JISession session) {
             if (progId == null || address == null || session == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
             }
             if (session.Stub != null) {
-                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
 
             if (session.SSOEnabled) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS2));
             }
 
             address = address.Trim();
-            address = Dns.GetHostAddresses(address).GetFirst()?.ToString();
+            address = Dns.GetHostAddresses(address).First()?.ToString();
 
             progId.Session = session;
             progId.Server = address;
@@ -362,14 +363,14 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="UnknownHostException"> </exception>
         public JIComServer(JIClsid clsid, string address, JISession session) {
             if (clsid == null || address == null || session == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
             }
             if (session.Stub != null) {
-                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
             address = address.Trim();
-            address = Dns.GetHostAddresses(address).GetFirst()?.ToString();
+            address = Dns.GetHostAddresses(address).First()?.ToString();
             address = "ncacn_ip_tcp:" + address + "[135]";
             Initialise(clsid, address, session);
         }
@@ -402,7 +403,7 @@ namespace org.jinterop.dcom.core {
             }
 
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
-                JISystem.internal_dumpMap();
+                JISystem.Internal_dumpMap();
             }
 
             _clsid = clsid.CLSID.ToUpper();
@@ -484,7 +485,7 @@ namespace org.jinterop.dcom.core {
                         catch (UnknownHostException e1) {
                             //auto registration failed as well...
                             Log.Logger.Error(e, "JIComServer", "initialise", e1);
-                            throw new JIException(JIErrorCodes.JI_WINREG_EXCEPTION3, e1);
+                            throw new JIException((int)JIErrorCodes.JI_WINREG_EXCEPTION3, e1);
                         }
                         //lets retry
                         Init();
@@ -539,7 +540,7 @@ namespace org.jinterop.dcom.core {
                     JISystem.COMVersion = serverAlive.Internal_getComVersion();
                 }
                 catch (JIRuntimeException e) {
-                    if (e.HResult == JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE) {
+                    if (e.HResult == (int)JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE) {
                         JISystem.COMVersion.MajorVersion = 5;
                         JISystem.COMVersion.MinorVersion = 1;
                     }
@@ -570,7 +571,7 @@ namespace org.jinterop.dcom.core {
             }
             catch (IOException e) {
                 _serverActivation = null;
-                throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
+                throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
             }
             catch (JIRuntimeException e1) {
                 _serverActivation = null;
@@ -649,7 +650,7 @@ namespace org.jinterop.dcom.core {
             var address = binding.NetworkAddress; //this will always have the port.
             var index = address.IndexOf("[", StringComparison.Ordinal);
             var hostname = binding.NetworkAddress.Substring(0, index);
-            var ipAddr = JISystem.getIPForHostName(hostname); //to use the binding supplied by the user.
+            var ipAddr = JISystem.GetIPForHostName(hostname); //to use the binding supplied by the user.
             if (ipAddr != null) {
                 address = ipAddr + address.Substring(index);
             }
@@ -684,7 +685,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIException((int)e.Code, e);
                 }
                 catch (IOException e) {
-                    throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
+                    throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
                 }
                 catch (JIRuntimeException e1) {
                     //remoteActivation = null;
@@ -708,7 +709,7 @@ namespace org.jinterop.dcom.core {
                         throw new JIException((int)e.Code, e);
                     }
                     catch (IOException e) {
-                        throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
+                        throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
                     }
                     catch (JIRuntimeException) {
                         //will eat this exception here.
@@ -733,7 +734,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"> </exception>
         public IJIComObject CreateInstance() {
             if (_interfacePtrCtor != null) {
-                throw new InvalidOperationException(JISystem.getLocalizedMessage(
+                throw new InvalidOperationException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_COMSTUB_WRONGCALLCREATEINSTANCE));
             }
             IJIComObject comObject = null;
@@ -742,7 +743,7 @@ namespace org.jinterop.dcom.core {
             //go to addToSession after it (since there is no condition).
             lock (_mutex) {
                 if (_serverInstantiated) {
-                    throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED, (Exception)null);
+                    throw new JIException((int)JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                 }
                 comObject = JIFrameworkHelper.InstantiateComObject(_session, _serverActivation.MInterfacePointer);
                 if (_serverActivation.Dual) {
@@ -773,7 +774,7 @@ namespace org.jinterop.dcom.core {
         internal IJIComObject Instance {
             get {
                 if (_interfacePtrCtor == null) {
-                    throw new InvalidOperationException(JISystem.getLocalizedMessage(
+                    throw new InvalidOperationException(JISystem.GetLocalizedMessage(
                         JIErrorCodes.JI_COMSTUB_WRONGCALLGETINSTANCE));
                 }
 
@@ -782,7 +783,7 @@ namespace org.jinterop.dcom.core {
                 //go to addToSession after it (since there is no condition).
                 lock (_mutex) {
                     if (_serverInstantiated) {
-                        throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED, (Exception)null);
+                        throw new JIException((int)JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                     }
                     comObject = JIFrameworkHelper.InstantiateComObject(_session, _interfacePtrCtor);
                     //increasing the reference count.
@@ -822,7 +823,7 @@ namespace org.jinterop.dcom.core {
             lock (_mutex) {
 
                 if (_session.SessionInDestroy && !obj._fromDestroySession) {
-                    throw new JIException(JIErrorCodes.JI_SESSION_DESTROYED);
+                    throw new JIException((int)JIErrorCodes.JI_SESSION_DESTROYED);
                 }
 
                 if (socketTimeout != 0) {
@@ -853,7 +854,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIException((int)e.Code, e);
                 }
                 catch (IOException e) {
-                    throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
+                    throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
                 }
                 catch (JIRuntimeException e1) {
                     throw new JIException(e1);

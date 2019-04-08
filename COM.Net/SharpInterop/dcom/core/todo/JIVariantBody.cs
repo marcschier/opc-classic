@@ -109,7 +109,7 @@ namespace org.jinterop.dcom.core {
 
             //for an unsupported type this could be null
             //but then this is my bug, any thread entering this ctor , will support a type.
-            var types = JIVariant.getSupportedType(_object, dataType);
+            var types = JIVariant.GetSupportedType(_object, dataType);
             if (types != null) {
                 _type = (int)types | (isByRef ? JIVariant.VT_BYREF : 0);
             }
@@ -169,7 +169,7 @@ namespace org.jinterop.dcom.core {
             //for an unsupported type this could be null
             //but then this is my bug, any thread entering this ctor , will support a type.
             _isByRef = isByRef;
-            var types = (int?)JIVariant.getSupportedType(nestedClass, flag);
+            var types = (int?)JIVariant.GetSupportedType(nestedClass, flag);
             if (types != null) {
                 _type = (int)types | (isByRef ? JIVariant.VT_BYREF : 0);
             }
@@ -447,17 +447,13 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal virtual void encode(NdrCodec ndr, IList defferedPointers, int flag) {
+        internal virtual void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
 
             {
                 //		try
                 flag |= _flag;
                 //align with 8 boundary
-                var index = (double)ndr.Buffer.Index;
-                if (index % 8.0 != 0) {
-                    long i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
-                    ndr.WriteOctetArray(new byte[(int)i], 0, (int)i);
-                }
+                ndr.FillAligned(8);
 
                 var start = ndr.Buffer.Index;
 
@@ -544,9 +540,7 @@ namespace org.jinterop.dcom.core {
                 var currentIndex = 0;
                 var length = (currentIndex = ndr.Buffer.Index) - start;
                 var value = (int)length / 8;
-#pragma warning disable RECS0018 // Comparison of floating point numbers with equality operator
                 if (length % 8.0 != 0) //entire variant is aligned by 8 bytes.
-#pragma warning restore RECS0018 // Comparison of floating point numbers with equality operator
                 {
                     value++;
                 }
@@ -724,7 +718,6 @@ namespace org.jinterop.dcom.core {
                 //SafeArray is 44
                 length += 44;
 
-
                 var isVariantArray = ((short)(short?)_safeArrayStruct.GetMember(1) & JIVariant.FADF_VARIANT) == JIVariant.FADF_VARIANT ? true : false;
 
                 if (array != null) {
@@ -733,7 +726,7 @@ namespace org.jinterop.dcom.core {
                         //each variant is 3 (size 20 = 20/8 = 3)
                         for (var i = 0; i < array.Length; i++) {
                             var variant = (JIVariant)array[i];
-                            length += variant.getLengthInBytes(_flag); //* 8;//((VariantBody)(variant.member.getReferent())).variantType * 8;
+                            length += variant.GetLengthInBytes(_flag); //* 8;//((VariantBody)(variant.member.getReferent())).variantType * 8;
                         }
 
                         //now for the "user" pointer part
@@ -810,10 +803,10 @@ namespace org.jinterop.dcom.core {
                 }
 
                 if (safeArray != null) {
-                    variant = new JIVariantBody(safeArray, (Type)JIVariant.getSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.GetMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
+                    variant = new JIVariantBody(safeArray, (Type)JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.GetMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
                 }
                 else {
-                    variant = new JIVariantBody(null, (Type)JIVariant.getSupportedClass(type2 & ~JIVariant.VT_ARRAY), false, isByRef, flagofFlags);
+                    variant = new JIVariantBody(null, (Type)JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), false, isByRef, flagofFlags);
                 }
 
                 variant._flag = flagofFlags;
@@ -915,7 +908,7 @@ namespace org.jinterop.dcom.core {
                     c = typeof(SCODE); //VT_ERROR,Scodes.
                     break;
                 default:
-                    c = JIVariant.getSupportedClass(type);
+                    c = JIVariant.GetSupportedClass(type);
                     if (c == null) {
                         //TODO log this , what has come that i don't support.
                     }
@@ -939,14 +932,14 @@ namespace org.jinterop.dcom.core {
                 return _isByRef ? 0x4000 | JIVariant.VT_UNKNOWN : JIVariant.VT_UNKNOWN;
             }
             if (c != null) {
-                var type2 = JIVariant.getSupportedType(c, _flag);
+                var type2 = JIVariant.GetSupportedType(c, _flag);
                 if (type2 != null) {
                     type = (int)type2;
                 }
                 else {
                     Log.Logger.Warning("In getVarType: Unsupported Type found ! " + c + " , please add this to the supportedType map ! ");
                     //make that an array of variants
-                    type2 = (int?)JIVariant.getSupportedType(typeof(JIVariant), _flag);
+                    type2 = (int?)JIVariant.GetSupportedType(typeof(JIVariant), _flag);
                 }
 
                 if (_isNull) {
@@ -1046,7 +1039,7 @@ namespace org.jinterop.dcom.core {
                 safeArray.AddMember(typeof(int?)); //safearrayunion
                 safeArray.AddMember(typeof(int?)); //size in safearrayunion
 
-                var c = (Type)JIVariant.supportedTypes_classes[type];
+                var c = (Type)JIVariant._supportedTypes_classes[type];
                 if (c == null) {
                     Log.Logger.Warning("From JIVariant: while decoding an Array, type " + type + " , was not found in supportedTypes_classes map , hence using JIVariant instead...");
                     //not available , lets try with JIVariant.

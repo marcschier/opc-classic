@@ -7,59 +7,67 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace org.jinterop.dcom.impls.automation {
 
-namespace org.jinterop.dcom.impls.automation
-{
+    /// <summary>
+    /// Implements the <i>CALLCONV</i> data type of COM Automation.
+    /// Identifies the calling convention used by a member function. 
+    /// </summary>
+    public enum CallConv {
 
-	/// <summary>
-	/// Implements the <i>CALLCONV</i> data type of COM Automation.
-	/// Definition from MSDN: <i> Identifies the calling convention used by a member function. </i>
-	/// </summary>
-	public interface CallConv
-	{
-		/// <summary>
-		/// Indicates that the Cdecl calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Mscpascal calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Pascal calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Macpascal calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Stdcall calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Syscall calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Mpwcdecl calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates that the Mpwpascal calling convention is used for a method.
-		/// </summary>
-		/// <summary>
-		/// Indicates the end of the CALLCONV enumeration.
-		/// </summary>
+        /// <summary>
+        /// Fast call
+        /// </summary>
+        CC_FASTCALL = 0,
 
-	}
+        /// <summary>
+        /// Indicates that the Cdecl calling convention is used for a method.
+        /// </summary>
+        CC_CDECL = 1,
 
-	public static class CallConv_Fields
-	{
-		public static readonly int? CC_FASTCALL = 0;
-		public static readonly int? CC_CDECL = 1;
-		public static readonly int? CC_MSCPASCAL = (int)CC_CDECL + 1;
-		public static readonly int? CC_PASCAL = CC_MSCPASCAL;
-		public static readonly int? CC_MACPASCAL = (int)CC_PASCAL + 1;
-		public static readonly int? CC_STDCALL = (int)CC_MACPASCAL + 1;
-		public static readonly int? CC_FPFASTCALL = (int)CC_STDCALL + 1;
-		public static readonly int? CC_SYSCALL = (int)CC_FPFASTCALL + 1;
-		public static readonly int? CC_MPWCDECL = (int)CC_SYSCALL + 1;
-		public static readonly int? CC_MPWPASCAL = (int)CC_MPWCDECL + 1;
-		public static readonly int? CC_MAX = (int)CC_MPWPASCAL + 1;
-	}
+        /// <summary>
+        /// Indicates that the Mscpascal calling convention is used for a method.
+        /// </summary>
+        CC_MSCPASCAL,
 
+        /// <summary>
+        /// Indicates that the Pascal calling convention is used for a method.
+        /// </summary>
+        CC_PASCAL = CC_MSCPASCAL,
+
+        /// <summary>
+        /// Indicates that the Macpascal calling convention is used for a method.
+        /// </summary>
+        CC_MACPASCAL,
+
+        /// <summary>
+        /// Indicates that the Stdcall calling convention is used for a method.
+        /// </summary>
+        CC_STDCALL,
+
+        /// <summary>
+        /// FP fast call
+        /// </summary>
+        CC_FPFASTCALL,
+
+        /// <summary>
+        /// Indicates that the Syscall calling convention is used for a method.
+        /// </summary>
+        CC_SYSCALL,
+
+        /// <summary>
+        /// Indicates that the Mpwcdecl calling convention is used for a method.
+        /// </summary>
+        CC_MPWCDECL,
+
+        /// <summary>
+        /// Indicates that the Mpwpascal calling convention is used for a method.
+        /// </summary>
+        CC_MPWPASCAL,
+
+        /// <summary>
+        /// Indicates the end of the CALLCONV enumeration.
+        /// </summary>
+        CC_MAX
+    }
 }

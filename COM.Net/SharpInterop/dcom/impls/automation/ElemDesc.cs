@@ -7,55 +7,45 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
-
-
 namespace org.jinterop.dcom.impls.automation {
+    using org.jinterop.dcom.core;
     using System;
-    using JIPointer = core.JIPointer;
-    using JIStruct = core.JIStruct;
 
     /// <summary>
-    ///Implements the <i>ELEMDESC</i> structure of COM Automation.
-    /// <para>
+    /// Implements the <i>ELEMDESC</i> structure of COM Automation.
     /// Definition from MSDN: <i> Includes the type description and process-transfer
-    /// information for a variable a function, or a function parameter.
-    /// </i>
-    /// 
-    /// 
-    /// @since 1.0
-    /// 
-    /// </para>
+    /// information for a variable a function, or a function parameter.</i>
     /// </summary>
     [Serializable]
-	public sealed class ElemDesc
-	{
+    public sealed class ElemDesc {
 
-		private const long serialVersionUID = 3022259075461969376L;
-		/// <summary>
-		/// Type of the element.
-		/// </summary>
-		public readonly TypeDesc typeDesc;
-		/// <summary>
-		/// Information about the parameter.
-		/// </summary>
-		public readonly ParamDesc paramDesc;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
+        public readonly TypeDesc TypeDesc;
+        public readonly ParamDesc paramDesc;
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-		public ElemDesc(JIStruct values)
-		{
-			if (values == null)
-			{
-				typeDesc = null;
-				paramDesc = null;
-				return;
-			}
-			typeDesc = new TypeDesc((JIStruct)values.GetMember(0));
-			paramDesc = new ParamDesc((JIStruct)values.GetMember(1));
-		}
+        /// <summary>
+        /// Element descriptor
+        /// </summary>
+        /// <param name="values"></param>
+        public ElemDesc(JIStruct values) {
+            if (values == null) {
+                TypeDesc = null;
+                paramDesc = null;
+                return;
+            }
+            TypeDesc = new TypeDesc((JIStruct)values.GetMember(0));
+            paramDesc = new ParamDesc((JIStruct)values.GetMember(1));
+        }
 
-		internal ElemDesc(JIPointer ptrValues) : this(ptrValues.Null ? null : (JIStruct)ptrValues.Referent)
-		{
-		}
-
-	}
-
+        /// <summary>
+        /// Element descriptor
+        /// </summary>
+        /// <param name="ptrValues"></param>
+        internal ElemDesc(JIPointer ptrValues) :
+            this(ptrValues.IsNull ? null : (JIStruct)ptrValues.GetReferent()) {
+        }
+    }
 }

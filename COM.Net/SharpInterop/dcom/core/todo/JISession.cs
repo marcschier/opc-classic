@@ -143,7 +143,7 @@ namespace org.jinterop.dcom.core {
         /// Initialize static session info
         /// </summary>
         static JISession() {
-            JISystem.internal_initLogger();
+            JISystem.Internal_initLogger();
             try {
                 InetAddress localhostAddr = InetAddress.LocalHost;
                 LocalhostAddressAsIPbytes = localhostAddr.Address;
@@ -187,7 +187,7 @@ namespace org.jinterop.dcom.core {
                     }
                     i++;
                 }
-                JISystem.internal_writeProgIdsToFile();
+                JISystem.Internal_writeProgIdsToFile();
                 JIComOxidRuntime.stopResolver();
                 _releaseRefsTimer.cancel();
                 _mapOfSessionIdsVsSessions.Clear();
@@ -338,7 +338,7 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JIComServer(JIProgId, JISession)"> </seealso>
         public static JISession createSession(IJIAuthInfo authInfo) {
             if (authInfo == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
             }
 
             var session = new JISession {
@@ -370,7 +370,7 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JIComServer(JIProgId, JISession)"> </seealso>
         public static JISession createSession(string domain, string username, string password) {
             if (username == null || password == null || domain == null) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
             }
             var session = new JISession {
                 _username = username,
@@ -414,7 +414,7 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JIComServer(JIProgId, JISession)"></seealso>
         public static JISession createSession() {
             if (!System.getProperty("os.name").ToLower().StartsWith("windows", StringComparison.Ordinal)) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_WIN_ONLY));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_WIN_ONLY));
             }
 
             var session = new JISession {

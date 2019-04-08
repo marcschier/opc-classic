@@ -6,9 +6,9 @@
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
+
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
 
@@ -86,9 +86,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
         protected void Serialize(NdrCodec ndr, Type c,
-            object value, List<object> defferedPointers, int flag) {
+            object value, List<object> defferedPointers, int flag) =>
             JIMarshalUnMarshalHelper.Serialize(ndr, c, value, defferedPointers, flag);
-        }
 
         /// <summary>
         /// Deserialize
@@ -100,10 +99,9 @@ namespace org.jinterop.dcom.core {
         /// <param name="additionalData"></param>
         /// <returns></returns>
         protected virtual object Deserialize(NdrCodec ndr, object obj,
-            List<object> defferedPointers, int flag, IDictionary<object, object> additionalData) {
-            return JIMarshalUnMarshalHelper.Deserialize(ndr, obj, defferedPointers,
+            List<object> defferedPointers, int flag, IDictionary<object, object> additionalData) =>
+            JIMarshalUnMarshalHelper.Deserialize(ndr, obj, defferedPointers,
                 flag, additionalData);
-        }
 
         /// <summary>
         /// Length in bytes
@@ -112,9 +110,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="obj"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        protected static int GetLengthInBytes(Type c, object obj, int flag) {
-            return JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, flag);
-        }
+        protected static int GetLengthInBytes(Type c, object obj, int flag) =>
+            JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, flag);
 
         private readonly IJIComObject _me;
     }

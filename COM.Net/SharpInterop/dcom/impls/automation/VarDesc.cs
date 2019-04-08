@@ -9,66 +9,63 @@
 
 
 namespace org.jinterop.dcom.impls.automation {
-
-    using JIPointer = core.JIPointer;
-    using JIStruct = core.JIStruct;
-    using JIUnion = core.JIUnion;
+    using org.jinterop.dcom.core;
+    using System;
 
     /// <summary>
     /// Implements the <i>VARDESC</i> structure of COM Automation
-    /// 
-    /// @since 1.0
-    /// 
     /// </summary>
     [Serializable]
-	public sealed class VarDesc
-	{
+    public sealed class VarDesc {
 
-		private const long serialVersionUID = -3874889610447398180L;
-		public const int VAR_PERINSTANCE = 0;
-		public const int VAR_STATIC = 1;
-		public const int VAR_CONST = 2;
-		public const int VAR_DISPATCH = 3;
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
+        public readonly int memberId;
+        public readonly JIPointer lpstrSchema;
+        public readonly JIUnion u;
+        public readonly ElemDesc elemdescVar;
+        public readonly short wVarFlags;
+        public readonly int varkind;
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-		public readonly int memberId;
-		public readonly JIPointer lpstrSchema;
-		public readonly JIUnion u;
-		/// <summary>
-		///  Contains the variable type.
-		/// </summary>
-		public readonly ElemDesc elemdescVar;
-		/// <summary>
-		/// Definition of flags follows
-		/// </summary>
-		public readonly short wVarFlags;
-		public readonly int varkind;
+        /// <summary> Per instance discriminant </summary>
+        public const int VAR_PERINSTANCE = 0;
+        /// <summary> Static discriminant </summary>
+        public const int VAR_STATIC = 1;
+        /// <summary> Const discriminant </summary>
+        public const int VAR_CONST = 2;
+        /// <summary> Dispatch discriminant </summary>
+        public const int VAR_DISPATCH = 3;
 
-		internal VarDesc(JIPointer values) : this(values.Null ? null : (JIStruct)values.Referent)
-		{
-		}
+        /// <summary>
+        /// Create description
+        /// </summary>
+        /// <param name="values"></param>
+        internal VarDesc(JIPointer values) :
+            this(values.IsNull ? null : (JIStruct)values.GetReferent()) {
+        }
 
-		internal VarDesc(JIStruct filledStruct)
-		{
-			if (filledStruct == null)
-			{
-				memberId = -1;
-				lpstrSchema = null;
-				u = null;
-				elemdescVar = null;
-				wVarFlags = -1;
-				varkind = -1;
-				return;
-			}
-
-			memberId = (int)(int?)filledStruct.GetMember(0);
-			lpstrSchema = (JIPointer)filledStruct.GetMember(1);
-			u = (JIUnion)filledStruct.GetMember(2);
-			elemdescVar = new ElemDesc((JIStruct)filledStruct.GetMember(3));
-			wVarFlags = (short)(short?)filledStruct.GetMember(4);
-			varkind = (int)(int?)filledStruct.GetMember(5);
-		}
-
-
-	}
-
+        /// <summary>
+        /// Create description
+        /// </summary>
+        /// <param name="filledStruct"></param>
+        internal VarDesc(JIStruct filledStruct) {
+            if (filledStruct == null) {
+                memberId = -1;
+                lpstrSchema = null;
+                u = null;
+                elemdescVar = null;
+                wVarFlags = -1;
+                varkind = -1;
+                return;
+            }
+            memberId = (int)(int?)filledStruct.GetMember(0);
+            lpstrSchema = (JIPointer)filledStruct.GetMember(1);
+            u = (JIUnion)filledStruct.GetMember(2);
+            elemdescVar = new ElemDesc((JIStruct)filledStruct.GetMember(3));
+            wVarFlags = (short)(short?)filledStruct.GetMember(4);
+            varkind = (int)(int?)filledStruct.GetMember(5);
+        }
+    }
 }

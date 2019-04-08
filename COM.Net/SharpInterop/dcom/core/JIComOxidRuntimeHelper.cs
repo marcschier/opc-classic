@@ -427,7 +427,7 @@ namespace org.jinterop.dcom.core {
                     var remunknownipid = uuid.ToString();
                     var portandthread = details.COMRuntimeHelper.startRemUnknown(details.IID, remunknownipid, details.Ipid, details.Referent.SupportedInterfaces);
                     port = (int)(int?)portandthread[0];
-                    details.RemUnknownThreadGroup = (ThreadGroup)portandthread[1];
+                    details.SetRemUnknownThreadGroup((ThreadGroup)portandthread[1]);
                     details.RemUnknownIpid = remunknownipid;
                 }
                 details.PortForRemUnknown = port;
@@ -442,9 +442,7 @@ namespace org.jinterop.dcom.core {
             var dualStringArray = new JIDualStringArray(port);
 
 
-            var authnHint = new int?(details.ProtectionLevel);
-
-
+            var authnHint = details.AuthHint;
             var buf = new byte[4 + 4 + dualStringArray.Length + 16 + 4 + 2 + 2 + 4 + 16];
 
             //have all data now prepare the response
@@ -460,7 +458,7 @@ namespace org.jinterop.dcom.core {
             dualStringArray.Encode(ndr2);
 
             JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(UUID), uuid, null, JIFlags.FLAG_NULL);
-            JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int?), authnHint, null, JIFlags.FLAG_NULL);
+            JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int), authnHint, null, JIFlags.FLAG_NULL);
             //		JIMarshalUnMarshalHelper.serialize(ndr2,Short.class, new Short((short)JISystem.getCOMVersion().getMajorVersion()),null,JIFlags.FLAG_NULL);
             //		JIMarshalUnMarshalHelper.serialize(ndr2,Short.class, new Short((short)JISystem.getCOMVersion().getMinorVersion()),null,JIFlags.FLAG_NULL);
 
@@ -486,7 +484,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        public virtual bool workerOver() {
+        public virtual bool WorkerOver() {
             //oxid resolver gets over when the client connected to it releases socket.
             return false;
         }
@@ -930,7 +928,7 @@ namespace org.jinterop.dcom.core {
             set => currentIID = value;
         }
 
-        public virtual bool workerOver() {
+        public virtual bool WorkerOver() {
             return workerOver_Renamed;
         }
     }

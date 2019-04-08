@@ -8,15 +8,13 @@
 //
 
 namespace org.jinterop.dcom.core {
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.impls.automation;
+    using Serilog;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
-    using rpc.core;
-    using org.jinterop.dcom.common;
-    using org.jinterop.winreg;
-    using Serilog;
     using System;
     using System.Collections.Generic;
-    using org.jinterop.dcom.impls.automation;
     using System.Reflection;
 
     /// <summary>
@@ -40,9 +38,9 @@ namespace org.jinterop.dcom.core {
 
         private const long serialVersionUID = 5101290038004040628L;
 
-        public sealed class Empty {}
-        public sealed class Null {}
-        public sealed class Scode {}
+        public sealed class Empty { }
+        public sealed class Null { }
+        public sealed class Scode { }
 
         /// <summary> id </summary>
         public const int VT_NULL = 0x00000001;
@@ -162,94 +160,94 @@ namespace org.jinterop.dcom.core {
         /// <summary> reserved bits </summary>
         public const int FADF_RESERVED = 0xF008;
 
-        internal static Hashtable supportedTypes = new Hashtable();
-        internal static Hashtable supportedTypes_classes = new Hashtable();
-        internal static Hashtable outTypesMap = new Hashtable();
+        internal static Hashtable _supportedTypes = new Hashtable();
+        internal static Hashtable _supportedTypes_classes = new Hashtable();
+        internal static Hashtable _outTypesMap = new Hashtable();
 
         /// <summary>
         /// Initialize variant
         /// </summary>
         static JIVariant() {
             //CAUTION NO PTR TYPE SHOULD BE PART OF THIS MAP !!!
-            outTypesMap[typeof(int)] = 0;
-            outTypesMap[typeof(int?)] = 0;
-            outTypesMap[typeof(short)] = (short)0;
-            outTypesMap[typeof(short?)] = (short)0;
-            outTypesMap[typeof(float)] = 0.0;
-            outTypesMap[typeof(float?)] = 0.0;
-            outTypesMap[typeof(double)] = 0.0;
-            outTypesMap[typeof(double?)] = 0.0;
-            outTypesMap[typeof(bool)] = false;
-            outTypesMap[typeof(bool?)] = false;
-            outTypesMap[typeof(string)] = "";
-            outTypesMap[typeof(JICurrency)] = new JICurrency("0.0");
-            outTypesMap[typeof(DateTime)] = DateTime.Now;
-            outTypesMap[typeof(char)] = '9';
-            outTypesMap[typeof(char?)] = '9';
-            outTypesMap[typeof(JIUnsignedByte)] = JIUnsignedFactory.GetUnsigned((short)0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE);
-            outTypesMap[typeof(JIUnsignedShort)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
-            outTypesMap[typeof(JIUnsignedInteger)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
-            outTypesMap[typeof(long)] = 0;
-            outTypesMap[typeof(long?)] = 0;
-            supportedTypes[typeof(object)] = VT_VARIANT;
-            supportedTypes[typeof(JIVariant)] = VT_VARIANT;
-            supportedTypes[typeof(int?)] = VT_I4;
-            supportedTypes[typeof(JIUnsignedInteger)] = VT_UI4;
-            supportedTypes[typeof(float?)] = VT_R4;
-            supportedTypes[typeof(bool?)] = VT_BOOL;
-            supportedTypes[typeof(double?)] = VT_R8;
-            supportedTypes[typeof(short?)] = VT_I2;
-            supportedTypes[typeof(JIUnsignedShort)] = VT_UI2;
-            supportedTypes[typeof(sbyte?)] = VT_I1;
-            supportedTypes[typeof(char?)] = VT_I1;
-            supportedTypes[typeof(JIUnsignedByte)] = VT_UI1;
-            supportedTypes[typeof(JIString)] = VT_BSTR;
+            _outTypesMap[typeof(int)] = 0;
+            _outTypesMap[typeof(int?)] = 0;
+            _outTypesMap[typeof(short)] = (short)0;
+            _outTypesMap[typeof(short?)] = (short)0;
+            _outTypesMap[typeof(float)] = 0.0;
+            _outTypesMap[typeof(float?)] = 0.0;
+            _outTypesMap[typeof(double)] = 0.0;
+            _outTypesMap[typeof(double?)] = 0.0;
+            _outTypesMap[typeof(bool)] = false;
+            _outTypesMap[typeof(bool?)] = false;
+            _outTypesMap[typeof(string)] = "";
+            _outTypesMap[typeof(JICurrency)] = new JICurrency("0.0");
+            _outTypesMap[typeof(DateTime)] = DateTime.Now;
+            _outTypesMap[typeof(char)] = '9';
+            _outTypesMap[typeof(char?)] = '9';
+            _outTypesMap[typeof(JIUnsignedByte)] = JIUnsignedFactory.GetUnsigned((short)0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE);
+            _outTypesMap[typeof(JIUnsignedShort)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT);
+            _outTypesMap[typeof(JIUnsignedInteger)] = JIUnsignedFactory.GetUnsigned(0, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
+            _outTypesMap[typeof(long)] = 0;
+            _outTypesMap[typeof(long?)] = 0;
+            _supportedTypes[typeof(object)] = VT_VARIANT;
+            _supportedTypes[typeof(JIVariant)] = VT_VARIANT;
+            _supportedTypes[typeof(int?)] = VT_I4;
+            _supportedTypes[typeof(JIUnsignedInteger)] = VT_UI4;
+            _supportedTypes[typeof(float?)] = VT_R4;
+            _supportedTypes[typeof(bool?)] = VT_BOOL;
+            _supportedTypes[typeof(double?)] = VT_R8;
+            _supportedTypes[typeof(short?)] = VT_I2;
+            _supportedTypes[typeof(JIUnsignedShort)] = VT_UI2;
+            _supportedTypes[typeof(sbyte?)] = VT_I1;
+            _supportedTypes[typeof(char?)] = VT_I1;
+            _supportedTypes[typeof(JIUnsignedByte)] = VT_UI1;
+            _supportedTypes[typeof(JIString)] = VT_BSTR;
             //		supportedTypes.put(IJIUnknown.class,new Integer(VT_UNKNOWN));
             //		supportedTypes.put(IJIDispatch.class,new Integer(VT_DISPATCH));
-            supportedTypes[typeof(Scode)] = VT_ERROR;
-            supportedTypes[typeof(Empty)] = VT_EMPTY;
-            supportedTypes[typeof(Null)] = VT_NULL;
-            supportedTypes[typeof(JIVariantBody.SCODE)] = VT_ERROR;
-            supportedTypes[typeof(JIVariantBody.EMPTY)] = VT_EMPTY;
-            supportedTypes[typeof(JIVariantBody.NULL)] = VT_NULL;
-            supportedTypes[typeof(JIArray)] = VT_ARRAY;
+            _supportedTypes[typeof(Scode)] = VT_ERROR;
+            _supportedTypes[typeof(Empty)] = VT_EMPTY;
+            _supportedTypes[typeof(Null)] = VT_NULL;
+            _supportedTypes[typeof(JIVariantBody.SCODE)] = VT_ERROR;
+            _supportedTypes[typeof(JIVariantBody.EMPTY)] = VT_EMPTY;
+            _supportedTypes[typeof(JIVariantBody.NULL)] = VT_NULL;
+            _supportedTypes[typeof(JIArray)] = VT_ARRAY;
             //		supportedTypes.put(JIComObjectImpl.class,new Integer(VT_UNKNOWN));
             //		supportedTypes.put(JIDispatchImpl.class,new Integer(VT_DISPATCH));
-            supportedTypes[typeof(DateTime)] = VT_DATE;
-            supportedTypes[typeof(JICurrency)] = VT_CY;
-            supportedTypes[typeof(long?)] = VT_I8;
+            _supportedTypes[typeof(DateTime)] = VT_DATE;
+            _supportedTypes[typeof(JICurrency)] = VT_CY;
+            _supportedTypes[typeof(long?)] = VT_I8;
 
-            supportedTypes_classes[VT_DATE] = typeof(DateTime);
-            supportedTypes_classes[VT_CY] = typeof(JICurrency);
-            supportedTypes_classes[VT_VARIANT] = typeof(JIVariant);
-            supportedTypes_classes[VT_I4] = typeof(int?);
-            supportedTypes_classes[VT_INT] = typeof(int?);
-            supportedTypes_classes[VT_UI4] = typeof(JIUnsignedInteger);
-            supportedTypes_classes[VT_UINT] = typeof(JIUnsignedInteger);
-            supportedTypes_classes[VT_R4] = typeof(float?);
-            supportedTypes_classes[VT_BOOL] = typeof(bool?);
-            supportedTypes_classes[VT_R8] = typeof(double?);
-            supportedTypes_classes[VT_I2] = typeof(short?);
-            supportedTypes_classes[VT_UI2] = typeof(JIUnsignedShort);
-            supportedTypes_classes[VT_I1] = typeof(char?);
-            supportedTypes_classes[VT_UI1] = typeof(JIUnsignedByte);
-            supportedTypes_classes[VT_BSTR] = typeof(JIString);
-            supportedTypes_classes[VT_ERROR] = typeof(Scode);
-            supportedTypes_classes[VT_EMPTY] = typeof(Empty);
-            supportedTypes_classes[VT_NULL] = typeof(Null);
-            supportedTypes_classes[VT_ARRAY] = typeof(JIArray);
-            supportedTypes_classes[VT_UNKNOWN] = typeof(IJIComObject);
-            supportedTypes_classes[VT_DISPATCH] = typeof(IJIComObject);
-            supportedTypes_classes[VT_I8] = typeof(long?);
+            _supportedTypes_classes[VT_DATE] = typeof(DateTime);
+            _supportedTypes_classes[VT_CY] = typeof(JICurrency);
+            _supportedTypes_classes[VT_VARIANT] = typeof(JIVariant);
+            _supportedTypes_classes[VT_I4] = typeof(int?);
+            _supportedTypes_classes[VT_INT] = typeof(int?);
+            _supportedTypes_classes[VT_UI4] = typeof(JIUnsignedInteger);
+            _supportedTypes_classes[VT_UINT] = typeof(JIUnsignedInteger);
+            _supportedTypes_classes[VT_R4] = typeof(float?);
+            _supportedTypes_classes[VT_BOOL] = typeof(bool?);
+            _supportedTypes_classes[VT_R8] = typeof(double?);
+            _supportedTypes_classes[VT_I2] = typeof(short?);
+            _supportedTypes_classes[VT_UI2] = typeof(JIUnsignedShort);
+            _supportedTypes_classes[VT_I1] = typeof(char?);
+            _supportedTypes_classes[VT_UI1] = typeof(JIUnsignedByte);
+            _supportedTypes_classes[VT_BSTR] = typeof(JIString);
+            _supportedTypes_classes[VT_ERROR] = typeof(Scode);
+            _supportedTypes_classes[VT_EMPTY] = typeof(Empty);
+            _supportedTypes_classes[VT_NULL] = typeof(Null);
+            _supportedTypes_classes[VT_ARRAY] = typeof(JIArray);
+            _supportedTypes_classes[VT_UNKNOWN] = typeof(IJIComObject);
+            _supportedTypes_classes[VT_DISPATCH] = typeof(IJIComObject);
+            _supportedTypes_classes[VT_I8] = typeof(long?);
 
             //for by ref types, do it at runtime.
-            arryInits.Add(typeof(JIString));
-            arryInits.Add(typeof(JIPointer));
+            kArryInits.Add(typeof(JIString));
+            kArryInits.Add(typeof(JIPointer));
             //		arryInits.add(JIComObjectImpl.class);
             //		arryInits.add(JIDispatchImpl.class);
             //		arryInits.add(IJIUnknown.class);
-            arryInits.Add(typeof(IJIComObject));
-            arryInits.Add(typeof(IJIDispatch)); //this can only happen in case of an array
+            kArryInits.Add(typeof(IJIComObject));
+            kArryInits.Add(typeof(IJIDispatch)); //this can only happen in case of an array
         }
 
         /// <summary>
@@ -262,10 +260,10 @@ namespace org.jinterop.dcom.core {
             JIVariant variant = null;
             if (!isArray) {
                 try {
-                    variant = makeVariant(outTypesMap[c], true);
+                    variant = MakeVariant(_outTypesMap[c], true);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
-                catch  {
+                catch {
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 }
 
@@ -284,7 +282,7 @@ namespace org.jinterop.dcom.core {
             }
             else {
                 try {
-                    var oo = outTypesMap[c];
+                    var oo = _outTypesMap[c];
                     if (oo != null) {
                         //we will always send a single dimension array.
                         object x = System.Array.CreateInstance(c, 1);
@@ -331,7 +329,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="o"> </param>
         /// <param name="isByRef">
         /// </param>
-        public static JIVariant makeVariant(object o, bool isByRef = false) {
+        public static JIVariant MakeVariant(object o, bool isByRef = false) {
             if (o == null || o.GetType() == typeof(object)) {
                 if (isByRef) {
                     return CreateEMPTY_BYREF();
@@ -340,7 +338,7 @@ namespace org.jinterop.dcom.core {
             }
             var c = o.GetType();
             if (c.IsArray) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(0x00001029));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_VARIANT_ONLY_JIARRAY_EXCEPTED));
             }
             if (c == typeof(JIVariant)) {
                 return new JIVariant((JIVariant)o);
@@ -392,9 +390,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal static Type getSupportedClass(int? type) {
-            return (Type)supportedTypes_classes[type];
-        }
+        internal static Type GetSupportedClass(int? type) => (Type)_supportedTypes_classes[type];
 
         /// <summary>
         /// Get supported type id
@@ -402,8 +398,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="c"></param>
         /// <param name="flag"></param>
         /// <returns></returns>
-        internal static int? getSupportedType(Type c, int flag) {
-            var retVal = (int?)supportedTypes[c];
+        internal static int? GetSupportedType(Type c, int flag) {
+            var retVal = (int?)_supportedTypes[c];
 
             if (retVal == null) {
                 if (typeof(IJIComObject) == c) {
@@ -432,9 +428,9 @@ namespace org.jinterop.dcom.core {
         /// <param name="o"></param>
         /// <param name="defaultType"></param>
         /// <returns></returns>
-        internal static int? getSupportedType(object o, int defaultType) {
+        internal static int? GetSupportedType(object o, int defaultType) {
             var c = o.GetType();
-            var retval = (int?)supportedTypes[c];
+            var retval = (int?)_supportedTypes[c];
             // Order is important since IJIDispatch derieves from IJIComObject
             if (retval == null) {
                 if (o is IJIDispatch) {
@@ -451,18 +447,14 @@ namespace org.jinterop.dcom.core {
         /// EMPTY <code>VARIANT</code>.
         /// This is not Thread Safe, hence a new instance must be taken each time.
         /// </summary>
-        public static JIVariant CreateEMPTY() {
-            return new JIVariant(false, null);
-        }
+        public static JIVariant CreateEMPTY() => new JIVariant(false, null);
 
         /// <summary>
         /// EMPTY BYREF <code>VARIANT</code>.
         /// This is not Thread Safe, hence a new instance must be taken each time. Used for a
         /// <code>[out] VARIANT*</code> .
         /// </summary>
-        public static JIVariant CreateEMPTY_BYREF() {
-            return new JIVariant(CreateEMPTY());
-        }
+        public static JIVariant CreateEMPTY_BYREF() => new JIVariant(CreateEMPTY());
 
         /// <summary>
         /// <code>VARIANT</code> for <code>([out] IUnknown*)</code>.
@@ -499,34 +491,25 @@ namespace org.jinterop.dcom.core {
         /// NULL <code>VARIANT</code>.
         /// This is not Thread Safe, hence a new instance must be taken each time.
         /// </summary>
-        public static JIVariant CreateNULL() {
-            return new JIVariant(false, new JIVariantBody(JIVariantBody.NULL));
-        }
+        public static JIVariant CreateNULL() => new JIVariant(false, new JIVariantBody(JIVariantBody.NULL));
 
         /// <summary>
         /// OPTIONAL PARAM. Pass this when a parameter is <code>[optional]</code> for a COM call.
         /// This is not Thread Safe , hence a new instance must be taken each time.
         /// </summary>
-        public static JIVariant CreateOPTIONAL_PARAM() {
-            return new JIVariant(new Scode(), JIErrorCodes.DISP_E_PARAMNOTFOUND);
-        }
+        public static JIVariant CreateOPTIONAL_PARAM() => new JIVariant(new Scode(), JIErrorCodes.DISP_E_PARAMNOTFOUND);
 
         /// <summary>
         /// Helper method for creating an array of <code>BSTR</code>s, IDL signature <code>[in, out] SAFEARRAY(BSTR) *p</code>.
         /// The return value can directly be used in an <code>IJIDispatch</code>call.
         /// </summary>
-        public static JIVariant CreateBSTRARRAY() {
-            return new JIVariant(new JIArray(new JIString[] { new JIString("") }, true), true);
-        }
+        public static JIVariant CreateBSTRARRAY() => new JIVariant(new JIArray(new JIString[] { new JIString("") }, true), true);
 
         /// <summary>
         /// Helper method for creating an array of <code>VARIANT</code>s, IDL signature <code>[in, out] SAFEARRAY(VARIANT) *p</code>
         /// OR <code>[in,out] VARIANT *pArray</code>. The return value can directly be used in an <code>IJIDispatch</code> call.
         /// </summary>
-        public static JIVariant CreateVARIANTARRAY() {
-            return new JIVariant(new JIArray(new JIVariant[] { CreateEMPTY() }, true), true);
-        }
-
+        public static JIVariant CreateVARIANTARRAY() => new JIVariant(new JIArray(new JIVariant[] { CreateEMPTY() }, true), true);
 
         /// <summary>
         /// Called when this variant is nested
@@ -709,7 +692,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="number"> </param>
         /// <param name="isByRef"> <code>true</code> if the value is to be represented as a pointer. </param>
         public JIVariant(IJIUnsigned number, bool isByRef = false) :
-            this(isByRef, (object)number) {
+            this(isByRef, number) {
         }
 
         /// <summary>
@@ -746,10 +729,10 @@ namespace org.jinterop.dcom.core {
         /// <param name="isByRef"></param>
         private JIVariant(bool isByRef, object obj) {
             if (obj != null && obj.GetType().IsArray) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_VARIANT_ONLY_JIARRAY_EXCEPTED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_VARIANT_ONLY_JIARRAY_EXCEPTED));
             }
             if (obj is JIInterfacePointer) {
-                throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_VARIANT_TYPE_INCORRECT));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_VARIANT_TYPE_INCORRECT));
             }
 
             //this case comes only for SCODE and EMPTY, and in these cases the isByRef flag will be set in the
@@ -772,7 +755,6 @@ namespace org.jinterop.dcom.core {
             _member.SetReferent(0x72657355); //"User" in LEndian.
         }
 
-        private static readonly IList arryInits = new ArrayList();
         /// <summary>
         /// Private constructor
         /// </summary>
@@ -810,7 +792,7 @@ namespace org.jinterop.dcom.core {
                     object subArray = obj2;
                     name = name.Substring(1);
                     var firstDim = ((object[])subArray).Length;
-                   // TODO:      subArray = Array.get(subArray, 0);
+                    // TODO:      subArray = Array.get(subArray, 0);
                     var secondDim = ((object[])subArray).Length;
                     var k = 0;
                     newArrayObj = (object[])System.Array.CreateInstance(subArray.GetType().GetElementType(), array.NumElementsInAllDimensions);
@@ -824,7 +806,7 @@ namespace org.jinterop.dcom.core {
                     is2Dim = true;
                     break;
                 default:
-                    throw new ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_VARIANT_VARARRAYS_2DIMRES));
+                    throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_VARIANT_VARARRAYS_2DIMRES));
             }
 
             array2 = new JIArray(newArrayObj, true); //should always be conformant since this is part of a safe array.
@@ -839,7 +821,7 @@ namespace org.jinterop.dcom.core {
                     elementSize = 16; //(Variant is pointer whose size is 16)
                 }
                 else {
-                    if (arryInits.Contains(c)) {
+                    if (kArryInits.Contains(c)) {
                         if (c == typeof(JIString)) {
                             flags = (short)(flags | FADF_BSTR);
                         }
@@ -887,28 +869,28 @@ namespace org.jinterop.dcom.core {
                 }
 
                 safeArray.AddMember((short)0); //locks
-                safeArray.AddMember((short)getSupportedType(c, flag)); //variant array, safearrayunion
+                safeArray.AddMember((short)GetSupportedType(c, flag)); //variant array, safearrayunion
                                                                        //peculiarity here, windows seems to be sending the signed type in VarType32...
                 if (c == typeof(JIUnsignedByte)) {
-                    safeArray.AddMember(getSupportedType(typeof(sbyte?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(sbyte?), flag)); //safearrayunion
                 }
                 else if (c == typeof(JIUnsignedShort)) {
-                    safeArray.AddMember(getSupportedType(typeof(short?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(short?), flag)); //safearrayunion
                 }
                 else if (c == typeof(JIUnsignedInteger)) {
-                    safeArray.AddMember(getSupportedType(typeof(int?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(int?), flag)); //safearrayunion
                 }
                 else if (c == typeof(bool?)) {
-                    safeArray.AddMember(getSupportedType(typeof(short?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(short?), flag)); //safearrayunion
                 }
                 else if (c == typeof(double?)) {
-                    safeArray.AddMember(getSupportedType(typeof(long?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(long?), flag)); //safearrayunion
                 }
                 else if (c == typeof(float?)) {
-                    safeArray.AddMember(getSupportedType(typeof(int?), flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(typeof(int?), flag)); //safearrayunion
                 }
                 else {
-                    safeArray.AddMember(getSupportedType(c, flag)); //safearrayunion
+                    safeArray.AddMember(GetSupportedType(c, flag)); //safearrayunion
                 }
                 safeArray.AddMember(array2.NumElementsInAllDimensions); //size in safearrayunion
                 var ptr2RealArray = new JIPointer(array2);
@@ -1156,7 +1138,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="flag"></param>
         /// <exception cref="JIException"> </exception>
-        internal int getLengthInBytes(int flag) {
+        internal int GetLengthInBytes(int flag) {
             checkValidity();
             return JIMarshalUnMarshalHelper.GetLengthInBytes(_member.GetType(), _member, flag);
         }
@@ -1198,16 +1180,15 @@ namespace org.jinterop.dcom.core {
         /// Helper to check validity
         /// </summary>
         private void checkValidity() {
-            if (_member == null || _member.Null) {
-                throw new JIException(JIErrorCodes.JI_VARIANT_IS_NULL);
+            if (_member == null || _member.IsNull) {
+                throw new JIException((int)JIErrorCodes.JI_VARIANT_IS_NULL);
             }
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return _member == null ? "[null]" : "[" + _member + "]";
-        }
+        public override string ToString() => _member == null ? "[null]" : "[" + _member + "]";
 
         internal JIPointer _member;
+        private static readonly List<object> kArryInits = new List<object>();
     }
 }

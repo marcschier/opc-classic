@@ -49,7 +49,7 @@ namespace org.jinterop.dcom.common {
         /// </summary>
         public JIException(int errorCode, string message, Exception cause) :
             base(message, cause) {
-            _errorCode = errorCode;
+            ErrorCode = errorCode;
             _message = message;
         }
 
@@ -57,16 +57,15 @@ namespace org.jinterop.dcom.common {
         /// Returns the localized error messages.
         /// </summary>
         public override string Message =>
-            _message ?? (_message = JISystem.getLocalizedMessage(_errorCode));
+            _message ?? (_message = JISystem.GetLocalizedMessage(ErrorCode));
 
         /// <summary>
         /// Returns the error code associated with this exception. Please refer
         /// <code>JIErrorCodes</code> for a complete list of errors.
         /// </summary>
         /// <returns> int representing the error code. </returns>
-        public virtual int ErrorCode => _errorCode;
+        public int ErrorCode { get; } = -1;
 
         private string _message;
-        private readonly int _errorCode = -1;
     }
 }

@@ -7,65 +7,48 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace org.jinterop.dcom.impls.automation {
 
-namespace org.jinterop.dcom.impls.automation
-{
+    /// <summary>
+    /// Exposes error code , exception source, exception description and help file path
+    /// for an unsuccessful <seealso cref="IJIDispatch"/> operation.
+    /// </summary>
+    public sealed class JIExcepInfo {
 
-	/// <summary>
-	/// Exposes error code , exception source, exception description and help file path
-	/// for an unsuccessful <seealso cref="IJIDispatch"/> operation.
-	/// 
-	/// @since 2.0
-	/// </summary>
-	public sealed class JIExcepInfo
-	{
-		internal string excepSource;
-		internal string excepDesc;
-		internal string excepHelpfile;
+        /// <summary>
+        /// Create exception info
+        /// </summary>
+        internal JIExcepInfo() {
+        }
 
-		internal int errorCode = -1;
-		internal JIExcepInfo()
-		{
-		}
-
-		internal void clearAll()
-		{
-			errorCode = -1;
-			excepSource = null;
-			excepDesc = null;
-			excepHelpfile = null;
-		}
+        internal void ClearAll() {
+            ErrorCode = -1;
+            ExcepSource = null;
+            ExcepDesc = null;
+            HelpFilePath = null;
+        }
 
         /// <summary>
         /// An error code identifying the error.
-        /// 
-        /// @return
         /// </summary>
-        public int ErrorCode => errorCode;
+        public int ErrorCode { get; internal set; } = -1;
 
         /// <summary>
         /// A textual, human-readable name of the source of the exception. Typically, this is an
         /// application name.
-        /// 
-        /// @return
         /// </summary>
-        public string ExcepSource => excepSource;
+        public string ExcepSource { get; internal set; }
 
         /// <summary>
         /// A textual, human-readable description of the error intended for the customer. If no
         /// description is available it returns <code>null</code>.
-        /// 
-        /// @return
         /// </summary>
-        public string ExcepDesc => excepDesc;
+        public string ExcepDesc { get; internal set; }
 
         /// <summary>
         /// The fully qualified drive, path, and file name of a Help file that has more information
         /// about the error. If no Help is available it returns <code>null</code>.
-        /// 
-        /// @return
         /// </summary>
-        public string HelpFilePath => excepHelpfile;
+        public string HelpFilePath { get; internal set; }
     }
-
 }

@@ -8,38 +8,35 @@
 // 
 
 
-namespace org.jinterop.dcom.impls.automation
-{
+namespace org.jinterop.dcom.impls.automation {
+    using org.jinterop.dcom.common;
 
-	using JIException = common.JIException;
+    /// <summary>
+    /// Class for signifying Automation related exceptions.
+    /// </summary>
+    public sealed class JIAutomationException : JIException {
 
-	/// <summary>
-	/// Class for signifying Automation related exceptions.
-	/// 
-	/// @since 2.01
-	/// </summary>
-	public sealed class JIAutomationException : JIException
-	{
-
-		public JIAutomationException(JIException e) : base(e.ErrorCode,e.Message,e.InnerException)
-		{
-		}
-
-		private JIExcepInfo excepInfo = new JIExcepInfo();
-
-		internal JIExcepInfo ExcepInfo {
-            set {
-                excepInfo.errorCode = value.errorCode;
-                excepInfo.excepDesc = value.excepDesc;
-                excepInfo.excepHelpfile = value.excepHelpfile;
-                excepInfo.excepSource = value.excepSource;
-            }
-            get => excepInfo;
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        /// <param name="e"></param>
+        public JIAutomationException(JIException e) : 
+            base(e.ErrorCode, e.Message, e.InnerException) {
         }
 
-        /// 
-        private const long serialVersionUID = 6969766293190131365L;
+        /// <summary>
+        /// Exception information
+        /// </summary>
+        internal JIExcepInfo ExcepInfo {
+            set {
+                _excepInfo.ErrorCode = value.ErrorCode;
+                _excepInfo.ExcepDesc = value.ExcepDesc;
+                _excepInfo.HelpFilePath = value.HelpFilePath;
+                _excepInfo.ExcepSource = value.ExcepSource;
+            }
+            get => _excepInfo;
+        }
 
-	}
-
+        private readonly JIExcepInfo _excepInfo = new JIExcepInfo();
+    }
 }

@@ -39,7 +39,7 @@ namespace org.jinterop.winreg.smb {
 		public JIWinRegStub(IJIAuthInfo authInfo, string serverName) 		{
 			if (authInfo == null)
 			{
-				throw new System.ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
+				throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
 			}
 
 			base.TransportFactory = new rpc.ncacn_np.TransportFactory();
@@ -420,7 +420,7 @@ namespace org.jinterop.winreg.smb {
 		{
 			if (data == null)
 			{
-				throw new System.ArgumentException(JISystem.getLocalizedMessage(JIErrorCodes.JI_WINREG_EXCEPTION5));
+				throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_WINREG_EXCEPTION5));
 			}
 
 			//calculate length of all strings + extra null in the end

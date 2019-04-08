@@ -9,10 +9,8 @@
 
 
 namespace org.jinterop.dcom.impls.automation {
+    using org.jinterop.dcom.core;
     using System;
-    using JIArray = core.JIArray;
-    using JIPointer = core.JIPointer;
-    using JIStruct = core.JIStruct;
 
     /// <summary>
     /// Implements the <i>ARRAYDESC</i> structure of COM Automation.
@@ -23,19 +21,18 @@ namespace org.jinterop.dcom.impls.automation {
     [Serializable]
     public sealed class ArrayDesc {
 
-        /// <summary>
-        /// Element Type.
-        /// </summary>
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable IDE1006 // Naming Styles
         public readonly TypeDesc typeDesc;
-        /// <summary>
-        /// Dimension Count.
-        /// </summary>
         public readonly short cDims;
-        /// <summary>
-        /// Variable length array containing one element for each dimension.
-        /// </summary>
         public readonly SafeArrayBounds[] safeArrayBounds;
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Create description
+        /// </summary>
+        /// <param name="values"></param>
         internal ArrayDesc(JIStruct values) {
             if (values == null) {
                 typeDesc = null;
@@ -45,7 +42,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             typeDesc = new TypeDesc((JIStruct)values.GetMember(0));
-            cDims = (short)(short?)values.GetMember(1);
+            cDims = (short)values.GetMember(1);
             var arry = (JIArray)values.GetMember(2);
             var arry2 = (object[])arry.ArrayInstance;
 
@@ -60,8 +57,12 @@ namespace org.jinterop.dcom.impls.automation {
             }
         }
 
-        internal ArrayDesc(JIPointer values) : this(values.Null ? null : (JIStruct)values.Referent) {
+        /// <summary>
+        /// Create description
+        /// </summary>
+        /// <param name="values"></param>
+        internal ArrayDesc(JIPointer values) : this(values.IsNull ? null : 
+            (JIStruct)values.GetReferent()) {
         }
     }
-
 }

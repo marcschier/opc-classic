@@ -111,7 +111,7 @@ namespace org.jinterop.dcom.core {
                             itr.Remove();
 
                             //the thread associated with this will also stop.
-                            details.interruptRemUnknownThreadGroup();
+                            details.InterruptRemUnknownThreadGroup();
 
                             component = null;
                             details = null;
@@ -139,7 +139,7 @@ namespace org.jinterop.dcom.core {
                 mapOfSessionIdsVsOIDs.Remove(session.SessionIdentifier);
 
                 //the thread associated with this will also stop.
-                details.interruptRemUnknownThreadGroup();
+                details.InterruptRemUnknownThreadGroup();
 
                 component = null;
                 details = null;
@@ -169,7 +169,7 @@ namespace org.jinterop.dcom.core {
                     listOfExportedJavaComponents.Remove(component);
                     //the thread associated with this will also stop.
                     if (details != null) {
-                        details.interruptRemUnknownThreadGroup();
+                        details.InterruptRemUnknownThreadGroup();
                     }
                     component = null;
                     details = null;
@@ -533,10 +533,10 @@ namespace org.jinterop.dcom.core {
 
                 properties.SetProperty("rpc.ntlm.domain", session.TargetServer);
 
-                var protecttionLevel = 2;
+                var protectionLevel = rpc.ProtectionLevel.PROTECTION_LEVEL_CONNECT;
 
                 if (session.SessionSecurityEnabled) {
-                    protecttionLevel = 6;
+                    protectionLevel = rpc.ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
                     properties.SetProperty("rpc.ntlm.seal", "true");
                     properties.SetProperty("rpc.ntlm.sign", "true");
                     properties.SetProperty("rpc.ntlm.keyExchange", "true");
@@ -557,7 +557,7 @@ namespace org.jinterop.dcom.core {
                 //now create a new JIComOxidDetails
                 //this carries a reference to the javaInstance , incase we do not get pings from the client
                 //at the right times, the cleaup thread will remove this entry and it's OXID as well from both the maps.
-                var details = new JIComOxidDetails(component, oxid, oid, iid, ipid, ptr, remUnknown, protecttionLevel);
+                var details = new JIComOxidDetails(component, oxid, oid, iid, ipid, ptr, remUnknown, protectionLevel);
 
 
                 mapOfJavaVsOxidDetails[component] = details;

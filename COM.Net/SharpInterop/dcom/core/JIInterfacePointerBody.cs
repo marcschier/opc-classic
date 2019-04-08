@@ -27,17 +27,17 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Custom object
         /// </summary>
-        internal bool CustomObjRef => _objectType == JIInterfacePointer.OBJREF_CUSTOM;
+        internal bool CustomObjRef => ObjectType == JIInterfacePointer.OBJREF_CUSTOM;
 
         /// <summary>
         /// Custom class id
         /// </summary>
-        internal string CustomCLSID => _customCLSID;
+        internal string CustomCLSID { get; private set; }
 
         /// <summary>
         /// Object type
         /// </summary>
-        internal int ObjectType => _objectType;
+        internal int ObjectType { get; private set; } = -1;
 
         /// <summary>
         /// Returns object reference
@@ -70,12 +70,12 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// String bindings
         /// </summary>
-        internal JIDualStringArray StringBindings => _resolverAddr;
+        internal JIDualStringArray StringBindings { get; private set; }
 
         /// <summary>
         /// Length
         /// </summary>
-        internal int Length => _length;
+        internal int Length { get; private set; } = -1;
 
         /// <summary>
         /// Called from Oxid Resolver master, the resolver address are put in here itself
@@ -87,8 +87,8 @@ namespace org.jinterop.dcom.core {
             _iid = iid;
             _stdObjRef = objref;
             _port = port;
-            _resolverAddr = new JIDualStringArray(port);
-            _length = 40 + 4 + 4 + 16 + _resolverAddr.Length;
+            StringBindings = new JIDualStringArray(port);
+            Length = 40 + 4 + 4 + 16 + StringBindings.Length;
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace org.jinterop.dcom.core {
         internal JIInterfacePointerBody(string iid, JIInterfacePointer interfacePointer) {
             _iid = iid;
             _stdObjRef = (JIStdObjRef)interfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD);
-            _resolverAddr = interfacePointer.StringBindings;
-            _length = 40 + 4 + 4 + 16 + _resolverAddr.Length;
+            StringBindings = interfacePointer.StringBindings;
+            Length = 40 + 4 + 4 + 16 + StringBindings.Length;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace org.jinterop.dcom.core {
             ndr.ReadUnsignedLong(); //length
 
             var ptr = new JIInterfacePointerBody {
-                _length = length
+                Length = length
             };
             //check for MEOW
             var b = new byte[4];
@@ -136,7 +136,7 @@ namespace org.jinterop.dcom.core {
 
             //TODO only STDOBJREF supported for now
 
-            if ((ptr._objectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
+            if ((ptr.ObjectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 try {
                     var ipid2 = new rpc.core.UUID();
                     ipid2.Decode(ndr, ndr.Buffer);
@@ -150,7 +150,7 @@ namespace org.jinterop.dcom.core {
                 try {
                     var ipid2 = new rpc.core.UUID();
                     ipid2.Decode(ndr, ndr.Buffer);
-                    ptr._customCLSID = ipid2.ToString();
+                    ptr.CustomCLSID = ipid2.ToString();
                 }
                 catch (NdrException e) {
                     Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
@@ -175,7 +175,7 @@ namespace org.jinterop.dcom.core {
             }
 
             ptr._stdObjRef = JIStdObjRef.Decode(ndr);
-            ptr._resolverAddr = JIDualStringArray.Decode(ndr);
+            ptr.StringBindings = JIDualStringArray.Decode(ndr);
             return ptr;
         }
 
@@ -202,7 +202,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //TODO only STDOBJREF supported for now
-            if ((ptr._objectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
+            if ((ptr.ObjectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 return null;
             }
 
@@ -216,7 +216,7 @@ namespace org.jinterop.dcom.core {
             }
 
             ptr._stdObjRef = JIStdObjRef.Decode(ndr);
-            ptr._resolverAddr = JIDualStringArray.Decode(ndr);
+            ptr.StringBindings = JIDualStringArray.Decode(ndr);
             return ptr;
         }
 
@@ -233,7 +233,7 @@ namespace org.jinterop.dcom.core {
             // + 16 bytes of ipid
             var length = 0;
             if (!CustomObjRef) {
-                length = 40 + 4 + 4 + 16 + _resolverAddr.Length;
+                length = 40 + 4 + 4 + 16 + StringBindings.Length;
             }
 
             ndr.WriteUnsignedLong(length);
@@ -249,7 +249,7 @@ namespace org.jinterop.dcom.core {
                 try {
                     var ipid2 = new rpc.core.UUID(_iid);
                     ipid2.Encode(ndr, ndr.Buffer);
-                    ipid2 = new rpc.core.UUID(_customCLSID);
+                    ipid2 = new rpc.core.UUID(CustomCLSID);
                     ipid2.Encode(ndr, ndr.Buffer);
                     ndr.WriteUnsignedLong(0); //extension
                     ndr.WriteUnsignedLong(0); //reserved, now the spec say that this is ignored by the server but the
@@ -275,7 +275,7 @@ namespace org.jinterop.dcom.core {
                     ipid2 = new rpc.core.UUID(JiIUnknown.IID);
                 }
                 else if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) == JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) {
-                    ipid2 = new rpc.core.UUID(impls.automation.IJIDispatch_Fields.IID);
+                    ipid2 = new rpc.core.UUID(impls.automation.DispatchFlags.IID);
                 }
 
                 ipid2.Encode(ndr, ndr.Buffer);
@@ -288,15 +288,11 @@ namespace org.jinterop.dcom.core {
 
             _stdObjRef.Encode(ndr);
 
-            _resolverAddr.Encode(ndr);
+            StringBindings.Encode(ndr);
         }
 
         private string _iid;
-        private string _customCLSID;
-        private int _objectType = -1;
         private JIStdObjRef _stdObjRef;
-        private int _length = -1;
-        private JIDualStringArray _resolverAddr;
         private readonly int _port = -1; //to be used when doing local resolution.
     }
 }

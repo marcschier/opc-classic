@@ -36,23 +36,23 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT"> </seealso>
         public static IJIUnsigned GetUnsigned(object value, int flag) {
             IJIUnsigned retVal = null;
-            if (!(value is short?) && !(value is long?) && !(value is int?)) {
+            if (!(value is short) && !(value is long) && !(value is int)) {
                 throw new System.ArgumentException(
-                    JISystem.getLocalizedMessage(JIErrorCodes.JI_UNSIGNED_INCORRECT_TYPE));
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_INCORRECT_TYPE));
             }
             switch (flag) {
                 case JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE:
-                    retVal = new JIUnsignedByte((short?)value);
+                    retVal = new JIUnsignedByte((short)value);
                     break;
                 case JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT:
-                    retVal = new JIUnsignedShort((int?)value);
+                    retVal = new JIUnsignedShort((int)value);
                     break;
                 case JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT:
-                    retVal = new JIUnsignedInteger((long?)value);
+                    retVal = new JIUnsignedInteger((long)value);
                     break;
                 default:
                     throw new System.ArgumentException(
-                        JISystem.getLocalizedMessage(JIErrorCodes.JI_UNSIGNED_INCORRECT_TYPE));
+                        JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_INCORRECT_TYPE));
             }
             return retVal;
         }
