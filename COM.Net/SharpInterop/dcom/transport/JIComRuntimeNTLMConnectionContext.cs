@@ -9,153 +9,133 @@
 
 
 namespace org.jinterop.dcom.transport {
-
-
-    using ConnectionOrientedPdu = rpc.ConnectionOrientedPdu;
-    using PresentationContext = rpc.core.PresentationContext;
-    using PresentationResult = rpc.core.PresentationResult;
-    using PresentationSyntax = rpc.core.PresentationSyntax;
-    using UUID = rpc.core.UUID;
-    using AlterContextPdu = rpc.pdu.AlterContextPdu;
-    using AlterContextResponsePdu = rpc.pdu.AlterContextResponsePdu;
-    using BindAcknowledgePdu = rpc.pdu.BindAcknowledgePdu;
-    using BindPdu = rpc.pdu.BindPdu;
-    using NtlmConnectionContext = rpc.security.ntlm.NtlmConnectionContext;
+    using System.Collections.Generic;
+    using rpc.pdu;
+    using rpc.security.ntlm;
+    using rpc.core;
+    using SharpCifs.Util.Sharpen;
+    using rpc;
 
     /// <summary>
-    /// @exclude
-    /// @since 1.0
-    /// 
+    /// Connection context
     /// </summary>
-    public sealed class JIComRuntimeNTLMConnectionContext : NtlmConnectionContext
-	{
+    public sealed class JIComRuntimeNTLMConnectionContext : NtlmConnectionContext {
 
-		  private const string IID = "IID";
-		  private const string IID2 = "IID2";
+        /// <inheritdoc/>
+        public override bool Established => base.Established | _established;
 
-		  private bool established;
-		  private SharpCifs.Util.Sharpen.Properties properties;
-		  private IList listOfInterfacesSupported = Collections.synchronizedList(new ArrayList());
+        /// <inheritdoc/>
+        public override ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
+            base.Init2(context, properties);
+            _properties = properties;
+            lock (_listOfInterfacesSupported) {
+                _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID)).ToUpper());
+                _listOfInterfacesSupported.Add(((string)properties.GetProperty(kIID2)).ToUpper() + ":0.0");
+            }
+            UpdateListOfInterfacesSupported2(
+                (List<object>)properties.GetProperty("LISTOFSUPPORTEDINTERFACES"));
+            return null;
+        }
 
-		  // this returns null, so that a recieve is performed first.
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu init(rpc.core.PresentationContext context, java.util.SharpCifs.Util.Sharpen.Properties properties) throws java.io.IOException
-		  public ConnectionOrientedPdu init(PresentationContext context, SharpCifs.Util.Sharpen.Properties properties)
-		  {
-			  base.Init2(context,properties);
-			  this.properties = properties;
-			  listOfInterfacesSupported.Add(((string)properties.getProperty(IID)).ToUpper());
-			  listOfInterfacesSupported.Add(((string)properties.getProperty(IID2)).ToUpper() + ":0.0");
-			  updateListOfInterfacesSupported2((IList)properties.get("LISTOFSUPPORTEDINTERFACES"));
-			  return null;
-		  }
+        /// <inheritdoc/>
+        public override ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+            ConnectionOrientedPdu reply = null;
+            switch (pdu.Type) {
+                case BindPdu.BIND_TYPE:
+                    _established = true;
+                    var presentationContexts = ((BindPdu)pdu).ContextList;
+                    reply = new BindAcknowledgePdu();
+                    var result = new PresentationResult[1];
+                    for (var i = 0; i < presentationContexts.Length; i++) {
+                        var presentationContext = presentationContexts[i];
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.ConnectionOrientedPdu accept(rpc.ConnectionOrientedPdu pdu) throws java.io.IOException
-		  public ConnectionOrientedPdu accept(ConnectionOrientedPdu pdu)
-		  {
-			  ConnectionOrientedPdu reply = null;
-			  switch (pdu.Type)
-			  {
-				  case BindPdu.BIND_TYPE:
-					  established = true;
-					  var presentationContexts = ((BindPdu)pdu).ContextList;
-					  reply = new BindAcknowledgePdu();
-					  var result = new PresentationResult[1];
-					  for (var i = 0; i < presentationContexts.Length;i++)
-					  {
-						  var presentationContext = presentationContexts[i];
+                        var contains = false;
+                        lock (_listOfInterfacesSupported) {
+                            contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
+                        }
+                        if (!contains) {
+                            //create a fault PDU stating the syntax is not supported.
+                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION, 
+                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED, 
+                                new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
+                            ((BindAcknowledgePdu)reply).ResultList = result;
+                            break;
+                        }
+                    }
 
-						  var contains = false;
-						  lock (listOfInterfacesSupported)
-						  {
-							  contains = listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
-						  }
-						  if (!contains)
-						  {
-							  //create a fault PDU stating the syntax is not supported.
-							  result[0] = new PresentationResult(PresentationResult.PROVIDER_REJECTION,PresentationResult.ABSTRACT_SYNTAX_NOT_SUPPORTED,new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
-							  ((BindAcknowledgePdu)reply).ResultList = result;
-							  break;
-						  }
-					  }
+                    //all okay
+                    if (((BindAcknowledgePdu)reply).ResultList == null) {
+                        result[0] = new PresentationResult(); //this will be acceptance.
+                        ((BindAcknowledgePdu)reply).AssociationGroupId =
+                            new object().GetHashCode(); //TODO should I save this ?
+                        ((BindAcknowledgePdu)reply).ResultList = result;
+                    } 
+                    ((BindAcknowledgePdu)reply).CallId = pdu.CallId;
+                    //issue a challenge against the request info
+                    break;
+                case AlterContextPdu.ALTER_CONTEXT_TYPE:
+                    _established = true;
 
-					  //all okay
-					  if (((BindAcknowledgePdu)reply).ResultList == null)
-					  {
-						  result[0] = new PresentationResult(); //this will be acceptance.
-						  ((BindAcknowledgePdu)reply).AssociationGroupId = new object().GetHashCode(); //TODO should I save this ?
-						  ((BindAcknowledgePdu)reply).ResultList = result;
-					  }((BindAcknowledgePdu)reply).setCallId(pdu.getCallId());
+                    presentationContexts = ((AlterContextPdu)pdu).ContextList;
+                    reply = new AlterContextResponsePdu();
+                    result = new PresentationResult[1];
+                    for (var i = 0; i < presentationContexts.Length; i++) {
+                        var presentationContext = presentationContexts[i];
+                        var contains = false;
+                        lock (_listOfInterfacesSupported) {
+                            contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
+                        }
+                        if (!contains) {
+                            //create a fault PDU stating the syntax is not supported.
+                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION, 
+                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED, 
+                                new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
+                            ((AlterContextResponsePdu)reply).ResultList = result;
+                            break;
+                        }
+                    }
 
+                    //all okay
+                    if (((AlterContextResponsePdu)reply).ResultList == null) {
+                        result[0] = new PresentationResult(); //this will be acceptance.
+                        ((AlterContextResponsePdu)reply).AssociationGroupId = 
+                            new object().GetHashCode(); //TODO should I save this ?
+                        ((AlterContextResponsePdu)reply).ResultList = result;
+                    }
 
-					  //issue a challenge against the request info
+                    ((AlterContextResponsePdu)reply).CallId = pdu.CallId;
+                    //issue a challenge against the request info
+                    break;
+                default:
+                    reply = base.Accept(reply);
+                    break;
+            }
+            return reply;
+        }
 
+        /// <summary>
+        /// Update interfaces
+        /// </summary>
+        /// <param name="newList"></param>
+        internal void UpdateListOfInterfacesSupported(List<object> newList) {
+            lock (_listOfInterfacesSupported) {
+                _listOfInterfacesSupported.AddRange(newList);
+            }
+        }
 
-					  break;
-				  case AlterContextPdu.ALTER_CONTEXT_TYPE:
-					  established = true;
+        internal void UpdateListOfInterfacesSupported2(List<object> newList) {
+            lock (_listOfInterfacesSupported) {
+                for (var i = 0; i < newList.Count; i++) {
+                    _listOfInterfacesSupported.Add(newList[i] + ":0.0");
+                }
+            }
+        }
 
-					  presentationContexts = ((AlterContextPdu)pdu).ContextList;
-					  reply = new AlterContextResponsePdu();
-					  result = new PresentationResult[1];
-					  for (var i = 0; i < presentationContexts.Length;i++)
-					  {
-						  var presentationContext = presentationContexts[i];
-						  var contains = false;
-						  lock (listOfInterfacesSupported)
-						  {
-							  contains = listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
-						  }
-						  if (!contains)
-						  {
-							  //create a fault PDU stating the syntax is not supported.
-							  result[0] = new PresentationResult(PresentationResult.PROVIDER_REJECTION,PresentationResult.ABSTRACT_SYNTAX_NOT_SUPPORTED,new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
-							  ((AlterContextResponsePdu)reply).ResultList = result;
-							  break;
-						  }
-					  }
-
-					  //all okay
-					  if (((AlterContextResponsePdu)reply).ResultList == null)
-					  {
-						  result[0] = new PresentationResult(); //this will be acceptance.
-						  ((AlterContextResponsePdu)reply).AssociationGroupId = new object().GetHashCode(); //TODO should I save this ?
-						  ((AlterContextResponsePdu)reply).ResultList = result;
-					  }
-
-					  ((AlterContextResponsePdu)reply).CallId = pdu.CallId;
-
-					  //issue a challenge against the request info
-
-
-				  break;
-				  default:
-					  reply = base.Accept(reply);
-				  break;
-			  }
-
-			  return reply;
-		  }
-
-        public bool Established => base.Established | established;
-
-        internal void updateListOfInterfacesSupported(IList newList)
-		  {
-			  lock (listOfInterfacesSupported)
-			  {
-				listOfInterfacesSupported.AddRange(newList);
-			  }
-		  }
-
-		  internal void updateListOfInterfacesSupported2(IList newList)
-		  {
-			for (var i = 0;i < newList.Count;i++)
-			{
-				listOfInterfacesSupported.Add(newList[i] + ":0.0");
-			}
-		  }
-
-	}
+        private const string kIID = "IID";
+        private const string kIID2 = "IID2";
+        private bool _established;
+        private Properties _properties;
+        private readonly List<object> _listOfInterfacesSupported = new List<object>();
+    }
 
 }

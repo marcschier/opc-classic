@@ -9,6 +9,7 @@
 
 namespace org.jinterop.dcom.core {
     using Serilog;
+    using SharpCifs.Util.Sharpen;
     using System;
 
     /// <summary>
@@ -108,6 +109,5 @@ namespace org.jinterop.dcom.core {
         }
 
         private ThreadGroup _remUnknownThread;
-
     }
 }

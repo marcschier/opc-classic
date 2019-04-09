@@ -90,7 +90,7 @@ namespace org.jinterop.dcom.core {
             }
 
             try {
-                base.Call(rpc.Semantics.IDEMPOTENT, pingObject);
+                Call(Semantics.IDEMPOTENT, pingObject);
             }
             catch (IOException e) {
                 Log.Logger.Error(e, "JIComOxidStub", "call", e);

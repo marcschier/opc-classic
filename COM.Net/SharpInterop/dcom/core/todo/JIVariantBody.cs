@@ -981,7 +981,7 @@ namespace org.jinterop.dcom.core {
                 }
                 else if (c.Equals(typeof(EMPTY))) //empty is 20 bytes
                    {
-                    obj = JIVariantBody.EMPTY;
+                    obj = EMPTY;
                     type = JIVariant.VT_EMPTY;
                 }
                 else if (c.Equals(typeof(JIString))) {

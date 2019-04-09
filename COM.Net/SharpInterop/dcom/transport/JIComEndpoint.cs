@@ -8,31 +8,29 @@
 // 
 
 
-namespace org.jinterop.dcom.transport
-{
+namespace org.jinterop.dcom.transport {
+    using rpc;
+    using rpc.core;
+    using System.IO;
 
-	using ConnectionOrientedEndpoint = rpc.ConnectionOrientedEndpoint;
-	using ITransport = rpc.ITransport;
-	using PresentationSyntax = rpc.core.PresentationSyntax;
+    /// <summary>
+    /// Endpoint
+    /// </summary>
+    public sealed class JIComEndpoint : ConnectionOrientedEndpoint {
 
-	/// <summary>
-	/// @exclude
-	/// @since 1.0
-	/// 
-	/// </summary>
-	public sealed class JIComEndpoint : ConnectionOrientedEndpoint
-	{
+        /// <summary>
+        /// Create endpoint
+        /// </summary>
+        /// <param name="transport"></param>
+        /// <param name="syntax"></param>
+        internal JIComEndpoint(ITransport transport, PresentationSyntax syntax) : 
+            base(transport, syntax) {
+        }
 
-	  internal JIComEndpoint(ITransport transport, PresentationSyntax syntax) : base(transport,syntax)
-	  {
-	  }
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void rebindEndPoint() throws java.io.IOException
-	  public void rebindEndPoint()
-	  {
-		  Rebind();
-	  }
-	}
-
+        /// <summary>
+        /// Rebind
+        /// </summary>
+        /// <exception cref="IOException"></exception>
+        public void RebindEndPoint() => Rebind();
+    }
 }

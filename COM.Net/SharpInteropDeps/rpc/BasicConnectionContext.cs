@@ -25,10 +25,10 @@ namespace rpc {
         public IConnection Connection { get; private set; }
 
         /// <inheritdoc/>
-        public bool Established { get; private set; }
+        public virtual bool Established { get; private set; }
 
         /// <inheritdoc/>
-        public ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
+        public virtual ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
             Established = false;
             Connection = new DefaultConnection();
             if (properties != null) {
@@ -50,7 +50,7 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public ConnectionOrientedPdu Alter(PresentationContext context) {
+        public virtual ConnectionOrientedPdu Alter(PresentationContext context) {
             Established = false;
             var pdu = new AlterContextPdu {
                 ContextList = new PresentationContext[] { context }
@@ -59,7 +59,7 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
+        public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
             PresentationResult[] results = null;
             switch (pdu.Type) {
                 case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:

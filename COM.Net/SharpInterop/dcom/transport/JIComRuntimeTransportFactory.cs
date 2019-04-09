@@ -9,46 +9,40 @@
 
 
 namespace org.jinterop.dcom.transport {
-    using ITransport = rpc.ITransport;
+    using rpc;
+    using SharpCifs.Util.Sharpen;
 
     /// <summary>
-    /// @exclude
-    /// @since 1.0
-    /// 
+    /// Transport factory
     /// </summary>
-    public sealed class JIComRuntimeTransportFactory : rpc.TransportFactory
-	{
+    public sealed class JIComRuntimeTransportFactory : rpc.TransportFactory {
 
-		private static JIComRuntimeTransportFactory factory;
-		private JIComRuntimeTransportFactory()
-		{
-		}
+        /// <summary>
+        /// Private constructor
+        /// </summary>
+        private JIComRuntimeTransportFactory() {
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
-		public ITransport createTransport(string address, SharpCifs.Util.Sharpen.Properties properties)
-		{
-				return new JIComRuntimeTransport(address, properties);
-		}
+        /// <inheritdoc/>
+        public override ITransport CreateTransport(string address, Properties properties) => 
+            new JIComRuntimeTransport(address, properties);
 
-		public static JIComRuntimeTransportFactory SingleTon
-		{
-			get
-			{
-				if (factory == null)
-				{
-					lock (typeof(JIComTransportFactory))
-					{
-						if (factory == null)
-						{
-							factory = new JIComRuntimeTransportFactory();
-						}
-					}
-				}
-    
-				return factory;
-			}
-		}
-	}
+        /// <summary>
+        /// Singleton
+        /// </summary>
+        public static JIComRuntimeTransportFactory SingleTon {
+            get {
+                if (_factory == null) {
+                    lock (typeof(JIComTransportFactory)) {
+                        if (_factory == null) {
+                            _factory = new JIComRuntimeTransportFactory();
+                        }
+                    }
+                }
+                return _factory;
+            }
+        }
 
+        private static JIComRuntimeTransportFactory _factory;
+    }
 }

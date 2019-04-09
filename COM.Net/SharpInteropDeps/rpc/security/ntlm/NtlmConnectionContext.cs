@@ -31,7 +31,7 @@ namespace rpc.security.ntlm {
         /// <summary>
         /// Established
         /// </summary>
-        public bool Established { get; private set; }
+        public virtual bool Established { get; private set; }
 
         /// <summary>
         /// Initialize

@@ -63,7 +63,7 @@ namespace org.jinterop.dcom.core {
             string address) {
 
             _session = session;
-            TransportFactory = JIComTransportFactory.SingleTon;
+            TransportFactory = JIComTransportFactory.Singleton;
             Properties = new Properties(_defaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
@@ -127,7 +127,7 @@ namespace org.jinterop.dcom.core {
                         //first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
                         Endpoint.Syntax.Version = 0;
-                        ((JIComEndpoint)Endpoint).rebindEndPoint();
+                        ((JIComEndpoint)Endpoint).RebindEndPoint();
                     }
 
                     Object = obj.ParentIpid;

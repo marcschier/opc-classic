@@ -9,63 +9,48 @@
 
 
 namespace org.jinterop.dcom.transport {
-
-
-    using SelectorManager = niosupport.SelectorManager;
-    using ITransport = rpc.ITransport;
+    using rpc;
+    using SharpCifs.Util.Sharpen;
+    using System.IO;
+    using org.jinterop.dcom.common;
 
     /// <summary>
     /// Factory for <seealso cref="JIComTransport"/>
     /// </summary>
-    public sealed class JIComTransportFactory : rpc.TransportFactory
-	{
-		private static JIComTransportFactory instance;
+    public sealed class JIComTransportFactory : rpc.TransportFactory {
 
-		private readonly SelectorManager selectorManager;
+        /// <summary>
+        /// Constructor for JIComTransportFactory.
+        /// </summary>
+        /// <exception cref="IOException"></exception>
+        private JIComTransportFactory() {
+            _selectorManager = new SelectorManager();
+        }
 
-		/// <summary>
-		/// Constructor for JIComTransportFactory.
-		/// </summary>
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: private JIComTransportFactory() throws java.io.IOException
-		private JIComTransportFactory()
-		{
-			selectorManager = new SelectorManager();
-		}
+        /// <inheritdoc/>
+        public override ITransport CreateTransport(string address, Properties properties) => 
+            new JIComTransport(address, _selectorManager, properties);
 
-		/// <seealso cref= rpc.TransportFactory#createTransport(java.lang.String,
-		///      java.util.SharpCifs.Util.Sharpen.Properties) </seealso>
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
-		public ITransport createTransport(string address, SharpCifs.Util.Sharpen.Properties properties)
-		{
-			return new JIComTransport(address, selectorManager, properties);
-		}
+        /// <summary>
+        /// Singleton
+        /// </summary>
+        public static JIComTransportFactory Singleton {
+            get {
+                lock (typeof(JIComTransportFactory)) {
+                    if (_instance == null) {
+                        try {
+                            _instance = new JIComTransportFactory();
+                        }
+                        catch (IOException e) {
+                            throw new JIException(-1, e);
+                        }
+                    }
+                    return _instance;
+                }
+            }
+        }
 
-		/// <returns> the singleton instance </returns>
-		public static JIComTransportFactory Singleton
-		{
-			get
-			{
-				lock (typeof(JIComTransportFactory))
-				{
-					if (instance == null)
-					{
-						try
-						{
-							instance = new JIComTransportFactory();
-						}
-						catch (IOException e)
-						{
-							throw new ExceptionInInitializerError(e);
-						}
-					}
-					return instance;
-				}
-			}
-		}
-
-        public static JIComTransportFactory SingleTon => Singleton;
+        private static JIComTransportFactory _instance;
+        private readonly SelectorManager _selectorManager;
     }
-
 }

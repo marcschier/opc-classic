@@ -9,130 +9,101 @@
 
 
 namespace org.jinterop.dcom.transport {
+    using org.jinterop.dcom.common;
+    using rpc;
+    using rpc.core;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
+    using System;
+    using System.IO;
 
-
-    using NdrBuffer = SharpCifs.Dcerpc.Ndr.NdrBuffer;
-
-    using JISystem = common.JISystem;
-
-    using IEndpoint = rpc.IEndpoint;
-    using RpcException = rpc.RpcException;
-    using ITransport = rpc.ITransport;
-    using PresentationSyntax = rpc.core.PresentationSyntax;
     /// <summary>
-    /// @exclude
-    /// @since 1.0
-    /// 
+    /// Transport
     /// </summary>
-    internal sealed class JIComRuntimeTransport : ITransport
-	{
+    internal sealed class JIComRuntimeTransport : ITransport {
 
+        /// <summary>
+        /// Create transport
+        /// </summary>
+        /// <exception cref="rpc.ProviderException"></exception>
+        /// <param name="address"></param>
+        /// <param name="properties"></param>
+        public JIComRuntimeTransport(string address, Properties properties) => 
+            Properties = properties; //address is ignored
 
-		public const string PROTOCOL = "ncacn_ip_tcp";
-        private Socket socket;
-
-		private System.IO.Stream output;
-
-		private System.IO.Stream input;
-
-		private bool attached;
-
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public JIComRuntimeTransport(String address, java.util.SharpCifs.Util.Sharpen.Properties properties) throws rpc.ProviderException
-		public JIComRuntimeTransport(string address, SharpCifs.Util.Sharpen.Properties properties)
-		{
-			SharpCifs.Util.Sharpen.Properties = properties;
-			//address is ignored
-		}
-
+        /// <inheritdoc/>
         public string Protocol => PROTOCOL;
 
-        public SharpCifs.Util.Sharpen.Properties SharpCifs.Util.Sharpen.Properties { get; }
+        /// <inheritdoc/>
+        public Properties Properties { get; }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public rpc.Endpoint attach(rpc.core.PresentationSyntax syntax) throws java.io.IOException
-        public IEndpoint Attach(PresentationSyntax syntax)
-		{
-			if (attached)
-			{
-				throw new RpcException("Transport already attached.");
-			}
+        /// <inheritdoc/>
+        public IEndpoint Attach(PresentationSyntax syntax) {
+            if (_attached) {
+                throw new RpcException("Transport already attached.");
+            }
 
-			IEndpoint endPoint = null;
-			try
-			{
-				socket = (Socket)JISystem.Internal_getSocket();
-				output = null;
-				input = null;
-				attached = true;
-				endPoint = new JIComRuntimeEndpoint(this, syntax);
-			}
-			catch (Exception)
-			{
-				try
-				{
-					Close();
-				}
-				catch (Exception)
-				{
-				}
-			}
-			return endPoint;
-		}
+            IEndpoint endPoint = null;
+            try {
+                _socket = (SocketEx)JISystem.Internal_getSocket();
+                _output = null;
+                _input = null;
+                _attached = true;
+                endPoint = new JIComRuntimeEndpoint(this, syntax);
+            }
+            catch (Exception) {
+                try {
+                    Close();
+                }
+                catch (Exception) {
+                }
+            }
+            return endPoint;
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void close() throws java.io.IOException
-		public void Close()
-		{
-			try
-			{
-				if (socket != null)
-				{
-					socket.close();
-				}
-			}
-			finally
-			{
-				attached = false;
-				socket = null;
-				output = null;
-				input = null;
-			}
-		}
+        /// <inheritdoc/>
+        public void Close() {
+            try {
+                if (_socket != null) {
+                    _socket.Close();
+                }
+            }
+            finally {
+                _attached = false;
+                _socket = null;
+                _output = null;
+                _input = null;
+            }
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void send(ndr.NdrBuffer buffer) throws java.io.IOException
-		public void Send(NdrBuffer buffer)
-		{
-			if (!attached)
-			{
-				throw new RpcException("Transport not attached.");
-			}
-			if (output == null)
-			{
-				output = socket.OutputStream;
-			}
-			output.Write(buffer.Buffer, 0, buffer.Length);
-			output.Flush();
-		}
+        /// <inheritdoc/>
+        public void Send(NdrBuffer buffer) {
+            if (!_attached) {
+                throw new RpcException("Transport not attached.");
+            }
+            if (_output == null) {
+                _output = _socket.GetOutputStream();
+            }
+            _output.Write(buffer.Buf, 0, buffer.Length);
+            _output.Flush();
+        }
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void receive(ndr.NdrBuffer buffer) throws java.io.IOException
-		public void Receive(NdrBuffer buffer)
-		{
-			if (!attached)
-			{
-				throw new RpcException("Transport not attached.");
-			}
-			if (input == null)
-			{
-				input = socket.InputStream;
-			}
-			buffer.length = input.Read(buffer.Buffer, 0, buffer.Capacity);
-		}
+        /// <inheritdoc/>
+        public void Receive(NdrBuffer buffer) {
+            if (!_attached) {
+                throw new RpcException("Transport not attached.");
+            }
+            if (_input == null) {
+                _input = _socket.GetInputStream();
+            }
+            buffer.Length = _input.Read(buffer.Buf, 0, buffer.GetCapacity());
+        }
 
-
-	}
+        public const string PROTOCOL = "ncacn_ip_tcp";
+        private SocketEx _socket;
+        private Stream _output;
+        private Stream _input;
+        private bool _attached;
+    }
 
 }

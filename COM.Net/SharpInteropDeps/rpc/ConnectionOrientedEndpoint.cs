@@ -12,12 +12,12 @@
 //
 
 namespace rpc {
-    using System;
-    using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util.Sharpen;
     using rpc.core;
     using rpc.pdu;
     using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
+    using System;
     using System.IO;
 
     /// <summary>
@@ -199,9 +199,7 @@ namespace rpc {
         /// Receive
         /// </summary>
         /// <exception cref="IOException"></exception>
-        protected ConnectionOrientedPdu Receive() {
-            return Context.Connection.Receive(Transport);
-        }
+        protected ConnectionOrientedPdu Receive() => Context.Connection.Receive(Transport);
 
         /// <summary>
         /// Connect

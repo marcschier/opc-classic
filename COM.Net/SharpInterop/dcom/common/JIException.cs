@@ -19,6 +19,8 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Create exception
         /// </summary>
+        /// <param name="errorCode"></param>
+        /// <param name="message"></param>
         public JIException(int errorCode, string message) :
             this(errorCode, message, null) {
         }
@@ -26,6 +28,16 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Create exception
         /// </summary>
+        /// <param name="errorCode"></param>
+        /// <param name="message"></param>
+        public JIException(JIErrorCodes errorCode, string message) : 
+            this (errorCode, message, null) {
+        }
+
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        /// <param name="errorCode"></param>
         public JIException(int errorCode) :
             this(errorCode, (Exception)null) {
         }
@@ -33,7 +45,22 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Create exception
         /// </summary>
+        /// <param name="errorCode"></param>
+        public JIException(JIErrorCodes errorCode) :
+            this(errorCode, (Exception)null) {
+        }
+
+        /// <summary>
+        /// Create exception
+        /// </summary>
         public JIException(int errorCode, Exception cause) :
+            this(errorCode, null, cause) {
+        }
+
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        public JIException(JIErrorCodes errorCode, Exception cause) :
             this(errorCode, null, cause) {
         }
 
@@ -48,6 +75,15 @@ namespace org.jinterop.dcom.common {
         /// Create exception
         /// </summary>
         public JIException(int errorCode, string message, Exception cause) :
+            base(message, cause) {
+            ErrorCode = (JIErrorCodes)errorCode;
+            _message = message;
+        }
+
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        public JIException(JIErrorCodes errorCode, string message, Exception cause) :
             base(message, cause) {
             ErrorCode = errorCode;
             _message = message;
@@ -64,7 +100,7 @@ namespace org.jinterop.dcom.common {
         /// <code>JIErrorCodes</code> for a complete list of errors.
         /// </summary>
         /// <returns> int representing the error code. </returns>
-        public int ErrorCode { get; } = -1;
+        public JIErrorCodes ErrorCode { get; } = (JIErrorCodes)(-1);
 
         private string _message;
     }

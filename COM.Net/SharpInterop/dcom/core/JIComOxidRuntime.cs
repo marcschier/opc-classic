@@ -533,10 +533,10 @@ namespace org.jinterop.dcom.core {
 
                 properties.SetProperty("rpc.ntlm.domain", session.TargetServer);
 
-                var protectionLevel = rpc.ProtectionLevel.PROTECTION_LEVEL_CONNECT;
+                var protectionLevel = ProtectionLevel.PROTECTION_LEVEL_CONNECT;
 
                 if (session.SessionSecurityEnabled) {
-                    protectionLevel = rpc.ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
+                    protectionLevel = ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
                     properties.SetProperty("rpc.ntlm.seal", "true");
                     properties.SetProperty("rpc.ntlm.sign", "true");
                     properties.SetProperty("rpc.ntlm.keyExchange", "true");

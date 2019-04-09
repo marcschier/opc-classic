@@ -274,7 +274,7 @@ namespace org.jinterop.dcom.core {
 
             var iid = (string)ipidVsIID[IPID];
             if (iid == null) {
-                throw new JIException((int)JIErrorCodes.RPC_E_INVALID_OBJECT);
+                throw new JIException(JIErrorCodes.RPC_E_INVALID_OBJECT);
             }
 
             var interfaceDefinitionOfClass = (JILocalInterfaceDefinition)mapOfIIDsToInterfaceDefinitions[iid];
@@ -300,7 +300,7 @@ namespace org.jinterop.dcom.core {
                         ((object[])retVal)[0] = 0; //not supported
                         break;
                     case 4: //getTypeInfo
-                        throw new JIException((int)JIErrorCodes.E_NOTIMPL);
+                        throw new JIException(JIErrorCodes.E_NOTIMPL);
                     case 5: //getIDOfNames
                         var paramObject = new JILocalParamsDescriptor();
 
@@ -361,7 +361,7 @@ namespace org.jinterop.dcom.core {
                         info = interfaceDefinitionOfClass.GetMethodDescriptorForDispId(dispId);
                         if (info == null) {
                             Log.Logger.Error("MethodDescriptor not found for DispId :- " + dispId);
-                            throw new JIException((int)JIErrorCodes.DISP_E_MEMBERNOTFOUND);
+                            throw new JIException(JIErrorCodes.DISP_E_MEMBERNOTFOUND);
                         }
 
                         dispParams = (JIStruct)retresults[4];
@@ -412,7 +412,7 @@ namespace org.jinterop.dcom.core {
             if (isStandardCall) {
                 methodDescriptor = interfaceDefinitionOfClass.GetMethodDescriptor(Opnum - 3); //adjust for IUnknown
                 if (methodDescriptor == null) {
-                    throw new JIException((int)JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
+                    throw new JIException(JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
                 }
                 methodDescriptor.ParameterObject.SetSession(Session);
                 @params = methodDescriptor.ParameterObject.Read(ndr);
@@ -445,27 +445,27 @@ namespace org.jinterop.dcom.core {
                 }
                 catch (ArgumentException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException((int)JIErrorCodes.E_INVALIDARG);
+                    throw new JIException(JIErrorCodes.E_INVALIDARG);
                 }
                 catch (MethodAccessException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod", e);
-                    throw new JIException((int)JIErrorCodes.ERROR_ACCESS_DENIED);
+                    throw new JIException(JIErrorCodes.ERROR_ACCESS_DENIED);
                 }
                 catch (TargetInvocationException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException((int)JIErrorCodes.E_UNEXPECTED, e);
+                    throw new JIException(JIErrorCodes.E_UNEXPECTED, e);
                 }
                 catch (SecurityException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException((int)JIErrorCodes.ERROR_ACCESS_DENIED, e);
+                    throw new JIException(JIErrorCodes.ERROR_ACCESS_DENIED, e);
                 }
                 catch (MissingMethodException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException((int)JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
+                    throw new JIException(JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
                 }
                 catch (InstantiationException e) {
                     Log.Logger.Error(e, "JILocalCoClass invokeMethod");
-                    throw new JIException((int)JIErrorCodes.E_UNEXPECTED, e);
+                    throw new JIException(JIErrorCodes.E_UNEXPECTED, e);
                 }
             }
             return (object[])retVal;
@@ -542,7 +542,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Supported interfaces
         /// </summary>
-        internal IList<object> SupportedInterfaces => _listOfSupportedInterfaces;
+        internal List<object> SupportedInterfaces => _listOfSupportedInterfaces;
 
 
         private const string IID_IDispatch = "00020400-0000-0000-c000-000000000046";

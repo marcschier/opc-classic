@@ -285,7 +285,7 @@ namespace org.jinterop.dcom.core {
                     var oo = _outTypesMap[c];
                     if (oo != null) {
                         //we will always send a single dimension array.
-                        object x = System.Array.CreateInstance(c, 1);
+                        object x = Array.CreateInstance(c, 1);
                         ((Array)x).SetValue(oo, 0);
                         variant = new JIVariant(new JIArray(x, true), true);
                     }
@@ -795,7 +795,7 @@ namespace org.jinterop.dcom.core {
                     // TODO:      subArray = Array.get(subArray, 0);
                     var secondDim = ((object[])subArray).Length;
                     var k = 0;
-                    newArrayObj = (object[])System.Array.CreateInstance(subArray.GetType().GetElementType(), array.NumElementsInAllDimensions);
+                    newArrayObj = (object[])Array.CreateInstance(subArray.GetType().GetElementType(), array.NumElementsInAllDimensions);
                     for (var i = 0; i < secondDim; i++) {
                         for (var j = 0; j < firstDim; j++) {
                             newArrayObj[k++] = obj2[j][i];
@@ -1181,7 +1181,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         private void checkValidity() {
             if (_member == null || _member.IsNull) {
-                throw new JIException((int)JIErrorCodes.JI_VARIANT_IS_NULL);
+                throw new JIException(JIErrorCodes.JI_VARIANT_IS_NULL);
             }
         }
 

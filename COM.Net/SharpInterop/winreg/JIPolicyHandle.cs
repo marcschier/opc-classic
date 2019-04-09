@@ -7,33 +7,30 @@
 // http://www.eclipse.org/legal/epl-v10.html
 // 
 
+namespace org.jinterop.winreg {
 
-namespace org.jinterop.winreg
-{
+    /// <summary>
+    /// Policy handle for each key.
+    /// </summary>
+    public class JIPolicyHandle {
 
-	/// <summary>
-	/// Policy handle for each key.
-	/// 
-	/// @since 1.0
-	/// 
-	/// </summary>
-	public class JIPolicyHandle
-	{
-		/// <summary>
-		/// Handle to the Key
-		/// </summary>
-		public readonly sbyte[] handle = new sbyte[20];
-		/// <summary>
-		/// True, if the key was newly created.
-		/// </summary>
-		public readonly bool newlyCreated;
-		/// <summary>
-		/// @exclude </summary>
-		/// <param name="newlyCreated"> </param>
-		public JIPolicyHandle(bool newlyCreated)
-		{
-			this.newlyCreated = newlyCreated;
-		}
-	}
+        /// <summary>
+        /// Handle to the Key
+        /// </summary>
+        public byte[] Handle { get; } 
 
+        /// <summary>
+        /// True, if the key was newly created.
+        /// </summary>
+        public bool NewlyCreated { get; }
+
+        /// <summary>
+        /// Create handle
+        /// </summary>
+        /// <param name="newlyCreated"> </param>
+        public JIPolicyHandle(bool newlyCreated) {
+            NewlyCreated = newlyCreated;
+            Handle = new byte[20];
+        }
+    }
 }

@@ -26,7 +26,7 @@ namespace rpc {
         /// <summary>
         /// Address
         /// </summary>
-        public virtual string Address {
+        public string Address {
             get => _address;
             set {
                 if ((value == null) ? _address == null : value.Equals(_address)) {
@@ -92,11 +92,12 @@ namespace rpc {
             if (address == null) {
                 throw new RpcException("No address specified.");
             }
-            Endpoint = TransportFactory.CreateTransport(address, Properties).Attach(new PresentationSyntax(Syntax));
+            var tp = TransportFactory.CreateTransport(address, Properties);
+            Endpoint = tp.Attach(new PresentationSyntax(Syntax));
         }
 
         /// <summary>
-        /// call
+        /// Call on the endpoint using the ndr operation
         /// </summary>
         /// <param name="semantics"></param>
         /// <param name="ndrobj"></param>

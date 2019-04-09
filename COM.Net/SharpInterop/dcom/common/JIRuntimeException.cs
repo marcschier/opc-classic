@@ -24,7 +24,15 @@ namespace org.jinterop.dcom.common {
         /// Create exception
         /// </summary>
         /// <param name="hresult"></param>
-        public JIRuntimeException(int hresult) => HResult = hresult;
+        public JIRuntimeException(int hresult) => 
+            HResult = hresult;
+
+        /// <summary>
+        /// Create exception
+        /// </summary>
+        /// <param name="hresult"></param>
+        public JIRuntimeException(JIErrorCodes hresult) => 
+            HResult = (int)hresult;
 
         /// <summary>
         /// Create exception
@@ -42,6 +50,7 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Get message
         /// </summary>
-        public override string Message => JISystem.GetLocalizedMessage(HResult);
+        public override string Message => 
+            JISystem.GetLocalizedMessage((JIErrorCodes)HResult);
     }
 }

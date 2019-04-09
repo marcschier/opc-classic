@@ -83,7 +83,7 @@ namespace org.jinterop.dcom.core {
             }
 
             if (session.Stub != null) {
-                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
 
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core {
                 }
             }
 
-            TransportFactory = JIComTransportFactory.SingleTon;
+            TransportFactory = JIComTransportFactory.Singleton;
             //now read the session and prepare information for the stub.
             Properties = new Properties(defaults);
             Properties.SetProperty("rpc.security.username", session.UserName);
@@ -189,7 +189,7 @@ namespace org.jinterop.dcom.core {
                 //first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
                 Endpoint.Syntax.Version = 0;
-                ((JIComEndpoint)Endpoint).rebindEndPoint();
+                ((JIComEndpoint)Endpoint).RebindEndPoint();
 
                 Call(Semantics.IDEMPOTENT, _oxidResolver);
             }
@@ -197,7 +197,7 @@ namespace org.jinterop.dcom.core {
                 throw new JIException((int)e.Code, e);
             }
             catch (IOException e) {
-                throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
+                throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
             }
             catch (JIRuntimeException e1) {
                 throw new JIException(e1);
@@ -329,7 +329,7 @@ namespace org.jinterop.dcom.core {
                     JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
             }
             if (session.Stub != null) {
-                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
 
             if (session.SSOEnabled) {
@@ -367,7 +367,7 @@ namespace org.jinterop.dcom.core {
                     JIErrorCodes.JI_COMSTUB_ILLEGAL_ARGUMENTS));
             }
             if (session.Stub != null) {
-                throw new JIException((int)JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
+                throw new JIException(JIErrorCodes.JI_SESSION_ALREADY_ESTABLISHED);
             }
             address = address.Trim();
             address = Dns.GetHostAddresses(address).First()?.ToString();
@@ -383,7 +383,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="session"></param>
         /// <exception cref="JIException"></exception>
         private void Initialise(JIClsid clsid, string address, JISession session) {
-            TransportFactory = JIComTransportFactory.SingleTon;
+            TransportFactory = JIComTransportFactory.Singleton;
             //now read the session and prepare information for the stub.
             Properties = new Properties(defaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
@@ -426,66 +426,67 @@ namespace org.jinterop.dcom.core {
                         try {
                             IJIWinReg registry = null;
                             if (session.SSOEnabled) {
-                                registry = JIWinRegFactory.SingleTon.getWinreg(session.TargetServer, true);
+                                registry = JIWinRegFactory.SingleTon.GetWinreg(session.TargetServer, true);
                             }
                             else {
-                                registry = JIWinRegFactory.SingleTon.getWinreg(new JIDefaultAuthInfoImpl(session.Domain, session.UserName, session.Password), session.TargetServer, true);
+                                registry = JIWinRegFactory.SingleTon.GetWinreg(new JIDefaultAuthInfoImpl(
+                                    session.Domain, session.UserName, session.Password), session.TargetServer, true);
                             }
 
                             JIPolicyHandle hklm = null;
                             JIPolicyHandle hkwow6432 = null;
                             try {
                                 // Try 64bit first...
-                                hklm = registry.winreg_OpenHKLM();
-                                hkwow6432 = registry.winreg_OpenKey(hklm, "SOFTWARE\\Classes\\Wow6432Node", winreg.IJIWinReg_Fields.KEY_ALL_ACCESS);
+                                hklm = registry.OpenHKLM();
+                                hkwow6432 = registry.OpenKey(hklm, "SOFTWARE\\Classes\\Wow6432Node", RegKeyAccess.KEY_ALL_ACCESS);
                             }
                             catch (JIException) {
                             }
 
                             if (hklm != null) {
-                                registry.winreg_CloseKey(hklm);
+                                registry.CloseKey(hklm);
                             }
 
                             if (hkwow6432 != null) {
                                 Log.Logger.Information("Attempting to register on 64 bit");
 
                                 // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Wow6432Node\CLSID\{E4BE20A4-9EF1-4B05-9117-AF43EAB4B295}\ -- "AppID"
-                                var key = registry.winreg_CreateKey(hkwow6432, "CLSID\\{" + _clsid + "}",
-                                    winreg.IJIWinReg_Fields.REG_OPTION_NON_VOLATILE, winreg.IJIWinReg_Fields.KEY_ALL_ACCESS);
-                                registry.winreg_SetValue(key, "AppId", ("{" + _clsid + "}").GetBytes(), false, false);
-                                registry.winreg_CloseKey(key);
-                                Log.Logger.Information("--- winreg_SetValue --- SOFTWARE\\Classes\\Wow6432Node\\CLSID\\" + _clsid + " -- AppID");
+                                var key = registry.CreateKey(hkwow6432, "CLSID\\{" + _clsid + "}",
+                                    RegOption.REG_OPTION_NON_VOLATILE, RegKeyAccess.KEY_ALL_ACCESS);
+                                registry.SetValue(key, "AppId", ("{" + _clsid + "}").GetBytes(), false, false);
+                                registry.CloseKey(key);
+                                Log.Logger.Information("--- SetValue --- SOFTWARE\\Classes\\Wow6432Node\\CLSID\\" + _clsid + " -- AppID");
 
                                 // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Wow6432Node\AppID\{E4BE20A4-9EF1-4B05-9117-AF43EAB4B295}\AppID\ -- "DllSurrogate"
-                                key = registry.winreg_CreateKey(hkwow6432, "AppID\\{" + _clsid + "}",
-                                    winreg.IJIWinReg_Fields.REG_OPTION_NON_VOLATILE, winreg.IJIWinReg_Fields.KEY_ALL_ACCESS);
-                                registry.winreg_SetValue(key, "DllSurrogate", "".GetBytes(), false, false);
-                                registry.winreg_CloseKey(key);
+                                key = registry.CreateKey(hkwow6432, "AppID\\{" + _clsid + "}",
+                                    RegOption.REG_OPTION_NON_VOLATILE, RegKeyAccess.KEY_ALL_ACCESS);
+                                registry.SetValue(key, "DllSurrogate", "".GetBytes(), false, false);
+                                registry.CloseKey(key);
 
-                                Log.Logger.Information("--- winreg_SetValue --- SOFTWARE\\Classes\\Wow6432Node\\AppID\\" +
+                                Log.Logger.Information("--- SetValue --- SOFTWARE\\Classes\\Wow6432Node\\AppID\\" +
                                     _clsid + " -- DllSurrogate");
-                                registry.winreg_CloseKey(hkwow6432);
+                                registry.CloseKey(hkwow6432);
                             }
                             else {
                                 Log.Logger.Information("Attempting to register on 32 bit");
-                                var hkcr = registry.winreg_OpenHKCR();
-                                var key = registry.winreg_CreateKey(hkcr, "CLSID\\{" + _clsid + "}",
-                                    winreg.IJIWinReg_Fields.REG_OPTION_NON_VOLATILE, winreg.IJIWinReg_Fields.KEY_ALL_ACCESS);
-                                registry.winreg_SetValue(key, "AppID", ("{" + _clsid + "}").GetBytes(), false, false);
-                                registry.winreg_CloseKey(key);
-                                key = registry.winreg_CreateKey(hkcr, "AppID\\{" + _clsid + "}",
-                                    winreg.IJIWinReg_Fields.REG_OPTION_NON_VOLATILE, winreg.IJIWinReg_Fields.KEY_ALL_ACCESS);
-                                registry.winreg_SetValue(key, "DllSurrogate", "  ".GetBytes(), false, false);
+                                var hkcr = registry.OpenHKCR();
+                                var key = registry.CreateKey(hkcr, "CLSID\\{" + _clsid + "}",
+                                    RegOption.REG_OPTION_NON_VOLATILE, RegKeyAccess.KEY_ALL_ACCESS);
+                                registry.SetValue(key, "AppID", ("{" + _clsid + "}").GetBytes(), false, false);
+                                registry.CloseKey(key);
+                                key = registry.CreateKey(hkcr, "AppID\\{" + _clsid + "}",
+                                    RegOption.REG_OPTION_NON_VOLATILE, RegKeyAccess.KEY_ALL_ACCESS);
+                                registry.SetValue(key, "DllSurrogate", "  ".GetBytes(), false, false);
 
-                                registry.winreg_CloseKey(key);
-                                registry.winreg_CloseKey(hkcr);
+                                registry.CloseKey(key);
+                                registry.CloseKey(hkcr);
                             }
-                            registry.closeConnection();
+                            registry.CloseConnection();
                         }
                         catch (UnknownHostException e1) {
                             //auto registration failed as well...
                             Log.Logger.Error(e, "JIComServer", "initialise", e1);
-                            throw new JIException((int)JIErrorCodes.JI_WINREG_EXCEPTION3, e1);
+                            throw new JIException(JIErrorCodes.JI_WINREG_EXCEPTION3, e1);
                         }
                         //lets retry
                         Init();
@@ -521,7 +522,7 @@ namespace org.jinterop.dcom.core {
                 //first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
                 Endpoint.Syntax.Version = 0;
-                ((JIComEndpoint)Endpoint).rebindEndPoint();
+                ((JIComEndpoint)Endpoint).RebindEndPoint();
 
                 //3.2.4.1.1.1 Determining RPC Binding Information for Activation
                 //Commenting the below to dynamically identify DCOM versions.
@@ -551,7 +552,7 @@ namespace org.jinterop.dcom.core {
                     _syntax = "000001A0-0000-0000-C000-000000000046:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("000001A0-0000-0000-C000-000000000046");
                     Endpoint.Syntax.Version = 0;
-                    ((JIComEndpoint)Endpoint).rebindEndPoint();
+                    ((JIComEndpoint)Endpoint).RebindEndPoint();
                     _serverActivation = new JIRemoteSCMActivator.RemoteCreateInstance(new JIRemoteSCMActivator(), _session.TargetServer, _clsid);
                     Call(Semantics.IDEMPOTENT, (JIRemoteSCMActivator.RemoteCreateInstance)_serverActivation);
                 }
@@ -560,7 +561,7 @@ namespace org.jinterop.dcom.core {
                     _syntax = "4d9f4ab8-7d1c-11cf-861e-0020af6e7c57:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("4d9f4ab8-7d1c-11cf-861e-0020af6e7c57");
                     Endpoint.Syntax.Version = 0;
-                    ((JIComEndpoint)Endpoint).rebindEndPoint();
+                    ((JIComEndpoint)Endpoint).RebindEndPoint();
                     _serverActivation = new JIRemActivation(_clsid);
                     Call(Semantics.IDEMPOTENT, (JIRemActivation)_serverActivation);
                 }
@@ -571,7 +572,7 @@ namespace org.jinterop.dcom.core {
             }
             catch (IOException e) {
                 _serverActivation = null;
-                throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
+                throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
             }
             catch (JIRuntimeException e1) {
                 _serverActivation = null;
@@ -685,7 +686,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIException((int)e.Code, e);
                 }
                 catch (IOException e) {
-                    throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
+                    throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
                 }
                 catch (JIRuntimeException e1) {
                     //remoteActivation = null;
@@ -709,7 +710,7 @@ namespace org.jinterop.dcom.core {
                         throw new JIException((int)e.Code, e);
                     }
                     catch (IOException e) {
-                        throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
+                        throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
                     }
                     catch (JIRuntimeException) {
                         //will eat this exception here.
@@ -743,7 +744,7 @@ namespace org.jinterop.dcom.core {
             //go to addToSession after it (since there is no condition).
             lock (_mutex) {
                 if (_serverInstantiated) {
-                    throw new JIException((int)JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
+                    throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                 }
                 comObject = JIFrameworkHelper.InstantiateComObject(_session, _serverActivation.MInterfacePointer);
                 if (_serverActivation.Dual) {
@@ -783,7 +784,7 @@ namespace org.jinterop.dcom.core {
                 //go to addToSession after it (since there is no condition).
                 lock (_mutex) {
                     if (_serverInstantiated) {
-                        throw new JIException((int)JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
+                        throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                     }
                     comObject = JIFrameworkHelper.InstantiateComObject(_session, _interfacePtrCtor);
                     //increasing the reference count.
@@ -823,7 +824,7 @@ namespace org.jinterop.dcom.core {
             lock (_mutex) {
 
                 if (_session.SessionInDestroy && !obj._fromDestroySession) {
-                    throw new JIException((int)JIErrorCodes.JI_SESSION_DESTROYED);
+                    throw new JIException(JIErrorCodes.JI_SESSION_DESTROYED);
                 }
 
                 if (socketTimeout != 0) {
@@ -843,7 +844,7 @@ namespace org.jinterop.dcom.core {
                         //first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
                         Endpoint.Syntax.Version = 0;
-                        ((JIComEndpoint)Endpoint).rebindEndPoint();
+                        ((JIComEndpoint)Endpoint).RebindEndPoint();
                     }
 
                     Object = obj.ParentIpid;
@@ -854,7 +855,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIException((int)e.Code, e);
                 }
                 catch (IOException e) {
-                    throw new JIException((int)JIErrorCodes.RPC_E_UNEXPECTED, e);
+                    throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
                 }
                 catch (JIRuntimeException e1) {
                     throw new JIException(e1);

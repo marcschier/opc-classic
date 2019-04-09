@@ -94,11 +94,11 @@ namespace org.jinterop.dcom.core {
 
             try {
                 if (session.SSOEnabled) {
-                    winreg = JIWinRegFactory.SingleTon.getWinreg(
+                    winreg = JIWinRegFactory.SingleTon.GetWinreg(
                         server, true);
                 }
                 else {
-                    winreg = JIWinRegFactory.SingleTon.getWinreg(
+                    winreg = JIWinRegFactory.SingleTon.GetWinreg(
                         new JIDefaultAuthInfoImpl(session.Domain, session.UserName, session.Password), server, true);
                 }
 
@@ -111,7 +111,7 @@ namespace org.jinterop.dcom.core {
             var key = StringHelperClass.NewString(winreg.winreg_QueryValue(handle2, 255));
             winreg.winreg_CloseKey(handle2);
             winreg.winreg_CloseKey(handle);
-            winreg.closeConnection();
+            winreg.CloseConnection();
             //seperate the {}
             clsid = JIClsid.ValueOf(StringHelperClass.SubstringSpecial(key,
                 key.IndexOf("{", StringComparison.Ordinal) + 1, key.IndexOf("}", StringComparison.Ordinal)));

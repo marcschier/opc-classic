@@ -42,28 +42,28 @@ namespace org.jinterop.dcom.core {
         //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
         //ORIGINAL LINE: void startOxid(int portNumLocal,int portNumRemote) throws java.io.IOException
         internal void startOxid(int portNumLocal, int portNumRemote) {
-            var oxidResolverThread = new Thread(new RunnableAnonymousInnerClassHelper(this), "jI_OxidResolver_Client[" + portNumLocal + " , " + portNumRemote + "]") {
+            var oxidResolverThread = new Thread(new RunnableAnonymousInnerClassHelper(this), null, "jI_OxidResolver_Client[" + portNumLocal + " , " + portNumRemote + "]") {
                 Daemon = true
             };
             oxidResolverThread.Start();
         }
 
-        private class RunnableAnonymousInnerClassHelper : Runnable {
+        private class RunnableAnonymousInnerClassHelper : IRunnable {
             private readonly JIComOxidRuntimeHelper outerInstance;
 
             public RunnableAnonymousInnerClassHelper(JIComOxidRuntimeHelper outerInstance) {
                 this.outerInstance = outerInstance;
             }
 
-            public virtual void run() {
+            public virtual void Run() {
                 try {
-                    Log.Logger.Information("started startOxid thread: " + Thread.CurrentThread.Name);
+                    Log.Logger.Information("started startOxid thread: " + System.Threading.Thread.CurrentThread.Name);
                     Attach();
-                    ((JIComRuntimeEndpoint)Endpoint).processRequests(new OxidResolverImpl(Properties), null, new List<object>());
+                    ((JIComRuntimeEndpoint)Endpoint).ProcessRequests(new OxidResolverImpl(Properties), null, new List<object>());
                 }
                 catch (Exception e) {
                     Log.Logger.Error(e, "Oxid Resolver Thread");
-                    Log.Logger.Warning("Oxid Resolver Thread: " + e.Message + " , on thread Id: " + Thread.CurrentThread.Name);
+                    Log.Logger.Warning("Oxid Resolver Thread: " + e.Message + " , on thread Id: " + System.Threading.Thread.CurrentThread.Name);
                 }
                 finally {
                     try {
@@ -72,7 +72,7 @@ namespace org.jinterop.dcom.core {
                     catch (IOException) {
                     }
                 }
-                Log.Logger.Information("terminating startOxid thread: " + Thread.CurrentThread.Name);
+                Log.Logger.Information("terminating startOxid thread: " + System.Threading.Thread.CurrentThread.Name);
             }
         }
 
@@ -123,8 +123,8 @@ namespace org.jinterop.dcom.core {
                 this.remUnknownForThisListener = remUnknownForThisListener;
             }
 
-            public virtual void run() {
-                Log.Logger.Information("started RemUnknown listener thread for : " + Thread.CurrentThread.Name);
+            public virtual void Run() {
+                Log.Logger.Information("started RemUnknown listener thread for : " + System.Threading.Thread.CurrentThread.Name);
                 try {
 
                     while (true) {
@@ -150,21 +150,21 @@ namespace org.jinterop.dcom.core {
                     }
                 }
                 catch (ClosedByInterruptException) {
-                    Log.Logger.Information("JIComOxidRuntimeHelper RemUnknownListener" + Thread.CurrentThread.Name + " is purposefully closed by interruption.");
+                    Log.Logger.Information("JIComOxidRuntimeHelper RemUnknownListener" + System.Threading.Thread.CurrentThread.Name + " is purposefully closed by interruption.");
                 }
                 catch (IOException e) {
                     Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownListener");
-                    Log.Logger.Warning("RemUnknownListener Thread: " + e.Message + " , on thread Id: " + Thread.CurrentThread.Name);
+                    Log.Logger.Warning("RemUnknownListener Thread: " + e.Message + " , on thread Id: " + System.Threading.Thread.CurrentThread.Name);
                 }
                 catch (Exception e) {
                     Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownListener");
                 }
 
 
-                Log.Logger.Information("terminating RemUnknownListener thread: " + Thread.CurrentThread.Name);
+                Log.Logger.Information("terminating RemUnknownListener thread: " + System.Threading.Thread.CurrentThread.Name);
             }
 
-            private class RunnableAnonymousInnerClassHelper3 : Runnable {
+            private class RunnableAnonymousInnerClassHelper3 : IRunnable {
                 private readonly RunnableAnonymousInnerClassHelper2 outerInstance;
 
                 private JIComOxidRuntimeHelper remUnknownHelper;
@@ -176,19 +176,19 @@ namespace org.jinterop.dcom.core {
 
                 public virtual void run() {
                     try {
-                        ((JIComRuntimeEndpoint)remUnknownHelper.Endpoint).processRequests(new RemUnknownObject(outerInstance.ipidOfRemUnknown, outerInstance.ipidOfComponent), outerInstance.baseIID, outerInstance.listOfSupportedInterfaces);
+                        ((JIComRuntimeEndpoint)remUnknownHelper.Endpoint).ProcessRequests(new RemUnknownObject(outerInstance.ipidOfRemUnknown, outerInstance.ipidOfComponent), outerInstance.baseIID, outerInstance.listOfSupportedInterfaces);
                     }
                     catch (SmbAuthException e) {
                         Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownThread (not listener)");
-                        throw new JIRuntimeException(JIErrorCodes.JI_CALLBACK_AUTH_FAILURE);
+                        throw new JIRuntimeException((int)JIErrorCodes.JI_CALLBACK_AUTH_FAILURE);
                     }
                     catch (SmbException e) {
                         //System.out.println(e.getMessage());
                         Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownThread (not listener)");
-                        throw new JIRuntimeException(JIErrorCodes.JI_CALLBACK_SMB_FAILURE);
+                        throw new JIRuntimeException((int)JIErrorCodes.JI_CALLBACK_SMB_FAILURE);
                     }
                     catch (ClosedByInterruptException) {
-                        Log.Logger.Information("JIComOxidRuntimeHelper RemUnknownThread (not listener)" + Thread.CurrentThread.Name + " is purposefully closed by interruption.");
+                        Log.Logger.Information("JIComOxidRuntimeHelper RemUnknownThread (not listener)" + System.Threading.Thread.CurrentThread.Name + " is purposefully closed by interruption.");
                     }
                     catch (IOException e) {
                         Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownThread (not listener)");
@@ -262,8 +262,6 @@ namespace org.jinterop.dcom.core {
                     Log.Logger.Warning("Oxid Object: DEFAULTED !!!");
                     throw new JIRuntimeException(JIErrorCodes.RPC_S_PROCNUM_OUT_OF_RANGE);
             }
-
-
         }
 
         private Random random = new Random();
@@ -434,7 +432,7 @@ namespace org.jinterop.dcom.core {
             }
             catch (IOException) {
 
-                throw new JIRuntimeException(JIErrorCodes.E_UNEXPECTED);
+                throw new JIRuntimeException((int)JIErrorCodes.E_UNEXPECTED);
             }
 
             //can support only TCP connections
@@ -670,7 +668,7 @@ namespace org.jinterop.dcom.core {
                     result = component.InvokeMethod(ipid, opnum, ndr);
                 }
                 catch (JIException e) {
-                    hresult = e.ErrorCode;
+                    hresult = (int)e.ErrorCode;
                     Log.Logger.Error(e, "RemUnknownObject read. Exception occured: " + e.ErrorCode);
                 }
 

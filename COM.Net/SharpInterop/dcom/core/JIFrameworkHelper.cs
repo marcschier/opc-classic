@@ -205,7 +205,7 @@ namespace org.jinterop.dcom.core {
         public static void DetachEventHandler(IJIComObject comObject, string identifier) {
             var connectionInfo = comObject.Internal_getConnectionInfo(identifier);
             if (connectionInfo == null) {
-                throw new JIException((int)JIErrorCodes.JI_CALLBACK_INVALID_ID);
+                throw new JIException(JIErrorCodes.JI_CALLBACK_INVALID_ID);
             }
 
             Log.Logger.Information("Detaching event handler for  comObject: " +
