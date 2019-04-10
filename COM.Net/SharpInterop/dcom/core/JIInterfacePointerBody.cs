@@ -12,6 +12,7 @@ namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
     using Serilog;
     using System;
+    using org.jinterop.dcom.impls.automation;
 
     /// <summary>
     /// Interface pointer body
@@ -270,14 +271,14 @@ namespace org.jinterop.dcom.core {
 
             try {
                 var ipid2 = new rpc.core.UUID(_iid);
-
-                if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) == JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) {
-                    ipid2 = new rpc.core.UUID(JiIUnknown.IID);
+                if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) ==
+                             JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) {
+                    ipid2 = new rpc.core.UUID(Interfaces.IID_IUnknown);
                 }
-                else if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) == JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) {
-                    ipid2 = new rpc.core.UUID(impls.automation.DispatchFlags.IID);
+                else if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) ==
+                                  JIFlags.FLAG_REPRESENTATION_USE_IDISPATCH_IID) {
+                    ipid2 = new rpc.core.UUID(Interfaces.IID_IDispatch);
                 }
-
                 ipid2.Encode(ndr, ndr.Buffer);
             }
             catch (NdrException e) {
@@ -293,6 +294,8 @@ namespace org.jinterop.dcom.core {
 
         private string _iid;
         private JIStdObjRef _stdObjRef;
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly int _port = -1; //to be used when doing local resolution.
+#pragma warning restore IDE0052 // Remove unread private members
     }
 }

@@ -169,7 +169,7 @@ namespace org.jinterop.dcom.core {
             //for an unsupported type this could be null
             //but then this is my bug, any thread entering this ctor , will support a type.
             _isByRef = isByRef;
-            var types = (int?)JIVariant.GetSupportedType(nestedClass, flag);
+            var types = JIVariant.GetSupportedType(nestedClass, flag);
             if (types != null) {
                 _type = (int)types | (isByRef ? JIVariant.VT_BYREF : 0);
             }
@@ -539,7 +539,7 @@ namespace org.jinterop.dcom.core {
 
                 var currentIndex = 0;
                 var length = (currentIndex = ndr.Buffer.Index) - start;
-                var value = (int)length / 8;
+                var value = length / 8;
                 if (length % 8.0 != 0) //entire variant is aligned by 8 bytes.
                 {
                     value++;
@@ -754,13 +754,7 @@ namespace org.jinterop.dcom.core {
 
         internal static JIVariantBody Decode(NdrCodec ndr, List<object> defferedPointers,
             int flag, IDictionary<object, object> additionalData) {
-            //bool readLong = false;
-            var index = (double)ndr.Buffer.Index;
-            if (index % 8.0 != 0) {
-                long i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
-                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
-            }
-
+            ndr.SkipAligned(8);
             var start = ndr.Buffer.Index;
             var length = ndr.ReadUnsignedLong(); //read the potential length
             ndr.ReadUnsignedLong(); //read the reserved byte
@@ -803,10 +797,10 @@ namespace org.jinterop.dcom.core {
                 }
 
                 if (safeArray != null) {
-                    variant = new JIVariantBody(safeArray, (Type)JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.GetMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
+                    variant = new JIVariantBody(safeArray, JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), ((object[])((JIArray)safeArray.GetMember(8)).ArrayInstance).Length > 1 ? true : false, isByRef, flagofFlags);
                 }
                 else {
-                    variant = new JIVariantBody(null, (Type)JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), false, isByRef, flagofFlags);
+                    variant = new JIVariantBody(null, JIVariant.GetSupportedClass(type2 & ~JIVariant.VT_ARRAY), false, isByRef, flagofFlags);
                 }
 
                 variant._flag = flagofFlags;
@@ -841,35 +835,19 @@ namespace org.jinterop.dcom.core {
                 //SafeArray have the alignment rule , that all Size <=4 are aligned by 4 and size 8 is aligned by 8.
                 //Variant is aligned by 4, Interface pointers are aligned by 4 as well.
                 //but this should not exceed the length
-                index = (double)ndr.Buffer.Index;
+                var index = ndr.Buffer.Index;
                 length = length * 8 + start;
                 if (index < length) {
                     var safeArrayStruct = variant._safeArrayStruct;
                     var size = (int?)safeArrayStruct.GetMember(2);
                     long i = 0;
-                    if ((int)size == 8) {
-                        if (index % 8.0 != 0) {
-                            i = (i = Math.Round(index % 8.0)) == 0 ? 0 : 8 - i;
-                            if (index + i <= length) {
-                                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
-                            }
-                            else {
-                                ndr.ReadOctetArray(new byte[(length - (int)index)], 0, (int)(length - (int)index));
-                            }
-                        }
+                    if (size == 8) {
+                        ndr.SkipAligned(8);
                     }
                     else {
                         //align by 4...
                         //TODO this needs to be tested for Structs and Unions.
-                        if (index % 4.0 != 0) {
-                            i = (i = Math.Round(index % 4.0)) == 0 ? 0 : 4 - i;
-                            if (index + i <= length) {
-                                ndr.ReadOctetArray(new byte[(int)i], 0, (int)i);
-                            }
-                            else {
-                                ndr.ReadOctetArray(new byte[(length - (int)index)], 0, (int)(length - (int)index));
-                            }
-                        }
+                        ndr.SkipAligned(4);
                     }
                 }
 
@@ -939,7 +917,7 @@ namespace org.jinterop.dcom.core {
                 else {
                     Log.Logger.Warning("In getVarType: Unsupported Type found ! " + c + " , please add this to the supportedType map ! ");
                     //make that an array of variants
-                    type2 = (int?)JIVariant.GetSupportedType(typeof(JIVariant), _flag);
+                    type2 = JIVariant.GetSupportedType(typeof(JIVariant), _flag);
                 }
 
                 if (_isNull) {

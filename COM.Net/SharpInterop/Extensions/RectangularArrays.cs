@@ -5,6 +5,8 @@
 //	This class provides the logic to simulate Java rectangular arrays, which are jagged
 //	arrays with inner arrays of the same length. A size of -1 indicates unknown length.
 //----------------------------------------------------------------------------------------
+using org.jinterop.dcom.core;
+
 public static partial class RectangularArrays
 {
     public static float[][] ReturnRectangularFloatArray(int size1, int size2)
@@ -21,8 +23,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -41,8 +44,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -61,8 +65,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -81,8 +86,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -101,8 +107,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -121,8 +128,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -141,8 +149,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -161,8 +170,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }
@@ -181,8 +191,9 @@ public static partial class RectangularArrays
                 }
             }
         }
-        else
+        else {
             newArray = null;
+        }
 
         return newArray;
     }

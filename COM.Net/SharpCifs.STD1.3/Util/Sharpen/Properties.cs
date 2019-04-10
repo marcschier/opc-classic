@@ -32,8 +32,8 @@ namespace SharpCifs.Util.Sharpen
 
         public object GetProperty(object key)
         {
-            return this._properties.Keys.Contains(key) 
-                ? this._properties[key] 
+            return this._properties.Keys.Contains(key)
+                ? this._properties[key]
                 : null;
         }
 

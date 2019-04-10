@@ -8,9 +8,15 @@
 //
 
 namespace org.jinterop.dcom.common {
+    using Serilog;
     using SharpCifs.Util.Sharpen;
+    using SharpInterop.Resources;
     using System;
     using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Sockets;
+    using System.Reflection;
+    using System.Resources;
 
     /// <summary>
     /// Class implemented for defining system wide changes.
@@ -20,16 +26,35 @@ namespace org.jinterop.dcom.common {
     /// </summary>
     public sealed class JISystem {
 
+        /// <summary>
+        /// Indicates to the framework, if Windows Registry settings for
+        /// DLL\OCX component identified by this object should be modified
+        /// to add a <code>Surrogate</code> automatically.
+        /// A <code>Surrogate</code> is a process which provides resources
+        /// such as memory and cpu for a DLL\OCX to execute.
+        /// This API overrides the instance specific flags set on JIClsid
+        /// or JIProgID.
+        /// </summary>
+        public static bool UseAutoRegistration { get; set; } = false;
+
+        /// <summary>
+        /// Sometimes the DCOM runtime of Windows will not send a ping on
+        /// time to the Framework.
+        /// It is not very abnormal, since Windows can sometimes resort
+        /// to mechanisms other than DCOM to keep a reference count for
+        /// the instances they imported. In case of j-Interop
+        /// framework, if a ping is not received in 8 minutes, the Local
+        /// Class is collected for GC. And if the COM server requires a
+        /// reference to it or acts on a previously obtained reference,
+        /// it is sent back an <i>Exception</i>.
+        /// Please use this flag to set the Auto Collection status
+        /// to ON or OFF. By Default, it is ON.
+        /// </summary>
+        public static bool IsCoClassAutoCollection { get; set; } = true;
 
         private JISystem() {
         }
 
-        private static string _pathToDB;
-        private static Locale _locale = Locale.Default;
-        private static ResourceBundle _resourceBundle;
-        private static readonly Properties _mapOfProgIdsVsClsids = new Properties();
-        private static List<object> _socketQueue = new List<object>();
-        private static readonly Hashtable _mapOfHostnamesVsIPs = new Hashtable();
 
         /// <summary>
         /// Sets the COM version which the library would use for communicating with COM servers.
@@ -38,68 +63,27 @@ namespace org.jinterop.dcom.common {
         public static JIComVersion COMVersion { set; get; } = new JIComVersion();
 
         /// <summary>
-        /// Sets the locale, this locale will be used to retrieve the resource bundle for Error Messages.
-        /// </summary>
-        /// <param name="locale"> default is <code>Locale.getDefault()</code>. </param>
-        public static Locale Locale {
-            set => _locale = value;
-            get => _locale;
-        }
-
-
-        /// <summary>
-        /// Returns the ResourceBundle associated with current locale.
-        ///
-        /// @return
-        /// </summary>
-        public static ResourceBundle ErrorMessages {
-            get {
-                if (_resourceBundle == null) {
-                    lock (typeof(JISystem)) {
-                        try {
-                            if (_resourceBundle == null) {
-                                _resourceBundle = ResourceBundle.getBundle("org.jinterop.dcom.jierrormessages", _locale);
-                            }
-                        }
-                        catch (MissingResourceException) {
-                            //now use the parent US english bundle , which you already have
-                            _resourceBundle = ResourceBundle.getBundle("org.jinterop.dcom.jierrormessages");
-                        }
-                    }
-                }
-
-                return _resourceBundle;
-            }
-        }
-
-        /// <summary>
         /// Returns the localized error messages for the error code.
         /// </summary>
         /// <param name="code"> error code
         /// </param>
         public static string GetLocalizedMessage(JIErrorCodes code) {
-            var strKey = code.ToString("x").ToUpper();
-            char[] buffer = { };
-            Array.Copy(strKey.ToCharArray(), 0, buffer, buffer.Length - strKey.Length, strKey.Length);
-            return GetLocalizedMessage(Convert.ToString(buffer));
-        }
-
-        private static string GetLocalizedMessage(string key) {
+            var key = ((int)code).ToString("X8");
             string message = null;
             try {
-                message = ErrorMessages.getString(key);
+                message = Resource.ResourceManager.GetString("0x" + key);
                 message = message + " [" + key + "]";
             }
             catch (MissingResourceException) {
                 message = "Message not found for errorCode: " + key;
             }
-
             return message;
         }
 
         /// <summary>
-        /// Queries the property file maintaining the <code>PROGID</code> Vs <code>CLSID</code> mappings
-        /// and returns the <code>CLSID</code> if found or null otherwise.
+        /// Queries the property file maintaining the <code>PROGID</code>
+        /// Vs <code>CLSID</code> mappings and returns the <code>CLSID</code>
+        /// if found or null otherwise.
         /// </summary>
         /// <param name="progId"> user friendly string such as "Excel.Application".
         /// </param>
@@ -107,255 +91,90 @@ namespace org.jinterop.dcom.common {
             if (progId == null) {
                 return null;
             }
-
             if (_pathToDB == null) {
                 lock (typeof(JISystem)) {
                     if (_pathToDB == null) {
-                        SaveDBPathAndLoadFile();
+                        Internal_readProgIdsFromFile();
                     }
                 }
             }
-
-            return (string)_mapOfProgIdsVsClsids.get(progId);
+            return (string)kMapOfProgIdsVsClsids.GetProperty(progId);
         }
 
-        private static void SaveDBPathAndLoadFile() {
-            ClassLoader loader = Thread.CurrentThread.ContextClassLoader;
-            if (loader == null) {
-                loader = typeof(JISystem).ClassLoader; // fallback
-            }
-
-            var locations = new HashSet();
-            if (loader != null) {
-                try {
-                    System.Collections.IEnumerator resources = loader.getResources("progIdVsClsidDB.properties");
-                    while (resources.hasMoreElements()) {
-                        locations.Add(resources.nextElement());
-                        break;
-                    }
-                }
-                catch (IOException) {
-                }
-            }
+        /// <summary>
+        /// Helper to load
+        /// </summary>
+        private static void Internal_readProgIdsFromFile() {
+            _pathToDB = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try {
-                if (locations.Count == 0) {
-                    System.Collections.IEnumerator resources = ClassLoader.getSystemResources("progIdVsClsidDB.properties");
-                    while (resources.hasMoreElements()) {
-                        locations.Add(resources.nextElement());
-                        break;
-                    }
-                }
+                var inputStream = new FileStream(_pathToDB, FileMode.Create, FileAccess.Write);
+                kMapOfProgIdsVsClsids.Load(inputStream);
+                inputStream.Close();
             }
-            catch (IOException) {
+            catch (Exception e) {
+                Log.Logger.Error(e, "JISystem: writeProgIdsToFile");
             }
-
-            IEnumerator iterator = locations.GetEnumerator();
-            while (iterator.hasNext()) {
-                try {
-                    var url = (URL)iterator.next();
-                    _pathToDB = url.Path;
-
-                    try {
-
-                        if (!_pathToDB.StartsWith("file:", StringComparison.Ordinal)) {
-                            url = new URL("file:" + _pathToDB);
-                        }
-
-                        if (Logger.isLoggable(Level.INFO)) {
-                            Logger.info("progIdVsClsidDB file located at: " + url);
-                        }
-
-                        URLConnection con = url.openConnection();
-                        System.IO.Stream inputStream = con.InputStream;
-                        _mapOfProgIdsVsClsids.load(inputStream);
-                        inputStream.Close();
-                        //outputStream = con.getOutputStream();
-                    }
-                    catch (Exception) {
-                    }
-
-                    //mapOfProgIdsVsClsids.load(new FileInputStream(pathToDB));
-                }
-                catch (Exception) {
-                    //ex.printStackTrace();
-                }
-            }
-
-            if (Logger.isLoggable(Level.INFO)) {
-                Logger.info("progIdVsClsidDB: " + _mapOfProgIdsVsClsids);
-            }
+            Log.Logger.Information("Read {@progIdVsClsidDB}", kMapOfProgIdsVsClsids);
         }
 
-        //should be called from system shut down only
         /// <summary>
         /// Should be called from system shut down only
-        ///
-        /// @exclude
         /// </summary>
-        public static void Internal_writeProgIdsToFile() {
+        internal static void Internal_writeProgIdsToFile() {
             if (_pathToDB != null) {
                 try {
-                    var outputStream = new System.IO.FileStream(_pathToDB, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-                    _mapOfProgIdsVsClsids.store(outputStream, "progId Vs ClsidDB");
+                    var outputStream = new FileStream(_pathToDB, FileMode.Create, FileAccess.Write);
+                    kMapOfProgIdsVsClsids.Store(outputStream);
                     outputStream.Close();
-                }
-                catch (FileNotFoundException e) {
-
-                    Logger.throwing("JISystem", "writeProgIdsToFile", e);
+                    Log.Logger.Information("Wrote {@progIdVsClsidDB}", kMapOfProgIdsVsClsids);
                 }
                 catch (IOException e) {
-
-                    Logger.throwing("JISystem", "writeProgIdsToFile", e);
+                    Log.Logger.Error(e, "JISystem: writeProgIdsToFile");
                 }
             }
         }
 
-
-
-        //stores it in a temporary hash map here, and this is later persisted when the library is shutdown
         /// <summary>
-        ///Stores it in a temporary hash map here, and this is later persisted when the library is shutdown
-        /// @exclude
+        /// Stores it in a temporary hash map here, and this is later persisted
+        /// when the library is shutdown
         /// </summary>
-        public static void Internal_setClsidtoProgId(string progId, string clsid) => _mapOfProgIdsVsClsids.SetProperty(progId, clsid);
+        internal static void Internal_setClsidtoProgId(string progId,
+            string clsid) => kMapOfProgIdsVsClsids.SetProperty(progId, clsid);
 
         /// <summary>
-        /// synchronisation will be performed by the oxid master
-        /// @exclude
-        /// @return
-        /// </summary>
-        public static object Internal_getSocket() {
-            {
-                //synchronized (socketQueue)
-                return _socketQueue.Remove(0);
-            }
-        }
-
-        /// <summary>
-        ///synchronisation will be performed by the oxid master
-        /// @exclude
-        /// </summary>
-        public static void Internal_setSocket(object socket) {
-            {
-                //synchronized (socketQueue)
-                _socketQueue.Add(socket);
-            }
-        }
-
-        /// <summary>
-        /// @exclude
-        /// @return
-        /// </summary>
-        public static void Internal_initLogger() {
-            lock (typeof(JISystem)) {
-                LogSystemPropertiesAndVersion();
-            }
-        }
-
-        private static void LogSystemPropertiesAndVersion() {
-            var pr = System.SharpCifs.Util.Sharpen.Properties;
-            IEnumerator itr = pr.Keys.GetEnumerator();
-            var str = "";
-            string jinteropVersion = typeof(JISystem).Assembly.ImplementationVersion;
-            Logger logger = Logger.getLogger("org.jinterop");
-            if (logger.isLoggable(Level.INFO)) {
-                logger.info("j-Interop Version = " + jinteropVersion + "\n");
-                while (itr.hasNext()) {
-                    var key = (string)itr.next();
-                    str = str + key + " = " + pr.getProperty(key) + "\n";
-                }
-                logger.info(str);
-            }
-        }
-
-        /// <summary>
-        ///Indicates to the framework, if Windows Registry settings for DLL\OCX
-        /// component identified by this object should be modified to add a <code>Surrogate</code>
-        /// automatically. A <code>Surrogate</code> is a process which provides resources
-        /// such as memory and cpu for a DLL\OCX to execute.
-        /// <para> This API overrides the instance specific flags set on JIClsid or JIProgID.
-        ///
-        /// </para>
-        /// </summary>
-        /// <param name="autoRegisteration"> <code>true</code> if auto registration should be done by the framework. </param>
-        public static bool AutoRegisteration {
-            set => AutoRegistrationSet = value;
-        }
-
-        /// <summary>
-        ///Returns true is auto registration is enabled.
-        ///
-        /// @return
-        /// </summary>
-        public static bool AutoRegistrationSet { get; private set; } = false;
-
-        /// <summary>
-        ///<para>Sometimes the DCOM runtime of Windows will not send a ping on time to the Framework.
-        /// It is not very abnormal, since Windows can sometimes resort to mechanisms other than
-        /// DCOM to keep a reference count for the instances they imported. In case of j-Interop
-        /// framework, if a ping is not received in 8 minutes , the Java Local Class is collected for
-        /// GC. And if the COM server requires a reference to it or acts on a previously obtained reference
-        /// , it is sent back an <i>Exception</i>. Please use this flag to set the Auto Collection status
-        /// to ON or OFF. By Default, it is ON. </para>
-        /// </summary>
-        /// <param name="autoCollection"> <code>false</code> if auto collection should be turned off. </param>
-        public static bool JavaCoClassAutoCollection {
-            set => JavaCoClassAutoCollectionSet = value;
-        }
-
-        /// <summary>
-        /// Status of autoCollection flag.
-        /// </summary>
-        /// <returns> <code>true</code> if autoCollection is enabled, <code>false</code> otherwise. </returns>
-        public static bool JavaCoClassAutoCollectionSet { get; private set; } = true;
-
-        /// <summary>
-        /// Used to set the in built log handler.
-        /// </summary>
-        /// <param name="useParentHandlers"> true if parent handlers should be used. </param>
-        /// <exception cref="IOException"> </exception>
-        /// <exception cref="SecurityException">  </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static void setInBuiltLogHandler(bool useParentHandlers) throws SecurityException, java.io.IOException
-        public static bool InBuiltLogHandler {
-            set {
-                Logger.UseParentHandlers = value;
-                var fileHandler = new FileHandler("%t/j-Interop%g.log", 0, 1, true) {
-                    Formatter = new SimpleFormatter()
-                };
-                Logger.addHandler(fileHandler);
-            }
-        }
-
-        /// <summary>
-        /// Adds a mapping between the <code>hostname</code> and its <code>IP</code>. This method should be used when there is a possibility
-        /// of multiple adapters (for example from a Virtual Machine) on the COM server. j-Interop Framework only uses
-        /// the host name and ignores the I.P addresses supplied in the interface reference of a COM object. If this hostname
-        /// is not reachable from the machine where library is currently running (such as a Linux machine with no name mappings)
-        /// then the call to this COM server would fail with an <code>UnknownHostException</code>. To avoid that either add the
+        /// Adds a mapping between the <code>hostname</code> and its
+        /// <code>IP</code>. This method should be used when there is
+        /// a possibility of multiple adapters (for example from a Virtual
+        /// Machine) on the COM server. j-Interop Framework only uses
+        /// the host name and ignores the I.P addresses supplied in the
+        /// interface reference of a COM object. If this hostname
+        /// is not reachable from the machine where library is currently
+        /// running (such as a Linux machine with no name mappings)
+        /// then the call to this COM server would fail with an
+        /// <code>UnknownHostException</code>. To avoid that either add the
         /// binding in the host machine or add the binding here.
-        /// <para>
-        /// This method stores the name vs I.P binding in a <code>Map</code>. Providing the same <code>hostname</code> will overwrite
+        /// This method stores the name vs I.P binding in a <code>Map</code>.
+        /// Providing the same <code>hostname</code> will overwrite
         /// the binding specified before.
-        ///
-        /// </para>
         /// </summary>
         /// <param name="hostname"> name of target machine. </param>
-        /// <param name="IP"> address of target machine in I.P format. </param>
-        /// <exception cref="UnknownHostException"> if the <code>IP</code> is invalid or cannot be reached. </exception>
-        /// <exception cref="ArgumentException"> if any parameter is <code>null</code> or of 0 length. </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static synchronized void mapHostNametoIP(String hostname, String IP) throws java.net.UnknownHostException
+        /// <param name="IP"> address of target machine in I.P format.
+        /// </param>
+        /// <exception cref="UnknownHostException"> if the <code>IP</code>
+        /// is invalid or cannot be reached. </exception>
+        /// <exception cref="ArgumentException"> if any parameter is
+        /// <code>null</code> or of 0 length. </exception>
         public static void MapHostNametoIP(string hostname, string IP) {
             lock (typeof(JISystem)) {
-                if (hostname == null || IP == null || hostname.Trim().Length == 0 || IP.Trim().Length == 0) {
-                    throw new ArgumentException();
+                if (string.IsNullOrWhiteSpace(hostname)) {
+                    throw new ArgumentException(nameof(hostname));
                 }
-
+                if (string.IsNullOrWhiteSpace(IP)) {
+                    throw new ArgumentException(nameof(IP));
+                }
                 //just check the validity of IP
-                InetAddress.getByName(IP.Trim());
-
-                _mapOfHostnamesVsIPs[hostname.Trim().ToUpper()] = IP.Trim();
+                // InetAddress.getByName(IP.Trim());
+                kMapOfHostnamesVsIPs[hostname.Trim().ToUpper()] = IP.Trim();
             }
         }
 
@@ -364,19 +183,34 @@ namespace org.jinterop.dcom.common {
         /// </summary>
         /// <param name="hostname"> </param>
         /// <returns> <code>null</code> if a mapping could not be found. </returns>
-        public static string GetIPForHostName(string hostname) {
+        internal static string GetIPForHostName(string hostname) {
             lock (typeof(JISystem)) {
-                return (string)_mapOfHostnamesVsIPs[hostname.Trim().ToUpper()];
+                return (string)kMapOfHostnamesVsIPs[hostname.Trim().ToUpper()];
             }
         }
 
-        public static void Internal_dumpMap() {
+        /// <summary>
+        /// Internal dump
+        /// </summary>
+        internal static void Internal_dumpMap() {
             lock (typeof(JISystem)) {
-                if (Logger.isLoggable(Level.INFO)) {
-                    Logger.info("mapOfHostnamesVsIPs: " + _mapOfHostnamesVsIPs);
-                }
+                Log.Logger.Information("{@mapOfHostnamesVsIPs}", kMapOfHostnamesVsIPs);
             }
         }
+        /// <summary>
+        /// synchronisation will be performed by the oxid master
+        /// </summary>
+        public static Socket Internal_getSocket() => kSocketQueue.Remove(0);
+
+        /// <summary>
+        /// synchronisation will be performed by the oxid master
+        /// @exclude
+        /// </summary>
+        public static void Internal_setSocket(Socket socket) => kSocketQueue.Add(socket);
+
+        private static string _pathToDB;
+        private static readonly Properties kMapOfProgIdsVsClsids = new Properties();
+        private static readonly List<Socket> kSocketQueue = new List<Socket>();
+        private static readonly Hashtable kMapOfHostnamesVsIPs = new Hashtable();
     }
-
 }

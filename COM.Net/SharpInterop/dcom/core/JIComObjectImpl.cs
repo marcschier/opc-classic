@@ -74,7 +74,7 @@ namespace org.jinterop.dcom.core {
         public IJIUnreferenced UnreferencedHandler {
             get {
                 CheckLocal();
-                return _session.getUnreferencedHandler(Ipid);
+                return _session.GetUnreferencedHandler(Ipid);
             }
         }
 
@@ -144,7 +144,7 @@ namespace org.jinterop.dcom.core {
             //JISession.debug_addIpids(_ptr.IPID, 5);
 
             //		session.getStub2().addRef_ReleaseRef(obj);
-            _session.addRef_ReleaseRef(_ptr.IPID, obj, 5);
+            _session.AddRef_ReleaseRef(_ptr.IPID, obj, 5);
 
             if (obj.GetResultAsIntAt(1) != 0) {
                 throw new JIException(obj.GetResultAsIntAt(1), (Exception)null);
@@ -173,7 +173,7 @@ namespace org.jinterop.dcom.core {
             }
             // TODO??
             //		session.getStub2().addRef_ReleaseRef(obj);
-            _session.addRef_ReleaseRef(_ptr.IPID, obj, -5);
+            _session.AddRef_ReleaseRef(_ptr.IPID, obj, -5);
         }
 
         /// <inheritdoc/>
@@ -185,13 +185,13 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public void RegisterUnreferencedHandler(IJIUnreferenced unreferenced) {
             CheckLocal();
-            _session.registerUnreferencedHandler(Ipid, unreferenced);
+            _session.RegisterUnreferencedHandler(Ipid, unreferenced);
         }
 
         /// <inheritdoc/>
         public void UnregisterUnreferencedHandler() {
             CheckLocal();
-            _session.unregisterUnreferencedHandler(Ipid);
+            _session.UnregisterUnreferencedHandler(Ipid);
         }
 
         /// <inheritdoc/>

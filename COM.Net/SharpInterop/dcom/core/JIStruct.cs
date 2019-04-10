@@ -8,11 +8,11 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
-    using SharpCifs.Util.Sharpen;
 
     /// <summary>
     /// This class represents the <code>Struct</code> data type.
@@ -121,20 +121,17 @@ namespace org.jinterop.dcom.core {
         /// Retrieves the member at the specified index from the member list.
         /// </summary>
         /// <param name="position"> Zero based index </param>
-        public object GetMember(int position) {
-            return Members[position];
-        }
+        public object GetMember(int position) => Members[position];
 
         /// <summary>
         /// Adds the object as a member of this structure. This object
         /// is appended to the list of members within.
+        /// Note that null has to be allowed for members who would like
+        /// to send null...NPE should not be thrown
         /// </summary>
         /// <param name="member"> </param>
         /// <exception cref="JIException"></exception>
-        public void AddMember(object member) {
-            //null has to be allowed for members who would like to send null...NPE should not be thrown
-            AddMember(Members.Count, member);
-        }
+        public void AddMember(object member) => AddMember(Members.Count, member);
 
         /// <summary>
         /// Adds object as member to the index specified.
@@ -293,10 +290,8 @@ namespace org.jinterop.dcom.core {
             //first read all Max counts and then the rest of the structs
             int j;
             int i;
-            for (i = 0; i < _listOfDimensions.Count; i++)
-            {
-                for (j = 0; j < (int)(int?)_listOfDimensions[i]; j++)
-                {
+            for (i = 0; i < _listOfDimensions.Count; i++) {
+                for (j = 0; j < (int?)_listOfDimensions[i]; j++) {
                     listOfMaxCounts2.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
                         typeof(int?), null, FLAG, additionalData));
                 }

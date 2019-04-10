@@ -50,7 +50,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <inheritdoc/>
         public int GetIDsOfNames(string apiName) {
             if (apiName == null || apiName.Trim().Equals("")) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
             }
 
@@ -90,7 +90,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <inheritdoc/>
         public int[] GetIDsOfNames(string[] apiName) {
             if (apiName == null || apiName.Length == 0) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
             }
 
             var sendForAll = false;
@@ -122,7 +122,7 @@ namespace org.jinterop.dcom.impls.automation {
             var pointers = new JIPointer[apiName.Length];
             for (var i = 0; i < apiName.Length; i++) {
                 if (apiName[i] == null || apiName[i].Trim().Equals("")) {
-                    throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                    throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
                 }
                 pointers[i] = new JIPointer(new JIString(apiName[i].Trim(), JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
             }
@@ -450,7 +450,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             if (dispIds == null || dispIds.Length != inparams.Length) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_PARAM_LENGTH));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_PARAM_LENGTH));
             }
 
             var array = new int?[inparams.Length];
@@ -495,7 +495,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             if (paramNames == null || paramNames.Length != inparams.Length) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_DISP_INCORRECT_PARAM_LENGTH));
             }
 

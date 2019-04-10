@@ -25,6 +25,11 @@ namespace org.jinterop.dcom.core {
         internal byte[] OID { get; }
 
         /// <summary>
+        /// Do not ping
+        /// </summary>
+        internal bool Dontping { get; }
+
+        /// <summary>
         /// Returns whether object expired
         /// </summary>
         /// <returns></returns>
@@ -44,7 +49,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="dontping"></param>
         internal JIObjectId(byte[] oid, bool dontping) {
             OID = oid;
-            _dontping = dontping;
+            Dontping = dontping;
             if (dontping) {
                 Log.Logger.Information("DONT PING is true for OID: " + ToString());
             }
@@ -102,7 +107,6 @@ namespace org.jinterop.dcom.core {
                 OID + " , hasExpired " + HasExpired() + " } ";
         }
 
-        internal readonly bool _dontping;
         private long _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
     }
 }

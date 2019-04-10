@@ -13,6 +13,7 @@
     using JIUnsignedInteger = core.JIUnsignedInteger;
     using JIUnsignedShort = core.JIUnsignedShort;
     using IJIDispatch = impls.automation.IJIDispatch;
+    using System;
 
     /// <summary>
     /// Contributed Code sample. Works in conjunction with SampleTestServers.zip

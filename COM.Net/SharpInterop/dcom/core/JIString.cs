@@ -151,7 +151,7 @@ namespace org.jinterop.dcom.core {
                 //setting it to true would spoil the logic
                 // this is incorrect logic in the bug sent by Kevin , the ONEVENTSTRUCT consists of LPWSTRs which are value
                 if (_member != null && !_member.Reference) {
-                    ((JIPointer)_member).Deffered = true;
+                    _member.Deffered = true;
                 }
             }
         }

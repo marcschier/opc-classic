@@ -2,13 +2,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>Port of J-Interop to .net Core</Description>
+    <Description>.net Core DCOM tests</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharpInteropDeps\SharpInteropDeps.csproj" />
+    <ProjectReference Include="..\SharpInterop\SharpInterop.csproj" />
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ namespace org.jinterop.dcom.core {
     using System.Collections.Generic;
     using SharpCifs.Util.Sharpen;
     using SharpCifs.Dcerpc.Ndr;
+    using System.Linq;
 
     /// <summary>
     /// Represents array of network address and security bindings.
@@ -116,8 +117,8 @@ namespace org.jinterop.dcom.core {
             // 2 bytes for num entries and 2 bytes for sec offset.
             dualStringArray.Length = dualStringArray.Length + 2 + 2;
 
-            dualStringArray.StringBindings = (JIStringBinding[])listOfStringBindings.ToArray(typeof(JIStringBinding));
-            dualStringArray.SecurityBindings = (JISecurityBinding[])listOfSecurityBindings.ToArray(typeof(JISecurityBinding));
+            dualStringArray.StringBindings = listOfStringBindings.Cast<JIStringBinding>().ToArray();
+            dualStringArray.SecurityBindings = listOfSecurityBindings.Cast<JISecurityBinding>().ToArray();
             return dualStringArray;
         }
 

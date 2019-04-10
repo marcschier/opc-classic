@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -28,7 +28,7 @@ namespace rpc.core {
         /// <summary>
         /// Create uuid
         /// </summary>
-        public UUID() : 
+        public UUID() :
             this(NIL_UUID) {
         }
 
@@ -36,9 +36,7 @@ namespace rpc.core {
         /// Create from string
         /// </summary>
         /// <param name="str"></param>
-        public UUID(string str) {
-            _internal = new SharpCifs.Dcerpc.Uuid(str);
-        }
+        public UUID(string str) => _internal = new SharpCifs.Dcerpc.Uuid(str);
 
         /// <inheritdoc/>
         public override void Encode(NdrCodec ndr, NdrBuffer dst) {
@@ -64,19 +62,14 @@ namespace rpc.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return _internal.ToString();
-        }
+        public override string ToString() => _internal.ToString();
 
         /// <summary>
         /// Parse uuid
         /// </summary>
         /// <param name="uuid"></param>
-        public void Parse(string uuid) {
-            _internal = new SharpCifs.Dcerpc.Uuid(uuid);
-        }
+        public void Parse(string uuid) => _internal = new SharpCifs.Dcerpc.Uuid(uuid);
 
         private SharpCifs.Dcerpc.Uuid _internal;
     }
-
 }

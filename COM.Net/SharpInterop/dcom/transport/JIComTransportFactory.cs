@@ -1,40 +1,38 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.transport {
+    using org.jinterop.dcom.common;
     using rpc;
     using SharpCifs.Util.Sharpen;
     using System.IO;
-    using org.jinterop.dcom.common;
 
     /// <summary>
     /// Factory for <seealso cref="JIComTransport"/>
     /// </summary>
-    public sealed class JIComTransportFactory : rpc.TransportFactory {
+    public sealed class JIComTransportFactory : TransportFactory {
 
         /// <summary>
-        /// Constructor for JIComTransportFactory.
+        /// private constructor
         /// </summary>
-        /// <exception cref="IOException"></exception>
         private JIComTransportFactory() {
-            _selectorManager = new SelectorManager();
         }
 
         /// <inheritdoc/>
-        public override ITransport CreateTransport(string address, Properties properties) => 
-            new JIComTransport(address, _selectorManager, properties);
+        public override ITransport CreateTransport(string address, Properties properties) =>
+            new JIComTransport(address, properties);
 
         /// <summary>
         /// Singleton
         /// </summary>
-        public static JIComTransportFactory Singleton {
+        public static JIComTransportFactory Instance {
             get {
                 lock (typeof(JIComTransportFactory)) {
                     if (_instance == null) {
@@ -51,6 +49,5 @@ namespace org.jinterop.dcom.transport {
         }
 
         private static JIComTransportFactory _instance;
-        private readonly SelectorManager _selectorManager;
     }
 }

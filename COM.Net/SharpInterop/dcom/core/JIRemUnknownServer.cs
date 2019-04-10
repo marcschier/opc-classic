@@ -63,7 +63,7 @@ namespace org.jinterop.dcom.core {
             string address) {
 
             _session = session;
-            TransportFactory = JIComTransportFactory.Singleton;
+            TransportFactory = JIComTransportFactory.Instance;
             Properties = new Properties(_defaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
@@ -107,7 +107,7 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         internal object[] Call(JICallBuilder obj, string targetIID, int socketTimeout) {
             lock (_mutex) {
-                if (_session.SessionInDestroy && !obj._fromDestroySession) {
+                if (_session.SessionInDestroy && !obj.FromDestroySession) {
                     throw new JIException(JIErrorCodes.JI_SESSION_DESTROYED);
                 }
 

@@ -512,7 +512,7 @@ namespace org.jinterop.dcom.core {
                     ((JIFlags.FLAG_REPRESENTATION_ARRAY & flag) != JIFlags.FLAG_REPRESENTATION_ARRAY) &&
                     ptr.IsCustomObjRef) {
                     //now we need to ask the session for its marshaller unmarshaller based on the CLSID
-                    ((JIComObjectImpl)comObject).CustomObject = session.getCustomMarshallerUnMarshallerTemplate(
+                    ((JIComObjectImpl)comObject).CustomObject = session.GetCustomMarshallerUnMarshallerTemplate(
                         ptr.CustomCLSID).Decode(comObject, ndr, defferedPointers, flag, additionalData);
                 }
                 ((List<object>)additionalData[JICallBuilder.COMOBJECTS]).Add(comObject);

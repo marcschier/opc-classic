@@ -8,8 +8,8 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
+    using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Create pointer
         /// </summary>
-        private JIPointer() {}
+        private JIPointer() { }
 
         /// <summary>
         /// Creates an instance of this class where the referent is <code>value</code>.
@@ -57,9 +57,7 @@ namespace org.jinterop.dcom.core {
         /// Some COM servers send referentId (pointer) as null but the referent is not.
         /// To be used only when you know this is the case. Better leave it unsed.
         /// </summary>
-        public void TreatNullSpecially() {
-            _nullSpecial = true;
-        }
+        public void TreatNullSpecially() => _nullSpecial = true;
 
         /// <summary>
         /// Creates an instance of this class where the referent is <code>value</code>.
@@ -101,16 +99,12 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Set reference type pointer
         /// </summary>
-        internal void SetIsReferenceTypePtr() {
-            Reference = true;
-        }
+        internal void SetIsReferenceTypePtr() => Reference = true;
 
         /// <summary>
         /// Returns the referent encapsulated by this pointer.
         /// </summary>
-        public object GetReferent() {
-            return IsNull ? null : _referent;
-        }
+        public object GetReferent() => IsNull ? null : _referent;
 
         /// <summary>
         /// Encode
@@ -230,9 +224,7 @@ namespace org.jinterop.dcom.core {
         /// Set referent id
         /// </summary>
         /// <param name="value"></param>
-        internal void SetReferent(int value) {
-            _referentId = value;
-        }
+        internal void SetReferent(int value) => _referentId = value;
 
         /// <summary>
         /// Returns the referent identifier.
@@ -288,9 +280,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return _referent == null ? "[null]" : "[" + _referent.ToString() + "]";
-        }
+        public override string ToString() => _referent == null ? "[null]" : "[" + _referent.ToString() + "]";
 
         private const int kPointerSize = 4;
         private bool _nullSpecial;

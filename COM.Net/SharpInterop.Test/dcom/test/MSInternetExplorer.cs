@@ -67,46 +67,46 @@
 		/// <summary>
 		/// The JIJavaCOClass is a representation for a Java server class. It's there so that when we get to the next version of the library, I am able to support full bi-directional access. Currently, you can implement any IDL of an existing COM server using the JIJavaCOClass and
 		/// pass it's interface pointer instead of the original COM server and it will work fine. Similar mechanism is exploited for call backs.In our case I had to implement DWebBrowserEvents interface.
-		/// 
+		///
 		/// IJavaCoClass javaComponent = new JILocalCoClass(new JILocalInterfaceDefinition("45B5FC0C-FAC2-42bd-923E-2B221A89E092"),DWebBrowserEvents2.class);
-		/// 
+		///
 		/// This definition create a Java component with an IID of 45B5FC0C-FAC2-42bd-923E-2B221A89E092...I just made this one up for uniquely classifying this class...you can equate this to a lib identifier of COM IDL. This is required if there are multilple interfaces being implemented in the same Java Class.
 		/// If you have only one...you can put it's IID here. I just did not do it for showing the user a possiblity.
-		/// 
+		///
 		/// The JIJavaCOClass has the option of instantiating the DWebBrowserEvents.class or it could use another ctor to pass an already instantiated object. In latter scenario, the object would be used as target for the events instead of instantiating a new one from DWebBrowserEvents.class.
 		/// Now that we have a Java server, we need to define the methods\events it will handle.
-		/// 
+		///
 		/// This is done using the Method descriptors which are themselves described using the Parameter Objects.
-		/// 
+		///
 		/// JILocalParamsDescriptor propertyChangeObject = new JILocalParamsDescriptor();
-		/// 
+		///
 		/// This creates a Parameter Object, capable of defining a IN or OUT type for a Method.
-		/// 
+		///
 		/// like:-
 		/// propertyChangeObject.addInParamAsType(JIString.class,JIFlags.FLAG_NULL);
-		/// 
+		///
 		/// JILocalMethodDescriptor methodDescriptor = new JILocalMethodDescriptor("PropertyChange",0x70,propertyChangeObject);
 		/// javaComponent.getInterfaceDefinition().addMethodDescriptor(methodDescriptor);
-		/// 
+		///
 		/// This declares a method descriptor. The first parameter in the ctor is the API name of the api to implement, the second one is it's OP number.
 		/// This one can be obtained from the IDL\TypeLib. And the third param is the parameterObject describing the input\output types of this method.
 		/// If you do not want to use this ctor, there is another, which sequentially increments the method numbers starting from 1.
 		/// The calls below add a new interface IID to this Java server. It simply means that the server supports this interface definition.
-		/// 
+		///
 		/// ArrayList list = new ArrayList();
 		/// list.add("34A715A0-6587-11D0-924A-0020AFC7AC4D");
 		/// javaComponent.setSupportedEventInterfaces(list);
-		/// 
+		///
 		/// This will be the list of all COM interfaces which this Java class supports or implements.
-		/// 
+		///
 		/// The next call attaches the event handler (our JILocalCoClass) to the actual COM server for recieving events for the interface identified by the IID.
 		/// There can be many such calls on the same COM server for different IIDs.
 		/// identifier = JIObjectFactory.attachEventHandler(ieObject,"34A715A0-6587-11D0-924A-0020AFC7AC4D",JIInterfacePointer.getInterfacePointer(session,javaComponent));
-		/// 
+		///
 		/// Now whether you use IJIDispatch or not, events will work regardless of that. The COM object you have to use in the attachEventHandler is the COM Object on
 		/// which you did the queryinterface for the IJIDispatch.
-		/// 
-		/// 
+		///
+		///
 		/// </summary>
 			var javaComponent = new JILocalCoClass(new JILocalInterfaceDefinition("34A715A0-6587-11D0-924A-0020AFC7AC4D"),typeof(DWebBrowserEvents2));
 

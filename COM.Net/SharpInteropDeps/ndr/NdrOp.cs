@@ -31,7 +31,7 @@ namespace SharpCifs.Dcerpc.Ndr {
         /// <summary>
         /// Op num of object
         /// </summary>
-        public virtual int Opnum { get => -1; set => throw new NotSupportedException(); }
+        public virtual int Opnum { get; set; } = -1;
 
         /// <summary>
         /// Decode

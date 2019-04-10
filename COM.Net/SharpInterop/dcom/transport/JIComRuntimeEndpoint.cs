@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.transport {
@@ -37,9 +37,15 @@ namespace org.jinterop.dcom.transport {
         public override void Call(Semantics semantics, UUID @object, int opnum, NdrOp ndrobj) =>
             throw new JIRuntimeException((int)JIErrorCodes.JI_ILLEGAL_CALL);
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Process requests on endpoint
+        /// </summary>
+        /// <param name="workerObject"></param>
+        /// <param name="baseIID"></param>
+        /// <param name="listOfSupportedInterfaces"></param>
+        /// <param name="cancellationToken"></param>
         public void ProcessRequests(IJICOMRuntimeWorker workerObject, string baseIID,
-            List<object> listOfSupportedInterfaces) {
+            List<object> listOfSupportedInterfaces, CancellationToken cancellationToken) {
 
             Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] started new thread " +
                 Thread.CurrentThread.Name);
@@ -50,7 +56,7 @@ namespace org.jinterop.dcom.transport {
             Transport.Properties.SetProperty("LISTOFSUPPORTEDINTERFACES", listOfSupportedInterfaces);
             Bind(); // will bind to the server and perform the initial bind\bind ack.
 
-            while (true) {
+            while (!cancellationToken.IsCancellationRequested) {
                 // first recieve and then answer
                 ConnectionOrientedPdu response = null;
                 var request = Receive();
@@ -109,7 +115,8 @@ namespace org.jinterop.dcom.transport {
                         //this call is only valid when the workerObject is RemUnknownObject.
                         //so the context us NTLMConnectionContext
                         if (Context is JIComRuntimeNTLMConnectionContext) {
-                            ((JIComRuntimeNTLMConnectionContext)Context).UpdateListOfInterfacesSupported(workerObject.QIedIIDs);
+                            ((JIComRuntimeNTLMConnectionContext)Context).UpdateListOfInterfacesSupported(
+                                workerObject.QIedIIDs);
                         }
                         switch (request.Type) {
                             case BindPdu.BIND_TYPE:
@@ -140,14 +147,6 @@ namespace org.jinterop.dcom.transport {
                             successful = result[0].Result == PresentationResultCode.ACCEPTANCE;
                             context = ((AlterContextPdu)request).ContextList[0]; //am expecting only one
                         }
-
-                        //					  if (successful)
-                        //					  {
-                        //						  //now select the Interface from the request and set that as the object expected to come.
-                        //						  workerObject.setCurrentJavaInstanceFromIID(context.abstractSyntax.toString().toUpperCase());
-                        //						  //set the component null;
-                        //					  }
-
                     }
                 }
                 else if (request is FaultCoPdu fault) {
@@ -160,19 +159,15 @@ namespace org.jinterop.dcom.transport {
                     throw new RpcException("Received shutdown request from server.");
                 }
                 else if (request is Auth3Pdu) {
-                    //				try {
-                    //					Thread.sleep(1000);
-                    //				} catch (InterruptedException e) {
-                    //					// TODO Auto-generated catch block
-                    //					e.printStackTrace();
-                    //				}
                     continue; //don't do anything here, the server will send another request
                 }
-                Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] response : " + Thread.CurrentThread.Name + " , " + response);
+                Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] response : " +
+                    Thread.CurrentThread.Name + ", " + response);
                 //now send the response.
                 Send(response);
                 if (workerObject.WorkerOver()) {
-                    Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] Worker is over, all IPID references have been released. Thread " +
+                    Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] Worker is over," +
+                        " all IPID references have been released. Thread " +
                         Thread.CurrentThread.Name + " will now exit.");
                     break;
                 }

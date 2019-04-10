@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="0x00001001" xml:space="preserve"><value>Object is already instantiated.</value></data>
+  <data name="0x00001002" xml:space="preserve"><value>This API cannot be invoked, further data preparation is required.</value></data>
+  <data name="0x00001003" xml:space="preserve"><value>Session is already established, please initiate a new session for new Stub.</value></data>
+  <data name="0x00001004" xml:space="preserve"><value>Discriminant cannot be null.</value></data>
+  <data name="0x00001005" xml:space="preserve"><value>Discriminant class type mismatch, please provide object of the same class as discriminant.</value></data>
+  <data name="0x00001006" xml:space="preserve"><value>Only 1 discriminant allowed for serialization, please remove the rest or no discriminant has been added at all.</value></data>
+  <data name="0x00001007" xml:space="preserve"><value>No discriminant value has been added at all.</value></data>
+  <data name="0x00001008" xml:space="preserve"><value>Incorrect Value of FLAG sent for this API. This FLAG is not valid here.</value></data>
+  <data name="0x00001009" xml:space="preserve"><value>Internal Library Error. This method should not have been called. Please check the parameters which you have passed to JICallBuilder. They have been sent incorrectly.</value></data>
+  <data name="0x0000100A" xml:space="preserve"><value>Outparams cannot have more than 1 parameter here. It should be a JIVariant class parameter.</value></data>
+  <data name="0x0000100B" xml:space="preserve"><value>Parameters inparams and dispId\paramNames arrays should have same length.</value></data>
+  <data name="0x0000100C" xml:space="preserve"><value>This in parameter cannot have null or \"\" values.</value></data>
+  <data name="0x0000100D" xml:space="preserve"><value>No parameters can be empty or null. Please provide valid parameters.</value></data>
+  <data name="0x0000100E" xml:space="preserve"><value>Could not retrieve CLSID from PROGID via Windows Remote Registry Service.</value></data>
+  <data name="0x0000100F" xml:space="preserve"><value>Internal Library Error, the serializer\deserializer was not found for {0}.  Please check the parameters passed to JICallBuilder.</value></data>
+  <data name="0x00001010" xml:space="preserve"><value>Authentication information was not supplied.</value></data>
+  <data name="0x00001011" xml:space="preserve"><value>Incorrect or Invalid Parameter(s) specified.</value></data>
+  <data name="0x00001012" xml:space="preserve"><value>The template cannot be null. </value></data>
+  <data name="0x00001013" xml:space="preserve"><value>Only Arrays Accepted as parameter.</value></data>
+  <data name="0x00001014" xml:space="preserve"><value>Arrays of Primitive Data Types are not accepted.</value></data>
+  <data name="0x00001015" xml:space="preserve"><value>Can only accept JIStruct, JIUnion, JIPointer and JIString as parameters for template.</value></data>
+  <data name="0x00001016" xml:space="preserve"><value>IPID cannot be null.</value></data>
+  <data name="0x00001017" xml:space="preserve"><value>Discriminant can only be of the type Integer,Short,Boolean or Character.</value></data>
+  <data name="0x00001018" xml:space="preserve"><value>Referent ID for <code>VARIANT</code> not found.</value></data>
+  <data name="0x00001019" xml:space="preserve"><value>This is a programming error, this API should not be called.</value></data>
+  <data name="0x0000101A" xml:space="preserve"><value>The parameters cannot be null.</value></data>
+  <data name="0x0000101B" xml:space="preserve"><value>An array has already been added as member and it has to be the last member of this Struct. Please insert this member elsewhere.</value></data>
+  <data name="0x0000101C" xml:space="preserve"><value>An array can be added only as a last member in a structure and not in between.</value></data>
+  <data name="0x0000101D" xml:space="preserve"><value>This Struct already has an array and the member (which also happens to be a Struct) has an array too. This member can only be present in the second last position of this new Struct.</value></data>
+  <data name="0x0000101E" xml:space="preserve"><value>Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct , not in between.</value></data>
+  <data name="0x0000101F" xml:space="preserve"><value>Authentication failure for the credentials sent by the COM server for performing call back. The identity is checked via a call back to the source COM server using SMB.</value></data>
+  <data name="0x00001020" xml:space="preserve"><value>SMB connection failure, please check whether SERVER service is running on Target machine (where COM server) is hosted.</value></data>
+  <data name="0x00001021" xml:space="preserve"><value>Illegal here to invoke this API.</value></data>
+  <data name="0x00001022" xml:space="preserve"><value>Variants can only take BSTR Strings and no other String Type.</value></data>
+  <data name="0x00001023" xml:space="preserve"><value>Overloaded APIs are not allowed.</value></data>
+  <data name="0x00001024" xml:space="preserve"><value>Variants cannot take object[] having Variants themselves as indices.</value></data>
+  <data name="0x00001025" xml:space="preserve"><value>fractionalUnits cannot be negative.</value></data>
+  <data name="0x00001026" xml:space="preserve"><value>Variant is null.</value></data>
+  <data name="0x00001027" xml:space="preserve"><value>Library currently accepts only up to 2 dimension for the JIVariant.</value></data>
+  <data name="0x00001028" xml:space="preserve"><value>The upper bounds is to be specified for all dimensions or not specified at all.</value></data>
+  <data name="0x00001029" xml:space="preserve"><value>Please use the JIArray to pass arrays.</value></data>
+  <data name="0x00001030" xml:space="preserve"><value>Unsupported type for VARIANT. </value></data>
+  <data name="0x00001031" xml:space="preserve"><value>Unable to access Windows Registry, please check whether the SERVER service is running on the Target Workstation.</value></data>
+  <data name="0x00001032" xml:space="preserve"><value>Invalid Identifier, or there is no Connection Info associated with this identifier on this comObject.</value></data>
+  <data name="0x00001033" xml:space="preserve"><value>Could not set the correct encoding for password field.</value></data>
+  <data name="0x00001034" xml:space="preserve"><value>Unknown hostname\ip was supplied for obtaining handle to WinReg.</value></data>
+  <data name="0x00001035" xml:space="preserve"><value>Type not supported for setting\getting value in\from registry.</value></data>
+  <data name="0x00001036" xml:space="preserve"><value>Illegal values sent as parameters, please check "data".</value></data>
+  <data name="0x00001037" xml:space="preserve"><value>JIMethodDescriptor is being added to a JIInterfaceDefinition supporting dispInterface, but it itself does not have a dispId.</value></data>
+  <data name="0x00001038" xml:space="preserve"><value>No parameters can be null or "".</value></data>
+  <data name="0x00001039" xml:space="preserve"><value>Unsupported charset supplied while encoding or decoding String.</value></data>
+  <data name="0x00001040" xml:space="preserve"><value>Unsigned numbers cannot be negative or null.</value></data>
+  <data name="0x00001041" xml:space="preserve"><value>Class not supported for unsigned operations. Only Long,Short,Integer allowed.</value></data>
+  <data name="0x00001042" xml:space="preserve"><value>"Object.class" arrays are not accepted. Only properly typed arrays accepted.</value></data>
+  <data name="0x00001043" xml:space="preserve"><value>This JILocalCoClass has already been exported with one COM object, please use a new instance of this class to get a new reference to a local COM object.</value></data>
+  <data name="0x00001044" xml:space="preserve"><value>JIInterfacePointer is not a valid parameter, please use JIVariant(IJIComObject,...).</value></data>
+  <data name="0x00001045" xml:space="preserve"><value>Direct Marshalling, UnMarshalling of Strings are not allowed, please use JIString instead.</value></data>
+  <data name="0x00001046" xml:space="preserve"><value>createInstance() cannot be called since the JIComServer(JISession, JIInterfacePointer, String) ctor was used to create this COM server instance, please use getInstance() instead.</value></data>
+  <data name="0x00001047" xml:space="preserve"><value>getInstance() cannot be called since the JIComServer(JISession, JIInterfacePointer, String) ctor was NOT used to create this COM server instance, please use createInstance() instead.</value></data>
+  <data name="0x00001048" xml:space="preserve"><value>A session is already attached with this COM object.</value></data>
+  <data name="0x00001049" xml:space="preserve"><value>This API cannot be invoked on local references.</value></data>
+  <data name="0x00001050" xml:space="preserve"><value>A session is not attached with this object , use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.</value></data>
+  <data name="0x00001051" xml:space="preserve"><value>The associated session is being destroyed. Current call to COM server has been terminated.</value></data>
+  <data name="0x00001052" xml:space="preserve"><value>This functionality is available only under "Microsoft Windows" line of Operating systems. </value></data>
+  <data name="0x00001053" xml:space="preserve"><value>S.S.O cannot be used with ProgId based ctors.</value></data>
+  <data name="0x00000001" xml:space="preserve"><value>Incorrect function.</value></data>
+  <data name="0x00000002" xml:space="preserve"><value>The system cannot find the file specified. Please check the path provided as parameter. If this exception is being thrown from the WinReg package, please check if the library is registered properly or do so using regsvr32.</value></data>
+  <data name="0x00000003" xml:space="preserve"><value>The system cannot find the path specified. </value></data>
+  <data name="0x00000005" xml:space="preserve"><value>Access is denied, please check whether the [domain-username-password] are correct. Also, if not already done please check the GETTING STARTED and FAQ sections in readme.htm. They provide information on how to correctly configure the Windows machine for DCOM access, so as to avoid such exceptions. </value></data>
+  <data name="0x0000007B" xml:space="preserve"><value>The filename, directory name, or volume label syntax is incorrect.</value></data>
+  <data name="0x000000B7" xml:space="preserve"><value>File already exists.  </value></data>
+  <data name="0x00000103" xml:space="preserve"><value>No more data is available.</value></data>
+  <data name="0x80004001" xml:space="preserve"><value>Not implemented.</value></data>
+  <data name="0x80004002" xml:space="preserve"><value>No such interface supported.</value></data>
+  <data name="0x80004005" xml:space="preserve"><value>Unspecified Error.</value></data>
+  <data name="0x80004014" xml:space="preserve"><value>A Remote activation was necessary but the server name provided was invalid.</value></data>
+  <data name="0x80004018" xml:space="preserve"><value>The server process could not be started, the pathname may be incorrect. </value></data>
+  <data name="0x80004019" xml:space="preserve"><value>The server process could not be started as the configured identity, the pathname may be incorrect or unavailable. </value></data>
+  <data name="0x8000401A" xml:space="preserve"><value>The server process could not be started because the configured identity is incorrect.  Check the username and password.</value></data>
+  <data name="0x8000401B" xml:space="preserve"><value>The client is not allowed to launch this server. </value></data>
+  <data name="0x8000FFFF" xml:space="preserve"><value>Catastrophic failure.</value></data>
+  <data name="0x80010001" xml:space="preserve"><value>Call was rejected by callee.</value></data>
+  <data name="0x80010100" xml:space="preserve"><value>System call failed. You might need to restart the server. </value></data>
+  <data name="0x80010105" xml:space="preserve"><value>The server threw an exception.</value></data>
+  <data name="0x80010108" xml:space="preserve"><value>The object invoked has disconnected from its clients.</value></data>
+  <data name="0x80010110" xml:space="preserve"><value>The version of OLE on the client and server machines does not match.  </value></data>
+  <data name="0x80010113" xml:space="preserve"><value>The requested object or interface does not exist.</value></data>
+  <data name="0x80010114" xml:space="preserve"><value>The requested object does not exist. </value></data>
+  <data name="0x8001011D" xml:space="preserve"><value>The marshaled interface data packet (OBJREF) has an invalid or unknown format.</value></data>
+  <data name="0x8001FFFF" xml:space="preserve"><value>An internal error occurred.</value></data>
+  <data name="0x80020001" xml:space="preserve"><value>Unknown interface. </value></data>
+  <data name="0x80020003" xml:space="preserve"><value>Member not found. </value></data>
+  <data name="0x80020004" xml:space="preserve"><value>Parameter not found. </value></data>
+  <data name="0x80020005" xml:space="preserve"><value>Type mismatch. </value></data>
+  <data name="0x80020006" xml:space="preserve"><value>Unknown name.</value></data>
+  <data name="0x80020007" xml:space="preserve"><value>No named arguments. </value></data>
+  <data name="0x80020008" xml:space="preserve"><value>Bad variable type. </value></data>
+  <data name="0x80020009" xml:space="preserve"><value>Exception occurred. </value></data>
+  <data name="0x8002000B" xml:space="preserve"><value>Invalid index. </value></data>
+  <data name="0x8002000E" xml:space="preserve"><value>Invalid number of parameters. </value></data>
+  <data name="0x8002000F" xml:space="preserve"><value>Parameter not optional. </value></data>
+  <data name="0x80020010" xml:space="preserve"><value>Invalid callee.</value></data>
+  <data name="0x8002802B" xml:space="preserve"><value>Element not found.</value></data>
+  <data name="0x800288BD" xml:space="preserve"><value>Wrong module kind for the operation.</value></data>
+  <data name="0x80040154" xml:space="preserve"><value>Class not registered. If you are using a DLL/OCX , please make sure it has "DllSurrogate" flag set. Faq A(6) in readme.html.</value></data>
+  <data name="0x80040155" xml:space="preserve"><value>Interface not registered.</value></data>
+  <data name="0x800401A1" xml:space="preserve"><value>Space for tools is not available.</value></data>
+  <data name="0x80040202" xml:space="preserve"><value>COM server could not establish call back connection.</value></data>
+  <data name="0x80070003" xml:space="preserve"><value>The system cannot find the path specified. </value></data>
+  <data name="0x80070002" xml:space="preserve"><value>The system cannot find the file specified. Is the COM Server present ? Please check DCOMCNFG for it's listing.</value></data>
+  <data name="0x80070005" xml:space="preserve"><value>Access is denied. </value></data>
+  <data name="0x8007000E" xml:space="preserve"><value>Not enough storage is available to complete this operation. </value></data>
+  <data name="0x80070057" xml:space="preserve"><value>The parameter is incorrect.</value></data>
+  <data name="0x800706BA" xml:space="preserve"><value>The RPC server is unavailable. Please check if the COM server is up and running and that route to the COM Server is accessible (A simple "Ping" to the Server machine would do). Also please confirm if the Windows Firewall is not blocking DCOM access.</value></data>
+  <data name="0x800706BE" xml:space="preserve"><value>The remote procedure call failed. This could be an internal library error or the COM server simply declined the request. Please contact library development team. </value></data>
+  <data name="0x800706C0" xml:space="preserve"><value>A remote procedure call (RPC) protocol error occurred. </value></data>
+  <data name="0x800706D1" xml:space="preserve"><value>The procedure number is out of range.</value></data>
+  <data name="0x800706F7" xml:space="preserve"><value>The stub received bad data. Please check whether the API has been called in the right way, with correct parameter formation.</value></data>
+  <data name="0x80070776" xml:space="preserve"><value>The object exporter was not found.</value></data>
+  <data name="0x80080005" xml:space="preserve"><value>Server execution failed.</value></data>
+  <data name="0x800A000D" xml:space="preserve"><value>Type mismatch.</value></data>
+  <data name="0x8007007E" xml:space="preserve"><value>The specified module could not be found. Please check if the COM server is present at it's location.</value></data>
+  <data name="0xC0000005" xml:space="preserve"><value>Access Violation.</value></data>
+  <data name="0xC000006D" xml:space="preserve"><value>The attempted logon is invalid. This is either due to a bad username or authentication information.</value></data>
+  <data name="0xC002002E" xml:space="preserve"><value>The procedure number is out of range.</value></data>
+</root>

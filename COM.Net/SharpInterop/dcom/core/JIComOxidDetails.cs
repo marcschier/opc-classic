@@ -20,7 +20,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Create details
         /// </summary>
-        /// <param name="javaInstance"></param>
+        /// <param name="localInstance"></param>
         /// <param name="oxid"></param>
         /// <param name="oid"></param>
         /// <param name="iid"></param>
@@ -28,11 +28,12 @@ namespace org.jinterop.dcom.core {
         /// <param name="ptr"></param>
         /// <param name="helper"></param>
         /// <param name="protectionLevel"></param>
-        internal JIComOxidDetails(JILocalCoClass javaInstance, JIOxid oxid,
+        internal JIComOxidDetails(JILocalCoClass localInstance, JIOxid oxid,
             JIObjectId oid, string iid, string ipid, JIInterfacePointer ptr,
             JIComOxidRuntimeHelper helper, rpc.ProtectionLevel protectionLevel) {
-            Referent = javaInstance;
+            Referent = localInstance;
             Ipid = ipid;
+            _ptr = ptr;
             Oxid = oxid;
             Oid = oid;
             IID = iid;
@@ -109,5 +110,6 @@ namespace org.jinterop.dcom.core {
         }
 
         private ThreadGroup _remUnknownThread;
+        private readonly JIInterfacePointer _ptr;
     }
 }

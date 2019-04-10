@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core {
                 }
             }
 
-            TransportFactory = JIComTransportFactory.Singleton;
+            TransportFactory = JIComTransportFactory.Instance;
             //now read the session and prepare information for the stub.
             Properties = new Properties(defaults);
             Properties.SetProperty("rpc.security.username", session.UserName);
@@ -383,7 +383,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="session"></param>
         /// <exception cref="JIException"></exception>
         private void Initialise(JIClsid clsid, string address, JISession session) {
-            TransportFactory = JIComTransportFactory.Singleton;
+            TransportFactory = JIComTransportFactory.Instance;
             //now read the session and prepare information for the stub.
             Properties = new Properties(defaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
@@ -420,7 +420,7 @@ namespace org.jinterop.dcom.core {
                     //check for jisystem.autoregister flag.
                     //jisystem takes precedence over clsid.
 
-                    if (JISystem.AutoRegistrationSet || clsid.AutoRegistrationSet) {
+                    if (JISystem.UseAutoRegistration || clsid.AutoRegistrationSet) {
 
                         //first create the registry entries.
                         try {
@@ -553,7 +553,7 @@ namespace org.jinterop.dcom.core {
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("000001A0-0000-0000-C000-000000000046");
                     Endpoint.Syntax.Version = 0;
                     ((JIComEndpoint)Endpoint).RebindEndPoint();
-                    _serverActivation = new JIRemoteSCMActivator.RemoteCreateInstance(new JIRemoteSCMActivator(), _session.TargetServer, _clsid);
+                    _serverActivation = new JIRemoteSCMActivator.RemoteCreateInstance(_session.TargetServer, _clsid);
                     Call(Semantics.IDEMPOTENT, (JIRemoteSCMActivator.RemoteCreateInstance)_serverActivation);
                 }
                 else {
@@ -720,7 +720,7 @@ namespace org.jinterop.dcom.core {
 
                     if (success) {
                         //which means that IDispatch is supported
-                        _session.releaseRef(dispatch.InterfacePointer.IPID, ((JIStdObjRef)dispatch.InterfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs);
+                        _session.ReleaseRef(dispatch.InterfacePointer.IPID, ((JIStdObjRef)dispatch.InterfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs);
                     }
                 }
             }
@@ -751,7 +751,7 @@ namespace org.jinterop.dcom.core {
                     //IJIComObject comObject2 = getObject(remoteActivation.dispIpid,"00020400-0000-0000-c000-000000000046");
                     //this will get garbage collected and then removed.
                     //session.addToSession(comObject2,remoteActivation.dispOid);
-                    _session.releaseRef(_serverActivation.DispIpid, _serverActivation.DispRefs);
+                    _session.ReleaseRef(_serverActivation.DispIpid, _serverActivation.DispRefs);
                     _serverActivation.DispIpid = null;
                     ((JIComObjectImpl)comObject).IsDual = true;
                 }
@@ -823,7 +823,7 @@ namespace org.jinterop.dcom.core {
         internal object[] Call(JICallBuilder obj, string targetIID, int socketTimeout) {
             lock (_mutex) {
 
-                if (_session.SessionInDestroy && !obj._fromDestroySession) {
+                if (_session.SessionInDestroy && !obj.FromDestroySession) {
                     throw new JIException(JIErrorCodes.JI_SESSION_DESTROYED);
                 }
 

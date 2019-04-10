@@ -8,46 +8,59 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
-    using SharpCifs.Util.Sharpen;
     using System.Linq;
+    using System.Threading;
 
     [Serializable]
     internal sealed class JIOrpcThis {
 
-        private static ThreadLocal cidForCallback = new ThreadLocal();
-        private JIComVersion version = JISystem.COMVersion;
+        /// <summary>
+        /// Create orpcthis
+        /// </summary>
+        public JIOrpcThis() =>
+            CasualityIdentifier = Guid.NewGuid().ToString();
 
-        public JIOrpcThis() {
-            //		cid = GUIDUtil.guidStringFromHexString(IdentifierFactory.createUniqueIdentifier().toHexString());
-            CasualityIdentifier = Guid.NewGuid().ToString(); //  java.util.UUID.randomUUID().ToString();
-        }
-
-        public JIOrpcThis(UUID casualityIdentifier) {
+        /// <summary>
+        /// Create orpcthis
+        /// </summary>
+        /// <param name="casualityIdentifier"></param>
+        public JIOrpcThis(UUID casualityIdentifier) =>
             CasualityIdentifier = casualityIdentifier.ToString();
-        }
 
+        /// <summary>
+        /// Flags
+        /// </summary>
         public int ORPCFlags { set; get; } = 0;
 
+        /// <summary>
+        /// Extent array
+        /// </summary>
+        public JIOrpcExtentArray[] ExtentArray { set; get; }
 
-        public JIOrpcExtentArray[] ExtentArray { set; get; } = null;
+        /// <summary>
+        /// Cid
+        /// </summary>
+        public string CasualityIdentifier { get; private set; }
 
-
-        public string CasualityIdentifier { get; private set; } = null;
-
+        /// <summary>
+        /// Encode
+        /// </summary>
+        /// <param name="ndr"></param>
         public void Encode(NdrCodec ndr) {
-            ndr.WriteUnsignedShort(version.MajorVersion); //COM Major version
-            ndr.WriteUnsignedShort(version.MinorVersion); //COM minor version
+            ndr.WriteUnsignedShort(_version.MajorVersion); //COM Major version
+            ndr.WriteUnsignedShort(_version.MinorVersion); //COM minor version
             ndr.WriteUnsignedLong(ORPCFlags); // No Flags
             ndr.WriteUnsignedLong(0); // Reserved ...always 0.
 
             //the order here is important since the cid is always filled from the ctor hence will never be null.
-            var cid2 = cidForCallback.get() == null ? CasualityIdentifier : (string)cidForCallback.get();
+            var cid2 = kCidForCallback.Value ?? CasualityIdentifier;
             var uuid = new UUID(cid2);
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -93,7 +106,7 @@ namespace org.jinterop.dcom.core {
             var minorVersion = (int)(short?)JIMarshalUnMarshalHelper.Deserialize(
                 ndr, typeof(short?), null, JIFlags.FLAG_NULL, map);
 
-            retval.version = new JIComVersion(majorVersion, minorVersion);
+            retval._version = new JIComVersion(majorVersion, minorVersion);
             retval.ORPCFlags = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(
                 ndr, typeof(int?), null, JIFlags.FLAG_NULL, map);
 
@@ -186,8 +199,11 @@ namespace org.jinterop.dcom.core {
             //callback will store the cid from the decode operation in the threadlocal variable. In case an encode is performed using the
             //same thread then we know that this is a nested call. Hence will replace the cid with the thread local cid. For the calls being in
             //case of encode this value will not be used if the encode thread is of the client and not of JIComOxidRuntimeHelper.
-            cidForCallback.set(retval.CasualityIdentifier);
+            kCidForCallback.Value = retval.CasualityIdentifier;
             return retval;
         }
+
+        private static readonly ThreadLocal<string> kCidForCallback = new ThreadLocal<string>();
+        private JIComVersion _version = JISystem.COMVersion;
     }
 }

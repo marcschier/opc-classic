@@ -8,10 +8,10 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util.Sharpen;
     using org.jinterop.dcom.common;
     using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
 
@@ -29,7 +29,7 @@ namespace org.jinterop.dcom.core {
             if (src == null || target == null) {
                 throw new NullReferenceException();
             }
-            JISession.linkTwoSessions(src, target);
+            JISession.LinkTwoSessions(src, target);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace org.jinterop.dcom.core {
             if (src == null || unlinkedSession == null) {
                 throw new NullReferenceException();
             }
-            JISession.unLinkSession(src, unlinkedSession);
+            JISession.UnLinkSession(src, unlinkedSession);
         }
 
         /// <summary>
@@ -49,18 +49,14 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="oxid"> </param>
         /// <returns></returns>
-        internal static JISession ResolveSessionForOXID(byte[] oxid) {
-            return JISession.resolveSessionForOxid(new JIOxid(oxid));
-        }
+        internal static JISession ResolveSessionForOXID(byte[] oxid) => JISession.ResolveSessionForOxid(new JIOxid(oxid));
 
         /// <summary>
         /// get interface pointer
         /// </summary>
         /// <param name="session"> </param>
         /// <returns></returns>
-        internal static JIInterfacePointer GetInterfacePointerOfStub(JISession session) {
-            return session.Stub.ServerInterfacePointer;
-        }
+        internal static JIInterfacePointer GetInterfacePointerOfStub(JISession session) => session.Stub.ServerInterfacePointer;
 
         /// <summary>
         /// Must be called once and only once from JICallBuilder "read" to
@@ -97,10 +93,10 @@ namespace org.jinterop.dcom.core {
                 var newsession = ResolveSessionForOXID(ptr.OXID);
                 if (newsession == null) {
                     //new COM server pointer
-                    newsession = JISession.createSession(session);
+                    newsession = JISession.CreateSession(session);
                     newsession.GlobalSocketTimeout = session.GlobalSocketTimeout;
-                    newsession.useSessionSecurity(session.SessionSecurityEnabled);
-                    newsession.useNTLMv2(session.NTLMv2Enabled);
+                    newsession.UseSessionSecurity(session.SessionSecurityEnabled);
+                    newsession.UseNTLMv2(session.NTLMv2Enabled);
                     var comServer = new JIComServer(newsession, ptr, null);
                     retval = comServer.Instance;
                     Link2Sessions(session, newsession);
@@ -122,31 +118,29 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="session"></param>
         /// <param name="comObject"></param>
-        internal static void AddComObjectToSession(JISession session, IJIComObject comObject) {
-            session.addToSession(comObject, comObject.Internal_getInterfacePointer().OID);
-        }
+        internal static void AddComObjectToSession(JISession session, IJIComObject comObject) =>
+            session.AddToSession(comObject, comObject.Internal_getInterfacePointer().OID);
 
         /// <summary>
         /// Returns an Interface Pointer representation for the Component
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="javaComponent"></param>
+        /// <param name="localComponent"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static IJIComObject InstantiateLocalComObject(JISession session, JILocalCoClass javaComponent) {
-            return new JIComObjectImpl(session, JIComOxidRuntime.GetInterfacePointer(session, javaComponent), true);
-        }
+        public static IJIComObject InstantiateLocalComObject(JISession session,
+            JILocalCoClass localComponent) => new JIComObjectImpl(session,
+                JIComOxidRuntime.Instance.GetInterfacePointer(session, localComponent), true);
 
         /// <summary>
         /// Release local Component
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="javaComponent"></param>
+        /// <param name="localComponent"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static void ReleaseLocalComponent(JISession session, JILocalCoClass javaComponent) {
-            JIComOxidRuntime.ReleaseLocalComponent(session, javaComponent);
-        }
+        public static void ReleaseLocalComponent(JISession session, JILocalCoClass localComponent) =>
+            JIComOxidRuntime.Instance.ReleaseLocalComponent(session, localComponent);
 
         /// <summary>
         /// Returns an Interface Pointer representation from raw bytes.
@@ -186,11 +180,13 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         public static IJIComObject InstantiateComObject(JISession session, IJIComObject comObject) {
             if (comObject.AssociatedSession != null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_SESSION_ALREADY_ATTACHED));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_SESSION_ALREADY_ATTACHED));
             }
 
             if (comObject.LocalReference) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COMOBJ_LOCAL_REF));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COMOBJ_LOCAL_REF));
             }
 
             return InstantiateComObject(session, comObject.Internal_getInterfacePointer());
@@ -236,7 +232,8 @@ namespace org.jinterop.dcom.core {
                 comObject == null ||
                 sourceUUID == null ||
                 sourceUUID.Equals("", StringComparison.CurrentCultureIgnoreCase)) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_CALLBACK_INVALID_PARAMS));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_CALLBACK_INVALID_PARAMS));
             }
 
             Log.Logger.Information("Attaching event handler for  comObject: " +
@@ -244,13 +241,13 @@ namespace org.jinterop.dcom.core {
                 " , eventListener: " + eventListener.InterfaceIdentifier +
                 " and eventListner IPID: " + eventListener.Ipid);
             //IID of IConnectionPointContainer :- B196B284-BAB4-101A-B69C-00AA00341D07
-            var connectionPointContainer = (IJIComObject)comObject.QueryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
+            var connectionPointContainer = comObject.QueryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
             var @object = new JICallBuilder(true) {
                 Opnum = 1
             };
             @object.AddInParamAsUUID(sourceUUID, JIFlags.FLAG_NULL);
             @object.AddOutParamAsObject(typeof(IJIComObject), JIFlags.FLAG_NULL);
-            var objects = (object[])connectionPointContainer.Call(@object); //find connection point
+            var objects = connectionPointContainer.Call(@object); //find connection point
             var connectionPointer = (IJIComObject)objects[0];
 
             @object.ReInit();
@@ -272,8 +269,6 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="arrayToReverse"></param>
         /// <returns></returns>
-        public static int ReverseArrayForDispatch(JIArray arrayToReverse) {
-            return arrayToReverse.ReverseArrayForDispatch();
-        }
+        public static int ReverseArrayForDispatch(JIArray arrayToReverse) => arrayToReverse.ReverseArrayForDispatch();
     }
 }

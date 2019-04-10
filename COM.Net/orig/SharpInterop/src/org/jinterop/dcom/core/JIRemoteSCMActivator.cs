@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 /// <summary>
 /// j-Interop (Pure Java implementation of DCOM protocol)
-/// 
+///
 /// Copyright (c) 2013 Vikram Roopchand
-/// 
+///
 /// All rights reserved. This program and the accompanying materials
 /// are made available under the terms of the Eclipse Public License v1.0
 /// which accompanies this distribution, and is available at
 /// http://www.eclipse.org/legal/epl-v10.html
-/// 
+///
 /// Contributors:
 /// Vikram Roopchand  - Moving to EPL from LGPL v3.
-/// 
+///
 /// </summary>
 
 namespace org.jinterop.dcom.core {
@@ -33,10 +33,10 @@ namespace org.jinterop.dcom.core {
     using UUID = rpc.core.UUID;
 
     /// <summary>
-    /// IRemoteSCMActivator implementation. 
-    /// 
+    /// IRemoteSCMActivator implementation.
+    ///
     /// @since 2.09
-    /// 
+    ///
     /// </summary>
     internal sealed class JIRemoteSCMActivator {
 
@@ -111,7 +111,7 @@ namespace org.jinterop.dcom.core {
 
                 }
 
-                 Catch(NdrException e) {
+                 catch(NdrException e) {
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
                 }
@@ -123,7 +123,7 @@ namespace org.jinterop.dcom.core {
                 ndr.writeUnsignedLong(0); //write here (reserved from objref_custom)
 
 
-                //Activation Properties Blob 
+                //Activation Properties Blob
                 int writeActivationPayload = ndr.Buffer.Index;
                 ndr.writeUnsignedLong(0); //payload to be written here
 
@@ -262,8 +262,7 @@ namespace org.jinterop.dcom.core {
                     try {
                         @struct.AddMember(1, new int?(len)); //will push Reserved to the next place now.
                     }
-
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -353,7 +352,7 @@ namespace org.jinterop.dcom.core {
 
                 }
 
-                Catch(JIException e) {
+                catch(JIException e) {
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
                 } //don't know will correct later.
@@ -375,7 +374,7 @@ namespace org.jinterop.dcom.core {
                 /// DWORD thisSize;
                 /// COMVERSION clientCOMVersion;
                 /// } InstantiationInfoData
-                /// 
+                ///
                 /// </summary>
 
                 JIStruct @struct = new JIStruct();
@@ -398,7 +397,7 @@ namespace org.jinterop.dcom.core {
 
                 }
 
-                Catch(JIException e) {
+                catch(JIException e) {
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
                 }
@@ -438,7 +437,7 @@ namespace org.jinterop.dcom.core {
                         @struct.AddMember(new int?(0));
                     }
 
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -467,7 +466,7 @@ namespace org.jinterop.dcom.core {
 
                     }
 
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -505,7 +504,7 @@ namespace org.jinterop.dcom.core {
 
                     }
 
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -529,10 +528,9 @@ namespace org.jinterop.dcom.core {
                     @struct = outerInstance.GetInstantiationInfoData();
                     @struct.RemoveMember(7);
                     try {
-                        @struct.AddMember(7, new int?(len)); //will push COMVERSION to last place now.
+                        @struct.AddMember(7, len); //will push COMVERSION to last place now.
                     }
-
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -580,7 +578,7 @@ namespace org.jinterop.dcom.core {
                         @struct.AddMember(new int?(0x00000000));
                     }
 
-                    Catch(JIException e) {
+                    catch(JIException e) {
                         Console.WriteLine(e.ToString());
                         Console.Write(e.StackTrace);
                     }
@@ -657,7 +655,7 @@ namespace org.jinterop.dcom.core {
                     throw new JIRuntimeException(hResult);
                 }
 
-                // we should now be standing at the Activation Properties Blob right now. 	
+                // we should now be standing at the Activation Properties Blob right now.
                 int totalLength = ndr.readUnsignedLong();
                 ndr.readUnsignedLong(); //reserved
 
@@ -697,7 +695,7 @@ namespace org.jinterop.dcom.core {
                     @struct.AddMember(typeof(int?));
                 }
 
-                Catch(JIException e) {
+                catch(JIException e) {
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
                 }
@@ -769,7 +767,7 @@ namespace org.jinterop.dcom.core {
 
                             }
 
-                            Catch(JIException e) {
+                            catch(JIException e) {
                                 Console.WriteLine(e.ToString());
                                 Console.Write(e.StackTrace);
                             }
@@ -813,12 +811,12 @@ namespace org.jinterop.dcom.core {
                                     @struct.AddMember(typeof(int?));
                                     @struct.AddMember(new JIPointer(new JIArray(typeof(UUID), null, 1, true)));
                                     @struct.AddMember(new JIPointer(new JIArray(typeof(int?), null, 1, true))); //Hresult,
-                                                                                                                //0 is good anything else is bad and corresponding MInterfacePointer will not exist. 
+                                                                                                                //0 is good anything else is bad and corresponding MInterfacePointer will not exist.
                                     @struct.AddMember(new JIPointer(new JIArray(typeof(JIInterfacePointer), null, 1, true)));
 
                                 }
 
-                            Catch(JIException e) {
+                            catch(JIException e) {
                                     Console.WriteLine(e.ToString());
                                     Console.Write(e.StackTrace);
                                 }

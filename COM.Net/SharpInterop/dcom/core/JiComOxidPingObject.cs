@@ -18,12 +18,14 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal class JiComOxidPingObject : NdrOp {
 
-        /// <inhertidoc/>
-        public override int Opnum => _opnum;
+        /// <summary>
+        /// Set id
+        /// </summary>
+        internal byte[] SetId { get; set; }
 
         /// <inhertidoc/>
         public override void Write(NdrCodec ndr) {
-            switch (_opnum) {
+            switch (Opnum) {
                 case 2: // complex ping
 
                     var newlength = 8 + 6 + 8 + (_listOfAdds.Count * 8) + 8 + (_listOfDels.Count * 8) + 16;
@@ -31,9 +33,9 @@ namespace org.jinterop.dcom.core {
                         ndr.Buffer.Buf = new byte[newlength + 16];
                     }
 
-                    if (_setId == null) {
+                    if (SetId == null) {
                         Log.Logger.Information("Complex Ping going for the first time, will get the setId as response of this call ");
-                        _setId = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                        SetId = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     }
 
                     if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
@@ -41,7 +43,7 @@ namespace org.jinterop.dcom.core {
                         Log.Logger.Information("listOfDels -> Size : " + _listOfDels.Count + " , " + _listOfDels);
                     }
 
-                    JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, _setId);
+                    JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, SetId);
 
                     JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?), (short)_seqNum, null, JIFlags.FLAG_NULL); //seq
                     JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?), (short)_listOfAdds.Count, null, JIFlags.FLAG_NULL); //add
@@ -67,10 +69,7 @@ namespace org.jinterop.dcom.core {
                         JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), _listOfDels.Count, null, JIFlags.FLAG_NULL);
 
                         //now align for array
-                        var index = (double)ndr.Buffer.Index;
-                        long k = (k = Math.Round(index % 8.0)) == 0 ? 0 : 8 - k;
-                        ndr.WriteOctetArray(new byte[(int)k], 0, (int)k);
-
+                        ndr.FillAligned(8);
                         for (var i = 0; i < _listOfDels.Count; i++) {
                             var oid = (JIObjectId)_listOfDels[i];
                             JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, oid.OID);
@@ -88,9 +87,9 @@ namespace org.jinterop.dcom.core {
                     break;
 
                 case 1: // simple ping
-                    if (_setId != null) {
-                        JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, _setId); //setid
-                        Log.Logger.Information("Simple Ping going for setId: " + Utils.HexString(_setId, 0, _setId.Length));
+                    if (SetId != null) {
+                        JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, SetId); //setid
+                        Log.Logger.Information("Simple Ping going for setId: " + Utils.HexString(SetId, 0, SetId.Length));
                     }
                     else {
                         Log.Logger.Information("Some error ! Simple ping requested , but has no setID ");
@@ -106,9 +105,9 @@ namespace org.jinterop.dcom.core {
         /// <inhertidoc/>
         public override void Read(NdrCodec ndr) {
             //read response and fill DSs accordingly
-            switch (_opnum) {
+            switch (Opnum) {
                 case 2: //complex ping
-                    _setId = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
+                    SetId = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
                     //ping factor
                     JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(short?), null, JIFlags.FLAG_NULL, null);
 
@@ -123,7 +122,7 @@ namespace org.jinterop.dcom.core {
                     break;
                 case 1: // simple ping
                     //hresult
-                    hresult = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, 
+                    hresult = (int)JIMarshalUnMarshalHelper.Deserialize(ndr,
                         typeof(int), null, JIFlags.FLAG_NULL, null);
 
                     if (hresult != 0) {
@@ -140,10 +139,8 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        internal int _opnum = -1;
         internal List<object> _listOfAdds = new List<object>();
         internal List<object> _listOfDels = new List<object>();
-        internal byte[] _setId;
         internal int _seqNum;
     }
 }

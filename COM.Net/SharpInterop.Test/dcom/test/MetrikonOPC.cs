@@ -1,4 +1,5 @@
 ﻿namespace org.jinterop.dcom.test {
+    using System;
     using IJIComObject = core.IJIComObject;
     using JICallBuilder = core.JICallBuilder;
     using JIComServer = core.JIComServer;
@@ -71,7 +72,7 @@
 						return;
 					}
 					var test = new MetrikonOPC(args[0],args);
-					test.OPC;
+					test.getOPC();
 					test.performOp();
 			}
 				catch (Exception e)
@@ -81,11 +82,5 @@
 					Console.Write(e.StackTrace);
 				}
 		}
-
-
-
-
-
 	}
-
 }

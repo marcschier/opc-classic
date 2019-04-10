@@ -17,24 +17,24 @@ namespace org.jinterop.dcom.common {
     public interface IJICOMRuntimeWorker {
 
         /// <summary>
-        /// Op
+        /// Set op number
         /// </summary>
-        int Opnum { set; }
+        int Opnum { get; set; }
 
         /// <summary>
         /// Current iid
         /// </summary>
-        string CurrentIID { set; }
+        string CurrentIID { get; set; }
 
         /// <summary>
         /// Current object
         /// </summary>
-        UUID CurrentObjectID { set; get; }
+        UUID CurrentObjectID { get; set; }
 
         /// <summary>
         /// Query interface ids
         /// </summary>
-        IList<object> QIedIIDs { get; }
+        List<object> QIedIIDs { get; }
 
         /// <summary>
         /// Resolver

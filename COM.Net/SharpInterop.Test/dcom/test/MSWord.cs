@@ -11,6 +11,8 @@
     using JIVariant = core.JIVariant;
     using JIObjectFactory = impls.JIObjectFactory;
     using IJIDispatch = impls.automation.IJIDispatch;
+    using System;
+    using Serilog;
 
     public class MSWord
 	{
@@ -35,7 +37,7 @@
 		public virtual void startWord()
 		{
 			unknown = comStub.CreateInstance();
-			dispatch = (IJIDispatch) JIObjectFactory.NarrowObject(unknown.QueryInterface(impls.automation.DispatchFlags.IID));
+			dispatch = (IJIDispatch) JIObjectFactory.NarrowObject(unknown.QueryInterface(impls.automation.Interfaces.IID_IDispatch));
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
@@ -128,7 +130,6 @@
 					return;
 				}
 
-				Log.Logger.Level = Level.INFO;
 				JISystem.InBuiltLogHandler = false;
 				var test = new MSWord(args[0], args);
 				test.startWord();

@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <remarks> <code>true</code> if auto registration should be done by the framework. </remarks>
         public virtual bool AutoRegistration {
-            set => autoRegister = value;
+            set => _autoRegister = value;
         }
 
         /// <summary>
@@ -45,22 +45,22 @@ namespace org.jinterop.dcom.core {
         /// by this object.
         /// </summary>
         /// <returns> <code>true</code> if the auto registration flag is set. </returns>
-        public virtual bool AutoRegistrationSet => autoRegister;
+        public virtual bool AutoRegistrationSet => _autoRegister;
 
         /// <summary>
         /// Create prog id
         /// </summary>
         /// <param name="progId"></param>
         private JIProgId(string progId) {
-            this.progId = progId;
-            clsid = JIClsid.ValueOf(JISystem.GetClsidFromProgId(progId));
+            _progId = progId;
+            _clsid = JIClsid.ValueOf(JISystem.GetClsidFromProgId(progId));
         }
 
         /// <summary>
         /// Set server
         /// </summary>
 		internal virtual string Server {
-            set => server = value;
+            set => _server = value;
         }
 
         /// <summary>
@@ -88,35 +88,35 @@ namespace org.jinterop.dcom.core {
             //			throw new JIException(JIErrorCodes.JI_WINREG_EXCEPTION3);
             //		}
 
-            if (server == null) {
-                server = session.TargetServer;
+            if (_server == null) {
+                _server = _session.TargetServer;
             }
 
             try {
-                if (session.SSOEnabled) {
+                if (_session.SSOEnabled) {
                     winreg = JIWinRegFactory.SingleTon.GetWinreg(
-                        server, true);
+                        _server, true);
                 }
                 else {
                     winreg = JIWinRegFactory.SingleTon.GetWinreg(
-                        new JIDefaultAuthInfoImpl(session.Domain, session.UserName, session.Password), server, true);
+                        new JIDefaultAuthInfoImpl(_session.Domain, _session.UserName, _session.Password), _server, true);
                 }
 
             }
             catch (UnknownHostException) {
                 throw new JIException(JIErrorCodes.JI_WINREG_EXCEPTION3);
             }
-            var handle = winreg.winreg_OpenHKLM();
-            var handle2 = winreg.winreg_OpenKey(handle, "SOFTWARE\\Classes\\" + progId + "\\CLSID", IJIWinReg_Fields.KEY_READ);
-            var key = StringHelperClass.NewString(winreg.winreg_QueryValue(handle2, 255));
-            winreg.winreg_CloseKey(handle2);
-            winreg.winreg_CloseKey(handle);
+            var handle = winreg.OpenHKLM();
+            var handle2 = winreg.OpenKey(handle, "SOFTWARE\\Classes\\" + _progId + "\\CLSID", RegKeyAccess.KEY_READ);
+            var key = StringHelperClass.NewString(winreg.QueryValue(handle2, 255));
+            winreg.CloseKey(handle2);
+            winreg.CloseKey(handle);
             winreg.CloseConnection();
             //seperate the {}
-            clsid = JIClsid.ValueOf(StringHelperClass.SubstringSpecial(key,
+            _clsid = JIClsid.ValueOf(StringHelperClass.SubstringSpecial(key,
                 key.IndexOf("{", StringComparison.Ordinal) + 1, key.IndexOf("}", StringComparison.Ordinal)));
-            clsid.AutoRegistration = autoRegister;
-            JISystem.Internal_setClsidtoProgId(progId, clsid.CLSID);
+            _clsid.AutoRegistration = _autoRegister;
+            JISystem.Internal_setClsidtoProgId(_progId, _clsid.CLSID);
         }
 
         /// <summary>
@@ -124,9 +124,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="progId"> user-friendly string representation such as "Excel.Application"
         /// </param>
-        public static JIProgId ValueOf(string progId) {
-            return new JIProgId(progId);
-        }
+        public static JIProgId ValueOf(string progId) => new JIProgId(progId);
 
         /// <summary>
         /// Returns the <code>CLSID</code> for this <code>ProgId</code>.
@@ -134,10 +132,10 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"> </exception>
         public virtual JIClsid CorrespondingCLSID {
             get {
-                if (clsid == null) {
+                if (_clsid == null) {
                     GetIdFromWinReg();
                 }
-                return clsid;
+                return _clsid;
             }
         }
 
@@ -145,13 +143,13 @@ namespace org.jinterop.dcom.core {
         /// Set session
         /// </summary>
         internal virtual JISession Session {
-            set => session = value;
+            set => _session = value;
         }
 
-        private readonly string progId;
-        private JIClsid clsid;
-        private JISession session;
-        private string server;
-        private bool autoRegister;
+        private readonly string _progId;
+        private JIClsid _clsid;
+        private JISession _session;
+        private string _server;
+        private bool _autoRegister;
     }
 }

@@ -39,7 +39,7 @@ namespace org.jinterop.winreg.smb {
         /// <exception cref="UnknownHostException"></exception>
         public JIWinRegStub(IJIAuthInfo authInfo, string serverName) {
             if (authInfo == null) {
-                throw new System.ArgumentException(
+                throw new ArgumentException(
                     JISystem.GetLocalizedMessage(JIErrorCodes.JI_AUTH_NOT_SUPPLIED));
             }
             TransportFactory = new rpc.ncacn_np.TransportFactory();
@@ -338,7 +338,7 @@ namespace org.jinterop.winreg.smb {
         /// <inheritdoc/>
         public void SetValue(JIPolicyHandle handle, string valueName, byte[][] data) {
             if (data == null) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_WINREG_EXCEPTION5));
             }
 

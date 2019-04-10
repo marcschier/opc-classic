@@ -233,7 +233,7 @@ namespace org.jinterop.dcom.impls.automation {
                 invKind != (int)InvokeKind.INVOKE_PROPERTYGET &&
                 invKind != (int)InvokeKind.INVOKE_PROPERTYPUTREF &&
                 invKind != (int)InvokeKind.INVOKE_PROPERTYPUT) {
-                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.E_INVALIDARG));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.E_INVALIDARG));
             }
             var callObject = new JICallBuilder(true);
             callObject.AddInParamAsInt(memberId, JIFlags.FLAG_NULL);

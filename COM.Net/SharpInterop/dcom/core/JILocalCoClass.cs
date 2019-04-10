@@ -10,6 +10,7 @@
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
     using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.impls.automation;
     using rpc.core;
     using Serilog;
     using SharpCifs.Dcerpc.Ndr;
@@ -28,75 +29,100 @@ namespace org.jinterop.dcom.core {
     public sealed class JILocalCoClass {
 
         /// <summary>
-        /// Creates a local class instance. The framework will try to create a instance of the <code>clazz</code>
-        /// using <code>Class.newInstance</code>. Make sure that <code>clazz</code> has a visible <code>null</code>
-        /// constructor.
+        /// Creates a local class instance. The framework will try to create
+        /// a instance of the <code>type</code>
+        /// using <code>Class.newInstance</code>. Make sure that <code>type</code>
+        /// has a visible <code>null</code> constructor.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface.
+        /// <param name="interfaceDefinition"> implementing structurally the
+        /// definition of the COM callback interface.
         /// </param>
-        /// <param name="clazz"> <code>class</code> to instantiate for serving requests from COM client. Must implement
-        /// the <code>interfaceDefinition</code> fully. </param>
+        /// <param name="clazz"> <code>class</code> to instantiate for serving
+        /// requests from COM client. Must implement the <code>interfaceDefinition</code>
+        /// fully. </param>
         /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or
         /// <code>clazz</code> are <code>null</code>. </exception>
         public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, Type clazz) {
             if (interfaceDefinition == null || clazz == null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            _identifier = clazz.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
+            _identifier = clazz.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
             Init(interfaceDefinition, clazz, null, false);
         }
 
         /// <summary>
         /// Refer <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, Type)"/>.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface. </param>
-        /// <param name="clazz"> <code>class</code> to instantiate for serving requests from COM client. Must implement
+        /// <param name="interfaceDefinition"> implementing structurally
+        /// the definition of the COM callback interface. </param>
+        /// <param name="type"> <code>class</code> to instantiate for serving
+        /// requests from COM client. Must implement
         /// the <code>interfaceDefinition</code> fully. </param>
-        /// <param name="useInterfaceDefinitionIID"> <code>true</code> if the <code>IID</code> of <code>interfaceDefinition</code>
-        /// should be used as to create the local COM Object. Use this when a reference other than <code>IUnknown*</code> is required.
-        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
-        /// <code>false</code> since the <code>IConnectionPoint::Advise</code> method takes in a <code>IUnknown*</code> reference. </param>
-        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>clazz</code> are <code>null</code>. </exception>
-        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, Type clazz, bool useInterfaceDefinitionIID) {
-            if (interfaceDefinition == null || clazz == null) {
+        /// <param name="useInterfaceDefinitionIID"> <code>true</code> if
+        /// the <code>IID</code> of <code>interfaceDefinition</code>
+        /// should be used as to create the local COM Object. Use this when a
+        /// reference other than <code>IUnknown*</code> is required.
+        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/>
+        /// operations this should be set to <code>false</code> since the
+        /// <code>IConnectionPoint::Advise</code> method takes in a
+        /// <code>IUnknown*</code> reference. </param>
+        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
+        /// or <code>clazz</code> are <code>null</code>. </exception>
+        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, Type type, bool useInterfaceDefinitionIID) {
+            if (interfaceDefinition == null || type == null) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            _identifier = clazz.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
-            Init(interfaceDefinition, clazz, null, useInterfaceDefinitionIID);
+            _identifier = type.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
+            Init(interfaceDefinition, type, null, useInterfaceDefinitionIID);
         }
 
         /// <summary>
         ///Creates a local class instance.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface. </param>
-        /// <param name="instance"> instance for serving requests from COM client. Must implement
+        /// <param name="interfaceDefinition"> implementing structurally the
+        /// definition of the COM callback interface. </param>
+        /// <param name="instance"> instance for serving requests from COM
+        /// client. Must implement
         /// the <code>interfaceDefinition</code> fully. </param>
-        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>instance</code>
+        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
+        /// or <code>instance</code>
         /// are <code>null</code>. </exception>
-        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, object instance) {
+        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition,
+            object instance) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
+            _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
             Init(interfaceDefinition, null, instance, false);
         }
 
         /// <summary>
-        ///Creates a local class instance.
+        /// Creates a local class instance.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface. </param>
-        /// <param name="instance"> instance for serving requests from COM client. Must implement
+        /// <param name="interfaceDefinition"> implementing structurally
+        /// the definition of the COM callback interface. </param>
+        /// <param name="instance"> instance for serving requests from
+        /// COM client. Must implement
         /// the <code>interfaceDefinition</code> fully. </param>
-        /// <param name="useInterfaceDefinitionIID"> <code>true</code> if the <code>IID</code> of <code>interfaceDefinition</code>
-        /// should be used as to create the local COM Object. Use this when a reference other than <code>IUnknown*</code> is required.
-        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/> operations this should be set to
-        /// <code>false</code> since the <code>IConnectionPoint::Advise</code> method takes in a <code>IUnknown*</code> reference. </param>
-        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>instance</code> are <code>null</code>. </exception>
-        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition, object instance, bool useInterfaceDefinitionIID) {
+        /// <param name="useInterfaceDefinitionIID"> <code>true</code> if
+        /// the <code>IID</code> of <code>interfaceDefinition</code>
+        /// should be used as to create the local COM Object. Use this when
+        /// a reference other than <code>IUnknown*</code> is required.
+        /// For all <seealso cref="JIObjectFactory.AttachEventHandler(IJIComObject, string, IJIComObject)"/>
+        /// operations this should be set to <code>false</code> since the
+        /// <code>IConnectionPoint::Advise</code> method takes in a
+        /// <code>IUnknown*</code> reference. </param>
+        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
+        /// or <code>instance</code> are <code>null</code>. </exception>
+        public JILocalCoClass(JILocalInterfaceDefinition interfaceDefinition,
+            object instance, bool useInterfaceDefinitionIID) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ _randomGen.Next();
+            _identifier = instance.GetHashCode() ^ new object().GetHashCode() ^ kRandomGen.Next();
             Init(interfaceDefinition, null, instance, useInterfaceDefinitionIID);
         }
 
@@ -104,24 +130,27 @@ namespace org.jinterop.dcom.core {
         /// Initialize
         /// </summary>
         /// <param name="interfaceDefinition"></param>
-        /// <param name="clazz"></param>
+        /// <param name="type"></param>
         /// <param name="instance"></param>
         /// <param name="realIID"></param>
-        private void Init(JILocalInterfaceDefinition interfaceDefinition, Type clazz, object instance, bool realIID) {
-            _listOfSupportedInterfaces.Add(IID_IDispatch.ToUpper()); //IDispatch
-            _listOfSupportedInterfaces.Add("00000131-0000-0000-C000-000000000046"); //IRemUnknown
+        private void Init(JILocalInterfaceDefinition interfaceDefinition, Type type,
+            object instance, bool realIID) {
+            SupportedInterfaces.Add(Interfaces.IID_IDispatch);
+            SupportedInterfaces.Add(Interfaces.IID_IRemUnknown);
             InterfaceDefinition = interfaceDefinition;
-            interfaceDefinition._clazz = clazz;
-            interfaceDefinition._instance = instance;
-            _listOfSupportedInterfaces.Add(interfaceDefinition.InterfaceIdentifier.ToUpper());
-            mapOfIIDsToInterfaceDefinitions[interfaceDefinition.InterfaceIdentifier.ToUpper()] = interfaceDefinition;
-            CoClassUnderRealIID = realIID;
+            interfaceDefinition.Type = type;
+            interfaceDefinition.Instance = instance;
+            SupportedInterfaces.Add(interfaceDefinition.InterfaceIdentifier.ToUpper());
+            _mapOfIIDsToInterfaceDefinitions[interfaceDefinition.InterfaceIdentifier.ToUpper()] = interfaceDefinition;
+            ICoClassUnderRealIID = realIID;
         }
 
 
         /// <summary>
-        ///Sets the interface identifiers (<code>IID</code>s) of the event interfaces this class would support. This in case the same
-        /// <code>clazz</code> or <code>instance</code> is implementing more than one <code>IID</code>.
+        /// Sets the interface identifiers (<code>IID</code>s) of the event
+        /// interfaces this class would support. This in case the same
+        /// <code>clazz</code> or <code>instance</code> is implementing more
+        /// than one <code>IID</code>.
         /// </summary>
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, Type)"> </seealso>
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, object)"> </seealso>
@@ -130,62 +159,74 @@ namespace org.jinterop.dcom.core {
                 if (value != null) {
                     for (var i = 0; i < value.Count; i++) {
                         var s = ((string)value[i]).ToUpper();
-                        _listOfSupportedInterfaces.Add(s);
+                        SupportedInterfaces.Add(s);
                         _listOfSupportedEventInterfaces.Add(s);
-                        mapOfIIDsToInterfaceDefinitions[s] = InterfaceDefinition;
+                        _mapOfIIDsToInterfaceDefinitions[s] = InterfaceDefinition;
                     }
                 }
             }
         }
 
         /// <summary>
-        ///Add another interface definition and it's supporting object instance.
+        /// Add another interface definition and it's supporting object
+        /// instance.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface. </param>
-        /// <param name="instance"> instance for serving requests from COM client. Must implement
+        /// <param name="interfaceDefinition"> implementing structurally
+        /// the definition of the COM callback interface. </param>
+        /// <param name="instance"> instance for serving requests from
+        /// COM client. Must implement
         /// the <code>interfaceDefinition</code> fully. </param>
-        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>instance</code> are <code>null</code>. </exception>
-        public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition, object instance) {
+        /// <exception cref="ArgumentException"> if <code>interfaceDefinition
+        /// </code> or <code>instance</code> are <code>null</code>. </exception>
+        public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition,
+            object instance) {
             if (interfaceDefinition == null || instance == null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            interfaceDefinition._instance = instance;
+            interfaceDefinition.Instance = instance;
             var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
-            _listOfSupportedInterfaces.Add(s);
+            SupportedInterfaces.Add(s);
             _listOfSupportedEventInterfaces.Add(s);
-            mapOfIIDsToInterfaceDefinitions[s] = interfaceDefinition;
+            _mapOfIIDsToInterfaceDefinitions[s] = interfaceDefinition;
         }
 
         /// <summary>
-        /// Add another interface definition and it's class. Make sure that this class has a default constructor,
+        /// Add another interface definition and it's class. Make sure
+        /// that this class has a default constructor,
         /// so that instantiation using <i>reflection</i> can take place.
         /// </summary>
-        /// <param name="interfaceDefinition"> implementing structurally the definition of the COM callback interface. </param>
-        /// <param name="clazz"> instance for serving requests from COM client. Must implement
+        /// <param name="interfaceDefinition"> implementing structurally
+        /// the definition of the COM callback interface. </param>
+        /// <param name="type"> instance for serving requests from COM
+        /// client. Must implement
         /// the <code>interfaceDefinition</code> fully. </param>
-        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code> or <code>clazz</code> are <code>null</code>. </exception>
-        public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition, Type clazz) {
-            if (interfaceDefinition == null || clazz == null) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
+        /// <exception cref="ArgumentException"> if <code>interfaceDefinition</code>
+        /// or <code>clazz</code> are <code>null</code>. </exception>
+        public void AddInterfaceDefinition(JILocalInterfaceDefinition interfaceDefinition,
+            Type type) {
+            if (interfaceDefinition == null || type == null) {
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_COM_RUNTIME_INVALID_CONTAINER_INFO));
             }
-            interfaceDefinition._clazz = clazz;
+            interfaceDefinition.Type = type;
             var s = interfaceDefinition.InterfaceIdentifier.ToUpper();
-            _listOfSupportedInterfaces.Add(s);
+            SupportedInterfaces.Add(s);
             _listOfSupportedEventInterfaces.Add(s);
-            mapOfIIDsToInterfaceDefinitions[s] = interfaceDefinition;
+            _mapOfIIDsToInterfaceDefinitions[s] = interfaceDefinition;
         }
 
         /// <summary>
         /// Returns the instance representing the interface definition.
         /// </summary>
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, object)"></seealso>
-        public object ServerInstance => InterfaceDefinition._instance;
+        public object ServerInstance => InterfaceDefinition.Instance;
 
         /// <summary>
         /// Returns the actual class representing the interface definition.
         /// </summary>
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, Type)"></seealso>
-        public Type ServerClass => InterfaceDefinition._clazz;
+        public Type ServerClass => InterfaceDefinition.Type;
 
         /// <summary>
         /// called from com runtime.
@@ -201,8 +242,8 @@ namespace org.jinterop.dcom.core {
                 _interfacePointer = new WeakReference(value);
                 var ipid = value.IPID.ToUpper();
                 var iid = value.IID.ToUpper();
-                IIDvsIpid[iid] = ipid;
-                ipidVsIID[ipid] = iid;
+                _iIDvsIpid[iid] = ipid;
+                _ipidVsIID[ipid] = iid;
             }
         }
 
@@ -224,7 +265,7 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         internal bool IsPresent(string iid) {
             iid = iid.ToUpper();
-            return _listOfSupportedInterfaces.Contains(iid);
+            return SupportedInterfaces.Contains(iid);
         }
 
         /// <summary>
@@ -237,13 +278,13 @@ namespace org.jinterop.dcom.core {
                 //Object retval = null;
                 IPID = IPID.ToUpper();
 
-                if (!IsPresent(uniqueIID)) //not supported IID.
-                {
+                if (!IsPresent(uniqueIID)) {
+                    //not supported IID.
                     return false;
                 }
 
-                IIDvsIpid[uniqueIID.ToUpper()] = IPID;
-                ipidVsIID[IPID] = uniqueIID.ToUpper();
+                _iIDvsIpid[uniqueIID.ToUpper()] = IPID;
+                _ipidVsIID[IPID] = uniqueIID.ToUpper();
                 return true;
             }
         }
@@ -272,12 +313,12 @@ namespace org.jinterop.dcom.core {
 
             object retVal = null; //will be an array.
 
-            var iid = (string)ipidVsIID[IPID];
+            var iid = (string)_ipidVsIID[IPID];
             if (iid == null) {
                 throw new JIException(JIErrorCodes.RPC_E_INVALID_OBJECT);
             }
 
-            var interfaceDefinitionOfClass = (JILocalInterfaceDefinition)mapOfIIDsToInterfaceDefinitions[iid];
+            var interfaceDefinitionOfClass = (JILocalInterfaceDefinition)_mapOfIIDsToInterfaceDefinitions[iid];
             interfaceDefinitionOfClass = interfaceDefinitionOfClass ?? InterfaceDefinition;
 
             JILocalMethodDescriptor methodDescriptor = null;
@@ -294,16 +335,15 @@ namespace org.jinterop.dcom.core {
             if (InterfaceDefinition.DispInterface) {
                 isStandardCall = false;
                 switch (Opnum) {
-                    case 3: //getTypeInfoCount
-                            //not supported
+                    case 3: //GetTypeInfoCount
+                        //not supported
                         retVal = new object[1];
                         ((object[])retVal)[0] = 0; //not supported
                         break;
-                    case 4: //getTypeInfo
+                    case 4: //GetTypeInfo
                         throw new JIException(JIErrorCodes.E_NOTIMPL);
-                    case 5: //getIDOfNames
+                    case 5: //GetIDOfNames
                         var paramObject = new JILocalParamsDescriptor();
-
                         paramObject.AddInParamAsType(typeof(UUID), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsObject(new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR), null, 1, true), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
@@ -311,7 +351,6 @@ namespace org.jinterop.dcom.core {
 
                         //now read and then send the result back.
                         var array = (JIArray)paramObject.Read(ndr)[1];
-
                         var arrayObj = (object[])array.ArrayInstance;
                         var dispIds = new int?[arrayObj.Length];
                         //get the first member of the Array , which is the APINAME and send the retVal with it's dispId
@@ -328,12 +367,9 @@ namespace org.jinterop.dcom.core {
                         for (var i = 1; i < arrayObj.Length; i++) {
                             dispIds[i] = i - 1;
                         }
-
                         var results = new JIArray(dispIds);
-
                         retVal = new object[1];
                         ((object[])retVal)[0] = results;
-
                         break;
                     case 6: //invoke of IDispatch
                         paramObject = new JILocalParamsDescriptor();
@@ -378,7 +414,7 @@ namespace org.jinterop.dcom.core {
                             }
                         }
 
-                        if ((int)(int?)retresults[5] != 0) {
+                        if ((int?)retresults[5] != 0) {
                             //now replace the params at index from the index array.
                             array = (JIArray)retresults[6];
                             var indexs = (int?[])array.ArrayInstance;
@@ -396,7 +432,6 @@ namespace org.jinterop.dcom.core {
                             @params[i] = @params[@params.Length - 1 - i];
                             @params[@params.Length - 1 - i] = t;
                         }
-
                         methodDescriptor = info;
                         execute = true;
                         break;
@@ -404,7 +439,6 @@ namespace org.jinterop.dcom.core {
                         isStandardCall = true;
                         Opnum -= 4; //adjust for only IDispatch(3,4,5,6) , IUnknown(0,1,2) will get adjusted below.
                         Log.Logger.Information("Standard call came: Opnum is " + Opnum);
-
                         break;
                 }
             }
@@ -420,16 +454,21 @@ namespace org.jinterop.dcom.core {
             }
 
             if (execute) {
-                //JILocalInterfaceDefinition interfaceDefinitionOfCall = interfaceDefinition;
-                var calleeClazz = interfaceDefinitionOfClass._instance == null ? interfaceDefinitionOfClass._clazz : interfaceDefinitionOfClass._instance.GetType();
-                Method method = null;
+                var calleeType = interfaceDefinitionOfClass.Instance == null ?
+                    interfaceDefinitionOfClass.Type : interfaceDefinitionOfClass.Instance.GetType();
+                MethodInfo method = null;
                 try {
                     Log.Logger.Information("methodDescriptor: " + methodDescriptor.MethodName);
-                    method = calleeClazz.getDeclaredMethod(methodDescriptor.MethodName, methodDescriptor.InparametersAsClass);
-                    object calleeInstance = interfaceDefinitionOfClass._instance ?? calleeClazz.newInstance();
-                    Log.Logger.Information("Call Back Method to be executed: " + method + " , to be executed on " + calleeInstance);
-                    object result = method.invoke(calleeInstance, @params);
 
+                    // Call using reflection
+                    method = calleeType.GetRuntimeMethod(methodDescriptor.MethodName,
+                        methodDescriptor.InparametersAsType);
+
+                    var calleeInstance = interfaceDefinitionOfClass.Instance ??
+                        Activator.CreateInstance(calleeType);
+                    Log.Logger.Information("Call Back Method to be executed: " + method +
+                        " , to be executed on " + calleeInstance);
+                    var result = method.Invoke(calleeInstance, @params);
                     if (result == null) {
                         retVal = null;
                     }
@@ -477,7 +516,7 @@ namespace org.jinterop.dcom.core {
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, Type)"></seealso>
         /// <seealso cref="JILocalCoClass(JILocalInterfaceDefinition, object)"></seealso>
         /// <returns>primary interfaceDefinition. </returns>
-        public JILocalInterfaceDefinition InterfaceDefinition { get; private set; } = null;
+        public JILocalInterfaceDefinition InterfaceDefinition { get; private set; }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) {
@@ -488,51 +527,45 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() {
-            return _identifier;
-        }
+        public override int GetHashCode() => _identifier;
 
         /// <summary>
         /// Returns the interface definition based on the IID of the interface.
         /// </summary>
         /// <returns> <code>null</code> if no interface definition matching the <code>IID</code>
         /// has been found. </returns>
-        public JILocalInterfaceDefinition GetInterfaceDefinition(string IID) {
-            return (JILocalInterfaceDefinition)mapOfIIDsToInterfaceDefinitions[IID.ToUpper()];
-        }
+        public JILocalInterfaceDefinition GetInterfaceDefinition(string IID) =>
+            (JILocalInterfaceDefinition)_mapOfIIDsToInterfaceDefinitions[IID.ToUpper()];
 
         /// <summary>
         /// Get interface definition from ipid
         /// </summary>
         /// <param name="IPID"></param>
         /// <returns></returns>
-        internal JILocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID) {
-            return (JILocalInterfaceDefinition)mapOfIIDsToInterfaceDefinitions[(string)ipidVsIID[IPID.ToUpper()]];
-        }
+        internal JILocalInterfaceDefinition GetInterfaceDefinitionFromIPID(string IPID) =>
+            (JILocalInterfaceDefinition)_mapOfIIDsToInterfaceDefinitions[(string)_ipidVsIID[IPID.ToUpper()]];
 
         /// <summary>
         /// Get ipid from iid helper
         /// </summary>
         /// <param name="uniqueIID"></param>
         /// <returns></returns>
-        internal string GetIpidFromIID(string uniqueIID) {
-            return (string)IIDvsIpid[uniqueIID.ToUpper()];
-        }
+        internal string GetIpidFromIID(string uniqueIID) =>
+            (string)_iIDvsIpid[uniqueIID.ToUpper()];
 
         /// <summary>
         /// Get iid from ipid helper
         /// </summary>
         /// <param name="ipid"></param>
         /// <returns></returns>
-        internal string GetIIDFromIpid(string ipid) {
-            return (string)ipidVsIID[ipid.ToUpper()];
-        }
+        internal string GetIIDFromIpid(string ipid) =>
+            (string)_ipidVsIID[ipid.ToUpper()];
 
         /// <summary>
         /// Returns <code>true</code> if the primary interface definition represents a real <code>IID</code> .
         /// The bind-auth3 and all are then all done as per this <code>IID</code> and not IUnknown.
         /// </summary>
-        public bool CoClassUnderRealIID { get; private set; } = false;
+        public bool ICoClassUnderRealIID { get; private set; }
 
         /// <summary>
         /// Associate the Session with this CoClass. Called by the framework.
@@ -542,20 +575,17 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Supported interfaces
         /// </summary>
-        internal List<object> SupportedInterfaces => _listOfSupportedInterfaces;
+        internal List<object> SupportedInterfaces { get; } = new List<object>();
 
-
-        private const string IID_IDispatch = "00020400-0000-0000-c000-000000000046";
-        private static Random _randomGen = new Random();
+        private static readonly Random kRandomGen = new Random();
         private readonly int _identifier;
         private WeakReference _interfacePointer;
-        private List<object> _listOfSupportedInterfaces = new List<object>();
-        private List<object> _listOfSupportedEventInterfaces = new List<object>();
-        private readonly Hashtable mapOfIIDsToInterfaceDefinitions = new Hashtable();
+        private readonly List<object> _listOfSupportedEventInterfaces = new List<object>();
+        private readonly Hashtable _mapOfIIDsToInterfaceDefinitions = new Hashtable();
         // will use this to identify which IID is being talked about
         // if it is IDispatch then delegate to it's invoke.
-        private readonly Hashtable ipidVsIID = new Hashtable();
+        private readonly Hashtable _ipidVsIID = new Hashtable();
         // will use this to identify which IPID is being talked about
-        private readonly Hashtable IIDvsIpid = new Hashtable();
+        private readonly Hashtable _iIDvsIpid = new Hashtable();
     }
 }

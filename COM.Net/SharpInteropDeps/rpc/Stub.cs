@@ -12,11 +12,10 @@
 //
 
 namespace rpc {
-    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
-    using System;
-    using System.IO;
+    using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
+    using System.IO;
 
     /// <summary>
     /// Stub

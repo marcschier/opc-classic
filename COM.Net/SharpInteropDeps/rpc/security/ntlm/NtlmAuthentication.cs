@@ -39,7 +39,7 @@ namespace rpc.security.ntlm {
         /// </summary>
         /// <param name="properties"></param>
         public NtlmAuthentication(Properties properties) {
-            this._properties = properties;
+            _properties = properties;
             string domain = null;
             string user = null;
             string password = null;

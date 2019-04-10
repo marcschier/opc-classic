@@ -45,7 +45,7 @@ namespace org.jinterop.dcom.core {
             get {
                 var newData = new byte[_data.Length];
                 for (var i = 0; i < _data.Length; i++) {
-                    newData[i] = (byte)_data[i];
+                    newData[i] = _data[i];
                 }
                 return newData;
             }

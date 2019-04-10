@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.core {
 
                 _parameters = value;
                 var @params = value.InParams;
-                InparametersAsClass = new Type[@params.Length];
+                InparametersAsType = new Type[@params.Length];
 
                 for (var i = 0; i < @params.Length; i++) {
                     var obj = @params[i];
@@ -82,11 +82,11 @@ namespace org.jinterop.dcom.core {
                                 c = typeof(void);
                             }
                         }
-                        InparametersAsClass[i] = c;
+                        InparametersAsType[i] = c;
                     }
                     else
                     {
-                        InparametersAsClass[i] = obj.GetType();
+                        InparametersAsType[i] = obj.GetType();
                     }
                 }
 
@@ -107,7 +107,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// In params
         /// </summary>
-        internal Type[] InparametersAsClass { get; private set; } = new Type[0];
+        internal Type[] InparametersAsType { get; private set; } = new Type[0];
 
         /// <summary>
         ///Creates the method descriptor. The method number is set by the order in which this instance is

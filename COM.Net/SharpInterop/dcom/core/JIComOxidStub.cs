@@ -24,15 +24,15 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIComOxidStub : Stub {
 
-        private static Properties _defaults = new Properties();
+        private static readonly Properties kDefaults = new Properties();
 
         static JIComOxidStub() {
 
-            _defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
-            _defaults.SetProperty("rpc.ntlm.sign", "false");
-            _defaults.SetProperty("rpc.ntlm.seal", "false");
-            _defaults.SetProperty("rpc.ntlm.keyExchange", "false");
-            _defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+            kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            kDefaults.SetProperty("rpc.ntlm.sign", "false");
+            kDefaults.SetProperty("rpc.ntlm.seal", "false");
+            kDefaults.SetProperty("rpc.ntlm.keyExchange", "false");
+            kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
         }
 
         /// <inheritdoc/>
@@ -49,8 +49,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="isSSO"></param>
         public JIComOxidStub(string address, string domain, string username,
             string password, bool useNTLMv2, bool isSSO) {
-            TransportFactory = JIComTransportFactory.SingleTon;
-            Properties = new Properties(_defaults);
+            TransportFactory = JIComTransportFactory.Instance;
+            Properties = new Properties(kDefaults);
             if (isSSO) {
                 Properties.SetProperty("rpc.ntlm.sso", "true");
             }
@@ -76,17 +76,17 @@ namespace org.jinterop.dcom.core {
         public byte[] Call(bool isSimplePing, byte[] setId,
             List<object> listOfAdds, List<object> listOfDels, int seqNum) {
             var pingObject = new JiComOxidPingObject {
-                _setId = setId,
+                SetId = setId,
                 _listOfAdds = listOfAdds,
                 _listOfDels = listOfDels,
                 _seqNum = seqNum
             };
 
             if (isSimplePing) {
-                pingObject._opnum = 1;
+                pingObject.Opnum = 1;
             }
             else {
-                pingObject._opnum = 2;
+                pingObject.Opnum = 2;
             }
 
             try {
@@ -97,7 +97,7 @@ namespace org.jinterop.dcom.core {
             }
 
             //returns setId.
-            return pingObject._setId;
+            return pingObject.SetId;
         }
 
         /// <summary>
