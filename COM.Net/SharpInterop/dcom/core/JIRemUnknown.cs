@@ -72,7 +72,7 @@ namespace org.jinterop.dcom.core {
             }
 
             ndr.WriteUnsignedLong(0);
-            // TODO Index Matching , there seems to be a bug in
+            // TODO Index Matching, there seems to be a bug in
             // the jarapac system, it only reads upto (length - 6) bytes and one has to have another
             // call after that or incomplete request will go.
             // in case no param is present just put an unsigned long = 0.

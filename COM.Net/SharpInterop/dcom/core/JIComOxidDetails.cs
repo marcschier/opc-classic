@@ -100,8 +100,10 @@ namespace org.jinterop.dcom.core {
         internal void InterruptRemUnknownThreadGroup() {
             if (_remUnknownThread != null) {
                 try {
-                    _remUnknownThread.interrupt();
-                    // remUnknownThread.destroy();
+                    // TODO:  
+                    // _remUnknownThread.interrupt();
+
+                    // old: remUnknownThread.destroy();
                 }
                 catch (Exception e) {
                     Log.Logger.Information("JIComOxidDetails interruptRemUnknownThreadGroup " + e);
@@ -110,6 +112,8 @@ namespace org.jinterop.dcom.core {
         }
 
         private ThreadGroup _remUnknownThread;
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly JIInterfacePointer _ptr;
+#pragma warning restore IDE0052 // Remove unread private members
     }
 }

@@ -28,7 +28,7 @@ namespace org.jinterop.dcom.impls {
 
         /// <summary>
         ///<para> Attaches an event handler to <code>comObject</code> for the
-        ///source event interface of COM , identified by the
+        ///source event interface of COM, identified by the
         /// <code>sourceUUID</code>. The event listener is itself identified by
         /// <code>eventListener</code>. An exception will be raised if
         /// <code>sourceUUID</code> is not supported by the COM Server.

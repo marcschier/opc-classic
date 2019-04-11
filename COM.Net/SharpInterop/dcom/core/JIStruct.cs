@@ -13,6 +13,7 @@ namespace org.jinterop.dcom.core {
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// This class represents the <code>Struct</code> data type.
@@ -143,7 +144,7 @@ namespace org.jinterop.dcom.core {
             //null has to be allowed for members who would like to send null...NPE should not be thrown
             member = member ?? 0;
             var memberClass = member.GetType();
-            //An array has already been added , now a new member cannot be added
+            //An array has already been added, now a new member cannot be added
             if (_arrayAdded && position == Members.Count && !memberClass.Equals(typeof(JIArray))) {
                 throw new JIException(JIErrorCodes.JI_STRUCT_ARRAY_AT_END);
             }
@@ -167,7 +168,7 @@ namespace org.jinterop.dcom.core {
 
             //struct part of another struct
             if (memberClass.Equals(typeof(JIStruct))) {
-                //if this has an array then , this struct has to be the last member in the struct list.
+                //if this has an array then, this struct has to be the last member in the struct list.
                 if (((JIStruct)member)._arrayAdded && _arrayAdded && position != (Members.Count - 1)) {
                     throw new JIException(JIErrorCodes.JI_STRUCT_INCORRECT_NESTED_STRUCT_POS);
                 }
@@ -255,14 +256,14 @@ namespace org.jinterop.dcom.core {
         internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
             //first write all Max counts and then the rest of the structs
             for (var i = 0; i < ArrayMaxCounts.Count; i++) {
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), (int?)ArrayMaxCounts[i], null, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), (int)ArrayMaxCounts[i], null, flag);
             }
 
             for (var i = 0; i < Members.Count; i++) {
                 var o = Members[i];
                 var conformant = false;
                 if (o is JIArray arr1) {
-                    //if this array is conformant then reset it's conformancy , since the length would have been
+                    //if this array is conformant then reset it's conformancy, since the length would have been
                     //written before.
                     conformant = arr1.Conformant;
                     arr1.Conformant = false;
@@ -291,9 +292,9 @@ namespace org.jinterop.dcom.core {
             int j;
             int i;
             for (i = 0; i < _listOfDimensions.Count; i++) {
-                for (j = 0; j < (int?)_listOfDimensions[i]; j++) {
+                for (j = 0; j < (int)_listOfDimensions[i]; j++) {
                     listOfMaxCounts2.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
-                        typeof(int?), null, FLAG, additionalData));
+                        typeof(int), null, FLAG, additionalData));
                 }
             }
             i = 0;
@@ -303,11 +304,11 @@ namespace org.jinterop.dcom.core {
                 List<object> maxCountTemp = null;
                 if (o is JIArray) {
                     if (((JIArray)o).Conformant || ((JIArray)o).Varying) {
-                        //if this array is conformant then reset it's conformancy , since the length would have been
+                        //if this array is conformant then reset it's conformancy, since the length would have been
                         //read before.
                         ((JIArray)o).Conformant = false;
                         maxCountTemp = ((JIArray)o).ConformantMaxCounts;
-                        ((JIArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, (int)_listOfDimensions[j]);
+                        ((JIArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, (int)_listOfDimensions[j]).ToList();
                         j++;
                     }
                 }

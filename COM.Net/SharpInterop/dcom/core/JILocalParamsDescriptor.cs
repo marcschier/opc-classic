@@ -76,7 +76,7 @@ namespace org.jinterop.dcom.core {
         /// Add <code>[in]</code> parameter at the end of the
         /// out parameter list. Typically callers are
         /// composite in nature <code>JIStruct</code>,
-        /// <code>JIUnions</code> , <code>JIPointer</code>
+        /// <code>JIUnions</code>, <code>JIPointer</code>
         /// and <code>JIString</code> .
         /// </summary>
         /// <param name="param"> </param>

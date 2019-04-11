@@ -35,7 +35,7 @@ namespace org.jinterop.dcom.core {
             var result = 1;
             //from SUN
             for (var i = 0; i < OXID.Length; i++) {
-                result = 31 * result + OXID[i];
+                result = (31 * result) + OXID[i];
             }
             return result;
         }

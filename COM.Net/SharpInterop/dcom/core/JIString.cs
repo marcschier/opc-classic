@@ -8,15 +8,15 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
+    using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Class representing a COM string. The Wide Char (<code>LPWSTR</code>) and the <code>BSTR</code> are
-    /// both encoded by the server in "UTF-16LE". This encoding will be preserved by the library for all to
-    /// and fro operations.
+    /// Class representing a COM string. The Wide Char (<code>LPWSTR</code>) and the
+    /// <code>BSTR</code> are both encoded by the server in "UTF-16LE". This encoding
+    /// will be preserved by the library for all to and fro operations.
     /// </summary>
     [Serializable]
     public sealed class JIString {
@@ -36,7 +36,8 @@ namespace org.jinterop.dcom.core {
         public readonly JIVariant VariantByRef;
 
         /// <summary>
-        ///Creates an object of the specified type. Used while deserialiazing this object.
+        /// Creates an object of the specified type. Used while deserialiazing 
+        /// this object.
         /// </summary>
         /// <param name="type"> JIFlags string flags </param>
         /// <seealso cref="JIFlags.FLAG_REPRESENTATION_STRING_BSTR"> </seealso>
@@ -61,7 +62,6 @@ namespace org.jinterop.dcom.core {
             VariantByRef = null;
             _member.Flags = type | JIFlags.FLAG_REPRESENTATION_VALID_STRING;
         }
-
 
         /// <summary>
         /// Creates a string object of a given <code>type</code>.
@@ -89,7 +89,8 @@ namespace org.jinterop.dcom.core {
                 VariantByRef = new JIVariant(this, true);
             }
             else {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
+                throw new ArgumentException(
+                    JISystem.GetLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
             }
             _member.Flags = type | JIFlags.FLAG_REPRESENTATION_VALID_STRING;
 
@@ -123,43 +124,45 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
-        /// <param name="FLAG"></param>
-        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int FLAG) {
-            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, defferedPointers, Type | FLAG);
-        }
+        /// <param name="flag"></param>
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) => 
+            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), 
+                _member, defferedPointers, Type | flag);
 
         /// <summary>
         /// Decode
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
-        /// <param name="FLAG"></param>
+        /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIString Decode(NdrCodec ndr, List<object> defferedPointers, int FLAG, IDictionary<object, object> additionalData) {
+        internal JIString Decode(NdrCodec ndr, List<object> defferedPointers, 
+            int flag, IDictionary<object, object> additionalData) {
             var newString = new JIString(Type) {
-                _member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, _member, defferedPointers, Type | FLAG, additionalData)
+                _member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(
+                    ndr, _member, defferedPointers, Type | flag, additionalData)
             };
             return newString;
         }
 
         internal bool Deffered {
-#pragma warning disable RECS0029 // Warns about property or indexer setters and event adders or removers that do not use the value parameter
             set {
-#pragma warning restore RECS0029 // Warns about property or indexer setters and event adders or removers that do not use the value parameter
-                //this condition is required so that only BSTRs are value and also since this member could be value and
-                //setting it to true would spoil the logic
-                // this is incorrect logic in the bug sent by Kevin , the ONEVENTSTRUCT consists of LPWSTRs which are value
+                // this condition is required so that only BSTRs are value
+                // and also since this member could be value and
+                // setting it to true would spoil the logic
+                // this is incorrect logic in the bug sent by Kevin, the 
+                // ONEVENTSTRUCT consists of LPWSTRs which are value
                 if (_member != null && !_member.Reference) {
-                    _member.Deffered = true;
+                    _member.Deffered = value;
                 }
             }
+            get => _member.Deffered;
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return _member == null ? "[null]" : "[Type: " + Type + " , " + _member + "]";
-        }
+        public override string ToString() => 
+            _member == null ? "[null]" : "[Type: " + Type + ", " + _member + "]";
 
         private JIPointer _member;
     }

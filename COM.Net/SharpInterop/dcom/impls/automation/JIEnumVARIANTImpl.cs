@@ -31,7 +31,7 @@ namespace org.jinterop.dcom.impls.automation {
             callObject.AddInParamAsInt(celt, JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(
                 new JIArray(typeof(JIVariant), null, 1, true, true), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
             var result = ComObject.Call(callObject);
             return result;
         }

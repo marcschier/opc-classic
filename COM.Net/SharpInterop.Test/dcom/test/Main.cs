@@ -8,81 +8,50 @@
  */
 
 namespace org.jinterop.dcom.test {
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.core;
+    using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.impls.automation;
+    using SharpCifs.Util.Sharpen;
+    using System;
+    using System.IO;
 
+    public class Program {
 
-    using JIException = common.JIException;
-    using JISystem = common.JISystem;
-    using IJIComObject = core.IJIComObject;
-    using JIComServer = core.JIComServer;
-    using JIProgId = core.JIProgId;
-    using JISession = core.JISession;
-    using JIString = core.JIString;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
+        public virtual void Execute(JIString str) => Console.WriteLine(str.String);
+        /// <param name="args"> </param>
+        public static void Main(string[] args) {
 
-    public class Main
-	{
+            if (args.Length < 4) {
+                Console.WriteLine("Please provide address domain username password");
+                return;
+            }
 
-		public virtual void Execute(JIString str)
-		{
-			Console.WriteLine(str.String);
-		}
-		/// <param name="args"> </param>
-		public static void Main(string[] args)
-		{
+            try {
+                var domain = args[1];
+                var username = args[2];
+                var password = args[3];
 
-			if (args.Length < 4)
-			{
-				Console.WriteLine("Please provide address domain username password");
-				return;
-			}
-
-
-
-			try
-			{
-
-				var domain = args[1];
-				var username = args[2];
-				var password = args[3];
-
-				Log.Logger.Level = Level.FINEST;
-				JISystem.InBuiltLogHandler = false;
-				JISystem.AutoRegisteration = true;
-				var session3 = JISession.createSession(domain,username,password);
-				session3.useSessionSecurity(true);
-				var virtualServer = new JIComServer(JIProgId.ValueOf("VirtualServer.Application"),args[0],session3);
-				var unkVirtualServer = virtualServer.CreateInstance();
-				var dispatchVirtualServer = (IJIDispatch)JIObjectFactory.narrowObject(unkVirtualServer.QueryInterface(impls.automation.DispatchFlags.IID));
-
-
-
-			}
-			catch (UnknownHostException e)
-			{
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-			catch (JIException e)
-			{
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-			catch (SecurityException e)
-			{
-				// TODO Auto-generated catch block
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-
-
-		}
-
-	}
+                JISystem.UseAutoRegistration = true;
+                var session3 = JISession.CreateSession(domain, username, password);
+                session3.UseSessionSecurity(true);
+                var virtualServer = new JIComServer(JIProgId.ValueOf("VirtualServer.Application"), args[0], session3);
+                var unkVirtualServer = virtualServer.CreateInstance();
+                var dispatchVirtualServer = (IJIDispatch)JIObjectFactory.NarrowObject(unkVirtualServer.QueryInterface(Interfaces.IID_IDispatch));
+            }
+            catch (UnknownHostException e) {
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+            catch (JIException e) {
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+            catch (IOException e) {
+                // TODO Auto-generated catch block
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+        }
+    }
 }

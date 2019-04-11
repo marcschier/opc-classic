@@ -94,8 +94,8 @@ namespace org.jinterop.dcom.core {
 
                 var orpcextent = new JIStruct();
                 orpcextent.AddMember(typeof(UUID));
-                orpcextent.AddMember(typeof(int?)); //length
-                orpcextent.AddMember(new JIArray(typeof(sbyte?), null, 1, true));
+                orpcextent.AddMember(typeof(int)); //length
+                orpcextent.AddMember(new JIArray(typeof(sbyte), null, 1, true));
                 //create the orpcextentarray struct
                 /*
                  *    typedef struct tagORPC_EXTENT_ARRAY
@@ -108,8 +108,8 @@ namespace org.jinterop.dcom.core {
                  */
 
 
-                orpcextentarray.AddMember(typeof(int?));
-                orpcextentarray.AddMember(typeof(int?));
+                orpcextentarray.AddMember(typeof(int));
+                orpcextentarray.AddMember(typeof(int));
                 //this is since the pointer is [unique]
                 orpcextentarray.AddMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
             }

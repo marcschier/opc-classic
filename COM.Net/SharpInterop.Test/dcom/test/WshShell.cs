@@ -1,200 +1,64 @@
 ﻿namespace org.jinterop.dcom.test {
-    using JISystem = common.JISystem;
-    using IJIComObject = core.IJIComObject;
-    using JIComServer = core.JIComServer;
-    using JIProgId = core.JIProgId;
-    using JISession = core.JISession;
-    using JIString = core.JIString;
-    using JIVariant = core.JIVariant;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
-
-
-
-    public class WshShell
-	{
-
-
-
-		  private readonly int xlWorksheet = -4167;
-
-		  private readonly int xlXYScatterLinesNoMarkers = 75;
-
-		  private readonly int xlColumns = 2;
-
-
-
-		  private JIComServer comServer;
-
-		  private IJIDispatch dispatch;
-
-		  private IJIComObject unknown;
-
-		  private readonly IJIDispatch dispatchOfWorkSheet;
-
-		  private readonly IJIDispatch dispatchOfWorkBook;
-
-		  private readonly JISession session;
-
-
-
-
-
-
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public WshShell(String address, String domain, String username, String password) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
-		  public WshShell(string address, string domain, string username, string password)
-
-		  {
-
-				Log.Logger.Level = Level.SEVERE;
-
-				session = JISession.createSession(domain,username,password);
-
-				comServer = new JIComServer(JIProgId.ValueOf("WScript.Shell"), address, session);
-
-		  }
-
-
-
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void startWScript() throws org.jinterop.dcom.common.JIException
-		  public virtual void startWScript()
-
-		  {
-
-
-
-
-
-
-
-
-
-				Console.WriteLine(comServer.SharpCifs.Util.Sharpen.Properties);
-
-
-
-				unknown = comServer.CreateInstance();
-
-				dispatch = (IJIDispatch)JIObjectFactory.NarrowObject((IJIComObject)unknown.QueryInterface(impls.automation.DispatchFlags.IID));
-
-
-
-
-
-				var jv = (JIVariant)dispatch.Get("CurrentDirectory");
-
-				Console.WriteLine(jv.ObjectAsString.String);
-
-
-
-				var dispId = dispatch.GetIDsOfNames("CurrentDirectory");
-
-				Console.WriteLine(dispId);
-
-				var variant = new JIVariant("C://WINDOWS");
-
-				dispatch.Put(dispId,variant);
-
-
-
-				jv = (JIVariant)dispatch.Get("CurrentDirectory");
-
-				Console.WriteLine(jv.ObjectAsString.String);
-
-
-
-
-				try
-				{
-					Thread.Sleep(60 * 1000 * 3);
-				}
-				catch (InterruptedException e)
-				{
-					// TODO Auto-generated catch block
-					Console.WriteLine(e.ToString());
-					Console.Write(e.StackTrace);
-				}
-
-				//WshShell.Exec
-
-				Console.WriteLine(dispatch.CallMethodA("Exec", new object[]{new JIString("calc")})[0]);
-
-
-				try
-				{
-					Thread.Sleep(60 * 1000 * 3);
-				}
-				catch (InterruptedException e)
-				{
-					// TODO Auto-generated catch block
-					Console.WriteLine(e.ToString());
-					Console.Write(e.StackTrace);
-				}
-				//WshShell.Run
-
-				Console.WriteLine(dispatch.CallMethodA("Run", new object[]{new JIString("notepad"), new JIVariant(10),JIVariant.CreateOPTIONAL_PARAM()})[0]);
-
-
-
-
-
-
-
-				//JISession.destroySession(session);
-
-
-
-
-
-		  }
-
-
-
-
-
-		  public static void Main(string[] args)
-		  {
-
-				try
-				{
-
-					  JISystem.AutoRegisteration = true;
-
-
-
-
-
-					  var wScript = new WshShell("localhost", "domain", "username", "password");
-
-
-
-					  wScript.startWScript();
-
-				}
-					  catch (Exception e)
-					  {
-
-							// TODO Auto-generated catch block
-
-							Console.WriteLine(e.ToString());
-							Console.Write(e.StackTrace);
-
-					  }
-
-		  }
-
-
-
-
-
-
-
-
-
-
-
-	}
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.core;
+    using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.impls.automation;
+    using System;
+    using System.Threading;
+
+    public class WshShell {
+        private readonly JISession _session;
+        private readonly JIComServer _comServer;
+        private IJIDispatch _dispatch;
+        private IJIComObject _unknown;
+
+        /// <summary>
+        /// Create
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="domain"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        public WshShell(string address, string domain, string username, string password) {
+            _session = JISession.CreateSession(domain, username, password);
+            _comServer = new JIComServer(JIProgId.ValueOf("WScript.Shell"), address, _session);
+        }
+
+        /// <summary>
+        /// Start
+        /// </summary>
+        public virtual void StartWScript() {
+            _unknown = _comServer.CreateInstance();
+            _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
+            var jv = _dispatch.Get("CurrentDirectory");
+            Console.WriteLine(jv.ObjectAsString.String);
+            var dispId = _dispatch.GetIDsOfNames("CurrentDirectory");
+            Console.WriteLine(dispId);
+            var variant = new JIVariant("C://WINDOWS");
+            _dispatch.Put(dispId, variant);
+            jv = _dispatch.Get("CurrentDirectory");
+            Console.WriteLine(jv.ObjectAsString.String);
+
+            Thread.Sleep(60 * 1000 * 3);
+            //WshShell.Exec
+            Console.WriteLine(_dispatch.CallMethodA("Exec", new object[] { new JIString("calc") })[0]);
+            Thread.Sleep(60 * 1000 * 3);
+            //WshShell.Run
+            Console.WriteLine(_dispatch.CallMethodA("Run", new object[] { new JIString("notepad"), new JIVariant(10), JIVariant.CreateOPTIONAL_PARAM() })[0]);
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        public static void Main(string[] args) {
+#pragma warning restore IDE0060 // Remove unused parameter
+            try {
+                JISystem.UseAutoRegistration = true;
+                var wScript = new WshShell("localhost", "domain", "username", "password");
+                wScript.StartWScript();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+        }
+    }
 }

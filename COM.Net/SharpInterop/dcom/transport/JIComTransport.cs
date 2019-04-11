@@ -84,7 +84,7 @@ namespace org.jinterop.dcom.transport {
 
         /// <inheritdoc/>
         public IEndpoint Attach(PresentationSyntax syntax) {
-            if (_attached) {
+            if (_client != null) {
                 throw new RpcException("Transport already attached.");
             }
             try {
@@ -149,7 +149,6 @@ namespace org.jinterop.dcom.transport {
         private readonly string _host;
         private readonly int _port;
         private Stream _stream;
-        private readonly bool _attached;
         private TcpClient _client;
     }
 }

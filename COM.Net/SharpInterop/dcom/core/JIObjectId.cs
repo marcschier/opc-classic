@@ -58,36 +58,29 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Update last ping
         /// </summary>
-        internal void UpdateLastPingTime() {
+        internal void UpdateLastPingTime() => 
             _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
-        }
 
         /// <summary>
         /// Reset ref count
         /// </summary>
-        internal void SetIPIDRefCountTo0() {
-            IPIDRefCount = 0;
-        }
+        internal void SetIPIDRefCountTo0() => IPIDRefCount = 0;
 
         /// <summary>
         /// Decrement ref count
         /// </summary>
-        internal void DecrementIPIDRefCountBy1() {
-            IPIDRefCount--;
-        }
+        internal void DecrementIPIDRefCountBy1() => IPIDRefCount--;
 
         /// <summary>
         /// Increment ref count
         /// </summary>
-        internal void IncrementIPIDRefCountBy1() {
-            IPIDRefCount++;
-        }
+        internal void IncrementIPIDRefCountBy1() => IPIDRefCount++;
 
         /// <inheritdoc/>
         public override int GetHashCode() {
             var result = 1;
             for (var i = 0; i < OID.Length; i++) {
-                result = 31 * result + OID[i];
+                result = (31 * result) + OID[i];
             }
             return result;
         }
@@ -102,10 +95,9 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return "{ IPID ref count is " + IPIDRefCount + " } and OID in bytes[] " +
-                OID + " , hasExpired " + HasExpired() + " } ";
-        }
+        public override string ToString() => 
+            "{ IPID ref count is " + IPIDRefCount + " } and OID in bytes[] " +
+                OID + ", hasExpired " + HasExpired() + " } ";
 
         private long _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
     }

@@ -1,65 +1,39 @@
 ﻿namespace org.jinterop.dcom.test {
+    using org.jinterop.dcom.common;
+    using org.jinterop.dcom.core;
+    using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.impls.automation;
+    using System;
+    using System.Threading;
 
+    public class Test10KServer {
 
-
-    using JISystem = common.JISystem;
-    using IJIComObject = core.IJIComObject;
-    using JIComServer = core.JIComServer;
-    using JIProgId = core.JIProgId;
-    using JISession = core.JISession;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
-
-    public class Test10KServer
-	{
-
-		private readonly JIComServer comStub;
-		private readonly IJIDispatch dispatch;
-		private readonly IJIComObject unknown;
-
-
-		public static void Main(string[] args)
-		{
-
-			try
-			{
-
-					if (args.Length < 4)
-					{
-						Console.WriteLine("Please provide address domain username password");
-						return;
-					}
-					JISystem.InBuiltLogHandler = false;
-					JISystem.AutoRegisteration = true;
-					for (var i = 0;i < 10000;++i)
-					{
-
-						var session = JISession.createSession(args[1],args[2],args[3]);
-						var comServer = new JIComServer(JIProgId.ValueOf("MSMQ.MSMQQueueInfo"),args[0],session);
-						var unknown = comServer.CreateInstance();
-						var dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(unknown.QueryInterface(impls.automation.DispatchFlags.IID));
-						//JISession.destroySession(session);
-						Thread.Sleep(150);
-						if (i % 100 == 0)
-						{
-							Console.WriteLine("".valueOf(i));
-						}
-						System.gc();
-					}
-
-			}
-			catch (Exception e)
-			{
-					// TODO Auto-generated catch block
-					Console.WriteLine(e.ToString());
-					Console.Write(e.StackTrace);
-			}
-		}
-
-
-
-
-
-	}
-
+        public static void Main(string[] args) {
+            try {
+                if (args.Length < 4) {
+                    Console.WriteLine("Please provide address domain username password");
+                    return;
+                }
+                JISystem.UseAutoRegistration = true;
+                for (var i = 0; i < 10000; ++i) {
+                    var session = JISession.CreateSession(args[1], args[2], args[3]);
+                    var comServer = new JIComServer(JIProgId.ValueOf("MSMQ.MSMQQueueInfo"), args[0], session);
+                    var unknown = comServer.CreateInstance();
+                    var dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(unknown.QueryInterface(Interfaces.IID_IDispatch));
+                    //JISession.destroySession(session);
+                    Thread.Sleep(150);
+                    if (i % 100 == 0) {
+                        Console.WriteLine(i);
+                    }
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                }
+            }
+            catch (Exception e) {
+                // TODO Auto-generated catch block
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+        }
+    }
 }

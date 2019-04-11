@@ -11,27 +11,29 @@
     using JIVariant = core.JIVariant;
     using JIObjectFactory = impls.JIObjectFactory;
     using IJIDispatch = impls.automation.IJIDispatch;
+    using System;
+    using SharpCifs.Util.Sharpen;
 
     public class MSOutLookExpressContacts
 	{
 
-		internal JISession session;
-		internal JIComServer comServer;
+		internal JISession _session;
+		internal JIComServer _comServer;
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: MSOutLookExpressContacts(String args[]) throws java.net.UnknownHostException, org.jinterop.dcom.common.JIException
 		internal MSOutLookExpressContacts(string[] args)
 		{
-			session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.ValueOf("Outlook.Application"),args[0],session);
+			_session = JISession.CreateSession(args[1],args[2],args[3]);
+			_comServer = new JIComServer(JIProgId.ValueOf("Outlook.Application"),args[0],_session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: void doStuff() throws org.jinterop.dcom.common.JIException
-		internal virtual void doStuff()
+		internal virtual void DoStuff()
 		{
-			var unknown = (IJIComObject)comServer.CreateInstance();
-			var application = (IJIComObject)unknown.QueryInterface("00063001-0000-0000-C000-000000000046");
+			var unknown = _comServer.CreateInstance();
+			var application = unknown.QueryInterface("00063001-0000-0000-C000-000000000046");
 
             var callObject = new JICallBuilder(!application.DispatchSupported) {
                 Opnum = 12
@@ -57,12 +59,12 @@
             callObject = new JICallBuilder {
                 Opnum = 4
             };
-            callObject.AddOutParamAsType(typeof(int?),JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int),JIFlags.FLAG_NULL);
 			res = folder.Call(callObject);
 
-			if ((int)(int?)res[0] != 2)
+			if ((int)res[0] != 2)
 			{
-				Console.WriteLine("Invalid folder selected, this is not a \"contact\" folder , please reselect..");
+				Console.WriteLine("Invalid folder selected, this is not a \"contact\" folder, please reselect..");
 				return;
 			}
 
@@ -124,12 +126,12 @@
 				Console.WriteLine("Please provide address domain username password");
 				return;
 			}
-			JISystem.AutoRegisteration = true;
+			JISystem.UseAutoRegistration = true;
 			try
 			{
 				var outlookMessages = new MSOutLookExpressContacts(args);
-				outlookMessages.doStuff();
-				JISession.destroySession(outlookMessages.session);
+				outlookMessages.DoStuff();
+				JISession.DestroySession(outlookMessages._session);
 			}
 			catch (UnknownHostException e)
 			{

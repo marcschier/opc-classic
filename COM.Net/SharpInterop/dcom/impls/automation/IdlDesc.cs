@@ -18,28 +18,25 @@ namespace org.jinterop.dcom.impls.automation {
     [Serializable]
     public sealed class IdlDesc {
 
-        public const short IDLFLAG_NONE = ParamDesc.PARAMFLAG_NONE;
-        public const short IDLFLAG_FIN = ParamDesc.PARAMFLAG_FIN;
-        public const short IDLFLAG_FOUT = ParamDesc.PARAMFLAG_FOUT;
-        public const short IDLFLAG_FLCID = ParamDesc.PARAMFLAG_FLCID;
-        public const short IDLFLAG_FRETVAL = ParamDesc.PARAMFLAG_FRETVAL;
-
-
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
         public readonly JIPointer dwReserved;
-        public readonly short wIDLFlags;
+        public readonly IdlFlag wIDLFlags;
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
+        /// <summary>
+        /// Create description
+        /// </summary>
+        /// <param name="values"></param>
         internal IdlDesc(JIStruct values) {
             if (values == null) {
                 dwReserved = null;
-                wIDLFlags = -1;
+                wIDLFlags = (IdlFlag)(-1);
                 return;
             }
             dwReserved = (JIPointer)values.GetMember(0);
-            wIDLFlags = (short)(short?)values.GetMember(1);
+            wIDLFlags = (IdlFlag)values.GetMember(1);
         }
     }
 }

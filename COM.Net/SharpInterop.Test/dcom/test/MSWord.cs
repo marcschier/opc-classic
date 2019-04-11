@@ -1,69 +1,53 @@
 ﻿namespace org.jinterop.dcom.test {
-
-
-    using JIException = common.JIException;
-    using JISystem = common.JISystem;
-    using IJIComObject = core.IJIComObject;
-    using JIComServer = core.JIComServer;
-    using JIProgId = core.JIProgId;
-    using JISession = core.JISession;
-    using JIString = core.JIString;
-    using JIVariant = core.JIVariant;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
     using System;
     using Serilog;
+    using System.Threading;
+    using org.jinterop.dcom.core;
+    using org.jinterop.dcom.impls.automation;
+    using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.common;
 
     public class MSWord
 	{
-
-		private JIComServer comStub;
-
-		private IJIDispatch dispatch;
-
-		private IJIComObject unknown;
+		private readonly JIComServer _comStub;
+		private IJIDispatch _dispatch;
+		private IJIComObject _unknown;
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public MSWord(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
 		public MSWord(string address, string[] args)
 		{
-			var session = JISession.createSession(args[1], args[2], args[3]);
-			session.useSessionSecurity(true);
-			comStub = new JIComServer(JIProgId.ValueOf("Word.Application"), address, session);
+			var session = JISession.CreateSession(args[1], args[2], args[3]);
+			session.UseSessionSecurity(true);
+			_comStub = new JIComServer(JIProgId.ValueOf("Word.Application"), address, session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void startWord() throws org.jinterop.dcom.common.JIException
-		public virtual void startWord()
+		public virtual void StartWord()
 		{
-			unknown = comStub.CreateInstance();
-			dispatch = (IJIDispatch) JIObjectFactory.NarrowObject(unknown.QueryInterface(impls.automation.Interfaces.IID_IDispatch));
+			_unknown = _comStub.CreateInstance();
+			_dispatch = (IJIDispatch) JIObjectFactory.NarrowObject(_unknown.QueryInterface(impls.automation.Interfaces.IID_IDispatch));
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void showWord() throws org.jinterop.dcom.common.JIException
-		public virtual void showWord()
+		public virtual void ShowWord()
 		{
-			var dispId = dispatch.GetIDsOfNames("Visible");
+			var dispId = _dispatch.GetIDsOfNames("Visible");
 			var variant = new JIVariant(true);
-			dispatch.Put(dispId, variant);
+			_dispatch.Put(dispId, variant);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-		public virtual void performOp()
+		public virtual void PerformOp()
 		{
+			JISystem.IsCoClassAutoCollection = true;
 
-			/* JISystem config *
-			 *
-			 */
-			JISystem.JavaCoClassAutoCollection = true;
-
-
-
-			Console.WriteLine(((JIVariant) dispatch.Get("Version")).ObjectAsString.String);
-			Console.WriteLine(((JIVariant) dispatch.Get("Path")).ObjectAsString.String);
-			var variant = dispatch.Get("Documents");
+			Console.WriteLine(_dispatch.Get("Version").ObjectAsString.String);
+			Console.WriteLine(_dispatch.Get("Path").ObjectAsString.String);
+			var variant = _dispatch.Get("Documents");
 
 			Console.WriteLine("Open document...");
 			var documents = (IJIDispatch) JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
@@ -72,7 +56,7 @@
 
 			Console.WriteLine("doc opened");
 			//10
-			sleep(10);
+			Sleep(10);
 
 			Console.WriteLine("Get content...");
 			var document = (IJIDispatch) JIObjectFactory.NarrowObject(variant2[0].ObjectAsComObject);
@@ -80,13 +64,13 @@
 			var range = (IJIDispatch) JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
 
 			//10
-			sleep(10);
+			Sleep(10);
 			Console.WriteLine("Running find...");
 			variant = range.Get("Find");
 			var find = (IJIDispatch) JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
 
 			//2
-			sleep(5);
+			Sleep(5);
 
 			Console.WriteLine("Running execute...");
 			var findString = new JIString("ow");
@@ -94,7 +78,7 @@
 			find.CallMethodA("Execute", new object[] {findString.VariantByRef, JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), replaceString.VariantByRef, JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM()});
 
 			//1
-			sleep(2);
+			Sleep(2);
 
 			Console.WriteLine("Closing document...");
 			document.CallMethod("Close");
@@ -103,20 +87,20 @@
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: private void sleep(int minutes) throws InterruptedException
-		private void sleep(int minutes)
+		private void Sleep(int minutes)
 		{
 			Console.WriteLine("Sleeping " + minutes + " minute(s)...");
-			Thread.Sleep((int)(minutes * 60 * 1000));
+			Thread.Sleep(minutes * 60 * 1000);
 		}
 
 		/// <exception cref="JIException"> </exception>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: private void quitAndDestroy() throws org.jinterop.dcom.common.JIException
-		private void quitAndDestroy()
+		private void QuitAndDestroy()
 		{
 			Console.WriteLine("Quit...");
-			dispatch.CallMethod("Quit", new object[] {new JIVariant(-1, true), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM()});
-			JISession.destroySession(dispatch.AssociatedSession);
+			_dispatch.CallMethod("Quit", new object[] {new JIVariant(-1, true), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM()});
+			JISession.DestroySession(_dispatch.AssociatedSession);
 		}
 
 		public static void Main(string[] args)
@@ -130,16 +114,16 @@
 					return;
 				}
 
-				JISystem.InBuiltLogHandler = false;
+				
 				var test = new MSWord(args[0], args);
-				test.startWord();
-				test.showWord();
+				test.StartWord();
+				test.ShowWord();
 
 	//			for (int i = 0; i < 10; i++) {
-					test.performOp();
+					test.PerformOp();
 	//			}
 
-				test.quitAndDestroy();
+				test.QuitAndDestroy();
 
 			}
 			catch (Exception e)

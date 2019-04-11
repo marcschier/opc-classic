@@ -36,7 +36,7 @@ namespace org.jinterop.dcom.core {
     /// JIComServer comserver = new JIComServer(JIProgId.valueOf("Word.Application"),address,session);
     /// IJIComObject comObject = comserver.createInstance();
     /// </code>
-    /// Also ,
+    /// Also,
     /// <code>
     /// IJIComObject handle = comObject.queryInterface("620012E2-69E3-4DC0-B553-AE252524D2F6");
     /// </code>
@@ -209,7 +209,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         ///Adds a <code>IJIUnreferenced</code> handler. The handler will be invoked when this comObject goes
         /// out of reference and is removed from it's session by the library. Only a single handler can be
-        /// added for each object. If a handler for this object already exists , it would be replaced by this
+        /// added for each object. If a handler for this object already exists, it would be replaced by this
         /// call.
         /// </summary>
         /// <param name="unreferenced"> handler to get notification when reference count for this object hits 0 and is

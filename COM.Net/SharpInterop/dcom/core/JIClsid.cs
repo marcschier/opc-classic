@@ -68,7 +68,7 @@ namespace org.jinterop.dcom.core {
         /// <returns> string of the form "00000000-0000-0000-0000-000000000000" </returns>
         public virtual string CLSID => _nestedUUID.ToString();
 
-        private UUID _nestedUUID = new UUID();
+        private readonly UUID _nestedUUID = new UUID();
         private bool _autoRegister;
     }
 }

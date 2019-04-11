@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.core {
                 Length = 2 + 2 + 2;
             }
             else {
-                Length = 2 + 2 + princName.Length * 2 + 2;
+                Length = 2 + 2 + (princName.Length * 2) + 2;
             }
         }
 
@@ -70,13 +70,13 @@ namespace org.jinterop.dcom.core {
             int retVal;
             while ((retVal = ndr.ReadUnsignedShort()) != 0)
             {
-                //even though this is a unicode string , but will not have anything else
+                //even though this is a unicode string, but will not have anything else
                 //other than ascii charset, which is supported by all encodings.
                 buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
             }
             securityBinding._princName = buffer.ToString();
-            // 2 bytes for authnsvc, 2 for authzsvc , each character is 2 bytes (short) and last 2 bytes for null termination
-            securityBinding.Length = 2 + 2 + securityBinding._princName.Length * 2 + 2;
+            // 2 bytes for authnsvc, 2 for authzsvc, each character is 2 bytes (short) and last 2 bytes for null termination
+            securityBinding.Length = 2 + 2 + (securityBinding._princName.Length * 2) + 2;
             return securityBinding;
         }
 

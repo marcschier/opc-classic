@@ -524,7 +524,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual int GetResultAsIntAt(int index) {
             CheckIfCalled();
-            return (int)(int?)_outparams[index];
+            return (int)_outparams[index];
         }
 
         /// <summary>
@@ -534,7 +534,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual float GetResultAsFloatAt(int index) {
             CheckIfCalled();
-            return (float)(float?)_outparams[index];
+            return (float)(float)_outparams[index];
         }
 
         /// <summary>
@@ -544,7 +544,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual bool GetResultAsBooleanAt(int index) {
             CheckIfCalled();
-            return (bool)(bool?)_outparams[index];
+            return (bool)(bool)_outparams[index];
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual short GetResultAsShortAt(int index) {
             CheckIfCalled();
-            return (short)(short?)_outparams[index];
+            return (short)_outparams[index];
         }
 
         /// <summary>
@@ -564,7 +564,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual double GetResultAsDoubleAt(int index) {
             CheckIfCalled();
-            return (double)(double?)_outparams[index];
+            return (double)(double)_outparams[index];
         }
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index</param>
         public virtual char GetResultAsCharacterAt(int index) {
             CheckIfCalled();
-            return (char)(char?)_outparams[index];
+            return (char)(char)_outparams[index];
         }
 
         /// <summary>
@@ -746,7 +746,7 @@ namespace org.jinterop.dcom.core {
                     var listOfDefferedPointers = new List<object>();
                     if (inparams[index] == null) {
                         JIMarshalUnMarshalHelper.Serialize(
-                            ndr, typeof(int?), 0, listOfDefferedPointers, JIFlags.FLAG_NULL);
+                            ndr, typeof(int), 0, listOfDefferedPointers, JIFlags.FLAG_NULL);
                     }
                     else {
                         JIMarshalUnMarshalHelper.Serialize(
@@ -772,7 +772,7 @@ namespace org.jinterop.dcom.core {
                         //				}
                         //
                         //	while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
-                        //	the deffered pointers , we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
+                        //	the deffered pointers, we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
                         //	in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
                         //	after the pointer 2 referent. But that is what is against the rules of DCERPC, in this case the referent of pointer 1 (struct with the pointer to another struct)
                         //	should be serialized in place (following th rules of the struct serialization ofcourse) and should not go to the end of the list.
@@ -875,7 +875,7 @@ namespace org.jinterop.dcom.core {
                     try {
                         IJIComObject comObject = null;
                         if (fromCallback) {
-                            //this is a new IP , so make a new JIComServer for this.
+                            //this is a new IP, so make a new JIComServer for this.
                             var newsession = JISession.CreateSession(Session);
                             newsession.GlobalSocketTimeout = Session.GlobalSocketTimeout;
                             newsession.UseSessionSecurity(Session.SessionSecurityEnabled);

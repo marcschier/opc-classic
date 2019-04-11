@@ -32,7 +32,7 @@ namespace org.jinterop.dcom.core {
             var result = 1;
             //from SUN
             for (var i = 0; i < SetID.Length; i++) {
-                result = 31 * result + SetID[i];
+                result = (31 * result) + SetID[i];
             }
             return result;
             //return Arrays.hashCode(setid);

@@ -43,7 +43,7 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public override void Write(NdrCodec ndr) {
             JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, _odix);
-            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?),
+            JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short),
                 (short)1, new List<object>(), JIFlags.FLAG_NULL);
             JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray),
                 new JIArray(new short?[] { 7 }, true), new List<object>(),

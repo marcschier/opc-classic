@@ -14,7 +14,7 @@ namespace org.jinterop.dcom.impls.automation
 	/// <summary>
 	/// Implements the <i>TYPEKIND</i> structure of COM Automation
 	/// </summary>
-	public enum TypeKind
+	public enum TypeKind : int
 	{
         /// <summary>
         /// A set of enumerators.

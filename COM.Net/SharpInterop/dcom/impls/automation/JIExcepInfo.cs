@@ -10,7 +10,7 @@
 namespace org.jinterop.dcom.impls.automation {
 
     /// <summary>
-    /// Exposes error code , exception source, exception description and help file path
+    /// Exposes error code, exception source, exception description and help file path
     /// for an unsuccessful <seealso cref="IJIDispatch"/> operation.
     /// </summary>
     public sealed class JIExcepInfo {

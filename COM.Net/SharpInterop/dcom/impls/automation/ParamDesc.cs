@@ -22,19 +22,11 @@ namespace org.jinterop.dcom.impls.automation {
     [Serializable]
 	public sealed class ParamDesc
 	{
-		public const short PARAMFLAG_NONE = 0x00;
-		public const short PARAMFLAG_FIN = 0x01;
-		public const short PARAMFLAG_FOUT = 0x02;
-		public const short PARAMFLAG_FLCID = 0x04;
-		public const short PARAMFLAG_FRETVAL = 0x08;
-		public const short PARAMFLAG_FOPT = 0x10;
-		public const short PARAMFLAG_FHASDEFAULT = 0x20;
-		public const short PARAMFLAG_FHASCUSTDATA = 0x40;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
         public readonly JIPointer lpVarValue;
-		public readonly short wPARAMFlags;
+		public readonly ParamFlag wPARAMFlags;
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
@@ -47,12 +39,12 @@ namespace org.jinterop.dcom.impls.automation {
 			if (values == null)
 			{
 				lpVarValue = null;
-				wPARAMFlags = -1;
+				wPARAMFlags = (ParamFlag)(-1);
 				return;
 			}
 
 			lpVarValue = (JIPointer)values.GetMember(0);
-			wPARAMFlags = (short)(short?)values.GetMember(1);
+			wPARAMFlags = (ParamFlag)values.GetMember(1);
 		}
 	}
 }

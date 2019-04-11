@@ -346,14 +346,14 @@ namespace org.jinterop.dcom.core {
                         var paramObject = new JILocalParamsDescriptor();
                         paramObject.AddInParamAsType(typeof(UUID), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsObject(new JIArray(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR), null, 1, true), JIFlags.FLAG_NULL);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
 
                         //now read and then send the result back.
                         var array = (JIArray)paramObject.Read(ndr)[1];
                         var arrayObj = (object[])array.ArrayInstance;
                         var dispIds = new int?[arrayObj.Length];
-                        //get the first member of the Array , which is the APINAME and send the retVal with it's dispId
+                        //get the first member of the Array, which is the APINAME and send the retVal with it's dispId
                         var apiName = (JIString)arrayObj[0];
                         var info = interfaceDefinitionOfClass.GetMethodDescriptor(apiName.String);
                         if (info == null) {
@@ -374,25 +374,25 @@ namespace org.jinterop.dcom.core {
                     case 6: //invoke of IDispatch
                         paramObject = new JILocalParamsDescriptor();
                         paramObject.SetSession(Session);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsType(typeof(UUID), JIFlags.FLAG_NULL);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
 
                         var dispParams = new JIStruct();
                         dispParams.AddMember(new JIPointer(new JIArray(typeof(JIVariant), null, 1, true)));
-                        dispParams.AddMember(new JIPointer(new JIArray(typeof(int?), null, 1, true)));
-                        dispParams.AddMember(typeof(int?));
-                        dispParams.AddMember(typeof(int?));
+                        dispParams.AddMember(new JIPointer(new JIArray(typeof(int), null, 1, true)));
+                        dispParams.AddMember(typeof(int));
+                        dispParams.AddMember(typeof(int));
 
                         paramObject.AddInParamAsObject(dispParams, JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
-                        paramObject.AddInParamAsType(typeof(int?), JIFlags.FLAG_NULL);
-                        paramObject.AddInParamAsObject(new JIArray(typeof(int?), null, 1, true), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
+                        paramObject.AddInParamAsObject(new JIArray(typeof(int), null, 1, true), JIFlags.FLAG_NULL);
                         paramObject.AddInParamAsObject(new JIArray(typeof(JIVariant), null, 1, true), JIFlags.FLAG_NULL);
 
                         var retresults = paramObject.Read(ndr);
                         //named params not supported
-                        var dispId = (int)(int?)retresults[0];
+                        var dispId = (int)retresults[0];
 
                         info = interfaceDefinitionOfClass.GetMethodDescriptorForDispId(dispId);
                         if (info == null) {
@@ -414,7 +414,7 @@ namespace org.jinterop.dcom.core {
                             }
                         }
 
-                        if ((int?)retresults[5] != 0) {
+                        if ((int)retresults[5] != 0) {
                             //now replace the params at index from the index array.
                             array = (JIArray)retresults[6];
                             var indexs = (int?[])array.ArrayInstance;
@@ -437,7 +437,7 @@ namespace org.jinterop.dcom.core {
                         break;
                     default: //others are normal API calls ...Opnum - 6 is there real Opnum. 0,1,2 and 3,4,5,6
                         isStandardCall = true;
-                        Opnum -= 4; //adjust for only IDispatch(3,4,5,6) , IUnknown(0,1,2) will get adjusted below.
+                        Opnum -= 4; //adjust for only IDispatch(3,4,5,6), IUnknown(0,1,2) will get adjusted below.
                         Log.Logger.Information("Standard call came: Opnum is " + Opnum);
                         break;
                 }
@@ -467,7 +467,7 @@ namespace org.jinterop.dcom.core {
                     var calleeInstance = interfaceDefinitionOfClass.Instance ??
                         Activator.CreateInstance(calleeType);
                     Log.Logger.Information("Call Back Method to be executed: " + method +
-                        " , to be executed on " + calleeInstance);
+                        ", to be executed on " + calleeInstance);
                     var result = method.Invoke(calleeInstance, @params);
                     if (result == null) {
                         retVal = null;

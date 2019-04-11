@@ -134,7 +134,9 @@ namespace org.jinterop.dcom.transport {
         private const string kIID = "IID";
         private const string kIID2 = "IID2";
         private bool _established;
+#pragma warning disable IDE0052 // Remove unread private members
         private Properties _properties;
+#pragma warning restore IDE0052 // Remove unread private members
         private readonly List<object> _listOfInterfacesSupported = new List<object>();
     }
 

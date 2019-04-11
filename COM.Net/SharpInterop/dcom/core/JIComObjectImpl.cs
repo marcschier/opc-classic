@@ -136,8 +136,8 @@ namespace org.jinterop.dcom.core {
             obj.AddInParamAsInt(5, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
 
-            obj.AddOutParamAsType(typeof(short?), JIFlags.FLAG_NULL); //size
-            obj.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //Hresult for size
+            obj.AddOutParamAsType(typeof(short), JIFlags.FLAG_NULL); //size
+            obj.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //Hresult for size
             Log.Logger.Warning("addRef: Adding 5 references for " + _ptr.IPID + " session: " +
                 _session.SessionIdentifier);
 
@@ -244,7 +244,7 @@ namespace org.jinterop.dcom.core {
         public void Internal_setDeffered(bool deffered) => _ptr.Deffered = deffered;
 
         /// <inheritdoc/>
-        public override string ToString() => "IJIComObject[" + Internal_getInterfacePointer() + " , session: " +
+        public override string ToString() => "IJIComObject[" + Internal_getInterfacePointer() + ", session: " +
                 AssociatedSession.SessionIdentifier + ", isLocal: " + LocalReference + "]";
 
         /// <inheritdoc/>

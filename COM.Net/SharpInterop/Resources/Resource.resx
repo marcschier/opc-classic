@@ -146,7 +146,7 @@
   <data name="0x0000101B" xml:space="preserve"><value>An array has already been added as member and it has to be the last member of this Struct. Please insert this member elsewhere.</value></data>
   <data name="0x0000101C" xml:space="preserve"><value>An array can be added only as a last member in a structure and not in between.</value></data>
   <data name="0x0000101D" xml:space="preserve"><value>This Struct already has an array and the member (which also happens to be a Struct) has an array too. This member can only be present in the second last position of this new Struct.</value></data>
-  <data name="0x0000101E" xml:space="preserve"><value>Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct , not in between.</value></data>
+  <data name="0x0000101E" xml:space="preserve"><value>Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct, not in between.</value></data>
   <data name="0x0000101F" xml:space="preserve"><value>Authentication failure for the credentials sent by the COM server for performing call back. The identity is checked via a call back to the source COM server using SMB.</value></data>
   <data name="0x00001020" xml:space="preserve"><value>SMB connection failure, please check whether SERVER service is running on Target machine (where COM server) is hosted.</value></data>
   <data name="0x00001021" xml:space="preserve"><value>Illegal here to invoke this API.</value></data>
@@ -178,7 +178,7 @@
   <data name="0x00001047" xml:space="preserve"><value>getInstance() cannot be called since the JIComServer(JISession, JIInterfacePointer, String) ctor was NOT used to create this COM server instance, please use createInstance() instead.</value></data>
   <data name="0x00001048" xml:space="preserve"><value>A session is already attached with this COM object.</value></data>
   <data name="0x00001049" xml:space="preserve"><value>This API cannot be invoked on local references.</value></data>
-  <data name="0x00001050" xml:space="preserve"><value>A session is not attached with this object , use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.</value></data>
+  <data name="0x00001050" xml:space="preserve"><value>A session is not attached with this object, use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.</value></data>
   <data name="0x00001051" xml:space="preserve"><value>The associated session is being destroyed. Current call to COM server has been terminated.</value></data>
   <data name="0x00001052" xml:space="preserve"><value>This functionality is available only under "Microsoft Windows" line of Operating systems. </value></data>
   <data name="0x00001053" xml:space="preserve"><value>S.S.O cannot be used with ProgId based ctors.</value></data>
@@ -221,7 +221,7 @@
   <data name="0x80020010" xml:space="preserve"><value>Invalid callee.</value></data>
   <data name="0x8002802B" xml:space="preserve"><value>Element not found.</value></data>
   <data name="0x800288BD" xml:space="preserve"><value>Wrong module kind for the operation.</value></data>
-  <data name="0x80040154" xml:space="preserve"><value>Class not registered. If you are using a DLL/OCX , please make sure it has "DllSurrogate" flag set. Faq A(6) in readme.html.</value></data>
+  <data name="0x80040154" xml:space="preserve"><value>Class not registered. If you are using a DLL/OCX, please make sure it has "DllSurrogate" flag set. Faq A(6) in readme.html.</value></data>
   <data name="0x80040155" xml:space="preserve"><value>Interface not registered.</value></data>
   <data name="0x800401A1" xml:space="preserve"><value>Space for tools is not available.</value></data>
   <data name="0x80040202" xml:space="preserve"><value>COM server could not establish call back connection.</value></data>

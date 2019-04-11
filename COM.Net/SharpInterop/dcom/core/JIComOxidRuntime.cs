@@ -179,6 +179,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="IPID"></param>
         /// <param name="oid"></param>
         internal void AddUpdateOXIDs(JISession session, string IPID, JIObjectId oid) {
+            System.Diagnostics.Debug.Assert(IPID != null);
             lock (_mapOfSessionVsPingSetHolderLock) {
                 //make sure this is the IP address
                 var holder = (PingSetHolder)_mapOfSessionVsPingSetHolder[session];
@@ -197,7 +198,7 @@ namespace org.jinterop.dcom.core {
                     _mapOfSessionVsPingSetHolder[session] = holder;
                 }
                 else {
-                    //found , means it is another call for a new IPID
+                    //found, means it is another call for a new IPID
                     var oid2 = (JIObjectId)holder.CurrentSetOIDs[oid];
                     if (oid2 != null) {
                         //have to update this oid, since the one from parameters is a "new" one.
@@ -234,7 +235,7 @@ namespace org.jinterop.dcom.core {
                     }
                     else {
                         Log.Logger.Warning("In delIPIDReference: Could not find Original OID for this temp OID for session: " +
-                            session.SessionIdentifier + " , temp oid is " + oid + " , and IPID is " + IPID);
+                            session.SessionIdentifier + ", temp oid is " + oid + ", and IPID is " + IPID);
                         return;
                     }
 
@@ -243,7 +244,7 @@ namespace org.jinterop.dcom.core {
                     Log.Logger.Information("delIPIDReference: Decrementing reference count for IPID " +
                         IPID + " on OID " + oid);
 
-                    //should we retain this now ??? , we need not send a ping for this as well.
+                    //should we retain this now ???, we need not send a ping for this as well.
                     // It is being retained for the last ping only.
                     if (oid.IPIDRefCount <= 0) {
                         holder.CurrentSetOIDs.Remove(oid);
@@ -258,7 +259,7 @@ namespace org.jinterop.dcom.core {
                 }
                 else {
                     Log.Logger.Warning("In delIPIDReference: Could not find PingSetHolder for this session: " +
-                        session.SessionIdentifier + " , temp oid is " + oid + " , and IPID is " + IPID);
+                        session.SessionIdentifier + ", temp oid is " + oid + ", and IPID is " + IPID);
                 }
             }
         }
@@ -365,7 +366,7 @@ namespace org.jinterop.dcom.core {
 
 
                 //now create a new JIComOxidDetails
-                //this carries a reference to the javaInstance , incase we do not get pings from the client
+                //this carries a reference to the javaInstance, incase we do not get pings from the client
                 //at the right times, the cleaup thread will remove this entry and it's OXID as well from both the maps.
                 var details = new JIComOxidDetails(component, oxid, oid, iid, ipid, ptr, remUnknown, protectionLevel);
 
@@ -631,7 +632,7 @@ namespace org.jinterop.dcom.core {
 
             /// <inheritdoc/>
             public override string ToString() =>
-                "SetID[" + SetId + "] , currentSetOIDs[" + CurrentSetOIDs + "]";
+                "SetID[" + SetId + "], currentSetOIDs[" + CurrentSetOIDs + "]";
         }
 
         /// <summary>
@@ -679,22 +680,22 @@ namespace org.jinterop.dcom.core {
         private readonly Properties _defaults = new Properties();
         private readonly Properties _defaults2 = new Properties();
         private bool _resolverStarted;
-        //java client , com server
+        //java client, com server
         private readonly Hashtable _mapOfIPIDVsComponent = new Hashtable();
-        //java client , com server
+        //java client, com server
         private readonly Hashtable _mapOfJavaVsOxidDetails = new Hashtable();
-        //java client , com server
+        //java client, com server
         private readonly Hashtable _mapOfOxidVsOxidDetails = new Hashtable();
-        //java client , com server
+        //java client, com server
         private readonly Hashtable _mapOfOIDVsComponents = new Hashtable();
         //list of all exported oids per session, all these oids have to be removed.
-        //java server , com client
+        //java server, com client
         private readonly Hashtable _mapOfSessionIdsVsOIDs = new Hashtable();
-        //com client , java server
+        //com client, java server
         private readonly Hashtable _mapOfSetIdVsListOfOIDs = new Hashtable();
-        //com client , java server
+        //com client, java server
         private readonly Hashtable _mapOfSessionVsPingSetHolder = new Hashtable();
-        //java client , com server, so that we don't have to keep doing bind everytime.
+        //java client, com server, so that we don't have to keep doing bind everytime.
         private readonly Hashtable _mapOfAddressVsStub = new Hashtable();
         private readonly List<object> _listOfExportedJavaComponents = new List<object>();
         internal readonly object Mutex = new object(); //for access to the sockets

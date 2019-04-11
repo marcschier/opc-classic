@@ -37,7 +37,7 @@ namespace org.jinterop.dcom.impls.automation {
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable IDE1006 // Naming Styles
-        public readonly int memId;
+        public readonly int memberId;
         public readonly JIPointer lprgscode;
         public readonly JIPointer lprgelemdescParam;
         public readonly int funcKind;
@@ -67,7 +67,7 @@ namespace org.jinterop.dcom.impls.automation {
         internal FuncDesc(JIStruct filledStruct) {
             if (filledStruct == null) {
                 _values = null;
-                memId = -1;
+                memberId = -1;
                 lprgscode = null;
                 lprgelemdescParam = null;
                 funcKind = -1;
@@ -82,7 +82,7 @@ namespace org.jinterop.dcom.impls.automation {
                 return;
             }
             _values = filledStruct;
-            memId = (int)_values.GetMember(0);
+            memberId = (int)_values.GetMember(0);
             lprgscode = (JIPointer)_values.GetMember(1);
             var ptr = (JIPointer)_values.GetMember(2);
             JIArray arrayOfElemDesc = null;

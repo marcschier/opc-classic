@@ -7,8 +7,17 @@
 //----------------------------------------------------------------------------------------
 using org.jinterop.dcom.core;
 
+/// <summary>
+/// Extension
+/// </summary>
 public static partial class RectangularArrays
 {
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static float[][] ReturnRectangularFloatArray(int size1, int size2)
     {
         float[][] newArray;
@@ -30,6 +39,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static int[][] ReturnRectangularIntArray(int size1, int size2)
     {
         int[][] newArray;
@@ -51,6 +66,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static double[][] ReturnRectangularDoubleArray(int size1, int size2)
     {
         double[][] newArray;
@@ -72,6 +93,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static char[][] ReturnRectangularCharArray(int size1, int size2)
     {
         char[][] newArray;
@@ -93,6 +120,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static bool[][] ReturnRectangularBoolArray(int size1, int size2)
     {
         bool[][] newArray;
@@ -114,6 +147,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static sbyte[][] ReturnRectangularSbyteArray(int size1, int size2)
     {
         sbyte[][] newArray;
@@ -135,6 +174,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static short[][] ReturnRectangularShortArray(int size1, int size2)
     {
         short[][] newArray;
@@ -156,6 +201,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static object[][] ReturnRectangularObjectArray(int size1, int size2)
     {
         object[][] newArray;
@@ -177,6 +228,12 @@ public static partial class RectangularArrays
         return newArray;
     }
 
+    /// <summary>
+    /// Create
+    /// </summary>
+    /// <param name="size1"></param>
+    /// <param name="size2"></param>
+    /// <returns></returns>
     public static JIVariant[][] ReturnRectangularJIVariantArray(int size1, int size2)
     {
         JIVariant[][] newArray;

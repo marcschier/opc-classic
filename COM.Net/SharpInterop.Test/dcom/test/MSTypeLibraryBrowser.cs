@@ -1,40 +1,32 @@
 ﻿namespace org.jinterop.dcom.test {
-    using IJIComObject = core.IJIComObject;
-    using JIComServer = core.JIComServer;
-    using JIProgId = core.JIProgId;
-    using JISession = core.JISession;
-    using JIString = core.JIString;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using FuncDesc = impls.automation.FuncDesc;
-    using IJIDispatch = impls.automation.IJIDispatch;
-    using IJITypeInfo = impls.automation.IJITypeInfo;
-    using IJITypeLib = impls.automation.IJITypeLib;
-    using TypeAttr = impls.automation.TypeAttr;
-    using VarDesc = impls.automation.VarDesc;
+    using org.jinterop.dcom.core;
+    using org.jinterop.dcom.impls;
+    using org.jinterop.dcom.impls.automation;
+    using System;
 
     public class MSTypeLibraryBrowser
 	{
 
-		private JIComServer comServer;
-		private IJIDispatch dispatch;
-		private IJIComObject unknown;
+		private readonly JIComServer _comServer;
+		private IJIDispatch _dispatch;
+		private IJIComObject _unknown;
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public MSTypeLibraryBrowser(String address, String args[]) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
 		public MSTypeLibraryBrowser(string address, string[] args)
 		{
-			var session = JISession.createSession(args[1],args[2],args[3]);
-			comServer = new JIComServer(JIProgId.ValueOf("InternetExplorer.Application"),address,session);
+			var session = JISession.CreateSession(args[1],args[2],args[3]);
+			_comServer = new JIComServer(JIProgId.ValueOf("InternetExplorer.Application"),address,session);
 		}
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void start() throws org.jinterop.dcom.common.JIException
-		public virtual void start()
+		public virtual void Start()
 		{
-			unknown = comServer.CreateInstance();
-			dispatch = (IJIDispatch)JIObjectFactory.narrowObject(unknown.QueryInterface(impls.automation.DispatchFlags.IID));
-			var typeInfo = dispatch.GetTypeInfo(0);
-			var typeLib = (IJITypeLib)((object[])typeInfo.ContainingTypeLib)[0];
+			_unknown = _comServer.CreateInstance();
+			_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
+			var typeInfo = _dispatch.GetTypeInfo(0);
+			var typeLib = (IJITypeLib)typeInfo.ContainingTypeLib[0];
 			var result = typeLib.GetDocumentation(-1);
 			Console.WriteLine(((JIString)result[0]).String);
 			Console.WriteLine(((JIString)result[1]).String);
@@ -59,7 +51,7 @@
 				for (j = 0;j < typeAttr.cFuncs;j++)
 				{
 					var funcDesc = typeInfo2.GetFuncDesc(j);
-					result = typeInfo2.GetDocumentation(funcDesc.MemberId);
+					result = typeInfo2.GetDocumentation(funcDesc.memberId);
 					Console.WriteLine(((JIString)result[0]).String);
 					Console.WriteLine(((JIString)result[1]).String);
 					Console.WriteLine(((JIString)result[3]).String);
@@ -67,10 +59,6 @@
 
 				for (j = 0;j < typeAttr.cVars;j++)
 				{
-					if (j == 77)
-					{
-						var kk = 0;
-					}
 					var varDesc = typeInfo2.GetVarDesc(j);
 					result = typeInfo2.GetDocumentation(varDesc.memberId);
 					Console.WriteLine(((JIString)result[0]).String);
@@ -82,7 +70,7 @@
 
 				Console.WriteLine("***************************************");
 			}
-			JISession.destroySession(dispatch.AssociatedSession);
+			JISession.DestroySession(_dispatch.AssociatedSession);
 		}
 
 		public static void Main(string[] args)
@@ -95,7 +83,7 @@
 					return;
 				}
 				var typeLibraryBrowser = new MSTypeLibraryBrowser(args[0],args);
-				typeLibraryBrowser.start();
+				typeLibraryBrowser.Start();
 			}
 			catch (Exception e)
 			{

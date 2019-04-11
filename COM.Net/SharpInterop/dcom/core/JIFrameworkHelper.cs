@@ -205,7 +205,7 @@ namespace org.jinterop.dcom.core {
             }
 
             Log.Logger.Information("Detaching event handler for  comObject: " +
-                comObject.InterfaceIdentifier + " , identifier: " + identifier);
+                comObject.InterfaceIdentifier + ", identifier: " + identifier);
 
             var connectionPointer = (IJIComObject)connectionInfo[0];
 
@@ -213,7 +213,7 @@ namespace org.jinterop.dcom.core {
             var @object = new JICallBuilder(true) {
                 Opnum = 3
             };
-            @object.AddInParamAsInt((int)(int?)connectionInfo[1], JIFlags.FLAG_NULL);
+            @object.AddInParamAsInt((int)connectionInfo[1], JIFlags.FLAG_NULL);
             connectionPointer.Call(@object);
             //now release the connectionPointer.
             connectionPointer.Release();
@@ -237,8 +237,8 @@ namespace org.jinterop.dcom.core {
             }
 
             Log.Logger.Information("Attaching event handler for  comObject: " +
-                comObject.InterfaceIdentifier + " , sourceUUID: " + sourceUUID +
-                " , eventListener: " + eventListener.InterfaceIdentifier +
+                comObject.InterfaceIdentifier + ", sourceUUID: " + sourceUUID +
+                ", eventListener: " + eventListener.InterfaceIdentifier +
                 " and eventListner IPID: " + eventListener.Ipid);
             //IID of IConnectionPointContainer :- B196B284-BAB4-101A-B69C-00AA00341D07
             var connectionPointContainer = comObject.QueryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
@@ -253,11 +253,11 @@ namespace org.jinterop.dcom.core {
             @object.ReInit();
             @object.Opnum = 2;
             @object.AddInParamAsComObject(eventListener, JIFlags.FLAG_NULL);
-            @object.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+            @object.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
             var obj = connectionPointer.Call(@object);
 
             //used to unadvise from the connectionpoint
-            var dwcookie = (int?)obj[0];
+            var dwcookie = (int)obj[0];
             Log.Logger.Information("Event handler returned cookie " + dwcookie);
             connectionPointContainer.Release();
 

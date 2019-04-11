@@ -385,7 +385,7 @@ namespace SharpInterop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct , not in between..
+        ///   Looks up a localized string similar to Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct, not in between..
         /// </summary>
         internal static string _0x0000101E {
             get {
@@ -673,7 +673,7 @@ namespace SharpInterop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A session is not attached with this object , use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object..
+        ///   Looks up a localized string similar to A session is not attached with this object, use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object..
         /// </summary>
         internal static string _0x00001050 {
             get {
@@ -997,7 +997,7 @@ namespace SharpInterop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class not registered. If you are using a DLL/OCX , please make sure it has &quot;DllSurrogate&quot; flag set. Faq A(6) in readme.html..
+        ///   Looks up a localized string similar to Class not registered. If you are using a DLL/OCX, please make sure it has &quot;DllSurrogate&quot; flag set. Faq A(6) in readme.html..
         /// </summary>
         internal static string _0x80040154 {
             get {

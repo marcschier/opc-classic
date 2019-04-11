@@ -39,19 +39,19 @@ namespace org.jinterop.dcom.core {
                     }
 
                     if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
-                        Log.Logger.Information("Complex ping going : listOfAdds -> Size : " + _listOfAdds.Count + " , " + _listOfAdds);
-                        Log.Logger.Information("listOfDels -> Size : " + _listOfDels.Count + " , " + _listOfDels);
+                        Log.Logger.Information("Complex ping going : listOfAdds -> Size : " + _listOfAdds.Count + ", " + _listOfAdds);
+                        Log.Logger.Information("listOfDels -> Size : " + _listOfDels.Count + ", " + _listOfDels);
                     }
 
                     JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr, SetId);
 
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?), (short)_seqNum, null, JIFlags.FLAG_NULL); //seq
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?), (short)_listOfAdds.Count, null, JIFlags.FLAG_NULL); //add
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short?), (short)_listOfDels.Count, null, JIFlags.FLAG_NULL); //del
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_seqNum, null, JIFlags.FLAG_NULL); //seq
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_listOfAdds.Count, null, JIFlags.FLAG_NULL); //add
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short), (short)_listOfDels.Count, null, JIFlags.FLAG_NULL); //del
 
                     if (_listOfAdds.Count > 0) {
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), new object().GetHashCode(), null, JIFlags.FLAG_NULL); //pointer
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), _listOfAdds.Count, null, JIFlags.FLAG_NULL);
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), new object().GetHashCode(), null, JIFlags.FLAG_NULL); //pointer
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), _listOfAdds.Count, null, JIFlags.FLAG_NULL);
 
 
                         for (var i = 0; i < _listOfAdds.Count; i++) {
@@ -61,12 +61,12 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     else {
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL); //null pointer
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL); //null pointer
                     }
 
                     if (_listOfDels.Count > 0) {
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), new object().GetHashCode(), null, JIFlags.FLAG_NULL); //pointer
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), _listOfDels.Count, null, JIFlags.FLAG_NULL);
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), new object().GetHashCode(), null, JIFlags.FLAG_NULL); //pointer
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), _listOfDels.Count, null, JIFlags.FLAG_NULL);
 
                         //now align for array
                         ndr.FillAligned(8);
@@ -77,13 +77,13 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     else {
-                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL); //null pointer
+                        JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL); //null pointer
                     }
 
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL);
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL);
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL);
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, null, JIFlags.FLAG_NULL);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, null, JIFlags.FLAG_NULL);
                     break;
 
                 case 1: // simple ping
@@ -92,7 +92,7 @@ namespace org.jinterop.dcom.core {
                         Log.Logger.Information("Simple Ping going for setId: " + Utils.HexString(SetId, 0, SetId.Length));
                     }
                     else {
-                        Log.Logger.Information("Some error ! Simple ping requested , but has no setID ");
+                        Log.Logger.Information("Some error ! Simple ping requested, but has no setID ");
                     }
                     break;
 
@@ -109,14 +109,14 @@ namespace org.jinterop.dcom.core {
                 case 2: //complex ping
                     SetId = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
                     //ping factor
-                    JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(short?), null, JIFlags.FLAG_NULL, null);
+                    JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(short), null, JIFlags.FLAG_NULL, null);
 
                     //hresult
                     var hresult = (int)JIMarshalUnMarshalHelper.Deserialize(ndr,
                         typeof(int), null, JIFlags.FLAG_NULL, null);
 
                     if (hresult != 0) {
-                        Log.Logger.Error("Some error ! Complex ping failed , hresult: " + hresult);
+                        Log.Logger.Error("Some error ! Complex ping failed, hresult: " + hresult);
                     }
 
                     break;
@@ -126,7 +126,7 @@ namespace org.jinterop.dcom.core {
                         typeof(int), null, JIFlags.FLAG_NULL, null);
 
                     if (hresult != 0) {
-                        Log.Logger.Error("Some error ! Simple ping failed , hresult: " + hresult);
+                        Log.Logger.Error("Some error ! Simple ping failed, hresult: " + hresult);
                     }
                     else {
                         Log.Logger.Information("Simple Ping Succeeded");

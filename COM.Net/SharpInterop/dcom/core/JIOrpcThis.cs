@@ -101,17 +101,17 @@ namespace org.jinterop.dcom.core {
         internal static JIOrpcThis Decode(NdrCodec ndr) {
             var retval = new JIOrpcThis();
             var map = new Hashtable();
-            var majorVersion = (int)(short?)JIMarshalUnMarshalHelper.Deserialize(
-                ndr, typeof(short?), null, JIFlags.FLAG_NULL, map);
-            var minorVersion = (int)(short?)JIMarshalUnMarshalHelper.Deserialize(
-                ndr, typeof(short?), null, JIFlags.FLAG_NULL, map);
+            var majorVersion = (int)(short)JIMarshalUnMarshalHelper.Deserialize(
+                ndr, typeof(short), null, JIFlags.FLAG_NULL, map);
+            var minorVersion = (int)(short)JIMarshalUnMarshalHelper.Deserialize(
+                ndr, typeof(short), null, JIFlags.FLAG_NULL, map);
 
             retval._version = new JIComVersion(majorVersion, minorVersion);
-            retval.ORPCFlags = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(
-                ndr, typeof(int?), null, JIFlags.FLAG_NULL, map);
+            retval.ORPCFlags = (int)JIMarshalUnMarshalHelper.Deserialize(
+                ndr, typeof(int), null, JIFlags.FLAG_NULL, map);
 
             JIMarshalUnMarshalHelper.Deserialize(
-                ndr, typeof(int?), null, JIFlags.FLAG_NULL, map); //reserved.
+                ndr, typeof(int), null, JIFlags.FLAG_NULL, map); //reserved.
 
             var uuid = new UUID();
             try {
@@ -138,8 +138,8 @@ namespace org.jinterop.dcom.core {
 
                 var orpcextent = new JIStruct();
                 orpcextent.AddMember(typeof(UUID));
-                orpcextent.AddMember(typeof(int?)); //length
-                orpcextent.AddMember(new JIArray(typeof(sbyte?), null, 1, true));
+                orpcextent.AddMember(typeof(int)); //length
+                orpcextent.AddMember(new JIArray(typeof(sbyte), null, 1, true));
                 //create the orpcextentarray struct
                 /*
                  *    typedef struct tagORPC_EXTENT_ARRAY
@@ -152,8 +152,8 @@ namespace org.jinterop.dcom.core {
                  */
 
 
-                orpcextentarray.AddMember(typeof(int?));
-                orpcextentarray.AddMember(typeof(int?));
+                orpcextentarray.AddMember(typeof(int));
+                orpcextentarray.AddMember(typeof(int));
                 //this is since the pointer is [unique]
                 orpcextentarray.AddMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
             }

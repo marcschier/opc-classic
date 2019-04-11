@@ -11,7 +11,6 @@ namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections.Generic;
-    using SharpCifs.Util.Sharpen;
     using System.Linq;
 
     /// <summary>
@@ -60,9 +59,8 @@ namespace org.jinterop.dcom.core {
         /// Object reference of specified type
         /// </summary>
         /// <param name="objectType"></param>
-        internal object GetObjectReference(int objectType) {
-            return ((JIInterfacePointerBody)_member.GetReferent()).GetObjectReference(objectType);
-        }
+        internal object GetObjectReference(int objectType) =>
+            ((JIInterfacePointerBody)_member.GetReferent()).GetObjectReference(objectType);
 
         /// <summary>
         /// Returns the Interface Identifier for this MIP.
@@ -89,8 +87,8 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// String bindings
         /// </summary>
-        internal JIDualStringArray StringBindings => ((JIInterfacePointerBody)_member.GetReferent())
-            .StringBindings;
+        internal JIDualStringArray StringBindings => 
+            ((JIInterfacePointerBody)_member.GetReferent()).StringBindings;
 
         /// <summary>
         /// Length
@@ -108,22 +106,20 @@ namespace org.jinterop.dcom.core {
         /// <param name="iid"> </param>
         /// <param name="port"></param>
         /// <param name="objref"></param>
-        internal JIInterfacePointer(string iid, int port, JIStdObjRef objref) {
+        internal JIInterfacePointer(string iid, int port, JIStdObjRef objref) =>
             _member = new JIPointer(new JIInterfacePointerBody(iid, port, objref), false);
-        }
 
         /// <summary>
         /// Create interface pointer
         /// </summary>
         /// <param name="iid"></param>
         /// <param name="interfacePointer"></param>
-        internal JIInterfacePointer(string iid, JIInterfacePointer interfacePointer) {
+        internal JIInterfacePointer(string iid, JIInterfacePointer interfacePointer) =>
             _member = new JIPointer(new JIInterfacePointerBody(iid, interfacePointer), false);
-        }
 
         /// <inheritdoc/>
         public override string ToString() {
-            var retVal = "JIInterfacePointer[IID:" + IID + " , ObjRef: " +
+            var retVal = "JIInterfacePointer[IID:" + IID + ", ObjRef: " +
                 GetObjectReference(OBJREF_STANDARD) + "]";
             return retVal;
         }
@@ -181,7 +177,7 @@ namespace org.jinterop.dcom.core {
             if ((FLAG & JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) ==
                         JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) {
                 //just encode a null.
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, FLAG);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, FLAG);
                 return;
             }
             JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), _member, defferedPointers, FLAG);

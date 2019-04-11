@@ -42,12 +42,12 @@ namespace org.jinterop.dcom.core {
         public JIPointer(Type value, bool isReferenceTypePtr) {
             //null pointer.
             if (value == null) {
-                value = typeof(int?);
+                value = typeof(int);
                 isReferenceTypePtr = true;
                 IsNull = true;
             }
             //Should not defer since the enclosing struct,union,array will defer it by itself
-            // this is important since , ptr to a ptr to a ptr (and more) will need to
+            // this is important since, ptr to a ptr to a ptr (and more) will need to
             //deserialize completely after the first deferement i.e they are not further deffered.
             _referent = value;
             Reference = isReferenceTypePtr;
@@ -81,7 +81,7 @@ namespace org.jinterop.dcom.core {
             //		}
 
             //Should not defer since the enclosing struct,union,array will defer it by itself
-            // this is important since , ptr to a ptr to a ptr (and more) will need to
+            // this is important since, ptr to a ptr to a ptr (and more) will need to
             //deserialize completely after the first deferement i.e they are not further deffered.
 
             _referent = value;
@@ -116,7 +116,7 @@ namespace org.jinterop.dcom.core {
 
             flag |= _flags;
             if (IsNull) {
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, flag);
                 return;
             }
             //it is deffered or part of an array, this logic will not get called twice since the
@@ -125,7 +125,7 @@ namespace org.jinterop.dcom.core {
 						(flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER*/
             {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), referentIdToPut, defferedPointers, flag);
                 Deffered = false;
                 Reference = true;
                 //			try{
@@ -139,14 +139,14 @@ namespace org.jinterop.dcom.core {
 
             if (!IsNull && !Reference) {
                 var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), referentIdToPut, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), referentIdToPut, defferedPointers, flag);
             }
 
             try {
                 if (!IsNull && _referent.GetType().Equals(typeof(JIVariant)) && ((JIVariant)_referent).IsArray) {
                     //write the length first before all elements
                     //ndr.writeUnsignedLong(((Object[])(((JIVariant)referent).getObject())).length);
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
                 }
             }
             catch (JIException e) {
@@ -158,7 +158,7 @@ namespace org.jinterop.dcom.core {
 
 
         /// <summary>
-        /// class of type being decoded. If the type being expected is an array , the varType
+        /// class of type being decoded. If the type being expected is an array, the varType
         /// should be the actual array type and not JIArray.
         /// </summary>
         /// <param name="ndr"></param>
@@ -181,7 +181,7 @@ namespace org.jinterop.dcom.core {
             if (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)
             /*|| (flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER */
             {
-                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?),
+                retVal._referentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
                     defferedPointers, flag, additionalData);
                 retVal._referent = _referent; //will only be the class or object
                 if (retVal._referentId == 0 && !_nullSpecial) {
@@ -200,7 +200,7 @@ namespace org.jinterop.dcom.core {
 
             if (!Reference) {
                 //referentId = ndr.readUnsignedLong();
-                retVal._referentId = (int)(int?)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?),
+                retVal._referentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
                     defferedPointers, flag, additionalData);
                 retVal._referent = _referent; //will only be the class or object
                 if (retVal._referentId == 0 && !_nullSpecial) {

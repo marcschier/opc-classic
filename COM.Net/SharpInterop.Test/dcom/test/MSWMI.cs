@@ -3,190 +3,151 @@
 
 
 
-    using IJIUnreferenced = common.IJIUnreferenced;
-    using JISystem = common.JISystem;
+    using org.jinterop.dcom.impls.automation;
+    using System;
     using IJIComObject = core.IJIComObject;
+    using IJIDispatch = impls.automation.IJIDispatch;
+    using IJIEnumVariant = impls.automation.IJIEnumVariant;
+    using IJIUnreferenced = common.IJIUnreferenced;
     using JIArray = core.JIArray;
     using JICallBuilder = core.JICallBuilder;
     using JIComServer = core.JIComServer;
     using JIFlags = core.JIFlags;
+    using JIObjectFactory = impls.JIObjectFactory;
     using JIProgId = core.JIProgId;
     using JISession = core.JISession;
     using JIString = core.JIString;
+    using JISystem = common.JISystem;
     using JIVariant = core.JIVariant;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
-    using IJIEnumVariant = impls.automation.IJIEnumVariant;
+
+    public class MSWMI {
+
+        private readonly JIComServer _comStub;
+        private readonly IJIComObject _comObject;
+        private readonly IJIDispatch _dispatch;
+        private readonly string _address;
+        private readonly JISession _session;
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public MSWMI(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+        public MSWMI(string address, string[] args) {
+            _address = address;
+            _session = JISession.CreateSession(args[1], args[2], args[3]);
+            _session.UseSessionSecurity(true);
+            _session.GlobalSocketTimeout = 5000;
+            _comStub = new JIComServer(JIProgId.ValueOf("WbemScripting.SWbemLocator"), address, _session);
+            var unknown = _comStub.CreateInstance();
+            _comObject = unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
+                                                                                         //This will obtain the dispatch interface
+            _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_comObject.QueryInterface(Interfaces.IID_IDispatch));
+        }
 
 
-    public class MSWMI
-	{
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
+        public virtual void PerformOp() {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            var results = _dispatch.CallMethodA("ConnectServer", new object[] { new JIString(_address), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), 0, JIVariant.CreateOPTIONAL_PARAM() });
 
-		private JIComServer comStub;
-		private IJIComObject comObject;
-		private IJIDispatch dispatch;
-		private readonly string address;
-		private JISession session;
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public MSWMI(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
-		public MSWMI(string address, string[] args)
-		{
-			this.address = address;
-			session = JISession.createSession(args[1],args[2],args[3]);
-			session.useSessionSecurity(true);
-			session.GlobalSocketTimeout = 5000;
-			comStub = new JIComServer(JIProgId.ValueOf("WbemScripting.SWbemLocator"),address,session);
-			var unknown = comStub.CreateInstance();
-			comObject = (IJIComObject)unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
-			//This will obtain the dispatch interface
-			dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(comObject.QueryInterface(impls.automation.DispatchFlags.IID));
-		}
+            //using the dispatch results above you can use the "ConnectServer" api to retrieve a pointer to IJIDispatch
+            //of ISWbemServices
 
+            //OR
+            //Make a direct call like below, in this case you would get back an interface pointer to ISWbemServices, NOT to it's IDispatch
+            var callObject = new JICallBuilder();
+            callObject.AddInParamAsString(_address, JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsString("", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsString("", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsString("", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsString("", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsString("", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsInt(0, JIFlags.FLAG_NULL);
+            callObject.AddInParamAsPointer(null, JIFlags.FLAG_NULL);
+            callObject.Opnum = 0;
+            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            var wbemServices = JIObjectFactory.NarrowObject((IJIComObject)_comObject.Call(callObject)[0]);
+            wbemServices.InstanceLevelSocketTimeout = 1000;
+            wbemServices.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper());
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-		public virtual void performOp()
-		{
-			System.gc();
-			var results = dispatch.CallMethodA("ConnectServer",new object[]{new JIString(address),JIVariant.CreateOPTIONAL_PARAM(),JIVariant.CreateOPTIONAL_PARAM(),JIVariant.CreateOPTIONAL_PARAM(),JIVariant.CreateOPTIONAL_PARAM(),JIVariant.CreateOPTIONAL_PARAM(), 0, JIVariant.CreateOPTIONAL_PARAM()});
+            //Lets have a look at both.
+            var wbemServices_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(results[0].ObjectAsComObject);
+            results = wbemServices_dispatch.CallMethodA("InstancesOf", new object[] { new JIString("Win32_Process"), 0, JIVariant.CreateOPTIONAL_PARAM() });
+            var wbemObjectSet_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(results[0].ObjectAsComObject);
+            var variant = wbemObjectSet_dispatch.Get("_NewEnum");
+            var object2 = variant.ObjectAsComObject;
 
-			//using the dispatch results above you can use the "ConnectServer" api to retrieve a pointer to IJIDispatch
-			//of ISWbemServices
+            Console.WriteLine(object2.DispatchSupported);
+            Console.WriteLine(object2.DispatchSupported);
 
-			//OR
-			//Make a direct call like below , in this case you would get back an interface pointer to ISWbemServices , NOT to it's IDispatch
-			var callObject = new JICallBuilder();
-			callObject.AddInParamAsString(address,JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsString("",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsInt(0,JIFlags.FLAG_NULL);
-			callObject.AddInParamAsPointer(null,JIFlags.FLAG_NULL);
-			callObject.Opnum = 0;
-			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var wbemServices = JIObjectFactory.NarrowObject((IJIComObject)((object[])comObject.Call(callObject))[0]);
-			wbemServices.InstanceLevelSocketTimeout = 1000;
-			wbemServices.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper(this));
+            object2.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper2());
 
-			//Lets have a look at both.
-			var wbemServices_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(results[0].ObjectAsComObject);
-			results = wbemServices_dispatch.CallMethodA("InstancesOf", new object[]{new JIString("Win32_Process"), 0, JIVariant.CreateOPTIONAL_PARAM()});
-			var wbemObjectSet_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(results[0].ObjectAsComObject);
-			var variant = wbemObjectSet_dispatch.Get("_NewEnum");
-			var object2 = variant.ObjectAsComObject;
+            var enumVARIANT = (IJIEnumVariant)JIObjectFactory.NarrowObject(object2.QueryInterface(Interfaces.IID_IEnumVARIANT));
 
-			Console.WriteLine(object2.DispatchSupported);
-			Console.WriteLine(object2.DispatchSupported);
+            //This will return back a dispatch of ISWbemObjectSet
 
-			object2.RegisterUnreferencedHandler(new IJIUnreferencedAnonymousInnerClassHelper2(this));
+            //OR
+            //It returns back the pointer to ISWbemObjectSet
+            callObject = new JICallBuilder();
+            callObject.AddInParamAsString("Win32_Process", JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
+            callObject.AddInParamAsInt(0, JIFlags.FLAG_NULL);
+            callObject.AddInParamAsPointer(null, JIFlags.FLAG_NULL);
+            callObject.Opnum = 4;
+            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            var wbemObjectSet = JIObjectFactory.NarrowObject((IJIComObject)wbemServices.Call(callObject)[0]);
 
-			var enumVARIANT = (IJIEnumVariant)JIObjectFactory.NarrowObject(object2.QueryInterface(impls.automation.IJIEnumVariant_Fields.IID));
-
-			//This will return back a dispatch of ISWbemObjectSet
-
-			//OR
-			//It returns back the pointer to ISWbemObjectSet
-			callObject = new JICallBuilder();
-			callObject.AddInParamAsString("Win32_Process",JIFlags.FLAG_REPRESENTATION_STRING_BSTR);
-			callObject.AddInParamAsInt(0,JIFlags.FLAG_NULL);
-			callObject.AddInParamAsPointer(null,JIFlags.FLAG_NULL);
-			callObject.Opnum = 4;
-			callObject.AddOutParamAsType(typeof(IJIComObject),JIFlags.FLAG_NULL);
-			var wbemObjectSet = JIObjectFactory.NarrowObject((IJIComObject)((object[])wbemServices.Call(callObject))[0]);
-
-			//okay seen enough of the other usage, lets just stick to disptach, it's lot simpler
-			var Count = wbemObjectSet_dispatch.Get("Count");
-			var count = Count.ObjectAsInt;
-			for (var i = 0; i < count; i++)
-			{
-				var values = enumVARIANT.Next(1);
-				var array = (JIArray)values[0];
-				var arrayObj = (object[])array.ArrayInstance;
-				for (var j = 0; j < arrayObj.Length; j++)
-				{
-					var wbemObject_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(((JIVariant)arrayObj[j]).ObjectAsComObject);
-					var variant2 = (JIVariant)wbemObject_dispatch.CallMethodA("GetObjectText_",new object[]{ 1 })[0];
-					Console.WriteLine(variant2.ObjectAsString.String);
-					Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				}
-			}
+            //okay seen enough of the other usage, lets just stick to disptach, it's lot simpler
+            var Count = wbemObjectSet_dispatch.Get("Count");
+            var count = Count.ObjectAsInt;
+            for (var i = 0; i < count; i++) {
+                var values = enumVARIANT.Next(1);
+                var array = (JIArray)values[0];
+                var arrayObj = (object[])array.ArrayInstance;
+                for (var j = 0; j < arrayObj.Length; j++) {
+                    var wbemObject_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(((JIVariant)arrayObj[j]).ObjectAsComObject);
+                    var variant2 = wbemObject_dispatch.CallMethodA("GetObjectText_", new object[] { 1 })[0];
+                    Console.WriteLine(variant2.ObjectAsString.String);
+                    Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                }
+            }
 
 
-		}
+        }
 
-		private class IJIUnreferencedAnonymousInnerClassHelper : IJIUnreferenced
-		{
-			private readonly MSWMI outerInstance;
+        private class IJIUnreferencedAnonymousInnerClassHelper : IJIUnreferenced {
 
-			public IJIUnreferencedAnonymousInnerClassHelper(MSWMI outerInstance)
-			{
-				this.outerInstance = outerInstance;
-			}
+            public virtual void UnReferenced() => Console.WriteLine("wbemServices unreferenced... ");
+        }
 
-			public virtual void UnReferenced()
-			{
-				Console.WriteLine("wbemServices unreferenced... ");
-			}
-		}
+        private class IJIUnreferencedAnonymousInnerClassHelper2 : IJIUnreferenced {
 
-		private class IJIUnreferencedAnonymousInnerClassHelper2 : IJIUnreferenced
-		{
-			private readonly MSWMI outerInstance;
+            public virtual void UnReferenced() => Console.WriteLine("object2 unreferenced...");
+        }
 
-			public IJIUnreferencedAnonymousInnerClassHelper2(MSWMI outerInstance)
-			{
-				this.outerInstance = outerInstance;
-			}
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: private void killme() throws org.jinterop.dcom.common.JIException
+        private void Killme() => JISession.DestroySession(_session);
 
-			public virtual void UnReferenced()
-			{
-				Console.WriteLine("object2 unreferenced...");
-			}
-		}
+        public static void Main(string[] args) {
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: private void killme() throws org.jinterop.dcom.common.JIException
-		private void killme()
-		{
-			JISession.destroySession(session);
-		}
+            try {
+                if (args.Length < 4) {
+                    Console.WriteLine("Please provide address domain username password");
+                    return;
+                }
 
-		public static void Main(string[] args)
-		{
-
-			try
-			{
-					if (args.Length < 4)
-					{
-						Console.WriteLine("Please provide address domain username password");
-						return;
-					}
-
-					Log.Logger.Level = Level.INFO;
-					JISystem.InBuiltLogHandler = false;
-					JISystem.AutoRegisteration = true;
-					var test = new MSWMI(args[0],args);
-					for (var i = 0 ; i < 100; i++)
-					{
-						Console.WriteLine("Index i: " + i);
-						test.performOp();
-					}
-					test.killme();
-			}
-				catch (Exception e)
-				{
-					// TODO Auto-generated catch block
-					Console.WriteLine(e.ToString());
-					Console.Write(e.StackTrace);
-				}
-		}
-
-
-
-
-
-	}
-
+                JISystem.UseAutoRegistration = true;
+                var test = new MSWMI(args[0], args);
+                for (var i = 0; i < 100; i++) {
+                    Console.WriteLine("Index i: " + i);
+                    test.PerformOp();
+                }
+                test.Killme();
+            }
+            catch (Exception e) {
+                // TODO Auto-generated catch block
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
+            }
+        }
+    }
 }

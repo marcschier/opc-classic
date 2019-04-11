@@ -8,9 +8,9 @@
 //
 
 namespace org.jinterop.dcom.core {
+    using org.jinterop.dcom.common;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
-    using org.jinterop.dcom.common;
     using System;
     using System.Collections.Generic;
 
@@ -59,10 +59,10 @@ namespace org.jinterop.dcom.core {
         public JIUnion(Type discriminantClass) {
             //the discriminant can only be a int, bool or char
 
-            if (!discriminantClass.Equals(typeof(int?)) &&
-                !discriminantClass.Equals(typeof(short?)) &&
-                !discriminantClass.Equals(typeof(bool?)) &&
-                !discriminantClass.Equals(typeof(char?))) {
+            if (!discriminantClass.Equals(typeof(int)) &&
+                !discriminantClass.Equals(typeof(short)) &&
+                !discriminantClass.Equals(typeof(bool)) &&
+                !discriminantClass.Equals(typeof(char))) {
                 //has to be from one of these. Rule from IDL.
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNION_INCORRECT_DISC));
             }
@@ -121,13 +121,11 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        /// Removes the entry , identified by it's <code>discriminant</code>
+        /// Removes the entry, identified by it's <code>discriminant</code>
         /// from the parameter list of the union.
         /// </summary>
         /// <param name="discriminant"> </param>
-        public void RemoveMember(object discriminant) {
-            Members.Remove(discriminant);
-        }
+        public void RemoveMember(object discriminant) => Members.Remove(discriminant);
 
         /// <summary>
         /// Encode
@@ -220,11 +218,11 @@ namespace org.jinterop.dcom.core {
         internal int Alignment {
             get {
                 var alignment = 0;
-                if (_discriminantClass.Equals(typeof(int?))) {
+                if (_discriminantClass.Equals(typeof(int))) {
                     //align with 4 bytes
                     alignment = 4;
                 }
-                else if (_discriminantClass.Equals(typeof(short?))) {
+                else if (_discriminantClass.Equals(typeof(short))) {
                     //align with 2
                     alignment = 2;
                 }
@@ -233,9 +231,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() {
-            return "[" + Members + "]";
-        }
+        public override string ToString() => "[" + Members + "]";
 
         private Type _discriminantClass;
     }

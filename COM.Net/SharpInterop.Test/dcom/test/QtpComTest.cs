@@ -1,149 +1,132 @@
 ﻿namespace org.jinterop.dcom.test {
-    using JISystem = common.JISystem;
+    using org.jinterop.dcom.impls.automation;
+    using System;
     using IJIComObject = core.IJIComObject;
+    using IJIDispatch = impls.automation.IJIDispatch;
     using JIComServer = core.JIComServer;
+    using JIObjectFactory = impls.JIObjectFactory;
     using JIProgId = core.JIProgId;
     using JISession = core.JISession;
     using JIString = core.JIString;
+    using JISystem = common.JISystem;
     using JIVariant = core.JIVariant;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
 
-    public class QtpComTest
-	{
+    public class QtpComTest {
 
-		private JIComServer comServer;
+        private readonly JIComServer _comServer;
 
-		private IJIDispatch dispatch;
+        private IJIDispatch _dispatch;
 
-		private IJIComObject unknown;
+        private IJIComObject _unknown;
 
-		private readonly JISession session;
+        private readonly JISession _session;
 
 
 
 
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public QtpComTest(String address, String domain, String username, String password) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
-		public QtpComTest(string address, string domain, string username, string password)
-		{
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public QtpComTest(String address, String domain, String username, String password) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+        public QtpComTest(string address, string domain, string username, string password) {
 
-						Log.Logger.Level = Level.FINEST;
 
-						/*Let the j-Interop library do this for you. You can set the "autoRegistration" flag in the
-	
-						  JISystem class. When the library encounters a "Class not registered" exception, it will
-	
-						  perform all the registry changes if the autoRegistration flag is set. And then re-attempt
-	
-						  loading the COM Server. Please have a look at MSSysInfo,MSWMI examples.*/
+            /*Let the j-Interop library do this for you. You can set the "autoRegistration" flag in the
 
-						JISystem.AutoRegisteration = true;
+              JISystem class. When the library encounters a "Class not registered" exception, it will
 
-						session = JISession.createSession(domain,username,password);
+              perform all the registry changes if the autoRegistration flag is set. And then re-attempt
 
-						comServer = new JIComServer(JIProgId.ValueOf("QuickTest.Application"), address, session);
+              loading the COM Server. Please have a look at MSSysInfo,MSWMI examples.*/
 
-	//                    session.setGlobalSocketTimeout(30000);
+            JISystem.UseAutoRegistration = true;
 
-		}
+            _session = JISession.CreateSession(domain, username, password);
 
+            _comServer = new JIComServer(JIProgId.ValueOf("QuickTest.Application"), address, _session);
 
+            //                    session.setGlobalSocketTimeout(30000);
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void startQTP() throws org.jinterop.dcom.common.JIException
-		public virtual void startQTP()
-		{
+        }
 
-						Console.WriteLine(comServer.SharpCifs.Util.Sharpen.Properties);
 
-						unknown = comServer.CreateInstance();
 
-						dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(unknown.QueryInterface(impls.automation.DispatchFlags.IID));
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public void startQTP() throws org.jinterop.dcom.common.JIException
+        public virtual void StartQTP() {
 
-						//System.out.println(((JIVariant)dispatch.get("Version")).getObjectAsString().getString());
+            Console.WriteLine(_comServer.Properties);
 
-		}
+            _unknown = _comServer.CreateInstance();
 
+            _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
 
+            //System.out.println(((JIVariant)dispatch.get("Version")).getObjectAsString().getString());
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void showQtp() throws org.jinterop.dcom.common.JIException
-		public virtual void showQtp()
-		{
+        }
 
-						var dispId = dispatch.GetIDsOfNames("Visible");
 
-						var variant = new JIVariant(true);
 
-						dispatch.Put(dispId,variant);
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public void showQtp() throws org.jinterop.dcom.common.JIException
+        public virtual void ShowQtp() {
 
-		}
+            var dispId = _dispatch.GetIDsOfNames("Visible");
 
+            var variant = new JIVariant(true);
 
+            _dispatch.Put(dispId, variant);
 
-//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-//ORIGINAL LINE: public void envQtp() throws org.jinterop.dcom.common.JIException
-		public virtual void envQtp()
-		{
+        }
 
-						dispatch.CallMethodA("Open", new object[]{new JIString("C:\\Programme\\Mercury Interactive\\QuickTest Professional\\Tests\\Test1"), new JIVariant(false), new JIVariant(true)});
 
-						var variant = dispatch.Get("Test");
 
-						var test = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
-						Console.WriteLine(test.Get("Author"));
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
+        //ORIGINAL LINE: public void envQtp() throws org.jinterop.dcom.common.JIException
+        public virtual void EnvQtp() {
 
-						//and this is the original session associated with dispatch.
-						JISession.destroySession(session);
+            _dispatch.CallMethodA("Open", new object[] { new JIString("C:\\Programme\\Mercury Interactive\\QuickTest Professional\\Tests\\Test1"), new JIVariant(false), new JIVariant(true) });
 
-		}
+            var variant = _dispatch.Get("Test");
 
+            var test = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
+            Console.WriteLine(test.Get("Author"));
 
+            //and this is the original session associated with dispatch.
+            JISession.DestroySession(_session);
 
+        }
 
 
-		public static void Main(string[] args)
-		{
 
-						//"localhost", "ctron", "mpitonia", "ChrisSarah1"
 
-						//"VPC003", "automation" , "automated_user", "@utom@tion"
 
-						//"automationsvr01", "AUTOMATION", "Automated_User", "@utom@tion"
+#pragma warning disable IDE0060 // Remove unused parameter
+        public static void Main(string[] args) {
+#pragma warning restore IDE0060 // Remove unused parameter
 
-						try
-						{
+            //"localhost", "ctron", "mpitonia", "ChrisSarah1"
 
-										var comQtp = new QtpComTest("localhost", "domain", "username", "password");
+            //"VPC003", "automation", "automated_user", "@utom@tion"
 
-										comQtp.startQTP();
+            //"automationsvr01", "AUTOMATION", "Automated_User", "@utom@tion"
 
-										comQtp.showQtp();
+            try {
 
-										comQtp.envQtp();
+                var comQtp = new QtpComTest("localhost", "domain", "username", "password");
 
-						}
-						catch (Exception e)
-						{
+                comQtp.StartQTP();
 
-										Console.WriteLine(e.ToString());
-										Console.Write(e.StackTrace);
+                comQtp.ShowQtp();
 
-						}
+                comQtp.EnvQtp();
 
-		}
+            }
+            catch (Exception e) {
 
+                Console.WriteLine(e.ToString());
+                Console.Write(e.StackTrace);
 
-
-
-
-
-
-
-
-
-
-	}
+            }
+        }
+    }
 }

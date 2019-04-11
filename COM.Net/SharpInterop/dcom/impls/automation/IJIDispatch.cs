@@ -292,7 +292,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// the <code>dispId</code> parameter.
         /// For the <code>inparams</code> array, sequential <code>DISPID</code>s
         /// (zero based index) will be used.
-        /// For <code>inparam[0]</code> , <code>DISPID</code> will be
+        /// For <code>inparam[0]</code>, <code>DISPID</code> will be
         /// <code>0</code>, for <code>inparam[1]</code>
         /// it will be <code>1</code> and so on. 
         /// </summary>
@@ -331,7 +331,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <code>dispId</code> parameter.
         /// For the <code>inparams</code> array, sequential <code>DISPID</code>s 
         /// (zero based index) will be used.
-        /// For <code>inparam[0]</code> , <code>DISPID</code> will be <code>0</code>,
+        /// For <code>inparam[0]</code>, <code>DISPID</code> will be <code>0</code>,
         /// for <code>inparam[1]</code>
         /// it will be <code>1</code> and so on.
         /// sequential dispIds for params are used 0,1,2,3...
@@ -380,7 +380,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <code>JIVariant</code>s before performing the
         /// actual call to the COM server, via the <code>IJIDispatch</code> interface.
         /// </param>
-        /// <param name="dispIds"> array of <code>DISPID</code>s , matching by index to
+        /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to
         /// those in <code>inparams</code> array. </param>
         /// <exception cref="JIException"> </exception>
         void CallMethod(int dispId, object[] inparams, int[] dispIds);
@@ -400,7 +400,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <code>JIVariant</code>s before performing the
         /// actual call to the COM server, via the <code>IJIDispatch</code> interface.
         /// </param>
-        /// <param name="dispIds"> array of <code>DISPID</code>s , matching by index to 
+        /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to 
         /// those in <code>inparams</code> array. </param>
         /// <returns> JIVariant[] result. </returns>
         /// <exception cref="JIException"> </exception>
@@ -421,7 +421,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <code>JIVariant</code>s before performing the
         /// actual call to the COM server, via the <code>IJIDispatch</code> interface.
         /// </param>
-        /// <param name="dispIds"> array of <code>DISPID</code>s , matching by index to
+        /// <param name="dispIds"> array of <code>DISPID</code>s, matching by index to
         /// those in <code>inparams</code> array. </param>
         /// <returns> JIVariant[] result. </returns>
         /// <exception cref="JIException"> </exception>

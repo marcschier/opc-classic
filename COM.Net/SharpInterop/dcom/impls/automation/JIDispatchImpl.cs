@@ -41,9 +41,9 @@ namespace org.jinterop.dcom.impls.automation {
                     Opnum = 0
                 };
                 obj.AddInParamAsInt(0, JIFlags.FLAG_NULL);
-                obj.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                obj.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
                 var result = ComObject.Call(obj);
-                return (int)(int?)result[0];
+                return (int)result[0];
             }
         }
 
@@ -56,7 +56,7 @@ namespace org.jinterop.dcom.impls.automation {
 
             var innerMap = (IDictionary<object, object>)_cacheOfDispIds[apiName];
             if (innerMap != null) {
-                var dispId = (int?)innerMap[apiName];
+                var dispId = (int)innerMap[apiName];
                 return (int)dispId;
             }
 
@@ -71,7 +71,7 @@ namespace org.jinterop.dcom.impls.automation {
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(1, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(0x800, JIFlags.FLAG_NULL);
-            obj.AddOutParamAsObject(new JIArray(typeof(int?), null, 1, true), JIFlags.FLAG_NULL);
+            obj.AddOutParamAsObject(new JIArray(typeof(int), null, 1, true), JIFlags.FLAG_NULL);
 
             var result = ComObject.Call(obj);
             if (result == null && obj.Error) {
@@ -83,7 +83,7 @@ namespace org.jinterop.dcom.impls.automation {
             };
             _cacheOfDispIds[apiName] = innerMap;
 
-            //first will be the length , and the next will be the actual value.
+            //first will be the length, and the next will be the actual value.
             return (int)((object[])((JIArray)result[0]).ArrayInstance)[0]; // will get the dispatch ID.
         }
 
@@ -100,8 +100,7 @@ namespace org.jinterop.dcom.impls.automation {
             {
                 var values = new int[innerMap.Count];
                 for (var i = 0; i < apiName.Length; i++) {
-                    var dispId = (int?)innerMap[apiName[i]];
-                    if (dispId == null) {
+                    if (!innerMap.TryGetValue(apiName[i], out var dispId)) {
                         sendForAll = true;
                         break;
                     }
@@ -128,7 +127,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             var array = new JIArray(pointers, true);
-            var arrayOut = new JIArray(typeof(int?), null, 1, true);
+            var arrayOut = new JIArray(typeof(int), null, 1, true);
             obj.AddInParamAsUUID(UUID.NIL_UUID, JIFlags.FLAG_NULL);
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(apiName.Length, JIFlags.FLAG_NULL);
@@ -218,7 +217,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             dispParams.AddMember(new JIPointer(arrayOfVariantsInParams)); //should be an array of variants
-            dispParams.AddMember(new JIPointer(arrayOfNamedDispIds)); //if there, this should be an array of variants , these too.
+            dispParams.AddMember(new JIPointer(arrayOfNamedDispIds)); //if there, this should be an array of variants, these too.
             dispParams.AddMember(lengthVar);
             dispParams.AddMember(lengthPtr);
 
@@ -251,7 +250,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             outparams[1] = kExcepInfo;
-            outparams[2] = new JIPointer(typeof(int?), true);
+            outparams[2] = new JIPointer(typeof(int), true);
             outparams[3] = new JIArray(typeof(JIVariant), null, 1, true);
 
             obj.SetOutParams(outparams, JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
@@ -542,15 +541,15 @@ namespace org.jinterop.dcom.impls.automation {
         /// </summary>
         static JIDispatchImpl() {
             try {
-                kExcepInfo.AddMember(typeof(short?));
-                kExcepInfo.AddMember(typeof(short?));
+                kExcepInfo.AddMember(typeof(short));
+                kExcepInfo.AddMember(typeof(short));
                 kExcepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
                 kExcepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
                 kExcepInfo.AddMember(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR));
-                kExcepInfo.AddMember(typeof(int?));
+                kExcepInfo.AddMember(typeof(int));
                 kExcepInfo.AddMember(new JIPointer(null, true));
                 kExcepInfo.AddMember(new JIPointer(null, true));
-                kExcepInfo.AddMember(typeof(int?));
+                kExcepInfo.AddMember(typeof(int));
             }
             catch (JIException e) {
                 Log.Logger.Error(e, "JIDispatchImpl static initializer");

@@ -13,12 +13,12 @@ namespace org.jinterop.dcom.core {
     using org.jinterop.winreg;
     using rpc;
     using Serilog;
-    using System;
-    using System.IO;
-    using System.Collections.Generic;
     using SharpCifs.Util.Sharpen;
-    using System.Net;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Net;
 
     /// <summary>
     /// Startup class representing a COM Server.
@@ -35,16 +35,16 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     public sealed class JIComServer : Stub {
 
-        private static Properties defaults = new Properties();
+        private static readonly Properties kDefaults = new Properties();
         static JIComServer() {
 
-            defaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
-            defaults.SetProperty("rpc.ntlm.sign", "false");
-            defaults.SetProperty("rpc.ntlm.seal", "false");
-            defaults.SetProperty("rpc.ntlm.keyExchange", "false");
-            defaults.SetProperty("rpc.ntlm.sso", "false");
-            defaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
-            defaults.SetProperty("rpc.socketTimeout", 0.ToString());
+            kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            kDefaults.SetProperty("rpc.ntlm.sign", "false");
+            kDefaults.SetProperty("rpc.ntlm.seal", "false");
+            kDefaults.SetProperty("rpc.ntlm.keyExchange", "false");
+            kDefaults.SetProperty("rpc.ntlm.sso", "false");
+            kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
+            kDefaults.SetProperty("rpc.socketTimeout", 0.ToString());
             //		rpc.connectionContext = rpc.security.ntlm.NtlmConnectionContext
             //		rpc.ntlm.sign = false
             //		rpc.ntlm.seal = false
@@ -92,14 +92,14 @@ namespace org.jinterop.dcom.core {
 
             //		ipAddress="192.168.1.104";
             if (ipAddress != null && !ipAddress.Trim().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
-                if (!_listOfIps.Contains(ipAddress)) {
-                    _listOfIps.Add(ipAddress.ToLower());
+                if (!kListOfIps.Contains(ipAddress)) {
+                    kListOfIps.Add(ipAddress.ToLower());
                 }
             }
 
             TransportFactory = JIComTransportFactory.Instance;
             //now read the session and prepare information for the stub.
-            Properties = new Properties(defaults);
+            Properties = new Properties(kDefaults);
             Properties.SetProperty("rpc.security.username", session.UserName);
             Properties.SetProperty("rpc.security.password", session.Password);
             Properties.SetProperty("rpc.ntlm.domain", session.Domain);
@@ -132,14 +132,14 @@ namespace org.jinterop.dcom.core {
                     var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
                     if (idx != -1) {
                         try {
-                            if (_listOfIps.Contains(binding.NetworkAddress.ToLower())) {
+                            if (kListOfIps.Contains(binding.NetworkAddress.ToLower())) {
                                 nameBinding = null;
                                 break;
                             }
 
                             //now check for the one with port
                             idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
-                            if (idx != -1 && _listOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
+                            if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
                                 nameBinding = null;
                                 break;
                             }
@@ -228,14 +228,14 @@ namespace org.jinterop.dcom.core {
                     var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
                     if (idx != -1) {
                         try {
-                            if (_listOfIps.Contains(binding.NetworkAddress.ToLower())) {
+                            if (kListOfIps.Contains(binding.NetworkAddress.ToLower())) {
                                 nameBinding = null;
                                 break;
                             }
 
                             //now check for the one with port
                             idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
-                            if (idx != -1 && _listOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
+                            if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
                                 nameBinding = null;
                                 break;
                             }
@@ -385,7 +385,7 @@ namespace org.jinterop.dcom.core {
         private void Initialise(JIClsid clsid, string address, JISession session) {
             TransportFactory = JIComTransportFactory.Instance;
             //now read the session and prepare information for the stub.
-            Properties = new Properties(defaults);
+            Properties = new Properties(kDefaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
             Address = address;
 
@@ -414,7 +414,7 @@ namespace org.jinterop.dcom.core {
             }
             catch (JIException e) {
                 if ((uint)e.ErrorCode == 0x80040154) {
-                    Log.Logger.Warning("Got the class not registered exception , will attempt setting entries based on status flags...");
+                    Log.Logger.Warning("Got the class not registered exception, will attempt setting entries based on status flags...");
                     //try registering the dll\ocx on our own
                     //check for clsid.autoregister flag
                     //check for jisystem.autoregister flag.
@@ -426,10 +426,10 @@ namespace org.jinterop.dcom.core {
                         try {
                             IJIWinReg registry = null;
                             if (session.SSOEnabled) {
-                                registry = JIWinRegFactory.SingleTon.GetWinreg(session.TargetServer, true);
+                                registry = JIWinRegFactory.Instance.GetWinreg(session.TargetServer, true);
                             }
                             else {
-                                registry = JIWinRegFactory.SingleTon.GetWinreg(new JIDefaultAuthInfoImpl(
+                                registry = JIWinRegFactory.Instance.GetWinreg(new JIDefaultAuthInfoImpl(
                                     session.Domain, session.UserName, session.Password), session.TargetServer, true);
                             }
 
@@ -808,9 +808,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="targetIID">
         /// </param>
         /// <exception cref="JIException"> </exception>
-        internal object[] Call(JICallBuilder obj, string targetIID) {
-            return Call(obj, targetIID, _session.GlobalSocketTimeout);
-        }
+        internal object[] Call(JICallBuilder obj, string targetIID) =>
+            Call(obj, targetIID, _session.GlobalSocketTimeout);
 
         /// <summary>
         /// Execute a Method on the COM Interface identified by the IID
@@ -836,9 +835,7 @@ namespace org.jinterop.dcom.core {
                         SocketTimeOut = socketTimeout;
                     }
                 }
-
                 try {
-
                     Attach();
                     if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
                         //first send an AlterContext to the IID of the interface
@@ -849,7 +846,6 @@ namespace org.jinterop.dcom.core {
 
                     Object = obj.ParentIpid;
                     Call(Semantics.IDEMPOTENT, obj);
-
                 }
                 catch (FaultException e) {
                     throw new JIException((int)e.Code, e);
@@ -860,10 +856,8 @@ namespace org.jinterop.dcom.core {
                 catch (JIRuntimeException e1) {
                     throw new JIException(e1);
                 }
-
                 return obj.Results;
             }
-
         }
 
         /// <summary>
@@ -927,7 +921,7 @@ namespace org.jinterop.dcom.core {
         }
 
         private JIIServerActivation _serverActivation;
-        private JIOxidResolver _oxidResolver;
+        private readonly JIOxidResolver _oxidResolver;
         private string _clsid;
         private JISession _session;
         private bool _serverInstantiated;
@@ -936,6 +930,6 @@ namespace org.jinterop.dcom.core {
         private string _syntax;
         private bool _timeoutModifiedfrom0;
         private readonly JIInterfacePointer _interfacePtrCtor;
-        private static readonly List<string> _listOfIps = new List<string>();
+        private static readonly List<string> kListOfIps = new List<string>();
     }
 }

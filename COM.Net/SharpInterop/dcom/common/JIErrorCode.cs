@@ -437,7 +437,7 @@ namespace org.jinterop.dcom.common {
         JI_STRUCT_INCORRECT_NESTED_STRUCT_POS = 0x0000101D,
 
         /// <summary>
-        /// Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct , not in between.
+        /// Member(which happens to be a Struct) has an array and hence can only be added to the end of this Struct, not in between.
         /// </summary>
         JI_STRUCT_INCORRECT_NESTED_STRUCT_POS2 = 0x0000101E,
 
@@ -598,7 +598,7 @@ namespace org.jinterop.dcom.common {
         JI_COMOBJ_LOCAL_REF = 0x00001049,
 
         /// <summary>
-        /// A session is not attached with this object , use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.
+        /// A session is not attached with this object, use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.
         /// </summary>
         JI_SESSION_NOT_ATTACHED = 0x00001050,
 

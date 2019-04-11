@@ -35,7 +35,7 @@ namespace org.jinterop.dcom.core {
         internal JIComOxidRuntimeHelper(Properties properties) {
             TransportFactory = JIComRuntimeTransportFactory.Instance;
             Properties = properties;
-            //this is never consulted so , putting localhost here.
+            //this is never consulted so, putting localhost here.
             Address = "127.0.0.1[135]";
         }
 
@@ -51,7 +51,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="portNumRemote"></param>
         internal void StartOxid(int portNumLocal, int portNumRemote) {
             var oxidResolverThread = new OxidResolverThread(this,
-                "jI_OxidResolver_Client[" + portNumLocal + " , " + portNumRemote + "]");
+                "jI_OxidResolver_Client[" + portNumLocal + ", " + portNumRemote + "]");
             oxidResolverThread.SetDaemon(true);
             oxidResolverThread.Start();
         }
@@ -79,7 +79,7 @@ namespace org.jinterop.dcom.core {
             var remUnknownThread = new RemUnknownListenerThread(this, baseIID,
                 ipidOfRemUnknown, ipidOfComponent, listOfSupportedInterfaces, serverSocket,
                 remUnknownForThisListener, "jI_RemUnknownListener[" +
-                baseIID + " , " + remUnknownPort + "]");
+                baseIID + ", " + remUnknownPort + "]");
             remUnknownThread.SetDaemon(true);
             remUnknownThread.Start();
             return remUnknownPort;
@@ -110,7 +110,7 @@ namespace org.jinterop.dcom.core {
                         GetName() + " is purposefully closed by cancellation.");
                 }
                 catch (Exception e) {
-                    Log.Logger.Error(e, "Oxid Resolver Thread: " + e.Message + " , on thread Id: " + GetName());
+                    Log.Logger.Error(e, "Oxid Resolver Thread: " + e.Message + ", on thread Id: " + GetName());
                 }
                 finally {
                     try {
@@ -175,7 +175,7 @@ namespace org.jinterop.dcom.core {
 
                         // now start a new thread with this socket
                         var remUnknown = new RemUnknownThread(this, remUnknownHelper,
-                            _remUnknownForThisListener, "jI_RemUnknown[" + _baseIID + " , L(" +
+                            _remUnknownForThisListener, "jI_RemUnknown[" + _baseIID + ", L(" +
                                 socket.GetLocalPort() + "):R(" + socket.GetPort() + ")]");
                         remUnknown.SetDaemon(true);
                         remUnknown.Start();
@@ -188,7 +188,7 @@ namespace org.jinterop.dcom.core {
                 catch (IOException e) {
                     Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownListener");
                     Log.Logger.Warning("RemUnknownListener Thread: " + e.Message +
-                        " , on thread Id: " + GetName());
+                        ", on thread Id: " + GetName());
                 }
                 catch (Exception e) {
                     Log.Logger.Warning(e, "JIComOxidRuntimeHelper RemUnknownListener");
@@ -264,7 +264,7 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// This object should have serialized access only, i.e
-        /// at a time only 1 read --> write , cycle should happen
+        /// at a time only 1 read --> write, cycle should happen
         /// it is not multithreaded safe.
         /// </summary>
         internal class OxidResolverImpl : NdrOp, IJICOMRuntimeWorker {
@@ -350,23 +350,23 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Information("Oxid Object: ComplexPing");
                 var b = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8); //setid
                 JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(short?), null, JIFlags.FLAG_NULL, null); //seqId.
-                var lengthAdds = (short?)JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(short?), null, JIFlags.FLAG_NULL, null);
-                var lengthDels = (short?)JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(short?), null, JIFlags.FLAG_NULL, null);
+                    ndr, typeof(short), null, JIFlags.FLAG_NULL, null); //seqId.
+                var lengthAdds = (short)JIMarshalUnMarshalHelper.Deserialize(
+                    ndr, typeof(short), null, JIFlags.FLAG_NULL, null);
+                var lengthDels = (short)JIMarshalUnMarshalHelper.Deserialize(
+                    ndr, typeof(short), null, JIFlags.FLAG_NULL, null);
                 JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(int?), null, JIFlags.FLAG_NULL, null);
+                    ndr, typeof(int), null, JIFlags.FLAG_NULL, null);
 
                 JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(int?), null, JIFlags.FLAG_NULL, null); //length
+                    ndr, typeof(int), null, JIFlags.FLAG_NULL, null); //length
                 var listOfAdds = new List<object>();
                 for (var i = 0; i < (int)lengthAdds; i++) {
                     listOfAdds.Add(new JIObjectId(JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8), false));
                 }
 
                 JIMarshalUnMarshalHelper.Deserialize(
-                    ndr, typeof(int?), null, JIFlags.FLAG_NULL, null); //length
+                    ndr, typeof(int), null, JIFlags.FLAG_NULL, null); //length
                 var listOfDels = new List<object>();
                 for (var i = 0; i < (int)lengthDels; i++) {
                     listOfDels.Add(new JIObjectId(JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8), false));
@@ -384,9 +384,9 @@ namespace org.jinterop.dcom.core {
 
                 JIMarshalUnMarshalHelper.WriteOctetArrayLE(ndr2, b);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(short?), (short)0, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(short), (short)0, null, JIFlags.FLAG_NULL);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(int?), 0, null, JIFlags.FLAG_NULL); //hresult
+                    ndr2, typeof(int), 0, null, JIFlags.FLAG_NULL); //hresult
                 return _buffer;
             }
 
@@ -430,19 +430,19 @@ namespace org.jinterop.dcom.core {
                 //This is so that we stay at 5.4 DCOM until we upgrade the
                 //local server to 5.7 as well.
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(short?), (short)5, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(short), (short)5, null, JIFlags.FLAG_NULL);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(short?), (short)4, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(short), (short)4, null, JIFlags.FLAG_NULL);
 
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(int?), 0, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(int), 0, null, JIFlags.FLAG_NULL);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(int?), dualStringArray.Length, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(int), dualStringArray.Length, null, JIFlags.FLAG_NULL);
                 dualStringArray.Encode(ndr2);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(int?), 0, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(int), 0, null, JIFlags.FLAG_NULL);
                 JIMarshalUnMarshalHelper.Serialize(
-                    ndr2, typeof(int?), 0, null, JIFlags.FLAG_NULL);
+                    ndr2, typeof(int), 0, null, JIFlags.FLAG_NULL);
                 return ndrBuffer;
             }
 
@@ -467,7 +467,7 @@ namespace org.jinterop.dcom.core {
                 var details = JIComOxidRuntime.Instance.GetOxidDetails(oxid);
 
                 if (details == null) {
-                    //not found, now throw an JIRuntimeException , so that a FaultPdu could be sent.
+                    //not found, now throw an JIRuntimeException, so that a FaultPdu could be sent.
                     throw new JIRuntimeException(JIErrorCodes.RPC_E_INVALID_OXID);
                 }
 
@@ -544,7 +544,7 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// This object should have serialized access only, i.e
-        /// at a time only 1 read --> write , cycle should happen
+        /// at a time only 1 read --> write, cycle should happen
         /// it is not multithreaded safe.
         /// </summary>
         internal class RemUnknownObject : NdrOp, IJICOMRuntimeWorker {
@@ -612,8 +612,8 @@ namespace org.jinterop.dcom.core {
                             var structs = (JIStruct[])array.ArrayInstance;
                             for (var i = 0; i < length; i++) {
                                 var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
-                                var publicRefs = (int)(int?)structs[i].GetMember(1);
-                                var privateRefs = (int)(int?)structs[i].GetMember(2);
+                                var publicRefs = (int)structs[i].GetMember(1);
+                                var privateRefs = (int)structs[i].GetMember(2);
 
                                 if (!_mapOfIpidsVsRef.Contains(ipidref)) {
                                     //this would be strange, since all the ipids we give should be part of the map already.
@@ -625,7 +625,7 @@ namespace org.jinterop.dcom.core {
                                 retvals[i] = 0x1;
 
 
-                                var total = (int?)_mapOfIpidsVsRef[ipidref] + publicRefs + privateRefs;
+                                var total = (int)_mapOfIpidsVsRef[ipidref] + publicRefs + privateRefs;
                                 _mapOfIpidsVsRef[ipidref] = total;
                             }
                             //preparing the response
@@ -651,13 +651,13 @@ namespace org.jinterop.dcom.core {
                             structs = (JIStruct[])array.ArrayInstance;
                             for (var i = 0; i < length; i++) {
                                 var ipidref = ((UUID)structs[i].GetMember(0)).ToString().ToUpper();
-                                var publicRefs = (int)(int?)structs[i].GetMember(1);
-                                var privateRefs = (int)(int?)structs[i].GetMember(2);
+                                var publicRefs = (int)structs[i].GetMember(1);
+                                var privateRefs = (int)structs[i].GetMember(2);
                                 if (!_mapOfIpidsVsRef.Contains(ipidref)) {
                                     continue;
                                 }
 
-                                var total = (int?)_mapOfIpidsVsRef[ipidref] - publicRefs - privateRefs;
+                                var total = (int)_mapOfIpidsVsRef[ipidref] - publicRefs - privateRefs;
                                 if (total == 0) {
                                     _mapOfIpidsVsRef.Remove(ipidref);
                                 }
@@ -685,12 +685,12 @@ namespace org.jinterop.dcom.core {
                     }
                 }
                 else {
-                    //now use the objectId , just set in before this call to read. That objectId is the IPID on which the
-                    //call is being made , and was previously exported during Q.I. The component value was filled during an
+                    //now use the objectId, just set in before this call to read. That objectId is the IPID on which the
+                    //call is being made, and was previously exported during Q.I. The component value was filled during an
                     //alter context or bind, again made some calls before.
                     if (_component == null) {
-                        Log.Logger.Error("JIComOxidRuntimeHelper RemUnknownObject read(): component is null , opnum is " +
-                            Opnum + " , IPID is " + ipid + " , selfIpid is " + _selfIPID);
+                        Log.Logger.Error("JIComOxidRuntimeHelper RemUnknownObject read(): component is null, opnum is " +
+                            Opnum + ", IPID is " + ipid + ", selfIpid is " + _selfIPID);
                     }
                     byte[] b = null;
                     object result = null;
@@ -705,7 +705,7 @@ namespace org.jinterop.dcom.core {
                         Log.Logger.Error(e, "RemUnknownObject read. Exception occured: " + e.ErrorCode);
                     }
 
-                    //now if opnum was 6 then this is a dispatch call , so response has to be dispatch response
+                    //now if opnum was 6 then this is a dispatch call, so response has to be dispatch response
                     //not the normal one.
                     if (_component.GetInterfaceDefinitionFromIPID(ipid).DispInterface && Opnum == 6) {
                         var result2 = result;
@@ -764,7 +764,7 @@ namespace org.jinterop.dcom.core {
                     ndr2.Buffer = _buffer;
 
                     //JIOrpcThat.encode(ndr2);
-                    //have to create a call Object, since these return types could be structs , unions etc. having deffered pointers
+                    //have to create a call Object, since these return types could be structs, unions etc. having deffered pointers
                     var callObject = new JICallBuilder();
                     callObject.AttachSession(_component.Session);
                     if (result != null) {
@@ -783,7 +783,7 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     callObject.Write2(ndr2);
-                    JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int?), hresult, null, JIFlags.FLAG_NULL);
+                    JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int), hresult, null, JIFlags.FLAG_NULL);
                 }
             }
 
@@ -808,7 +808,7 @@ namespace org.jinterop.dcom.core {
                 var details = JIComOxidRuntime.Instance.GetComponentFromIPID(ipid.ToString());
 
                 if (details == null) {
-                    //not found, now throw an JIRuntimeException , so that a FaultPdu could be sent.
+                    //not found, now throw an JIRuntimeException, so that a FaultPdu could be sent.
                     throw new JIRuntimeException(JIErrorCodes.RPC_E_INVALID_OXID);
                 }
 
@@ -816,7 +816,7 @@ namespace org.jinterop.dcom.core {
 
                 Log.Logger.Verbose("RemUnknownObject: [QI] JIJavcCoClass is " + component.CoClassIID);
 
-                JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int), null, JIFlags.FLAG_NULL, null); //refs , don't really care about this.
+                JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int), null, JIFlags.FLAG_NULL, null); //refs, don't really care about this.
 
                 int length = (short)JIMarshalUnMarshalHelper.Deserialize(
                     ndr, typeof(short), null, JIFlags.FLAG_NULL, null); //length of the requested Interfaces
@@ -835,9 +835,9 @@ namespace org.jinterop.dcom.core {
                 JIOrpcThat.Encode(ndr2);
 
                 //pointer
-                JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int?), new object().GetHashCode(), null, JIFlags.FLAG_NULL);
+                JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int), new object().GetHashCode(), null, JIFlags.FLAG_NULL);
                 //length of array
-                JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int?), length, null, JIFlags.FLAG_NULL);
+                JIMarshalUnMarshalHelper.Serialize(ndr2, typeof(int), length, null, JIFlags.FLAG_NULL);
 
                 var arrayOfUUIDs = (object[])array.ArrayInstance;
 
@@ -873,9 +873,9 @@ namespace org.jinterop.dcom.core {
                         }
                         //hresult
                         JIMarshalUnMarshalHelper.Serialize(
-                            ndr2, typeof(int?), hresult, null, JIFlags.FLAG_NULL);
+                            ndr2, typeof(int), hresult, null, JIFlags.FLAG_NULL);
                         JIMarshalUnMarshalHelper.Serialize(
-                            ndr2, typeof(int?), unchecked((int)0xCCCCCCCC), null, JIFlags.FLAG_NULL);
+                            ndr2, typeof(int), unchecked((int)0xCCCCCCCC), null, JIFlags.FLAG_NULL);
 
                         //now generate the IPID and export a java instance with this.
                         JIStdObjRef objRef = null;

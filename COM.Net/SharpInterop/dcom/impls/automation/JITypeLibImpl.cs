@@ -33,9 +33,9 @@ namespace org.jinterop.dcom.impls.automation {
                 var callObject = new JICallBuilder(true) {
                     Opnum = 0
                 };
-                callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+                callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
                 var result = ComObject.Call(callObject);
-                return (int)(int?)result[0];
+                return (int)result[0];
             }
         }
 
@@ -56,9 +56,9 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 2
             };
             callObject.AddInParamAsInt(index, JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
             var result = ComObject.Call(callObject);
-            return (int)(int?)result[0];
+            return (int)result[0];
         }
 
         /// <inheritdoc/>
@@ -81,14 +81,14 @@ namespace org.jinterop.dcom.impls.automation {
 
             var tlibattr = new JIStruct();
             tlibattr.AddMember(typeof(UUID));
-            tlibattr.AddMember(typeof(int?));
-            tlibattr.AddMember(typeof(int?));
-            tlibattr.AddMember(typeof(short?));
-            tlibattr.AddMember(typeof(short?));
-            tlibattr.AddMember(typeof(short?));
+            tlibattr.AddMember(typeof(int));
+            tlibattr.AddMember(typeof(int));
+            tlibattr.AddMember(typeof(short));
+            tlibattr.AddMember(typeof(short));
+            tlibattr.AddMember(typeof(short));
 
             callObject.AddOutParamAsObject(new JIPointer(tlibattr), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(int?), JIFlags.FLAG_NULL); //CLEANUPSTORAGE
+            callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //CLEANUPSTORAGE
             var result = ComObject.Call(callObject);
         }
 
@@ -96,10 +96,10 @@ namespace org.jinterop.dcom.impls.automation {
         public object[] GetDocumentation(int memberId) {
             var callObject = new JICallBuilder(true);
             callObject.AddInParamAsInt(memberId, JIFlags.FLAG_NULL);
-            callObject.AddInParamAsInt(0xb, JIFlags.FLAG_NULL); //refPtrFlags , as per the oaidl.idl...
+            callObject.AddInParamAsInt(0xb, JIFlags.FLAG_NULL); //refPtrFlags, as per the oaidl.idl...
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsObject(typeof(int?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(typeof(int), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
             callObject.Opnum = 6;
             return ComObject.Call(callObject);
@@ -115,8 +115,8 @@ namespace org.jinterop.dcom.impls.automation {
             callObject.AddInParamAsShort(found, JIFlags.FLAG_NULL);
 
             callObject.AddOutParamAsObject(new JIArray(typeof(IJIComObject), null, 1, true, true), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsObject(new JIArray(typeof(int?), null, 1, true, true), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(short?), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIArray(typeof(int), null, 1, true, true), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(short), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
 
             return ComObject.Call(callObject);

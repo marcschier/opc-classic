@@ -61,7 +61,7 @@ namespace org.jinterop.dcom.transport {
                 ConnectionOrientedPdu response = null;
                 var request = Receive();
                 Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] request : " +
-                    Thread.CurrentThread.Name + " , " + request + " workerObject is resolver: " +
+                    Thread.CurrentThread.Name + ", " + request + " workerObject is resolver: " +
                     workerObject.Resolver);
                 NdrBuffer buffer = null;
                 var ndr = new NdrCodec();
@@ -75,7 +75,7 @@ namespace org.jinterop.dcom.transport {
                     ndr.Format = ((RequestCoPdu)request).Format;
                     workerObject.Opnum = ((RequestCoPdu)request).Opnum;
                     //sets the current object, this is used to identify the JILocalCoClass to work on.
-                    //for most cases this will be null , till there is an actual COM interface request.
+                    //for most cases this will be null, till there is an actual COM interface request.
                     workerObject.CurrentObjectID = ((RequestCoPdu)request).Object;
 
                     try {
@@ -109,7 +109,7 @@ namespace org.jinterop.dcom.transport {
                         //this list will be clear after this call.
                         /* Basically the cycle expected is like this...first a bind call comes, then a RemQI, that populates the
                          * list internally (Remunknownobject), then an alter context comes for the QIed interface, this clears the set
-                         * object (if any) , then a normal request comes through.
+                         * object (if any), then a normal request comes through.
                          *
                          */
                         //this call is only valid when the workerObject is RemUnknownObject.
@@ -150,7 +150,7 @@ namespace org.jinterop.dcom.transport {
                     }
                 }
                 else if (request is FaultCoPdu fault) {
-                    // TODO to throw or not to throw ...that is the question :)...i think it should be logged , but not thrown
+                    // TODO to throw or not to throw ...that is the question :)...i think it should be logged, but not thrown
                     // otherwise this thread will be terminated and further access will be blocked for the com server.
                     // TODO write logging code here and comment this code.
                     throw new FaultException("Received fault.", fault.Status, fault.Stub);

@@ -99,12 +99,12 @@ namespace org.jinterop.dcom.core {
 
             ndr.WriteUnsignedLong(0); // Minterface pointer
             ndr.WriteUnsignedLong(ClientImpersonationLevel); // impersonation level
-            ndr.WriteUnsignedLong(Mode); //mode, when object name , interface pointer are not null , this is passed directly to IPersistFile:Load
+            ndr.WriteUnsignedLong(Mode); //mode, when object name, interface pointer are not null, this is passed directly to IPersistFile:Load
             ndr.WriteUnsignedLong(2); //No. of IIDs requested.
             ndr.WriteUnsignedLong(new object().GetHashCode());
             ndr.WriteUnsignedLong(2); //Array length
 
-            //IID of IUnknown , this is hard coded here, standard way of COM is to first get a handle to the IUnknown
+            //IID of IUnknown, this is hard coded here, standard way of COM is to first get a handle to the IUnknown
             uuid.Parse("00000000-0000-0000-c000-000000000046");
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -201,14 +201,14 @@ namespace org.jinterop.dcom.core {
             if (arrayObjs[1] != null) {
                 //dual is supported since the IDispatch was obtained
                 _isDual = true;
-                //eat this keeping only the IPID for cleanup , let the user perform another queryInterface for this.
+                //eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
                 var ptr = arrayObjs[1];
                 _dispIpid = ptr.IPID;
                 _dispOid = ptr.OID;
                 _dispRefs = ((JIStdObjRef)ptr.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
             }
 
-            array = new JIArray(typeof(int?), null, 1, true);
+            array = new JIArray(typeof(int), null, 1, true);
             //ignore the retvals
             JIMarshalUnMarshalHelper.Deserialize(ndr, array, null, JIFlags.FLAG_NULL, null);
 

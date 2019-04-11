@@ -94,11 +94,11 @@ namespace org.jinterop.dcom.core {
 
             try {
                 if (_session.SSOEnabled) {
-                    winreg = JIWinRegFactory.SingleTon.GetWinreg(
+                    winreg = JIWinRegFactory.Instance.GetWinreg(
                         _server, true);
                 }
                 else {
-                    winreg = JIWinRegFactory.SingleTon.GetWinreg(
+                    winreg = JIWinRegFactory.Instance.GetWinreg(
                         new JIDefaultAuthInfoImpl(_session.Domain, _session.UserName, _session.Password), _server, true);
                 }
 

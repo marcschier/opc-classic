@@ -62,7 +62,7 @@ namespace org.jinterop.dcom.core {
             else {
                 NetworkAddress = hostaddress + "[" + Convert.ToString(port) + "]";
             }
-            Length = 2 + NetworkAddress.Length * 2 + 2;
+            Length = 2 + (NetworkAddress.Length * 2) + 2;
             TowerId = 0x7; // TCP_IP
         }
 
@@ -83,7 +83,7 @@ namespace org.jinterop.dcom.core {
                 TowerId = ndr.ReadUnsignedShort()
             };
 
-            //hit the end , security bindings start.
+            //hit the end, security bindings start.
             if (stringBinding.TowerId == 0) {
                 return null;
             }
@@ -101,7 +101,7 @@ namespace org.jinterop.dcom.core {
 
             stringBinding.NetworkAddress = buffer.ToString();
             // 2 bytes for tower id, each character is 2 bytes (short) and last 2 bytes for null termination
-            stringBinding.Length = 2 + stringBinding.NetworkAddress.Length * 2 + 2;
+            stringBinding.Length = 2 + (stringBinding.NetworkAddress.Length * 2) + 2;
             return stringBinding;
         }
 

@@ -129,7 +129,7 @@ namespace org.jinterop.dcom.core {
         /// is not equal to the <code>dimension</code> parameter. </exception>
         /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
         /// specified types. </exception>
-        //for structs, pointers , unions.
+        //for structs, pointers, unions.
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
             if (template == null) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
@@ -171,7 +171,7 @@ namespace org.jinterop.dcom.core {
             _isVaryingProxy = isVarying;
 
             if (upperBounds != null) {
-                //have to supply the upperbounds for each dimension , no gaps in between
+                //have to supply the upperbounds for each dimension, no gaps in between
                 if (upperBounds.Length != dimension) {
                     throw new ArgumentException(JISystem.GetLocalizedMessage(
                         JIErrorCodes.JI_ARRAY_UPPERBNDS_DIM_NOTMATCH));
@@ -273,7 +273,7 @@ namespace org.jinterop.dcom.core {
                     ConformantMaxCounts.Add(x);
                 }
                 ArrayClass = subArray.GetType().GetElementType();
-                if (x == 0) //In which ever index the length is 0 , the array stops there, example Byte[0],Byte[0][10],Byte[10][0]
+                if (x == 0) //In which ever index the length is 0, the array stops there, example Byte[0],Byte[0][10],Byte[10][0]
                 {
                     break;
                 }
@@ -288,7 +288,7 @@ namespace org.jinterop.dcom.core {
 
             UpperBounds = new int[upperBounds2.Count];
             for (var i = 0; i < upperBounds2.Count; i++) {
-                UpperBounds[i] = (int)(int?)upperBounds2[i];
+                UpperBounds[i] = (int)upperBounds2[i];
             }
             Dimensions++; //since it starts from -1.
             _sizeOfNestedArrayInBytes = ComputeLengthArray(array);
@@ -389,7 +389,7 @@ namespace org.jinterop.dcom.core {
                 //first write the max counts ...First to last dimension.
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag);
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], defferedPointers, flag);
                     i++;
                 }
 
@@ -400,8 +400,8 @@ namespace org.jinterop.dcom.core {
                 //write the offset and the actual count
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), 0, defferedPointers, flag); //offset
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int?), ConformantMaxCounts[i], defferedPointers, flag); //actual count
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, flag); //offset
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], defferedPointers, flag); //actual count
                     i++;
                 }
 
@@ -447,7 +447,7 @@ namespace org.jinterop.dcom.core {
                 var i = 0;
                 while (i < dimension) {
                     retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(
-                        ndr, typeof(int?), defferedPointers, flag, additionalData));
+                        ndr, typeof(int), defferedPointers, flag, additionalData));
                     i++;
                 }
 
@@ -459,7 +459,7 @@ namespace org.jinterop.dcom.core {
                     retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                     i = 0;
                     while (i < retVal.ConformantMaxCounts.Count) {
-                        retVal.UpperBounds[i] = (int)(int?)retVal.ConformantMaxCounts[i];
+                        retVal.UpperBounds[i] = (int)retVal.ConformantMaxCounts[i];
                         retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                         i++;
                     }
@@ -483,9 +483,9 @@ namespace org.jinterop.dcom.core {
                 retVal.NumElementsInAllDimensions = 0;
 
                 while (i < dimension) {
-                    JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int?), defferedPointers, flag, null); // offset
+                    JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int), defferedPointers, flag, null); // offset
                     retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
-                        typeof(int?), defferedPointers, flag, additionalData)); //actual count
+                        typeof(int), defferedPointers, flag, additionalData)); //actual count
                     i++;
                 }
 
@@ -497,7 +497,7 @@ namespace org.jinterop.dcom.core {
                     retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                     i = 0;
                     while (i < retVal.ConformantMaxCounts.Count) {
-                        retVal.UpperBounds[i] = (int)(int?)retVal.ConformantMaxCounts[i];
+                        retVal.UpperBounds[i] = (int)retVal.ConformantMaxCounts[i];
                         retVal.NumElementsInAllDimensions *= retVal.UpperBounds[i];
                         i++;
                     }
@@ -603,7 +603,7 @@ namespace org.jinterop.dcom.core {
                     UpperBounds = new int[ConformantMaxCounts.Count];
                     var i = 0;
                     while (i < ConformantMaxCounts.Count) {
-                        UpperBounds[i] = (int)(int?)ConformantMaxCounts[i];
+                        UpperBounds[i] = (int)ConformantMaxCounts[i];
                         NumElementsInAllDimensions *= UpperBounds[i];
                         i++;
                     }
@@ -632,7 +632,7 @@ namespace org.jinterop.dcom.core {
         /// so this "feature" flag of the SA shas to be looked into.
         /// As can be seen above except only BSTR require a template others do not. But the logic
         /// for the JIString(BSTR) already works fine. So I will use this
-        /// flag only to set the JIVariant.class , whereever the "type" does not specify it but
+        /// flag only to set the JIVariant.class, whereever the "type" does not specify it but
         /// the "feature" does.
         /// </summary>
         /// <param name="c"> </param>
@@ -640,19 +640,19 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override string ToString() {
-            var retVal = "[Type: " + ArrayClass + " , ";
+            var retVal = "[Type: " + ArrayClass + ", ";
             if (ArrayInstance == null) {
-                retVal += "memberArray is null , ";
+                retVal += "memberArray is null, ";
             }
             else {
-                retVal += ArrayInstance + " , ";
+                retVal += ArrayInstance + ", ";
             }
 
             if (_isConformant) {
-                retVal += " conformant , ";
+                retVal += " conformant, ";
             }
             if (_isVarying) {
-                retVal += " varying , ";
+                retVal += " varying, ";
             }
 
             return retVal + "]";

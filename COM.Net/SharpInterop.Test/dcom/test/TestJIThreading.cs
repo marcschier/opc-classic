@@ -1,95 +1,64 @@
 ﻿namespace org.jinterop.dcom.test {
-
-
-    using JISystem = common.JISystem;
-    using IJIComObject = core.IJIComObject;
+    using org.jinterop.dcom.impls.automation;
+    using Serilog;
+    using SharpCifs.Util.Sharpen;
+    using System;
+    using IJIDispatch = impls.automation.IJIDispatch;
     using JIComServer = core.JIComServer;
+    using JIObjectFactory = impls.JIObjectFactory;
     using JIProgId = core.JIProgId;
     using JISession = core.JISession;
     using JIString = core.JIString;
+    using JISystem = common.JISystem;
     using JIVariant = core.JIVariant;
-    using JIObjectFactory = impls.JIObjectFactory;
-    using IJIDispatch = impls.automation.IJIDispatch;
 
-    public class TestJIThreading
-	{
+    public class TestJIThreading {
 
-		internal const string domain = "fdgnt";
-		internal const string user = "roopchand";
-		internal const string password = "QweQwe007";
-		internal const string host = "estroopchandnb";
+        internal const string Domain = "fdgnt";
+        internal const string User = "roopchand";
+        internal const string Password = "QweQwe007";
+        internal const string Host = "estroopchandnb";
 
-		internal const string comServerName = "WbemScripting.SWbemLocator";
-		internal const string comObjectId = "76A6415B-CB41-11d1-8B02-00600806D9B6";
+        internal const string ComServerName = "WbemScripting.SWbemLocator";
+        internal const string ComObjectId = "76A6415B-CB41-11d1-8B02-00600806D9B6";
 
 
-		internal const int totalLoops = 500;
-		internal const int numThreads = 25;
-		internal static int loopsPerThread;
-		internal const int waitForThreadssleepTime = 1000;
+        internal const int TotalLoops = 500;
+        internal const int NumThreads = 25;
+        internal static int _loopsPerThread;
+        internal const int WaitForThreadssleepTime = 1000;
 
-		static TestJIThreading()
-		{
-			loopsPerThread = totalLoops / numThreads;
-		}
+        static TestJIThreading() => _loopsPerThread = TotalLoops / NumThreads;
 
-		public virtual void setUp()
-		{
+        public virtual void SetUp() => JISystem.UseAutoRegistration = true;
 
-			try
-			{
-				JISystem.InBuiltLogHandler = false;
-			}
-			catch (SecurityException e)
-			{
-				// TODO Auto-generated catch block
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				Console.WriteLine(e.ToString());
-				Console.Write(e.StackTrace);
-			}
-			JISystem.AutoRegisteration = true;
-			Log.Logger.Level = Level.ALL;
-		}
+        public virtual void TestThreading() {
+            var group = new ThreadGroup("JIThreading Group");
+            var threads = new Thread[NumThreads];
+            for (var i = 0; i < NumThreads; i++) {
+                threads[i] = new TestThread(group, "TestThread: " + i);
+            }
 
-		public virtual void testThreading()
-		{
-			var group = new ThreadGroup("JIThreading Group");
-			var threads = new Thread[numThreads];
-			for (var i = 0; i < numThreads; i++)
-			{
-				threads[i] = new TestThread(group, "TestThread: " + i);
-			}
+            for (var i = 0; i < NumThreads; i++) {
+                threads[i].Start();
+                //log.info( "activeCount: "+ group.activeCount() );
+                //group.list();
+            }
 
-			for (var i = 0; i < numThreads; i++)
-			{
-				threads[i].Start();
-				//log.info( "activeCount: "+ group.activeCount() );
-				//group.list();
-			}
+            var keepSleeping = true;
+            while (keepSleeping) {
+                try {
+                    for (var i = 0; i < threads.Length; i++) {
+                        var thread = threads[i];
+                        thread.Join();
+                    }
+                }
+                catch (OperationCanceledException e) {
+                    Log.Logger.Error(e, "InterruptedException caught");
+                }
 
-			var keepSleeping = true;
-			while (keepSleeping)
-			{
-				try
-				{
-					for (var i = 0; i < threads.Length; i++)
-					{
-						var thread = threads[i];
-						thread.Join();
-					}
-				}
-				catch (InterruptedException e)
-				{
-					Log.Logger.log(Level.SEVERE, "InterruptedException caught", e);
-				}
-
-				break;
-				/*
+                break;
+                /*
 				bool threadsRunning = false;
 				int aliveCount = 0;
 				for ( int i = 0; i < threads.length; i++ ) {
@@ -106,70 +75,65 @@
 					break;
 				}
 				*/
-			}
-		}
+            }
+        }
 
-		public class TestThread : System.Threading.Thread
-		{
-			public TestThread(ThreadGroup group, string name) : base(group, name)
-			{
-			}
-			public virtual void run()
-			{
-				for (var i = 0; i < loopsPerThread; i++)
-				{
-					doStuff();
-				}
-			}
+        public class TestThread : Thread {
+            public TestThread(ThreadGroup group, string name) : base(group, name) {
+            }
+            public override void Run() {
+                for (var i = 0; i < _loopsPerThread; i++) {
+                    DoStuff();
+                }
+            }
 
-			public virtual void doStuff()
-			{
+            public virtual void DoStuff() {
 
-				try
-				{
-					var session = JISession.createSession(domain, user, password);
+                try {
+                    var session = JISession.CreateSession(Domain, User, Password);
 
-					//this.session.setGlobalSocketTimeout( 60000 );
+                    //this.session.setGlobalSocketTimeout( 60000 );
 
-					// by name, requires local access (for registry search), or a populated progIdVsClsidDB.properties
-					var progId = JIProgId.ValueOf(comServerName);
+                    // by name, requires local access (for registry search), or a populated progIdVsClsidDB.properties
+                    var progId = JIProgId.ValueOf(ComServerName);
 
-					var baseComServer = new JIComServer(progId, host, session);
+                    var baseComServer = new JIComServer(progId, Host, session);
 
-					// Do it by clsid
-					//JIClsid clsid = JIClsid.valueOf( "76A6415B-CB41-11d1-8B02-00600806D9B6" );
-					//clsid.setAutoRegistration( true );
-					//baseComServer = new JIComServer( clsid, host, session );
+                    // Do it by clsid
+                    //JIClsid clsid = JIClsid.valueOf( "76A6415B-CB41-11d1-8B02-00600806D9B6" );
+                    //clsid.setAutoRegistration( true );
+                    //baseComServer = new JIComServer( clsid, host, session );
 
-					// I'm not really sure what the deal is with this
-					// Create an intermediary instance?
-					var unknown = baseComServer.CreateInstance();
+                    // I'm not really sure what the deal is with this
+                    // Create an intermediary instance?
+                    var unknown = baseComServer.CreateInstance();
 
-					var baseComObject = (IJIComObject) unknown.QueryInterface(comObjectId);
+                    var baseComObject = unknown.QueryInterface(ComObjectId);
 
-					var baseDispatch = (IJIDispatch) JIObjectFactory.NarrowObject(baseComObject.QueryInterface(impls.automation.DispatchFlags.IID));
+                    var baseDispatch = (IJIDispatch)JIObjectFactory.NarrowObject(baseComObject.QueryInterface(Interfaces.IID_IDispatch));
 
-					var connectServer = (JIVariant) baseDispatch.CallMethodA("ConnectServer", new object[] { new JIString(host)
-								   , JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), 0, JIVariant.CreateOPTIONAL_PARAM()
-				})[0];
+                    var connectServer = baseDispatch.CallMethodA("ConnectServer", new object[] {
+                        new JIString(Host), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(),
+                        JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(),
+                        0, JIVariant.CreateOPTIONAL_PARAM() })[0];
 
-					JISession.destroySession(session);
-					Console.WriteLine("doStuff() run complete");
-			}
-				internal virtual catch (Exception e)
-				{
-					Log.Logger.log(Level.SEVERE, "Caught exception: ", e);
-				}
-		}
-	}
+                    JISession.DestroySession(session);
+                    Console.WriteLine("doStuff() run complete");
+                }
+                catch (Exception e) {
+                    Log.Logger.Error(e, "Caught exception: ");
+                }
+            }
+        }
 
 
-		public static void Main(string[] args)
-		{
-			var testJIThreading = new TestJIThreading();
-			testJIThreading.setUp();
-			testJIThreading.testThreading();
-		}
-}
+#pragma warning disable IDE0060 // Remove unused parameter
+        public static void Main(string[] args) {
+#pragma warning restore IDE0060 // Remove unused parameter
+            var testJIThreading = new TestJIThreading();
+            testJIThreading.SetUp();
+            testJIThreading.TestThreading();
+        }
+    }
 
 }

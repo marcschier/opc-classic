@@ -45,35 +45,35 @@ namespace org.jinterop.dcom.core {
                     {
                         {
                             //get the primitive members here
-                            if (c.Equals(typeof(bool?)))
+                            if (c.Equals(typeof(bool)))
                             {
                                 c = typeof(bool);
                             }
-                            else if (c.Equals(typeof(char?)))
+                            else if (c.Equals(typeof(char)))
                             {
                                 c = typeof(char);
                             }
-                            else if (c.Equals(typeof(byte?)))
+                            else if (c.Equals(typeof(byte)))
                             {
                                 c = typeof(byte);
                             }
-                            else if (c.Equals(typeof(short?)))
+                            else if (c.Equals(typeof(short)))
                             {
                                 c = typeof(short);
                             }
-                            else if (c.Equals(typeof(int?)))
+                            else if (c.Equals(typeof(int)))
                             {
                                 c = typeof(int);
                             }
-                            else if (c.Equals(typeof(long?)))
+                            else if (c.Equals(typeof(long)))
                             {
                                 c = typeof(long);
                             }
-                            else if (c.Equals(typeof(float?)))
+                            else if (c.Equals(typeof(float)))
                             {
                                 c = typeof(float);
                             }
-                            else if (c.Equals(typeof(double?)))
+                            else if (c.Equals(typeof(double)))
                             {
                                 c = typeof(double);
                             }

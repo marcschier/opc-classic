@@ -56,36 +56,19 @@ namespace org.jinterop.dcom.impls.automation {
         public readonly int memidDestructor;
         public readonly JIPointer lpstrSchema; 
         public readonly int cbSizeInstance;
-        public readonly int typekind; 
+        public readonly TypeKind typekind; 
         public readonly short cFuncs; 
         public readonly short cVars; 
         public readonly short cImplTypes;
         public readonly short cbSizeVft;
         public readonly short cbAlignment;
-        public readonly short wTypeFlags;
+        public readonly TypeFlag wTypeFlags;
         public readonly short wMajorVerNum; 
         public readonly short wMinorVerNum; 
         public readonly TypeDesc tdescAlias; 
         public readonly IdlDesc idldescType;
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-
-        public const int TYPEFLAG_FAPPOBJECT = 0x01;
-        public const int TYPEFLAG_FCANCREATE = 0x02;
-        public const int TYPEFLAG_FLICENSED = 0x04;
-        public const int TYPEFLAG_FPREDECLID = 0x08;
-        public const int TYPEFLAG_FHIDDEN = 0x10;
-        public const int TYPEFLAG_FCONTROL = 0x20;
-        public const int TYPEFLAG_FDUAL = 0x40;
-        public const int TYPEFLAG_FNONEXTENSIBLE = 0x80;
-        public const int TYPEFLAG_FOLEAUTOMATION = 0x100;
-        public const int TYPEFLAG_FRESTRICTED = 0x200;
-        public const int TYPEFLAG_FAGGREGATABLE = 0x400;
-        public const int TYPEFLAG_FREPLACEABLE = 0x800;
-        public const int TYPEFLAG_FDISPATCHABLE = 0x1000;
-        public const int TYPEFLAG_FREVERSEBIND = 0x2000;
-
 
         /// <summary>
         /// Create type attribute
@@ -108,13 +91,13 @@ namespace org.jinterop.dcom.impls.automation {
                 memidDestructor = -1;
                 lpstrSchema = null;
                 cbSizeInstance = -1;
-                typekind = -1;
+                typekind = (TypeKind)(-1);
                 cFuncs = -1;
                 cVars = -1;
                 cImplTypes = -1;
                 cbSizeVft = -1;
                 cbAlignment = -1;
-                wTypeFlags = -1;
+                wTypeFlags = (TypeFlag)(-1);
                 wMajorVerNum = -1;
                 wMinorVerNum = -1;
                 tdescAlias = null;
@@ -129,13 +112,13 @@ namespace org.jinterop.dcom.impls.automation {
             memidDestructor = (int)filledStruct.GetMember(4);
             lpstrSchema = (JIPointer)filledStruct.GetMember(5);
             cbSizeInstance = (int)filledStruct.GetMember(6);
-            typekind = (int)filledStruct.GetMember(7);
+            typekind = (TypeKind)filledStruct.GetMember(7);
             cFuncs = (short)filledStruct.GetMember(8);
             cVars = (short)filledStruct.GetMember(9);
             cImplTypes = (short)filledStruct.GetMember(10);
             cbSizeVft = (short)filledStruct.GetMember(11);
             cbAlignment = (short)filledStruct.GetMember(12);
-            wTypeFlags = (short)filledStruct.GetMember(13);
+            wTypeFlags = (TypeFlag)filledStruct.GetMember(13);
             wMajorVerNum = (short)filledStruct.GetMember(14);
             wMinorVerNum = (short)filledStruct.GetMember(15);
             tdescAlias = new TypeDesc((JIStruct)filledStruct.GetMember(16));
