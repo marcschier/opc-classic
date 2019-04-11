@@ -15,38 +15,38 @@
 
 namespace org.jinterop.dcom.core {
 
-	using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
-	using JISystem = org.jinterop.dcom.common.JISystem;
+    using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
+    using JISystem = org.jinterop.dcom.common.JISystem;
 
-	/// <summary>
-	/// Class representing the unsigned c++ short.
-	/// 
-	/// @since 1.15(b)
-	/// 
-	/// </summary>
-	public sealed class JIUnsignedShort : IJIUnsigned {
+    /// <summary>
+    /// Class representing the unsigned c++ short.
+    /// 
+    /// @since 1.15(b)
+    /// 
+    /// </summary>
+    public sealed class JIUnsignedShort : IJIUnsigned {
 
-		private readonly int? ShortValue;
+        private readonly int? ShortValue;
 
-		public JIUnsignedShort(int? shortValue) {
-			if (shortValue == null || (int)shortValue < 0) {
-				throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
-			}
-			this.ShortValue = shortValue;
-		}
+        public JIUnsignedShort(int? shortValue) {
+            if (shortValue == null || (int)shortValue < 0) {
+                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+            }
+            this.ShortValue = shortValue;
+        }
 
-		public int Type {
-			get {
-				return JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT;
-			}
-		}
+        public int Type {
+            get {
+                return JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT;
+            }
+        }
 
-		public Number Value {
-			get {
-				return ShortValue;
-			}
-		}
+        public Number Value {
+            get {
+                return ShortValue;
+            }
+        }
 
-	}
+    }
 
 }

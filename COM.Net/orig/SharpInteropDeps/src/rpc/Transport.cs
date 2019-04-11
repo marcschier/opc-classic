@@ -19,31 +19,31 @@
 namespace rpc {
 
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using PresentationSyntax = rpc.core.PresentationSyntax;
+    using NdrBuffer = ndr.NdrBuffer;
+    using PresentationSyntax = rpc.core.PresentationSyntax;
 
-	public interface Transport {
+    public interface Transport {
 
-		string Protocol { get; }
+        string Protocol { get; }
 
-		Properties Properties { get; }
+        Properties Properties { get; }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public Endpoint attach(rpc.core.PresentationSyntax syntax) throws java.io.IOException;
-		Endpoint Attach(PresentationSyntax syntax);
+        Endpoint Attach(PresentationSyntax syntax);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void send(ndr.NdrBuffer buffer) throws java.io.IOException;
-		void Send(NdrBuffer buffer);
+        void Send(NdrBuffer buffer);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void receive(ndr.NdrBuffer buffer) throws java.io.IOException;
-		void Receive(NdrBuffer buffer);
+        void Receive(NdrBuffer buffer);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void close() throws java.io.IOException;
-		void Close();
+        void Close();
 
-	}
+    }
 
 }

@@ -58,20 +58,20 @@ namespace org.jinterop.dcom.core {
             };
 
             if (securityBinding._authnSvc == 0) {
-                //security binding over.
+                // security binding over.
                 return null;
             }
 
             securityBinding._authzSvc = ndr.ReadUnsignedShort();
 
-            //now to read the String till a null termination character.
+            // now to read the String till a null termination character.
             // a '0' will be represented as 30
             var buffer = new StringBuilder();
             int retVal;
             while ((retVal = ndr.ReadUnsignedShort()) != 0)
             {
-                //even though this is a unicode string, but will not have anything else
-                //other than ascii charset, which is supported by all encodings.
+                // even though this is a unicode string, but will not have anything else
+                // other than ascii charset, which is supported by all encodings.
                 buffer.Append(StringHelperClass.NewString(new byte[] { (byte)retVal }));
             }
             securityBinding._princName = buffer.ToString();
@@ -88,13 +88,13 @@ namespace org.jinterop.dcom.core {
             ndr.WriteUnsignedShort(_authnSvc);
             ndr.WriteUnsignedShort(_authzSvc);
 
-            //now to write the network address.
+            // now to write the network address.
             var i = 0;
             while (i < _princName.Length) {
                 ndr.WriteUnsignedShort(_princName[i]);
                 i++;
             }
-            ndr.WriteUnsignedShort(0); //null termination
+            ndr.WriteUnsignedShort(0); // null termination
         }
 
 

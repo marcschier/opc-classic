@@ -6,6 +6,7 @@
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
+
 namespace org.jinterop.dcom.core {
     using Serilog;
     using System;
@@ -36,7 +37,7 @@ namespace org.jinterop.dcom.core {
         internal bool HasExpired() {
             // TODO: Make configurable
             // 8 minutes interval...giving COM Client some grace period.
-            if ((DateTimeHelperClass.CurrentUnixTimeMillis() - _lastPingTime) > 8 * 60 * 1000) {
+            if ((DateTime.UtcNow - _lastPingTime) > TimeSpan.FromMinutes(8)) {
                 return true;
             }
             return false;
@@ -58,8 +59,8 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Update last ping
         /// </summary>
-        internal void UpdateLastPingTime() => 
-            _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
+        internal void UpdateLastPingTime() =>
+            _lastPingTime = DateTime.UtcNow;
 
         /// <summary>
         /// Reset ref count
@@ -86,7 +87,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-		public override bool Equals(object obj) {
+        public override bool Equals(object obj) {
             if (!(obj is JIObjectId other)) {
                 return false;
             }
@@ -95,10 +96,10 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() => 
+        public override string ToString() =>
             "{ IPID ref count is " + IPIDRefCount + " } and OID in bytes[] " +
                 OID + ", hasExpired " + HasExpired() + " } ";
 
-        private long _lastPingTime = DateTimeHelperClass.CurrentUnixTimeMillis();
+        private DateTime _lastPingTime = DateTime.UtcNow;
     }
 }

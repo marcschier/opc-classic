@@ -20,7 +20,7 @@ namespace org.jinterop.dcom.common {
         /// <param name="domain"> </param>
         /// <param name="username"> </param>
         /// <param name="password"> </param>
-        public JIDefaultAuthInfoImpl(string domain, string username, 
+        public JIDefaultAuthInfoImpl(string domain, string username,
             string password) {
             UserName = username;
             Password = password;
@@ -30,16 +30,16 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// User name
         /// </summary>
-        public string UserName { get; } = null;
+        public string UserName { get; }
 
         /// <summary>
         /// Password
         /// </summary>
-        public string Password { get; } = null;
+        public string Password { get; }
 
         /// <summary>
         /// Domain
         /// </summary>
-        public string Domain { get; } = null;
+        public string Domain { get; }
     }
 }

@@ -17,29 +17,27 @@
         private readonly string _address;
 #pragma warning restore IDE0052 // Remove unread private members
         private readonly JIComServer _comStub;
-        private readonly IJIComObject _comObject;
+        private readonly IComObject _comObject;
         private readonly IJIDispatch _dispatch;
         private readonly JISession _session;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSWMI2(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSWMI2(string address, string[] args) {
             _address = address;
             _session = JISession.CreateSession(args[1], args[2], args[3]);
-            //		session.useSessionSecurity(true);
-            //		session.setGlobalSocketTimeout(5000);
+            //        session.useSessionSecurity(true);
+            //        session.setGlobalSocketTimeout(5000);
             _comStub = new JIComServer(JIClsid.ValueOf("76a64158-cb41-11d1-8b02-00600806d9b6"), address, _session);
             var unknown = _comStub.CreateInstance();
-            _comObject = unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); //ISWbemLocator
-                                                                                         //This will obtain the dispatch interface
+            _comObject = unknown.QueryInterface("76A6415B-CB41-11d1-8B02-00600806D9B6"); // ISWbemLocator
+                                                                                         // This will obtain the dispatch interface
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_comObject.QueryInterface(Interfaces.IID_IDispatch));
         }
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-        public virtual void PerformOp() {
-            //		IJIDispatch securityDisp = (IJIDispatch)JIObjectFactory.narrowObject(dispatch.get("Security_").getObjectAsComObject());
-            //		securityDisp.put("ImpersonationLevel", new JIVariant(3));
+
+        public void PerformOp() {
+            //        IJIDispatch securityDisp = (IJIDispatch)JIObjectFactory.narrowObject(dispatch.get("Security_").getObjectAsComObject());
+            //        securityDisp.put("ImpersonationLevel", new JIVariant(3));
             var results = _dispatch.CallMethodA("ConnectServer", new object[] { JIVariant.CreateOPTIONAL_PARAM(), new JIString("ROOT\\CIMV2"), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), 0, JIVariant.CreateOPTIONAL_PARAM() });
 
             var wbemServices_dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(results[0].ObjectAsComObject);
@@ -67,8 +65,7 @@
 
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void killme() throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void killme() throws org.jinterop.dcom.common.JIException
         private void Killme() => JISession.DestroySession(_session);
 
         public static void Main(string[] args) {

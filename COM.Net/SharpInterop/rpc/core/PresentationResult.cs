@@ -1,15 +1,15 @@
-﻿//
+﻿// 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-//
+// 
 // j-Interop (Pure Java implementation of DCOM protocol)
-//
+// 
 // Copyright (c) 2013 Vikram Roopchand
-//
+// 
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-//
+// 
 
 namespace rpc.core {
     using Serilog;
@@ -80,8 +80,8 @@ namespace rpc.core {
             ndr.Buffer.Align(4);
             Result = (PresentationResultCode)ndr.ReadUnsignedShort();
             Reason = (PresentationResultReason)ndr.ReadUnsignedShort();
-            //commenting this since the entire packet should be decoded VRC
-            //if (Result == PresentationResultCode.ACCEPTANCE)
+            // commenting this since the entire packet should be decoded VRC
+            // if (Result == PresentationResultCode.ACCEPTANCE)
             {
                 TransferSyntax = new PresentationSyntax();
                 try {

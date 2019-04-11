@@ -15,38 +15,38 @@
 
 namespace org.jinterop.dcom.core {
 
-	using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
-	using JISystem = org.jinterop.dcom.common.JISystem;
+    using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
+    using JISystem = org.jinterop.dcom.common.JISystem;
 
-	/// <summary>
-	/// Class representing the unsigned c++ byte.
-	/// 
-	/// @since 1.15(b)
-	/// 
-	/// </summary>
-	public sealed class JIUnsignedByte : IJIUnsigned {
+    /// <summary>
+    /// Class representing the unsigned c++ byte.
+    /// 
+    /// @since 1.15(b)
+    /// 
+    /// </summary>
+    public sealed class JIUnsignedByte : IJIUnsigned {
 
-		private readonly short? ByteValue;
+        private readonly short? ByteValue;
 
-		public JIUnsignedByte(short? byteValue) {
-			if (byteValue == null || (short)byteValue < 0) {
-				throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
-			}
-			this.ByteValue = byteValue;
-		}
+        public JIUnsignedByte(short? byteValue) {
+            if (byteValue == null || (short)byteValue < 0) {
+                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+            }
+            this.ByteValue = byteValue;
+        }
 
-		public int Type {
-			get {
-				return JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE;
-			}
-		}
+        public int Type {
+            get {
+                return JIFlags.FLAG_REPRESENTATION_UNSIGNED_BYTE;
+            }
+        }
 
-		public Number Value {
-			get {
-				return ByteValue;
-			}
-		}
+        public Number Value {
+            get {
+                return ByteValue;
+            }
+        }
 
-	}
+    }
 
 }

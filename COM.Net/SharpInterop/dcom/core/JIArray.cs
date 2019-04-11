@@ -18,12 +18,12 @@ namespace org.jinterop.dcom.core {
     /// behaviors. Since this class forms a wrapper on the actual array, the developer
     /// is expected to provide complete and final arrays (of Objects) to this class.
     /// Modifying the wrapped array afterwards <b>will</b> have unexpected results.
-    ///  </para>
+    /// </para>
     /// <para>
     /// <i>Please refer to <b>MSExcel</b> examples for more details on how to use this
     /// class.</i>
     /// </para>
-    ///  <para>
+    /// <para>
     /// <b>Note</b>: Wrapped Arrays can be at most two dimensional in nature. Above
     /// that is not supported by the library.
     /// </para>
@@ -81,16 +81,16 @@ namespace org.jinterop.dcom.core {
         /// Sample Usage:-
         ///
         /// <code>
-        ///   JIStruct safeArrayBounds = new JIStruct();
-        ///   safeArrayBounds.addMember(Integer.class);
-        ///   safeArrayBounds.addMember(Integer.class);
-        ///   //arraydesc
-        ///   JIStruct arrayDesc = new JIStruct();
-        ///   //typedesc
-        ///   JIStruct typeDesc = new JIStruct();
-        ///   arrayDesc.addMember(typeDesc);
-        ///   arrayDesc.addMember(Short.class);
-        ///   arrayDesc.addMember(<b>new JIArray(safeArrayBounds,new int[]{1},1,true)</b>);
+        ///  JIStruct safeArrayBounds = new JIStruct();
+        ///  safeArrayBounds.addMember(Integer.class);
+        ///  safeArrayBounds.addMember(Integer.class);
+        ///  // arraydesc
+        ///  JIStruct arrayDesc = new JIStruct();
+        ///  // typedesc
+        ///  JIStruct typeDesc = new JIStruct();
+        ///  arrayDesc.addMember(typeDesc);
+        ///  arrayDesc.addMember(Short.class);
+        ///  arrayDesc.addMember(<b>new JIArray(safeArrayBounds,new int[]{1},1,true)</b>);
         /// </code>
         /// </summary>
         /// <param name="template"> can be only of the type <code>JIStruct</code>, <code>JIPointer</code>,
@@ -129,7 +129,7 @@ namespace org.jinterop.dcom.core {
         /// is not equal to the <code>dimension</code> parameter. </exception>
         /// <exception cref="ArgumentException"> if <code>template</code> is null or is not of the
         /// specified types. </exception>
-        //for structs, pointers, unions.
+        // for structs, pointers, unions.
         public JIArray(object template, int[] upperBounds, int dimension, bool isConformant, bool isVarying) {
             if (template == null) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_ARRAY_TEMPLATE_NULL));
@@ -141,9 +141,9 @@ namespace org.jinterop.dcom.core {
             }
 
             if (JISystem.COMVersion.MinorVersion == 6 && template.GetType().Equals(typeof(JIPointer))) {
-                if (((JIPointer)template).GetReferent().GetType() == typeof(IJIComObject)) {
-                    //in this case this pointer will be a reference type pointer and not deffered one.
-                    //change in MS specs since DCOM 5.4
+                if (((JIPointer)template).Referent.GetType() == typeof(IComObject)) {
+                    // in this case this pointer will be a reference type pointer and not deffered one.
+                    // change in MS specs since DCOM 5.4
                     _isArrayOfCOMObjects_56DCOM = true;
                     ((JIPointer)template).SetIsReferenceTypePtr();
                 }
@@ -171,7 +171,7 @@ namespace org.jinterop.dcom.core {
             _isVaryingProxy = isVarying;
 
             if (upperBounds != null) {
-                //have to supply the upperbounds for each dimension, no gaps in between
+                // have to supply the upperbounds for each dimension, no gaps in between
                 if (upperBounds.Length != dimension) {
                     throw new ArgumentException(JISystem.GetLocalizedMessage(
                         JIErrorCodes.JI_ARRAY_UPPERBNDS_DIM_NOTMATCH));
@@ -184,7 +184,7 @@ namespace org.jinterop.dcom.core {
                     ConformantMaxCounts.Add(upperBounds[i]);
                 }
             }
-            //numElementsInAllDimensions = numElementsInAllDimensions * dimension;
+            // numElementsInAllDimensions = numElementsInAllDimensions * dimension;
         }
 
         /// <summary>
@@ -250,8 +250,8 @@ namespace org.jinterop.dcom.core {
                     JIErrorCodes.JI_ARRAY_PRIMITIVE_NOTACCEPT));
             }
 
-            //bad way...but what the heck...
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
+            // bad way...but what the heck...
+            // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
             // yield results identical to the Java Class.getName method:
             if (array.GetType().ToString().IndexOf("java.lang.Object", StringComparison.Ordinal) != -1) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(
@@ -260,7 +260,7 @@ namespace org.jinterop.dcom.core {
             ArrayInstance = array;
 
             var upperBounds2 = new List<object>();
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
+            // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var subArray = array;
             NumElementsInAllDimensions = 1;
@@ -273,7 +273,7 @@ namespace org.jinterop.dcom.core {
                     ConformantMaxCounts.Add(x);
                 }
                 ArrayClass = subArray.GetType().GetElementType();
-                if (x == 0) //In which ever index the length is 0, the array stops there, example Byte[0],Byte[0][10],Byte[10][0]
+                if (x == 0) // In which ever index the length is 0, the array stops there, example Byte[0],Byte[0][10],Byte[10][0]
                 {
                     break;
                 }
@@ -290,13 +290,13 @@ namespace org.jinterop.dcom.core {
             for (var i = 0; i < upperBounds2.Count; i++) {
                 UpperBounds[i] = (int)upperBounds2[i];
             }
-            Dimensions++; //since it starts from -1.
+            Dimensions++; // since it starts from -1.
             _sizeOfNestedArrayInBytes = ComputeLengthArray(array);
         }
 
         private int ComputeLengthArray(object array) {
             var length = 0;
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
+            // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always
             // yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var o = (object[])array;
@@ -346,10 +346,10 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         internal int SizeOfAllElementsInBytes {
             get {
-                //int length = numElementsInAllDimensions *
+                // int length = numElementsInAllDimensions *
                 // JIMarshalUnMarshalHelper.getLengthInBytes(clazz,((Object[])memberArray)[0],JIFlags.FLAG_NULL);
 
-                //this means that decode has created this array, and we need to compute the size to stay consistent.
+                // this means that decode has created this array, and we need to compute the size to stay consistent.
                 if (_sizeOfNestedArrayInBytes == -1) {
                     _sizeOfNestedArrayInBytes = ComputeLengthArray(ArrayInstance);
                 }
@@ -383,32 +383,32 @@ namespace org.jinterop.dcom.core {
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
         internal void Encode(NdrCodec ndr, object array, List<object> defferedPointers, int flag) {
-            //	List<object> listofDefferedPointers = new List<object>();
+            //    List<object> listofDefferedPointers = new List<object>();
 
             if (_isConformantProxy) {
-                //first write the max counts ...First to last dimension.
+                // first write the max counts ...First to last dimension.
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
                     JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], defferedPointers, flag);
                     i++;
                 }
 
-                _isConformantProxy = false; //this is since encode is recursive.
+                _isConformantProxy = false; // this is since encode is recursive.
             }
 
             if (_isVaryingProxy) {
-                //write the offset and the actual count
+                // write the offset and the actual count
                 var i = 0;
                 while (i < ConformantMaxCounts.Count) {
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, flag); //offset
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], defferedPointers, flag); //actual count
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, flag); // offset
+                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ConformantMaxCounts[i], defferedPointers, flag); // actual count
                     i++;
                 }
 
-                _isVaryingProxy = false; //this is since encode is recursive.
+                _isVaryingProxy = false; // this is since encode is recursive.
             }
 
-            //JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
+            // JAVA TO C# CONVERTER WARNING: The .NET Type.FullName property will not always yield results identical to the Java Class.getName method:
             var name = array.GetType().FullName;
             var o = (object[])array;
             for (var i = 0; i < o.Length; i++) {
@@ -443,7 +443,7 @@ namespace org.jinterop.dcom.core {
             };
             if (_isConformantProxy) {
 
-                //first read the max counts ...First to last dimension.
+                // first read the max counts ...First to last dimension.
                 var i = 0;
                 while (i < dimension) {
                     retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(
@@ -451,10 +451,10 @@ namespace org.jinterop.dcom.core {
                     i++;
                 }
 
-                //isConformantProxy = false; //this is since decode is recursive.
+                // isConformantProxy = false; // this is since decode is recursive.
 
                 if (UpperBounds == null) {
-                    //max elements will come now.
+                    // max elements will come now.
                     retVal.NumElementsInAllDimensions = 0;
                     retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                     i = 0;
@@ -466,33 +466,33 @@ namespace org.jinterop.dcom.core {
                     if (i == 0) {
                         NumElementsInAllDimensions = 0;
                     }
-                    //retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
+                    // retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
                 }
             }
-            else { //this is the case when it is non conformant or coming from struct.
+            else { // this is the case when it is non conformant or coming from struct.
                 retVal.UpperBounds = UpperBounds;
                 retVal.ConformantMaxCounts = ConformantMaxCounts;
                 retVal.NumElementsInAllDimensions = NumElementsInAllDimensions;
             }
 
             if (_isVaryingProxy) {
-                //first read the max counts ...First to last dimension.
+                // first read the max counts ...First to last dimension.
                 var i = 0;
-                retVal.ConformantMaxCounts.Clear(); //can't take the max count size now
+                retVal.ConformantMaxCounts.Clear(); // can't take the max count size now
                 retVal.UpperBounds = null;
                 retVal.NumElementsInAllDimensions = 0;
 
                 while (i < dimension) {
                     JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int), defferedPointers, flag, null); // offset
                     retVal.ConformantMaxCounts.Add(JIMarshalUnMarshalHelper.Deserialize(ndr,
-                        typeof(int), defferedPointers, flag, additionalData)); //actual count
+                        typeof(int), defferedPointers, flag, additionalData)); // actual count
                     i++;
                 }
 
-                //isConformantProxy = false; //this is since decode is recursive.
+                // isConformantProxy = false; // this is since decode is recursive.
 
                 if (UpperBounds == null) {
-                    //max elements will come now.
+                    // max elements will come now.
                     retVal.NumElementsInAllDimensions = 1;
                     retVal.UpperBounds = new int[retVal.ConformantMaxCounts.Count];
                     i = 0;
@@ -504,7 +504,7 @@ namespace org.jinterop.dcom.core {
                     if (i == 0) {
                         NumElementsInAllDimensions = 0;
                     }
-                    //retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
+                    // retVal.numElementsInAllDimensions = retVal.numElementsInAllDimensions * dimension;
                 }
             }
 
@@ -543,15 +543,15 @@ namespace org.jinterop.dcom.core {
 
             for (var i = 0; i < retVal.UpperBounds[retVal.UpperBounds.Length - dimension]; i++) {
                 if (dimension == 1) {
-                    //fill value here
-                    //Array.set(array,i,new Float(i));
+                    // fill value here
+                    // Array.set(array,i,new Float(i));
                     if (_template == null) {
                         ((Array)array).SetValue(JIMarshalUnMarshalHelper.Deserialize(ndr,
                             c.GetElementType() ?? c, defferedPointers, flag | JIFlags.FLAG_REPRESENTATION_ARRAY, additionalData), i);
                     }
                     else {
                         if (_isArrayOfCOMObjects_56DCOM) {
-                            //not setting the array flag here.
+                            // not setting the array flag here.
                             ((Array)array).SetValue(JIMarshalUnMarshalHelper.Deserialize(ndr,
                                 _template, defferedPointers, flag, additionalData), i);
                         }
@@ -571,7 +571,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
-        ///	Reverses Array elements for IJIDispatch.
+        ///   Reverses Array elements for IJIDispatch.
         /// </summary>
         internal int ReverseArrayForDispatch() {
             if (ArrayInstance == null) {
@@ -595,10 +595,10 @@ namespace org.jinterop.dcom.core {
         internal List<object> MaxCountAndUpperBounds {
             set {
                 ConformantMaxCounts = value;
-                //	if (upperBounds == null) this will always be null since this api will get called from a decode and
-                //in that the upperBounds is always null, since one does not know the dim expected.
+                //    if (upperBounds == null) this will always be null since this api will get called from a decode and
+                // in that the upperBounds is always null, since one does not know the dim expected.
                 if (ConformantMaxCounts.Count > 0) {
-                    //max elements will come now.
+                    // max elements will come now.
                     NumElementsInAllDimensions = 1;
                     UpperBounds = new int[ConformantMaxCounts.Count];
                     var i = 0;
@@ -664,6 +664,6 @@ namespace org.jinterop.dcom.core {
         private bool _isVaryingProxy;
         private object _template;
         private readonly bool _isArrayOfCOMObjects_56DCOM;
-        private int _sizeOfNestedArrayInBytes; //used in both encoding and decoding.
+        private int _sizeOfNestedArrayInBytes; // used in both encoding and decoding.
     }
 }

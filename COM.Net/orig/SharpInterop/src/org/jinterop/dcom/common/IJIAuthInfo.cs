@@ -15,34 +15,34 @@
 
 namespace org.jinterop.dcom.common {
 
-	/// <summary>
-	/// Interface for setting user credentials.
-	/// 
-	/// @since 1.0
-	/// </summary>
-	public interface IJIAuthInfo {
+    /// <summary>
+    /// Interface for setting user credentials.
+    /// 
+    /// @since 1.0
+    /// </summary>
+    public interface IJIAuthInfo {
 
-		/// <summary>
-		/// Returns username.
-		/// 
-		/// @return
-		/// </summary>
-		string UserName { get; }
+        /// <summary>
+        /// Returns username.
+        /// 
+        /// @return
+        /// </summary>
+        string UserName { get; }
 
-		/// <summary>
-		/// Returns password.
-		/// 
-		/// @return
-		/// </summary>
-		string Password { get; }
+        /// <summary>
+        /// Returns password.
+        /// 
+        /// @return
+        /// </summary>
+        string Password { get; }
 
-		/// <summary>
-		/// Returns user's domain.
-		/// 
-		/// @return
-		/// </summary>
-		string Domain { get; }
+        /// <summary>
+        /// Returns user's domain.
+        /// 
+        /// @return
+        /// </summary>
+        string Domain { get; }
 
-	}
+    }
 
 }

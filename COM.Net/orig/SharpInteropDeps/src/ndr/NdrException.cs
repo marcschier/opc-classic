@@ -17,13 +17,13 @@
 
 namespace ndr {
 
-	public class NdrException : IOException {
+    public class NdrException : IOException {
 
-		public const string NO_NULL_REF = "ref pointer cannot be null";
-		public const string INVALID_CONFORMANCE = "invalid array conformance";
+        public const string NO_NULL_REF = "ref pointer cannot be null";
+        public const string INVALID_CONFORMANCE = "invalid array conformance";
 
-		public NdrException(string msg) : base(msg) {
-		}
-	}
+        public NdrException(string msg) : base(msg) {
+        }
+    }
 
 }

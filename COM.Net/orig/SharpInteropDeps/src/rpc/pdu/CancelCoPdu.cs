@@ -19,16 +19,16 @@
 
 namespace rpc.pdu {
 
-	public class CancelCoPdu : ConnectionOrientedPdu {
+    public class CancelCoPdu : ConnectionOrientedPdu {
 
-		public const int CANCEL_TYPE = 0x12;
+        public const int CANCEL_TYPE = 0x12;
 
-		public override int Type {
-			get {
-				return CANCEL_TYPE;
-			}
-		}
+        public override int Type {
+            get {
+                return CANCEL_TYPE;
+            }
+        }
 
-	}
+    }
 
 }

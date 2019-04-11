@@ -17,21 +17,21 @@
 
 namespace org.jinterop.dcom.common {
 
-	using UUID = rpc.core.UUID;
+    using UUID = rpc.core.UUID;
 
-	/// <summary>
-	/// Framework Internal.
-	/// 
-	/// @exclude
-	/// @since 1.0
-	/// </summary>
-	public interface IJICOMRuntimeWorker {
-		int Opnum { set; }
-		string CurrentIID { set; }
-		UUID CurrentObjectID { set;get; }
-		IList QIedIIDs { get; }
-		bool Resolver { get; }
-		bool WorkerOver();
-	}
+    /// <summary>
+    /// Framework Internal.
+    /// 
+    /// @exclude
+    /// @since 1.0
+    /// </summary>
+    public interface IJICOMRuntimeWorker {
+        int Opnum { set; }
+        string CurrentIID { set; }
+        UUID CurrentObjectID { set;get; }
+        IList QIedIIDs { get; }
+        bool Resolver { get; }
+        bool WorkerOver();
+    }
 
 }

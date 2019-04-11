@@ -1,12 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
+//
 
 namespace org.jinterop.dcom.impls.automation {
     using org.jinterop.dcom.core;
@@ -29,7 +28,6 @@ namespace org.jinterop.dcom.impls.automation {
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
-
         /// <summary> pointer </summary>
         public static readonly short VT_PTR = 0x1a;
         /// <summary> safe array </summary>
@@ -44,7 +42,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// </summary>
         /// <param name="values"></param>
         internal TypeDesc(JIPointer values) :
-            this(values.IsNull ? null : (JIStruct)values.GetReferent()) {
+            this(values.IsNull ? null : (JIStruct)values.Referent) {
         }
 
         /// <summary>

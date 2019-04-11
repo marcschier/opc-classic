@@ -101,7 +101,7 @@ namespace rpc {
         /// <param name="semantics"></param>
         /// <param name="ndrobj"></param>
         /// <exception cref="IOException"></exception>
-        public virtual void Call(Semantics semantics, NdrOp ndrobj) {
+        public void Call(Semantics semantics, NdrOp ndrobj) {
             Attach();
             var obj = Object;
             var uuid = (obj == null) ? null : new UUID(obj);

@@ -10,7 +10,6 @@
 namespace org.jinterop.dcom.core {
     using System;
     using System.Collections.Generic;
-    using SharpCifs.Util.Sharpen;
     using SharpCifs.Dcerpc.Ndr;
     using System.Linq;
 
@@ -33,7 +32,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Length
         /// </summary>
-        public int Length { get; private set; } = 0;
+        public int Length { get; private set; }
 
         /// <summary>
         /// Create array
@@ -45,22 +44,22 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="port"></param>
         internal JIDualStringArray(int port) {
-            //create bindings here.
-            StringBindings = new JIStringBinding[2]; //only 1
+            // create bindings here.
+            StringBindings = new JIStringBinding[2]; // only 1
             StringBindings[0] = new JIStringBinding(port, false);
 
             Length = StringBindings[0].Length;
 
             StringBindings[1] = new JIStringBinding(port, true);
 
-            Length = Length + StringBindings[1].Length + 2; //null termination
+            Length = Length + StringBindings[1].Length + 2; // null termination
 
             _secOffset = Length;
 
-            SecurityBindings = new JISecurityBinding[1]; //support only winnt NTLM
+            SecurityBindings = new JISecurityBinding[1]; // support only winnt NTLM
             SecurityBindings[0] = new JISecurityBinding(0x0a, 0xffff, "");
             Length += SecurityBindings[0].Length;
-            //null termination, 2 bytes for num entries and 2 bytes for sec offset.
+            // null termination, 2 bytes for num entries and 2 bytes for sec offset.
             Length = Length + 2 + 2 + 2;
         }
 
@@ -72,15 +71,15 @@ namespace org.jinterop.dcom.core {
         internal static JIDualStringArray Decode(NdrCodec ndr) {
             var dualStringArray = new JIDualStringArray();
 
-            //first extract number of entries
+            // first extract number of entries
             var numEntries = ndr.ReadUnsignedShort();
 
-            //return empty
+            // return empty
             if (numEntries == 0) {
                 return dualStringArray;
             }
 
-            //extract security offset
+            // extract security offset
             var securityOffset = ndr.ReadUnsignedShort();
 
             var listOfStringBindings = new List<object>();
@@ -92,7 +91,7 @@ namespace org.jinterop.dcom.core {
                     var s = JIStringBinding.Decode(ndr);
                     if (s == null) {
                         stringbinding = false;
-                        //null termination
+                        // null termination
                         dualStringArray.Length += 2;
                         dualStringArray._secOffset = dualStringArray.Length;
                         continue;
@@ -104,7 +103,7 @@ namespace org.jinterop.dcom.core {
                 else {
                     var s = JISecurityBinding.Decode(ndr);
                     if (s == null) {
-                        //null termination
+                        // null termination
                         dualStringArray.Length += 2;
                         break;
                     }
@@ -127,8 +126,8 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         public void Encode(NdrCodec ndr) {
-            //fill num entries
-            //this is total length/2. since they are all shorts
+            // fill num entries
+            // this is total length/2. since they are all shorts
             ndr.WriteUnsignedShort((Length - 4) / 2);
             ndr.WriteUnsignedShort(_secOffset / 2);
 

@@ -150,29 +150,26 @@ namespace rpc {
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
         private ConnectionOrientedPdu ReceivePdu(ITransport transport) {
-            // TODO: Cleanup
-            var fragmentLength = -1;
-            var type = -1;
             var read = true;
 
             if (_bytesRemainingInRecieveBuffer) {
-                //Vikram - 26th Feb 2013.
-                //receiver buffer always falls on the boundary of a new Fragment.
+                // Vikram - 26th Feb 2013.
+                // receiver buffer always falls on the boundary of a new Fragment.
                 //
-                //Vikram - 26th Feb 2013, commenting belwo as we were getting packets which are 2 bytes in length causing this logic to fail
-                //and thus read was set to true (since the receiveBuffer.length was less than or equal to ConnectionOrientedPdu.TYPE_OFFSET)
-                //so we read a fresh packet and whatever bytes were there in recieverBuffer already were lost !
+                // Vikram - 26th Feb 2013, commenting belwo as we were getting packets which are 2 bytes in length causing this logic to fail
+                // and thus read was set to true (since the receiveBuffer.length was less than or equal to ConnectionOrientedPdu.TYPE_OFFSET)
+                // so we read a fresh packet and whatever bytes were there in recieverBuffer already were lost !
                 {
-                    //    		if (receiveBuffer.length > ConnectionOrientedPdu.TYPE_OFFSET)
-                    //    			receiveBuffer.setIndex(ConnectionOrientedPdu.TYPE_OFFSET);
-                    //	    		type = receiveBuffer.dec_ndr_small();
-                    //				if (isValidType(type))
+                    //            if (receiveBuffer.length > ConnectionOrientedPdu.TYPE_OFFSET)
+                    //                receiveBuffer.setIndex(ConnectionOrientedPdu.TYPE_OFFSET);
+                    //                type = receiveBuffer.dec_ndr_small();
+                    //                if (isValidType(type))
                     {
                         // this is required so that the correct length for the next fragment can be obtained.
                         // If is < 10 bytes than the fraglength would be an arbitary length.
                         while (_receiveBuffer.Length <= 10) {
-                            //perform a read again in a new buffer and assign that to the reciever buffer
-                            //this needs to be a small buffer 10 bytes
+                            // perform a read again in a new buffer and assign that to the reciever buffer
+                            // this needs to be a small buffer 10 bytes
                             var tmpBuffer = new NdrBuffer(new byte[10], 0);
                             transport.Receive(tmpBuffer);
                             Array.Copy(tmpBuffer.Buf, 0, _receiveBuffer.Buf, _receiveBuffer.Length, tmpBuffer.Length);
@@ -196,33 +193,32 @@ namespace rpc {
                     Utils.HexString(_receiveBuffer.Buf, 0, _receiveBuffer.Length));
             }
 
-            byte[] newbuffer = null;
             var counter = 0;
             var trimSize = -1;
             var lengthOfArrayTobeRead = _receiveBuffer.Length;
-            //frag length logic
+            // frag length logic
             if (_receiveBuffer.Length <= 0) {
-                //socket has been closed.
-                throw new IOException("Socket Closed"); //Vikram
+                // socket has been closed.
+                throw new IOException("Socket Closed"); // Vikram
             }
 
             _receiveBuffer.Index = ConnectionOrientedPdu.FRAG_LENGTH_OFFSET;
-            var frag = new byte[2]; //short
+            var frag = new byte[2]; // short
             _receiveBuffer.ReadOctetArray(frag, 0, frag.Length);
-            fragmentLength = (frag[0] & 0xFF) | ((frag[1] & 0xFF) << 8); //receiveBuffer.dec_ndr_short(); is looping over.
-                                                                         //			fragmentLength = receiveBuffer.dec_ndr_short();
+            var fragmentLength = (frag[0] & 0xFF) | ((frag[1] & 0xFF) << 8);
+            //            fragmentLength = receiveBuffer.dec_ndr_short();
             Log.Logger.Verbose("\n" + " length of the fragment " + fragmentLength + "\n" +
                 " size in bytes of the buffer [] " + _receiveBuffer.Buf.Length);
 
-            //the new buffer should be equal to fragment size
-            newbuffer = new byte[fragmentLength];
+            // the new buffer should be equal to fragment size
+            var newbuffer = new byte[fragmentLength];
             if (fragmentLength > _receiveBuffer.Length) {
-                //this means the socket buffer is not fully read, this packet is bigger than the reciever buffer size
+                // this means the socket buffer is not fully read, this packet is bigger than the reciever buffer size
                 var remainingBytes = fragmentLength - _receiveBuffer.Length;
                 Log.Logger.Verbose("\n" + " Some bytes from RecieveBuffer Socket have not been read: Remaining  " +
                     remainingBytes);
 
-                //now reset and read again.
+                // now reset and read again.
                 while (fragmentLength > counter) {
                     Array.Copy(_receiveBuffer.Buf, 0, newbuffer, counter, lengthOfArrayTobeRead);
                     counter += lengthOfArrayTobeRead;
@@ -240,7 +236,7 @@ namespace rpc {
                         lengthOfArrayTobeRead = _receiveBuffer.Length;
                     }
                     else {
-                        //this would be the last one. Now we need to trim the buffer to it's read length as well.
+                        // this would be the last one. Now we need to trim the buffer to it's read length as well.
                         lengthOfArrayTobeRead = fragmentLength - counter;
                         trimSize = _receiveBuffer.Length - lengthOfArrayTobeRead;
                     }
@@ -266,13 +262,13 @@ namespace rpc {
                 _receiveBuffer.Length = trimSize;
                 _receiveBuffer.Index = 0;
                 _receiveBuffer.Start = 0;
-                //reciever buffer read more than it should, after we trim only the additionally read bytes will be left.
-                //these have to be read in the next call to recieveFragment.
+                // reciever buffer read more than it should, after we trim only the additionally read bytes will be left.
+                // these have to be read in the next call to recieveFragment.
                 _bytesRemainingInRecieveBuffer = true;
             }
 
             var bufferToBeUsed = new NdrBuffer(newbuffer, 0) {
-                Length = newbuffer.Length //this will be fully utilized and not left empty.
+                Length = newbuffer.Length // this will be fully utilized and not left empty.
             };
 
             Log.Logger.Verbose("bufferToBeUsed Size = " + bufferToBeUsed.Length + " : " +
@@ -281,9 +277,10 @@ namespace rpc {
             // caution, frag length is changed here...it is void of security info.
             ProcessIncoming(bufferToBeUsed);
             bufferToBeUsed.Index = ConnectionOrientedPdu.TYPE_OFFSET;
-            type = bufferToBeUsed.Dec_ndr_small();
+            // TODO: Cleanup
+            var type = bufferToBeUsed.Dec_ndr_small();
 
-            ConnectionOrientedPdu pdu = null;
+            ConnectionOrientedPdu pdu;
             switch (type) {
                 case AlterContextPdu.ALTER_CONTEXT_TYPE:
                     pdu = new AlterContextPdu();
@@ -375,7 +372,6 @@ namespace rpc {
                 case AlterContextPdu.ALTER_CONTEXT_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("Recieved ALTER_CTX");
-                        logMsg = false;
                     }
                     var verifier = DetachAuthentication(buffer);
                     if (verifier != null) {
@@ -409,7 +405,6 @@ namespace rpc {
                 case RequestCoPdu.REQUEST_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("\n Recieved REQUEST");
-                        logMsg = false;
                     }
                     if (_security != null) {
                         var ndr2 = new NdrCodec {
@@ -418,13 +413,12 @@ namespace rpc {
                         VerifyAndUnseal(ndr2);
                     }
                     else {
-                        DetachAuthentication(buffer); //just strip the information, do not use it.
+                        DetachAuthentication(buffer); // just strip the information, do not use it.
                     }
                     break;
                 case Auth3Pdu.AUTH3_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("\n Recieved AUTH3");
-                        logMsg = false;
                     }
                     IncomingRebind(DetachAuthentication2(buffer));
                     break;
@@ -466,7 +460,6 @@ namespace rpc {
                 case AlterContextResponsePdu.ALTER_CONTEXT_RESPONSE_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("\n Sending ALTER_CTX_RESP");
-                        logMsg = false;
                     }
                     var verifier = OutgoingRebind();
                     if (verifier != null) {
@@ -476,7 +469,6 @@ namespace rpc {
                 case AlterContextPdu.ALTER_CONTEXT_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("\n Sending ALTER_CTX");
-                        logMsg = false;
                     }
                     break;
                 case RequestCoPdu.REQUEST_TYPE:
@@ -484,7 +476,7 @@ namespace rpc {
                         Log.Logger.Information("\n Sending REQUEST");
                         logMsg = false;
                     }
-                    //        	verifier = outgoingRebind();
+                    //            verifier = outgoingRebind();
                     //            if (verifier != null) attachAuthentication(verifier);
                     goto case CancelCoPdu.CANCEL_TYPE;
                 case CancelCoPdu.CANCEL_TYPE:
@@ -508,7 +500,6 @@ namespace rpc {
                 case ResponseCoPdu.RESPONSE_TYPE:
                     if (logMsg) {
                         Log.Logger.Information("\n Sending RESPONSE");
-                        logMsg = false;
                     }
                     if (_security != null) {
                         SignAndSeal(_ndr);
@@ -555,7 +546,7 @@ namespace rpc {
                 buffer.Index = ConnectionOrientedPdu.AUTH_LENGTH_OFFSET;
                 var length = buffer.Dec_ndr_short(); // auth body size
                 var index = 20;
-                buffer.Index = index; //exactly at the auth type.
+                buffer.Index = index; // exactly at the auth type.
                 var verifier = new AuthenticationVerifier(length);
                 verifier.Decode(_ndr, buffer);
                 buffer.Index = index + 2; // auth padding

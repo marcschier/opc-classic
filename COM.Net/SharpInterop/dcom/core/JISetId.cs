@@ -23,19 +23,17 @@ namespace org.jinterop.dcom.core {
         /// Create
         /// </summary>
         /// <param name="setid"></param>
-        internal JISetId(byte[] setid) {
-            SetID = setid;
-        }
+        internal JISetId(byte[] setid) => SetID = setid;
 
         /// <inheritdoc/>
         public override int GetHashCode() {
             var result = 1;
-            //from SUN
+            // from SUN
             for (var i = 0; i < SetID.Length; i++) {
                 result = (31 * result) + SetID[i];
             }
             return result;
-            //return Arrays.hashCode(setid);
+            // return Arrays.hashCode(setid);
         }
 
         /// <inheritdoc/>

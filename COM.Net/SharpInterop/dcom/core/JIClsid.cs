@@ -26,12 +26,10 @@ namespace org.jinterop.dcom.core {
     public class JIClsid {
 
         /// <summary>
-        /// Private constructor
+        /// String representation of the wrapped class identifier.
         /// </summary>
-        /// <param name="uuid"></param>
-        private JIClsid(string uuid) {
-            _nestedUUID.Parse(uuid);
-        }
+        /// <returns> string of the form "00000000-0000-0000-0000-000000000000" </returns>
+        public string CLSID => _nestedUUID.ToString();
 
         /// <summary>
         /// Indicates to the framework, if Windows Registry settings for DLL\OCX
@@ -39,21 +37,19 @@ namespace org.jinterop.dcom.core {
         /// automatically. A <code>Surrogate</code> is a process which provides resources
         /// such as memory and cpu for a DLL\OCX to execute.
         /// </summary>
-        public virtual bool AutoRegistration {
-            set => _autoRegister = value;
-        }
+        public bool UseAutoRegistration { set; get; }
 
         /// <summary>
-        /// Returns the status of the auto registration flag for the component identified by this object.
+        /// Private constructor
         /// </summary>
-        /// <returns> <code>true</code> if the auto registration flag is set. </returns>
-        public virtual bool AutoRegistrationSet => _autoRegister;
-        // TODO
+        /// <param name="uuid"></param>
+        private JIClsid(string uuid) => _nestedUUID.Parse(uuid);
 
         /// <summary>
         /// Factory method returning an instance of this class.
         /// </summary>
-        /// <param name="uuid"> - clsid of the form "00000000-0000-0000-0000-000000000000" </param>
+        /// <param name="uuid"> - clsid of the form
+        /// "00000000-0000-0000-0000-000000000000" </param>
         /// <returns> - instance of JIClsid  </returns>
         public static JIClsid ValueOf(string uuid) {
             if (uuid == null) {
@@ -62,13 +58,6 @@ namespace org.jinterop.dcom.core {
             return new JIClsid(uuid);
         }
 
-        /// <summary>
-        /// String representation of the wrapped class identifier.
-        /// </summary>
-        /// <returns> string of the form "00000000-0000-0000-0000-000000000000" </returns>
-        public virtual string CLSID => _nestedUUID.ToString();
-
         private readonly UUID _nestedUUID = new UUID();
-        private bool _autoRegister;
     }
 }

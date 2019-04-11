@@ -56,9 +56,7 @@ namespace rpc.security.ntlm {
         /// <exception cref="SecurityUtilityException"> </exception>
         /// <exception cref="UnsupportedEncodingException"> </exception>
         /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
-        public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce) {
-            return Responses.HmacMD5(servernonce, GetNTLMUserSessionKey(password));
-        }
+        public byte[] GetNTLM2SessionResponseUserSessionKey(string password, byte[] servernonce) => Responses.HmacMD5(servernonce, GetNTLMUserSessionKey(password));
 
         /// <summary>
         /// Randomly generated 16 bytes
@@ -84,18 +82,17 @@ namespace rpc.security.ntlm {
             return keystream;
         }
 
-        internal virtual byte[] ApplyARCFOUR(IStreamCipher keystream, byte[] data) {
+        /// <summary>
+        /// Apply stream cypher
+        /// </summary>
+        /// <param name="keystream"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        internal byte[] ApplyARCFOUR(IStreamCipher keystream, byte[] data) {
             var retData = new byte[data.Length];
-
             keystream.ProcessBytes(data, 0, data.Length, retData, 0);
-
-            //		for (int i = 0; i < data.length; i++) {
-            //		   retData[i] = (byte) (data[i] ^ keystream.nextByte());
-            //		}
-
             return retData;
         }
-
 
         /// <summary>
         /// NTLMv1 User Session Key. Cases where LMcompatibilitylevel is 0,1,2.
@@ -109,7 +106,7 @@ namespace rpc.security.ntlm {
         private byte[] GetNTLMUserSessionKey(string password) {
             // look at NTLMPasswordAuthentication in SharpCifs. It supports only
             // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
-            //		 byte key[] = new byte[16];
+            //         byte key[] = new byte[16];
             var ntlmHash = Responses.NtlmHash(password);
             IDigest md4 = new MD4Digest();
             var ret = new byte[md4.GetDigestSize()];
@@ -124,9 +121,8 @@ namespace rpc.security.ntlm {
         /// <param name="encryptedData"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public byte[] DecryptSecondarySessionKey(byte[] encryptedData, byte[] key) {
-            return ApplyARCFOUR(GetARCFOUR(key), encryptedData);
-        }
+        public byte[] DecryptSecondarySessionKey(byte[] encryptedData, byte[] key) =>
+            ApplyARCFOUR(GetARCFOUR(key), encryptedData);
 
         /// <summary>
         /// Encrypt
@@ -134,9 +130,8 @@ namespace rpc.security.ntlm {
         /// <param name="plainData"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public byte[] EncryptSecondarySessionKey(byte[] plainData, byte[] key) {
-            return ApplyARCFOUR(GetARCFOUR(key), plainData);
-        }
+        public byte[] EncryptSecondarySessionKey(byte[] plainData, byte[] key) =>
+            ApplyARCFOUR(GetARCFOUR(key), plainData);
 
         /// <summary>
         /// Generate client signing key
@@ -146,10 +141,10 @@ namespace rpc.security.ntlm {
         public byte[] GenerateClientSigningKeyUsingNegotiatedSecondarySessionKey(
             byte[] secondarySessionKey) {
             // TODO this can be moved out of here...
-            var dataforhash = new byte[secondarySessionKey.Length + kclientSigningMagicConstant.Length];
+            var dataforhash = new byte[secondarySessionKey.Length + kClientSigningMagicConstant.Length];
             Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-            Array.Copy(kclientSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-                kclientSigningMagicConstant.Length);
+            Array.Copy(kClientSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
+                kClientSigningMagicConstant.Length);
             IDigest md5 = new MD5Digest();
             var ret = new byte[md5.GetDigestSize()];
             md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
@@ -165,10 +160,10 @@ namespace rpc.security.ntlm {
         public byte[] GenerateClientSealingKeyUsingNegotiatedSecondarySessionKey(
             byte[] secondarySessionKey) {
             // TODO this can be moved out of here...
-            var dataforhash = new byte[secondarySessionKey.Length + kclientSealingMagicConstant.Length];
+            var dataforhash = new byte[secondarySessionKey.Length + kClientSealingMagicConstant.Length];
             Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-            Array.Copy(kclientSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-                kclientSealingMagicConstant.Length);
+            Array.Copy(kClientSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
+                kClientSealingMagicConstant.Length);
             IDigest md5 = new MD5Digest();
             var ret = new byte[md5.GetDigestSize()];
             md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
@@ -184,10 +179,10 @@ namespace rpc.security.ntlm {
         public byte[] GenerateServerSigningKeyUsingNegotiatedSecondarySessionKey(
             byte[] secondarySessionKey) {
             // TODO this can be moved out of here...
-            var dataforhash = new byte[secondarySessionKey.Length + kserverSigningMagicConstant.Length];
+            var dataforhash = new byte[secondarySessionKey.Length + kServerSigningMagicConstant.Length];
             Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-            Array.Copy(kserverSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-                kserverSigningMagicConstant.Length);
+            Array.Copy(kServerSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
+                kServerSigningMagicConstant.Length);
             IDigest md5 = new MD5Digest();
             var ret = new byte[md5.GetDigestSize()];
             md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
@@ -202,11 +197,11 @@ namespace rpc.security.ntlm {
         /// <returns></returns>
         public byte[] GenerateServerSealingKeyUsingNegotiatedSecondarySessionKey(
             byte[] secondarySessionKey) {
-            //TODO this can be moved out of here...
-            var dataforhash = new byte[secondarySessionKey.Length + kserverSealingMagicConstant.Length];
+            // TODO this can be moved out of here...
+            var dataforhash = new byte[secondarySessionKey.Length + kServerSealingMagicConstant.Length];
             Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
-            Array.Copy(kserverSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
-                kserverSealingMagicConstant.Length);
+            Array.Copy(kServerSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
+                kServerSealingMagicConstant.Length);
             IDigest md5 = new MD5Digest();
             var ret = new byte[md5.GetDigestSize()];
             md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
@@ -238,7 +233,7 @@ namespace rpc.security.ntlm {
             Array.Copy(data, 0, seqNumPlusData, 4, lengthOfBuffer);
 
             var retval = new byte[16];
-            retval[0] = 0x01; //Version number LE 1.
+            retval[0] = 0x01; // Version number LE 1.
 
             var sign = Responses.HmacMD5(seqNumPlusData, signingKey);
 
@@ -262,8 +257,8 @@ namespace rpc.security.ntlm {
         /// <exception cref="InvalidOperationException"></exception>
         public void SigningPt2(byte[] verifier, IStreamCipher rc4) {
             for (var i = 0; i < 8; i++) {
-                //			verifier[i+4] = (byte) (verifier[i+4] ^ rc4.nextByte());
-                verifier[i + 4] = (byte)rc4.ReturnByte(verifier[i + 4]);
+                //            verifier[i+4] = (byte) (verifier[i+4] ^ rc4.nextByte());
+                verifier[i + 4] = rc4.ReturnByte(verifier[i + 4]);
             }
         }
 
@@ -273,12 +268,10 @@ namespace rpc.security.ntlm {
         /// <param name="src"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public bool CompareSignature(byte[] src, byte[] target) {
-            return src.SequenceEqual(target);
-        }
+        public bool CompareSignature(byte[] src, byte[] target) => src.SequenceEqual(target);
 
         private readonly Random _random = new Random();
-        private static readonly byte[] kclientSigningMagicConstant = {
+        private static readonly byte[] kClientSigningMagicConstant = {
             0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x20,
             0x6b, 0x65, 0x79, 0x20, 0x74, 0x6f, 0x20, 0x63,
             0x6c, 0x69, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x6f,
@@ -287,7 +280,7 @@ namespace rpc.security.ntlm {
             0x6b, 0x65, 0x79, 0x20, 0x6d, 0x61, 0x67, 0x69,
             0x63, 0x20, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61,
             0x6e, 0x74, 0x00 };
-        private static readonly byte[] kserverSigningMagicConstant = {
+        private static readonly byte[] kServerSigningMagicConstant = {
             0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x20,
             0x6b, 0x65, 0x79, 0x20, 0x74, 0x6f, 0x20, 0x73,
             0x65, 0x72, 0x76, 0x65, 0x72, 0x2d, 0x74, 0x6f,
@@ -296,7 +289,7 @@ namespace rpc.security.ntlm {
             0x6b, 0x65, 0x79, 0x20, 0x6d, 0x61, 0x67, 0x69,
             0x63, 0x20, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61,
             0x6e, 0x74, 0x00 };
-        private static readonly byte[] kclientSealingMagicConstant = {
+        private static readonly byte[] kClientSealingMagicConstant = {
             0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x20,
             0x6b, 0x65, 0x79, 0x20, 0x74, 0x6f, 0x20, 0x63,
             0x6c, 0x69, 0x65, 0x6e, 0x74, 0x2d, 0x74, 0x6f,
@@ -305,7 +298,7 @@ namespace rpc.security.ntlm {
             0x6b, 0x65, 0x79, 0x20, 0x6d, 0x61, 0x67, 0x69,
             0x63, 0x20, 0x63, 0x6f, 0x6e, 0x73, 0x74, 0x61,
             0x6e, 0x74, 0x00 };
-        private static readonly byte[] kserverSealingMagicConstant = {
+        private static readonly byte[] kServerSealingMagicConstant = {
             0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x20,
             0x6b, 0x65, 0x79, 0x20, 0x74, 0x6f, 0x20, 0x73,
             0x65, 0x72, 0x76, 0x65, 0x72, 0x2d, 0x74, 0x6f,

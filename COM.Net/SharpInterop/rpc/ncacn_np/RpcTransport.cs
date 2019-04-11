@@ -43,7 +43,7 @@ namespace rpc.ncacn_np {
             }
             catch (UnknownHostException) {
             }
-            LOCALHOST = localhost;
+            kLOCALHOST = localhost;
         }
 
         /// <summary>
@@ -58,16 +58,16 @@ namespace rpc.ncacn_np {
         }
 
         /// <inheritdoc/>
-        public virtual IEndpoint Attach(PresentationSyntax syntax) {
+        public IEndpoint Attach(PresentationSyntax syntax) {
             if (_attached) {
                 throw new RpcException("Transport already attached.");
             }
 
-            //with the first flag an access denied exception occurs
-            //with the second one file not found. so changing code here.
+            // with the first flag an access denied exception occurs
+            // with the second one file not found. so changing code here.
             /*pipe = new SmbNamedPipe(address, (0x2019f << 16) |
-					SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT);
-			 * */
+                    SmbNamedPipe.PIPE_TYPE_RDWR | SmbNamedPipe.PIPE_TYPE_DCE_TRANSACT);
+             * */
             _pipe = new SmbNamedPipe(_address, SmbNamedPipe.PipeTypeDceTransact);
             _in2 = _pipe.GetInputStream();
             _out = _pipe.GetNamedPipeOutputStream();
@@ -77,7 +77,7 @@ namespace rpc.ncacn_np {
         }
 
         /// <inheritdoc/>
-        public virtual void Close() {
+        public void Close() {
             try {
                 if (_pipe != null) {
                     _in.Close();
@@ -92,7 +92,7 @@ namespace rpc.ncacn_np {
         }
 
         /// <inheritdoc/>
-        public virtual void Send(NdrBuffer buffer) {
+        public void Send(NdrBuffer buffer) {
             if (!_attached) {
                 throw new RpcException("Transport not attached.");
             }
@@ -101,7 +101,7 @@ namespace rpc.ncacn_np {
         }
 
         /// <inheritdoc/>
-        public virtual void Receive(NdrBuffer buffer) {
+        public void Receive(NdrBuffer buffer) {
             var buf = buffer.GetBuffer();
             int off = 0, bytes_to_read, n;
 
@@ -171,7 +171,7 @@ namespace rpc.ncacn_np {
                 server = server.Substring(1);
             }
             if ("".Equals(server)) {
-                server = LOCALHOST;
+                server = kLOCALHOST;
             }
             var properties = Properties;
             if (properties != null) {
@@ -202,7 +202,7 @@ namespace rpc.ncacn_np {
             _address = "smb://" + server + "/IPC$/" + address;
         }
 
-        private static readonly string LOCALHOST;
+        private static readonly string kLOCALHOST;
         private string _address;
         private SmbNamedPipe _pipe;
         internal Stream _out;

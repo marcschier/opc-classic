@@ -82,7 +82,7 @@ namespace rpc.security.ntlm {
 
         /// <inheritdoc/>
         public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
-            PresentationResult[] results = null;
+            PresentationResult[] results;
             switch (pdu.Type) {
                 case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                     var bindAck = (BindAcknowledgePdu)pdu;
@@ -114,7 +114,7 @@ namespace rpc.security.ntlm {
                         }
                     }
                     Established = true;
-                    //return new Auth3Pdu();
+                    // return new Auth3Pdu();
                     return null;
                 case BindNoAcknowledgePdu.BIND_NO_ACKNOWLEDGE_TYPE:
                     throw new BindException("Unable to bind.", ((BindNoAcknowledgePdu)pdu).RejectReason);
@@ -124,17 +124,17 @@ namespace rpc.security.ntlm {
                     throw new RpcException("Server shutdown connection.");
                 case BindPdu.BIND_TYPE:
                     Established = false;
-                    //CHECK PRESENTATION CONTEXT
-                    //CHALLENGE
+                    // CHECK PRESENTATION CONTEXT
+                    // CHALLENGE
                     throw new Exception();
                 case AlterContextPdu.ALTER_CONTEXT_TYPE:
                     Established = false;
-                    //CHECK PRESENTATION CONTEXT
-                    //CHALLENGE
+                    // CHECK PRESENTATION CONTEXT
+                    // CHALLENGE
                     throw new Exception();
                 case Auth3Pdu.AUTH3_TYPE:
-                    //AUTHENTICATE
-                    //TWEAK CONNECTION
+                    // AUTHENTICATE
+                    // TWEAK CONNECTION
                     Established = true;
                     return null;
                 default:

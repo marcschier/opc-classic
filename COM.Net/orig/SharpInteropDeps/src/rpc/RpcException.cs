@@ -17,17 +17,17 @@
 
 namespace rpc {
 
-	public class RpcException : IOException {
+    public class RpcException : IOException {
 
-		/// 
-		private const long SerialVersionUID = -6529915206074406077L;
+        /// 
+        private const long SerialVersionUID = -6529915206074406077L;
 
-		public RpcException() : base() {
-		}
+        public RpcException() : base() {
+        }
 
-		public RpcException(string message) : base(message) {
-		}
+        public RpcException(string message) : base(message) {
+        }
 
-	}
+    }
 
 }

@@ -60,7 +60,7 @@ namespace rpc {
 
         /// <inheritdoc/>
         public virtual ConnectionOrientedPdu Accept(ConnectionOrientedPdu pdu) {
-            PresentationResult[] results = null;
+            PresentationResult[] results;
             switch (pdu.Type) {
                 case BindAcknowledgePdu.BIND_ACKNOWLEDGE_TYPE:
                     var bindAck = (BindAcknowledgePdu)pdu;

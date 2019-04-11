@@ -16,7 +16,7 @@ namespace org.jinterop.dcom.core {
     using System;
     using System.Collections.Generic;
 
-    internal sealed class JIRemActivation : NdrOp, JIIServerActivation {
+    internal sealed class JIRemActivation : NdrOp, IServerActivation {
 
         /// <summary>
         /// That
@@ -57,7 +57,7 @@ namespace org.jinterop.dcom.core {
         /// Create activation
         /// </summary>
         /// <param name="clsid"></param>
-		public JIRemActivation(string clsid) {
+        public JIRemActivation(string clsid) {
             ClientImpersonationLevel = JIIServerActivation_Fields.RPC_C_IMP_LEVEL_IMPERSONATE;
             // 10000002-0000-0000-0000-000000000001 Inside DCOM
             _clsid = new UUID(clsid);
@@ -81,7 +81,7 @@ namespace org.jinterop.dcom.core {
             var orpcThis = new JIOrpcThis();
             orpcThis.Encode(ndr);
 
-            //JIClsid of the component being activated.
+            // JIClsid of the component being activated.
             var uuid = new UUID();
             uuid.Parse(_clsid.ToString());
             try {
@@ -99,12 +99,12 @@ namespace org.jinterop.dcom.core {
 
             ndr.WriteUnsignedLong(0); // Minterface pointer
             ndr.WriteUnsignedLong(ClientImpersonationLevel); // impersonation level
-            ndr.WriteUnsignedLong(Mode); //mode, when object name, interface pointer are not null, this is passed directly to IPersistFile:Load
-            ndr.WriteUnsignedLong(2); //No. of IIDs requested.
+            ndr.WriteUnsignedLong(Mode); // mode, when object name, interface pointer are not null, this is passed directly to IPersistFile:Load
+            ndr.WriteUnsignedLong(2); // No. of IIDs requested.
             ndr.WriteUnsignedLong(new object().GetHashCode());
-            ndr.WriteUnsignedLong(2); //Array length
+            ndr.WriteUnsignedLong(2); // Array length
 
-            //IID of IUnknown, this is hard coded here, standard way of COM is to first get a handle to the IUnknown
+            // IID of IUnknown, this is hard coded here, standard way of COM is to first get a handle to the IUnknown
             uuid.Parse("00000000-0000-0000-c000-000000000046");
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -113,7 +113,7 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivatio write");
             }
 
-            //checking for IDispatch support
+            // checking for IDispatch support
             uuid.Parse("00020400-0000-0000-c000-000000000046");
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -122,9 +122,9 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivation write");
             }
 
-            ndr.WriteUnsignedLong(1); //Protocol Sequences available
-            ndr.WriteUnsignedLong(1); //Array length
-            ndr.WriteUnsignedShort(7); //TCP
+            ndr.WriteUnsignedLong(1); // Protocol Sequences available
+            ndr.WriteUnsignedLong(1); // Array length
+            ndr.WriteUnsignedShort(7); // TCP
             var address = JISession.LocalhostAddressAsIPbytes;
             ndr.WriteUnsignedShort(address[0]);
             ndr.WriteUnsignedShort(address[1]);
@@ -136,25 +136,25 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public override void Read(NdrCodec ndr) {
 
-            //first take out JIOrpcThat
+            // first take out JIOrpcThat
             ORPCThat = JIOrpcThat.Decode(ndr);
 
-            //now fill the oxid
+            // now fill the oxid
             Oxid = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr, 8);
 
             var skipdual = ndr.ReadUnsignedLong();
 
             if (skipdual != 0) {
                 ndr.ReadUnsignedLong();
-                //now fill the dual string array for oxid bindings, the call to IRemUnknown will be
-                //directed to this address and the port in that address.
+                // now fill the dual string array for oxid bindings, the call to IRemUnknown will be
+                // directed to this address and the port in that address.
                 DualStringArrayForOxid = JIDualStringArray.Decode(ndr);
             }
 
-            //get the IPID which will be the "Object" in the call to IRemUknown. This is the IPID of the
-            //component which has been specified as the JIClsid. This may differ in multiple invokations of
-            //of remote activation as everytime a new object may be created at the server per call. This is all
-            //server implementation dependent.
+            // get the IPID which will be the "Object" in the call to IRemUknown. This is the IPID of the
+            // component which has been specified as the JIClsid. This may differ in multiple invokations of
+            // of remote activation as everytime a new object may be created at the server per call. This is all
+            // server implementation dependent.
             try {
                 var ipid2 = new UUID();
                 ipid2.Decode(ndr, ndr.Buffer);
@@ -164,7 +164,7 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivation read");
             }
 
-            //read the auth hint
+            // read the auth hint
             AuthenticationHint = ndr.ReadUnsignedLong();
 
             ComVersion = new JIComVersion {
@@ -175,11 +175,11 @@ namespace org.jinterop.dcom.core {
             Hresult = ndr.ReadUnsignedLong();
 
             if (Hresult != 0) {
-                //System.out.println("EXCEPTION FROM SERVER ! --> " + "0x" + Long.toHexString(hresult).substring(8));
+                // System.out.println("EXCEPTION FROM SERVER ! --> " + "0x" + Long.toHexString(hresult).substring(8));
                 throw new JIRuntimeException(Hresult);
             }
 
-            //int numRet = ndr.readUnsignedLong();//Number of interface pointers returned. Currently only 2.
+            // int numRet = ndr.readUnsignedLong();// Number of interface pointers returned. Currently only 2.
 
             var array = new JIArray(typeof(JIInterfacePointer), null, 1, true);
             var listOfDefferedPointers = new List<object>();
@@ -191,7 +191,7 @@ namespace org.jinterop.dcom.core {
 
                 var newList = new List<object>();
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, null);
-                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); // this should replace the value in the original place.
                 x++;
                 listOfDefferedPointers.InsertRange(x, newList);
             }
@@ -199,9 +199,9 @@ namespace org.jinterop.dcom.core {
             MInterfacePointer = arrayObjs[0];
 
             if (arrayObjs[1] != null) {
-                //dual is supported since the IDispatch was obtained
+                // dual is supported since the IDispatch was obtained
                 _isDual = true;
-                //eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
+                // eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
                 var ptr = arrayObjs[1];
                 _dispIpid = ptr.IPID;
                 _dispOid = ptr.OID;
@@ -209,7 +209,7 @@ namespace org.jinterop.dcom.core {
             }
 
             array = new JIArray(typeof(int), null, 1, true);
-            //ignore the retvals
+            // ignore the retvals
             JIMarshalUnMarshalHelper.Deserialize(ndr, array, null, JIFlags.FLAG_NULL, null);
 
             ActivationSuccessful = true;

@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.transport {
@@ -54,24 +54,24 @@ namespace org.jinterop.dcom.transport {
                             contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
                         }
                         if (!contains) {
-                            //create a fault PDU stating the syntax is not supported.
-                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION, 
-                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED, 
+                            // create a fault PDU stating the syntax is not supported.
+                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
+                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
                                 new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
                             ((BindAcknowledgePdu)reply).ResultList = result;
                             break;
                         }
                     }
 
-                    //all okay
+                    // all okay
                     if (((BindAcknowledgePdu)reply).ResultList == null) {
-                        result[0] = new PresentationResult(); //this will be acceptance.
+                        result[0] = new PresentationResult(); // this will be acceptance.
                         ((BindAcknowledgePdu)reply).AssociationGroupId =
-                            new object().GetHashCode(); //TODO should I save this ?
+                            new object().GetHashCode(); // TODO should I save this ?
                         ((BindAcknowledgePdu)reply).ResultList = result;
-                    } 
+                    }
                     ((BindAcknowledgePdu)reply).CallId = pdu.CallId;
-                    //issue a challenge against the request info
+                    // issue a challenge against the request info
                     break;
                 case AlterContextPdu.ALTER_CONTEXT_TYPE:
                     _established = true;
@@ -86,25 +86,25 @@ namespace org.jinterop.dcom.transport {
                             contains = _listOfInterfacesSupported.Contains(presentationContext.AbstractSyntax.ToString().ToUpper());
                         }
                         if (!contains) {
-                            //create a fault PDU stating the syntax is not supported.
-                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION, 
-                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED, 
+                            // create a fault PDU stating the syntax is not supported.
+                            result[0] = new PresentationResult(PresentationResultCode.PROVIDER_REJECTION,
+                                PresentationResultReason.ABSTRACT_SYNTAX_NOT_SUPPORTED,
                                 new PresentationSyntax(UUID.NIL_UUID + ":0.0"));
                             ((AlterContextResponsePdu)reply).ResultList = result;
                             break;
                         }
                     }
 
-                    //all okay
+                    // all okay
                     if (((AlterContextResponsePdu)reply).ResultList == null) {
-                        result[0] = new PresentationResult(); //this will be acceptance.
-                        ((AlterContextResponsePdu)reply).AssociationGroupId = 
-                            new object().GetHashCode(); //TODO should I save this ?
+                        result[0] = new PresentationResult(); // this will be acceptance.
+                        ((AlterContextResponsePdu)reply).AssociationGroupId =
+                            new object().GetHashCode(); // TODO should I save this ?
                         ((AlterContextResponsePdu)reply).ResultList = result;
                     }
 
                     ((AlterContextResponsePdu)reply).CallId = pdu.CallId;
-                    //issue a challenge against the request info
+                    // issue a challenge against the request info
                     break;
                 default:
                     reply = base.Accept(reply);

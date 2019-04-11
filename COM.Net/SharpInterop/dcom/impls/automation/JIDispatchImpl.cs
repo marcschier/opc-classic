@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.impls.automation {
@@ -24,15 +24,13 @@ namespace org.jinterop.dcom.impls.automation {
     [Serializable]
     internal sealed class JIDispatchImpl : JIComObjectImplWrapper, IJIDispatch {
 
-        internal JIDispatchImpl(IJIComObject comObject) : base(comObject) {
-            //this.comObject = comObject;
+        internal JIDispatchImpl(IComObject comObject) :
+            base(comObject) {
         }
 
-        //IJIComObject comObject = null;
         private readonly Hashtable _cacheOfDispIds = new Hashtable();
         public const int FLAG_TYPEINFO_SUPPORTED = 1;
         public const int FLAG_TYPEINFO_NOTSUPPORTED = 0;
-
 
         /// <inheritdoc/>
         public int TypeInfoCount {
@@ -57,11 +55,11 @@ namespace org.jinterop.dcom.impls.automation {
             var innerMap = (IDictionary<object, object>)_cacheOfDispIds[apiName];
             if (innerMap != null) {
                 var dispId = (int)innerMap[apiName];
-                return (int)dispId;
+                return dispId;
             }
 
             var obj = new JICallBuilder(true) {
-                Opnum = 2 //size of the array
+                Opnum = 2 // size of the array
                 // 1st is the num elements and second is the actual values
             };
 
@@ -71,7 +69,8 @@ namespace org.jinterop.dcom.impls.automation {
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(1, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(0x800, JIFlags.FLAG_NULL);
-            obj.AddOutParamAsObject(new JIArray(typeof(int), null, 1, true), JIFlags.FLAG_NULL);
+            obj.AddOutParamAsObject(
+                new JIArray(typeof(int), null, 1, true), JIFlags.FLAG_NULL);
 
             var result = ComObject.Call(obj);
             if (result == null && obj.Error) {
@@ -83,21 +82,24 @@ namespace org.jinterop.dcom.impls.automation {
             };
             _cacheOfDispIds[apiName] = innerMap;
 
-            //first will be the length, and the next will be the actual value.
-            return (int)((object[])((JIArray)result[0]).ArrayInstance)[0]; // will get the dispatch ID.
+            // first will be the length, and the next will be the actual value.
+            return (int)((object[])((JIArray)result[0]).ArrayInstance)[0];
+            // will get the dispatch ID.
         }
 
         /// <inheritdoc/>
         public int[] GetIDsOfNames(string[] apiName) {
             if (apiName == null || apiName.Length == 0) {
-                throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                throw new ArgumentException(JISystem.GetLocalizedMessage(
+                    JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
             }
 
             var sendForAll = false;
-            //first one will be the method name
+            // first one will be the method name
             var innerMap = (IDictionary<object, object>)_cacheOfDispIds[apiName[0]];
-            if (innerMap != null) //if name is not found will not even go in. so it is safe to assume that api name will always be there.
-            {
+            if (innerMap != null) {
+                // if name is not found will not even go in. so it is safe to assume
+                // that api name will always be there.
                 var values = new int[innerMap.Count];
                 for (var i = 0; i < apiName.Length; i++) {
                     if (!innerMap.TryGetValue(apiName[i], out var dispId)) {
@@ -108,22 +110,24 @@ namespace org.jinterop.dcom.impls.automation {
                 }
 
                 if (!sendForAll) {
-                    return values; //all found returning now
+                    return values; // all found returning now
                 }
             }
 
 
             var obj = new JICallBuilder(true) {
-                Opnum = 2 //size of the array
-                //1st is the num elements and second is the actual values
+                Opnum = 2 // size of the array
+                // 1st is the num elements and second is the actual values
             };
 
             var pointers = new JIPointer[apiName.Length];
             for (var i = 0; i < apiName.Length; i++) {
                 if (apiName[i] == null || apiName[i].Trim().Equals("")) {
-                    throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                    throw new ArgumentException(JISystem.GetLocalizedMessage(
+                        JIErrorCodes.JI_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
                 }
-                pointers[i] = new JIPointer(new JIString(apiName[i].Trim(), JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
+                pointers[i] = new JIPointer(
+                    new JIString(apiName[i].Trim(), JIFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
             }
 
             var array = new JIArray(pointers, true);
@@ -136,12 +140,13 @@ namespace org.jinterop.dcom.impls.automation {
 
             var result = ComObject.Call(obj);
 
-            if (obj.HRESULT != 0) { //exception occured
-                throw new JIException(obj.HRESULT, JISystem.GetLocalizedMessage((JIErrorCodes)obj.HRESULT));
+            if (obj.HRESULT != 0) { // exception occured
+                throw new JIException(obj.HRESULT,
+                    JISystem.GetLocalizedMessage((JIErrorCodes)obj.HRESULT));
             }
 
             var arrayOfResults = (JIArray)result[0];
-            var arrayOfDispIds = (int?[])arrayOfResults.ArrayInstance;
+            var arrayOfDispIds = (int[])arrayOfResults.ArrayInstance;
             var retVal = new int[apiName.Length];
 
             innerMap = innerMap ?? new Hashtable();
@@ -163,10 +168,9 @@ namespace org.jinterop.dcom.impls.automation {
             };
             obj.AddInParamAsInt(typeInfo, JIFlags.FLAG_NULL);
             obj.AddInParamAsInt(0x400, JIFlags.FLAG_NULL);
-            obj.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
-            //obj.setUpParams(new Object[]{new Integer(typeInfo),new Integer(0x400)},new Object[]{MInterfacePointer.class},JIFlags.FLAG_NULL,JIFlags.FLAG_NULL);
+            obj.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             var result = ComObject.Call(obj);
-            return (IJITypeInfo)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            return (IJITypeInfo)JIObjectFactory.NarrowObject((IComObject)result[0]);
         }
 
         /// <summary>
@@ -179,7 +183,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <param name="outParamType"></param>
         /// <exception cref="JIException"></exception>
         /// <returns></returns>
-        public JIVariant[] Invoke(int dispId, int dispatchFlags, JIArray arrayOfVariantsInParams, 
+        public JIVariant[] Invoke(int dispId, int dispatchFlags, JIArray arrayOfVariantsInParams,
             JIArray arrayOfNamedDispIds, JIVariant outParamType) {
             LastExcepInfo.ClearAll();
             var obj = new JICallBuilder(true) {
@@ -187,24 +191,22 @@ namespace org.jinterop.dcom.impls.automation {
             };
 
             var dispParams = new JIStruct();
-
-            //now check whether any of the variants is representation of a variant ptr, if so replace it with an
-            //EMPTY variant and add it to another array.
+            // now check whether any of the variants is representation of a variant ptr,
+            // if so replace it with an EMPTY variant and add it to another array.
             var listOfVariantPtrs = new List<object>();
             var listOfPositions = new List<object>();
-            JIVariant[] variants = null;
             var lengthVar = 0;
-            //bool isLastAptr = false;
+            // bool isLastAptr = false;
             if (arrayOfVariantsInParams != null) {
                 lengthVar = JIFrameworkHelper.ReverseArrayForDispatch(arrayOfVariantsInParams);
-                variants = (JIVariant[])arrayOfVariantsInParams.ArrayInstance;
+                var variants = (JIVariant[])arrayOfVariantsInParams.ArrayInstance;
                 for (var i = 0; i < variants.Length; i++) {
                     var variant = variants[i];
                     if (variant.IsByRef) {
                         listOfVariantPtrs.Add(variant);
-                        listOfPositions.Add(i); //for position array
-                                                //now replace with Empty.
-                                                //variants[i] = new JIVariant(JIVariant.POINTER);
+                        listOfPositions.Add(i); // for position array
+                                                // now replace with Empty.
+                                                // variants[i] = new JIVariant(JIVariant.POINTER);
                         variants[i] = JIVariant.CreateEMPTY();
                     }
                 }
@@ -215,9 +217,10 @@ namespace org.jinterop.dcom.impls.automation {
             if (arrayOfNamedDispIds != null) {
                 lengthPtr = JIFrameworkHelper.ReverseArrayForDispatch(arrayOfNamedDispIds);
             }
-
-            dispParams.AddMember(new JIPointer(arrayOfVariantsInParams)); //should be an array of variants
-            dispParams.AddMember(new JIPointer(arrayOfNamedDispIds)); //if there, this should be an array of variants, these too.
+            // should be an array of variants
+            dispParams.AddMember(new JIPointer(arrayOfVariantsInParams));
+            // if there, this should be an array of variants, these too.
+            dispParams.AddMember(new JIPointer(arrayOfNamedDispIds));
             dispParams.AddMember(lengthVar);
             dispParams.AddMember(lengthPtr);
 
@@ -227,26 +230,29 @@ namespace org.jinterop.dcom.impls.automation {
             obj.AddInParamAsInt((int)(dispatchFlags ^ 0xFFFFFFF0), JIFlags.FLAG_NULL);
             obj.AddInParamAsStruct(dispParams, JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
-            //now add the extra params if exist.
+            // now add the extra params if exist.
             if (listOfVariantPtrs.Count > 0) {
-                //write length
+                // write length
                 obj.AddInParamAsInt(listOfPositions.Count, JIFlags.FLAG_NULL);
-                //then write the array
+                // then write the array
                 obj.AddInParamAsArray(new JIArray(listOfPositions.Cast<int>().ToArray(), true), JIFlags.FLAG_NULL);
-                //now write the array of variant ptrs
+                // now write the array of variant ptrs
                 obj.AddInParamAsArray(new JIArray(listOfVariantPtrs.Cast<JIVariant>().ToArray(), true), JIFlags.FLAG_NULL);
             }
 
-            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL); //results --> currently all are null and this param is not required as the outparam carries this info.
-            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL); //excepinfo --> currently all are null and this param is not required as the excepinfo is built here.
-            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL); //augerr --> currently all are null and this param is not required as the excepinfo is built here.
+            // results --> currently all are null and this param is not required as the outparam carries this info.
+            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL);
+            // excepinfo --> currently all are null and this param is not required as the excepinfo is built here.
+            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL);
+            // augerr --> currently all are null and this param is not required as the excepinfo is built here.
+            obj.AddInParamAsObject(null, JIFlags.FLAG_NULL);
 
             var outparams = new object[4];
             if (outParamType == null) {
-                outparams[0] = typeof(JIVariant); //fill ourselves
+                outparams[0] = typeof(JIVariant); // fill ourselves
             }
             else {
-                outparams[0] = outParamType; //fill from users input
+                outparams[0] = outParamType; // fill from users input
             }
 
             outparams[1] = kExcepInfo;
@@ -255,14 +261,14 @@ namespace org.jinterop.dcom.impls.automation {
 
             obj.SetOutParams(outparams, JIFlags.FLAG_REPRESENTATION_IDISPATCH_INVOKE);
 
-            object[] result = null;
+            object[] result;
             try {
                 result = ComObject.Call(obj);
             }
             catch (JIException e) {
                 var results = obj.ResultsInCaseOfException;
                 if (results != null) {
-                    //catching here so that an extended message could be sent out
+                    // catching here so that an extended message could be sent out
                     var excepInfoRet = (JIStruct)results[1];
                     var text1 = ((JIString)excepInfoRet.GetMember(2)).String + " ";
                     var text2 = ((JIString)excepInfoRet.GetMember(3)).String + " [ ";
@@ -282,7 +288,7 @@ namespace org.jinterop.dcom.impls.automation {
             }
 
             var array = (JIArray)result[3];
-            var byrefVariants = (JIVariant[])array.ArrayInstance; //will be a sinlge dimensional array.
+            var byrefVariants = (JIVariant[])array.ArrayInstance; // will be a sinlge dimensional array.
 
             var retVal = new JIVariant[1 + byrefVariants.Length];
             retVal[0] = (JIVariant)result[0];
@@ -299,7 +305,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <param name="isRef"></param>
         /// <exception cref="JIException"></exception>
         private void Put(int dispId, object[] inparams, bool isRef) {
-            var propertyFlag = isRef ? 
+            var propertyFlag = isRef ?
                 DispatchFlags.DISPATCH_PROPERTYPUTREF : DispatchFlags.DISPATCH_PROPERTYPUT;
             var objectParams = inparams;
             if (objectParams == null) {
@@ -308,8 +314,9 @@ namespace org.jinterop.dcom.impls.automation {
 
             var variants = new JIVariant[objectParams.Length];
             for (var i = 0; i < objectParams.Length; i++) {
-                JIVariant variant = null;
                 var obj = objectParams[i];
+
+                JIVariant variant;
                 if (!(obj is JIVariant)) {
                     if (obj is JIArray) {
                         variant = new JIVariant((JIArray)obj, isRef);
@@ -320,30 +327,28 @@ namespace org.jinterop.dcom.impls.automation {
                 }
                 else {
                     variant = (JIVariant)obj;
-                    //variant = new JIVariant((JIVariant)obj);
+                    // variant = new JIVariant((JIVariant)obj);
                 }
                 variants[i] = variant;
             }
-
-
             Invoke(dispId, propertyFlag, new JIArray(variants, true),
                 new JIArray(new int[] { DispatchFlags.DISPATCH_DISPID_PUTPUTREF }, true), null);
         }
 
         /// <inheritdoc/>
-        public void Put(int dispId, JIVariant inparam) => 
+        public void Put(int dispId, JIVariant inparam) =>
             Put(dispId, new object[] { inparam }, false);
 
         /// <inheritdoc/>
-        public void Put(string name, JIVariant inparam) => 
+        public void Put(string name, JIVariant inparam) =>
             Put(GetIDsOfNames(name), inparam);
 
         /// <inheritdoc/>
-        public void PutRef(int dispId, JIVariant inparam) => 
+        public void PutRef(int dispId, JIVariant inparam) =>
             Put(dispId, new object[] { inparam }, true);
 
         /// <inheritdoc/>
-        public void PutRef(string name, JIVariant inparam) => 
+        public void PutRef(string name, JIVariant inparam) =>
             PutRef(GetIDsOfNames(name), inparam);
 
         /// <inheritdoc/>
@@ -351,7 +356,7 @@ namespace org.jinterop.dcom.impls.automation {
             Invoke(dispId, DispatchFlags.DISPATCH_PROPERTYGET, null, null, null)[0];
 
         /// <inheritdoc/>
-        public JIVariant[] Get(int dispId, object[] inparams) => 
+        public JIVariant[] Get(int dispId, object[] inparams) =>
             CallMethodA(dispId, inparams, DispatchFlags.DISPATCH_PROPERTYGET);
 
         public JIVariant[] Get(string name, object[] inparams) =>
@@ -382,11 +387,11 @@ namespace org.jinterop.dcom.impls.automation {
             CallMethodA(GetIDsOfNames(name), inparams);
 
         /// <inheritdoc/>
-        public void CallMethod(int dispId, object[] inparams) => 
+        public void CallMethod(int dispId, object[] inparams) =>
             CallMethodA(dispId, inparams);
 
         /// <inheritdoc/>
-        public JIVariant[] CallMethodA(string name, object[] inparams) => 
+        public JIVariant[] CallMethodA(string name, object[] inparams) =>
             CallMethodA(GetIDsOfNames(name), inparams);
 
         /// <summary>
@@ -405,8 +410,9 @@ namespace org.jinterop.dcom.impls.automation {
 
             var variants = new JIVariant[objectParams.Length];
             for (var i = 0; i < objectParams.Length; i++) {
-                JIVariant variant = null;
                 var obj = objectParams[i];
+
+                JIVariant variant;
                 if (!(obj is JIVariant)) {
                     if (obj is JIArray) {
                         variant = new JIVariant((JIArray)obj);
@@ -418,7 +424,7 @@ namespace org.jinterop.dcom.impls.automation {
                 }
                 else {
                     variant = (JIVariant)obj;
-                    //variant = new JIVariant((JIVariant)obj);
+                    // variant = new JIVariant((JIVariant)obj);
                 }
 
                 variants[i] = variant;
@@ -427,19 +433,19 @@ namespace org.jinterop.dcom.impls.automation {
         }
 
         /// <inheritdoc/>
-        public JIVariant[] CallMethodA(int dispId, object[] inparams) => 
+        public JIVariant[] CallMethodA(int dispId, object[] inparams) =>
             CallMethodA(dispId, inparams, DispatchFlags.DISPATCH_METHOD);
 
         /// <inheritdoc/>
-        public void CallMethod(string name, object[] inparams, int[] dispIds) => 
+        public void CallMethod(string name, object[] inparams, int[] dispIds) =>
             CallMethodA(GetIDsOfNames(name), inparams, dispIds);
 
         /// <inheritdoc/>
-        public void CallMethod(int dispId, object[] inparams, int[] dispIds) => 
+        public void CallMethod(int dispId, object[] inparams, int[] dispIds) =>
             CallMethodA(dispId, inparams, dispIds);
 
         /// <inheritdoc/>
-        public JIVariant[] CallMethodA(string name, object[] inparams, int[] dispIds) => 
+        public JIVariant[] CallMethodA(string name, object[] inparams, int[] dispIds) =>
             CallMethodA(GetIDsOfNames(name), inparams, dispIds);
 
         /// <inheritdoc/>
@@ -452,8 +458,8 @@ namespace org.jinterop.dcom.impls.automation {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_DISP_INCORRECT_PARAM_LENGTH));
             }
 
-            var array = new int?[inparams.Length];
-            //now prepare the JIArray of dispIds.
+            var array = new int[inparams.Length];
+            // now prepare the JIArray of dispIds.
             for (var i = 0; i < inparams.Length; i++) {
                 array[i] = dispIds[i];
             }
@@ -462,8 +468,9 @@ namespace org.jinterop.dcom.impls.automation {
 
             var variants = new JIVariant[inparams.Length];
             for (var i = 0; i < inparams.Length; i++) {
-                JIVariant variant = null;
                 var obj = inparams[i];
+
+                JIVariant variant;
                 if (!(obj is JIVariant)) {
                     if (obj is JIArray) {
                         variant = new JIVariant((JIArray)obj);
@@ -474,17 +481,17 @@ namespace org.jinterop.dcom.impls.automation {
                 }
                 else {
                     variant = (JIVariant)obj;
-                    //variant = new JIVariant((JIVariant)obj);
+                    // variant = new JIVariant((JIVariant)obj);
                 }
 
                 variants[i] = variant;
             }
-            return Invoke(dispId, DispatchFlags.DISPATCH_METHOD, 
+            return Invoke(dispId, DispatchFlags.DISPATCH_METHOD,
                 new JIArray(variants, true), arrayOfValues, null);
         }
 
         /// <inheritdoc/>
-        public void CallMethod(string name, object[] inparams, string[] paramNames) => 
+        public void CallMethod(string name, object[] inparams, string[] paramNames) =>
             CallMethodA(name, inparams, paramNames);
 
         /// <inheritdoc/>
@@ -506,7 +513,7 @@ namespace org.jinterop.dcom.impls.automation {
             var newDispIds = new int[dispIds.Length - 1];
 
             for (var i = 0; i < newDispIds.Length; i++) {
-                newDispIds[i] = dispIds[i + 1]; //skip the apiname
+                newDispIds[i] = dispIds[i + 1]; // skip the apiname
             }
 
             return CallMethodA(dispIds[0], inparams, newDispIds);
@@ -517,7 +524,7 @@ namespace org.jinterop.dcom.impls.automation {
             Put(dispId, @params, false);
 
         /// <inheritdoc/>
-        public void Put(string name, object[] @params) => 
+        public void Put(string name, object[] @params) =>
             Put(GetIDsOfNames(name), @params, false);
 
         /// <inheritdoc/>
@@ -525,16 +532,15 @@ namespace org.jinterop.dcom.impls.automation {
             Put(dispId, @params, true);
 
         /// <inheritdoc/>
-        public void PutRef(string name, object[] @params) => 
+        public void PutRef(string name, object[] @params) =>
             Put(GetIDsOfNames(name), @params, true);
 
         /// <inheritdoc/>
-        public override string ToString() => 
+        public override string ToString() =>
             "IJIDispatch[" + base.ToString() + "]";
 
         /// <inheritdoc/>
         public JIExcepInfo LastExcepInfo { get; } = new JIExcepInfo();
-
 
         /// <summary>
         /// Static initialization
@@ -554,13 +560,8 @@ namespace org.jinterop.dcom.impls.automation {
             catch (JIException e) {
                 Log.Logger.Error(e, "JIDispatchImpl static initializer");
             }
-            for (var i = 0; i < 100; i++) {
-                kArrayOfDispIds[i] = i;
-            }
-
         }
 
-        private static readonly int?[] kArrayOfDispIds = new int?[100];
         private static readonly JIStruct kExcepInfo = new JIStruct();
     }
 }

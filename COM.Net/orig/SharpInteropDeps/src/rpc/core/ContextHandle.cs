@@ -17,38 +17,38 @@
 
 namespace rpc.core {
 
-	using NdrObject = ndr.NdrObject;
+    using NdrObject = ndr.NdrObject;
 
-	public class ContextHandle : NdrObject {
+    public class ContextHandle : NdrObject {
 
-		internal int Attributes_Renamed;
-		internal UUID Uuid_Renamed;
+        internal int Attributes_Renamed;
+        internal UUID Uuid_Renamed;
 
-		public ContextHandle(int attributes, UUID uuid) {
-			Attributes = attributes;
-			Uuid = uuid;
-		}
+        public ContextHandle(int attributes, UUID uuid) {
+            Attributes = attributes;
+            Uuid = uuid;
+        }
 
-		public virtual int Attributes {
-			get {
-				return Attributes_Renamed;
-			}
-			set {
-				this.Attributes_Renamed = value;
-			}
-		}
-
-
-		public virtual UUID Uuid {
-			get {
-				return Uuid_Renamed;
-			}
-			set {
-				this.Uuid_Renamed = value;
-			}
-		}
+        public virtual int Attributes {
+            get {
+                return Attributes_Renamed;
+            }
+            set {
+                this.Attributes_Renamed = value;
+            }
+        }
 
 
-	}
+        public virtual UUID Uuid {
+            get {
+                return Uuid_Renamed;
+            }
+            set {
+                this.Uuid_Renamed = value;
+            }
+        }
+
+
+    }
 
 }

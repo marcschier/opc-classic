@@ -17,46 +17,46 @@
 namespace org.jinterop.dcom.core {
 
 
-	/// 
-	/// <summary>
-	/// @since 1.0
-	/// 
-	/// </summary>
-	[Serializable]
-	internal sealed class JIOrpcExtentArray {
+    /// 
+    /// <summary>
+    /// @since 1.0
+    /// 
+    /// </summary>
+    [Serializable]
+    internal sealed class JIOrpcExtentArray {
 
-		private const long SerialVersionUID = -3594184670915738836L;
-		private string Uuid = null;
-		private int Size = -1;
-		private sbyte?[] Data_Renamed = null;
+        private const long SerialVersionUID = -3594184670915738836L;
+        private string Uuid = null;
+        private int Size = -1;
+        private sbyte?[] Data_Renamed = null;
 
-		public JIOrpcExtentArray(string guid, int size, sbyte?[] data) {
-			Uuid = guid;
-			this.Size = size;
-			this.Data_Renamed = data;
-		}
+        public JIOrpcExtentArray(string guid, int size, sbyte?[] data) {
+            Uuid = guid;
+            this.Size = size;
+            this.Data_Renamed = data;
+        }
 
-		public string GUID {
-			get {
-				return Uuid;
-			}
-		}
+        public string GUID {
+            get {
+                return Uuid;
+            }
+        }
 
-		public int SizeOfData {
-			get {
-				return Size;
-			}
-		}
+        public int SizeOfData {
+            get {
+                return Size;
+            }
+        }
 
-		public sbyte[] Data {
-			get {
-				sbyte[] newData = new sbyte[Data_Renamed.Length];
-				for (int i = 0;i < Data_Renamed.Length;i++) {
-					newData[i] = (sbyte)Data_Renamed[i];
-				}
-				return newData;
-			}
-		}
-	}
+        public sbyte[] Data {
+            get {
+                sbyte[] newData = new sbyte[Data_Renamed.Length];
+                for (int i = 0;i < Data_Renamed.Length;i++) {
+                    newData[i] = (sbyte)Data_Renamed[i];
+                }
+                return newData;
+            }
+        }
+    }
 
 }

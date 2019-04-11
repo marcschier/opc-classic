@@ -9,19 +9,17 @@
 
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
         private readonly JISession _session;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSADO(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSADO(string address, string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("ADODB.Connection"), address, _session);
         }
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-        public virtual void PerformOp() {
+
+        public void PerformOp() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
             var typeInfo = _dispatch.GetTypeInfo(0);
@@ -35,7 +33,7 @@
             }
             else {
                 var resultSet = (IJIDispatch)JIObjectFactory.NarrowObject(variant[0].ObjectAsComObject);
-                //variant = resultSet.get("EOF");
+                // variant = resultSet.get("EOF");
                 while (!resultSet.Get("EOF").ObjectAsBoolean) {
                     var variant2 = resultSet.Get("Fields");
                     var fields = (IJIDispatch)JIObjectFactory.NarrowObject(variant2.ObjectAsComObject);
@@ -45,10 +43,10 @@
                         var field = (IJIDispatch)JIObjectFactory.NarrowObject(variant[0].ObjectAsComObject);
                         variant2 = field.Get("Value");
                         object val = null;
-                        if (variant2.Type == JIVariant.VT_BSTR) {
+                        if (variant2.Type == VariantType.VT_BSTR) {
                             val = variant2.ObjectAsString.String;
                         }
-                        if (variant2.Type == JIVariant.VT_I4) {
+                        if (variant2.Type == VariantType.VT_I4) {
                             val = variant2.ObjectAsInt;
                         }
                         Console.WriteLine(field.Get("Name").ObjectAsString.String + " = " + val + "[" + variant2.Type + "]");

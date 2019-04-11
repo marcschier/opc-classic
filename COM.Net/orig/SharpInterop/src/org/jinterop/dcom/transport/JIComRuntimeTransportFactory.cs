@@ -15,39 +15,39 @@
 
 namespace org.jinterop.dcom.transport {
 
-	using ProviderException = rpc.ProviderException;
-	using Transport = rpc.Transport;
+    using ProviderException = rpc.ProviderException;
+    using Transport = rpc.Transport;
 
-	/// <summary>
-	/// @exclude
-	/// @since 1.0
-	/// 
-	/// </summary>
-	public sealed class JIComRuntimeTransportFactory : rpc.TransportFactory {
+    /// <summary>
+    /// @exclude
+    /// @since 1.0
+    /// 
+    /// </summary>
+    public sealed class JIComRuntimeTransportFactory : rpc.TransportFactory {
 
-		private static JIComRuntimeTransportFactory Factory = null;
-		private JIComRuntimeTransportFactory() {
-		}
+        private static JIComRuntimeTransportFactory Factory = null;
+        private JIComRuntimeTransportFactory() {
+        }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.Properties properties) throws rpc.ProviderException
-		public Transport CreateTransport(string address, Properties properties) {
-				return new JIComRuntimeTransport(address, properties);
-		}
+        public Transport CreateTransport(string address, Properties properties) {
+                return new JIComRuntimeTransport(address, properties);
+        }
 
-		public static JIComRuntimeTransportFactory SingleTon {
-			get {
-				if (Factory == null) {
-					lock (typeof(JIComTransportFactory)) {
-						if (Factory == null) {
-							Factory = new JIComRuntimeTransportFactory();
-						}
-					}
-				}
+        public static JIComRuntimeTransportFactory SingleTon {
+            get {
+                if (Factory == null) {
+                    lock (typeof(JIComTransportFactory)) {
+                        if (Factory == null) {
+                            Factory = new JIComRuntimeTransportFactory();
+                        }
+                    }
+                }
     
-				return Factory;
-			}
-		}
-	}
+                return Factory;
+            }
+        }
+    }
 
 }

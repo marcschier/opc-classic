@@ -18,16 +18,16 @@
 
 namespace rpc.pdu {
 
-	public class ShutdownPdu : ConnectionOrientedPdu {
+    public class ShutdownPdu : ConnectionOrientedPdu {
 
-		public const int SHUTDOWN_TYPE = 0x11;
+        public const int SHUTDOWN_TYPE = 0x11;
 
-		public override int Type {
-			get {
-				return SHUTDOWN_TYPE;
-			}
-		}
+        public override int Type {
+            get {
+                return SHUTDOWN_TYPE;
+            }
+        }
 
-	}
+    }
 
 }

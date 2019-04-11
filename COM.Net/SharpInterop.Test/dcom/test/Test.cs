@@ -14,26 +14,26 @@ namespace org.jinterop.dcom.test {
             try {
 
                 // Socket socket = new Socket("10.24.10.65",139);
-                //socket.close();
-                //	 UniAddress mydomaincontoller = UniAddress.getByName( "192.168.170.6" );
-                //	 NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "vikram_roopchand", "Dilbert007" );
-                //
-                //	 SmbSession.logon( mydomaincontoller, mycreds );
-                //	 Config.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
-                //	 Config.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-                //		 System.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
-                //		 System.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
-                //		 System.setProperty("SharpCifs.netbios.hostname","itl-hw-lt15522.ad.infosys.com");
+                // socket.close();
+                //     UniAddress mydomaincontoller = UniAddress.getByName( "192.168.170.6" );
+                //     NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "vikram_roopchand", "Dilbert007" );
+                // 
+                //     SmbSession.logon( mydomaincontoller, mycreds );
+                //     Config.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
+                //     Config.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
+                //         System.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");
+                //         System.setProperty("SharpCifs.smb.client.domain","itl-hw-lt15522.ad.infosys.com");
+                //         System.setProperty("SharpCifs.netbios.hostname","itl-hw-lt15522.ad.infosys.com");
 
-                //NtlmChallenge challenge = SmbSession.getChallengeForDomain();
+                // NtlmChallenge challenge = SmbSession.getChallengeForDomain();
 
                 var mydomaincontoller = UniAddress.GetByName("itl-hw-lt15522");
                 var mycreds = new NtlmPasswordAuthentication("itl-hw-lt15522", "TestUser", "Enabler2000");
                 SmbSession.Logon(mydomaincontoller, mycreds);
-                //PLEASE NOTE THAT THE WINDOWS "SERVER" SERVICE SOULD BE RUNNING !!! OTHERWISE THE
-                //GETCHALLENGE WILL FAIL.
-                //		 UniAddress mydomaincontoller = UniAddress.getByName("itl-hw-lt15522.ad.infosys.com");
-                //		 byte[] b =  SmbSession.getChallenge(mydomaincontoller,139);
+                // PLEASE NOTE THAT THE WINDOWS "SERVER" SERVICE SOULD BE RUNNING !!! OTHERWISE THE
+                // GETCHALLENGE WILL FAIL.
+                //         UniAddress mydomaincontoller = UniAddress.getByName("itl-hw-lt15522.ad.infosys.com");
+                //         byte[] b =  SmbSession.getChallenge(mydomaincontoller,139);
                 // NtlmChallenge challenge = SmbSession.getChallengeForDomain();
 
                 // SUCCESS
@@ -61,7 +61,7 @@ namespace org.jinterop.dcom.test {
             }
         }
 
-        public virtual void DoTest() => Console.WriteLine("Called back !!!");
+        public void DoTest() => Console.WriteLine("Called back !!!");
 
     }
 

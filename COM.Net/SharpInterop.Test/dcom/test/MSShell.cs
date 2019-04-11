@@ -10,38 +10,36 @@
         internal JISession _session;
         internal JIComServer _comServer;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: MSShell(String args[]) throws java.net.UnknownHostException, org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: MSShell(String args[]) throws java.net.UnknownHostException, org.jinterop.dcom.common.JIException
         internal MSShell(string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("Shell.Application"), args[0], _session);
         }
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: void doStuff() throws org.jinterop.dcom.common.JIException
-        internal virtual void DoStuff() {
-            //this will return a reference to the IUnknown of the Shell coclass.
+                // ORIGINAL LINE: void doStuff() throws org.jinterop.dcom.common.JIException
+        internal void DoStuff() {
+            // this will return a reference to the IUnknown of the Shell coclass.
             var comUnknown = _comServer.CreateInstance();
 
-            //now we query for the IShellDispatch interface
+            // now we query for the IShellDispatch interface
             var shellDispatch = comUnknown.QueryInterface("D8F015C0-C278-11CE-A49E-444553540000");
 
             var callObject = new JICallBuilder();
-            //		callObject.setOpnum(5);
-            //		callObject.addInParamAsVariant(new JIVariant(new JIString("c:")),JIFlags.FLAG_NULL);
-            //		Object result[] = shellDispatch.call(callObject);
+            //        callObject.setOpnum(5);
+            //        callObject.addInParamAsVariant(new JIVariant(new JIString("c:")),JIFlags.FLAG_NULL);
+            //        Object result[] = shellDispatch.call(callObject);
 
-            //		callObject.reInit();
-            //		callObject.setOpnum(7);
-            //		result = shellDispatch.call(callObject);
+            //        callObject.reInit();
+            //        callObject.setOpnum(7);
+            //        result = shellDispatch.call(callObject);
 
             callObject.ReInit();
             callObject.Opnum = 2;
             callObject.AddInParamAsVariant(new JIVariant(2), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             var result = shellDispatch.Call(callObject);
-            var folder = JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            var folder = JIObjectFactory.NarrowObject((IComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
@@ -52,28 +50,28 @@
 
             callObject.ReInit();
             callObject.Opnum = 1;
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             result = folder.Call(callObject);
-            var test = JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            var test = JIObjectFactory.NarrowObject((IComObject)result[0]);
 
-            //		Not implemented by shell
-            //		callObject.reInit();
-            //		callObject.setOpnum(2);
-            //		callObject.addOutParamAsType(JIInterfacePointer.class,JIFlags.FLAG_NULL);
-            //		result = folder.call(callObject);
-            //		test = JIObjectFactory.createCOMInstance(shellDispatch,(JIInterfacePointer)result[0]);
+            //        Not implemented by shell
+            //        callObject.reInit();
+            //        callObject.setOpnum(2);
+            //        callObject.addOutParamAsType(JIInterfacePointer.class,JIFlags.FLAG_NULL);
+            //        result = folder.call(callObject);
+            //        test = JIObjectFactory.createCOMInstance(shellDispatch,(JIInterfacePointer)result[0]);
 
             callObject.ReInit();
             callObject.Opnum = 3;
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             result = folder.Call(callObject);
-            test = JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            test = JIObjectFactory.NarrowObject((IComObject)result[0]);
 
             callObject.ReInit();
             callObject.Opnum = 4;
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             result = folder.Call(callObject);
-            var folderItems = JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            var folderItems = JIObjectFactory.NarrowObject((IComObject)result[0]);
 
             callObject = new JICallBuilder {
                 Opnum = 0
@@ -87,9 +85,9 @@
                 callObject.ReInit();
                 callObject.Opnum = 3;
                 callObject.AddInParamAsVariant(new JIVariant(i), JIFlags.FLAG_NULL);
-                callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+                callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
                 result = folderItems.Call(callObject);
-                var folderItem = JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+                var folderItem = JIObjectFactory.NarrowObject((IComObject)result[0]);
 
 
                 var callObject2 = new JICallBuilder {
@@ -110,7 +108,7 @@
                 callObject2 = new JICallBuilder {
                     Opnum = 9
                 };
-                //VARIANT_BOOL is Boolean
+                // VARIANT_BOOL is Boolean
                 callObject2.AddOutParamAsType(typeof(bool), JIFlags.FLAG_NULL);
                 result = folderItem.Call(callObject2);
 

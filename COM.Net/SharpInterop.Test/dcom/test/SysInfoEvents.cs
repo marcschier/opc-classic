@@ -4,8 +4,8 @@ namespace org.jinterop.dcom.test {
 
     public class SysInfoEvents {
 
-        public virtual void PowerStatusChanged() => Console.WriteLine("Called by COM -> PowerStatusChanged");
+        public void PowerStatusChanged() => Console.WriteLine("Called by COM -> PowerStatusChanged");
 
-        public virtual void TimeChanged() => Console.WriteLine("Called by COM -> TimeChanged");
+        public void TimeChanged() => Console.WriteLine("Called by COM -> TimeChanged");
     }
 }

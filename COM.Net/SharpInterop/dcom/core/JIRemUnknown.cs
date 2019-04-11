@@ -23,7 +23,7 @@ namespace org.jinterop.dcom.core {
         /// Iunknown
         /// </summary>
         public const string IID_IUnknown = "00000143-0000-0000-c000-000000000046";
-        //	public static final String IID_IDispatch = "00020400-0000-0000-c000-000000000046";
+        //    public static final String IID_IDispatch = "00020400-0000-0000-c000-000000000046";
 
         /// <summary>
         /// Interface pointer
@@ -50,7 +50,7 @@ namespace org.jinterop.dcom.core {
             var orpcthis = new JIOrpcThis();
             orpcthis.Encode(ndr);
 
-            //now write the IPID
+            // now write the IPID
             var uuid = new UUID(_ipidOfIUnknown);
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -59,9 +59,9 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemUnknown write");
             }
 
-            ndr.WriteUnsignedShort(1); //1 interfaces. (requested IID)
-            ndr.WriteUnsignedShort(0); //byte alignment
-            ndr.WriteUnsignedLong(1); //length of the array
+            ndr.WriteUnsignedShort(1); // 1 interfaces. (requested IID)
+            ndr.WriteUnsignedShort(0); // byte alignment
+            ndr.WriteUnsignedLong(1); // length of the array
             uuid = new UUID(_requestedIID);
             try {
                 uuid.Encode(ndr, ndr.Buffer);
@@ -81,21 +81,21 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public override void Read(NdrCodec ndr) {
             JIOrpcThat.Decode(ndr);
-            ndr.ReadUnsignedLong(); //size will be one
+            ndr.ReadUnsignedLong(); // size will be one
             var hresult1 = ndr.ReadUnsignedLong();
             if (hresult1 != 0) {
-                //something happened.
+                // something happened.
                 throw new JIRuntimeException(hresult1);
             }
-            //array length
+            // array length
             ndr.ReadUnsignedLong();
-            //and now the JIInterfacePointer itself.
+            // and now the JIInterfacePointer itself.
             InterfacePointer = JIInterfacePointer.Decode(
                 ndr, new List<object>(), JIFlags.FLAG_NULL, new Hashtable());
-            //final hresult
+            // final hresult
             hresult1 = ndr.ReadUnsignedLong();
             if (hresult1 != 0) {
-                //something happened.
+                // something happened.
                 throw new JIRuntimeException(hresult1);
             }
         }

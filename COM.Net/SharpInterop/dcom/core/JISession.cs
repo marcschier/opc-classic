@@ -14,7 +14,6 @@ namespace org.jinterop.dcom.core {
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Runtime.CompilerServices;
@@ -620,8 +619,8 @@ namespace org.jinterop.dcom.core {
         /// The class level and the method level settings in case of
         /// <code>IJIComObject</code> override this timeout. </para>
         /// </summary>
-        /// <seealso cref="IJIComObject.InstanceLevelSocketTimeout"> </seealso>
-        /// <seealso cref="IJIComObject.Call(JICallBuilder, int)"> </seealso>
+        /// <seealso cref="IComObject.InstanceLevelSocketTimeout"> </seealso>
+        /// <seealso cref="IComObject.Call(JICallBuilder, int)"> </seealso>
         public int GlobalSocketTimeout { set; get; }
 
         /// <summary>
@@ -723,7 +722,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="comObject"></param>
         /// <param name="oid"></param>
-        internal void AddToSession(IJIComObject comObject, byte[] oid) {
+        internal void AddToSession(IComObject comObject, byte[] oid) {
             //nothing will be done if the session is being destroyed.
             if (SessionInDestroy) {
                 return;
@@ -780,7 +779,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="comObject"></param>
         /// <param name="oid"></param>
-        internal void AddWeakReference(IJIComObject comObject, byte[] oid) {
+        internal void AddWeakReference(IComObject comObject, byte[] oid) {
             var holder = new IPID_SessionID_Holder(comObject.Ipid, SessionIdentifier, false, oid);
             lock (kMapOfObjects) {
                 // Add to finalizer table - it will finalize the holder

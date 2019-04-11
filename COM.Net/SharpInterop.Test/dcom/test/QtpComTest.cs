@@ -1,7 +1,7 @@
 ﻿namespace org.jinterop.dcom.test {
     using org.jinterop.dcom.impls.automation;
     using System;
-    using IJIComObject = core.IJIComObject;
+    using IComObject = core.IComObject;
     using IJIDispatch = impls.automation.IJIDispatch;
     using JIComServer = core.JIComServer;
     using JIObjectFactory = impls.JIObjectFactory;
@@ -17,7 +17,7 @@
 
         private IJIDispatch _dispatch;
 
-        private IJIComObject _unknown;
+        private IComObject _unknown;
 
         private readonly JISession _session;
 
@@ -25,8 +25,7 @@
 
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public QtpComTest(String address, String domain, String username, String password) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public QtpComTest(string address, string domain, string username, string password) {
 
 
@@ -50,9 +49,8 @@
 
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startQTP() throws org.jinterop.dcom.common.JIException
-        public virtual void StartQTP() {
+
+        public void StartQTP() {
 
             Console.WriteLine(_comServer.Properties);
 
@@ -60,15 +58,14 @@
 
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
 
-            //System.out.println(((JIVariant)dispatch.get("Version")).getObjectAsString().getString());
+            // System.out.println(((JIVariant)dispatch.get("Version")).getObjectAsString().getString());
 
         }
 
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showQtp() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowQtp() {
+
+        public void ShowQtp() {
 
             var dispId = _dispatch.GetIDsOfNames("Visible");
 
@@ -80,9 +77,8 @@
 
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void envQtp() throws org.jinterop.dcom.common.JIException
-        public virtual void EnvQtp() {
+
+        public void EnvQtp() {
 
             _dispatch.CallMethodA("Open", new object[] { new JIString("C:\\Programme\\Mercury Interactive\\QuickTest Professional\\Tests\\Test1"), new JIVariant(false), new JIVariant(true) });
 
@@ -91,7 +87,7 @@
             var test = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
             Console.WriteLine(test.Get("Author"));
 
-            //and this is the original session associated with dispatch.
+            // and this is the original session associated with dispatch.
             JISession.DestroySession(_session);
 
         }
@@ -104,11 +100,11 @@
         public static void Main(string[] args) {
 #pragma warning restore IDE0060 // Remove unused parameter
 
-            //"localhost", "ctron", "mpitonia", "ChrisSarah1"
+            // "localhost", "ctron", "mpitonia", "ChrisSarah1"
 
-            //"VPC003", "automation", "automated_user", "@utom@tion"
+            // "VPC003", "automation", "automated_user", "@utom@tion"
 
-            //"automationsvr01", "AUTOMATION", "Automated_User", "@utom@tion"
+            // "automationsvr01", "AUTOMATION", "Automated_User", "@utom@tion"
 
             try {
 

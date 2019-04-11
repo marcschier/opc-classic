@@ -1,5 +1,5 @@
 ﻿// Extracted from http://davenport.sourceforge.net/ntlm.html
-// Copyright � 2003, 2006 Eric Glass (eric.glass@gmail.com) 
+// Copyright � 2003, 2006 Eric Glass (eric.glass@gmail.com)
 
 namespace rpc.security.ntlm {
     using Org.BouncyCastle.Crypto;
@@ -7,7 +7,6 @@ namespace rpc.security.ntlm {
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Security;
     using SharpCifs.Util;
-    using SharpCifs.Util.Sharpen;
     using System;
 
     /// <summary>
@@ -52,10 +51,10 @@ namespace rpc.security.ntlm {
         /// <param name="targetInformation"> The target information block from the Type 2
         /// message. </param>
         /// <param name="challenge"> The Type 2 challenge from the server. </param>
-        /// <param name="clientNonce"> The random 8-byte client nonce. 
+        /// <param name="clientNonce"> The random 8-byte client nonce.
         /// </param>
         /// <returns> The NTLMv2 Response. </returns>
-        public static byte[][] GetNTLMv2Response(string target, string user, string password, 
+        public static byte[][] GetNTLMv2Response(string target, string user, string password,
             byte[] targetInformation, byte[] challenge, byte[] clientNonce) {
             var retval = new byte[2][];
             var ntlmv2Hash_Renamed = Ntlmv2Hash(target, user, password);
@@ -230,10 +229,11 @@ namespace rpc.security.ntlm {
             byte[] reserved = { 0x00, 0x00, 0x00, 0x00 };
             byte[] unknown1 = { 0x00, 0x00, 0x00, 0x00 };
             byte[] unknown2 = { 0x00, 0x00, 0x00, 0x00 };
-            var time = DateTimeHelperClass.CurrentUnixTimeMillis();
-            time += 11644473600000L; // milliseconds from January 1, 1601 -> epoch.
-            time *= 10000; // tenths of a microsecond.
-                           // convert to little-endian byte array.
+            var time = DateTime.UtcNow.ToFileTimeUtc();
+           //var time = DateTimeHelperClass.CurrentUnixTimeMillis();
+           //time += 11644473600000L; // milliseconds from January 1, 1601 -> epoch.
+           //time *= 10000; // tenths of a microsecond.
+           //               // convert to little-endian byte array.
             var timestamp = new byte[8];
             for (var i = 0; i < 8; i++) {
                 timestamp[i] = (byte)time;
@@ -285,7 +285,7 @@ namespace rpc.security.ntlm {
            //  var content = new byte[data.Length + 64];
            //  Array.Copy(ipad, 0, content, 0, 64);
            //  Array.Copy(data, 0, content, 64, data.Length);
-           //  
+           //
            //  var md5 = DigestUtilities.GetDigest("MD5");
            //  data = md5.digest(content);
            //  content = new byte[data.Length + 64];
@@ -327,10 +327,10 @@ namespace rpc.security.ntlm {
         private static void OddParity(byte[] bytes) {
             for (var i = 0; i < bytes.Length; i++) {
                 var b = bytes[i];
-                var needsParity = 
+                var needsParity =
                     ((((int)((uint)b >> 7)) ^
                     ((int)((uint)b >> 6)) ^
-                    ((int)((uint)b >> 5)) ^ 
+                    ((int)((uint)b >> 5)) ^
                     ((int)((uint)b >> 4)) ^
                     ((int)((uint)b >> 3)) ^
                     ((int)((uint)b >> 2)) ^

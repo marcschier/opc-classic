@@ -18,43 +18,43 @@
 
 namespace rpc.core {
 
-	using NdrBuffer = ndr.NdrBuffer;
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NdrBuffer = ndr.NdrBuffer;
+    using NdrException = ndr.NdrException;
+    using NdrObject = ndr.NdrObject;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
 
-	public class ProtocolVersion : NdrObject {
+    public class ProtocolVersion : NdrObject {
 
-		internal int MajorVersion_Renamed, MinorVersion_Renamed;
+        internal int MajorVersion_Renamed, MinorVersion_Renamed;
 
-		public virtual int GetMajorVersion() {
-			return MajorVersion_Renamed;
-		}
+        public virtual int GetMajorVersion() {
+            return MajorVersion_Renamed;
+        }
 
-		public virtual void SetMajorVersion(short majorVersion) {
-			this.MajorVersion_Renamed = majorVersion;
-		}
+        public virtual void SetMajorVersion(short majorVersion) {
+            this.MajorVersion_Renamed = majorVersion;
+        }
 
-		public virtual int GetMinorVersion() {
-			return MinorVersion_Renamed;
-		}
+        public virtual int GetMinorVersion() {
+            return MinorVersion_Renamed;
+        }
 
-		public virtual void SetMinorVersion(short minorVersion) {
-			this.MinorVersion_Renamed = minorVersion;
-		}
+        public virtual void SetMinorVersion(short minorVersion) {
+            this.MinorVersion_Renamed = minorVersion;
+        }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void encode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer dst) throws ndr.NdrException
-		public override void Encode(NetworkDataRepresentation ndr, NdrBuffer dst) {
-			dst.Enc_ndr_small(MajorVersion_Renamed);
-			dst.Enc_ndr_small(MinorVersion_Renamed);
-		}
+        public override void Encode(NetworkDataRepresentation ndr, NdrBuffer dst) {
+            dst.Enc_ndr_small(MajorVersion_Renamed);
+            dst.Enc_ndr_small(MinorVersion_Renamed);
+        }
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void decode(ndr.NetworkDataRepresentation ndr, ndr.NdrBuffer src) throws ndr.NdrException
-		public override void Decode(NetworkDataRepresentation ndr, NdrBuffer src) {
-			MajorVersion_Renamed = src.Dec_ndr_small();
-			MinorVersion_Renamed = src.Dec_ndr_small();
-		}
-	}
+        public override void Decode(NetworkDataRepresentation ndr, NdrBuffer src) {
+            MajorVersion_Renamed = src.Dec_ndr_small();
+            MinorVersion_Renamed = src.Dec_ndr_small();
+        }
+    }
 
 }

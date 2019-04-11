@@ -96,7 +96,7 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIComOxidStub", "call", e);
             }
 
-            //returns setId.
+            // returns setId.
             return pingObject.SetId;
         }
 

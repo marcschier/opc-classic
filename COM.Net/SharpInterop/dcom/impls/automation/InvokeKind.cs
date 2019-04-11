@@ -1,21 +1,21 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.impls.automation {
 
     /// <summary>
-    /// Implements the <i>INVOKEKIND</i> structure of COM Automation.
+    /// Implements the <i>INVOKEKIND</i> type of COM Automation.
     /// </summary>
     public enum InvokeKind {
 
         /// <summary>
-        ///  The member is called using a normal function invocation syntax
+        /// The member is called using a normal function invocation syntax
         /// </summary>
         INVOKE_FUNC = 1,
 
@@ -33,7 +33,8 @@ namespace org.jinterop.dcom.impls.automation {
         INVOKE_PROPERTYPUT = 4,
 
         /// <summary>
-        ///  The function is invoked using a property reference assignment syntax.
+        /// The function is invoked using a property reference
+        /// assignment syntax.
         /// </summary>
         INVOKE_PROPERTYPUTREF = 8,
     }

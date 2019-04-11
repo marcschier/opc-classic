@@ -18,115 +18,115 @@
 
 namespace rpc.pdu {
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
-	using Port = rpc.core.Port;
-	using PresentationResult = rpc.core.PresentationResult;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using Port = rpc.core.Port;
+    using PresentationResult = rpc.core.PresentationResult;
 
-	public class BindAcknowledgePdu : ConnectionOrientedPdu {
+    public class BindAcknowledgePdu : ConnectionOrientedPdu {
 
-		public const int BIND_ACKNOWLEDGE_TYPE = 0x0c;
+        public const int BIND_ACKNOWLEDGE_TYPE = 0x0c;
 
-		private PresentationResult[] ResultList_Renamed;
+        private PresentationResult[] ResultList_Renamed;
 
-		private int MaxTransmitFragment_Renamed = MUST_RECEIVE_FRAGMENT_SIZE;
+        private int MaxTransmitFragment_Renamed = MUST_RECEIVE_FRAGMENT_SIZE;
 
-		private int MaxReceiveFragment_Renamed = MUST_RECEIVE_FRAGMENT_SIZE;
+        private int MaxReceiveFragment_Renamed = MUST_RECEIVE_FRAGMENT_SIZE;
 
-		private int AssociationGroupId_Renamed = 0;
+        private int AssociationGroupId_Renamed = 0;
 
-		private Port SecondaryAddress_Renamed;
+        private Port SecondaryAddress_Renamed;
 
-		public override int Type {
-			get {
-				return BIND_ACKNOWLEDGE_TYPE;
-			}
-		}
+        public override int Type {
+            get {
+                return BIND_ACKNOWLEDGE_TYPE;
+            }
+        }
 
-		public virtual int MaxTransmitFragment {
-			get {
-				return MaxTransmitFragment_Renamed;
-			}
-			set {
-				this.MaxTransmitFragment_Renamed = value;
-			}
-		}
-
-
-		public virtual int MaxReceiveFragment {
-			get {
-				return MaxReceiveFragment_Renamed;
-			}
-			set {
-				this.MaxReceiveFragment_Renamed = value;
-			}
-		}
+        public virtual int MaxTransmitFragment {
+            get {
+                return MaxTransmitFragment_Renamed;
+            }
+            set {
+                this.MaxTransmitFragment_Renamed = value;
+            }
+        }
 
 
-		public virtual int AssociationGroupId {
-			get {
-				return AssociationGroupId_Renamed;
-			}
-			set {
-				this.AssociationGroupId_Renamed = value;
-			}
-		}
+        public virtual int MaxReceiveFragment {
+            get {
+                return MaxReceiveFragment_Renamed;
+            }
+            set {
+                this.MaxReceiveFragment_Renamed = value;
+            }
+        }
 
 
-		public virtual Port SecondaryAddress {
-			get {
-				return SecondaryAddress_Renamed;
-			}
-			set {
-				this.SecondaryAddress_Renamed = value;
-			}
-		}
+        public virtual int AssociationGroupId {
+            get {
+                return AssociationGroupId_Renamed;
+            }
+            set {
+                this.AssociationGroupId_Renamed = value;
+            }
+        }
 
 
-		public virtual PresentationResult[] ResultList {
-			get {
-				return ResultList_Renamed;
-			}
-			set {
-				this.ResultList_Renamed = value;
-			}
-		}
+        public virtual Port SecondaryAddress {
+            get {
+                return SecondaryAddress_Renamed;
+            }
+            set {
+                this.SecondaryAddress_Renamed = value;
+            }
+        }
 
 
-		public override void ReadBody(NetworkDataRepresentation ndr) {
-			MaxTransmitFragment = ndr.ReadUnsignedShort();
-			MaxReceiveFragment = ndr.ReadUnsignedShort();
-			AssociationGroupId = (int) ndr.ReadUnsignedLong();
-			Port secondaryAddress = new Port();
-			secondaryAddress.Read(ndr);
-			SecondaryAddress = secondaryAddress;
-			ndr.Buffer.Align(4);
-			int count = ndr.ReadUnsignedSmall();
-			PresentationResult[] resultList = new PresentationResult[count];
-			for (int i = 0; i < count; i++) {
-				resultList[i] = new PresentationResult();
-				resultList[i].Read(ndr);
-			}
-			ResultList = resultList;
-		}
+        public virtual PresentationResult[] ResultList {
+            get {
+                return ResultList_Renamed;
+            }
+            set {
+                this.ResultList_Renamed = value;
+            }
+        }
 
-		public override void WriteBody(NetworkDataRepresentation ndr) {
-			ndr.WriteUnsignedShort(MaxTransmitFragment);
-			ndr.WriteUnsignedShort(MaxReceiveFragment);
-			ndr.WriteUnsignedLong(AssociationGroupId);
-			Port secondaryAddress = SecondaryAddress;
-			if (secondaryAddress == null) {
-				secondaryAddress = new Port();
-			}
-			secondaryAddress.Write(ndr);
-			ndr.Buffer.Align(4);
-			PresentationResult[] resultList = ResultList;
-			int count = resultList.Length;
-			ndr.WriteUnsignedSmall((short) count);
-			for (int i = 0; i < count; i++) {
-				resultList[i].Write(ndr);
-			}
-		}
 
-	}
+        public override void ReadBody(NetworkDataRepresentation ndr) {
+            MaxTransmitFragment = ndr.ReadUnsignedShort();
+            MaxReceiveFragment = ndr.ReadUnsignedShort();
+            AssociationGroupId = (int) ndr.ReadUnsignedLong();
+            Port secondaryAddress = new Port();
+            secondaryAddress.Read(ndr);
+            SecondaryAddress = secondaryAddress;
+            ndr.Buffer.Align(4);
+            int count = ndr.ReadUnsignedSmall();
+            PresentationResult[] resultList = new PresentationResult[count];
+            for (int i = 0; i < count; i++) {
+                resultList[i] = new PresentationResult();
+                resultList[i].Read(ndr);
+            }
+            ResultList = resultList;
+        }
+
+        public override void WriteBody(NetworkDataRepresentation ndr) {
+            ndr.WriteUnsignedShort(MaxTransmitFragment);
+            ndr.WriteUnsignedShort(MaxReceiveFragment);
+            ndr.WriteUnsignedLong(AssociationGroupId);
+            Port secondaryAddress = SecondaryAddress;
+            if (secondaryAddress == null) {
+                secondaryAddress = new Port();
+            }
+            secondaryAddress.Write(ndr);
+            ndr.Buffer.Align(4);
+            PresentationResult[] resultList = ResultList;
+            int count = resultList.Length;
+            ndr.WriteUnsignedSmall((short) count);
+            for (int i = 0; i < count; i++) {
+                resultList[i].Write(ndr);
+            }
+        }
+
+    }
 
 }

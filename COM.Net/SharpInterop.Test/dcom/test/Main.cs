@@ -18,7 +18,7 @@ namespace org.jinterop.dcom.test {
 
     public class Program {
 
-        public virtual void Execute(JIString str) => Console.WriteLine(str.String);
+        public void Execute(JIString str) => Console.WriteLine(str.String);
         /// <param name="args"> </param>
         public static void Main(string[] args) {
 

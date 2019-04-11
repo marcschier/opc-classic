@@ -1,13 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
-
+//
 
 namespace org.jinterop.winreg.smb {
     using SharpCifs.Util.Sharpen;
@@ -48,7 +46,7 @@ namespace org.jinterop.winreg.smb {
             var password =  HttpUtility.UrlEncode(authInfo.Password, Encoding.UTF8);
 
             // TODO: Needed?
-            // some strange issue with the space character, it gets encoded to '+' 
+            // some strange issue with the space character, it gets encoded to '+'
             // (which is right), but Windows refuses it.
             // Manually changing + to %20
             var password_ = new StringBuilder();
@@ -171,7 +169,7 @@ namespace org.jinterop.winreg.smb {
         }
 
         /// <inheritdoc/>
-        public JIPolicyHandle OpenKey(JIPolicyHandle handle, string key, 
+        public JIPolicyHandle OpenKey(JIPolicyHandle handle, string key,
             RegKeyAccess accessMask) {
             var openkey = new OpenKey {
                 accessMask = accessMask,
@@ -256,7 +254,7 @@ namespace org.jinterop.winreg.smb {
                 throw new JIException(e);
             }
 
-            //return queryvalue.key;
+            // return queryvalue.key;
             return queryvalue.buffer;
         }
 
@@ -307,7 +305,7 @@ namespace org.jinterop.winreg.smb {
         }
 
         /// <inheritdoc/>
-        public JIPolicyHandle CreateKey(JIPolicyHandle handle, string subKey, 
+        public JIPolicyHandle CreateKey(JIPolicyHandle handle, string subKey,
             RegOption options, RegKeyAccess accessMask) {
             var createkey = new CreateKey {
                 accessMask = accessMask,
@@ -342,15 +340,15 @@ namespace org.jinterop.winreg.smb {
                     JIErrorCodes.JI_WINREG_EXCEPTION5));
             }
 
-            //calculate length of all strings + extra null in the end
+            // calculate length of all strings + extra null in the end
             var totalStrings = data.Length;
             var length = 0;
             for (var i = 0; i < totalStrings; i++) {
                 var j = data[i].Length;
-                length += (j + 1) * 2; //including null termination
+                length += (j + 1) * 2; // including null termination
             }
 
-            length += 2; //final termination
+            length += 2; // final termination
 
             var setvalue = new SetValue {
                 clazzType = RegValueType.REG_MULTI_SZ,

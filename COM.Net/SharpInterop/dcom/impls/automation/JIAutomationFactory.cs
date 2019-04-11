@@ -24,7 +24,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// <param name="comObject"></param>
         /// <exception cref="JIException"></exception>
         /// <returns></returns>
-        public static IJIComObject NarrowObject(IJIComObject comObject) {
+        public static IComObject NarrowObject(IComObject comObject) {
             var retval = comObject;
             switch (comObject.InterfaceIdentifier.ToUpper()) {
                 case Interfaces.IID_IDispatch:

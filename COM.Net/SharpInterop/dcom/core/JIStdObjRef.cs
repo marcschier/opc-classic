@@ -117,7 +117,7 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override string ToString() {
-            var retVal = "IPID: " + Ipid; //+ ", OID: " + oidString;
+            var retVal = "IPID: " + Ipid; // + ", OID: " + oidString;
             return retVal;
         }
     }

@@ -7,7 +7,6 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-
 namespace org.jinterop.dcom.transport {
     using org.jinterop.dcom.common;
     using rpc;
@@ -30,7 +29,7 @@ namespace org.jinterop.dcom.transport {
         /// <param name="address"></param>
         /// <param name="properties"></param>
         public JIComRuntimeTransport(string address, Properties properties) {
-            //address is ignored but should not be null
+            // address is ignored but should not be null
             System.Diagnostics.Debug.Assert(address != null);
             Properties = properties;
         }

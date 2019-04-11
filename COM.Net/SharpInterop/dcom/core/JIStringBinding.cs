@@ -9,9 +9,6 @@
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
-    using rpc.core;
-    using org.jinterop.dcom.common;
-    using org.jinterop.winreg;
     using System;
     using System.Text;
 

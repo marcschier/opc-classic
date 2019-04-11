@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.impls.automation {
     using org.jinterop.dcom.core;
@@ -17,20 +17,20 @@ namespace org.jinterop.dcom.impls.automation {
     /// See http://msdn.microsoft.com/en-us/library/ms221425(VS.85).aspx .
     /// </summary>
     /// <remarks>
-    ///   MEMBERID memid;           // Function member ID.
-    ///   /* [size_is] */ SCODE __RPC_FAR *lprgscode;
-    ///   /* [size_is] */ ELEMDESC __RPC_FAR *lprgelemdescParam;
-    ///   FuncKind funckind;        // Specifies whether the function is virtual, static, or dispatch-only.
-    ///   InvokeKind invkind;       // Invocation kind. Indicates if this is a property function, and if so, what kind.
-    ///   CallConv callconv;        // Specifies the function's calling
-    ///                             // convention.
-    ///   short cParams;            // Count of total number of parameters.
-    ///   short cParamsOpt;         // Count of optional parameters (detailed
-    ///                             // description follows).
-    ///   short oVft;               // For FUNC_VIRTUAL, specifies the offset in the VTBL.
-    ///   short cScodes;            // Count of permitted return values.
-    ///   ELEMDESC elemdescFunc;    // Contains the return type of the function.
-    ///   WORD wFuncFlags;          // Definition of flags follows.
+    ///  MEMBERID memid;           // Function member ID.
+    ///  /* [size_is] */ SCODE __RPC_FAR *lprgscode;
+    ///  /* [size_is] */ ELEMDESC __RPC_FAR *lprgelemdescParam;
+    ///  FuncKind funckind;        // Specifies whether the function is virtual, static, or dispatch-only.
+    ///  InvokeKind invkind;       // Invocation kind. Indicates if this is a property function, and if so, what kind.
+    ///  CallConv callconv;        // Specifies the function's calling
+    ///                            // convention.
+    ///  short cParams;            // Count of total number of parameters.
+    ///  short cParamsOpt;         // Count of optional parameters (detailed
+    ///                            // description follows).
+    ///  short oVft;               // For FUNC_VIRTUAL, specifies the offset in the VTBL.
+    ///  short cScodes;            // Count of permitted return values.
+    ///  ELEMDESC elemdescFunc;    // Contains the return type of the function.
+    ///  WORD wFuncFlags;          // Definition of flags follows.
     /// </remarks>
     [Serializable]
     public sealed class FuncDesc {
@@ -57,7 +57,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// </summary>
         /// <param name="values"></param>
         internal FuncDesc(JIPointer values) :
-            this(values.IsNull ? null : (JIStruct)values.GetReferent()) {
+            this(values.IsNull ? null : (JIStruct)values.Referent) {
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace org.jinterop.dcom.impls.automation {
             var ptr = (JIPointer)_values.GetMember(2);
             JIArray arrayOfElemDesc = null;
             if (!ptr.IsNull) {
-                var arry = (JIArray)ptr.GetReferent();
+                var arry = (JIArray)ptr.Referent;
                 var obj = (object[])arry.ArrayInstance;
                 arrayOfElemDesc = new JIArray(obj);
             }

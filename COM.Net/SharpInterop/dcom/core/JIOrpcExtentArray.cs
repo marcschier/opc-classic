@@ -22,7 +22,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="guid"></param>
         /// <param name="size"></param>
         /// <param name="data"></param>
-		internal JIOrpcExtentArray(string guid, int size, byte[] data) {
+        internal JIOrpcExtentArray(string guid, int size, byte[] data) {
             GUID = guid;
             SizeOfData = size;
             _data = data;

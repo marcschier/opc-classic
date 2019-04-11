@@ -44,14 +44,14 @@ namespace org.jinterop.dcom.core {
             private readonly JIRemoteSCMActivator OuterInstance;
 
 
-            //		HRESULT RemoteCreateInstance(
-            //				[in] handle_t hRpc,
-            //				[in] ORPCTHIS* orpcthis,
-            //				[out] ORPCTHAT* orpcthat,
-            //				[in, unique] MInterfacePointer* pUnkOuter,
-            //				[in, unique] MInterfacePointer* pActProperties,
-            //				[out] MInterfacePointer** ppActProperties
-            //				);
+            //        HRESULT RemoteCreateInstance(
+            //                [in] handle_t hRpc,
+            //                [in] ORPCTHIS* orpcthis,
+            //                [out] ORPCTHAT* orpcthat,
+            //                [in, unique] MInterfacePointer* pUnkOuter,
+            //                [in, unique] MInterfacePointer* pActProperties,
+            //                [out] MInterfacePointer** ppActProperties
+            //                );
 
             internal readonly string TargetClsid;
             internal readonly string TargetServer;
@@ -194,7 +194,7 @@ namespace org.jinterop.dcom.core {
             //Pass the length from outside as to calculate it we need to encode the struct and that mutates the internal data structs
             //will return total length of the structure including common header and padding.
             public virtual int AddCommonTypeHeaderAndEncode(NetworkDataRepresentation ndr, JIStruct @struct, int lengthOfStruct) {
-                //			will add the common type header and write on wire
+                //            will add the common type header and write on wire
 
                 //common header has to be a multiple of 8 bytes. If not it has to be padded at the end.
                 int padding = lengthOfStruct % 8;
@@ -523,8 +523,8 @@ namespace org.jinterop.dcom.core {
                     ndr.Buffer = new NdrBuffer(new sbyte[512], 0);
                     int len = AddCommonTypeHeaderAndEncode(ndr, @struct, lenOfStruct);
                     //now we read the length to put into this struct
-                    //			ndr.getBuffer().setIndex(8);
-                    //			int len = ndr.readUnsignedLong();
+                    //            ndr.getBuffer().setIndex(8);
+                    //            int len = ndr.readUnsignedLong();
                     @struct = outerInstance.GetInstantiationInfoData();
                     @struct.RemoveMember(7);
                     try {
@@ -662,8 +662,8 @@ namespace org.jinterop.dcom.core {
                 //Custom Header begins
                 //lets check what all has been returned back to us. We are only interested in two Properties (ScmReply and PropsOut)
                 //Must contain the following properties
-                //			ScmReplyInfoData 2.2.22.2.8 Required
-                //			PropsOutInfo 2.2.22.2.9 Required
+                //            ScmReplyInfoData 2.2.22.2.8 Required
+                //            PropsOutInfo 2.2.22.2.9 Required
 
                 /// <summary>
                 /// typedef struct tagCustomHeader {

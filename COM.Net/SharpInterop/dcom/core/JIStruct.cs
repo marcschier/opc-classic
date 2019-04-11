@@ -17,8 +17,8 @@ namespace org.jinterop.dcom.core {
 
     /// <summary>
     /// This class represents the <code>Struct</code> data type.
-    /// for conformant and conformant+varying arrays the maxcount etc.
-    /// should come at the begining of the struct.
+    /// for conformant and conformant+varying arrays the maxcount
+    /// etc. should come at the begining of the struct.
     /// </summary>
     [Serializable]
     public sealed class JIStruct {
@@ -84,17 +84,21 @@ namespace org.jinterop.dcom.core {
                         c.Equals(typeof(string)) ||
                         c.Equals(typeof(JIString)) ||
                         c.Equals(typeof(JIPointer)) ||
-                        c.Equals(typeof(JIUnsignedInteger)) ||
+                        c.Equals(typeof(uint)) ||
                         c.Equals(typeof(JIVariant))) {
-                        //align with 4 bytes
+                        // align with 4 bytes
                         alignment = alignment <= 4 ? 4 : alignment;
                     }
-                    else if (c.Equals(typeof(double)) || c.Equals(typeof(DateTime)) || c.Equals(typeof(long))) {
-                        //align with 8
+                    else if (c.Equals(typeof(double)) ||
+                             c.Equals(typeof(DateTime)) ||
+                             c.Equals(typeof(long)) ||
+                             c.Equals(typeof(ulong))) {
+                        // align with 8
                         alignment = alignment <= 8 ? 8 : alignment;
                     }
-                    else if (c.Equals(typeof(short)) || c.Equals(typeof(JIUnsignedShort))) {
-                        //align with 2
+                    else if (c.Equals(typeof(short)) ||
+                             c.Equals(typeof(ushort))) {
+                        // align with 2
                         alignment = alignment <= 2 ? 2 : alignment;
                     }
                     else if (c.Equals(typeof(JIStruct))) {
@@ -141,44 +145,44 @@ namespace org.jinterop.dcom.core {
         /// <param name="member"> </param>
         /// <exception cref="JIException"></exception>
         public void AddMember(int position, object member) {
-            //null has to be allowed for members who would like to send null...NPE should not be thrown
+            // null has to be allowed for members who would like to send null...NPE should not be thrown
             member = member ?? 0;
             var memberClass = member.GetType();
-            //An array has already been added, now a new member cannot be added
+            // An array has already been added, now a new member cannot be added
             if (_arrayAdded && position == Members.Count && !memberClass.Equals(typeof(JIArray))) {
                 throw new JIException(JIErrorCodes.JI_STRUCT_ARRAY_AT_END);
             }
 
-            //arrays can only be the last element of this struct.
+            // arrays can only be the last element of this struct.
             if (memberClass.Equals(typeof(JIArray))) {
-                //this condition will also allow that if another nested struct has an array,
+                // this condition will also allow that if another nested struct has an array,
                 // this new array is added at the
                 // very end.
                 if (position != Members.Count) {
                     throw new JIException(JIErrorCodes.JI_STRUCT_ARRAY_ONLY_AT_END);
                 }
                 _arrayAdded = true;
-                //Fixed arrays like char[50] are serialzed\deserialized in place itself.
+                // Fixed arrays like char[50] are serialzed\deserialized in place itself.
                 if (((JIArray)member).Conformant || ((JIArray)member).Varying) {
-                    //since there could be two arrays.
+                    // since there could be two arrays.
                     ArrayMaxCounts.AddRange(((JIArray)member).ConformantMaxCounts);
                     _listOfDimensions.Add(((JIArray)member).Dimensions);
                 }
             }
 
-            //struct part of another struct
+            // struct part of another struct
             if (memberClass.Equals(typeof(JIStruct))) {
-                //if this has an array then, this struct has to be the last member in the struct list.
+                // if this has an array then, this struct has to be the last member in the struct list.
                 if (((JIStruct)member)._arrayAdded && _arrayAdded && position != (Members.Count - 1)) {
                     throw new JIException(JIErrorCodes.JI_STRUCT_INCORRECT_NESTED_STRUCT_POS);
                 }
 
                 if (_arrayAdded && ((JIStruct)member)._arrayAdded) {
-                    //means that we have to move the maxcount of the internal struct to this struct.
+                    // means that we have to move the maxcount of the internal struct to this struct.
                     _arrayAdded = true;
                     ArrayMaxCounts.AddRange(((JIStruct)member).ArrayMaxCounts);
-                    ((JIStruct)member).ArrayMaxCounts.Clear(); //this is a "move" of max counts to the
-                                                               //outer struct
+                    ((JIStruct)member).ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
+                                                               // outer struct
 
                     _listOfDimensions.AddRange(((JIStruct)member)._listOfDimensions);
                     ((JIStruct)member)._listOfDimensions.Clear();
@@ -188,8 +192,8 @@ namespace org.jinterop.dcom.core {
                     if (position == Members.Count) {
                         _arrayAdded = true;
                         ArrayMaxCounts.AddRange(((JIStruct)member).ArrayMaxCounts);
-                        ((JIStruct)member).ArrayMaxCounts.Clear(); //this is a "move" of max counts to the
-                                                                   //outer struct
+                        ((JIStruct)member).ArrayMaxCounts.Clear(); // this is a "move" of max counts to the
+                                                                   // outer struct
 
                         _listOfDimensions.AddRange(((JIStruct)member)._listOfDimensions);
                         ((JIStruct)member)._listOfDimensions.Clear();
@@ -200,7 +204,7 @@ namespace org.jinterop.dcom.core {
                 }
             }
             if (memberClass.Equals(typeof(JIPointer)) && !((JIPointer)member).Reference) {
-                //send this to the end and put the place holder of the pointer here
+                // send this to the end and put the place holder of the pointer here
                 ((JIPointer)member).Deffered = true;
             }
             else if (memberClass.Equals(typeof(JIVariant))) {
@@ -210,18 +214,18 @@ namespace org.jinterop.dcom.core {
                 ((JIString)member).Deffered = true;
             }
             // else if (memberClass.equals(JIInterfacePointer.class)) {
-            //			((JIInterfacePointer)member).Deffered = true;
-            //		}
+            //            ((JIInterfacePointer)member).Deffered = true;
+            //        }
             // else if (memberClass.equals(JIDispatchImpl.class)) {
-            //			((JIComObjectImplWrapper)member).getInterfacePointer().Deffered = true;
-            //		}
+            //            ((JIComObjectImplWrapper)member).getInterfacePointer().Deffered = true;
+            //        }
             // else if (memberClass.equals(JIComObjectImpl.class)) {
-            //			((IJIComObject)member).getInterfacePointer().Deffered = true;
-            //		}
-            else if (memberClass.Equals(typeof(IJIComObject))) {
-                ((IJIComObject)member).Internal_setDeffered(true);
+            //            ((IJIComObject)member).getInterfacePointer().Deffered = true;
+            //        }
+            else if (memberClass.Equals(typeof(IComObject))) {
+                ((IComObject)member).Internal_setDeffered(true);
             }
-            //else the pointer will be serialized "inplace".
+            // else the pointer will be serialized "inplace".
             Members.Insert(position, member);
         }
 
@@ -232,14 +236,14 @@ namespace org.jinterop.dcom.core {
         public void RemoveMember(int index) {
             var member = Members.GetAndRemoveAt(index);
             if (member is JIArray) {
-                //we need to remove it's max count values also.
-                //JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
+                // we need to remove it's max count values also.
+                // JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
                 ArrayMaxCounts.RemoveAll(((JIArray)member).ConformantMaxCounts);
 
             }
             else if (member is JIStruct && ((JIStruct)member)._arrayAdded) {
-                //we need to remove it's max count values also.
-                //JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
+                // we need to remove it's max count values also.
+                // JAVA TO C# CONVERTER TODO TASK: There is no .NET equivalent to the java.util.Collection 'removeAll' method:
                 ArrayMaxCounts.RemoveAll(((JIStruct)member).ArrayMaxCounts);
             }
             if (ArrayMaxCounts.Count == 0) {
@@ -254,7 +258,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
         internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
-            //first write all Max counts and then the rest of the structs
+            // first write all Max counts and then the rest of the structs
             for (var i = 0; i < ArrayMaxCounts.Count; i++) {
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), (int)ArrayMaxCounts[i], null, flag);
             }
@@ -263,14 +267,14 @@ namespace org.jinterop.dcom.core {
                 var o = Members[i];
                 var conformant = false;
                 if (o is JIArray arr1) {
-                    //if this array is conformant then reset it's conformancy, since the length would have been
-                    //written before.
+                    // if this array is conformant then reset it's conformancy, since the length would have been
+                    // written before.
                     conformant = arr1.Conformant;
                     arr1.Conformant = false;
                 }
                 JIMarshalUnMarshalHelper.Serialize(ndr, o.GetType(), o, defferedPointers, flag);
                 if (conformant && o is JIArray arr2) {
-                    //noew reset this, so that next time when the same struct is written everything goes proper.
+                    // noew reset this, so that next time when the same struct is written everything goes proper.
                     arr2.Conformant = true;
                 }
             }
@@ -288,7 +292,7 @@ namespace org.jinterop.dcom.core {
             IDictionary<object, object> additionalData) {
             var retVal = new JIStruct();
             var listOfMaxCounts2 = new List<object>();
-            //first read all Max counts and then the rest of the structs
+            // first read all Max counts and then the rest of the structs
             int j;
             int i;
             for (i = 0; i < _listOfDimensions.Count; i++) {
@@ -298,14 +302,14 @@ namespace org.jinterop.dcom.core {
                 }
             }
             i = 0;
-            j = 0; //index only for the conformant \ varying arrays
+            j = 0; // index only for the conformant \ varying arrays
             while (i < Members.Count) {
                 var o = Members[i];
                 List<object> maxCountTemp = null;
                 if (o is JIArray) {
                     if (((JIArray)o).Conformant || ((JIArray)o).Varying) {
-                        //if this array is conformant then reset it's conformancy, since the length would have been
-                        //read before.
+                        // if this array is conformant then reset it's conformancy, since the length would have been
+                        // read before.
                         ((JIArray)o).Conformant = false;
                         maxCountTemp = ((JIArray)o).ConformantMaxCounts;
                         ((JIArray)o).MaxCountAndUpperBounds = listOfMaxCounts2.SubList(j, (int)_listOfDimensions[j]).ToList();
@@ -315,13 +319,13 @@ namespace org.jinterop.dcom.core {
                 var o1 = JIMarshalUnMarshalHelper.Deserialize(ndr, o, defferedPointers, FLAG, additionalData);
                 if (o is JIArray) {
                     if (((JIArray)o).Conformant || ((JIArray)o).Varying) {
-                        //now reset this, so that next time when the same struct is written everything goes proper.
+                        // now reset this, so that next time when the same struct is written everything goes proper.
                         ((JIArray)o).Conformant = ((JIArray)o).Conformant;
                         ((JIArray)o).MaxCountAndUpperBounds = maxCountTemp;
                     }
                 }
                 try {
-                    retVal.AddMember(o1); //listOfMembers.add(o);
+                    retVal.AddMember(o1); // listOfMembers.add(o);
                 }
                 catch (JIException e) {
                     throw new JIRuntimeException(e.ErrorCode);
@@ -329,7 +333,7 @@ namespace org.jinterop.dcom.core {
                 i++;
             }
 
-            //do not copy other members since the addMember above will take care of all the conditions.
+            // do not copy other members since the addMember above will take care of all the conditions.
             return retVal;
         }
 

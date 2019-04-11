@@ -15,27 +15,27 @@
 
 namespace org.jinterop.winreg {
 
-	/// <summary>
-	/// Policy handle for each key.
-	/// 
-	/// @since 1.0
-	/// 
-	/// </summary>
-	public class JIPolicyHandle {
-		/// <summary>
-		/// Handle to the Key
-		/// </summary>
-		public readonly sbyte[] Handle = new sbyte[20];
-		/// <summary>
-		/// True, if the key was newly created.
-		/// </summary>
-		public readonly bool NewlyCreated;
-		/// <summary>
-		/// @exclude </summary>
-		/// <param name="newlyCreated"> </param>
-		public JIPolicyHandle(bool newlyCreated) {
-			this.NewlyCreated = newlyCreated;
-		}
-	}
+    /// <summary>
+    /// Policy handle for each key.
+    /// 
+    /// @since 1.0
+    /// 
+    /// </summary>
+    public class JIPolicyHandle {
+        /// <summary>
+        /// Handle to the Key
+        /// </summary>
+        public readonly sbyte[] Handle = new sbyte[20];
+        /// <summary>
+        /// True, if the key was newly created.
+        /// </summary>
+        public readonly bool NewlyCreated;
+        /// <summary>
+        /// @exclude </summary>
+        /// <param name="newlyCreated"> </param>
+        public JIPolicyHandle(bool newlyCreated) {
+            this.NewlyCreated = newlyCreated;
+        }
+    }
 
 }

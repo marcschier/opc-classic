@@ -7,7 +7,6 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-
 namespace org.jinterop.dcom.transport {
     using org.jinterop.dcom.common;
     using rpc;
@@ -49,7 +48,7 @@ namespace org.jinterop.dcom.transport {
 
             Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] started new thread " +
                 Thread.CurrentThread.Name);
-            //this iid is the component IID just in case.
+            // this iid is the component IID just in case.
             if (baseIID != null) {
                 Transport.Properties.SetProperty("IID2", baseIID);
             }
@@ -63,19 +62,18 @@ namespace org.jinterop.dcom.transport {
                 Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] request : " +
                     Thread.CurrentThread.Name + ", " + request + " workerObject is resolver: " +
                     workerObject.Resolver);
-                NdrBuffer buffer = null;
                 var ndr = new NdrCodec();
                 workerObject.CurrentIID = CurrentIID;
                 if (request is RequestCoPdu) {
-                    buffer = new NdrBuffer(((RequestCoPdu)request).Stub, 0);
+                    var buffer = new NdrBuffer(((RequestCoPdu)request).Stub, 0);
                     if (buffer.Buf != null) {
                         var byteArrayOutputStream = Utils.HexString(buffer.Buf, 0, buffer.Buf.Length);
                         Log.Logger.Verbose("\n" + byteArrayOutputStream.ToString());
                     }
                     ndr.Format = ((RequestCoPdu)request).Format;
                     workerObject.Opnum = ((RequestCoPdu)request).Opnum;
-                    //sets the current object, this is used to identify the JILocalCoClass to work on.
-                    //for most cases this will be null, till there is an actual COM interface request.
+                    // sets the current object, this is used to identify the JILocalCoClass to work on.
+                    // for most cases this will be null, till there is an actual COM interface request.
                     workerObject.CurrentObjectID = ((RequestCoPdu)request).Object;
 
                     try {
@@ -87,7 +85,7 @@ namespace org.jinterop.dcom.transport {
                         };
                         ((NdrOp)workerObject).Encode(ndr, null);
                         var length = ndr.Buffer.Length > ndr.Buffer.Index ? ndr.Buffer.Length : ndr.Buffer.Index;
-                        //					  length = length + 4;
+                        //                      length = length + 4;
                         responseCoPdu.AllocationHint = length + 4;
                         var responsebytes = new byte[length + 4];
                         Array.Copy(ndr.Buffer.Buf, 0, responsebytes, 0, responsebytes.Length - 4);
@@ -97,7 +95,7 @@ namespace org.jinterop.dcom.transport {
                     }
                     catch (JIRuntimeException e) {
                         Log.Logger.Error(e, "JIComRuntimeEndpoint", "processRequests", e);
-                        //create a fault PDU
+                        // create a fault PDU
                         response = new FaultCoPdu {
                             CallId = ((RequestCoPdu)request).CallId
                         };
@@ -106,14 +104,14 @@ namespace org.jinterop.dcom.transport {
                 }
                 else if (request is BindPdu || request is AlterContextPdu) {
                     if (!workerObject.Resolver) {
-                        //this list will be clear after this call.
+                        // this list will be clear after this call.
                         /* Basically the cycle expected is like this...first a bind call comes, then a RemQI, that populates the
                          * list internally (Remunknownobject), then an alter context comes for the QIed interface, this clears the set
                          * object (if any), then a normal request comes through.
                          *
                          */
-                        //this call is only valid when the workerObject is RemUnknownObject.
-                        //so the context us NTLMConnectionContext
+                        // this call is only valid when the workerObject is RemUnknownObject.
+                        // so the context us NTLMConnectionContext
                         if (Context is JIComRuntimeNTLMConnectionContext) {
                             ((JIComRuntimeNTLMConnectionContext)Context).UpdateListOfInterfacesSupported(
                                 workerObject.QIedIIDs);
@@ -123,29 +121,31 @@ namespace org.jinterop.dcom.transport {
                                 CurrentIID = ((BindPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
                                 break;
                             case AlterContextPdu.ALTER_CONTEXT_TYPE:
-                                //we need to record the iid now if this is successful and subsequent calls will now be for this iid.
+                                // we need to record the iid now if this is successful and subsequent calls will now be for this iid.
                                 CurrentIID = ((AlterContextPdu)request).ContextList[0].AbstractSyntax.Uuid.ToString();
                                 break;
                             default:
-                                //nothing
+                                // nothing
                                 break;
                         }
                     }
 
                     response = Context.Accept(request);
                     if (!workerObject.Resolver) {
-                        PresentationResult[] result = null;
-                        PresentationContext context = null;
-                        var successful = false;
+                        PresentationResult[] result;
+
+                        PresentationContext context;
+
+                        bool successful;
                         if (response is BindAcknowledgePdu) {
                             result = ((BindAcknowledgePdu)response).ResultList;
                             successful = result[0].Result == PresentationResultCode.ACCEPTANCE;
-                            context = ((BindPdu)request).ContextList[0]; //am expecting only one
+                            context = ((BindPdu)request).ContextList[0]; // am expecting only one
                         }
                         else {
                             result = ((AlterContextResponsePdu)response).ResultList;
                             successful = result[0].Result == PresentationResultCode.ACCEPTANCE;
-                            context = ((AlterContextPdu)request).ContextList[0]; //am expecting only one
+                            context = ((AlterContextPdu)request).ContextList[0]; // am expecting only one
                         }
                     }
                 }
@@ -159,11 +159,11 @@ namespace org.jinterop.dcom.transport {
                     throw new RpcException("Received shutdown request from server.");
                 }
                 else if (request is Auth3Pdu) {
-                    continue; //don't do anything here, the server will send another request
+                    continue; // don't do anything here, the server will send another request
                 }
                 Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] response : " +
                     Thread.CurrentThread.Name + ", " + response);
-                //now send the response.
+                // now send the response.
                 Send(response);
                 if (workerObject.WorkerOver()) {
                     Log.Logger.Information("processRequests: [JIComRuntimeEndPoint] Worker is over," +

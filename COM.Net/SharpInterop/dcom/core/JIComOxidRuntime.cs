@@ -9,6 +9,7 @@
 
 namespace org.jinterop.dcom.core {
     using org.jinterop.dcom.common;
+    using org.jinterop.dcom.impls.automation;
     using rpc;
     using Serilog;
     using SharpCifs.Util.Sharpen;
@@ -78,7 +79,7 @@ namespace org.jinterop.dcom.core {
                 _thread.SetDaemon(true);
                 _thread.Start();
 
-                //schedule only the task to ping the OIDs obtained.
+                // schedule only the task to ping the OIDs obtained.
                 _clientPing = new Timer(_ => ClientPingTimerTask(), null, 0, 4 * 60 * 1000);
                 if (JISystem.IsCoClassAutoCollection) {
                     _serverPing = new Timer(_ => ServerPingTimerTask(), null, 0, 8 * 60 * 1000);
@@ -103,7 +104,7 @@ namespace org.jinterop.dcom.core {
                     var s = (JIComOxidStub)itr.Next();
                     s.Close();
                 }
-                _mapOfAddressVsStub.Clear(); //will clean up all the others as well
+                _mapOfAddressVsStub.Clear(); // will clean up all the others as well
             }
         }
 
@@ -127,7 +128,7 @@ namespace org.jinterop.dcom.core {
                 _listOfExportedJavaComponents.Remove(component);
                 _mapOfSessionIdsVsOIDs.Remove(session.SessionIdentifier);
 
-                //the thread associated with this will also stop.
+                // the thread associated with this will also stop.
                 details.InterruptRemUnknownThreadGroup();
 
                 component = null;
@@ -150,7 +151,7 @@ namespace org.jinterop.dcom.core {
 
                 for (var i = 0; i < oids.Count; i++) {
                     var oid = (JIObjectId)oids[i];
-                    //remove all
+                    // remove all
                     var component = (JILocalCoClass)_mapOfOIDVsComponents.GetAndRemove(oid);
                     var details = (JIComOxidDetails)_mapOfJavaVsOxidDetails[component];
                     if (details != null) {
@@ -159,7 +160,7 @@ namespace org.jinterop.dcom.core {
                     }
                     _mapOfJavaVsOxidDetails.Remove(component);
                     _listOfExportedJavaComponents.Remove(component);
-                    //the thread associated with this will also stop.
+                    // the thread associated with this will also stop.
                     if (details != null) {
                         details.InterruptRemUnknownThreadGroup();
                     }
@@ -181,10 +182,10 @@ namespace org.jinterop.dcom.core {
         internal void AddUpdateOXIDs(JISession session, string IPID, JIObjectId oid) {
             System.Diagnostics.Debug.Assert(IPID != null);
             lock (_mapOfSessionVsPingSetHolderLock) {
-                //make sure this is the IP address
+                // make sure this is the IP address
                 var holder = (PingSetHolder)_mapOfSessionVsPingSetHolder[session];
                 if (holder == null) {
-                    //new
+                    // new
                     holder = new PingSetHolder {
                         Username = session.UserName,
                         Password = session.Password,
@@ -198,10 +199,10 @@ namespace org.jinterop.dcom.core {
                     _mapOfSessionVsPingSetHolder[session] = holder;
                 }
                 else {
-                    //found, means it is another call for a new IPID
+                    // found, means it is another call for a new IPID
                     var oid2 = (JIObjectId)holder.CurrentSetOIDs[oid];
                     if (oid2 != null) {
-                        //have to update this oid, since the one from parameters is a "new" one.
+                        // have to update this oid, since the one from parameters is a "new" one.
                         oid = oid2;
                     }
                     else {
@@ -226,11 +227,11 @@ namespace org.jinterop.dcom.core {
         internal void DelIPIDReference(string IPID, JIObjectId oid, JISession session) {
             lock (_mapOfSessionVsPingSetHolderLock) {
                 var holder = (PingSetHolder)_mapOfSessionVsPingSetHolder[session];
-                //this will be non-null, since we are trying to remove an IPID reference so the PingSet for its OID should exist
+                // this will be non-null, since we are trying to remove an IPID reference so the PingSet for its OID should exist
                 if (holder != null) {
                     var oid2 = (JIObjectId)holder.CurrentSetOIDs[oid];
                     if (oid2 != null) {
-                        //temp gets replaced by the real one.
+                        // temp gets replaced by the real one.
                         oid = oid2;
                     }
                     else {
@@ -239,16 +240,16 @@ namespace org.jinterop.dcom.core {
                         return;
                     }
 
-                    //this is the same OID as in the PingSetHolder.
+                    // this is the same OID as in the PingSetHolder.
                     oid.DecrementIPIDRefCountBy1();
                     Log.Logger.Information("delIPIDReference: Decrementing reference count for IPID " +
                         IPID + " on OID " + oid);
 
-                    //should we retain this now ???, we need not send a ping for this as well.
+                    // should we retain this now ???, we need not send a ping for this as well.
                     // It is being retained for the last ping only.
                     if (oid.IPIDRefCount <= 0) {
                         holder.CurrentSetOIDs.Remove(oid);
-                        //everything is gone, remove the session
+                        // everything is gone, remove the session
                         if (holder.CurrentSetOIDs.Count == 0) {
                             holder.Closed = true;
                             _mapOfSessionVsPingSetHolder.Remove(session);
@@ -270,15 +271,15 @@ namespace org.jinterop.dcom.core {
         /// <param name="session"></param>
         internal void ClearIPIDsforSession(JISession session) {
             lock (_mapOfSessionVsPingSetHolderLock) {
-                //make sure this is the IP address
+                // make sure this is the IP address
                 var holder = (PingSetHolder)_mapOfSessionVsPingSetHolder[session];
                 if (holder != null) {
                     Log.Logger.Information("clearIPIDsforSession: holder.currentSetOIDs's size is " +
                         holder.CurrentSetOIDs.Count);
 
                     holder.Modified = true;
-                    //being done since this session is being destroyed and the corresponding COM server
-                    //need not be retained by us.
+                    // being done since this session is being destroyed and the corresponding COM server
+                    // need not be retained by us.
                     holder.CurrentSetOIDs.Clear();
                     holder.Closed = true;
 
@@ -288,7 +289,7 @@ namespace org.jinterop.dcom.core {
                 }
             }
 
-            //remove the socket for this session associated with ping timer
+            // remove the socket for this session associated with ping timer
             lock (_mapOfAddressVsStubLock) {
                 var stub = (JIComOxidStub)_mapOfAddressVsStub.GetAndRemove(session.TargetServer);
                 if (stub != null) {
@@ -314,17 +315,11 @@ namespace org.jinterop.dcom.core {
                 }
 
                 component.Session = session;
-                //
-                //			JIComOxidDetails details = 	(JIComOxidDetails)mapOfJavaVsOxidDetails.get(component);
-                //
-                //			if (details != null)
-                //			{
-                //				return details.getInterfacePtr();
-                //			}
 
-                //as the ID could be repeated, this is the ipid of the interface being requested.
+                // as the ID could be repeated, this is the ipid of the interface being requested.
                 var ipid = Guid.NewGuid().ToString();
-                var iid = component.ICoClassUnderRealIID ? component.CoClassIID : JiIUnknown.IID; //has to be IUnknown's IID.
+                var iid = component.ICoClassUnderRealIID ?
+                    component.CoClassIID : Interfaces.IID_IUnknown; // has to be IUnknown's IID.
                 var bytes = new byte[8];
                 _randomGen.NextBytes(bytes);
                 var oxid = new JIOxid(bytes);
@@ -335,13 +330,12 @@ namespace org.jinterop.dcom.core {
 
                 component.ObjectId = oid.OID;
 
-                //JIComOxidDetails details = new JIComOxidDetails();
+                // JIComOxidDetails details = new JIComOxidDetails();
                 var objref = new JIStdObjRef(ipid, oxid, oid);
                 ptr = new JIInterfacePointer(iid, OxidResolverPort, objref);
 
                 var properties = new Properties(_defaults2);
-                properties.SetProperty("IID", "00000131-0000-0000-C000-000000000046:0.0".ToUpper()); //IRemUnknown
-
+                properties.SetProperty("IID", "00000131-0000-0000-C000-000000000046:0.0".ToUpper()); // IRemUnknown
                 properties.SetProperty("rpc.ntlm.domain", session.TargetServer);
 
                 var protectionLevel = ProtectionLevel.PROTECTION_LEVEL_CONNECT;
@@ -365,9 +359,9 @@ namespace org.jinterop.dcom.core {
                 var remUnknown = new JIComOxidRuntimeHelper(properties);
 
 
-                //now create a new JIComOxidDetails
-                //this carries a reference to the javaInstance, incase we do not get pings from the client
-                //at the right times, the cleaup thread will remove this entry and it's OXID as well from both the maps.
+                // now create a new JIComOxidDetails
+                // this carries a reference to the javaInstance, incase we do not get pings from the client
+                // at the right times, the cleaup thread will remove this entry and it's OXID as well from both the maps.
                 var details = new JIComOxidDetails(component, oxid, oid, iid, ipid, ptr, remUnknown, protectionLevel);
 
 
@@ -379,7 +373,7 @@ namespace org.jinterop.dcom.core {
 
                 _listOfExportedJavaComponents.Add(component);
 
-                _mapOfIPIDVsComponent[ipid] = details; //this is the ipid of the component.
+                _mapOfIPIDVsComponent[ipid] = details; // this is the ipid of the component.
 
                 var oids = (List<object>)_mapOfSessionIdsVsOIDs[session.SessionIdentifier];
                 if (oids == null) {
@@ -393,7 +387,7 @@ namespace org.jinterop.dcom.core {
             return ptr;
         }
 
-        //will get called from OxidResolverImpl only
+        // will get called from OxidResolverImpl only
         internal JIComOxidDetails GetOxidDetails(JIOxid oxid) {
             lock (_mapOfOIDVsComponentsLock) {
                 return (JIComOxidDetails)_mapOfOxidVsOxidDetails[oxid];
@@ -434,10 +428,10 @@ namespace org.jinterop.dcom.core {
                 var listOfOIDs = (List<object>)_mapOfSetIdVsListOfOIDs[setId];
                 if (listOfOIDs == null) {
                     listOfOIDs = new List<object>();
-                    //first time
+                    // first time
                     listOfOIDs.AddRange(objectIdsAdded);
                     _mapOfSetIdVsListOfOIDs[setId] = listOfOIDs;
-                    //del list would be empty I presume
+                    // del list would be empty I presume
 
                 }
                 else {
@@ -462,7 +456,7 @@ namespace org.jinterop.dcom.core {
             lock (_mapOfOIDVsComponentsLock) {
                 for (var i = 0; i < _listOfExportedJavaComponents.Count; i++) {
                     component = (JILocalCoClass)_listOfExportedJavaComponents[i];
-                    //this will be unique, no two components will ever have same IPID for
+                    // this will be unique, no two components will ever have same IPID for
                     // an IID.They will have different IPIDs for same IIDs.
                     if (component.GetIIDFromIpid(ipid) != null) {
                         break;
@@ -489,10 +483,10 @@ namespace org.jinterop.dcom.core {
                 while (itr.HasNext()) {
                     var oid = (JIObjectId)itr.Next();
                     if (oid.HasExpired()) {
-                        //remove all
+                        // remove all
                         var component = (JILocalCoClass)_mapOfOIDVsComponents[oid];
-                        //this means the local system still has references and we cannot delete this object
-                        //since the user may reuse it.
+                        // this means the local system still has references and we cannot delete this object
+                        // since the user may reuse it.
                         if (component.AssociatedReferenceAlive) {
                             continue;
                         }
@@ -503,7 +497,7 @@ namespace org.jinterop.dcom.core {
                         _listOfExportedJavaComponents.Remove(component);
                         itr.Remove();
 
-                        //the thread associated with this will also stop.
+                        // the thread associated with this will also stop.
                         details.InterruptRemUnknownThreadGroup();
 
                         component = null;
@@ -524,18 +518,18 @@ namespace org.jinterop.dcom.core {
             }
 
             Log.Logger.Information("Running ClientPingTimerTask !");
-            //iterate over the map and get the corresponding stubs and use there sessions to
-            //stub is created here and used per address
+            // iterate over the map and get the corresponding stubs and use there sessions to
+            // stub is created here and used per address
 
-            //if set id is null send a complex ping to get back the set id for all the OIDs in the
-            //PingSetHolder
+            // if set id is null send a complex ping to get back the set id for all the OIDs in the
+            // PingSetHolder
 
             while (itr.HasNext()) {
                 var entry = itr.Next();
                 var holder = (PingSetHolder)entry.Value;
                 var address = ((JISession)entry.Key).TargetServer;
-                //will get it from the cache, since it is getting called after every 4 minutes
-                //what if this stub has timed out, I guess I will have to ask the developers to increase the timeout for now.
+                // will get it from the cache, since it is getting called after every 4 minutes
+                // what if this stub has timed out, I guess I will have to ask the developers to increase the timeout for now.
                 JIComOxidStub stub = null;
                 lock (_mapOfAddressVsStubLock) {
                     stub = (JIComOxidStub)_mapOfAddressVsStub[address];
@@ -548,7 +542,7 @@ namespace org.jinterop.dcom.core {
 
                 var listOfAddedOIDs = new List<object>();
                 var listOfRemovedOIDs = new List<object>();
-                //form a list if OID is 0 ref
+                // form a list if OID is 0 ref
                 lock (_mapOfSessionVsPingSetHolderLock) {
                     for (var itr2 = holder.CurrentSetOIDs.Keys.Iterator(); itr2.HasNext();) {
                         var oid = (JIObjectId)itr2.Next();
@@ -573,21 +567,21 @@ namespace org.jinterop.dcom.core {
                     "Within ClientPingTimerTask: holder.currentSetOIDs, current size of which is " +
                     holder.CurrentSetOIDs.Count);
 
-                //this is the first time this is going and objects with no references
-                //will not be added to ping set.
+                // this is the first time this is going and objects with no references
+                // will not be added to ping set.
                 if (holder.SetId == null) {
                     listOfRemovedOIDs.Clear();
                 }
 
                 var isSimplePing = false;
 
-                //No additions and no deletions
+                // No additions and no deletions
                 if (holder.SetId != null && !holder.Modified) {
-                    //send simple set ping
+                    // send simple set ping
                     isSimplePing = true;
                 }
 
-                //seqNum will be 0 for simple ping, but incremented for complex pings.
+                // seqNum will be 0 for simple ping, but incremented for complex pings.
                 // seqNum is per setId. first one will be 0 and increments there on...
                 holder.SetId = stub.Call(isSimplePing, holder.SetId, listOfAddedOIDs,
                     listOfRemovedOIDs, isSimplePing ? 0 : holder.SeqNum++);
@@ -595,10 +589,10 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Verbose("Within ClientPingTimerTask: holder.seqNum " + holder.SeqNum);
 
                 holder.Modified = false;
-                //stub.close(); commenting this since we are caching the stub.
+                // stub.close(); commenting this since we are caching the stub.
                 if (holder.Closed) {
-                    //this means that this set is empty and there is no need for it.
-                    //The set has emptied  itself and will get removed from COM servers side as well.
+                    // this means that this set is empty and there is no need for it.
+                    // The set has emptied  itself and will get removed from COM servers side as well.
                     Log.Logger.Information("Within ClientPingTimerTask: Holder " + holder +
                         " is empty, will remove this from mapOfSessionVsPingSetHolder");
                     itr.Remove();
@@ -657,10 +651,10 @@ namespace org.jinterop.dcom.core {
                     var socket = listener.Accept();
                     lock (_outerInstance.Mutex) {
                         JISystem.Internal_setSocket(socket);
-                        //now create the JIComOxidRuntimeHelper Object and start it.
+                        // now create the JIComOxidRuntimeHelper Object and start it.
                         var properties = new Properties(_outerInstance._defaults);
                         properties.SetProperty("IID",
-                            "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper()); //IOxidResolver
+                            "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper()); // IOxidResolver
                         var oxidResolver = new JIComOxidRuntimeHelper(properties);
                         oxidResolver.StartOxid(socket.GetLocalPort(), socket.GetLocalPort());
                     }
@@ -680,30 +674,30 @@ namespace org.jinterop.dcom.core {
         private readonly Properties _defaults = new Properties();
         private readonly Properties _defaults2 = new Properties();
         private bool _resolverStarted;
-        //java client, com server
+        // java client, com server
         private readonly Hashtable _mapOfIPIDVsComponent = new Hashtable();
-        //java client, com server
+        // java client, com server
         private readonly Hashtable _mapOfJavaVsOxidDetails = new Hashtable();
-        //java client, com server
+        // java client, com server
         private readonly Hashtable _mapOfOxidVsOxidDetails = new Hashtable();
-        //java client, com server
+        // java client, com server
         private readonly Hashtable _mapOfOIDVsComponents = new Hashtable();
-        //list of all exported oids per session, all these oids have to be removed.
-        //java server, com client
+        // list of all exported oids per session, all these oids have to be removed.
+        // java server, com client
         private readonly Hashtable _mapOfSessionIdsVsOIDs = new Hashtable();
-        //com client, java server
+        // com client, java server
         private readonly Hashtable _mapOfSetIdVsListOfOIDs = new Hashtable();
-        //com client, java server
+        // com client, java server
         private readonly Hashtable _mapOfSessionVsPingSetHolder = new Hashtable();
-        //java client, com server, so that we don't have to keep doing bind everytime.
+        // java client, com server, so that we don't have to keep doing bind everytime.
         private readonly Hashtable _mapOfAddressVsStub = new Hashtable();
         private readonly List<object> _listOfExportedJavaComponents = new List<object>();
-        internal readonly object Mutex = new object(); //for access to the sockets
-        //for access to the maps
+        internal readonly object Mutex = new object(); // for access to the sockets
+        // for access to the maps
         private readonly object _mapOfOIDVsComponentsLock = new object();
-        //for access to the AddressVsSession,Stub Map
+        // for access to the AddressVsSession,Stub Map
         private readonly object _mapOfSessionVsPingSetHolderLock = new object();
-        //for access to the mapOfAddressVsStub
+        // for access to the mapOfAddressVsStub
         private readonly object _mapOfAddressVsStubLock = new object();
 
         private readonly Random _randomGen = new Random();

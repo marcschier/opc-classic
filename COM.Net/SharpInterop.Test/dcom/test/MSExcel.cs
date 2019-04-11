@@ -13,40 +13,35 @@
 
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
         private IJIDispatch _dispatchOfWorkSheet;
         private IJIDispatch _dispatchOfWorkBook;
         private readonly JISession _session;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSExcel(String address,String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSExcel(string address, string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("Excel.Application"), address, _session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void StartExcel() {
+
+        public void StartExcel() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
             var typeInfo = _dispatch.GetTypeInfo(0);
             typeInfo.GetFuncDesc(0);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowExcel() {
+
+        public void ShowExcel() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(true);
             _dispatch.Put(dispId, variant);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void createWorkSheet() throws org.jinterop.dcom.common.JIException
-        public virtual void CreateWorkSheet() {
+
+        public void CreateWorkSheet() {
             var dispId = _dispatch.GetIDsOfNames("Workbooks");
             object[] @out = { typeof(JIVariant) };
-            JIVariant[] outVal2 = null;
             var outVal = _dispatch.Get(dispId);
             _dispatchOfWorkBook = (IJIDispatch)JIObjectFactory.NarrowObject(outVal.ObjectAsComObject);
 
@@ -56,7 +51,7 @@
             @out = new object[] { typeof(JIVariant) };
             dispId = _dispatchOfWorkBook.GetIDsOfNames("Add");
 
-            outVal2 = _dispatchOfWorkBook.CallMethodA(dispId, new object[] { _xlWorksheet });
+            var outVal2 = _dispatchOfWorkBook.CallMethodA(dispId, new object[] { _xlWorksheet });
             _dispatchOfWorkBook = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
 
             dispId = _dispatchOfWorkBook.GetIDsOfNames("Worksheets");
@@ -68,16 +63,14 @@
 
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void pasteStringToWorkSheet() throws org.jinterop.dcom.common.JIException
-        public virtual void PasteStringToWorkSheet() {
+
+        public void PasteStringToWorkSheet() {
             var dispId = _dispatchOfWorkSheet.GetIDsOfNames("Range");
 
             var variant = new JIVariant(new JIString("A1"));
             object[] @out = { typeof(JIVariant) };
             JIVariant outVal;
-            JIVariant[] outVal2 = null;
-            outVal2 = _dispatchOfWorkSheet.Get(dispId, new object[] { variant });
+            var outVal2 = _dispatchOfWorkSheet.Get(dispId, new object[] { variant });
 
             var dispRange = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
 
@@ -100,17 +93,15 @@
             }
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void createXYChart() throws org.jinterop.dcom.common.JIException
-        public virtual void CreateXYChart() {
-            //column 2.
+
+        public void CreateXYChart() {
+            // column 2.
             var dispId = _dispatchOfWorkSheet.GetIDsOfNames("Columns");
 
-            var cols = new double?(2);
+            var cols = 2.0;
             object[] @out = { typeof(JIVariant) };
             JIVariant outVal;
-            JIVariant[] outVal2 = null;
-            outVal2 = _dispatchOfWorkSheet.Get(dispId, new object[] { cols });
+            var outVal2 = _dispatchOfWorkSheet.Get(dispId, new object[] { cols });
 
 
             var dispatchRange = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
@@ -145,7 +136,7 @@
 
             dispId = dispatchActiveChart.GetIDsOfNames("SetSourceData");
             @out = new object[] { typeof(JIVariant) };
-            outVal2 = dispatchActiveChart.CallMethodA(dispId, new object[] { dispatchRange, (short)_xlColumns }, new int[] { dispIds[1], dispIds[2] }); //invoke(dispIds[0],IJIDispatch.DISPATCH_METHOD,new Object[]{variant,new JIArray(new Integer[]{new Integer(dispIds[1]),new Integer(dispIds[2])},true),null,null,null},null);
+            outVal2 = dispatchActiveChart.CallMethodA(dispId, new object[] { dispatchRange, (short)_xlColumns }, new int[] { dispIds[1], dispIds[2] }); // invoke(dispIds[0],IJIDispatch.DISPATCH_METHOD,new Object[]{variant,new JIArray(new Integer[]{new Integer(dispIds[1]),new Integer(dispIds[2])},true),null,null,null},null);
 
             JISession.DestroySession(_session);
         }

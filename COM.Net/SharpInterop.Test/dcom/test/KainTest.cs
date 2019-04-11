@@ -9,34 +9,27 @@ namespace org.jinterop.dcom.test {
     public class KainTest {
 
         private readonly JIComServer _comServer;
-        private readonly IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private readonly IJIDispatch _dispatch; // TODO:  Assign to it!!!
+        private IComObject _unknown;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public KainTest(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public KainTest(string address, string[] args) {
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("Word.Application"), address, session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startWord() throws org.jinterop.dcom.common.JIException
-        public virtual void StartWord() {
+        public void StartWord() {
             _unknown = _comServer.CreateInstance();
             var dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showWord() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowWord() {
+        public void ShowWord() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(true);
             _dispatch.Put(dispId, variant);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-        public virtual void PerformOp() {
+        public void PerformOp() {
             var sDir = "c:\\tmp\\";
             var sInputDoc = sDir + "file_in.doc";
             var sOutputDoc = sDir + "file_out.doc";
@@ -49,9 +42,9 @@ namespace org.jinterop.dcom.test {
 
             var variant = _dispatch.Get("Documents");
             var documents = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
-            //String has to be a JIString.
+            // String has to be a JIString.
             var filePath = new JIString(sInputDoc);
-            //this "open" is of Word 2003
+            // this "open" is of Word 2003
             var variant2 = documents.CallMethodA("open", new object[] { new JIVariant(filePath, true), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM() });
 
             var document = (IJIDispatch)JIObjectFactory.NarrowObject(variant2[0].ObjectAsComObject);

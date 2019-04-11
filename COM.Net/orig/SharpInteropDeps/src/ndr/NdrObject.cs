@@ -17,35 +17,35 @@
 
 namespace ndr {
 
-	public abstract class NdrObject {
+    public abstract class NdrObject {
 
-		internal const int Opnum_Renamed = -1;
+        internal const int Opnum_Renamed = -1;
 
-		public object Value;
+        public object Value;
 
-		public virtual int Opnum {
-			get {
-				return Opnum_Renamed;
-			}
-		}
+        public virtual int Opnum {
+            get {
+                return Opnum_Renamed;
+            }
+        }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void encode(NetworkDataRepresentation ndr, NdrBuffer dst) throws NdrException
-		public virtual void Encode(NetworkDataRepresentation ndr, NdrBuffer dst) {
-			ndr.Buf = dst;
-			Write(ndr); // just for compatibility with jarapac < 0.2
-		}
+        public virtual void Encode(NetworkDataRepresentation ndr, NdrBuffer dst) {
+            ndr.Buf = dst;
+            Write(ndr); // just for compatibility with jarapac < 0.2
+        }
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void decode(NetworkDataRepresentation ndr, NdrBuffer src) throws NdrException
-		public virtual void Decode(NetworkDataRepresentation ndr, NdrBuffer src) {
-			ndr.Buf = src;
-			Read(ndr);
-		}
-		public virtual void Write(NetworkDataRepresentation ndr) {
-		}
-		public virtual void Read(NetworkDataRepresentation ndr) {
-		}
-	}
+        public virtual void Decode(NetworkDataRepresentation ndr, NdrBuffer src) {
+            ndr.Buf = src;
+            Read(ndr);
+        }
+        public virtual void Write(NetworkDataRepresentation ndr) {
+        }
+        public virtual void Read(NetworkDataRepresentation ndr) {
+        }
+    }
 
 
 }

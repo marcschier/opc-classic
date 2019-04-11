@@ -60,8 +60,6 @@ namespace rpc.core {
         }
 
         /// <override/>
-        public override string ToString() {
-            return Uuid + ":" + MajorVersion + "." + MinorVersion;
-        }
+        public override string ToString() => Uuid + ":" + MajorVersion + "." + MinorVersion;
     }
 }

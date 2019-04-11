@@ -21,9 +21,7 @@ namespace org.jinterop.dcom.core {
         /// Create
         /// </summary>
         /// <param name="oxid"></param>
-        internal JIOxid(byte[] oxid) {
-            _oxid = oxid;
-        }
+        internal JIOxid(byte[] oxid) => _oxid = oxid;
 
         /// <summary>
         /// Oxid
@@ -33,7 +31,7 @@ namespace org.jinterop.dcom.core {
         /// <inheritdoc/>
         public override int GetHashCode() {
             var result = 1;
-            //from SUN
+            // from SUN
             for (var i = 0; i < OXID.Length; i++) {
                 result = (31 * result) + OXID[i];
             }

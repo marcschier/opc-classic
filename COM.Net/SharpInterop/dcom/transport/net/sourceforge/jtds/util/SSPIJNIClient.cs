@@ -31,7 +31,7 @@ namespace net.sourceforge.jtds.util {
         private static SSPIJNIClient _thisInstance;
 
         /// <summary>
-        /// SSPI native library loaded flag. 
+        /// SSPI native library loaded flag.
         /// </summary>
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -42,18 +42,18 @@ namespace net.sourceforge.jtds.util {
 #pragma warning restore IDE0051 // Remove unused private members
 
         /// <summary>
-        /// SSPI client initialized flag. 
+        /// SSPI client initialized flag.
         /// </summary>
         private bool _initialized;
 
         /// <summary>
-        /// Initializes the SSPI client. 
+        /// Initializes the SSPI client.
         /// </summary>
         [DllImport("ntlmauth.dll")]
         private static extern void Initialize();
 
         /// <summary>
-        /// Uninitializes the SSPI client. 
+        /// Uninitializes the SSPI client.
         /// </summary>
         [DllImport("ntlmauth.dll")]
         private static extern void UnInitialize();
@@ -68,7 +68,7 @@ namespace net.sourceforge.jtds.util {
         /// <summary>
         /// Prepares the NTLM TYPE-3 message using the current user's credentials.
         /// It needs the challenge BLOB and it's size as input. The challenge BLOB
-        /// is nothig but the TYPE-2 message that is received 
+        /// is nothig but the TYPE-2 message that is received
         /// </summary>
         /// <param name="buf">  challenge BLOB </param>
         /// <param name="size"> challenge BLOB size </param>
@@ -82,8 +82,8 @@ namespace net.sourceforge.jtds.util {
         private SSPIJNIClient() {
           //  try {
           //      if (System.getProperty("os.name").ToLower().StartsWith("windows", StringComparison.Ordinal)) {
-          //          //JAVA TO C# CONVERTER TODO TASK: The library is specified in the 'DllImport' attribute for .NET:
-          //          //					System.loadLibrary("ntlmauth");
+          //          // JAVA TO C# CONVERTER TODO TASK: The library is specified in the 'DllImport' attribute for .NET:
+          //          //                    System.loadLibrary("ntlmauth");
           //          libraryLoaded = true;
           //      }
           //      else {
@@ -119,7 +119,7 @@ namespace net.sourceforge.jtds.util {
         /// <summary>
         /// Calls <code>#initialize()</code> if the SSPI client is not already inited.
         /// </summary>
-        public virtual void InvokeInitialize() {
+        public void InvokeInitialize() {
             if (!_initialized) {
                 Initialize();
                 _initialized = true;
@@ -129,7 +129,7 @@ namespace net.sourceforge.jtds.util {
         /// <summary>
         /// Calls <code>#unInitialize()</code> if the SSPI client is inited.
         /// </summary>
-        public virtual void InvokeUnInitialize() {
+        public void InvokeUnInitialize() {
             if (_initialized) {
                 UnInitialize();
                 _initialized = false;
@@ -140,8 +140,8 @@ namespace net.sourceforge.jtds.util {
         /// Calls <code>#prepareSSORequest()</code> to prepare the NTLM TYPE-1 message.
         /// </summary>
         /// <exception cref="Exception"> if an error occurs during the call or the SSPI client
-        ///                   is uninitialized </exception>
-        public virtual byte[] InvokePrepareSSORequest() {
+        ///                  is uninitialized </exception>
+        public byte[] InvokePrepareSSORequest() {
             if (!_initialized) {
                 throw new InvalidOperationException("SSPI Not Initialized");
             }
@@ -153,8 +153,8 @@ namespace net.sourceforge.jtds.util {
         /// message.
         /// </summary>
         /// <exception cref="Exception"> if an error occurs during the call or the SSPI client
-        ///                   is uninitialized </exception>
-        public virtual byte[] InvokePrepareSSOSubmit(byte[] buf) {
+        ///                  is uninitialized </exception>
+        public byte[] InvokePrepareSSOSubmit(byte[] buf) {
             if (!_initialized) {
                 throw new InvalidOperationException("SSPI Not Initialized");
             }

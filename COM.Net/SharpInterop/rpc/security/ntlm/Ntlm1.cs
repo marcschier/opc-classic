@@ -89,7 +89,7 @@ namespace rpc.security.ntlm {
                 byte[] signingKey = null;
                 IStreamCipher cipher = null;
 
-                //reverse of what it is
+                // reverse of what it is
                 if (!_isServer) {
                     signingKey = _serverSigningKey;
                     cipher = _serverCipher;
@@ -114,11 +114,11 @@ namespace rpc.security.ntlm {
                 _keyFactory.SigningPt2(verifier, cipher);
 
                 buffer.Index = verifierIndex;
-                //now read the next 16 bytes and pass compare them
+                // now read the next 16 bytes and pass compare them
                 var signing = new byte[16];
                 ndr.ReadOctetArray(signing, 0, signing.Length);
 
-                //this should result in an access denied fault
+                // this should result in an access denied fault
                 if (!_keyFactory.CompareSignature(verifier, signing)) {
                     throw new IntegrityException("Message out of sequence. " +
                         "Perhaps the user being used to run this application is different " +

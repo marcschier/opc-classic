@@ -14,7 +14,7 @@
 
         public JIOPCEventSink() => _listeners = new HashSet<object>();
 
-        public virtual void AddListener(EventNotificationListener listener) {
+        public void AddListener(EventNotificationListener listener) {
             if (listener == null) {
                 throw new System.NullReferenceException("The listener is null");
             }
@@ -23,34 +23,31 @@
             }
         }
 
-        public virtual void RemoveListener(EventNotificationListener listener) {
+        public void RemoveListener(EventNotificationListener listener) {
             lock (_listeners) {
                 _listeners.Remove(listener);
             }
         }
 
         /// <summary>
-        /// This method is provided by the client to handle notifications from the OPCEventSubscription for events. This method can be
-        /// called whether this is a refresh or standard event notification. </summary>
-        /// <param name="clientSubscription">
-        /// 		The client handle for the subscription object sending the event notifications. </param>
-        /// <param name="refresh">
-        /// 		TRUE if this is a subscription refresh. </param>
-        /// <param name="lastRefresh">
-        /// 		TRUE if this is the last subscription refresh in response to a specific invocation of the IOPCEventSubscriptionMgt::Refresh method. </param>
-        /// <param name="count">
-        /// 		Number of event notifications. A value of zero indicates this is a keep-alive notification. </param>
-        /// <param name="events">
-        /// 		Array of event notifications
-        /// @return
-        /// 		An EMPTY() array. </param>
+        /// This method is provided by the client to handle notifications
+        /// from the OPCEventSubscription for events. This method can be
+        /// called whether this is a refresh or standard event notification.
+        /// </summary>
+        /// <param name="clientSubscription"> The client handle for the
+        /// subscription object sending the event notifications. </param>
+        /// <param name="refresh">TRUE if this is a subscription refresh.
+        /// </param>
+        /// <param name="lastRefresh"> TRUE if this is the last subscription
+        /// refresh in response to a specific invocation of the
+        /// IOPCEventSubscriptionMgt::Refresh method. </param>
+        /// <param name="count"> Number of event notifications. A value of
+        /// zero indicates this is a keep-alive notification. </param>
+        /// <param name="events">Array of event notifications</param>
+        /// <returns>An EMPTY() array. </returns>
         /// <exception cref="JIException"> </exception>
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public Object[] onEvent(final int clientSubscription,final int refresh,final int lastRefresh, int count, org.jinterop.dcom.core.JIArray eventsArray) throws org.jinterop.dcom.common.JIException
-        //JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
-        public virtual object[] OnEvent(int clientSubscription, int refresh, int lastRefresh, int count, JIArray eventsArray) {
-            //JAVA TO C# CONVERTER WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final org.jinterop.dcom.core.JIStruct[] events;
+        public object[] OnEvent(int clientSubscription, int refresh, int lastRefresh,
+            int count, JIArray eventsArray) {
             JIStruct[] events;
             if (count == 0) {
                 events = new JIStruct[0];
@@ -67,7 +64,8 @@
 
             private readonly JIStruct[] _events;
 
-            public RunnableAnonymousInnerClassHelper(JIOPCEventSink outerInstance, JIStruct[] events, string name) : base(name) {
+            public RunnableAnonymousInnerClassHelper(JIOPCEventSink outerInstance,
+                JIStruct[] events, string name) : base(name) {
                 _outerInstance = outerInstance;
                 _events = events;
             }
@@ -86,13 +84,13 @@
         /// <summary>
         /// Create an out struct definition of this object that may be use in a call object
         /// @return
-        /// 		The OPC struct definition
+        ///        The OPC struct definition
         /// </summary>
         public static JIStruct FileTimeOutStruct() {
             var @struct = new JIStruct();
             try {
-                @struct.AddMember(typeof(int)); //Low date time
-                @struct.AddMember(typeof(int)); //High date time
+                @struct.AddMember(typeof(int)); // Low date time
+                @struct.AddMember(typeof(int)); // High date time
                 return @struct;
             }
             catch (JIException) { // Can't occur
@@ -103,7 +101,7 @@
         /// <summary>
         /// Create an out struct definition of this object that may be use in a call object
         /// @return
-        /// 		The OPC struct definition
+        ///        The OPC struct definition
         /// </summary>
         private static JIStruct OutStruct() {
             var @struct = new JIStruct();
@@ -134,7 +132,7 @@
         }
 
         public static JILocalCoClass GetCoClass(JIOPCEventSink instance) {
-            //Define the onEvent method for this interface
+            // Define the onEvent method for this interface
             var oeParams = new JILocalParamsDescriptor();
             oeParams.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
             oeParams.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
@@ -142,12 +140,12 @@
             oeParams.AddInParamAsType(typeof(int), JIFlags.FLAG_NULL);
             oeParams.AddInParamAsObject(new JIArray(OutStruct(), null, 1, true), JIFlags.FLAG_NULL);
             var oeMethod = new JILocalMethodDescriptor("onEvent", 0, oeParams);
-            //This identify the JIOPCEventSink and not the interface
+            // This identify the JIOPCEventSink and not the interface
             var def = new JILocalInterfaceDefinition(kLOCAL_CLASS_IID, false);
             def.AddMethodDescriptor(oeMethod);
             var coClass = (instance == null) ? new JILocalCoClass(def, typeof(JIOPCEventSink)) : new JILocalCoClass(def, instance);
             var list = new List<object> {
-                //Supported interface
+                // Supported interface
                 OPC_IID
             };
             coClass.SupportedEventInterfaces = list;

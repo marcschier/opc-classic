@@ -9,45 +9,41 @@
 
         private readonly JIComServer _comStub;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSWord2(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSWord2(string address, string[] args) {
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             _comStub = new JIComServer(JIProgId.ValueOf("Word.Application"), address, session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startWord() throws org.jinterop.dcom.common.JIException
-        public virtual void StartWord() {
+
+        public void StartWord() {
             _unknown = _comStub.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showWord() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowWord() {
+
+        public void ShowWord() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(true);
             _dispatch.Put(dispId, variant);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException, InterruptedException
-        public virtual void PerformOp() {
+
+        public void PerformOp() {
             Console.WriteLine(_dispatch.Get("Version").ObjectAsString.String);
             Console.WriteLine(_dispatch.Get("Path").ObjectAsString.String);
             var variant = _dispatch.Get("Documents");
-            //JIInterfacePointer ptr = variant.getObjectAsInterfacePointer();
-            //IJIDispatch documents = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,ptr);
+            // JIInterfacePointer ptr = variant.getObjectAsInterfacePointer();
+            // IJIDispatch documents = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,ptr);
             var documents = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
             var filePath = new JIString("c:/temp/test.doc");
             var variant2 = documents.CallMethodA("open", new object[] { filePath.VariantByRef, JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM() });
-            //IJIDispatch document = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,variant2[0].getObjectAsInterfacePointer());
+            // IJIDispatch document = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,variant2[0].getObjectAsInterfacePointer());
             var document = (IJIDispatch)JIObjectFactory.NarrowObject(variant2[0].ObjectAsComObject);
             variant = document.Get("Content");
-            //IJIDispatch range = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,variant.getObjectAsInterfacePointer());
+            // IJIDispatch range = (IJIDispatch)JIObjectFactory.createCOMInstance(unknown,variant.getObjectAsInterfacePointer());
             var range = (IJIDispatch)JIObjectFactory.NarrowObject(variant.ObjectAsComObject);
 
             variant = range.Get("Find");

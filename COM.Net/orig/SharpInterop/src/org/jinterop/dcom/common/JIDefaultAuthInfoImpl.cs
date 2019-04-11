@@ -15,46 +15,46 @@
 
 namespace org.jinterop.dcom.common {
 
-	/// <summary>
-	/// Default implementation of <code>IJIAuthInfo</code>.
-	/// 
-	/// @since 1.0
-	/// </summary>
-	public sealed class JIDefaultAuthInfoImpl : IJIAuthInfo {
+    /// <summary>
+    /// Default implementation of <code>IJIAuthInfo</code>.
+    /// 
+    /// @since 1.0
+    /// </summary>
+    public sealed class JIDefaultAuthInfoImpl : IJIAuthInfo {
 
-		private string Username = null;
-		private string Password_Renamed = null;
-		private string Domain_Renamed = null;
+        private string Username = null;
+        private string Password_Renamed = null;
+        private string Domain_Renamed = null;
 
-		/// <summary>
-		///Creates the AuthInfo Object.
-		/// </summary>
-		/// <param name="domain"> </param>
-		/// <param name="username"> </param>
-		/// <param name="password"> </param>
-		public JIDefaultAuthInfoImpl(string domain, string username, string password) {
-			this.Username = username;
-			this.Password_Renamed = password;
-			this.Domain_Renamed = domain;
-		}
-		public string UserName {
-			get {
-				return Username;
-			}
-		}
+        /// <summary>
+        ///Creates the AuthInfo Object.
+        /// </summary>
+        /// <param name="domain"> </param>
+        /// <param name="username"> </param>
+        /// <param name="password"> </param>
+        public JIDefaultAuthInfoImpl(string domain, string username, string password) {
+            this.Username = username;
+            this.Password_Renamed = password;
+            this.Domain_Renamed = domain;
+        }
+        public string UserName {
+            get {
+                return Username;
+            }
+        }
 
-		public string Password {
-			get {
-				return Password_Renamed;
-			}
-		}
+        public string Password {
+            get {
+                return Password_Renamed;
+            }
+        }
 
-		public string Domain {
-			get {
-				return Domain_Renamed;
-			}
-		}
+        public string Domain {
+            get {
+                return Domain_Renamed;
+            }
+        }
 
-	}
+    }
 
 }

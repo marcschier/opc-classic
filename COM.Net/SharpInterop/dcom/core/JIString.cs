@@ -36,7 +36,7 @@ namespace org.jinterop.dcom.core {
         public readonly JIVariant VariantByRef;
 
         /// <summary>
-        /// Creates an object of the specified type. Used while deserialiazing 
+        /// Creates an object of the specified type. Used while deserialiazing
         /// this object.
         /// </summary>
         /// <param name="type"> JIFlags string flags </param>
@@ -60,7 +60,7 @@ namespace org.jinterop.dcom.core {
             }
             Variant = null;
             VariantByRef = null;
-            _member.Flags = type | JIFlags.FLAG_REPRESENTATION_VALID_STRING;
+            _member.SetFlags(type | JIFlags.FLAG_REPRESENTATION_VALID_STRING);
         }
 
         /// <summary>
@@ -83,8 +83,9 @@ namespace org.jinterop.dcom.core {
                 VariantByRef = null;
             }
             else if (type == JIFlags.FLAG_REPRESENTATION_STRING_BSTR) {
-                _member = new JIPointer(str, false);
-                _member.SetReferent(0x72657355); //"User" in LEndian.
+                _member = new JIPointer(str, false) {
+                    ReferentId = 0x72657355 // "User" in LEndian.
+                };
                 Variant = new JIVariant(this);
                 VariantByRef = new JIVariant(this, true);
             }
@@ -92,7 +93,7 @@ namespace org.jinterop.dcom.core {
                 throw new ArgumentException(
                     JISystem.GetLocalizedMessage(JIErrorCodes.JI_UTIL_FLAG_ERROR));
             }
-            _member.Flags = type | JIFlags.FLAG_REPRESENTATION_VALID_STRING;
+            _member.SetFlags(type | JIFlags.FLAG_REPRESENTATION_VALID_STRING);
 
         }
 
@@ -108,7 +109,7 @@ namespace org.jinterop.dcom.core {
         /// String encapsulated by this object. The encoding scheme
         /// for <code>LPWSTR</code> and <code>BSTR</code> strings is "UTF-16LE".
         /// </summary>
-        public string String => _member.GetReferent()?.ToString();
+        public string String => _member.Referent?.ToString();
 
         /// <summary>
         /// Type representing this object.
@@ -125,8 +126,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) => 
-            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(), 
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) =>
+            JIMarshalUnMarshalHelper.Serialize(ndr, _member.GetType(),
                 _member, defferedPointers, Type | flag);
 
         /// <summary>
@@ -137,7 +138,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        internal JIString Decode(NdrCodec ndr, List<object> defferedPointers, 
+        internal JIString Decode(NdrCodec ndr, List<object> defferedPointers,
             int flag, IDictionary<object, object> additionalData) {
             var newString = new JIString(Type) {
                 _member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(
@@ -151,7 +152,7 @@ namespace org.jinterop.dcom.core {
                 // this condition is required so that only BSTRs are value
                 // and also since this member could be value and
                 // setting it to true would spoil the logic
-                // this is incorrect logic in the bug sent by Kevin, the 
+                // this is incorrect logic in the bug sent by Kevin, the
                 // ONEVENTSTRUCT consists of LPWSTRs which are value
                 if (_member != null && !_member.Reference) {
                     _member.Deffered = value;
@@ -161,7 +162,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public override string ToString() => 
+        public override string ToString() =>
             _member == null ? "[null]" : "[Type: " + Type + ", " + _member + "]";
 
         private JIPointer _member;

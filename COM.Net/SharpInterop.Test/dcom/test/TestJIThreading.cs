@@ -30,9 +30,9 @@
 
         static TestJIThreading() => _loopsPerThread = TotalLoops / NumThreads;
 
-        public virtual void SetUp() => JISystem.UseAutoRegistration = true;
+        public void SetUp() => JISystem.UseAutoRegistration = true;
 
-        public virtual void TestThreading() {
+        public void TestThreading() {
             var group = new ThreadGroup("JIThreading Group");
             var threads = new Thread[NumThreads];
             for (var i = 0; i < NumThreads; i++) {
@@ -41,8 +41,8 @@
 
             for (var i = 0; i < NumThreads; i++) {
                 threads[i].Start();
-                //log.info( "activeCount: "+ group.activeCount() );
-                //group.list();
+                // log.info( "activeCount: "+ group.activeCount() );
+                // group.list();
             }
 
             var keepSleeping = true;
@@ -59,22 +59,22 @@
 
                 break;
                 /*
-				bool threadsRunning = false;
-				int aliveCount = 0;
-				for ( int i = 0; i < threads.length; i++ ) {
-					Thread thread = threads[ i ];
-					if ( thread.isAlive() ) {
-						aliveCount++;
-						threadsRunning = true;
-						//break;
-					}
-				}
-				log.info( "threadsRunning: "+ threadsRunning +" aliveCount: "+ aliveCount );
-				if ( threadsRunning == false ) {
-					keepSleeping = false;
-					break;
-				}
-				*/
+                bool threadsRunning = false;
+                int aliveCount = 0;
+                for ( int i = 0; i < threads.length; i++ ) {
+                    Thread thread = threads[ i ];
+                    if ( thread.isAlive() ) {
+                        aliveCount++;
+                        threadsRunning = true;
+                        // break;
+                    }
+                }
+                log.info( "threadsRunning: "+ threadsRunning +" aliveCount: "+ aliveCount );
+                if ( threadsRunning == false ) {
+                    keepSleeping = false;
+                    break;
+                }
+                */
             }
         }
 
@@ -87,12 +87,12 @@
                 }
             }
 
-            public virtual void DoStuff() {
+            public void DoStuff() {
 
                 try {
                     var session = JISession.CreateSession(Domain, User, Password);
 
-                    //this.session.setGlobalSocketTimeout( 60000 );
+                    // this.session.setGlobalSocketTimeout( 60000 );
 
                     // by name, requires local access (for registry search), or a populated progIdVsClsidDB.properties
                     var progId = JIProgId.ValueOf(ComServerName);
@@ -100,9 +100,9 @@
                     var baseComServer = new JIComServer(progId, Host, session);
 
                     // Do it by clsid
-                    //JIClsid clsid = JIClsid.valueOf( "76A6415B-CB41-11d1-8B02-00600806D9B6" );
-                    //clsid.setAutoRegistration( true );
-                    //baseComServer = new JIComServer( clsid, host, session );
+                    // JIClsid clsid = JIClsid.valueOf( "76A6415B-CB41-11d1-8B02-00600806D9B6" );
+                    // clsid.setAutoRegistration( true );
+                    // baseComServer = new JIComServer( clsid, host, session );
 
                     // I'm not really sure what the deal is with this
                     // Create an intermediary instance?

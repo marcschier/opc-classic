@@ -11,11 +11,10 @@
 
         private readonly JIComServer _comServer;
         private readonly JISession _session;
-        private readonly IJIComObject _ieObject;
+        private readonly IComObject _ieObject;
         private readonly IJIDispatch _ieObjectDispatch;
         private string _identifier;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSInternetExplorer(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSInternetExplorer(string address, string[] args) {
             JISystem.MapHostNametoIP("locutus", "192.168.0.130");
             _session = JISession.CreateSession(args[1], args[2], args[3]);
@@ -28,8 +27,7 @@
 
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void setVisible() throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void setVisible() throws org.jinterop.dcom.common.JIException
         private void SetVisible() {
 
             var dispId = _ieObjectDispatch.GetIDsOfNames("Visible");
@@ -40,15 +38,13 @@
 
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void navigateToUrl(String url) throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void navigateToUrl(String url) throws org.jinterop.dcom.common.JIException
         private void NavigateToUrl(string url) =>
-            //ieObjectDispatch.put("Top",new JIVariant(new Integer(600)));
-            //ieObjectDispatch.put("Left",new JIVariant(new Integer(700)));
+            // ieObjectDispatch.put("Top",new JIVariant(new Integer(600)));
+            // ieObjectDispatch.put("Left",new JIVariant(new Integer(700)));
             _ieObjectDispatch.CallMethod("Navigate2", new object[] { new JIString(url), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM() });
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void attachCallBack() throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void attachCallBack() throws org.jinterop.dcom.common.JIException
         private void AttachCallBack() {
 
             /// <summary>
@@ -104,7 +100,7 @@
 
 
             var navigateObject = new JILocalParamsDescriptor();
-            navigateObject.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            navigateObject.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             navigateObject.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             navigateObject.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             navigateObject.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
@@ -151,13 +147,13 @@
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
             var NavigateComplete2 = new JILocalParamsDescriptor();
-            NavigateComplete2.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            NavigateComplete2.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             NavigateComplete2.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             methodDescriptor = new JILocalMethodDescriptor("NavigateComplete2", 0xfc, NavigateComplete2);
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
             var DocumentComplete = new JILocalParamsDescriptor();
-            DocumentComplete.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            DocumentComplete.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             DocumentComplete.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             methodDescriptor = new JILocalMethodDescriptor("DocumentComplete", 0x103, DocumentComplete);
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
@@ -245,7 +241,7 @@
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
             var NavigateError = new JILocalParamsDescriptor();
-            NavigateError.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            NavigateError.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             NavigateError.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             NavigateError.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             NavigateError.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
@@ -263,12 +259,12 @@
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
             var PrintTemplateInstantiation = new JILocalParamsDescriptor();
-            PrintTemplateInstantiation.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            PrintTemplateInstantiation.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             methodDescriptor = new JILocalMethodDescriptor("PrintTemplateInstantiation", 0xe1, PrintTemplateInstantiation);
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
             var PrintTemplateTeardown = new JILocalParamsDescriptor();
-            PrintTemplateTeardown.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            PrintTemplateTeardown.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             methodDescriptor = new JILocalMethodDescriptor("PrintTemplateTeardown", 0xe2, PrintTemplateTeardown);
             javaComponent.InterfaceDefinition.AddMethodDescriptor(methodDescriptor);
 
@@ -285,7 +281,7 @@
 
 
             var UpdatePageStatus = new JILocalParamsDescriptor();
-            UpdatePageStatus.AddInParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            UpdatePageStatus.AddInParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             UpdatePageStatus.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             UpdatePageStatus.AddInParamAsType(typeof(JIVariant), JIFlags.FLAG_NULL);
             methodDescriptor = new JILocalMethodDescriptor("UpdatePageStatus", 0xe3, UpdatePageStatus);
@@ -309,13 +305,11 @@
             Thread.Sleep(5000);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void detachCallBack() throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void detachCallBack() throws org.jinterop.dcom.common.JIException
         private void DetachCallBack() => JIObjectFactory.DetachEventHandler(_ieObject, _identifier);
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private void quit() throws org.jinterop.dcom.common.JIException
+                // ORIGINAL LINE: private void quit() throws org.jinterop.dcom.common.JIException
         private void Quit() {
             _ieObjectDispatch.CallMethod("Quit");
             JISession.DestroySession(_ieObjectDispatch.AssociatedSession);
@@ -335,9 +329,9 @@
                 internetExplorer.SetVisible();
                 internetExplorer.AttachCallBack();
                 internetExplorer.NavigateToUrl("http://www.sqlshark.com");
-                Thread.Sleep(30000); //for call backs
+                Thread.Sleep(30000); // for call backs
                 internetExplorer.DetachCallBack();
-                Thread.Sleep(5000); //wait for 5 secs
+                Thread.Sleep(5000); // wait for 5 secs
                 internetExplorer.Quit();
             }
             catch (Exception e) {

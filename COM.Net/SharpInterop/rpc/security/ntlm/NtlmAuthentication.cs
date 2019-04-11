@@ -102,7 +102,7 @@ namespace rpc.security.ntlm {
         /// <param name="type1"></param>
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
-        public virtual Type2Message CreateType2(Type1Message type1) {
+        public Type2Message CreateType2(Type1Message type1) {
             int flags;
             if (type1 == null) {
                 flags = DefaultFlags;
@@ -110,9 +110,9 @@ namespace rpc.security.ntlm {
             else {
                 flags = AdjustFlags(type1.GetFlags());
             }
-            flags |= 0x00020000; //challenge accept response flag
+            flags |= 0x00020000; // challenge accept response flag
             var type2Message = new Type2Message(flags, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 },
-                _credentials.GetDomain()); //generate our own, since SMB will throw exception here
+                _credentials.GetDomain()); // generate our own, since SMB will throw exception here
             return type2Message;
         }
 
@@ -142,10 +142,9 @@ namespace rpc.security.ntlm {
                     flags &= ~0x00020000;
                 }
 
-                Type3Message type3 = null;
                 var clientNonce = new byte[8];
                 byte[] blob = null;
-                string target = null; //getTargetFromTargetInformation(type2.GetTargetInformation());
+                string target = null; // getTargetFromTargetInformation(type2.GetTargetInformation());
 
                 if (target == null) {
                     target = _credentials.GetDomain().ToUpper();
@@ -154,6 +153,7 @@ namespace rpc.security.ntlm {
                     }
                 }
 
+                Type3Message type3;
                 if (_useNtlmV2) {
                     kRandomGen.NextBytes(clientNonce);
                     try {
@@ -173,13 +173,13 @@ namespace rpc.security.ntlm {
 
                 }
                 else {
-                    if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) //NTLM2 Session security response
+                    if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) // NTLM2 Session security response
                     {
                         flags = AdjustFlags(flags);
                         flags &= ~0x00020000;
-                        //flags =  0xe2888235;
+                        // flags =  0xe2888235;
                         var challenge = type2.GetChallenge();
-                        //LMReponse is 24 bytes. 8 byte random client nonce and the rest is null padded.
+                        // LMReponse is 24 bytes. 8 byte random client nonce and the rest is null padded.
                         var lmResponse = new byte[24];
 
                         kRandomGen.NextBytes(clientNonce);
@@ -195,7 +195,7 @@ namespace rpc.security.ntlm {
                         type3 = new Type3Message(flags, lmResponse, ntResponse, target,
                             _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
                     }
-                    else //Plain NTLMv1 response
+                    else // Plain NTLMv1 response
                     {
                         var challenge = type2.GetChallenge();
                         var lmResponse = NtlmPasswordAuthentication
@@ -209,8 +209,8 @@ namespace rpc.security.ntlm {
                         }
                     }
                 }
-                //we have to now form lmv2 and ntlmv2 response with regards to the session security
-                //the type3message also has to be altered
+                // we have to now form lmv2 and ntlmv2 response with regards to the session security
+                // the type3message also has to be altered
                 if (_useNtlm2sessionsecurity && (flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) {
                     var ntlmKeyFactory = new NTLMKeyFactory();
                     byte[] userSessionKey;
@@ -224,8 +224,8 @@ namespace rpc.security.ntlm {
                         }
                     }
                     else {
-                        //now create the key for the session
-                        //this key will be used to RC4 a 16 byte random key and set to the type3 message
+                        // now create the key for the session
+                        // this key will be used to RC4 a 16 byte random key and set to the type3 message
                         var servernonce = new byte[16];
                         Array.Copy(type2.GetChallenge(), 0, servernonce, 0, type2.GetChallenge().Length);
                         Array.Copy(clientNonce, 0, servernonce, 8, clientNonce.Length);
@@ -239,7 +239,7 @@ namespace rpc.security.ntlm {
 
                     }
                     try {
-                        //now RC4 encrypt a random 16 byte key
+                        // now RC4 encrypt a random 16 byte key
                         var secondayMasterKey = ntlmKeyFactory.SecondarySessionKey;
                         type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(secondayMasterKey, userSessionKey));
                         Security = new Ntlm1(flags, secondayMasterKey, false);
@@ -295,7 +295,7 @@ namespace rpc.security.ntlm {
                 if (_keyLength >= 128) {
                     flags |= NtlmFlags.NtlmsspNegotiate128;
                 }
-                //We always negotiate for NTLM2 session security
+                // We always negotiate for NTLM2 session security
                 //        if (useNtlm2sessionsecurity)
                 {
                     flags |= NtlmFlags.NtlmsspNegotiateNtlm2;
@@ -334,7 +334,7 @@ namespace rpc.security.ntlm {
             }
             //   if (!useNtlm2sessionsecurity)
             //   {
-            //   	flags &= ~NtlmFlags.NtlmsspNegotiateNtlm2;
+            //       flags &= ~NtlmFlags.NtlmsspNegotiateNtlm2;
             //   }
             return flags;
         }
@@ -350,12 +350,12 @@ namespace rpc.security.ntlm {
             var i = 0;
             while (i < targetInformation.Length) {
                 switch (Encdec.Dec_uint16le(targetInformation, i)) {
-                    case 1: //Server name
+                    case 1: // Server name
                         i++;
-                        i++; //advance two bytes
+                        i++; // advance two bytes
                         int length = Encdec.Dec_uint16le(targetInformation, i);
                         i++;
-                        i++; //advance two bytes
+                        i++; // advance two bytes
                         var domainb = new byte[length];
                         Array.Copy(targetInformation, i, domainb, 0, length);
                         try {
@@ -364,15 +364,15 @@ namespace rpc.security.ntlm {
                         catch (ArgumentException) {
                             return null;
                         }
-                        i += length;
+
                         i = targetInformation.Length;
                         break;
-                    default: //skip bytes
+                    default: // skip bytes
                         i++;
-                        i++; //advance two bytes
+                        i++; // advance two bytes
                         length = Encdec.Dec_uint16le(targetInformation, i);
                         i++;
-                        i++; //advance two bytes
+                        i++; // advance two bytes
                         i += length;
                         break;
                 }
@@ -386,28 +386,28 @@ namespace rpc.security.ntlm {
         /// <param name="type3"></param>
         internal void CreateSecurityWhenServer(NtlmMessage type3) {
             var type3Message = (Type3Message)type3;
-            //two things here...check for anonymous, in that case the user response key is new byte[16].
-            //in case anonymous has not been sent then create the key using credentials.
+            // two things here...check for anonymous, in that case the user response key is new byte[16].
+            // in case anonymous has not been sent then create the key using credentials.
             var flags = type3Message.GetFlags();
             var ntlmKeyFactory = new NTLMKeyFactory();
             byte[] secondayMasterKey;
             byte[] sessionResponseUserSessionKey = null;
-            if (type3Message.GetFlag(0x00000800)) //anonymous flag
+            if (type3Message.GetFlag(0x00000800)) // anonymous flag
             {
-                //if it is anonymous the user session key is new byte[16];
+                // if it is anonymous the user session key is new byte[16];
                 sessionResponseUserSessionKey = new byte[16];
             }
             else if (_useNtlmV2) {
-                //TODO this needs to be checked here since the key logic will be totally different
-                //and we have to get the key out of Type3 message response (blob of the NTLMv2 response.)
+                // TODO this needs to be checked here since the key logic will be totally different
+                // and we have to get the key out of Type3 message response (blob of the NTLMv2 response.)
             }
             else {
-                //now create the key for the session
-                //this key will be used to RC4 a 16 byte random key and set to the type3 message
+                // now create the key for the session
+                // this key will be used to RC4 a 16 byte random key and set to the type3 message
                 var servernonce = new byte[16];
-                byte[] challenge = { 1, 2, 3, 4, 5, 6, 7, 8 }; //challenge is fixed
+                byte[] challenge = { 1, 2, 3, 4, 5, 6, 7, 8 }; // challenge is fixed
                 Array.Copy(challenge, 0, servernonce, 0, challenge.Length);
-                //first 8 bytes only, the rest are all 0x00 and not required.
+                // first 8 bytes only, the rest are all 0x00 and not required.
                 Array.Copy(type3Message.GetLMResponse(), 0, servernonce, 8, 8);
                 try {
                     sessionResponseUserSessionKey = ntlmKeyFactory
@@ -419,7 +419,7 @@ namespace rpc.security.ntlm {
             }
 
             try {
-                //now RC4 decrypt the session key
+                // now RC4 decrypt the session key
                 secondayMasterKey = ntlmKeyFactory
                     .DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
                 Security = new Ntlm1(flags, secondayMasterKey, true);
@@ -443,7 +443,7 @@ namespace rpc.security.ntlm {
         private readonly bool _seal;
         private readonly bool _sign;
         private readonly bool _keyExchange;
-        //we always go for 128
+        // we always go for 128
         private readonly int _keyLength = 128;
         private readonly bool _useNtlm2sessionsecurity;
         private readonly bool _useNtlmV2;

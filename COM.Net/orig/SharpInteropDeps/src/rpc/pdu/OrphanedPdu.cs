@@ -17,16 +17,16 @@
 
 namespace rpc.pdu {
 
-	public class OrphanedPdu : ConnectionOrientedPdu {
+    public class OrphanedPdu : ConnectionOrientedPdu {
 
-		public const int ORPHANED_TYPE = 0x13;
+        public const int ORPHANED_TYPE = 0x13;
 
-		public override int Type {
-			get {
-				return ORPHANED_TYPE;
-			}
-		}
+        public override int Type {
+            get {
+                return ORPHANED_TYPE;
+            }
+        }
 
-	}
+    }
 
 }

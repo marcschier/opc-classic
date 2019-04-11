@@ -28,7 +28,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="clsid"></param>
         /// <param name="comObject"></param>
-		protected JIComCustomMarshallerUnMarshaller(string clsid, IJIComObject comObject) :
+        protected JIComCustomMarshallerUnMarshaller(string clsid, IComObject comObject) :
             this(clsid, comObject, false) {
         }
 
@@ -38,23 +38,23 @@ namespace org.jinterop.dcom.core {
         /// <param name="clsid"></param>
         /// <param name="comObject"></param>
         /// <param name="isTemplate"></param>
-		protected JIComCustomMarshallerUnMarshaller(string clsid,
-            IJIComObject comObject, bool isTemplate) {
+        protected JIComCustomMarshallerUnMarshaller(string clsid,
+            IComObject comObject, bool isTemplate) {
             CLSID = clsid;
             if (isTemplate) {
-                _me = new JIComObjectImpl(comObject.AssociatedSession,
+                ComObject = new JIComObjectImpl(comObject.AssociatedSession,
                     comObject.Internal_getInterfacePointer());
-                ((JIComObjectImpl)_me).CustomObject = this;
+                ((JIComObjectImpl)ComObject).CustomObject = this;
             }
             else {
-                _me = comObject;
+                ComObject = comObject;
             }
         }
 
         /// <summary>
         /// Me
         /// </summary>
-        public virtual IJIComObject ComObject => _me;
+        public IComObject ComObject { get; }
 
         /// <summary>
         /// Implement for custom encoding. Called by the framework.
@@ -73,7 +73,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"> </param>
         /// <param name="additionalData">
         /// </param>
-        public abstract JIComCustomMarshallerUnMarshaller Decode(IJIComObject newMe,
+        public abstract JIComCustomMarshallerUnMarshaller Decode(IComObject newMe,
             NdrCodec ndr, List<object> defferedPointers, int flag,
             IDictionary<object, object> additionalData);
 
@@ -98,7 +98,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="flag"></param>
         /// <param name="additionalData"></param>
         /// <returns></returns>
-        protected virtual object Deserialize(NdrCodec ndr, object obj,
+        protected object Deserialize(NdrCodec ndr, object obj,
             List<object> defferedPointers, int flag, IDictionary<object, object> additionalData) =>
             JIMarshalUnMarshalHelper.Deserialize(ndr, obj, defferedPointers,
                 flag, additionalData);
@@ -112,7 +112,5 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         protected static int GetLengthInBytes(Type c, object obj, int flag) =>
             JIMarshalUnMarshalHelper.GetLengthInBytes(c, obj, flag);
-
-        private readonly IJIComObject _me;
     }
 }

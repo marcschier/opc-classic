@@ -9,12 +9,11 @@
     public class MSSysInfo {
 
         internal JISession _session;
-        internal IJIComObject _sysInfoObject;
-        internal IJIComObject _sysInfoServer;
+        internal IComObject _sysInfoObject;
+        internal IComObject _sysInfoServer;
         internal IJIDispatch _dispatch;
         internal string _identifier;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: MSSysInfo(String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+                // ORIGINAL LINE: MSSysInfo(String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
         internal MSSysInfo(string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
             _session.UseSessionSecurity(true);
@@ -24,23 +23,21 @@
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_sysInfoObject.QueryInterface(Interfaces.IID_IDispatch));
 
         }
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: void displayValues() throws org.jinterop.dcom.common.JIException
-        internal virtual void DisplayValues() {
+                // ORIGINAL LINE: void displayValues() throws org.jinterop.dcom.common.JIException
+        internal void DisplayValues() {
             Console.WriteLine("ACStatus: " + _dispatch.Get("ACStatus").ObjectAsShort);
             Console.WriteLine("BatteryFullTime: " + _dispatch.Get("BatteryFullTime").ObjectAsInt);
             Console.WriteLine("BatteryLifePercent: " + _dispatch.Get("BatteryLifePercent").ObjectAsShort);
             Console.WriteLine("BatteryLifeTime: " + _dispatch.Get("BatteryLifeTime").ObjectAsInt);
             Console.WriteLine("BatteryStatus: " + _dispatch.Get("BatteryStatus").ObjectAsShort);
             Console.WriteLine("OSVersion: " + _dispatch.Get("OSVersion").ObjectAsFloat);
-            //dispatch.callMethod("AboutBox");
+            // dispatch.callMethod("AboutBox");
 
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: void AttachEventListener() throws org.jinterop.dcom.common.JIException
-        internal virtual void AttachEventListener() {
-            //6FBA474D-43AC-11CE-9A0E-00AA0062BB4C
+                // ORIGINAL LINE: void AttachEventListener() throws org.jinterop.dcom.common.JIException
+        internal void AttachEventListener() {
+            // 6FBA474D-43AC-11CE-9A0E-00AA0062BB4C
 
             var javaComponent = new JILocalCoClass(new JILocalInterfaceDefinition("6FBA474D-43AC-11CE-9A0E-00AA0062BB4C"), typeof(SysInfoEvents));
             javaComponent.InterfaceDefinition.AddMethodDescriptor(new JILocalMethodDescriptor("PowerStatusChanged", 8, null));
@@ -49,9 +46,8 @@
             Thread.Sleep(3000);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: void DetachEventListener() throws org.jinterop.dcom.common.JIException
-        internal virtual void DetachEventListener() {
+                // ORIGINAL LINE: void DetachEventListener() throws org.jinterop.dcom.common.JIException
+        internal void DetachEventListener() {
             JIObjectFactory.DetachEventHandler(_sysInfoServer, _identifier);
             JISession.DestroySession(_dispatch.AssociatedSession);
         }
@@ -66,7 +62,7 @@
                 var sysInfo = new MSSysInfo(args);
                 sysInfo.DisplayValues();
                 sysInfo.AttachEventListener();
-                Thread.Sleep(20000); //now play around with power settings
+                Thread.Sleep(20000); // now play around with power settings
                 sysInfo.DetachEventListener();
             }
             catch (Exception e) {

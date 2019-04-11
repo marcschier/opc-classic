@@ -54,7 +54,7 @@ namespace rpc.security.ntlm {
             switch (verifier.Body[8]) {
                 case 1:
                     // server gets negotiate from client
-                    //setSecurity(null);
+                    // setSecurity(null);
                     _contextId = verifier.ContextId;
                     _ntlm = new Type1Message(verifier.Body);
                     break;
@@ -64,7 +64,6 @@ namespace rpc.security.ntlm {
                     break;
                 case 3:
                     // server gets authenticate from client
-                    var type2 = (Type2Message)_ntlm;
                     _ntlm = new Type3Message(verifier.Body);
                     var usentlmv2 = Convert.ToBoolean(_properties.GetProperty("rpc.ntlm.ntlm2"));
                     if (usentlmv2) {
@@ -100,9 +99,9 @@ namespace rpc.security.ntlm {
                 }
             }
             else if (_ntlm is Type3Message) {
-                //this simply means that we have sent the response to the challenge
-                //now is the time to send the Auth Context only
-                //        	 return new AuthenticationVerifier(
+                // this simply means that we have sent the response to the challenge
+                // now is the time to send the Auth Context only
+                //             return new AuthenticationVerifier(
                 //                     NtlmAuthentication.AUTHENTICATION_SERVICE_NTLM,Security.PROTECTION_LEVEL_CONNECT,
                 //                             contextId, new byte[]{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
                 return null;

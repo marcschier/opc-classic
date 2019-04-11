@@ -16,7 +16,7 @@ namespace rpc.pdu {
     /// <summary>
     /// Cancel
     /// </summary>
-	public class CancelCoPdu : ConnectionOrientedPdu {
+    public class CancelCoPdu : ConnectionOrientedPdu {
 
         /// <summary> Type info - TODO - move to PduTypes.cs </summary>
         public const int CANCEL_TYPE = 0x12;

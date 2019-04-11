@@ -17,48 +17,48 @@
 
 namespace org.jinterop.dcom.common {
 
-	/// <summary>
-	/// Framework Internal class.
-	/// 
-	/// @exclude
-	/// <para>Internally used class from JICallBuilder, since the read(), write() do not throw
-	/// exceptions. The IJIComObject call or QI or any other APIs will always throw checked JIException
-	/// </para>
-	/// </summary>
-	public sealed class JIRuntimeException : Exception {
+    /// <summary>
+    /// Framework Internal class.
+    /// 
+    /// @exclude
+    /// <para>Internally used class from JICallBuilder, since the read(), write() do not throw
+    /// exceptions. The IJIComObject call or QI or any other APIs will always throw checked JIException
+    /// </para>
+    /// </summary>
+    public sealed class JIRuntimeException : Exception {
 
 
-		private const long SerialVersionUID = 4972599190342284084L;
-		private object[] Parameters_Renamed = null;
-		private int Hresult = 0;
-		public JIRuntimeException(int hresult) {
-			//error code
-			this.Hresult = hresult;
-		}
+        private const long SerialVersionUID = 4972599190342284084L;
+        private object[] Parameters_Renamed = null;
+        private int Hresult = 0;
+        public JIRuntimeException(int hresult) {
+            //error code
+            this.Hresult = hresult;
+        }
 
-		public JIRuntimeException(int hresult, object[] parameters) {
-			//error code
-			this.Hresult = hresult;
-			this.Parameters_Renamed = parameters;
-		}
+        public JIRuntimeException(int hresult, object[] parameters) {
+            //error code
+            this.Hresult = hresult;
+            this.Parameters_Renamed = parameters;
+        }
 
-		public int HResult {
-			get {
-				return Hresult;
-			}
-		}
+        public int HResult {
+            get {
+                return Hresult;
+            }
+        }
 
-		public object[] Parameters {
-			get {
-				return Parameters_Renamed;
-			}
-		}
+        public object[] Parameters {
+            get {
+                return Parameters_Renamed;
+            }
+        }
 
-		public string Message {
-			get {
-				return JISystem.GetLocalizedMessage(Hresult);
-			}
-		}
-	}
+        public string Message {
+            get {
+                return JISystem.GetLocalizedMessage(Hresult);
+            }
+        }
+    }
 
 }

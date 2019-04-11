@@ -1,14 +1,14 @@
 ﻿namespace org.jinterop.dcom.test
 {
 
-	using JIStruct = core.JIStruct;
+    using JIStruct = core.JIStruct;
 
 
-	public interface EventNotificationListener
-	{
+    public interface EventNotificationListener
+    {
 
-		void onEvent(JIStruct[] @event);
+        void onEvent(JIStruct[] @event);
 
-	}
+    }
 
 }

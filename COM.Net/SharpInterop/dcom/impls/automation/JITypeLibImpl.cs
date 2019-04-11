@@ -1,12 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
-
+//
 
 namespace org.jinterop.dcom.impls.automation {
     using org.jinterop.dcom.core;
@@ -23,7 +22,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// Create type lib
         /// </summary>
         /// <param name="comObject"></param>
-        internal JITypeLibImpl(IJIComObject comObject) : 
+        internal JITypeLibImpl(IComObject comObject) :
             base(comObject) {
         }
 
@@ -45,9 +44,9 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 1
             };
             callObject.AddInParamAsInt(index, JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             var result = ComObject.Call(callObject);
-            return (IJITypeInfo)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            return (IJITypeInfo)JIObjectFactory.NarrowObject((IComObject)result[0]);
         }
 
         /// <inheritdoc/>
@@ -67,13 +66,12 @@ namespace org.jinterop.dcom.impls.automation {
                 Opnum = 3
             };
             callObject.AddInParamAsUUID(uuid, JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsType(typeof(IComObject), JIFlags.FLAG_NULL);
             var result = ComObject.Call(callObject);
-            return (IJITypeInfo)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            return (IJITypeInfo)JIObjectFactory.NarrowObject((IComObject)result[0]);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void getLibAttr() throws org.jinterop.dcom.common.JIException
+        /// <inheritdoc/>
         public void GetLibAttr() {
             var callObject = new JICallBuilder(true) {
                 Opnum = 4
@@ -88,7 +86,7 @@ namespace org.jinterop.dcom.impls.automation {
             tlibattr.AddMember(typeof(short));
 
             callObject.AddOutParamAsObject(new JIPointer(tlibattr), JIFlags.FLAG_NULL);
-            callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //CLEANUPSTORAGE
+            callObject.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); // CLEANUPSTORAGE
             var result = ComObject.Call(callObject);
         }
 
@@ -96,7 +94,7 @@ namespace org.jinterop.dcom.impls.automation {
         public object[] GetDocumentation(int memberId) {
             var callObject = new JICallBuilder(true);
             callObject.AddInParamAsInt(memberId, JIFlags.FLAG_NULL);
-            callObject.AddInParamAsInt(0xb, JIFlags.FLAG_NULL); //refPtrFlags, as per the oaidl.idl...
+            callObject.AddInParamAsInt(0xb, JIFlags.FLAG_NULL); // refPtrFlags, as per the oaidl.idl...
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(typeof(int), JIFlags.FLAG_NULL);
@@ -114,7 +112,7 @@ namespace org.jinterop.dcom.impls.automation {
             callObject.AddInParamAsInt(hashValue, JIFlags.FLAG_NULL);
             callObject.AddInParamAsShort(found, JIFlags.FLAG_NULL);
 
-            callObject.AddOutParamAsObject(new JIArray(typeof(IJIComObject), null, 1, true, true), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(new JIArray(typeof(IComObject), null, 1, true, true), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIArray(typeof(int), null, 1, true, true), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsType(typeof(short), JIFlags.FLAG_NULL);
             callObject.AddOutParamAsObject(new JIString(JIFlags.FLAG_REPRESENTATION_STRING_BSTR), JIFlags.FLAG_NULL);

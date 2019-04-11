@@ -1,15 +1,15 @@
-﻿//
+﻿// 
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-//
+// 
 // j-Interop (Pure Java implementation of DCOM protocol)
-//
+// 
 // Copyright (c) 2013 Vikram Roopchand
-//
+// 
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-//
+// 
 
 namespace rpc.core {
     using SharpCifs.Dcerpc.Ndr;
@@ -36,9 +36,7 @@ namespace rpc.core {
         /// Create port
         /// </summary>
         /// <param name="portSpec"></param>
-        public Port(string portSpec) {
-            PortSpec = portSpec;
-        }
+        public Port(string portSpec) => PortSpec = portSpec;
 
         /// <override/>
         public override void Read(NdrCodec ndr) {
@@ -81,8 +79,6 @@ namespace rpc.core {
         }
 
         /// <override/>
-        public override int GetHashCode() {
-            return EqualityComparer<string>.Default.GetHashCode(PortSpec);
-        }
+        public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(PortSpec);
     }
 }

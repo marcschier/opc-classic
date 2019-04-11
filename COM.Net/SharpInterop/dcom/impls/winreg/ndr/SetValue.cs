@@ -1,12 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
-// http:// www.eclipse.org/legal/epl-v10.html
-// 
-
+// http://www.eclipse.org/legal/epl-v10.html
+//
 
 namespace org.jinterop.winreg {
     using org.jinterop.dcom.common;
@@ -71,7 +70,7 @@ namespace org.jinterop.winreg {
                 switch (clazzType) {
                     case RegValueType.REG_EXPAND_SZ: // for environment variable strings
                     case RegValueType.REG_SZ:
-                        // for strings, strings are null terminated, length in 
+                        // for strings, strings are null terminated, length in
                         // bytes will NOT include the null termination
                         // character writing the max count
                         ndr.WriteUnsignedLong((lengthInBytes + 1) * 2);
@@ -105,7 +104,7 @@ namespace org.jinterop.winreg {
                         ndr.FillAligned(4);
                         ndr.WriteUnsignedLong(lengthInBytes);
                         break;
-                    case RegValueType.REG_MULTI_SZ: 
+                    case RegValueType.REG_MULTI_SZ:
                         // for strings, strings are null terminated, length in bytes will NOT include the null termination
                         // character.  Writing the max count, this will be computed before hand
                         ndr.WriteUnsignedLong(lengthInBytes);

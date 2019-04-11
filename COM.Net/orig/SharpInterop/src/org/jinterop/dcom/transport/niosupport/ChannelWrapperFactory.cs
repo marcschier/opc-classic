@@ -16,28 +16,28 @@
 namespace org.jinterop.dcom.transport.niosupport {
 
 
-	/// <summary>
-	/// Factory for ChannelWrappers
-	/// </summary>
-	public sealed class ChannelWrapperFactory {
-		private ChannelWrapperFactory() {
-			// Nothing to do
-		}
+    /// <summary>
+    /// Factory for ChannelWrappers
+    /// </summary>
+    public sealed class ChannelWrapperFactory {
+        private ChannelWrapperFactory() {
+            // Nothing to do
+        }
 
-		/// <summary>
-		/// Static method to create a Channel Wrapper.
-		/// </summary>
-		/// <param name="selectorManager"> </param>
-		/// <param name="selectableChannel"> </param>
-		/// <param name="channelListener"> </param>
-		/// <returns> the new read/write channel wrapper </returns>
-		/// <exception cref="IOException"> </exception>
+        /// <summary>
+        /// Static method to create a Channel Wrapper.
+        /// </summary>
+        /// <param name="selectorManager"> </param>
+        /// <param name="selectableChannel"> </param>
+        /// <param name="channelListener"> </param>
+        /// <returns> the new read/write channel wrapper </returns>
+        /// <exception cref="IOException"> </exception>
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public static ChannelWrapper createChannelWrapper(final SelectorManager selectorManager, final java.nio.channels.SelectableChannel selectableChannel, final ChannelListener channelListener) throws java.io.IOException
 //JAVA TO C# CONVERTER WARNING: 'final' parameters are not available in .NET:
-		public static ChannelWrapper CreateChannelWrapper(SelectorManager selectorManager, SelectableChannel selectableChannel, ChannelListener channelListener) {
-			return new ChannelWrapperImpl(selectorManager, selectableChannel, channelListener);
-		}
-	}
+        public static ChannelWrapper CreateChannelWrapper(SelectorManager selectorManager, SelectableChannel selectableChannel, ChannelListener channelListener) {
+            return new ChannelWrapperImpl(selectorManager, selectableChannel, channelListener);
+        }
+    }
 
 }

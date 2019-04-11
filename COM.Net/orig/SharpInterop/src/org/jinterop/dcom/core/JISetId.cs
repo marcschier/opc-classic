@@ -18,41 +18,41 @@
 namespace org.jinterop.dcom.core {
 
 
-	[Serializable]
-	internal sealed class JISetId {
+    [Serializable]
+    internal sealed class JISetId {
 
 
-		private const long SerialVersionUID = -3819165506317998524L;
-		internal sbyte[] Setid = null;
+        private const long SerialVersionUID = -3819165506317998524L;
+        internal sbyte[] Setid = null;
 
-		public JISetId(sbyte[] setid) {
-			this.Setid = setid;
-		}
+        public JISetId(sbyte[] setid) {
+            this.Setid = setid;
+        }
 
-		public sbyte[] SetID {
-			get {
-				return Setid;
-			}
-		}
+        public sbyte[] SetID {
+            get {
+                return Setid;
+            }
+        }
 
-		public override int GetHashCode() {
-			int result = 1;
-			//from SUN
-			for (int i = 0;i < Setid.Length;i++) {
-				result = 31 * result + Setid[i];
-			}
-			return result;
-			//return Arrays.hashCode(setid);
-		}
+        public override int GetHashCode() {
+            int result = 1;
+            //from SUN
+            for (int i = 0;i < Setid.Length;i++) {
+                result = 31 * result + Setid[i];
+            }
+            return result;
+            //return Arrays.hashCode(setid);
+        }
 
-		 public override bool Equals(object obj) {
-			 if (!(obj is JISetId)) {
-				return false;
-			 }
+         public override bool Equals(object obj) {
+             if (!(obj is JISetId)) {
+                return false;
+             }
 
-			 return Arrays.Equals(Setid,((JISetId)obj).SetID);
-		 }
+             return Arrays.Equals(Setid,((JISetId)obj).SetID);
+         }
 
-	}
+    }
 
 }

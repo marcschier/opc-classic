@@ -9,19 +9,17 @@
 
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSTypeLibraryBrowser2(String address, String args[]) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSTypeLibraryBrowser2(string address, string[] args) {
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             session.UseSessionSecurity(true);
             _comServer = new JIComServer(JIProgId.ValueOf(args[4]), address, session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void start() throws org.jinterop.dcom.common.JIException
-        public virtual void Start() {
+
+        public void Start() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
             var typeLib = (IJITypeLib)_dispatch.GetTypeInfo(0).ContainingTypeLib[0];
@@ -47,14 +45,13 @@
                 IJITypeInfo ptempInfo = null;
                 TypeAttr pTempAttr = null;
                 if (typeAttr.typekind != TypeKind.TKIND_DISPATCH && typeAttr.typekind != TypeKind.TKIND_COCLASS) {
-                    var p = 0;
-                    p++;
+                   // var p = 0;
                 }
 
                 if (typeAttr.typekind == TypeKind.TKIND_COCLASS) {
 
                     for (var i = 0; i < typeAttr.cImplTypes; i++) {
-                        var nFlags = -1;
+                        int nFlags;
                         try {
                             nFlags = typeInfo.GetImplTypeFlags(i);
                         }
@@ -63,7 +60,7 @@
                         }
 
                         if ((nFlags & (int)ImplTypeFlags.IMPLTYPEFLAG_FDEFAULT) == (int)ImplTypeFlags.IMPLTYPEFLAG_FDEFAULT) {
-                            var hRefType = -1;
+                            int hRefType;
                             try {
                                 hRefType = typeInfo.GetRefTypeOfImplType(i);
                             }
@@ -130,16 +127,16 @@
 
                     switch (pFuncDesc.invokeKind) {
 
-                        case 2: //InvokeKind.INVOKE_PROPERTYGET.intValue():
+                        case 2: // InvokeKind.INVOKE_PROPERTYGET.intValue():
                             Console.WriteLine("PropertyGet");
                             break;
-                        case 4: //InvokeKind.INVOKE_PROPERTYPUT.intValue():
+                        case 4: // InvokeKind.INVOKE_PROPERTYPUT.intValue():
                             Console.WriteLine("PropertyPut");
                             break;
-                        case 8: //InvokeKind.INVOKE_PROPERTYPUTREF.intValue():
+                        case 8: // InvokeKind.INVOKE_PROPERTYPUTREF.intValue():
                             Console.WriteLine("PropertyPutRef");
                             break;
-                        case 1: //InvokeKind.INVOKE_FUNC.intValue():
+                        case 1: // InvokeKind.INVOKE_FUNC.intValue():
                             Console.WriteLine("DispatchMethod");
                             break;
                         default:
@@ -148,10 +145,10 @@
 
                     Console.WriteLine("VTable offset: " + pFuncDesc.oVft);
                     Console.WriteLine("Calling convention: " + pFuncDesc.callConv);
-                    //TODO need to return a string representation of this.
+                    // TODO need to return a string representation of this.
                     Console.WriteLine("Return type = " + pFuncDesc.elemdescFunc.TypeDesc.vt);
                     Console.WriteLine("ParamCount = " + pFuncDesc.cParams);
-                    var array = (JIArray)pFuncDesc.lprgelemdescParam.GetReferent();
+                    var array = (JIArray)pFuncDesc.lprgelemdescParam.Referent;
                     ElemDesc[] types = null;
                     if (array != null) {
                         var temp = (object[])array.ArrayInstance;
@@ -206,7 +203,7 @@
                             Console.WriteLine("VarType = " + pVarDesc.elemdescVar.TypeDesc.vt);
                             break;
                         default:
-                            //TODO resolve to it's string representation
+                            // TODO resolve to it's string representation
                             Console.WriteLine("VarKind = " + pVarDesc.varkind);
                             break;
                     }

@@ -6,13 +6,14 @@
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
 //
+
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
+    using SharpCifs.Dcerpc.Ndr;
+    using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
-    using SharpCifs.Util.Sharpen;
     using System.Linq;
 
     [Serializable]
@@ -25,9 +26,14 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <summary>
+        /// Extent array
+        /// </summary>
+        public JIOrpcExtentArray[] ExtentArray { get; private set; }
+
+        /// <summary>
         /// Returns an array of flags present (JIOrpcFlags).
         /// For now only 2 flags are returned to the user
-        ///  0 and 1. Reserved flags are not returned.
+        /// 0 and 1. Reserved flags are not returned.
         /// </summary>
         public int[] SupportedFlags {
             get {
@@ -39,15 +45,6 @@ namespace org.jinterop.dcom.core {
                 }
                 return new int[] { 0 };
             }
-        }
-
-        private JIOrpcExtentArray[] extentArray = null;
-
-        /// <summary>
-        /// Exten array
-        /// </summary>
-        private void SetExtentArray(JIOrpcExtentArray[] value) {
-            extentArray = value;
         }
 
         /// <summary>
@@ -69,7 +66,7 @@ namespace org.jinterop.dcom.core {
                 _flags = ndr.ReadUnsignedLong()
             };
 
-            //to throw JIRuntimeException from here.
+            // to throw JIRuntimeException from here.
             if (orpcthat._flags != (int)JIOrpcFlags.ORPCF_NULL &&
                 orpcthat._flags != (int)JIOrpcFlags.ORPCF_LOCAL &&
                 orpcthat._flags != (int)JIOrpcFlags.ORPCF_RESERVED1 &&
@@ -81,7 +78,7 @@ namespace org.jinterop.dcom.core {
 
             var orpcextentarray = new JIStruct();
             try {
-                //create the orpcextent struct
+                // create the orpcextent struct
                 /*
                  *  typedef struct tagORPC_EXTENT
             {
@@ -94,9 +91,9 @@ namespace org.jinterop.dcom.core {
 
                 var orpcextent = new JIStruct();
                 orpcextent.AddMember(typeof(UUID));
-                orpcextent.AddMember(typeof(int)); //length
+                orpcextent.AddMember(typeof(int)); // length
                 orpcextent.AddMember(new JIArray(typeof(sbyte), null, 1, true));
-                //create the orpcextentarray struct
+                // create the orpcextentarray struct
                 /*
                  *    typedef struct tagORPC_EXTENT_ARRAY
             {
@@ -110,11 +107,11 @@ namespace org.jinterop.dcom.core {
 
                 orpcextentarray.AddMember(typeof(int));
                 orpcextentarray.AddMember(typeof(int));
-                //this is since the pointer is [unique]
+                // this is since the pointer is [unique]
                 orpcextentarray.AddMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
             }
             catch (JIException) {
-                //this won't fail...i am certain :)...
+                // this won't fail...i am certain :)...
             }
 
             var map = new Hashtable();
@@ -125,22 +122,22 @@ namespace org.jinterop.dcom.core {
             while (x < listOfDefferedPointers.Count) {
                 var newList = new List<object>();
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, map);
-                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); //this should replace the value in the original place.
+                ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement); // this should replace the value in the original place.
                 x++;
                 listOfDefferedPointers.InsertRange(x, newList);
             }
 
             var extentArrays = new List<object>();
-            //now read whether extend array exists or not
-            //int ptr = ndr.readUnsignedLong();
+            // now read whether extend array exists or not
+            // int ptr = ndr.readUnsignedLong();
             if (!orpcextentarrayptr.IsNull) {
-                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.GetReferent()).GetMember(2)).GetReferent()).ArrayInstance;
+                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.Referent).GetMember(2)).Referent).ArrayInstance;
                 for (var i = 0; i < pointers.Length; i++) {
                     if (pointers[i].IsNull) {
                         continue;
                     }
 
-                    var orpcextent2 = (JIStruct)pointers[i].GetReferent();
+                    var orpcextent2 = (JIStruct)pointers[i].Referent;
                     var byteArray = (byte[])((JIArray)orpcextent2.GetMember(2)).ArrayInstance;
 
                     extentArrays.Add(new JIOrpcExtentArray(((UUID)orpcextent2.GetMember(0)).ToString(), byteArray.Length, byteArray));
@@ -148,8 +145,7 @@ namespace org.jinterop.dcom.core {
 
             }
 
-            orpcthat.SetExtentArray(extentArrays.Cast<JIOrpcExtentArray>().ToArray());
-
+            orpcthat.ExtentArray = extentArrays.Cast<JIOrpcExtentArray>().ToArray();
             return orpcthat;
         }
 

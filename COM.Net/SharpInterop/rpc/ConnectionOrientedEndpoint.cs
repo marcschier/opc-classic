@@ -165,7 +165,7 @@ namespace rpc {
                                         }
                                         break;
                                     default:
-                                        //nothing
+                                        // nothing
                                         break;
                                 }
                                 Send(pdu);

@@ -24,14 +24,14 @@ namespace org.jinterop.dcom.common {
         /// Create exception
         /// </summary>
         /// <param name="hresult"></param>
-        public JIRuntimeException(int hresult) => 
+        public JIRuntimeException(int hresult) =>
             HResult = hresult;
 
         /// <summary>
         /// Create exception
         /// </summary>
         /// <param name="hresult"></param>
-        public JIRuntimeException(JIErrorCodes hresult) => 
+        public JIRuntimeException(JIErrorCodes hresult) =>
             HResult = (int)hresult;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace org.jinterop.dcom.common {
         /// </summary>
         /// <param name="hresult"></param>
         /// <param name="parameters"></param>
-		public JIRuntimeException(int hresult, params object[] parameters) :
+        public JIRuntimeException(int hresult, params object[] parameters) :
             this(hresult) => Parameters = parameters;
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace org.jinterop.dcom.common {
         /// <summary>
         /// Get message
         /// </summary>
-        public override string Message => 
+        public override string Message =>
             JISystem.GetLocalizedMessage((JIErrorCodes)HResult);
     }
 }

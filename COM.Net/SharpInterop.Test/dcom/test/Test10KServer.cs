@@ -20,7 +20,7 @@
                     var comServer = new JIComServer(JIProgId.ValueOf("MSMQ.MSMQQueueInfo"), args[0], session);
                     var unknown = comServer.CreateInstance();
                     var dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(unknown.QueryInterface(Interfaces.IID_IDispatch));
-                    //JISession.destroySession(session);
+                    // JISession.destroySession(session);
                     Thread.Sleep(150);
                     if (i % 100 == 0) {
                         Console.WriteLine(i);

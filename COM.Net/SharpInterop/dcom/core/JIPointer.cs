@@ -20,81 +20,66 @@ namespace org.jinterop.dcom.core {
     public sealed class JIPointer {
 
         /// <summary>
-        /// Create pointer
+        /// Deferred
         /// </summary>
-        private JIPointer() { }
+        internal bool Deffered { set; get; } = false;
 
         /// <summary>
-        /// Creates an instance of this class where the referent is <code>value</code>.
-        /// Used when serializing this pointer. This pointer is <b>not</b> of reference type.
+        /// Returns the referent identifier.
         /// </summary>
-        /// <param name="value"> </param>
-        public JIPointer(object value) : this(value, false) {
+        /// <summary>
+        /// Set referent id
+        /// </summary>
+        /// <param name="value"></param>
+        public int ReferentId { get; internal set; } = -1;
+
+        /// <summary>
+        /// Returns the referent encapsulated by this pointer.
+        /// </summary>
+        /// <returns>Referent object</returns>
+        public object Referent {
+            get => IsNull ? null : _referent;
+            internal set => _referent = value;
         }
 
         /// <summary>
-        /// Creates an instance of this class where the referent is of the type
-        /// <code>value</code>. Used when deserializing this pointer.
+        /// Returns status whether this is a reference type pointer
+        /// or not.
         /// </summary>
-        /// <param name="value"> <code>null</code> is acceptable </param>
-        /// <param name="isReferenceTypePtr"> <code>true</code> if a referent identifier
-        /// will not precede this ptr. </param>
-        public JIPointer(Type value, bool isReferenceTypePtr) {
-            //null pointer.
-            if (value == null) {
-                value = typeof(int);
-                isReferenceTypePtr = true;
-                IsNull = true;
+        /// <returns> <code>true</code> if this is a reference type
+        /// pointer. </returns>
+        public bool Reference { get; private set; }
+
+        /// <summary>
+        /// Length
+        /// </summary>
+        internal int Length {
+            get {
+                // 4 for pointer
+                if (IsNull) {
+                    return kPointerSize;
+                }
+                if (_referent is Type) {
+                    return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes((Type)_referent,
+                        _referent, JIFlags.FLAG_NULL);
+                }
+                return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes(_referent.GetType(),
+                    _referent, JIFlags.FLAG_NULL);
             }
-            //Should not defer since the enclosing struct,union,array will defer it by itself
-            // this is important since, ptr to a ptr to a ptr (and more) will need to
-            //deserialize completely after the first deferement i.e they are not further deffered.
-            _referent = value;
-            Reference = isReferenceTypePtr;
         }
 
         /// <summary>
-        /// Some COM servers send referentId (pointer) as null but the referent is not.
-        /// To be used only when you know this is the case. Better leave it unsed.
+        /// Returns status if this pointer is <code>null</code>.
         /// </summary>
-        public void TreatNullSpecially() => _nullSpecial = true;
-
-        /// <summary>
-        /// Creates an instance of this class where the referent is <code>value</code>.
-        ///  Used when serializing this pointer.
-        /// </summary>
-        /// <param name="value"> <code>null</code> is acceptable </param>
-        /// <param name="isReferenceTypePtr"> <code>true</code> if a referent Identifier
-        /// will not precede this ptr. </param>
-        public JIPointer(object value, bool isReferenceTypePtr) {
-            if (value == null) {
-                //since a null is being sent for a pointer, it has to be shown as 0x0.
-                value = 0;
-                isReferenceTypePtr = true;
-                IsNull = true;
-            }
-
-            //		if (value.getClass().equals(JIArray.class))
-            //		{
-            //			if (((JIArray)value).getDimensions() > 1)
-            //				throw new System.ArgumentException("Only single dimension arrays accepted");
-            //		}
-
-            //Should not defer since the enclosing struct,union,array will defer it by itself
-            // this is important since, ptr to a ptr to a ptr (and more) will need to
-            //deserialize completely after the first deferement i.e they are not further deffered.
-
-            _referent = value;
-            _referentId = new object().GetHashCode();
-            Reference = isReferenceTypePtr;
-        }
+        /// <returns> <code>true</code> if the pointer is
+        /// <code>null</code>. </returns>
+        public bool IsNull { get; private set; }
 
         /// <summary>
         /// Sets the flags associated with the referent.
         /// </summary>
-        internal int Flags {
-            set => _flags = value;
-        }
+        /// <param name="value"></param>
+        internal void SetFlags(int value) => _flags = value;
 
         /// <summary>
         /// Set reference type pointer
@@ -102,9 +87,77 @@ namespace org.jinterop.dcom.core {
         internal void SetIsReferenceTypePtr() => Reference = true;
 
         /// <summary>
-        /// Returns the referent encapsulated by this pointer.
+        /// Create pointer
         /// </summary>
-        public object GetReferent() => IsNull ? null : _referent;
+        private JIPointer() { }
+
+        /// <summary>
+        /// Creates an instance of this class where the referent is
+        /// <code>value</code>.
+        /// Used when serializing this pointer. This pointer is
+        /// <b>not</b> of reference type.
+        /// </summary>
+        /// <param name="value"> </param>
+        public JIPointer(object value) :
+            this(value, false) {
+        }
+
+        /// <summary>
+        /// Creates an instance of this class where the referent
+        /// is of the type <code>value</code>. Used when deserializing
+        /// this pointer.
+        /// </summary>
+        /// <param name="value"> <code>null</code> is acceptable </param>
+        /// <param name="isReferenceTypePtr"> <code>true</code> if
+        /// a referent identifier will not precede this ptr. </param>
+        public JIPointer(Type value, bool isReferenceTypePtr) {
+            // null pointer.
+            if (value == null) {
+                value = typeof(int);
+                isReferenceTypePtr = true;
+                IsNull = true;
+            }
+            // Should not defer since the enclosing struct, union, array
+            // will defer it by itself.  this is important since, ptr to
+            // a ptr to a ptr (and more) will need to deserialize completely
+            // after the first deferement i.e they are not further deffered.
+            _referent = value;
+            Reference = isReferenceTypePtr;
+        }
+
+        /// <summary>
+        /// Some COM servers send referentId (pointer) as null but
+        /// the referent is not.
+        /// To be used only when you know this is the case.
+        /// Better leave it unsed.
+        /// </summary>
+        public void TreatNullSpecially() => _nullSpecial = true;
+
+        /// <summary>
+        /// Creates an instance of this class where the referent is
+        /// <code>value</code>. Used when serializing this pointer.
+        /// </summary>
+        /// <param name="value"> <code>null</code> is acceptable
+        /// </param>
+        /// <param name="isReferenceTypePtr"> <code>true</code>
+        /// if a referent Identifier will not precede this ptr. </param>
+        public JIPointer(object value, bool isReferenceTypePtr) {
+            if (value == null) {
+                // since a null is being sent for a pointer,
+                // it has to be shown as 0x0.
+                value = 0;
+                isReferenceTypePtr = true;
+                IsNull = true;
+            }
+
+            // Should not defer since the enclosing struct, union, array
+            // will defer it by itself.  this is important since, ptr to
+            // a ptr to a ptr (and more) will need to deserialize completely
+            // after the first deferement i.e they are not further deffered.
+            _referent = value;
+            ReferentId = new object().GetHashCode();
+            Reference = isReferenceTypePtr;
+        }
 
         /// <summary>
         /// Encode
@@ -112,41 +165,44 @@ namespace org.jinterop.dcom.core {
         /// <param name="ndr"></param>
         /// <param name="defferedPointers"></param>
         /// <param name="flag"></param>
-        internal void Encode(NdrCodec ndr, List<object> defferedPointers, int flag) {
+        internal void Encode(NdrCodec ndr, List<object> defferedPointers,
+            int flag) {
 
             flag |= _flags;
             if (IsNull) {
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, flag);
+                JIMarshalUnMarshalHelper.Serialize(
+                    ndr, typeof(int), 0, defferedPointers, flag);
                 return;
             }
-            //it is deffered or part of an array, this logic will not get called twice since the
-            //deffered list will come in withb FLAG_NULL
-            if (!IsNull && (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)) /*||
-						(flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER*/
+            // it is deffered or part of an array, this logic will not get called twice since the
+            // deffered list will come in withb FLAG_NULL
+            if (!IsNull && (Deffered ||
+                (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)) /*||
+                (flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER*/
             {
-                var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
+                var referentIdToPut = ReferentId == -1 ? _referent.GetHashCode() : ReferentId;
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), referentIdToPut, defferedPointers, flag);
                 Deffered = false;
                 Reference = true;
-                //			try{
+                //            try{
                 defferedPointers.Add(this);
-                //			}catch(NullPointerException e)
-                //			{
-                //				int ni = 0;
-                //			}
+                //            }catch(NullPointerException e)
+                //            {
+                //                int ni = 0;
+                //            }
                 return;
             }
 
             if (!IsNull && !Reference) {
-                var referentIdToPut = _referentId == -1 ? _referent.GetHashCode() : _referentId;
-                JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), referentIdToPut, defferedPointers, flag);
+                var referentIdToPut = ReferentId == -1 ?
+                    _referent.GetHashCode() : ReferentId;
+                JIMarshalUnMarshalHelper.Serialize(
+                    ndr, typeof(int), referentIdToPut, defferedPointers, flag);
             }
-
             try {
                 if (!IsNull && _referent.GetType().Equals(typeof(JIVariant)) && ((JIVariant)_referent).IsArray) {
-                    //write the length first before all elements
-                    //ndr.writeUnsignedLong(((Object[])(((JIVariant)referent).getObject())).length);
-                    JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
+                    JIMarshalUnMarshalHelper.Serialize(
+                        ndr, typeof(int), ((object[])((JIVariant)_referent).Object).Length, defferedPointers, flag);
                 }
             }
             catch (JIException e) {
@@ -168,24 +224,24 @@ namespace org.jinterop.dcom.core {
         /// <returns></returns>
         internal JIPointer Decode(NdrCodec ndr, List<object> defferedPointers, int flag,
             IDictionary<object, object> additionalData) {
-            //shallowClone();
+            // shallowClone();
             flag |= _flags;
 
             var retVal = new JIPointer {
-                Flags = _flags,
                 IsNull = IsNull,
                 _nullSpecial = _nullSpecial
             };
+            retVal.SetFlags(_flags);
 
-            //retVal.isDeffered = isDeffered;
+            // retVal.isDeffered = isDeffered;
             if (Deffered || (flag & JIFlags.FLAG_REPRESENTATION_ARRAY) == JIFlags.FLAG_REPRESENTATION_ARRAY)
             /*|| (flag & JIFlags.FLAG_REPRESENTATION_NESTED_POINTER ) == JIFlags.FLAG_REPRESENTATION_NESTED_POINTER */
             {
-                retVal._referentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
+                retVal.ReferentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
                     defferedPointers, flag, additionalData);
-                retVal._referent = _referent; //will only be the class or object
-                if (retVal._referentId == 0 && !_nullSpecial) {
-                    //null pointer
+                retVal._referent = _referent; // will only be the class or object
+                if (retVal.ReferentId == 0 && !_nullSpecial) {
+                    // null pointer
                     // just return
                     retVal.IsNull = true;
                     retVal.Deffered = false;
@@ -199,12 +255,12 @@ namespace org.jinterop.dcom.core {
             }
 
             if (!Reference) {
-                //referentId = ndr.readUnsignedLong();
-                retVal._referentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
+                // referentId = ndr.readUnsignedLong();
+                retVal.ReferentId = (int)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(int),
                     defferedPointers, flag, additionalData);
-                retVal._referent = _referent; //will only be the class or object
-                if (retVal._referentId == 0 && !_nullSpecial) {
-                    //null pointer
+                retVal._referent = _referent; // will only be the class or object
+                if (retVal.ReferentId == 0 && !_nullSpecial) {
+                    // null pointer
                     // just return
                     retVal.IsNull = true;
                     return retVal;
@@ -213,46 +269,6 @@ namespace org.jinterop.dcom.core {
             retVal._referent = JIMarshalUnMarshalHelper.Deserialize(ndr, _referent,
                 defferedPointers, flag, additionalData);
             return retVal;
-        }
-
-        /// <summary>
-        /// Deferred
-        /// </summary>
-        internal bool Deffered { set; get; } = false;
-
-        /// <summary>
-        /// Set referent id
-        /// </summary>
-        /// <param name="value"></param>
-        internal void SetReferent(int value) => _referentId = value;
-
-        /// <summary>
-        /// Returns the referent identifier.
-        /// </summary>
-        public int? ReferentIdentifier => _referentId;
-
-        /// <summary>
-        /// Returns status whether this is a reference type pointer or not.
-        /// </summary>
-        /// <returns> <code>true</code> if this is a reference type pointer. </returns>
-        public bool Reference { get; private set; } = false;
-
-        /// <summary>
-        /// Length
-        /// </summary>
-        internal int Length {
-            get {
-                //4 for pointer
-                if (IsNull) {
-                    return kPointerSize;
-                }
-                if (_referent is Type) {
-                    return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes((Type)_referent,
-                        _referent, JIFlags.FLAG_NULL);
-                }
-                return 4 + JIMarshalUnMarshalHelper.GetLengthInBytes(_referent.GetType(),
-                    _referent, JIFlags.FLAG_NULL);
-            }
         }
 
         /// <summary>
@@ -266,26 +282,13 @@ namespace org.jinterop.dcom.core {
             _referent = replacement._referent;
         }
 
-        /// <summary>
-        /// Returns status if this pointer is <code>null</code>.
-        /// </summary>
-        /// <returns> <code>true</code> if the pointer is <code>null</code>. </returns>
-        public bool IsNull { get; private set; }
-
-        /// <summary>
-        /// Set value
-        /// </summary>
-        internal object Value {
-            set => _referent = value;
-        }
-
         /// <inheritdoc/>
-        public override string ToString() => _referent == null ? "[null]" : "[" + _referent.ToString() + "]";
+        public override string ToString() =>
+            _referent == null ? "[null]" : "[" + _referent.ToString() + "]";
 
         private const int kPointerSize = 4;
         private bool _nullSpecial;
         private object _referent;
-        private int _referentId = -1;
         private int _flags;
     }
 }

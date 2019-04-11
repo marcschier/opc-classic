@@ -17,46 +17,46 @@
 
 namespace rpc {
 
-	using BindNoAcknowledgePdu = rpc.pdu.BindNoAcknowledgePdu;
+    using BindNoAcknowledgePdu = rpc.pdu.BindNoAcknowledgePdu;
 
-	public class BindException : RpcException {
+    public class BindException : RpcException {
 
-		public BindException() : base() {
-		}
+        public BindException() : base() {
+        }
 
-		public BindException(string message) : base(message) {
-		}
+        public BindException(string message) : base(message) {
+        }
 
-		public BindException(string message, int rejectReason) : base(Message(message, rejectReason)) {
-		}
+        public BindException(string message, int rejectReason) : base(Message(message, rejectReason)) {
+        }
 
-		private static string Message(string message, int reason) {
-			return (message != null) ? message + " (" + Message(reason) + ")" : Message(reason);
-		}
+        private static string Message(string message, int reason) {
+            return (message != null) ? message + " (" + Message(reason) + ")" : Message(reason);
+        }
 
-		private static string Message(int reason) {
-			switch (reason) {
-			case BindNoAcknowledgePdu.REASON_NOT_SPECIFIED:
-				return "REASON_NOT_SPECIFIED";
-			case BindNoAcknowledgePdu.TEMPORARY_CONGESTION:
-				return "TEMPORARY_CONGESTION";
-			case BindNoAcknowledgePdu.LOCAL_LIMIT_EXCEEDED:
-				return "LOCAL_LIMIT_EXCEEDED";
-			case BindNoAcknowledgePdu.CALLED_PADDR_UNKNOWN:
-				return "CALLED_PADDR_UNKNOWN";
-			case BindNoAcknowledgePdu.PROTOCOL_VERSION_NOT_SUPPORTED:
-				return "PROTOCOL_VERSION_NOT_SUPPORTED";
-			case BindNoAcknowledgePdu.DEFAULT_CONTEXT_NOT_SUPPORTED:
-				return "DEFAULT_CONTEXT_NOT_SUPPORTED";
-			case BindNoAcknowledgePdu.USER_DATA_NOT_READABLE:
-				return "USER_DATA_NOT_READABLE";
-			case BindNoAcknowledgePdu.NO_PSAP_AVAILABLE:
-				return "NO_PSAP_AVAILABLE";
-			default:
-				return "unknown";
-			}
-		}
+        private static string Message(int reason) {
+            switch (reason) {
+            case BindNoAcknowledgePdu.REASON_NOT_SPECIFIED:
+                return "REASON_NOT_SPECIFIED";
+            case BindNoAcknowledgePdu.TEMPORARY_CONGESTION:
+                return "TEMPORARY_CONGESTION";
+            case BindNoAcknowledgePdu.LOCAL_LIMIT_EXCEEDED:
+                return "LOCAL_LIMIT_EXCEEDED";
+            case BindNoAcknowledgePdu.CALLED_PADDR_UNKNOWN:
+                return "CALLED_PADDR_UNKNOWN";
+            case BindNoAcknowledgePdu.PROTOCOL_VERSION_NOT_SUPPORTED:
+                return "PROTOCOL_VERSION_NOT_SUPPORTED";
+            case BindNoAcknowledgePdu.DEFAULT_CONTEXT_NOT_SUPPORTED:
+                return "DEFAULT_CONTEXT_NOT_SUPPORTED";
+            case BindNoAcknowledgePdu.USER_DATA_NOT_READABLE:
+                return "USER_DATA_NOT_READABLE";
+            case BindNoAcknowledgePdu.NO_PSAP_AVAILABLE:
+                return "NO_PSAP_AVAILABLE";
+            default:
+                return "unknown";
+            }
+        }
 
-	}
+    }
 
 }

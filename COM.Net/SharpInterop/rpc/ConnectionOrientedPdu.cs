@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc {
     using SharpCifs.Dcerpc.Ndr;
@@ -68,20 +68,17 @@ namespace rpc {
         /// <summary>
         /// Major version
         /// </summary>
-        public virtual int MajorVersion => CONNECTION_ORIENTED_MAJOR_VERSION;
+        public int MajorVersion => CONNECTION_ORIENTED_MAJOR_VERSION;
 
         /// <summary>
         /// Minor version
         /// </summary>
-        public virtual int MinorVersion {
-            get => _minorVersion;
-            set => _minorVersion = value;
-        }
+        public int MinorVersion { get; set; }
 
         /// <summary>
         /// Format
         /// </summary>
-        public virtual NdrFormat Format {
+        public NdrFormat Format {
             get => _format ?? (_format = NdrFormat.DEFAULT_FORMAT);
             set => _format = value;
         }
@@ -89,33 +86,28 @@ namespace rpc {
         /// <summary>
         /// Get flags
         /// </summary>
-        public virtual int Flags {
-            get => _flags;
-            set => _flags = value;
-        }
+        public int Flags { get; set; } = PFC_FIRST_FRAG | PFC_LAST_FRAG;
 
         /// <summary>
         /// Test flag
         /// </summary>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public virtual bool GetFlag(int flag) {
-            return (Flags & flag) != 0;
-        }
+        public bool GetFlag(int flag) =>
+            (Flags & flag) != 0;
 
         /// <summary>
         /// Set flag
         /// </summary>
         /// <param name="flag"></param>
         /// <param name="value"></param>
-        public virtual void SetFlag(int flag, bool value) {
+        public void SetFlag(int flag, bool value) =>
             Flags = value ? (Flags | flag) : (Flags & ~flag);
-        }
 
         /// <summary>
         /// Call id
         /// </summary>
-        public virtual int CallId {
+        public int CallId {
             get => _callId;
             set {
                 _useCallIdCounter = false;
@@ -126,18 +118,12 @@ namespace rpc {
         /// <summary>
         /// Fragment length
         /// </summary>
-        public virtual int FragmentLength {
-            get => _fragLength;
-            set => _fragLength = value;
-        }
+        public int FragmentLength { get; set; }
 
         /// <summary>
         /// Auth length
         /// </summary>
-        public virtual int AuthenticatorLength {
-            get => _authLength;
-            set => _authLength = value;
-        }
+        public int AuthenticatorLength { get; set; }
 
 
         /// <summary>
@@ -191,7 +177,7 @@ namespace rpc {
         /// Read header
         /// </summary>
         /// <param name="ndr"></param>
-        protected internal virtual void ReadHeader(NdrCodec ndr) {
+        protected internal void ReadHeader(NdrCodec ndr) {
             if (ndr.ReadUnsignedSmall() != CONNECTION_ORIENTED_MAJOR_VERSION) {
                 throw new InvalidOperationException("Version mismatch.");
             }
@@ -213,7 +199,7 @@ namespace rpc {
         /// Write header
         /// </summary>
         /// <param name="ndr"></param>
-        protected internal virtual void WriteHeader(NdrCodec ndr) {
+        protected internal void WriteHeader(NdrCodec ndr) {
             ndr.WriteUnsignedSmall((short)MajorVersion);
             ndr.WriteUnsignedSmall((short)MinorVersion);
             ndr.WriteUnsignedSmall((short)Type);
@@ -266,12 +252,8 @@ namespace rpc {
 
         /// <summary> Call id counter </summary>
         protected internal static int s_callIdCounter;
-        private int _minorVersion;
-        private int _flags = PFC_FIRST_FRAG | PFC_LAST_FRAG;
         private int _callId = s_callIdCounter;
         private bool _useCallIdCounter = true;
-        private int _fragLength;
-        private int _authLength;
         private NdrFormat _format;
     }
 }

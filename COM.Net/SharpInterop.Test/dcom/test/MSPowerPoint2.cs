@@ -8,42 +8,37 @@
 
         private readonly JIComServer _comStub;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSPowerPoint2(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSPowerPoint2(string address, string[] args) {
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             _comStub = new JIComServer(JIProgId.ValueOf("PowerPoint.Application"), address, session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startPowerPoint() throws org.jinterop.dcom.common.JIException
-        public virtual void StartPowerPoint() {
+
+        public void StartPowerPoint() {
             _unknown = _comStub.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showPowerPoint() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowPowerPoint() {
+
+        public void ShowPowerPoint() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(-1);
             _dispatch.Put(dispId, variant);
         }
 
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public org.jinterop.dcom.impls.automation.IJIDispatch openPresentation(String fullEscapedPath) throws org.jinterop.dcom.common.JIException, InterruptedException
-        public virtual IJIDispatch OpenPresentation(string fullEscapedPath) {
+
+        public IJIDispatch OpenPresentation(string fullEscapedPath) {
             var presentations = (IJIDispatch)JIObjectFactory.NarrowObject(_dispatch.Get("Presentations").ObjectAsComObject);
             var result = presentations.CallMethodA("Open", new object[] { new JIString(fullEscapedPath), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM(), JIVariant.CreateOPTIONAL_PARAM() });
             return (IJIDispatch)JIObjectFactory.NarrowObject(result[0].ObjectAsComObject);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public org.jinterop.dcom.impls.automation.IJIDispatch runPresentation(org.jinterop.dcom.impls.automation.IJIDispatch activePresentation) throws org.jinterop.dcom.common.JIException
-        public virtual IJIDispatch RunPresentation(IJIDispatch activePresentation) {
+
+        public IJIDispatch RunPresentation(IJIDispatch activePresentation) {
             var slideShowSettings = (IJIDispatch)JIObjectFactory.NarrowObject(activePresentation.Get("SlideShowSettings").ObjectAsComObject);
             Console.WriteLine("Running Slide show : " + activePresentation.Get("Name").ObjectAsString.String);
             var slideShowWindow = (IJIDispatch)JIObjectFactory.NarrowObject(slideShowSettings.CallMethodA("Run").ObjectAsComObject);
@@ -51,40 +46,32 @@
             return slideShowView;
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void quitPowerPoint() throws org.jinterop.dcom.common.JIException
-        public virtual void QuitPowerPoint() {
+
+        public void QuitPowerPoint() {
             _dispatch.CallMethod("Quit");
             JISession.DestroySession(_dispatch.AssociatedSession);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void closePresentation(org.jinterop.dcom.impls.automation.IJIDispatch presentation) throws org.jinterop.dcom.common.JIException
-        public virtual void ClosePresentation(IJIDispatch presentation) => presentation.CallMethod("Close");
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void savePresentationAs(org.jinterop.dcom.impls.automation.IJIDispatch presentation, String fullEscapedPath) throws org.jinterop.dcom.common.JIException
-        public virtual void SavePresentationAs(IJIDispatch presentation, string fullEscapedPath) => presentation.CallMethod("SaveAs", new object[] { new JIString(fullEscapedPath).Variant, JIVariant.CreateOPTIONAL_PARAM(), -1 });
+        public void ClosePresentation(IJIDispatch presentation) => presentation.CallMethod("Close");
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void goto_First_Slide(org.jinterop.dcom.impls.automation.IJIDispatch view) throws org.jinterop.dcom.common.JIException
-        public virtual void Goto_First_Slide(IJIDispatch view) => view.CallMethod("First");
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void goto_Last_Slide(org.jinterop.dcom.impls.automation.IJIDispatch view) throws org.jinterop.dcom.common.JIException
-        public virtual void Goto_Last_Slide(IJIDispatch view) => view.CallMethod("Last");
+        public void SavePresentationAs(IJIDispatch presentation, string fullEscapedPath) => presentation.CallMethod("SaveAs", new object[] { new JIString(fullEscapedPath).Variant, JIVariant.CreateOPTIONAL_PARAM(), -1 });
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void do_Next_Action(org.jinterop.dcom.impls.automation.IJIDispatch view) throws org.jinterop.dcom.common.JIException
-        public virtual void Do_Next_Action(IJIDispatch view) => view.CallMethod("Next");
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void do_Previous_Action(org.jinterop.dcom.impls.automation.IJIDispatch view) throws org.jinterop.dcom.common.JIException
-        public virtual void Do_Previous_Action(IJIDispatch view) => view.CallMethod("Previous");
+        public void Goto_First_Slide(IJIDispatch view) => view.CallMethod("First");
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void goto_Numbered_Slide(org.jinterop.dcom.impls.automation.IJIDispatch view, int index) throws org.jinterop.dcom.common.JIException
-        public virtual void Goto_Numbered_Slide(IJIDispatch view, int index) => view.CallMethod("GotoSlide", new object[] { index, JIVariant.CreateOPTIONAL_PARAM() });
+
+        public void Goto_Last_Slide(IJIDispatch view) => view.CallMethod("Last");
+
+
+        public void Do_Next_Action(IJIDispatch view) => view.CallMethod("Next");
+
+
+        public void Do_Previous_Action(IJIDispatch view) => view.CallMethod("Previous");
+
+
+        public void Goto_Numbered_Slide(IJIDispatch view, int index) => view.CallMethod("GotoSlide", new object[] { index, JIVariant.CreateOPTIONAL_PARAM() });
 
 
 
@@ -102,13 +89,13 @@
                 Console.WriteLine("Welcome to PowerPoint Manager !");
                 Console.WriteLine("Commands --> ");
                 Console.WriteLine("'O' <path_to_ppt>               Open PPT, ex:- O c:\\temp\\j-Interop.ppt");
-                Console.WriteLine("'C'  							Close PPT");
-                Console.WriteLine("'N'  							Next Action");
-                Console.WriteLine("'P'  							Previous Action");
+                Console.WriteLine("'C'                              Close PPT");
+                Console.WriteLine("'N'                              Next Action");
+                Console.WriteLine("'P'                              Previous Action");
                 Console.WriteLine("'G' <slide number>              Goto Slide, ex:- G 3");
-                Console.WriteLine("'F' 							First Slide");
-                Console.WriteLine("'L' 							Last Slide");
-                Console.WriteLine("'Q' 				  			Quit PowerPoint Manager");
+                Console.WriteLine("'F'                             First Slide");
+                Console.WriteLine("'L'                             Last Slide");
+                Console.WriteLine("'Q'                               Quit PowerPoint Manager");
 
                 
                 var inputreader = Console.In;

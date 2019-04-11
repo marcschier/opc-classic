@@ -1,18 +1,18 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
-// http:// www.eclipse.org/legal/epl-v10.html
-// 
+// http://www.eclipse.org/legal/epl-v10.html
+//
 
 namespace org.jinterop.winreg {
     using org.jinterop.dcom.common;
 
     /// <summary>
     /// Perform C-R-U-D on the Windows Registry.
-    /// This interface uses "Windows Remote Registry" and "Server" services 
+    /// This interface uses "Windows Remote Registry" and "Server" services
     /// and these must be running on target workstation.
     /// </summary>
     public interface IJIWinReg {
@@ -64,7 +64,7 @@ namespace org.jinterop.winreg {
         void CloseKey(JIPolicyHandle handle);
 
         /// <summary>
-        /// Query the key for it's name. Please put buffer size more 
+        /// Query the key for it's name. Please put buffer size more
         /// than the estimated expected value. In this case 1024 would do.
         /// </summary>
         /// <param name="handle"> </param>
@@ -74,7 +74,7 @@ namespace org.jinterop.winreg {
         byte[] QueryValue(JIPolicyHandle handle, int bufferSize);
 
         /// <summary>
-        /// Query the key-value for it's value.Please put buffer size more than 
+        /// Query the key-value for it's value.Please put buffer size more than
         /// the estimated expected value.
         /// </summary>
         /// <param name="handle"> </param>
@@ -88,9 +88,9 @@ namespace org.jinterop.winreg {
         object[] QueryValue(JIPolicyHandle handle, string valueName, int bufferSize);
 
         /// <summary>
-        ///Creates a new key by name subKey under the handle. If 
+        ///Creates a new key by name subKey under the handle. If
         /// REG_OPTION_NON_VOLATILE option is used then the key is preserved
-        /// in the registry when the machine shutsdown, otherwise it is stored 
+        /// in the registry when the machine shutsdown, otherwise it is stored
         /// only in memory.
         /// </summary>
         /// <param name="handle"> </param>
@@ -103,8 +103,8 @@ namespace org.jinterop.winreg {
             RegOption options, RegKeyAccess accessMask);
 
         /// <summary>
-        /// Sets name-value for a REG_MULTI_SZ type. data is a 2 dimensional 
-        /// array, each primary dimension representing one string. 
+        /// Sets name-value for a REG_MULTI_SZ type. data is a 2 dimensional
+        /// array, each primary dimension representing one string.
         /// Please make sure that the encoding is correct.
         /// </summary>
         /// <param name="handle"> </param>
@@ -122,11 +122,11 @@ namespace org.jinterop.winreg {
         void SetValue(JIPolicyHandle handle, string valueName);
 
         /// <summary>
-        /// Sets name-value for a REG_SZ\REG_EXPAND_SZ\REG_BINARY type. The data 
+        /// Sets name-value for a REG_SZ\REG_EXPAND_SZ\REG_BINARY type. The data
         /// will be considered as String if the binary flag is not set to true.
         /// In case of non binary data, please make sure that the encoding is correct
         /// while doing String.getBytes(...). Set expand_sz to true if the String
-        /// contains environment variables. When both binary and expand_sz are set, 
+        /// contains environment variables. When both binary and expand_sz are set,
         /// binary will take precedence.
         /// </summary>
         /// <param name="handle"> </param>
@@ -154,11 +154,11 @@ namespace org.jinterop.winreg {
         /// <param name="valueName"> </param>
         /// <param name="isKey"> </param>
         /// <exception cref="JIException"> </exception>
-        void DeleteKeyOrValue(JIPolicyHandle handle, string valueName, 
+        void DeleteKeyOrValue(JIPolicyHandle handle, string valueName,
             bool isKey);
 
         /// <summary>
-        /// Saves registry entries from handle location to local fileName. 
+        /// Saves registry entries from handle location to local fileName.
         /// This path is local to the target machine.
         /// </summary>
         /// <param name="handle"> </param>
@@ -167,7 +167,7 @@ namespace org.jinterop.winreg {
         void SaveFile(JIPolicyHandle handle, string fileName);
 
         /// <summary>
-        /// Returns name and class (in that order) for the key identified 
+        /// Returns name and class (in that order) for the key identified
         /// by index under parent handle.
         /// </summary>
         /// <param name="handle"> </param>
@@ -177,12 +177,12 @@ namespace org.jinterop.winreg {
         string[] EnumKey(JIPolicyHandle handle, int index);
 
         /// <summary>
-        ///Returns name and type (in that order) for the value identified 
+        ///Returns name and type (in that order) for the value identified
         ///by index under parent handle.
         /// </summary>
         /// <param name="handle"> </param>
         /// <param name="index"> </param>
-        /// <returns> First is a String (valueName) and second param is 
+        /// <returns> First is a String (valueName) and second param is
         /// an Integer (type) </returns>
         /// <exception cref="JIException"> </exception>
         object[] EnumValue(JIPolicyHandle handle, int index);

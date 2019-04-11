@@ -1,21 +1,19 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
+namespace org.jinterop.dcom.impls.automation {
 
-namespace org.jinterop.dcom.impls.automation
-{
+    /// <summary>
+    /// Implements the <i>TYPEKIND</i> structure of COM Automation
+    /// </summary>
+    public enum TypeKind : int {
 
-	/// <summary>
-	/// Implements the <i>TYPEKIND</i> structure of COM Automation
-	/// </summary>
-	public enum TypeKind : int
-	{
         /// <summary>
         /// A set of enumerators.
         /// </summary>
@@ -24,7 +22,7 @@ namespace org.jinterop.dcom.impls.automation
         /// <summary>
         /// A structure with no methods.
         /// </summary>
-   		TKIND_RECORD,
+        TKIND_RECORD,
 
         /// <summary>
         /// A module that can only have static functions and data (for example, a DLL).
@@ -55,11 +53,11 @@ namespace org.jinterop.dcom.impls.automation
         /// <summary>
         /// A union, all of whose members have an offset of zero.
         /// </summary>
-   		TKIND_UNION,
+        TKIND_UNION,
 
         /// <summary>
         /// End of ENUM marker.
         /// </summary>
-		TKIND_MAX
+        TKIND_MAX
     }
 }

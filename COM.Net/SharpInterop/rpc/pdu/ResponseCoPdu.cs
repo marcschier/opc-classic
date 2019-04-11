@@ -188,9 +188,7 @@ namespace rpc.pdu {
             }
 
             /// <inheritdoc/>
-            public override bool HasNext() {
-                return _index < _outerInstance.Stub.Length;
-            }
+            public override bool HasNext() => _index < _outerInstance.Stub.Length;
 
             /// <inheritdoc/>
             public override ConnectionOrientedPdu Next() {
@@ -219,9 +217,7 @@ namespace rpc.pdu {
             }
 
             /// <inheritdoc/>
-            public override void Remove() {
-                throw new NotSupportedException();
-            }
+            public override void Remove() => throw new NotSupportedException();
 
             private readonly ResponseCoPdu _outerInstance;
             private readonly int _stubSize;

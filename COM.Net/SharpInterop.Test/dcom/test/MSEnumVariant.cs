@@ -5,15 +5,14 @@
     using org.jinterop.dcom.impls.automation;
     using System;
 
-    //StdCollection.VBCollection
+    // StdCollection.VBCollection
     public class MSEnumVariant {
 
         private readonly JIComServer _comServer;
         private readonly JISession _session;
         private readonly IJIDispatch _dispatch;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSEnumVariant(String address,String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSEnumVariant(string address, string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("StdCollection.VBCollection"), address, _session);
@@ -21,9 +20,8 @@
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(@object.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void performOp() throws org.jinterop.dcom.common.JIException
-        public virtual void PerformOp() {
+
+        public void PerformOp() {
             var i = 0;
             for (; i < 5; i++) {
                 _dispatch.CallMethod("Add", new object[] { i, new JIString("Key-" + i) });
@@ -36,7 +34,7 @@
             var variant = _dispatch.Get("_NewEnum");
 
             var object2 = variant.ObjectAsComObject;
-            //IJIComObject enumObject = (IJIComObject)object2.queryInterface(IJIEnumVARIANT.IID);
+            // IJIComObject enumObject = (IJIComObject)object2.queryInterface(IJIEnumVARIANT.IID);
 
             var enumVARIANT = (IJIEnumVariant)JIObjectFactory.NarrowObject(object2.QueryInterface(Interfaces.IID_IEnumVARIANT));
 
@@ -58,7 +56,6 @@
             var newenum = enumVARIANT.Clone();
             newenum.Reset();
             values = newenum.Next(10);
-            i = 0;
 
             JISession.DestroySession(_session);
         }

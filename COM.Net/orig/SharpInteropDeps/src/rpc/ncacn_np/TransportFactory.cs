@@ -20,14 +20,14 @@
 namespace rpc.ncacn_np {
 
 
-	public class TransportFactory : rpc.TransportFactory {
+    public class TransportFactory : rpc.TransportFactory {
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public rpc.Transport createTransport(String address, java.util.Properties properties) throws rpc.ProviderException
-		public override Transport CreateTransport(string address, Properties properties) {
-			return new RpcTransport(address, properties);
-		}
+        public override Transport CreateTransport(string address, Properties properties) {
+            return new RpcTransport(address, properties);
+        }
 
-	}
+    }
 
 }

@@ -209,9 +209,7 @@ namespace rpc.pdu {
             }
 
             /// <inheritdoc/>
-            public override bool HasNext() {
-                return _index < _outerInstance.Stub.Length;
-            }
+            public override bool HasNext() => _index < _outerInstance.Stub.Length;
 
             /// <inheritdoc/>
             public override ConnectionOrientedPdu Next() {
@@ -236,21 +234,19 @@ namespace rpc.pdu {
                     flags |= PFC_LAST_FRAG;
                 }
                 fragment.Flags = flags;
-                //always use the same callId
-                fragment.CallId = callId;
-                Log.Logger.Verbose("In FragementIterator:next(): callIdCounter is " + callId);
+                // always use the same callId
+                fragment.CallId = _callId;
+                Log.Logger.Verbose("In FragementIterator:next(): callIdCounter is " + _callId);
                 return fragment;
             }
 
             /// <inheritdoc/>
-            public override void Remove() {
-                throw new NotSupportedException();
-            }
+            public override void Remove() => throw new NotSupportedException();
 
             private readonly RequestCoPdu _outerInstance;
             private readonly int _stubSize;
             private int _index;
-            private readonly int callId = s_callIdCounter++;
+            private readonly int _callId = s_callIdCounter++;
         }
 
         private UUID _object;

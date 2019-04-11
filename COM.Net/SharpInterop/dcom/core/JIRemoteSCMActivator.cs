@@ -20,15 +20,15 @@ namespace org.jinterop.dcom.core {
     /// </summary>
     internal sealed class JIRemoteSCMActivator {
 
-        //		HRESULT RemoteCreateInstance(
-        //				[in] handle_t hRpc,
-        //				[in] ORPCTHIS* orpcthis,
-        //				[out] ORPCTHAT* orpcthat,
-        //				[in, unique] MInterfacePointer* pUnkOuter,
-        //				[in, unique] MInterfacePointer* pActProperties,
-        //				[out] MInterfacePointer** ppActProperties
-        //				);
-        internal class RemoteCreateInstance : NdrOp, JIIServerActivation {
+        //        HRESULT RemoteCreateInstance(
+        //                [in] handle_t hRpc,
+        //                [in] ORPCTHIS* orpcthis,
+        //                [out] ORPCTHAT* orpcthat,
+        //                [in, unique] MInterfacePointer* pUnkOuter,
+        //                [in, unique] MInterfacePointer* pActProperties,
+        //                [out] MInterfacePointer** ppActProperties
+        //                );
+        internal class RemoteCreateInstance : NdrOp, IServerActivation {
             private readonly string _targetClsid;
             private readonly string _targetServer;
 #pragma warning disable IDE0052 // Remove unread private members
@@ -37,13 +37,6 @@ namespace org.jinterop.dcom.core {
             private JIComVersion _comVersion;
             private byte[] _dispOid;
 #pragma warning restore IDE0052 // Remove unread private members
-            private JIDualStringArray _dualStringArrayForOxid;
-            private string _ipid;
-            private JIInterfacePointer _mInterfacePointer;
-            private bool _isDual;
-            private string _dispIpid;
-            private int _dispRefs = 5;
-            private bool _isActivationSuccessful;
 
             /// <summary>
             /// Create
@@ -66,20 +59,20 @@ namespace org.jinterop.dcom.core {
                 ndr.WriteUnsignedLong(0); // pUnkOuter, setting it to NULL.
                 ndr.WriteUnsignedLong(0x00020000);
 
-                var index = ndr.Buffer.Index; //recording where we have to write length
-                ndr.WriteUnsignedLong(0); //Len 1
+                var index = ndr.Buffer.Index; // recording where we have to write length
+                ndr.WriteUnsignedLong(0); // Len 1
 
-                //alignment may kick in
-                var index2 = ndr.Buffer.Index; //recording where we have to write length
-                ndr.WriteUnsignedLong(0); //Len 2
+                // alignment may kick in
+                var index2 = ndr.Buffer.Index; // recording where we have to write length
+                ndr.WriteUnsignedLong(0); // Len 2
 
-                var countFromIndex = ndr.Buffer.Index; //recording from where we have to write
+                var countFromIndex = ndr.Buffer.Index; // recording from where we have to write
                 ndr.WriteUnsignedLong(0x574f454d); // Signature MEOW
                 ndr.WriteUnsignedLong(4); // OBJREF_CUSTOM
 
-                //now we will write the Custom Interface pointer to Activation SharpCifs.Util.Sharpen.Properties.
+                // now we will write the Custom Interface pointer to Activation SharpCifs.Util.Sharpen.Properties.
                 try {
-                    //IID_IActivationPropertiesIn
+                    // IID_IActivationPropertiesIn
                     var iid_IActivationPropertiesIn = new UUID("000001a2-0000-0000-c000-000000000046");
                     iid_IActivationPropertiesIn.Encode(ndr, ndr.Buffer);
                     var clsid_IActivationPropertiesIn = new UUID("00000338-0000-0000-c000-000000000046");
@@ -91,17 +84,17 @@ namespace org.jinterop.dcom.core {
                     Console.Write(e.StackTrace);
                 }
 
-                var countEntirePayload = ndr.Buffer.Index; //Entire length of Payload for Custom Marshalling
-                ndr.WriteUnsignedLong(0); //extension
+                var countEntirePayload = ndr.Buffer.Index; // Entire length of Payload for Custom Marshalling
+                ndr.WriteUnsignedLong(0); // extension
                 var writeCountEntirePayloadLength_Here = ndr.Buffer.Index;
-                ndr.WriteUnsignedLong(0); //write here (reserved from objref_custom)
+                ndr.WriteUnsignedLong(0); // write here (reserved from objref_custom)
 
-                //Activation SharpCifs.Util.Sharpen.Properties Blob
+                // Activation SharpCifs.Util.Sharpen.Properties Blob
                 var writeActivationPayload = ndr.Buffer.Index;
-                ndr.WriteUnsignedLong(0); //payload to be written here
+                ndr.WriteUnsignedLong(0); // payload to be written here
 
-                ndr.WriteUnsignedLong(0); //reserved
-                var countActivationPayload = ndr.Buffer.Index; //Only Activation Payload
+                ndr.WriteUnsignedLong(0); // reserved
+                var countActivationPayload = ndr.Buffer.Index; // Only Activation Payload
 
                 var tempStruct = CustomHeader;
                 var lentempStruct = GetLengthOfStruct(tempStruct);
@@ -133,16 +126,16 @@ namespace org.jinterop.dcom.core {
                 tempStruct = ScmRequestInfoData;
                 AddCommonTypeHeaderAndEncode(ndr, tempStruct, lentempStruct);
 
-                //now update the length in Common header struct.
+                // now update the length in Common header struct.
                 WriteEncodingLength(countActivationPayload, countActivationPayload + 16, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
 
                 WriteEncodingLength(countActivationPayload, writeActivationPayload, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
                 WriteEncodingLength(countEntirePayload, writeCountEntirePayloadLength_Here, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
                 WriteEncodingLength(countFromIndex, index, ndr); // Len 1 for the Custom Object Ref
-                WriteEncodingLength(countFromIndex, index2, ndr); //Len 2 for the Custom Object Ref
+                WriteEncodingLength(countFromIndex, index2, ndr); // Len 2 for the Custom Object Ref
             }
 
-            internal virtual void WriteEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr) {
+            internal void WriteEncodingLength(int countFromIndex, int writeAtIndex, NdrCodec ndr) {
                 var length = ndr.Buffer.Index - countFromIndex;
                 var temp = ndr.Buffer.Index;
                 ndr.Buffer.Index = writeAtIndex;
@@ -150,27 +143,27 @@ namespace org.jinterop.dcom.core {
                 ndr.Buffer.Index = temp;
             }
 
-            //Pass the length from outside as to calculate it we need to encode the struct and that mutates the internal data structs
-            //will return total length of the structure including common header and padding.
-            internal virtual int AddCommonTypeHeaderAndEncode(NdrCodec ndr, JIStruct @struct, int lengthOfStruct) {
-                //			will add the common type header and write on wire
+            // Pass the length from outside as to calculate it we need to encode the struct and that mutates the internal data structs
+            // will return total length of the structure including common header and padding.
+            internal int AddCommonTypeHeaderAndEncode(NdrCodec ndr, JIStruct @struct, int lengthOfStruct) {
+                //            will add the common type header and write on wire
 
-                //common header has to be a multiple of 8 bytes. If not it has to be padded at the end.
+                // common header has to be a multiple of 8 bytes. If not it has to be padded at the end.
                 var padding = lengthOfStruct % 8;
 
                 var startI = ndr.Buffer.Index;
 
-                //2.2.6.1 Common Type Header for the Serialization Stream (MS-RPCE)
-                ndr.WriteUnsignedSmall(0x01); //version
-                ndr.WriteUnsignedSmall(0x10); //endianness
-                ndr.WriteUnsignedShort(0x08); //common header length
-                ndr.WriteUnsignedLong(unchecked((int)0xCCCCCCCC)); //Filler
+                // 2.2.6.1 Common Type Header for the Serialization Stream (MS-RPCE)
+                ndr.WriteUnsignedSmall(0x01); // version
+                ndr.WriteUnsignedSmall(0x10); // endianness
+                ndr.WriteUnsignedShort(0x08); // common header length
+                ndr.WriteUnsignedLong(unchecked((int)0xCCCCCCCC)); // Filler
 
-                //now comes the length of the entire CustomHeader without the Common Type Header and this length and Filler.
+                // now comes the length of the entire CustomHeader without the Common Type Header and this length and Filler.
                 var writeAtIndex = ndr.Buffer.Index;
-                ndr.WriteUnsignedLong(0); //write here
+                ndr.WriteUnsignedLong(0); // write here
 
-                ndr.WriteUnsignedLong(0); //filler, set to NULL
+                ndr.WriteUnsignedLong(0); // filler, set to NULL
 
                 var countFromIndex = ndr.Buffer.Index;
 
@@ -179,7 +172,7 @@ namespace org.jinterop.dcom.core {
                 @struct.Encode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL);
                 while (x < listOfDefferedPointers.Count) {
                     var newList = new List<object>();
-                    var referent = ((JIPointer)listOfDefferedPointers[x]).GetReferent();
+                    var referent = ((JIPointer)listOfDefferedPointers[x]).Referent;
                     if (referent is JIStruct) {
                         JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIStruct), referent, newList, JIFlags.FLAG_NULL);
                     }
@@ -191,7 +184,7 @@ namespace org.jinterop.dcom.core {
                             JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray), referent, newList, JIFlags.FLAG_NULL);
                         }
                     }
-                    x++; //incrementing index
+                    x++; // incrementing index
                     listOfDefferedPointers.InsertRange(x, newList);
                 }
 
@@ -205,7 +198,7 @@ namespace org.jinterop.dcom.core {
                 return ndr.Buffer.Index - startI;
             }
 
-            internal virtual JIStruct CustomHeader {
+            internal JIStruct CustomHeader {
                 get {
                     var @struct = GetCustomHeader();
                     var ndr = new NdrCodec {
@@ -214,13 +207,13 @@ namespace org.jinterop.dcom.core {
                     var lenOfStruct = GetLengthOfStruct(@struct);
                     @struct = GetCustomHeader();
                     var len = AddCommonTypeHeaderAndEncode(ndr, @struct, lenOfStruct);
-                    //now we read the length to put into this struct
+                    // now we read the length to put into this struct
                     ndr.Buffer.Index = 8;
-                    //int len = ndr.readUnsignedLong() + 16; //8 for common type header and (4 + 4) for header length and reserved.
+                    // int len = ndr.readUnsignedLong() + 16; // 8 for common type header and (4 + 4) for header length and reserved.
                     @struct = GetCustomHeader();
                     @struct.RemoveMember(1);
                     try {
-                        @struct.AddMember(1, len); //will push Reserved to the next place now.
+                        @struct.AddMember(1, len); // will push Reserved to the next place now.
                     }
                     catch (JIException e) {
                         Console.WriteLine(e.ToString());
@@ -245,22 +238,22 @@ namespace org.jinterop.dcom.core {
             /// DWORD* pdwReserved;
             /// } CustomHeader;
             /// </summary>
-            internal virtual JIStruct GetCustomHeader() {
+            internal JIStruct GetCustomHeader() {
 
                 var @struct = new JIStruct();
 
                 try {
 
-                    @struct.AddMember(0); //Total Activation Blob size
+                    @struct.AddMember(0); // Total Activation Blob size
 
-                    //Correct length set in getCustomHeader.
-                    @struct.AddMember(0); //Total Custom header size including the common type header (from this common type header to start of the next common type header)
+                    // Correct length set in getCustomHeader.
+                    @struct.AddMember(0); // Total Custom header size including the common type header (from this common type header to start of the next common type header)
 
                     @struct.AddMember(0);
 
                     @struct.AddMember(2);
 
-                    //sending 5 cIfs
+                    // sending 5 cIfs
                     @struct.AddMember(5);
 
                     @struct.AddMember(new UUID(UUID.NIL_UUID));
@@ -268,7 +261,7 @@ namespace org.jinterop.dcom.core {
                     @struct.AddMember(new JIPointer(new JIArray(new UUID[]{ new UUID("000001b9-0000-0000-c000-000000000046"), new UUID("000001ab-0000-0000-c000-000000000046"), new UUID("000001a6-0000-0000-c000-000000000046"), new UUID("000001a4-0000-0000-c000-000000000046"), new UUID("000001aa-0000-0000-c000-000000000046")
                 }, true)));
 
-                    //now come their sizes including their Common headers.
+                    // now come their sizes including their Common headers.
                     var ndr2 = new NdrCodec {
                         Buffer = new NdrBuffer(new byte[512], 0)
                     };
@@ -310,15 +303,15 @@ namespace org.jinterop.dcom.core {
                     var lenScmRequestInfoDataProp = AddCommonTypeHeaderAndEncode(ndr2, tempStruct, lentempStruct);
 
 
-                    @struct.AddMember(new JIPointer(new JIArray(new int?[] { lenSpecialSystemProp, lenInstantiationInfoProp, lenSecurityInfoProp, lenServerLocationProp, lenScmRequestInfoDataProp }, true)));
+                    @struct.AddMember(new JIPointer(new JIArray(new int[] { lenSpecialSystemProp, lenInstantiationInfoProp, lenSecurityInfoProp, lenServerLocationProp, lenScmRequestInfoDataProp }, true)));
 
-                    @struct.AddMember(0); //reserved
+                    @struct.AddMember(0); // reserved
 
                 }
                 catch (JIException e) {
                     Console.WriteLine(e.ToString());
                     Console.Write(e.StackTrace);
-                } //don't know will correct later.
+                } // don't know will correct later.
 
                 return @struct;
             }
@@ -338,7 +331,7 @@ namespace org.jinterop.dcom.core {
             /// } InstantiationInfoData
             ///
             /// </summary>
-            internal virtual JIStruct GetInstantiationInfoData() {
+            internal JIStruct GetInstantiationInfoData() {
 
                 var @struct = new JIStruct();
                 try {
@@ -347,15 +340,14 @@ namespace org.jinterop.dcom.core {
                     @struct.AddMember(0x14); //  CLSCTX_INPROC_HANDLER | CLSCTX_LOCAL_SERVER | CLSCTX_INPROC_SERVER16
                     @struct.AddMember(0);
                     @struct.AddMember(0);
-                    @struct.AddMember(2); //IUnknown and IDispatch
+                    @struct.AddMember(2); // IUnknown and IDispatch
                     @struct.AddMember(0);
-                    var ptr = new JIPointer(new JIArray(new UUID[] { new UUID("00000000-0000-0000-c000-000000000046"), new UUID("00020400-0000-0000-c000-000000000046") }, true)) {
-                        Flags = JIFlags.FLAG_REPRESENTATION_ARRAY
-                    };
+                    var ptr = new JIPointer(new JIArray(new UUID[] { new UUID("00000000-0000-0000-c000-000000000046"), new UUID("00020400-0000-0000-c000-000000000046") }, true));
+                    ptr.SetFlags(JIFlags.FLAG_REPRESENTATION_ARRAY);
                     @struct.AddMember(ptr);
 
-                    //size of the current struct, why ? why ???
-                    @struct.AddMember(0); //don't know will replace later on. (remove and add)
+                    // size of the current struct, why ? why ???
+                    @struct.AddMember(0); // don't know will replace later on. (remove and add)
                     @struct.AddMember(Convert.ToInt16((short)JISystem.COMVersion.MajorVersion));
                     @struct.AddMember(Convert.ToInt16((short)JISystem.COMVersion.MinorVersion));
 
@@ -376,7 +368,7 @@ namespace org.jinterop.dcom.core {
             /// DWORD* pdwReserved;
             /// } SecurityInfoData
             /// </summary>
-            internal virtual JIStruct SecurityInfoData {
+            internal JIStruct SecurityInfoData {
                 get {
                     var @struct = new JIStruct();
                     try {
@@ -407,7 +399,7 @@ namespace org.jinterop.dcom.core {
             /// DWORD contextId;
             /// } LocationInfoData;
             /// </summary>
-            internal virtual JIStruct ServerLocationInfo {
+            internal JIStruct ServerLocationInfo {
                 get {
                     var @struct = new JIStruct();
                     try {
@@ -433,7 +425,7 @@ namespace org.jinterop.dcom.core {
             /// customREMOTE_REQUEST_SCM_INFO* remoteRequest;
             /// } ScmRequestInfoData
             /// </summary>
-            internal virtual JIStruct ScmRequestInfoData {
+            internal JIStruct ScmRequestInfoData {
                 get {
                     var @struct = new JIStruct();
                     try {
@@ -443,7 +435,7 @@ namespace org.jinterop.dcom.core {
                         var _customRemoteRequestSCMInfo = new JIStruct();
                         _customRemoteRequestSCMInfo.AddMember(2);
                         _customRemoteRequestSCMInfo.AddMember((short)1);
-                        _customRemoteRequestSCMInfo.AddMember(new JIPointer(new JIArray(new short?[] { 0x07 }, true)));
+                        _customRemoteRequestSCMInfo.AddMember(new JIPointer(new JIArray(new short[] { 0x07 }, true)));
                         @struct.AddMember(new JIPointer(_customRemoteRequestSCMInfo));
 
                     }
@@ -457,7 +449,7 @@ namespace org.jinterop.dcom.core {
             }
 
 
-            internal virtual JIStruct InstantiationInfoData {
+            internal JIStruct InstantiationInfoData {
                 get {
                     var @struct = GetInstantiationInfoData();
                     var lenOfStruct = GetLengthOfStruct(@struct);
@@ -466,13 +458,13 @@ namespace org.jinterop.dcom.core {
                         Buffer = new NdrBuffer(new byte[512], 0)
                     };
                     var len = AddCommonTypeHeaderAndEncode(ndr, @struct, lenOfStruct);
-                    //now we read the length to put into this struct
-                    //			ndr.getBuffer().setIndex(8);
-                    //			int len = ndr.readUnsignedLong();
+                    // now we read the length to put into this struct
+                    //            ndr.getBuffer().setIndex(8);
+                    //            int len = ndr.readUnsignedLong();
                     @struct = GetInstantiationInfoData();
                     @struct.RemoveMember(7);
                     try {
-                        @struct.AddMember(7, len); //will push COMVERSION to last place now.
+                        @struct.AddMember(7, len); // will push COMVERSION to last place now.
                     }
                     catch (JIException e) {
                         Console.WriteLine(e.ToString());
@@ -499,7 +491,7 @@ namespace org.jinterop.dcom.core {
             /// DWORD Reserved3[5];
             /// } SpecialPropertiesData;
             /// </summary>
-            internal virtual JIStruct SpecialPropertyData {
+            internal JIStruct SpecialPropertyData {
                 get {
 
                     var @struct = new JIStruct();
@@ -508,7 +500,7 @@ namespace org.jinterop.dcom.core {
                         @struct.AddMember(0x00000000);
                         @struct.AddMember(0x00000000);
                         @struct.AddMember(0x00000000);
-                        @struct.AddMember(0x00000001); //auth level none ? Why ?
+                        @struct.AddMember(0x00000001); // auth level none ? Why ?
                         @struct.AddMember(new UUID(UUID.NIL_UUID));
                         @struct.AddMember(0x00000000);
                         @struct.AddMember(0x14);
@@ -531,8 +523,8 @@ namespace org.jinterop.dcom.core {
             }
 
 
-            //discard this struct after use and create a new one
-            internal virtual int GetLengthOfStruct(JIStruct @struct) {
+            // discard this struct after use and create a new one
+            internal int GetLengthOfStruct(JIStruct @struct) {
                 var ndr = new NdrCodec {
                     Buffer = new NdrBuffer(new byte[512], 0)
                 };
@@ -543,7 +535,7 @@ namespace org.jinterop.dcom.core {
                 @struct.Encode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL);
                 while (x < listOfDefferedPointers.Count) {
                     var newList = new List<object>();
-                    var referent = ((JIPointer)listOfDefferedPointers[x]).GetReferent();
+                    var referent = ((JIPointer)listOfDefferedPointers[x]).Referent;
                     if (referent is JIStruct) {
                         JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIStruct), referent, newList, JIFlags.FLAG_NULL);
                     }
@@ -555,7 +547,7 @@ namespace org.jinterop.dcom.core {
                             JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray), referent, newList, JIFlags.FLAG_NULL);
                         }
                     }
-                    x++; //incrementing index
+                    x++; // incrementing index
                     listOfDefferedPointers.InsertRange(x, newList);
                 }
 
@@ -563,19 +555,19 @@ namespace org.jinterop.dcom.core {
             }
 
 
-            //Skip common header and return total length of the object buffer inside. We will need to skip the
-            //padded bytes as well once we have analyzed the complete objectBuffer.
-            internal virtual int SkipCommonHeader(NdrCodec ndr) {
-                ndr.ReadUnsignedSmall(); //version
-                ndr.ReadUnsignedSmall(); //endianness
-                ndr.ReadUnsignedShort(); //common header length
-                ndr.ReadUnsignedLong(); //Filler
+            // Skip common header and return total length of the object buffer inside. We will need to skip the
+            // padded bytes as well once we have analyzed the complete objectBuffer.
+            internal int SkipCommonHeader(NdrCodec ndr) {
+                ndr.ReadUnsignedSmall(); // version
+                ndr.ReadUnsignedSmall(); // endianness
+                ndr.ReadUnsignedShort(); // common header length
+                ndr.ReadUnsignedLong(); // Filler
                 var retlength = ndr.ReadUnsignedLong();
-                ndr.ReadUnsignedLong(); //reserved
+                ndr.ReadUnsignedLong(); // reserved
                 return retlength;
             }
 
-            internal virtual void SkipBytes(int objectBufferLength, int startIndex, NdrCodec ndr) {
+            internal void SkipBytes(int objectBufferLength, int startIndex, NdrCodec ndr) {
                 var bytesRead = ndr.Buffer.Index - startIndex;
                 if (objectBufferLength > bytesRead) {
                     ndr.ReadOctetArray(new byte[objectBufferLength - bytesRead], 0, objectBufferLength - bytesRead);
@@ -588,12 +580,12 @@ namespace org.jinterop.dcom.core {
 
                 JIOrpcThat.Decode(ndr);
 
-                //MInterfacePointer** ppActProperties
+                // MInterfacePointer** ppActProperties
 
                 var listOfDefferedPointers = new List<object>();
                 var ppActProperties = (JIInterfacePointer)JIMarshalUnMarshalHelper.Deserialize(ndr, typeof(JIInterfacePointer), listOfDefferedPointers, JIFlags.FLAG_NULL, new Hashtable());
 
-                //Class not registered or any other exception probably.
+                // Class not registered or any other exception probably.
                 if (ppActProperties == null) {
                     var hResult = ndr.ReadUnsignedLong();
                     throw new JIRuntimeException(hResult);
@@ -601,13 +593,13 @@ namespace org.jinterop.dcom.core {
 
                 // we should now be standing at the Activation SharpCifs.Util.Sharpen.Properties Blob right now.
                 var totalLength = ndr.ReadUnsignedLong();
-                ndr.ReadUnsignedLong(); //reserved
+                ndr.ReadUnsignedLong(); // reserved
 
-                //Custom Header begins
-                //lets check what all has been returned back to us. We are only interested in two SharpCifs.Util.Sharpen.Properties (ScmReply and PropsOut)
-                //Must contain the following properties
-                //			ScmReplyInfoData 2.2.22.2.8 Required
-                //			PropsOutInfo 2.2.22.2.9 Required
+                // Custom Header begins
+                // lets check what all has been returned back to us. We are only interested in two SharpCifs.Util.Sharpen.Properties (ScmReply and PropsOut)
+                // Must contain the following properties
+                //            ScmReplyInfoData 2.2.22.2.8 Required
+                //            PropsOutInfo 2.2.22.2.9 Required
 
                 // typedef struct tagCustomHeader {
                 // DWORD totalSize;
@@ -630,7 +622,7 @@ namespace org.jinterop.dcom.core {
                     @struct.AddMember(typeof(int));
                     @struct.AddMember(typeof(int));
                     @struct.AddMember(typeof(int));
-                    @struct.AddMember(typeof(int)); //cIfs
+                    @struct.AddMember(typeof(int)); // cIfs
                     @struct.AddMember(typeof(UUID));
                     @struct.AddMember(new JIPointer(new JIArray(typeof(UUID), null, 1, true)));
                     @struct.AddMember(new JIPointer(new JIArray(typeof(int), null, 1, true)));
@@ -645,27 +637,27 @@ namespace org.jinterop.dcom.core {
 
                 SkipBytes(objectBufferLength, startIndex, ndr);
 
-                //now we need to check for the indexes of our relevant SharpCifs.Util.Sharpen.Properties
+                // now we need to check for the indexes of our relevant SharpCifs.Util.Sharpen.Properties
 
-                var clsidProps = (UUID[])((JIArray)((JIPointer)@struct.GetMember(6)).GetReferent()).ArrayInstance;
+                var clsidProps = (UUID[])((JIArray)((JIPointer)@struct.GetMember(6)).Referent).ArrayInstance;
 
-                var clsidPropsLengths = (int[])((JIArray)((JIPointer)@struct.GetMember(7)).GetReferent()).ArrayInstance;
+                var clsidPropsLengths = (int[])((JIArray)((JIPointer)@struct.GetMember(7)).Referent).ArrayInstance;
 
-                //using the clsidPropsLengths we can skip the NDR buffer of the properties not needed.
+                // using the clsidPropsLengths we can skip the NDR buffer of the properties not needed.
                 IList<string> requiredProps = new List<string> {
                     "000001b6-0000-0000-c000-000000000046".ToUpper(),
                     "00000339-0000-0000-c000-000000000046".ToUpper()
                 };
-                //we will go sequentially so if a property is not found we skip that many bytes ahead
+                // we will go sequentially so if a property is not found we skip that many bytes ahead
                 for (var i = 0; i < clsidProps.Length; i++) {
                     if (requiredProps.Contains(clsidProps[i].ToString().ToUpper())) {
-                        //its present so analyse
+                        // its present so analyse
                         objectBufferLength = SkipCommonHeader(ndr);
                         startIndex = ndr.Buffer.Index;
                         @struct = new JIStruct();
 
                         if (clsidProps[i].ToString().Equals("000001b6-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
-                            try { //ScmReplyInfo
+                            try { // ScmReplyInfo
 
                                 // typedef struct tagScmReplyInfoData {
                                 // DWORD* pdwReserved;
@@ -683,7 +675,7 @@ namespace org.jinterop.dcom.core {
                                 // DWORD authnHint;
                                 // COMVERSION serverVersion;
                                 // } customREMOTE_REPLY_SCM_INFO;
-                                //we need to take out oxid only way to do it is byte by byte
+                                // we need to take out oxid only way to do it is byte by byte
                                 remoteReplyStruct.AddMember(typeof(byte));
                                 remoteReplyStruct.AddMember(typeof(byte));
                                 remoteReplyStruct.AddMember(typeof(byte));
@@ -692,12 +684,12 @@ namespace org.jinterop.dcom.core {
                                 remoteReplyStruct.AddMember(typeof(byte));
                                 remoteReplyStruct.AddMember(typeof(byte));
                                 remoteReplyStruct.AddMember(typeof(byte));
-                                //8 bytes (4 + 4 LE) = OXID
+                                // 8 bytes (4 + 4 LE) = OXID
                                 remoteReplyStruct.AddMember(new JIPointer(typeof(JIDualStringArray), false));
                                 remoteReplyStruct.AddMember(typeof(UUID));
                                 remoteReplyStruct.AddMember(typeof(int));
-                                //COM Version can be taken as two shorts.
-                                //if this COM version is less than 5.6 than we throw an exception
+                                // COM Version can be taken as two shorts.
+                                // if this COM version is less than 5.6 than we throw an exception
                                 remoteReplyStruct.AddMember(typeof(short));
                                 remoteReplyStruct.AddMember(typeof(short));
 
@@ -710,9 +702,9 @@ namespace org.jinterop.dcom.core {
                             }
 
                             @struct = DecodeStruct(@struct, ndr);
-                            @struct = (JIStruct)((JIPointer)@struct.GetMember(1)).GetReferent();
+                            @struct = (JIStruct)((JIPointer)@struct.GetMember(1)).Referent;
 
-                            //now we need to get the IPID and Dual String Array.
+                            // now we need to get the IPID and Dual String Array.
                             var ndr2 = new NdrCodec();
                             var buffer = new NdrBuffer(new byte[8], 0);
                             buffer.Buf[0] = (byte)@struct.GetMember(0);
@@ -726,14 +718,14 @@ namespace org.jinterop.dcom.core {
                             ndr2.Buffer = buffer;
 
                             _oxid = JIMarshalUnMarshalHelper.ReadOctetArrayLE(ndr2, 8);
-                            _dualStringArrayForOxid = (JIDualStringArray)((JIPointer)@struct.GetMember(8)).GetReferent();
-                            _ipid = ((UUID)@struct.GetMember(9)).ToString();
+                            DualStringArrayForOxid = (JIDualStringArray)((JIPointer)@struct.GetMember(8)).Referent;
+                            IPID = ((UUID)@struct.GetMember(9)).ToString();
                             _authenticationHint = (int)@struct.GetMember(10);
                             _comVersion = new JIComVersion((short)@struct.GetMember(11), (short)@struct.GetMember(12));
                         }
                         else {
                             if (clsidProps[i].ToString().Equals("00000339-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
-                                try { //PropsOutInfo
+                                try { // PropsOutInfo
 
                                     // typedef struct tagPropsOutInfo {
                                     // [range(1, MAX_REQUESTED_INTERFACES)]
@@ -745,8 +737,8 @@ namespace org.jinterop.dcom.core {
 
                                     @struct.AddMember(typeof(int));
                                     @struct.AddMember(new JIPointer(new JIArray(typeof(UUID), null, 1, true)));
-                                    @struct.AddMember(new JIPointer(new JIArray(typeof(int), null, 1, true))); //Hresult,
-                                                                                                                //0 is good anything else is bad and corresponding MInterfacePointer will not exist.
+                                    @struct.AddMember(new JIPointer(new JIArray(typeof(int), null, 1, true))); // Hresult,
+                                                                                                                // 0 is good anything else is bad and corresponding MInterfacePointer will not exist.
                                     @struct.AddMember(new JIPointer(new JIArray(typeof(JIInterfacePointer), null, 1, true)));
 
                                 }
@@ -757,29 +749,29 @@ namespace org.jinterop.dcom.core {
 
                                 @struct = DecodeStruct(@struct, ndr);
 
-                                var marshalledIp = (JIInterfacePointer[])((JIArray)((JIPointer)@struct.GetMember(3)).GetReferent()).ArrayInstance;
+                                var marshalledIp = (JIInterfacePointer[])((JIArray)((JIPointer)@struct.GetMember(3)).Referent).ArrayInstance;
 
-                                var iids = (UUID[])((JIArray)((JIPointer)@struct.GetMember(1)).GetReferent()).ArrayInstance;
+                                var iids = (UUID[])((JIArray)((JIPointer)@struct.GetMember(1)).Referent).ArrayInstance;
 
-                                //now get the hresults and only those IIDs are supported which have 0x00000000
-                                //in our case IUnknown will always be supported (naturally) where as IDispatch may or may not be.
-                                var hresults = (int?[])((JIArray)((JIPointer)@struct.GetMember(2)).GetReferent()).ArrayInstance;
+                                // now get the hresults and only those IIDs are supported which have 0x00000000
+                                // in our case IUnknown will always be supported (naturally) where as IDispatch may or may not be.
+                                var hresults = (int[])((JIArray)((JIPointer)@struct.GetMember(2)).Referent).ArrayInstance;
                                 for (var j = 0; j < hresults.Length; j++) {
                                     if (hresults[j] == 0x00000000) {
-                                        //pointer exists
-                                        //if it is Disp IID then set dual stuff else it has to be IUnknown, save it.
+                                        // pointer exists
+                                        // if it is Disp IID then set dual stuff else it has to be IUnknown, save it.
                                         if (iids[j].ToString().Equals("00000000-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
-                                            //IUnknown
-                                            _mInterfacePointer = marshalledIp[j];
+                                            // IUnknown
+                                            MInterfacePointer = marshalledIp[j];
                                         }
                                         else if (iids[j].ToString().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
-                                            //dual is supported since the IDispatch was obtained
-                                            _isDual = true;
-                                            //eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
+                                            // dual is supported since the IDispatch was obtained
+                                            Dual = true;
+                                            // eat this keeping only the IPID for cleanup, let the user perform another queryInterface for this.
                                             var ptr = marshalledIp[j];
-                                            _dispIpid = ptr.IPID;
+                                            DispIpid = ptr.IPID;
                                             _dispOid = ptr.OID;
-                                            _dispRefs = ((JIStdObjRef)ptr.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
+                                            DispRefs = ((JIStdObjRef)ptr.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs;
                                         }
                                     }
                                 }
@@ -797,10 +789,10 @@ namespace org.jinterop.dcom.core {
                     }
                 }
 
-                _isActivationSuccessful = true;
+                ActivationSuccessful = true;
             }
 
-            internal virtual JIStruct DecodeStruct(JIStruct @struct, NdrCodec ndr) {
+            internal JIStruct DecodeStruct(JIStruct @struct, NdrCodec ndr) {
                 var listOfDefferedPointers = new List<object>();
                 var additionalData = new Hashtable();
                 @struct = @struct.Decode(ndr, listOfDefferedPointers, JIFlags.FLAG_NULL, additionalData);
@@ -809,29 +801,26 @@ namespace org.jinterop.dcom.core {
                     var newList = new List<object>();
                     var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, additionalData);
                     ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
-                    x++; //incrementing index
+                    x++; // incrementing index
                     listOfDefferedPointers.InsertRange(x, newList);
                 }
 
                 return @struct;
             }
 
-            public virtual bool ActivationSuccessful => _isActivationSuccessful;
+            public bool ActivationSuccessful { get; private set; }
 
-            public virtual JIDualStringArray DualStringArrayForOxid => _dualStringArrayForOxid;
+            public JIDualStringArray DualStringArrayForOxid { get; private set; }
 
-            public virtual JIInterfacePointer MInterfacePointer => _mInterfacePointer;
+            public JIInterfacePointer MInterfacePointer { get; private set; }
 
-            public virtual string IPID => _ipid;
+            public string IPID { get; private set; }
 
-            public virtual bool Dual => _isDual;
+            public bool Dual { get; private set; }
 
-            public virtual string DispIpid {
-                get => _dispIpid;
-                set => _dispIpid = value;
-            }
+            public string DispIpid { get; set; }
 
-            public virtual int DispRefs => _dispRefs;
+            public int DispRefs { get; private set; } = 5;
         }
     }
 }

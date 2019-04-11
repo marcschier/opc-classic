@@ -7,15 +7,15 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-
 namespace org.jinterop.winreg {
+
     /// <summary>
     /// Registry value types
     /// </summary>
     public enum RegValueType {
 
         /// <summary>
-        /// No type (the stored value, if any) 
+        /// No type (the stored value, if any)
         /// </summary>
         REG_NONE = 0,
 
@@ -55,7 +55,7 @@ namespace org.jinterop.winreg {
         REG_LINK,
 
         /// <summary>
-        /// A multi-string value, which is an ordered list of non-empty 
+        /// A multi-string value, which is an ordered list of non-empty
         /// strings, normally stored and exposed in UTF-16LE
         /// </summary>
         REG_MULTI_SZ = 7,

@@ -19,17 +19,17 @@
 namespace rpc {
 
 
-	public class IntegrityException : RpcException {
+    public class IntegrityException : RpcException {
 
-		/// 
-		private const long SerialVersionUID = 6809424276771390469L;
+        /// 
+        private const long SerialVersionUID = 6809424276771390469L;
 
-		public IntegrityException() : base() {
-		}
+        public IntegrityException() : base() {
+        }
 
-		public IntegrityException(string message) : base(message) {
-		}
+        public IntegrityException(string message) : base(message) {
+        }
 
-	}
+    }
 
 }

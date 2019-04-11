@@ -21,15 +21,15 @@ namespace org.jinterop.dcom.core {
     /// to be serialized\deserialzed.
     /// Sample Usage :-
     /// <code>
-    /// 	JIUnion forTypeDesc = new JIUnion(Short.class);
-    ///     JIPointer ptrToTypeDesc = new JIPointer(typeDesc);
-    ///     JIPointer ptrToArrayDesc = new JIPointer(arrayDesc);
-    ///     forTypeDesc.addMember(TypeDesc.VT_PTR,ptrToTypeDesc);
-    ///     forTypeDesc.addMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
-    ///     forTypeDesc.addMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
-    ///     forTypeDesc.addMember(TypeDesc.VT_USERDEFINED,Integer.class);
+    ///    JIUnion forTypeDesc = new JIUnion(typeof(short));
+    ///    JIPointer ptrToTypeDesc = new JIPointer(typeDesc);
+    ///    JIPointer ptrToArrayDesc = new JIPointer(arrayDesc);
+    ///    forTypeDesc.AddMember(TypeDesc.VT_PTR,ptrToTypeDesc);
+    ///    forTypeDesc.AddMember(TypeDesc.VT_SAFEARRAY,ptrToTypeDesc);
+    ///    forTypeDesc.AddMember(TypeDesc.VT_CARRAY,ptrToArrayDesc);
+    ///    forTypeDesc.AddMember(TypeDesc.VT_USERDEFINED,typeof(int));
     /// </code>
-    /// The TypeDesc.VT_PTR is an <code>Integer</code> and is used
+    /// The TypeDesc.VT_PTR is an <code>int</code> and is used
     /// as a discriminant to select ptrTypeDesc, TypeDesc.VT_CARRAY
     /// chooses ptrArrayDesc.
     /// </summary>
@@ -49,21 +49,21 @@ namespace org.jinterop.dcom.core {
 
         /// <summary>
         /// Creates an object with discriminant type specified. Used only during deserializing
-        ///  the union. Can only be of the type <code>Integer</code>,<code>Short</code>,<code>Boolean</code>
-        ///  or <code>Character</code>.
+        /// the union. Can only be of the type <code>Integer</code>,<code>Short</code>,<code>Boolean</code>
+        /// or <code>Character</code>.
         /// </summary>
         /// <param name="discriminantClass"></param>
         /// <exception cref="ArgumentException"> if the
         /// <code>discriminantClass</code> is not of the type as specified
         /// above. </exception>
         public JIUnion(Type discriminantClass) {
-            //the discriminant can only be a int, bool or char
+            // the discriminant can only be a int, bool or char
 
             if (!discriminantClass.Equals(typeof(int)) &&
                 !discriminantClass.Equals(typeof(short)) &&
                 !discriminantClass.Equals(typeof(bool)) &&
                 !discriminantClass.Equals(typeof(char))) {
-                //has to be from one of these. Rule from IDL.
+                // has to be from one of these. Rule from IDL.
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNION_INCORRECT_DISC));
             }
             _discriminantClass = discriminantClass;
@@ -115,9 +115,9 @@ namespace org.jinterop.dcom.core {
                 member = JIStruct.MEMBER_IS_EMPTY;
             }
             Members[discriminant] = member;
-            //do not need a seperate list of pointers like the struct,
-            //since based on the discriminant only 1 pointer
-            //(if present) can be deserialized\serialized.
+            // do not need a seperate list of pointers like the struct,
+            // since based on the discriminant only 1 pointer
+            // (if present) can be deserialized\serialized.
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace org.jinterop.dcom.core {
                     JIErrorCodes.JI_UNION_DISCRMINANT_SERIALIZATION_ERROR);
             }
 
-            //first write the discriminant and then the member
+            // first write the discriminant and then the member
             var keys = Members.Keys.Iterator();
             JIMarshalUnMarshalHelper.Serialize(ndr, _discriminantClass,
                 keys.Next(), listOfDefferedPointers, FLAGS);
@@ -147,7 +147,7 @@ namespace org.jinterop.dcom.core {
             keys = Members.Values.Iterator();
             var value = keys.Next();
 
-            //will not write empty union members
+            // will not write empty union members
             if (!value.Equals(JIStruct.MEMBER_IS_EMPTY)) {
                 JIMarshalUnMarshalHelper.Serialize(ndr, value.GetType(), value,
                     listOfDefferedPointers, FLAGS);
@@ -169,22 +169,22 @@ namespace org.jinterop.dcom.core {
                 throw new JIRuntimeException(JIErrorCodes.JI_UNION_DISCRMINANT_DESERIALIZATION_ERROR);
             }
 
-            //shallowClone();
-            //first write the discriminant and then the member
+            // shallowClone();
+            // first write the discriminant and then the member
             var retVal = new JIUnion {
                 _discriminantClass = _discriminantClass
             };
 
             var key = JIMarshalUnMarshalHelper.Deserialize(ndr, _discriminantClass,
                 listOfDefferedPointers, FLAGS, additionalData);
-            //next thing to be deserialized is the member
+            // next thing to be deserialized is the member
             var value = Members[key];
-            //should allow null since this could be a "default"
+            // should allow null since this could be a "default"
             if (value == null) {
                 value = JIStruct.MEMBER_IS_EMPTY;
             }
 
-            //will not write empty union members
+            // will not write empty union members
             if (!value.Equals(JIStruct.MEMBER_IS_EMPTY)) {
                 retVal.Members[key] = JIMarshalUnMarshalHelper.Deserialize(
                     ndr, value, listOfDefferedPointers, FLAGS, additionalData);
@@ -205,7 +205,7 @@ namespace org.jinterop.dcom.core {
                 foreach (var o in Members.Keys) {
                     var temp = JIMarshalUnMarshalHelper.GetLengthInBytes(
                         o.GetType(), o, JIFlags.FLAG_NULL);
-                    length = length > temp ? length : temp; //length of the largest member
+                    length = length > temp ? length : temp; // length of the largest member
                 }
                 return length + JIMarshalUnMarshalHelper.GetLengthInBytes(
                     _discriminantClass, null, JIFlags.FLAG_NULL);
@@ -219,11 +219,11 @@ namespace org.jinterop.dcom.core {
             get {
                 var alignment = 0;
                 if (_discriminantClass.Equals(typeof(int))) {
-                    //align with 4 bytes
+                    // align with 4 bytes
                     alignment = 4;
                 }
                 else if (_discriminantClass.Equals(typeof(short))) {
-                    //align with 2
+                    // align with 2
                     alignment = 2;
                 }
                 return alignment;

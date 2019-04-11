@@ -7,7 +7,6 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-
 namespace org.jinterop.dcom.transport {
     using rpc;
     using rpc.core;

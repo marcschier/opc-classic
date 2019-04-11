@@ -17,16 +17,16 @@
 
 namespace rpc {
 
-	public interface Connection {
+    public interface Connection {
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void transmit(ConnectionOrientedPdu pdu, Transport transport) throws java.io.IOException;
-		void Transmit(ConnectionOrientedPdu pdu, Transport transport);
+        void Transmit(ConnectionOrientedPdu pdu, Transport transport);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public ConnectionOrientedPdu receive(Transport transport) throws java.io.IOException;
-		ConnectionOrientedPdu Receive(Transport transport);
+        ConnectionOrientedPdu Receive(Transport transport);
 
-	}
+    }
 
 }

@@ -15,35 +15,35 @@
 
 namespace org.jinterop.dcom.impls.automation {
 
-	using JIException = org.jinterop.dcom.common.JIException;
+    using JIException = org.jinterop.dcom.common.JIException;
 
-	/// <summary>
-	/// Class for signifying Automation related exceptions.
-	/// 
-	/// @since 2.01
-	/// </summary>
-	public sealed class JIAutomationException : JIException {
+    /// <summary>
+    /// Class for signifying Automation related exceptions.
+    /// 
+    /// @since 2.01
+    /// </summary>
+    public sealed class JIAutomationException : JIException {
 
-		public JIAutomationException(JIException e) : base(e.ErrorCode,e.Message,e.InnerException) {
-		}
+        public JIAutomationException(JIException e) : base(e.ErrorCode,e.Message,e.InnerException) {
+        }
 
-		private JIExcepInfo ExcepInfo_Renamed = new JIExcepInfo();
+        private JIExcepInfo ExcepInfo_Renamed = new JIExcepInfo();
 
-		public JIExcepInfo ExcepInfo {
-			set {
-				this.ExcepInfo_Renamed.ErrorCode_Renamed = value.ErrorCode_Renamed;
-				this.ExcepInfo_Renamed.ExcepDesc_Renamed = value.ExcepDesc_Renamed;
-				this.ExcepInfo_Renamed.ExcepHelpfile = value.ExcepHelpfile;
-				this.ExcepInfo_Renamed.ExcepSource_Renamed = value.ExcepSource_Renamed;
-			}
-			get {
-				return ExcepInfo_Renamed;
-			}
-		}
+        public JIExcepInfo ExcepInfo {
+            set {
+                this.ExcepInfo_Renamed.ErrorCode_Renamed = value.ErrorCode_Renamed;
+                this.ExcepInfo_Renamed.ExcepDesc_Renamed = value.ExcepDesc_Renamed;
+                this.ExcepInfo_Renamed.ExcepHelpfile = value.ExcepHelpfile;
+                this.ExcepInfo_Renamed.ExcepSource_Renamed = value.ExcepSource_Renamed;
+            }
+            get {
+                return ExcepInfo_Renamed;
+            }
+        }
 
-		/// 
-		private const long SerialVersionUID = 6969766293190131365L;
+        /// 
+        private const long SerialVersionUID = 6969766293190131365L;
 
-	}
+    }
 
 }

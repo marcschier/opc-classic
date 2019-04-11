@@ -8,37 +8,33 @@
 
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
         private IJIDispatch _dispatchOfWorkSheets;
         private IJIDispatch _dispatchOfWorkBook;
         private IJIDispatch _dispatchOfWorkSheet;
         private readonly JISession _session;
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSExcel2(String address, String[] args) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSExcel2(string address, string[] args) {
             _session = JISession.CreateSession(args[1], args[2], args[3]);
-            //		session.useSessionSecurity(true);
+            //        session.useSessionSecurity(true);
             _comServer = new JIComServer(JIProgId.ValueOf("Excel.Application"), address, _session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void StartExcel() {
+
+        public void StartExcel() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowExcel() {
+
+        public void ShowExcel() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(true);
             _dispatch.Put(dispId, variant);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void createWorkSheet() throws org.jinterop.dcom.common.JIException
-        public virtual void CreateWorkSheet() {
+
+        public void CreateWorkSheet() {
             var dispId = _dispatch.GetIDsOfNames("Workbooks");
 
             var outVal = _dispatch.Get(dispId);
@@ -57,9 +53,8 @@
             _dispatchOfWorkSheet = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void pasteArrayToWorkSheet() throws org.jinterop.dcom.common.JIException
-        public virtual void PasteArrayToWorkSheet() {
+
+        public void PasteArrayToWorkSheet() {
             var dispId = _dispatchOfWorkSheet.GetIDsOfNames("Range");
             var variant = new JIVariant(new JIString("A1:C3"));
             object[] @out = { typeof(JIVariant) };

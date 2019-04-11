@@ -29,9 +29,9 @@
 
             try {
                 var registry = JIWinRegFactory.Instance.GetWinreg(authInfo, args[0], true);
-                //Open HKLM
+                // Open HKLM
                 var policyHandle = registry.OpenHKLM();
-                //Open a key here
+                // Open a key here
                 var policyHandle2 = registry.OpenKey(policyHandle, "Software\\Classes", RegKeyAccess.KEY_ALL_ACCESS);
 
                 Console.WriteLine("Printing first 1000 entries under \"Software\\Classes\"...");
@@ -81,29 +81,29 @@
                 registry.CloseKey(policyHandle);
                 registry.CloseConnection();
 
-                //			
-                //			//Open HKCR
-                //			policyHandle = registry.OpenHKCR();
-                //			
-                //			policyHandle2 = registry.OpenKey(policyHandle,"ClSID",IJIWinReg.KEY_ALL_ACCESS);
-                //			policyHandle3 = registry.CreateKey(policyHandle2,"j-Interop007",IJIWinReg.REG_OPTION_NON_VOLATILE,IJIWinReg.KEY_ALL_ACCESS);
-                //			registry.CloseKey(policyHandle3);
-                //			registry.CloseKey(policyHandle2);
-                //			registry.CloseKey(policyHandle);
-                //			
-                //			//Open HKCU
-                //			policyHandle = registry.OpenHKCU();
-                //			
-                //			policyHandle2 = registry.OpenKey(policyHandle,"Software\\Classes",IJIWinReg.KEY_ALL_ACCESS);
-                //			registry.CloseKey(policyHandle2);
-                //			registry.CloseKey(policyHandle);
-                //			
-                //			//Open HKU
-                //			policyHandle = registry.OpenHKU();
-                //			
-                //			policyHandle2 = registry.OpenKey(policyHandle,".DEFAULT",IJIWinReg.KEY_ALL_ACCESS);
-                //			registry.CloseKey(policyHandle2);
-                //			registry.CloseKey(policyHandle);
+                //            
+                //            // Open HKCR
+                //            policyHandle = registry.OpenHKCR();
+                //            
+                //            policyHandle2 = registry.OpenKey(policyHandle,"ClSID",IJIWinReg.KEY_ALL_ACCESS);
+                //            policyHandle3 = registry.CreateKey(policyHandle2,"j-Interop007",IJIWinReg.REG_OPTION_NON_VOLATILE,IJIWinReg.KEY_ALL_ACCESS);
+                //            registry.CloseKey(policyHandle3);
+                //            registry.CloseKey(policyHandle2);
+                //            registry.CloseKey(policyHandle);
+                //            
+                //            // Open HKCU
+                //            policyHandle = registry.OpenHKCU();
+                //            
+                //            policyHandle2 = registry.OpenKey(policyHandle,"Software\\Classes",IJIWinReg.KEY_ALL_ACCESS);
+                //            registry.CloseKey(policyHandle2);
+                //            registry.CloseKey(policyHandle);
+                //            
+                //            // Open HKU
+                //            policyHandle = registry.OpenHKU();
+                //            
+                //            policyHandle2 = registry.OpenKey(policyHandle,".DEFAULT",IJIWinReg.KEY_ALL_ACCESS);
+                //            registry.CloseKey(policyHandle2);
+                //            registry.CloseKey(policyHandle);
 
 
             }

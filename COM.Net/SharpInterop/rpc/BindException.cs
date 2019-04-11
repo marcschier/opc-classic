@@ -1,15 +1,15 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc {
     using rpc.pdu;
@@ -22,12 +22,12 @@ namespace rpc {
         }
 
         /// <inheritdoc/>
-        public BindException(string message) : 
+        public BindException(string message) :
             base(message) {
         }
 
         /// <inheritdoc/>
-        public BindException(string message, BindNoAcknowledgeReason rejectReason) : 
+        public BindException(string message, BindNoAcknowledgeReason rejectReason) :
             base(ToString(message, rejectReason)) {
         }
 
@@ -38,10 +38,8 @@ namespace rpc {
         /// <param name="reason"></param>
         /// <returns></returns>
         private static string ToString(string message,
-            BindNoAcknowledgeReason reason) {
-            return !string.IsNullOrEmpty(message) ? 
+            BindNoAcknowledgeReason reason) => !string.IsNullOrEmpty(message) ?
                 message + " (" + ToString(reason) + ")" : ToString(reason);
-        }
 
         /// <summary>
         /// TODO Move to extension

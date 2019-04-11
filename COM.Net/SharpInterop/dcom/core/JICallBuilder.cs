@@ -23,19 +23,19 @@ namespace org.jinterop.dcom.core {
     /// a call to the COM server.
     /// Sample Usage :-
     /// <code>
-    ///  JICallBuilder obj = new JICallBuilder();
-    ///  obj.reInit();
-    ///  obj.setOpnum(0); //0 based index, can be obtained from the IDL or the Type Library of COM server.
+    /// JICallBuilder obj = new JICallBuilder();
+    /// obj.reInit();
+    /// obj.setOpnum(0); // 0 based index, can be obtained from the IDL or the Type Library of COM server.
     ///
-    ///  obj.addInParamAsString(new JIString("j-Interop Rocks !"), JIFlags.FLAG_NULL);
-    ///  obj.addInParamAsInt(100, JIFlags.FLAG_NULL);
-    ///  //handle is previously obtained <seealso cref="IJIComObject"/>
-    ///  Object[] result = comObject.call(obj);
+    /// obj.addInParamAsString(new JIString("j-Interop Rocks !"), JIFlags.FLAG_NULL);
+    /// obj.addInParamAsInt(100, JIFlags.FLAG_NULL);
+    /// // handle is previously obtained <seealso cref="IComObject"/>
+    /// Object[] result = comObject.call(obj);
     /// </code>
     /// [out] parameters can be added in a similar way.
     /// <code>
-    ///  obj.addOutParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
-    ///  obj.addOutParamAsObject(new JIPointer(Short.class,true),JIFlags.FLAG_NULL);
+    /// obj.addOutParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
+    /// obj.addOutParamAsObject(new JIPointer(Short.class,true),JIFlags.FLAG_NULL);
     /// </code>
     /// </summary>
     [Serializable]
@@ -51,7 +51,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="dispatchNotSupported"> <code>true</code> if <code>IDispatch</code> is
         /// not supported by the <code>IJIComObject</code> on which this builder would
-        /// act. Use <seealso cref="IJIComObject.DispatchSupported"/> to find out if
+        /// act. Use <seealso cref="IComObject.DispatchSupported"/> to find out if
         /// dispatch is supported on the COM Object. </param>
         public JICallBuilder(bool dispatchNotSupported) : this() =>
             _dispatchNotSupported = dispatchNotSupported;
@@ -62,22 +62,22 @@ namespace org.jinterop.dcom.core {
         /// would act.
         /// </summary>
         public JICallBuilder() {
-            //		enclosingParentsIPID = IPIDofParent;
+            //        enclosingParentsIPID = IPIDofParent;
         }
 
         /// <summary>
         /// Reinitializes all members of this object. It is ready to be used again on a
-        /// fresh <code><seealso cref="IJIComObject.Call(JICallBuilder)"/></code> after this step.
+        /// fresh <code><seealso cref="IComObject.Call(JICallBuilder)"/></code> after this step.
         ///
         /// </summary>
-        //after reinit, except parent, nothing is available.
-        public virtual void ReInit() {
+        // after reinit, except parent, nothing is available.
+        public void ReInit() {
             _opnum = -1;
             _inParams = new List<object>();
             _inparamFlags = new List<object>();
             _outParams = new List<object>();
             _outparamFlags = new List<object>();
-            _hresult = -1;
+            HRESULT = -1;
             _outparams = null;
             _executed = false;
         }
@@ -90,7 +90,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="comObject"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsComObject(IJIComObject comObject, int flags) =>
+        public void AddInParamAsComObject(IComObject comObject, int flags) =>
             InsertInParamAsComObjectAt(_inParams.Count, comObject, flags);
 
 
@@ -100,16 +100,43 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsInt(int value, int flags) =>
+        public void AddInParamAsInt(int value, int flags) =>
             InsertInParamAsIntAt(_inParams.Count, value, flags);
 
         /// <summary>
-        /// Add <code>[in]</code> parameter as <code>IJIUnsigned</code> at
+        /// Add <code>[in]</code> parameter as <code>uint</code> at
         /// the end of the Parameter list.
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsUnsigned(IJIUnsigned value, int flags) =>
+        public void AddInParamAsUnsigned(uint value, int flags) =>
+            InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>ushort</code> at
+        /// the end of the Parameter list.
+        /// </summary>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be) </param>
+        public void AddInParamAsUnsigned(ushort value, int flags) =>
+            InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>ulong</code> at
+        /// the end of the Parameter list.
+        /// </summary>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be) </param>
+        public void AddInParamAsUnsigned(ulong value, int flags) =>
+            InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>byte</code> at
+        /// the end of the Parameter list.
+        /// </summary>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be) </param>
+        public void AddInParamAsUnsigned(byte value, int flags) =>
             InsertInParamAsUnsignedAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -118,7 +145,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsFloat(float value, int flags) =>
+        public void AddInParamAsFloat(float value, int flags) =>
             InsertInParamAsFloatAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -127,7 +154,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsBoolean(bool value, int flags) =>
+        public void AddInParamAsBoolean(bool value, int flags) =>
             InsertInParamAsBooleanAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -136,7 +163,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsShort(short value, int flags) =>
+        public void AddInParamAsShort(short value, int flags) =>
             InsertInParamAsShortAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -145,7 +172,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsDouble(double value, int flags) =>
+        public void AddInParamAsDouble(double value, int flags) =>
             InsertInParamAsDoubleAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -154,8 +181,17 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be) </param>
-        public virtual void AddInParamAsCharacter(char value, int flags) =>
+        public void AddInParamAsCharacter(char value, int flags) =>
             InsertInParamAsCharacterAt(_inParams.Count, value, flags);
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>char</code> at
+        /// the end of the Parameter list.
+        /// </summary>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be) </param>
+        public void AddInParamAsSByte(sbyte value, int flags) =>
+            InsertInParamAsSByteAt(_inParams.Count, value, flags);
 
         /// <summary>
         /// Add <code>[in]</code> parameter as <code>String</code> at
@@ -164,7 +200,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (These <i>HAVE</i> to be
         /// the <b>String</b> Flags).</param>
-        public virtual void AddInParamAsString(string value, int flags) =>
+        public void AddInParamAsString(string value, int flags) =>
             InsertInParamAsStringAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -173,7 +209,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsVariant(JIVariant value, int flags) =>
+        public void AddInParamAsVariant(JIVariant value, int flags) =>
             InsertInParamAsVariantAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -182,7 +218,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsObject(object value, int flags) =>
+        public void AddInParamAsObject(object value, int flags) =>
             InsertInParamAsObjectAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -191,7 +227,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsUUID(string value, int flags) =>
+        public void AddInParamAsUUID(string value, int flags) =>
             InsertInParamAsUUIDAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -200,7 +236,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsPointer(JIPointer value, int flags) =>
+        public void AddInParamAsPointer(JIPointer value, int flags) =>
             InsertInParamAsPointerAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -209,7 +245,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsStruct(JIStruct value, int flags) =>
+        public void AddInParamAsStruct(JIStruct value, int flags) =>
             InsertInParamAsStructAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -218,7 +254,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be). </param>
-        public virtual void AddInParamAsArray(JIArray value, int flags) =>
+        public void AddInParamAsArray(JIArray value, int flags) =>
             InsertInParamAsArrayAt(_inParams.Count, value, flags);
 
         /// <summary>
@@ -228,10 +264,11 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="values"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void SetInParams(object[] values, int flags) {
+        public void SetInParams(object[] values, int flags) {
             for (var i = 0; i < values.Length; i++) {
                 _inParams.Add(values[i]);
-                _inparamFlags.Add(flags); // quite useless but do not want to change logic elsewhere
+                // quite useless but do not want to change logic elsewhere
+                _inparamFlags.Add(flags);
             }
         }
 
@@ -242,7 +279,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsComObjectAt(int index, IJIComObject value,
+        public void InsertInParamAsComObjectAt(int index, IComObject value,
             int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
@@ -255,19 +292,43 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsIntAt(int index, int value, int flags) {
+        public void InsertInParamAsIntAt(int index, int value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
 
         /// <summary>
-        /// Add <code>[in]</code> parameter as <code>IJIUnsigned</code> at the
+        /// Add <code>[in]</code> parameter as <code>byte</code> at the
         /// specified index in the Parameter list.
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsUnsignedAt(int index, IJIUnsigned value, int flags) {
+        public void InsertInParamAsUnsignedAt(int index, byte value, int flags) {
+            _inParams.Insert(index, value);
+            _inparamFlags.Insert(index, flags);
+        }
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>ushort</code> at the
+        /// specified index in the Parameter list.
+        /// </summary>
+        /// <param name="index"> 0 based index </param>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be).  </param>
+        public void InsertInParamAsUnsignedAt(int index, ushort value, int flags) {
+            _inParams.Insert(index, value);
+            _inparamFlags.Insert(index, flags);
+        }
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>uint</code> at the
+        /// specified index in the Parameter list.
+        /// </summary>
+        /// <param name="index"> 0 based index </param>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be).  </param>
+        public void InsertInParamAsUnsignedAt(int index, ulong value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -279,7 +340,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsFloatAt(int index, float value, int flags) {
+        public void InsertInParamAsFloatAt(int index, float value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -291,8 +352,20 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsBooleanAt(int index, bool value, int flags) {
+        public void InsertInParamAsBooleanAt(int index, bool value, int flags) {
             _inParams.Insert(index, Convert.ToBoolean(value));
+            _inparamFlags.Insert(index, flags);
+        }
+
+        /// <summary>
+        /// Add <code>[in]</code> parameter as <code>sbyte</code> at the
+        /// specified index in the Parameter list.
+        /// </summary>
+        /// <param name="index"> 0 based index </param>
+        /// <param name="value"> </param>
+        /// <param name="flags"> from JIFlags (if need be).  </param>
+        public void InsertInParamAsSByteAt(int index, sbyte value, int flags) {
+            _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
 
@@ -303,7 +376,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsShortAt(int index, short value, int flags) {
+        public void InsertInParamAsShortAt(int index, short value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -315,7 +388,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsDoubleAt(int index, double value, int flags) {
+        public void InsertInParamAsDoubleAt(int index, double value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -327,7 +400,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsCharacterAt(int index, char value, int flags) {
+        public void InsertInParamAsCharacterAt(int index, char value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -340,7 +413,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (These <i>HAVE</i> to be
         /// the <b>String</b> Flags). </param>
-        public virtual void InsertInParamAsStringAt(int index, string value, int flags) {
+        public void InsertInParamAsStringAt(int index, string value, int flags) {
             _inParams.Insert(index, new JIString(value, flags));
             _inparamFlags.Insert(index, JIFlags.FLAG_NULL);
         }
@@ -352,9 +425,9 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsVariantAt(int index, JIVariant value, int flags) {
+        public void InsertInParamAsVariantAt(int index, JIVariant value, int flags) {
             _inParams.Insert(index, value);
-            _inparamFlags.Insert(index, JIFlags.FLAG_NULL);
+            _inparamFlags.Insert(index, flags);
         }
 
         /// <summary>
@@ -364,7 +437,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsObjectAt(int index, object value, int flags) {
+        public void InsertInParamAsObjectAt(int index, object value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -376,7 +449,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsUUIDAt(int index, string value, int flags) {
+        public void InsertInParamAsUUIDAt(int index, string value, int flags) {
             _inParams.Insert(index, new UUID(value));
             _inparamFlags.Insert(index, flags);
         }
@@ -388,7 +461,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsPointerAt(int index, JIPointer value, int flags) {
+        public void InsertInParamAsPointerAt(int index, JIPointer value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -400,7 +473,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsStructAt(int index, JIStruct value, int flags) {
+        public void InsertInParamAsStructAt(int index, JIStruct value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -412,7 +485,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="index"> 0 based index </param>
         /// <param name="value"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void InsertInParamAsArrayAt(int index, JIArray value, int flags) {
+        public void InsertInParamAsArrayAt(int index, JIArray value, int flags) {
             _inParams.Insert(index, value);
             _inparamFlags.Insert(index, flags);
         }
@@ -423,7 +496,9 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void RemoveInParamAt(int index, int flags) {
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void RemoveInParamAt(int index, int flags) {
+#pragma warning restore IDE0060 // Remove unused parameter
             _inParams.RemoveAt(index);
             _inparamFlags.RemoveAt(index);
         }
@@ -436,7 +511,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <returns> Primitives are returned as there Derieved types.  </returns>
-        public virtual object GetInParamAt(int index) => _inParams[index];
+        public object GetInParamAt(int index) => _inParams[index];
 
         /// <summary>
         /// Add <code>[out]</code> parameter of the type <code>clazz</code>
@@ -444,7 +519,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="clazz"> </param>
         /// <param name="flags"> </param>
-        public virtual void AddOutParamAsType(Type clazz, int flags) =>
+        public void AddOutParamAsType(Type clazz, int flags) =>
             InsertOutParamAt(_outParams.Count, clazz, flags);
 
         /// <summary>
@@ -454,7 +529,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="outparam"> </param>
         /// <param name="flags"> </param>
-        public virtual void AddOutParamAsObject(object outparam, int flags) =>
+        public void AddOutParamAsObject(object outparam, int flags) =>
             InsertOutParamAt(_outParams.Count, outparam, flags);
 
         /// <summary>
@@ -465,7 +540,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="classOrInstance"> can be either a Class or
         /// an Object </param>
         /// <param name="flags"> </param>
-        public virtual void InsertOutParamAt(int index, object classOrInstance, int flags) {
+        public void InsertOutParamAt(int index, object classOrInstance, int flags) {
             _outParams.Insert(index, classOrInstance);
             _outparamFlags.Insert(index, flags);
         }
@@ -476,7 +551,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <returns>  </returns>
-        public virtual object GetOutParamAt(int index) => _outParams[index];
+        public object GetOutParamAt(int index) => _outParams[index];
 
         /// <summary>
         ///Removes <code>[out]</code> parameter at the specified index
@@ -484,7 +559,9 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="index"> 0 based index </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void RemoveOutParamAt(int index, int flags) {
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void RemoveOutParamAt(int index, int flags) {
+#pragma warning restore IDE0060 // Remove unused parameter
             _outParams.RemoveAt(index);
             _outparamFlags.RemoveAt(index);
         }
@@ -496,7 +573,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="values"> </param>
         /// <param name="flags"> from JIFlags (if need be).  </param>
-        public virtual void SetOutParams(object[] values, int flags) {
+        public void SetOutParams(object[] values, int flags) {
             for (var i = 0; i < values.Length; i++) {
                 _outParams.Add(values[i]);
                 _outparamFlags.Add(flags);
@@ -510,7 +587,7 @@ namespace org.jinterop.dcom.core {
         /// only valid before the interpretation of read, after that
         /// has actual values
         /// </summary>
-        public virtual object[] Results {
+        public object[] Results {
             get {
                 CheckIfCalled();
                 return _outparams;
@@ -522,7 +599,7 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual int GetResultAsIntAt(int index) {
+        public int GetResultAsIntAt(int index) {
             CheckIfCalled();
             return (int)_outparams[index];
         }
@@ -532,9 +609,9 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual float GetResultAsFloatAt(int index) {
+        public float GetResultAsFloatAt(int index) {
             CheckIfCalled();
-            return (float)(float)_outparams[index];
+            return (float)_outparams[index];
         }
 
         /// <summary>
@@ -542,9 +619,9 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual bool GetResultAsBooleanAt(int index) {
+        public bool GetResultAsBooleanAt(int index) {
             CheckIfCalled();
-            return (bool)(bool)_outparams[index];
+            return (bool)_outparams[index];
         }
 
         /// <summary>
@@ -552,7 +629,7 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual short GetResultAsShortAt(int index) {
+        public short GetResultAsShortAt(int index) {
             CheckIfCalled();
             return (short)_outparams[index];
         }
@@ -562,9 +639,9 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual double GetResultAsDoubleAt(int index) {
+        public double GetResultAsDoubleAt(int index) {
             CheckIfCalled();
-            return (double)(double)_outparams[index];
+            return (double)_outparams[index];
         }
 
         /// <summary>
@@ -572,9 +649,9 @@ namespace org.jinterop.dcom.core {
         /// the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual char GetResultAsCharacterAt(int index) {
+        public char GetResultAsCharacterAt(int index) {
             CheckIfCalled();
-            return (char)(char)_outparams[index];
+            return (char)_outparams[index];
         }
 
         /// <summary>
@@ -582,7 +659,7 @@ namespace org.jinterop.dcom.core {
         /// from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual JIString GetResultAsStringAt(int index) {
+        public JIString GetResultAsStringAt(int index) {
             CheckIfCalled();
             return (JIString)_outparams[index];
         }
@@ -592,7 +669,7 @@ namespace org.jinterop.dcom.core {
         /// from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual JIVariant GetResultAsVariantAt(int index) {
+        public JIVariant GetResultAsVariantAt(int index) {
             CheckIfCalled();
             return (JIVariant)_outparams[index];
         }
@@ -602,7 +679,7 @@ namespace org.jinterop.dcom.core {
         /// UUID</code> at the index from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual string GetResultAsUUIDStrAt(int index) {
+        public string GetResultAsUUIDStrAt(int index) {
             CheckIfCalled();
             return ((UUID)_outparams[index]).ToString();
         }
@@ -612,7 +689,7 @@ namespace org.jinterop.dcom.core {
         /// from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual JIPointer GetResultAsPointerAt(int index) {
+        public JIPointer GetResultAsPointerAt(int index) {
             CheckIfCalled();
             return (JIPointer)_outparams[index];
         }
@@ -622,7 +699,7 @@ namespace org.jinterop.dcom.core {
         /// from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual JIStruct GetResultAsStructAt(int index) {
+        public JIStruct GetResultAsStructAt(int index) {
             CheckIfCalled();
             return (JIStruct)_outparams[index];
         }
@@ -632,7 +709,7 @@ namespace org.jinterop.dcom.core {
         /// from the result list.
         /// </summary>
         /// <param name="index"> 0 based index</param>
-        public virtual JIArray GetResultAsArrayAt(int index) {
+        public JIArray GetResultAsArrayAt(int index) {
             CheckIfCalled();
             return (JIArray)_outparams[index];
         }
@@ -640,7 +717,7 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Returns the results incase an exception occured.
         /// </summary>
-        public virtual object[] ResultsInCaseOfException {
+        public object[] ResultsInCaseOfException {
             get {
                 CheckIfCalled();
                 return _resultsOfException;
@@ -652,7 +729,7 @@ namespace org.jinterop.dcom.core {
         /// should be zero for successful calls and
         /// non-zero for failures.
         /// </summary>
-        public virtual int HRESULT => _hresult;
+        public int HRESULT { get; private set; }
 
         /// <summary>
         /// Helper
@@ -667,46 +744,46 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Returns the entire <code>[in]</code> parameters list.
         /// </summary>
-        public virtual object[] InParams => _inParams.ToArray();
+        public object[] InParams => _inParams.ToArray();
 
         /// <summary>
         /// Returns the entire <code>[out]</code> parameters list.
         /// </summary>
-        public virtual object[] OutParams => _outParams.ToArray();
+        public object[] OutParams => _outParams.ToArray();
 
         /// <summary>
         /// Returns the In Param flag.
         /// </summary>
-        public virtual int[] InparamFlags => _inparamFlags.Cast<int>().ToArray();
+        public int[] InparamFlags => _inparamFlags.Cast<int>().ToArray();
 
         /// <summary>
         /// Returns the Out Param flag.
         /// </summary>
-        public virtual int[] OutparamFlags => _outparamFlags.Cast<int>().ToArray();
+        public int[] OutparamFlags => _outparamFlags.Cast<int>().ToArray();
 
         /// <summary>
         /// Returns the opnum of the API which will be invoked at the <code>COM</code> server.
         /// </summary>
         public override int Opnum {
             get =>
-                //opnum is 3 as this is a COM interface and 0,1,2 are occupied by IUnknown
-                //TODO remember this for extending com components also.
+                // opnum is 3 as this is a COM interface and 0,1,2 are occupied by IUnknown
+                // TODO remember this for extending com components also.
                 _opnum;
             set {
                 var dispatch = 0;
                 if (!_dispatchNotSupported) {
-                    dispatch = 4; //4 apis.
+                    dispatch = 4; // 4 apis.
                 }
-                _opnum = dispatch + value + 3; //0,1,2, Q.I
+                _opnum = dispatch + value + 3; // 0,1,2, Q.I
             }
         }
 
         /// <inheritdoc/>
         public override void Write(NdrCodec ndr) {
 
-            //reset buffer size here...
-            //calculate rough length required length + 16 for the last bytes
-            //plus adding 30 more for the verifier etc.
+            // reset buffer size here...
+            // calculate rough length required length + 16 for the last bytes
+            // plus adding 30 more for the verifier etc.
             ndr.Buffer.Buf = new byte[BufferLength() + 16];
 
             var orpcthis = new JIOrpcThis();
@@ -714,18 +791,18 @@ namespace org.jinterop.dcom.core {
 
             WritePacket(ndr);
 
-            //when it ends add 16 zeros.
+            // when it ends add 16 zeros.
             ndr.WriteUnsignedLong(0);
             ndr.WriteUnsignedLong(0);
             ndr.WriteUnsignedLong(0);
             ndr.WriteUnsignedLong(0);
         }
 
-        //All Methods are 0 index based
+        // All Methods are 0 index based
         internal void Write2(NdrCodec ndr) {
-            //reset buffer size here...
-            //calculate rough length required length + 16 for the last bytes
-            //plus adding 30 more for the verifier etc.
+            // reset buffer size here...
+            // calculate rough length required length + 16 for the last bytes
+            // plus adding 30 more for the verifier etc.
             ndr.Buffer.Buf = new byte[BufferLength() + 16 + 30];
             JIOrpcThat.Encode(ndr);
             WritePacket(ndr);
@@ -757,29 +834,29 @@ namespace org.jinterop.dcom.core {
                     var x = 0;
 
                     while (x < listOfDefferedPointers.Count) {
-                        //	thought of this today morning...change the logic here...the defeered pointers need to be
-                        //	completely serialized here. If they are also having nested deffered pointers then  those pointers
-                        //	should be "inserted" just after the current pointer itself.
-                        //	change the logic below to send out a new list and insert that list after the current x.
-                        //	consider the case when there is a Struct having a nested pointer to another struct and this struct
-                        //	itself having a pointer.
+                        //    thought of this today morning...change the logic here...the defeered pointers need to be
+                        //    completely serialized here. If they are also having nested deffered pointers then  those pointers
+                        //    should be "inserted" just after the current pointer itself.
+                        //    change the logic below to send out a new list and insert that list after the current x.
+                        //    consider the case when there is a Struct having a nested pointer to another struct and this struct
+                        //    itself having a pointer.
                         //
-                        //	Inparams order:- for 2 params.
-                        //	int f,Struct{int i;
-                        //				 Struct *ptr;
-                        //				 Struct *ptr2;
-                        //				 int j;
-                        //				}
+                        //    Inparams order:- for 2 params.
+                        //    int f,Struct{int i;
+                        //                 Struct *ptr;
+                        //                 Struct *ptr2;
+                        //                 int j;
+                        //                }
                         //
-                        //	while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
-                        //	the deffered pointers, we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
-                        //	in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
-                        //	after the pointer 2 referent. But that is what is against the rules of DCERPC, in this case the referent of pointer 1 (struct with the pointer to another struct)
-                        //	should be serialized in place (following th rules of the struct serialization ofcourse) and should not go to the end of the list.
-                        //JIMarshalUnMarshalHelper.Serialize(ndr,JIPointer.class,(JIPointer)listOfDefferedPointers.get(x),listOfDefferedPointers,inparamFlags);
+                        //    while serializing this struct the pointer 1 will get deffered and so will pointer 2. Now while writing
+                        //    the deffered pointers, we will find that the pointer 1 is pointing to a struct which has another deffered pointer (pointer to another struct maybe)
+                        //    in such case, the current logic will add the deffered pointer to the end of the listOfDefferedPointers list, effectively serializing it
+                        //    after the pointer 2 referent. But that is what is against the rules of DCERPC, in this case the referent of pointer 1 (struct with the pointer to another struct)
+                        //    should be serialized in place (following th rules of the struct serialization ofcourse) and should not go to the end of the list.
+                        // JIMarshalUnMarshalHelper.Serialize(ndr,JIPointer.class,(JIPointer)listOfDefferedPointers.get(x),listOfDefferedPointers,inparamFlags);
                         var newList = new List<object>();
                         JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIPointer), (JIPointer)listOfDefferedPointers[x], newList, (int)_inparamFlags[index]);
-                        x++; //incrementing index
+                        x++; // incrementing index
                         listOfDefferedPointers.InsertRange(x, newList);
                     }
                     index++;
@@ -789,10 +866,10 @@ namespace org.jinterop.dcom.core {
 
         /// <inheritdoc/>
         public override void Read(NdrCodec ndr) {
-            //interpret based on the out params flags
+            // interpret based on the out params flags
             if (!_readOnlyHRESULT) {
                 if (_splCOMVersion) {
-                    //during handshake and no other time. Kept for OxidResolver methods.
+                    // during handshake and no other time. Kept for OxidResolver methods.
                     _serverAlive2 = new JIComVersion(ndr.ReadUnsignedShort(), ndr.ReadUnsignedShort());
                     new JIPointer(new JIPointer(typeof(JIDualStringArray))).Decode(ndr,
                         new List<object>(), JIFlags.FLAG_NULL, new Hashtable());
@@ -813,8 +890,8 @@ namespace org.jinterop.dcom.core {
         internal void Read2(NdrCodec ndr) {
             JIOrpcThis.Decode(ndr);
             ReadPacket(ndr, true);
-            //readResult(ndr);
-            //hresult = 0;
+            // readResult(ndr);
+            // hresult = 0;
         }
 
         /// <summary>
@@ -846,7 +923,7 @@ namespace org.jinterop.dcom.core {
                 [COMOBJECTS] = comObjects
             };
             var results = new List<object>();
-            //user has nothing to return.
+            // user has nothing to return.
             if (_outparams != null && _outparams.Length > 0) {
                 while (index < _outparams.Length) {
                     var listOfDefferedPointers = new List<object>();
@@ -860,7 +937,7 @@ namespace org.jinterop.dcom.core {
                         var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr,
                             (JIPointer)listOfDefferedPointers[x], newList, (int)_outparamFlags[index], additionalData);
 
-                        //this should replace the value in the original place.
+                        // this should replace the value in the original place.
                         ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                         x++;
                         listOfDefferedPointers.InsertRange(x, newList);
@@ -869,13 +946,13 @@ namespace org.jinterop.dcom.core {
                 }
 
 
-                //now create the right COM Objects, it is required here only and no place else.
+                // now create the right COM Objects, it is required here only and no place else.
                 for (var i = 0; i < comObjects.Count; i++) {
                     var comObjectImpl = (JIComObjectImpl)comObjects[i];
                     try {
-                        IJIComObject comObject = null;
+                        IComObject comObject = null;
                         if (fromCallback) {
-                            //this is a new IP, so make a new JIComServer for this.
+                            // this is a new IP, so make a new JIComServer for this.
                             var newsession = JISession.CreateSession(Session);
                             newsession.GlobalSocketTimeout = Session.GlobalSocketTimeout;
                             newsession.UseSessionSecurity(Session.SessionSecurityEnabled);
@@ -896,8 +973,8 @@ namespace org.jinterop.dcom.core {
                         comObjectImpl.ReplaceMembers(comObject);
                         JIFrameworkHelper.AddComObjectToSession(
                             comObjectImpl.AssociatedSession, comObjectImpl);
-                        //Why did I put this here. We should do an addRef regardless of whether we give a pointer to COM or it gives us one.
-                        //					if (!fromCallback)
+                        // Why did I put this here. We should do an addRef regardless of whether we give a pointer to COM or it gives us one.
+                        //                    if (!fromCallback)
                         {
                             comObjectImpl.AddRef();
                         }
@@ -907,7 +984,7 @@ namespace org.jinterop.dcom.core {
                         Log.Logger.Error(e, "JICallBuilder readPacket");
                         throw new JIRuntimeException(e.ErrorCode);
                     }
-                    //replace the members of the original com objects by the completed ones.
+                    // replace the members of the original com objects by the completed ones.
                 }
 
                 comObjects.Clear();
@@ -922,14 +999,14 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         private void ReadResult(NdrCodec ndr) {
-            //last has to be the result.
-            _hresult = ndr.ReadUnsignedLong();
+            // last has to be the result.
+            HRESULT = ndr.ReadUnsignedLong();
 
-            if (_hresult != 0) {
-                //something exception occured at server, set up results
+            if (HRESULT != 0) {
+                // something exception occured at server, set up results
                 _resultsOfException = _outparams;
                 _outparams = null;
-                throw new JIRuntimeException(_hresult);
+                throw new JIRuntimeException(HRESULT);
             }
         }
 
@@ -950,7 +1027,7 @@ namespace org.jinterop.dcom.core {
                 length += length2;
             }
 
-            return length + 2048; //2K extra for alignments, if any.
+            return length + 2048; // 2K extra for alignments, if any.
         }
 
         /// <summary>
@@ -959,7 +1036,7 @@ namespace org.jinterop.dcom.core {
         public bool Error {
             get {
                 CheckIfCalled();
-                return _hresult != 0;
+                return HRESULT != 0;
             }
         }
 
@@ -991,7 +1068,6 @@ namespace org.jinterop.dcom.core {
         private List<object> _outparamFlags = new List<object>();
         private List<object> _inParams = new List<object>();
         private List<object> _outParams = new List<object>();
-        private int _hresult;
         private bool _executed;
         private object[] _resultsOfException;
     }

@@ -17,64 +17,64 @@
 
 namespace rpc.core {
 
-	using NdrObject = ndr.NdrObject;
+    using NdrObject = ndr.NdrObject;
 
-	public class InterfaceIdentifier : NdrObject {
+    public class InterfaceIdentifier : NdrObject {
 
-		internal UUID Uuid_Renamed;
-		internal int MajorVersion_Renamed, MinorVersion_Renamed;
+        internal UUID Uuid_Renamed;
+        internal int MajorVersion_Renamed, MinorVersion_Renamed;
 
-		public InterfaceIdentifier(string syntax) {
-			Parse(syntax);
-		}
+        public InterfaceIdentifier(string syntax) {
+            Parse(syntax);
+        }
 
-		public InterfaceIdentifier(UUID uuid, int majorVersion, int minorVersion) {
-			Uuid = uuid;
-			MajorVersion = majorVersion;
-			MinorVersion = minorVersion;
-		}
+        public InterfaceIdentifier(UUID uuid, int majorVersion, int minorVersion) {
+            Uuid = uuid;
+            MajorVersion = majorVersion;
+            MinorVersion = minorVersion;
+        }
 
-		public virtual UUID Uuid {
-			get {
-				return Uuid_Renamed;
-			}
-			set {
-				this.Uuid_Renamed = value;
-			}
-		}
-
-
-		public virtual int MajorVersion {
-			get {
-				return MajorVersion_Renamed;
-			}
-			set {
-				this.MajorVersion_Renamed = value;
-			}
-		}
+        public virtual UUID Uuid {
+            get {
+                return Uuid_Renamed;
+            }
+            set {
+                this.Uuid_Renamed = value;
+            }
+        }
 
 
-		public virtual int MinorVersion {
-			get {
-				return MinorVersion_Renamed;
-			}
-			set {
-				this.MinorVersion_Renamed = value;
-			}
-		}
+        public virtual int MajorVersion {
+            get {
+                return MajorVersion_Renamed;
+            }
+            set {
+                this.MajorVersion_Renamed = value;
+            }
+        }
 
 
-		public override string ToString() {
-			return Uuid.ToString() + ":" + MajorVersion + "." + MinorVersion;
-		}
+        public virtual int MinorVersion {
+            get {
+                return MinorVersion_Renamed;
+            }
+            set {
+                this.MinorVersion_Renamed = value;
+            }
+        }
 
-		public virtual void Parse(string syntax) {
-			StringTokenizer tokenizer = new StringTokenizer(syntax, ":.");
-			Uuid.Parse(tokenizer.nextToken());
-			MajorVersion = int.Parse(tokenizer.nextToken());
-			MinorVersion = int.Parse(tokenizer.nextToken());
-		}
 
-	}
+        public override string ToString() {
+            return Uuid.ToString() + ":" + MajorVersion + "." + MinorVersion;
+        }
+
+        public virtual void Parse(string syntax) {
+            StringTokenizer tokenizer = new StringTokenizer(syntax, ":.");
+            Uuid.Parse(tokenizer.nextToken());
+            MajorVersion = int.Parse(tokenizer.nextToken());
+            MinorVersion = int.Parse(tokenizer.nextToken());
+        }
+
+    }
 
 }

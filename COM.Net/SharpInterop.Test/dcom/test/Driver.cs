@@ -166,7 +166,7 @@
                     upperBounds[i] = (int)upperBounds2[i];
                 }
 
-                //			 Object newArray = createArray(oi, Class.forName(clazzName), dimension);
+                //             Object newArray = createArray(oi, Class.forName(clazzName), dimension);
                 var newArray = createArray(new long?[][]
                 {
                         new long?[] { 1, new long?(2)},
@@ -229,11 +229,11 @@
                 var b1123 = (byte)b;
                 var uid = new UUID();
                 Console.WriteLine(uid);
-                //			  System.out.println(new ObjectId().toHexString());
-                //			  String str = new ObjectId().toHexString();
-                //			  System.out.println(str);
-                //			  str = str.substring(0,8) + "-" + str.substring(8,12) + "-" + str.substring(12,16) + "-" + str.substring(16,20) + "-" + str.substring(20)   ;
-                //			  System.out.println(str);
+                //              System.out.println(new ObjectId().toHexString());
+                //              String str = new ObjectId().toHexString();
+                //              System.out.println(str);
+                //              str = str.substring(0,8) + "-" + str.substring(8,12) + "-" + str.substring(12,16) + "-" + str.substring(16,20) + "-" + str.substring(20)   ;
+                //              System.out.println(str);
                 //JAVA TO C# CONVERTER NOTE: The following call to the 'RectangularArrays' helper class reproduces the rectangular array initialization that is automatic in Java:
                 //ORIGINAL LINE: object[][] obj = new object[6][2];
                 var obj = RectangularArrays.ReturnRectangularObjectArray(6, 2);
@@ -256,10 +256,10 @@
                     Array.Copy(toSend2.GetBytes(), 0, lowbuffer, 0, 8);
                 }
 
-                //			  double d = -125;
-                //			  Double.
-                //			  d = 0xf;
-                //			  long va = d & 0xF;
+                //              double d = -125;
+                //              Double.
+                //              d = 0xf;
+                //              long va = d & 0xF;
 
                 var buffer = new byte[1148]; //1144
                 System.IO.FileStream inputStream;
@@ -267,11 +267,11 @@
                     inputStream = new System.IO.FileStream("c:/temp/webbrowserevent3", System.IO.FileMode.Open, System.IO.FileAccess.Read); //change the 32nd member to 106 byte value, in inspect and change
                     inputStream.Read(buffer, 0, 1148); //1144
 
-                    //					FileOutputStream outputStream = new FileOutputStream("c:/temp/webbrowserevent3");
-                    //					outputStream.write(buffer,0,544);
-                    //					outputStream.write(buffer,548,1148 - 548);
-                    //					outputStream.flush();
-                    //					outputStream.close();
+                    //                    FileOutputStream outputStream = new FileOutputStream("c:/temp/webbrowserevent3");
+                    //                    outputStream.write(buffer,0,544);
+                    //                    outputStream.write(buffer,548,1148 - 548);
+                    //                    outputStream.flush();
+                    //                    outputStream.close();
                 }
                 catch (Exception e) {
                     // TODO Auto-generated catch block
@@ -281,49 +281,49 @@
 
 
 
-                //			  	Integer iarray[][] = new Integer[5][6];
-                //			  	System.out.println(((Object[])iarray).length);
-                //			  	Object r = Array.get(iarray,0);
-                //			  	Short s = new Short((short)Float.NaN);
-                //			  	Float[] flt = new Float[]{new Float(10)};
-                //			  	Class c = flt.getClass();
-                //			  	if (c.equals(Float[].class))
-                //			  		System.out.println(true);
+                //                  Integer iarray[][] = new Integer[5][6];
+                //                  System.out.println(((Object[])iarray).length);
+                //                  Object r = Array.get(iarray,0);
+                //                  Short s = new Short((short)Float.NaN);
+                //                  Float[] flt = new Float[]{new Float(10)};
+                //                  Class c = flt.getClass();
+                //                  if (c.equals(Float[].class))
+                //                      System.out.println(true);
                 //
                 //
-                //			  	Float f[][][] = new Float[][][]{new Float[][]{{new Float(1),new Float(2)},{new Float(3),new Float(4)},{new Float(13),new Float(14)},{new Float(113),new Float(114)}},new Float[][]{{new Float(1),new Float(2)},{new Float(1234),new Float(123)},{new Float(999),new Float(555)},{new Float(345),new Float(123)}}};
-                //				computeLengthArray(f);
+                //                  Float f[][][] = new Float[][][]{new Float[][]{{new Float(1),new Float(2)},{new Float(3),new Float(4)},{new Float(13),new Float(14)},{new Float(113),new Float(114)}},new Float[][]{{new Float(1),new Float(2)},{new Float(1234),new Float(123)},{new Float(999),new Float(555)},{new Float(345),new Float(123)}}};
+                //                computeLengthArray(f);
                 int?[] yx = { 19, new int?(20), 22, new int?(23) };
                 computeLengthArray(yx);
                 double?[][] yx2 = { new double?[] { }, new double?[] { 123.3, new double?(123.4), 123.5 }, new double?[] { } };
                 computeLengthArray(yx2);
-                //				serializeArray(yx);
+                //                serializeArray(yx);
                 //
                 var array = deSerializeArray(typeof(float), new int[] { 10, 20 }, 2);
-                //			  	//Object o3 = Array.get(f,0);
+                //                  //Object o3 = Array.get(f,0);
                 //
-                //			  	//Object[] o = f[0];
-                //			  	//System.out.println(o[0]);
-                //			  	c = new Float[10][10].getClass();
-                //			  	System.out.println(c.getCanonicalName());
-                //			  	System.out.println(c);
-                //			  	System.out.println("Starting...");
-                //			  	byte b1[] = new byte[]{(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)-1,(byte)128};
-                //			  	double val = Encdec.dec_doublele(b1, 0);
-                //			    byte[] b = new byte[100];
-                //			    int i = 0;
-                //			    while (i < 100)b[i++] = -1;
-                //			  	Encdec.enc_doublele(Float.NaN,b,0);
+                //                  //Object[] o = f[0];
+                //                  //System.out.println(o[0]);
+                //                  c = new Float[10][10].getClass();
+                //                  System.out.println(c.getCanonicalName());
+                //                  System.out.println(c);
+                //                  System.out.println("Starting...");
+                //                  byte b1[] = new byte[]{(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)-1,(byte)128};
+                //                  double val = Encdec.dec_doublele(b1, 0);
+                //                byte[] b = new byte[100];
+                //                int i = 0;
+                //                while (i < 100)b[i++] = -1;
+                //                  Encdec.enc_doublele(Float.NaN,b,0);
                 //Encdec.enc_uint32le(268435456,b,0);
-                //			  InetAddress address = InetAddress.getLocalHost();
-                //			  byte[] array = address.getAddress();
+                //              InetAddress address = InetAddress.getLocalHost();
+                //              byte[] array = address.getAddress();
                 var b1 = new byte[10]; //{(byte)0x9c,(byte)0x3f,(byte)0x16,(byte)0};
                 int val = Encdec.dec_uint32le(b1, 0);
                 Encdec.enc_doublele(10.0, b1, 0);
-                //				FirstContact_Stub test = (FirstContact_Stub)
-                //				  StubFactory.newInstance().createStub(
-                //						  FirstContact.class);
-                //				test.setAddress("ncacn_ip_tcp:10.74.2.90[135]");
+                //                FirstContact_Stub test = (FirstContact_Stub)
+                //                  StubFactory.newInstance().createStub(
+                //                          FirstContact.class);
+                //                test.setAddress("ncacn_ip_tcp:10.74.2.90[135]");
                 var strKey = Convert.ToString(12345678);
                 char[] buffer1 = { };
                 Array.Copy(strKey.ToCharArray(), 0, buffer1, buffer1.Length - strKey.Length, strKey.Length);

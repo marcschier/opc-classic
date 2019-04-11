@@ -11,12 +11,14 @@ namespace org.jinterop.dcom.core {
     using System;
 
     /// <summary>
-    /// Describe a method of the COM <code>IDL</code> to be used in Callback implementations.
-    /// Framework uses java reflection to invoke methods requested by COM clients so it is
-    /// absolutely essential that java methods in the implementation class conform exactly to
-    /// what is described in this object.
-    /// <i>Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
-    /// and MSShell examples for more details on how to use this class.</i>
+    /// Describe a method of the COM <code>IDL</code> to be used in Callback
+    /// implementations.
+    /// Framework uses reflection to invoke methods requested by COM clients
+    /// so it is absolutely essential that java methods in the implementation
+    /// class conform exactly to what is described in this object.
+    /// <i>Please refer to MSInternetExplorer, Test_ITestServer2_Impl,
+    /// SampleTestServer and MSShell examples for more details on how to use
+    /// this class.</i>
     /// </summary>
     public sealed class JILocalMethodDescriptor {
 
@@ -44,7 +46,7 @@ namespace org.jinterop.dcom.core {
                     if (obj is Type c)
                     {
                         {
-                            //get the primitive members here
+                            // get the primitive members here
                             if (c.Equals(typeof(bool)))
                             {
                                 c = typeof(bool);

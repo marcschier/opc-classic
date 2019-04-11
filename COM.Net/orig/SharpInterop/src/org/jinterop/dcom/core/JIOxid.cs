@@ -18,40 +18,40 @@
 namespace org.jinterop.dcom.core {
 
 
-	[Serializable]
-	internal sealed class JIOxid {
+    [Serializable]
+    internal sealed class JIOxid {
 
-		private const long SerialVersionUID = 3456725801334190150L;
-		internal sbyte[] Oxid = null;
+        private const long SerialVersionUID = 3456725801334190150L;
+        internal sbyte[] Oxid = null;
 
-		public JIOxid(sbyte[] oxid) {
-			this.Oxid = oxid;
-		}
+        public JIOxid(sbyte[] oxid) {
+            this.Oxid = oxid;
+        }
 
-		public sbyte[] OXID {
-			get {
-				return Oxid;
-			}
-		}
+        public sbyte[] OXID {
+            get {
+                return Oxid;
+            }
+        }
 
-		public override int GetHashCode() {
-			int result = 1;
-			//from SUN
-			for (int i = 0;i < Oxid.Length;i++) {
-				result = 31 * result + Oxid[i];
-			}
-			return result;
-			//return Arrays.hashCode(oxid);
-		}
+        public override int GetHashCode() {
+            int result = 1;
+            //from SUN
+            for (int i = 0;i < Oxid.Length;i++) {
+                result = 31 * result + Oxid[i];
+            }
+            return result;
+            //return Arrays.hashCode(oxid);
+        }
 
-		 public override bool Equals(object obj) {
-			 if (!(obj is JIOxid)) {
-				return false;
-			 }
+         public override bool Equals(object obj) {
+             if (!(obj is JIOxid)) {
+                return false;
+             }
 
-			 return Arrays.Equals(Oxid,((JIOxid)obj).OXID);
-		 }
+             return Arrays.Equals(Oxid,((JIOxid)obj).OXID);
+         }
 
-	}
+    }
 
 }

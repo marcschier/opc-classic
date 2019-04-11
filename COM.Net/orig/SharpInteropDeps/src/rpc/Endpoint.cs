@@ -17,30 +17,30 @@
 
 namespace rpc {
 
-	using NdrObject = ndr.NdrObject;
-	using PresentationSyntax = rpc.core.PresentationSyntax;
-	using UUID = rpc.core.UUID;
+    using NdrObject = ndr.NdrObject;
+    using PresentationSyntax = rpc.core.PresentationSyntax;
+    using UUID = rpc.core.UUID;
 
-	public interface Endpoint {
+    public interface Endpoint {
 
-		Transport Transport { get; }
+        Transport Transport { get; }
 
-		PresentationSyntax Syntax { get; }
+        PresentationSyntax Syntax { get; }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void call(int semantics, rpc.core.UUID object, int opnum, ndr.NdrObject ndrobj) throws java.io.IOException;
-		void Call(int semantics, UUID @object, int opnum, NdrObject ndrobj);
+        void Call(int semantics, UUID @object, int opnum, NdrObject ndrobj);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void detach() throws java.io.IOException;
-		void Detach();
+        void Detach();
 
-	}
+    }
 
-	public static class Endpoint_Fields {
-		public const int MAYBE = 0x01;
-		public const int IDEMPOTENT = 0x02;
-		public const int BROADCAST = 0x04;
-	}
+    public static class Endpoint_Fields {
+        public const int MAYBE = 0x01;
+        public const int IDEMPOTENT = 0x02;
+        public const int BROADCAST = 0x04;
+    }
 
 }

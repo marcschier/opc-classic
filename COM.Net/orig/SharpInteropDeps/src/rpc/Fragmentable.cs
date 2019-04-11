@@ -23,16 +23,16 @@ using System.Collections;
 namespace rpc {
 
 
-	public interface Fragmentable : ICloneable {
+    public interface Fragmentable : ICloneable {
 
-		IEnumerator Fragment(int size);
+        IEnumerator Fragment(int size);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public Fragmentable assemble(java.util.Iterator fragments) throws java.io.IOException;
-		Fragmentable Assemble(IEnumerator fragments);
+        Fragmentable Assemble(IEnumerator fragments);
 
-		object Clone();
+        object Clone();
 
-	}
+    }
 
 }

@@ -100,7 +100,7 @@ namespace org.jinterop.dcom.core {
         internal void InterruptRemUnknownThreadGroup() {
             if (_remUnknownThread != null) {
                 try {
-                    // TODO:  
+                    // TODO:
                     // _remUnknownThread.interrupt();
 
                     // old: remUnknownThread.destroy();

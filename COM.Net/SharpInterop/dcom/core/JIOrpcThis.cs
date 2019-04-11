@@ -54,12 +54,12 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         public void Encode(NdrCodec ndr) {
-            ndr.WriteUnsignedShort(_version.MajorVersion); //COM Major version
-            ndr.WriteUnsignedShort(_version.MinorVersion); //COM minor version
+            ndr.WriteUnsignedShort(_version.MajorVersion); // COM Major version
+            ndr.WriteUnsignedShort(_version.MinorVersion); // COM minor version
             ndr.WriteUnsignedLong(ORPCFlags); // No Flags
             ndr.WriteUnsignedLong(0); // Reserved ...always 0.
 
-            //the order here is important since the cid is always filled from the ctor hence will never be null.
+            // the order here is important since the cid is always filled from the ctor hence will never be null.
             var cid2 = kCidForCallback.Value ?? CasualityIdentifier;
             var uuid = new UUID(cid2);
             try {
@@ -111,7 +111,7 @@ namespace org.jinterop.dcom.core {
                 ndr, typeof(int), null, JIFlags.FLAG_NULL, map);
 
             JIMarshalUnMarshalHelper.Deserialize(
-                ndr, typeof(int), null, JIFlags.FLAG_NULL, map); //reserved.
+                ndr, typeof(int), null, JIFlags.FLAG_NULL, map); // reserved.
 
             var uuid = new UUID();
             try {
@@ -125,7 +125,7 @@ namespace org.jinterop.dcom.core {
 
             var orpcextentarray = new JIStruct();
             try {
-                //create the orpcextent struct
+                // create the orpcextent struct
                 /*
                  *  typedef struct tagORPC_EXTENT
             {
@@ -138,9 +138,9 @@ namespace org.jinterop.dcom.core {
 
                 var orpcextent = new JIStruct();
                 orpcextent.AddMember(typeof(UUID));
-                orpcextent.AddMember(typeof(int)); //length
+                orpcextent.AddMember(typeof(int)); // length
                 orpcextent.AddMember(new JIArray(typeof(sbyte), null, 1, true));
-                //create the orpcextentarray struct
+                // create the orpcextentarray struct
                 /*
                  *    typedef struct tagORPC_EXTENT_ARRAY
             {
@@ -154,11 +154,11 @@ namespace org.jinterop.dcom.core {
 
                 orpcextentarray.AddMember(typeof(int));
                 orpcextentarray.AddMember(typeof(int));
-                //this is since the pointer is [unique]
+                // this is since the pointer is [unique]
                 orpcextentarray.AddMember(new JIPointer(new JIArray(new JIPointer(orpcextent), null, 1, true)));
             }
             catch (JIException) {
-                //this won't fail...i am certain :)...
+                // this won't fail...i am certain :)...
             }
 
             var listOfDefferedPointers = new List<object>();
@@ -170,22 +170,22 @@ namespace org.jinterop.dcom.core {
                 var newList = new List<object>();
                 var replacement = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(
                     ndr, (JIPointer)listOfDefferedPointers[x], newList, JIFlags.FLAG_NULL, map);
-                //this should replace the value in the original place.
+                // this should replace the value in the original place.
                 ((JIPointer)listOfDefferedPointers[x]).ReplaceSelfWithNewPointer(replacement);
                 x++;
                 listOfDefferedPointers.InsertRange(x, newList);
             }
 
             var extentArrays = new List<object>();
-            //now read whether extend array exists or not
+            // now read whether extend array exists or not
             if (!orpcextentarrayptr.IsNull) {
-                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.GetReferent()).GetMember(2)).GetReferent()).ArrayInstance;
+                var pointers = (JIPointer[])((JIArray)((JIPointer)((JIStruct)orpcextentarrayptr.Referent).GetMember(2)).Referent).ArrayInstance;
                 for (var i = 0; i < pointers.Length; i++) {
                     if (pointers[i].IsNull) {
                         continue;
                     }
 
-                    var orpcextent2 = (JIStruct)pointers[i].GetReferent();
+                    var orpcextent2 = (JIStruct)pointers[i].Referent;
                     var byteArray = (byte[])((JIArray)orpcextent2.GetMember(2)).ArrayInstance;
 
                     extentArrays.Add(new JIOrpcExtentArray(((UUID)orpcextent2.GetMember(0)).ToString(), byteArray.Length, byteArray));
@@ -195,10 +195,10 @@ namespace org.jinterop.dcom.core {
 
             retval.ExtentArray = extentArrays.Cast<JIOrpcExtentArray>().ToArray();
 
-            //decode can only be executed incase of a request made from the server side in case of a callback. so the thread making this
-            //callback will store the cid from the decode operation in the threadlocal variable. In case an encode is performed using the
-            //same thread then we know that this is a nested call. Hence will replace the cid with the thread local cid. For the calls being in
-            //case of encode this value will not be used if the encode thread is of the client and not of JIComOxidRuntimeHelper.
+            // decode can only be executed incase of a request made from the server side in case of a callback. so the thread making this
+            // callback will store the cid from the decode operation in the threadlocal variable. In case an encode is performed using the
+            // same thread then we know that this is a nested call. Hence will replace the cid with the thread local cid. For the calls being in
+            // case of encode this value will not be used if the encode thread is of the client and not of JIComOxidRuntimeHelper.
             kCidForCallback.Value = retval.CasualityIdentifier;
             return retval;
         }

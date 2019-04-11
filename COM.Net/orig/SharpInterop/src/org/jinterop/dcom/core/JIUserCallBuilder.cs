@@ -15,33 +15,33 @@
 
 namespace org.jinterop.dcom.core {
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
 
-	//Users can implement this object to provide for custom handling of there objects
-	/// <summary>
-	/// Users can implement this class to provide for custom handling of there objects
-	/// 
-	/// @since 2.0 (formerly JIUserCallObject)
-	/// </summary>
-	public abstract class JIUserCallBuilder : JICallBuilder {
+    //Users can implement this object to provide for custom handling of there objects
+    /// <summary>
+    /// Users can implement this class to provide for custom handling of there objects
+    /// 
+    /// @since 2.0 (formerly JIUserCallObject)
+    /// </summary>
+    public abstract class JIUserCallBuilder : JICallBuilder {
 
-		public abstract void WriteObject(NetworkDataRepresentation ndr);
-		public abstract void ReadObject(NetworkDataRepresentation ndr);
+        public abstract void WriteObject(NetworkDataRepresentation ndr);
+        public abstract void ReadObject(NetworkDataRepresentation ndr);
 
-		public JIUserCallBuilder(bool dispatchNotSupported) : base(dispatchNotSupported) {
-		}
+        public JIUserCallBuilder(bool dispatchNotSupported) : base(dispatchNotSupported) {
+        }
 
-		public JIUserCallBuilder() : base() {
-		}
+        public JIUserCallBuilder() : base() {
+        }
 
-		public override void Write(NetworkDataRepresentation ndr) {
-			WriteObject(ndr);
-		}
+        public override void Write(NetworkDataRepresentation ndr) {
+            WriteObject(ndr);
+        }
 
-		public override void Read(NetworkDataRepresentation ndr) {
-			ReadObject(ndr);
-		}
+        public override void Read(NetworkDataRepresentation ndr) {
+            ReadObject(ndr);
+        }
 
-	}
+    }
 
 }

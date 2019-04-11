@@ -9,7 +9,6 @@
 
 namespace org.jinterop.dcom.core {
     using SharpCifs.Dcerpc.Ndr;
-    using org.jinterop.dcom.common;
     using Serilog;
     using System;
     using org.jinterop.dcom.impls.automation;
@@ -56,7 +55,7 @@ namespace org.jinterop.dcom.core {
         /// Returns the Interface Identifier for this MIP.
         /// </summary>
         /// <returns> String representation of 128 bit uuid. </returns>
-        internal string IID => _iid;
+        internal string IID { get; private set; }
 
         /// <summary>
         /// Ip id
@@ -85,7 +84,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="port"></param>
         /// <param name="objref"></param>
         internal JIInterfacePointerBody(string iid, int port, JIStdObjRef objref) {
-            _iid = iid;
+            IID = iid;
             _stdObjRef = objref;
             _port = port;
             StringBindings = new JIDualStringArray(port);
@@ -98,7 +97,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="iid"></param>
         /// <param name="interfacePointer"></param>
         internal JIInterfacePointerBody(string iid, JIInterfacePointer interfacePointer) {
-            _iid = iid;
+            IID = iid;
             _stdObjRef = (JIStdObjRef)interfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD);
             StringBindings = interfacePointer.StringBindings;
             Length = 40 + 4 + 4 + 16 + StringBindings.Length;
@@ -117,37 +116,37 @@ namespace org.jinterop.dcom.core {
             }
 
             var length = ndr.ReadUnsignedLong();
-            ndr.ReadUnsignedLong(); //length
+            ndr.ReadUnsignedLong(); // length
 
             var ptr = new JIInterfacePointerBody {
                 Length = length
             };
-            //check for MEOW
+            // check for MEOW
             var b = new byte[4];
             ndr.ReadOctetArray(b, 0, 4);
 
             var i = 0;
             while (i != 4) {
-                //not MEOW then what ?
+                // not MEOW then what ?
                 if (b[i] != JIInterfacePointer.OBJREF_SIGNATURE[i]) {
                     return null;
                 }
                 i++;
             }
 
-            //TODO only STDOBJREF supported for now
+            // TODO only STDOBJREF supported for now
 
             if ((ptr.ObjectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 try {
                     var ipid2 = new rpc.core.UUID();
                     ipid2.Decode(ndr, ndr.Buffer);
-                    ptr._iid = ipid2.ToString();
+                    ptr.IID = ipid2.ToString();
                 }
                 catch (NdrException e) {
                     Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
                 }
 
-                //now for CLSID
+                // now for CLSID
                 try {
                     var ipid2 = new rpc.core.UUID();
                     ipid2.Decode(ndr, ndr.Buffer);
@@ -157,10 +156,10 @@ namespace org.jinterop.dcom.core {
                     Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
                 }
 
-                //extension
+                // extension
                 ndr.ReadUnsignedLong();
 
-                //reserved
+                // reserved
                 ndr.ReadUnsignedLong();
 
                 return ptr;
@@ -169,7 +168,7 @@ namespace org.jinterop.dcom.core {
             try {
                 var ipid2 = new rpc.core.UUID();
                 ipid2.Decode(ndr, ndr.Buffer);
-                ptr._iid = ipid2.ToString();
+                ptr.IID = ipid2.ToString();
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
@@ -189,20 +188,20 @@ namespace org.jinterop.dcom.core {
         internal static JIInterfacePointerBody Decode2(NdrCodec ndr) {
             var ptr = new JIInterfacePointerBody();
 
-            //check for MEOW
+            // check for MEOW
             var b = new byte[4];
             ndr.ReadOctetArray(b, 0, 4);
 
             var i = 0;
             while (i != 4) {
-                //not MEOW then what ?
+                // not MEOW then what ?
                 if (b[i] != JIInterfacePointer.OBJREF_SIGNATURE[i]) {
                     return null;
                 }
                 i++;
             }
 
-            //TODO only STDOBJREF supported for now
+            // TODO only STDOBJREF supported for now
             if ((ptr.ObjectType = ndr.ReadUnsignedLong()) != JIInterfacePointer.OBJREF_STANDARD) {
                 return null;
             }
@@ -210,7 +209,7 @@ namespace org.jinterop.dcom.core {
             try {
                 var ipid2 = new rpc.core.UUID();
                 ipid2.Decode(ndr, ndr.Buffer);
-                ptr._iid = ipid2.ToString();
+                ptr.IID = ipid2.ToString();
             }
             catch (NdrException e) {
                 Log.Logger.Error(e, "JIInterfacePointer", "decode", e);
@@ -226,11 +225,11 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="ndr"></param>
         /// <param name="flags"></param>
-        internal virtual void Encode(NdrCodec ndr, int flags) {
+        internal void Encode(NdrCodec ndr, int flags) {
 
-            //now for length
-            //the length for STDOBJREF is fixed 40 bytes : 4,4,8,8,16.
-            //Dual string array has to be computed, since that can vary. MEOW = 4., flag stdobjref = 4
+            // now for length
+            // the length for STDOBJREF is fixed 40 bytes : 4,4,8,8,16.
+            // Dual string array has to be computed, since that can vary. MEOW = 4., flag stdobjref = 4
             // + 16 bytes of ipid
             var length = 0;
             if (!CustomObjRef) {
@@ -240,22 +239,22 @@ namespace org.jinterop.dcom.core {
             ndr.WriteUnsignedLong(length);
             ndr.WriteUnsignedLong(length);
 
-            //for OBJREF_CUSTOM we will correct this length after the custom object has been marshalled.
-            //this object is marshalled 4 + 4 + 40 bytes after this point. The length of the length itself is not included.
+            // for OBJREF_CUSTOM we will correct this length after the custom object has been marshalled.
+            // this object is marshalled 4 + 4 + 40 bytes after this point. The length of the length itself is not included.
 
             ndr.WriteOctetArray(JIInterfacePointer.OBJREF_SIGNATURE, 0, 4);
 
             if (CustomObjRef) {
                 ndr.WriteUnsignedLong(JIInterfacePointer.OBJREF_CUSTOM);
                 try {
-                    var ipid2 = new rpc.core.UUID(_iid);
+                    var ipid2 = new rpc.core.UUID(IID);
                     ipid2.Encode(ndr, ndr.Buffer);
                     ipid2 = new rpc.core.UUID(CustomCLSID);
                     ipid2.Encode(ndr, ndr.Buffer);
-                    ndr.WriteUnsignedLong(0); //extension
-                    ndr.WriteUnsignedLong(0); //reserved, now the spec say that this is ignored by the server but the
-                                              //the WMIO marshaller puts the length of the entire buffer here. If this is the case then we will have to go
-                                              //4 bytes back and rewrite this with total lengths in the custom marshaller.
+                    ndr.WriteUnsignedLong(0); // extension
+                    ndr.WriteUnsignedLong(0); // reserved, now the spec say that this is ignored by the server but the
+                                              // the WMIO marshaller puts the length of the entire buffer here. If this is the case then we will have to go
+                                              // 4 bytes back and rewrite this with total lengths in the custom marshaller.
                 }
                 catch (NdrException e) {
                     // TODO Auto-generated catch block
@@ -263,14 +262,14 @@ namespace org.jinterop.dcom.core {
                     Console.Write(e.StackTrace);
                 }
 
-                return; //rest will be filled by the Custom Marshaller.
+                return; // rest will be filled by the Custom Marshaller.
             }
 
-            //std ref
+            // std ref
             ndr.WriteUnsignedLong(JIInterfacePointer.SORF_OXRES1);
 
             try {
-                var ipid2 = new rpc.core.UUID(_iid);
+                var ipid2 = new rpc.core.UUID(IID);
                 if ((flags & JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) ==
                              JIFlags.FLAG_REPRESENTATION_USE_IUNKNOWN_IID) {
                     ipid2 = new rpc.core.UUID(Interfaces.IID_IUnknown);
@@ -292,10 +291,9 @@ namespace org.jinterop.dcom.core {
             StringBindings.Encode(ndr);
         }
 
-        private string _iid;
         private JIStdObjRef _stdObjRef;
 #pragma warning disable IDE0052 // Remove unread private members
-        private readonly int _port = -1; //to be used when doing local resolution.
+        private readonly int _port = -1; // to be used when doing local resolution.
 #pragma warning restore IDE0052 // Remove unread private members
     }
 }

@@ -18,62 +18,62 @@
 
 namespace rpc.core {
 
-	using NdrException = ndr.NdrException;
-	using NdrObject = ndr.NdrObject;
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NdrException = ndr.NdrException;
+    using NdrObject = ndr.NdrObject;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
 
-	public class PresentationContext : NdrObject {
+    public class PresentationContext : NdrObject {
 
-		public int ContextId;
+        public int ContextId;
 
-		public PresentationSyntax AbstractSyntax;
+        public PresentationSyntax AbstractSyntax;
 
-		public PresentationSyntax[] TransferSyntaxes;
+        public PresentationSyntax[] TransferSyntaxes;
 
-		public PresentationContext() : this(0, new PresentationSyntax(), new PresentationSyntax[] { new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX) }) {
-		}
+        public PresentationContext() : this(0, new PresentationSyntax(), new PresentationSyntax[] { new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX) }) {
+        }
 
-		public PresentationContext(int contextId, PresentationSyntax abstractSyntax) : this(contextId, abstractSyntax, new PresentationSyntax[] { new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX) }) {
-		}
+        public PresentationContext(int contextId, PresentationSyntax abstractSyntax) : this(contextId, abstractSyntax, new PresentationSyntax[] { new PresentationSyntax(NetworkDataRepresentation.NDR_SYNTAX) }) {
+        }
 
-		public PresentationContext(int contextId, PresentationSyntax abstractSyntax, PresentationSyntax[] transferSyntaxes) {
-			this.ContextId = contextId;
-			this.AbstractSyntax = abstractSyntax;
-			this.TransferSyntaxes = transferSyntaxes;
-		}
+        public PresentationContext(int contextId, PresentationSyntax abstractSyntax, PresentationSyntax[] transferSyntaxes) {
+            this.ContextId = contextId;
+            this.AbstractSyntax = abstractSyntax;
+            this.TransferSyntaxes = transferSyntaxes;
+        }
 
-		public override void Read(NetworkDataRepresentation ndr) {
-			ndr.Buffer.Align(4);
-			ContextId = ndr.ReadUnsignedShort();
-			int count = ndr.ReadUnsignedSmall();
+        public override void Read(NetworkDataRepresentation ndr) {
+            ndr.Buffer.Align(4);
+            ContextId = ndr.ReadUnsignedShort();
+            int count = ndr.ReadUnsignedSmall();
 
-			try {
-				AbstractSyntax.Decode(ndr, ndr.Buffer);
-				   TransferSyntaxes = new PresentationSyntax[count];
-				for (int i = 0; i < count; i++) {
-					TransferSyntaxes[i] = new PresentationSyntax();
-					TransferSyntaxes[i].Decode(ndr, ndr.Buffer);
-				}
-			}
-			catch (NdrException) {
-			}
-		}
+            try {
+                AbstractSyntax.Decode(ndr, ndr.Buffer);
+                   TransferSyntaxes = new PresentationSyntax[count];
+                for (int i = 0; i < count; i++) {
+                    TransferSyntaxes[i] = new PresentationSyntax();
+                    TransferSyntaxes[i].Decode(ndr, ndr.Buffer);
+                }
+            }
+            catch (NdrException) {
+            }
+        }
 
-		public override void Write(NetworkDataRepresentation ndr) {
-			ndr.Buffer.Align(4, unchecked((sbyte)0xcc));
-			ndr.WriteUnsignedShort(ContextId);
-			ndr.WriteUnsignedShort((short) TransferSyntaxes.Length);
+        public override void Write(NetworkDataRepresentation ndr) {
+            ndr.Buffer.Align(4, unchecked((sbyte)0xcc));
+            ndr.WriteUnsignedShort(ContextId);
+            ndr.WriteUnsignedShort((short) TransferSyntaxes.Length);
 
-			try {
-				AbstractSyntax.Encode(ndr, ndr.Buffer);
-				for (int i = 0; i < TransferSyntaxes.Length; i++) {
-					TransferSyntaxes[i].Encode(ndr, ndr.Buffer);
-				}
-			}
-			catch (NdrException) {
-			}
-		}
+            try {
+                AbstractSyntax.Encode(ndr, ndr.Buffer);
+                for (int i = 0; i < TransferSyntaxes.Length; i++) {
+                    TransferSyntaxes[i].Encode(ndr, ndr.Buffer);
+                }
+            }
+            catch (NdrException) {
+            }
+        }
 
-	}
+    }
 
 }

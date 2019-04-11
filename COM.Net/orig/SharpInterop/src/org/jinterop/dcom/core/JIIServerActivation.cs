@@ -15,27 +15,27 @@
 
 namespace org.jinterop.dcom.core {
 
-	internal interface JIIServerActivation {
+    internal interface JIIServerActivation {
 
-		bool ActivationSuccessful { get; }
+        bool ActivationSuccessful { get; }
 
-		JIDualStringArray DualStringArrayForOxid { get; }
+        JIDualStringArray DualStringArrayForOxid { get; }
 
-		JIInterfacePointer MInterfacePointer { get; }
+        JIInterfacePointer MInterfacePointer { get; }
 
-		string IPID { get; }
+        string IPID { get; }
 
-		bool Dual { get; }
+        bool Dual { get; }
 
-		string DispIpid { get;set; }
+        string DispIpid { get;set; }
 
-		int DispRefs { get; }
+        int DispRefs { get; }
 
 
-	}
+    }
 
-	public static class JIIServerActivation_Fields {
-		public const int RPC_C_IMP_LEVEL_IDENTIFY = 2;
-		public const int RPC_C_IMP_LEVEL_IMPERSONATE = 3;
-	}
+    public static class JIIServerActivation_Fields {
+        public const int RPC_C_IMP_LEVEL_IDENTIFY = 2;
+        public const int RPC_C_IMP_LEVEL_IMPERSONATE = 3;
+    }
 }

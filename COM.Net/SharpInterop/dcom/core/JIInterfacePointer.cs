@@ -14,18 +14,23 @@ namespace org.jinterop.dcom.core {
     using System.Linq;
 
     /// <summary>
-    /// Class representing a Marshalled Interface Pointer. You will never use the members of this
-    /// class directly, but always as an implementation of <code>IJIComObject</code> interface.
+    /// Class representing a Marshalled Interface Pointer. You will never
+    /// use the members of this class directly, but always as an implementation
+    /// of <code>IJIComObject</code> interface.
     /// Sample Usage:-
     /// <code>
-    /// IJIComObject connectionPointContainer = (IJIComObject)ieObject.queryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
-    /// JICallBuilder object = new JICallBuilder(connectionPointContainer.getIpid(),true);
-    /// object.setOpnum(1);
-    /// object.addInParamAsUUID("34A715A0-6587-11D0-924A-0020AFC7AC4D",JIFlags.FLAG_NULL);
-    /// object.addOutParamAsObject(JIInterfacePointer.class,JIFlags.FLAG_NULL);
-    /// Object[] objects = (Object[])connectionPointContainer.call(object); //find connection point
-    /// JIInterfacePointer connectionPtr = (JIInterfacePointer)objects[0];
-    /// IJIComObject connectionPointer = JIObjectFactory.createCOMInstance(connectionPointContainer,connectionPtr);
+    ///  IJIComObject connectionPointContainer =
+    ///      (IJIComObject)ieObject.queryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
+    ///  JICallBuilder object =
+    ///      new JICallBuilder(connectionPointContainer.getIpid(),true);
+    ///  object.Opnum = 1;
+    ///  object.AddInParamAsUUID("34A715A0-6587-11D0-924A-0020AFC7AC4D",JIFlags.FLAG_NULL);
+    ///  object.AddOutParamAsObject(JIInterfacePointer.class,JIFlags.FLAG_NULL);
+    ///  // find connection point
+    ///  object[] objects = (object[])connectionPointContainer.call(object);
+    ///  JIInterfacePointer connectionPtr = (JIInterfacePointer)objects[0];
+    ///  IJIComObject connectionPointer =
+    ///      JIObjectFactory.CreateCOMInstance(connectionPointContainer, connectionPtr);
     /// </code>
     /// </summary>
     [Serializable]
@@ -34,13 +39,13 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Custom object
         /// </summary>
-        internal bool IsCustomObjRef => ((JIInterfacePointerBody)_member.GetReferent())
+        internal bool IsCustomObjRef => ((JIInterfacePointerBody)_member.Referent)
             .CustomObjRef;
 
         /// <summary>
         /// Custom class id
         /// </summary>
-        internal string CustomCLSID => ((JIInterfacePointerBody)_member.GetReferent())
+        internal string CustomCLSID => ((JIInterfacePointerBody)_member.Referent)
             .CustomCLSID;
 
         /// <summary>
@@ -53,47 +58,47 @@ namespace org.jinterop.dcom.core {
         /// <summary>
         /// Object type
         /// </summary>
-        internal int ObjectType => ((JIInterfacePointerBody)_member.GetReferent()).ObjectType;
+        internal int ObjectType => ((JIInterfacePointerBody)_member.Referent).ObjectType;
 
         /// <summary>
         /// Object reference of specified type
         /// </summary>
         /// <param name="objectType"></param>
         internal object GetObjectReference(int objectType) =>
-            ((JIInterfacePointerBody)_member.GetReferent()).GetObjectReference(objectType);
+            ((JIInterfacePointerBody)_member.Referent).GetObjectReference(objectType);
 
         /// <summary>
         /// Returns the Interface Identifier for this MIP.
         /// </summary>
-        public string IID => ((JIInterfacePointerBody)_member.GetReferent()).IID;
+        public string IID => ((JIInterfacePointerBody)_member.Referent).IID;
 
         /// <summary>
         /// IP Id
         /// </summary>
-        public string IPID => ((JIInterfacePointerBody)_member.GetReferent()).IPID;
+        public string IPID => ((JIInterfacePointerBody)_member.Referent).IPID;
 
         /// <summary>
         /// Oid
         /// </summary>
-        public byte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.GetReferent())
+        public byte[] OID => ((JIStdObjRef)((JIInterfacePointerBody)_member.Referent)
             .GetObjectReference(OBJREF_STANDARD)).ObjectId;
 
         /// <summary>
         /// Oxid
         /// </summary>
-        internal byte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.GetReferent())
+        internal byte[] OXID => ((JIStdObjRef)((JIInterfacePointerBody)_member.Referent)
             .GetObjectReference(OBJREF_STANDARD)).Oxid;
 
         /// <summary>
         /// String bindings
         /// </summary>
-        internal JIDualStringArray StringBindings => 
-            ((JIInterfacePointerBody)_member.GetReferent()).StringBindings;
+        internal JIDualStringArray StringBindings =>
+            ((JIInterfacePointerBody)_member.Referent).StringBindings;
 
         /// <summary>
         /// Length
         /// </summary>
-        internal int Length => ((JIInterfacePointerBody)_member.GetReferent()).Length;
+        internal int Length => ((JIInterfacePointerBody)_member.Referent).Length;
 
         /// <summary>
         /// Hidden constructor
@@ -160,7 +165,7 @@ namespace org.jinterop.dcom.core {
                 ptr._member = (JIPointer)JIMarshalUnMarshalHelper.Deserialize(ndr,
                     new JIPointer(typeof(JIInterfacePointerBody)), defferedPointers, FLAG, additionalData);
             }
-            //the pointer is null, no point of it's wrapper being present, so return null from here as well
+            // the pointer is null, no point of it's wrapper being present, so return null from here as well
             if (ptr._member.IsNull) {
                 ptr = null;
             }
@@ -176,7 +181,7 @@ namespace org.jinterop.dcom.core {
         internal void Encode(NdrCodec ndr, List<object> defferedPointers, int FLAG) {
             if ((FLAG & JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) ==
                         JIFlags.FLAG_REPRESENTATION_SET_JIINTERFACEPTR_NULL_FOR_VARIANT) {
-                //just encode a null.
+                // just encode a null.
                 JIMarshalUnMarshalHelper.Serialize(ndr, typeof(int), 0, defferedPointers, FLAG);
                 return;
             }

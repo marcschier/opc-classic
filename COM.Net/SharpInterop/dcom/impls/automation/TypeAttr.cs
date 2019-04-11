@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.impls.automation {
     using org.jinterop.dcom.core;
@@ -16,33 +16,33 @@ namespace org.jinterop.dcom.impls.automation {
     /// contains attributes of an IJITypeInfo.
     /// </summary>
     /// <remarks>
-    ///   GUID guid;                    // The GUID of the type information.
-    ///   LCID lcid;                    // Locale of member names and doc
-    ///                                 // strings.
-    ///   unsigned long dwReserved;     // reserved
-    ///   MEMBERID memidConstructor;    // ID of constructor, or MEMBERID_NIL if
-    ///                                 // none.
-    ///   MEMBERID memidDestructor;     // ID of destructor, or MEMBERID_NIL if
-    ///                                 // none.
-    ///   OLECHAR FAR* lpstrSchema;     // Reserved for future use.
-    ///   unsigned long cbSizeInstance; // The size of an instance of
-    ///                                 // this type.
-    ///   TypeKind typekind;            // The kind of type this information
-    ///                                 // describes.
-    ///   unsigned short cFuncs;        // Number of functions.
-    ///   unsigned short cVars;         // Number of variables/data members.
-    ///   unsigned short cImplTypes;    // Number of implemented interfaces.
-    ///   unsigned short cbSizeVft;     // The size of this type's VTBL.
-    ///   unsigned short cbAlignment;   // Byte alignment for an instance
-    ///                                 // of this type.
-    ///   unsigned short wTypeFlags;
-    ///   unsigned short wMajorVerNum;  // Major version number.
-    ///   unsigned short wMinorVerNum;  // Minor version number.
-    ///   TYPEDESC tdescAlias;          // If TypeKind == TKIND_ALIAS,
-    ///                                 // specifies the type for which
-    ///                                 // this type is an alias.
-    ///   IDLDESC idldescType;          // IDL attributes of the
-    ///                                 // described type.
+    ///  GUID guid;                    // The GUID of the type information.
+    ///  LCID lcid;                    // Locale of member names and doc
+    ///                                // strings.
+    ///  unsigned long dwReserved;     // reserved
+    ///  MEMBERID memidConstructor;    // ID of constructor, or MEMBERID_NIL if
+    ///                                // none.
+    ///  MEMBERID memidDestructor;     // ID of destructor, or MEMBERID_NIL if
+    ///                                // none.
+    ///  OLECHAR FAR* lpstrSchema;     // Reserved for future use.
+    ///  unsigned long cbSizeInstance; // The size of an instance of
+    ///                                // this type.
+    ///  TypeKind typekind;            // The kind of type this information
+    ///                                // describes.
+    ///  unsigned short cFuncs;        // Number of functions.
+    ///  unsigned short cVars;         // Number of variables/data members.
+    ///  unsigned short cImplTypes;    // Number of implemented interfaces.
+    ///  unsigned short cbSizeVft;     // The size of this type's VTBL.
+    ///  unsigned short cbAlignment;   // Byte alignment for an instance
+    ///                                // of this type.
+    ///  unsigned short wTypeFlags;
+    ///  unsigned short wMajorVerNum;  // Major version number.
+    ///  unsigned short wMinorVerNum;  // Minor version number.
+    ///  TYPEDESC tdescAlias;          // If TypeKind == TKIND_ALIAS,
+    ///                                // specifies the type for which
+    ///                                // this type is an alias.
+    ///  IDLDESC idldescType;          // IDL attributes of the
+    ///                                // described type.
     /// </remarks>
     [Serializable]
     public sealed class TypeAttr {
@@ -52,20 +52,20 @@ namespace org.jinterop.dcom.impls.automation {
         public readonly string guid;
         public readonly int lcid;
         public readonly int dwReserved;
-        public readonly int memidConstructor; 
+        public readonly int memidConstructor;
         public readonly int memidDestructor;
-        public readonly JIPointer lpstrSchema; 
+        public readonly JIPointer lpstrSchema;
         public readonly int cbSizeInstance;
-        public readonly TypeKind typekind; 
-        public readonly short cFuncs; 
-        public readonly short cVars; 
+        public readonly TypeKind typekind;
+        public readonly short cFuncs;
+        public readonly short cVars;
         public readonly short cImplTypes;
         public readonly short cbSizeVft;
         public readonly short cbAlignment;
         public readonly TypeFlag wTypeFlags;
-        public readonly short wMajorVerNum; 
-        public readonly short wMinorVerNum; 
-        public readonly TypeDesc tdescAlias; 
+        public readonly short wMajorVerNum;
+        public readonly short wMinorVerNum;
+        public readonly TypeDesc tdescAlias;
         public readonly IdlDesc idldescType;
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
@@ -74,8 +74,8 @@ namespace org.jinterop.dcom.impls.automation {
         /// Create type attribute
         /// </summary>
         /// <param name="values"></param>
-        internal TypeAttr(JIPointer values) : 
-            this(values.IsNull ? null : (JIStruct)values.GetReferent()) {
+        internal TypeAttr(JIPointer values) :
+            this(values.IsNull ? null : (JIStruct)values.Referent) {
         }
 
         /// <summary>

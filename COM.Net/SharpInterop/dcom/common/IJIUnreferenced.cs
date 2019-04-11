@@ -23,14 +23,14 @@ namespace org.jinterop.dcom.common {
     /// purpose of this housekeeping than it will <b>NEVER</b> get garbage collected by the framework as
     /// the logic of collection is based on weak references.
     /// <para>
-    ///  <code>
-    ///    comObject.registerUnreferencedHandler(session, new IJIUnreferenced(){
-    ///			public void unReferenced()
-    ///			{
-    ///				//do something here
-    ///			}
-    ///		});
-    ///  </code>
+    /// <code>
+    ///   comObject.registerUnreferencedHandler(session, new IJIUnreferenced(){
+    ///           public void unReferenced()
+    ///           {
+    ///               // do something here
+    ///           }
+    ///       });
+    /// </code>
     /// </para>
     /// Please refer to MSWMI example for more details on how to use this class.
     /// </remarks>

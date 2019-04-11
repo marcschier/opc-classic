@@ -19,40 +19,38 @@
             }
         }
 
-        public virtual void UpdateMe(JIUnsignedShort size, JIArray array) {
+        public void UpdateMe(ushort size, JIArray array) {
             Append("C:\\Test\\callback_j.log", "SampleTestServerCallback::UpdateMe entered with array size=" + size + "\n");
             Console.WriteLine("SampleTestServerCallback::UpdateMe entered with array size=" + size + "\n");
             var structArray = (JIStruct[])array.ArrayInstance;
-            for (var i = 0; i < (int)size.Value; i++) {
+            for (var i = 0; i < (int)size; i++) {
                 Append("C:\\Test\\callback_j.log", "Member 0= " + structArray[i].GetMember(0).ToString() + "\n");
                 Console.WriteLine("Array elt=" + i + ",Member 0= " + structArray[i].GetMember(0).ToString() + "\n");
             }
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: private static org.jinterop.dcom.core.JILocalInterfaceDefinition registerInterface() throws org.jinterop.dcom.common.JIException
         private static JILocalInterfaceDefinition RegisterInterface() {
-            //Now for the Java Implementation of SampleTestServer2 interface (from the type library or IDL)
-            var interfaceDefinition = new JILocalInterfaceDefinition("D3F9CE10-686C-11d2-97BF-006008BD50B1", false); //IStatisUpdateMeSink
+            // Now for the Java Implementation of SampleTestServer2 interface (from the type library or IDL)
+            var interfaceDefinition = new JILocalInterfaceDefinition("D3F9CE10-686C-11d2-97BF-006008BD50B1", false); // IStatisUpdateMeSink
 
             var VarData = new JIStruct(); // Will add in the struct later on
-            VarData.AddMember(typeof(JIUnsignedInteger));
+            VarData.AddMember(typeof(uint));
             VarData.AddMember(typeof(float));
             VarData.AddMember(typeof(float));
-            VarData.AddMember(typeof(JIUnsignedShort));
+            VarData.AddMember(typeof(ushort));
             VarData.AddMember(typeof(float));
             VarData.AddMember(typeof(DateTime));
-            VarData.AddMember(typeof(JIUnsignedShort));
+            VarData.AddMember(typeof(ushort));
 
             var NonVariableData = new JIStruct(); // Will add in the struct later on
-            NonVariableData.AddMember(typeof(JIUnsignedInteger));
-            NonVariableData.AddMember(typeof(JIUnsignedInteger));
-            NonVariableData.AddMember(typeof(JIUnsignedByte));
-            NonVariableData.AddMember(new JIPointer(new JIArray(VarData, null, 1, true), true)); //since this is an embedded pointer
+            NonVariableData.AddMember(typeof(uint));
+            NonVariableData.AddMember(typeof(uint));
+            NonVariableData.AddMember(typeof(byte));
+            NonVariableData.AddMember(new JIPointer(new JIArray(VarData, null, 1, true), true)); // since this is an embedded pointer
             var NonVariableDataArray = new JIArray(NonVariableData, null, 1, true);
 
             var updateParamObj = new JILocalParamsDescriptor();
-            updateParamObj.AddInParamAsType(typeof(JIUnsignedShort), JIFlags.FLAG_NULL);
+            updateParamObj.AddInParamAsType(typeof(ushort), JIFlags.FLAG_NULL);
             updateParamObj.AddInParamAsObject(NonVariableDataArray, JIFlags.FLAG_NULL);
             var methodDescriptor = new JILocalMethodDescriptor("UpdateMe", updateParamObj);
             interfaceDefinition.AddMethodDescriptor(methodDescriptor);
@@ -60,16 +58,15 @@
             return interfaceDefinition;
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static void testStaticUpdateMeSink(String[] args) throws org.jinterop.dcom.common.JIException, InterruptedException, java.net.UnknownHostException
+
         public static void TestStaticUpdateMeSink(string[] args) {
 
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             var comStub = new JIComServer(JIProgId.ValueOf("TstMarsh.Test"), args[0], session);
             var unknown = comStub.CreateInstance();
-            var ITest = unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
+            var ITest = unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); // ITest
 
-            //Create the Java Server class. This contains the instance to be called by the COM Server
+            // Create the Java Server class. This contains the instance to be called by the COM Server
             //
             var interfaceDefinition = RegisterInterface();
             if (_staticSinkJavaCoClass == null) {
@@ -83,9 +80,9 @@
                 Opnum = 0
             };
             javaCallback.AddInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
-            javaCallback.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //Long
+            javaCallback.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); // Long
             Console.WriteLine("ITest.DoSomethingAndGetSomethingBack about to call this...");
-            results = ITest.Call(javaCallback); //<== same exception is thrown here as well
+            results = ITest.Call(javaCallback); // <== same exception is thrown here as well
             Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
             var staticSession = (int)results[0];
 
@@ -99,7 +96,7 @@
             results = ITest.Call(javaCallback);
             Console.WriteLine("ITest.SetSomethingInSomethingsRate succeeded");
 
-            //start the session
+            // start the session
             javaCallback.ReInit();
             javaCallback.Opnum = 6;
             javaCallback.AddInParamAsInt(staticSession, JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT);
@@ -107,7 +104,7 @@
             results = ITest.Call(javaCallback);
             Console.WriteLine("ITest.StartSomething succeeded");
 
-            //stop the session
+            // stop the session
             Thread.Sleep(10000);
             javaCallback.ReInit();
             javaCallback.Opnum = 7;
@@ -116,7 +113,7 @@
             results = ITest.Call(javaCallback);
             Console.WriteLine("ITest.StopSomething succeeded");
 
-            //destroy the session
+            // destroy the session
             Thread.Sleep(1000);
             javaCallback.ReInit();
             javaCallback.Opnum = 1;
@@ -128,16 +125,15 @@
             JISession.DestroySession(session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public static void testSinkDebug(String[] args) throws org.jinterop.dcom.common.JIException, InterruptedException, java.net.UnknownHostException
+
         public static void TestSinkDebug(string[] args) {
 
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             var comStub = new JIComServer(JIProgId.ValueOf("TstMarsh.Test"), args[0], session);
             var unknown = comStub.CreateInstance();
-            var ITest = unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); //ITest
+            var ITest = unknown.QueryInterface("89D8C8BE-1E91-11D3-910F-00C04F9403C2"); // ITest
 
-            //Create the Java Server class. This contains the instance to be called by the COM Server
+            // Create the Java Server class. This contains the instance to be called by the COM Server
             //
             var interfaceDefinition = RegisterInterface();
             if (_staticSinkJavaCoClass != null) {
@@ -152,8 +148,8 @@
                 Opnum = 8
             };
             javaCallback.AddInParamAsComObject(iStaticSink, JIFlags.FLAG_NULL);
-            javaCallback.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //Long
-            results = ITest.Call(javaCallback); //<== same exception is thrown here as well
+            javaCallback.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); // Long
+            results = ITest.Call(javaCallback); // <== same exception is thrown here as well
             Console.WriteLine("ITest.DoSomethingAndGetSomethingBack succeeded, session out =" + results[0]);
             var staticSession = (int)results[0];
 

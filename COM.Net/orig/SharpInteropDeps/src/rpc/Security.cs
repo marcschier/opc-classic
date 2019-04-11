@@ -17,36 +17,36 @@
 
 namespace rpc {
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
 
-	public interface Security {
+    public interface Security {
 
-		int VerifierLength { get; }
+        int VerifierLength { get; }
 
-		int AuthenticationService { get; }
+        int AuthenticationService { get; }
 
-		int ProtectionLevel { get; }
+        int ProtectionLevel { get; }
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void processIncoming(ndr.NetworkDataRepresentation ndr, int index, int length, int verifierIndex, boolean isFragmented) throws java.io.IOException;
-		void ProcessIncoming(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
+        void ProcessIncoming(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
 
 //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
 //ORIGINAL LINE: public void processOutgoing(ndr.NetworkDataRepresentation ndr, int index, int length, int verifierIndex, boolean isFragmented) throws java.io.IOException;
-		void ProcessOutgoing(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
+        void ProcessOutgoing(NetworkDataRepresentation ndr, int index, int length, int verifierIndex, bool isFragmented);
 
-	}
+    }
 
-	public static class Security_Fields {
-		public const string USERNAME = "rpc.security.username";
-		public const string PASSWORD = "rpc.security.password";
-		public const int AUTHENTICATION_SERVICE_NONE = 0;
-		public const int PROTECTION_LEVEL_NONE = 1;
-		public const int PROTECTION_LEVEL_CONNECT = 2;
-		public const int PROTECTION_LEVEL_CALL = 3;
-		public const int PROTECTION_LEVEL_PACKET = 4;
-		public const int PROTECTION_LEVEL_INTEGRITY = 5;
-		public const int PROTECTION_LEVEL_PRIVACY = 6;
-	}
+    public static class Security_Fields {
+        public const string USERNAME = "rpc.security.username";
+        public const string PASSWORD = "rpc.security.password";
+        public const int AUTHENTICATION_SERVICE_NONE = 0;
+        public const int PROTECTION_LEVEL_NONE = 1;
+        public const int PROTECTION_LEVEL_CONNECT = 2;
+        public const int PROTECTION_LEVEL_CALL = 3;
+        public const int PROTECTION_LEVEL_PACKET = 4;
+        public const int PROTECTION_LEVEL_INTEGRITY = 5;
+        public const int PROTECTION_LEVEL_PRIVACY = 6;
+    }
 
 }

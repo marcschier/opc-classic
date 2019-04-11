@@ -12,28 +12,28 @@ namespace org.jinterop.dcom.core {
     using System;
 
     /// <summary>
-    /// Provides a way to express parameters for a particular method. 
+    /// Provides a way to express parameters for a particular method.
     /// These are only <code>[in]</code> parameters, the <code>[out]</code>
     /// parameters are decided at the implementation level. If the <code>IDL</code>
-    /// method being described by this class is returning multiple 
+    /// method being described by this class is returning multiple
     /// objects then use the return type of the implementation
     /// as an <code>Object[]</code>
     /// For example:
     /// IDL from Microsoft Internet Explorer is:
     /// <code>
-    /// [id(0x000000fb), 
+    /// [id(0x000000fb),
     /// helpstring("A new, hidden, non-navigated WebBrowser window is needed.")]
-    ///    void NewWindow2([in, out] IDispatch** ppDisp,
-    ///                    [in, out] VARIANT_BOOL* Cancel);
+    ///   void NewWindow2([in, out] IDispatch** ppDisp,
+    ///                   [in, out] VARIANT_BOOL* Cancel);
     /// </code>
     /// Corresponding <code>JILocalParamsDescriptor</code> would be :
     /// <code>
-    ///  JILocalParamsDescriptor paramObject = new JILocalParamsDescriptor();
-    ///  paramObject.addInParamAsObject(new JIPointer(IJIComObject.class,false),
-    ///     JIFlags.FLAG_NULL);
-    ///  paramObject.addInParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
+    /// JILocalParamsDescriptor paramObject = new JILocalParamsDescriptor();
+    /// paramObject.addInParamAsObject(new JIPointer(IJIComObject.class,false),
+    ///    JIFlags.FLAG_NULL);
+    /// paramObject.addInParamAsType(JIVariant.class,JIFlags.FLAG_NULL);
     /// </code>
-    /// and the Java implementation must return an <code>Object[]</code> 
+    /// and the Java implementation must return an <code>Object[]</code>
     /// in this case, for returning the 2 parameters back.
     /// Please refer to MSInternetExplorer, Test_ITestServer2_Impl, SampleTestServer
     /// and MSShell examples for more details on how to use this class.
@@ -69,7 +69,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="type"> </param>
         /// <param name="flags"> </param>
-        public void AddInParamAsType(Type type, int flags) => 
+        public void AddInParamAsType(Type type, int flags) =>
             _callObject.AddOutParamAsType(type, flags);
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="param"> </param>
         /// <param name="flags"> </param>
-        public void AddInParamAsObject(object param, int flags) => 
+        public void AddInParamAsObject(object param, int flags) =>
             _callObject.AddOutParamAsObject(param, flags);
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="params"> </param>
         /// <param name="flags"> </param>
-        internal void SetInParams(object[] @params, int flags) => 
+        internal void SetInParams(object[] @params, int flags) =>
             _callObject.SetOutParams(@params, flags);
 
         /// <summary>

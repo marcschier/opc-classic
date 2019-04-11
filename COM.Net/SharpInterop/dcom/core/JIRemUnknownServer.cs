@@ -80,7 +80,7 @@ namespace org.jinterop.dcom.core {
                 Properties.SetProperty("rpc.ntlm.domain", session.Domain);
             }
 
-            //now set the NTLMv2 Session Security.
+            // now set the NTLMv2 Session Security.
             if (session.SessionSecurityEnabled) {
                 Properties.SetProperty("rpc.ntlm.seal", "true");
                 Properties.SetProperty("rpc.ntlm.sign", "true");
@@ -91,7 +91,7 @@ namespace org.jinterop.dcom.core {
 
             // Now will setup syntax for IRemUnknown and the address.
             Syntax = "00000143-0000-0000-c000-000000000046:0.0";
-            //and currently only TCPIP is supported.
+            // and currently only TCPIP is supported.
             Address = address;
             _remunknownIPID = remUnknownIpid;
             _session.Stub2 = this;
@@ -115,7 +115,7 @@ namespace org.jinterop.dcom.core {
                     SocketTimeOut = socketTimeout;
                 }
                 else {
-                    //for cases where it was something earlier, but is now being set to 0.
+                    // for cases where it was something earlier, but is now being set to 0.
                     if (_timeoutModifiedfrom0) {
                         SocketTimeOut = socketTimeout;
                     }
@@ -124,7 +124,7 @@ namespace org.jinterop.dcom.core {
                     Attach();
                     if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID,
                         StringComparison.CurrentCultureIgnoreCase)) {
-                        //first send an AlterContext to the IID of the interface
+                        // first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
                         Endpoint.Syntax.Version = 0;
                         ((JIComEndpoint)Endpoint).RebindEndPoint();

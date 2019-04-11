@@ -13,8 +13,8 @@
 
 namespace rpc.core {
     using SharpCifs.Dcerpc.Ndr;
-    using System.Linq;
     using System;
+    using System.Linq;
 
     /// <summary>
     /// Verifier
@@ -103,10 +103,10 @@ namespace rpc.core {
             dst.Enc_ndr_small(AuthenticationService);
             dst.Enc_ndr_small((int)Protection);
             dst.Enc_ndr_small(padding);
-            dst.Enc_ndr_small(0); //Reserved
+            dst.Enc_ndr_small(0); // Reserved
             dst.Enc_ndr_long(ContextId);
             Array.Copy(Body, 0, dst.Buf, dst.Index, Body.Length);
-            //dst.index += body.length;
+            // dst.index += body.length;
             dst.Advance(Body.Length);
         }
 
@@ -130,8 +130,6 @@ namespace rpc.core {
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode() {
-            return AuthenticationService ^ (int)Protection ^ ContextId;
-        }
+        public override int GetHashCode() => AuthenticationService ^ (int)Protection ^ ContextId;
     }
 }

@@ -10,7 +10,7 @@
         private readonly JISession _session;
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
 
         /// <summary>
         /// Create
@@ -27,7 +27,7 @@
         /// <summary>
         /// Start
         /// </summary>
-        public virtual void StartWScript() {
+        public void StartWScript() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
             var jv = _dispatch.Get("CurrentDirectory");
@@ -40,10 +40,10 @@
             Console.WriteLine(jv.ObjectAsString.String);
 
             Thread.Sleep(60 * 1000 * 3);
-            //WshShell.Exec
+            // WshShell.Exec
             Console.WriteLine(_dispatch.CallMethodA("Exec", new object[] { new JIString("calc") })[0]);
             Thread.Sleep(60 * 1000 * 3);
-            //WshShell.Run
+            // WshShell.Run
             Console.WriteLine(_dispatch.CallMethodA("Run", new object[] { new JIString("notepad"), new JIVariant(10), JIVariant.CreateOPTIONAL_PARAM() })[0]);
         }
 

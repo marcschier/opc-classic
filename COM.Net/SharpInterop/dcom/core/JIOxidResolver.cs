@@ -8,10 +8,10 @@
 //
 
 namespace org.jinterop.dcom.core {
-    using SharpCifs.Dcerpc.Ndr;
     using org.jinterop.dcom.common;
     using rpc.core;
     using Serilog;
+    using SharpCifs.Dcerpc.Ndr;
     using System.Collections.Generic;
 
     /// <summary>
@@ -33,9 +33,7 @@ namespace org.jinterop.dcom.core {
         /// Create resolver
         /// </summary>
         /// <param name="oxid"></param>
-        internal JIOxidResolver(byte[] oxid) {
-            _odix = oxid;
-        }
+        internal JIOxidResolver(byte[] oxid) => _odix = oxid;
 
         /// <inheritdoc/>
         public override int Opnum => 4;
@@ -46,14 +44,14 @@ namespace org.jinterop.dcom.core {
             JIMarshalUnMarshalHelper.Serialize(ndr, typeof(short),
                 (short)1, new List<object>(), JIFlags.FLAG_NULL);
             JIMarshalUnMarshalHelper.Serialize(ndr, typeof(JIArray),
-                new JIArray(new short?[] { 7 }, true), new List<object>(),
+                new JIArray(new short[] { 7 }, true), new List<object>(),
                 JIFlags.FLAG_REPRESENTATION_ARRAY);
         }
 
         /// <inheritdoc/>
         public override void Read(NdrCodec ndr) {
-            ndr.ReadUnsignedLong(); //pointer
-            ndr.ReadUnsignedLong(); //some length component, irrelevant for us right now
+            ndr.ReadUnsignedLong(); // pointer
+            ndr.ReadUnsignedLong(); // some length component, irrelevant for us right now
             OxidBindings = JIDualStringArray.Decode(ndr);
             try {
                 var ipid2 = new UUID();
@@ -64,7 +62,7 @@ namespace org.jinterop.dcom.core {
                 Log.Logger.Error(e, "JIRemActivation", "read", e);
             }
 
-            //read the auth hint
+            // read the auth hint
             var authenticationHint = ndr.ReadUnsignedLong();
             var comVersion = new JIComVersion {
                 MajorVersion = ndr.ReadUnsignedShort(),

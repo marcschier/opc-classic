@@ -19,17 +19,17 @@
 
 namespace rpc {
 
-	using Format = ndr.Format;
+    using Format = ndr.Format;
 
-	public interface ProtocolDataUnit {
+    public interface ProtocolDataUnit {
 
-		int MajorVersion { get; }
+        int MajorVersion { get; }
 
-		int Type { get; }
+        int Type { get; }
 
-		Format Format { get;set; }
+        Format Format { get;set; }
 
 
-	}
+    }
 
 }

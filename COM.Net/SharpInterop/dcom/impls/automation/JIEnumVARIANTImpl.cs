@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 
 namespace org.jinterop.dcom.impls.automation {
@@ -20,7 +20,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// Create implementation
         /// </summary>
         /// <param name="comObject"></param>
-        internal JIEnumVARIANTImpl(IJIComObject comObject) : base(comObject) {
+        internal JIEnumVARIANTImpl(IComObject comObject) : base(comObject) {
         }
 
         /// <inheritdoc/>
@@ -58,9 +58,9 @@ namespace org.jinterop.dcom.impls.automation {
             var callObject = new JICallBuilder(true) {
                 Opnum = 3
             };
-            callObject.AddOutParamAsObject(typeof(IJIComObject), JIFlags.FLAG_NULL);
+            callObject.AddOutParamAsObject(typeof(IComObject), JIFlags.FLAG_NULL);
             var result = ComObject.Call(callObject);
-            return (IJIEnumVariant)JIObjectFactory.NarrowObject((IJIComObject)result[0]);
+            return (IJIEnumVariant)JIObjectFactory.NarrowObject((IComObject)result[0]);
         }
     }
 }

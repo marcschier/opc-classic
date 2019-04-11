@@ -1,11 +1,11 @@
-﻿// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace org.jinterop.dcom.impls.automation {
     using org.jinterop.dcom.core;
@@ -45,7 +45,7 @@ namespace org.jinterop.dcom.impls.automation {
         /// </summary>
         /// <param name="ptrValues"></param>
         internal ElemDesc(JIPointer ptrValues) :
-            this(ptrValues.IsNull ? null : (JIStruct)ptrValues.GetReferent()) {
+            this(ptrValues.IsNull ? null : (JIStruct)ptrValues.Referent) {
         }
     }
 }

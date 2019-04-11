@@ -15,38 +15,38 @@
 
 namespace org.jinterop.dcom.core {
 
-	using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
-	using JISystem = org.jinterop.dcom.common.JISystem;
+    using JIErrorCodes = org.jinterop.dcom.common.JIErrorCodes;
+    using JISystem = org.jinterop.dcom.common.JISystem;
 
-	/// <summary>
-	/// Class representing the unsigned c++ integer.
-	/// 
-	/// @since 1.15(b)
-	/// 
-	/// </summary>
-	public sealed class JIUnsignedInteger : IJIUnsigned {
+    /// <summary>
+    /// Class representing the unsigned c++ integer.
+    /// 
+    /// @since 1.15(b)
+    /// 
+    /// </summary>
+    public sealed class JIUnsignedInteger : IJIUnsigned {
 
-		private readonly long? IntValue;
+        private readonly long? IntValue;
 
-		public JIUnsignedInteger(long? intValue) {
-			if (intValue == null || (long)intValue < 0) {
-				throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
-			}
-			this.IntValue = intValue;
-		}
+        public JIUnsignedInteger(long? intValue) {
+            if (intValue == null || (long)intValue < 0) {
+                throw new System.ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_UNSIGNED_NEGATIVE));
+            }
+            this.IntValue = intValue;
+        }
 
-		public int Type {
-			get {
-				return JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT;
-			}
-		}
+        public int Type {
+            get {
+                return JIFlags.FLAG_REPRESENTATION_UNSIGNED_INT;
+            }
+        }
 
-		public Number Value {
-			get {
-				return IntValue;
-			}
-		}
+        public Number Value {
+            get {
+                return IntValue;
+            }
+        }
 
-	}
+    }
 
 }

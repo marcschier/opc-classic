@@ -1,19 +1,19 @@
-﻿// 
+﻿//
 // Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
+//
 // j-Interop (Pure Java implementation of DCOM protocol)
-// 
+//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
 namespace rpc.pdu {
-    using SharpCifs.Dcerpc.Ndr;
     using rpc.core;
+    using SharpCifs.Dcerpc.Ndr;
 
     /// <summary>
     /// Bind pdu
@@ -77,8 +77,6 @@ namespace rpc.pdu {
         /// <summary>
         /// Helper
         /// </summary>
-        public void ResetCallIdCounter() {
-            s_callIdCounter = 0;
-        }
+        public void ResetCallIdCounter() => s_callIdCounter = 0;
     }
 }

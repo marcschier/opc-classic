@@ -67,7 +67,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="ptr"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        internal static IJIComObject InstantiateComObject(JISession session, JIInterfacePointer ptr) {
+        internal static IComObject InstantiateComObject(JISession session, JIInterfacePointer ptr) {
             var retval = InstantiateComObject2(session, ptr);
             AddComObjectToSession(retval.AssociatedSession, retval);
             return retval;
@@ -80,19 +80,19 @@ namespace org.jinterop.dcom.core {
         /// <param name="ptr"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        internal static IJIComObject InstantiateComObject2(JISession session, JIInterfacePointer ptr) {
+        internal static IComObject InstantiateComObject2(JISession session, JIInterfacePointer ptr) {
             if (ptr == null) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(JIErrorCodes.JI_COMFACTORY_ILLEGAL_ARG));
             }
 
-            IJIComObject retval = null;
+            IComObject retval = null;
             var stubPtr = GetInterfacePointerOfStub(session);
             if (!JIInterfacePointer.IsOxidEqual(stubPtr, ptr)) {
                 Log.Logger.Warning("NEW SESSION IDENTIFIED ! for ptr " + ptr);
-                //first check if a session for this OXID does not already exist and thus its stub
+                // first check if a session for this OXID does not already exist and thus its stub
                 var newsession = ResolveSessionForOXID(ptr.OXID);
                 if (newsession == null) {
-                    //new COM server pointer
+                    // new COM server pointer
                     newsession = JISession.CreateSession(session);
                     newsession.GlobalSocketTimeout = session.GlobalSocketTimeout;
                     newsession.UseSessionSecurity(session.SessionSecurityEnabled);
@@ -102,7 +102,7 @@ namespace org.jinterop.dcom.core {
                     Link2Sessions(session, newsession);
                 }
 
-                //this is so that the reference gets added correctly.
+                // this is so that the reference gets added correctly.
                 session = newsession;
             }
 
@@ -118,7 +118,7 @@ namespace org.jinterop.dcom.core {
         /// </summary>
         /// <param name="session"></param>
         /// <param name="comObject"></param>
-        internal static void AddComObjectToSession(JISession session, IJIComObject comObject) =>
+        internal static void AddComObjectToSession(JISession session, IComObject comObject) =>
             session.AddToSession(comObject, comObject.Internal_getInterfacePointer().OID);
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="localComponent"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static IJIComObject InstantiateLocalComObject(JISession session,
+        public static IComObject InstantiateLocalComObject(JISession session,
             JILocalCoClass localComponent) => new JIComObjectImpl(session,
                 JIComOxidRuntime.Instance.GetInterfacePointer(session, localComponent), true);
 
@@ -151,13 +151,13 @@ namespace org.jinterop.dcom.core {
         /// <param name="ipAddress"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static IJIComObject InstantiateComObject(JISession session, byte[] rawBytes, string ipAddress) {
+        public static IComObject InstantiateComObject(JISession session, byte[] rawBytes, string ipAddress) {
             var ndr = new NdrCodec();
             var ndrBuffer = new NdrBuffer(rawBytes, 0);
             ndr.Buffer = ndrBuffer;
             ndrBuffer.Length = rawBytes.Length;
 
-            //this is a brand new session.
+            // this is a brand new session.
             if (session.Stub == null) {
                 var comServer = new JIComServer(session, JIInterfacePointer.Decode(ndr,
                     new List<object>(), JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2, new Hashtable()), ipAddress);
@@ -165,7 +165,7 @@ namespace org.jinterop.dcom.core {
             }
             var retval = InstantiateComObject(session, JIInterfacePointer.Decode(ndr,
                 new List<object>(), JIFlags.FLAG_REPRESENTATION_INTERFACEPTR_DECODE2, new Hashtable()));
-            //increasing the reference count.
+            // increasing the reference count.
             retval.AddRef();
             return retval;
         }
@@ -178,7 +178,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="comObject"></param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static IJIComObject InstantiateComObject(JISession session, IJIComObject comObject) {
+        public static IComObject InstantiateComObject(JISession session, IComObject comObject) {
             if (comObject.AssociatedSession != null) {
                 throw new ArgumentException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_SESSION_ALREADY_ATTACHED));
@@ -198,7 +198,7 @@ namespace org.jinterop.dcom.core {
         /// <param name="comObject"> </param>
         /// <param name="identifier"> </param>
         /// <exception cref="JIException"> </exception>
-        public static void DetachEventHandler(IJIComObject comObject, string identifier) {
+        public static void DetachEventHandler(IComObject comObject, string identifier) {
             var connectionInfo = comObject.Internal_getConnectionInfo(identifier);
             if (connectionInfo == null) {
                 throw new JIException(JIErrorCodes.JI_CALLBACK_INVALID_ID);
@@ -207,15 +207,15 @@ namespace org.jinterop.dcom.core {
             Log.Logger.Information("Detaching event handler for  comObject: " +
                 comObject.InterfaceIdentifier + ", identifier: " + identifier);
 
-            var connectionPointer = (IJIComObject)connectionInfo[0];
+            var connectionPointer = (IComObject)connectionInfo[0];
 
-            //first use the cookie to detach.
+            // first use the cookie to detach.
             var @object = new JICallBuilder(true) {
                 Opnum = 3
             };
             @object.AddInParamAsInt((int)connectionInfo[1], JIFlags.FLAG_NULL);
             connectionPointer.Call(@object);
-            //now release the connectionPointer.
+            // now release the connectionPointer.
             connectionPointer.Release();
         }
 
@@ -226,8 +226,8 @@ namespace org.jinterop.dcom.core {
         /// <param name="eventListener"> </param>
         /// <exception cref="JIException"> </exception>
         /// <returns></returns>
-        public static string AttachEventHandler(IJIComObject comObject, string sourceUUID,
-            IJIComObject eventListener) {
+        public static string AttachEventHandler(IComObject comObject, string sourceUUID,
+            IComObject eventListener) {
             if (eventListener == null ||
                 comObject == null ||
                 sourceUUID == null ||
@@ -240,15 +240,15 @@ namespace org.jinterop.dcom.core {
                 comObject.InterfaceIdentifier + ", sourceUUID: " + sourceUUID +
                 ", eventListener: " + eventListener.InterfaceIdentifier +
                 " and eventListner IPID: " + eventListener.Ipid);
-            //IID of IConnectionPointContainer :- B196B284-BAB4-101A-B69C-00AA00341D07
+            // IID of IConnectionPointContainer :- B196B284-BAB4-101A-B69C-00AA00341D07
             var connectionPointContainer = comObject.QueryInterface("B196B284-BAB4-101A-B69C-00AA00341D07");
             var @object = new JICallBuilder(true) {
                 Opnum = 1
             };
             @object.AddInParamAsUUID(sourceUUID, JIFlags.FLAG_NULL);
-            @object.AddOutParamAsObject(typeof(IJIComObject), JIFlags.FLAG_NULL);
-            var objects = connectionPointContainer.Call(@object); //find connection point
-            var connectionPointer = (IJIComObject)objects[0];
+            @object.AddOutParamAsObject(typeof(IComObject), JIFlags.FLAG_NULL);
+            var objects = connectionPointContainer.Call(@object); // find connection point
+            var connectionPointer = (IComObject)objects[0];
 
             @object.ReInit();
             @object.Opnum = 2;
@@ -256,7 +256,7 @@ namespace org.jinterop.dcom.core {
             @object.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL);
             var obj = connectionPointer.Call(@object);
 
-            //used to unadvise from the connectionpoint
+            // used to unadvise from the connectionpoint
             var dwcookie = (int)obj[0];
             Log.Logger.Information("Event handler returned cookie " + dwcookie);
             connectionPointContainer.Release();

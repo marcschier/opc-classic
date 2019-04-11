@@ -16,11 +16,11 @@ namespace org.jinterop.dcom.common {
     using System.IO;
     using System.Net.Sockets;
     using System.Reflection;
-    using System.Resources;
 
     /// <summary>
     /// Class implemented for defining system wide changes.
-    /// <para><b>Note</b>: Methods starting with <i>internal_</i> keyword are internal to the framework
+    /// <para><b>Note</b>: Methods starting with <i>internal_</i>
+    /// keyword are internal to the framework
     /// and must not be called by the developer.
     /// </para>
     /// </summary>
@@ -69,7 +69,8 @@ namespace org.jinterop.dcom.common {
         /// </param>
         public static string GetLocalizedMessage(JIErrorCodes code) {
             var key = ((int)code).ToString("X8");
-            string message = null;
+
+            string message;
             try {
                 message = Resource.ResourceManager.GetString("0x" + key);
                 message = message + " [" + key + "]";

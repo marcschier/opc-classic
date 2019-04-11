@@ -30,7 +30,7 @@ namespace org.jinterop.dcom.common {
         /// </summary>
         /// <param name="errorCode"></param>
         /// <param name="message"></param>
-        public JIException(JIErrorCodes errorCode, string message) : 
+        public JIException(JIErrorCodes errorCode, string message) :
             this (errorCode, message, null) {
         }
 

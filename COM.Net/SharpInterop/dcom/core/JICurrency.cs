@@ -11,15 +11,20 @@ namespace org.jinterop.dcom.core {
     using System;
 
     /// <summary>
-    /// Definition from MSDN: encapsulates the CURRENCY data type used in Automation. CURRENCY is implemented
-    /// as an 8-byte, two's-complement integer value scaled by 10,000. This gives a fixed-point number
-    /// with 15 digits to the left of the decimal point and 4 digits to the right. The CURRENCY data type
-    /// is extremely useful for calculations involving money, or for any fixed-point calculation where accuracy
-    /// is important. It is one of the possible types for the VARIANT data type of Automation.
-    /// If the absolute value of the fractional part is greater than 10,000, the appropriate adjustment
-    /// is made to the units, as shown in the third of the following examples.
-    /// Note that the units and fractional part are specified by signed long values. The fourth of the following
-    /// examples shows what happens when the parameters have different signs.
+    /// Definition from MSDN: encapsulates the CURRENCY data type used
+    /// in Automation. CURRENCY is implemented as an 8-byte, two's-complement
+    /// integer value scaled by 10,000. This gives a fixed-point number
+    /// with 15 digits to the left of the decimal point and 4 digits to the
+    /// right. The CURRENCY data type is extremely useful for calculations
+    /// involving money, or for any fixed-point calculation where accuracy
+    /// is important. It is one of the possible types for the VARIANT data
+    /// type of Automation.
+    /// If the absolute value of the fractional part is greater than 10,000,
+    /// the appropriate adjustment is made to the units, as shown in the third
+    /// of the following examples.
+    /// Note that the units and fractional part are specified by signed long
+    /// values. The fourth of the following examples shows what happens when
+    /// the parameters have different signs.
     /// <code>
     /// COleCurrency curA;           // value: 0.0000
     /// curA.SetCurrency(4, 500);    // value: 4.0500

@@ -17,30 +17,30 @@
 
 namespace org.jinterop.dcom.impls.automation {
 
-	using JIStruct = org.jinterop.dcom.core.JIStruct;
+    using JIStruct = org.jinterop.dcom.core.JIStruct;
 
-	/// <summary>
-	/// Implements the <i>SAFEARRAYBOUNDS</i> structure of COM Automation.
-	/// 
-	/// @since 1.0
-	/// 
-	/// </summary>
-	[Serializable]
-	public sealed class SafeArrayBounds {
+    /// <summary>
+    /// Implements the <i>SAFEARRAYBOUNDS</i> structure of COM Automation.
+    /// 
+    /// @since 1.0
+    /// 
+    /// </summary>
+    [Serializable]
+    public sealed class SafeArrayBounds {
 
-		private const long SerialVersionUID = -3110688445129575984L;
-		public readonly int CElements;
-		public readonly int LLbound;
+        private const long SerialVersionUID = -3110688445129575984L;
+        public readonly int CElements;
+        public readonly int LLbound;
 
-		public SafeArrayBounds(JIStruct values) {
-			if (values == null) {
-				CElements = -1;
-				LLbound = -1;
-				return;
-			}
-			CElements = (int)((int?)values.GetMember(0));
-			LLbound = (int)((int?)values.GetMember(0));
-		}
-	}
+        public SafeArrayBounds(JIStruct values) {
+            if (values == null) {
+                CElements = -1;
+                LLbound = -1;
+                return;
+            }
+            CElements = (int)((int?)values.GetMember(0));
+            LLbound = (int)((int?)values.GetMember(0));
+        }
+    }
 
 }

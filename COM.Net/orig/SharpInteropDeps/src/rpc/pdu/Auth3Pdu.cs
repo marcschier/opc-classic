@@ -18,25 +18,25 @@
 
 namespace rpc.pdu {
 
-	using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
+    using NetworkDataRepresentation = ndr.NetworkDataRepresentation;
 
-	public class Auth3Pdu : ConnectionOrientedPdu {
+    public class Auth3Pdu : ConnectionOrientedPdu {
 
-		public const int AUTH3_TYPE = 0x10;
+        public const int AUTH3_TYPE = 0x10;
 
-		public Auth3Pdu() {
-			//Really useless value
-			CallId = 0;
-		}
-		public override int Type {
-			get {
-				return AUTH3_TYPE;
-			}
-		}
+        public Auth3Pdu() {
+            //Really useless value
+            CallId = 0;
+        }
+        public override int Type {
+            get {
+                return AUTH3_TYPE;
+            }
+        }
 
-		public override void WriteBody(NetworkDataRepresentation ndr) {
-			ndr.WriteUnsignedLong(0);
-		}
-	}
+        public override void WriteBody(NetworkDataRepresentation ndr) {
+            ndr.WriteUnsignedLong(0);
+        }
+    }
 
 }

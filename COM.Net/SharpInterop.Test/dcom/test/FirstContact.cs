@@ -1,10 +1,10 @@
 ﻿namespace org.jinterop.dcom.test
 {
 
-	public interface FirstContact
-	{
+    public interface FirstContact
+    {
 
-		void obtainReference();
-	}
+        void obtainReference();
+    }
 
 }

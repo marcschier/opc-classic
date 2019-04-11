@@ -11,27 +11,24 @@
 
         private readonly JIComServer _comServer;
         private IJIDispatch _dispatch;
-        private IJIComObject _unknown;
+        private IComObject _unknown;
         private IJIDispatch _dispatchOfWorkSheets;
         private IJIDispatch _dispatchOfWorkBook;
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public MSExcel3(String address, String args[]) throws org.jinterop.dcom.common.JIException, java.net.UnknownHostException
+
         public MSExcel3(string address, string[] args) {
             var session = JISession.CreateSession(args[1], args[2], args[3]);
             _comServer = new JIComServer(JIProgId.ValueOf("Excel.Application"), address, session);
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void startExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void StartExcel() {
+
+        public void StartExcel() {
             _unknown = _comServer.CreateInstance();
             _dispatch = (IJIDispatch)JIObjectFactory.NarrowObject(_unknown.QueryInterface(Interfaces.IID_IDispatch));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void showExcel() throws org.jinterop.dcom.common.JIException
-        public virtual void ShowExcel() {
+
+        public void ShowExcel() {
             var dispId = _dispatch.GetIDsOfNames("Visible");
             var variant = new JIVariant(true);
             _dispatch.Put(dispId, variant);
@@ -39,9 +36,8 @@
             _dispatch.Put("DisplayAlerts", new JIVariant(true));
         }
 
-        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in .NET:
-        //ORIGINAL LINE: public void createWorkSheet() throws org.jinterop.dcom.common.JIException
-        public virtual void CreateWorkSheet() {
+
+        public void CreateWorkSheet() {
             var dispId = _dispatch.GetIDsOfNames("Workbooks");
 
             var outVal = _dispatch.Get(dispId);
@@ -89,7 +85,8 @@
                 Thread.Sleep(300);
                 var temp1 = newValue[0][0];
                 var temp2 = newValue[0][1];
-                var i = 0;
+
+                int i;
                 for (i = 1; i < newValue.Length; i++) {
                     for (var k = 0; k < newValue[i - 1].Length; k++) {
                         newValue[i - 1][k] = newValue[i][k];
@@ -104,8 +101,8 @@
 
             outVal2 = sheet.Get("ChartObjects", new object[] { JIVariant.CreateOPTIONAL_PARAM() });
             var chartObjects = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
-            outVal2 = chartObjects.CallMethodA("Add", new object[] { 100, new double?(30), 400, new double?(250) });
-            //outVal2 = chartObjects.get("Item", new Object[]{new Integer(1)});
+            outVal2 = chartObjects.CallMethodA("Add", new object[] { 100, 30.0, 400, 250.0 });
+            // outVal2 = chartObjects.get("Item", new Object[]{new Integer(1)});
             var chartObject = (IJIDispatch)JIObjectFactory.NarrowObject(outVal2[0].ObjectAsComObject);
             outVal = chartObject.Get("Chart");
             var chart = (IJIDispatch)JIObjectFactory.NarrowObject(outVal.ObjectAsComObject);

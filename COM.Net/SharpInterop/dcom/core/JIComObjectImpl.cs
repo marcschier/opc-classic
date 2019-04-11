@@ -19,7 +19,7 @@ namespace org.jinterop.dcom.core {
     /// There is a 1 to 1 mapping between this and a <code>COM</code> interface.
     /// </summary>
     [Serializable]
-    internal sealed class JIComObjectImpl : IJIComObject {
+    internal sealed class JIComObjectImpl : IComObject {
 
         /// <summary>
         /// Dual interface
@@ -55,7 +55,7 @@ namespace org.jinterop.dcom.core {
                 lock (this) {
                     CheckLocal();
                     if (!_dualInfo) {
-                        //query interface for it and then release it.
+                        // query interface for it and then release it.
                         try {
                             var comObject = QueryInterface("00020400-0000-0000-c000-000000000046");
                             comObject.Release();
@@ -112,7 +112,7 @@ namespace org.jinterop.dcom.core {
         }
 
         /// <inheritdoc/>
-        public IJIComObject QueryInterface(string iid) {
+        public IComObject QueryInterface(string iid) {
             CheckLocal();
             return _session.Stub.GetInterface(iid, _ptr.IPID);
         }
@@ -122,28 +122,28 @@ namespace org.jinterop.dcom.core {
             CheckLocal();
             var obj = new JICallBuilder(true) {
                 ParentIpid = _ptr.IPID,
-                Opnum = 1 //addRef
+                Opnum = 1 // addRef
             };
 
-            //length
+            // length
             obj.AddInParamAsShort(1, JIFlags.FLAG_NULL);
-            //ipid to addfref on
+            // ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
-            //TODO requesting 5 for now, will later build caching mechnaism to exhaust
-            //5 refs first before asking for more
+            // TODO requesting 5 for now, will later build caching mechnaism to exhaust
+            // 5 refs first before asking for more
             // same with release.
             obj.AddInParamAsInt(5, JIFlags.FLAG_NULL);
-            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
+            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); // private refs = 0
 
-            obj.AddOutParamAsType(typeof(short), JIFlags.FLAG_NULL); //size
-            obj.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); //Hresult for size
+            obj.AddOutParamAsType(typeof(short), JIFlags.FLAG_NULL); // size
+            obj.AddOutParamAsType(typeof(int), JIFlags.FLAG_NULL); // Hresult for size
             Log.Logger.Warning("addRef: Adding 5 references for " + _ptr.IPID + " session: " +
                 _session.SessionIdentifier);
 
-            //JISession.debug_addIpids(_ptr.IPID, 5);
+            // JISession.debug_addIpids(_ptr.IPID, 5);
 
-            //		session.getStub2().addRef_ReleaseRef(obj);
+            //        session.getStub2().addRef_ReleaseRef(obj);
             _session.AddRef_ReleaseRef(_ptr.IPID, obj, 5);
 
             if (obj.GetResultAsIntAt(1) != 0) {
@@ -156,23 +156,23 @@ namespace org.jinterop.dcom.core {
             CheckLocal();
             var obj = new JICallBuilder(true) {
                 ParentIpid = _ptr.IPID,
-                Opnum = 2 //release
+                Opnum = 2 // release
             };
-            //length
+            // length
             obj.AddInParamAsShort(1, JIFlags.FLAG_NULL);
-            //ipid to addfref on
+            // ipid to addfref on
             var array = new JIArray(new UUID[] { new UUID(_ptr.IPID) }, true);
             obj.AddInParamAsArray(array, JIFlags.FLAG_NULL);
-            //TODO requesting 5 for now, will later build caching mechnaism to exhaust 5 refs first before asking for more
+            // TODO requesting 5 for now, will later build caching mechnaism to exhaust 5 refs first before asking for more
             // same with release.
             obj.AddInParamAsInt(5, JIFlags.FLAG_NULL);
-            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); //private refs = 0
+            obj.AddInParamAsInt(0, JIFlags.FLAG_NULL); // private refs = 0
             if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
                 Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
                 // JISession.debug_delIpids(_ptr.IPID, 5);
             }
             // TODO??
-            //		session.getStub2().addRef_ReleaseRef(obj);
+            //        session.getStub2().addRef_ReleaseRef(obj);
             _session.AddRef_ReleaseRef(_ptr.IPID, obj, -5);
         }
 
@@ -200,7 +200,7 @@ namespace org.jinterop.dcom.core {
             obj.AttachSession(_session);
             obj.ParentIpid = _ptr.IPID;
             // Call is always made on your stub.
-            if (socketTimeout != 0) { //using instance level timeout
+            if (socketTimeout != 0) { // using instance level timeout
                 return _session.Stub.Call(obj, _ptr.IID, socketTimeout);
             }
             return _session.Stub.Call(obj, _ptr.IID);
@@ -210,10 +210,10 @@ namespace org.jinterop.dcom.core {
         public JIInterfacePointer Internal_getInterfacePointer() => _ptr ?? _session.Stub.ServerInterfacePointer;
 
         /// <inheritdoc/>
-        public string Internal_setConnectionInfo(IJIComObject connectionPoint, int? cookie) {
+        public string Internal_setConnectionInfo(IComObject connectionPoint, int? cookie) {
             lock (this) {
                 CheckLocal();
-                if (_connectionPointInfo == null) { //lazy creation, since this is used by event callbacks only.
+                if (_connectionPointInfo == null) { // lazy creation, since this is used by event callbacks only.
                     _connectionPointInfo = new Hashtable();
                 }
                 var uniqueId = /*UUID.randomUUID()*/ Guid.NewGuid().ToString();
@@ -262,7 +262,7 @@ namespace org.jinterop.dcom.core {
         /// Replace members
         /// </summary>
         /// <param name="comObject"></param>
-        internal void ReplaceMembers(IJIComObject comObject) {
+        internal void ReplaceMembers(IComObject comObject) {
             _session = comObject.AssociatedSession;
             _ptr = comObject.Internal_getInterfacePointer();
         }

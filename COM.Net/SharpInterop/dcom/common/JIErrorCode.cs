@@ -262,7 +262,7 @@ namespace org.jinterop.dcom.common {
         DISP_E_BADCALLEE = unchecked((int)0x80020010),
 
         /// <summary>
-        ///  The object invoked has disconnected from its clients.
+        /// The object invoked has disconnected from its clients.
         /// </summary>
         RPC_E_DISCONNECTED = unchecked((int)0x80010108),
 
@@ -287,7 +287,7 @@ namespace org.jinterop.dcom.common {
         E_FAIL = unchecked((int)0x80004005),
 
 
-        /////System's Own ...start from 0x00001001 to 0x00002001
+        //// /System's Own ...start from 0x00001001 to 0x00002001
 
         /// <summary>
         /// Object is already instantiated.

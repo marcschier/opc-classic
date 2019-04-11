@@ -23,14 +23,14 @@ namespace org.jinterop.dcom.core {
     /// <summary>
     /// Startup class representing a COM Server.
     /// Sample Usage :-
-    ///  <code>
-    ///   <seealso cref="JISession"/> session = JISession.createSession("DOMAIN","USERNAME","PASSWORD");
-    ///   JIComServer excelServer = new JIComServer(JIProgId.valueOf("Excel.Application"),address,session);
-    ///   IJIComObject comObject = excelServer.createInstance();
-    ///   //Obtaining the IJIDispatch (if supported)
-    ///   <seealso cref="impls.automation.IJIDispatch"/> dispatch =
-    ///     (IJIDispatch)<seealso cref="impls.JIObjectFactory"/>.narrowObject(comObject.queryInterface(IJIDispatch.IID));
-    ///   </code>
+    /// <code>
+    ///  <seealso cref="JISession"/> session = JISession.createSession("DOMAIN","USERNAME","PASSWORD");
+    ///  JIComServer excelServer = new JIComServer(JIProgId.valueOf("Excel.Application"),address,session);
+    ///  IJIComObject comObject = excelServer.createInstance();
+    ///  // Obtaining the IJIDispatch (if supported)
+    ///  <seealso cref="impls.automation.IJIDispatch"/> dispatch =
+    ///    (IJIDispatch)<seealso cref="impls.JIObjectFactory"/>.narrowObject(comObject.queryInterface(IJIDispatch.IID));
+    ///  </code>
     /// Each instance of this class is associated with a single session only.
     /// </summary>
     public sealed class JIComServer : Stub {
@@ -45,10 +45,10 @@ namespace org.jinterop.dcom.core {
             kDefaults.SetProperty("rpc.ntlm.sso", "false");
             kDefaults.SetProperty("rpc.connectionContext", "rpc.security.ntlm.NtlmConnectionContext");
             kDefaults.SetProperty("rpc.socketTimeout", 0.ToString());
-            //		rpc.connectionContext = rpc.security.ntlm.NtlmConnectionContext
-            //		rpc.ntlm.sign = false
-            //		rpc.ntlm.seal = false
-            //		rpc.ntlm.keyExchange = false
+            //        rpc.connectionContext = rpc.security.ntlm.NtlmConnectionContext
+            //        rpc.ntlm.sign = false
+            //        rpc.ntlm.seal = false
+            //        rpc.ntlm.keyExchange = false
 
         }
 
@@ -90,7 +90,7 @@ namespace org.jinterop.dcom.core {
                 JISystem.Internal_dumpMap();
             }
 
-            //		ipAddress="192.168.1.104";
+            //        ipAddress="192.168.1.104";
             if (ipAddress != null && !ipAddress.Trim().Equals("", StringComparison.CurrentCultureIgnoreCase)) {
                 if (!kListOfIps.Contains(ipAddress)) {
                     kListOfIps.Add(ipAddress.ToLower());
@@ -98,7 +98,7 @@ namespace org.jinterop.dcom.core {
             }
 
             TransportFactory = JIComTransportFactory.Instance;
-            //now read the session and prepare information for the stub.
+            // now read the session and prepare information for the stub.
             Properties = new Properties(kDefaults);
             Properties.SetProperty("rpc.security.username", session.UserName);
             Properties.SetProperty("rpc.security.password", session.Password);
@@ -119,16 +119,16 @@ namespace org.jinterop.dcom.core {
             var targetAddress = ipAddress == null ? "" : ipAddress.Trim();
 
             {
-                //		if (!targetAddress.equals(""))
-                //now we choose, otherwise the first one we get.
+                //        if (!targetAddress.equals(""))
+                // now we choose, otherwise the first one we get.
                 while (i < addressBindings.Length) {
                     binding = addressBindings[i];
                     if (binding.TowerId != 0x07) {
-                        //this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
+                        // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
                         i++;
                         continue;
                     }
-                    //get the one with IP address
+                    // get the one with IP address
                     var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
                     if (idx != -1) {
                         try {
@@ -137,8 +137,8 @@ namespace org.jinterop.dcom.core {
                                 break;
                             }
 
-                            //now check for the one with port
-                            idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
+                            // now check for the one with port
+                            idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
                             if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
                                 nameBinding = null;
                                 break;
@@ -148,7 +148,7 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     else {
-                        //can only come for the name, saving it incase nothing matches the target address
+                        // can only come for the name, saving it incase nothing matches the target address
                         nameBinding = binding;
                     }
                     i++;
@@ -157,21 +157,21 @@ namespace org.jinterop.dcom.core {
                 binding = nameBinding ?? binding;
             }
 
-            //will use this last binding .
-            //and currently only TCPIP is supported.
+            // will use this last binding .
+            // and currently only TCPIP is supported.
             var address = binding.NetworkAddress;
-            if (address.IndexOf("[", StringComparison.Ordinal) == -1) { //this does not contain the port
-                var addr = JISystem.GetIPForHostName(address); //to use the binding supplied by the user.
+            if (address.IndexOf("[", StringComparison.Ordinal) == -1) { // this does not contain the port
+                var addr = JISystem.GetIPForHostName(address); // to use the binding supplied by the user.
                 if (addr != null) {
                     address = addr;
                 }
-                //use 135
+                // use 135
                 address += "[135]";
             }
             else {
                 var idx = address.IndexOf("[", StringComparison.Ordinal);
                 var host = binding.NetworkAddress.Substring(0, idx);
-                var addr = JISystem.GetIPForHostName(host); //to use the binding supplied by the user.
+                var addr = JISystem.GetIPForHostName(host); // to use the binding supplied by the user.
                 if (addr != null) {
                     address = addr + address.Substring(idx);
                 }
@@ -186,7 +186,7 @@ namespace org.jinterop.dcom.core {
             try {
                 _syntax = "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0";
                 Attach();
-                //first send an AlterContext to the IID of the IOxidResolver
+                // first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
                 Endpoint.Syntax.Version = 0;
                 ((JIComEndpoint)Endpoint).RebindEndPoint();
@@ -204,27 +204,27 @@ namespace org.jinterop.dcom.core {
             }
 
             // Now will setup syntax for IRemUnknown and the address.
-            //syntax = "00000143-0000-0000-c000-000000000046:0.0";
+            // syntax = "00000143-0000-0000-c000-000000000046:0.0";
             _syntax = interfacePointer.IID + ":0.0";
 
-            //now for the new ip and the port.
+            // now for the new ip and the port.
 
             var bindings = _oxidResolver.OxidBindings.StringBindings;
 
             binding = null;
             nameBinding = null;
             i = 0;
-            //		if (!targetAddress.equals(""))
+            //        if (!targetAddress.equals(""))
             {
-                //now we choose, otherwise the first one we get.
+                // now we choose, otherwise the first one we get.
                 while (i < bindings.Length) {
                     binding = bindings[i];
-                    if (binding.TowerId != 0x07) //this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
+                    if (binding.TowerId != 0x07) // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
                     {
                         i++;
                         continue;
                     }
-                    //get the one with IP address
+                    // get the one with IP address
                     var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
                     if (idx != -1) {
                         try {
@@ -233,8 +233,8 @@ namespace org.jinterop.dcom.core {
                                 break;
                             }
 
-                            //now check for the one with port
-                            idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
+                            // now check for the one with port
+                            idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
                             if (idx != -1 && kListOfIps.Contains(binding.NetworkAddress.Substring(0, idx).ToLower())) {
                                 nameBinding = null;
                                 break;
@@ -245,7 +245,7 @@ namespace org.jinterop.dcom.core {
                         }
                     }
                     else {
-                        //can only come for the name, saving it incase nothing matches the target address
+                        // can only come for the name, saving it incase nothing matches the target address
                         nameBinding = binding;
                     }
                     i++;
@@ -263,15 +263,15 @@ namespace org.jinterop.dcom.core {
                 Properties.SetProperty("rpc.ntlm.ntlm2", "true");
             }
 
-            address = binding.NetworkAddress; //this will always have the port.
+            address = binding.NetworkAddress; // this will always have the port.
             var index = address.IndexOf("[", StringComparison.Ordinal);
             var hostname = binding.NetworkAddress.Substring(0, index);
-            var ipAddr = JISystem.GetIPForHostName(hostname); //to use the binding supplied by the user.
+            var ipAddr = JISystem.GetIPForHostName(hostname); // to use the binding supplied by the user.
             if (ipAddr != null) {
                 address = ipAddr + address.Substring(index);
             }
 
-            //and currently only TCPIP is supported.
+            // and currently only TCPIP is supported.
             Address = "ncacn_ip_tcp:" + address;
             _remunknownIPID = _oxidResolver.IPID;
             _interfacePtrCtor = interfacePointer;
@@ -339,11 +339,8 @@ namespace org.jinterop.dcom.core {
 
             address = address.Trim();
             address = Dns.GetHostAddresses(address).First()?.ToString();
-
-            progId.Session = session;
-            progId.Server = address;
+            var clsid = progId.GetCorrespondingClsid(address, session);
             address = "ncacn_ip_tcp:" + address + "[135]";
-            var clsid = progId.CorrespondingCLSID;
             Initialise(clsid, address, session);
         }
 
@@ -384,7 +381,7 @@ namespace org.jinterop.dcom.core {
         /// <exception cref="JIException"></exception>
         private void Initialise(JIClsid clsid, string address, JISession session) {
             TransportFactory = JIComTransportFactory.Instance;
-            //now read the session and prepare information for the stub.
+            // now read the session and prepare information for the stub.
             Properties = new Properties(kDefaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
             Address = address;
@@ -415,14 +412,14 @@ namespace org.jinterop.dcom.core {
             catch (JIException e) {
                 if ((uint)e.ErrorCode == 0x80040154) {
                     Log.Logger.Warning("Got the class not registered exception, will attempt setting entries based on status flags...");
-                    //try registering the dll\ocx on our own
-                    //check for clsid.autoregister flag
-                    //check for jisystem.autoregister flag.
-                    //jisystem takes precedence over clsid.
+                    // try registering the dll\ocx on our own
+                    // check for clsid.autoregister flag
+                    // check for jisystem.autoregister flag.
+                    // jisystem takes precedence over clsid.
 
-                    if (JISystem.UseAutoRegistration || clsid.AutoRegistrationSet) {
+                    if (JISystem.UseAutoRegistration || clsid.UseAutoRegistration) {
 
-                        //first create the registry entries.
+                        // first create the registry entries.
                         try {
                             IJIWinReg registry = null;
                             if (session.SSOEnabled) {
@@ -484,11 +481,11 @@ namespace org.jinterop.dcom.core {
                             registry.CloseConnection();
                         }
                         catch (UnknownHostException e1) {
-                            //auto registration failed as well...
+                            // auto registration failed as well...
                             Log.Logger.Error(e, "JIComServer", "initialise", e1);
                             throw new JIException(JIErrorCodes.JI_WINREG_EXCEPTION3, e1);
                         }
-                        //lets retry
+                        // lets retry
                         Init();
                     }
                     else {
@@ -519,18 +516,18 @@ namespace org.jinterop.dcom.core {
                 Attach();
                 // socket to COM server is established
                 attachcomplete = true;
-                //first send an AlterContext to the IID of the IOxidResolver
+                // first send an AlterContext to the IID of the IOxidResolver
                 Endpoint.Syntax.Uuid = new rpc.core.UUID("99fcfec4-5260-101b-bbcb-00aa0021347a");
                 Endpoint.Syntax.Version = 0;
                 ((JIComEndpoint)Endpoint).RebindEndPoint();
 
-                //3.2.4.1.1.1 Determining RPC Binding Information for Activation
-                //Commenting the below to dynamically identify DCOM versions.
-                //			JICallBuilder serverAlive = new JICallBuilder(true);
-                //			serverAlive.attachSession(session);
-                //			serverAlive.setOpnum(0);
-                //			serverAlive.setReadOnlyHRESULT();
-                //			Call(Semantics.IDEMPOTENT,serverAlive);
+                // 3.2.4.1.1.1 Determining RPC Binding Information for Activation
+                // Commenting the below to dynamically identify DCOM versions.
+                //            JICallBuilder serverAlive = new JICallBuilder(true);
+                //            serverAlive.attachSession(session);
+                //            serverAlive.setOpnum(0);
+                //            serverAlive.setReadOnlyHRESULT();
+                //            Call(Semantics.IDEMPOTENT,serverAlive);
 
                 var serverAlive = new JICallBuilder(true);
                 serverAlive.AttachSession(_session);
@@ -548,7 +545,7 @@ namespace org.jinterop.dcom.core {
                 }
 
                 if (JISystem.COMVersion != null && JISystem.COMVersion.MinorVersion > 1) {
-                    //use SCMActivator
+                    // use SCMActivator
                     _syntax = "000001A0-0000-0000-C000-000000000046:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("000001A0-0000-0000-C000-000000000046");
                     Endpoint.Syntax.Version = 0;
@@ -557,7 +554,7 @@ namespace org.jinterop.dcom.core {
                     Call(Semantics.IDEMPOTENT, (JIRemoteSCMActivator.RemoteCreateInstance)_serverActivation);
                 }
                 else {
-                    //setup syntax for IRemoteActivation
+                    // setup syntax for IRemoteActivation
                     _syntax = "4d9f4ab8-7d1c-11cf-861e-0020af6e7c57:0.0";
                     Endpoint.Syntax.Uuid = new rpc.core.UUID("4d9f4ab8-7d1c-11cf-861e-0020af6e7c57");
                     Endpoint.Syntax.Version = 0;
@@ -579,7 +576,7 @@ namespace org.jinterop.dcom.core {
                 throw new JIException(e1);
             }
             finally {
-                //the only time remactivation will be null will be case of an exception.
+                // the only time remactivation will be null will be case of an exception.
                 if (attachcomplete && _serverActivation == null) {
                     try {
                         Detach();
@@ -592,7 +589,7 @@ namespace org.jinterop.dcom.core {
 
             // Now will setup syntax for IRemUnknown and the address.
             _syntax = "00000143-0000-0000-c000-000000000046:0.0";
-            //now for the new ip and the port.
+            // now for the new ip and the port.
 
             var bindings = _serverActivation.DualStringArrayForOxid.StringBindings;
             var i = 0;
@@ -602,16 +599,16 @@ namespace org.jinterop.dcom.core {
             targetAddress = targetAddress.SubstringSpecial(targetAddress.IndexOf(':') + 1, targetAddress.IndexOf('['));
             while (i < bindings.Length) {
                 binding = bindings[i];
-                if (binding.TowerId != 0x07) //this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
+                if (binding.TowerId != 0x07) // this means, even though I asked for TCPIP something else was supplied, noticed this in win2k.
                 {
                     i++;
                     continue;
                 }
-                //get the one with IP address
+                // get the one with IP address
                 var idx = binding.NetworkAddress.IndexOf(".", StringComparison.Ordinal);
                 if (idx != -1) {
                     try {
-                        idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
+                        idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
                         if (idx != -1 && binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
                             break;
                         }
@@ -621,11 +618,11 @@ namespace org.jinterop.dcom.core {
                     }
                 }
                 else {
-                    //can only come for the name, saving it incase nothing matches the target address
-                    //then we are not sure which is the right IP and which might be virtual, refer to
-                    //issue faced by Igor.
+                    // can only come for the name, saving it incase nothing matches the target address
+                    // then we are not sure which is the right IP and which might be virtual, refer to
+                    // issue faced by Igor.
                     nameBinding = binding;
-                    idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); //this contains the port
+                    idx = binding.NetworkAddress.IndexOf("[", StringComparison.Ordinal); // this contains the port
                     if (binding.NetworkAddress.Substring(0, idx).Equals(targetAddress, StringComparison.CurrentCultureIgnoreCase)) {
                         break;
                     }
@@ -637,9 +634,9 @@ namespace org.jinterop.dcom.core {
                 binding = nameBinding;
             }
 
-            //will use this last binding .
-            //and currently only TCPIP is supported.
-            //now set the NTLMv2 Session Security.
+            // will use this last binding .
+            // and currently only TCPIP is supported.
+            // now set the NTLMv2 Session Security.
             if (_session.SessionSecurityEnabled) {
                 Properties.SetProperty("rpc.ntlm.seal", "true");
                 Properties.SetProperty("rpc.ntlm.sign", "true");
@@ -648,15 +645,15 @@ namespace org.jinterop.dcom.core {
                 Properties.SetProperty("rpc.ntlm.ntlm2", "true");
             }
 
-            var address = binding.NetworkAddress; //this will always have the port.
+            var address = binding.NetworkAddress; // this will always have the port.
             var index = address.IndexOf("[", StringComparison.Ordinal);
             var hostname = binding.NetworkAddress.Substring(0, index);
-            var ipAddr = JISystem.GetIPForHostName(hostname); //to use the binding supplied by the user.
+            var ipAddr = JISystem.GetIPForHostName(hostname); // to use the binding supplied by the user.
             if (ipAddr != null) {
                 address = ipAddr + address.Substring(index);
             }
 
-            //and currently only TCPIP is supported.
+            // and currently only TCPIP is supported.
             Address = "ncacn_ip_tcp:" + address;
             _remunknownIPID = _serverActivation.IPID;
         }
@@ -668,16 +665,16 @@ namespace org.jinterop.dcom.core {
         /// <param name="ipidOfTheTargetUnknown"></param>
         /// <returns></returns>
         /// <exception cref="JIException"></exception>
-        internal IJIComObject GetInterface(string iid, string ipidOfTheTargetUnknown) {
-            IJIComObject retval = null;
-            //this is still essentially serial, since all threads will have to wait for mutex before
-            //entering addToSession.
+        internal IComObject GetInterface(string iid, string ipidOfTheTargetUnknown) {
+            IComObject retval = null;
+            // this is still essentially serial, since all threads will have to wait for mutex before
+            // entering addToSession.
             lock (_mutex) {
-                //now also set the Object ID for IRemUnknown call this will be the IPID of the returned JIRemActivation
+                // now also set the Object ID for IRemUnknown call this will be the IPID of the returned JIRemActivation
                 Object = _remunknownIPID;
-                //setObject(ipid);
+                // setObject(ipid);
 
-                //JIRemUnknown reqUnknown = new JIRemUnknown(unknownIPID,iid,5);
+                // JIRemUnknown reqUnknown = new JIRemUnknown(unknownIPID,iid,5);
                 var reqUnknown = new JIRemUnknown(ipidOfTheTargetUnknown, iid);
                 try {
                     _session.Stub2.Call(Semantics.IDEMPOTENT, reqUnknown);
@@ -689,19 +686,19 @@ namespace org.jinterop.dcom.core {
                     throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
                 }
                 catch (JIRuntimeException e1) {
-                    //remoteActivation = null;
+                    // remoteActivation = null;
                     throw new JIException(e1);
                 }
 
                 retval = JIFrameworkHelper.InstantiateComObject(_session, reqUnknown.InterfacePointer);
-                //increasing the reference count.
+                // increasing the reference count.
                 retval.AddRef();
-                //for querying dispatch we can't send another call
+                // for querying dispatch we can't send another call
                 if (!iid.Equals("00020400-0000-0000-c000-000000000046", StringComparison.CurrentCultureIgnoreCase)) {
                     var success = true;
                     ((JIComObjectImpl)retval).IsDual = true;
-                    //now to check whether it supports IDispatch
-                    //IDispatch 00020400-0000-0000-c000-000000000046
+                    // now to check whether it supports IDispatch
+                    // IDispatch 00020400-0000-0000-c000-000000000046
                     var dispatch = new JIRemUnknown(retval.Ipid, "00020400-0000-0000-c000-000000000046");
                     try {
                         _session.Stub2.Call(Semantics.IDEMPOTENT, dispatch);
@@ -713,13 +710,13 @@ namespace org.jinterop.dcom.core {
                         throw new JIException(JIErrorCodes.RPC_E_UNEXPECTED, e);
                     }
                     catch (JIRuntimeException) {
-                        //will eat this exception here.
+                        // will eat this exception here.
                         ((JIComObjectImpl)retval).IsDual = false;
                         success = false;
                     }
 
                     if (success) {
-                        //which means that IDispatch is supported
+                        // which means that IDispatch is supported
                         _session.ReleaseRef(dispatch.InterfacePointer.IPID, ((JIStdObjRef)dispatch.InterfacePointer.GetObjectReference(JIInterfacePointer.OBJREF_STANDARD)).PublicRefs);
                     }
                 }
@@ -733,24 +730,24 @@ namespace org.jinterop.dcom.core {
         /// Returns an <code>IJIComObject</code> representing the COM Server.
         /// </summary>
         /// <exception cref="JIException"> </exception>
-        public IJIComObject CreateInstance() {
+        public IComObject CreateInstance() {
             if (_interfacePtrCtor != null) {
                 throw new InvalidOperationException(JISystem.GetLocalizedMessage(
                     JIErrorCodes.JI_COMSTUB_WRONGCALLCREATEINSTANCE));
             }
-            IJIComObject comObject = null;
+            IComObject comObject = null;
 
-            //This method is still essentially serial, since all threads will have to stop at mutex and then
-            //go to addToSession after it (since there is no condition).
+            // This method is still essentially serial, since all threads will have to stop at mutex and then
+            // go to addToSession after it (since there is no condition).
             lock (_mutex) {
                 if (_serverInstantiated) {
                     throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                 }
                 comObject = JIFrameworkHelper.InstantiateComObject(_session, _serverActivation.MInterfacePointer);
                 if (_serverActivation.Dual) {
-                    //IJIComObject comObject2 = getObject(remoteActivation.dispIpid,"00020400-0000-0000-c000-000000000046");
-                    //this will get garbage collected and then removed.
-                    //session.addToSession(comObject2,remoteActivation.dispOid);
+                    // IJIComObject comObject2 = getObject(remoteActivation.dispIpid,"00020400-0000-0000-c000-000000000046");
+                    // this will get garbage collected and then removed.
+                    // session.addToSession(comObject2,remoteActivation.dispOid);
                     _session.ReleaseRef(_serverActivation.DispIpid, _serverActivation.DispRefs);
                     _serverActivation.DispIpid = null;
                     ((JIComObjectImpl)comObject).IsDual = true;
@@ -758,7 +755,7 @@ namespace org.jinterop.dcom.core {
                 else {
                     ((JIComObjectImpl)comObject).IsDual = false;
                 }
-                //increasing the reference count.
+                // increasing the reference count.
                 comObject.AddRef();
                 _serverInstantiated = true;
             }
@@ -772,22 +769,22 @@ namespace org.jinterop.dcom.core {
         /// otherwise use createInstance() instead.
         /// </summary>
         /// <exception cref="JIException"> </exception>
-        internal IJIComObject Instance {
+        internal IComObject Instance {
             get {
                 if (_interfacePtrCtor == null) {
                     throw new InvalidOperationException(JISystem.GetLocalizedMessage(
                         JIErrorCodes.JI_COMSTUB_WRONGCALLGETINSTANCE));
                 }
 
-                IJIComObject comObject = null;
-                //This method is still essentially serial, since all threads will have to stop at mutex and then
-                //go to addToSession after it (since there is no condition).
+                IComObject comObject = null;
+                // This method is still essentially serial, since all threads will have to stop at mutex and then
+                // go to addToSession after it (since there is no condition).
                 lock (_mutex) {
                     if (_serverInstantiated) {
                         throw new JIException(JIErrorCodes.JI_OBJECT_ALREADY_INSTANTIATED);
                     }
                     comObject = JIFrameworkHelper.InstantiateComObject(_session, _interfacePtrCtor);
-                    //increasing the reference count.
+                    // increasing the reference count.
                     comObject.AddRef();
                     _serverInstantiated = true;
                 }
@@ -829,7 +826,7 @@ namespace org.jinterop.dcom.core {
                 if (socketTimeout != 0) {
                     SocketTimeOut = socketTimeout;
                 }
-                else //for cases where it was something earlier, but is now being set to 0.
+                else // for cases where it was something earlier, but is now being set to 0.
                 {
                     if (_timeoutModifiedfrom0) {
                         SocketTimeOut = socketTimeout;
@@ -838,7 +835,7 @@ namespace org.jinterop.dcom.core {
                 try {
                     Attach();
                     if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
-                        //first send an AlterContext to the IID of the interface
+                        // first send an AlterContext to the IID of the interface
                         Endpoint.Syntax.Uuid = new rpc.core.UUID(targetIID);
                         Endpoint.Syntax.Version = 0;
                         ((JIComEndpoint)Endpoint).RebindEndPoint();
@@ -864,7 +861,7 @@ namespace org.jinterop.dcom.core {
         /// Server interface pointer
         /// </summary>
         internal JIInterfacePointer ServerInterfacePointer =>
-                //remoteactivation can be null only incase of OxidResolver ctor getting called.
+                // remoteactivation can be null only incase of OxidResolver ctor getting called.
                 _serverActivation == null ? _interfacePtrCtor : _serverActivation.MInterfacePointer;
 
         /// <summary>
@@ -878,7 +875,7 @@ namespace org.jinterop.dcom.core {
                 if (_remunknownIPID == null) {
                     return;
                 }
-                //now also set the Object ID for IRemUnknown call this will be the IPID of the returned JIRemActivation or IOxidResolver
+                // now also set the Object ID for IRemUnknown call this will be the IPID of the returned JIRemActivation or IOxidResolver
                 obj.ParentIpid = _remunknownIPID;
                 obj.AttachSession(_session);
                 try {
@@ -920,7 +917,7 @@ namespace org.jinterop.dcom.core {
             }
         }
 
-        private JIIServerActivation _serverActivation;
+        private IServerActivation _serverActivation;
         private readonly JIOxidResolver _oxidResolver;
         private string _clsid;
         private JISession _session;
