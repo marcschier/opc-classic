@@ -5,12 +5,13 @@
 //    This class provides the logic to simulate Java rectangular arrays, which are jagged
 //    arrays with inner arrays of the same length. A size of -1 indicates unknown length.
 // ----------------------------------------------------------------------------------------
-using org.jinterop.dcom.core;
+using SharpInterop.Core;
 
 /// <summary>
 /// Extension
 /// </summary>
-public static partial class RectangularArrays {
+public static class RectangularArrays {
+
     /// <summary>
     /// Create
     /// </summary>
@@ -201,13 +202,13 @@ public static partial class RectangularArrays {
     /// <param name="size1"></param>
     /// <param name="size2"></param>
     /// <returns></returns>
-    public static JIVariant[][] ReturnRectangularJIVariantArray(int size1, int size2) {
-        JIVariant[][] newArray;
+    public static Variant[][] ReturnRectangularVariantArray(int size1, int size2) {
+        Variant[][] newArray;
         if (size1 > -1) {
-            newArray = new JIVariant[size1][];
+            newArray = new Variant[size1][];
             if (size2 > -1) {
                 for (var array1 = 0; array1 < size1; array1++) {
-                    newArray[array1] = new JIVariant[size2];
+                    newArray[array1] = new Variant[size2];
                 }
             }
         }

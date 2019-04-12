@@ -125,19 +125,19 @@
   <data name="0x00001006" xml:space="preserve"><value>Only 1 discriminant allowed for serialization, please remove the rest or no discriminant has been added at all.</value></data>
   <data name="0x00001007" xml:space="preserve"><value>No discriminant value has been added at all.</value></data>
   <data name="0x00001008" xml:space="preserve"><value>Incorrect Value of FLAG sent for this API. This FLAG is not valid here.</value></data>
-  <data name="0x00001009" xml:space="preserve"><value>Internal Library Error. This method should not have been called. Please check the parameters which you have passed to JICallBuilder. They have been sent incorrectly.</value></data>
-  <data name="0x0000100A" xml:space="preserve"><value>Outparams cannot have more than 1 parameter here. It should be a JIVariant class parameter.</value></data>
+  <data name="0x00001009" xml:space="preserve"><value>Internal Library Error. This method should not have been called. Please check the parameters which you have passed to CallBuilder. They have been sent incorrectly.</value></data>
+  <data name="0x0000100A" xml:space="preserve"><value>Outparams cannot have more than 1 parameter here. It should be a Variant class parameter.</value></data>
   <data name="0x0000100B" xml:space="preserve"><value>Parameters inparams and dispId\paramNames arrays should have same length.</value></data>
   <data name="0x0000100C" xml:space="preserve"><value>This in parameter cannot have null or \"\" values.</value></data>
   <data name="0x0000100D" xml:space="preserve"><value>No parameters can be empty or null. Please provide valid parameters.</value></data>
   <data name="0x0000100E" xml:space="preserve"><value>Could not retrieve CLSID from PROGID via Windows Remote Registry Service.</value></data>
-  <data name="0x0000100F" xml:space="preserve"><value>Internal Library Error, the serializer\deserializer was not found for {0}.  Please check the parameters passed to JICallBuilder.</value></data>
+  <data name="0x0000100F" xml:space="preserve"><value>Internal Library Error, the serializer\deserializer was not found for {0}.  Please check the parameters passed to CallBuilder.</value></data>
   <data name="0x00001010" xml:space="preserve"><value>Authentication information was not supplied.</value></data>
   <data name="0x00001011" xml:space="preserve"><value>Incorrect or Invalid Parameter(s) specified.</value></data>
   <data name="0x00001012" xml:space="preserve"><value>The template cannot be null. </value></data>
   <data name="0x00001013" xml:space="preserve"><value>Only Arrays Accepted as parameter.</value></data>
   <data name="0x00001014" xml:space="preserve"><value>Arrays of Primitive Data Types are not accepted.</value></data>
-  <data name="0x00001015" xml:space="preserve"><value>Can only accept JIStruct, JIUnion, JIPointer and JIString as parameters for template.</value></data>
+  <data name="0x00001015" xml:space="preserve"><value>Can only accept Struct, Union, Pointer and String as parameters for template.</value></data>
   <data name="0x00001016" xml:space="preserve"><value>IPID cannot be null.</value></data>
   <data name="0x00001017" xml:space="preserve"><value>Discriminant can only be of the type Integer,Short,Boolean or Character.</value></data>
   <data name="0x00001018" xml:space="preserve"><value>Referent ID for <code>VARIANT</code> not found.</value></data>
@@ -155,9 +155,9 @@
   <data name="0x00001024" xml:space="preserve"><value>Variants cannot take object[] having Variants themselves as indices.</value></data>
   <data name="0x00001025" xml:space="preserve"><value>fractionalUnits cannot be negative.</value></data>
   <data name="0x00001026" xml:space="preserve"><value>Variant is null.</value></data>
-  <data name="0x00001027" xml:space="preserve"><value>Library currently accepts only up to 2 dimension for the JIVariant.</value></data>
+  <data name="0x00001027" xml:space="preserve"><value>Library currently accepts only up to 2 dimension for the Variant.</value></data>
   <data name="0x00001028" xml:space="preserve"><value>The upper bounds is to be specified for all dimensions or not specified at all.</value></data>
-  <data name="0x00001029" xml:space="preserve"><value>Please use the JIArray to pass arrays.</value></data>
+  <data name="0x00001029" xml:space="preserve"><value>Please use the ComArray to pass arrays.</value></data>
   <data name="0x00001030" xml:space="preserve"><value>Unsupported type for VARIANT. </value></data>
   <data name="0x00001031" xml:space="preserve"><value>Unable to access Windows Registry, please check whether the SERVER service is running on the Target Workstation.</value></data>
   <data name="0x00001032" xml:space="preserve"><value>Invalid Identifier, or there is no Connection Info associated with this identifier on this comObject.</value></data>
@@ -165,20 +165,20 @@
   <data name="0x00001034" xml:space="preserve"><value>Unknown hostname\ip was supplied for obtaining handle to WinReg.</value></data>
   <data name="0x00001035" xml:space="preserve"><value>Type not supported for setting\getting value in\from registry.</value></data>
   <data name="0x00001036" xml:space="preserve"><value>Illegal values sent as parameters, please check "data".</value></data>
-  <data name="0x00001037" xml:space="preserve"><value>JIMethodDescriptor is being added to a JIInterfaceDefinition supporting dispInterface, but it itself does not have a dispId.</value></data>
+  <data name="0x00001037" xml:space="preserve"><value>MethodDescriptor is being added to a InterfaceDefinition supporting dispInterface, but it itself does not have a dispId.</value></data>
   <data name="0x00001038" xml:space="preserve"><value>No parameters can be null or "".</value></data>
   <data name="0x00001039" xml:space="preserve"><value>Unsupported charset supplied while encoding or decoding String.</value></data>
   <data name="0x00001040" xml:space="preserve"><value>Unsigned numbers cannot be negative or null.</value></data>
   <data name="0x00001041" xml:space="preserve"><value>Class not supported for unsigned operations. Only Long,Short,Integer allowed.</value></data>
   <data name="0x00001042" xml:space="preserve"><value>"Object.class" arrays are not accepted. Only properly typed arrays accepted.</value></data>
-  <data name="0x00001043" xml:space="preserve"><value>This JILocalCoClass has already been exported with one COM object, please use a new instance of this class to get a new reference to a local COM object.</value></data>
-  <data name="0x00001044" xml:space="preserve"><value>JIInterfacePointer is not a valid parameter, please use JIVariant(IJIComObject,...).</value></data>
-  <data name="0x00001045" xml:space="preserve"><value>Direct Marshalling, UnMarshalling of Strings are not allowed, please use JIString instead.</value></data>
-  <data name="0x00001046" xml:space="preserve"><value>createInstance() cannot be called since the JIComServer(JISession, JIInterfacePointer, String) ctor was used to create this COM server instance, please use getInstance() instead.</value></data>
-  <data name="0x00001047" xml:space="preserve"><value>getInstance() cannot be called since the JIComServer(JISession, JIInterfacePointer, String) ctor was NOT used to create this COM server instance, please use createInstance() instead.</value></data>
+  <data name="0x00001043" xml:space="preserve"><value>This LocalCoClass has already been exported with one COM object, please use a new instance of this class to get a new reference to a local COM object.</value></data>
+  <data name="0x00001044" xml:space="preserve"><value>InterfacePointer is not a valid parameter, please use Variant(IComObject,...).</value></data>
+  <data name="0x00001045" xml:space="preserve"><value>Direct Marshalling, UnMarshalling of Strings are not allowed, please use String instead.</value></data>
+  <data name="0x00001046" xml:space="preserve"><value>createInstance() cannot be called since the ComServer(Session, InterfacePointer, String) ctor was used to create this COM server instance, please use getInstance() instead.</value></data>
+  <data name="0x00001047" xml:space="preserve"><value>getInstance() cannot be called since the ComServer(Session, InterfacePointer, String) ctor was NOT used to create this COM server instance, please use createInstance() instead.</value></data>
   <data name="0x00001048" xml:space="preserve"><value>A session is already attached with this COM object.</value></data>
   <data name="0x00001049" xml:space="preserve"><value>This API cannot be invoked on local references.</value></data>
-  <data name="0x00001050" xml:space="preserve"><value>A session is not attached with this object, use JIObjectFactory.buildObject(JISession, IJIComObject) to attach a session with this object.</value></data>
+  <data name="0x00001050" xml:space="preserve"><value>A session is not attached with this object, use ObjectFactory.buildObject(Session, IComObject) to attach a session with this object.</value></data>
   <data name="0x00001051" xml:space="preserve"><value>The associated session is being destroyed. Current call to COM server has been terminated.</value></data>
   <data name="0x00001052" xml:space="preserve"><value>This functionality is available only under "Microsoft Windows" line of Operating systems. </value></data>
   <data name="0x00001053" xml:space="preserve"><value>S.S.O cannot be used with ProgId based ctors.</value></data>

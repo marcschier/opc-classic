@@ -1,19 +1,15 @@
-﻿// 
-// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
-// j-Interop (Pure Java implementation of DCOM protocol)
-// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
-namespace rpc {
-    using rpc.core;
-    using rpc.pdu;
+namespace SharpInterop.Rpc {
+    using SharpInterop.Rpc.Core;
+    using SharpInterop.Rpc.pdu;
     using SharpCifs.Util.Sharpen;
 
     /// <summary>
@@ -32,11 +28,11 @@ namespace rpc {
             Established = false;
             Connection = new DefaultConnection();
             if (properties != null) {
-                var maxTransmit = (string)properties.GetProperty(rpc.Connection.MAX_TRANSMIT_FRAGMENT);
+                var maxTransmit = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
                 if (maxTransmit != null) {
                     _maxTransmitFragment = int.Parse(maxTransmit);
                 }
-                var maxReceive = (string)properties.GetProperty(rpc.Connection.MAX_RECEIVE_FRAGMENT);
+                var maxReceive = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
                 if (maxReceive != null) {
                     _maxReceiveFragment = int.Parse(maxReceive);
                 }
@@ -105,8 +101,8 @@ namespace rpc {
             }
         }
 
-        private int _maxTransmitFragment = rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
-        private int _maxReceiveFragment = rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
+        private int _maxTransmitFragment = SharpInterop.Rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
+        private int _maxReceiveFragment = SharpInterop.Rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
         private int _transmitLength;
         private int _receiveLength;
     }

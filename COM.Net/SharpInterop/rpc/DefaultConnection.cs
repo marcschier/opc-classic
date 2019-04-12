@@ -1,8 +1,4 @@
 ﻿//
-// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-//
-// j-Interop (Pure Java implementation of DCOM protocol)
-//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -11,9 +7,9 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace rpc {
-    using rpc.core;
-    using rpc.pdu;
+namespace SharpInterop.Rpc {
+    using SharpInterop.Rpc.Core;
+    using SharpInterop.Rpc.pdu;
     using Serilog;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
@@ -103,7 +99,7 @@ namespace rpc {
                     else {
                         try {
                             Log.Logger.Verbose("[Fragmented Packet] [" + _packetIndex++ +
-                                "] recieved, fragment decomposition is below:- ");
+                                "] recieved, fragment decomposition is below: ");
                             _currentFragment = _outerInstance.ReceivePdu(_transport);
                         }
                         catch (InvalidCastException e) {
@@ -138,7 +134,7 @@ namespace rpc {
             _transmitBuffer.Reset();
             fragment.Encode(_ndr, _transmitBuffer);
             ProcessOutgoing();
-            Log.Logger.Verbose("[TRANSMIT BUFFER]:-\n" +
+            Log.Logger.Verbose("[TRANSMIT BUFFER]:\n" +
                 Utils.HexString(_transmitBuffer.Buf, 0, _transmitBuffer.Length));
             transport.Send(_transmitBuffer);
         }
@@ -186,10 +182,10 @@ namespace rpc {
             if (read) {
                 // read the transport now...
                 _receiveBuffer.Reset();
-                Log.Logger.Verbose("Reading bytes from RecieveBuffer Socket...Current Capacity:- " +
+                Log.Logger.Verbose("Reading bytes from RecieveBuffer Socket...Current Capacity: " +
                     _receiveBuffer.GetCapacity());
                 transport.Receive(_receiveBuffer);
-                Log.Logger.Verbose("[RECIEVER BUFFER]:-\n" +
+                Log.Logger.Verbose("[RECIEVER BUFFER]:\n" +
                     Utils.HexString(_receiveBuffer.Buf, 0, _receiveBuffer.Length));
             }
 
@@ -243,7 +239,7 @@ namespace rpc {
 
                     Log.Logger.Verbose("lengthOfArrayTobeRead = " + lengthOfArrayTobeRead + "\n" +
                         "trimSize = " + trimSize + "\n" + "RecieveBuffer current read size: " + _receiveBuffer.Length);
-                    Log.Logger.Verbose("[RECIEVER BUFFER]:-\n" +
+                    Log.Logger.Verbose("[RECIEVER BUFFER]:\n" +
                         Utils.HexString(_receiveBuffer.Buf, 0, _receiveBuffer.Length));
                 }
             }

@@ -1,19 +1,14 @@
-﻿using System;
-
-// 
-// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
-// j-Interop (Pure Java implementation of DCOM protocol)
-// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
-namespace rpc {
+namespace SharpInterop.Rpc {
+    using System;
 
     /// <summary>
     /// Generic buffer
@@ -76,7 +71,7 @@ namespace rpc {
         /// <summary>
         /// Create buffer
         /// </summary>
-        public Buffer() : 
+        public Buffer() :
             this(null, 0) {
         }
 
@@ -92,7 +87,7 @@ namespace rpc {
         /// Create buffer
         /// </summary>
         /// <param name="buffer"></param>
-        public Buffer(byte[] buffer) : 
+        public Buffer(byte[] buffer) :
             this(buffer, 0) {
         }
 

@@ -28,7 +28,8 @@ namespace System.Collections.Generic {
         /// <param name="key"></param>
         /// <param name="deflt"></param>
         /// <returns></returns>
-        public static V GetOrDefault<K, V>(this IDictionary<K, V> dictionary, K key, V deflt) {
+        public static V GetOrDefault<K, V>(this IDictionary<K, V> dictionary, K key, 
+            V deflt = default) {
             if (dictionary.ContainsKey(key)) {
                 var value = dictionary[key];
                 return value;

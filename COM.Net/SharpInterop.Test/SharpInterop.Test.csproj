@@ -5,7 +5,7 @@
     <Description>.net Core DCOM tests</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="dcom\test\Driver.cs" />
+    <Compile Remove="Tests\Driver.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />

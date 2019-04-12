@@ -1,18 +1,14 @@
-﻿// 
-// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-// 
-// j-Interop (Pure Java implementation of DCOM protocol)
-// 
+﻿//
 // Copyright (c) 2013 Vikram Roopchand
-// 
+//
 // All rights reserved. This program and the accompanying materials
 // are made available under the terms of the Eclipse Public License v1.0
 // which accompanies this distribution, and is available at
 // http://www.eclipse.org/legal/epl-v10.html
-// 
+//
 
-namespace rpc {
-    using rpc.core;
+namespace SharpInterop.Rpc {
+    using SharpInterop.Rpc.Core;
     using SharpCifs.Util.Sharpen;
     using System.IO;
 
@@ -38,7 +34,7 @@ namespace rpc {
         /// <param name="properties"></param>
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
-        ConnectionOrientedPdu Init(PresentationContext context, 
+        ConnectionOrientedPdu Init(PresentationContext context,
             Properties properties);
 
         /// <summary>

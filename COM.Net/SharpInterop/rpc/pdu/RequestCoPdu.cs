@@ -1,8 +1,4 @@
 ﻿//
-// Donated by Jarapac (http://jarapac.sourceforge.net/) and released under EPL.
-//
-// j-Interop (Pure Java implementation of DCOM protocol)
-//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -11,8 +7,8 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-namespace rpc.pdu {
-    using rpc.core;
+namespace SharpInterop.Rpc.pdu {
+    using SharpInterop.Rpc.Core;
     using Serilog;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
