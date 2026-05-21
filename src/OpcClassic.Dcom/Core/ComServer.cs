@@ -553,7 +553,11 @@ namespace SharpInterop.Core {
                 }
 
                 if (Interop.COMVersion != null && Interop.COMVersion.MinorVersion > 1) {
-                    // use SCMActivator
+                    // Default path: IRemoteSCMActivator (DCOM v5.6 / Win XP SP2+ /
+                    // Win Server 2003+). Required by Microsoft's DCOM hardening
+                    // (KB5004442, mandatory since March 2023) which rejects activation
+                    // requests below RPC_C_AUTHN_LEVEL_PKT_INTEGRITY against hardened
+                    // Windows DCOM servers.
                     _syntax = Interfaces.IID_IRemoteSCMActivator + ":0.0";
                     Endpoint.Syntax.Uuid = new UUID(Interfaces.IID_IRemoteSCMActivator);
                     Endpoint.Syntax.Version = 0;
@@ -562,7 +566,10 @@ namespace SharpInterop.Core {
                     Call(Semantics.IDEMPOTENT, (RemoteSCMActivator.RemoteCreateInstance)_serverActivation);
                 }
                 else {
-                    // setup syntax for IRemoteActivation
+                    // Legacy path: IRemoteActivation (DCOM v5.4 / Win 2000 / XP RTM).
+                    // Opt-in only — set Interop.COMVersion = new ComVersion(5, 1).
+                    // Hardened Windows DCOM servers will reject this path with
+                    // Event ID 10036 unless explicitly relaxed on the server.
                     _syntax = Interfaces.IID_IActivation + ":0.0";
                     Endpoint.Syntax.Uuid = new UUID(Interfaces.IID_IActivation);
                     Endpoint.Syntax.Version = 0;

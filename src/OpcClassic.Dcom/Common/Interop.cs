@@ -54,9 +54,17 @@ namespace SharpInterop.Common {
         public static bool IsCoClassAutoCollection { get; set; } = true;
 
         /// <summary>
-        /// Sets the COM version which the library would use for communicating with COM servers.
-        /// Default is 5.2.
+        /// Sets the COM version this library uses to communicate with COM servers.
         /// </summary>
+        /// <remarks>
+        /// Default is 5.4 — which selects the modern <c>IRemoteSCMActivator</c>
+        /// (a.k.a. DCOM v5.6) activation path in <see cref="SharpInterop.Core.ComServer"/>
+        /// rather than the legacy <c>IRemoteActivation</c> (v5.4) path.
+        /// <see cref="SharpInterop.Core.ComServer"/> selects the SCM activator
+        /// whenever <c>MinorVersion &gt; 1</c>, which is true for the default.
+        /// Set this to <c>new ComVersion(5, 1)</c> to opt back into the legacy
+        /// v5.4 activation surface for Windows 2000 / XP pre-SP2 targets.
+        /// </remarks>
         public static ComVersion COMVersion { set; get; } = new ComVersion();
 
         /// <summary>
