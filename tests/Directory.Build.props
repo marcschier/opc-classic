@@ -1,0 +1,49 @@
+<Project>
+
+  <!--
+    Applies to every tests/*/*.csproj. Per the implementation plan's libs_only
+    NativeAOT scope, test projects are NOT AOT-strict — they may use reflection-
+    heavy testing infrastructure (Verify snapshot diffs, CsCheck shrinking, etc.)
+    without affecting the AOT-cleanliness of the libraries they test.
+
+    The libraries under test are still subject to the strict src/Directory.Build.props
+    constraints, so violations in the LIBRARIES will fail the build even if the
+    TESTS exercise them via reflection.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+    <IsTestProject>true</IsTestProject>
+
+    <!-- Microsoft.Testing.Platform (MTP) — not VSTest. TUnit is MTP-native. -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <OutputType>Exe</OutputType>
+
+    <!-- Test projects intentionally not AOT-strict (libs_only scope). -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- TUnit (source-generated test discovery, AOT-friendly) + its built-in assertions library -->
+    <PackageReference Include="TUnit" />
+
+    <!-- Coverage collection for `dotnet test --collect "XPlat Code Coverage"` -->
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

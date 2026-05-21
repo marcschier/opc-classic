@@ -1,0 +1,46 @@
+SPDX-License-Identifier: EPL-1.0
+
+Copyright (c) 2026 OPC Classic .NET Contributors
+Copyright (c) 2013 Vikram Roopchand (SharpInterop / j-Interop C# port)
+Copyright (c) 2003-2017 OPC Foundation, Inc. (legacy DotNet/ tree)
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0 which accompanies this distribution,
+and is available at:
+
+    https://www.eclipse.org/legal/epl-v10.html
+
+The full text of the Eclipse Public License v1.0 will be vendored in this
+file as part of Phase 1E (Licensing cleanup) of the implementation plan.
+Until then, consult the canonical text at the URL above. Per-file
+SPDX-License-Identifier headers are being added as code is migrated into
+src/.
+
+THIRD-PARTY MATERIALS (TRANSITIONAL)
+====================================
+
+This repository currently bundles or references the following third-party
+materials, each retaining their own license. Phase 1A removes the items
+marked "scheduled for removal"; Phase 1E produces a consolidated
+THIRD-PARTY-NOTICES.md.
+
+  Java/j-interop/                       LGPL-3.0          (scheduled for removal)
+  Java/j-interopdeps/                   Guile (GPL-2.0+)  (scheduled for removal)
+  DotNet/                               OPC Foundation    (scheduled for removal)
+  COM/                                  OPC Foundation    (retained as conformance reference)
+  External/                             OPC Foundation    (binary redistributables)
+  src/OpcClassic.Dcom/rpc/Auth/SSPIClient.cs   LGPL-2.1   (scheduled for removal in Phase 2F)
+
+WARRANTY DISCLAIMER
+===================
+
+THE PROGRAM IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT
+LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is
+solely responsible for determining the appropriateness of using and
+distributing the Program and assumes all risks associated with its
+exercise of rights under this Agreement, including but not limited to
+the risks and costs of program errors, compliance with applicable laws,
+damage to or loss of data, programs or equipment, and unavailability or
+interruption of operations.

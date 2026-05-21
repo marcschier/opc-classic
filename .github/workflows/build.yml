@@ -1,0 +1,104 @@
+name: build
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: build-${{ matrix.os }}-${{ matrix.configuration }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        configuration: [Debug, Release]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        if: hashFiles('OpcClassic.sln') != ''
+        run: dotnet restore OpcClassic.sln
+
+      - name: Build
+        if: hashFiles('OpcClassic.sln') != ''
+        run: dotnet build OpcClassic.sln --configuration ${{ matrix.configuration }} --no-restore
+
+      - name: Test
+        if: hashFiles('OpcClassic.sln') != ''
+        run: dotnet test OpcClassic.sln --configuration ${{ matrix.configuration }} --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+      - name: Upload coverage
+        if: always() && hashFiles('TestResults/**/coverage.cobertura.xml') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.os }}-${{ matrix.configuration }}
+          path: TestResults/**/coverage.cobertura.xml
+
+  format:
+    name: dotnet-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: dotnet format --verify-no-changes
+        if: hashFiles('OpcClassic.sln') != ''
+        run: dotnet format OpcClassic.sln --verify-no-changes --severity error
+
+  aot-canary:
+    name: aot-canary-${{ matrix.os }}
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Publish NativeAOT canary
+        if: hashFiles('samples/OpcClassic.AotCanary/*.csproj') != ''
+        run: dotnet publish samples/OpcClassic.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
+
+  conformance-windows:
+    name: conformance-windows
+    needs: build
+    runs-on: windows-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Build native COM sample servers (reference impl)
+        if: hashFiles('OPC COM.sln') != ''
+        shell: cmd
+        run: |
+          call "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86 || call "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
+          msbuild "OPC COM.sln" /p:Configuration=Release /p:Platform=Win32 /v:minimal
+      - name: Run conformance tests
+        if: hashFiles('tests/**/*Conformance*.csproj') != ''
+        run: dotnet test --filter "Category=Conformance" --configuration Release

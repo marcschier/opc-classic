@@ -1,0 +1,38 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup Label="Test framework — TUnit on Microsoft.Testing.Platform">
+    <PackageVersion Include="TUnit" Version="0.12.27" />
+    <PackageVersion Include="TUnit.Assertions" Version="0.12.27" />
+  </ItemGroup>
+
+  <ItemGroup Label="Coverage">
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup Label="Property-based tests (CsCheck — framework-agnostic, no reflection generators)">
+    <PackageVersion Include="CsCheck" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Snapshot tests (Verify with the TUnit adapter)">
+    <PackageVersion Include="Verify.TUnit" Version="28.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Log assertions">
+    <PackageVersion Include="Microsoft.Extensions.Logging.Testing" Version="10.0.0" />
+  </ItemGroup>
+
+  <!--
+    Mocking: the exact NuGet package is intentionally NOT pinned here. Per the
+    implementation plan (§ Phase 11B), a small spike at the start of Phase 11B
+    selects the TUnit-recommended source-generator mocking companion (no Castle
+    proxies, no Reflection.Emit, no DispatchProxy). When chosen, add a
+    PackageVersion entry here. Fallback: hand-written test doubles in
+    tests/_TestDoubles/, no NuGet package needed.
+  -->
+
+</Project>
