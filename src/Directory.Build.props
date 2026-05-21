@@ -91,4 +91,21 @@
     <None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" Visible="false" Condition="Exists('$(MSBuildThisFileDirectory)..\README.md')" />
   </ItemGroup>
 
+  <!--
+    OpcClassic.Generators is referenced as an analyzer in every src/ project
+    except itself. Analyzer references are NOT transitive through ProjectReference,
+    so they must be declared per-consumer; centralizing here keeps that wiring
+    in exactly one place.
+
+    Excluded:
+      - OpcClassic.Generators itself (would create a circular reference).
+      - OpcClassic.Dcom: transitional Java-ported code; out of scope until Phase 2B
+        completes its modernization sweep.
+  -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' != 'OpcClassic.Generators' and '$(MSBuildProjectName)' != 'OpcClassic.Dcom'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)OpcClassic.Generators\OpcClassic.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
 </Project>

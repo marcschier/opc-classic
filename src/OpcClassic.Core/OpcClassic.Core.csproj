@@ -7,13 +7,6 @@
     <PackageId>OpcClassic.Core</PackageId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Pull in OpcClassic.Generators as an analyzer-mode dependency.
-         The generator runs at build time and emits source into this assembly;
-         no runtime dependency on the generator assembly is created. -->
-    <ProjectReference Include="..\OpcClassic.Generators\OpcClassic.Generators.csproj"
-                      OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false" />
-  </ItemGroup>
+  <!-- OpcClassic.Generators is wired in centrally via src/Directory.Build.props. -->
 
 </Project>

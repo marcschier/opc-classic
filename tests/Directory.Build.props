@@ -66,5 +66,17 @@
     <NoWarn>$(NoWarn);CA1062;CA1707;CA1812;CA1822;CA1031;CA2007;CS1591;IDE0290;IDE0010;IDE0058</NoWarn>
   </PropertyGroup>
 
+  <!--
+    OpcClassic.Generators is referenced as an analyzer in every test project,
+    so test fixtures (mocks, sample interfaces) can use [OpcInterface] etc.
+    without per-project wiring. Analyzer references are not transitive through
+    ProjectReference, so they must be declared per-consumer.
+  -->
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\src\OpcClassic.Generators\OpcClassic.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
 </Project>
 
