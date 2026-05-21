@@ -13,5 +13,6 @@
     <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />
     <Project Path="tests/OpcClassic.Hda.Tests/OpcClassic.Hda.Tests.csproj" />
+    <Project Path="tests/OpcClassic.PropertyTests/OpcClassic.PropertyTests.csproj" />
   </Folder>
 </Solution>
