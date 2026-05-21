@@ -32,13 +32,18 @@ namespace OpcClassic.Generators
     /// <c>OpcClassic.Generators</c> as an analyzer. Confirms the source-generator
     /// pipeline is wired correctly end-to-end.
     /// </summary>
-    public static class OpcClassicGeneratorMarker
+    /// <remarks>
+    /// Emitted <c>internal</c> so each consuming project carries its own
+    /// private copy and downstream consumers don't see type-conflict
+    /// diagnostics (CS0436) when they also reference the generator.
+    /// </remarks>
+    internal static class OpcClassicGeneratorMarker
     {
         /// <summary>Tracks the generator surface as it evolves. Bumped per phase.</summary>
-        public const string Version = ""0.1.0-dev"";
+        public const string Version = ""0.2.0-dev"";
 
         /// <summary>Human-readable description of the current generator surface.</summary>
-        public const string Description = ""Phase 4A.1 skeleton (smoke test only)"";
+        public const string Description = ""Phase 4A.1 + 4A.2: marker + OpcInterface generators"";
     }
 }
 ";

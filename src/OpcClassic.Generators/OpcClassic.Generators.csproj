@@ -51,4 +51,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Per Roslyn analyzer release tracking convention; satisfies RS2008. -->
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
 </Project>

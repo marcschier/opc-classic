@@ -25,7 +25,7 @@ public sealed class GeneratorSmokeTests
     [Test]
     public async Task GeneratedMarker_HasExpectedVersion()
     {
-        await Assert.That(ReadVersion()).IsEqualTo("0.1.0-dev");
+        await Assert.That(ReadVersion()).IsEqualTo("0.2.0-dev");
     }
 
     [Test]

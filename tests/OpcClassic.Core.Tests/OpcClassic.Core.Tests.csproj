@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OpcClassic.Core\OpcClassic.Core.csproj" />
+    <!-- Analyzer references are not transitive; the test project must reference
+         the generator directly so [OpcInterface] in test sources is processed. -->
+    <ProjectReference Include="..\..\src\OpcClassic.Generators\OpcClassic.Generators.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
