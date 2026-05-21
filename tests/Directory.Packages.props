@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup Label="Test framework — TUnit on Microsoft.Testing.Platform">
-    <PackageVersion Include="TUnit" Version="0.12.27" />
-    <PackageVersion Include="TUnit.Assertions" Version="0.12.27" />
+    <PackageVersion Include="TUnit" Version="0.13.0" />
+    <PackageVersion Include="TUnit.Assertions" Version="0.13.0" />
   </ItemGroup>
 
   <ItemGroup Label="Coverage">

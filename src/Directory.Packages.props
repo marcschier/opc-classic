@@ -44,15 +44,12 @@
   </ItemGroup>
 
   <!--
-    TRANSITIONAL — these dependencies live in src/OpcClassic.Dcom while the
-    legacy SharpInterop code is being modernized. Phase 2D replaces SharpCifs.Std
-    (with SMBLibrary or a hand-rolled SMB subset). Phase 2E hand-rolls MD4 + RC4
-    to eliminate the BouncyCastle dependency entirely. Phase 2G replaces Serilog
-    with Microsoft.Extensions.Logging abstractions. Once each is removed in the
-    code, delete the matching PackageVersion entry below.
+    Phase 2E complete: BouncyCastle is eliminated. MD4 + RC4 are hand-rolled
+    in src/OpcClassic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
+    transitional shim Crypto/BcCompat.cs. Phase 2D will remove SharpCifs.Std.
+    Phase 2G will remove Serilog (replaced by Microsoft.Extensions.Logging).
   -->
-  <ItemGroup Label="TRANSITIONAL — removed by Phase 2D / 2E / 2G">
-    <PackageVersion Include="Portable.BouncyCastle" Version="1.8.5" />
+  <ItemGroup Label="TRANSITIONAL — removed by Phase 2D / 2G">
     <PackageVersion Include="Serilog" Version="2.8.0" />
     <PackageVersion Include="SharpCifs.Std" Version="0.2.13" />
   </ItemGroup>

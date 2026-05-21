@@ -2,10 +2,7 @@
 // Copyright � 2003, 2006 Eric Glass (eric.glass@gmail.com)
 
 namespace SharpInterop.Rpc.Auth.ntlm {
-    using Org.BouncyCastle.Crypto;
-    using Org.BouncyCastle.Crypto.Digests;
-    using Org.BouncyCastle.Crypto.Parameters;
-    using Org.BouncyCastle.Security;
+    using SharpInterop.Crypto;
     using SharpCifs.Util;
     using System;
 

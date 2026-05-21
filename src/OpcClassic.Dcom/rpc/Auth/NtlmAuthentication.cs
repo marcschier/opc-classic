@@ -11,7 +11,6 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpCifs.Ntlmssp;
     using SharpCifs.Smb;
     using SharpCifs.Util;
-    using net.sourceforge.jtds.util;
     using System;
     using SharpCifs;
     using SharpCifs.Util.Sharpen;
@@ -61,12 +60,17 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             }
 
             if (_useSSO) {
-                _jniClient = SSPIJNIClient.Instance;
+                // Phase 2F: the Windows-only SSPIJNIClient (P/Invoke to ntlmauth.dll)
+                // is incompatible with the cross-platform .NET 10 target. Single
+                // sign-on returns in Phase 3D via Kerberos.NET-backed Kerberos /
+                // SPNEGO authentication. Until then, callers must supply explicit
+                // domain / user / password credentials.
+                throw new PlatformNotSupportedException(
+                    "NTLM SSO (rpc.ntlm.sso=true) is not supported on this platform. " +
+                    "Use explicit username/password NTLMv2 credentials, or wait for " +
+                    "Kerberos/SPNEGO support in OpcClassic.Dcom.Kerberos (Phase 3D).");
             }
-            else {
-                _jniClient = null;
-                _credentials = new NtlmPasswordAuthentication(domain, user, password);
-            }
+            _credentials = new NtlmPasswordAuthentication(domain, user, password);
         }
 
         /// <summary>
@@ -81,10 +85,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <returns></returns>
         public Type1Message CreateType1() {
             if (_useSSO) {
-                var ntlmMessage = _jniClient.InvokePrepareSSORequest();
-                var type1Message = new Type1Message(ntlmMessage);
-                type1Message.SetFlags(DefaultFlags);
-                return type1Message;
+                // Unreachable — constructor already throws for _useSSO. Defensive guard.
+                throw new PlatformNotSupportedException(
+                    "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
             }
             var flags = DefaultFlags;
             return new Type1Message(flags, _credentials.GetDomain(), Type1Message.GetDefaultWorkstation());
@@ -118,16 +121,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <returns></returns>
         public Type3Message CreateType3(Type2Message type2) {
             if (_useSSO) {
-                var ntlmMessage = type2.ToByteArray();
-                var ret = _jniClient.InvokePrepareSSOSubmit(ntlmMessage);
-                var message = new Type3Message(ret);
-                var flags = type2.GetFlags();
-                if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != 0) {
-                    flags = AdjustFlags(flags);
-                    flags &= ~0x00020000;
-                }
-                message.SetFlags(flags);
-                return message;
+                // Unreachable — constructor already throws for _useSSO. Defensive guard.
+                throw new PlatformNotSupportedException(
+                    "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
             }
             else {
                 var flags = type2.GetFlags();
@@ -443,6 +439,5 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly bool _useNtlmV2;
         private readonly bool _useSSO;
         private static readonly Random kRandomGen = new Random();
-        private readonly SSPIJNIClient _jniClient;
     }
 }

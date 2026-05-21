@@ -3,6 +3,7 @@
     <Project Path="src/OpcClassic.Dcom/OpcClassic.Dcom.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />
   </Folder>
 </Solution>

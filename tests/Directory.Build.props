@@ -56,5 +56,15 @@
     </PackageReference>
   </ItemGroup>
 
+  <!--
+    Test-only analyzer relaxations: test methods often take parameters from
+    [Arguments] / [ClassDataSource] attributes where null-checking each one
+    is noise; XML doc comments on tests add no value; etc.
+  -->
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1062;CA1707;CA1812;CA1822;CA1031;CA2007;CS1591;IDE0290;IDE0010;IDE0058</NoWarn>
+  </PropertyGroup>
+
 </Project>
 

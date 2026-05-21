@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
-    using Org.BouncyCastle.Crypto;
+    using SharpInterop.Crypto;
     using Serilog;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Ntlmssp;
