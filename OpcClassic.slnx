@@ -4,8 +4,10 @@
     <Project Path="src/OpcClassic.Core/OpcClassic.Core.csproj" />
     <Project Path="src/OpcClassic.Da/OpcClassic.Da.csproj" />
     <Project Path="src/OpcClassic.Dcom/OpcClassic.Dcom.csproj" />
+    <Project Path="src/OpcClassic.Dx/OpcClassic.Dx.csproj" />
     <Project Path="src/OpcClassic.Generators/OpcClassic.Generators.csproj" />
     <Project Path="src/OpcClassic.Hda/OpcClassic.Hda.csproj" />
+    <Project Path="src/OpcClassic.Security/OpcClassic.Security.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OpcClassic.Ae.Tests/OpcClassic.Ae.Tests.csproj" />
@@ -13,7 +15,9 @@
     <Project Path="tests/OpcClassic.Da.Tests/OpcClassic.Da.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Dx.Tests/OpcClassic.Dx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Hda.Tests/OpcClassic.Hda.Tests.csproj" />
     <Project Path="tests/OpcClassic.PropertyTests/OpcClassic.PropertyTests.csproj" />
+    <Project Path="tests/OpcClassic.Security.Tests/OpcClassic.Security.Tests.csproj" />
   </Folder>
 </Solution>
