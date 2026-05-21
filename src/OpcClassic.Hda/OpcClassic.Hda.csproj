@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Historical Data Access (HDA 1.x) managed API + protocol shims.</Description>
+    <RootNamespace>OpcClassic.Hda</RootNamespace>
+    <AssemblyName>OpcClassic.Hda</AssemblyName>
+    <PackageId>OpcClassic.Hda</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>

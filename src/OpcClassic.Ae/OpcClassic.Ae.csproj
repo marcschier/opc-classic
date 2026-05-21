@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Alarms &amp; Events (AE 1.0 / 1.10) managed API + protocol shims.</Description>
+    <RootNamespace>OpcClassic.Ae</RootNamespace>
+    <AssemblyName>OpcClassic.Ae</AssemblyName>
+    <PackageId>OpcClassic.Ae</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>
