@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/OpcClassic.Ae/OpcClassic.Ae.csproj" />
     <Project Path="src/OpcClassic.Core/OpcClassic.Core.csproj" />
+    <Project Path="src/OpcClassic.Cpx/OpcClassic.Cpx.csproj" />
     <Project Path="src/OpcClassic.Da/OpcClassic.Da.csproj" />
     <Project Path="src/OpcClassic.Dcom/OpcClassic.Dcom.csproj" />
     <Project Path="src/OpcClassic.Dx/OpcClassic.Dx.csproj" />
@@ -12,6 +13,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/OpcClassic.Ae.Tests/OpcClassic.Ae.Tests.csproj" />
     <Project Path="tests/OpcClassic.Core.Tests/OpcClassic.Core.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Cpx.Tests/OpcClassic.Cpx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Da.Tests/OpcClassic.Da.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />

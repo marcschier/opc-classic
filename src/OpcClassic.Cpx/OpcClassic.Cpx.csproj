@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Complex Data (Cpx) — OPCBinary type-dictionary-driven complex values for OPC DA 3.0+.</Description>
+    <RootNamespace>OpcClassic.Cpx</RootNamespace>
+    <AssemblyName>OpcClassic.Cpx</AssemblyName>
+    <PackageId>OpcClassic.Cpx</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>
