@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for OpcClassic.Core (FileTimeHelper, OpcResultId, OpcException).</Description>
+    <RootNamespace>OpcClassic.Tests</RootNamespace>
+    <AssemblyName>OpcClassic.Core.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Cross-spec primitives for OPC Classic: GUID tables, ResultID/HRESULT wrappers, FILETIME helpers, exception hierarchy, URL parsing, NDR struct helpers. Foundational layer above OpcClassic.Dcom.</Description>
+    <RootNamespace>OpcClassic</RootNamespace>
+    <AssemblyName>OpcClassic.Core</AssemblyName>
+    <PackageId>OpcClassic.Core</PackageId>
+  </PropertyGroup>
+
+</Project>

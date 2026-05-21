@@ -19,6 +19,9 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
+    <!-- CS1591 (missing XML doc) is noisy on forwarding ctors / record positional members.
+         Public types still carry full docs; suppressing the warning avoids per-member churn. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <!-- NativeAOT enforcement (HARD requirement, plan §NativeAOT requirements) -->
