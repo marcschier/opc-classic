@@ -4,6 +4,7 @@
     <Project Path="src/OpcClassic.Core/OpcClassic.Core.csproj" />
     <Project Path="src/OpcClassic.Da/OpcClassic.Da.csproj" />
     <Project Path="src/OpcClassic.Dcom/OpcClassic.Dcom.csproj" />
+    <Project Path="src/OpcClassic.Generators/OpcClassic.Generators.csproj" />
     <Project Path="src/OpcClassic.Hda/OpcClassic.Hda.csproj" />
   </Folder>
   <Folder Name="/tests/">
