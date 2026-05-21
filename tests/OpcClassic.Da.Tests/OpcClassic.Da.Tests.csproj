@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for OpcClassic.Da managed types.</Description>
+    <RootNamespace>OpcClassic.Da.Tests</RootNamespace>
+    <AssemblyName>OpcClassic.Da.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Da\OpcClassic.Da.csproj" />
+  </ItemGroup>
+
+</Project>
