@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/OpcClassic.Ae/OpcClassic.Ae.csproj" />
+    <Project Path="src/OpcClassic.Batch/OpcClassic.Batch.csproj" />
+    <Project Path="src/OpcClassic.Commands/OpcClassic.Commands.csproj" />
     <Project Path="src/OpcClassic.Core/OpcClassic.Core.csproj" />
     <Project Path="src/OpcClassic.Cpx/OpcClassic.Cpx.csproj" />
     <Project Path="src/OpcClassic.Da/OpcClassic.Da.csproj" />
@@ -12,6 +14,8 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OpcClassic.Ae.Tests/OpcClassic.Ae.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Batch.Tests/OpcClassic.Batch.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Commands.Tests/OpcClassic.Commands.Tests.csproj" />
     <Project Path="tests/OpcClassic.Core.Tests/OpcClassic.Core.Tests.csproj" />
     <Project Path="tests/OpcClassic.Cpx.Tests/OpcClassic.Cpx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Da.Tests/OpcClassic.Da.Tests.csproj" />

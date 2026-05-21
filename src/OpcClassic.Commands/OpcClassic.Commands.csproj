@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Commands (1.0) managed types and DCOM-projection interfaces. Bootstrap — managed type vocabulary will be designed from the spec in a later phase (no DotNet/Rcw/Commands.cs equivalent existed prior to this rewrite).</Description>
+    <RootNamespace>OpcClassic.Commands</RootNamespace>
+    <AssemblyName>OpcClassic.Commands</AssemblyName>
+    <PackageId>OpcClassic.Commands</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>
