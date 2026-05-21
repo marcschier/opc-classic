@@ -102,6 +102,32 @@ public readonly record struct OpcResultId(int Code, string? Description)
     /// <summary><c>OPC_E_NOTFOUND</c> (0xC0040011) — server cannot find the public group.</summary>
     public static OpcResultId NotFound { get; } = new(unchecked((int)0xC0040011u), "OPC_E_NOTFOUND");
 
+    // --- OPC DA 3.0 result codes (FACILITY_OPC) ---
+
+    /// <summary><c>OPC_E_INVALID_PID</c> (0xC0040203) — property ID is invalid for the item.</summary>
+    public static OpcResultId InvalidPid { get; } = new(unchecked((int)0xC0040203u), "OPC_E_INVALID_PID");
+
+    /// <summary><c>OPC_E_DEADBANDNOTSET</c> (0xC0040400) — no deadband has been set for the group.</summary>
+    public static OpcResultId DeadbandNotSet { get; } = new(unchecked((int)0xC0040400u), "OPC_E_DEADBANDNOTSET");
+
+    /// <summary><c>OPC_E_DEADBANDNOTSUPPORTED</c> (0xC0040401) — item does not support deadband.</summary>
+    public static OpcResultId DeadbandNotSupported { get; } = new(unchecked((int)0xC0040401u), "OPC_E_DEADBANDNOTSUPPORTED");
+
+    /// <summary><c>OPC_E_NOBUFFERING</c> (0xC0040402) — buffering is not supported by this group.</summary>
+    public static OpcResultId NoBuffering { get; } = new(unchecked((int)0xC0040402u), "OPC_E_NOBUFFERING");
+
+    /// <summary><c>OPC_E_INVALIDCONTINUATIONPOINT</c> (0xC0040403) — browse continuation point is invalid.</summary>
+    public static OpcResultId InvalidContinuationPoint { get; } = new(unchecked((int)0xC0040403u), "OPC_E_INVALIDCONTINUATIONPOINT");
+
+    /// <summary><c>OPC_S_DATAQUEUEOVERFLOW</c> (0x00040404) — server's data buffer overflowed (warning).</summary>
+    public static OpcResultId DataQueueOverflow { get; } = new(0x00040404, "OPC_S_DATAQUEUEOVERFLOW");
+
+    /// <summary><c>OPC_E_RATENOTSET</c> (0xC0040405) — no sampling rate has been set for the item.</summary>
+    public static OpcResultId RateNotSet { get; } = new(unchecked((int)0xC0040405u), "OPC_E_RATENOTSET");
+
+    /// <summary><c>OPC_E_NOTSUPPORTED</c> (0xC0040406) — operation not supported by this server.</summary>
+    public static OpcResultId NotSupported { get; } = new(unchecked((int)0xC0040406u), "OPC_E_NOTSUPPORTED");
+
     public override string ToString()
     {
         var hex = $"0x{Code:X8}";
