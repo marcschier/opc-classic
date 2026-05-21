@@ -6,6 +6,12 @@
     heavy testing infrastructure (Verify snapshot diffs, CsCheck shrinking, etc.)
     without affecting the AOT-cleanliness of the libraries they test.
 
+    Test projects opt in by default (IsTestProject=true) and get TUnit on
+    Microsoft.Testing.Platform plus coverlet. Transitional / legacy projects
+    can opt out with <IsTestProject>false</IsTestProject> in their csproj —
+    that suppresses both the framework PackageReferences and the OutputType=Exe
+    runner configuration.
+
     The libraries under test are still subject to the strict src/Directory.Build.props
     constraints, so violations in the LIBRARIES will fail the build even if the
     TESTS exercise them via reflection.
@@ -21,12 +27,9 @@
 
     <IsPackable>false</IsPackable>
     <IsPublishable>false</IsPublishable>
-    <IsTestProject>true</IsTestProject>
 
-    <!-- Microsoft.Testing.Platform (MTP) — not VSTest. TUnit is MTP-native. -->
-    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
-    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
-    <OutputType>Exe</OutputType>
+    <!-- Default: opt-in to TUnit test runner. Override with <IsTestProject>false</IsTestProject>. -->
+    <IsTestProject Condition="'$(IsTestProject)' == ''">true</IsTestProject>
 
     <!-- Test projects intentionally not AOT-strict (libs_only scope). -->
     <IsAotCompatible>false</IsAotCompatible>
@@ -35,11 +38,18 @@
     <EnableAotAnalyzer>false</EnableAotAnalyzer>
   </PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
+    <!-- Microsoft.Testing.Platform (MTP) — not VSTest. TUnit is MTP-native. -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <!-- TUnit (source-generated test discovery, AOT-friendly) + its built-in assertions library -->
     <PackageReference Include="TUnit" />
 
-    <!-- Coverage collection for `dotnet test --collect "XPlat Code Coverage"` -->
+    <!-- Coverage collection for `dotnet test` with the XPlat Code Coverage collector -->
     <PackageReference Include="coverlet.collector">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -47,3 +57,4 @@
   </ItemGroup>
 
 </Project>
+

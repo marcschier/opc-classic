@@ -43,4 +43,19 @@
     <PackageVersion Include="Polly" Version="8.5.0" />
   </ItemGroup>
 
+  <!--
+    TRANSITIONAL — these dependencies live in src/OpcClassic.Dcom while the
+    legacy SharpInterop code is being modernized. Phase 2D replaces SharpCifs.Std
+    (with SMBLibrary or a hand-rolled SMB subset). Phase 2E hand-rolls MD4 + RC4
+    to eliminate the BouncyCastle dependency entirely. Phase 2G replaces Serilog
+    with Microsoft.Extensions.Logging abstractions. Once each is removed in the
+    code, delete the matching PackageVersion entry below.
+  -->
+  <ItemGroup Label="TRANSITIONAL — removed by Phase 2D / 2E / 2G">
+    <PackageVersion Include="Portable.BouncyCastle" Version="1.8.5" />
+    <PackageVersion Include="Serilog" Version="2.8.0" />
+    <PackageVersion Include="SharpCifs.Std" Version="0.2.13" />
+  </ItemGroup>
+
 </Project>
+
