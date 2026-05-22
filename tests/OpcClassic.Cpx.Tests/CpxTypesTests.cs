@@ -3,177 +3,188 @@
 // Copyright (c) 2026 OPC Classic .NET Contributors
 //
 
+using System;
 using System.Collections.Generic;
-using OpcClassic.Cpx;
+using OpcClassic.Cpx.Dcom;
+using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
 namespace OpcClassic.Cpx.Tests;
 
-public sealed class StructFieldTests
+public sealed class TypeDescriptionTests
 {
     [Test]
-    public async Task Defaults_RepeatsZeroAndNullableReferences()
+    public async Task ValueEquality_IncludesFieldSequence()
     {
-        var f = new StructField { Name = "X", Kind = TypeKind.Int32 };
-        await Assert.That(f.Repeats).IsEqualTo(0);
-        await Assert.That(f.TypeReference).IsNull();
-        await Assert.That(f.CountFieldName).IsNull();
-        await Assert.That(f.ByteOrder).IsNull();
+        var first = new TypeDescription(
+            "MotorStatus",
+            "ns=vendor;MotorStatus",
+            TypeKind.StructReference,
+            isComplex: true,
+            new[]
+            {
+                new TypeField("Running", TypeKind.Boolean),
+                new TypeField("Speed", TypeKind.Double),
+            });
+
+        var second = new TypeDescription(
+            "MotorStatus",
+            "ns=vendor;MotorStatus",
+            TypeKind.StructReference,
+            isComplex: true,
+            new[]
+            {
+                new TypeField("Running", TypeKind.Boolean),
+                new TypeField("Speed", TypeKind.Double),
+            });
+
+        await Assert.That(first).IsEqualTo(second);
+        await Assert.That(first.GetHashCode()).IsEqualTo(second.GetHashCode());
     }
 
     [Test]
-    public async Task StructReference_Kind_HasTypeReference()
+    public async Task Constructor_RejectsInvalidIdentityOrType()
     {
-        var f = new StructField
-        {
-            Name = "Nested",
-            Kind = TypeKind.StructReference,
-            TypeReference = "MyOtherStruct",
-        };
-        await Assert.That(f.Kind).IsEqualTo(TypeKind.StructReference);
-        await Assert.That(f.TypeReference).IsEqualTo("MyOtherStruct");
+        await Assert.That(() => { _ = new TypeDescription("", "id", TypeKind.Int32, isComplex: false); })
+            .Throws<ArgumentException>();
+
+        await Assert.That(() => { _ = new TypeDescription("Name", "", TypeKind.Int32, isComplex: false); })
+            .Throws<ArgumentException>();
+
+        var unknownKind = TypeKind.Unknown;
+        await Assert.That(() => { _ = new TypeDescription("Name", "id", unknownKind, isComplex: false); })
+            .Throws<ArgumentOutOfRangeException>();
     }
 
     [Test]
-    public async Task DynamicArray_HasCountFieldName()
+    public async Task TypeField_NormalizesOptionalStrings_AndRejectsNegativeCounts()
     {
-        var f = new StructField
-        {
-            Name = "Data",
-            Kind = TypeKind.UInt8,
-            Repeats = -1,
-            CountFieldName = "DataLength",
-        };
-        await Assert.That(f.Repeats).IsLessThan(0);
-        await Assert.That(f.CountFieldName).IsEqualTo("DataLength");
+        var field = new TypeField("Nested", TypeKind.StructReference, "  ", ElementCountFieldName: "Count");
+
+        await Assert.That(field.TypeId).IsNull();
+        await Assert.That(field.ElementCountFieldName).IsEqualTo("Count");
+
+        await Assert.That(() => { _ = new TypeField("Bad", TypeKind.Int16, Length: -1); })
+            .Throws<ArgumentOutOfRangeException>();
     }
 }
 
-public sealed class StructTypeTests
+public sealed class InstanceDescriptionTests
 {
     [Test]
-    public async Task Defaults_LittleEndian_NotDefault_NoFields()
+    public async Task ValueEquality_IncludesFieldValuesRegardlessOfDictionaryOrder()
     {
-        var s = new StructType { Name = "S" };
-        await Assert.That(s.DefaultByteOrder).IsEqualTo(ByteOrder.LittleEndian);
-        await Assert.That(s.IsDefault).IsFalse();
-        await Assert.That(s.Fields.Count).IsEqualTo(0);
+        var first = new InstanceDescription(
+            "Channel1.Device1.Motor",
+            "MotorStatus",
+            isComplex: true,
+            new Dictionary<string, object?>
+            {
+                ["Running"] = true,
+                ["Speed"] = 1200.0,
+            },
+            dictionaryId: "MotorDictionary");
+
+        var second = new InstanceDescription(
+            "Channel1.Device1.Motor",
+            "MotorStatus",
+            isComplex: true,
+            new Dictionary<string, object?>
+            {
+                ["Speed"] = 1200.0,
+                ["Running"] = true,
+            },
+            dictionaryId: "MotorDictionary");
+
+        var retrieved = first.TryGet<double>("Speed", out var speed);
+
+        await Assert.That(first).IsEqualTo(second);
+        await Assert.That(first.GetHashCode()).IsEqualTo(second.GetHashCode());
+        await Assert.That(retrieved).IsTrue();
+        await Assert.That(speed).IsEqualTo(1200.0);
     }
 
     [Test]
-    public async Task WithFields_PreservesOrder()
+    public async Task Constructor_RejectsInvalidIdentifiers()
     {
-        var s = new StructType
-        {
-            Name = "Triple",
-            Fields = new[]
-            {
-                new StructField { Name = "a", Kind = TypeKind.Int32 },
-                new StructField { Name = "b", Kind = TypeKind.Single },
-                new StructField { Name = "c", Kind = TypeKind.String },
-            },
-        };
-        await Assert.That(s.Fields.Count).IsEqualTo(3);
-        await Assert.That(s.Fields[0].Name).IsEqualTo("a");
-        await Assert.That(s.Fields[2].Name).IsEqualTo("c");
+        await Assert.That(() => { _ = new InstanceDescription("", "Type", isComplex: true); })
+            .Throws<ArgumentException>();
+
+        await Assert.That(() => { _ = new InstanceDescription("Item", "", isComplex: true); })
+            .Throws<ArgumentException>();
+
+        await Assert.That(() => { _ = new InstanceDescription("Item", "Type", isComplex: true, typeSystemId: ""); })
+            .Throws<ArgumentException>();
     }
 }
 
 public sealed class TypeDictionaryTests
 {
     [Test]
-    public async Task FromTypes_LookupSucceeds()
+    public async Task FromTypes_LookupByNameAndTypeIdSucceeds()
     {
-        var sA = new StructType { Name = "A" };
-        var sB = new StructType { Name = "B", IsDefault = true };
-        var dict = TypeDictionary.FromTypes(sA, sB);
+        var simple = new TypeDescription("Temperature", "TemperatureType", TypeKind.Double, isComplex: false);
+        var complex = new TypeDescription(
+            "MotorStatus",
+            "MotorStatusType",
+            TypeKind.StructReference,
+            isComplex: true,
+            new[] { new TypeField("Running", TypeKind.Boolean) });
 
-        await Assert.That(dict.TryGet("A")).IsEqualTo(sA);
-        await Assert.That(dict.TryGet("B")).IsEqualTo(sB);
-        await Assert.That(dict.TryGet("missing")).IsNull();
+        var dict = new TypeDictionary("PlantTypes", new[] { simple, complex }, defaultBigEndian: false);
+
+        await Assert.That(dict.Name).IsEqualTo("PlantTypes");
+        await Assert.That(dict.DefaultBigEndian).IsFalse();
+        await Assert.That(dict.TryGet("Temperature")).IsEqualTo(simple);
+        await Assert.That(dict.TryGetByTypeId("MotorStatusType")).IsEqualTo(complex);
+        await Assert.That(dict.TryGet("Missing")).IsNull();
     }
 
     [Test]
-    public async Task Default_ReturnsTheTypeMarkedDefault()
+    public async Task Lookup_IsCaseSensitive()
     {
-        var sA = new StructType { Name = "A" };
-        var sB = new StructType { Name = "B", IsDefault = true };
-        var dict = TypeDictionary.FromTypes(sA, sB);
-        await Assert.That(dict.Default).IsEqualTo(sB);
-    }
+        var dict = TypeDictionary.FromTypes(new TypeDescription("Capital", "CapitalType", TypeKind.String, isComplex: false));
 
-    [Test]
-    public async Task Default_Null_WhenNoTypeIsDefault()
-    {
-        var dict = TypeDictionary.FromTypes(new StructType { Name = "X" });
-        await Assert.That(dict.Default).IsNull();
-    }
-
-    [Test]
-    public async Task Contains_IsCaseSensitive()
-    {
-        var dict = TypeDictionary.FromTypes(new StructType { Name = "Capital" });
         await Assert.That(dict.Contains("Capital")).IsTrue();
         await Assert.That(dict.Contains("capital")).IsFalse();
     }
+
+    [Test]
+    public async Task Constructor_RejectsDuplicateNamesAndTypeIds()
+    {
+        var duplicateNameA = new TypeDescription("Same", "A", TypeKind.Int16, isComplex: false);
+        var duplicateNameB = new TypeDescription("Same", "B", TypeKind.Int32, isComplex: false);
+        var duplicateIdA = new TypeDescription("A", "SameId", TypeKind.Int16, isComplex: false);
+        var duplicateIdB = new TypeDescription("B", "SameId", TypeKind.Int32, isComplex: false);
+
+        await Assert.That(() => { _ = TypeDictionary.FromTypes(duplicateNameA, duplicateNameB); })
+            .Throws<ArgumentException>();
+
+        await Assert.That(() => { _ = TypeDictionary.FromTypes(duplicateIdA, duplicateIdB); })
+            .Throws<ArgumentException>();
+    }
 }
 
-public sealed class ComplexValueTests
+public sealed class DcomInterfaceIdTests
 {
     [Test]
-    public async Task Indexer_RetrievesFieldByName()
+    public async Task IOPCComplexDataItem_InterfaceId_MatchesSpec()
     {
-        var t = new StructType { Name = "T" };
-        var cv = new ComplexValue
-        {
-            Type = t,
-            Fields = new Dictionary<string, object?>
-            {
-                ["age"] = 42,
-                ["name"] = "alice",
-            },
-        };
-        await Assert.That(cv["age"]).IsEqualTo(42);
-        await Assert.That(cv["name"]).IsEqualTo("alice");
+        var expected = new Guid("7ECE6649-2C1E-494A-BB99-22D36FB3B0C3");
+        await Assert.That(IOPCComplexDataItem.InterfaceId).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task TryGet_TypedRetrieval_Succeeds()
+    public async Task IOPCComplexDataItem2_InterfaceId_MatchesSpec()
     {
-        var t = new StructType { Name = "T" };
-        var cv = new ComplexValue
-        {
-            Type = t,
-            Fields = new Dictionary<string, object?> { ["x"] = 3.14 },
-        };
-        var ok = cv.TryGet<double>("x", out var d);
-        await Assert.That(ok).IsTrue();
-        await Assert.That(d).IsEqualTo(3.14);
+        var expected = new Guid("44F68398-60AF-4F02-9442-172D058CB16F");
+        await Assert.That(IOPCComplexDataItem2.InterfaceId).IsEqualTo(expected);
     }
 
     [Test]
-    public async Task TryGet_WrongType_ReturnsFalse()
+    public async Task IOPCTypeLibrary_InterfaceId_MatchesSpec()
     {
-        var t = new StructType { Name = "T" };
-        var cv = new ComplexValue
-        {
-            Type = t,
-            Fields = new Dictionary<string, object?> { ["x"] = 42 },
-        };
-        var ok = cv.TryGet<string>("x", out _);
-        await Assert.That(ok).IsFalse();
-    }
-
-    [Test]
-    public async Task TryGet_MissingField_ReturnsFalse()
-    {
-        var t = new StructType { Name = "T" };
-        var cv = new ComplexValue
-        {
-            Type = t,
-            Fields = new Dictionary<string, object?>(),
-        };
-        var ok = cv.TryGet<int>("doesnotexist", out _);
-        await Assert.That(ok).IsFalse();
+        var expected = new Guid("B8C1B2C6-ACB7-4B7B-87B5-6EAC2CF63C31");
+        await Assert.That(IOPCTypeLibrary.InterfaceId).IsEqualTo(expected);
     }
 }
