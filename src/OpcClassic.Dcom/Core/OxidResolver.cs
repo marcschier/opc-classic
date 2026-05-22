@@ -15,8 +15,19 @@ namespace SharpInterop.Core {
     using System.Collections.Generic;
 
     /// <summary>
-    /// Partially implements IOxidResolver interface, used only for ResolveOxid calls.
+    /// Partially implements IOxIDResolver client calls, used only for ResolveOxid.
     /// </summary>
+    // Phase 4E audit (date: 2026-05-22):
+    //   - Authentication: this client-side NdrOp does not accept incoming Ping/PingObject calls; the server-side
+    //     handlers live in ComOxidRuntimeHelper.OxidResolverImpl and are exposed through the unauthenticated
+    //     ComRuntimeConnectionContext path by default.
+    //   - Signing: this NdrOp inherits signing/sealing from the bound RPC connection; the server-side resolver
+    //     default path does not require an NTLM security context, so incoming pings are not guaranteed signed.
+    //   - DoS posture: no rate-limiting/throttling is visible for server-side SimplePing/ComplexPing, and those
+    //     calls mutate ping-set state, so unauthenticated ping floods can amplify CPU/memory work.
+    //   - Recommendations: require authenticated RPC context before mutating ping sets, enforce negotiated
+    //     integrity/privacy where present, and add per-peer rate limits/back-pressure.
+    // TODO(p4e-security): Harden server-side SimplePing/ComplexPing before they mutate ping-set state.
     internal sealed class OxidResolver : NdrOp {
 
         /// <summary>
