@@ -26,6 +26,7 @@ public static class OpcDaHostingServiceCollectionExtensions
 
         services.Configure(configureOptions);
         services.AddSingleton<IOpcDaServer, T>();
+        services.AddSingleton<IOpcDaDataChangePublisher, OpcDaDataChangePublisher>();
         services.AddSingleton<OpcClassic.Hosting.IOpcServerHost, OpcDaServerHost>();
         return services;
     }
