@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Container-backed cross-process integration tests and fixtures for OPC Classic.</Description>
+    <RootNamespace>OpcClassic.Integration.Tests</RootNamespace>
+    <AssemblyName>OpcClassic.Integration.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Testcontainers" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\_Fixtures\Testcontainers\KerberosKdcFixture.cs" Link="Fixtures\Testcontainers\KerberosKdcFixture.cs" />
+  </ItemGroup>
+
+</Project>

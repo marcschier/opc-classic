@@ -10,6 +10,10 @@
     <PackageVersion Include="TUnit.Assertions" Version="0.13.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Cross-process integration tests">
+    <PackageVersion Include="Testcontainers" Version="4.0.0" />
+  </ItemGroup>
+
   <ItemGroup Label="Coverage">
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="coverlet.msbuild" Version="6.0.4" />

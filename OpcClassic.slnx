@@ -8,6 +8,7 @@
     <Project Path="src/OpcClassic.Da/OpcClassic.Da.csproj" />
     <Project Path="src/OpcClassic.Dcom/OpcClassic.Dcom.csproj" />
     <Project Path="src/OpcClassic.Dcom.Kerberos/OpcClassic.Dcom.Kerberos.csproj" />
+    <Project Path="src/OpcClassic.Discovery/OpcClassic.Discovery.csproj" />
     <Project Path="src/OpcClassic.Dx/OpcClassic.Dx.csproj" />
     <Project Path="src/OpcClassic.Generators/OpcClassic.Generators.csproj" />
     <Project Path="src/OpcClassic.Hda/OpcClassic.Hda.csproj" />
@@ -23,8 +24,10 @@
     <Project Path="tests/OpcClassic.Da.Tests/OpcClassic.Da.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Kerberos.Tests/OpcClassic.Dcom.Kerberos.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Integration.Tests/OpcClassic.Integration.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Logging.Tests/OpcClassic.Dcom.Logging.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Discovery.Tests/OpcClassic.Discovery.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dx.Tests/OpcClassic.Dx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Generators.Tests/OpcClassic.Generators.Tests.csproj" />
     <Project Path="tests/OpcClassic.Hda.Tests/OpcClassic.Hda.Tests.csproj" />
