@@ -61,8 +61,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 case 3:
                     // server gets authenticate from client
                     _ntlm = new Type3Message(verifier.Body);
-                    var usentlmv2 = Convert.ToBoolean(_properties.GetProperty("rpc.ntlm.ntlm2"));
-                    if (usentlmv2) {
+                    if (UseNtlm2SessionSecurity()) {
                         _authentication.CreateSecurityWhenServer(_ntlm);
                         _security = _authentication.Security;
                     }
@@ -89,8 +88,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             else if (_ntlm is Type2Message type2) // client sends authenticate to server
 {
                 _ntlm = _authentication.CreateType3(type2);
-                var usentlmv2 = Convert.ToBoolean(_properties.GetProperty("rpc.ntlm.ntlm2"));
-                if (usentlmv2) {
+                if (UseNtlm2SessionSecurity()) {
                     _security = _authentication.Security;
                 }
             }
@@ -112,6 +110,11 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                         ProtectionLevel.PROTECTION_LEVEL_CONNECT;
             return new AuthenticationVerifier(NtlmAuthentication.AUTHENTICATIONSERVICENTLM,
                 protectionLevel, _contextId, _ntlm.ToByteArray());
+        }
+
+        private bool UseNtlm2SessionSecurity() {
+            var value = _properties.GetProperty("rpc.ntlm.ntlm2");
+            return value == null || Convert.ToBoolean(value);
         }
 
         private static int _contextSerial;

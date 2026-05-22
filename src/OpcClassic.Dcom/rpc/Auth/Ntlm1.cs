@@ -18,6 +18,10 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     /// <summary>
     /// Ntlm1 implementation
     /// </summary>
+    [System.Obsolete(
+        "NTLMv1 (Ntlm1) is cryptographically broken and disabled by default in Phase 3C. " +
+        "Use NtlmV2 (default). To re-enable NTLMv1 for compatibility with very old legacy " +
+        "servers, set OpcConnectData.AllowNtlmV1 = true or properties.SetProperty(\"rpc.ntlm.allowV1\", \"true\").")]
     public class Ntlm1 : NtlmFlags, ISecurity {
 
         private const int kNTLM1_VERIFIER_LENGTH = 16;

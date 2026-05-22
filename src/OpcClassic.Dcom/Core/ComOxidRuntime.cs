@@ -74,6 +74,9 @@ namespace SharpInterop.Core {
             // SessionSecurityEnabled still escalates to PRIVACY for full seal.
             var protectionLevel = ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
             properties.SetProperty("rpc.ntlm.sign", "true");
+            // Phase 3C: prefer NTLMv2 plus extended session security by default.
+            properties.SetProperty("rpc.ntlm.ntlmv2", "true");
+            properties.SetProperty("rpc.ntlm.ntlm2", "true");
 
             if (sessionSecurityEnabled) {
                 protectionLevel = ProtectionLevel.PROTECTION_LEVEL_PRIVACY;

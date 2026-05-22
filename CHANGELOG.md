@@ -49,6 +49,11 @@ The Unreleased section accumulates repository state until the first 1.0.0 releas
 ### Security
 
 - Phase 3B: DCOM activation path now defaults to `PROTECTION_LEVEL_INTEGRITY` per KB5004442. Set `OpcProtectionLevel.Connect` explicitly on `OpcConnectData` to opt back to the legacy level for unhardened servers.
+- Phase 3C: NTLMv2 + extended session security are now enabled by default
+  (`rpc.ntlm.ntlmv2=true`, `rpc.ntlm.ntlm2=true`). The legacy NTLMv1
+  `Ntlm1` class is marked `[Obsolete]` and is gated behind an explicit
+  `rpc.ntlm.allowV1=true` opt-in. Callers that need NTLMv1 for very
+  old servers must opt back in (not recommended).
 - NTLMv2 and Kerberos/SPNEGO hardening remains in active design and implementation across Phase 2 and Phase 3.
 - DCOM authentication behavior remains a security-sensitive review area until the authentication stack reaches its stable pre-1.0 baseline.
 - In-tree NTLMv2 behavior remains a target for responsible cryptanalysis reports.

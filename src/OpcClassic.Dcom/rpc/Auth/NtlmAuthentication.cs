@@ -33,6 +33,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <param name="properties"></param>
         public NtlmAuthentication(Properties properties) {
             _properties = properties;
+            _useNtlm2sessionsecurity = true;
+            _useNtlmV2 = true;
             string domain = null;
             string user = null;
             string password = null;
@@ -51,12 +53,18 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     }
                 }
 
-                _useNtlm2sessionsecurity = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.ntlm2"));
-                _useNtlmV2 = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.ntlmv2"));
+                _useNtlm2sessionsecurity = GetBooleanProperty(properties, "rpc.ntlm.ntlm2", true);
+                _useNtlmV2 = GetBooleanProperty(properties, "rpc.ntlm.ntlmv2", true);
+                _allowNtlmV1 = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.allowV1"));
                 _useSSO = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.sso"));
                 domain = (string)properties.GetProperty("rpc.ntlm.domain");
                 user = (string)properties.GetProperty(SharpInterop.Rpc.Security.USERNAME);
                 password = (string)properties.GetProperty(SharpInterop.Rpc.Security.PASSWORD);
+            }
+
+            if (!_useNtlmV2 && !_allowNtlmV1) {
+                throw new NotSupportedException(
+                    "NTLMv1 is disabled by default; set rpc.ntlm.allowV1=true to re-enable (not recommended).");
             }
 
             if (_useSSO) {
@@ -232,7 +240,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                         // now RC4 encrypt a random 16 byte key
                         var secondayMasterKey = ntlmKeyFactory.SecondarySessionKey;
                         type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(secondayMasterKey, userSessionKey));
+#pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
                         Security = new Ntlm1(flags, secondayMasterKey, false);
+#pragma warning restore CS0618
                     }
                     catch (Exception e) {
                         throw new Exception("Exception occured while forming Session Security for Type3Response", e);
@@ -412,7 +422,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 // now RC4 decrypt the session key
                 secondayMasterKey = ntlmKeyFactory
                     .DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
+#pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
                 Security = new Ntlm1(flags, secondayMasterKey, true);
+#pragma warning restore CS0618
             }
             catch (Exception e) {
                 throw new Exception("Exception occured while forming Session Security Type3Response", e);
@@ -424,6 +436,12 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
             NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
             (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : 0);
+
+        private static bool GetBooleanProperty(Properties properties, string name, bool defaultValue) {
+            var value = properties.GetProperty(name);
+            return value == null ? defaultValue : Convert.ToBoolean(value);
+        }
+
         private readonly NtlmPasswordAuthentication _credentials;
         //  private AuthenticationSource _authenticationSource;
 #pragma warning disable IDE0052 // Remove unread private members
@@ -437,6 +455,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly int _keyLength = 128;
         private readonly bool _useNtlm2sessionsecurity;
         private readonly bool _useNtlmV2;
+        private readonly bool _allowNtlmV1;
         private readonly bool _useSSO;
         private static readonly Random kRandomGen = new Random();
     }

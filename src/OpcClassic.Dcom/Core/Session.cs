@@ -640,7 +640,7 @@ namespace SharpInterop.Core {
         public void UseSessionSecurity(bool enable) => _useSessionSecurity = enable;
 
         /// <summary>
-        /// <para> Sets the use of NTLMv2 Security (default is NTLM1). This
+        /// <para> Sets the use of NTLMv2 Security (default is NTLMv2). This
         /// can be used in combination with <code>useSessionSecurity</code> method.
         /// Once the <code><see cref="ComServer"/></code> is bound to this session
         /// (using any of the <code><see cref="ComServer"/></code> constructors)
@@ -1092,7 +1092,7 @@ namespace SharpInterop.Core {
         private string _targetServer;
         private ComServer _stub;
         private bool _useSessionSecurity;
-        private bool _useNTLMv2;
+        private bool _useNTLMv2 = true;
         private readonly List<string> _listOfDeferencedIpids = new List<string>();
         private readonly List<Session> _links = new List<Session>();
         private readonly Dictionary<string, IUnreferenced> _mapOfUnreferencedHandlers = 
