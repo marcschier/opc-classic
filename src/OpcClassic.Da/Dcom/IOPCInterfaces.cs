@@ -15,7 +15,7 @@
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCServer not IOpcServer)
-#pragma warning disable MA0048 // 12 trivial 4-line interface stubs are clearer grouped than fragmented across files
+#pragma warning disable MA0048 // 14 trivial 4-line interface stubs are clearer grouped than fragmented across files
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -142,7 +142,19 @@ public partial interface IOPCAsyncIO2
 {
 }
 
-/// <summary><c>IOPCDataCallback</c> — DA subscription callback sink (IID_IOPCDataCallback).</summary>
+/// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
+[OpcInterface("B196B284-BAB4-101A-B69C-00AA00341D07")]
+public partial interface IConnectionPointContainer
+{
+}
+
+/// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
+[OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
+public partial interface IConnectionPoint
+{
+}
+
+/// <summary><c>IOPCDataCallback</c> — server -&gt; client OnDataChange/OnReadComplete/OnWriteComplete/OnCancelComplete (IID_IOPCDataCallback).</summary>
 [OpcInterface("39C13A70-011E-11D0-9675-0020AFD8ADB3")]
 public partial interface IOPCDataCallback
 {
