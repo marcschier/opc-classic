@@ -32,11 +32,11 @@ public sealed class HostingExtensionsTests
     }
 
     [Test]
-    public async Task AddOpcDaServer_registers_IOpcServerHost()
+    public async Task AddOpcAeServer_registers_IOpcServerHost()
     {
         var services = new ServiceCollection();
 
-        services.AddOpcDaServer<TestOpcServerHost>();
+        services.AddOpcAeServer<TestOpcServerHost>();
 
         var provider = new TestServiceProvider(services);
         var host = provider.GetRequiredService<IOpcServerHost>();
@@ -61,12 +61,12 @@ public sealed class HostingExtensionsTests
     }
 
     [Test]
-    public async Task AddOpcDaServer_can_be_called_multiple_times()
+    public async Task AddOpcAeServer_can_be_called_multiple_times()
     {
         var services = new ServiceCollection();
 
-        services.AddOpcDaServer<TestOpcServerHost>();
-        services.AddOpcDaServer<SecondTestOpcServerHost>();
+        services.AddOpcAeServer<TestOpcServerHost>();
+        services.AddOpcAeServer<SecondTestOpcServerHost>();
 
         var provider = new TestServiceProvider(services);
         var hosts = provider.GetRequiredService<IEnumerable<IOpcServerHost>>().ToArray();

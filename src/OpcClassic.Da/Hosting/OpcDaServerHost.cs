@@ -1,0 +1,74 @@
+//
+// SPDX-License-Identifier: EPL-1.0
+// Copyright (c) 2026 OPC Classic .NET Contributors
+//
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using OpcClassic.Hosting;
+
+namespace OpcClassic.Da.Hosting;
+
+/// <summary>
+/// DA-specific <see cref="IOpcServerHost"/> implementation for managed in-process servers.
+/// </summary>
+public sealed class OpcDaServerHost : IOpcServerHost
+{
+    private static readonly Action<ILogger, Guid, string, Exception?> StartingHost = LoggerMessage.Define<Guid, string>(
+        LogLevel.Information,
+        new EventId(1, nameof(StartingHost)),
+        "OpcDaServerHost starting: CLSID={Clsid}, ProgId={ProgId}");
+
+    private static readonly Action<ILogger, Guid, Exception?> StoppingHost = LoggerMessage.Define<Guid>(
+        LogLevel.Information,
+        new EventId(2, nameof(StoppingHost)),
+        "OpcDaServerHost stopping: CLSID={Clsid}");
+
+    private readonly IOpcDaServer _serverImpl;
+    private readonly OpcDaServerOptions _options;
+    private readonly ILogger<OpcDaServerHost> _logger;
+
+    /// <summary>Initializes a new instance of the <see cref="OpcDaServerHost"/> class.</summary>
+    public OpcDaServerHost(
+        IOpcDaServer serverImpl,
+        IOptions<OpcDaServerOptions> options,
+        ILogger<OpcDaServerHost> logger)
+    {
+        _serverImpl = serverImpl ?? throw new ArgumentNullException(nameof(serverImpl));
+        _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    /// <inheritdoc />
+    public string SpecName => "DA";
+
+    /// <inheritdoc />
+    public OpcClsidRegistration Registration => new(
+        Clsid: _options.Clsid,
+        ProgId: _options.ProgId,
+        AssemblyName: typeof(IOpcDaServer).Assembly.GetName().Name ?? "OpcClassic.Da",
+        TypeName: _serverImpl.GetType().FullName ?? "Unknown",
+        FriendlyName: _options.FriendlyName);
+
+    /// <inheritdoc />
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        StartingHost(_logger, _options.Clsid, _options.ProgId, null);
+        // SCAFFOLD: real impl starts:
+        //   1. ncacn_ip_tcp listener on _options.ListenAddress
+        //   2. LocalCoClass-backed activation route -> _serverImpl
+        //   3. CallChannel-driven dispatch table mapping (iid, opnum) -> _serverImpl.<Method>
+        // For now, this is a no-op signal that the host is wired correctly.
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        StoppingHost(_logger, _options.Clsid, null);
+        return Task.CompletedTask;
+    }
+}

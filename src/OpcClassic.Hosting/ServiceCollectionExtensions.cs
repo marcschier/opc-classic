@@ -42,19 +42,6 @@ public static class OpcClassicHostingServiceCollectionExtensions
         return services;
     }
 
-    /// <summary>
-    /// Registers a DA server-host implementation.
-    /// </summary>
-    public static IServiceCollection AddOpcDaServer<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
-        this IServiceCollection services)
-        where T : class, IOpcServerHost
-    {
-        ArgumentNullException.ThrowIfNull(services);
-        services.AddSingleton<IOpcServerHost, T>();
-        return services;
-    }
-
     /// <summary>Registers an AE server-host implementation.</summary>
     public static IServiceCollection AddOpcAeServer<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
