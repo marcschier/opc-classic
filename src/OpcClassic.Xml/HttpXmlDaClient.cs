@@ -110,6 +110,29 @@ public sealed class HttpXmlDaClient : IXmlDaClient
             cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc />
+    public async Task<XmlDaBrowseResponse> BrowseAsync(
+        XmlDaBrowseRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        byte[] requestBytes;
+        using (var ms = new MemoryStream(capacity: 256))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
+                BrowseSerializer.WriteRequest(w, request);
+            }
+            requestBytes = ms.ToArray();
+        }
+
+        return await PostAsync(requestBytes,
+            XmlDaConstants.SoapActionBrowse,
+            static r => BrowseSerializer.ReadResponse(r),
+            cancellationToken).ConfigureAwait(false);
+    }
+
     private async Task<T> PostAsync<T>(
         byte[] requestBytes,
         string soapAction,
