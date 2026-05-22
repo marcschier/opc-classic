@@ -62,3 +62,15 @@ These were discovered during the inventory and must be included before package r
 ## Risk and validation
 
 Each phase is intentionally a series of mechanical replacements. Build after every batch, keep the DCOM tests green, and avoid changing authentication or marshalling behavior while replacing types. The Crypto.Tests project added in Phase 2I is the safety net for MD4/RC4 and should be expanded with NTLM message vectors before Phase 2D.4. The DCOM legacy tests should continue to pass after every phase, and full `dotnet build OpcClassic.slnx` plus `dotnet test OpcClassic.slnx` gates Phase 2D.5.
+
+## Phase 2C — Async I/O end-to-end
+
+Phase 2C introduces the managed async transport surface in `OpcClassic.Transport` without rewiring the legacy SharpInterop call sites yet. `IAsyncTransport` exposes the ncacn_ip_tcp byte stream as `System.IO.Pipelines.PipeReader` and `PipeWriter`, `IAsyncTransportFactory.ConnectAsync` becomes the future connector entry point, and `IAsyncEndpoint.AcceptConnectionsAsync` models server-side accepts as an `IAsyncEnumerable<IAsyncTransport>` for hosted-service consumers.
+
+The rollout is intentionally staged:
+
+1. Keep `SharpInterop.Rpc.ITransport` and its synchronous `Send` / `Receive` callers stable while focused tests cover the new contracts and pipe-backed test double.
+2. Add a DCOM or transport package implementation that adapts TCP sockets to `IAsyncTransport`, including cancellation-aware reads, writes, flushes, and disposal.
+3. Move connection-oriented RPC framing to consume `PipeReader` / `PipeWriter` directly, then bridge or replace legacy `IEndpoint.Call` with async call flow and `ICallChannel` integration.
+4. Convert server socket-accept loops from dedicated threads to hosted services that iterate `await foreach` over `AcceptConnectionsAsync` and dispatch accepted transports through channel-style workers.
+5. Retire the legacy `SharpInterop.Rpc.ITransport` surface after all client activation, call, callback, and subscription paths use the async contracts. OPC DA subscriptions already expose pushed changes as `IAsyncEnumerable`, so the transport refactor can align connection handling with that consumer pattern.
