@@ -7,60 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-This project is pre-1.0 and has no released versions yet.
+(nothing new since 0.1.0-alpha.2)
 
-The Unreleased section accumulates repository state until the first 1.0.0 release line is cut.
+## [0.1.0-alpha.2] - 2026-05-22
 
 ### Added
 
-- Added 13+ OPC NDR spec struct codecs across the DA, AE, HDA, and Batch implementation workstreams.
-- Verified OPC NDR codec coverage currently lives under these source paths:
-  - `src\OpcClassic.Da\Ndr\`
-  - `src\OpcClassic.Ae\Ndr\`
-  - `src\OpcClassic.Hda\Ndr\`
-- Added DA NDR codecs for server status and item-related structures.
-- Added AE NDR codecs for event notification and event server status structures.
-- Added HDA NDR codecs for time, item, modified item, attribute, and annotation structures.
-- Added NDR primitive and compound marshalling coverage for:
-  - conformant arrays
-  - `VARIANT`
-  - `SAFEARRAY`
-  - `LPWSTR` and LPWSTR pointer forms
-  - `BSTR`
-  - `FILETIME`
-  - `Guid`
-- Added XML-DA support in `src\OpcClassic.Xml\` with 100% spec-complete coverage for the eight XML-DA operations.
-- Added `OpcInterfaceGenerator` in `src\OpcClassic.Generators\`.
-- Added generator output for `InterfaceId` metadata from `[OpcInterface]` declarations.
-- Added generator output for opnums from `[OpcMethod]` declarations.
-- Added source-generated interface metadata coverage for 38 partial interfaces migrated to the generator model.
-- Added 642+ tests across 13 test projects under `tests\`.
-- Added test coverage for protocol codecs, XML-DA, generator behavior, crypto, logging, and core compatibility paths.
-- Added repository governance documentation for security reporting, contribution workflow, and changelog maintenance.
+- Phase 4 + Phase 6 call-shim pipeline: OpcProxyGenerator emits real
+  `ICallChannel.InvokeAsync` bodies for `[OpcMethod]` methods on
+  decorated `[OpcInterface]` partials. First real application:
+  IOPCServer (Phase 6B template), IOPCGroupStateMgt + IOPCItemIO
+  (Phase 6C).
+- Codec registry covers 32+ types: primitives + OpcVariant + OpcSafeArray
+  + all 21 spec struct codecs.
+- OpcClassic.Hosting end-to-end: IClsidRegistry + IOpcServerHost +
+  Microsoft.Extensions.Hosting integration. AddOpcDaServer<T>(configure)
+  registers a DA server implementation.
+- OpcClassic.Discovery: LocalEnum (full impl), OpcEnum/RemoteRegistry
+  scaffolds, OpcDiscoveryFactory composite with CLSID dedup.
+- OpcClassic.Dcom.Kerberos: KerberosConnectionContext with real
+  Kerberos.NET 4.6.146 integration (AP-REQ/AP-REP). SPNEGO encoder
+  (RFC 4178). Channel binding (RFC 5056) helper.
+- Phase 14A Windows CI runner + Phase 14B/C/D conformance scaffolds.
+- IAsyncTransport scaffold (Phase 2C) — System.IO.Pipelines-backed
+  contract for the upcoming async I/O refactor.
 
 ### Changed
 
-- Replaced the Serilog static logging API in `src\OpcClassic.Dcom\` with a Microsoft.Extensions.Logging-based shim as part of Phase 2G.
-- Migrated 38 partial interfaces to use `OpcInterfaceGenerator` output for InterfaceId and method opnum metadata instead of hand-maintained declarations.
-- Continued tightening source-project quality gates around NativeAOT compatibility and analyzer enforcement.
-- Continued the shift from runtime reflection dispatch toward generated metadata and generated dispatch paths.
-- Documented that `OpcClassic.slnx` is the .NET 10 XML solution format used for build and test entry points.
-
-### Security
-
-- Phase 3B: DCOM activation path now defaults to `PROTECTION_LEVEL_INTEGRITY` per KB5004442. Set `OpcProtectionLevel.Connect` explicitly on `OpcConnectData` to opt back to the legacy level for unhardened servers.
-- Phase 3C: NTLMv2 + extended session security are now enabled by default
-  (`rpc.ntlm.ntlmv2=true`, `rpc.ntlm.ntlm2=true`). The legacy NTLMv1
-  `Ntlm1` class is marked `[Obsolete]` and is gated behind an explicit
-  `rpc.ntlm.allowV1=true` opt-in. Callers that need NTLMv1 for very
-  old servers must opt back in (not recommended).
-- NTLMv2 and Kerberos/SPNEGO hardening remains in active design and implementation across Phase 2 and Phase 3.
-- DCOM authentication behavior remains a security-sensitive review area until the authentication stack reaches its stable pre-1.0 baseline.
-- In-tree NTLMv2 behavior remains a target for responsible cryptanalysis reports.
-- In-tree RC4 and MD4 behavior in `src\OpcClassic.Dcom\Crypto\` remains a target for deterministic test-vector review.
+- DCOM defaults: PROTECTION_LEVEL_INTEGRITY + NTLMv2 + NTLM2 sessions
+  (Phase 3B + 3C).
+- NTLMv1 marked [Obsolete]; gated behind explicit `rpc.ntlm.allowV1=true`.
+- Phase 2I: NTLMv2 server-side key derivation per MS-NLMP §3.4.5
+  (verified against §4.2.4.1 spec test vectors).
 
 ### Removed
 
-- Removed the Serilog package dependency from the DCOM logging path.
-- Replaced that dependency with Microsoft.Extensions.Logging.Abstractions-based infrastructure.
-- No stable released versions have been removed because the project has not shipped 1.0.0.
+- Serilog package dependency (replaced by Microsoft.Extensions.Logging
+  via Phase 2G shim).
+- SharpCifs.Util.Sharpen.Properties usage replaced with managed
+  PropertyBag (Phase 2D.1; 2D.2-2D.5 queued).

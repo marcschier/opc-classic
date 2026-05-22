@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v0.1.0-alpha.1). Required when triggering manually.'
+        required: true
+        type: string
+
+permissions:
+  contents: write      # for creating the GitHub Release
+  packages: write      # for publishing to nuget.org (via NUGET_API_KEY secret)
+  id-token: write      # for SourceLink reproducible-build attestation
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Validate tag format
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta|rc)\.[0-9]+)?$ ]]; then
+            echo "::error::Tag '$TAG' must match v<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]"
+            exit 1
+          fi
+          # Strip leading "v" for the package version
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+
+      - name: Restore
+        run: dotnet restore OpcClassic.slnx
+
+      - name: Build
+        run: dotnet build OpcClassic.slnx --no-restore -c Release -p:Version=${{ env.VERSION }}
+
+      - name: Test
+        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+
+      - name: Pack
+        run: dotnet pack OpcClassic.slnx --no-build -c Release -p:Version=${{ env.VERSION }} -o ./.nupkg
+
+      - name: Push to nuget.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [ -z "$NUGET_API_KEY" ]; then
+            echo "::warning::NUGET_API_KEY not configured - skipping nuget.org push (artifacts uploaded for manual review)"
+          else
+            dotnet nuget push ./.nupkg/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          fi
+
+      - name: Upload packages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: opcclassic-${{ env.VERSION }}-nupkgs
+          path: ./.nupkg
+
+      - name: Extract changelog notes
+        id: changelog
+        shell: bash
+        run: |
+          # Extract the section for this version from CHANGELOG.md (Keep a Changelog format).
+          NOTES=$(awk -v ver="${{ env.VERSION }}" '
+            $0 ~ "^## \\[" ver "\\]" { sec=1; next }
+            /^## \[/{ if (sec) exit }
+            sec { print }
+          ' CHANGELOG.md)
+          if [ -z "$NOTES" ]; then
+            echo "::error::No CHANGELOG.md section found for ${{ env.VERSION }}"
+            exit 1
+          fi
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: 'OpcClassic ${{ env.VERSION }}'
+          body: |
+            ## What's new
+
+            ${{ steps.changelog.outputs.notes }}
+
+            ## Packages
+
+            All `OpcClassic.*` packages published at version `${{ env.VERSION }}` to nuget.org.
+
+            ## Status
+
+            Pre-1.0 alpha. See [Phase 14D compat matrix](docs/COMPAT_MATRIX_STATUS.md) for release-readiness.
+          files: ./.nupkg/*.nupkg
+          prerelease: ${{ contains(env.VERSION, '-') }}
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
