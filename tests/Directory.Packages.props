@@ -12,6 +12,7 @@
 
   <ItemGroup Label="Coverage">
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.msbuild" Version="6.0.4" />
   </ItemGroup>
 
   <ItemGroup Label="Property-based tests (CsCheck — framework-agnostic, no reflection generators)">

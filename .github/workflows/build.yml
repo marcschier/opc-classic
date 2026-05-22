@@ -36,23 +36,100 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        if: hashFiles('OpcClassic.sln') != ''
-        run: dotnet restore OpcClassic.sln
+        if: hashFiles('OpcClassic.slnx') != ''
+        run: dotnet restore OpcClassic.slnx
 
       - name: Build
-        if: hashFiles('OpcClassic.sln') != ''
-        run: dotnet build OpcClassic.sln --configuration ${{ matrix.configuration }} --no-restore
+        if: hashFiles('OpcClassic.slnx') != ''
+        run: dotnet build OpcClassic.slnx --configuration ${{ matrix.configuration }} --no-restore
 
-      - name: Test
-        if: hashFiles('OpcClassic.sln') != ''
-        run: dotnet test OpcClassic.sln --configuration ${{ matrix.configuration }} --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults
+      - name: Test with coverage
+        if: hashFiles('OpcClassic.slnx') != ''
+        shell: pwsh
+        run: |
+          $coverageRoot = Join-Path $PWD "coverage-results"
+          if (Test-Path $coverageRoot) {
+            Remove-Item -Recurse -Force $coverageRoot
+          }
+          New-Item -ItemType Directory -Path $coverageRoot -Force | Out-Null
+
+          $failed = $false
+          $projects = Get-ChildItem -Path "tests" -Filter "*.csproj" -Recurse | Sort-Object FullName
+          foreach ($project in $projects) {
+            $name = [IO.Path]::GetFileNameWithoutExtension($project.Name)
+            $projectResults = Join-Path $coverageRoot $name
+            New-Item -ItemType Directory -Path $projectResults -Force | Out-Null
+
+            Write-Host "Testing $name"
+            dotnet test $project.FullName --configuration ${{ matrix.configuration }} --no-build --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory $projectResults --logger "trx;LogFileName=$name.trx"
+            if ($LASTEXITCODE -ne 0) {
+              $failed = $true
+            }
+          }
+
+          if ($failed) {
+            exit 1
+          }
+
+      - name: Install ReportGenerator
+        if: hashFiles('OpcClassic.slnx') != ''
+        shell: pwsh
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          if ($LASTEXITCODE -ne 0) {
+            dotnet tool update -g dotnet-reportgenerator-globaltool
+          }
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
+          $toolPath = Join-Path (Join-Path $HOME ".dotnet") "tools"
+          $toolPath | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Generate coverage report
+        if: hashFiles('OpcClassic.slnx') != ''
+        shell: pwsh
+        run: |
+          reportgenerator `
+            -reports:./coverage-results/**/coverage.cobertura.xml `
+            -targetdir:./coverage-report `
+            -reporttypes:"Cobertura;TextSummary;MarkdownSummaryGithub" `
+            -assemblyfilters:"+*;-OpcClassic.Dcom*;-SharpInterop*;-OpcClassic.Generators*;-*Tests*" `
+            -classfilters:"+*;-*.Generated.*;-*Tests*" `
+            -filefilters:"-**/obj/**;-**/bin/**;-**/*.g.cs"
+
+      - name: Print coverage summary
+        if: always() && hashFiles('coverage-report/Summary.txt') != ''
+        shell: pwsh
+        run: Get-Content ./coverage-report/Summary.txt
+
+      - name: Append coverage to job summary
+        if: always() && hashFiles('coverage-report/SummaryGithub.md') != ''
+        shell: bash
+        run: cat ./coverage-report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Coverage gate (line >=70%, branch >=60%)
+        if: hashFiles('OpcClassic.slnx') != ''
+        shell: pwsh
+        run: |
+          [xml]$cov = Get-Content ./coverage-report/Cobertura.xml
+          $line = [double]$cov.coverage.'line-rate' * 100
+          $branch = [double]$cov.coverage.'branch-rate' * 100
+          Write-Host "Line coverage: $($line.ToString('F2'))%"
+          Write-Host "Branch coverage: $($branch.ToString('F2'))%"
+          $lineMin = 70.0
+          $branchMin = 60.0
+          if ($line -lt $lineMin) { Write-Error "Line coverage $line% is below threshold $lineMin%"; exit 1 }
+          if ($branch -lt $branchMin) { Write-Error "Branch coverage $branch% is below threshold $branchMin%"; exit 1 }
+          Write-Host "Coverage gate PASSED"
 
       - name: Upload coverage
-        if: always() && hashFiles('TestResults/**/coverage.cobertura.xml') != ''
+        if: always() && hashFiles('coverage-results/**/coverage.cobertura.xml') != ''
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.os }}-${{ matrix.configuration }}
-          path: TestResults/**/coverage.cobertura.xml
+          path: |
+            coverage-results/**/coverage.cobertura.xml
+            coverage-report/**
 
   format:
     name: dotnet-format
@@ -63,8 +140,8 @@ jobs:
         with:
           global-json-file: global.json
       - name: dotnet format --verify-no-changes
-        if: hashFiles('OpcClassic.sln') != ''
-        run: dotnet format OpcClassic.sln --verify-no-changes --severity error
+        if: hashFiles('OpcClassic.slnx') != ''
+        run: dotnet format OpcClassic.slnx --verify-no-changes --severity error
 
   aot-canary:
     name: aot-canary-${{ matrix.os }}

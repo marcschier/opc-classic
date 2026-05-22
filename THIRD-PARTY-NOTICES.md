@@ -64,7 +64,7 @@ The licenses governing the use of these components are included below.
 - Used in: test projects through tests/Directory.Build.props
 - Version: TUnit 0.13.0; TUnit.Assertions 0.13.0; TUnit.Engine transitive via TUnit
 
-### coverlet.collector
+### coverlet.collector / coverlet.msbuild
 - Source: https://github.com/coverlet-coverage/coverlet
 - License: MIT
 - Used in: test projects through tests/Directory.Build.props

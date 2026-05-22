@@ -82,6 +82,23 @@ await Assert.That(itemId).IsEqualTo(expectedItemId);
 
 Keep tests deterministic. When a vulnerability report includes vectors, add them under the relevant test project in `tests\`.
 
+## Coverage
+
+CI gates code coverage at **70% line / 60% branch** (initial thresholds; targeting 80%/70% by 1.0). Transitional code in `src\OpcClassic.Dcom\*` and source generators (`src\OpcClassic.Generators\`) are excluded from gating.
+
+Run coverage locally for a targeted project:
+
+```powershell
+dotnet test tests\OpcClassic.Core.Tests\OpcClassic.Core.Tests.csproj --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory .\coverage-results\OpcClassic.Core.Tests
+```
+
+Generate a human-readable report:
+
+```powershell
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:.\coverage-results\**\coverage.cobertura.xml -targetdir:.\coverage-report -reporttypes:Html
+```
+
 ## Build Quality Gates
 
 Source projects must maintain zero build errors and zero build warnings. `src\Directory.Build.props` sets `TreatWarningsAsErrors=true`, enables latest recommended analysis, and marks source projects as NativeAOT-compatible.

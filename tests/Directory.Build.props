@@ -54,7 +54,26 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+
+    <!-- MSBuild-integrated coverage collection for Microsoft.Testing.Platform/TUnit projects. -->
+    <PackageReference Include="coverlet.msbuild">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true' and '$(VSTestCollect)' == 'XPlat Code Coverage'">
+    <!-- Bridge VSTest-style coverage collection to coverlet.msbuild for Microsoft.Testing.Platform/TUnit projects. -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput Condition="'$(CoverletOutput)' == '' and '$(VSTestResultsDirectory)' != ''">$(VSTestResultsDirectory)\</CoverletOutput>
+    <Exclude>[*]OpcClassic.Dcom.*,[*]SharpInterop.*,[OpcClassic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
+    <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <ExcludeByFile>**/obj/**,**/bin/**,**/*.g.cs</ExcludeByFile>
+    <IncludeTestAssembly>false</IncludeTestAssembly>
+    <DeterministicReport>true</DeterministicReport>
+    <UseSourceLink>true</UseSourceLink>
+  </PropertyGroup>
 
   <!--
     Test-only analyzer relaxations: test methods often take parameters from
