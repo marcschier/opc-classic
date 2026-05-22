@@ -10,6 +10,6 @@ public enum OverrideState
 {
     /// <summary>The override mechanism is disabled — last-good values flow through.</summary>
     Disabled = 0,
-    /// <summary>The configured <see cref="DxConnection.OverrideValue"/> is being substituted for live data.</summary>
+    /// <summary>The configured <see cref="DxConnection.DefaultOverrideValue"/> is being substituted for live data.</summary>
     Enabled = 1,
 }

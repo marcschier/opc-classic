@@ -29,12 +29,12 @@ public interface IDxServer : IAsyncDisposable
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>List source servers registered with this DX server.</summary>
-    Task<IReadOnlyList<SourceServer>> GetSourceServersAsync(
+    Task<IReadOnlyList<DxSourceServer>> GetSourceServersAsync(
         CancellationToken cancellationToken = default);
 
     /// <summary>Register or update a source server.</summary>
     Task<OpcResultId> AddOrUpdateSourceServerAsync(
-        SourceServer source,
+        DxSourceServer source,
         CancellationToken cancellationToken = default);
 
     /// <summary>Remove a source server (and all connections that referenced it).</summary>
