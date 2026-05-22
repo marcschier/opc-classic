@@ -24,7 +24,7 @@ namespace SharpInterop.Core {
     /// </summary>
     internal sealed class ComOxidStub : Stub {
 
-        private static readonly Properties kDefaults = new Properties();
+        private static readonly PropertyBag kDefaults = new PropertyBag();
 
         static ComOxidStub() {
 
@@ -50,7 +50,7 @@ namespace SharpInterop.Core {
         public ComOxidStub(string address, string domain, string username,
             string password, bool useNTLMv2, bool isSSO) {
             TransportFactory = ComTransportFactory.Instance;
-            Properties = new Properties(kDefaults);
+            Properties = new PropertyBag(kDefaults);
             if (isSSO) {
                 Properties.SetProperty("rpc.ntlm.sso", "true");
             }

@@ -40,7 +40,7 @@ namespace SharpInterop.Core {
     /// </summary>
     public sealed class ComServer : Stub {
 
-        private static readonly Properties kDefaults = new Properties();
+        private static readonly PropertyBag kDefaults = new PropertyBag();
         static ComServer() {
 
             kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
@@ -104,7 +104,7 @@ namespace SharpInterop.Core {
 
             TransportFactory = ComTransportFactory.Instance;
             // now read the session and prepare information for the stub.
-            Properties = new Properties(kDefaults);
+            Properties = new PropertyBag(kDefaults);
             Properties.SetProperty("rpc.security.username", session.UserName);
             Properties.SetProperty("rpc.security.password", session.Password);
             Properties.SetProperty("rpc.ntlm.domain", session.Domain);
@@ -388,7 +388,7 @@ namespace SharpInterop.Core {
         private void Initialise(Clsid clsid, string address, Session session) {
             TransportFactory = ComTransportFactory.Instance;
             // now read the session and prepare information for the stub.
-            Properties = new Properties(kDefaults);
+            Properties = new PropertyBag(kDefaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
             Address = address;
 

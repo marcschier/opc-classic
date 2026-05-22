@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Ncacn_Np {
-    using SharpCifs.Util.Sharpen;
+    using OpcClassic.Dcom.Internal;
 
     /// <summary>
     /// Transport factory
@@ -23,6 +23,6 @@ namespace SharpInterop.Rpc.Ncacn_Np {
         /// <exception cref="ProviderException"></exception>
         /// <returns></returns>
         public override ITransport CreateTransport(string address,
-            Properties properties) => new RpcTransport(address, properties);
+            PropertyBag properties) => new RpcTransport(address, properties);
     }
 }

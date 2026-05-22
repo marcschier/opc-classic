@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Util.Sharpen;
     using System.IO;
@@ -35,7 +36,7 @@ namespace SharpInterop.Rpc {
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
         ConnectionOrientedPdu Init(PresentationContext context,
-            Properties properties);
+            PropertyBag properties);
 
         /// <summary>
         /// Alter

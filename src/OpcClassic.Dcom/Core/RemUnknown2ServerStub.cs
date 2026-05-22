@@ -7,6 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 namespace SharpInterop.Core {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Common;
     using SharpInterop.Transport;
     using SharpInterop.Rpc;
@@ -19,7 +20,7 @@ namespace SharpInterop.Core {
     /// </summary>
     internal sealed class RemUnknown2ServerStub : Stub {
 
-        private static readonly Properties kDefaults = new Properties();
+        private static readonly PropertyBag kDefaults = new PropertyBag();
         static RemUnknown2ServerStub() {
             kDefaults.SetProperty("rpc.ntlm.lanManagerKey", "false");
             kDefaults.SetProperty("rpc.ntlm.sign", "false");
@@ -64,7 +65,7 @@ namespace SharpInterop.Core {
 
             _session = session;
             TransportFactory = ComTransportFactory.Instance;
-            Properties = new Properties(kDefaults);
+            Properties = new PropertyBag(kDefaults);
             Properties.SetProperty("rpc.socketTimeout", session.GlobalSocketTimeout.ToString());
 
             if (session.NTLMv2Enabled) {

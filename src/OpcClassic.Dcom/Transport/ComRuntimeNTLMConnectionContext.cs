@@ -9,6 +9,7 @@
 
 
 namespace SharpInterop.Transport {
+    using OpcClassic.Dcom.Internal;
     using System.Collections.Generic;
     using SharpInterop.Rpc.pdu;
     using SharpInterop.Rpc.Auth.ntlm;
@@ -25,7 +26,7 @@ namespace SharpInterop.Transport {
         public override bool Established => base.Established | _established;
 
         /// <inheritdoc/>
-        public override ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
+        public override ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
             base.Init2(context, properties);
             _properties = properties;
             lock (_listOfInterfacesSupported) { // TODO - find another way...
@@ -135,7 +136,7 @@ namespace SharpInterop.Transport {
         private const string kIID2 = "IID2";
         private bool _established;
 #pragma warning disable IDE0052 // Remove unread private members
-        private Properties _properties;
+        private PropertyBag _properties;
 #pragma warning restore IDE0052 // Remove unread private members
         private readonly List<string> _listOfInterfacesSupported = new List<string>();
     }

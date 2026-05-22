@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Ncacn_Np {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpCifs;
     using SharpCifs.Dcerpc.Ndr;
@@ -26,7 +27,7 @@ namespace SharpInterop.Rpc.Ncacn_Np {
         public string Protocol => "ncacn_np";
 
         /// <inheritdoc/>
-        public Properties Properties { get; }
+        public PropertyBag Properties { get; }
 
         /// <summary>
         /// Initialize transport
@@ -47,7 +48,7 @@ namespace SharpInterop.Rpc.Ncacn_Np {
         /// <param name="address"></param>
         /// <param name="properties"></param>
         /// <exception cref="ProviderException"></exception>
-        public RpcTransport(string address, Properties properties) {
+        public RpcTransport(string address, PropertyBag properties) {
             Properties = properties;
             Parse(address);
         }

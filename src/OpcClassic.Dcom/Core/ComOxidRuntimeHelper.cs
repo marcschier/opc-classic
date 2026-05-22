@@ -32,7 +32,7 @@ namespace SharpInterop.Core {
         /// Create runtime helper
         /// </summary>
         /// <param name="properties"></param>
-        internal ComOxidRuntimeHelper(Properties properties) {
+        internal ComOxidRuntimeHelper(PropertyBag properties) {
             TransportFactory = ComRuntimeTransportFactory.Instance;
             Properties = properties;
             // this is never consulted so, putting localhost here.
@@ -277,7 +277,7 @@ namespace SharpInterop.Core {
             /// </summary>
             /// <param name="p"></param>
             /// <inheritdoc/>
-            public OxidResolverImpl(Properties p) => _p = p;
+            public OxidResolverImpl(PropertyBag p) => _p = p;
 #pragma warning restore RECS0154 // Parameter is never used
 
             /// <inheritdoc/>
@@ -537,7 +537,7 @@ namespace SharpInterop.Core {
             private readonly Random _random = new Random();
             private NdrBuffer _buffer;
 #pragma warning disable IDE0052 // Remove unread private members
-            private readonly Properties _p;
+            private readonly PropertyBag _p;
 #pragma warning restore IDE0052 // Remove unread private members
         }
 

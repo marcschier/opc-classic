@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
+    using OpcClassic.Dcom.Internal;
     using System;
     using System.IO;
     using SharpInterop.Rpc.Core;
@@ -36,7 +37,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <param name="properties"></param>
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
-        public virtual ConnectionOrientedPdu Init2(PresentationContext context, Properties properties) {
+        public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties) {
             Established = false;
             if (properties != null) {
                 var maxTransmit = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
@@ -59,7 +60,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         }
 
         /// <inheritdoc/>
-        public virtual ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
+        public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
 
             var pdu = (BindPdu)Init2(context, properties);
             pdu.ResetCallIdCounter();

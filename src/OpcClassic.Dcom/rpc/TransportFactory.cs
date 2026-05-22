@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc {
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
 
     /// <summary>
@@ -22,18 +23,18 @@ namespace SharpInterop.Rpc {
         /// <param name="properties"></param>
         /// <exception cref="ProviderException"></exception>
         /// <returns></returns>
-        public abstract ITransport CreateTransport(string address, Properties properties);
+        public abstract ITransport CreateTransport(string address, PropertyBag properties);
 
         /// <summary>
         /// Default properties
         /// </summary>
-        public static Properties DefaultProperties { get; } = new Properties();
+        public static PropertyBag DefaultProperties { get; } = new PropertyBag();
 
         // TODO!!!
 
         //    private static class MetaTransportFactory extends TransportFactory {
         //
-        //        public Transport createTransport(String address, SharpCifs.Util.Sharpen.Properties properties)
+        //        public Transport createTransport(String address, PropertyBag properties)
         //                throws ProviderException {
         //            if (address == null) {
         //                throw new ProviderException("No address specified.");
@@ -60,7 +61,7 @@ namespace SharpInterop.Rpc {
 
         //    private static final List FACTORIES;
 
-        // private static Properties defaultProperties = new Properties();
+        // private static PropertyBag defaultProperties = new PropertyBag();
 
         //    static {
         //        META_FACTORY = new MetaTransportFactory();
@@ -86,7 +87,7 @@ namespace SharpInterop.Rpc {
         //        Iterator iterator = locations.iterator();
         //        while (iterator.hasNext()) {
         //            try {
-        //                SharpCifs.Util.Sharpen.Properties properties = new SharpCifs.Util.Sharpen.Properties();
+        //                PropertyBag properties = new PropertyBag();
         //                properties.load(((URL) iterator.next()).openStream());
         //                Enumeration classNames = properties.propertyNames();
         //                while (classNames.hasMoreElements()) {
@@ -107,13 +108,13 @@ namespace SharpInterop.Rpc {
       // /// <summary>
       // /// Default properties
       // /// </summary>
-      // public static Properties DefaultProperties {
+      // public static PropertyBag DefaultProperties {
       //     get {
       //
                 //   // TODO
                 //   lock (typeof(TransportFactory)) {
                 //       if (defaultProperties == null) {
-                //           var properties = new Properties();
+                //           var properties = new PropertyBag();
                 //           string defaults = null;
                 //           try {
                 //               defaults = System.getProperty("rpc.properties");
@@ -148,7 +149,7 @@ namespace SharpInterop.Rpc {
                 //           defaultProperties = properties;
                 //       }
                 //   }
-                //    var properties = new Properties(defaultProperties);
+                //    var properties = new PropertyBag(defaultProperties);
                 //    try {
                 //        properties.PutAll(System.Properties);
                 //    }

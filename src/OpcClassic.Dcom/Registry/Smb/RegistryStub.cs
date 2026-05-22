@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Registry.Smb {
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using SharpCifs.Smb;
     using SharpInterop.Rpc;
@@ -41,7 +42,7 @@ namespace SharpInterop.Registry.Smb {
                     Interop.GetLocalizedMessage(ErrorCode.INTEROP_AUTH_NOT_SUPPLIED));
             }
             TransportFactory = new SharpInterop.Rpc.Ncacn_Np.TransportFactory();
-            Properties = new Properties();
+            Properties = new PropertyBag();
             Properties.SetProperty("rpc.ncacn_np.username", authInfo.UserName);
             var password =  HttpUtility.UrlEncode(authInfo.Password, Encoding.UTF8);
 
@@ -75,7 +76,7 @@ namespace SharpInterop.Registry.Smb {
         /// <exception cref="UnknownHostException"></exception>
         public RegistryStub(string serverName) {
             TransportFactory = new SharpInterop.Rpc.Ncacn_Np.TransportFactory();
-            Properties = new Properties();
+            Properties = new PropertyBag();
             Properties.SetProperty("rpc.ntlm.sso", "true");
             serverName = serverName.Trim();
             serverName = Dns.GetHostAddresses(serverName).First().ToString();

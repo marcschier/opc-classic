@@ -11,8 +11,8 @@ using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using OpcClassic.Dcom.Internal;
 using SharpCifs.Ntlmssp;
-using SharpCifs.Util.Sharpen;
 using SharpInterop.Crypto;
 using SharpInterop.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
@@ -126,7 +126,7 @@ public sealed class NtlmV2ServerKeyDerivationTests
 
     private static NtlmAuthentication CreateAuthentication(string password)
     {
-        var properties = new Properties();
+        var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "true");
         properties.SetProperty("rpc.ntlm.seal", "true");

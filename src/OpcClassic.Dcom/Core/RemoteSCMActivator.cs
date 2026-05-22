@@ -85,7 +85,7 @@ namespace SharpInterop.Core {
                 var writeCountEntirePayloadLength_Here = ndr.Buffer.Index;
                 ndr.WriteUnsignedLong(0); // write here (reserved from objref_custom)
 
-                // Activation SharpCifs.Util.Sharpen.Properties Blob
+                // Activation Properties Blob
                 var writeActivationPayload = ndr.Buffer.Index;
                 ndr.WriteUnsignedLong(0); // payload to be written here
 
@@ -123,10 +123,10 @@ namespace SharpInterop.Core {
                 AddCommonTypeHeaderAndEncode(ndr, tempStruct, lentempStruct);
 
                 // now update the length in Common header struct.
-                WriteEncodingLength(countActivationPayload, countActivationPayload + 16, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
+                WriteEncodingLength(countActivationPayload, countActivationPayload + 16, ndr); // Len for Activation Properties Blob
 
-                WriteEncodingLength(countActivationPayload, writeActivationPayload, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
-                WriteEncodingLength(countEntirePayload, writeCountEntirePayloadLength_Here, ndr); // Len for Activation SharpCifs.Util.Sharpen.Properties Blob
+                WriteEncodingLength(countActivationPayload, writeActivationPayload, ndr); // Len for Activation Properties Blob
+                WriteEncodingLength(countEntirePayload, writeCountEntirePayloadLength_Here, ndr); // Len for Activation Properties Blob
                 WriteEncodingLength(countFromIndex, index, ndr); // Len 1 for the Custom Object Ref
                 WriteEncodingLength(countFromIndex, index2, ndr); // Len 2 for the Custom Object Ref
             }
@@ -549,12 +549,12 @@ namespace SharpInterop.Core {
                     throw new InteropRuntimeException(hResult);
                 }
 
-                // we should now be standing at the Activation SharpCifs.Util.Sharpen.Properties Blob right now.
+                // we should now be standing at the Activation Properties Blob right now.
                 var totalLength = ndr.ReadUnsignedLong();
                 ndr.ReadUnsignedLong(); // reserved
 
                 // Custom Header begins
-                // lets check what all has been returned back to us. We are only interested in two SharpCifs.Util.Sharpen.Properties (ScmReply and PropsOut)
+                // lets check what all has been returned back to us. We are only interested in two activation properties (ScmReply and PropsOut)
                 // Must contain the following properties
                 //            ScmReplyInfoData 2.2.22.2.8 Required
                 //            PropsOutInfo 2.2.22.2.9 Required
@@ -594,7 +594,7 @@ namespace SharpInterop.Core {
 
                 SkipBytes(objectBufferLength, startIndex, ndr);
 
-                // now we need to check for the indexes of our relevant SharpCifs.Util.Sharpen.Properties
+                // now we need to check for the indexes of our relevant activation properties
 
                 var clsidProps = (UUID[])((ComArray)((ComPointer)strukt.GetMember(6)).Referent).ArrayInstance;
 

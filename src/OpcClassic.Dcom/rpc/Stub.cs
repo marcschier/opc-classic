@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
@@ -47,9 +48,9 @@ namespace SharpInterop.Rpc {
         public TransportFactory TransportFactory { get; set; }
 
         /// <summary>
-        /// SharpCifs.Util.Sharpen.Properties
+        /// OpcClassic.Dcom.Internal.PropertyBag
         /// </summary>
-        public Properties Properties { get; set; }
+        public PropertyBag Properties { get; set; }
 
         /// <summary>
         /// Endpoint

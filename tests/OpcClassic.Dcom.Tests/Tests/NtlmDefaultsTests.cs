@@ -5,7 +5,7 @@
 
 using System;
 using System.Reflection;
-using SharpCifs.Util.Sharpen;
+using OpcClassic.Dcom.Internal;
 using SharpInterop.Rpc;
 using SharpInterop.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
@@ -55,7 +55,7 @@ public sealed class NtlmDefaultsTests
         await Assert.That(authentication).IsNotNull();
     }
 
-    private static ProtectionLevel ConfigureActivationProtection(Properties properties, bool sessionSecurityEnabled)
+    private static ProtectionLevel ConfigureActivationProtection(PropertyBag properties, bool sessionSecurityEnabled)
     {
         var runtimeType = typeof(ProtectionLevel).Assembly.GetType(
             "SharpInterop.Core.ComOxidRuntime", throwOnError: true)!;
@@ -66,9 +66,9 @@ public sealed class NtlmDefaultsTests
             null, new object?[] { properties, sessionSecurityEnabled, "user", "password" })!;
     }
 
-    private static Properties CreateActivationProperties()
+    private static PropertyBag CreateActivationProperties()
     {
-        var properties = new Properties();
+        var properties = new PropertyBag();
         properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
         properties.SetProperty("rpc.ntlm.sign", "false");
         properties.SetProperty("rpc.ntlm.seal", "false");

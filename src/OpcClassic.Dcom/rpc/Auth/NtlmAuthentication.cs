@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Ntlmssp;
     using SharpCifs.Smb;
     using SharpCifs.Util;
@@ -33,7 +34,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// Create auth
         /// </summary>
         /// <param name="properties"></param>
-        public NtlmAuthentication(Properties properties) {
+        public NtlmAuthentication(PropertyBag properties) {
             _properties = properties;
             _useNtlm2sessionsecurity = true;
             _useNtlmV2 = true;
@@ -480,7 +481,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
             (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : 0);
 
-        private static bool GetBooleanProperty(Properties properties, string name, bool defaultValue) {
+        private static bool GetBooleanProperty(PropertyBag properties, string name, bool defaultValue) {
             var value = properties.GetProperty(name);
             return value == null ? defaultValue : Convert.ToBoolean(value);
         }
@@ -488,7 +489,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly NtlmPasswordAuthentication _credentials;
         //  private AuthenticationSource _authenticationSource;
 #pragma warning disable IDE0052 // Remove unread private members
-        private readonly Properties _properties;
+        private readonly PropertyBag _properties;
 #pragma warning restore IDE0052 // Remove unread private members
         private readonly bool _lanManagerKey;
         private readonly bool _seal;

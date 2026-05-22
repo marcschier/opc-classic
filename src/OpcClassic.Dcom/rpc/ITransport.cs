@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
@@ -26,7 +27,7 @@ namespace SharpInterop.Rpc {
         /// <summary>
         /// Configuration
         /// </summary>
-        Properties Properties { get; }
+        PropertyBag Properties { get; }
 
         /// <summary>
         /// Attach

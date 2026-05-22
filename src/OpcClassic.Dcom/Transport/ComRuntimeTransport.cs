@@ -8,11 +8,11 @@
 //
 
 namespace SharpInterop.Transport {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Common;
     using SharpInterop.Rpc;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util.Sharpen;
     using System.IO;
     using System.Net.Sockets;
 
@@ -27,7 +27,7 @@ namespace SharpInterop.Transport {
         /// <exception cref="ProviderException"></exception>
         /// <param name="address"></param>
         /// <param name="properties"></param>
-        public ComRuntimeTransport(string address, Properties properties) {
+        public ComRuntimeTransport(string address, PropertyBag properties) {
             // address is ignored but should not be null
             System.Diagnostics.Debug.Assert(address != null);
             Properties = properties;
@@ -37,7 +37,7 @@ namespace SharpInterop.Transport {
         public string Protocol => "ncacn_ip_tcp";
 
         /// <inheritdoc/>
-        public Properties Properties { get; }
+        public PropertyBag Properties { get; }
 
         /// <inheritdoc/>
         public IEndpoint Attach(PresentationSyntax syntax) {

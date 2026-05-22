@@ -8,9 +8,9 @@
 //
 
 namespace SharpInterop.Rpc {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpInterop.Rpc.pdu;
-    using SharpCifs.Util.Sharpen;
 
     /// <summary>
     /// Basic connection context
@@ -24,7 +24,7 @@ namespace SharpInterop.Rpc {
         public virtual bool Established { get; private set; }
 
         /// <inheritdoc/>
-        public virtual ConnectionOrientedPdu Init(PresentationContext context, Properties properties) {
+        public virtual ConnectionOrientedPdu Init(PresentationContext context, PropertyBag properties) {
             Established = false;
             Connection = new DefaultConnection();
             if (properties != null) {

@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Transport {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Common;
     using SharpInterop.Rpc;
     using SharpCifs.Util.Sharpen;
@@ -25,7 +26,7 @@ namespace SharpInterop.Transport {
         }
 
         /// <inheritdoc/>
-        public override ITransport CreateTransport(string address, Properties properties) =>
+        public override ITransport CreateTransport(string address, PropertyBag properties) =>
             new ComTransport(address, properties);
 
         /// <summary>

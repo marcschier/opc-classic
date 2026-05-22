@@ -8,6 +8,7 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Ntlmssp;
@@ -24,7 +25,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// Create connection
         /// </summary>
         /// <param name="properties"></param>
-        public NtlmConnection(Properties properties) {
+        public NtlmConnection(PropertyBag properties) {
             _authentication = new NtlmAuthentication(properties);
             _properties = properties;
         }
@@ -118,7 +119,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         }
 
         private static int _contextSerial;
-        private readonly Properties _properties;
+        private readonly PropertyBag _properties;
         private readonly NtlmAuthentication _authentication;
         private NtlmMessage _ntlm;
     }

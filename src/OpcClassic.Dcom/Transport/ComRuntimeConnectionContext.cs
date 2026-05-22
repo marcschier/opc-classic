@@ -8,10 +8,10 @@
 //
 
 namespace SharpInterop.Transport {
+    using OpcClassic.Dcom.Internal;
     using SharpInterop.Rpc;
     using SharpInterop.Rpc.Core;
     using SharpInterop.Rpc.pdu;
-    using SharpCifs.Util.Sharpen;
     using System;
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace SharpInterop.Transport {
 
         /// <inheritdoc/>
         public override ConnectionOrientedPdu Init(PresentationContext context,
-            Properties properties) {
+            PropertyBag properties) {
             base.Init(context, properties);
             _properties = properties;
             return null;
@@ -98,6 +98,6 @@ namespace SharpInterop.Transport {
 
         private const string kIID = "IID";
         private bool _established;
-        private Properties _properties;
+        private PropertyBag _properties;
     }
 }

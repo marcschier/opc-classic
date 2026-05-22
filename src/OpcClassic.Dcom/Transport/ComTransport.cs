@@ -27,7 +27,7 @@ namespace SharpInterop.Transport {
         public string Protocol => "ncacn_ip_tcp";
 
         /// <inheritdoc/>
-        public Properties Properties { get; }
+        public PropertyBag Properties { get; }
 
         /// <summary>
         /// Initialize class
@@ -48,7 +48,7 @@ namespace SharpInterop.Transport {
         /// <exception cref="ProviderException"></exception>
         /// <param name="address"></param>
         /// <param name="properties"></param>
-        public ComTransport(string address, Properties properties) {
+        public ComTransport(string address, PropertyBag properties) {
             Properties = properties;
 
             if (address == null) {

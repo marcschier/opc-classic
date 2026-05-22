@@ -215,7 +215,7 @@ namespace SharpInterop.Common {
         public static void Internal_setSocket(Socket socket) => kSocketQueue.Add(socket);
 
         private static string _pathToDB;
-        private static readonly Properties kMapOfProgIdsVsClsids = new Properties();
+        private static readonly PropertyBag kMapOfProgIdsVsClsids = new PropertyBag();
         private static readonly List<Socket> kSocketQueue = new List<Socket>();
         private static readonly Dictionary<string, string> kMapOfHostnamesVsIPs = 
             new Dictionary<string, string>();

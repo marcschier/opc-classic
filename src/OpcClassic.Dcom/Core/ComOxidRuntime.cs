@@ -67,7 +67,7 @@ namespace SharpInterop.Core {
         }
 
         internal static ProtectionLevel ConfigureActivationProtection(
-            Properties properties, bool sessionSecurityEnabled,
+            PropertyBag properties, bool sessionSecurityEnabled,
             string username, string password) {
             // Phase 3B: default to INTEGRITY per Microsoft DCOM hardening (KB5004442);
             // patched Windows DCOM servers reject CONNECT-level activation requests.
@@ -356,7 +356,7 @@ namespace SharpInterop.Core {
                 var objref = new StdObjRef(ipid, oxid, oid);
                 ptr = new InterfacePointer(iid, OxidResolverPort, objref);
 
-                var properties = new Properties(_defaults2);
+                var properties = new PropertyBag(_defaults2);
                 properties.SetProperty("IID", Interfaces.IID_IRemUnknown + ":0.0"); 
                 properties.SetProperty("rpc.ntlm.domain", session.TargetServer);
 
@@ -650,7 +650,7 @@ namespace SharpInterop.Core {
                     lock (_outerInstance.Mutex) {
                         Interop.Internal_setSocket(socket);
                         // now create the ComOxidRuntimeHelper Object and start it.
-                        var properties = new Properties(_outerInstance._defaults);
+                        var properties = new PropertyBag(_outerInstance._defaults);
                         properties.SetProperty("IID",
                             "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0".ToUpper()); // IOxidResolver
                         var oxidResolver = new ComOxidRuntimeHelper(properties);
@@ -708,8 +708,8 @@ namespace SharpInterop.Core {
         private readonly object _mapOfAddressVsStubLock = new object();
 
 
-        private readonly Properties _defaults = new Properties();
-        private readonly Properties _defaults2 = new Properties();
+        private readonly PropertyBag _defaults = new PropertyBag();
+        private readonly PropertyBag _defaults2 = new PropertyBag();
         private readonly Random _randomGen = new Random();
         private Timer _clientPing;
         private Timer _serverPing;

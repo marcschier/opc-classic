@@ -13,6 +13,7 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Ntlmssp;
     using SharpCifs.Util.Sharpen;
     using System;
@@ -70,7 +71,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// session properties.
         /// </summary>
         /// <exception cref="IOException">Underlying credential store I/O failure.</exception>
-        public abstract byte[] CreateChallenge(Properties properties,
+        public abstract byte[] CreateChallenge(PropertyBag properties,
             Type1Message type1);
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// integrity / privacy on subsequent traffic.
         /// </summary>
         /// <exception cref="IOException">Underlying credential store I/O failure.</exception>
-        public abstract sbyte[] Authenticate(Properties properties,
+        public abstract sbyte[] Authenticate(PropertyBag properties,
             Type2Message type2, Type3Message type3);
     }
 
@@ -102,11 +103,11 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             "to install a custom credential-validation implementation.";
 
         /// <inheritdoc />
-        public override byte[] CreateChallenge(Properties properties, Type1Message type1)
+        public override byte[] CreateChallenge(PropertyBag properties, Type1Message type1)
             => throw new InvalidOperationException(NotRegisteredMessage);
 
         /// <inheritdoc />
-        public override sbyte[] Authenticate(Properties properties, Type2Message type2, Type3Message type3)
+        public override sbyte[] Authenticate(PropertyBag properties, Type2Message type2, Type3Message type3)
             => throw new InvalidOperationException(NotRegisteredMessage);
     }
 }
