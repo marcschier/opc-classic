@@ -4,9 +4,9 @@
 //
 // OPC Commands DCOM-projection interfaces. Each [OpcInterface] partial
 // interface is extended by the OpcInterfaceGenerator to carry a
-// compile-time-known InterfaceId. Methods + supporting types will be added
-// in Phase 9D with spec-derived API design (no managed API existed prior
-// to this rewrite).
+// compile-time-known InterfaceId. IIDs are verified against
+// External\Include\OpcCmd.h; method-level shims and NDR codecs are deferred
+// to the Phase 9D follow-up.
 //
 
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCCommandInformation)
