@@ -19,4 +19,9 @@ public interface IXmlDaClient
     /// Sends a <c>GetStatus</c> request and returns the server's status.
     /// </summary>
     Task<XmlDaServerStatus> GetStatusAsync(XmlDaRequestHeader header, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sends a <c>Read</c> request and returns the per-item values.
+    /// </summary>
+    Task<XmlDaReadResponse> ReadAsync(XmlDaReadRequest request, CancellationToken cancellationToken = default);
 }

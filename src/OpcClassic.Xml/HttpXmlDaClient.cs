@@ -58,12 +58,44 @@ public sealed class HttpXmlDaClient : IXmlDaClient
             requestBytes = ms.ToArray();
         }
 
-        using var content = new ByteArrayContent(requestBytes);
-        content.Headers.ContentType = new MediaTypeHeaderValue("text/xml")
+        return await PostAsync(requestBytes,
+            XmlDaConstants.SoapActionGetStatus,
+            static r => GetStatusSerializer.ReadResponse(r),
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task<XmlDaReadResponse> ReadAsync(
+        XmlDaReadRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        byte[] requestBytes;
+        using (var ms = new MemoryStream(capacity: 512))
         {
-            CharSet = "utf-8",
-        };
-        content.Headers.Add("SOAPAction", "\"" + XmlDaConstants.SoapActionGetStatus + "\"");
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
+                ReadSerializer.WriteRequest(w, request);
+            }
+            requestBytes = ms.ToArray();
+        }
+
+        return await PostAsync(requestBytes,
+            XmlDaConstants.SoapActionRead,
+            static r => ReadSerializer.ReadResponse(r),
+            cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<T> PostAsync<T>(
+        byte[] requestBytes,
+        string soapAction,
+        Func<SoapEnvelopeReader, T> deserialize,
+        CancellationToken cancellationToken)
+    {
+        using var content = new ByteArrayContent(requestBytes);
+        content.Headers.ContentType = new MediaTypeHeaderValue("text/xml") { CharSet = "utf-8" };
+        content.Headers.Add("SOAPAction", "\"" + soapAction + "\"");
 
         using var response = await _http.PostAsync(_endpoint, content, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
@@ -74,7 +106,7 @@ public sealed class HttpXmlDaClient : IXmlDaClient
         await using (responseStream.ConfigureAwait(false))
         {
             using var reader = new SoapEnvelopeReader(responseStream);
-            return GetStatusSerializer.ReadResponse(reader);
+            return deserialize(reader);
         }
     }
 }
