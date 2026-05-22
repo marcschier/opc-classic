@@ -34,4 +34,9 @@ public interface IXmlDaClient
     /// Sends a <c>Browse</c> request and returns the elements at the requested branch.
     /// </summary>
     Task<XmlDaBrowseResponse> BrowseAsync(XmlDaBrowseRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Cancels a server-side subscription previously created via Subscribe.
+    /// </summary>
+    Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default);
 }
