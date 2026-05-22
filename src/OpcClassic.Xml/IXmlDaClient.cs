@@ -41,6 +41,11 @@ public interface IXmlDaClient
     Task<XmlDaSubscribeResponse> SubscribeAsync(XmlDaSubscribeRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Polls one or more server-side subscriptions for accumulated value changes.
+    /// </summary>
+    Task<XmlDaSubscriptionPolledRefreshResponse> SubscriptionPolledRefreshAsync(XmlDaSubscriptionPolledRefreshRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Cancels a server-side subscription previously created via Subscribe.
     /// </summary>
     Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default);
