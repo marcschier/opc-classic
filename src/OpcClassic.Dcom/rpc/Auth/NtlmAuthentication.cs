@@ -15,6 +15,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpCifs;
     using SharpCifs.Util.Sharpen;
     using System.IO;
+    using System.Security;
+    using System.Security.Cryptography;
 
     /// <summary>
     /// Ntlm auth
@@ -116,7 +118,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 flags = AdjustFlags(type1.GetFlags());
             }
             flags |= 0x00020000; // challenge accept response flag
-            var type2Message = new Type2Message(flags, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 },
+            var challenge = (byte[])kDefaultServerChallenge.Clone();
+            _serverChallenge = challenge;
+            var type2Message = new Type2Message(flags, challenge,
                 _credentials.GetDomain()); // generate our own, since SMB will throw exception here
             return type2Message;
         }
@@ -392,14 +396,15 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             var ntlmKeyFactory = new NTLMKeyFactory();
             byte[] secondayMasterKey;
             byte[] sessionResponseUserSessionKey = null;
+            var sessionResponseUserSessionKeyIsSecondaryMasterKey = false;
             if (type3Message.GetFlag(0x00000800)) // anonymous flag
             {
                 // if it is anonymous the user session key is new byte[16];
                 sessionResponseUserSessionKey = new byte[16];
             }
             else if (_useNtlmV2) {
-                // TODO this needs to be checked here since the key logic will be totally different
-                // and we have to get the key out of Type3 message response (blob of the NTLMv2 response.)
+                sessionResponseUserSessionKey = CreateNtlmV2ServerSessionKey(type3Message, ntlmKeyFactory);
+                sessionResponseUserSessionKeyIsSecondaryMasterKey = true;
             }
             else {
                 // now create the key for the session
@@ -419,9 +424,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             }
 
             try {
-                // now RC4 decrypt the session key
-                secondayMasterKey = ntlmKeyFactory
-                    .DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
+                secondayMasterKey = sessionResponseUserSessionKeyIsSecondaryMasterKey
+                    ? sessionResponseUserSessionKey
+                    : ntlmKeyFactory.DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
                 Security = new Ntlm1(flags, secondayMasterKey, true);
 #pragma warning restore CS0618
@@ -431,6 +436,44 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             }
         }
 
+        private byte[] CreateNtlmV2ServerSessionKey(Type3Message type3Message, NTLMKeyFactory ntlmKeyFactory) {
+            var ntResponse = type3Message.GetNTResponse();
+            if (ntResponse == null || ntResponse.Length < 16) {
+                throw new SecurityException("Invalid NTLMv2 NT challenge response.");
+            }
+            if (_serverChallenge == null || _serverChallenge.Length != 8) {
+                throw new SecurityException("The NTLMv2 server challenge was not saved before authentication.");
+            }
+
+            var ntProofStr = new byte[16];
+            Array.Copy(ntResponse, 0, ntProofStr, 0, ntProofStr.Length);
+            var temp = new byte[ntResponse.Length - ntProofStr.Length];
+            Array.Copy(ntResponse, ntProofStr.Length, temp, 0, temp.Length);
+
+            var target = type3Message.GetDomain() ?? _credentials.GetDomain();
+            var user = type3Message.GetUser() ?? _credentials.GetUsername();
+            var ntowfv2 = Responses.Ntlmv2Hash(target, user, _credentials.GetPassword());
+            var challengeAndTemp = new byte[_serverChallenge.Length + temp.Length];
+            Array.Copy(_serverChallenge, 0, challengeAndTemp, 0, _serverChallenge.Length);
+            Array.Copy(temp, 0, challengeAndTemp, _serverChallenge.Length, temp.Length);
+            var expectedNtProofStr = Responses.HmacMD5(challengeAndTemp, ntowfv2);
+            if (!CryptographicOperations.FixedTimeEquals(expectedNtProofStr, ntProofStr)) {
+                throw new SecurityException("Invalid NTLMv2 NT proof string.");
+            }
+
+            var sessionBaseKey = Responses.HmacMD5(ntProofStr, ntowfv2);
+            if (!type3Message.GetFlag(NtlmFlags.NtlmsspNegotiateKeyExch)) {
+                return sessionBaseKey;
+            }
+
+            var encryptedRandomSessionKey = type3Message.GetSessionKey();
+            if (encryptedRandomSessionKey == null || encryptedRandomSessionKey.Length == 0) {
+                throw new SecurityException("NTLMv2 key exchange was negotiated without an encrypted random session key.");
+            }
+            return ntlmKeyFactory.DecryptSecondarySessionKey(encryptedRandomSessionKey, sessionBaseKey);
+        }
+
+        private static readonly byte[] kDefaultServerChallenge = { 1, 2, 3, 4, 5, 6, 7, 8 };
         private static readonly bool kUnicodeSupported = Config.GetBoolean("SharpCifs.smb.client.useUnicode", true);
         private static readonly int kBASICFLAGS =
             NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
@@ -457,6 +500,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly bool _useNtlmV2;
         private readonly bool _allowNtlmV1;
         private readonly bool _useSSO;
+        private byte[] _serverChallenge;
         private static readonly Random kRandomGen = new Random();
     }
 }

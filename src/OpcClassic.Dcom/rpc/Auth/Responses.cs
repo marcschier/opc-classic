@@ -5,6 +5,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpInterop.Crypto;
     using SharpCifs.Util;
     using System;
+    using System.Text;
 
     /// <summary>
     /// Calculates the various Type 3 responses.
@@ -113,13 +114,13 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <returns> The LM Hash of the given password, used in the calculation
         /// of the LM Response. </returns>
         private static byte[] LmHash(string password) {
-            var oemPassword = password.ToUpper().GetBytes("US-ASCII");
+            var oemPassword = Encoding.ASCII.GetBytes(password.ToUpperInvariant());
             var length = Math.Min(oemPassword.Length, 14);
             var keyBytes = new byte[14];
             Array.Copy(oemPassword, 0, keyBytes, 0, length);
             var lowKey = CreateDESKey(keyBytes, 0);
             var highKey = CreateDESKey(keyBytes, 7);
-            var magicConstant = "KGS!@#$%".GetBytes("US-ASCII");
+            var magicConstant = Encoding.ASCII.GetBytes("KGS!@#$%");
             var des = CipherUtilities.GetCipher("DES/ECB/NoPadding");
             des.Init(true, lowKey);
             var lowHash = des.DoFinal(magicConstant);
@@ -139,7 +140,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <returns> The NTLM Hash of the given password, used in the calculation
         /// of the NTLM Response and the NTLMv2 and LMv2 Hashes. </returns>
         internal static byte[] NtlmHash(string password) {
-            var unicodePassword = password.GetBytes("UnicodeLittleUnmarked");
+            var unicodePassword = Encoding.Unicode.GetBytes(password);
             IDigest md4 = new MD4Digest();
             var ret = new byte[md4.GetDigestSize()];
             md4.BlockUpdate(unicodePassword, 0, unicodePassword.Length);
@@ -158,8 +159,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// and LMv2 Responses.  </returns>
         internal static byte[] Ntlmv2Hash(string target, string user, string password) {
             var ntlmHash_Renamed = NtlmHash(password);
-            var identity = user.ToUpper() + target;
-            return HmacMD5(identity.GetBytes("UnicodeLittleUnmarked"), ntlmHash_Renamed);
+            var identity = user.ToUpperInvariant() + target;
+            return HmacMD5(Encoding.Unicode.GetBytes(identity), ntlmHash_Renamed);
         }
 
         /// <summary>
