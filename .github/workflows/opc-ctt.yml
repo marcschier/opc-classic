@@ -1,0 +1,78 @@
+name: OPC CTT conformance
+
+on:
+  workflow_dispatch:
+    inputs:
+      ctt-installer-url:
+        description: 'Direct download URL for the OPC CTT installer (member-only)'
+        required: false
+        type: string
+  schedule:
+    # Once weekly on Sunday at 03:00 UTC; only runs if the OPC_CTT_INSTALLER_URL
+    # secret is configured (the step is gated below).
+    - cron: '0 3 * * 0'
+
+jobs:
+  opc-ctt-conformance:
+    runs-on: windows-2022
+    if: github.repository == 'marcschier/opc-classic'  # don't run on forks
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for CTT installer URL
+        id: check-secret
+        shell: pwsh
+        run: |
+          $url = if ('${{ inputs.ctt-installer-url }}') { '${{ inputs.ctt-installer-url }}' } else { '${{ secrets.OPC_CTT_INSTALLER_URL }}' }
+          if (-not $url) {
+            Write-Host "::warning::OPC_CTT_INSTALLER_URL not configured - skipping CTT conformance"
+            echo "skip=true" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "skip=false" >> $env:GITHUB_OUTPUT
+            echo "url=$url" >> $env:GITHUB_OUTPUT
+          }
+
+      - uses: actions/setup-dotnet@v4
+        if: steps.check-secret.outputs.skip != 'true'
+        with:
+          global-json-file: global.json
+
+      - name: Download + install OPC CTT
+        if: steps.check-secret.outputs.skip != 'true'
+        shell: pwsh
+        run: |
+          $url = '${{ steps.check-secret.outputs.url }}'
+          $installer = "$env:RUNNER_TEMP\OpcCtt.exe"
+          Invoke-WebRequest -Uri $url -OutFile $installer
+          Start-Process -FilePath $installer -ArgumentList '/S' -Wait
+
+      - name: Start managed OpcDaServerHost
+        if: steps.check-secret.outputs.skip != 'true'
+        shell: pwsh
+        run: |
+          # SCAFFOLD: launch a sample net10 server that hosts a CTT-compliant
+          # OpcDaServerHost. The samples/OpcClassic.CttServer/ project
+          # (Phase 14E-followup) provides this minimal sample.
+          # For this scaffold, we just print a TODO.
+          Write-Host "::notice::CTT test runner activation pending Phase 14E-followup: samples/OpcClassic.CttServer/"
+
+      - name: Run OPC CTT against managed server
+        if: steps.check-secret.outputs.skip != 'true'
+        shell: pwsh
+        run: |
+          $cttExe = "${env:ProgramFiles(x86)}\OPC Foundation\OPC Compliance Test Tool\OpcCtt.exe"
+          if (Test-Path $cttExe) {
+            # CTT is typically GUI; CI requires the headless mode (-headless or /AUTO).
+            # The exact invocation depends on CTT version (verify against installer docs).
+            & $cttExe /AUTO /Output:$env:RUNNER_TEMP\ctt-results.xml /ServerProgId:OpcClassic.DaSample.1
+          } else {
+            Write-Warning "OPC CTT not installed at expected path"
+            exit 1
+          }
+
+      - name: Upload CTT results
+        if: always() && steps.check-secret.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: opc-ctt-results
+          path: ${{ runner.temp }}/ctt-results.xml

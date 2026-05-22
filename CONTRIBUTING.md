@@ -183,6 +183,14 @@ because the native build chain is platform-specific and may not be available
 on every runner image. Until Phase 14B test files land, this is a green-by-default
 job that lights up automatically once the conformance tests are added.
 
+## OPC CTT conformance (Phase 14E)
+
+The separate `.github\workflows\opc-ctt.yml` workflow scaffolds official OPC
+Foundation Compliance Test Tool runs for managed server conformance. It is
+gated on OPC Foundation membership and the `OPC_CTT_INSTALLER_URL` secret; forks
+are skipped and an unset secret no-ops. See `docs\OPC_CTT_CONFORMANCE.md` for
+prerequisites, triggers, result artifacts, and release-gating status.
+
 ## License
 
 This project currently uses EPL-1.0 and carries license inheritance from SharpInterop and the j-Interop C# port, with preserved OPC Foundation material under legacy conformance paths.
