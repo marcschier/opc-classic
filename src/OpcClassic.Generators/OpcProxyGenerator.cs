@@ -77,6 +77,7 @@ namespace OpcClassic.Generators
             { "global::OpcClassic.Da.OpcBrowseElementResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcBrowseElementCodec") },
             { "global::OpcClassic.Da.OpcItemAttributes", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemAttributesCodec") },
             { "global::OpcClassic.Da.OpcItemDef", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemDefCodec") },
+            { "global::OpcClassic.Da.OpcGroupState", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcGroupStateCodec") },
             { "global::OpcClassic.Da.OpcItemProperties", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemPropertiesCodec") },
             { "global::OpcClassic.Da.OpcItemPropertyResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemPropertyCodec") },
             { "global::OpcClassic.Da.OpcItemResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemResultCodec") },

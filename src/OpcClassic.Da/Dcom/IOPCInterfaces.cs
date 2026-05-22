@@ -20,6 +20,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using OpcClassic;
+using OpcClassic.Da;
 using OpcClassic.Generators;
 
 namespace OpcClassic.Da.Dcom;
@@ -55,6 +56,8 @@ public partial interface IOPCServer
 [OpcInterface("39227004-A18F-4B57-8B0A-5235670F4468")]
 public partial interface IOPCBrowse
 {
+    // GetProperties and Browse require conformant arrays of strings, property IDs,
+    // OPCITEMPROPERTIES, or OPCBROWSEELEMENT values; defer until array codecs exist.
 }
 
 /// <summary><c>IOPCBrowseServerAddressSpace</c> — DA 2.x browse interface (IID_IOPCBrowseServerAddressSpace).</summary>
@@ -67,24 +70,52 @@ public partial interface IOPCBrowseServerAddressSpace
 [OpcInterface("39C13A72-011E-11D0-9675-0020AFD8ADB3")]
 public partial interface IOPCItemProperties
 {
+    // QueryAvailableProperties, GetItemProperties, and LookupItemIDs require
+    // conformant arrays of property IDs, variants, strings, and HRESULTs.
 }
 
 /// <summary><c>IOPCItemIO</c> — DA 3.0 stateless item I/O (IID_IOPCItemIO).</summary>
 [OpcInterface("85C0B427-2893-4CBC-BD78-E5FC5146F08F")]
+[GenerateOpcProxy]
 public partial interface IOPCItemIO
 {
+    /// <summary>
+    /// <c>IOPCItemIO::GetProperties</c> (opnum 4). Returns property values for a single item/property pair.
+    /// </summary>
+    [OpcMethod(4)]
+    Task<OpcItemProperties> GetPropertiesAsync(string itemId, int propertyId, CancellationToken cancellationToken = default);
+
+    // Read and WriteVQT remain deferred because their IDL shapes require
+    // conformant arrays of item IDs, max ages, VQTs, values, qualities, and HRESULTs.
 }
 
 /// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
 [OpcInterface("39C13A54-011E-11D0-9675-0020AFD8ADB3")]
 public partial interface IOPCItemMgt
 {
+    // SetActiveState, SetClientHandles, SetDatatypes, and the item add/validate
+    // methods are array-heavy and wait on conformant-array codec support.
 }
 
 /// <summary><c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).</summary>
 [OpcInterface("39C13A50-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
 public partial interface IOPCGroupStateMgt
 {
+    /// <summary>
+    /// <c>IOPCGroupStateMgt::GetState</c> (opnum 3). Returns the group's current state snapshot.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCGroupStateMgt::SetName</c> (opnum 4). Renames the group.
+    /// </summary>
+    [OpcMethod(4)]
+    Task SetNameAsync(string name, CancellationToken cancellationToken = default);
+
+    // SetState has optional pointer inputs and a revised-rate output; CloneGroup
+    // returns a COM interface pointer. Both are deferred to later call-shim work.
 }
 
 /// <summary><c>IOPCGroupStateMgt2</c> — DA 3.0 group state with keep-alive (IID_IOPCGroupStateMgt2).</summary>
