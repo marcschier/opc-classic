@@ -17,14 +17,38 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCServer not IOpcServer)
 #pragma warning disable MA0048 // 12 trivial 4-line interface stubs are clearer grouped than fragmented across files
 
+using System.Threading;
+using System.Threading.Tasks;
+using OpcClassic;
 using OpcClassic.Generators;
 
 namespace OpcClassic.Da.Dcom;
 
 /// <summary><c>IOPCServer</c> — top-level OPC DA server interface (IID_IOPCServer).</summary>
 [OpcInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
 public partial interface IOPCServer
 {
+    /// <summary>
+    /// <c>IOPCServer::GetStatus</c> (opnum 3). Returns the server's run-state snapshot.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServer::RemoveGroup</c> (opnum 5). Removes the named group from the server.
+    /// </summary>
+    [OpcMethod(5)]
+    Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServer::GetErrorString</c> (opnum 8). Returns a localized human-readable string for the given HRESULT.
+    /// </summary>
+    [OpcMethod(8)]
+    Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default);
+
+    // AddGroup, GetGroupByName, and CreateGroupEnumerator require out COM interface pointers
+    // or multi-return shapes, so they are deferred until those codecs exist.
 }
 
 /// <summary><c>IOPCBrowse</c> — DA 3.0 unified browse interface (IID_IOPCBrowse).</summary>
