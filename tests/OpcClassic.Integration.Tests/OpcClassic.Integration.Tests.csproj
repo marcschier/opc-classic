@@ -11,6 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Da\OpcClassic.Da.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\_Fixtures\Testcontainers\KerberosKdcFixture.cs" Link="Fixtures\Testcontainers\KerberosKdcFixture.cs" />
   </ItemGroup>
 
