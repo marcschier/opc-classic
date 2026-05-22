@@ -165,6 +165,24 @@ The multi-phase roadmap lives outside the repository in the session workspace at
 
 Phase names run from 1A through 16E. When a contribution completes or advances a planned phase, mention the phase in the commit message and PR description.
 
+## Windows conformance jobs (Phase 14A–14D)
+
+The CI matrix includes a `windows-conformance` job that:
+
+1. Installs the OPC Foundation Core Components (DCOM proxy/stub registrations)
+2. Builds the native C++ OPC sample servers under `COM/`
+3. Registers them via `regserver.cmd`
+4. Runs the managed test suite and the `Category=NativeConformance` subset against the native servers
+
+The Phase 14C Matrikon Simulation Server test runs separately via the
+`matrikon-conformance` job (Phase 14C-followup; not yet added — depends on
+a workflow secret carrying the Matrikon installer URL).
+
+The job is currently `continue-on-error` for the native-conformance step
+because the native build chain is platform-specific and may not be available
+on every runner image. Until Phase 14B test files land, this is a green-by-default
+job that lights up automatically once the conformance tests are added.
+
 ## License
 
 This project currently uses EPL-1.0 and carries license inheritance from SharpInterop and the j-Interop C# port, with preserved OPC Foundation material under legacy conformance paths.

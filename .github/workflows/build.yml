@@ -160,25 +160,68 @@ jobs:
         if: hashFiles('samples/OpcClassic.AotCanary/*.csproj') != ''
         run: dotnet publish samples/OpcClassic.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 
-  conformance-windows:
-    name: conformance-windows
+  windows-conformance:
     needs: build
-    runs-on: windows-latest
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: windows-2022
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
-      - name: Build native COM sample servers (reference impl)
-        if: hashFiles('OPC COM.sln') != ''
-        shell: cmd
+
+      - name: Build managed solution for Windows tests
+        shell: pwsh
+        run: dotnet build OpcClassic.slnx -c Release
+
+      - name: Install OPC Foundation Core Components
+        shell: pwsh
         run: |
-          call "%ProgramFiles%\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86 || call "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x86
-          msbuild "OPC COM.sln" /p:Configuration=Release /p:Platform=Win32 /v:minimal
-      - name: Run conformance tests
-        if: hashFiles('tests/**/*Conformance*.csproj') != ''
-        run: dotnet test --filter "Category=Conformance" --configuration Release
+          # External/OpcCoreComponents.exe contains opcproxy.dll, opcenum.exe, etc.
+          # These provide the DCOM proxy/stub for IOPCServer + the OpcEnum service.
+          $installer = "$env:GITHUB_WORKSPACE\External\Bin\OpcCoreComponents.exe"
+          if (Test-Path $installer) {
+            Start-Process -FilePath $installer -ArgumentList "/S" -Wait -NoNewWindow
+            Write-Host "OPC Foundation Core Components installed"
+          } else {
+            Write-Warning "OpcCoreComponents.exe not found - skipping (Phase 14B/14C will not run)"
+          }
+
+      - name: Build native COM samples (Phase 14B reference)
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (-not (Test-Path $vswhere)) { Write-Warning "vswhere missing"; exit 0 }
+          $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
+          if (-not $msbuild) { Write-Warning "MSBuild missing"; exit 0 }
+          $sln = "$env:GITHUB_WORKSPACE\COM\OPC.sln"
+          if (Test-Path $sln) {
+            & $msbuild $sln /p:Configuration=Release /p:Platform=Win32 /m
+          } else {
+            Write-Warning "COM/OPC.sln not found - native conformance disabled"
+          }
+
+      - name: Register native COM sample servers
+        shell: pwsh
+        run: |
+          # COM\Bin\Da\Simple Server\OPC Da Simple Server.exe /RegServer (or regserver.cmd)
+          $regCmd = "$env:GITHUB_WORKSPACE\COM\regserver.cmd"
+          if (Test-Path $regCmd) {
+            & cmd /c $regCmd
+          } else {
+            Write-Warning "COM/regserver.cmd not found - skipping registration"
+          }
+        if: success()
+
+      - name: Run cross-platform managed tests on Windows
+        shell: pwsh
+        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=windows-tests.trx"
+
+      - name: Run native COM conformance tests (Phase 14B)
+        shell: pwsh
+        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category=NativeConformance"
+        if: success()
+        continue-on-error: true  # native conformance is opt-in until Phase 14B+14C land
 
   docfx-build:
     needs: build
