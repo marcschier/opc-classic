@@ -38,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\OpcClassic.Dcom\OpcClassic.Dcom.csproj" />
   </ItemGroup>
 

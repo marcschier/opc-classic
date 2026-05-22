@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Test {
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using System;
     using SharpInterop.Automation;

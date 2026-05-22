@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -10,7 +10,7 @@
 namespace SharpInterop.Core {
     using SharpInterop.Common;
     using SharpInterop.Rpc.Core;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
@@ -168,7 +168,7 @@ namespace SharpInterop.Core {
             // same with release.
             obj.AddInParamAsInt(5);
             obj.AddInParamAsInt(0); // private refs = 0
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                 Log.Logger.Warning("RELEASE called directly ! removing 5 references for " + _ptr.IPID + " session: " + _session.SessionIdentifier);
                 // <see cref="Session"/>.debug_delIpids(_ptr.IPID, 5);
             }

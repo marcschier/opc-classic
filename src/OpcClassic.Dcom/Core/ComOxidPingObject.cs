@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Core {
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Dcerpc.Ndr;
     using System;
     using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace SharpInterop.Core {
                         SetId = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
                     }
 
-                    if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+                    if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                         Log.Logger.Information("Complex ping going : listOfAdds -> Size : " +
                             _listOfAdds.Count + ", " + _listOfAdds);
                         Log.Logger.Information("listOfDels -> Size : " +

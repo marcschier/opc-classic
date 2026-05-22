@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -10,7 +10,7 @@
 namespace SharpInterop.Core {
     using SharpInterop.Common;
     using SharpInterop.Rpc.Core;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;
@@ -879,7 +879,7 @@ namespace SharpInterop.Core {
             // same with release.
             obj.AddInParamAsInt(numinstances);
             obj.AddInParamAsInt(0); //private refs = 0
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                 Log.Logger.Warning("releaseRef: Releasing numinstances " + numinstances +
                     " references of IPID: " + IPID + " session: " + SessionIdentifier);
                 // debug_delIpids(IPID, numinstances);
@@ -948,7 +948,7 @@ namespace SharpInterop.Core {
             remInterface.AddMember(new UUID(IPID));
             remInterface.AddMember(refcount);
             remInterface.AddMember(0); //private refs = 0
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                 Log.Logger.Warning("prepareForReleaseRef: Releasing " + refcount +
                     "references of IPID: " + IPID + " session: " + SessionIdentifier);
                 // debug_delIpids(IPID, refcount);

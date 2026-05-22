@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Core {
     using SharpInterop.Rpc;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using SharpInterop.Automation;
     using SharpInterop.Common;
@@ -91,7 +91,7 @@ namespace SharpInterop.Core {
                 throw new InteropException(ErrorCode.INTEROP_SESSION_ALREADY_ESTABLISHED);
             }
 
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                 Interop.Internal_dumpMap();
             }
 
@@ -405,7 +405,7 @@ namespace SharpInterop.Core {
                 Properties.SetProperty("rpc.ntlm.domain", session.Domain);
             }
 
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Information)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Information)) {
                 Interop.Internal_dumpMap();
             }
 

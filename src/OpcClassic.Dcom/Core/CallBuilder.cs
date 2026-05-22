@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -10,7 +10,7 @@
 namespace SharpInterop.Core {
     using SharpInterop.Common;
     using SharpInterop.Rpc.Core;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Util.Sharpen;
     using System;
@@ -902,7 +902,7 @@ namespace SharpInterop.Core {
             var index = 0;
             _outparams = _outParams.ToArray();
 
-            if (Log.Logger.IsEnabled(Serilog.Events.LogEventLevel.Verbose)) {
+            if (Log.Logger.IsEnabled(Microsoft.Extensions.Logging.LogLevel.Trace)) {
                 var str = "";
                 for (var i = 0; i < _outparams.Length; i++) {
                     str = str + "Out Param:[" + i + "]" + _outparams[i] + "\n";
