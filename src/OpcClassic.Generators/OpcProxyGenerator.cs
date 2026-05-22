@@ -51,23 +51,46 @@ namespace OpcClassic.Generators
              SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier) &
             ~SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-    private static readonly Dictionary<string, (string? Writer, string? Reader)> PrimitiveCodecs =
+    private static readonly CodecEmitter AeServerStatusCodec = StaticCodec(
+        "global::OpcClassic.Ae.Ndr.NdrOpcEventServerStatusCodec");
+
+    private static readonly Dictionary<string, CodecEmitter> Codecs =
         new(System.StringComparer.Ordinal)
         {
-            { "global::System.Int32", ("WriteInt32", "ReadInt32") },
-            { "global::System.UInt32", ("WriteUInt32", "ReadUInt32") },
-            { "global::System.Int16", ("WriteInt16", "ReadInt16") },
-            { "global::System.UInt16", ("WriteUInt16", "ReadUInt16") },
-            { "global::System.Int64", ("WriteInt64", "ReadInt64") },
-            { "global::System.UInt64", ("WriteUInt64", "ReadUInt64") },
-            { "global::System.Single", ("WriteSingle", "ReadSingle") },
-            { "global::System.Double", ("WriteDouble", "ReadDouble") },
-            { "global::System.Boolean", (null, null) },
-            { "global::System.Guid", ("WriteGuid", "ReadGuid") },
-            { "global::System.String", (null, null) },
-            { "global::System.String?", (null, null) },
-            { "string", (null, null) },
-            { "string?", (null, null) },
+            { "global::System.Int32", new CodecEmitter("{Writer}.WriteInt32({Param})", "{Reader}.ReadInt32()") },
+            { "global::System.UInt32", new CodecEmitter("{Writer}.WriteUInt32({Param})", "{Reader}.ReadUInt32()") },
+            { "global::System.Int16", new CodecEmitter("{Writer}.WriteInt16({Param})", "{Reader}.ReadInt16()") },
+            { "global::System.UInt16", new CodecEmitter("{Writer}.WriteUInt16({Param})", "{Reader}.ReadUInt16()") },
+            { "global::System.Int64", new CodecEmitter("{Writer}.WriteInt64({Param})", "{Reader}.ReadInt64()") },
+            { "global::System.UInt64", new CodecEmitter("{Writer}.WriteUInt64({Param})", "{Reader}.ReadUInt64()") },
+            { "global::System.Single", new CodecEmitter("{Writer}.WriteSingle({Param})", "{Reader}.ReadSingle()") },
+            { "global::System.Double", new CodecEmitter("{Writer}.WriteDouble({Param})", "{Reader}.ReadDouble()") },
+            { "global::System.Boolean", new CodecEmitter("{Writer}.WriteInt32({Param} ? -1 : 0)", "({Reader}.ReadInt32() != 0)") },
+            { "global::System.Guid", new CodecEmitter("{Writer}.WriteGuid({Param})", "{Reader}.ReadGuid()") },
+            { "global::System.String", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
+            { "global::System.String?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
+            { "string", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
+            { "string?", new CodecEmitter("{Writer}.WriteUnicodeStringPtr({Param})", "{Reader}.ReadUnicodeStringPtr()!") },
+            { "global::OpcClassic.OpcVariant", new CodecEmitter("global::OpcClassic.Ndr.NdrVariantExtensions.WriteVariant(ref {Writer}, {Param})", "global::OpcClassic.Ndr.NdrVariantExtensions.ReadVariant(ref {Reader})") },
+            { "global::OpcClassic.OpcSafeArray", new CodecEmitter("global::OpcClassic.Ndr.NdrSafeArrayExtensions.WriteSafeArray(ref {Writer}, {Param})", "global::OpcClassic.Ndr.NdrSafeArrayExtensions.ReadSafeArray(ref {Reader})") },
+            { "global::OpcClassic.OpcServerStatus", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcServerStatusCodec") },
+            { "global::OpcClassic.Da.OpcBrowseElementResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcBrowseElementCodec") },
+            { "global::OpcClassic.Da.OpcItemAttributes", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemAttributesCodec") },
+            { "global::OpcClassic.Da.OpcItemDef", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemDefCodec") },
+            { "global::OpcClassic.Da.OpcItemProperties", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemPropertiesCodec") },
+            { "global::OpcClassic.Da.OpcItemPropertyResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemPropertyCodec") },
+            { "global::OpcClassic.Da.OpcItemResult", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemResultCodec") },
+            { "global::OpcClassic.Da.OpcItemState", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemStateCodec") },
+            { "global::OpcClassic.Da.OpcItemVqt", StaticCodec("global::OpcClassic.Da.Ndr.NdrOpcItemVqtCodec") },
+            { "global::OpcClassic.Ae.OpcConditionState", StaticCodec("global::OpcClassic.Ae.Ndr.NdrOpcConditionStateCodec") },
+            { "global::OpcClassic.Ae.OpcEventNotification", StaticCodec("global::OpcClassic.Ae.Ndr.NdrOpcEventNotificationCodec") },
+            { "global::OpcClassic.Batch.OpcBatchSummary", StaticCodec("global::OpcClassic.Batch.Ndr.NdrOpcBatchSummaryCodec") },
+            { "global::OpcClassic.Batch.OpcBatchSummaryFilter", StaticCodec("global::OpcClassic.Batch.Ndr.NdrOpcBatchSummaryFilterCodec") },
+            { "global::OpcClassic.Hda.OpcHdaAnnotation", StaticCodec("global::OpcClassic.Hda.Ndr.NdrOpcHdaAnnotationCodec") },
+            { "global::OpcClassic.Hda.OpcHdaAttribute", StaticCodec("global::OpcClassic.Hda.Ndr.NdrOpcHdaAttributeCodec") },
+            { "global::OpcClassic.Hda.OpcHdaItem", StaticCodec("global::OpcClassic.Hda.Ndr.NdrOpcHdaItemCodec") },
+            { "global::OpcClassic.Hda.OpcHdaModifiedItem", StaticCodec("global::OpcClassic.Hda.Ndr.NdrOpcHdaModifiedItemCodec") },
+            { "global::OpcClassic.Hda.OpcHdaTime", StaticCodec("global::OpcClassic.Hda.Ndr.NdrOpcHdaTimeCodec") },
         };
 
     private static readonly DiagnosticDescriptor NotPartialDescriptor = new(
@@ -186,10 +209,7 @@ namespace OpcClassic.Generators
                 outParameters.Add(EscapeIdentifier(parameter.Name));
             }
 
-            if (parameter.RefKind != RefKind.None && parameter.RefKind != RefKind.In)
-            {
-                hasUnsupportedRefOutParameter = true;
-            }
+            hasUnsupportedRefOutParameter |= parameter.RefKind != RefKind.None && parameter.RefKind != RefKind.In;
 
             bool isCancellationToken = string.Equals(
                 parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
@@ -211,6 +231,7 @@ namespace OpcClassic.Generators
             parameters,
             taskReturnKind,
             taskResultMarshallingType);
+        string? declaringNamespace = ContainingNamespace(method.ContainingType);
 
         return new MethodModel(
             name: method.Name,
@@ -228,8 +249,14 @@ namespace OpcClassic.Generators
             taskResultMarshallingType: taskResultMarshallingType,
             unsupportedMarshallingType: unsupportedMarshallingType,
             cancellationTokenParameterName: cancellationTokenParameterName,
+            declaringNamespace: declaringNamespace,
             location: method.Locations.IsDefaultOrEmpty ? Location.None : method.Locations[0]);
     }
+
+    private static string? ContainingNamespace(INamedTypeSymbol symbol) =>
+        symbol.ContainingNamespace?.IsGlobalNamespace == false
+            ? symbol.ContainingNamespace!.ToDisplayString()
+            : null;
 
     private static void Emit(SourceProductionContext spc, InterfaceModel? maybeModel)
     {
@@ -437,7 +464,7 @@ namespace OpcClassic.Generators
         {
             if (!parameter.IsCancellationToken)
             {
-                EmitPrimitiveWrite(sb, indent, writerLocal, parameter);
+                EmitCodecWrite(sb, indent, writerLocal, parameter, method.DeclaringNamespace);
             }
         }
 
@@ -518,7 +545,7 @@ namespace OpcClassic.Generators
         sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;");
         sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::OpcClassic.Ndr.NdrReader(")
             .Append(responseSpanLocal).AppendLine(");");
-        sb.Append(indent).Append("            return ").Append(PrimitiveReadExpression(readerLocal, method.TaskResultMarshallingType!)).AppendLine(";");
+        sb.Append(indent).Append("            return ").Append(CodecReadExpression(readerLocal, method.TaskResultMarshallingType!, method.DeclaringNamespace)).AppendLine(";");
         sb.Append(indent).AppendLine("        }");
     }
     private static string InvokeCoreName(MethodModel method) => "__opcInvoke" + method.Name + "CoreAsync";
@@ -541,14 +568,14 @@ namespace OpcClassic.Generators
     {
         foreach (var parameter in parameters)
         {
-            if (!parameter.IsCancellationToken && !TryGetPrimitiveCodec(parameter.MarshallingType, out _))
+            if (!parameter.IsCancellationToken && !TryGetCodec(parameter.MarshallingType, declaringNamespace: null, out _))
             {
                 return parameter.MarshallingType;
             }
         }
 
         if (taskReturnKind == TaskReturnKind.TaskOfT &&
-            (taskResultMarshallingType is null || !TryGetPrimitiveCodec(taskResultMarshallingType, out _)))
+            (taskResultMarshallingType is null || !TryGetCodec(taskResultMarshallingType, declaringNamespace: null, out _)))
         {
             return taskResultMarshallingType ?? "<unknown>";
         }
@@ -556,62 +583,57 @@ namespace OpcClassic.Generators
         return null;
     }
 
-    private static void EmitPrimitiveWrite(StringBuilder sb, string indent, string writerLocal, ParameterModel parameter)
+    private static void EmitCodecWrite(
+        StringBuilder sb,
+        string indent,
+        string writerLocal,
+        ParameterModel parameter,
+        string? declaringNamespace)
     {
-        sb.Append(indent).Append("                ").Append(writerLocal).Append('.');
-        if (IsBoolType(parameter.MarshallingType))
+        sb.Append(indent).Append("                ");
+        if (TryGetCodec(parameter.MarshallingType, declaringNamespace, out var codec))
         {
-            sb.Append("WriteInt32(").Append(parameter.Name).AppendLine(" ? -1 : 0);");
+            sb.Append(FormatWriteExpression(codec, writerLocal, parameter.Name)).AppendLine(";");
             return;
         }
 
-        if (IsStringType(parameter.MarshallingType))
-        {
-            sb.Append("WriteUnicodeStringPtr(").Append(parameter.Name).AppendLine(");");
-            return;
-        }
-
-        if (TryGetPrimitiveCodec(parameter.MarshallingType, out var codec) && codec.Writer is not null)
-        {
-            sb.Append(codec.Writer).Append('(').Append(parameter.Name).AppendLine(");");
-            return;
-        }
-
-        sb.AppendLine("WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
+        sb.Append(writerLocal).AppendLine(".WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
     }
 
-    private static string PrimitiveReadExpression(string readerLocal, string marshallingType)
+    private static string CodecReadExpression(string readerLocal, string marshallingType, string? declaringNamespace)
     {
-        if (IsBoolType(marshallingType))
+        if (TryGetCodec(marshallingType, declaringNamespace, out var codec))
         {
-            return "(" + readerLocal + ".ReadInt32() != 0)";
-        }
-
-        if (IsStringType(marshallingType))
-        {
-            return readerLocal + ".ReadUnicodeStringPtr()!";
-        }
-
-        if (TryGetPrimitiveCodec(marshallingType, out var codec) && codec.Reader is not null)
-        {
-            return readerLocal + "." + codec.Reader + "()";
+            return FormatReadExpression(codec, readerLocal);
         }
 
         return "default!";
     }
 
-    private static bool TryGetPrimitiveCodec(string typeName, out (string? Writer, string? Reader) codec) =>
-        PrimitiveCodecs.TryGetValue(typeName, out codec);
+    private static bool TryGetCodec(string typeName, string? declaringNamespace, out CodecEmitter codec)
+    {
+        if (string.Equals(typeName, "global::OpcClassic.OpcServerStatus", System.StringComparison.Ordinal) &&
+            IsAeNamespace(declaringNamespace))
+        {
+            codec = AeServerStatusCodec;
+            return true;
+        }
 
-    private static bool IsBoolType(string typeName) =>
-        string.Equals(typeName, "global::System.Boolean", System.StringComparison.Ordinal) ||
-        string.Equals(typeName, "bool", System.StringComparison.Ordinal);
+        return Codecs.TryGetValue(typeName, out codec);
+    }
 
-    private static bool IsStringType(string typeName) =>
-        string.Equals(typeName, "global::System.String", System.StringComparison.Ordinal) ||
-        string.Equals(typeName, "global::System.String?", System.StringComparison.Ordinal) ||
-        string.Equals(typeName, "string", System.StringComparison.Ordinal) ||
-        string.Equals(typeName, "string?", System.StringComparison.Ordinal);
+    private static CodecEmitter StaticCodec(string codecClassName) =>
+        new CodecEmitter(codecClassName + ".Write(ref {Writer}, {Param})", codecClassName + ".Read(ref {Reader})");
+
+    private static string FormatWriteExpression(CodecEmitter codec, string writerLocal, string parameterName) =>
+        codec.WriteExpression.Replace("{Writer}", writerLocal).Replace("{Param}", parameterName);
+
+    private static string FormatReadExpression(CodecEmitter codec, string readerLocal) =>
+        codec.ReadExpression.Replace("{Reader}", readerLocal);
+
+    private static bool IsAeNamespace(string? declaringNamespace) =>
+        string.Equals(declaringNamespace, "OpcClassic.Ae", System.StringComparison.Ordinal) ||
+        (declaringNamespace is not null && declaringNamespace.StartsWith("OpcClassic.Ae.", System.StringComparison.Ordinal));
 
     private static string ParameterList(ImmutableArray<IParameterSymbol> parameters)
     {
@@ -861,6 +883,18 @@ namespace OpcClassic.Generators
         TaskOfT,
     }
 
+    private readonly struct CodecEmitter
+    {
+        public CodecEmitter(string writeExpression, string readExpression)
+        {
+            WriteExpression = writeExpression;
+            ReadExpression = readExpression;
+        }
+
+        public string WriteExpression { get; }
+        public string ReadExpression { get; }
+    }
+
     private sealed class ParameterModel
     {
         public ParameterModel(string name, string marshallingType, bool isCancellationToken)
@@ -893,6 +927,7 @@ namespace OpcClassic.Generators
             string? taskResultMarshallingType,
             string? unsupportedMarshallingType,
             string? cancellationTokenParameterName,
+            string? declaringNamespace,
             Location location)
         {
             Name = name;
@@ -911,6 +946,7 @@ namespace OpcClassic.Generators
             UnsupportedMarshallingType = unsupportedMarshallingType;
             IsFullyMarshallable = taskReturnKind != TaskReturnKind.Unsupported && unsupportedMarshallingType is null;
             CancellationTokenParameterName = cancellationTokenParameterName;
+            DeclaringNamespace = declaringNamespace;
             Location = location;
         }
 
@@ -930,6 +966,7 @@ namespace OpcClassic.Generators
         public string? UnsupportedMarshallingType { get; }
         public bool IsFullyMarshallable { get; }
         public string? CancellationTokenParameterName { get; }
+        public string? DeclaringNamespace { get; }
         public Location Location { get; }
     }
 

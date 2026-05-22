@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using OpcClassic.Ae;
+using OpcClassic.Da;
 using OpcClassic.Ndr;
 using OpcClassic.Testing;
 using TUnit.Core;
@@ -29,12 +31,16 @@ public sealed class OpcProxyGeneratorMarshallingTests
 {
     private const string SampleSource = """
         using OpcClassic;
+        using OpcClassic.Ae;
+        using OpcClassic.Da;
         using OpcClassic.Generators;
         using System;
         using System.Threading;
         using System.Threading.Tasks;
 
         namespace Test;
+
+        public sealed class UnknownPayload { }
 
         [OpcInterface("33333333-4444-5555-6666-777777777777")]
         [GenerateOpcProxy]
@@ -44,7 +50,27 @@ public sealed class OpcProxyGeneratorMarshallingTests
             [OpcMethod(4)] Task<string> GetNameAsync(int handle, CancellationToken ct);
             [OpcMethod(5)] Task WriteAsync(int handle, double value);
             [OpcMethod(6)] Task<Guid> GetServerIdAsync();
-            [OpcMethod(7)] Task<int> WithComplexParamAsync(OpcVariant variant);
+            [OpcMethod(7)] Task<OpcVariant> EchoVariantAsync(OpcVariant variant);
+            [OpcMethod(8)] Task<int> WriteItemStateAsync(OpcItemState state);
+            [OpcMethod(9)] Task<OpcConditionState> GetConditionStateAsync();
+            [OpcMethod(10)] Task<UnknownPayload> WithUnknownAsync(UnknownPayload payload);
+            [OpcMethod(11)] Task<OpcItemDef> MixedAsync(int id, OpcVariant value);
+            [OpcMethod(12)] Task<OpcSafeArray> EchoSafeArrayAsync(OpcSafeArray value);
+        }
+        """;
+
+    private const string AeStatusSource = """
+        using OpcClassic;
+        using OpcClassic.Generators;
+        using System.Threading.Tasks;
+
+        namespace OpcClassic.Ae;
+
+        [OpcInterface("33333333-4444-5555-6666-777777777779")]
+        [GenerateOpcProxy]
+        public partial interface IAeMarshalTest
+        {
+            [OpcMethod(1)] Task<OpcServerStatus> GetStatusAsync();
         }
         """;
 
@@ -86,14 +112,67 @@ public sealed class OpcProxyGeneratorMarshallingTests
     }
 
     [Test]
-    public async Task WithComplexParamAsync_falls_back_to_empty_payload_placeholder()
+    public async Task EchoVariantAsync_emits_variant_request_and_response_marshalling()
     {
-        string method = GeneratedMethodSection("WithComplexParamAsync");
+        string method = GeneratedMethodSection("EchoVariantAsync");
 
-        await Assert.That(method.Contains("WriteInt32", StringComparison.Ordinal)).IsFalse();
-        await Assert.That(method.Contains("ReadInt32", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method).Contains("global::OpcClassic.Ndr.NdrVariantExtensions.WriteVariant(ref __opcWriter, variant)");
+        await Assert.That(method).Contains("global::OpcClassic.Ndr.NdrVariantExtensions.ReadVariant(ref __opcReader)");
+    }
+
+    [Test]
+    public async Task WriteItemStateAsync_emits_item_state_codec_and_int32_response_marshalling()
+    {
+        string method = GeneratedMethodSection("WriteItemStateAsync");
+
+        await Assert.That(method).Contains("global::OpcClassic.Da.Ndr.NdrOpcItemStateCodec.Write(ref __opcWriter, state)");
+        await Assert.That(method).Contains("ReadInt32()");
+    }
+
+    [Test]
+    public async Task GetConditionStateAsync_emits_condition_state_response_codec()
+    {
+        string method = GeneratedMethodSection("GetConditionStateAsync");
+
+        await Assert.That(method).Contains("global::OpcClassic.Ae.Ndr.NdrOpcConditionStateCodec.Read(ref __opcReader)");
+    }
+
+    [Test]
+    public async Task WithUnknownAsync_falls_back_to_empty_payload_placeholder()
+    {
+        string method = GeneratedMethodSection("WithUnknownAsync");
+
         await Assert.That(method).Contains("global::System.ReadOnlyMemory<byte>.Empty");
         await Assert.That(method).Contains("return default!;");
+        await Assert.That(method.Contains("NdrVariantExtensions", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method.Contains("NdrOpcItemStateCodec", StringComparison.Ordinal)).IsFalse();
+    }
+
+    [Test]
+    public async Task MixedAsync_emits_primitive_variant_and_item_def_marshalling()
+    {
+        string method = GeneratedMethodSection("MixedAsync");
+
+        await Assert.That(method).Contains("WriteInt32(id)");
+        await Assert.That(method).Contains("global::OpcClassic.Ndr.NdrVariantExtensions.WriteVariant(ref __opcWriter, value)");
+        await Assert.That(method).Contains("global::OpcClassic.Da.Ndr.NdrOpcItemDefCodec.Read(ref __opcReader)");
+    }
+
+    [Test]
+    public async Task EchoSafeArrayAsync_emits_safe_array_request_and_response_marshalling()
+    {
+        string method = GeneratedMethodSection("EchoSafeArrayAsync");
+
+        await Assert.That(method).Contains("global::OpcClassic.Ndr.NdrSafeArrayExtensions.WriteSafeArray(ref __opcWriter, value)");
+        await Assert.That(method).Contains("global::OpcClassic.Ndr.NdrSafeArrayExtensions.ReadSafeArray(ref __opcReader)");
+    }
+
+    [Test]
+    public async Task AeStatusMethod_emits_event_server_status_codec()
+    {
+        string method = GeneratedMethodSection("GetStatusAsync", AeStatusSource);
+
+        await Assert.That(method).Contains("global::OpcClassic.Ae.Ndr.NdrOpcEventServerStatusCodec.Read(ref __opcReader)");
     }
 
     [Test]
@@ -125,9 +204,9 @@ public sealed class OpcProxyGeneratorMarshallingTests
         await Assert.That(Convert.ToHexString(observedPayload!)).IsEqualTo(Convert.ToHexString(expectedPayload));
     }
 
-    private static string GeneratedMethodSection(string methodName)
+    private static string GeneratedMethodSection(string methodName, string? source = null)
     {
-        GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out _);
+        GeneratorDriverRunResult result = RunGenerator(source ?? SampleSource, out Compilation outputCompilation, out _);
         ThrowIfCompilationHasErrors(outputCompilation);
         return MethodSection(GeneratedProxySource(result), methodName);
     }
@@ -209,6 +288,8 @@ public sealed class OpcProxyGeneratorMarshallingTests
         }
 
         yield return MetadataReference.CreateFromFile(typeof(ICallChannel).Assembly.Location);
+        yield return MetadataReference.CreateFromFile(typeof(OpcConditionState).Assembly.Location);
+        yield return MetadataReference.CreateFromFile(typeof(OpcItemState).Assembly.Location);
     }
 
     private static byte[] EncodeRequest(int id, string name)
