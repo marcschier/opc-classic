@@ -1,0 +1,80 @@
+//
+// SPDX-License-Identifier: EPL-1.0
+// Copyright (c) 2026 OPC Classic .NET Contributors
+//
+// HttpClient-based OPC XML-DA 1.0 client. Constructs SOAP envelopes via
+// OpcClassic.Xml.Serialization, POSTs them as text/xml with the
+// per-operation SOAPAction header, then deserializes the response.
+//
+// Cross-platform by construction — relies only on System.Net.Http and
+// System.Xml; no DCOM, no NTLM, no Win32 dependencies.
+//
+
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+using OpcClassic.Xml.Serialization;
+
+namespace OpcClassic.Xml;
+
+/// <summary>
+/// SOAP-over-HTTP implementation of <see cref="IXmlDaClient"/>.
+/// </summary>
+public sealed class HttpXmlDaClient : IXmlDaClient
+{
+    private readonly HttpClient _http;
+    private readonly Uri _endpoint;
+
+    /// <summary>
+    /// Creates a new client targeting the supplied XML-DA endpoint.
+    /// The <see cref="HttpClient"/> lifetime is the caller's
+    /// responsibility — typical usage is a process-wide singleton.
+    /// </summary>
+    public HttpXmlDaClient(HttpClient httpClient, Uri endpoint)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(endpoint);
+        _http = httpClient;
+        _endpoint = endpoint;
+    }
+
+    /// <inheritdoc />
+    public async Task<XmlDaServerStatus> GetStatusAsync(
+        XmlDaRequestHeader header,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(header);
+
+        byte[] requestBytes;
+        using (var ms = new MemoryStream(capacity: 256))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
+                GetStatusSerializer.WriteRequest(w, header);
+            }
+            requestBytes = ms.ToArray();
+        }
+
+        using var content = new ByteArrayContent(requestBytes);
+        content.Headers.ContentType = new MediaTypeHeaderValue("text/xml")
+        {
+            CharSet = "utf-8",
+        };
+        content.Headers.Add("SOAPAction", "\"" + XmlDaConstants.SoapActionGetStatus + "\"");
+
+        using var response = await _http.PostAsync(_endpoint, content, cancellationToken).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+
+        Stream responseStream = await response.Content
+            .ReadAsStreamAsync(cancellationToken)
+            .ConfigureAwait(false);
+        await using (responseStream.ConfigureAwait(false))
+        {
+            using var reader = new SoapEnvelopeReader(responseStream);
+            return GetStatusSerializer.ReadResponse(reader);
+        }
+    }
+}
