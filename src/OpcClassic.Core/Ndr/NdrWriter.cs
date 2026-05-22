@@ -286,6 +286,123 @@ public ref struct NdrWriter
         _position += 2;
     }
 
+    // -------- Conformant arrays of primitive types --------
+
+    /// <summary>
+    /// Writes a conformant array of bytes: 4-byte count + raw bytes
+    /// (no element alignment since bytes are 1-aligned).
+    /// </summary>
+    public void WriteConformantByteArray(ReadOnlySpan<byte> values)
+    {
+        WriteConformanceHeader(values.Length);
+        WriteRawBytes(values);
+    }
+
+    /// <summary>Writes a conformant array of Int16 values.</summary>
+    public void WriteConformantInt16Array(ReadOnlySpan<short> values)
+    {
+        WriteConformanceHeader(values.Length);
+        AlignTo(2);
+        EnsureCapacity(values.Length * 2);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteInt16LittleEndian(_buffer.Slice(_position, 2), values[i]);
+            _position += 2;
+        }
+    }
+
+    /// <summary>Writes a conformant array of UInt16 values.</summary>
+    public void WriteConformantUInt16Array(ReadOnlySpan<ushort> values)
+    {
+        WriteConformanceHeader(values.Length);
+        AlignTo(2);
+        EnsureCapacity(values.Length * 2);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), values[i]);
+            _position += 2;
+        }
+    }
+
+    /// <summary>Writes a conformant array of Int32 values.</summary>
+    public void WriteConformantInt32Array(ReadOnlySpan<int> values)
+    {
+        WriteConformanceHeader(values.Length);
+        EnsureCapacity(values.Length * 4);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteInt32LittleEndian(_buffer.Slice(_position, 4), values[i]);
+            _position += 4;
+        }
+    }
+
+    /// <summary>Writes a conformant array of UInt32 values.</summary>
+    public void WriteConformantUInt32Array(ReadOnlySpan<uint> values)
+    {
+        WriteConformanceHeader(values.Length);
+        EnsureCapacity(values.Length * 4);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteUInt32LittleEndian(_buffer.Slice(_position, 4), values[i]);
+            _position += 4;
+        }
+    }
+
+    /// <summary>Writes a conformant array of Int64 values.</summary>
+    public void WriteConformantInt64Array(ReadOnlySpan<long> values)
+    {
+        WriteConformanceHeader(values.Length);
+        AlignTo(8);
+        EnsureCapacity(values.Length * 8);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteInt64LittleEndian(_buffer.Slice(_position, 8), values[i]);
+            _position += 8;
+        }
+    }
+
+    /// <summary>Writes a conformant array of Single (float) values.</summary>
+    public void WriteConformantSingleArray(ReadOnlySpan<float> values)
+    {
+        WriteConformanceHeader(values.Length);
+        EnsureCapacity(values.Length * 4);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteSingleLittleEndian(_buffer.Slice(_position, 4), values[i]);
+            _position += 4;
+        }
+    }
+
+    /// <summary>Writes a conformant array of Double values.</summary>
+    public void WriteConformantDoubleArray(ReadOnlySpan<double> values)
+    {
+        WriteConformanceHeader(values.Length);
+        AlignTo(8);
+        EnsureCapacity(values.Length * 8);
+        for (int i = 0; i < values.Length; i++)
+        {
+            BinaryPrimitives.WriteDoubleLittleEndian(_buffer.Slice(_position, 8), values[i]);
+            _position += 8;
+        }
+    }
+
+    /// <summary>Writes a conformant array of Guid values (each 16 bytes, aligned to 4).</summary>
+    public void WriteConformantGuidArray(ReadOnlySpan<Guid> values)
+    {
+        WriteConformanceHeader(values.Length);
+        AlignTo(4);
+        EnsureCapacity(values.Length * 16);
+        for (int i = 0; i < values.Length; i++)
+        {
+            bool ok = values[i].TryWriteBytes(_buffer.Slice(_position, 16));
+            if (!ok)
+            {
+                throw new InvalidOperationException("Guid.TryWriteBytes failed unexpectedly.");
+            }
+            _position += 16;
+        }
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void EnsureCapacity(int additionalBytes)
     {

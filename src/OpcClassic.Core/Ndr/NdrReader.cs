@@ -252,6 +252,136 @@ public ref struct NdrReader
         return span;
     }
 
+    // -------- Conformant arrays of primitive types --------
+
+    /// <summary>Reads a conformant array of bytes (uint count + raw bytes).</summary>
+    public byte[] ReadConformantByteArray()
+    {
+        int count = ReadConformanceHeader();
+        EnsureAvailable(count);
+        var result = new byte[count];
+        _buffer.Slice(_position, count).CopyTo(result);
+        _position += count;
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Int16 values.</summary>
+    public short[] ReadConformantInt16Array()
+    {
+        int count = ReadConformanceHeader();
+        AlignTo(2);
+        EnsureAvailable(count * 2);
+        var result = new short[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadInt16LittleEndian(_buffer.Slice(_position, 2));
+            _position += 2;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of UInt16 values.</summary>
+    public ushort[] ReadConformantUInt16Array()
+    {
+        int count = ReadConformanceHeader();
+        AlignTo(2);
+        EnsureAvailable(count * 2);
+        var result = new ushort[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadUInt16LittleEndian(_buffer.Slice(_position, 2));
+            _position += 2;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Int32 values.</summary>
+    public int[] ReadConformantInt32Array()
+    {
+        int count = ReadConformanceHeader();
+        EnsureAvailable(count * 4);
+        var result = new int[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadInt32LittleEndian(_buffer.Slice(_position, 4));
+            _position += 4;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of UInt32 values.</summary>
+    public uint[] ReadConformantUInt32Array()
+    {
+        int count = ReadConformanceHeader();
+        EnsureAvailable(count * 4);
+        var result = new uint[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadUInt32LittleEndian(_buffer.Slice(_position, 4));
+            _position += 4;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Int64 values.</summary>
+    public long[] ReadConformantInt64Array()
+    {
+        int count = ReadConformanceHeader();
+        AlignTo(8);
+        EnsureAvailable(count * 8);
+        var result = new long[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadInt64LittleEndian(_buffer.Slice(_position, 8));
+            _position += 8;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Single (float) values.</summary>
+    public float[] ReadConformantSingleArray()
+    {
+        int count = ReadConformanceHeader();
+        EnsureAvailable(count * 4);
+        var result = new float[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadSingleLittleEndian(_buffer.Slice(_position, 4));
+            _position += 4;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Double values.</summary>
+    public double[] ReadConformantDoubleArray()
+    {
+        int count = ReadConformanceHeader();
+        AlignTo(8);
+        EnsureAvailable(count * 8);
+        var result = new double[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = BinaryPrimitives.ReadDoubleLittleEndian(_buffer.Slice(_position, 8));
+            _position += 8;
+        }
+        return result;
+    }
+
+    /// <summary>Reads a conformant array of Guid values.</summary>
+    public Guid[] ReadConformantGuidArray()
+    {
+        int count = ReadConformanceHeader();
+        AlignTo(4);
+        EnsureAvailable(count * 16);
+        var result = new Guid[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = new Guid(_buffer.Slice(_position, 16));
+            _position += 16;
+        }
+        return result;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void EnsureAvailable(int requiredBytes)
     {
