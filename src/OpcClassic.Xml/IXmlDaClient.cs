@@ -36,6 +36,11 @@ public interface IXmlDaClient
     Task<XmlDaBrowseResponse> BrowseAsync(XmlDaBrowseRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Creates a server-side subscription and returns the subscription handle.
+    /// </summary>
+    Task<XmlDaSubscribeResponse> SubscribeAsync(XmlDaSubscribeRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Cancels a server-side subscription previously created via Subscribe.
     /// </summary>
     Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default);
