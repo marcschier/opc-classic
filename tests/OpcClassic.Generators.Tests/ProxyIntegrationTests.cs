@@ -6,6 +6,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using OpcClassic.Ndr;
 using OpcClassic.Testing;
 using TUnit.Core;
 
@@ -63,7 +64,7 @@ public sealed class ProxyIntegrationTests
         {
             observedInterfaceId = interfaceId;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32(0)));
         });
         var proxy = new IDemoService_ClientProxy(channel);
 
@@ -103,8 +104,16 @@ public sealed class ProxyIntegrationTests
     [Test]
     public async Task Multiple_method_invocations_log_correctly()
     {
-        var channel = new InMemoryCallChannel(static (_, _, _, _) =>
-            Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty)));
+        var channel = new InMemoryCallChannel(static (_, opnum, _, _) =>
+        {
+            ReadOnlyMemory<byte> responsePayload = opnum switch
+            {
+                IDemoService.Opnums.ReadCountAsync => EncodeInt32(0),
+                IDemoService.Opnums.GetLabelAsync => EncodeUnicodeStringPtr("demo"),
+                _ => ReadOnlyMemory<byte>.Empty,
+            };
+            return Task.FromResult(new NdrCallResult(0, responsePayload));
+        });
         var proxy = new IDemoService_ClientProxy(channel);
 
         await proxy.PingAsync(CancellationToken.None);
@@ -116,6 +125,22 @@ public sealed class ProxyIntegrationTests
         await Assert.That(callLog[0].Opnum).IsEqualTo(IDemoService.Opnums.PingAsync);
         await Assert.That(callLog[1].Opnum).IsEqualTo(IDemoService.Opnums.ReadCountAsync);
         await Assert.That(callLog[2].Opnum).IsEqualTo(IDemoService.Opnums.GetLabelAsync);
+    }
+
+    private static ReadOnlyMemory<byte> EncodeInt32(int value)
+    {
+        var buffer = new byte[16];
+        var writer = new NdrWriter(buffer);
+        writer.WriteInt32(value);
+        return buffer.AsMemory(0, writer.Position).ToArray();
+    }
+
+    private static ReadOnlyMemory<byte> EncodeUnicodeStringPtr(string value)
+    {
+        var buffer = new byte[128];
+        var writer = new NdrWriter(buffer);
+        writer.WriteUnicodeStringPtr(value);
+        return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
     private static async Task<TException> CaptureAsync<TException>(Func<Task> action)

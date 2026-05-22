@@ -11,3 +11,4 @@ OPCGEN003| OpcClassic.Generators     | Error    | Duplicate OpcMethod opnum on t
 OPCGEN004| OpcClassic.Generators     | Error    | OpcProxy target must be partial.
 OPCGEN005| OpcClassic.Generators     | Warning  | OpcProxy target should be decorated with [OpcInterface].
 OPCGEN006| OpcClassic.Generators     | Warning  | OpcMethod with ref/out parameter cannot have generated body; falling back to NotImplementedException.
+OPCGEN008| OpcClassic.Generators     | Info     | OpcMethod has unsupported parameter/return type; emitting empty-payload placeholder body.

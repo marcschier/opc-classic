@@ -45,6 +45,31 @@ namespace OpcClassic.Generators
             SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions |
             SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
+    private static readonly SymbolDisplayFormat CodecTypeDisplayFormat =
+        SymbolDisplayFormat.FullyQualifiedFormat.WithMiscellaneousOptions(
+            (SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions |
+             SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier) &
+            ~SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+
+    private static readonly Dictionary<string, (string? Writer, string? Reader)> PrimitiveCodecs =
+        new(System.StringComparer.Ordinal)
+        {
+            { "global::System.Int32", ("WriteInt32", "ReadInt32") },
+            { "global::System.UInt32", ("WriteUInt32", "ReadUInt32") },
+            { "global::System.Int16", ("WriteInt16", "ReadInt16") },
+            { "global::System.UInt16", ("WriteUInt16", "ReadUInt16") },
+            { "global::System.Int64", ("WriteInt64", "ReadInt64") },
+            { "global::System.UInt64", ("WriteUInt64", "ReadUInt64") },
+            { "global::System.Single", ("WriteSingle", "ReadSingle") },
+            { "global::System.Double", ("WriteDouble", "ReadDouble") },
+            { "global::System.Boolean", (null, null) },
+            { "global::System.Guid", ("WriteGuid", "ReadGuid") },
+            { "global::System.String", (null, null) },
+            { "global::System.String?", (null, null) },
+            { "string", (null, null) },
+            { "string?", (null, null) },
+        };
+
     private static readonly DiagnosticDescriptor NotPartialDescriptor = new(
         id: "OPCGEN004",
         title: "OpcProxy target must be partial",
@@ -67,6 +92,14 @@ namespace OpcClassic.Generators
         messageFormat: "Method '{0}' is decorated with [OpcMethod] but has a ref/out parameter; falling back to NotImplementedException",
         category: "OpcClassic.Generators",
         defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true);
+
+    private static readonly DiagnosticDescriptor UnsupportedMarshallingDescriptor = new(
+        id: "OPCGEN008",
+        title: "OpcMethod has unsupported parameter or return type",
+        messageFormat: "Method '{0}' uses unsupported OPC method type '{1}'; emitting empty-payload placeholder body",
+        category: "OpcClassic.Generators",
+        defaultSeverity: DiagnosticSeverity.Info,
         isEnabledByDefault: true);
 
     /// <inheritdoc />
@@ -140,6 +173,7 @@ namespace OpcClassic.Generators
     {
         var outParameters = ImmutableArray.CreateBuilder<string>();
         var parameterNames = ImmutableArray.CreateBuilder<string>();
+        var parameters = ImmutableArray.CreateBuilder<ParameterModel>();
         string? cancellationTokenParameterName = null;
         bool hasUnsupportedRefOutParameter = false;
 
@@ -157,17 +191,26 @@ namespace OpcClassic.Generators
                 hasUnsupportedRefOutParameter = true;
             }
 
-            if (cancellationTokenParameterName is null &&
-                string.Equals(
-                    parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                    "global::System.Threading.CancellationToken",
-                    System.StringComparison.Ordinal))
+            bool isCancellationToken = string.Equals(
+                parameter.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                "global::System.Threading.CancellationToken",
+                System.StringComparison.Ordinal);
+            if (cancellationTokenParameterName is null && isCancellationToken)
             {
                 cancellationTokenParameterName = EscapeIdentifier(parameter.Name);
             }
+
+            parameters.Add(new ParameterModel(
+                name: EscapeIdentifier(parameter.Name),
+                marshallingType: parameter.Type.ToDisplayString(CodecTypeDisplayFormat),
+                isCancellationToken: isCancellationToken));
         }
 
-        var taskReturnKind = ClassifyTaskReturn(method.ReturnType, out string? taskResultType);
+        var taskReturnKind = ClassifyTaskReturn(method.ReturnType, out string? taskResultType, out string? taskResultMarshallingType);
+        string? unsupportedMarshallingType = FindUnsupportedMarshallingType(
+            parameters,
+            taskReturnKind,
+            taskResultMarshallingType);
 
         return new MethodModel(
             name: method.Name,
@@ -177,10 +220,13 @@ namespace OpcClassic.Generators
             constraintClauses: ConstraintClauses(method.TypeParameters),
             outParameters: outParameters.ToImmutable(),
             parameterNames: parameterNames.ToImmutable(),
+            parameters: parameters.ToImmutable(),
             hasOpcMethodAttribute: HasOpcMethodAttribute(method),
             hasUnsupportedRefOutParameter: hasUnsupportedRefOutParameter,
             taskReturnKind: taskReturnKind,
             taskResultType: taskResultType,
+            taskResultMarshallingType: taskResultMarshallingType,
+            unsupportedMarshallingType: unsupportedMarshallingType,
             cancellationTokenParameterName: cancellationTokenParameterName,
             location: method.Locations.IsDefaultOrEmpty ? Location.None : method.Locations[0]);
     }
@@ -252,6 +298,16 @@ namespace OpcClassic.Generators
             {
                 spc.ReportDiagnostic(Diagnostic.Create(OpcMethodRefOutDescriptor, method.Location, method.Name));
             }
+            else if (method.HasOpcMethodAttribute &&
+                method.TaskReturnKind != TaskReturnKind.Unsupported &&
+                !method.IsFullyMarshallable)
+            {
+                spc.ReportDiagnostic(Diagnostic.Create(
+                    UnsupportedMarshallingDescriptor,
+                    method.Location,
+                    method.Name,
+                    method.UnsupportedMarshallingType ?? "<unknown>"));
+            }
 
             EmitMethod(sb, indent, model.Name, model.FullyQualifiedName, method);
         }
@@ -265,7 +321,7 @@ namespace OpcClassic.Generators
 
         sb.AppendLine();
         sb.Append(indent).Append("    public ");
-        if (emitInvokeBody)
+        if (emitInvokeBody && !method.IsFullyMarshallable)
         {
             sb.Append("async ");
         }
@@ -300,6 +356,17 @@ namespace OpcClassic.Generators
 
     private static void EmitInvokeAsyncBody(StringBuilder sb, string indent, string fullyQualifiedInterfaceName, MethodModel method)
     {
+        if (method.IsFullyMarshallable)
+        {
+            EmitMarshalledInvokeAsyncBody(sb, indent, fullyQualifiedInterfaceName, method);
+            return;
+        }
+
+        EmitEmptyPayloadInvokeAsyncBody(sb, indent, fullyQualifiedInterfaceName, method);
+    }
+
+    private static void EmitEmptyPayloadInvokeAsyncBody(StringBuilder sb, string indent, string fullyQualifiedInterfaceName, MethodModel method)
+    {
         string cancellationTokenLocal = UniqueLocalName(method.ParameterNames, "__opcCancellationToken");
         string resultLocal = UniqueLocalName(method.ParameterNames, "__opcResult", cancellationTokenLocal);
         string cancellationTokenValue = method.CancellationTokenParameterName ?? "global::System.Threading.CancellationToken.None";
@@ -310,24 +377,241 @@ namespace OpcClassic.Generators
         sb.Append(indent).Append("            ").Append(fullyQualifiedInterfaceName).Append(".Opnums.").Append(method.Name).AppendLine(",");
         sb.Append(indent).AppendLine("            global::System.ReadOnlyMemory<byte>.Empty,");
         sb.Append(indent).Append("            ").Append(cancellationTokenLocal).AppendLine(").ConfigureAwait(false);");
+        EmitFailureCheck(sb, indent, resultLocal);
+
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
+        {
+            sb.Append(indent).Append("        // Unsupported OPC method type '").Append(method.UnsupportedMarshallingType ?? "<unknown>")
+                .AppendLine("'; Phase 6B emits the empty-payload placeholder.");
+            sb.Append(indent).AppendLine("        return default!;");
+        }
+        else
+        {
+            sb.Append(indent).Append("        // Unsupported OPC method type '").Append(method.UnsupportedMarshallingType ?? "<unknown>")
+                .AppendLine("'; Phase 6B emits the empty-payload placeholder.");
+        }
+    }
+
+    private static void EmitMarshalledInvokeAsyncBody(StringBuilder sb, string indent, string fullyQualifiedInterfaceName, MethodModel method)
+    {
+        string cancellationTokenLocal = UniqueLocalName(method.ParameterNames, "__opcCancellationToken");
+        string bufferLocal = UniqueLocalName(method.ParameterNames, "__opcBuffer", cancellationTokenLocal);
+        string payloadLocal = UniqueLocalName(method.ParameterNames, "__opcPayload", cancellationTokenLocal, bufferLocal);
+        string writerLocal = UniqueLocalName(method.ParameterNames, "__opcWriter", cancellationTokenLocal, bufferLocal, payloadLocal);
+        string channelLocal = UniqueLocalName(method.ParameterNames, "__opcChannel", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal);
+        string resultLocal = UniqueLocalName(method.ParameterNames, "__opcResult", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, channelLocal);
+        string responsePayloadLocal = UniqueLocalName(method.ParameterNames, "__opcResponsePayload", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, channelLocal, resultLocal);
+        string responseSpanLocal = UniqueLocalName(method.ParameterNames, "__opcResponseSpan", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, channelLocal, resultLocal, responsePayloadLocal);
+        string readerLocal = UniqueLocalName(method.ParameterNames, "__opcReader", cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, channelLocal, resultLocal, responsePayloadLocal, responseSpanLocal);
+        string cancellationTokenValue = method.CancellationTokenParameterName ?? "global::System.Threading.CancellationToken.None";
+
+        EmitEncodeAndInvokeReturn(sb, indent, method, cancellationTokenLocal, bufferLocal, payloadLocal, writerLocal, cancellationTokenValue);
+        sb.AppendLine();
+        EmitInvokeCoreLocalFunction(sb, indent, fullyQualifiedInterfaceName, method, channelLocal, payloadLocal, bufferLocal, cancellationTokenLocal, resultLocal);
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
+        {
+            sb.AppendLine();
+            EmitDecodeResponseLocalFunction(sb, indent, method, responsePayloadLocal, responseSpanLocal, readerLocal);
+        }
+    }
+
+    private static void EmitEncodeAndInvokeReturn(
+        StringBuilder sb,
+        string indent,
+        MethodModel method,
+        string cancellationTokenLocal,
+        string bufferLocal,
+        string payloadLocal,
+        string writerLocal,
+        string cancellationTokenValue)
+    {
+        sb.Append(indent).Append("        var ").Append(cancellationTokenLocal).Append(" = ").Append(cancellationTokenValue).AppendLine(";");
+        sb.Append(indent).Append("        var ").Append(bufferLocal).AppendLine(" = global::System.Buffers.ArrayPool<byte>.Shared.Rent(1024);");
+        sb.Append(indent).AppendLine("        try");
+        sb.Append(indent).AppendLine("        {");
+        sb.Append(indent).Append("            global::System.ReadOnlyMemory<byte> ").Append(payloadLocal).AppendLine(";");
+        sb.Append(indent).AppendLine("            {");
+        sb.Append(indent).Append("                var ").Append(writerLocal).Append(" = new global::OpcClassic.Ndr.NdrWriter(new global::System.Span<byte>(")
+            .Append(bufferLocal).AppendLine(", 0, 1024));");
+        foreach (var parameter in method.Parameters)
+        {
+            if (!parameter.IsCancellationToken)
+            {
+                EmitPrimitiveWrite(sb, indent, writerLocal, parameter);
+            }
+        }
+
+        sb.Append(indent).Append("                ").Append(payloadLocal).Append(" = new global::System.ReadOnlyMemory<byte>(")
+            .Append(bufferLocal).Append(", 0, ").Append(writerLocal).AppendLine(".Position);");
+        sb.Append(indent).AppendLine("            }");
+        sb.Append(indent).Append("            return ").Append(InvokeCoreName(method)).Append("(_channel, ").Append(payloadLocal).Append(", ")
+            .Append(bufferLocal).Append(", ").Append(cancellationTokenLocal).AppendLine(");");
+        sb.Append(indent).AppendLine("        }");
+        sb.Append(indent).AppendLine("        catch");
+        sb.Append(indent).AppendLine("        {");
+        sb.Append(indent).Append("            global::System.Buffers.ArrayPool<byte>.Shared.Return(").Append(bufferLocal).AppendLine(");");
+        sb.Append(indent).AppendLine("            throw;");
+        sb.Append(indent).AppendLine("        }");
+    }
+
+    private static void EmitInvokeCoreLocalFunction(
+        StringBuilder sb,
+        string indent,
+        string fullyQualifiedInterfaceName,
+        MethodModel method,
+        string channelLocal,
+        string payloadLocal,
+        string bufferLocal,
+        string cancellationTokenLocal,
+        string resultLocal)
+    {
+        EmitInvokeCoreSignature(sb, indent, method);
+        sb.Append(indent).Append("            global::OpcClassic.ICallChannel ").Append(channelLocal).AppendLine(",");
+        sb.Append(indent).Append("            global::System.ReadOnlyMemory<byte> ").Append(payloadLocal).AppendLine(",");
+        sb.Append(indent).Append("            byte[] ").Append(bufferLocal).AppendLine(",");
+        sb.Append(indent).Append("            global::System.Threading.CancellationToken ").Append(cancellationTokenLocal).AppendLine(")");
+        sb.Append(indent).AppendLine("        {");
+        sb.Append(indent).AppendLine("            try");
+        sb.Append(indent).AppendLine("            {");
+        sb.Append(indent).Append("                var ").Append(resultLocal).Append(" = await ").Append(channelLocal).AppendLine(".InvokeAsync(");
+        sb.Append(indent).Append("                    ").Append(fullyQualifiedInterfaceName).AppendLine(".InterfaceId,");
+        sb.Append(indent).Append("                    ").Append(fullyQualifiedInterfaceName).Append(".Opnums.").Append(method.Name).AppendLine(",");
+        sb.Append(indent).Append("                    ").Append(payloadLocal).AppendLine(",");
+        sb.Append(indent).Append("                    ").Append(cancellationTokenLocal).AppendLine(").ConfigureAwait(false);");
+        EmitFailureCheck(sb, indent + "        ", resultLocal);
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
+        {
+            sb.Append(indent).Append("                return ").Append(DecodeResponseName(method)).Append('(').Append(resultLocal).AppendLine(".ResponsePayload);");
+        }
+
+        sb.Append(indent).AppendLine("            }");
+        sb.Append(indent).AppendLine("            finally");
+        sb.Append(indent).AppendLine("            {");
+        sb.Append(indent).Append("                global::System.Buffers.ArrayPool<byte>.Shared.Return(").Append(bufferLocal).AppendLine(");");
+        sb.Append(indent).AppendLine("            }");
+        sb.Append(indent).AppendLine("        }");
+    }
+
+    private static void EmitInvokeCoreSignature(StringBuilder sb, string indent, MethodModel method)
+    {
+        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
+        {
+            sb.Append(indent).Append("        static async ").Append(method.ReturnType).Append(' ').Append(InvokeCoreName(method)).AppendLine("(");
+        }
+        else
+        {
+            sb.Append(indent).Append("        static async global::System.Threading.Tasks.Task ").Append(InvokeCoreName(method)).AppendLine("(");
+        }
+    }
+
+    private static void EmitDecodeResponseLocalFunction(
+        StringBuilder sb,
+        string indent,
+        MethodModel method,
+        string responsePayloadLocal,
+        string responseSpanLocal,
+        string readerLocal)
+    {
+        sb.Append(indent).Append("        static ").Append(method.TaskResultType).Append(' ').Append(DecodeResponseName(method))
+            .Append("(global::System.ReadOnlyMemory<byte> ").Append(responsePayloadLocal).AppendLine(")");
+        sb.Append(indent).AppendLine("        {");
+        sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;");
+        sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::OpcClassic.Ndr.NdrReader(")
+            .Append(responseSpanLocal).AppendLine(");");
+        sb.Append(indent).Append("            return ").Append(PrimitiveReadExpression(readerLocal, method.TaskResultMarshallingType!)).AppendLine(";");
+        sb.Append(indent).AppendLine("        }");
+    }
+    private static string InvokeCoreName(MethodModel method) => "__opcInvoke" + method.Name + "CoreAsync";
+
+    private static string DecodeResponseName(MethodModel method) => "__opcDecode" + method.Name + "Response";
+
+    private static void EmitFailureCheck(StringBuilder sb, string indent, string resultLocal)
+    {
         sb.Append(indent).Append("        if (").Append(resultLocal).AppendLine(".IsFailure)");
         sb.Append(indent).AppendLine("        {");
         sb.Append(indent).Append("            throw new global::OpcClassic.OpcException(new global::OpcClassic.OpcResultId(")
             .Append(resultLocal).AppendLine(".Hresult, null));");
         sb.Append(indent).AppendLine("        }");
-
-        if (method.TaskReturnKind == TaskReturnKind.TaskOfT)
-        {
-            sb.Append(indent).Append("        // TODO Phase 6B+: NDR-decode ").Append(resultLocal).Append(".ResponsePayload into ")
-                .Append(method.TaskResultType).AppendLine(".");
-            sb.Append(indent).AppendLine("        return default!;");
-        }
-        else
-        {
-            sb.Append(indent).Append("        // TODO Phase 6B+: NDR-decode ").Append(resultLocal)
-                .AppendLine(".ResponsePayload to populate result.");
-        }
     }
+
+    private static string? FindUnsupportedMarshallingType(
+        IEnumerable<ParameterModel> parameters,
+        TaskReturnKind taskReturnKind,
+        string? taskResultMarshallingType)
+    {
+        foreach (var parameter in parameters)
+        {
+            if (!parameter.IsCancellationToken && !TryGetPrimitiveCodec(parameter.MarshallingType, out _))
+            {
+                return parameter.MarshallingType;
+            }
+        }
+
+        if (taskReturnKind == TaskReturnKind.TaskOfT &&
+            (taskResultMarshallingType is null || !TryGetPrimitiveCodec(taskResultMarshallingType, out _)))
+        {
+            return taskResultMarshallingType ?? "<unknown>";
+        }
+
+        return null;
+    }
+
+    private static void EmitPrimitiveWrite(StringBuilder sb, string indent, string writerLocal, ParameterModel parameter)
+    {
+        sb.Append(indent).Append("                ").Append(writerLocal).Append('.');
+        if (IsBoolType(parameter.MarshallingType))
+        {
+            sb.Append("WriteInt32(").Append(parameter.Name).AppendLine(" ? -1 : 0);");
+            return;
+        }
+
+        if (IsStringType(parameter.MarshallingType))
+        {
+            sb.Append("WriteUnicodeStringPtr(").Append(parameter.Name).AppendLine(");");
+            return;
+        }
+
+        if (TryGetPrimitiveCodec(parameter.MarshallingType, out var codec) && codec.Writer is not null)
+        {
+            sb.Append(codec.Writer).Append('(').Append(parameter.Name).AppendLine(");");
+            return;
+        }
+
+        sb.AppendLine("WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
+    }
+
+    private static string PrimitiveReadExpression(string readerLocal, string marshallingType)
+    {
+        if (IsBoolType(marshallingType))
+        {
+            return "(" + readerLocal + ".ReadInt32() != 0)";
+        }
+
+        if (IsStringType(marshallingType))
+        {
+            return readerLocal + ".ReadUnicodeStringPtr()!";
+        }
+
+        if (TryGetPrimitiveCodec(marshallingType, out var codec) && codec.Reader is not null)
+        {
+            return readerLocal + "." + codec.Reader + "()";
+        }
+
+        return "default!";
+    }
+
+    private static bool TryGetPrimitiveCodec(string typeName, out (string? Writer, string? Reader) codec) =>
+        PrimitiveCodecs.TryGetValue(typeName, out codec);
+
+    private static bool IsBoolType(string typeName) =>
+        string.Equals(typeName, "global::System.Boolean", System.StringComparison.Ordinal) ||
+        string.Equals(typeName, "bool", System.StringComparison.Ordinal);
+
+    private static bool IsStringType(string typeName) =>
+        string.Equals(typeName, "global::System.String", System.StringComparison.Ordinal) ||
+        string.Equals(typeName, "global::System.String?", System.StringComparison.Ordinal) ||
+        string.Equals(typeName, "string", System.StringComparison.Ordinal) ||
+        string.Equals(typeName, "string?", System.StringComparison.Ordinal);
 
     private static string ParameterList(ImmutableArray<IParameterSymbol> parameters)
     {
@@ -474,9 +758,13 @@ namespace OpcClassic.Generators
         };
     }
 
-    private static TaskReturnKind ClassifyTaskReturn(ITypeSymbol returnType, out string? taskResultType)
+    private static TaskReturnKind ClassifyTaskReturn(
+        ITypeSymbol returnType,
+        out string? taskResultType,
+        out string? taskResultMarshallingType)
     {
         taskResultType = null;
+        taskResultMarshallingType = null;
         if (returnType is not INamedTypeSymbol namedType ||
             !string.Equals(namedType.Name, "Task", System.StringComparison.Ordinal) ||
             !string.Equals(namedType.ContainingNamespace.ToDisplayString(), "System.Threading.Tasks", System.StringComparison.Ordinal))
@@ -492,6 +780,7 @@ namespace OpcClassic.Generators
         if (namedType.Arity == 1)
         {
             taskResultType = namedType.TypeArguments[0].ToDisplayString(TypeDisplayFormat);
+            taskResultMarshallingType = namedType.TypeArguments[0].ToDisplayString(CodecTypeDisplayFormat);
             return TaskReturnKind.TaskOfT;
         }
 
@@ -526,11 +815,11 @@ namespace OpcClassic.Generators
         return false;
     }
 
-    private static string UniqueLocalName(ImmutableArray<string> parameterNames, string preferredName, string? additionalName = null)
+    private static string UniqueLocalName(ImmutableArray<string> parameterNames, string preferredName, params string[] additionalNames)
     {
         string candidate = preferredName;
         int suffix = 0;
-        while (NameMatches(parameterNames, candidate) || string.Equals(candidate, additionalName, System.StringComparison.Ordinal))
+        while (NameMatches(parameterNames, candidate) || NameMatches(additionalNames, candidate))
         {
             suffix++;
             candidate = preferredName + suffix.ToString(CultureInfo.InvariantCulture);
@@ -539,7 +828,7 @@ namespace OpcClassic.Generators
         return candidate;
     }
 
-    private static bool NameMatches(ImmutableArray<string> names, string candidate)
+    private static bool NameMatches(IEnumerable<string> names, string candidate)
     {
         foreach (var name in names)
         {
@@ -572,6 +861,20 @@ namespace OpcClassic.Generators
         TaskOfT,
     }
 
+    private sealed class ParameterModel
+    {
+        public ParameterModel(string name, string marshallingType, bool isCancellationToken)
+        {
+            Name = name;
+            MarshallingType = marshallingType;
+            IsCancellationToken = isCancellationToken;
+        }
+
+        public string Name { get; }
+        public string MarshallingType { get; }
+        public bool IsCancellationToken { get; }
+    }
+
     private sealed class MethodModel
     {
         public MethodModel(
@@ -582,10 +885,13 @@ namespace OpcClassic.Generators
             string constraintClauses,
             ImmutableArray<string> outParameters,
             ImmutableArray<string> parameterNames,
+            ImmutableArray<ParameterModel> parameters,
             bool hasOpcMethodAttribute,
             bool hasUnsupportedRefOutParameter,
             TaskReturnKind taskReturnKind,
             string? taskResultType,
+            string? taskResultMarshallingType,
+            string? unsupportedMarshallingType,
             string? cancellationTokenParameterName,
             Location location)
         {
@@ -596,10 +902,14 @@ namespace OpcClassic.Generators
             ConstraintClauses = constraintClauses;
             OutParameters = outParameters;
             ParameterNames = parameterNames;
+            Parameters = parameters;
             HasOpcMethodAttribute = hasOpcMethodAttribute;
             HasUnsupportedRefOutParameter = hasUnsupportedRefOutParameter;
             TaskReturnKind = taskReturnKind;
             TaskResultType = taskResultType;
+            TaskResultMarshallingType = taskResultMarshallingType;
+            UnsupportedMarshallingType = unsupportedMarshallingType;
+            IsFullyMarshallable = taskReturnKind != TaskReturnKind.Unsupported && unsupportedMarshallingType is null;
             CancellationTokenParameterName = cancellationTokenParameterName;
             Location = location;
         }
@@ -611,10 +921,14 @@ namespace OpcClassic.Generators
         public string ConstraintClauses { get; }
         public ImmutableArray<string> OutParameters { get; }
         public ImmutableArray<string> ParameterNames { get; }
+        public ImmutableArray<ParameterModel> Parameters { get; }
         public bool HasOpcMethodAttribute { get; }
         public bool HasUnsupportedRefOutParameter { get; }
         public TaskReturnKind TaskReturnKind { get; }
         public string? TaskResultType { get; }
+        public string? TaskResultMarshallingType { get; }
+        public string? UnsupportedMarshallingType { get; }
+        public bool IsFullyMarshallable { get; }
         public string? CancellationTokenParameterName { get; }
         public Location Location { get; }
     }

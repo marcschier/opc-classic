@@ -7,98 +7,122 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using OpcClassic.Generators;
+using OpcClassic.Ndr;
+using OpcClassic.Testing;
 using TUnit.Core;
 
 namespace OpcClassic.Generators.Tests;
 
-public sealed class OpcProxyGeneratorBodyTests
+[OpcInterface("33333333-4444-5555-6666-777777777778")]
+[GenerateOpcProxy]
+public partial interface IMarshalRoundTrip
+{
+    [OpcMethod(8)]
+    Task<int> SomeMethodAsync(int id, string name, CancellationToken ct);
+}
+
+public sealed class OpcProxyGeneratorMarshallingTests
 {
     private const string SampleSource = """
+        using OpcClassic;
         using OpcClassic.Generators;
+        using System;
         using System.Threading;
         using System.Threading.Tasks;
 
         namespace Test;
 
-        [OpcInterface("00000000-0000-0000-0000-000000000002")]
+        [OpcInterface("33333333-4444-5555-6666-777777777777")]
         [GenerateOpcProxy]
-        public partial interface ITestService
+        public partial interface IMarshalTest
         {
-            [OpcMethod(3)] Task DoNothingAsync(CancellationToken ct);
-            [OpcMethod(4)] Task<int> ReadAsync(int id, CancellationToken ct);
-            [OpcMethod(5)] Task<string> GetNameAsync();
-            Task<string> WithoutOpcMethodAsync();
-            [OpcMethod(6)] void SyncMethod();
-            [OpcMethod(7)] Task BadAsync(out int x);
+            [OpcMethod(3)] Task<int> ReadCountAsync(int id, CancellationToken ct);
+            [OpcMethod(4)] Task<string> GetNameAsync(int handle, CancellationToken ct);
+            [OpcMethod(5)] Task WriteAsync(int handle, double value);
+            [OpcMethod(6)] Task<Guid> GetServerIdAsync();
+            [OpcMethod(7)] Task<int> WithComplexParamAsync(OpcVariant variant);
         }
         """;
 
     [Test]
-    public async Task DoNothingAsync_emits_invoke_async_no_result()
+    public async Task ReadCountAsync_emits_int32_request_and_response_marshalling()
     {
-        string method = GeneratedMethodSection("DoNothingAsync");
+        string method = GeneratedMethodSection("ReadCountAsync");
 
-        await Assert.That(method).Contains("InvokeAsync(");
-        await Assert.That(method).Contains("global::Test.ITestService.InterfaceId");
-        await Assert.That(method).Contains("global::Test.ITestService.Opnums.DoNothingAsync");
-        await Assert.That(method.Contains("NotImplementedException", StringComparison.Ordinal)).IsFalse();
-    }
-
-    [Test]
-    public async Task ReadAsync_emits_invoke_async_with_int_marshalling()
-    {
-        string method = GeneratedMethodSection("ReadAsync");
-
-        await Assert.That(method).Contains("InvokeAsync(");
-        await Assert.That(method).Contains("global::Test.ITestService.Opnums.ReadAsync");
+        await Assert.That(method).Contains("global::System.Buffers.ArrayPool<byte>.Shared.Rent");
         await Assert.That(method).Contains("WriteInt32(id)");
         await Assert.That(method).Contains("ReadInt32()");
-        await Assert.That(method.Contains("return default!;", StringComparison.Ordinal)).IsFalse();
     }
 
     [Test]
-    public async Task GetNameAsync_uses_CancellationToken_None()
+    public async Task GetNameAsync_emits_int32_request_and_lpwstr_response_marshalling()
     {
         string method = GeneratedMethodSection("GetNameAsync");
 
-        await Assert.That(method).Contains("global::System.Threading.CancellationToken.None");
-        await Assert.That(method).Contains("global::Test.ITestService.Opnums.GetNameAsync");
+        await Assert.That(method).Contains("WriteInt32(handle)");
+        await Assert.That(method).Contains("ReadUnicodeStringPtr");
     }
 
     [Test]
-    public async Task WithoutOpcMethodAsync_keeps_NotImplementedException_stub()
+    public async Task WriteAsync_emits_arguments_without_response_reader()
     {
-        string method = GeneratedMethodSection("WithoutOpcMethodAsync");
+        string method = GeneratedMethodSection("WriteAsync");
 
-        await Assert.That(method).Contains("NotImplementedException");
-        await Assert.That(method.Contains("InvokeAsync", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method).Contains("WriteInt32(handle)");
+        await Assert.That(method).Contains("WriteDouble(value)");
+        await Assert.That(method.Contains("NdrReader", StringComparison.Ordinal)).IsFalse();
     }
 
     [Test]
-    public async Task SyncMethod_keeps_NotImplementedException_stub()
+    public async Task GetServerIdAsync_emits_guid_response_marshalling()
     {
-        string method = GeneratedMethodSection("SyncMethod");
+        string method = GeneratedMethodSection("GetServerIdAsync");
 
-        await Assert.That(method).Contains("NotImplementedException");
-        await Assert.That(method.Contains("InvokeAsync", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method).Contains("ReadGuid()");
     }
 
     [Test]
-    public async Task BadAsync_with_out_param_keeps_NotImplementedException_stub_and_reports_OPCGEN006()
+    public async Task WithComplexParamAsync_falls_back_to_empty_payload_placeholder()
     {
-        GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics);
-        ThrowIfCompilationHasErrors(outputCompilation);
-        string generated = GeneratedProxySource(result);
-        string method = MethodSection(generated, "BadAsync");
-        var diagnostics = result.Results.SelectMany(static generator => generator.Diagnostics).Concat(driverDiagnostics);
+        string method = GeneratedMethodSection("WithComplexParamAsync");
 
-        await Assert.That(method).Contains("x = default!;");
-        await Assert.That(method).Contains("NotImplementedException");
-        await Assert.That(method.Contains("InvokeAsync", StringComparison.Ordinal)).IsFalse();
-        await Assert.That(diagnostics.Any(static diagnostic => diagnostic.Id == "OPCGEN006")).IsTrue();
+        await Assert.That(method.Contains("WriteInt32", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method.Contains("ReadInt32", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(method).Contains("global::System.ReadOnlyMemory<byte>.Empty");
+        await Assert.That(method).Contains("return default!;");
+    }
+
+    [Test]
+    public async Task Proxy_round_trip_encodes_request_payload_and_decodes_response_payload()
+    {
+        byte[] expectedPayload = EncodeRequest(42, "hello");
+        ReadOnlyMemory<byte> responsePayload = EncodeInt32(7);
+        byte[]? observedPayload = null;
+        Guid observedInterfaceId = Guid.Empty;
+        int observedOpnum = -1;
+        CancellationToken observedCancellationToken = default;
+        var channel = new InMemoryCallChannel((interfaceId, opnum, requestPayload, cancellationToken) =>
+        {
+            observedInterfaceId = interfaceId;
+            observedOpnum = opnum;
+            observedCancellationToken = cancellationToken;
+            observedPayload = requestPayload.ToArray();
+            return Task.FromResult(new NdrCallResult(0, responsePayload));
+        });
+        var proxy = new IMarshalRoundTrip_ClientProxy(channel);
+
+        int result = await proxy.SomeMethodAsync(42, "hello", CancellationToken.None);
+
+        await Assert.That(result).IsEqualTo(7);
+        await Assert.That(observedInterfaceId).IsEqualTo(IMarshalRoundTrip.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IMarshalRoundTrip.Opnums.SomeMethodAsync);
+        await Assert.That(observedCancellationToken).IsEqualTo(CancellationToken.None);
+        await Assert.That(observedPayload is not null).IsTrue();
+        await Assert.That(Convert.ToHexString(observedPayload!)).IsEqualTo(Convert.ToHexString(expectedPayload));
     }
 
     private static string GeneratedMethodSection(string methodName)
@@ -165,7 +189,7 @@ public sealed class OpcProxyGeneratorBodyTests
     private static CSharpCompilation CreateCompilation(string source)
     {
         return CSharpCompilation.Create(
-            assemblyName: "OpcProxyGeneratorBodyTestAssembly",
+            assemblyName: "OpcProxyGeneratorMarshallingTestAssembly",
             syntaxTrees: [CSharpSyntaxTree.ParseText(source, ParseOptions())],
             references: References(),
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
@@ -185,5 +209,22 @@ public sealed class OpcProxyGeneratorBodyTests
         }
 
         yield return MetadataReference.CreateFromFile(typeof(ICallChannel).Assembly.Location);
+    }
+
+    private static byte[] EncodeRequest(int id, string name)
+    {
+        var buffer = new byte[128];
+        var writer = new NdrWriter(buffer);
+        writer.WriteInt32(id);
+        writer.WriteUnicodeStringPtr(name);
+        return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static ReadOnlyMemory<byte> EncodeInt32(int value)
+    {
+        var buffer = new byte[16];
+        var writer = new NdrWriter(buffer);
+        writer.WriteInt32(value);
+        return buffer.AsMemory(0, writer.Position).ToArray();
     }
 }
