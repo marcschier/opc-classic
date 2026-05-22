@@ -24,4 +24,9 @@ public interface IXmlDaClient
     /// Sends a <c>Read</c> request and returns the per-item values.
     /// </summary>
     Task<XmlDaReadResponse> ReadAsync(XmlDaReadRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sends a <c>Write</c> request and returns per-item result codes.
+    /// </summary>
+    Task<XmlDaWriteResponse> WriteAsync(XmlDaWriteRequest request, CancellationToken cancellationToken = default);
 }
