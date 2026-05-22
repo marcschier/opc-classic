@@ -21,6 +21,7 @@
     <Project Path="tests/OpcClassic.Cpx.Tests/OpcClassic.Cpx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Da.Tests/OpcClassic.Da.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Crypto.Tests/OpcClassic.Dcom.Crypto.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Dcom.Logging.Tests/OpcClassic.Dcom.Logging.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dcom.Tests/OpcClassic.Dcom.Tests.csproj" />
     <Project Path="tests/OpcClassic.Dx.Tests/OpcClassic.Dx.Tests.csproj" />
     <Project Path="tests/OpcClassic.Hda.Tests/OpcClassic.Hda.Tests.csproj" />

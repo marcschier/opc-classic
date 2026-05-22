@@ -40,10 +40,13 @@
           hand-rolled). Phase 2E now COMPLETE: BouncyCastle removed, replaced by
           hand-rolled MD4 + RC4 in Crypto/ plus BCL MD5/HMAC-MD5/DES via the
           transitional Crypto/BcCompat.cs shim.
-          Phase 2G replaces Serilog with Microsoft.Extensions.Logging abstractions.
+          Phase 2G IN PROGRESS: Microsoft.Extensions.Logging.Abstractions added.
+          Per-file migration from Serilog to OpcClassic.Dcom.Internal.Log is staged
+          (see Internal/Log.cs for the migration shim).
         -->
         <PackageReference Include="Serilog" />
         <PackageReference Include="SharpCifs.Std" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     </ItemGroup>
 
   <ItemGroup>
