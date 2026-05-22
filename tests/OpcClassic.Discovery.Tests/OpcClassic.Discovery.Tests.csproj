@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for OpcClassic.Discovery.</Description>
+    <RootNamespace>OpcClassic.Discovery.Tests</RootNamespace>
+    <AssemblyName>OpcClassic.Discovery.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Discovery\OpcClassic.Discovery.csproj" />
+  </ItemGroup>
+
+</Project>
