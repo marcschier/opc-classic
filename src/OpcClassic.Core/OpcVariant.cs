@@ -95,6 +95,19 @@ public readonly record struct OpcVariant
     /// <summary>Creates a VT_CLSID variant.</summary>
     public static OpcVariant FromClsid(Guid v) => new(VarType.VT_CLSID, v);
 
+    /// <summary>
+    /// Creates an array variant: the VARTYPE carries the VT_ARRAY modifier
+    /// OR'd with the SAFEARRAY's element type, and the boxed value is the
+    /// <see cref="OpcSafeArray"/> itself.
+    /// </summary>
+    public static OpcVariant FromSafeArray(OpcSafeArray array)
+    {
+        ArgumentNullException.ThrowIfNull(array);
+        return new OpcVariant(
+            (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY),
+            array);
+    }
+
     // ---- Strongly-typed accessors ----
 
     /// <summary>Returns the int8 value if <see cref="Type"/> is <see cref="VarType.VT_I1"/>, else null.</summary>
@@ -144,4 +157,10 @@ public readonly record struct OpcVariant
 
     /// <summary>Returns the GUID if <see cref="Type"/> is <see cref="VarType.VT_CLSID"/>, else null.</summary>
     public Guid? AsClsid() => Type == VarType.VT_CLSID ? (Guid?)Boxed : null;
+
+    /// <summary>
+    /// Returns the carried <see cref="OpcSafeArray"/> if this variant carries
+    /// the <see cref="VarType.VT_ARRAY"/> modifier, else <see langword="null"/>.
+    /// </summary>
+    public OpcSafeArray? AsSafeArray() => VarTypeMask.IsArray(Type) ? Boxed as OpcSafeArray : null;
 }
