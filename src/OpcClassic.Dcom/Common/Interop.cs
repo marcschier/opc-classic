@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Common {
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using SharpInterop.Core;
     using SharpInterop.Resources;
