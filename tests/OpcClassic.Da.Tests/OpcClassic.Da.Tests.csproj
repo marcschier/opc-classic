@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\src\OpcClassic.Da\OpcClassic.Da.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Verify.TUnit" />
+  </ItemGroup>
+
 </Project>

@@ -161,3 +161,15 @@ Every new source file must include:
 ```
 
 Do not remove existing third-party notices or OPC Foundation sample-code disclaimers from preserved files under `COM\` or `External\`.
+
+## Snapshot tests (Verify.TUnit)
+
+PDU byte-stream golden files live alongside the test source code under
+`tests\<ProjectName>.Tests\Snapshots\<TestClassName>.<TestMethodName>.verified.txt`.
+
+On first run, a test produces a `.received.txt` file — review and rename
+to `.verified.txt` to accept the snapshot. Subsequent runs assert equality.
+Diffs are visible in the test output and via any diff tool.
+
+To regenerate ALL snapshots: delete the `.verified.*` files and re-run tests;
+accept the new `.received.*` files.
