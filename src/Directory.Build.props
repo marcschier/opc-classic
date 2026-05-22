@@ -36,9 +36,10 @@
   <!-- Determinism + reproducible builds -->
   <PropertyGroup>
     <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true' or '$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DeterministicSourcePaths Condition="'$(GITHUB_ACTIONS)' == 'true'">true</DeterministicSourcePaths>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <!-- Phase 16A: NuGet package metadata (shared across all src/ projects) -->
@@ -62,10 +63,7 @@
 
   <!-- Analyzers (PrivateAssets=all — they're build-time only, no runtime dep) -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
     <PackageReference Include="Meziantou.Analyzer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
