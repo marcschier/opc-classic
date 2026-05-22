@@ -39,4 +39,9 @@ public interface IXmlDaClient
     /// Cancels a server-side subscription previously created via Subscribe.
     /// </summary>
     Task<XmlDaSubscriptionCancelResponse> SubscriptionCancelAsync(XmlDaSubscriptionCancelRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Sends a <c>GetProperties</c> request and returns per-item property metadata.
+    /// </summary>
+    Task<XmlDaGetPropertiesResponse> GetPropertiesAsync(XmlDaGetPropertiesRequest request, CancellationToken cancellationToken = default);
 }

@@ -156,6 +156,29 @@ public sealed class HttpXmlDaClient : IXmlDaClient
             cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc />
+    public async Task<XmlDaGetPropertiesResponse> GetPropertiesAsync(
+        XmlDaGetPropertiesRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        byte[] requestBytes;
+        using (var ms = new MemoryStream(capacity: 512))
+        {
+            using (var w = new SoapEnvelopeWriter(ms))
+            {
+                GetPropertiesSerializer.WriteRequest(w, request);
+            }
+            requestBytes = ms.ToArray();
+        }
+
+        return await PostAsync(requestBytes,
+            XmlDaConstants.SoapActionGetProperties,
+            static r => GetPropertiesSerializer.ReadResponse(r),
+            cancellationToken).ConfigureAwait(false);
+    }
+
     private async Task<T> PostAsync<T>(
         byte[] requestBytes,
         string soapAction,
