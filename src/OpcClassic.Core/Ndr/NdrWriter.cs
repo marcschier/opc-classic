@@ -312,6 +312,21 @@ public ref struct NdrWriter
     /// <summary>Writes a null BSTR (a single zero referent UInt32).</summary>
     public void WriteNullBstr() => WriteNullReferent();
 
+    /// <summary>
+    /// Writes a unique-pointer LPWSTR — a referent ID followed by the
+    /// conformant-variant string body (or a single zero referent for null).
+    /// </summary>
+    public void WriteUnicodeStringPtr(string? value)
+    {
+        if (value is null)
+        {
+            WriteNullReferent();
+            return;
+        }
+        _ = WriteReferentId();
+        WriteUnicodeString(value);
+    }
+
     // -------- Conformant arrays of primitive types --------
 
     /// <summary>

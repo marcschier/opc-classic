@@ -277,6 +277,20 @@ public ref struct NdrReader
         return new string(chars);
     }
 
+    /// <summary>
+    /// Reads a unique-pointer LPWSTR — a referent followed by the
+    /// conformant-variant string body. Returns <see langword="null"/>
+    /// when the referent is zero.
+    /// </summary>
+    public string? ReadUnicodeStringPtr()
+    {
+        if (!TryReadReferentId(out _))
+        {
+            return null;
+        }
+        return ReadUnicodeString();
+    }
+
     /// <summary>Reads a span of raw bytes verbatim (no alignment, no length prefix).</summary>
     public ReadOnlySpan<byte> ReadRawBytes(int count)
     {
