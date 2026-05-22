@@ -30,4 +30,7 @@
     <Project Path="tests/OpcClassic.Security.Tests/OpcClassic.Security.Tests.csproj" />
     <Project Path="tests/OpcClassic.Xml.Tests/OpcClassic.Xml.Tests.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/OpcClassic.AotCanary/OpcClassic.AotCanary.csproj" />
+  </Folder>
 </Solution>
