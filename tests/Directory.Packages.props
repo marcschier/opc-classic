@@ -22,6 +22,10 @@
     <PackageVersion Include="Verify.TUnit" Version="28.10.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Roslyn source-generator tests">
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+  </ItemGroup>
+
   <ItemGroup Label="Log assertions">
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Testing" Version="10.0.0" />
