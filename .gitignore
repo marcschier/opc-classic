@@ -18,6 +18,9 @@
 /**/launchSettings.json
 /.vscode/**
 /build/**
+# Don't ignore the strong-name key (it's not a secret)
+!/build/
+!/build/OpcClassic.snk
 *.user
 /**/packages/**
 /**/packages.config
