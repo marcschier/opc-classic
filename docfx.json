@@ -1,0 +1,63 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "src/OpcClassic.Core/OpcClassic.Core.csproj",
+            "src/OpcClassic.Da/OpcClassic.Da.csproj",
+            "src/OpcClassic.Ae/OpcClassic.Ae.csproj",
+            "src/OpcClassic.Hda/OpcClassic.Hda.csproj",
+            "src/OpcClassic.Dx/OpcClassic.Dx.csproj",
+            "src/OpcClassic.Cpx/OpcClassic.Cpx.csproj",
+            "src/OpcClassic.Batch/OpcClassic.Batch.csproj",
+            "src/OpcClassic.Commands/OpcClassic.Commands.csproj",
+            "src/OpcClassic.Security/OpcClassic.Security.csproj",
+            "src/OpcClassic.Xml/OpcClassic.Xml.csproj",
+            "src/OpcClassic.Hosting/OpcClassic.Hosting.csproj",
+            "src/OpcClassic.Discovery/OpcClassic.Discovery.csproj",
+            "src/OpcClassic.Dcom.Kerberos/OpcClassic.Dcom.Kerberos.csproj"
+          ]
+        }
+      ],
+      "dest": "docs/api",
+      "outputFormat": "mref"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "docs/**/*.md",
+          "docs/**/toc.yml"
+        ]
+      }
+    ],
+    "resource": [],
+    "globalMetadata": {
+      "_appName": "OPC Classic .NET",
+      "_appTitle": "OPC Classic .NET",
+      "_enableSearch": true,
+      "_disableContribution": false,
+      "_gitContribute": {
+        "repo": "https://github.com/marcschier/opc-classic",
+        "branch": "main"
+      }
+    },
+    "dest": "_site",
+    "globalMetadataFiles": [],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+      "modern"
+    ],
+    "postProcessors": [
+      "ExtractSearchIndex"
+    ],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false
+  }
+}

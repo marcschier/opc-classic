@@ -105,6 +105,22 @@ dotnet tool install -g dotnet-reportgenerator-globaltool
 reportgenerator -reports:.\coverage-results\**\coverage.cobertura.xml -targetdir:.\coverage-report -reporttypes:Html
 ```
 
+## Building the documentation site
+
+Install DocFX:
+
+```bash
+dotnet tool install -g docfx
+```
+
+Build + serve locally:
+
+```bash
+docfx docfx.json --serve
+```
+
+Open http://localhost:8080
+
 ## Build Quality Gates
 
 Source projects must maintain zero build errors and zero build warnings. `src\Directory.Build.props` sets `TreatWarningsAsErrors=true`, enables latest recommended analysis, and marks source projects as NativeAOT-compatible.
