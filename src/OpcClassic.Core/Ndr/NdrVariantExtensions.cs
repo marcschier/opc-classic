@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: EPL-1.0
 // Copyright (c) 2026 OPC Classic .NET Contributors
 //
-// NDR wire encoding for OPC VARIANTs (scalar subset).
+// NDR wire encoding for OPC VARIANTs (scalar + SAFEARRAY subset).
 //
 // Wire layout — the "encapsulated VARIANT" form documented in
 // [MS-OAUT] §2.2.29.1:
@@ -16,15 +16,14 @@
 //     body                 // per-VARTYPE encoded value
 //
 // SCOPE LIMITATION — this is a deliberately reduced subset:
-//   * Scalar fixed-size types only (VT_EMPTY, VT_NULL, VT_I1/I2/I4/I8,
+//   * Scalar fixed-size types (VT_EMPTY, VT_NULL, VT_I1/I2/I4/I8,
 //     VT_UI1/UI2/UI4/UI8, VT_R4/R8, VT_BOOL, VT_DATE, VT_ERROR,
 //     VT_FILETIME, VT_CLSID).
+//   * BSTR (variable-length OLE string).
+//   * 1-D scalar SAFEARRAYs via NdrSafeArrayExtensions.
 //   * Round-trip tested. Spec conformance against real Windows-emitted
 //     wire dumps is a Phase 14 (Windows conformance) deliverable.
-//   * BSTR (variable-length OLE string) is NOT yet handled — pending
-//     decision on whether to emit BSTR header form or LPWSTR-like.
-//   * SAFEARRAY, VT_VARIANT (nested), VT_BYREF, VT_RECORD: explicit
-//     future work in Phase 5E.4+.
+//   * VT_VARIANT (nested), VT_BYREF, VT_RECORD: explicit future work.
 //
 
 using System;
@@ -53,6 +52,12 @@ public static class NdrVariantExtensions
             // header is computed inclusive of that variable body, so we route
             // BSTR through a dedicated writer.
             WriteBstrVariant(ref writer, (string?)value.Boxed);
+            return;
+        }
+
+        if (VarTypeMask.IsArray(value.Type))
+        {
+            WriteSafeArrayVariant(ref writer, value);
             return;
         }
 
@@ -92,6 +97,83 @@ public static class NdrVariantExtensions
         {
             writer.WriteBstr(text);
         }
+    }
+
+    private static void WriteSafeArrayVariant(ref NdrWriter writer, OpcVariant value)
+    {
+        OpcSafeArray? array = value.AsSafeArray();
+        if (array is null)
+        {
+            throw new InvalidOperationException(
+                $"NDR VARIANT SAFEARRAY encoding requires an {nameof(OpcSafeArray)} payload.");
+        }
+
+        var expectedType = (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY);
+        if (value.Type != expectedType)
+        {
+            throw new InvalidOperationException(
+                $"NDR VARIANT SAFEARRAY type {value.Type} does not match element type {array.ElementType}.");
+        }
+
+        int bodyBytes = ComputeSafeArrayBodySize(array);
+        writer.AlignTo(4);
+        writer.WriteUInt32(unchecked((uint)(VariantHeaderBytes - 8 + bodyBytes)));
+        writer.WriteUInt32(0u);
+        writer.WriteUInt16((ushort)value.Type);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        writer.WriteSafeArray(array);
+    }
+
+    private static int ComputeSafeArrayBodySize(OpcSafeArray array)
+    {
+        if (array.Rank != 1)
+        {
+            throw new InvalidOperationException(
+                $"NDR SAFEARRAY codec currently supports rank=1 only (got rank={array.Rank}).");
+        }
+
+        const int descriptorBytesBeforeElements = 28;
+        int count = array.TotalElements;
+        if (count == 0)
+        {
+            return descriptorBytesBeforeElements;
+        }
+
+        return array.ElementType switch
+        {
+            VarType.VT_I1 or VarType.VT_UI1 => descriptorBytesBeforeElements + count,
+            VarType.VT_I2 or VarType.VT_UI2 or VarType.VT_BOOL => FixedArrayBodySize(descriptorBytesBeforeElements, count, 2, 2),
+            VarType.VT_I4 or VarType.VT_UI4 or VarType.VT_R4 or VarType.VT_ERROR => FixedArrayBodySize(descriptorBytesBeforeElements, count, 4, 4),
+            VarType.VT_I8 or VarType.VT_UI8 or VarType.VT_R8 or VarType.VT_DATE => FixedArrayBodySize(descriptorBytesBeforeElements, count, 8, 8),
+            VarType.VT_CLSID => FixedArrayBodySize(descriptorBytesBeforeElements, count, 4, 16),
+            VarType.VT_BSTR => ComputeBstrSafeArrayBodySize(descriptorBytesBeforeElements, (string?[])array.Data),
+            _ => throw new InvalidOperationException(
+                $"NDR SAFEARRAY codec does not support element type {array.ElementType}."),
+        };
+    }
+
+    private static int FixedArrayBodySize(int position, int count, int alignment, int elementBytes) =>
+        AlignOffset(position, alignment) + count * elementBytes;
+
+    private static int ComputeBstrSafeArrayBodySize(int position, string?[] values)
+    {
+        for (int i = 0; i < values.Length; i++)
+        {
+            position = AlignOffset(position, 4) + 4;
+            if (values[i] is { } value)
+            {
+                position += 8 + value.Length * 2;
+            }
+        }
+        return position;
+    }
+
+    private static int AlignOffset(int position, int boundary)
+    {
+        int misaligned = position & (boundary - 1);
+        return misaligned == 0 ? position : position + boundary - misaligned;
     }
 
     private static int ComputeBodySize(VarType vt) => vt switch
@@ -181,7 +263,31 @@ public static class NdrVariantExtensions
         _ = reader.ReadUInt16();           // wReserved3
 
         var vt = (VarType)vtRaw;
+        if (VarTypeMask.IsArray(vt))
+        {
+            return ReadSafeArrayVariant(ref reader, vt);
+        }
+
         return ReadBody(ref reader, vt);
+    }
+
+    private static OpcVariant ReadSafeArrayVariant(ref NdrReader reader, VarType vt)
+    {
+        if ((ushort)(vt & VarType.VT_BYREF) != 0)
+        {
+            throw new InvalidDataException(
+                $"NDR VARIANT wire decoding is not supported for BYREF SAFEARRAY type {vt}.");
+        }
+
+        OpcSafeArray array = reader.ReadSafeArray();
+        var expectedType = (VarType)((ushort)array.ElementType | (ushort)VarType.VT_ARRAY);
+        if (vt != expectedType)
+        {
+            throw new InvalidDataException(
+                $"NDR VARIANT SAFEARRAY type {vt} does not match element type {array.ElementType}.");
+        }
+
+        return OpcVariant.FromSafeArray(array);
     }
 
     private static OpcVariant ReadBody(ref NdrReader reader, VarType vt) => vt switch
