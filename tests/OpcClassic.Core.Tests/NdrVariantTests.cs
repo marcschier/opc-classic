@@ -190,12 +190,47 @@ public sealed class NdrVariantTests
         {
             var buf = new byte[64];
             var w = new NdrWriter(buf);
-            w.WriteVariant(new OpcVariant(VarType.VT_BSTR, "not yet supported"));
+            w.WriteVariant(new OpcVariant(VarType.VT_DECIMAL, new byte[16]));
         };
         bool threw = false;
         try { action(); }
         catch (InvalidOperationException) { threw = true; }
         await Assert.That(threw).IsTrue();
+    }
+
+    [Test]
+    public async Task Bstr_RoundTrips_Ascii()
+    {
+        var bytes = WriteOne((ref NdrWriter w) =>
+            w.WriteVariant(OpcVariant.FromString("hello")));
+        await Assert.That(ReadOne(bytes).AsString()).IsEqualTo("hello");
+    }
+
+    [Test]
+    public async Task Bstr_RoundTrips_Empty()
+    {
+        var bytes = WriteOne((ref NdrWriter w) =>
+            w.WriteVariant(OpcVariant.FromString(string.Empty)));
+        await Assert.That(ReadOne(bytes).AsString()).IsEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task Bstr_RoundTrips_NonAscii()
+    {
+        var input = "Ä-中文-🙂";
+        var bytes = WriteOne((ref NdrWriter w) =>
+            w.WriteVariant(OpcVariant.FromString(input)), capacity: 128);
+        await Assert.That(ReadOne(bytes).AsString()).IsEqualTo(input);
+    }
+
+    [Test]
+    public async Task Bstr_NullPayload_RoundTrips()
+    {
+        var bytes = WriteOne((ref NdrWriter w) =>
+            w.WriteVariant(new OpcVariant(VarType.VT_BSTR, null)));
+        var r = ReadOne(bytes);
+        await Assert.That(r.Type).IsEqualTo(VarType.VT_BSTR);
+        await Assert.That(r.Boxed).IsNull();
     }
 
     [Test]

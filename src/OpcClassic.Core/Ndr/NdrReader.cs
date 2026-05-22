@@ -242,6 +242,41 @@ public ref struct NdrReader
         return new string(chars);
     }
 
+    /// <summary>
+    /// Reads an OLE Automation BSTR per [MS-OAUT] §2.2.23 — a referent
+    /// followed by a FLAGGED_WORD_BLOB. Returns <see langword="null"/>
+    /// when the referent is zero (null BSTR).
+    /// </summary>
+    public string? ReadBstr()
+    {
+        if (!TryReadReferentId(out _))
+        {
+            return null;
+        }
+        uint fFlags = ReadUInt32();
+        if (fFlags != 0u)
+        {
+            throw new InvalidOperationException(
+                $"NDR BSTR fFlags must be 0 but was {fFlags}.");
+        }
+        uint clSize = ReadUInt32();
+        if (clSize > (uint)int.MaxValue / 2)
+        {
+            throw new InvalidOperationException(
+                $"NDR BSTR clSize {clSize} too large.");
+        }
+        int charCount = (int)clSize;
+        EnsureAvailable(charCount * 2);
+        var chars = new char[charCount];
+        for (int i = 0; i < charCount; i++)
+        {
+            chars[i] = (char)BinaryPrimitives.ReadUInt16LittleEndian(
+                _buffer.Slice(_position + i * 2, 2));
+        }
+        _position += charCount * 2;
+        return new string(chars);
+    }
+
     /// <summary>Reads a span of raw bytes verbatim (no alignment, no length prefix).</summary>
     public ReadOnlySpan<byte> ReadRawBytes(int count)
     {

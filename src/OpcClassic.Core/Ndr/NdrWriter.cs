@@ -286,6 +286,32 @@ public ref struct NdrWriter
         _position += 2;
     }
 
+    /// <summary>
+    /// Writes an OLE Automation BSTR as a referent followed by a
+    /// FLAGGED_WORD_BLOB per [MS-OAUT] §2.2.23:
+    ///   uint referent       (non-zero for non-null; 0 for null)
+    ///   {if non-null:}
+    ///     uint fFlags       (0)
+    ///     uint clSize       (count of UInt16 elements — char count, no terminator)
+    ///     ushort[clSize] chars
+    /// </summary>
+    public void WriteBstr(ReadOnlySpan<char> value)
+    {
+        uint referent = WriteReferentId();        // never null in this overload
+        _ = referent;                              // discard return — already written
+        WriteUInt32(0u);                           // fFlags
+        WriteUInt32(unchecked((uint)value.Length));// clSize — char count, no nul
+        EnsureCapacity(value.Length * 2);
+        for (int i = 0; i < value.Length; i++)
+        {
+            BinaryPrimitives.WriteUInt16LittleEndian(_buffer.Slice(_position, 2), value[i]);
+            _position += 2;
+        }
+    }
+
+    /// <summary>Writes a null BSTR (a single zero referent UInt32).</summary>
+    public void WriteNullBstr() => WriteNullReferent();
+
     // -------- Conformant arrays of primitive types --------
 
     /// <summary>

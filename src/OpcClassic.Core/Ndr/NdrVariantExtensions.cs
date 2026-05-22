@@ -46,6 +46,16 @@ public static class NdrVariantExtensions
     /// <summary>Encodes a scalar <see cref="OpcVariant"/> per the wire layout above.</summary>
     public static void WriteVariant(this ref NdrWriter writer, OpcVariant value)
     {
+        if (value.Type == VarType.VT_BSTR)
+        {
+            // BSTR has a variable-length body that includes its own internal
+            // header (FLAGGED_WORD_BLOB). The cbSize field at the outer VARIANT
+            // header is computed inclusive of that variable body, so we route
+            // BSTR through a dedicated writer.
+            WriteBstrVariant(ref writer, (string?)value.Boxed);
+            return;
+        }
+
         int bodyBytes = ComputeBodySize(value.Type);
         writer.AlignTo(4);
         writer.WriteUInt32(unchecked((uint)(VariantHeaderBytes - 8 + bodyBytes))); // cbSize: bytes after this field
@@ -56,6 +66,32 @@ public static class NdrVariantExtensions
         writer.WriteUInt16(0);                                                      // wReserved3
 
         WriteBody(ref writer, value);
+    }
+
+    private static void WriteBstrVariant(ref NdrWriter writer, string? text)
+    {
+        // Variable body length = 4 (referent) + (text != null ? 4 (fFlags) +
+        //                       4 (clSize) + text.Length * 2 : 0)
+        int charCount = text?.Length ?? 0;
+        int bodyBytes = text is null
+            ? 4
+            : 4 + 4 + 4 + charCount * 2;
+        writer.AlignTo(4);
+        writer.WriteUInt32(unchecked((uint)(VariantHeaderBytes - 8 + bodyBytes)));
+        writer.WriteUInt32(0u);                       // rpcReserved
+        writer.WriteUInt16((ushort)VarType.VT_BSTR);  // vt
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+        writer.WriteUInt16(0);
+
+        if (text is null)
+        {
+            writer.WriteNullBstr();
+        }
+        else
+        {
+            writer.WriteBstr(text);
+        }
     }
 
     private static int ComputeBodySize(VarType vt) => vt switch
@@ -167,7 +203,15 @@ public static class NdrVariantExtensions
         VarType.VT_DATE => OpcVariant.FromDate(DateTime.FromOADate(reader.ReadDouble())),
         VarType.VT_FILETIME => OpcVariant.FromFileTime(reader.ReadFileTime()),
         VarType.VT_CLSID => OpcVariant.FromClsid(reader.ReadGuid()),
+        VarType.VT_BSTR => ReadBstrBody(ref reader),
         _ => throw new InvalidDataException(
             $"NDR VARIANT wire decoding is not supported for type {vt}."),
     };
+
+    private static OpcVariant ReadBstrBody(ref NdrReader reader)
+    {
+        string? text = reader.ReadBstr();
+        // Null BSTR is represented as a VT_BSTR variant carrying a null payload.
+        return new OpcVariant(VarType.VT_BSTR, text);
+    }
 }
