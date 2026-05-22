@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for OpcClassic.Hosting.</Description>
+    <RootNamespace>OpcClassic.Hosting.Tests</RootNamespace>
+    <AssemblyName>OpcClassic.Hosting.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Hosting\OpcClassic.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>
