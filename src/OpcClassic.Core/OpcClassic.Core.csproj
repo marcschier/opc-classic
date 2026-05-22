@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Cross-spec primitives for OPC Classic: GUID tables, ResultID/HRESULT wrappers, FILETIME helpers, exception hierarchy, URL parsing, NDR struct helpers. Foundational layer above OpcClassic.Dcom.</Description>
+    <Description>Cross-spec primitives (OpcVariant, OpcQuality, OpcUrl, FILETIME helpers, NDR codec primitives) for the OPC Classic .NET stack.</Description>
     <RootNamespace>OpcClassic</RootNamespace>
     <AssemblyName>OpcClassic.Core</AssemblyName>
-    <PackageId>OpcClassic.Core</PackageId>
   </PropertyGroup>
 
   <!-- OpcClassic.Generators is wired in centrally via src/Directory.Build.props. -->

@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>OPC Alarms &amp; Events (AE 1.0 / 1.10) managed API + protocol shims.</Description>
+    <Description>OPC Alarms &amp; Events (AE) 1.10 managed records and NDR wire codecs.</Description>
     <RootNamespace>OpcClassic.Ae</RootNamespace>
     <AssemblyName>OpcClassic.Ae</AssemblyName>
-    <PackageId>OpcClassic.Ae</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

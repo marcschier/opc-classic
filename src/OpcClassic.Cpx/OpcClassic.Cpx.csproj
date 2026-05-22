@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>OPC Complex Data (Cpx) — OPCBinary type-dictionary-driven complex values for OPC DA 3.0+.</Description>
+    <Description>OPC Complex Data (Cpx) 1.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>OpcClassic.Cpx</RootNamespace>
     <AssemblyName>OpcClassic.Cpx</AssemblyName>
-    <PackageId>OpcClassic.Cpx</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

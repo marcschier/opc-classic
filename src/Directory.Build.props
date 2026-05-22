@@ -41,21 +41,23 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
-  <!-- NuGet packaging defaults (overridable per project) -->
+  <!-- Phase 16A: NuGet package metadata (shared across all src/ projects) -->
   <PropertyGroup>
     <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>0.1.0-alpha.1</Version>
+    <Authors>OPC Classic .NET Contributors</Authors>
+    <Company>OPC Classic .NET</Company>
+    <Copyright>Copyright (c) 2026 OPC Classic .NET Contributors</Copyright>
+    <PackageProjectUrl>https://github.com/marcschier/opc-classic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/marcschier/opc-classic.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>EPL-1.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>opc;opc-classic;opc-da;opc-ae;opc-hda;dcom;industrial;automation;dotnet-10</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageLicenseExpression>EPL-1.0</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Copyright>Copyright (c) 2026 OPC Classic .NET Contributors</Copyright>
-    <Authors>OPC Classic .NET Contributors</Authors>
-    <Company>OPC Classic .NET Contributors</Company>
-    <RepositoryUrl>https://github.com/marcschier/opc-classic</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/marcschier/opc-classic</PackageProjectUrl>
-    <PackageTags>opc;opc-classic;opc-da;opc-ae;opc-hda;dcom;msrpc;ntlm;kerberos;industrial;netstandard;net10;nativeaot</PackageTags>
   </PropertyGroup>
 
   <!-- Analyzers (PrivateAssets=all — they're build-time only, no runtime dep) -->

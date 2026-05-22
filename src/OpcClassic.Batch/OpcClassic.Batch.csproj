@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>OPC Batch (1.0 / 2.0) managed types and DCOM-projection interfaces. Bootstrap — managed type vocabulary will be designed from the spec in a later phase (no DotNet/Rcw/Batch.cs equivalent existed prior to this rewrite).</Description>
+    <Description>OPC Batch 2.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>OpcClassic.Batch</RootNamespace>
     <AssemblyName>OpcClassic.Batch</AssemblyName>
-    <PackageId>OpcClassic.Batch</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

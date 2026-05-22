@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>OPC Data Access (DA 2.05a + 3.0) managed API + protocol shims. Built on OpcClassic.Core + OpcClassic.Dcom.</Description>
+    <Description>OPC Data Access (DA) 2.05a / 3.00 managed records and NDR wire codecs.</Description>
     <RootNamespace>OpcClassic.Da</RootNamespace>
     <AssemblyName>OpcClassic.Da</AssemblyName>
-    <PackageId>OpcClassic.Da</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
