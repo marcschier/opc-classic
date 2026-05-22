@@ -82,16 +82,16 @@ The licenses governing the use of these components are included below.
 - Used in: tests/ central package versions for snapshot tests
 - Version: 28.10.0
 
-### Microsoft.Extensions.Logging.Abstractions
+### Microsoft.Extensions.Logging / Microsoft.Extensions.Logging.Abstractions
 - Source: https://github.com/dotnet/runtime
 - License: MIT
 - Used in: OpcClassic.Dcom.Logging.Tests
 - Version: 10.0.0
 
-### Microsoft.Extensions.Logging.Testing
-- Source: https://github.com/dotnet/runtime
+### Microsoft.Extensions.Diagnostics.Testing
+- Source: https://github.com/dotnet/extensions
 - License: MIT
-- Used in: tests/ central package versions for log assertions
+- Used in: OpcClassic.Dcom.Logging.Tests for FakeLogger-based log assertions
 - Version: 10.0.0
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)

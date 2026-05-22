@@ -62,7 +62,13 @@ Tests use TUnit on Microsoft.Testing.Platform. Prefer the async fluent assertion
 await Assert.That(actual).IsEqualTo(expected);
 ```
 
-Use `[Test]` and `[Arguments]` for parameterized cases. Do not add runtime-proxy mocking frameworks such as NSubstitute, Moq, or FakeItEasy; they rely on patterns that conflict with the NativeAOT direction. Use hand-written test doubles or source-generated alternatives.
+Use `[Test]` and `[Arguments]` for parameterized cases. See the mocking policy below before adding any test-double dependency.
+
+### Mocking and Test Doubles
+
+Do not add runtime-proxy mocking frameworks such as NSubstitute, Moq, or FakeItEasy; they rely on Castle.Core, Reflection.Emit, DispatchProxy, or similar dynamic code paths that conflict with the NativeAOT direction. Shared hand-written doubles live under `tests\_TestDoubles\` and follow the conventions in `tests\_TestDoubles\Testing.md`.
+
+Use `FakeXxx` for reusable configurable doubles, `StubXxx` for narrow scaffolds, and `CapturingXxx` for doubles that record calls or state. Keep shared doubles per-interface, small, and free of production logic. For `ILogger` assertions, prefer the Microsoft fake logger APIs provided by `Microsoft.Extensions.Diagnostics.Testing` (`Microsoft.Extensions.Logging.Testing` namespace).
 
 For NDR tests, use the snapshot-first pattern. `NdrReader` and `NdrWriter` are `ref struct` types and cannot cross `await` boundaries. Capture all values into ordinary locals inside a synchronous block, then await assertions against those locals.
 
