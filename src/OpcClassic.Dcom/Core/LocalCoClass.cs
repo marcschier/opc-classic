@@ -524,15 +524,28 @@ namespace SharpInterop.Core {
                 try {
                     Log.Logger.Information("methodDescriptor: " + methodDescriptor.MethodName);
 
-                    // Call using reflection
+                    // Call through the dispatch table seam; the default table still uses reflection.
                     var method = calleeType.GetRuntimeMethod(methodDescriptor.MethodName,
                         methodDescriptor.InparametersAsType);
 
+                    if (method == null) {
+                        throw new MissingMethodException(calleeType.FullName, methodDescriptor.MethodName);
+                    }
+
                     var calleeInstance = interfaceDefinitionOfClass.Instance ??
                         Activator.CreateInstance(calleeType);
+                    var dispatchIid = new Guid(iid);
+                    var dispatchTable = new ReflectionDispatchTable(calleeInstance,
+                        new[] { (dispatchIid, methodDescriptor.MethodNum, method) });
+
+                    if (!dispatchTable.TryGetDispatcher(dispatchIid, methodDescriptor.MethodNum,
+                        out var dispatcher)) {
+                        throw new MissingMethodException(calleeType.FullName, methodDescriptor.MethodName);
+                    }
+
                     Log.Logger.Information("Call Back Method to be executed: " + method +
                         ", to be executed on " + calleeInstance);
-                    var result = method.Invoke(calleeInstance, parameters);
+                    var result = dispatcher(parameters);
                     if (result == null) {
                         retVal = null;
                     }
