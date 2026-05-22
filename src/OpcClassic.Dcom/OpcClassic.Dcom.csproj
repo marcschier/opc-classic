@@ -46,6 +46,10 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\OpcClassic.Hosting\OpcClassic.Hosting.csproj" />
+    </ItemGroup>
+
   <ItemGroup>
     <Compile Update="Resources\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
