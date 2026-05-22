@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,52 @@ public static class OpcClassicHostingServiceCollectionExtensions
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
         services.AddSingleton<IClsidRegistry>(_ => ConfigurationClsidRegistry.FromConfiguration(configuration));
+        return services;
+    }
+
+    /// <summary>
+    /// Registers the OPC Classic hosted service that drives lifecycle of all
+    /// <see cref="IOpcServerHost"/> instances registered in the container.
+    /// </summary>
+    public static IServiceCollection AddOpcClassicServer(this IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddHostedService<OpcClassicHostedService>();
+        return services;
+    }
+
+    /// <summary>
+    /// Registers a DA server-host implementation.
+    /// </summary>
+    public static IServiceCollection AddOpcDaServer<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+        this IServiceCollection services)
+        where T : class, IOpcServerHost
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddSingleton<IOpcServerHost, T>();
+        return services;
+    }
+
+    /// <summary>Registers an AE server-host implementation.</summary>
+    public static IServiceCollection AddOpcAeServer<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+        this IServiceCollection services)
+        where T : class, IOpcServerHost
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddSingleton<IOpcServerHost, T>();
+        return services;
+    }
+
+    /// <summary>Registers an HDA server-host implementation.</summary>
+    public static IServiceCollection AddOpcHdaServer<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(
+        this IServiceCollection services)
+        where T : class, IOpcServerHost
+    {
+        ArgumentNullException.ThrowIfNull(services);
+        services.AddSingleton<IOpcServerHost, T>();
         return services;
     }
 }
