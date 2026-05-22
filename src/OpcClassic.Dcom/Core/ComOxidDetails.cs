@@ -85,8 +85,9 @@ namespace SharpInterop.Core {
         /// <summary>
         /// Protection level
         /// </summary>
+        // Phase 3B: default INTEGRITY per Microsoft DCOM hardening (KB5004442).
         internal SharpInterop.Rpc.ProtectionLevel AuthHint { get; } =
-            SharpInterop.Rpc.ProtectionLevel.PROTECTION_LEVEL_CONNECT;
+            SharpInterop.Rpc.ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 
         /// <summary>
         /// Set thread group

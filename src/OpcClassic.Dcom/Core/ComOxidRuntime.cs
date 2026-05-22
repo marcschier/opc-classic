@@ -66,6 +66,29 @@ namespace SharpInterop.Core {
             _defaults.SetProperty("rpc.connectionContext", "SharpInterop.Transport.ComRuntimeConnectionContext");
         }
 
+        internal static ProtectionLevel ConfigureActivationProtection(
+            Properties properties, bool sessionSecurityEnabled,
+            string username, string password) {
+            // Phase 3B: default to INTEGRITY per Microsoft DCOM hardening (KB5004442);
+            // patched Windows DCOM servers reject CONNECT-level activation requests.
+            // SessionSecurityEnabled still escalates to PRIVACY for full seal.
+            var protectionLevel = ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
+            properties.SetProperty("rpc.ntlm.sign", "true");
+
+            if (sessionSecurityEnabled) {
+                protectionLevel = ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
+                properties.SetProperty("rpc.ntlm.seal", "true");
+                properties.SetProperty("rpc.ntlm.keyExchange", "true");
+                properties.SetProperty("rpc.ntlm.keyLength", "128");
+                properties.SetProperty("rpc.ntlm.ntlm2", "true");
+                properties.SetProperty(Security.USERNAME, username);
+                properties.SetProperty(Security.PASSWORD, password);
+                properties.SetProperty("rpc.ntlm.ntlm2", "true");
+            }
+
+            return protectionLevel;
+        }
+
         /// <summary>
         /// Start resolver
         /// </summary>
@@ -334,19 +357,11 @@ namespace SharpInterop.Core {
                 properties.SetProperty("IID", Interfaces.IID_IRemUnknown + ":0.0"); 
                 properties.SetProperty("rpc.ntlm.domain", session.TargetServer);
 
-                var protectionLevel = ProtectionLevel.PROTECTION_LEVEL_CONNECT;
-
-                if (session.SessionSecurityEnabled) {
-                    protectionLevel = ProtectionLevel.PROTECTION_LEVEL_PRIVACY;
-                    properties.SetProperty("rpc.ntlm.seal", "true");
-                    properties.SetProperty("rpc.ntlm.sign", "true");
-                    properties.SetProperty("rpc.ntlm.keyExchange", "true");
-                    properties.SetProperty("rpc.ntlm.keyLength", "128");
-                    properties.SetProperty("rpc.ntlm.ntlm2", "true");
-                    properties.SetProperty(Security.USERNAME, session.UserName);
-                    properties.SetProperty(Security.PASSWORD, session.Password);
-                    properties.SetProperty("rpc.ntlm.ntlm2", "true");
-                }
+                var sessionSecurityEnabled = session.SessionSecurityEnabled;
+                var protectionLevel = ConfigureActivationProtection(
+                    properties, sessionSecurityEnabled,
+                    sessionSecurityEnabled ? session.UserName : null,
+                    sessionSecurityEnabled ? session.Password : null);
 
                 if (session.NTLMv2Enabled) {
                     properties.SetProperty("rpc.ntlm.ntlmv2", "true");

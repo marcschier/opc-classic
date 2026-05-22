@@ -2,14 +2,13 @@
 
   <!--
     TRANSITIONAL: this is COM.Net/SharpInterop.Test, a collection of manual
-    integration drivers (every "test" file is a `public static void RunTest(string[] args)`
-    that requires a live DCOM endpoint + credentials). It is NOT a real test
-    project — Driver.cs is explicitly excluded from compilation in the original.
+    integration drivers (most "test" files are `public static void RunTest(string[] args)`
+    entry points that require a live DCOM endpoint + credentials). Driver.cs is
+    explicitly excluded from compilation in the original.
 
-    Phase 11 rewrites these into real TUnit tests under siblings such as
+    Phase 3B adds focused TUnit coverage for hardened DCOM protection defaults.
+    Phase 11 later rewrites the remaining manual drivers under siblings such as
     tests/OpcClassic.Dcom.Unit.Tests/ and tests/OpcClassic.Dcom.Integration.Tests/.
-    Until then, this project compiles as a non-publishable library of legacy
-    drivers — it opts out of TUnit/MTP by setting IsTestProject=false.
   -->
 
   <PropertyGroup>
@@ -17,11 +16,11 @@
     <RootNamespace>SharpInterop.Test</RootNamespace>
     <AssemblyName>OpcClassic.Dcom.LegacyTests</AssemblyName>
 
-    <!-- Opt out of TUnit/MTP from tests/Directory.Build.props -->
-    <IsTestProject>false</IsTestProject>
+    <!-- Opt in to TUnit/MTP for focused unit coverage while retaining legacy drivers. -->
+    <IsTestProject>true</IsTestProject>
 
-    <!-- Library — not a test runner -->
-    <OutputType>Library</OutputType>
+    <!-- TUnit runner plus legacy driver library code. -->
+    <OutputType>Exe</OutputType>
 
     <!-- Relax inherited strictness (same as the moved Dcom project) -->
     <IsPackable>false</IsPackable>
