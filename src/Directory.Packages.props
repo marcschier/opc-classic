@@ -43,6 +43,10 @@
     <PackageVersion Include="Polly" Version="8.5.0" />
   </ItemGroup>
 
+  <ItemGroup Label="Authentication">
+    <PackageVersion Include="Kerberos.NET" Version="4.6.146" />
+  </ItemGroup>
+
   <!--
     Phase 2E complete: BouncyCastle is eliminated. MD4 + RC4 are hand-rolled
     in src/OpcClassic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
