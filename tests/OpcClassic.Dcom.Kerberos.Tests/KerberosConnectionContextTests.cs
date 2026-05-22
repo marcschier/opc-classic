@@ -12,22 +12,22 @@ namespace OpcClassic.Dcom.Kerberos.Tests;
 public sealed class KerberosConnectionContextTests
 {
     [Test]
-    public async Task KerberosConnectionContext_AcquireApRequest_throws_scaffold_NotImpl()
+    public async Task KerberosConnectionContext_AcquireApRequest_requires_password_or_keytab()
     {
         var authInfo = new KerberosAuthInfo("EXAMPLE.COM", "RPCSS/server.example.com", "alice", null, null, null);
         var context = new KerberosConnectionContext(authInfo);
 
-        NotImplementedException? thrown = null;
+        Exception? thrown = null;
         try
         {
-            _ = context.AcquireApRequestAsync();
+            _ = await context.AcquireApRequestAsync();
         }
-        catch (NotImplementedException ex)
+        catch (Exception ex)
         {
             thrown = ex;
         }
 
-        await Assert.That(thrown).IsNotNull();
-        await Assert.That(thrown!.Message).Contains("Phase 3D scaffold");
+        await Assert.That(thrown is InvalidOperationException).IsTrue();
+        await Assert.That(thrown!.Message).Contains("Password or KeytabPath");
     }
 }

@@ -3,18 +3,12 @@
 // Copyright (c) 2026 OPC Classic .NET Contributors
 //
 
-// PHASE 3D SCAFFOLD - Kerberos / SPNEGO authentication for OpcClassic.Dcom.
-//
-// The current commit defines the API surface (KerberosAuthInfo, KerberosConnectionContext)
-// and takes the Kerberos.NET package dependency. The AcquireApRequestAsync and
-// ProcessApResponseAsync method bodies are NotImplementedException - intentional, so
-// follow-up Phase 3D work fills them in with KDC + service-ticket-request integration
-// without API churn.
-//
-// Phase 3E adds SPNEGO negotiation (wrapping AP-REQ/AP-REP in SPNEGO token frames).
-// Phase 3F adds EPA (Extended Protection for Authentication / channel binding).
-
-#pragma warning disable MA0025 // Phase 3D intentionally exposes NotImplementedException scaffold methods.
+using Kerberos.NET;
+using Kerberos.NET.Client;
+using Kerberos.NET.Configuration;
+using Kerberos.NET.Credentials;
+using Kerberos.NET.Crypto;
+using Kerberos.NET.Entities;
 
 namespace OpcClassic.Dcom.Kerberos;
 
@@ -23,7 +17,14 @@ namespace OpcClassic.Dcom.Kerberos;
 /// </summary>
 public sealed class KerberosConnectionContext
 {
+    private const byte GssInitialContextTokenTag = 0x60;
+    private const byte GssApRepTokenId0 = 0x02;
+    private const byte GssApRepTokenId1 = 0x00;
+    private const byte KerberosApRepApplicationTag = 0x6f;
+    private const int GssKerberosTokenHeaderLength = 2;
+
     private readonly KerberosAuthInfo _info;
+    private ApplicationSessionContext? _sessionContext;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="KerberosConnectionContext" /> class.
@@ -42,10 +43,29 @@ public sealed class KerberosConnectionContext
     /// </summary>
     /// <param name="cancellationToken">Cancellation token for the future KDC request flow.</param>
     /// <returns>The AP-REQ token bytes.</returns>
-    public Task<byte[]> AcquireApRequestAsync(CancellationToken cancellationToken = default)
+    public async Task<byte[]> AcquireApRequestAsync(CancellationToken cancellationToken = default)
     {
-        _ = cancellationToken;
-        throw new NotImplementedException(CreateScaffoldMessage(nameof(AcquireApRequestAsync)));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var credential = CreateCredential();
+        using var client = CreateKerberosClient();
+
+        await client.Authenticate(credential).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var sessionContext = await client.GetServiceTicket(
+            new RequestServiceTicket
+            {
+                ServicePrincipalName = _info.Spn,
+                Realm = _info.Realm,
+                ApOptions = ApOptions.MutualRequired,
+                GssContextFlags = GssContextEstablishmentFlag.GSS_C_MUTUAL_FLAG,
+                IncludeSequenceNumber = true,
+            },
+            cancellationToken).ConfigureAwait(false);
+
+        _sessionContext = sessionContext;
+        return sessionContext.ApReq.EncodeGssApi().ToArray();
     }
 
     /// <summary>
@@ -57,15 +77,87 @@ public sealed class KerberosConnectionContext
     /// <returns>The derived session key bytes.</returns>
     public Task<byte[]> ProcessApResponseAsync(ReadOnlyMemory<byte> apReply, CancellationToken cancellationToken = default)
     {
-        _ = apReply;
-        _ = cancellationToken;
-        throw new NotImplementedException(CreateScaffoldMessage(nameof(ProcessApResponseAsync)));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var applicationToken = ExtractApReplyApplicationToken(apReply);
+        var sessionContext = _sessionContext ?? throw new InvalidOperationException(
+            "AcquireApRequestAsync must complete before processing an AP-REP token.");
+
+        var sessionKey = sessionContext.AuthenticateServiceResponse(applicationToken);
+        return Task.FromResult(sessionKey.KeyValue.ToArray());
     }
 
-    private string CreateScaffoldMessage(string methodName)
+    private KerberosClient CreateKerberosClient()
     {
-        return "Phase 3D scaffold: " + methodName + " is not yet implemented for SPN '" + _info.Spn +
-            "' in realm '" + _info.Realm + "'. Full implementation requires KDC integration via " +
-            "Kerberos.NET's KerberosClient plus a service ticket request flow. See Phase 3D follow-up.";
+        var configuration = Krb5Config.CurrentUser();
+        configuration.Defaults.DefaultRealm = _info.Realm;
+
+        return new KerberosClient(configuration, logger: null);
+    }
+
+    private KerberosCredential CreateCredential()
+    {
+        if (_info.Password is not null)
+        {
+            return new KerberosPasswordCredential(_info.Username, _info.Password, _info.Realm);
+        }
+
+        if (_info.KeytabPath is not null)
+        {
+            return new KeytabCredential(_info.Username, ReadKeytab(_info.KeytabPath), _info.Realm);
+        }
+
+        throw new InvalidOperationException("KerberosAuthInfo must carry either Password or KeytabPath.");
+    }
+
+    private static KeyTable ReadKeytab(string path)
+    {
+        using var stream = File.OpenRead(path);
+        return new KeyTable(stream);
+    }
+
+    private static ReadOnlyMemory<byte> ExtractApReplyApplicationToken(ReadOnlyMemory<byte> apReply)
+    {
+        if (apReply.IsEmpty)
+        {
+            throw new KerberosProtocolException("AP-REP token is empty.");
+        }
+
+        var span = apReply.Span;
+        if (span[0] == KerberosApRepApplicationTag)
+        {
+            return apReply;
+        }
+
+        if (HasGssApRepTokenId(span))
+        {
+            return apReply[GssKerberosTokenHeaderLength..];
+        }
+
+        if (span[0] == GssInitialContextTokenTag)
+        {
+            var token = GssApiToken.Decode(apReply).Token;
+            var tokenSpan = token.Span;
+
+            if (!token.IsEmpty && tokenSpan[0] == KerberosApRepApplicationTag)
+            {
+                return token;
+            }
+
+            if (HasGssApRepTokenId(tokenSpan))
+            {
+                return token[GssKerberosTokenHeaderLength..];
+            }
+        }
+
+        throw new KerberosProtocolException("AP-REP token was not a raw AP-REP or recognized GSS-API KRB_AP_REP frame.");
+    }
+
+    private static bool HasGssApRepTokenId(ReadOnlySpan<byte> token)
+    {
+        return token.Length > GssKerberosTokenHeaderLength &&
+            token[0] == GssApRepTokenId0 &&
+            token[1] == GssApRepTokenId1 &&
+            token[GssKerberosTokenHeaderLength] == KerberosApRepApplicationTag;
     }
 }
