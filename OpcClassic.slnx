@@ -11,6 +11,7 @@
     <Project Path="src/OpcClassic.Generators/OpcClassic.Generators.csproj" />
     <Project Path="src/OpcClassic.Hda/OpcClassic.Hda.csproj" />
     <Project Path="src/OpcClassic.Security/OpcClassic.Security.csproj" />
+    <Project Path="src/OpcClassic.Xml/OpcClassic.Xml.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OpcClassic.Ae.Tests/OpcClassic.Ae.Tests.csproj" />
@@ -25,5 +26,6 @@
     <Project Path="tests/OpcClassic.Hda.Tests/OpcClassic.Hda.Tests.csproj" />
     <Project Path="tests/OpcClassic.PropertyTests/OpcClassic.PropertyTests.csproj" />
     <Project Path="tests/OpcClassic.Security.Tests/OpcClassic.Security.Tests.csproj" />
+    <Project Path="tests/OpcClassic.Xml.Tests/OpcClassic.Xml.Tests.csproj" />
   </Folder>
 </Solution>

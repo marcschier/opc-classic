@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC XML-DA 1.0 client and server-hosting primitives. Pure HTTP/SOAP — no DCOM dependency. Cross-platform by construction.</Description>
+    <RootNamespace>OpcClassic.Xml</RootNamespace>
+    <AssemblyName>OpcClassic.Xml</AssemblyName>
+    <PackageId>OpcClassic.Xml</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpcClassic.Core\OpcClassic.Core.csproj" />
+  </ItemGroup>
+
+</Project>
