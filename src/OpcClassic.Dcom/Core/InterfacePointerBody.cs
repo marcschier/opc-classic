@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Core {
     using SharpCifs.Dcerpc.Ndr;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using System;
 
     /// <summary>

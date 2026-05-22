@@ -34,17 +34,35 @@ public interface IShimLogger
     /// <summary>Information-level log with structured arguments.</summary>
     void Information(string template, params object?[] args);
 
+    /// <summary>Information-level log carrying an exception.</summary>
+    void Information(Exception exception, string message);
+
+    /// <summary>Information-level log carrying an exception + structured arguments.</summary>
+    void Information(Exception exception, string template, params object?[] args);
+
     /// <summary>Debug-level log.</summary>
     void Debug(string message);
 
     /// <summary>Debug-level log with structured arguments.</summary>
     void Debug(string template, params object?[] args);
 
+    /// <summary>Debug-level log carrying an exception.</summary>
+    void Debug(Exception exception, string message);
+
+    /// <summary>Debug-level log carrying an exception + structured arguments.</summary>
+    void Debug(Exception exception, string template, params object?[] args);
+
     /// <summary>Verbose-level log (mapped to Trace).</summary>
     void Verbose(string message);
 
     /// <summary>Verbose-level log (mapped to Trace) with arguments.</summary>
     void Verbose(string template, params object?[] args);
+
+    /// <summary>Verbose-level log carrying an exception.</summary>
+    void Verbose(Exception exception, string message);
+
+    /// <summary>Verbose-level log carrying an exception + structured arguments.</summary>
+    void Verbose(Exception exception, string template, params object?[] args);
 
     /// <summary>Warning-level log.</summary>
     void Warning(string message);
@@ -73,8 +91,14 @@ public interface IShimLogger
     /// <summary>Fatal-level log (mapped to Critical).</summary>
     void Fatal(string message);
 
+    /// <summary>Fatal-level log with structured arguments.</summary>
+    void Fatal(string template, params object?[] args);
+
     /// <summary>Fatal-level log carrying an exception.</summary>
     void Fatal(Exception exception, string message);
+
+    /// <summary>Fatal-level log carrying an exception + structured arguments.</summary>
+    void Fatal(Exception exception, string template, params object?[] args);
 }
 
 internal sealed class ShimLogger : IShimLogger
@@ -86,14 +110,26 @@ internal sealed class ShimLogger : IShimLogger
     public void Information(string message) => Get().LogInformation("{Message}", message);
     public void Information(string template, params object?[] args)
         => Get().LogInformation(template, args);
+    public void Information(Exception exception, string message)
+        => Get().LogInformation(exception, "{Message}", message);
+    public void Information(Exception exception, string template, params object?[] args)
+        => Get().LogInformation(exception, template, args);
 
     public void Debug(string message) => Get().LogDebug("{Message}", message);
     public void Debug(string template, params object?[] args)
         => Get().LogDebug(template, args);
+    public void Debug(Exception exception, string message)
+        => Get().LogDebug(exception, "{Message}", message);
+    public void Debug(Exception exception, string template, params object?[] args)
+        => Get().LogDebug(exception, template, args);
 
     public void Verbose(string message) => Get().LogTrace("{Message}", message);
     public void Verbose(string template, params object?[] args)
         => Get().LogTrace(template, args);
+    public void Verbose(Exception exception, string message)
+        => Get().LogTrace(exception, "{Message}", message);
+    public void Verbose(Exception exception, string template, params object?[] args)
+        => Get().LogTrace(exception, template, args);
 
     public void Warning(string message) => Get().LogWarning("{Message}", message);
     public void Warning(string template, params object?[] args)
@@ -112,6 +148,10 @@ internal sealed class ShimLogger : IShimLogger
         => Get().LogError(exception, template, args);
 
     public void Fatal(string message) => Get().LogCritical("{Message}", message);
+    public void Fatal(string template, params object?[] args)
+        => Get().LogCritical(template, args);
     public void Fatal(Exception exception, string message)
         => Get().LogCritical(exception, "{Message}", message);
+    public void Fatal(Exception exception, string template, params object?[] args)
+        => Get().LogCritical(exception, template, args);
 }

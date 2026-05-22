@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpInterop.Crypto;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Dcerpc.Ndr;
     using SharpCifs.Ntlmssp;
     using System;

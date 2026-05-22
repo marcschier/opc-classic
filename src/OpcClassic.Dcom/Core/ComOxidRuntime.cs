@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -10,7 +10,7 @@
 namespace SharpInterop.Core {
     using SharpInterop.Common;
     using SharpInterop.Rpc;
-    using Serilog;
+    using OpcClassic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;

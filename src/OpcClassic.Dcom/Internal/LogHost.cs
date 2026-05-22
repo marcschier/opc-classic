@@ -5,13 +5,13 @@
 // Phase 2G bootstrap — Microsoft.Extensions.Logging-backed shim that
 // mimics Serilog's "Log.Logger.Information(...)" surface. Lets existing
 // Serilog call sites migrate file-by-file with a single using-directive
-// swap (`using Serilog;` -> `using OpcClassic.Dcom.Internal;`) instead
+// swap (`using OpcClassic.Dcom.Internal;` -> `using OpcClassic.Dcom.Internal;`) instead
 // of a big-bang rewrite of all 33+ logging consumers.
 //
 // Migration plan:
 //   1. (this commit) Add LogHost + Log shim. Existing Serilog code keeps
 //      working unchanged.
-//   2. Per-file PR: replace `using Serilog;` with `using OpcClassic.Dcom.Internal;`
+//   2. Per-file PR: replace `using OpcClassic.Dcom.Internal;` with `using OpcClassic.Dcom.Internal;`
 //      and verify the file compiles + tests still pass.
 //   3. Once all files migrated, remove the Serilog package reference.
 //
