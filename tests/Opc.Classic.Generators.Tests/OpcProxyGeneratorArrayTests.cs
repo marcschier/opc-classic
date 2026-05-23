@@ -44,11 +44,11 @@ public sealed class OpcProxyGeneratorArrayTests
     {
         string method = GeneratedMethodSection("GetHandlesAsync");
 
-        await Assert.That(method).Contains("var __opcCount = (int)__opcReader.ReadUInt32();");
-        await Assert.That(method).Contains("var __opcArray = new global::System.Int32[__opcCount];");
-        await Assert.That(method).Contains("for (int __opcIndex = 0; __opcIndex < __opcCount; __opcIndex++)");
-        await Assert.That(method).Contains("__opcArray[__opcIndex] = __opcReader.ReadInt32();");
-        await Assert.That(method).Contains("return __opcArray;");
+        await Assert.That(method).Contains("var __opcResponseValue0Count = (int)__opcReader.ReadUInt32();");
+        await Assert.That(method).Contains("var __opcResponseValue0Array = new global::System.Int32[__opcResponseValue0Count];");
+        await Assert.That(method).Contains("for (int __opcResponseValue0Index = 0; __opcResponseValue0Index < __opcResponseValue0Count; __opcResponseValue0Index++)");
+        await Assert.That(method).Contains("__opcResponseValue0Array[__opcResponseValue0Index] = __opcReader.ReadInt32();");
+        await Assert.That(method).Contains("return __opcResponseValue0;");
     }
 
     [Test]
@@ -70,8 +70,8 @@ public sealed class OpcProxyGeneratorArrayTests
         await Assert.That(method).Contains("__opcWriter.WriteUInt32((uint)(serverHandles?.Length ?? 0));");
         await Assert.That(method).Contains("foreach (var __opcItem in serverHandles)");
         await Assert.That(method).Contains("__opcWriter.WriteInt32(__opcItem);");
-        await Assert.That(method).Contains("var __opcArray = new global::Opc.Classic.Da.OpcItemState[__opcCount];");
-        await Assert.That(method).Contains("__opcArray[__opcIndex] = global::Opc.Classic.Da.Ndr.NdrOpcItemStateCodec.Read(ref __opcReader);");
+        await Assert.That(method).Contains("var __opcResponseValue0Array = new global::Opc.Classic.Da.OpcItemState[__opcResponseValue0Count];");
+        await Assert.That(method).Contains("__opcResponseValue0Array[__opcResponseValue0Index] = global::Opc.Classic.Da.Ndr.NdrOpcItemStateCodec.Read(ref __opcReader);");
     }
 
     [Test]
@@ -79,10 +79,10 @@ public sealed class OpcProxyGeneratorArrayTests
     {
         string method = GeneratedMethodSection("GetItemIDsAsync");
 
-        await Assert.That(method).Contains("var __opcCount = (int)__opcReader.ReadUInt32();");
-        await Assert.That(method).Contains("var __opcArray = new global::System.String[__opcCount];");
-        await Assert.That(method).Contains("__opcArray[__opcIndex] = __opcReader.ReadUnicodeStringPtr()!;");
-        await Assert.That(method).Contains("return __opcArray;");
+        await Assert.That(method).Contains("var __opcResponseValue0Count = (int)__opcReader.ReadUInt32();");
+        await Assert.That(method).Contains("var __opcResponseValue0Array = new global::System.String[__opcResponseValue0Count];");
+        await Assert.That(method).Contains("__opcResponseValue0Array[__opcResponseValue0Index] = __opcReader.ReadUnicodeStringPtr()!;");
+        await Assert.That(method).Contains("return __opcResponseValue0;");
     }
 
     [Test]

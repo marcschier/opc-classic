@@ -87,7 +87,7 @@ public sealed class OpcProxyGeneratorBodyTests
     }
 
     [Test]
-    public async Task BadAsync_with_out_param_keeps_NotImplementedException_stub_and_reports_OPCGEN006()
+    public async Task BadAsync_with_out_param_decodes_response_without_OPCGEN006()
     {
         GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out ImmutableArray<Diagnostic> driverDiagnostics);
         ThrowIfCompilationHasErrors(outputCompilation);
@@ -95,10 +95,11 @@ public sealed class OpcProxyGeneratorBodyTests
         string method = MethodSection(generated, "BadAsync");
         var diagnostics = result.Results.SelectMany(static generator => generator.Diagnostics).Concat(driverDiagnostics);
 
-        await Assert.That(method).Contains("x = default!;");
-        await Assert.That(method).Contains("NotImplementedException");
-        await Assert.That(method.Contains("InvokeAsync", StringComparison.Ordinal)).IsFalse();
-        await Assert.That(diagnostics.Any(static diagnostic => diagnostic.Id == "OPCGEN006")).IsTrue();
+        await Assert.That(method).Contains("InvokeAsync");
+        await Assert.That(method).Contains("ReadInt32()");
+        await Assert.That(method).Contains("x = __opcDecoded;");
+        await Assert.That(method.Contains("NotImplementedException", StringComparison.Ordinal)).IsFalse();
+        await Assert.That(diagnostics.Any(static diagnostic => diagnostic.Id == "OPCGEN006")).IsFalse();
     }
 
     private static string GeneratedMethodSection(string methodName)

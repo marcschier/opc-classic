@@ -27,6 +27,14 @@ public partial interface IMarshalRoundTrip
     Task<int> SomeMethodAsync(int id, string name, CancellationToken ct);
 }
 
+[OpcInterface("33333333-4444-5555-6666-777777777780")]
+[GenerateOpcProxy]
+public partial interface IRefOutRoundTrip
+{
+    [OpcMethod(9)]
+    Task<int> AdjustAsync(int id, ref int current, out string name, CancellationToken ct);
+}
+
 public sealed class OpcProxyGeneratorMarshallingTests
 {
     private const string SampleSource = """
@@ -42,6 +50,11 @@ public sealed class OpcProxyGeneratorMarshallingTests
 
         public sealed class UnknownPayload { }
 
+        [OpcInterface("33333333-4444-5555-6666-777777777771")]
+        public partial interface IChildObject
+        {
+        }
+
         [OpcInterface("33333333-4444-5555-6666-777777777777")]
         [GenerateOpcProxy]
         public partial interface IMarshalTest
@@ -56,6 +69,9 @@ public sealed class OpcProxyGeneratorMarshallingTests
             [OpcMethod(10)] Task<UnknownPayload> WithUnknownAsync(UnknownPayload payload);
             [OpcMethod(11)] Task<OpcItemDef> MixedAsync(int id, OpcVariant value);
             [OpcMethod(12)] Task<OpcSafeArray> EchoSafeArrayAsync(OpcSafeArray value);
+            [OpcMethod(13)] Task<int> AdjustAsync(int id, ref int current, out string name);
+            [OpcMethod(14)] Task<IChildObject> GetChildAsync();
+            [OpcMethod(15)] [OpcGenerateMultiOutRecord] Task GetPairAsync(out int count, out string name);
         }
         """;
 
@@ -168,6 +184,41 @@ public sealed class OpcProxyGeneratorMarshallingTests
     }
 
     [Test]
+    public async Task AdjustAsync_emits_ref_request_and_out_response_marshalling()
+    {
+        string method = GeneratedMethodSection("AdjustAsync");
+
+        await Assert.That(method).Contains("WriteInt32(id)");
+        await Assert.That(method).Contains("WriteInt32(current)");
+        await Assert.That(method).Contains("ReadInt32()");
+        await Assert.That(method).Contains("name = __opcDecoded.Name;");
+        await Assert.That(method.Contains("WriteUnicodeStringPtr(name)", StringComparison.Ordinal)).IsFalse();
+    }
+
+    [Test]
+    public async Task InterfaceReturn_emits_objref_decode_handle()
+    {
+        string method = GeneratedMethodSection("GetChildAsync");
+
+        await Assert.That(method).Contains("global::Opc.Classic.Dcom.OpcInterfaceRefCodec.Read(ref __opcReader)");
+        await Assert.That(method).Contains("(global::Test.IChildObject)(object)");
+    }
+
+    [Test]
+    public async Task MultiOutMethod_emits_generated_record_and_assignments()
+    {
+        GeneratorDriverRunResult result = RunGenerator(SampleSource, out Compilation outputCompilation, out _);
+        ThrowIfCompilationHasErrors(outputCompilation);
+        string generated = GeneratedProxySource(result);
+        string method = MethodSection(generated, "GetPairAsync");
+
+        await Assert.That(generated).Contains("public sealed record GetPairAsyncResult(int Count, string Name);");
+        await Assert.That(method).Contains("return new GetPairAsyncResult(__opcResponseValue0, __opcResponseValue1);");
+        await Assert.That(method).Contains("count = __opcDecoded.Count;");
+        await Assert.That(method).Contains("name = __opcDecoded.Name;");
+    }
+
+    [Test]
     public async Task AeStatusMethod_emits_event_server_status_codec()
     {
         string method = GeneratedMethodSection("GetStatusAsync", AeStatusSource);
@@ -200,6 +251,29 @@ public sealed class OpcProxyGeneratorMarshallingTests
         await Assert.That(observedInterfaceId).IsEqualTo(IMarshalRoundTrip.InterfaceId);
         await Assert.That(observedOpnum).IsEqualTo(IMarshalRoundTrip.Opnums.SomeMethodAsync);
         await Assert.That(observedCancellationToken).IsEqualTo(CancellationToken.None);
+        await Assert.That(observedPayload is not null).IsTrue();
+        await Assert.That(Convert.ToHexString(observedPayload!)).IsEqualTo(Convert.ToHexString(expectedPayload));
+    }
+
+    [Test]
+    public async Task Proxy_round_trip_assigns_ref_and_out_response_values()
+    {
+        byte[] expectedPayload = EncodeRefOutRequest(5, 41);
+        ReadOnlyMemory<byte> responsePayload = EncodeRefOutResponse(7, 42, "updated");
+        byte[]? observedPayload = null;
+        var channel = new InMemoryCallChannel((_, _, requestPayload, _) =>
+        {
+            observedPayload = requestPayload.ToArray();
+            return Task.FromResult(new NdrCallResult(0, responsePayload));
+        });
+        var proxy = new IRefOutRoundTripClientProxy(channel);
+        int current = 41;
+
+        int result = await proxy.AdjustAsync(5, ref current, out string name, CancellationToken.None);
+
+        await Assert.That(result).IsEqualTo(7);
+        await Assert.That(current).IsEqualTo(42);
+        await Assert.That(name).IsEqualTo("updated");
         await Assert.That(observedPayload is not null).IsTrue();
         await Assert.That(Convert.ToHexString(observedPayload!)).IsEqualTo(Convert.ToHexString(expectedPayload));
     }
@@ -299,6 +373,25 @@ public sealed class OpcProxyGeneratorMarshallingTests
         writer.WriteInt32(id);
         writer.WriteUnicodeStringPtr(name);
         return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static byte[] EncodeRefOutRequest(int id, int current)
+    {
+        var buffer = new byte[128];
+        var writer = new NdrWriter(buffer);
+        writer.WriteInt32(id);
+        writer.WriteInt32(current);
+        return buffer.AsSpan(0, writer.Position).ToArray();
+    }
+
+    private static ReadOnlyMemory<byte> EncodeRefOutResponse(int result, int current, string name)
+    {
+        var buffer = new byte[128];
+        var writer = new NdrWriter(buffer);
+        writer.WriteInt32(result);
+        writer.WriteInt32(current);
+        writer.WriteUnicodeStringPtr(name);
+        return buffer.AsMemory(0, writer.Position).ToArray();
     }
 
     private static ReadOnlyMemory<byte> EncodeInt32(int value)

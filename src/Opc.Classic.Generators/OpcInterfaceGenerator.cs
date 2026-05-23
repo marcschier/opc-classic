@@ -1,4 +1,4 @@
-//
+﻿//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -87,6 +87,13 @@ namespace Opc.Classic.Generators
         public OpcMethodAttribute(int opnum) { Opnum = opnum; }
         public int Opnum { get; }
     }
+
+    /// <summary>
+    /// Requests a generated result record for DCOM methods whose response
+    /// payload contains multiple out values.
+    /// </summary>
+    [global::System.AttributeUsage(global::System.AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+    internal sealed class OpcGenerateMultiOutRecordAttribute : global::System.Attribute { }
 }
 ";
 
