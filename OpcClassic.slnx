@@ -39,5 +39,6 @@
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/OpcClassic.AotCanary/OpcClassic.AotCanary.csproj" />
+    <Project Path="samples/OpcClassic.CttServer/OpcClassic.CttServer.csproj" />
   </Folder>
 </Solution>
