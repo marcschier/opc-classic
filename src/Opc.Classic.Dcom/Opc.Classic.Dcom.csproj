@@ -45,6 +45,9 @@
     <ItemGroup>
         <ProjectReference Include="..\Opc.Classic.Hosting\Opc.Classic.Hosting.csproj" />
         <ProjectReference Include="..\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
+        <ProjectReference Include="..\Opc.Classic.Generators\Opc.Classic.Generators.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false" />
     </ItemGroup>
 
   <ItemGroup>

@@ -648,6 +648,7 @@ namespace SharpInterop.Core {
             public override void Run() {
                 var listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
                 listener.Bind(new IPEndPoint(IPAddress.Any, 0));
+                listener.Listen();
                 _outerInstance.OxidResolverPort = listener.GetLocalPort();
                 while (!IsCanceled) {
                     var socket = listener.Accept();
