@@ -28,6 +28,11 @@ The 1.0.0 release waits for ALL of the following to be GREEN:
 
 Once those are green, the 1.0.0 release is `git tag v1.0.0` + `git push origin v1.0.0`.
 
+## Version history
+
+- `0.2.0-alpha.1` (2026-05-23): cumulative Session 10/11 pre-release; tag/push is a manual user action.
+- `0.1.0-alpha.2` (2026-05-22): Phase 16E release workflow and first alpha.2 package prep.
+
 ## Manual / workflow_dispatch trigger
 
 If automated tag-based dispatch fails for any reason, the release
