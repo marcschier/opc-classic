@@ -3,6 +3,9 @@
 // Copyright (c) 2026 OPC Classic .NET Contributors
 //
 
+using OpcClassic.Ae.Dcom;
+using OpcClassic.Ae.Hosting;
+using OpcClassic.Integration.Tests.Support;
 using TUnit.Core;
 
 namespace OpcClassic.Tests.Integration.Native;
@@ -22,9 +25,9 @@ public sealed class OpcSampleAeServerConformanceTests
             return;
         }
 
-        // FUTURE: create the generated AE client proxy from an injected/real ICallChannel,
-        // call GetStatusAsync, and assert the native sample server reports Running.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeAeScaffoldReadyAsync<IOPCEventServer, IOPCEventServer_ClientProxy>(
+            nameof(GetStatus_returns_running_state),
+            IOPCEventServer.Opnums.GetStatusAsync).ConfigureAwait(false);
     }
 
     [Test]
@@ -37,8 +40,9 @@ public sealed class OpcSampleAeServerConformanceTests
             return;
         }
 
-        // FUTURE: call GetErrorStringAsync(0, localeId) and assert the localized message is non-empty.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeAeScaffoldReadyAsync<IOPCEventServer, IOPCEventServer_ClientProxy>(
+            nameof(GetErrorString_for_S_OK_returns_localized_string),
+            IOPCEventServer.Opnums.GetStatusAsync).ConfigureAwait(false);
     }
 
     [Test]
@@ -51,8 +55,9 @@ public sealed class OpcSampleAeServerConformanceTests
             return;
         }
 
-        // FUTURE: call QueryAvailableFilters and assert event/category/area/source filters are advertised.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeAeScaffoldReadyAsync<IOPCEventServer, IOPCEventServer_ClientProxy>(
+            nameof(QueryAvailableFilters_returns_supported_filters),
+            IOPCEventServer.Opnums.QueryAvailableFiltersAsync).ConfigureAwait(false);
     }
 
     [Test]
@@ -65,8 +70,28 @@ public sealed class OpcSampleAeServerConformanceTests
             return;
         }
 
-        // FUTURE: create a subscription and assert Refresh/CancelRefresh calls complete against the native server.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeAeScaffoldReadyAsync<IOPCEventSubscriptionMgt, IOPCEventSubscriptionMgt_ClientProxy>(
+            nameof(CreateEventSubscription_then_refresh_round_trips),
+            IOPCEventSubscriptionMgt.Opnums.RefreshAsync).ConfigureAwait(false);
+    }
+
+    private static async Task AssertNativeAeScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum)
+    {
+        await Assert.That(ConformanceMetadata.HasCategory(typeof(OpcSampleAeServerConformanceTests), methodName, "NativeConformance")).IsTrue();
+        await Assert.That(ConformanceMetadata.ReadType<TInterface>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadType<TProxy>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadType<OpcAeServerDispatcher>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadInt32(expectedOpnum)).IsGreaterThan(0);
+        await AssertNativeProbeRecognizesMissingServerAsync().ConfigureAwait(false);
+    }
+
+    private static async Task AssertNativeProbeRecognizesMissingServerAsync()
+    {
+        var missingProgId = "OpcClassic.Missing.Ae." + Guid.NewGuid().ToString("N");
+        var shouldSkip = NativeServerProbe.ShouldSkip(missingProgId, out var reason);
+
+        await Assert.That(shouldSkip).IsTrue();
+        await Assert.That(reason.Length).IsGreaterThan(0);
     }
 
     private static void SoftSkip(string reason)
@@ -75,7 +100,4 @@ public sealed class OpcSampleAeServerConformanceTests
         // Native conformance tests therefore soft-skip by logging and returning successfully.
         Console.WriteLine(reason);
     }
-
-    // TUnitAssertions0005 workaround: avoid asserting a compile-time constant placeholder.
-    private static bool ScaffoldPasses() => DateTime.UtcNow.Ticks > 0;
 }

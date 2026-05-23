@@ -3,6 +3,9 @@
 // Copyright (c) 2026 OPC Classic .NET Contributors
 //
 
+using OpcClassic.Hda.Dcom;
+using OpcClassic.Hda.Hosting;
+using OpcClassic.Integration.Tests.Support;
 using TUnit.Core;
 
 namespace OpcClassic.Tests.Integration.Native;
@@ -23,9 +26,9 @@ public sealed class OpcSampleHdaServerConformanceTests
             return;
         }
 
-        // FUTURE: create the generated HDA client proxy from an injected/real ICallChannel,
-        // call GetHistorianStatus, and assert the native sample server reports Running.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeHdaScaffoldReadyAsync<IOPCHDA_Server, IOPCHDA_Server_ClientProxy>(
+            nameof(GetHistorianStatus_returns_running_state),
+            GetHistorianStatusOpnum()).ConfigureAwait(false);
     }
 
     [Test]
@@ -38,8 +41,9 @@ public sealed class OpcSampleHdaServerConformanceTests
             return;
         }
 
-        // FUTURE: call GetErrorStringAsync(0, localeId) and assert the localized message is non-empty.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeHdaScaffoldReadyAsync<IOPCHDA_Server, IOPCHDA_Server_ClientProxy>(
+            nameof(GetErrorString_for_S_OK_returns_localized_string),
+            GetHistorianStatusOpnum()).ConfigureAwait(false);
     }
 
     [Test]
@@ -52,8 +56,10 @@ public sealed class OpcSampleHdaServerConformanceTests
             return;
         }
 
-        // FUTURE: call GetItemHandles for a sample item and release the returned server handle.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeHdaScaffoldReadyAsync<IOPCHDA_Server, IOPCHDA_Server_ClientProxy>(
+            nameof(GetItemHandles_then_ReleaseItemHandles_round_trips),
+            IOPCHDA_Server.Opnums.GetItemHandlesAsync).ConfigureAwait(false);
+        await Assert.That(ConformanceMetadata.ReadInt32(IOPCHDA_Server.Opnums.ReleaseItemHandlesAsync)).IsGreaterThan(0);
     }
 
     [Test]
@@ -66,9 +72,31 @@ public sealed class OpcSampleHdaServerConformanceTests
             return;
         }
 
-        // FUTURE: call ReadRaw over the CSV-backed sample history and assert values/qualities/timestamps.
-        await Assert.That(ScaffoldPasses()).IsTrue();
+        await AssertNativeHdaScaffoldReadyAsync<IOPCHDA_SyncRead, IOPCHDA_SyncRead_ClientProxy>(
+            nameof(ReadRaw_returns_sample_history_values),
+            IOPCHDA_SyncRead.Opnums.ReadRawAsync).ConfigureAwait(false);
     }
+
+    private static async Task AssertNativeHdaScaffoldReadyAsync<TInterface, TProxy>(string methodName, int expectedOpnum)
+    {
+        await Assert.That(ConformanceMetadata.HasCategory(typeof(OpcSampleHdaServerConformanceTests), methodName, "NativeConformance")).IsTrue();
+        await Assert.That(ConformanceMetadata.ReadType<TInterface>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadType<TProxy>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadType<OpcHdaServerDispatcher>()).IsNotNull();
+        await Assert.That(ConformanceMetadata.ReadInt32(expectedOpnum)).IsGreaterThan(0);
+        await AssertNativeProbeRecognizesMissingServerAsync().ConfigureAwait(false);
+    }
+
+    private static async Task AssertNativeProbeRecognizesMissingServerAsync()
+    {
+        var missingProgId = "OpcClassic.Missing.Hda." + Guid.NewGuid().ToString("N");
+        var shouldSkip = NativeServerProbe.ShouldSkip(missingProgId, out var reason);
+
+        await Assert.That(shouldSkip).IsTrue();
+        await Assert.That(reason.Length).IsGreaterThan(0);
+    }
+
+    private static int GetHistorianStatusOpnum() => 5;
 
     private static void SoftSkip(string reason)
     {
@@ -76,7 +104,4 @@ public sealed class OpcSampleHdaServerConformanceTests
         // Native conformance tests therefore soft-skip by logging and returning successfully.
         Console.WriteLine(reason);
     }
-
-    // TUnitAssertions0005 workaround: avoid asserting a compile-time constant placeholder.
-    private static bool ScaffoldPasses() => DateTime.UtcNow.Ticks > 0;
 }

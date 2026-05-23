@@ -15,7 +15,15 @@ The Matrikon Simulation Server exposes a well-known tag tree:
 
 See https://www.matrikonopc.com/products/opc-desktop-tools/opc-simulation-server.aspx
 
-## Running
+## Loopback equivalent
+
+`Category=MatrikonConformance.Loopback` tests run without Matrikon installed.
+They simulate the well-known tags in `StubDaServer`, route the generated
+`IOPCServer` client proxy through `InMemoryCallChannel` into
+`OpcDaServerDispatcher`, and assert the typed status/error responses plus tag
+catalog assumptions.
+
+## Running real Matrikon tests
 
 Matrikon Simulation Server is distributed by Matrikon (now Honeywell).
 Free download requires registration at matrikonopc.com.
@@ -31,11 +39,12 @@ Locally on Windows, install Matrikon, then:
 dotnet test --filter "Category=MatrikonConformance"
 ```
 
-Tests soft-skip when Matrikon isn't installed.
+Tests soft-skip when Matrikon isn't installed. When Matrikon is present but
+real DCOM transport is not wired, the tests assert the generated proxy,
+probe, category-tag, and tag-tree plumbing.
 
 ## Status
 
-Scaffold-only today. Prerequisites are the same as Phase 14B (real
-DCOM CallChannel via Phase 4 + per-method generator bodies via Phase
-6B follow-up). The well-known tag tree means tests will need minimal
-parameterisation once the prerequisites land.
+The folder now has loopback-backed assertions for the generated proxy and DA
+server dispatcher. Full Matrikon end-to-end tests still require the installer,
+license/registration, and a real `DcomCallChannel` connection to the server.

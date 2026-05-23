@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OpcClassic.Ae\OpcClassic.Ae.csproj" />
     <ProjectReference Include="..\..\src\OpcClassic.Da\OpcClassic.Da.csproj" />
+    <ProjectReference Include="..\..\src\OpcClassic.Hda\OpcClassic.Hda.csproj" />
   </ItemGroup>
 
   <ItemGroup>
