@@ -109,9 +109,9 @@ namespace SharpInterop.Core {
                 _thread.Start();
 
                 // schedule only the task to ping the OIDs obtained.
-                _clientPing = new Timer(_ => ClientPingTimerTask(), null, 0, 4 * 60 * 1000);
+                _clientPing = new Timer(_ => ClientPingTimerTask(), null, TimeSpan.Zero, DcomTimings.PingPeriod);
                 if (Interop.IsCoClassAutoCollection) {
-                    _serverPing = new Timer(_ => ServerPingTimerTask(), null, 0, 8 * 60 * 1000);
+                    _serverPing = new Timer(_ => ServerPingTimerTask(), null, TimeSpan.Zero, DcomTimings.ObjectExpiryPeriod);
                 }
                 _resolverStarted = true;
             }
@@ -534,7 +534,7 @@ namespace SharpInterop.Core {
                 var entry = itr.Next();
                 var holder = entry.Value;
                 var address = entry.Key.TargetServer;
-                // will get it from the cache, since it is getting called after every 4 minutes
+                // will get it from the cache, since it is getting called every OXID ping period
                 // what if this stub has timed out, I guess I will have to ask the developers to increase the timeout for now.
                 ComOxidStub stub = null;
                 lock (_mapOfAddressVsStubLock) {

@@ -44,7 +44,7 @@ namespace SharpInterop.Common {
         /// It is not very abnormal, since Windows can sometimes resort
         /// to mechanisms other than DCOM to keep a reference count for
         /// the instances they imported. In case of this framework, if a
-        /// ping is not received in 8 minutes, the Local Class is 
+        /// ping is not received within <see cref="DcomTimings.ObjectExpiryPeriod"/>, the Local Class is
         /// collected for GC. And if the COM server requires a
         /// reference to it or acts on a previously obtained reference,
         /// it is sent back an <i>Exception</i>.

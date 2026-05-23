@@ -9,6 +9,7 @@
 
 namespace SharpInterop.Core {
     using Opc.Classic.Dcom.Internal;
+    using SharpInterop.Common;
     using System;
     using System.Linq;
 
@@ -35,9 +36,7 @@ namespace SharpInterop.Core {
         /// </summary>
         /// <returns></returns>
         internal bool HasExpired() {
-            // TODO: Make configurable
-            // 8 minutes interval...giving COM Client some grace period.
-            if ((DateTime.UtcNow - _lastPingTime) > TimeSpan.FromMinutes(8)) {
+            if ((DcomTimings.UtcNow - _lastPingTime) > DcomTimings.ObjectExpiryPeriod) {
                 return true;
             }
             return false;
@@ -60,7 +59,7 @@ namespace SharpInterop.Core {
         /// Update last ping
         /// </summary>
         internal void UpdateLastPingTime() =>
-            _lastPingTime = DateTime.UtcNow;
+            _lastPingTime = DcomTimings.UtcNow;
 
         /// <summary>
         /// Reset ref count
@@ -100,6 +99,6 @@ namespace SharpInterop.Core {
             "{ IPID ref count is " + IPIDRefCount + " } and OID in bytes[] " +
                 OID + ", hasExpired " + HasExpired() + " } ";
 
-        private DateTime _lastPingTime = DateTime.UtcNow;
+        private DateTimeOffset _lastPingTime = DcomTimings.UtcNow;
     }
 }
