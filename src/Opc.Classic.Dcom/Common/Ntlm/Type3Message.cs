@@ -9,6 +9,9 @@ namespace Opc.Classic.Dcom.Internal.Ntlm;
 
 public sealed class Type3Message : NtlmMessage
 {
+    public const int MicOffset = 72;
+    public const int MicLength = NtlmMic.MicLength;
+
     private byte[]? _version;
     private byte[]? _mic;
 
@@ -144,6 +147,10 @@ public sealed class Type3Message : NtlmMessage
 
     public byte[] GetSessionKey() => CloneOrEmpty(EncryptedRandomSessionKey);
 
+    public byte[] GetMic() => CloneOrEmpty(_mic);
+
+    public bool HasMic => _mic is { Length: MicLength };
+
     public string? GetUser() => User;
 
     public string? GetWorkstation() => Workstation;
@@ -155,6 +162,19 @@ public sealed class Type3Message : NtlmMessage
     public void SetNtResponse(byte[] ntResponse) => NtResponse = CloneOrEmpty(ntResponse);
 
     public void SetSessionKey(byte[] sessionKey) => EncryptedRandomSessionKey = CloneOrEmpty(sessionKey);
+
+    public void SetMic(byte[] mic)
+    {
+        ArgumentNullException.ThrowIfNull(mic);
+        if (mic.Length != MicLength)
+        {
+            throw new ArgumentException("NTLM MIC must be exactly 16 bytes.", nameof(mic));
+        }
+
+        _mic = (byte[])mic.Clone();
+    }
+
+    public void ClearMic() => _mic = null;
 
     public void SetUser(string user) => User = user;
 
@@ -188,11 +208,11 @@ public sealed class Type3Message : NtlmMessage
         BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(60, 4), (uint)Flags);
         if (includeVersion)
         {
-            (_version ?? Array.Empty<byte>()).AsSpan(0, Math.Min(_version?.Length ?? 0, 8)).CopyTo(span.Slice(64, 8));
+            (_version ?? DefaultVersion.ToArray()).AsSpan(0, Math.Min(_version?.Length ?? 8, 8)).CopyTo(span.Slice(64, 8));
         }
         if (includeMic)
         {
-            _mic!.CopyTo(span.Slice(72, 16));
+            _mic!.CopyTo(span.Slice(MicOffset, MicLength));
         }
 
         offset = headerSize;
@@ -203,6 +223,27 @@ public sealed class Type3Message : NtlmMessage
         CopyPayload(workstationBytes, span, ref offset);
         CopyPayload(sessionKey, span, ref offset);
         return buffer;
+    }
+
+    public byte[] ToByteArrayWithMic(byte[] sessionKey, ReadOnlySpan<byte> negotiate, ReadOnlySpan<byte> challenge)
+    {
+        ArgumentNullException.ThrowIfNull(sessionKey);
+
+        var previousMic = _mic;
+        _mic = new byte[MicLength];
+        try
+        {
+            var authenticate = ToByteArray();
+            var mic = NtlmMic.Compute(sessionKey, negotiate, challenge, authenticate);
+            mic.CopyTo(authenticate.AsSpan(MicOffset, MicLength));
+            _mic = mic;
+            return authenticate;
+        }
+        catch
+        {
+            _mic = previousMic;
+            throw;
+        }
     }
 
     public override string ToString() =>
@@ -243,9 +284,9 @@ public sealed class Type3Message : NtlmMessage
         {
             _version = span.Slice(64, 8).ToArray();
         }
-        if (span.Length >= 88 && minimumPayloadOffset >= 88)
+        if (span.Length >= MicOffset + MicLength && minimumPayloadOffset >= MicOffset + MicLength)
         {
-            _mic = span.Slice(72, 16).ToArray();
+            _mic = span.Slice(MicOffset, MicLength).ToArray();
         }
 
         var encoding = StringEncoding(Flags);

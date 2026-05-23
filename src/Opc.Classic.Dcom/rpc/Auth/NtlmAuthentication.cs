@@ -168,10 +168,17 @@ namespace SharpInterop.Rpc.Auth.ntlm {
 
             public OpcProtectionLevel ProtectionLevel { get; }
 
-            public byte[] BuildInitialToken() => _authentication.CreateType1().ToByteArray();
+            public byte[] BuildInitialToken() {
+                var type1 = _authentication.CreateType1();
+                var token = type1.ToByteArray();
+                _authentication.SetNegotiateMessage(token);
+                return token;
+            }
 
             public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) {
-                var type2 = new Type2Message(serverToken.ToArray());
+                var challengeToken = serverToken.ToArray();
+                _authentication.SetChallengeMessage(challengeToken);
+                var type2 = new Type2Message(challengeToken);
                 return _authentication.CreateType3(type2).ToByteArray();
             }
 
@@ -242,7 +249,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
             }
             var flags = DefaultFlags;
-            return new Type1Message(flags, _credentials.Domain, Type1Message.GetDefaultWorkstation());
+            var type1 = new Type1Message(flags, _credentials.Domain, Type1Message.GetDefaultWorkstation());
+            _negotiateMessage = type1.ToByteArray();
+            return type1;
         }
 
         /// <summary>
@@ -264,6 +273,17 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             _serverChallenge = challenge;
             var type2Message = new Type2Message(flags, challenge,
                 _credentials.Domain); // generate our own, since SMB will throw exception here
+            if (ShouldRequestMic(flags)) {
+                type2Message.SetTargetInformation(NtlmAvPairs.AddMicFlag(type2Message.GetTargetInformation()));
+            }
+
+            _challengeFlags = flags;
+            _challengeTargetInformation = type2Message.GetTargetInformation();
+            _challengeMessage = type2Message.ToByteArray();
+            if (type1 != null && _negotiateMessage == null) {
+                _negotiateMessage = type1.ToByteArray();
+            }
+
             return type2Message;
         }
 
@@ -298,6 +318,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 }
 
                 Type3Message type3;
+                byte[] exportedSessionKey = null;
                 if (_useNtlmV2) {
                     kRandomGen.NextBytes(clientNonce);
                     try {
@@ -384,6 +405,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     try {
                         // now RC4 encrypt a random 16 byte key
                         var secondayMasterKey = ntlmKeyFactory.SecondarySessionKey;
+                        exportedSessionKey = secondayMasterKey;
                         type3.SetSessionKey(ntlmKeyFactory.EncryptSecondarySessionKey(secondayMasterKey, userSessionKey));
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
                         Security = new Ntlm1(flags, secondayMasterKey, false);
@@ -394,6 +416,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     }
                 }
 
+                AddMicIfRequired(type2, type3, exportedSessionKey);
                 return type3;
             }
         }
@@ -432,7 +455,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     flags |= NtlmFlags.NtlmsspNegotiateSeal;
                 }
                 if (_keyExchange) {
-                    flags |= NtlmFlags.NtlmsspNegotiateKeyExch;
+                    flags |= NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion;
                 }
                 if (_keyLength >= 56) {
                     flags |= NtlmFlags.NtlmsspNegotiate56;
@@ -529,7 +552,12 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// Create security
         /// </summary>
         /// <param name="type3"></param>
-        internal void CreateSecurityWhenServer(object type3) {
+        internal void CreateSecurityWhenServer(object type3) => CreateSecurityWhenServerCore(type3, null);
+
+        internal void CreateSecurityWhenServerWithMic(object type3, byte[] authenticateMessage) =>
+            CreateSecurityWhenServerCore(type3, authenticateMessage);
+
+        private void CreateSecurityWhenServerCore(object type3, byte[]? authenticateMessage) {
             var type3Message = Type3Message.FromObject(type3);
             // two things here...check for anonymous, in that case the user response key is new byte[16].
             // in case anonymous has not been sent then create the key using credentials.
@@ -568,9 +596,13 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 secondayMasterKey = sessionResponseUserSessionKeyIsSecondaryMasterKey
                     ? sessionResponseUserSessionKey
                     : ntlmKeyFactory.DecryptSecondarySessionKey(type3Message.GetSessionKey(), sessionResponseUserSessionKey);
+                VerifyMicIfRequired(type3Message, secondayMasterKey, authenticateMessage);
 #pragma warning disable CS0618 // NTLMv1 fallback - explicit opt-in via rpc.ntlm.allowV1
                 Security = new Ntlm1(flags, secondayMasterKey, true);
 #pragma warning restore CS0618
+            }
+            catch (SecurityException) {
+                throw;
             }
             catch (Exception e) {
                 throw new Exception("Exception occured while forming Session Security Type3Response", e);
@@ -614,6 +646,54 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             }
             return ntlmKeyFactory.DecryptSecondarySessionKey(encryptedRandomSessionKey, sessionBaseKey);
         }
+
+        internal void SetNegotiateMessage(ReadOnlySpan<byte> negotiateMessage) =>
+            _negotiateMessage = negotiateMessage.ToArray();
+
+        internal void SetChallengeMessage(ReadOnlySpan<byte> challengeMessage) =>
+            _challengeMessage = challengeMessage.ToArray();
+
+        private void AddMicIfRequired(Type2Message type2, Type3Message type3, byte[]? exportedSessionKey) {
+            var targetInformation = type2.GetTargetInformation();
+            if (!RequiresMic(type2.GetFlags(), targetInformation)) {
+                return;
+            }
+            if (exportedSessionKey == null || exportedSessionKey.Length == 0) {
+                throw new SecurityException("NTLMv2 MIC requires an exported session key.");
+            }
+            if (_negotiateMessage == null || _negotiateMessage.Length == 0) {
+                throw new SecurityException("NTLMv2 MIC requires the original NEGOTIATE message.");
+            }
+
+            var challengeMessage = _challengeMessage ?? type2.ToByteArray();
+            type3.ToByteArrayWithMic(exportedSessionKey, _negotiateMessage, challengeMessage);
+        }
+
+        private void VerifyMicIfRequired(Type3Message type3Message, byte[] exportedSessionKey, byte[]? authenticateMessage) {
+            if (!RequiresMic(_challengeFlags, _challengeTargetInformation ?? Array.Empty<byte>())) {
+                return;
+            }
+            if (exportedSessionKey == null || exportedSessionKey.Length == 0) {
+                throw new SecurityException("NTLMv2 MIC verification requires an exported session key.");
+            }
+            if (_negotiateMessage == null || _negotiateMessage.Length == 0 ||
+                _challengeMessage == null || _challengeMessage.Length == 0) {
+                throw new SecurityException("NTLMv2 MIC verification requires the original NEGOTIATE and CHALLENGE messages.");
+            }
+
+            var authenticate = authenticateMessage ?? type3Message.ToByteArray();
+            if (!type3Message.HasMic ||
+                !NtlmMic.Verify(exportedSessionKey, _negotiateMessage, _challengeMessage, authenticate, Type3Message.MicOffset)) {
+                throw new SecurityException("Invalid NTLMv2 MIC.");
+            }
+        }
+
+        private static bool RequiresMic(NtlmFlags flags, ReadOnlySpan<byte> targetInformation) =>
+            ShouldRequestMic(flags) && NtlmAvPairs.HasMicFlag(targetInformation);
+
+        private static bool ShouldRequestMic(NtlmFlags flags) =>
+            (flags & (NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion)) ==
+            (NtlmFlags.NtlmsspNegotiateKeyExch | NtlmFlags.NtlmsspNegotiateVersion);
 
         private static readonly byte[] kDefaultServerChallenge = { 1, 2, 3, 4, 5, 6, 7, 8 };
         private static readonly bool kUnicodeSupported = Config.GetBoolean("SharpCifs.smb.client.useUnicode", true);
@@ -757,6 +837,10 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly bool _useSSO;
         private readonly byte[] _channelBindingsHash;
         private byte[] _serverChallenge;
+        private NtlmFlags _challengeFlags;
+        private byte[]? _challengeTargetInformation;
+        private byte[]? _negotiateMessage;
+        private byte[]? _challengeMessage;
         private const ushort MsvAvEol = 0x0000;
         private const ushort MsvAvChannelBindings = 0x000A;
         private static readonly Random kRandomGen = new Random();

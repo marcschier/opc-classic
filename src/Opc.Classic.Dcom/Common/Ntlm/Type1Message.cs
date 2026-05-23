@@ -83,7 +83,7 @@ public sealed class Type1Message : NtlmMessage
         WriteFields(span.Slice(24, 8), CheckedLength(workstationBytes.Length), (uint)(headerSize + domainBytes.Length));
         if (includeVersion)
         {
-            (_version ?? Array.Empty<byte>()).AsSpan(0, Math.Min(_version?.Length ?? 0, 8)).CopyTo(span.Slice(32, 8));
+            (_version ?? DefaultVersion.ToArray()).AsSpan(0, Math.Min(_version?.Length ?? 8, 8)).CopyTo(span.Slice(32, 8));
         }
 
         domainBytes.CopyTo(span[headerSize..]);

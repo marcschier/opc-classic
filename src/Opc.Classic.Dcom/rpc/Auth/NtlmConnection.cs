@@ -53,17 +53,19 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     // server gets negotiate from client
                     // setSecurity(null);
                     _contextId = verifier.ContextId;
+                    _authentication.SetNegotiateMessage(verifier.Body);
                     _ntlm = new Type1Message(verifier.Body);
                     break;
                 case 2:
                     // client gets challenge from server
+                    _authentication.SetChallengeMessage(verifier.Body);
                     _ntlm = new Type2Message(verifier.Body);
                     break;
                 case 3:
                     // server gets authenticate from client
                     _ntlm = new Type3Message(verifier.Body);
                     if (UseNtlm2SessionSecurity()) {
-                        _authentication.CreateSecurityWhenServer(_ntlm);
+                        _authentication.CreateSecurityWhenServerWithMic(_ntlm, verifier.Body);
                         _security = _authentication.Security;
                     }
                     break;
@@ -109,8 +111,16 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     _ntlm.GetFlag(NtlmFlags.NtlmsspNegotiateSign) ?
                         ProtectionLevel.PROTECTION_LEVEL_INTEGRITY :
                         ProtectionLevel.PROTECTION_LEVEL_CONNECT;
+            var body = _ntlm.ToByteArray();
+            if (_ntlm is Type1Message) {
+                _authentication.SetNegotiateMessage(body);
+            }
+            else if (_ntlm is Type2Message) {
+                _authentication.SetChallengeMessage(body);
+            }
+
             return new AuthenticationVerifier(NtlmAuthentication.AUTHENTICATIONSERVICENTLM,
-                protectionLevel, _contextId, _ntlm.ToByteArray());
+                protectionLevel, _contextId, body);
         }
 
         private bool UseNtlm2SessionSecurity() {

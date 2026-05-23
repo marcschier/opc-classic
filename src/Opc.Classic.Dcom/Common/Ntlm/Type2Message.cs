@@ -139,7 +139,7 @@ public sealed class Type2Message : NtlmMessage
         WriteFields(span.Slice(40, 8), CheckedLength(targetInformationBytes.Length), (uint)(headerSize + targetBytes.Length));
         if (includeVersion)
         {
-            (_version ?? Array.Empty<byte>()).AsSpan(0, Math.Min(_version?.Length ?? 0, 8)).CopyTo(span.Slice(48, 8));
+            (_version ?? DefaultVersion.ToArray()).AsSpan(0, Math.Min(_version?.Length ?? 8, 8)).CopyTo(span.Slice(48, 8));
         }
 
         targetBytes.CopyTo(span[headerSize..]);

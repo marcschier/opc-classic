@@ -12,6 +12,8 @@ public abstract class NtlmMessage
 
     private static readonly byte[] SignatureBytes = Encoding.ASCII.GetBytes("NTLMSSP\0");
 
+    protected static ReadOnlySpan<byte> DefaultVersion => [10, 0, 0, 0, 0, 0, 0, 15];
+
     public abstract int MessageType { get; }
 
     public NtlmFlags Flags { get; set; }
