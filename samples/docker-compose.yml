@@ -1,0 +1,111 @@
+name: opc-classic-samples
+
+services:
+  daserver:
+    image: opcclassic/daserver:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.DaServer/Dockerfile
+    ports:
+      - "51300:51300"
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SAMPLE_PORT: "51300"
+    networks:
+      - opcclassic-demo
+    healthcheck:
+      test: ["CMD", "dotnet", "--info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  daclient:
+    image: opcclassic/daclient:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.DaClient/Dockerfile
+    depends_on:
+      daserver:
+        condition: service_healthy
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SERVER_HOST: daserver
+      OPC_CLASSIC_SERVER_PORT: "51300"
+    networks:
+      - opcclassic-demo
+    restart: "no"
+
+  aeserver:
+    image: opcclassic/aeserver:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.AeServer/Dockerfile
+    ports:
+      - "51301:51301"
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SAMPLE_PORT: "51301"
+    networks:
+      - opcclassic-demo
+    healthcheck:
+      test: ["CMD", "dotnet", "--info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  aeclient:
+    image: opcclassic/aeclient:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.AeClient/Dockerfile
+    depends_on:
+      aeserver:
+        condition: service_healthy
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SERVER_HOST: aeserver
+      OPC_CLASSIC_SERVER_PORT: "51301"
+    networks:
+      - opcclassic-demo
+    restart: "no"
+
+  hdaserver:
+    image: opcclassic/hdaserver:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.HdaServer/Dockerfile
+    ports:
+      - "51302:51302"
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SAMPLE_PORT: "51302"
+    networks:
+      - opcclassic-demo
+    healthcheck:
+      test: ["CMD", "dotnet", "--info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  hdaclient:
+    image: opcclassic/hdaclient:local
+    build:
+      context: ..
+      dockerfile: samples/Opc.Classic.Samples.HdaClient/Dockerfile
+    depends_on:
+      hdaserver:
+        condition: service_healthy
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      OPC_CLASSIC_SERVER_HOST: hdaserver
+      OPC_CLASSIC_SERVER_PORT: "51302"
+    networks:
+      - opcclassic-demo
+    restart: "no"
+
+networks:
+  opcclassic-demo:
+    driver: bridge
