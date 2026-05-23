@@ -37,6 +37,7 @@
     <Project Path="tests/Opc.Classic.Hosting.Tests/Opc.Classic.Hosting.Tests.csproj" />
     <Project Path="tests/Opc.Classic.PropertyTests/Opc.Classic.PropertyTests.csproj" />
     <Project Path="tests/Opc.Classic.Security.Tests/Opc.Classic.Security.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.SnapshotTests/Opc.Classic.SnapshotTests.csproj" />
     <Project Path="tests/Opc.Classic.Xml.Tests/Opc.Classic.Xml.Tests.csproj" />
   </Folder>
   <Folder Name="/samples/">
