@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.4.0-alpha.1] - 2026-05-23
 
+### Added (samples)
+
+- `samples/Opc.Classic.Samples.DaServer/` — managed DA sample server mirroring the C++ `COM/Sample Server/Da/` reference (Matrikon-style tag tree: Random.*, Bucket Brigade.*, wave generators, error injection tags)
+- `samples/Opc.Classic.Samples.AeServer/` — managed AE sample server with periodic synthetic event emission (Heartbeat, condition transitions)
+- `samples/Opc.Classic.Samples.HdaServer/` — managed HDA sample server with in-memory historical data (sensor.* signals at 1s resolution over 1 day)
+- `docs/ADOPTION.md` — comprehensive adoption guide (~20 KB): Hello World client + server, authentication scenarios, discovery, cross-platform notes, AOT publishing, spec coverage, migration paths, troubleshooting
+
 ### Changed
 
 - **BREAKING**: Project renamed from `OpcClassic.*` to `Opc.Classic.*` (dotted form). Every namespace, NuGet package ID, folder, and project file follows the new convention. Pre-1.0 alpha; no packages published under the old name.

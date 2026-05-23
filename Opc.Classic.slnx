@@ -38,7 +38,10 @@
     <Project Path="tests/Opc.Classic.Xml.Tests/Opc.Classic.Xml.Tests.csproj" />
   </Folder>
   <Folder Name="/samples/">
+    <Project Path="samples/Opc.Classic.Samples.AeServer/Opc.Classic.Samples.AeServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.AotCanary/Opc.Classic.Samples.AotCanary.csproj" />
     <Project Path="samples/Opc.Classic.Samples.CttServer/Opc.Classic.Samples.CttServer.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.DaServer/Opc.Classic.Samples.DaServer.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.HdaServer/Opc.Classic.Samples.HdaServer.csproj" />
   </Folder>
 </Solution>
