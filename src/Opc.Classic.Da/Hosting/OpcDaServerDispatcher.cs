@@ -39,9 +39,9 @@ public sealed class OpcDaServerDispatcher : IOpcDaServerDispatcher
             {
                 return opnum switch
                 {
-                    3 => await DispatchGetStatusAsync(cancellationToken).ConfigureAwait(false),
-                    5 => await DispatchRemoveGroupAsync(requestPayload, cancellationToken).ConfigureAwait(false),
-                    8 => await DispatchGetErrorStringAsync(requestPayload, cancellationToken).ConfigureAwait(false),
+                    4 => await DispatchGetErrorStringAsync(requestPayload, cancellationToken).ConfigureAwait(false),
+                    6 => await DispatchGetStatusAsync(cancellationToken).ConfigureAwait(false),
+                    7 => await DispatchRemoveGroupAsync(requestPayload, cancellationToken).ConfigureAwait(false),
                     _ => NotImplemented(),
                 };
             }

@@ -12,7 +12,7 @@ namespace Opc.Classic.Samples.LoopbackDemo;
 
 internal sealed class LoopbackDaRuntime
 {
-    private const int AddGroupOpnum = 4;
+    private const int AddGroupOpnum = 3;
     private const int BrowseItemsOpnum = 5;
     private const int AddItemsOpnum = 3;
     private const int ReadOpnum = 3;

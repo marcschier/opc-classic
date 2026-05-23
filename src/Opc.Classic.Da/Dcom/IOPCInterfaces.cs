@@ -32,22 +32,22 @@ namespace Opc.Classic.Da.Dcom;
 public partial interface IOPCServer
 {
     /// <summary>
-    /// <c>IOPCServer::GetStatus</c> (opnum 3). Returns the server's run-state snapshot.
+    /// <c>IOPCServer::GetErrorString</c> (opnum 4). Returns a localized human-readable string for the given HRESULT.
     /// </summary>
-    [OpcMethod(3)]
+    [OpcMethod(4)]
+    Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCServer::GetStatus</c> (opnum 6). Returns the server's run-state snapshot.
+    /// </summary>
+    [OpcMethod(6)]
     Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// <c>IOPCServer::RemoveGroup</c> (opnum 5). Removes the named group from the server.
+    /// <c>IOPCServer::RemoveGroup</c> (opnum 7). Removes the named group from the server.
     /// </summary>
-    [OpcMethod(5)]
+    [OpcMethod(7)]
     Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// <c>IOPCServer::GetErrorString</c> (opnum 8). Returns a localized human-readable string for the given HRESULT.
-    /// </summary>
-    [OpcMethod(8)]
-    Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken cancellationToken = default);
 
     // AddGroup, GetGroupByName, and CreateGroupEnumerator require out COM interface pointers
     // or multi-return shapes, so they are deferred until those codecs exist.
@@ -165,9 +165,9 @@ public partial interface IOPCGroupStateMgt
     Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// <c>IOPCGroupStateMgt::SetName</c> (opnum 4). Renames the group.
+    /// <c>IOPCGroupStateMgt::SetName</c> (opnum 5). Renames the group.
     /// </summary>
-    [OpcMethod(4)]
+    [OpcMethod(5)]
     Task SetNameAsync(string name, CancellationToken cancellationToken = default);
 
     // SetState has optional pointer inputs and a revised-rate output; CloneGroup
