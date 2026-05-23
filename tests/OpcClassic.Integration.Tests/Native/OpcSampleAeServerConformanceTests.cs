@@ -13,13 +13,14 @@ namespace OpcClassic.Tests.Integration.Native;
 public sealed class OpcSampleAeServerConformanceTests
 {
     private const string SampleProgId = "OPCSample.OPCEventServer.1";
-    // ProgID matches COM/Sample Server/Ae/OPCEventServer.rgs.
+    private static readonly Guid SampleClsid = new("65168852-5783-11D1-84A0-00608CB8A7E9");
+    // ProgID and CLSID match COM/Sample Server/Ae/OPCEventServer.rgs.
 
     [Test]
     [Category("NativeConformance")]
     public async Task GetStatus_returns_running_state()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -34,7 +35,7 @@ public sealed class OpcSampleAeServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetErrorString_for_S_OK_returns_localized_string()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -49,7 +50,7 @@ public sealed class OpcSampleAeServerConformanceTests
     [Category("NativeConformance")]
     public async Task QueryAvailableFilters_returns_supported_filters()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -64,7 +65,7 @@ public sealed class OpcSampleAeServerConformanceTests
     [Category("NativeConformance")]
     public async Task CreateEventSubscription_then_refresh_round_trips()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;

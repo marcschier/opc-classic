@@ -13,14 +13,15 @@ namespace OpcClassic.Tests.Integration.Native;
 public sealed class OpcSampleHdaServerConformanceTests
 {
     private const string SampleProgId = "OPCSample.OpcHdaServer.1";
-    // ProgID matches COM/Sample Server/Hda/Server/OpcHdaServer.cpp registration:
-    // OPC_DECLARE_APPLICATION(OPCSample, OpcHdaServer, ...) + OPC_CLASS_TABLE_ENTRY(..., 1, ...).
+    private static readonly Guid SampleClsid = new("6A5EEDEC-1509-4627-997F-993CCB65AB7C");
+    // ProgID is derived by COM/Sample Server/Hda/Server/OpcHdaServer.cpp registration macros.
+    // CLSID is the coclass OpcHdaServer uuid in COM/Sample Server/Hda/Server/OpcHdaServer.idl.
 
     [Test]
     [Category("NativeConformance")]
     public async Task GetHistorianStatus_returns_running_state()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -35,7 +36,7 @@ public sealed class OpcSampleHdaServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetErrorString_for_S_OK_returns_localized_string()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -50,7 +51,7 @@ public sealed class OpcSampleHdaServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetItemHandles_then_ReleaseItemHandles_round_trips()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -66,7 +67,7 @@ public sealed class OpcSampleHdaServerConformanceTests
     [Category("NativeConformance")]
     public async Task ReadRaw_returns_sample_history_values()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;

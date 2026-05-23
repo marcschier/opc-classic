@@ -18,7 +18,8 @@ in-process before a real native DCOM endpoint is available.
    on `windows-2022` (see `.github/workflows/build.yml`).
 
 2. Locally on Windows, install the OPC Foundation Core Components
-   (places `opcproxy.dll` etc.) and register the native sample servers:
+   (places `opcproxy.dll` etc.), build the native `.vcxproj` sample servers
+   as documented in `COM/README.md`, and register them:
    ```cmd
    .\External\Bin\OpcCoreComponents.exe /S
    .\COM\regserver.cmd
@@ -33,6 +34,14 @@ in-process before a real native DCOM endpoint is available.
    message logged via the test framework). When the servers are registered
    but the real listener-side DCOM channel is not injected yet, the tests
    assert the generated proxy, dispatcher, probe, and category-tag plumbing.
+
+## Verified native server identifiers
+
+| Sample | ProgID | CLSID |
+|---|---|---|
+| DA | `OPCSample.OpcDaServer.1` | `{625C49A1-BE1C-45D7-9A8A-14BEDCF5CE6C}` |
+| AE | `OPCSample.OPCEventServer.1` | `{65168852-5783-11D1-84A0-00608CB8A7E9}` |
+| HDA | `OPCSample.OpcHdaServer.1` | `{6A5EEDEC-1509-4627-997F-993CCB65AB7C}` |
 
 ## Status
 

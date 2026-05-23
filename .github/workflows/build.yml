@@ -177,14 +177,14 @@ jobs:
       - name: Install OPC Foundation Core Components
         shell: pwsh
         run: |
-          # External/OpcCoreComponents.exe contains opcproxy.dll, opcenum.exe, etc.
-          # These provide the DCOM proxy/stub for IOPCServer + the OpcEnum service.
+          # The OPC Foundation Core Components installer is a separately downloaded prerequisite.
+          # When present, it installs opcproxy.dll/opcenum.exe for OPC Classic COM marshalling.
           $installer = "$env:GITHUB_WORKSPACE\External\Bin\OpcCoreComponents.exe"
           if (Test-Path $installer) {
             Start-Process -FilePath $installer -ArgumentList "/S" -Wait -NoNewWindow
             Write-Host "OPC Foundation Core Components installed"
           } else {
-            Write-Warning "OpcCoreComponents.exe not found - skipping (Phase 14B/14C will not run)"
+            Write-Warning "OpcCoreComponents.exe not found - native conformance will soft-skip"
           }
 
       - name: Build native COM samples (Phase 14B reference)
@@ -194,17 +194,36 @@ jobs:
           if (-not (Test-Path $vswhere)) { Write-Warning "vswhere missing"; exit 0 }
           $msbuild = & $vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
           if (-not $msbuild) { Write-Warning "MSBuild missing"; exit 0 }
-          $sln = "$env:GITHUB_WORKSPACE\COM\OPC.sln"
-          if (Test-Path $sln) {
-            & $msbuild $sln /p:Configuration=Release /p:Platform=Win32 /m
-          } else {
-            Write-Warning "COM/OPC.sln not found - native conformance disabled"
+
+          $solutionDir = "$env:GITHUB_WORKSPACE\COM\"
+          $projects = @(
+            "$env:GITHUB_WORKSPACE\COM\Sample Server\Da\Server\OpcDaServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\COM\Sample Server\Ae\OpcAeServer.vcxproj",
+            "$env:GITHUB_WORKSPACE\COM\Sample Server\Hda\Server\OpcHdaServer.vcxproj"
+          )
+
+          foreach ($project in $projects) {
+            if (-not (Test-Path $project)) {
+              Write-Warning "Native project not found: $project"
+              continue
+            }
+
+            & $msbuild $project `
+              /p:Configuration=Release `
+              /p:Platform=Win32 `
+              /p:SolutionDir=$solutionDir `
+              /p:PlatformToolset=v143 `
+              /p:WindowsTargetPlatformVersion=10.0 `
+              /m
+            if ($LASTEXITCODE -ne 0) {
+              Write-Warning "Native project build failed: $project"
+              exit 0
+            }
           }
 
       - name: Register native COM sample servers
         shell: pwsh
         run: |
-          # COM\Bin\Da\Simple Server\OPC Da Simple Server.exe /RegServer (or regserver.cmd)
           $regCmd = "$env:GITHUB_WORKSPACE\COM\regserver.cmd"
           if (Test-Path $regCmd) {
             & cmd /c $regCmd

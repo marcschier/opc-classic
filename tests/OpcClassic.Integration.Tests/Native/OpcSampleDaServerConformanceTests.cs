@@ -13,8 +13,9 @@ namespace OpcClassic.Tests.Integration.Native;
 public sealed class OpcSampleDaServerConformanceTests
 {
     private const string SampleProgId = "OPCSample.OpcDaServer.1";
-    // ProgID matches COM/Sample Server/Da/Server/OpcDaServer.cpp registration:
-    // OPC_DECLARE_APPLICATION(OPCSample, OpcDaServer, ...) + OPC_CLASS_TABLE_ENTRY(..., 1, ...).
+    private static readonly Guid SampleClsid = new("625C49A1-BE1C-45D7-9A8A-14BEDCF5CE6C");
+    // ProgID is derived by COM/Sample Server/Da/Server/OpcDaServer.cpp registration macros.
+    // CLSID is the coclass OpcDaServer uuid in COM/Sample Server/Da/Server/OpcDaServer.idl.
 
     internal static Func<string, CancellationToken, Task<ICallChannel>>? ConnectAsync { get; set; }
 
@@ -43,7 +44,7 @@ public sealed class OpcSampleDaServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetStatus_returns_running_state()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -65,7 +66,7 @@ public sealed class OpcSampleDaServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetErrorString_for_S_OK_returns_localized_string()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -87,7 +88,7 @@ public sealed class OpcSampleDaServerConformanceTests
     [Category("NativeConformance")]
     public async Task AddGroup_then_RemoveGroup_round_trips()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
@@ -101,7 +102,7 @@ public sealed class OpcSampleDaServerConformanceTests
     [Category("NativeConformance")]
     public async Task GetGroupByName_returns_handle_for_named_group()
     {
-        if (NativeServerProbe.ShouldSkip(SampleProgId, out var reason))
+        if (NativeServerProbe.ShouldSkip(SampleProgId, SampleClsid, out var reason))
         {
             SoftSkip(reason);
             return;
