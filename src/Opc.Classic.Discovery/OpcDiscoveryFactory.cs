@@ -3,6 +3,15 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using Opc.Classic;
+
 namespace Opc.Classic.Discovery;
 
 /// <summary>
@@ -11,44 +20,75 @@ namespace Opc.Classic.Discovery;
 /// </summary>
 public sealed class OpcDiscoveryFactory : IOpcDiscovery
 {
-    private readonly System.Collections.Generic.IReadOnlyList<IOpcDiscovery> _strategies;
+    private readonly IReadOnlyList<IOpcDiscovery> _strategies;
 
     public OpcDiscoveryFactory(params IOpcDiscovery[] strategies)
     {
-        System.ArgumentNullException.ThrowIfNull(strategies);
+        ArgumentNullException.ThrowIfNull(strategies);
         if (strategies.Length == 0)
         {
-            throw new System.ArgumentException("At least one discovery strategy is required.", nameof(strategies));
+            throw new ArgumentException("At least one discovery strategy is required.", nameof(strategies));
         }
 
         _strategies = strategies;
     }
 
-    public async System.Collections.Generic.IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
+    public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
         string? host = null,
-        [System.Runtime.CompilerServices.EnumeratorCancellation] System.Threading.CancellationToken cancellationToken = default)
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var seenClsids = new System.Collections.Generic.HashSet<System.Guid>();
-        foreach (var strategy in _strategies)
+        var seenClsids = new HashSet<Guid>();
+        foreach (IOpcDiscovery strategy in _strategies)
         {
-            System.Collections.Generic.IAsyncEnumerable<OpcServerEntry> stream;
-            try
+            IReadOnlyList<OpcServerEntry> entries = await ReadStrategyEntriesAsync(strategy, host, cancellationToken)
+                .ConfigureAwait(false);
+            foreach (OpcServerEntry entry in entries)
             {
-                stream = strategy.DiscoverAsync(host, cancellationToken);
-            }
-            catch (System.NotImplementedException)
-            {
-                // Strategy is a scaffold (Phase 10A-followup or 10B-followup); skip silently.
-                continue;
-            }
-
-            await foreach (var entry in stream.WithCancellation(cancellationToken).ConfigureAwait(false))
-            {
+                cancellationToken.ThrowIfCancellationRequested();
                 if (seenClsids.Add(entry.Clsid))
                 {
                     yield return entry;
                 }
             }
+        }
+    }
+
+    private static async Task<IReadOnlyList<OpcServerEntry>> ReadStrategyEntriesAsync(
+        IOpcDiscovery strategy,
+        string? host,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var entries = new List<OpcServerEntry>();
+            await foreach (OpcServerEntry entry in strategy.DiscoverAsync(host, cancellationToken)
+                .WithCancellation(cancellationToken)
+                .ConfigureAwait(false))
+            {
+                entries.Add(entry);
+            }
+
+            return entries;
+        }
+        catch (OpcException)
+        {
+            return Array.Empty<OpcServerEntry>();
+        }
+        catch (IOException)
+        {
+            return Array.Empty<OpcServerEntry>();
+        }
+        catch (SocketException)
+        {
+            return Array.Empty<OpcServerEntry>();
+        }
+        catch (TimeoutException)
+        {
+            return Array.Empty<OpcServerEntry>();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Array.Empty<OpcServerEntry>();
         }
     }
 }

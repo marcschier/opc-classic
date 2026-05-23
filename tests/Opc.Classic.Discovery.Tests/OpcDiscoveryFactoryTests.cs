@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Opc.Classic;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
@@ -53,18 +54,43 @@ public sealed class OpcDiscoveryFactoryTests
     }
 
     [Test]
-    public async Task Skips_strategies_that_throw_NotImplementedException()
+    public async Task Skips_strategies_that_throw_protocol_errors()
     {
         var local = CreateEntry("10138C2C-0000-0000-0000-000000000014", "Vendor.Local.1");
         var discovery = new OpcDiscoveryFactory(
-            new ThrowingDiscovery(),
-            new LocalEnum(new[] { local }, includeWindowsRegistry: false),
-            new ThrowingDiscovery());
+            new ProtocolErrorDiscovery(),
+            new LocalEnum(new[] { local }, includeWindowsRegistry: false));
 
         var entries = await ToListAsync(discovery);
 
         await Assert.That(entries.Count).IsEqualTo(1);
         await Assert.That(entries[0]).IsEqualTo(local);
+    }
+
+    [Test]
+    public async Task Does_not_mask_NotImplementedException()
+    {
+        var discovery = new OpcDiscoveryFactory(new ThrowingDiscovery());
+
+        Exception exception = await CaptureAsync(() => ToListAsync(discovery));
+
+        await Assert.That(exception is NotImplementedException).IsTrue();
+    }
+
+    [Test]
+    public async Task Includes_OpcEnumClient_when_configured()
+    {
+        var classId = Guid.Parse("10138C2C-0000-0000-0000-000000000015");
+        var server = new SyntheticOpcEnumServer()
+            .AddServer(Opc.Classic.OpcGuids.CATID_OPCDAServer20, classId, "Vendor.OpcEnum.1", "Vendor OpcEnum", "Vendor.OpcEnum");
+        var discovery = new OpcDiscoveryFactory(
+            new OpcEnumClient("opc-host", server, new[] { Opc.Classic.OpcGuids.CATID_OPCDAServer20 }));
+
+        var entries = await ToListAsync(discovery);
+
+        await Assert.That(entries.Count).IsEqualTo(1);
+        await Assert.That(entries[0].Clsid).IsEqualTo(classId);
+        await Assert.That(entries[0].ProgId).IsEqualTo("Vendor.OpcEnum.1");
     }
 
     private static async Task<List<OpcServerEntry>> ToListAsync(IOpcDiscovery discovery)
@@ -112,12 +138,40 @@ public sealed class OpcDiscoveryFactoryTests
         }
     }
 
+    private static async Task<Exception> CaptureAsync(Func<Task> action)
+    {
+        try
+        {
+            await action().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            return ex;
+        }
+
+        throw new InvalidOperationException("Expected an exception.");
+    }
+
+    private sealed class ProtocolErrorDiscovery : IOpcDiscovery
+    {
+        public IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
+            string? host = null,
+            CancellationToken cancellationToken = default)
+        {
+            _ = host;
+            _ = cancellationToken;
+            throw new OpcException(new OpcResultId(unchecked((int)0x80004005u), "E_FAIL"));
+        }
+    }
+
     private sealed class ThrowingDiscovery : IOpcDiscovery
     {
         public IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
             string? host = null,
             CancellationToken cancellationToken = default)
         {
+            _ = host;
+            _ = cancellationToken;
             throw new NotImplementedException();
         }
     }

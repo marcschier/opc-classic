@@ -4,37 +4,494 @@
 //
 
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
+using Opc.Classic;
+using Opc.Classic.Dcom;
+using Opc.Classic.Discovery.Dcom;
+using Opc.Classic.Ndr;
+using SharpInterop.Core;
 
 namespace Opc.Classic.Discovery;
 
 /// <summary>
-/// Placeholder for OpcEnum (OPC.ServerList.1) DCOM server discovery.
+/// OPCEnum (OPC.ServerList.1) DCOM discovery client.
 /// </summary>
 public sealed class OpcEnumClient : IOpcDiscovery
 {
-    /// <summary>
-    /// Initializes the OpcEnum discovery scaffold.
-    /// </summary>
-    public OpcEnumClient(Opc.Classic.OpcUrl serverListUrl)
+    private const int RemoteCreateInstanceOpnum = 4;
+    private const int EnumerationBatchSize = 64;
+    private const int DefaultPayloadSize = 4096;
+    private const int MaximumPayloadSize = 65536;
+    private const int ClassContext = 0x14;
+    private const int RpcProtocolSequenceTcp = 7;
+    private const int ENoInterface = unchecked((int)0x80004002u);
+    private const uint ObjRefSignature = 0x574F454D;
+
+    private static readonly Guid RemoteScmActivatorInterfaceId = new("000001A0-0000-0000-C000-000000000046");
+    private static readonly Guid[] DefaultCategoryIdsArray =
+    {
+        OpcGuids.CATID_OPCDAServer20,
+        OpcGuids.CATID_OPCDAServer30,
+        OpcGuids.CATID_OPCHDAServer10,
+        OpcGuids.CATID_OPCAEServer10,
+    };
+
+    private readonly IOpcEnumCallChannelFactory _channelFactory;
+    private readonly Guid[] _categoryIds;
+
+    private delegate void NdrWriteAction(ref NdrWriter writer);
+
+    /// <summary>Initializes an OPCEnum client from an OPC URL.</summary>
+    public OpcEnumClient(OpcUrl serverListUrl)
+        : this(serverListUrl, new DcomOpcEnumCallChannelFactory(), null)
+    {
+    }
+
+    /// <summary>Initializes an OPCEnum client from an OPC URL and injectable DCOM channel factory.</summary>
+    public OpcEnumClient(
+        OpcUrl serverListUrl,
+        IOpcEnumCallChannelFactory channelFactory,
+        IEnumerable<Guid>? categoryIds = null)
     {
         ArgumentNullException.ThrowIfNull(serverListUrl);
+        ArgumentNullException.ThrowIfNull(channelFactory);
 
         ServerListUrl = serverListUrl;
+        Host = NormalizeHost(serverListUrl.Host);
+        _channelFactory = channelFactory;
+        _categoryIds = NormalizeCategories(categoryIds);
     }
+
+    /// <summary>Initializes an OPCEnum client for a host and injectable DCOM channel factory.</summary>
+    public OpcEnumClient(
+        string host,
+        IOpcEnumCallChannelFactory channelFactory,
+        IEnumerable<Guid>? categoryIds = null)
+        : this(OpcUrl.Parse($"opcda://{NormalizeHost(host)}/OPC.ServerList.1"), channelFactory, categoryIds)
+    {
+    }
+
+    /// <summary>The default OPCEnum category IDs used by discovery.</summary>
+    public static IReadOnlyList<Guid> DefaultCategoryIds { get; } = Array.AsReadOnly(DefaultCategoryIdsArray);
 
     /// <summary>The OpcEnum server-list endpoint URL.</summary>
-    public Opc.Classic.OpcUrl ServerListUrl { get; }
+    public OpcUrl ServerListUrl { get; }
 
-    /// <inheritdoc />
-    [SuppressMessage("Design", "MA0025:Implement the functionality", Justification = "This Phase 10A scaffold must throw NotImplementedException until IOPCServerList shims land.")]
-    public IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
+    /// <summary>The default host passed to OPCEnum activation.</summary>
+    public string Host { get; }
+
+    /// <summary>Enumerates OPCEnum descriptors for the configured host and categories.</summary>
+    public Task<OpcServerDescriptor[]> EnumerateAsync(CancellationToken cancellationToken = default) =>
+        EnumerateAsync(null, null, cancellationToken);
+
+    /// <summary>Enumerates OPCEnum descriptors for a host and category list.</summary>
+    public async Task<OpcServerDescriptor[]> EnumerateAsync(
         string? host = null,
+        IEnumerable<Guid>? categories = null,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException(
-            "Phase 10A follow-up: enumerate via OPC.ServerList.1 (CLSID_OpcServerList) using IOPCServerList shims once Phase 6B per-method NDR bodies are applied to IOPCServerList.");
+        string targetHost = string.IsNullOrWhiteSpace(host) ? Host : NormalizeHost(host);
+        Guid[] requestedCategories = categories is null ? CopyCategories(_categoryIds) : NormalizeCategories(categories);
+        if (requestedCategories.Length == 0)
+        {
+            return Array.Empty<OpcServerDescriptor>();
+        }
+
+        ActivatedServerList activated = await ActivateServerListAsync(targetHost, cancellationToken).ConfigureAwait(false);
+        ICallChannel? serverListChannel = null;
+        try
+        {
+            Guid serverListIid = activated.SupportsServerList2 ? OpcGuids.IID_IOPCServerList2 : OpcGuids.IID_IOPCServerList;
+            serverListChannel = await _channelFactory.CreateObjectChannelAsync(
+                targetHost,
+                activated.InterfaceRef,
+                serverListIid,
+                cancellationToken).ConfigureAwait(false);
+
+            return activated.SupportsServerList2
+                ? await EnumerateWithServerList2Async(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false)
+                : await EnumerateWithServerListAsync(targetHost, serverListChannel, requestedCategories, cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            await DisposeChannelAsync(serverListChannel).ConfigureAwait(false);
+        }
     }
+
+    /// <inheritdoc />
+    public async IAsyncEnumerable<OpcServerEntry> DiscoverAsync(
+        string? host = null,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        string targetHost = string.IsNullOrWhiteSpace(host) ? Host : NormalizeHost(host);
+        OpcServerDescriptor[] descriptors = await EnumerateAsync(targetHost, null, cancellationToken).ConfigureAwait(false);
+        foreach (OpcServerDescriptor descriptor in descriptors)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            yield return new OpcServerEntry(
+                descriptor.ClassId,
+                descriptor.ProgId,
+                descriptor.UserType,
+                targetHost,
+                descriptor.Categories);
+        }
+    }
+
+    private async Task<OpcServerDescriptor[]> EnumerateWithServerList2Async(
+        string host,
+        ICallChannel serverListChannel,
+        Guid[] requestedCategories,
+        CancellationToken cancellationToken)
+    {
+        var serverList = new IOPCServerList2ClientProxy(serverListChannel);
+        CategoryMerge merge = await EnumerateClassesAsync(
+            host,
+            requestedCategories,
+            (category, token) => serverList.EnumClassesOfCategoriesAsync(new[] { category }, Array.Empty<Guid>(), token),
+            cancellationToken).ConfigureAwait(false);
+
+        var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
+        foreach (Guid classId in merge.ClassIds)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            OpcServerListClassDetails details = await serverList.GetClassDetailsAsync(classId, cancellationToken).ConfigureAwait(false);
+            descriptors.Add(CreateDescriptor(classId, details.ProgId, details.UserType, details.VerIndProgId, merge.CategoriesByClassId[classId]));
+        }
+
+        return descriptors.ToArray();
+    }
+
+    private async Task<OpcServerDescriptor[]> EnumerateWithServerListAsync(
+        string host,
+        ICallChannel serverListChannel,
+        Guid[] requestedCategories,
+        CancellationToken cancellationToken)
+    {
+        var serverList = new IOPCServerListClientProxy(serverListChannel);
+        CategoryMerge merge = await EnumerateClassesAsync(
+            host,
+            requestedCategories,
+            (category, token) => serverList.EnumClassesOfCategoriesAsync(new[] { category }, Array.Empty<Guid>(), token),
+            cancellationToken).ConfigureAwait(false);
+
+        var descriptors = new List<OpcServerDescriptor>(merge.ClassIds.Count);
+        foreach (Guid classId in merge.ClassIds)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            OpcServerListClassDetails details = await serverList.GetClassDetailsAsync(classId, cancellationToken).ConfigureAwait(false);
+            descriptors.Add(CreateDescriptor(classId, details.ProgId, details.UserType, null, merge.CategoriesByClassId[classId]));
+        }
+
+        return descriptors.ToArray();
+    }
+
+    private async Task<CategoryMerge> EnumerateClassesAsync(
+        string host,
+        IReadOnlyList<Guid> requestedCategories,
+        Func<Guid, CancellationToken, Task<IOpcInterfaceRef>> enumFactory,
+        CancellationToken cancellationToken)
+    {
+        var classIds = new List<Guid>();
+        var categoriesByClassId = new Dictionary<Guid, List<Guid>>();
+
+        foreach (Guid category in requestedCategories)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            IOpcInterfaceRef enumRef = await enumFactory(category, cancellationToken).ConfigureAwait(false);
+            ICallChannel? enumChannel = null;
+            try
+            {
+                enumChannel = await _channelFactory.CreateObjectChannelAsync(
+                    host,
+                    enumRef,
+                    OpcGuids.IID_IOPCEnumGUID,
+                    cancellationToken).ConfigureAwait(false);
+                var enumerator = new IOPCEnumGUIDClientProxy(enumChannel);
+                await AddEnumeratedClassIdsAsync(enumerator, category, classIds, categoriesByClassId, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                await DisposeChannelAsync(enumChannel).ConfigureAwait(false);
+            }
+        }
+
+        return new CategoryMerge(classIds, categoriesByClassId);
+    }
+
+    private static async Task AddEnumeratedClassIdsAsync(
+        IOPCEnumGUIDClientProxy enumerator,
+        Guid category,
+        List<Guid> classIds,
+        Dictionary<Guid, List<Guid>> categoriesByClassId,
+        CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            OpcEnumGuidNextResult next = await enumerator.NextAsync(EnumerationBatchSize, cancellationToken).ConfigureAwait(false);
+            if (next.Fetched <= 0 || next.ClassIds.Length == 0)
+            {
+                break;
+            }
+
+            int count = Math.Min(next.Fetched, next.ClassIds.Length);
+            for (int i = 0; i < count; i++)
+            {
+                Guid classId = next.ClassIds[i];
+                if (!categoriesByClassId.TryGetValue(classId, out List<Guid>? categories))
+                {
+                    categories = new List<Guid>();
+                    categoriesByClassId.Add(classId, categories);
+                    classIds.Add(classId);
+                }
+
+                if (!categories.Contains(category))
+                {
+                    categories.Add(category);
+                }
+            }
+
+            if (next.Fetched < EnumerationBatchSize)
+            {
+                break;
+            }
+        }
+    }
+
+    private async Task<ActivatedServerList> ActivateServerListAsync(string host, CancellationToken cancellationToken)
+    {
+        try
+        {
+            IOpcInterfaceRef serverList2 = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList2, cancellationToken)
+                .ConfigureAwait(false);
+            return new ActivatedServerList(serverList2, SupportsServerList2: true);
+        }
+        catch (OpcException ex) when (ex.ResultId.Code == ENoInterface)
+        {
+            IOpcInterfaceRef serverList = await RemoteCreateInstanceAsync(host, OpcGuids.IID_IOPCServerList, cancellationToken)
+                .ConfigureAwait(false);
+            return new ActivatedServerList(serverList, SupportsServerList2: false);
+        }
+    }
+
+    private async Task<IOpcInterfaceRef> RemoteCreateInstanceAsync(
+        string host,
+        Guid requestedIid,
+        CancellationToken cancellationToken)
+    {
+        ICallChannel? activationChannel = null;
+        try
+        {
+            activationChannel = await _channelFactory.CreateActivationChannelAsync(host, cancellationToken).ConfigureAwait(false);
+            byte[] payload = EncodeRemoteCreateInstanceRequest(host, OpcGuids.CLSID_OpcEnum, requestedIid);
+            NdrCallResult result = await activationChannel.InvokeAsync(
+                RemoteScmActivatorInterfaceId,
+                RemoteCreateInstanceOpnum,
+                payload,
+                cancellationToken).ConfigureAwait(false);
+            return DecodeRemoteCreateInstanceResponse(result);
+        }
+        finally
+        {
+            await DisposeChannelAsync(activationChannel).ConfigureAwait(false);
+        }
+    }
+
+    private static OpcServerDescriptor CreateDescriptor(
+        Guid classId,
+        string? progId,
+        string? userType,
+        string? verIndProgId,
+        IReadOnlyList<Guid> categories) =>
+        new(
+            classId,
+            string.IsNullOrWhiteSpace(progId) ? classId.ToString("B") : progId,
+            string.IsNullOrWhiteSpace(userType) ? string.IsNullOrWhiteSpace(progId) ? classId.ToString("B") : progId : userType,
+            string.IsNullOrWhiteSpace(verIndProgId) ? null : verIndProgId,
+            new ReadOnlyCollection<Guid>(CopyCategories(categories)));
+
+    private static byte[] EncodeRemoteCreateInstanceRequest(string host, Guid clsid, Guid requestedIid)
+    {
+        var activationProperties = new ActivationProperties(
+            new SpecialPropertiesData(ActivationComVersion.V5_6, Mode: 0, ClassContext, requestedIid, Array.Empty<int>()),
+            new InstanceInfo(clsid, requestedIid, ClassContext, Mode: 0),
+            new LocationInfo(host, Environment.ProcessId, new[] { RpcProtocolSequenceTcp }),
+            null,
+            new SecurityInfo(AuthenticationLevel: 0, ImpersonationLevel: 3, Capabilities: 0));
+        byte[] encodedProperties = ActivationInfoCodec.Encode(activationProperties);
+
+        return WritePayload((ref NdrWriter writer) =>
+        {
+            writer.WriteGuid(clsid);
+            writer.WriteGuid(requestedIid);
+            writer.WriteUInt32(1);
+            writer.WriteInt32(RpcProtocolSequenceTcp);
+            writer.WriteUInt32((uint)encodedProperties.Length);
+            writer.WriteRawBytes(encodedProperties);
+        });
+    }
+
+    private static IOpcInterfaceRef DecodeRemoteCreateInstanceResponse(NdrCallResult result)
+    {
+        ThrowIfFailed(result.Hresult, "IRemoteSCMActivator::RemoteCreateInstance");
+        if (result.ResponsePayload.IsEmpty)
+        {
+            throw new InvalidOperationException("RemoteCreateInstance did not return an OPCEnum OBJREF.");
+        }
+
+        ReadOnlySpan<byte> response = result.ResponsePayload.Span;
+        if (TryDecodeObjRef(response, out IOpcInterfaceRef? directObjRef))
+        {
+            return directObjRef!;
+        }
+
+        if (TryDecodeActivationProperties(response, out IOpcInterfaceRef? activationObjRef))
+        {
+            return activationObjRef!;
+        }
+
+        return DecodeLengthPrefixedObjRef(response);
+    }
+
+    private static IOpcInterfaceRef DecodeLengthPrefixedObjRef(ReadOnlySpan<byte> response)
+    {
+        var reader = new NdrReader(response);
+        int innerHresult = reader.ReadInt32();
+        ThrowIfFailed(innerHresult, "IRemoteSCMActivator::RemoteCreateInstance");
+        if (reader.RemainingBytes < sizeof(uint))
+        {
+            throw new InvalidOperationException("RemoteCreateInstance response did not include a length-prefixed OBJREF.");
+        }
+
+        uint objRefLength = reader.ReadUInt32();
+        if (objRefLength > reader.RemainingBytes)
+        {
+            throw new InvalidOperationException("RemoteCreateInstance OBJREF length exceeds the remaining response payload.");
+        }
+
+        byte[] objRefBytes = reader.ReadRawBytes((int)objRefLength).ToArray();
+        if (TryDecodeObjRef(objRefBytes, out IOpcInterfaceRef? objRef))
+        {
+            return objRef!;
+        }
+
+        throw new InvalidOperationException("RemoteCreateInstance returned an invalid OPCEnum OBJREF.");
+    }
+
+    private static bool TryDecodeActivationProperties(ReadOnlySpan<byte> response, out IOpcInterfaceRef? objRef)
+    {
+        objRef = null;
+        if (!ActivationInfoCodec.TryDecode(response, out ActivationProperties properties)
+            || properties.ScmReplyInfo?.ObjRef is not { Length: > 0 } objRefBytes)
+        {
+            return false;
+        }
+
+        return TryDecodeObjRef(objRefBytes, out objRef);
+    }
+
+    private static bool TryDecodeObjRef(ReadOnlySpan<byte> payload, out IOpcInterfaceRef? objRef)
+    {
+        objRef = null;
+        if (payload.Length < sizeof(uint) || BinaryPrimitives.ReadUInt32LittleEndian(payload) != ObjRefSignature)
+        {
+            return false;
+        }
+
+        try
+        {
+            var reader = new NdrReader(payload);
+            objRef = OpcInterfaceRefCodec.Read(ref reader);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
+    private static byte[] WritePayload(NdrWriteAction action)
+    {
+        ArgumentNullException.ThrowIfNull(action);
+
+        for (int size = DefaultPayloadSize; size <= MaximumPayloadSize; size *= 2)
+        {
+            var buffer = new byte[size];
+            var writer = new NdrWriter(buffer);
+            try
+            {
+                action(ref writer);
+                return buffer.AsSpan(0, writer.Position).ToArray();
+            }
+            catch (InvalidOperationException) when (size < MaximumPayloadSize)
+            {
+            }
+        }
+
+        throw new InvalidOperationException("Unable to encode the RemoteCreateInstance payload.");
+    }
+
+    private static Guid[] NormalizeCategories(IEnumerable<Guid>? categories)
+    {
+        if (categories is null)
+        {
+            return CopyCategories(DefaultCategoryIdsArray);
+        }
+
+        var distinct = new List<Guid>();
+        foreach (Guid category in categories)
+        {
+            if (category != Guid.Empty && !distinct.Contains(category))
+            {
+                distinct.Add(category);
+            }
+        }
+
+        return distinct.ToArray();
+    }
+
+    private static Guid[] CopyCategories(IReadOnlyList<Guid> categories)
+    {
+        var copy = new Guid[categories.Count];
+        for (int i = 0; i < categories.Count; i++)
+        {
+            copy[i] = categories[i];
+        }
+
+        return copy;
+    }
+
+    private static string NormalizeHost(string host) =>
+        string.IsNullOrWhiteSpace(host) ? "localhost" : host.Trim();
+
+    private static void ThrowIfFailed(int hresult, string operationDescription) =>
+        OpcException.ThrowIfFailed(new OpcResultId(hresult, null), operationDescription);
+
+    private static async ValueTask DisposeChannelAsync(ICallChannel? channel)
+    {
+        switch (channel)
+        {
+            case IAsyncDisposable asyncDisposable:
+                await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+                break;
+            case IDisposable disposable:
+                disposable.Dispose();
+                break;
+        }
+    }
+
+    private sealed record ActivatedServerList(IOpcInterfaceRef InterfaceRef, bool SupportsServerList2);
+
+    private sealed record CategoryMerge(
+        IReadOnlyList<Guid> ClassIds,
+        IReadOnlyDictionary<Guid, List<Guid>> CategoriesByClassId);
 }
