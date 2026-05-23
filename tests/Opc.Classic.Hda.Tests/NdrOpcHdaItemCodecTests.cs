@@ -130,4 +130,33 @@ public sealed class NdrOpcHdaItemCodecTests
         var back = ReadOne(bytes);
         await Assert.That(back.AggregateHandle).IsEqualTo(17);
     }
+
+    [Test]
+    [Arguments(10_000)]
+    [Arguments(100_000)]
+    public async Task RoundTrip_SafeArrayDoubleVariant_PreservesLargeArrays(int sampleCount)
+    {
+        var doubles = new double[sampleCount];
+        for (int i = 0; i < doubles.Length; i++)
+        {
+            doubles[i] = i + 0.25d;
+        }
+
+        var input = new OpcHdaItem(
+            clientHandle: 11,
+            aggregateHandle: 0,
+            timestamps: [new DateTimeOffset(2026, 5, 22, 10, 0, 0, TimeSpan.Zero)],
+            qualities: [192u],
+            values: [OpcVariant.FromSafeArray(OpcSafeArray.OfDouble(doubles))]);
+        var bytes = WriteOne(
+            (ref NdrWriter w) => NdrOpcHdaItemCodec.Write(ref w, input),
+            capacity: (sampleCount * 16) + 4096);
+        var back = ReadOne(bytes);
+        OpcSafeArray? safeArray = back.Values[0].AsSafeArray();
+        await Assert.That(safeArray).IsNotNull();
+        var roundTripped = (double[])safeArray!.Data;
+        await Assert.That(roundTripped.Length).IsEqualTo(sampleCount);
+        await Assert.That(roundTripped[0]).IsEqualTo(0.25d);
+        await Assert.That(roundTripped[^1]).IsEqualTo((sampleCount - 1) + 0.25d);
+    }
 }

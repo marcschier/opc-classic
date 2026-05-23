@@ -28,6 +28,23 @@ public interface IOpcHdaServer : IOPCHDA_Server
     Task<int[]> IOPCHDA_Server.ValidateItemIDsAsync(string[] itemIds, CancellationToken cancellationToken) =>
         ValidateItemIdsAsync(itemIds, cancellationToken);
 
+    Task IOPCHDA_Server.GetItemAttributesAsync(out int[] attributeIds, out string[] attributeNames, out string[] attributeDescriptions, out int[] attributeDataTypes, CancellationToken cancellationToken)
+    {
+        attributeIds = [];
+        attributeNames = [];
+        attributeDescriptions = [];
+        attributeDataTypes = [];
+        throw NotImplemented();
+    }
+
+    Task IOPCHDA_Server.GetAggregatesAsync(out int[] aggregateIds, out string[] aggregateNames, out string[] aggregateDescriptions, CancellationToken cancellationToken)
+    {
+        aggregateIds = [];
+        aggregateNames = [];
+        aggregateDescriptions = [];
+        throw NotImplemented();
+    }
+
     private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
 
     /// <summary>Reads raw historical values for each item in the requested time range.</summary>
