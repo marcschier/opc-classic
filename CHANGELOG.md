@@ -7,9 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+(nothing new since 0.3.0-alpha.1)
+
+## [0.3.0-alpha.1] - 2026-05-23
+
 ### Removed
 
-- SharpCifs.Std (LGPL-2.1) transitional dependency.
+- **SharpCifs.Std (LGPL-2.1) transitional dependency fully dropped.** The OpcClassic .NET 10 assembly tree is now license-clean under EPL-1.0 with no LGPL transitive runtime dependencies.
+
+### Changed
+
+- **N7.6 FINAL**: `OpcClassic.Dcom.Internal.Ntlm.NtlmMessage` + `Type1Message` + `Type2Message` + `Type3Message` reimplemented self-contained per MS-NLMP §2.2.1.1-3. The Phase 2I MS-NLMP §4.2.4.1 spec test vectors continue to pass, proving wire compatibility with the SharpCifs implementation that was replaced.
+- **N14B prep**: `COM/README.md` documents the native C++ sample server build process (MSBuild + Windows SDK + OPC Foundation Core Components). `COM/regserver.cmd` registers all three (DA/AE/HDA) sample servers. Phase 14B test scaffolds updated with verified CLSIDs/ProgIDs from the C++ sources.
+
+### Status
+
+- 1.0.0 Gate 2 (clear LGPL dep) — **MET** ✅
+- 1.0.0 Gate 1 (compat matrix) — preparation complete; actual native build + conformance runs require Windows runner with VS 2022 Build Tools + Windows SDK + OPC Foundation Core Components installer (the `windows-conformance` CI job is wired to perform this when assets are available)
+- 1.0.0 Gate 3 (OPC CTT) — externally blocked on OPC Foundation membership + `OPC_CTT_INSTALLER_URL` CI secret (workflow scaffold ready in `.github/workflows/opc-ctt.yml`)
 
 ## [0.2.0-alpha.1] - 2026-05-23
 

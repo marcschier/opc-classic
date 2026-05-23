@@ -46,7 +46,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>0.2.0-alpha.1</Version>
+    <Version>0.3.0-alpha.1</Version>
     <Authors>OPC Classic .NET Contributors</Authors>
     <Company>OPC Classic .NET</Company>
     <Copyright>Copyright (c) 2026 OPC Classic .NET Contributors</Copyright>
