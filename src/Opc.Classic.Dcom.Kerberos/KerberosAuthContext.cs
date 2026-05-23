@@ -17,6 +17,8 @@ public sealed class KerberosAuthContext : IAuthContext
 {
     private readonly IKerberosConnectionContext _kerberosCtx;
     private readonly ChannelBindings? _channelBindings;
+    private readonly IGssMicProvider _micProvider;
+    private byte[]? _mechListBytes;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="KerberosAuthContext" /> class.
@@ -24,11 +26,13 @@ public sealed class KerberosAuthContext : IAuthContext
     /// <param name="authInfo">Kerberos credentials and service principal information.</param>
     /// <param name="channelBindings">Optional channel bindings for extended protection.</param>
     /// <param name="protectionLevel">DCE/RPC packet-protection level.</param>
+    /// <param name="micProvider">Optional Kerberos MIC provider for SPNEGO mechListMIC verification.</param>
     public KerberosAuthContext(
         KerberosAuthInfo authInfo,
         ChannelBindings? channelBindings = null,
-        OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity)
-        : this(new KerberosConnectionContext(authInfo), channelBindings, protectionLevel)
+        OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
+        IGssMicProvider? micProvider = null)
+        : this(new KerberosConnectionContext(authInfo), channelBindings, protectionLevel, micProvider)
     {
     }
 
@@ -38,15 +42,18 @@ public sealed class KerberosAuthContext : IAuthContext
     /// <param name="kerberosContext">Kerberos handshake context.</param>
     /// <param name="channelBindings">Optional channel bindings for extended protection.</param>
     /// <param name="protectionLevel">DCE/RPC packet-protection level.</param>
+    /// <param name="micProvider">Optional Kerberos MIC provider for SPNEGO mechListMIC verification.</param>
     public KerberosAuthContext(
         IKerberosConnectionContext kerberosContext,
         ChannelBindings? channelBindings = null,
-        OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity)
+        OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
+        IGssMicProvider? micProvider = null)
     {
         ArgumentNullException.ThrowIfNull(kerberosContext);
 
         _kerberosCtx = kerberosContext;
         _channelBindings = channelBindings;
+        _micProvider = micProvider ?? new KerberosMicProvider();
         ProtectionLevel = protectionLevel;
     }
 
@@ -65,7 +72,7 @@ public sealed class KerberosAuthContext : IAuthContext
 #pragma warning disable VSTHRD002 // IAuthContext is synchronous; Kerberos.NET ticket acquisition is async.
         var apReq = _kerberosCtx.AcquireApRequestAsync(channelBindingsHash, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
-        return SpnegoTokenBuilder.BuildInitToken(apReq);
+        return SpnegoTokenBuilder.BuildInitToken(apReq, out _mechListBytes);
     }
 
     /// <inheritdoc />
@@ -79,7 +86,25 @@ public sealed class KerberosAuthContext : IAuthContext
 #pragma warning restore VSTHRD002
         }
 
+        if (resp.MechListMic.HasValue)
+        {
+            VerifyMechListMic(resp);
+        }
+
         return [];
+    }
+
+    private void VerifyMechListMic(SpnegoNegTokenResp response)
+    {
+        if (_mechListBytes is null || _mechListBytes.Length == 0)
+        {
+            throw new InvalidOperationException("SPNEGO mechListMIC verification requires the original NegTokenInit mechType list.");
+        }
+
+        if (!response.VerifyMechListMic(_mechListBytes, _micProvider))
+        {
+            throw new InvalidOperationException("SPNEGO mechListMIC verification failed.");
+        }
     }
 
     /// <inheritdoc />

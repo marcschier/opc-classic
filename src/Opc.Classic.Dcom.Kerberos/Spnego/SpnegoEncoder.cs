@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Formats.Asn1;
 
 namespace Opc.Classic.Dcom.Kerberos.Spnego;
@@ -27,29 +28,17 @@ public static class SpnegoEncoder
 
         var mechTypesTag = new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true);
         negTokenInit.PushSequence(mechTypesTag);
-        negTokenInit.PushSequence();
-        foreach (var mech in init.MechTypes)
-        {
-            negTokenInit.WriteObjectIdentifier(mech);
-        }
-
-        negTokenInit.PopSequence();
+        negTokenInit.WriteEncodedValue(EncodeMechTypeList(init.MechTypes));
         negTokenInit.PopSequence(mechTypesTag);
 
         if (!init.MechToken.IsEmpty)
         {
-            var mechTokenTag = new Asn1Tag(TagClass.ContextSpecific, 2, isConstructed: true);
-            negTokenInit.PushSequence(mechTokenTag);
-            negTokenInit.WriteOctetString(init.MechToken.Span);
-            negTokenInit.PopSequence(mechTokenTag);
+            WriteOctetStringField(negTokenInit, 2, init.MechToken);
         }
 
         if (init.MechListMic.HasValue && !init.MechListMic.Value.IsEmpty)
         {
-            var mechListMicTag = new Asn1Tag(TagClass.ContextSpecific, 3, isConstructed: true);
-            negTokenInit.PushSequence(mechListMicTag);
-            negTokenInit.WriteOctetString(init.MechListMic.Value.Span);
-            negTokenInit.PopSequence(mechListMicTag);
+            WriteOctetStringField(negTokenInit, 3, init.MechListMic.Value);
         }
 
         negTokenInit.PopSequence();
@@ -68,5 +57,101 @@ public static class SpnegoEncoder
         initialContextToken.PopSequence(initialContextTokenTag);
 
         return initialContextToken.Encode();
+    }
+
+    /// <summary>
+    /// Encodes a NegTokenResp continuation token.
+    /// </summary>
+    /// <param name="response">Response negotiation fields.</param>
+    /// <returns>The DER-encoded SPNEGO negTokenResp negotiation token.</returns>
+    public static byte[] EncodeNegTokenResp(SpnegoNegTokenResp response)
+    {
+        ArgumentNullException.ThrowIfNull(response);
+
+        var body = new AsnWriter(AsnEncodingRules.DER);
+        body.PushSequence();
+
+        if (response.NegState.HasValue)
+        {
+            var negStateTag = new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true);
+            body.PushSequence(negStateTag);
+            body.WriteEnumeratedValue(response.NegState.GetValueOrDefault());
+            body.PopSequence(negStateTag);
+        }
+
+        if (!string.IsNullOrEmpty(response.SupportedMech))
+        {
+            var supportedMechTag = new Asn1Tag(TagClass.ContextSpecific, 1, isConstructed: true);
+            body.PushSequence(supportedMechTag);
+            body.WriteObjectIdentifier(response.SupportedMech);
+            body.PopSequence(supportedMechTag);
+        }
+
+        if (response.ResponseToken.HasValue)
+        {
+            WriteOctetStringField(body, 2, response.ResponseToken.Value);
+        }
+
+        if (response.MechListMic.HasValue)
+        {
+            WriteOctetStringField(body, 3, response.MechListMic.Value);
+        }
+
+        body.PopSequence();
+
+        var negotiationToken = new AsnWriter(AsnEncodingRules.DER);
+        var negTokenRespTag = new Asn1Tag(TagClass.ContextSpecific, 1, isConstructed: true);
+        negotiationToken.PushSequence(negTokenRespTag);
+        negotiationToken.WriteEncodedValue(body.Encode());
+        negotiationToken.PopSequence(negTokenRespTag);
+        return negotiationToken.Encode();
+    }
+
+    /// <summary>
+    /// Encodes a NegTokenResp and computes its mechListMIC over the original MechTypeList bytes.
+    /// </summary>
+    /// <param name="response">Response negotiation fields without a precomputed mechListMIC.</param>
+    /// <param name="mechListBytes">Exact DER bytes of the original MechTypeList SEQUENCE.</param>
+    /// <param name="micProvider">The negotiated inner mechanism MIC provider.</param>
+    /// <returns>The DER-encoded SPNEGO negTokenResp negotiation token.</returns>
+    public static byte[] EncodeNegTokenResp(
+        SpnegoNegTokenResp response,
+        ReadOnlySpan<byte> mechListBytes,
+        IGssMicProvider micProvider)
+    {
+        ArgumentNullException.ThrowIfNull(response);
+        ArgumentNullException.ThrowIfNull(micProvider);
+
+        return EncodeNegTokenResp(response with { MechListMic = micProvider.GetMic(mechListBytes) });
+    }
+
+    /// <summary>
+    /// Encodes the MechTypeList SEQUENCE used as the mechListMIC input.
+    /// </summary>
+    /// <param name="mechTypes">Mechanism object identifiers in initiator preference order.</param>
+    /// <returns>The exact DER-encoded MechTypeList SEQUENCE.</returns>
+    public static byte[] EncodeMechTypeList(IEnumerable<string> mechTypes)
+    {
+        ArgumentNullException.ThrowIfNull(mechTypes);
+
+        var writer = new AsnWriter(AsnEncodingRules.DER);
+        writer.PushSequence();
+        foreach (var mechType in mechTypes)
+        {
+            ArgumentNullException.ThrowIfNull(mechType);
+
+            writer.WriteObjectIdentifier(mechType);
+        }
+
+        writer.PopSequence();
+        return writer.Encode();
+    }
+
+    private static void WriteOctetStringField(AsnWriter writer, int tagValue, ReadOnlyMemory<byte> value)
+    {
+        var tag = new Asn1Tag(TagClass.ContextSpecific, tagValue, isConstructed: true);
+        writer.PushSequence(tag);
+        writer.WriteOctetString(value.Span);
+        writer.PopSequence(tag);
     }
 }

@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Formats.Asn1;
 
 namespace Opc.Classic.Dcom.Kerberos.Spnego;
@@ -13,6 +14,51 @@ namespace Opc.Classic.Dcom.Kerberos.Spnego;
 /// </summary>
 public static class SpnegoDecoder
 {
+    /// <summary>
+    /// Decodes a NegTokenInit initial context token and preserves the exact MechTypeList bytes.
+    /// </summary>
+    /// <param name="data">DER-encoded NegTokenInit data.</param>
+    /// <returns>The parsed NegTokenInit fields.</returns>
+    public static SpnegoNegTokenInit DecodeNegTokenInit(ReadOnlyMemory<byte> data)
+    {
+        var reader = new AsnReader(data, AsnEncodingRules.DER);
+        var bodyReader = ReadNegTokenInitBody(reader);
+        reader.ThrowIfNotEmpty();
+
+        IReadOnlyList<string> mechTypes = [];
+        ReadOnlyMemory<byte> mechToken = ReadOnlyMemory<byte>.Empty;
+        ReadOnlyMemory<byte>? mechListMic = null;
+        ReadOnlyMemory<byte> mechListBytes = ReadOnlyMemory<byte>.Empty;
+
+        while (bodyReader.HasData)
+        {
+            var tag = bodyReader.PeekTag();
+            if (tag.TagClass != TagClass.ContextSpecific)
+            {
+                _ = bodyReader.ReadEncodedValue();
+                continue;
+            }
+
+            switch (tag.TagValue)
+            {
+                case 0:
+                    mechTypes = ReadMechTypes(bodyReader, tag, out mechListBytes);
+                    break;
+                case 2:
+                    mechToken = ReadOctetStringField(bodyReader, tag);
+                    break;
+                case 3:
+                    mechListMic = ReadOctetStringField(bodyReader, tag);
+                    break;
+                default:
+                    _ = bodyReader.ReadEncodedValue();
+                    break;
+            }
+        }
+
+        return new SpnegoNegTokenInit(mechTypes, mechToken, mechListMic, mechListBytes);
+    }
+
     /// <summary>
     /// Decodes a NegTokenResp continuation token.
     /// </summary>
@@ -61,6 +107,41 @@ public static class SpnegoDecoder
         return new SpnegoNegTokenResp(negState, supportedMech, responseToken, mechListMic);
     }
 
+    private static AsnReader ReadNegTokenInitBody(AsnReader reader)
+    {
+        var tag = reader.PeekTag();
+        var negTokenInitTag = new Asn1Tag(TagClass.ContextSpecific, 0, isConstructed: true);
+        if (tag.Equals(negTokenInitTag))
+        {
+            var tokenReader = reader.ReadSequence(negTokenInitTag);
+            var bodyReader = tokenReader.ReadSequence();
+            tokenReader.ThrowIfNotEmpty();
+            return bodyReader;
+        }
+
+        var initialContextTokenTag = new Asn1Tag(TagClass.Application, 0, isConstructed: true);
+        if (tag.Equals(initialContextTokenTag))
+        {
+            var initialContextTokenReader = reader.ReadSequence(initialContextTokenTag);
+            var oid = initialContextTokenReader.ReadObjectIdentifier();
+            if (!StringComparer.Ordinal.Equals(oid, SpnegoOids.Spnego))
+            {
+                throw new AsnContentException();
+            }
+
+            var bodyReader = ReadNegTokenInitBody(initialContextTokenReader);
+            initialContextTokenReader.ThrowIfNotEmpty();
+            return bodyReader;
+        }
+
+        if (tag.Equals(Asn1Tag.Sequence))
+        {
+            return reader.ReadSequence();
+        }
+
+        throw new AsnContentException();
+    }
+
     private static AsnReader ReadNegTokenRespBody(AsnReader reader)
     {
         var tag = reader.PeekTag();
@@ -102,6 +183,27 @@ public static class SpnegoDecoder
         var negState = innerReader.ReadEnumeratedValue<SpnegoNegState>();
         innerReader.ThrowIfNotEmpty();
         return negState;
+    }
+
+    private static IReadOnlyList<string> ReadMechTypes(
+        AsnReader bodyReader,
+        Asn1Tag tag,
+        out ReadOnlyMemory<byte> mechListBytes)
+    {
+        var innerReader = bodyReader.ReadSequence(tag);
+        mechListBytes = innerReader.ReadEncodedValue().ToArray();
+        innerReader.ThrowIfNotEmpty();
+
+        var mechListReader = new AsnReader(mechListBytes, AsnEncodingRules.DER);
+        var sequenceReader = mechListReader.ReadSequence();
+        var mechTypes = new List<string>();
+        while (sequenceReader.HasData)
+        {
+            mechTypes.Add(sequenceReader.ReadObjectIdentifier());
+        }
+
+        mechListReader.ThrowIfNotEmpty();
+        return mechTypes;
     }
 
     private static string ReadSupportedMech(AsnReader bodyReader, Asn1Tag tag)
