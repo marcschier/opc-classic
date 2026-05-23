@@ -185,7 +185,7 @@ public static class SpnegoDecoder
         return negState;
     }
 
-    private static IReadOnlyList<string> ReadMechTypes(
+    private static List<string> ReadMechTypes(
         AsnReader bodyReader,
         Asn1Tag tag,
         out ReadOnlyMemory<byte> mechListBytes)

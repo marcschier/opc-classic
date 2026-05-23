@@ -11,6 +11,7 @@
     <Project Path="src/Opc.Classic.Discovery/Opc.Classic.Discovery.csproj" />
     <Project Path="src/Opc.Classic.Dx/Opc.Classic.Dx.csproj" />
     <Project Path="src/Opc.Classic.Generators/Opc.Classic.Generators.csproj" />
+    <Project Path="src/Opc.Classic.MigrationAnalyzer/Opc.Classic.MigrationAnalyzer.csproj" />
     <Project Path="src/Opc.Classic.Hda/Opc.Classic.Hda.csproj" />
     <Project Path="src/Opc.Classic.Hosting/Opc.Classic.Hosting.csproj" />
     <Project Path="src/Opc.Classic.Security/Opc.Classic.Security.csproj" />
@@ -31,6 +32,7 @@
     <Project Path="tests/Opc.Classic.Discovery.Tests/Opc.Classic.Discovery.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Dx.Tests/Opc.Classic.Dx.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Generators.Tests/Opc.Classic.Generators.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.MigrationAnalyzer.Tests/Opc.Classic.MigrationAnalyzer.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hda.Tests/Opc.Classic.Hda.Tests.csproj" />
     <Project Path="tests/Opc.Classic.Hosting.Tests/Opc.Classic.Hosting.Tests.csproj" />
     <Project Path="tests/Opc.Classic.PropertyTests/Opc.Classic.PropertyTests.csproj" />
