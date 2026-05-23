@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Opc.Classic.Da.Dcom;
 using TUnit.Core;
@@ -20,18 +21,39 @@ public sealed class OpcMethodOpnumTests
         new(typeof(IOPCServer), nameof(IOPCServer.GetStatusAsync), 6),
         new(typeof(IOPCServer), nameof(IOPCServer.RemoveGroupAsync), 7),
         new(typeof(IOPCBrowse), nameof(IOPCBrowse.GetPropertiesAsync), 3),
+        new(typeof(IOPCBrowse), nameof(IOPCBrowse.BrowseAsync), 4),
         new(typeof(IOPCBrowseServerAddressSpace), nameof(IOPCBrowseServerAddressSpace.QueryOrganizationAsync), 3),
         new(typeof(IOPCBrowseServerAddressSpace), nameof(IOPCBrowseServerAddressSpace.ChangeBrowsePositionAsync), 4),
         new(typeof(IOPCBrowseServerAddressSpace), nameof(IOPCBrowseServerAddressSpace.GetItemIdAsync), 6),
+        new(typeof(IOPCItemProperties), nameof(IOPCItemProperties.QueryAvailablePropertiesAsync), 3),
+        new(typeof(IOPCItemProperties), nameof(IOPCItemProperties.GetItemPropertiesAsync), 4),
+        new(typeof(IOPCItemProperties), nameof(IOPCItemProperties.LookupItemIdsAsync), 5),
+        new(typeof(IOPCItemDeadbandMgt), nameof(IOPCItemDeadbandMgt.SetItemDeadbandAsync), 3),
+        new(typeof(IOPCItemDeadbandMgt), nameof(IOPCItemDeadbandMgt.GetItemDeadbandAsync), 4),
+        new(typeof(IOPCItemDeadbandMgt), nameof(IOPCItemDeadbandMgt.ClearItemDeadbandAsync), 5),
+        new(typeof(IOPCItemSamplingMgt), nameof(IOPCItemSamplingMgt.SetItemSamplingRateAsync), 3),
+        new(typeof(IOPCItemSamplingMgt), nameof(IOPCItemSamplingMgt.GetItemSamplingRateAsync), 4),
+        new(typeof(IOPCItemSamplingMgt), nameof(IOPCItemSamplingMgt.ClearItemSamplingRateAsync), 5),
+        new(typeof(IOPCItemSamplingMgt), nameof(IOPCItemSamplingMgt.SetItemBufferEnableAsync), 6),
+        new(typeof(IOPCItemSamplingMgt), nameof(IOPCItemSamplingMgt.GetItemBufferEnableAsync), 7),
+        new(typeof(IOPCItemIO), nameof(IOPCItemIO.ReadAsync), 3),
+        new(typeof(IOPCItemIO), nameof(IOPCItemIO.WriteVqtAsync), 4),
+        new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.AddItemsAsync), 3),
+        new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.ValidateItemsAsync), 4),
         new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.RemoveItemsAsync), 5),
         new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.SetActiveStateAsync), 6),
         new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.SetClientHandlesAsync), 7),
         new(typeof(IOPCItemMgt), nameof(IOPCItemMgt.SetDatatypesAsync), 8),
         new(typeof(IOPCGroupStateMgt), nameof(IOPCGroupStateMgt.GetStateAsync), 3),
+        new(typeof(IOPCGroupStateMgt), nameof(IOPCGroupStateMgt.SetStateAsync), 4),
         new(typeof(IOPCGroupStateMgt), nameof(IOPCGroupStateMgt.SetNameAsync), 5),
+        new(typeof(IOPCSyncIO), nameof(IOPCSyncIO.ReadAsync), 3),
         new(typeof(IOPCSyncIO), nameof(IOPCSyncIO.WriteAsync), 4),
+        new(typeof(IOPCSyncIO2), nameof(IOPCSyncIO2.ReadAsync), 3),
         new(typeof(IOPCSyncIO2), nameof(IOPCSyncIO2.WriteAsync), 4),
         new(typeof(IOPCSyncIO2), nameof(IOPCSyncIO2.WriteVqtAsync), 6),
+        new(typeof(IOPCAsyncIO2), nameof(IOPCAsyncIO2.ReadAsync), 3),
+        new(typeof(IOPCAsyncIO2), nameof(IOPCAsyncIO2.WriteAsync), 4),
         new(typeof(IOPCAsyncIO2), nameof(IOPCAsyncIO2.Refresh2Async), 5),
         new(typeof(IOPCAsyncIO2), nameof(IOPCAsyncIO2.Cancel2Async), 6),
         new(typeof(IOPCAsyncIO2), nameof(IOPCAsyncIO2.SetEnableAsync), 7),
@@ -40,6 +62,8 @@ public sealed class OpcMethodOpnumTests
         new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.Cancel2Async), 6),
         new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.SetEnableAsync), 7),
         new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.GetEnableAsync), 8),
+        new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.ReadMaxAgeAsync), 9),
+        new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.WriteVqtAsync), 10),
         new(typeof(IOPCAsyncIO3), nameof(IOPCAsyncIO3.RefreshMaxAgeAsync), 11),
         new(typeof(IOPCDataCallback), nameof(IOPCDataCallback.OnDataChangeAsync), 3),
         new(typeof(IOPCDataCallback), nameof(IOPCDataCallback.OnReadCompleteAsync), 4),
@@ -54,6 +78,23 @@ public sealed class OpcMethodOpnumTests
         {
             int actual = GetOpcMethodOpnum(expected.InterfaceType, expected.MethodName);
             await Assert.That(actual).IsEqualTo(expected.Opnum);
+        }
+    }
+
+    [Test]
+    public async Task OpcDaMethods_DoNotDuplicateOpnumsPerInterface()
+    {
+        var opnumsByInterface = new Dictionary<Type, HashSet<int>>();
+        foreach (ExpectedOpcMethod expected in OpcDaIdlOpnums)
+        {
+            if (!opnumsByInterface.TryGetValue(expected.InterfaceType, out HashSet<int>? opnums))
+            {
+                opnums = new HashSet<int>();
+                opnumsByInterface.Add(expected.InterfaceType, opnums);
+            }
+
+            bool added = opnums.Add(GetOpcMethodOpnum(expected.InterfaceType, expected.MethodName));
+            await Assert.That(added).IsTrue();
         }
     }
 

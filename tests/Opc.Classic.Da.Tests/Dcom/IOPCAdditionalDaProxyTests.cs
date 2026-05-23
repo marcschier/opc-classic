@@ -93,28 +93,26 @@ public sealed class IOPCAdditionalDaProxyTests
     }
 
     [Test]
-    public async Task ItemIO_GetProperties_invokes_channel_with_correct_metadata_and_decodes_properties()
+    public async Task ItemIO_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors()
     {
         Guid observedIid = Guid.Empty;
         int observedOpnum = -1;
-        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
-            NdrOpcItemPropertiesCodec.Write(ref writer, new OpcItemProperties(0, Array.Empty<OpcItemPropertyResult>())));
         var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
         {
             observedIid = iid;
             observedOpnum = opnum;
-            return Task.FromResult(new NdrCallResult(0, responsePayload));
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
         });
 
         var proxy = new IOPCItemIOClientProxy(channel);
-        OpcItemProperties actual = await proxy.GetPropertiesAsync("Random.Int4", 100, CancellationToken.None);
+        int[] errors = await proxy.WriteVqtAsync(
+            new[] { "Random.Int4" },
+            new[] { new OpcItemVqt(OpcVariant.FromInt32(123)) },
+            CancellationToken.None);
 
-        int expectedOpnum = IOPCItemIO.Opnums.GetPropertiesAsync;
-        int propertyCount = actual.Properties.Length;
         await Assert.That(observedIid).IsEqualTo(IOPCItemIO.InterfaceId);
-        await Assert.That(observedOpnum).IsEqualTo(expectedOpnum);
-        await Assert.That(actual.ErrorId).IsEqualTo(0);
-        await Assert.That(propertyCount).IsEqualTo(0);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCItemIO.Opnums.WriteVqtAsync);
+        await Assert.That(errors[0]).IsEqualTo(0);
     }
 
     [Test]

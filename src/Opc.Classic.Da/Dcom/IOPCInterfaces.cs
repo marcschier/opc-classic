@@ -70,8 +70,24 @@ public partial interface IOPCBrowse
         int[] propertyIds,
         CancellationToken cancellationToken = default);
 
-    // Browse has an in/out continuation point plus more/count outputs; deferred until
-    // the generator supports explicit multi-out records for those semantics.
+    /// <summary>
+    /// <c>IOPCBrowse::Browse</c> (opnum 4). Browses DA 3.0 elements below an item ID.
+    /// </summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task BrowseAsync(
+        string itemId,
+        ref string? continuationPoint,
+        int maxElementsReturned,
+        int browseFilter,
+        string elementNameFilter,
+        string vendorFilter,
+        bool returnAllProperties,
+        bool returnPropertyValues,
+        int[] propertyIds,
+        out bool moreElements,
+        out OpcBrowseElementResult[] browseElements,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCBrowseServerAddressSpace</c> — DA 2.x browse interface (IID_IOPCBrowseServerAddressSpace).</summary>
@@ -103,10 +119,128 @@ public partial interface IOPCBrowseServerAddressSpace
 
 /// <summary><c>IOPCItemProperties</c> — DA 2.x item-property interface (IID_IOPCItemProperties).</summary>
 [OpcInterface("39C13A72-011E-11D0-9675-0020AFD8ADB3")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCItemProperties
 {
-    // QueryAvailableProperties, GetItemProperties, and LookupItemIDs require
-    // conformant arrays of property IDs, variants, strings, and HRESULTs.
+    /// <summary>
+    /// <c>IOPCItemProperties::QueryAvailableProperties</c> (opnum 3). Lists properties available for an item.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task QueryAvailablePropertiesAsync(
+        string itemId,
+        out int[] propertyIds,
+        out string[] descriptions,
+        out ushort[] dataTypes,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemProperties::GetItemProperties</c> (opnum 4). Reads property values for an item.
+    /// </summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetItemPropertiesAsync(
+        string itemId,
+        int[] propertyIds,
+        out OpcVariant[] data,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemProperties::LookupItemIDs</c> (opnum 5). Resolves item IDs for indirect properties.
+    /// </summary>
+    [OpcMethod(5)]
+    [OpcGenerateMultiOutRecord]
+    Task LookupItemIdsAsync(
+        string itemId,
+        int[] propertyIds,
+        out string[] newItemIds,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+}
+
+/// <summary><c>IOPCItemDeadbandMgt</c> — per-item deadband management (IID_IOPCItemDeadbandMgt).</summary>
+[OpcInterface("5946DA93-8B39-4EC8-AB3D-AA73DF5BC86F")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
+public partial interface IOPCItemDeadbandMgt
+{
+    /// <summary>
+    /// <c>IOPCItemDeadbandMgt::SetItemDeadband</c> (opnum 3). Sets per-item percent deadbands.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<int[]> SetItemDeadbandAsync(int[] serverHandles, float[] percentDeadbands, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemDeadbandMgt::GetItemDeadband</c> (opnum 4). Reads per-item percent deadbands.
+    /// </summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetItemDeadbandAsync(
+        int[] serverHandles,
+        out float[] percentDeadbands,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemDeadbandMgt::ClearItemDeadband</c> (opnum 5). Clears per-item percent deadbands.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<int[]> ClearItemDeadbandAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+}
+
+/// <summary><c>IOPCItemSamplingMgt</c> — per-item sampling-rate/buffer management (IID_IOPCItemSamplingMgt).</summary>
+[OpcInterface("3E22D313-F08B-41A5-86C8-95E95CB49FFC")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
+public partial interface IOPCItemSamplingMgt
+{
+    /// <summary>
+    /// <c>IOPCItemSamplingMgt::SetItemSamplingRate</c> (opnum 3). Sets requested per-item sampling rates.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task SetItemSamplingRateAsync(
+        int[] serverHandles,
+        int[] requestedSamplingRates,
+        out int[] revisedSamplingRates,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemSamplingMgt::GetItemSamplingRate</c> (opnum 4). Reads per-item sampling rates.
+    /// </summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task GetItemSamplingRateAsync(
+        int[] serverHandles,
+        out int[] samplingRates,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemSamplingMgt::ClearItemSamplingRate</c> (opnum 5). Clears per-item sampling rates.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<int[]> ClearItemSamplingRateAsync(int[] serverHandles, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemSamplingMgt::SetItemBufferEnable</c> (opnum 6). Enables or disables per-item buffering.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<int[]> SetItemBufferEnableAsync(int[] serverHandles, bool[] enabled, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemSamplingMgt::GetItemBufferEnable</c> (opnum 7). Reads per-item buffering flags.
+    /// </summary>
+    [OpcMethod(7)]
+    [OpcGenerateMultiOutRecord]
+    Task GetItemBufferEnableAsync(
+        int[] serverHandles,
+        out bool[] enabled,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemIO</c> — DA 3.0 stateless item I/O (IID_IOPCItemIO).</summary>
@@ -116,13 +250,24 @@ public partial interface IOPCItemProperties
 public partial interface IOPCItemIO
 {
     /// <summary>
-    /// <c>IOPCItemIO::GetProperties</c> (opnum 4). Returns property values for a single item/property pair.
+    /// <c>IOPCItemIO::Read</c> (opnum 3). Reads item values by item ID and max age.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task ReadAsync(
+        string[] itemIds,
+        int[] maxAges,
+        out OpcVariant[] values,
+        out ushort[] qualities,
+        out long[] timestamps,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCItemIO::WriteVQT</c> (opnum 4). Writes value/quality/timestamp tuples by item ID.
     /// </summary>
     [OpcMethod(4)]
-    Task<OpcItemProperties> GetPropertiesAsync(string itemId, int propertyId, CancellationToken cancellationToken = default);
-
-    // Read and WriteVQT remain deferred because their IDL shapes require
-    // conformant arrays of item IDs, max ages, VQTs, values, qualities, and HRESULTs.
+    Task<int[]> WriteVqtAsync(string[] itemIds, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
@@ -131,6 +276,39 @@ public partial interface IOPCItemIO
 [OpcGenerateServerDispatch]
 public partial interface IOPCItemMgt
 {
+    /// <summary>
+    /// <c>IOPCItemMgt::AddItems</c> (opnum 3). Adds items to a group.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task AddItemsAsync(
+        OpcItemDef[] itemDefinitions,
+        out OpcItemResult[] addResults,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        addResults = default!;
+        errors = default!;
+        throw new NotSupportedException();
+    }
+
+    /// <summary>
+    /// <c>IOPCItemMgt::ValidateItems</c> (opnum 4). Validates prospective items without adding them.
+    /// </summary>
+    [OpcMethod(4)]
+    [OpcGenerateMultiOutRecord]
+    Task ValidateItemsAsync(
+        OpcItemDef[] itemDefinitions,
+        bool blobUpdate,
+        out OpcItemResult[] validationResults,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        validationResults = default!;
+        errors = default!;
+        throw new NotSupportedException();
+    }
+
     /// <summary>
     /// <c>IOPCItemMgt::RemoveItems</c> (opnum 5). Removes server handles and returns one HRESULT per item.
     /// </summary>
@@ -155,7 +333,7 @@ public partial interface IOPCItemMgt
     [OpcMethod(8)]
     Task<int[]> SetDatatypesAsync(int[] serverHandles, ushort[] requestedDataTypes, CancellationToken cancellationToken = default);
 
-    // AddItems and ValidateItems return OPCITEMRESULT[] plus HRESULT[]; CreateEnumerator returns an interface pointer.
+    // CreateEnumerator returns an interface pointer.
 }
 
 /// <summary><c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).</summary>
@@ -171,13 +349,25 @@ public partial interface IOPCGroupStateMgt
     Task<OpcGroupState> GetStateAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// <c>IOPCGroupStateMgt::SetState</c> (opnum 4). Updates group state and returns the revised update rate.
+    /// </summary>
+    [OpcMethod(4)]
+    Task<int> SetStateAsync(
+        int requestedUpdateRate,
+        bool active,
+        int timeBias,
+        float percentDeadband,
+        int localeId,
+        int clientGroupHandle,
+        CancellationToken cancellationToken = default) => throw new NotSupportedException();
+
+    /// <summary>
     /// <c>IOPCGroupStateMgt::SetName</c> (opnum 5). Renames the group.
     /// </summary>
     [OpcMethod(5)]
     Task SetNameAsync(string name, CancellationToken cancellationToken = default);
 
-    // SetState has optional pointer inputs and a revised-rate output; CloneGroup
-    // returns a COM interface pointer. Both are deferred to later call-shim work.
+    // CloneGroup returns a COM interface pointer.
 }
 
 /// <summary><c>IOPCGroupStateMgt2</c> — DA 3.0 group state with keep-alive (IID_IOPCGroupStateMgt2).</summary>
@@ -193,12 +383,24 @@ public partial interface IOPCGroupStateMgt2
 public partial interface IOPCSyncIO
 {
     /// <summary>
+    /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<OpcItemState[]> ReadAsync(
+        int dataSource,
+        int[] serverHandles,
+        out int[] errors,
+        CancellationToken cancellationToken = default)
+    {
+        errors = default!;
+        throw new NotSupportedException();
+    }
+
+    /// <summary>
     /// <c>IOPCSyncIO::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(4)]
     Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default);
-
-    // Read returns OPCITEMSTATE[] plus HRESULT[] and needs a multi-out result record codec.
 }
 
 /// <summary><c>IOPCSyncIO2</c> — DA 3.0 max-age synchronous I/O (IID_IOPCSyncIO2).</summary>
@@ -207,6 +409,16 @@ public partial interface IOPCSyncIO
 [OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO2
 {
+    /// <summary>
+    /// <c>IOPCSyncIO2::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<OpcItemState[]> ReadAsync(
+        int dataSource,
+        int[] serverHandles,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
     /// <summary>
     /// <c>IOPCSyncIO2::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
@@ -219,7 +431,7 @@ public partial interface IOPCSyncIO2
     [OpcMethod(6)]
     Task<int[]> WriteVqtAsync(int[] serverHandles, OpcItemVqt[] values, CancellationToken cancellationToken = default);
 
-    // Read and ReadMaxAge have parallel value/quality/timestamp/error outputs.
+    // ReadMaxAge has parallel value/quality/timestamp/error outputs.
 }
 
 /// <summary><c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).</summary>
@@ -228,6 +440,27 @@ public partial interface IOPCSyncIO2
 [OpcGenerateServerDispatch]
 public partial interface IOPCAsyncIO2
 {
+    /// <summary>
+    /// <c>IOPCAsyncIO2::Read</c> (opnum 3). Starts an async read and returns cancel ID plus per-item HRESULTs.
+    /// </summary>
+    [OpcMethod(3)]
+    Task<int> ReadAsync(
+        int[] serverHandles,
+        int transactionId,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCAsyncIO2::Write</c> (opnum 4). Starts an async write and returns cancel ID plus per-item HRESULTs.
+    /// </summary>
+    [OpcMethod(4)]
+    Task<int> WriteAsync(
+        int[] serverHandles,
+        OpcVariant[] values,
+        int transactionId,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
     /// <summary>
     /// <c>IOPCAsyncIO2::Refresh2</c> (opnum 5). Starts an async refresh and returns the cancel ID.
     /// </summary>
@@ -252,7 +485,6 @@ public partial interface IOPCAsyncIO2
     [OpcMethod(8)]
     Task<bool> GetEnableAsync(CancellationToken cancellationToken = default);
 
-    // Read and Write return cancel IDs plus per-item HRESULT arrays.
 }
 
 /// <summary><c>IOPCAsyncIO3</c> — DA 3.0 asynchronous I/O with max-age/VQT methods (IID_IOPCAsyncIO3).</summary>
@@ -286,12 +518,32 @@ public partial interface IOPCAsyncIO3
     Task<bool> GetEnableAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// <c>IOPCAsyncIO3::ReadMaxAge</c> (opnum 9). Starts a max-age async read.
+    /// </summary>
+    [OpcMethod(9)]
+    Task<int> ReadMaxAgeAsync(
+        int[] serverHandles,
+        int[] maxAges,
+        int transactionId,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCAsyncIO3::WriteVQT</c> (opnum 10). Starts an async VQT write.
+    /// </summary>
+    [OpcMethod(10)]
+    Task<int> WriteVqtAsync(
+        int[] serverHandles,
+        OpcItemVqt[] values,
+        int transactionId,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCAsyncIO3::RefreshMaxAge</c> (opnum 11). Starts a max-age refresh and returns the cancel ID.
     /// </summary>
     [OpcMethod(11)]
     Task<int> RefreshMaxAgeAsync(int maxAge, int transactionId, CancellationToken cancellationToken = default);
-
-    // Read/Write and max-age/VQT write methods also return per-item HRESULT arrays.
 }
 
 /// <summary><c>IConnectionPointContainer</c> — enumerates connection points (IID_IConnectionPointContainer).</summary>
