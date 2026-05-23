@@ -6,17 +6,29 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Opc.Classic.Hda.Dcom;
 
 namespace Opc.Classic.Hda.Hosting;
 
 /// <summary>Contract implemented by user code to provide an in-process managed HDA server.</summary>
-public interface IOpcHdaServer
+public interface IOpcHdaServer : IOPCHDA_Server
 {
     /// <summary>Gets the HDA historian runtime status snapshot.</summary>
-    Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
+    new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Validates HDA item IDs and returns per-item HRESULTs.</summary>
     Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default);
+
+    Task<int[]> IOPCHDA_Server.GetItemHandlesAsync(string[] itemIds, int[] clientHandles, CancellationToken cancellationToken) =>
+        throw NotImplemented();
+
+    Task<int[]> IOPCHDA_Server.ReleaseItemHandlesAsync(int[] serverHandles, CancellationToken cancellationToken) =>
+        throw NotImplemented();
+
+    Task<int[]> IOPCHDA_Server.ValidateItemIDsAsync(string[] itemIds, CancellationToken cancellationToken) =>
+        ValidateItemIdsAsync(itemIds, cancellationToken);
+
+    private static OpcException NotImplemented() => new(OpcResultId.NotImplemented);
 
     /// <summary>Reads raw historical values for each item in the requested time range.</summary>
     Task<OpcHdaItem[]> ReadRawAsync(

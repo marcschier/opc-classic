@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Opc.Classic.Hda.Dcom;
 using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Hda.Hosting;
@@ -60,7 +61,7 @@ public sealed class OpcHdaServerHost : IOpcServerHost
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
-        var dispatcher = new OpcHdaServerDispatcher(_serverImpl);
+        var dispatcher = new IOPCHDA_ServerServerDispatcher(_serverImpl);
         _acceptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _acceptTask = AcceptConnectionsAsync(dispatcher, _acceptCts.Token);
         return Task.CompletedTask;
@@ -96,7 +97,7 @@ public sealed class OpcHdaServerHost : IOpcServerHost
     }
 
     private static async Task AcceptConnectionsAsync(
-        IOpcHdaServerDispatcher dispatcher,
+        IOpcServerDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(dispatcher);

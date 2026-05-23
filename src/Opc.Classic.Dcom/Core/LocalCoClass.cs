@@ -607,35 +607,9 @@ namespace SharpInterop.Core {
                 return true;
             }
 
-            // TODO N1.2-followup: replace this legacy reflection fallback with generated
-            // IDispatchTable registrations for every LocalInterfaceDefinition.
-            return TryCreateLegacyReflectionDispatcher(interfaceDefinition, iid, methodDescriptor,
-                out dispatcher, out calleeInstance);
-        }
-
-        private static bool TryCreateLegacyReflectionDispatcher(LocalInterfaceDefinition interfaceDefinition,
-            Guid iid, LocalMethodDescriptor methodDescriptor, out Func<object[], object?> dispatcher,
-            out object calleeInstance) {
-            var calleeType = interfaceDefinition.Instance == null ?
-                interfaceDefinition.Type : interfaceDefinition.Instance.GetType();
-            if (calleeType == null) {
-                dispatcher = null;
-                calleeInstance = null;
-                return false;
-            }
-
-            var method = calleeType.GetRuntimeMethod(methodDescriptor.MethodName,
-                methodDescriptor.InparametersAsType);
-            if (method == null) {
-                dispatcher = null;
-                calleeInstance = null;
-                return false;
-            }
-
-            calleeInstance = interfaceDefinition.Instance ?? Activator.CreateInstance(calleeType);
-            var dispatchTable = new ReflectionDispatchTable(calleeInstance,
-                new[] { (iid, methodDescriptor.MethodNum, method) });
-            return dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher);
+            dispatcher = null;
+            calleeInstance = null;
+            return false;
         }
 
         /// <inheritdoc/>

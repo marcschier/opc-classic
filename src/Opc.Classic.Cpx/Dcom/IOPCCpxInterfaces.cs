@@ -20,6 +20,7 @@ namespace Opc.Classic.Cpx.Dcom;
 /// <summary><c>IOPCComplexDataItem</c> — Complex Data item metadata/filter interface (IID_IOPCComplexDataItem).</summary>
 [OpcInterface("7ECE6649-2C1E-494A-BB99-22D36FB3B0C3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCComplexDataItem
 {
     /// <summary><c>IOPCComplexDataItem::GetTypeItemID</c> (opnum 3).</summary>
@@ -42,6 +43,7 @@ public partial interface IOPCComplexDataItem
 /// <summary><c>IOPCComplexDataItem2</c> — extended Complex Data item interface (IID_IOPCComplexDataItem2).</summary>
 [OpcInterface("44F68398-60AF-4F02-9442-172D058CB16F")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCComplexDataItem2
 {
     /// <summary><c>IOPCComplexDataItem2::GetTypeID</c> (opnum 3).</summary>
@@ -60,6 +62,7 @@ public partial interface IOPCComplexDataItem2
 /// <summary><c>IOPCTypeLibrary</c> — Complex Data type-library metadata interface (IID_IOPCTypeLibrary).</summary>
 [OpcInterface("B8C1B2C6-ACB7-4B7B-87B5-6EAC2CF63C31")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCTypeLibrary
 {
     /// <summary><c>IOPCTypeLibrary::GetDictionary</c> (opnum 3).</summary>

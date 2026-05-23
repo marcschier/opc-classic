@@ -5,6 +5,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Opc.Classic.Da.Dcom;
 
 namespace Opc.Classic.Da.Hosting;
 
@@ -14,10 +15,10 @@ namespace Opc.Classic.Da.Hosting;
 /// + IOPCSyncIO/AsyncIO calls onto this interface; the user's implementation
 /// returns server status, manages groups, and serves item values.
 /// </summary>
-public interface IOpcDaServer
+public interface IOpcDaServer : IOPCServer
 {
     /// <summary>Gets the server runtime status snapshot.</summary>
-    Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
+    new Task<OpcServerStatus> GetStatusAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Adds a DA group and returns its server handle.</summary>
     Task<int> AddGroupAsync(
@@ -29,13 +30,13 @@ public interface IOpcDaServer
         CancellationToken cancellationToken = default);
 
     /// <summary>Removes a DA group by server handle.</summary>
-    Task RemoveGroupAsync(
+    new Task RemoveGroupAsync(
         int serverGroupHandle,
         bool force,
         CancellationToken cancellationToken = default);
 
     /// <summary>Gets a localized error string for an OPC HRESULT.</summary>
-    Task<string> GetErrorStringAsync(
+    new Task<string> GetErrorStringAsync(
         int errorCode,
         int localeId,
         CancellationToken cancellationToken = default);

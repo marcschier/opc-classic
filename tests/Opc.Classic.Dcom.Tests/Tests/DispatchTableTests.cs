@@ -4,7 +4,6 @@
 //
 
 using System;
-using System.Reflection;
 using SharpInterop.Core;
 using TUnit.Core;
 
@@ -13,12 +12,11 @@ namespace Opc.Classic.Dcom.Tests;
 public sealed class DispatchTableTests
 {
     [Test]
-    public async Task ReflectionDispatchTable_returns_dispatcher_for_registered_method()
+    public async Task DelegateDispatchTable_returns_dispatcher_for_registered_method()
     {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
-        var method = GetDispatchMethod(nameof(DispatchTarget.Echo));
-        var table = CreateDispatchTable(target, iid, 7, method);
+        var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
 
         var found = TryGetDispatcher(table, iid, 7, out var dispatcher);
 
@@ -27,12 +25,11 @@ public sealed class DispatchTableTests
     }
 
     [Test]
-    public async Task ReflectionDispatchTable_returns_false_for_unregistered_iid_opnum()
+    public async Task DelegateDispatchTable_returns_false_for_unregistered_iid_opnum()
     {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
-        var method = GetDispatchMethod(nameof(DispatchTarget.Echo));
-        var table = CreateDispatchTable(target, iid, 7, method);
+        var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
 
         var found = TryGetDispatcher(table, Guid.NewGuid(), 8, out var dispatcher);
 
@@ -41,12 +38,11 @@ public sealed class DispatchTableTests
     }
 
     [Test]
-    public async Task ReflectionDispatchTable_dispatcher_calls_target_method()
+    public async Task DelegateDispatchTable_dispatcher_calls_target_method()
     {
         var target = new DispatchTarget();
         var iid = Guid.NewGuid();
-        var method = GetDispatchMethod(nameof(DispatchTarget.Echo));
-        var table = CreateDispatchTable(target, iid, 7, method);
+        var table = CreateDispatchTable(iid, 7, args => target.Echo((string)args[0]));
 
         TryGetDispatcher(table, iid, 7, out var dispatcher);
         var result = dispatcher!(new object[] { "payload" });
@@ -54,15 +50,15 @@ public sealed class DispatchTableTests
         await Assert.That(result).IsEqualTo("echo:payload");
     }
 
-    private static object CreateDispatchTable(object target, Guid iid, int opnum, MethodInfo method)
+    private static object CreateDispatchTable(Guid iid, int opnum, Func<object[], object?> dispatcher)
     {
         var tableType = typeof(LocalCoClass).Assembly.GetType(
-            "SharpInterop.Core.ReflectionDispatchTable", throwOnError: true)!;
-        var registrationType = typeof(ValueTuple<Guid, int, MethodInfo>);
+            "SharpInterop.Core.DelegateDispatchTable", throwOnError: true)!;
+        var registrationType = typeof(ValueTuple<Guid, int, Func<object[], object?>>);
         var registrations = Array.CreateInstance(registrationType, 1);
-        registrations.SetValue((iid, opnum, method), 0);
+        registrations.SetValue((iid, opnum, dispatcher), 0);
 
-        return Activator.CreateInstance(tableType, target, registrations)!;
+        return Activator.CreateInstance(tableType, registrations)!;
     }
 
     private static bool TryGetDispatcher(
@@ -77,9 +73,6 @@ public sealed class DispatchTableTests
         dispatcher = (Func<object[], object?>?)args[2];
         return found;
     }
-
-    private static MethodInfo GetDispatchMethod(string methodName) =>
-        typeof(DispatchTarget).GetMethod(methodName)!;
 
     private sealed class DispatchTarget
     {

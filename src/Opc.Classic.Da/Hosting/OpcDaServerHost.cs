@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Opc.Classic.Da.Dcom;
 using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Da.Hosting;
@@ -60,7 +61,7 @@ public sealed class OpcDaServerHost : IOpcServerHost
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
-        var dispatcher = new OpcDaServerDispatcher(_serverImpl);
+        var dispatcher = new IOPCServerServerDispatcher(_serverImpl);
         _acceptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         _acceptTask = AcceptConnectionsAsync(dispatcher, _acceptCts.Token);
         return Task.CompletedTask;
@@ -96,7 +97,7 @@ public sealed class OpcDaServerHost : IOpcServerHost
     }
 
     private static async Task AcceptConnectionsAsync(
-        IOpcDaServerDispatcher dispatcher,
+        IOpcServerDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(dispatcher);

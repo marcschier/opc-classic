@@ -19,6 +19,7 @@ namespace Opc.Classic.Batch.Dcom;
 /// <summary><c>IOPCBatchServer</c> — Batch 1.0 top-level browse/enumeration interface (IID_IOPCBatchServer).</summary>
 [OpcInterface("8BB4ED50-B314-11D3-B3EA-00C04F8ECEAA")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCBatchServer
 {
     /// <summary><c>IOPCBatchServer::GetDelimiter</c> (opnum 3).</summary>
@@ -31,6 +32,7 @@ public partial interface IOPCBatchServer
 /// <summary><c>IOPCBatchServer2</c> — Batch 2.0 filtered batch-summary enumeration interface (IID_IOPCBatchServer2).</summary>
 [OpcInterface("895A78CF-B0C5-11D4-A0B7-000102A980B1")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCBatchServer2
 {
     // CreateFilteredEnumerator returns an interface pointer and remains deferred.
@@ -39,6 +41,7 @@ public partial interface IOPCBatchServer2
 /// <summary><c>IEnumOPCBatchSummary</c> — enumeration of batch summaries (IID_IEnumOPCBatchSummary).</summary>
 [OpcInterface("A8080DA2-E23E-11D2-AFA7-00C04F539421")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IEnumOPCBatchSummary
 {
     /// <summary><c>IEnumOPCBatchSummary::Next</c> (opnum 3).</summary>
@@ -63,6 +66,7 @@ public partial interface IEnumOPCBatchSummary
 /// <summary><c>IOPCEnumerationSets</c> — Batch enumeration sets for physical/procedural/state/mode classification (IID_IOPCEnumerationSets).</summary>
 [OpcInterface("A8080DA3-E23E-11D2-AFA7-00C04F539421")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCEnumerationSets
 {
     /// <summary><c>IOPCEnumerationSets::QueryEnumeration</c> (opnum 4).</summary>

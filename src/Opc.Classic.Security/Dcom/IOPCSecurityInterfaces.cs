@@ -27,6 +27,7 @@ namespace Opc.Classic.Security.Dcom;
 /// <summary><c>IOPCSecurityNT</c> - Windows-integrated authentication (IID_IOPCSecurityNT).</summary>
 [OpcInterface("7AA83A01-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCSecurityNT
 {
     /// <summary><c>IOPCSecurityNT::IsAvailableNT</c> (opnum 3).</summary>
@@ -45,6 +46,7 @@ public partial interface IOPCSecurityNT
 /// <summary><c>IOPCSecurityPrivate</c> - server-defined username/password (IID_IOPCSecurityPrivate).</summary>
 [OpcInterface("7AA83A02-6C77-11D3-84F9-00008630A38B")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCSecurityPrivate
 {
     /// <summary><c>IOPCSecurityPrivate::IsAvailablePriv</c> (opnum 3).</summary>

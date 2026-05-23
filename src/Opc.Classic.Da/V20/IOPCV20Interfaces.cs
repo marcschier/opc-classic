@@ -24,6 +24,7 @@ namespace Opc.Classic.Da.V20.Dcom;
 /// </summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
 {
     /// <summary>
@@ -40,6 +41,7 @@ public partial interface IOPCSyncIO
 /// </summary>
 [OpcInterface("39C13A53-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCAsyncIO
 {
     /// <summary>

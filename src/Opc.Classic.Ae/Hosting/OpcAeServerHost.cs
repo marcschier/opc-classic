@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Opc.Classic.Ae.Dcom;
 using Opc.Classic.Hosting;
 
 namespace Opc.Classic.Ae.Hosting;
@@ -60,8 +61,9 @@ public sealed class OpcAeServerHost : IOpcServerHost
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
 
+        var dispatcher = new IOPCEventServerServerDispatcher(_serverImpl);
         _acceptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        _acceptTask = AcceptConnectionsAsync(_acceptCts.Token);
+        _acceptTask = AcceptConnectionsAsync(dispatcher, _acceptCts.Token);
         return Task.CompletedTask;
     }
 
@@ -94,8 +96,12 @@ public sealed class OpcAeServerHost : IOpcServerHost
         acceptCts?.Dispose();
     }
 
-    private static async Task AcceptConnectionsAsync(CancellationToken cancellationToken)
+    private static async Task AcceptConnectionsAsync(
+        IOpcServerDispatcher dispatcher,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(dispatcher);
+
         await Task.Delay(TimeSpan.Zero, cancellationToken).ConfigureAwait(false);
         cancellationToken.ThrowIfCancellationRequested();
     }

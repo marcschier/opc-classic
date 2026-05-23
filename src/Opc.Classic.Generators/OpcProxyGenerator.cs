@@ -55,6 +55,9 @@ namespace Opc.Classic.Generators
     private static readonly CodecEmitter AeServerStatusCodec = StaticCodec(
         "global::Opc.Classic.Ae.Ndr.NdrOpcEventServerStatusCodec");
 
+    private static readonly CodecEmitter HdaServerStatusCodec = StaticCodec(
+        "global::Opc.Classic.Hda.Ndr.NdrOpcHdaServerStatusCodec");
+
     private static readonly Dictionary<string, CodecEmitter> Codecs =
         new(System.StringComparer.Ordinal)
         {
@@ -1042,11 +1045,19 @@ namespace Opc.Classic.Generators
             return true;
         }
 
-        if (string.Equals(typeName, "global::Opc.Classic.OpcServerStatus", System.StringComparison.Ordinal) &&
-            IsAeNamespace(declaringNamespace))
+        if (string.Equals(typeName, "global::Opc.Classic.OpcServerStatus", System.StringComparison.Ordinal))
         {
-            codec = AeServerStatusCodec;
-            return true;
+            if (IsAeNamespace(declaringNamespace))
+            {
+                codec = AeServerStatusCodec;
+                return true;
+            }
+
+            if (IsHdaNamespace(declaringNamespace))
+            {
+                codec = HdaServerStatusCodec;
+                return true;
+            }
         }
 
         return Codecs.TryGetValue(typeName, out codec);
@@ -1076,6 +1087,10 @@ namespace Opc.Classic.Generators
     private static bool IsAeNamespace(string? declaringNamespace) =>
         string.Equals(declaringNamespace, "Opc.Classic.Ae", System.StringComparison.Ordinal) ||
         (declaringNamespace is not null && declaringNamespace.StartsWith("Opc.Classic.Ae.", System.StringComparison.Ordinal));
+
+    private static bool IsHdaNamespace(string? declaringNamespace) =>
+        string.Equals(declaringNamespace, "Opc.Classic.Hda", System.StringComparison.Ordinal) ||
+        (declaringNamespace is not null && declaringNamespace.StartsWith("Opc.Classic.Hda.", System.StringComparison.Ordinal));
 
     private static string ParameterList(ImmutableArray<IParameterSymbol> parameters)
     {

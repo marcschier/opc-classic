@@ -19,6 +19,7 @@ namespace Opc.Classic.Commands.Dcom;
 /// <summary><c>IOPCCommandInformation</c> — Commands metadata interface (IID_IOPCCommandInformation).</summary>
 [OpcInterface("3104B525-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCCommandInformation
 {
     /// <summary><c>IOPCCommandInformation::QueryCapabilities</c> (opnum 3) projected as maximum storage time.</summary>
@@ -41,6 +42,7 @@ public partial interface IOPCCommandInformation
 /// <summary><c>IOPCCommandExecution</c> — Commands execution interface (IID_IOPCCommandExecution).</summary>
 [OpcInterface("3104B526-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCCommandExecution
 {
     /// <summary><c>IOPCCommandExecution::SyncInvoke</c> (opnum 3) projected as string result arguments.</summary>
@@ -71,6 +73,7 @@ public partial interface IOPCCommandExecution
 /// <summary><c>IOPCCommandCallback</c> — Commands progress / completion sink (IID_IOPCCommandCallback).</summary>
 [OpcInterface("3104B527-2016-442D-9696-1275DE978778")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCCommandCallback
 {
     /// <summary><c>IOPCCommandCallback::OnStateChange</c> (opnum 3) projected as a compact callback notification.</summary>

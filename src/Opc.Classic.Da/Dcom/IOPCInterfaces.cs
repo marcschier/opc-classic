@@ -29,6 +29,7 @@ namespace Opc.Classic.Da.Dcom;
 /// <summary><c>IOPCServer</c> — top-level OPC DA server interface (IID_IOPCServer).</summary>
 [OpcInterface("39C13A4D-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCServer
 {
     /// <summary>
@@ -56,6 +57,7 @@ public partial interface IOPCServer
 /// <summary><c>IOPCBrowse</c> — DA 3.0 unified browse interface (IID_IOPCBrowse).</summary>
 [OpcInterface("39227004-A18F-4B57-8B0A-5235670F4468")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCBrowse
 {
     /// <summary>
@@ -75,6 +77,7 @@ public partial interface IOPCBrowse
 /// <summary><c>IOPCBrowseServerAddressSpace</c> — DA 2.x browse interface (IID_IOPCBrowseServerAddressSpace).</summary>
 [OpcInterface("39C13A4F-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCBrowseServerAddressSpace
 {
     /// <summary>
@@ -109,6 +112,7 @@ public partial interface IOPCItemProperties
 /// <summary><c>IOPCItemIO</c> — DA 3.0 stateless item I/O (IID_IOPCItemIO).</summary>
 [OpcInterface("85C0B427-2893-4CBC-BD78-E5FC5146F08F")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCItemIO
 {
     /// <summary>
@@ -124,6 +128,7 @@ public partial interface IOPCItemIO
 /// <summary><c>IOPCItemMgt</c> — group item management (IID_IOPCItemMgt).</summary>
 [OpcInterface("39C13A54-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCItemMgt
 {
     /// <summary>
@@ -156,6 +161,7 @@ public partial interface IOPCItemMgt
 /// <summary><c>IOPCGroupStateMgt</c> — group state (active, rate, deadband, ...) (IID_IOPCGroupStateMgt).</summary>
 [OpcInterface("39C13A50-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCGroupStateMgt
 {
     /// <summary>
@@ -183,6 +189,7 @@ public partial interface IOPCGroupStateMgt2
 /// <summary><c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).</summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
 {
     /// <summary>
@@ -197,6 +204,7 @@ public partial interface IOPCSyncIO
 /// <summary><c>IOPCSyncIO2</c> — DA 3.0 max-age synchronous I/O (IID_IOPCSyncIO2).</summary>
 [OpcInterface("730F5F0F-55B1-4C81-9E18-FF8A0904E1FA")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO2
 {
     /// <summary>
@@ -217,6 +225,7 @@ public partial interface IOPCSyncIO2
 /// <summary><c>IOPCAsyncIO2</c> — DA 2.05a asynchronous I/O (IID_IOPCAsyncIO2).</summary>
 [OpcInterface("39C13A71-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCAsyncIO2
 {
     /// <summary>
@@ -249,6 +258,7 @@ public partial interface IOPCAsyncIO2
 /// <summary><c>IOPCAsyncIO3</c> — DA 3.0 asynchronous I/O with max-age/VQT methods (IID_IOPCAsyncIO3).</summary>
 [OpcInterface("0967B97B-36EF-423E-B6F8-6BFF1E40D39D")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCAsyncIO3
 {
     /// <summary>
@@ -294,6 +304,7 @@ public partial interface IConnectionPointContainer
 /// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
 {
     /// <summary>
@@ -308,6 +319,7 @@ public partial interface IConnectionPoint
 /// <summary><c>IOPCDataCallback</c> — server -&gt; client OnDataChange/OnReadComplete/OnWriteComplete/OnCancelComplete (IID_IOPCDataCallback).</summary>
 [OpcInterface("39C13A70-011E-11D0-9675-0020AFD8ADB3")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCDataCallback
 {
     /// <summary>
@@ -364,6 +376,7 @@ public partial interface IOPCDataCallback
 /// <summary><c>IOPCEnumGUID</c> — enumerates OPC category/server class IDs (IID_IOPCEnumGUID).</summary>
 [OpcInterface("55C382C8-21C7-4E88-96C1-BECFB1E3F483")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCEnumGUID
 {
     /// <summary>
@@ -390,6 +403,7 @@ public partial interface IOPCEnumGUID
 /// <summary><c>IOPCServerList</c> — OPC Discovery 1.0 server list (IID_IOPCServerList).</summary>
 [OpcInterface("13486D50-4821-11D2-A494-3CB306C10000")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCServerList
 {
     /// <summary>
@@ -404,6 +418,7 @@ public partial interface IOPCServerList
 /// <summary><c>IOPCServerList2</c> — OPC Discovery 2.0 server list (IID_IOPCServerList2).</summary>
 [OpcInterface("9DD0B56C-AD9E-43EE-8305-487F3188BF7A")]
 [GenerateOpcProxy]
+[OpcGenerateServerDispatch]
 public partial interface IOPCServerList2
 {
     /// <summary>
