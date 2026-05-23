@@ -1,60 +1,103 @@
-# opc-classic
+# Opc.Classic
 
-A cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic (DA, AE, HDA, DX, Cpx, Batch, Commands, Security, XML-DA), with both **client** and **server** hosting on Linux / macOS / Windows.
+[![Build](https://github.com/marcschier/opc-classic/actions/workflows/build.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/build.yml)
+[![OPC CTT](https://github.com/marcschier/opc-classic/actions/workflows/opc-ctt.yml/badge.svg)](https://github.com/marcschier/opc-classic/actions/workflows/opc-ctt.yml)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
+[![NativeAOT](https://img.shields.io/badge/NativeAOT-clean-brightgreen)](samples/Opc.Classic.Samples.AotCanary/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **Status: early development.** This repository is being restructured per the implementation plan in `~/.copilot/session-state/<session-id>/plan.md`. The existing `COM/`, `COM.Net/`, `DotNet/`, `Java/`, and `External/` folders are the legacy trees being migrated or retired (Phase 1A).
+**Opc.Classic** is a cross-platform, NativeAOT-compatible **.NET 10** implementation of OPC Classic for client and server workloads. It brings DA, AE, HDA, DX, Complex Data, Batch, Commands, Security, and XML-DA into a modern managed stack that runs on Linux, macOS, and Windows without depending on Windows DCOM automation or legacy COM runtime interop.
 
-## Goals
+> **Status:** pre-1.0 alpha. The public assembly names, package IDs, and namespaces now use the `Opc.Classic.*` dotted form, and the project is licensed under MIT.
 
-- **Cross-platform.** Talk to and host OPC DA / AE / HDA servers from Linux and macOS, not just Windows. No `[ComImport]`, no `ole32.dll` P/Invoke, no Windows-specific runtime — a pure-managed DCOM stack is the foundation.
-- **NativeAOT-compatible libraries.** Consumer apps can publish with `dotnet publish -p:PublishAot=true` against any `Opc.Classic.*` package and see zero `IL2xxx` / `IL3xxx` warnings. All in-tree code is source-generated or hand-rolled — no reflection emit, no expression-tree compile, no `MethodInfo.Invoke`.
-- **Full OPC Classic spec coverage** — DA 2.05a + 3.0, AE 1.x, HDA 1.x, DX, Cpx, Batch, Commands, Security, XML-DA.
-- **Modern auth** — NTLMv2 + Kerberos / SPNEGO, defaulting to `PKT_INTEGRITY` for compatibility with Microsoft's mandatory DCOM hardening (KB5004442, phase-3, March 2023).
-- **Both client and server.** Hosting a managed OPC server cross-platform via `Microsoft.Extensions.Hosting`.
-- **Fully tested.** [TUnit](https://github.com/thomhurst/TUnit) with source-generator-integrated mocking, managed loopback integration tests, and layered conformance against the native C++ sample servers preserved under `COM/`, Matrikon OPC Simulation, and optionally the OPC Foundation Compliance Test Tool.
+## Quick start
 
-## Project layout (target)
+Install the DA package from the prerelease feed:
 
-| Folder | Purpose |
-|---|---|
-| `src/` | Production source — every assembly `IsAotCompatible=true`. |
-| `tests/` | TUnit-based unit, integration, and conformance test projects. |
-| `samples/` | Quickstart sample apps and the AOT canary (`samples/Opc.Classic.Samples.AotCanary`). |
-| `docs/` | DocFX site, ARCHITECTURE, cookbook, migration guide. |
-| `COM/` | **Preserved** native C++ OPC sample servers (conformance reference; not built by default). |
-| `External/` | **Preserved** OPC Foundation Core Components — downloaded by CI for Windows conformance jobs. |
-| `.github/workflows/` | Linux / macOS / Windows build matrix + AOT-canary publish gate. |
-
-The legacy `DotNet/`, `Java/`, and `COM.Net/` folders migrate into the new layout per Phase 1A of the implementation plan.
-
-## Building
-
-Requires **.NET 10 SDK** (10.0.100 or later). See [`global.json`](global.json) for the exact version. From the repository root:
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
+```powershell
+dotnet add package Opc.Classic.Da --prerelease
 ```
 
-To verify NativeAOT-compatibility:
+Read an OPC DA item through the async managed surface once discovery/activation has provided an `IDaServer`:
 
-```bash
-dotnet publish samples/Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true
+```csharp
+using Opc.Classic.Da;
+
+static async Task ReadOneAsync(IDaServer server, CancellationToken cancellationToken = default)
+{
+    IReadOnlyList<ItemValueResult> values = await server.ReadAsync(
+    [
+        new Item("Random.Int1") { ClientHandle = 1 },
+    ], cancellationToken);
+
+    ItemValueResult value = values[0];
+    Console.WriteLine($"{value.ItemName} = {value.Value} ({value.Quality}) @ {value.Timestamp:O}");
+}
 ```
 
-Zero warnings = AOT-clean. Any `IL2xxx` or `IL3xxx` warning is treated as a regression by CI.
+The alpha connection bootstrap continues to settle around discovery, activation, and generated DCOM proxies; `IDaServer`, `IDaSubscription`, and the per-spec managed contracts are the consumer-facing shape.
 
-## Architecture
+## Why Opc.Classic?
 
-A pure-managed MSRPC/DCOM stack (`Opc.Classic.Dcom`) is the foundation. On top of it sit per-spec assemblies (`Opc.Classic.Da`, `Opc.Classic.Ae`, `Opc.Classic.Hda`, …) that translate the OPC Classic interface semantics into managed APIs. A Roslyn source generator (`Opc.Classic.Generators`) emits AOT-safe call shims, NDR marshallers, and `LocalCoClass` dispatch tables — replacing every reflection / expression-tree code path that would otherwise break NativeAOT.
+- **Cross-platform OPC Classic stack.** The DCOM path is pure managed MSRPC/DCOM over `ncacn_ip_tcp`; XML-DA uses `HttpClient`. No Windows-only `[ComImport]`, RCW activation, or `ole32.dll` dependency is required for the portable stack.
+- **Full OPC Classic family coverage.** Assemblies cover DA, AE, HDA, DX, Complex Data, Batch, Commands, Security, and XML-DA.
+- **Source-generator-driven DCOM proxies.** `[OpcInterface(iid)]`, `[OpcMethod(opnum)]`, and `[GenerateOpcProxy]` emit interface IDs, opnum tables, and client proxies with no runtime reflection dispatch.
+- **NativeAOT-compatible by design.** Runtime source projects are written for trimming and AOT; the canary at [`samples/Opc.Classic.Samples.AotCanary/`](samples/Opc.Classic.Samples.AotCanary/) verifies publish-time cleanliness.
+- **Modern authentication.** NTLMv2 is the default, Kerberos is available through Kerberos.NET, SPNEGO token negotiation is implemented, and channel binding supports Extended Protection for Authentication.
+- **Hardened DCOM defaults.** DCOM traffic defaults to packet integrity, NTLMv2, and NTLM2 session security to align with Microsoft KB5004442 hardening.
+- **License-clean.** The project is MIT licensed and has removed the LGPL `SharpCifs.Std` transitional runtime dependency.
+- **Deep tests.** 700+ TUnit tests span unit, property, snapshot, generator, loopback, and conformance scaffolding across the `tests/` tree, with coverage gates in CI.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (coming as part of Phase 15A).
+## Repository layout
+
+| Path | Purpose |
+| --- | --- |
+| [`src/`](src/) | Production assemblies. Shared props enforce .NET 10, analyzer, package metadata, AOT, trimming, and source-generator wiring. |
+| [`tests/`](tests/) | TUnit projects for primitives, DCOM transport/auth, generators, per-spec codecs, hosting, discovery, property tests, and integration loops. |
+| [`samples/`](samples/) | Runnable samples, including the AOT canary and managed DA/AE/HDA server samples. |
+| [`docs/`](docs/) | Architecture notes, release/conformance docs, XML-DA status, and documentation site content. |
+| [`COM/`](COM/) | Preserved OPC Foundation native C++ sample servers used as Windows conformance references. |
+| [`External/`](External/) | Preserved OPC Foundation redistributables and merge modules used by conformance jobs. |
+| [`.github/`](.github/) | GitHub Actions workflows for build, conformance, OPC CTT, release, and repository guidance. |
+
+## Sample apps
+
+| Sample | What it demonstrates |
+| --- | --- |
+| [`samples/Opc.Classic.Samples.AotCanary/`](samples/Opc.Classic.Samples.AotCanary/) | NativeAOT publish verification for consumer applications. CI treats IL2xxx/IL3xxx warnings as regressions. |
+| [`samples/Opc.Classic.Samples.CttServer/`](samples/Opc.Classic.Samples.CttServer/) | Minimal CTT-oriented managed DA server registered as `Opc.Classic.DaSample.1`. |
+| [`samples/Opc.Classic.Samples.DaServer/`](samples/Opc.Classic.Samples.DaServer/) | Full DA server sample with a tag tree, browse support, reads/writes, and data-change publishing. |
+| [`samples/Opc.Classic.Samples.AeServer/`](samples/Opc.Classic.Samples.AeServer/) | AE server sample with area/source hierarchy, condition events, and event-category metadata. |
+| [`samples/Opc.Classic.Samples.HdaServer/`](samples/Opc.Classic.Samples.HdaServer/) | HDA server sample with historical values, aggregates, annotations, and time-range queries. |
+
+## Build from source
+
+Requires the .NET 10 SDK pinned by [`global.json`](global.json):
+
+```powershell
+dotnet restore Opc.Classic.slnx
+dotnet build Opc.Classic.slnx
+dotnet test Opc.Classic.slnx
+```
+
+Publish the NativeAOT canary:
+
+```powershell
+dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
+```
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md) — top-down design of transports, NDR codecs, source generators, hosting, auth, discovery, tests, AOT, CI, and roadmap.
+- [Adoption guide](docs/ADOPTION.md) — migration guidance for consumers adopting the alpha packages.
+- [Cookbook](docs/COOKBOOK.md) — recipes for reads, writes, subscriptions, XML-DA, hosting, and conformance workflows.
+- [XML-DA status](docs/XMLDA_STATUS.md) — operation coverage and serializer notes for SOAP-over-HTTP.
+- [Changelog](CHANGELOG.md) — release history from `0.1.0-alpha.1` through the current alpha.
+
+## Contributing and governance
+
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and report security issues through [SECURITY.md](SECURITY.md). Preserved OPC Foundation material under `COM/` and `External/` retains its original notices; project source is MIT licensed.
 
 ## License
 
-[MIT](LICENSE). Per-file `SPDX-License-Identifier` headers are being added as code is migrated.
-
-## Contributing
-
-`CONTRIBUTING.md` lands with Phase 15D. For the active roadmap, see the implementation plan in the session-state folder.
+Opc.Classic is licensed under the [MIT License](LICENSE).
