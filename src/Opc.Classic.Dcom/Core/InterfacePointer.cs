@@ -189,6 +189,7 @@ namespace SharpInterop.Core {
         internal const int OBJREF_STANDARD = 0x1; // standard marshaled objref
         internal const int OBJREF_HANDLER = 0x2; // handler marshaled objref
         internal const int OBJREF_CUSTOM = 0x4; // custom marshaled objref
+        internal const int OBJREF_EXTENDED = 0x8; // extended standard marshaled objref
 
         // Flag values for a STDOBJREF (standard part of an OBJREF).
         // SORF_OXRES1 - SORF_OXRES8 are reserved for the object exporters

@@ -443,8 +443,14 @@ namespace SharpInterop.Core {
                     ((InteropFlags.FLAG_REPRESENTATION_ARRAY & context.Flag) != InteropFlags.FLAG_REPRESENTATION_ARRAY) &&
                     ptr.IsCustomObjRef) {
                     // now we need to ask the session for its marshaller unmarshaller based on the CLSID
+                    var customBody = ptr.GetObjectReference(InterfacePointer.OBJREF_CUSTOM) as CustomInterfacePointerBody;
+                    var customNdr = ndr;
+                    if (customBody != null && customBody.ObjectData.Length > 0) {
+                        customNdr = new NdrCodec { Buffer = new NdrBuffer(customBody.ObjectData, 0), Format = ndr.Format };
+                        customNdr.Buffer.Length = customBody.ObjectData.Length;
+                    }
                     ((ComObjectImpl)comObject).CustomObject = session.GetCustomMarshallerUnMarshallerTemplate(
-                        ptr.CustomCLSID).Decode(comObject, ndr, context);
+                        ptr.CustomCLSID).Decode(comObject, customNdr, context);
                 }
                 context.ComObjects.Add(comObject);
                 return comObject;
