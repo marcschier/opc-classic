@@ -12,6 +12,10 @@ using OpcClassic.Da.Ndr;
 using OpcClassic.Ndr;
 using OpcClassic.Testing;
 using TUnit.Core;
+using V20AsyncIO = OpcClassic.Da.V20.Dcom.IOPCAsyncIO;
+using V20AsyncIOClientProxy = OpcClassic.Da.V20.Dcom.IOPCAsyncIO_ClientProxy;
+using V20SyncIO = OpcClassic.Da.V20.Dcom.IOPCSyncIO;
+using V20SyncIOClientProxy = OpcClassic.Da.V20.Dcom.IOPCSyncIO_ClientProxy;
 
 namespace OpcClassic.Da.Tests.Dcom;
 
@@ -113,6 +117,304 @@ public sealed class IOPCAdditionalDaProxyTests
         await Assert.That(propertyCount).IsEqualTo(0);
     }
 
+    [Test]
+    public async Task Browse_GetProperties_invokes_channel_with_correct_metadata_and_decodes_properties()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        ReadOnlyMemory<byte> responsePayload = WritePayload((ref NdrWriter writer) =>
+        {
+            writer.WriteUInt32(1);
+            NdrOpcItemPropertiesCodec.Write(ref writer, new OpcItemProperties(0, Array.Empty<OpcItemPropertyResult>()));
+        });
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, responsePayload));
+        });
+
+        var proxy = new IOPCBrowse_ClientProxy(channel);
+        OpcItemProperties[] actual = await proxy.GetPropertiesAsync(
+            new[] { "Random.Int4" },
+            returnPropertyValues: true,
+            propertyIds: new[] { 100 },
+            CancellationToken.None);
+
+        int actualLength = actual.Length;
+        await Assert.That(observedIid).IsEqualTo(IOPCBrowse.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCBrowse.Opnums.GetPropertiesAsync);
+        await Assert.That(actualLength).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task BrowseServerAddressSpace_GetItemId_invokes_channel_with_correct_metadata()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeString("Channel1.Device1.Tag1")));
+        });
+
+        var proxy = new IOPCBrowseServerAddressSpace_ClientProxy(channel);
+        string actual = await proxy.GetItemIdAsync("Tag1", CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCBrowseServerAddressSpace.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCBrowseServerAddressSpace.Opnums.GetItemIdAsync);
+        await Assert.That(actual).IsEqualTo("Channel1.Device1.Tag1");
+    }
+
+    [Test]
+    public async Task ItemMgt_SetActiveState_invokes_channel_with_correct_metadata_and_decodes_errors()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+        });
+
+        var proxy = new IOPCItemMgt_ClientProxy(channel);
+        int[] errors = await proxy.SetActiveStateAsync(new[] { 42 }, active: true, CancellationToken.None);
+
+        int firstError = errors[0];
+        await Assert.That(observedIid).IsEqualTo(IOPCItemMgt.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCItemMgt.Opnums.SetActiveStateAsync);
+        await Assert.That(firstError).IsEqualTo(0);
+    }
+
+    [Test]
+    public async Task SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+        });
+
+        var proxy = new IOPCSyncIO_ClientProxy(channel);
+        int[] errors = await proxy.WriteAsync(Array.Empty<int>(), Array.Empty<OpcVariant>(), CancellationToken.None);
+
+        int errorCount = errors.Length;
+        await Assert.That(observedIid).IsEqualTo(IOPCSyncIO.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCSyncIO.Opnums.WriteAsync);
+        await Assert.That(errorCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task SyncIO2_WriteVqt_invokes_channel_with_correct_metadata_and_decodes_errors()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+        });
+
+        var proxy = new IOPCSyncIO2_ClientProxy(channel);
+        int[] errors = await proxy.WriteVqtAsync(Array.Empty<int>(), Array.Empty<OpcItemVqt>(), CancellationToken.None);
+
+        int errorCount = errors.Length;
+        await Assert.That(observedIid).IsEqualTo(IOPCSyncIO2.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCSyncIO2.Opnums.WriteVqtAsync);
+        await Assert.That(errorCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task AsyncIO2_GetEnable_invokes_channel_with_correct_metadata_and_decodes_boolean()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeBoolean(true)));
+        });
+
+        var proxy = new IOPCAsyncIO2_ClientProxy(channel);
+        bool enabled = await proxy.GetEnableAsync(CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCAsyncIO2.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCAsyncIO2.Opnums.GetEnableAsync);
+        await Assert.That(enabled).IsEqualTo(true);
+    }
+
+    [Test]
+    public async Task AsyncIO3_RefreshMaxAge_invokes_channel_with_correct_metadata_and_decodes_cancel_id()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x1234)));
+        });
+
+        var proxy = new IOPCAsyncIO3_ClientProxy(channel);
+        int cancelId = await proxy.RefreshMaxAgeAsync(1000, 0x99, CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCAsyncIO3.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCAsyncIO3.Opnums.RefreshMaxAgeAsync);
+        await Assert.That(cancelId).IsEqualTo(0x1234);
+    }
+
+    [Test]
+    public async Task DataCallback_OnCancelComplete_invokes_channel_with_correct_metadata()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, ReadOnlyMemory<byte>.Empty));
+        });
+
+        var proxy = new IOPCDataCallback_ClientProxy(channel);
+        await proxy.OnCancelCompleteAsync(0x22, 0x33, CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCDataCallback.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCDataCallback.Opnums.OnCancelCompleteAsync);
+    }
+
+    [Test]
+    public async Task ConnectionPoint_GetConnectionInterface_invokes_channel_with_correct_metadata()
+    {
+        Guid expected = IOPCDataCallback.InterfaceId;
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
+        });
+
+        var proxy = new IConnectionPoint_ClientProxy(channel);
+        Guid actual = await proxy.GetConnectionInterfaceAsync(CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IConnectionPoint.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IConnectionPoint.Opnums.GetConnectionInterfaceAsync);
+        await Assert.That(actual).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task EnumGuid_Next_invokes_channel_with_correct_metadata_and_decodes_guids()
+    {
+        Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeGuidArray(expected)));
+        });
+
+        var proxy = new IOPCEnumGUID_ClientProxy(channel);
+        Guid[] actual = await proxy.NextAsync(1, CancellationToken.None);
+
+        Guid first = actual[0];
+        await Assert.That(observedIid).IsEqualTo(IOPCEnumGUID.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCEnumGUID.Opnums.NextAsync);
+        await Assert.That(first).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task ServerList_ClsidFromProgId_invokes_channel_with_correct_metadata()
+    {
+        Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
+        });
+
+        var proxy = new IOPCServerList_ClientProxy(channel);
+        Guid actual = await proxy.ClsidFromProgIdAsync("Matrikon.OPC.Simulation.1", CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCServerList.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCServerList.Opnums.ClsidFromProgIdAsync);
+        await Assert.That(actual).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task ServerList2_ClsidFromProgId_invokes_channel_with_correct_metadata()
+    {
+        Guid expected = Guid.Parse("39C13A4D-011E-11D0-9675-0020AFD8ADB3");
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeGuid(expected)));
+        });
+
+        var proxy = new IOPCServerList2_ClientProxy(channel);
+        Guid actual = await proxy.ClsidFromProgIdAsync("Matrikon.OPC.Simulation.1", CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(IOPCServerList2.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(IOPCServerList2.Opnums.ClsidFromProgIdAsync);
+        await Assert.That(actual).IsEqualTo(expected);
+    }
+
+    [Test]
+    public async Task V20SyncIO_Write_invokes_channel_with_correct_metadata_and_decodes_errors()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32Array(0)));
+        });
+
+        var proxy = new V20SyncIOClientProxy(channel);
+        int[] errors = await proxy.WriteAsync(Array.Empty<int>(), Array.Empty<OpcVariant>(), CancellationToken.None);
+
+        int errorCount = errors.Length;
+        await Assert.That(observedIid).IsEqualTo(V20SyncIO.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(V20SyncIO.Opnums.WriteAsync);
+        await Assert.That(errorCount).IsEqualTo(1);
+    }
+
+    [Test]
+    public async Task V20AsyncIO_Refresh_invokes_channel_with_correct_metadata_and_decodes_transaction_id()
+    {
+        Guid observedIid = Guid.Empty;
+        int observedOpnum = -1;
+        var channel = new InMemoryCallChannel((iid, opnum, _, _) =>
+        {
+            observedIid = iid;
+            observedOpnum = opnum;
+            return Task.FromResult(new NdrCallResult(0, EncodeInt32(0x5678)));
+        });
+
+        var proxy = new V20AsyncIOClientProxy(channel);
+        int transactionId = await proxy.RefreshAsync(1, 2, CancellationToken.None);
+
+        await Assert.That(observedIid).IsEqualTo(V20AsyncIO.InterfaceId);
+        await Assert.That(observedOpnum).IsEqualTo(V20AsyncIO.Opnums.RefreshAsync);
+        await Assert.That(transactionId).IsEqualTo(0x5678);
+    }
+
     private static ReadOnlyMemory<byte> WritePayload(NdrWriteAction write, int capacity = 1024)
     {
         var buffer = new byte[capacity];
@@ -120,6 +422,35 @@ public sealed class IOPCAdditionalDaProxyTests
         write(ref writer);
         return buffer[..writer.Position];
     }
+
+    private static ReadOnlyMemory<byte> EncodeBoolean(bool value) => EncodeInt32(value ? -1 : 0);
+
+    private static ReadOnlyMemory<byte> EncodeGuid(Guid value) => WritePayload((ref NdrWriter writer) =>
+        writer.WriteGuid(value));
+
+    private static ReadOnlyMemory<byte> EncodeGuidArray(params Guid[] values) => WritePayload((ref NdrWriter writer) =>
+    {
+        writer.WriteUInt32((uint)values.Length);
+        foreach (Guid value in values)
+        {
+            writer.WriteGuid(value);
+        }
+    });
+
+    private static ReadOnlyMemory<byte> EncodeInt32(int value) => WritePayload((ref NdrWriter writer) =>
+        writer.WriteInt32(value));
+
+    private static ReadOnlyMemory<byte> EncodeInt32Array(params int[] values) => WritePayload((ref NdrWriter writer) =>
+    {
+        writer.WriteUInt32((uint)values.Length);
+        foreach (int value in values)
+        {
+            writer.WriteInt32(value);
+        }
+    });
+
+    private static ReadOnlyMemory<byte> EncodeString(string value) => WritePayload((ref NdrWriter writer) =>
+        writer.WriteUnicodeStringPtr(value));
 
     private static int EFail() => unchecked((int)0x80004005u);
 
