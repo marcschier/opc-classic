@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -97,29 +97,35 @@ namespace Opc.Classic.Generators
 }
 ";
 
+    private const string DiagnosticCategory = "Opc.Classic.Generators";
+    private const string DiagnosticsHelpLinkUri = "docs/generators/diagnostics.md";
+
     private static readonly DiagnosticDescriptor InvalidGuidDescriptor = new(
         id: "OPCGEN001",
         title: "OpcInterface attribute carries an invalid GUID",
         messageFormat: "OpcInterface attribute on '{0}' has an invalid GUID literal '{1}'",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     private static readonly DiagnosticDescriptor NotPartialDescriptor = new(
         id: "OPCGEN002",
         title: "OpcInterface target must be partial",
         messageFormat: "Interface '{0}' is decorated with [OpcInterface] but is not declared partial",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     private static readonly DiagnosticDescriptor DuplicateOpnumDescriptor = new(
         id: "OPCGEN003",
         title: "Duplicate OpcMethod opnum",
         messageFormat: "Interface '{0}' has multiple methods sharing opnum {1}: '{2}' and '{3}'",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)

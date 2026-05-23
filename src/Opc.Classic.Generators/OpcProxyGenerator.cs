@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -95,37 +95,71 @@ namespace Opc.Classic.Generators
             { "global::Opc.Classic.Hda.OpcHdaTime", StaticCodec("global::Opc.Classic.Hda.Ndr.NdrOpcHdaTimeCodec") },
         };
 
+    private const string DiagnosticCategory = "Opc.Classic.Generators";
+    private const string DiagnosticsHelpLinkUri = "docs/generators/diagnostics.md";
+
     private static readonly DiagnosticDescriptor NotPartialDescriptor = new(
         id: "OPCGEN004",
         title: "OpcProxy target must be partial",
         messageFormat: "Interface '{0}' is decorated with [GenerateOpcProxy] but is not declared partial",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Error,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     private static readonly DiagnosticDescriptor MissingOpcInterfaceDescriptor = new(
         id: "OPCGEN005",
         title: "OpcProxy target should be decorated with OpcInterface",
         messageFormat: "Interface '{0}' is decorated with [GenerateOpcProxy] but is not decorated with [OpcInterface]",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     private static readonly DiagnosticDescriptor OpcMethodRefOutDescriptor = new(
         id: "OPCGEN006",
         title: "OpcMethod has unsupported ref/out parameter type",
         messageFormat: "Method '{0}' has ref/out OPC method type '{1}' without a registered request/response codec",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
+
+    private static readonly DiagnosticDescriptor UnsupportedSignatureDescriptor = new(
+        id: "OPCGEN007",
+        title: "OpcMethod has unsupported method signature",
+        messageFormat: "Method '{0}' is marked [OpcMethod] but has an unsupported signature: {1}",
+        category: DiagnosticCategory,
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     private static readonly DiagnosticDescriptor UnsupportedMarshallingDescriptor = new(
         id: "OPCGEN008",
         title: "OpcMethod has unsupported parameter or return type",
         messageFormat: "Method '{0}' uses unsupported OPC method type '{1}'; emitting empty-payload placeholder body",
-        category: "Opc.Classic.Generators",
+        category: DiagnosticCategory,
         defaultSeverity: DiagnosticSeverity.Info,
-        isEnabledByDefault: true);
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
+
+    private static readonly DiagnosticDescriptor MissingCodecDescriptor = new(
+        id: "OPCGEN009",
+        title: "OPC method type is missing a codec",
+        messageFormat: "Method '{0}' uses OPC method type '{1}' but no codec is registered in the generator codec registry",
+        category: DiagnosticCategory,
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
+
+    private static readonly DiagnosticDescriptor UnsupportedParameterDescriptor = new(
+        id: "OPCGEN010",
+        title: "OpcMethod has unsupported parameter type",
+        messageFormat: "Method '{0}' has unsupported parameter '{1}' of OPC method type '{2}'",
+        category: DiagnosticCategory,
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        helpLinkUri: DiagnosticsHelpLinkUri);
 
     /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -218,8 +252,9 @@ namespace Opc.Classic.Generators
         var taskReturnKind = ClassifyTaskReturn(method.ReturnType, out string? taskResultType, out string? taskResultMarshallingType);
         bool taskResultIsOpcInterface = TryGetTaskResultSymbol(method.ReturnType, out var taskResultSymbol) && IsOpcInterfaceType(taskResultSymbol);
         string? declaringNamespace = ContainingNamespace(method.ContainingType);
-        string? unsupportedMarshallingType = FindUnsupportedMarshallingType(parameters, taskReturnKind, taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace, out string? unsupportedRefOutMarshallingType);
-        return new MethodModel(method.Name, method.ReturnType.ToDisplayString(TypeDisplayFormat), TypeParameterList(method.TypeParameters), ParameterList(method.Parameters), ConstraintClauses(method.TypeParameters), outParameters.ToImmutable(), parameterNames.ToImmutable(), parameters.ToImmutable(), HasOpcMethodAttribute(method), hasRefOrOutParameter, HasGenerateMultiOutRecordAttribute(method) || outParameterCount >= 2, taskReturnKind, taskResultType, taskResultMarshallingType, taskResultIsOpcInterface, unsupportedMarshallingType, unsupportedRefOutMarshallingType, cancellationTokenParameterName, declaringNamespace, method.Locations.IsDefaultOrEmpty ? Location.None : method.Locations[0]);
+        string? unsupportedSignatureReason = UnsupportedSignatureReason(method, taskReturnKind);
+        string? unsupportedMarshallingType = FindUnsupportedMarshallingType(parameters, taskReturnKind, taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace, out string? unsupportedRefOutMarshallingType, out UnsupportedMarshallingKind unsupportedMarshallingKind, out string? unsupportedParameterName);
+        return new MethodModel(method.Name, method.ReturnType.ToDisplayString(TypeDisplayFormat), TypeParameterList(method.TypeParameters), ParameterList(method.Parameters), ConstraintClauses(method.TypeParameters), outParameters.ToImmutable(), parameterNames.ToImmutable(), parameters.ToImmutable(), HasOpcMethodAttribute(method), hasRefOrOutParameter, HasGenerateMultiOutRecordAttribute(method) || outParameterCount >= 2, taskReturnKind, taskResultType, taskResultMarshallingType, taskResultIsOpcInterface, unsupportedMarshallingType, unsupportedRefOutMarshallingType, unsupportedMarshallingKind, unsupportedParameterName, unsupportedSignatureReason, cancellationTokenParameterName, declaringNamespace, method.Locations.IsDefaultOrEmpty ? Location.None : method.Locations[0]);
     }
 
     private static string? ContainingNamespace(INamedTypeSymbol symbol) =>
@@ -333,23 +368,54 @@ namespace Opc.Classic.Generators
     {
         foreach (var method in model.Methods)
         {
-            if (method.HasOpcMethodAttribute && method.UnsupportedRefOutMarshallingType is not null)
+            if (method.HasOpcMethodAttribute)
             {
-                spc.ReportDiagnostic(Diagnostic.Create(
-                    OpcMethodRefOutDescriptor,
-                    method.Location,
-                    method.Name,
-                    method.UnsupportedRefOutMarshallingType));
-            }
-            else if (method.HasOpcMethodAttribute &&
-                method.TaskReturnKind != TaskReturnKind.Unsupported &&
-                !method.IsFullyMarshallable)
-            {
-                spc.ReportDiagnostic(Diagnostic.Create(
-                    UnsupportedMarshallingDescriptor,
-                    method.Location,
-                    method.Name,
-                    method.UnsupportedMarshallingType ?? "<unknown>"));
+                if (method.UnsupportedSignatureReason is not null)
+                {
+                    spc.ReportDiagnostic(Diagnostic.Create(
+                        UnsupportedSignatureDescriptor,
+                        method.Location,
+                        method.Name,
+                        method.UnsupportedSignatureReason));
+                }
+
+                if (method.UnsupportedRefOutMarshallingType is not null)
+                {
+                    spc.ReportDiagnostic(Diagnostic.Create(
+                        OpcMethodRefOutDescriptor,
+                        method.Location,
+                        method.Name,
+                        method.UnsupportedRefOutMarshallingType));
+                }
+                else if (method.UnsupportedSignatureReason is null &&
+                    method.TaskReturnKind != TaskReturnKind.Unsupported &&
+                    !method.IsFullyMarshallable)
+                {
+                    if (method.UnsupportedMarshallingKind == UnsupportedMarshallingKind.Parameter &&
+                        method.UnsupportedParameterName is not null)
+                    {
+                        spc.ReportDiagnostic(Diagnostic.Create(
+                            UnsupportedParameterDescriptor,
+                            method.Location,
+                            method.Name,
+                            method.UnsupportedParameterName,
+                            method.UnsupportedMarshallingType ?? "<unknown>"));
+                    }
+                    else if (method.UnsupportedMarshallingKind == UnsupportedMarshallingKind.Return)
+                    {
+                        spc.ReportDiagnostic(Diagnostic.Create(
+                            MissingCodecDescriptor,
+                            method.Location,
+                            method.Name,
+                            method.UnsupportedMarshallingType ?? "<unknown>"));
+                    }
+
+                    spc.ReportDiagnostic(Diagnostic.Create(
+                        UnsupportedMarshallingDescriptor,
+                        method.Location,
+                        method.Name,
+                        method.UnsupportedMarshallingType ?? "<unknown>"));
+                }
             }
 
             EmitMethod(sb, indent, model.Name, model.FullyQualifiedName, method);
@@ -359,7 +425,8 @@ namespace Opc.Classic.Generators
     private static void EmitMethod(StringBuilder sb, string indent, string interfaceName, string fullyQualifiedInterfaceName, MethodModel method)
     {
         bool emitInvokeBody = method.HasOpcMethodAttribute &&
-            method.TaskReturnKind != TaskReturnKind.Unsupported;
+            method.TaskReturnKind != TaskReturnKind.Unsupported &&
+            method.UnsupportedSignatureReason is null;
 
         sb.AppendLine();
         sb.Append(indent).Append("    public ");
@@ -570,16 +637,53 @@ namespace Opc.Classic.Generators
         sb.Append(indent).AppendLine("        }");
     }
 
-    private static string? FindUnsupportedMarshallingType(IEnumerable<ParameterModel> parameters, TaskReturnKind taskReturnKind, string? taskResultMarshallingType, bool taskResultIsOpcInterface, string? declaringNamespace, out string? unsupportedRefOutMarshallingType)
+    private static string? FindUnsupportedMarshallingType(
+        IEnumerable<ParameterModel> parameters,
+        TaskReturnKind taskReturnKind,
+        string? taskResultMarshallingType,
+        bool taskResultIsOpcInterface,
+        string? declaringNamespace,
+        out string? unsupportedRefOutMarshallingType,
+        out UnsupportedMarshallingKind unsupportedMarshallingKind,
+        out string? unsupportedParameterName)
     {
         unsupportedRefOutMarshallingType = null;
+        unsupportedMarshallingKind = UnsupportedMarshallingKind.None;
+        unsupportedParameterName = null;
         foreach (var parameter in parameters)
         {
-            if (parameter.IsCancellationToken) { continue; }
-            if (parameter.IsRequestValue && !CanWriteType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace)) { if (parameter.RefKind == RefKind.Ref || parameter.RefKind == RefKind.Out) { unsupportedRefOutMarshallingType = parameter.MarshallingType; return null; } return parameter.MarshallingType; }
-            if (parameter.IsResponseValue && !CanReadType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace)) { unsupportedRefOutMarshallingType = parameter.MarshallingType; return null; }
+            if (parameter.IsCancellationToken)
+            {
+                continue;
+            }
+
+            if (parameter.IsRequestValue && !CanWriteType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace))
+            {
+                if (parameter.RefKind == RefKind.Ref || parameter.RefKind == RefKind.Out)
+                {
+                    unsupportedRefOutMarshallingType = parameter.MarshallingType;
+                    return null;
+                }
+
+                unsupportedMarshallingKind = UnsupportedMarshallingKind.Parameter;
+                unsupportedParameterName = parameter.Name;
+                return parameter.MarshallingType;
+            }
+
+            if (parameter.IsResponseValue && !CanReadType(parameter.MarshallingType, parameter.IsOpcInterface, declaringNamespace))
+            {
+                unsupportedRefOutMarshallingType = parameter.MarshallingType;
+                return null;
+            }
         }
-        if (taskReturnKind == TaskReturnKind.TaskOfT && (taskResultMarshallingType is null || !CanReadType(taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace))) { return taskResultMarshallingType ?? "<unknown>"; }
+
+        if (taskReturnKind == TaskReturnKind.TaskOfT &&
+            (taskResultMarshallingType is null || !CanReadType(taskResultMarshallingType, taskResultIsOpcInterface, declaringNamespace)))
+        {
+            unsupportedMarshallingKind = UnsupportedMarshallingKind.Return;
+            return taskResultMarshallingType ?? "<unknown>";
+        }
+
         return null;
     }
     private static void EmitCodecWrite(
@@ -1147,6 +1251,21 @@ namespace Opc.Classic.Generators
         return TaskReturnKind.Unsupported;
     }
 
+    private static string? UnsupportedSignatureReason(IMethodSymbol method, TaskReturnKind taskReturnKind)
+    {
+        if (method.TypeParameters.Length > 0)
+        {
+            return "generic methods are not supported";
+        }
+
+        if (taskReturnKind == TaskReturnKind.Unsupported)
+        {
+            return "method must return System.Threading.Tasks.Task or System.Threading.Tasks.Task<T>";
+        }
+
+        return null;
+    }
+
     private static bool HasOpcInterfaceAttribute(INamedTypeSymbol symbol)
     {
         foreach (var attr in symbol.GetAttributes())
@@ -1255,6 +1374,13 @@ namespace Opc.Classic.Generators
             ? "@" + name
             : name;
 
+    private enum UnsupportedMarshallingKind
+    {
+        None,
+        Parameter,
+        Return,
+    }
+
     private enum TaskReturnKind
     {
         Unsupported,
@@ -1300,7 +1426,57 @@ namespace Opc.Classic.Generators
     }
     private sealed class MethodModel
     {
-        public MethodModel(string name, string returnType, string typeParameterList, string parameterList, string constraintClauses, ImmutableArray<string> outParameters, ImmutableArray<string> parameterNames, ImmutableArray<ParameterModel> parameters, bool hasOpcMethodAttribute, bool hasRefOrOutParameter, bool generateMultiOutRecord, TaskReturnKind taskReturnKind, string? taskResultType, string? taskResultMarshallingType, bool taskResultIsOpcInterface, string? unsupportedMarshallingType, string? unsupportedRefOutMarshallingType, string? cancellationTokenParameterName, string? declaringNamespace, Location location) { Name = name; ReturnType = returnType; TypeParameterList = typeParameterList; ParameterList = parameterList; ConstraintClauses = constraintClauses; OutParameters = outParameters; ParameterNames = parameterNames; Parameters = parameters; HasOpcMethodAttribute = hasOpcMethodAttribute; HasRefOrOutParameter = hasRefOrOutParameter; GenerateMultiOutRecord = generateMultiOutRecord; TaskReturnKind = taskReturnKind; TaskResultType = taskResultType; TaskResultMarshallingType = taskResultMarshallingType; TaskResultIsOpcInterface = taskResultIsOpcInterface; UnsupportedMarshallingType = unsupportedMarshallingType; UnsupportedRefOutMarshallingType = unsupportedRefOutMarshallingType; IsFullyMarshallable = taskReturnKind != TaskReturnKind.Unsupported && unsupportedMarshallingType is null && unsupportedRefOutMarshallingType is null; CancellationTokenParameterName = cancellationTokenParameterName; DeclaringNamespace = declaringNamespace; Location = location; }
+        public MethodModel(
+            string name,
+            string returnType,
+            string typeParameterList,
+            string parameterList,
+            string constraintClauses,
+            ImmutableArray<string> outParameters,
+            ImmutableArray<string> parameterNames,
+            ImmutableArray<ParameterModel> parameters,
+            bool hasOpcMethodAttribute,
+            bool hasRefOrOutParameter,
+            bool generateMultiOutRecord,
+            TaskReturnKind taskReturnKind,
+            string? taskResultType,
+            string? taskResultMarshallingType,
+            bool taskResultIsOpcInterface,
+            string? unsupportedMarshallingType,
+            string? unsupportedRefOutMarshallingType,
+            UnsupportedMarshallingKind unsupportedMarshallingKind,
+            string? unsupportedParameterName,
+            string? unsupportedSignatureReason,
+            string? cancellationTokenParameterName,
+            string? declaringNamespace,
+            Location location)
+        {
+            Name = name;
+            ReturnType = returnType;
+            TypeParameterList = typeParameterList;
+            ParameterList = parameterList;
+            ConstraintClauses = constraintClauses;
+            OutParameters = outParameters;
+            ParameterNames = parameterNames;
+            Parameters = parameters;
+            HasOpcMethodAttribute = hasOpcMethodAttribute;
+            HasRefOrOutParameter = hasRefOrOutParameter;
+            GenerateMultiOutRecord = generateMultiOutRecord;
+            TaskReturnKind = taskReturnKind;
+            TaskResultType = taskResultType;
+            TaskResultMarshallingType = taskResultMarshallingType;
+            TaskResultIsOpcInterface = taskResultIsOpcInterface;
+            UnsupportedMarshallingType = unsupportedMarshallingType;
+            UnsupportedRefOutMarshallingType = unsupportedRefOutMarshallingType;
+            UnsupportedMarshallingKind = unsupportedMarshallingKind;
+            UnsupportedParameterName = unsupportedParameterName;
+            UnsupportedSignatureReason = unsupportedSignatureReason;
+            IsFullyMarshallable = taskReturnKind != TaskReturnKind.Unsupported && unsupportedMarshallingType is null && unsupportedRefOutMarshallingType is null;
+            CancellationTokenParameterName = cancellationTokenParameterName;
+            DeclaringNamespace = declaringNamespace;
+            Location = location;
+        }
+
         public string Name { get; }
         public string ReturnType { get; }
         public string TypeParameterList { get; }
@@ -1319,6 +1495,9 @@ namespace Opc.Classic.Generators
         public bool TaskResultIsOpcInterface { get; }
         public string? UnsupportedMarshallingType { get; }
         public string? UnsupportedRefOutMarshallingType { get; }
+        public UnsupportedMarshallingKind UnsupportedMarshallingKind { get; }
+        public string? UnsupportedParameterName { get; }
+        public string? UnsupportedSignatureReason { get; }
         public bool IsFullyMarshallable { get; }
         public string? CancellationTokenParameterName { get; }
         public string? DeclaringNamespace { get; }
