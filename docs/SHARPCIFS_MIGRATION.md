@@ -84,3 +84,9 @@ Remaining SharpCifs migration sub-phases are queued as N7.3-N7.5:
 1. **Phase 2D.3:** Replace `SharpCifs.Smb` credential usage.
 2. **Phase 2D.4:** Vendor or replace `SharpCifs.Ntlmssp` message/flag types.
 3. **Phase 2D.5:** Replace or vendor the remaining `SharpCifs.Dcerpc.Ndr` surface, then remove the package reference once no `SharpCifs.*` usage remains.
+
+## Phase 2D.3 / N7.3 — `NtlmPasswordAuthentication` replacement done
+
+N7.3 removed the `SharpCifs.Smb.NtlmPasswordAuthentication` credential carrier from `src/OpcClassic.Dcom` and replaced it with `System.Net.NetworkCredential`. The constructor parameter order was corrected from SharpCifs `(domain, user, password)` to BCL `(userName, password, domain)`, and accessors now use `Domain`, `UserName`, and `Password`.
+
+Remaining `SharpCifs.Smb` imports are for named-pipe SMB transport types such as `SmbException` and `SmbNamedPipe`; those are outside N7.3. Phase 2D.4 / N7.4 is next and will vendor or replace the `SharpCifs.Ntlmssp` `Type1Message`, `Type2Message`, `Type3Message`, and `NtlmFlags` types under `OpcClassic.Dcom/Common/Ntlm/`.

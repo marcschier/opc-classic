@@ -10,12 +10,12 @@
 namespace SharpInterop.Rpc.Auth.ntlm {
     using OpcClassic.Dcom.Internal;
     using SharpCifs.Ntlmssp;
-    using SharpCifs.Smb;
     using System;
     using System.Buffers.Binary;
     using SharpCifs;
     using SharpCifs.Util.Sharpen;
     using System.IO;
+    using System.Net;
     using System.Security;
     using System.Security.Cryptography;
 
@@ -81,7 +81,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     "Use explicit username/password NTLMv2 credentials, or wait for " +
                     "Kerberos/SPNEGO support in OpcClassic.Dcom.Kerberos (Phase 3D).");
             }
-            _credentials = new NtlmPasswordAuthentication(domain, user, password);
+            _credentials = new NetworkCredential(user, password, domain);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     "NTLM SSO is unsupported on net10; use Kerberos via Phase 3D.");
             }
             var flags = DefaultFlags;
-            return new Type1Message(flags, _credentials.GetDomain(), Type1Message.GetDefaultWorkstation());
+            return new Type1Message(flags, _credentials.Domain, Type1Message.GetDefaultWorkstation());
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             var challenge = (byte[])kDefaultServerChallenge.Clone();
             _serverChallenge = challenge;
             var type2Message = new Type2Message(flags, challenge,
-                _credentials.GetDomain()); // generate our own, since SMB will throw exception here
+                _credentials.Domain); // generate our own, since SMB will throw exception here
             return type2Message;
         }
 
@@ -150,7 +150,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 string target = null; // getTargetFromTargetInformation(type2.GetTargetInformation());
 
                 if (target == null) {
-                    target = _credentials.GetDomain().ToUpper();
+                    target = _credentials.Domain.ToUpperInvariant();
                     if (target.Equals("")) {
                         target = GetTargetFromTargetInformation(type2.GetTargetInformation());
                     }
@@ -161,14 +161,14 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     kRandomGen.NextBytes(clientNonce);
                     try {
                         var lmv2Response = Responses.GetLMv2Response(target,
-                            _credentials.GetUsername(), _credentials.GetPassword(), type2.GetChallenge(), clientNonce);
+                            _credentials.UserName, _credentials.Password, type2.GetChallenge(), clientNonce);
                         var retval = Responses.GetNTLMv2Response(target,
-                            _credentials.GetUsername(), _credentials.GetPassword(), type2.GetTargetInformation(),
+                            _credentials.UserName, _credentials.Password, type2.GetTargetInformation(),
                             type2.GetChallenge(), clientNonce);
                         var ntlmv2Response = retval[0];
                         blob = retval[1];
                         type3 = new Type3Message(flags, lmv2Response, ntlmv2Response,
-                            target, _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
+                            target, _credentials.UserName, Type3Message.GetDefaultWorkstation());
                     }
                     catch (Exception e) {
                         throw new Exception("Exception occured while forming NTLMv2 Type3Response", e);
@@ -189,24 +189,22 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                         Array.Copy(clientNonce, 0, lmResponse, 0, clientNonce.Length);
                         byte[] ntResponse;
                         try {
-                            ntResponse = Responses.GetNTLM2SessionResponse(_credentials.GetPassword(), challenge, clientNonce);
+                            ntResponse = Responses.GetNTLM2SessionResponse(_credentials.Password, challenge, clientNonce);
                         }
                         catch (Exception e) {
                             throw new Exception("Exception occured while forming Session Security Type3Response", e);
                         }
 
                         type3 = new Type3Message(flags, lmResponse, ntResponse, target,
-                            _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
+                            _credentials.UserName, Type3Message.GetDefaultWorkstation());
                     }
                     else // Plain NTLMv1 response
                     {
                         var challenge = type2.GetChallenge();
-                        var lmResponse = NtlmPasswordAuthentication
-                            .GetPreNtlmResponse(_credentials.GetPassword(), challenge);
-                        var ntResponse = NtlmPasswordAuthentication
-                            .GetNtlmResponse(_credentials.GetPassword(), challenge);
+                        var lmResponse = Responses.GetLMResponse(_credentials.Password, challenge);
+                        var ntResponse = Responses.GetNTLMResponse(_credentials.Password, challenge);
                         type3 = new Type3Message(flags, lmResponse, ntResponse, target,
-                            _credentials.GetUsername(), Type3Message.GetDefaultWorkstation());
+                            _credentials.UserName, Type3Message.GetDefaultWorkstation());
                         if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != 0) {
                             throw new Exception("Key Exchange not supported by Library !");
                         }
@@ -220,7 +218,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     if (_useNtlmV2) {
                         try {
                             userSessionKey = ntlmKeyFactory
-                                .GetNTLMv2UserSessionKey(target, _credentials.GetUsername(), _credentials.GetPassword(), type2.GetChallenge(), blob);
+                                .GetNTLMv2UserSessionKey(target, _credentials.UserName, _credentials.Password, type2.GetChallenge(), blob);
                         }
                         catch (Exception e) {
                             throw new Exception("Exception occured while forming NTLMv2 with NTLM2 Session Security for Type3Response", e);
@@ -234,7 +232,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                         Array.Copy(clientNonce, 0, servernonce, 8, clientNonce.Length);
                         try {
                             userSessionKey = ntlmKeyFactory
-                                .GetNTLM2SessionResponseUserSessionKey(_credentials.GetPassword(), servernonce);
+                                .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
                         }
                         catch (Exception e) {
                             throw new Exception("Exception occured while forming Session Security for Type3Response", e);
@@ -417,7 +415,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 Array.Copy(type3Message.GetLMResponse(), 0, servernonce, 8, 8);
                 try {
                     sessionResponseUserSessionKey = ntlmKeyFactory
-                        .GetNTLM2SessionResponseUserSessionKey(_credentials.GetPassword(), servernonce);
+                        .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
                 }
                 catch (Exception e) {
                     throw new Exception("Exception occured while forming Session Security from Type3 AUTH", e);
@@ -451,9 +449,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             var temp = new byte[ntResponse.Length - ntProofStr.Length];
             Array.Copy(ntResponse, ntProofStr.Length, temp, 0, temp.Length);
 
-            var target = type3Message.GetDomain() ?? _credentials.GetDomain();
-            var user = type3Message.GetUser() ?? _credentials.GetUsername();
-            var ntowfv2 = Responses.Ntlmv2Hash(target, user, _credentials.GetPassword());
+            var target = type3Message.GetDomain() ?? _credentials.Domain;
+            var user = type3Message.GetUser() ?? _credentials.UserName;
+            var ntowfv2 = Responses.Ntlmv2Hash(target, user, _credentials.Password);
             var challengeAndTemp = new byte[_serverChallenge.Length + temp.Length];
             Array.Copy(_serverChallenge, 0, challengeAndTemp, 0, _serverChallenge.Length);
             Array.Copy(temp, 0, challengeAndTemp, _serverChallenge.Length, temp.Length);
@@ -486,7 +484,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             return value == null ? defaultValue : Convert.ToBoolean(value);
         }
 
-        private readonly NtlmPasswordAuthentication _credentials;
+        private readonly NetworkCredential _credentials;
         //  private AuthenticationSource _authenticationSource;
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly PropertyBag _properties;

@@ -96,7 +96,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <exception cref="UnsupportedEncodingException"> </exception>
         /// <exception cref="SecurityUtilityException"> </exception>
         private byte[] GetNTLMUserSessionKey(string password) {
-            // look at NTLMPasswordAuthentication in SharpCifs. It supports only
+            // The old SharpCifs credential helper supported only
             // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
             //         byte key[] = new byte[16];
             var ntlmHash = Responses.NtlmHash(password);
