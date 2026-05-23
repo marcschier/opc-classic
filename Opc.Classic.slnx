@@ -44,5 +44,6 @@
     <Project Path="samples/Opc.Classic.Samples.CttServer/Opc.Classic.Samples.CttServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.DaServer/Opc.Classic.Samples.DaServer.csproj" />
     <Project Path="samples/Opc.Classic.Samples.HdaServer/Opc.Classic.Samples.HdaServer.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.HdaClient/Opc.Classic.Samples.HdaClient.csproj" />
   </Folder>
 </Solution>
