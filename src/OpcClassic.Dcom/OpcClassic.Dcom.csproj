@@ -48,6 +48,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\OpcClassic.Hosting\OpcClassic.Hosting.csproj" />
+        <ProjectReference Include="..\OpcClassic.Dcom.Kerberos\OpcClassic.Dcom.Kerberos.csproj" />
     </ItemGroup>
 
   <ItemGroup>

@@ -15,7 +15,7 @@ namespace OpcClassic.Dcom.Kerberos;
 /// <summary>
 /// Owns the per-connection Kerberos authentication handshake state.
 /// </summary>
-public sealed class KerberosConnectionContext
+public sealed class KerberosConnectionContext : IKerberosConnectionContext
 {
     private const byte GssInitialContextTokenTag = 0x60;
     private const byte GssApRepTokenId0 = 0x02;
@@ -43,9 +43,29 @@ public sealed class KerberosConnectionContext
     /// </summary>
     /// <param name="cancellationToken">Cancellation token for the future KDC request flow.</param>
     /// <returns>The AP-REQ token bytes.</returns>
-    public async Task<byte[]> AcquireApRequestAsync(CancellationToken cancellationToken = default)
+    public Task<byte[]> AcquireApRequestAsync(CancellationToken cancellationToken = default) =>
+        AcquireApRequestAsync(channelBindingsHash: null, cancellationToken);
+
+    /// <summary>
+    /// Acquires an AP-REQ token for the configured SPN with an optional Phase 3F channel-bindings hash.
+    /// </summary>
+    /// <param name="channelBindingsHash">
+    /// Optional Phase 3F channel-bindings hash. Kerberos.NET does not currently expose
+    /// the AP-REQ authorization-data hook needed to embed this value as
+    /// KERB_AD_RESTRICTION_ENTRY, so this is accepted for the integration point and
+    /// deferred until that API surface is available.
+    /// </param>
+    /// <param name="cancellationToken">Cancellation token for the future KDC request flow.</param>
+    /// <returns>The AP-REQ token bytes.</returns>
+    public async Task<byte[]> AcquireApRequestAsync(
+        ReadOnlyMemory<byte>? channelBindingsHash,
+        CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
+        if (channelBindingsHash.HasValue && !channelBindingsHash.Value.IsEmpty)
+        {
+            _ = channelBindingsHash.Value;
+        }
 
         var credential = CreateCredential();
         using var client = CreateKerberosClient();

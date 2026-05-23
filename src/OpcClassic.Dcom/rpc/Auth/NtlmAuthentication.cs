@@ -8,8 +8,11 @@
 //
 
 namespace SharpInterop.Rpc.Auth.ntlm {
+    using OpcClassic;
     using OpcClassic.Dcom.Internal;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using OpcClassic.Dcom.Internal.Ntlm;
+    using OpcClassic.Dcom.Kerberos;
     using System;
     using System.Buffers.Binary;
     using SharpCifs;
@@ -82,6 +85,139 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     "Kerberos/SPNEGO support in OpcClassic.Dcom.Kerberos (Phase 3D).");
             }
             _credentials = new NetworkCredential(user, password, domain);
+        }
+
+        /// <summary>
+        /// Creates the managed authentication context selected by <see cref="OpcConnectData.AuthMode" />.
+        /// </summary>
+        /// <param name="connectData">OPC connection authentication settings.</param>
+        /// <returns>The authentication context used by DCOM bind and call PDUs.</returns>
+        public static IAuthContext CreateAuthContext(OpcConnectData connectData) {
+            ArgumentNullException.ThrowIfNull(connectData);
+
+            return connectData.AuthMode switch {
+                OpcAuthMode.Anonymous => NoOpAuthContext.Instance,
+                OpcAuthMode.Kerberos => new KerberosAuthContext(
+                    BuildKerberosAuthInfo(connectData),
+                    channelBindings: null,
+                    protectionLevel: connectData.ProtectionLevel),
+                OpcAuthMode.NtlmV2 => new NtlmAuthContext(connectData),
+                _ => throw new NotSupportedException($"Auth mode {connectData.AuthMode} not supported")
+            };
+        }
+
+        private static KerberosAuthInfo BuildKerberosAuthInfo(OpcConnectData connectData) {
+            var credentials = connectData.Credentials ?? throw new InvalidOperationException(
+                "Kerberos authentication requires credentials.");
+            var host = string.IsNullOrWhiteSpace(connectData.Url.Host) ? "localhost" : connectData.Url.Host;
+            var realm = !string.IsNullOrWhiteSpace(credentials.Domain)
+                ? credentials.Domain.ToUpperInvariant()
+                : ExtractRealm(credentials.UserName) ?? host.ToUpperInvariant();
+
+            return new KerberosAuthInfo(
+                realm,
+                "RPCSS/" + host,
+                credentials.UserName,
+                string.IsNullOrWhiteSpace(credentials.Domain) ? null : credentials.Domain,
+                credentials.Password,
+                keytabPath: null);
+        }
+
+        private static string ExtractRealm(string userName) {
+            var separator = userName.LastIndexOf('@');
+            return separator > 0 && separator < userName.Length - 1
+                ? userName[(separator + 1)..].ToUpperInvariant()
+                : null;
+        }
+
+        private static PropertyBag CreateNtlmProperties(OpcConnectData connectData) {
+            var credentials = connectData.Credentials ?? throw new InvalidOperationException(
+                "NTLM authentication requires credentials.");
+            var properties = new PropertyBag();
+            var sign = connectData.ProtectionLevel >= OpcProtectionLevel.Integrity;
+            var seal = connectData.ProtectionLevel >= OpcProtectionLevel.Privacy;
+
+            properties.SetProperty("rpc.ntlm.lanManagerKey", "false");
+            properties.SetProperty("rpc.ntlm.sign", sign.ToString());
+            properties.SetProperty("rpc.ntlm.seal", seal.ToString());
+            properties.SetProperty("rpc.ntlm.keyExchange", sign.ToString());
+            properties.SetProperty("rpc.ntlm.keyLength", "128");
+            properties.SetProperty("rpc.ntlm.ntlm2", "true");
+            properties.SetProperty("rpc.ntlm.ntlmv2", "true");
+            properties.SetProperty("rpc.ntlm.allowV1", "false");
+            properties.SetProperty("rpc.ntlm.sso", "false");
+            properties.SetProperty("rpc.ntlm.domain", credentials.Domain);
+            properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, credentials.UserName);
+            properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, credentials.Password);
+            return properties;
+        }
+
+        private sealed class NtlmAuthContext : IAuthContext {
+            private readonly NtlmAuthentication _authentication;
+
+            public NtlmAuthContext(OpcConnectData connectData) {
+                ArgumentNullException.ThrowIfNull(connectData);
+                _authentication = new NtlmAuthentication(CreateNtlmProperties(connectData));
+                ProtectionLevel = connectData.ProtectionLevel;
+            }
+
+            public OpcProtectionLevel ProtectionLevel { get; }
+
+            public byte[] BuildInitialToken() => _authentication.CreateType1().ToByteArray();
+
+            public byte[] ProcessChallengeToken(ReadOnlyMemory<byte> serverToken) {
+                var type2 = new Type2Message(serverToken.ToArray());
+                return _authentication.CreateType3(type2).ToByteArray();
+            }
+
+            public void SignAndSeal(Span<byte> pduBody, out byte[] signature) {
+                if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+                    signature = [];
+                    return;
+                }
+
+                var security = EstablishedSecurity;
+                var buffer = new byte[pduBody.Length + security.VerifierLength];
+                pduBody.CopyTo(buffer.AsSpan());
+                var ndr = CreateNdrCodec(buffer);
+                security.ProcessOutgoing(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
+                buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
+                signature = buffer.AsSpan(pduBody.Length, security.VerifierLength).ToArray();
+            }
+
+            public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature) {
+                if (ProtectionLevel < OpcProtectionLevel.Integrity) {
+                    return signature.IsEmpty;
+                }
+
+                var security = EstablishedSecurity;
+                if (signature.Length != security.VerifierLength) {
+                    return false;
+                }
+
+                var buffer = new byte[pduBody.Length + security.VerifierLength];
+                pduBody.CopyTo(buffer.AsSpan());
+                signature.Span.CopyTo(buffer.AsSpan(pduBody.Length));
+                var ndr = CreateNdrCodec(buffer);
+                try {
+                    security.ProcessIncoming(ndr, 0, pduBody.Length, pduBody.Length, isFragmented: false);
+                }
+                catch (IntegrityException) {
+                    return false;
+                }
+
+                buffer.AsSpan(0, pduBody.Length).CopyTo(pduBody);
+                return true;
+            }
+
+            private ISecurity EstablishedSecurity => _authentication.Security ?? throw new InvalidOperationException(
+                "NTLM session security is not established until ProcessChallengeToken completes.");
+
+            private static NdrCodec CreateNdrCodec(byte[] buffer) {
+                var ndrBuffer = new NdrBuffer(buffer, 0);
+                ndrBuffer.SetLength(buffer.Length);
+                return new NdrCodec { Buffer = ndrBuffer, Format = NdrFormat.DEFAULT_FORMAT };
+            }
         }
 
         /// <summary>
