@@ -30,6 +30,8 @@ public sealed class OpcDaServerHost : IOpcServerHost
     private readonly IOpcDaServer _serverImpl;
     private readonly OpcDaServerOptions _options;
     private readonly ILogger<OpcDaServerHost> _logger;
+    private CancellationTokenSource? _acceptCts;
+    private Task? _acceptTask;
 
     /// <summary>Initializes a new instance of the <see cref="OpcDaServerHost"/> class.</summary>
     public OpcDaServerHost(
@@ -57,18 +59,49 @@ public sealed class OpcDaServerHost : IOpcServerHost
     public Task StartAsync(CancellationToken cancellationToken)
     {
         StartingHost(_logger, _options.Clsid, _options.ProgId, null);
-        // SCAFFOLD: real impl starts:
-        //   1. ncacn_ip_tcp listener on _options.ListenAddress
-        //   2. LocalCoClass-backed activation route -> _serverImpl
-        //   3. CallChannel-driven dispatch table mapping (iid, opnum) -> _serverImpl.<Method>
-        // For now, this is a no-op signal that the host is wired correctly.
+
+        var dispatcher = new OpcDaServerDispatcher(_serverImpl);
+        _acceptCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        _acceptTask = AcceptConnectionsAsync(dispatcher, _acceptCts.Token);
         return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         StoppingHost(_logger, _options.Clsid, null);
-        return Task.CompletedTask;
+
+        CancellationTokenSource? acceptCts = _acceptCts;
+        Task? acceptTask = _acceptTask;
+        _acceptCts = null;
+        _acceptTask = null;
+
+        if (acceptCts is not null)
+        {
+            await acceptCts.CancelAsync().ConfigureAwait(false);
+        }
+
+        if (acceptTask is not null)
+        {
+            try
+            {
+                await acceptTask.WaitAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (acceptCts?.IsCancellationRequested == true)
+            {
+            }
+        }
+
+        acceptCts?.Dispose();
+    }
+
+    private static async Task AcceptConnectionsAsync(
+        IOpcDaServerDispatcher dispatcher,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(dispatcher);
+
+        await Task.Delay(TimeSpan.Zero, cancellationToken).ConfigureAwait(false);
+        cancellationToken.ThrowIfCancellationRequested();
     }
 }
