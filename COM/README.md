@@ -2,7 +2,7 @@
 
 This folder contains the OPC Foundation's official C++ sample server
 sources for DA, AE, and HDA, preserved as the GOLD STANDARD reference
-for Phase 14B conformance testing.
+for conformance testing.
 
 ## Structure
 
@@ -77,7 +77,7 @@ AE registers `OPCSample.OPCEventServer.1` and
 `{65168852-5783-11D1-84A0-00608CB8A7E9}` explicitly in
 `Sample Server/Ae/OPCEventServer.rgs` and `OpcAeServer.cpp`.
 
-## Phase 14B test connection
+## Test connection
 
 `tests/Opc.Classic.Integration.Tests/Native/` uses these ProgIDs and CLSIDs
 via `NativeServerProbe.ShouldSkip(progId, clsid, out reason)`. Tests soft-skip
