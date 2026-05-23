@@ -18,18 +18,44 @@
 #pragma warning disable CA1707 // OPC IDL naming preserved (IOPCSecurityNT)
 #pragma warning disable MA0048 // Two trivial interface stubs grouped for readability
 
+using System.Threading;
+using System.Threading.Tasks;
 using OpcClassic.Generators;
 
 namespace OpcClassic.Security.Dcom;
 
 /// <summary><c>IOPCSecurityNT</c> - Windows-integrated authentication (IID_IOPCSecurityNT).</summary>
 [OpcInterface("7AA83A01-6C77-11D3-84F9-00008630A38B")]
+[GenerateOpcProxy]
 public partial interface IOPCSecurityNT
 {
+    /// <summary><c>IOPCSecurityNT::IsAvailableNT</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    Task<bool> IsAvailableNTAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCSecurityNT::QueryMinImpersonationLevel</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task<int> QueryMinImpersonationLevelAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCSecurityNT::ChangeUser</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task ChangeUserAsync(CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCSecurityPrivate</c> - server-defined username/password (IID_IOPCSecurityPrivate).</summary>
 [OpcInterface("7AA83A02-6C77-11D3-84F9-00008630A38B")]
+[GenerateOpcProxy]
 public partial interface IOPCSecurityPrivate
 {
+    /// <summary><c>IOPCSecurityPrivate::IsAvailablePriv</c> (opnum 3).</summary>
+    [OpcMethod(3)]
+    Task<bool> IsAvailablePrivAsync(CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCSecurityPrivate::Logon</c> (opnum 4).</summary>
+    [OpcMethod(4)]
+    Task LogonAsync(string userId, string password, CancellationToken cancellationToken = default);
+
+    /// <summary><c>IOPCSecurityPrivate::Logoff</c> (opnum 5).</summary>
+    [OpcMethod(5)]
+    Task LogoffAsync(CancellationToken cancellationToken = default);
 }
