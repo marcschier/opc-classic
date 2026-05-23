@@ -6,6 +6,17 @@ The generated proxy body is emitted at compile time. It rents a buffer, writes r
 
 `DcomCallChannel` owns the transport side of the call. It ensures a presentation context for the interface, builds a `RequestCoPdu`, writes it to the connected transport, reads one or more response fragments, and returns an `NdrCallResult` to the generated shim.
 
+## ORPC envelope
+
+Generated proxies pass only the method payload to `ICallChannel`. The DCOM channel adds the required [MS-DCOM] ORPC envelope centrally:
+
+```text
+RequestCoPdu.Stub  = ORPC_THIS  + method request payload
+ResponseCoPdu.Stub = ORPC_THAT  + method response payload
+```
+
+`ORPC_THIS` carries COMVERSION 5.7, flags `0`, a causality GUID shared through `CausalityContext`, and a normally-null extension pointer. `ORPC_THAT` is read and stripped before the generated proxy decodes the response payload.
+
 ```mermaid
 sequenceDiagram
     autonumber

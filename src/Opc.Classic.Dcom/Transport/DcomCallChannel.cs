@@ -12,9 +12,11 @@ using System.IO.Pipelines;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Transport;
+using Opc.Classic.Dcom.Channels;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
+using Opc.Classic.Dcom.Orpc;
+using Opc.Classic.Ndr;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Core;
 using SharpInterop.Rpc;
 using SharpInterop.Rpc.Core;
 using SharpInterop.Rpc.pdu;
@@ -61,13 +63,15 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         ArgumentOutOfRangeException.ThrowIfNegative(opnum);
         cancellationToken.ThrowIfCancellationRequested();
 
+        using IDisposable causalityScope = CausalityContext.BeginCall();
         await _callLock.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
 
             int contextId = await EnsurePresentationContextAsync(interfaceId, cancellationToken).ConfigureAwait(false);
-            byte[] requestStub = BuildRequestStub(requestPayload);
+            Guid causalityId = CausalityContext.Current.Value.GetValueOrDefault();
+            byte[] requestStub = BuildRequestStub(requestPayload, causalityId);
             var request = new RequestCoPdu
             {
                 AllocationHint = requestStub.Length,
@@ -406,43 +410,25 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable
         }
     }
 
-    private static byte[] BuildRequestStub(ReadOnlyMemory<byte> requestPayload)
+    private static byte[] BuildRequestStub(ReadOnlyMemory<byte> requestPayload, Guid causalityId)
     {
-        byte[] orpcThis = EncodeOrpcThis();
-        byte[] stub = new byte[orpcThis.Length + requestPayload.Length];
-        orpcThis.CopyTo(stub, 0);
-        requestPayload.Span.CopyTo(stub.AsSpan(orpcThis.Length));
+        byte[] stub = new byte[OrpcThis.NullExtensionsWireSize + requestPayload.Length];
+        var writer = new NdrWriter(stub);
+        new OrpcThis { CausalityId = causalityId }.Write(ref writer);
+        requestPayload.Span.CopyTo(stub.AsSpan(writer.Position));
         return stub;
-    }
-
-    private static byte[] EncodeOrpcThis()
-    {
-        var ndr = new NdrCodec { Format = NdrFormat.DEFAULT_FORMAT };
-        var buffer = new NdrBuffer(new byte[128], 0);
-        ndr.Buffer = buffer;
-        new OrpcThis().Encode(ndr);
-        return buffer.Buf.AsSpan(0, buffer.Length).ToArray();
     }
 
     private static ReadOnlyMemory<byte> ExtractResponseBody(byte[] stub)
     {
         if (stub is null || stub.Length == 0)
         {
-            return ReadOnlyMemory<byte>.Empty;
+            throw new InvalidOperationException("DCOM response stub is missing the ORPC_THAT envelope.");
         }
 
-        var ndr = new NdrCodec { Format = NdrFormat.DEFAULT_FORMAT };
-        var buffer = new NdrBuffer(stub, 0) { Length = stub.Length };
-        ndr.Buffer = buffer;
-        try
-        {
-            OrpcThat.Decode(ndr);
-            return stub.AsMemory(buffer.Index).ToArray();
-        }
-        catch (Exception)
-        {
-            return stub;
-        }
+        var reader = new NdrReader(stub);
+        _ = OrpcThat.Read(ref reader);
+        return stub.AsMemory(reader.Position);
     }
 
     private static bool TryGetFragmentLength(ReadOnlySequence<byte> buffer, out int fragmentLength)
