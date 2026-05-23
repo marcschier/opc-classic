@@ -26,6 +26,9 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
     private readonly KerberosAuthInfo _info;
     private ApplicationSessionContext? _sessionContext;
 
+    /// <inheritdoc />
+    public KerberosSessionKey? EstablishedSessionKey { get; private set; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="KerberosConnectionContext" /> class.
     /// </summary>
@@ -71,6 +74,10 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
             cancellationToken).ConfigureAwait(false);
 
         _sessionContext = sessionContext;
+        EstablishedSessionKey = new KerberosSessionKey(
+            sessionContext.SessionKey.KeyValue.ToArray(),
+            sessionContext.SessionKey.EType,
+            UsesAcceptorSubkey: false);
         return sessionContext.ApReq.EncodeGssApi().ToArray();
     }
 
@@ -90,6 +97,10 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
             "AcquireApRequestAsync must complete before processing an AP-REP token.");
 
         var sessionKey = sessionContext.AuthenticateServiceResponse(applicationToken);
+        EstablishedSessionKey = new KerberosSessionKey(
+            sessionKey.KeyValue.ToArray(),
+            sessionKey.EType,
+            UsesAcceptorSubkey: !ReferenceEquals(sessionKey, sessionContext.SessionKey));
         return Task.FromResult(sessionKey.KeyValue.ToArray());
     }
 

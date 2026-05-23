@@ -8,6 +8,7 @@ using System.Formats.Asn1;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Kerberos.NET.Crypto;
 using Opc.Classic.Dcom.Kerberos.Spnego;
 using Opc.Classic.Security;
 using TUnit.Core;
@@ -48,15 +49,19 @@ public sealed class KerberosAuthContextTests
     }
 
     [Test]
-    public async Task SignAndSeal_throws_NotImplementedException_today()
+    public async Task SignAndSeal_after_context_establishment_wraps_and_verifies_pdu_body()
     {
         var context = new KerberosAuthContext(new FakeKerberosConnectionContext([0x60, 0x61, 0x62]));
+        _ = context.BuildInitialToken();
         byte[] pduBody = [0x01, 0x02, 0x03];
+        byte[] expected = pduBody.ToArray();
 
-        var thrown = CaptureException(() => context.SignAndSeal(pduBody, out _));
+        context.SignAndSeal(pduBody, out byte[] signature);
+        bool verified = context.VerifyAndUnseal(pduBody, signature);
 
-        await Assert.That(thrown is NotImplementedException).IsTrue();
-        await Assert.That(thrown!.Message).Contains("Phase 3F follow-up");
+        await Assert.That(signature.Length > 0).IsTrue();
+        await Assert.That(verified).IsTrue();
+        await Assert.That(pduBody.SequenceEqual(expected)).IsTrue();
     }
 
     [Test]
@@ -112,19 +117,6 @@ public sealed class KerberosAuthContextTests
     private static bool ContainsSubsequence(ReadOnlySpan<byte> haystack, ReadOnlySpan<byte> needle) =>
         haystack.IndexOf(needle) >= 0;
 
-    private static Exception? CaptureException(Action action)
-    {
-        try
-        {
-            action();
-            return null;
-        }
-        catch (Exception ex)
-        {
-            return ex;
-        }
-    }
-
     private sealed class FakeKerberosConnectionContext : IKerberosConnectionContext
     {
         private readonly byte[] _apRequest;
@@ -132,6 +124,10 @@ public sealed class KerberosAuthContextTests
         public FakeKerberosConnectionContext(byte[] apRequest)
         {
             _apRequest = apRequest;
+            EstablishedSessionKey = new KerberosSessionKey(
+                new byte[] { 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F },
+                EncryptionType.AES128_CTS_HMAC_SHA1_96,
+                UsesAcceptorSubkey: false);
         }
 
         public int AcquireCallCount { get; private set; }
@@ -141,6 +137,8 @@ public sealed class KerberosAuthContextTests
         public ReadOnlyMemory<byte>? LastChannelBindingsHash { get; private set; }
 
         public ReadOnlyMemory<byte> LastApReply { get; private set; }
+
+        public KerberosSessionKey? EstablishedSessionKey { get; }
 
         public Task<byte[]> AcquireApRequestAsync(
             ReadOnlyMemory<byte>? channelBindingsHash,

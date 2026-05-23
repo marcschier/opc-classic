@@ -34,4 +34,9 @@ public interface IKerberosConnectionContext
     /// <param name="cancellationToken">Cancellation token for AP-REP processing.</param>
     /// <returns>The derived session key bytes.</returns>
     Task<byte[]> ProcessApResponseAsync(ReadOnlyMemory<byte> apReply, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets the established per-message key metadata when the concrete implementation can expose it.
+    /// </summary>
+    KerberosSessionKey? EstablishedSessionKey => null;
 }

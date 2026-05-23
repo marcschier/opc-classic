@@ -15,9 +15,12 @@ namespace Opc.Classic.Dcom.Kerberos;
 /// </summary>
 public sealed class KerberosAuthContext : IAuthContext
 {
+    private const int Rfc4121WrapHeaderLength = 16;
+
     private readonly IKerberosConnectionContext _kerberosCtx;
     private readonly ChannelBindings? _channelBindings;
-    private readonly IGssMicProvider _micProvider;
+    private readonly IGssMicProvider? _micProvider;
+    private IKerberosSession? _session;
     private byte[]? _mechListBytes;
 
     /// <summary>
@@ -53,7 +56,7 @@ public sealed class KerberosAuthContext : IAuthContext
 
         _kerberosCtx = kerberosContext;
         _channelBindings = channelBindings;
-        _micProvider = micProvider ?? new KerberosMicProvider();
+        _micProvider = micProvider;
         ProtectionLevel = protectionLevel;
     }
 
@@ -72,6 +75,7 @@ public sealed class KerberosAuthContext : IAuthContext
 #pragma warning disable VSTHRD002 // IAuthContext is synchronous; Kerberos.NET ticket acquisition is async.
         var apReq = _kerberosCtx.AcquireApRequestAsync(channelBindingsHash, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
+        UpdateSessionFromEstablishedKey();
         return SpnegoTokenBuilder.BuildInitToken(apReq, out _mechListBytes);
     }
 
@@ -84,6 +88,7 @@ public sealed class KerberosAuthContext : IAuthContext
 #pragma warning disable VSTHRD002 // IAuthContext is synchronous; Kerberos.NET AP-REP processing is async.
             _ = _kerberosCtx.ProcessApResponseAsync(responseToken, CancellationToken.None).GetAwaiter().GetResult();
 #pragma warning restore VSTHRD002
+            UpdateSessionFromEstablishedKey();
         }
 
         if (resp.MechListMic.HasValue)
@@ -101,29 +106,94 @@ public sealed class KerberosAuthContext : IAuthContext
             throw new InvalidOperationException("SPNEGO mechListMIC verification requires the original NegTokenInit mechType list.");
         }
 
-        if (!response.VerifyMechListMic(_mechListBytes, _micProvider))
+        if (!response.VerifyMechListMic(_mechListBytes, GetMicProvider()))
         {
             throw new InvalidOperationException("SPNEGO mechListMIC verification failed.");
         }
     }
 
+    private IGssMicProvider GetMicProvider()
+    {
+        if (_micProvider is not null)
+        {
+            return _micProvider;
+        }
+
+        return new KerberosMicProvider(EstablishedSession);
+    }
+
+    private void UpdateSessionFromEstablishedKey()
+    {
+        if (_kerberosCtx.EstablishedSessionKey is not { } sessionKey)
+        {
+            return;
+        }
+
+        _session = new KerberosSession(
+            sessionKey.Key.Span,
+            sessionKey.EncryptionType,
+            usesAcceptorSubkey: sessionKey.UsesAcceptorSubkey);
+    }
+
+    private IKerberosSession EstablishedSession => _session ?? throw new InvalidOperationException(
+        "Kerberos packet protection is not available until the AP-REQ/AP-REP context is established.");
+
     /// <inheritdoc />
     public void SignAndSeal(Span<byte> pduBody, out byte[] signature)
     {
-        _ = pduBody;
-        signature = [];
-#pragma warning disable MA0025 // N8 scaffold intentionally documents deferred Kerberos signing.
-        throw new NotImplementedException("Phase 3F follow-up: Kerberos gss_get_mic / gss_wrap signing");
-#pragma warning restore MA0025
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
+            signature = [];
+            return;
+        }
+
+        bool confidential = ProtectionLevel >= OpcProtectionLevel.Privacy;
+        signature = EstablishedSession.WrapMessage(pduBody, confidential);
+        if (confidential)
+        {
+            signature.AsSpan(Rfc4121WrapHeaderLength, pduBody.Length).CopyTo(pduBody);
+        }
     }
 
     /// <inheritdoc />
     public bool VerifyAndUnseal(Span<byte> pduBody, ReadOnlyMemory<byte> signature)
     {
-        _ = pduBody;
-        _ = signature;
-#pragma warning disable MA0025 // N8 scaffold intentionally documents deferred Kerberos verification.
-        throw new NotImplementedException("Phase 3F follow-up: Kerberos gss_verify_mic / gss_unwrap");
-#pragma warning restore MA0025
+        if (ProtectionLevel < OpcProtectionLevel.Integrity)
+        {
+            return signature.IsEmpty;
+        }
+
+        try
+        {
+            byte[] plaintext = EstablishedSession.UnwrapMessage(signature.Span, out bool wasConfidential);
+            if (wasConfidential != (ProtectionLevel >= OpcProtectionLevel.Privacy) || plaintext.Length != pduBody.Length)
+            {
+                return false;
+            }
+
+            if (!wasConfidential && !plaintext.AsSpan().SequenceEqual(pduBody))
+            {
+                return false;
+            }
+
+            plaintext.CopyTo(pduBody);
+            return true;
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+        catch (System.Security.SecurityException)
+        {
+            return false;
+        }
+        catch (System.Security.Cryptography.CryptographicException)
+        {
+            return false;
+        }
     }
 }
