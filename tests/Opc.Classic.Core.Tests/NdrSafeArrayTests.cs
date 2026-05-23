@@ -6,6 +6,7 @@
 //
 
 using System;
+using System.IO;
 using System.Linq;
 using Opc.Classic;
 using Opc.Classic.Ndr;
@@ -146,18 +147,90 @@ public sealed class NdrSafeArrayTests
     }
 
     [Test]
-    public async Task MultiDimensional_ThrowsOnWrite()
+    public async Task TwoDimensional_Int32Array_RoundTrips()
     {
+        var input = new OpcSafeArray(
+            VarType.VT_I4,
+            new int[] { 1, 2, 3, 4, 5, 6 },
+            lengths: new[] { 2, 3 },
+            lowerBounds: new[] { 0, 1 });
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteSafeArray(input));
+        var read = ReadOne(bytes);
+        await Assert.That(read.Rank).IsEqualTo(2);
+        await Assert.That(read.Lengths[0]).IsEqualTo(2);
+        await Assert.That(read.Lengths[1]).IsEqualTo(3);
+        await Assert.That(read.LowerBounds[1]).IsEqualTo(1);
+        await Assert.That(read).IsEqualTo(input);
+    }
+
+    [Test]
+    public async Task ThreeDimensional_DoubleArray_RoundTrips()
+    {
+        var input = new OpcSafeArray(
+            VarType.VT_R8,
+            new[] { 1.0d, 2.0d, 3.0d, 4.0d, 5.0d, 6.0d, 7.0d, 8.0d },
+            lengths: new[] { 2, 2, 2 },
+            lowerBounds: new[] { 0, -1, 4 });
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteSafeArray(input));
+        var read = ReadOne(bytes);
+        await Assert.That(read.Rank).IsEqualTo(3);
+        await Assert.That(read.LowerBounds[1]).IsEqualTo(-1);
+        await Assert.That(read).IsEqualTo(input);
+    }
+
+    [Test]
+    public async Task FeatureFlags_ArePreserved()
+    {
+        var input = new OpcSafeArray(
+            VarType.VT_BSTR,
+            new string?[] { "A", "B" },
+            features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Bstr | SafeArrayFeatures.FixedSize);
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteSafeArray(input));
+        var read = ReadOne(bytes);
+        await Assert.That(read.Features).IsEqualTo(SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Bstr | SafeArrayFeatures.FixedSize);
+        await Assert.That(read).IsEqualTo(input);
+    }
+
+    [Test]
+    public async Task Reader_RejectsTooManyDimensions()
+    {
+        var bytes = new byte[4];
+        BitConverter.GetBytes((ushort)257).CopyTo(bytes, 0);
         bool threw = false;
         try
         {
-            var input = new OpcSafeArray(
-                VarType.VT_I4,
-                new int[] { 1, 2, 3, 4 },
-                lengths: new[] { 2, 2 });
-            WriteOne((ref NdrWriter w) => w.WriteSafeArray(input));
+            _ = ReadOne(bytes);
         }
-        catch (InvalidOperationException)
+        catch (InvalidDataException)
+        {
+            threw = true;
+        }
+        await Assert.That(threw).IsTrue();
+    }
+
+    [Test]
+    public async Task Reader_RejectsPayloadLargerThanTwoGiB()
+    {
+        const uint elementCount = 536_870_913u;
+        var bytes = WriteOne((ref NdrWriter w) =>
+        {
+            w.WriteUInt16(1);
+            w.WriteUInt16((ushort)SafeArrayFeatures.HaveVartype);
+            w.WriteUInt32(4);
+            w.WriteUInt32(0);
+            w.WriteUInt32(elementCount);
+            w.WriteUInt16((ushort)VarType.VT_I4);
+            w.WriteUInt16(0);
+            w.WriteUInt32(elementCount);
+            w.WriteInt32(0);
+        });
+
+        bool threw = false;
+        try
+        {
+            _ = ReadOne(bytes);
+        }
+        catch (InvalidDataException)
         {
             threw = true;
         }

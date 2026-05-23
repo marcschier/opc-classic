@@ -6,6 +6,7 @@
 //
 
 using System;
+using System.IO;
 using Opc.Classic;
 using Opc.Classic.Ndr;
 using TUnit.Core;
@@ -262,6 +263,115 @@ public sealed class NdrVariantTests
         bool threw = false;
         try { ReadOne(bytes); }
         catch (System.IO.InvalidDataException) { threw = true; }
+        await Assert.That(threw).IsTrue();
+    }
+
+    [Test]
+    public async Task ByRef_Int32_RoundTrips()
+    {
+        var input = OpcVariant.FromByRef(VarType.VT_I4, 123456);
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(input));
+        var read = ReadOne(bytes);
+        await Assert.That(read.Type).IsEqualTo((VarType)((ushort)VarType.VT_I4 | (ushort)VarType.VT_BYREF));
+        await Assert.That((int?)read.Boxed).IsEqualTo(123456);
+    }
+
+    [Test]
+    public async Task ByRef_Double_RoundTrips()
+    {
+        var input = OpcVariant.FromByRef(VarType.VT_R8, 123.25d);
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(input));
+        var read = ReadOne(bytes);
+        await Assert.That(read.Type).IsEqualTo((VarType)((ushort)VarType.VT_R8 | (ushort)VarType.VT_BYREF));
+        await Assert.That((double?)read.Boxed).IsEqualTo(123.25d);
+    }
+
+    [Test]
+    public async Task ByRef_Bstr_RoundTrips()
+    {
+        var input = OpcVariant.FromByRef(VarType.VT_BSTR, "byref-text");
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(input), capacity: 256);
+        var read = ReadOne(bytes);
+        await Assert.That(read.Type).IsEqualTo((VarType)((ushort)VarType.VT_BSTR | (ushort)VarType.VT_BYREF));
+        await Assert.That((string?)read.Boxed).IsEqualTo("byref-text");
+    }
+
+    [Test]
+    public async Task ByRef_Variant_RoundTrips()
+    {
+        var nested = OpcVariant.FromString("nested");
+        var input = OpcVariant.FromByRef(VarType.VT_VARIANT, nested);
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(input), capacity: 256);
+        var read = ReadOne(bytes);
+        await Assert.That(read.Type).IsEqualTo((VarType)((ushort)VarType.VT_VARIANT | (ushort)VarType.VT_BYREF));
+        await Assert.That(read.AsVariant()).IsEqualTo(nested);
+    }
+
+    [Test]
+    public async Task VariantArray_WithMixedNestedValues_RoundTrips()
+    {
+        var array = OpcSafeArray.OfVariant(new[]
+        {
+            OpcVariant.FromInt32(7),
+            OpcVariant.FromString("tag"),
+            OpcVariant.FromDouble(2.5d),
+        });
+        var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.FromSafeArray(array)), capacity: 512);
+        OpcSafeArray? readArray = ReadOne(bytes).AsSafeArray();
+        var values = (OpcVariant[])readArray!.Data;
+        await Assert.That(readArray.Features).IsEqualTo(SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Variant);
+        await Assert.That(values[0].AsInt32()).IsEqualTo(7);
+        await Assert.That(values[1].AsString()).IsEqualTo("tag");
+        await Assert.That(values[2].AsDouble()).IsEqualTo(2.5d);
+    }
+
+    [Test]
+    public async Task Record_WithRegisteredRecordInfo_RoundTrips()
+    {
+        var info = new OpcRecordInfo(
+            new Guid("6D88A608-407A-4F1F-A8F0-AE2B10BBA875"),
+            "SampleRecord",
+            new[]
+            {
+                new OpcRecordField("Id", VarType.VT_I4),
+                new OpcRecordField("Name", VarType.VT_BSTR),
+                new OpcRecordField("Value", VarType.VT_R8),
+            });
+        RecordInfoRegistry.Register(info);
+        try
+        {
+            var record = new OpcRecordValue(info, new object?[] { 42, "Pump", 9.75d });
+            var bytes = WriteOne((ref NdrWriter w) => w.WriteVariant(OpcVariant.FromRecord(record)), capacity: 512);
+            OpcRecordValue? read = ReadOne(bytes).AsRecord();
+            await Assert.That(read).IsEqualTo(record);
+            await Assert.That((int?)read!.Values[0]).IsEqualTo(42);
+            await Assert.That((string?)read.Values[1]).IsEqualTo("Pump");
+            await Assert.That((double?)read.Values[2]).IsEqualTo(9.75d);
+        }
+        finally
+        {
+            _ = RecordInfoRegistry.Unregister(info.Id);
+        }
+    }
+
+    [Test]
+    public async Task VariantNesting_BeyondLimit_Throws()
+    {
+        OpcVariant value = OpcVariant.FromInt32(1);
+        for (int i = 0; i <= NdrVariantExtensions.MaxVariantRecursionDepth; i++)
+        {
+            value = OpcVariant.FromVariant(value);
+        }
+
+        bool threw = false;
+        try
+        {
+            _ = WriteOne((ref NdrWriter w) => w.WriteVariant(value), capacity: 4096);
+        }
+        catch (InvalidDataException)
+        {
+            threw = true;
+        }
         await Assert.That(threw).IsTrue();
     }
 }

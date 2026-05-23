@@ -149,4 +149,22 @@ public sealed class OpcSafeArrayTests
         var b = OpcSafeArray.OfDouble(new[] { 1.0, 2.0, 3.0 });
         await Assert.That(a.GetHashCode()).IsEqualTo(b.GetHashCode());
     }
+
+    [Test]
+    public async Task Constructor_RejectsMismatchedFeatureFlags()
+    {
+        bool threw = false;
+        try
+        {
+            _ = new OpcSafeArray(
+                VarType.VT_I4,
+                new int[] { 1 },
+                features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Bstr);
+        }
+        catch (ArgumentException)
+        {
+            threw = true;
+        }
+        await Assert.That(threw).IsTrue();
+    }
 }

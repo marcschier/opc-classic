@@ -31,18 +31,40 @@ public sealed record OpcSafeArray
     /// <param name="data">The element data as a 1-D array. For multi-dimensional logical shapes, callers row-major-pack into a 1-D array sized as the product of <paramref name="lengths"/>.</param>
     /// <param name="lengths">Per-dimension element counts. <see langword="null"/> defaults to a single dimension of <c>data.Length</c>.</param>
     /// <param name="lowerBounds">Per-dimension lower bounds. <see langword="null"/> defaults to zero per dimension.</param>
-    public OpcSafeArray(VarType elementType, Array data, int[]? lengths = null, int[]? lowerBounds = null)
+    /// <param name="features">SAFEARRAY FADF_* descriptor flags to preserve on the wire.</param>
+    public OpcSafeArray(
+        VarType elementType,
+        Array data,
+        int[]? lengths = null,
+        int[]? lowerBounds = null,
+        SafeArrayFeatures features = SafeArrayFeatures.HaveVartype)
     {
         ArgumentNullException.ThrowIfNull(data);
 
         ElementType = elementType;
         Data = data;
+        Features = features;
         Lengths = lengths is null
             ? new[] { data.Length }
             : (int[])lengths.Clone();
         LowerBounds = lowerBounds is null
             ? new int[Lengths.Length]
             : (int[])lowerBounds.Clone();
+
+        if (Lengths.Length == 0)
+        {
+            throw new ArgumentException("SAFEARRAY rank must be at least 1.", nameof(lengths));
+        }
+        if (Lengths.Length > 256)
+        {
+            throw new ArgumentOutOfRangeException(nameof(lengths), Lengths.Length, "SAFEARRAY rank must not exceed 256.");
+        }
+        if (VarTypeMask.IsArray(elementType) || VarTypeMask.IsByRef(elementType))
+        {
+            throw new ArgumentException("SAFEARRAY element type must not include VT_ARRAY or VT_BYREF modifiers.", nameof(elementType));
+        }
+
+        ValidateFeatures(elementType, features);
 
         if (Lengths.Length != LowerBounds.Length)
         {
@@ -79,6 +101,9 @@ public sealed record OpcSafeArray
     /// <summary>Per-dimension lower bounds (typically all zero).</summary>
     public int[] LowerBounds { get; }
 
+    /// <summary>SAFEARRAY FADF_* descriptor flags preserved on encode/decode.</summary>
+    public SafeArrayFeatures Features { get; }
+
     /// <summary>The element data as a 1-D array (row-major for multi-dimensional logical shapes).</summary>
     public Array Data { get; }
 
@@ -114,6 +139,38 @@ public sealed record OpcSafeArray
     /// <summary>Creates a 1-D VT_BOOL SAFEARRAY from a managed bool[].</summary>
     public static OpcSafeArray OfBoolean(bool[] values) => new(VarType.VT_BOOL, values);
 
+    /// <summary>Creates a 1-D VT_VARIANT SAFEARRAY from managed variants.</summary>
+    public static OpcSafeArray OfVariant(OpcVariant[] values) =>
+        new(VarType.VT_VARIANT, values, features: SafeArrayFeatures.HaveVartype | SafeArrayFeatures.Variant);
+
+    private static void ValidateFeatures(VarType elementType, SafeArrayFeatures features)
+    {
+        if ((features & SafeArrayFeatures.Variant) != SafeArrayFeatures.None && elementType != VarType.VT_VARIANT)
+        {
+            throw new ArgumentException("FADF_VARIANT requires VT_VARIANT elements.", nameof(features));
+        }
+        if ((features & SafeArrayFeatures.Bstr) != SafeArrayFeatures.None && elementType != VarType.VT_BSTR)
+        {
+            throw new ArgumentException("FADF_BSTR requires VT_BSTR elements.", nameof(features));
+        }
+        if ((features & SafeArrayFeatures.Record) != SafeArrayFeatures.None && elementType != VarType.VT_RECORD)
+        {
+            throw new ArgumentException("FADF_RECORD requires VT_RECORD elements.", nameof(features));
+        }
+        if ((features & SafeArrayFeatures.Unknown) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN)
+        {
+            throw new ArgumentException("FADF_UNKNOWN requires VT_UNKNOWN elements.", nameof(features));
+        }
+        if ((features & SafeArrayFeatures.Dispatch) != SafeArrayFeatures.None && elementType != VarType.VT_DISPATCH)
+        {
+            throw new ArgumentException("FADF_DISPATCH requires VT_DISPATCH elements.", nameof(features));
+        }
+        if ((features & SafeArrayFeatures.HaveIID) != SafeArrayFeatures.None && elementType != VarType.VT_UNKNOWN && elementType != VarType.VT_DISPATCH)
+        {
+            throw new ArgumentException("FADF_HAVEIID requires VT_UNKNOWN or VT_DISPATCH elements.", nameof(features));
+        }
+    }
+
     /// <inheritdoc />
     public bool Equals(OpcSafeArray? other)
     {
@@ -125,7 +182,7 @@ public sealed record OpcSafeArray
         {
             return true;
         }
-        if (ElementType != other.ElementType)
+        if (ElementType != other.ElementType || Features != other.Features)
         {
             return false;
         }
@@ -165,6 +222,7 @@ public sealed record OpcSafeArray
     {
         var hc = new HashCode();
         hc.Add(ElementType);
+        hc.Add(Features);
         hc.Add(Data.Length);
         for (int i = 0; i < Lengths.Length; i++)
         {

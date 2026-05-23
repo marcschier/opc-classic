@@ -95,6 +95,20 @@ public readonly record struct OpcVariant
     /// <summary>Creates a VT_CLSID variant.</summary>
     public static OpcVariant FromClsid(Guid v) => new(VarType.VT_CLSID, v);
 
+    /// <summary>Creates a VT_VARIANT variant that carries another VARIANT.</summary>
+    public static OpcVariant FromVariant(OpcVariant v) => new(VarType.VT_VARIANT, v);
+
+    /// <summary>Creates a VT_BYREF variant for the supplied base VARTYPE.</summary>
+    public static OpcVariant FromByRef(VarType baseType, object? boxed) =>
+        new((VarType)(((ushort)baseType & ~(ushort)VarType.VT_BYREF) | (ushort)VarType.VT_BYREF), boxed);
+
+    /// <summary>Creates a VT_RECORD variant for a registered record layout.</summary>
+    public static OpcVariant FromRecord(OpcRecordValue record)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        return new OpcVariant(VarType.VT_RECORD, record);
+    }
+
     /// <summary>
     /// Creates an array variant: the VARTYPE carries the VT_ARRAY modifier
     /// OR'd with the SAFEARRAY's element type, and the boxed value is the
@@ -157,6 +171,15 @@ public readonly record struct OpcVariant
 
     /// <summary>Returns the GUID if <see cref="Type"/> is <see cref="VarType.VT_CLSID"/>, else null.</summary>
     public Guid? AsClsid() => Type == VarType.VT_CLSID ? (Guid?)Boxed : null;
+
+    /// <summary>Returns the nested VARIANT when the base type is <see cref="VarType.VT_VARIANT"/>.</summary>
+    public OpcVariant? AsVariant() => VarTypeMask.BaseOf(Type) == VarType.VT_VARIANT ? (OpcVariant?)Boxed : null;
+
+    /// <summary>Returns the record value when the base type is <see cref="VarType.VT_RECORD"/>.</summary>
+    public OpcRecordValue? AsRecord() => VarTypeMask.BaseOf(Type) == VarType.VT_RECORD ? Boxed as OpcRecordValue : null;
+
+    /// <summary>Returns the referenced value if this variant carries the VT_BYREF modifier.</summary>
+    public object? AsByRefValue() => VarTypeMask.IsByRef(Type) ? Boxed : null;
 
     /// <summary>
     /// Returns the carried <see cref="OpcSafeArray"/> if this variant carries
