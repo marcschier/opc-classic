@@ -12,9 +12,9 @@ namespace SharpInterop.Core {
     using SharpInterop.Rpc.Core;
     using OpcClassic.Dcom.Internal;
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util;
     using SharpCifs.Util.Sharpen;
     using System;
+    using System.Buffers.Binary;
     using System.Collections.Generic;
 
     /// <summary>
@@ -609,14 +609,14 @@ namespace SharpInterop.Core {
                     value = long.MinValue;
                 }
                 ndr.Buffer.Align(8); // needed?
-                Encdec.Enc_uint64le((long)value, ndr.Buffer.Buf, ndr.Buffer.Index);
+                BinaryPrimitives.WriteInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(long)), (long)value);
                 ndr.Buffer.Advance(8);
             }
 
             /// <inheritdoc/>
             public object DeserializeData(NdrCodec ndr, CodecContext context) {
                 ndr.Buffer.Align(8);// needed?
-                var b = Encdec.Dec_uint64le(ndr.Buffer.Buf, ndr.Buffer.Index);
+                var b = BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(long)));
                 ndr.Buffer.Advance(8);
                 return b;
             }
@@ -634,14 +634,14 @@ namespace SharpInterop.Core {
                     value = double.NaN;
                 }
                 ndr.Buffer.Align(8);
-                Encdec.Enc_doublele((double)value, ndr.Buffer.Buf, ndr.Buffer.Index);
+                BinaryPrimitives.WriteInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)), BitConverter.DoubleToInt64Bits((double)value));
                 ndr.Buffer.Advance(8);
             }
 
             /// <inheritdoc/>
             public object DeserializeData(NdrCodec ndr, CodecContext context) {
                 ndr.Buffer.Align(8);
-                var b = Encdec.Dec_doublele(ndr.Buffer.Buf, ndr.Buffer.Index);
+                var b = BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double))));
                 ndr.Buffer.Advance(8);
                 return b;
             }
@@ -722,7 +722,7 @@ namespace SharpInterop.Core {
             /// <inheritdoc/>
             public void SerializeData(NdrCodec ndr, object value, CodecContext context) {
                 ndr.Buffer.Align(8);
-                Encdec.Enc_doublele(((DateTime)value).ToOADate(), ndr.Buffer.Buf, ndr.Buffer.Index);
+                BinaryPrimitives.WriteInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)), BitConverter.DoubleToInt64Bits(((DateTime)value).ToOADate()));
                 ndr.Buffer.Advance(8);
 
             }
@@ -730,7 +730,7 @@ namespace SharpInterop.Core {
             /// <inheritdoc/>
             public object DeserializeData(NdrCodec ndr, CodecContext context) {
                 ndr.Buffer.Align(8);
-                var b = DateTime.FromOADate(Encdec.Dec_doublele(ndr.Buffer.Buf, ndr.Buffer.Index));
+                var b = DateTime.FromOADate(BitConverter.Int64BitsToDouble(BinaryPrimitives.ReadInt64LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(double)))));
                 ndr.Buffer.Advance(8);
                 return b;
             }
@@ -748,14 +748,14 @@ namespace SharpInterop.Core {
                     value = float.NaN;
                 }
                 ndr.Buffer.Align(4);
-                Encdec.Enc_floatle((float)value, ndr.Buffer.Buf, ndr.Buffer.Index);
+                BinaryPrimitives.WriteInt32LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(float)), BitConverter.SingleToInt32Bits((float)value));
                 ndr.Buffer.Advance(4);
             }
 
             /// <inheritdoc/>
             public object DeserializeData(NdrCodec ndr, CodecContext context) {
                 ndr.Buffer.Align(4);
-                var b = Encdec.Dec_floatle(ndr.Buffer.Buf, ndr.Buffer.Index);
+                var b = BitConverter.Int32BitsToSingle(BinaryPrimitives.ReadInt32LittleEndian(ndr.Buffer.Buf.AsSpan(ndr.Buffer.Index, sizeof(float))));
                 ndr.Buffer.Advance(4);
                 return b;
             }

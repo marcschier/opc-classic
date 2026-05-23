@@ -4,9 +4,6 @@
 
 namespace System {
 
-    using SharpCifs.Util;
-    using System.IO;
-
     /// <summary>
     /// Utils
     /// </summary>
@@ -19,11 +16,6 @@ namespace System {
         /// <param name="start"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string HexString(byte[] buffer, int start, int length) {
-            using (var writer = new StringWriter()) {
-                Hexdump.ToHexdump(writer, buffer, start, length);
-                return writer.ToString();
-            }
-        }
+        public static string HexString(byte[] buffer, int start, int length) => Convert.ToHexString(buffer, start, length);
     }
 }

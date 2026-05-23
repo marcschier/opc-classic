@@ -74,3 +74,13 @@ The rollout is intentionally staged:
 3. Move connection-oriented RPC framing to consume `PipeReader` / `PipeWriter` directly, then bridge or replace legacy `IEndpoint.Call` with async call flow and `ICallChannel` integration.
 4. Convert server socket-accept loops from dedicated threads to hosted services that iterate `await foreach` over `AcceptConnectionsAsync` and dispatch accepted transports through channel-style workers.
 5. Retire the legacy `SharpInterop.Rpc.ITransport` surface after all client activation, call, callback, and subscription paths use the async contracts. OPC DA subscriptions already expose pushed changes as `IAsyncEnumerable`, so the transport refactor can align connection handling with that consumer pattern.
+
+## Phase 2D.2 — SharpCifs.Util replacement done
+
+N7.2 removed the remaining direct `SharpCifs.Util` helper usage from `src/OpcClassic.Dcom`. Hex formatting now uses `Convert.ToHexString`, HMAC-MD5 uses `System.Security.Cryptography.HMACMD5`, and little-endian primitive reads/writes use `System.Buffers.Binary.BinaryPrimitives` plus `BitConverter` for floating-point bit conversion.
+
+Remaining SharpCifs migration sub-phases are queued as N7.3-N7.5:
+
+1. **Phase 2D.3:** Replace `SharpCifs.Smb` credential usage.
+2. **Phase 2D.4:** Vendor or replace `SharpCifs.Ntlmssp` message/flag types.
+3. **Phase 2D.5:** Replace or vendor the remaining `SharpCifs.Dcerpc.Ndr` surface, then remove the package reference once no `SharpCifs.*` usage remains.

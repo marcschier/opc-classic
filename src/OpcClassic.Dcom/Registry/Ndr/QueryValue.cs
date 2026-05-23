@@ -10,8 +10,8 @@
 namespace SharpInterop.Registry {
     using SharpInterop.Common;
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util;
     using System;
+    using System.Buffers.Binary;
 
     /// <inheritdoc/>
     public class QueryValue : NdrOp {
@@ -119,7 +119,7 @@ namespace SharpInterop.Registry {
                 case RegValueType.REG_DWORD:
                     i = ndr.ReadUnsignedLong();
                     var value = ndr.ReadUnsignedLong();
-                    Encdec.Enc_uint32le(value, retval, 0);
+                    BinaryPrimitives.WriteInt32LittleEndian(retval, value);
                     break;
                 case RegValueType.REG_NONE:
                 case RegValueType.REG_BINARY:

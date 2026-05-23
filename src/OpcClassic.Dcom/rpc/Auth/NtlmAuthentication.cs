@@ -11,8 +11,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using OpcClassic.Dcom.Internal;
     using SharpCifs.Ntlmssp;
     using SharpCifs.Smb;
-    using SharpCifs.Util;
     using System;
+    using System.Buffers.Binary;
     using SharpCifs;
     using SharpCifs.Util.Sharpen;
     using System.IO;
@@ -354,11 +354,11 @@ namespace SharpInterop.Rpc.Auth.ntlm {
 
             var i = 0;
             while (i < targetInformation.Length) {
-                switch (Encdec.Dec_uint16le(targetInformation, i)) {
+                switch (BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.AsSpan(i, sizeof(ushort)))) {
                     case 1: // Server name
                         i++;
                         i++; // advance two bytes
-                        int length = Encdec.Dec_uint16le(targetInformation, i);
+                        int length = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.AsSpan(i, sizeof(ushort)));
                         i++;
                         i++; // advance two bytes
                         var domainb = new byte[length];
@@ -375,7 +375,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     default: // skip bytes
                         i++;
                         i++; // advance two bytes
-                        length = Encdec.Dec_uint16le(targetInformation, i);
+                        length = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.AsSpan(i, sizeof(ushort)));
                         i++;
                         i++; // advance two bytes
                         i += length;

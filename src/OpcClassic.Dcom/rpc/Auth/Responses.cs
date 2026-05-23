@@ -3,8 +3,8 @@
 
 namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpInterop.Crypto;
-    using SharpCifs.Util;
     using System;
+    using System.Security.Cryptography;
     using System.Text;
 
     /// <summary>
@@ -269,8 +269,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <returns> The HMAC-MD5 hash of the given data. </returns>
         internal static byte[] HmacMD5(byte[] data, byte[] key) {
 
-            var hmac = new Hmact64(key);
-            return hmac.Digest(data);
+            using var hmac = new HMACMD5(key);
+            return hmac.ComputeHash(data);
 
             //  var ipad = new byte[64];
             //  var opad = new byte[64];
