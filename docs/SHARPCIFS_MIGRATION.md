@@ -85,8 +85,20 @@ Remaining SharpCifs migration sub-phases are queued as N7.3-N7.5:
 2. **Phase 2D.4:** Vendor or replace `SharpCifs.Ntlmssp` message/flag types.
 3. **Phase 2D.5:** Replace or vendor the remaining `SharpCifs.Dcerpc.Ndr` surface, then remove the package reference once no `SharpCifs.*` usage remains.
 
+## N1.1 — DcomCallChannel landed
+
+N1.1 adds `OpcClassic.Dcom.Transport.DcomCallChannel`, the first `ICallChannel` implementation built directly on `IAsyncTransport`. It performs the async DCE/RPC bind handshake, maps the first invoked IID to a presentation context, emits `RequestCoPdu` frames with an `ORPCTHIS` prefix, reads `ResponseCoPdu` / `FaultCoPdu` replies, and reassembles fragmented responses before returning `NdrCallResult` to generated shims.
+
+The new public auth contract lives in `OpcClassic.IAuthContext`, with `NoOpAuthContext` available for unauthenticated tests and loopback scenarios. Downstream `OpcProxyGenerator`-emitted shims can now be wired by obtaining an `ICallChannel` from `DcomCallChannelFactory.ConnectAsync(endpoint, clsid, authContext, ct)` and passing their NDR request payloads to `InvokeAsync(iid, opnum, payload, ct)`. Non-empty auth tokens and packet verifiers are carried through the PDU auth trailer; production NTLM/Kerberos contexts fill in the concrete signing/sealing behavior in the follow-up auth integration work.
+
 ## Phase 2D.3 / N7.3 — `NtlmPasswordAuthentication` replacement done
 
 N7.3 removed the `SharpCifs.Smb.NtlmPasswordAuthentication` credential carrier from `src/OpcClassic.Dcom` and replaced it with `System.Net.NetworkCredential`. The constructor parameter order was corrected from SharpCifs `(domain, user, password)` to BCL `(userName, password, domain)`, and accessors now use `Domain`, `UserName`, and `Password`.
 
 Remaining `SharpCifs.Smb` imports are for named-pipe SMB transport types such as `SmbException` and `SmbNamedPipe`; those are outside N7.3. Phase 2D.4 / N7.4 is next and will vendor or replace the `SharpCifs.Ntlmssp` `Type1Message`, `Type2Message`, `Type3Message`, and `NtlmFlags` types under `OpcClassic.Dcom/Common/Ntlm/`.
+
+## Phase 2D.4 / N7.4 — `SharpCifs.Ntlmssp` forwarding shim
+
+N7.4 introduced `OpcClassic.Dcom.Internal.Ntlm` in `src/OpcClassic.Dcom/Common/Ntlm/`. The DCOM auth call sites now depend on local `NtlmFlags`, `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message` types instead of importing `SharpCifs.Ntlmssp` directly.
+
+This is intentionally a type-forwarding step: the local wrappers still delegate parsing and serialization to `SharpCifs.Std` internally so Type1/Type2/Type3 wire bytes stay unchanged. Full self-contained MS-NLMP serialization replaces those internals in the N7.4 follow-up, and the `SharpCifs.Std` package reference is removed only after the Dcerpc/NDR migration is complete.

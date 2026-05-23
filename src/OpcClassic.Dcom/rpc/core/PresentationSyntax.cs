@@ -9,7 +9,8 @@
 
 namespace SharpInterop.Rpc.Core {
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Util.Sharpen;
+    using System;
+    using System.Globalization;
 
     /// <summary>
     /// Presentation syntax
@@ -47,11 +48,22 @@ namespace SharpInterop.Rpc.Core {
         /// </summary>
         /// <param name="syntax"></param>
         public PresentationSyntax(string syntax) : this() {
-            var tokenizer = new StringTokenizer(syntax, ":.");
-            Uuid = new UUID();
-            Uuid.Parse(tokenizer.NextToken());
-            Version = (int.Parse(tokenizer.NextToken()) & 0xffff) |
-                (int.Parse(tokenizer.NextToken()) << 16);
+            ArgumentNullException.ThrowIfNull(syntax);
+
+            var versionSeparator = syntax.LastIndexOf(':');
+            if (versionSeparator < 0 || versionSeparator == syntax.Length - 1) {
+                throw new FormatException("Presentation syntax must include a version suffix.");
+            }
+
+            var version = syntax[(versionSeparator + 1)..];
+            var minorSeparator = version.IndexOf('.');
+            if (minorSeparator < 0 || minorSeparator == version.Length - 1) {
+                throw new FormatException("Presentation syntax version must be major.minor.");
+            }
+
+            Uuid = new UUID(syntax[..versionSeparator]);
+            Version = (int.Parse(version[..minorSeparator], CultureInfo.InvariantCulture) & 0xffff) |
+                (int.Parse(version[(minorSeparator + 1)..], CultureInfo.InvariantCulture) << 16);
         }
 
         /// <summary>
