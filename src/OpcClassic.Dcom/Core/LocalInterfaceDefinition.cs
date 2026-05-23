@@ -39,6 +39,11 @@ namespace SharpInterop.Core {
         /// </summary>
         internal Type Type { get; set; }
 
+        /// <summary>
+        /// Optional source-generated dispatch table for this interface.
+        /// </summary>
+        internal IDispatchTable DispatchTable { get; set; }
+
 #pragma warning disable RECS0154 // Parameter is never used
         /// <summary>
         /// Creates an Interface definition. By default, the

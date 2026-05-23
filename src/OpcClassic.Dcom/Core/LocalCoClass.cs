@@ -303,6 +303,22 @@ namespace SharpInterop.Core {
             _mapOfIIDsToInterfaceDefinitions.GetOrDefault(IID.ToUpper());
 
         /// <summary>
+        /// Registers a generated dispatch table for an IID.
+        /// </summary>
+        internal void AddDispatchTable(string IID, IDispatchTable dispatchTable) {
+            if (IID == null || dispatchTable == null) {
+                throw new ArgumentException(Interop.GetLocalizedMessage(
+                    ErrorCode.INTEROP_COM_RUNTIME_INVALID_CONTAINER_INFO));
+            }
+
+            var key = IID.ToUpper();
+            _mapOfIIDsToDispatchTables.AddOrUpdate(key, dispatchTable);
+            if (_mapOfIIDsToInterfaceDefinitions.TryGetValue(key, out var interfaceDefinition)) {
+                interfaceDefinition.DispatchTable = dispatchTable;
+            }
+        }
+
+        /// <summary>
         /// Iid present
         /// </summary>
         /// <param name="iid"></param>
@@ -519,32 +535,19 @@ namespace SharpInterop.Core {
             }
 
             if (execute) {
-                var calleeType = interfaceDefinitionOfClass.Instance == null ?
-                    interfaceDefinitionOfClass.Type : interfaceDefinitionOfClass.Instance.GetType();
                 try {
                     Log.Logger.Information("methodDescriptor: " + methodDescriptor.MethodName);
 
-                    // Call through the dispatch table seam; the default table still uses reflection.
-                    var method = calleeType.GetRuntimeMethod(methodDescriptor.MethodName,
-                        methodDescriptor.InparametersAsType);
-
-                    if (method == null) {
-                        throw new MissingMethodException(calleeType.FullName, methodDescriptor.MethodName);
-                    }
-
-                    var calleeInstance = interfaceDefinitionOfClass.Instance ??
-                        Activator.CreateInstance(calleeType);
                     var dispatchIid = new Guid(iid);
-                    var dispatchTable = new ReflectionDispatchTable(calleeInstance,
-                        new[] { (dispatchIid, methodDescriptor.MethodNum, method) });
-
-                    if (!dispatchTable.TryGetDispatcher(dispatchIid, methodDescriptor.MethodNum,
-                        out var dispatcher)) {
+                    if (!TryGetDispatcher(interfaceDefinitionOfClass, dispatchIid, methodDescriptor,
+                        out var dispatcher, out var calleeInstance)) {
+                        var calleeType = interfaceDefinitionOfClass.Instance == null ?
+                            interfaceDefinitionOfClass.Type : interfaceDefinitionOfClass.Instance.GetType();
                         throw new MissingMethodException(calleeType.FullName, methodDescriptor.MethodName);
                     }
 
-                    Log.Logger.Information("Call Back Method to be executed: " + method +
-                        ", to be executed on " + calleeInstance);
+                    Log.Logger.Information("Call Back Method to be executed: " +
+                        methodDescriptor.MethodName + ", to be executed on " + calleeInstance);
                     var result = dispatcher(parameters);
                     if (result == null) {
                         retVal = null;
@@ -587,6 +590,54 @@ namespace SharpInterop.Core {
             return (object[])retVal;
         }
 
+        private bool TryGetDispatcher(LocalInterfaceDefinition interfaceDefinition, Guid iid,
+            LocalMethodDescriptor methodDescriptor, out Func<object[], object?> dispatcher,
+            out object calleeInstance) {
+            var key = iid.ToString().ToUpper();
+            if (_mapOfIIDsToDispatchTables.TryGetValue(key, out var dispatchTable) &&
+                dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher)) {
+                calleeInstance = interfaceDefinition.Instance;
+                return true;
+            }
+
+            dispatchTable = interfaceDefinition.DispatchTable;
+            if (dispatchTable != null &&
+                dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher)) {
+                calleeInstance = interfaceDefinition.Instance;
+                return true;
+            }
+
+            // TODO N1.2-followup: replace this legacy reflection fallback with generated
+            // IDispatchTable registrations for every LocalInterfaceDefinition.
+            return TryCreateLegacyReflectionDispatcher(interfaceDefinition, iid, methodDescriptor,
+                out dispatcher, out calleeInstance);
+        }
+
+        private static bool TryCreateLegacyReflectionDispatcher(LocalInterfaceDefinition interfaceDefinition,
+            Guid iid, LocalMethodDescriptor methodDescriptor, out Func<object[], object?> dispatcher,
+            out object calleeInstance) {
+            var calleeType = interfaceDefinition.Instance == null ?
+                interfaceDefinition.Type : interfaceDefinition.Instance.GetType();
+            if (calleeType == null) {
+                dispatcher = null;
+                calleeInstance = null;
+                return false;
+            }
+
+            var method = calleeType.GetRuntimeMethod(methodDescriptor.MethodName,
+                methodDescriptor.InparametersAsType);
+            if (method == null) {
+                dispatcher = null;
+                calleeInstance = null;
+                return false;
+            }
+
+            calleeInstance = interfaceDefinition.Instance ?? Activator.CreateInstance(calleeType);
+            var dispatchTable = new ReflectionDispatchTable(calleeInstance,
+                new[] { (iid, methodDescriptor.MethodNum, method) });
+            return dispatchTable.TryGetDispatcher(iid, methodDescriptor.MethodNum, out dispatcher);
+        }
+
         /// <inheritdoc/>
         public override bool Equals(object obj) {
             if (!(obj is LocalCoClass other)) {
@@ -604,6 +655,8 @@ namespace SharpInterop.Core {
         private readonly List<string> _listOfSupportedEventInterfaces = new List<string>();
         private readonly Dictionary<string, LocalInterfaceDefinition> _mapOfIIDsToInterfaceDefinitions = 
             new Dictionary<string, LocalInterfaceDefinition>();
+        private readonly Dictionary<string, IDispatchTable> _mapOfIIDsToDispatchTables =
+            new Dictionary<string, IDispatchTable>();
         // will use this to identify which IID is being talked about
         // if it is IDispatch then delegate to it's invoke.
         private readonly Dictionary<string, string> _ipidVsIID = new Dictionary<string, string>();

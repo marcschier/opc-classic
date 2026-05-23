@@ -35,6 +35,8 @@ namespace SharpInterop.Core {
         /// </summary>
         public static ComOxidRuntime Instance {
             get {
+                // TODO N1.2-followup: register ComOxidRuntime as an IServiceProvider singleton
+                // and retire this legacy global mutable accessor.
                 lock (typeof(ComOxidRuntime)) {
                     if (_instance == null) {
                         try {
@@ -100,6 +102,8 @@ namespace SharpInterop.Core {
                 if (_resolverStarted) {
                     return;
                 }
+                // TODO N1.2-followup: route the OXID socket listener through
+                // ComOxidRuntimeAcceptService after the legacy Socket transport has an IAsyncEndpoint adapter.
                 _thread = new OxidResolverThread(this, "jI_OxidResolver");
                 _thread.SetDaemon(true);
                 _thread.Start();

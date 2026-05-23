@@ -35,7 +35,8 @@ internal sealed class ReflectionDispatchTable : IDispatchTable
     {
         if (_methods.TryGetValue((iid, opnum), out var method))
         {
-            // Per-call closure; source-generated tables can replace this with a hand-written delegate.
+            // TODO N1.2-followup: remove this MethodInfo.Invoke fallback once all LocalCoClass
+            // registrations are source-generated IDispatchTable delegates.
             dispatcher = args => method.Invoke(_target, args);
             return true;
         }

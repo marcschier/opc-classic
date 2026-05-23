@@ -204,6 +204,7 @@ namespace SharpInterop.Core {
                     // should cover all the rest cases.
                     ctor = typeof(Variant).GetConstructor(new Type[] { c, typeof(bool) });
                 }
+                // TODO N1.2-followup: replace reflective Variant construction with a generated factory table.
                 return (Variant)ctor.Invoke(new object[] { o, Convert.ToBoolean(isByRef) });
             }
             catch (Exception e) {

@@ -113,6 +113,7 @@ namespace SharpInterop.Core {
             }
         }
 
+        // TODO N1.2-followup: replace ThreadGroup with an async RemUnknown listener lease.
         private ThreadGroup _remUnknownThread;
 #pragma warning disable IDE0052 // Remove unread private members
         private readonly InterfacePointer _ptr;

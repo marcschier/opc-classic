@@ -74,6 +74,8 @@ namespace SharpInterop.Core {
             var remUnknownPort = serverSocket.GetLocalPort();
             // have to pick up a random name so adding the ipid of
             // remunknown this is a uuid so the string is quite random.
+            // TODO N1.2-followup: replace ThreadGroup-scoped RemUnknown lifetime with
+            // an IAsyncDisposable lease owned by ComOxidRuntimeAcceptService workers.
             remUnknownForThisListener =
                 new ThreadGroup("ThreadGroup - " + baseIID + "[" + ipidOfRemUnknown + "]");
             var remUnknownThread = new RemUnknownListenerThread(this, baseIID,
