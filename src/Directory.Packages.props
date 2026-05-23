@@ -50,12 +50,11 @@
   <!--
     Phase 2E complete: BouncyCastle is eliminated. MD4 + RC4 are hand-rolled
     in src/OpcClassic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
-    transitional shim Crypto/BcCompat.cs. Phase 2D will remove SharpCifs.Std.
-    Phase 2G will remove Serilog (replaced by Microsoft.Extensions.Logging).
+    transitional shim Crypto/BcCompat.cs. Phase 2D complete: LGPL transitional
+    package removed. Phase 2G complete: Serilog package references removed.
   -->
-  <ItemGroup Label="TRANSITIONAL — removed by Phase 2D / 2G">
+  <ItemGroup Label="Historical transitional package versions">
     <PackageVersion Include="Serilog" Version="2.8.0" />
-    <PackageVersion Include="SharpCifs.Std" Version="0.2.13" />
   </ItemGroup>
 
 </Project>

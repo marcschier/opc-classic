@@ -1,145 +1,290 @@
 // SPDX-License-Identifier: EPL-1.0
 
+using System;
+using System.Buffers.Binary;
+using System.Text;
+using SharpInterop.Rpc.Auth.ntlm;
+
 namespace OpcClassic.Dcom.Internal.Ntlm;
 
 public sealed class Type3Message : NtlmMessage
 {
+    private byte[]? _version;
+    private byte[]? _mic;
+
     public Type3Message()
-        : base(new SharpCifs.Ntlmssp.Type3Message())
     {
+        Flags = GetDefaultFlags();
+        Domain = GetDefaultDomain();
+        User = GetDefaultUser();
+        Workstation = GetDefaultWorkstation();
+        LmResponse = Array.Empty<byte>();
+        NtResponse = Array.Empty<byte>();
+        EncryptedRandomSessionKey = Array.Empty<byte>();
     }
 
-    public Type3Message(byte[] raw)
-        : base(new SharpCifs.Ntlmssp.Type3Message(raw))
-    {
-    }
+    public Type3Message(byte[] raw) => Parse(raw);
 
     public Type3Message(NtlmFlags flags, byte[] lmResponse, byte[] ntResponse,
         string domain, string user, string workstation)
-        : base(new SharpCifs.Ntlmssp.Type3Message(ToInt32(flags), lmResponse, ntResponse,
-            domain, user, workstation))
     {
+        Flags = flags;
+        LmResponse = CloneOrEmpty(lmResponse);
+        NtResponse = CloneOrEmpty(ntResponse);
+        Domain = domain;
+        User = user;
+        Workstation = workstation;
+        EncryptedRandomSessionKey = Array.Empty<byte>();
     }
 
     public Type3Message(int flags, byte[] lmResponse, byte[] ntResponse,
         string domain, string user, string workstation)
-        : base(new SharpCifs.Ntlmssp.Type3Message(flags, lmResponse, ntResponse,
-            domain, user, workstation))
+        : this(FromInt32(flags), lmResponse, ntResponse, domain, user, workstation)
     {
     }
 
     public Type3Message(Type2Message type2Message)
-        : base(new SharpCifs.Ntlmssp.Type3Message(type2Message.InnerMessage))
+        : this(GetDefaultFlags(type2Message), Array.Empty<byte>(), Array.Empty<byte>(),
+            type2Message?.GetTarget() ?? GetDefaultDomain(), GetDefaultUser(), GetDefaultWorkstation())
     {
     }
 
     public Type3Message(Type2Message type2Message, string password, string domain,
         string user, string workstation, NtlmFlags flags)
-        : base(new SharpCifs.Ntlmssp.Type3Message(type2Message.InnerMessage, password,
-            domain, user, workstation, ToInt32(flags)))
+        : this(flags, GetLMResponse(type2Message, password), GetNTResponse(type2Message, password),
+            domain, user, workstation)
     {
     }
 
     public Type3Message(Type2Message type2Message, string password, string domain,
         string user, string workstation, int flags)
-        : base(new SharpCifs.Ntlmssp.Type3Message(type2Message.InnerMessage, password,
-            domain, user, workstation, flags))
-    {
-    }
-
-    internal Type3Message(SharpCifs.Ntlmssp.Type3Message inner)
-        : base(inner)
+        : this(type2Message, password, domain, user, workstation, FromInt32(flags))
     {
     }
 
     public override int MessageType => 3;
 
-    public string Domain
+    public byte[]? LmResponse { get; set; }
+
+    public byte[]? NtResponse { get; set; }
+
+    public string? Domain { get; set; }
+
+    public string? User { get; set; }
+
+    public string? Username
     {
-        get => InnerMessage.GetDomain();
-        set => InnerMessage.SetDomain(value);
+        get => User;
+        set => User = value;
     }
 
-    public string User
-    {
-        get => InnerMessage.GetUser();
-        set => InnerMessage.SetUser(value);
-    }
+    public string? Workstation { get; set; }
 
-    public string Workstation
-    {
-        get => InnerMessage.GetWorkstation();
-        set => InnerMessage.SetWorkstation(value);
-    }
+    public byte[]? EncryptedRandomSessionKey { get; set; }
 
-    public static string GetDefaultDomain() => SharpCifs.Ntlmssp.Type3Message.GetDefaultDomain();
+    public static string GetDefaultDomain() => string.Empty;
 
-    public static NtlmFlags GetDefaultFlags() => FromInt32(SharpCifs.Ntlmssp.Type3Message.GetDefaultFlags());
+    public static NtlmFlags GetDefaultFlags() =>
+        NtlmFlags.NtlmsspNegotiateUnicode | NtlmFlags.NtlmsspNegotiateNtlm;
 
     public static NtlmFlags GetDefaultFlags(Type2Message type2Message) =>
-        FromInt32(SharpCifs.Ntlmssp.Type3Message.GetDefaultFlags(type2Message.InnerMessage));
+        type2Message?.GetFlags() ?? GetDefaultFlags();
 
-    public static string GetDefaultPassword() => SharpCifs.Ntlmssp.Type3Message.GetDefaultPassword();
+    public static string GetDefaultPassword() => string.Empty;
 
-    public static string GetDefaultUser() => SharpCifs.Ntlmssp.Type3Message.GetDefaultUser();
+    public static string GetDefaultUser() => string.Empty;
 
-    public static string GetDefaultWorkstation() => SharpCifs.Ntlmssp.Type3Message.GetDefaultWorkstation();
+    public static string GetDefaultWorkstation() => Environment.MachineName;
 
-    public static byte[] GetLMResponse(Type2Message type2Message, string password) =>
-        SharpCifs.Ntlmssp.Type3Message.GetLMResponse(type2Message.InnerMessage, password);
-
-    public static byte[] GetLMv2Response(Type2Message type2Message, string domain,
-        string user, string password, byte[] clientChallenge) =>
-        SharpCifs.Ntlmssp.Type3Message.GetLMv2Response(type2Message.InnerMessage,
-            domain, user, password, clientChallenge);
-
-    public static byte[] GetNtlMv2Response(Type2Message type2Message, byte[] responseKeyNT,
-        byte[] clientChallenge) =>
-        SharpCifs.Ntlmssp.Type3Message.GetNtlMv2Response(type2Message.InnerMessage,
-            responseKeyNT, clientChallenge);
-
-    public static byte[] GetNTResponse(Type2Message type2Message, string password) =>
-        SharpCifs.Ntlmssp.Type3Message.GetNTResponse(type2Message.InnerMessage, password);
-
-    public string GetDomain() => InnerMessage.GetDomain();
-
-    public byte[] GetLMResponse() => InnerMessage.GetLMResponse();
-
-    public byte[] GetMasterKey() => InnerMessage.GetMasterKey();
-
-    public byte[] GetNTResponse() => InnerMessage.GetNTResponse();
-
-    public byte[] GetSessionKey() => InnerMessage.GetSessionKey();
-
-    public string GetUser() => InnerMessage.GetUser();
-
-    public string GetWorkstation() => InnerMessage.GetWorkstation();
-
-    public void SetDomain(string domain) => InnerMessage.SetDomain(domain);
-
-    public void SetLmResponse(byte[] lmResponse) => InnerMessage.SetLmResponse(lmResponse);
-
-    public void SetNtResponse(byte[] ntResponse) => InnerMessage.SetNtResponse(ntResponse);
-
-    public void SetSessionKey(byte[] sessionKey) => InnerMessage.SetSessionKey(sessionKey);
-
-    public void SetUser(string user) => InnerMessage.SetUser(user);
-
-    public void SetWorkstation(string workstation) => InnerMessage.SetWorkstation(workstation);
-
-    public override string ToString() => InnerMessage.ToString();
-
-    public static implicit operator SharpCifs.Ntlmssp.Type3Message(Type3Message message) => message.InnerMessage;
-
-    internal static Type3Message FromObject(object message)
+    public static byte[] GetLMResponse(Type2Message type2Message, string password)
     {
-        return message switch
-        {
-            Type3Message wrapper => wrapper,
-            SharpCifs.Ntlmssp.Type3Message inner => new Type3Message(inner),
-            _ => throw new System.ArgumentException("Expected an NTLM Type3 message.", nameof(message)),
-        };
+        ArgumentNullException.ThrowIfNull(type2Message);
+        return Responses.GetLMResponse(password, type2Message.GetChallenge());
     }
 
-    internal SharpCifs.Ntlmssp.Type3Message InnerMessage => (SharpCifs.Ntlmssp.Type3Message)Inner;
+    public static byte[] GetLMv2Response(Type2Message type2Message, string domain,
+        string user, string password, byte[] clientChallenge)
+    {
+        ArgumentNullException.ThrowIfNull(type2Message);
+        return Responses.GetLMv2Response(domain, user, password, type2Message.GetChallenge(), clientChallenge);
+    }
+
+    public static byte[] GetNtlMv2Response(Type2Message type2Message, byte[] responseKeyNT,
+        byte[] clientChallenge)
+    {
+        ArgumentNullException.ThrowIfNull(type2Message);
+        ArgumentNullException.ThrowIfNull(responseKeyNT);
+        ArgumentNullException.ThrowIfNull(clientChallenge);
+
+        var blob = Responses.CreateBlob(type2Message.GetTargetInformation(), clientChallenge);
+        var challenge = type2Message.GetChallenge();
+        var proofInput = new byte[challenge.Length + blob.Length];
+        Array.Copy(challenge, 0, proofInput, 0, challenge.Length);
+        Array.Copy(blob, 0, proofInput, challenge.Length, blob.Length);
+        var proof = Responses.HmacMD5(proofInput, responseKeyNT);
+        var response = new byte[proof.Length + blob.Length];
+        Array.Copy(proof, 0, response, 0, proof.Length);
+        Array.Copy(blob, 0, response, proof.Length, blob.Length);
+        return response;
+    }
+
+    public static byte[] GetNTResponse(Type2Message type2Message, string password)
+    {
+        ArgumentNullException.ThrowIfNull(type2Message);
+        return Responses.GetNTLMResponse(password, type2Message.GetChallenge());
+    }
+
+    public string? GetDomain() => Domain;
+
+    public byte[] GetLMResponse() => CloneOrEmpty(LmResponse);
+
+    public byte[] GetMasterKey() => CloneOrEmpty(EncryptedRandomSessionKey);
+
+    public byte[] GetNTResponse() => CloneOrEmpty(NtResponse);
+
+    public byte[] GetSessionKey() => CloneOrEmpty(EncryptedRandomSessionKey);
+
+    public string? GetUser() => User;
+
+    public string? GetWorkstation() => Workstation;
+
+    public void SetDomain(string domain) => Domain = domain;
+
+    public void SetLmResponse(byte[] lmResponse) => LmResponse = CloneOrEmpty(lmResponse);
+
+    public void SetNtResponse(byte[] ntResponse) => NtResponse = CloneOrEmpty(ntResponse);
+
+    public void SetSessionKey(byte[] sessionKey) => EncryptedRandomSessionKey = CloneOrEmpty(sessionKey);
+
+    public void SetUser(string user) => User = user;
+
+    public void SetWorkstation(string workstation) => Workstation = workstation;
+
+    public override byte[] ToByteArray()
+    {
+        var encoding = StringEncoding(Flags);
+        var lmResponse = LmResponse ?? Array.Empty<byte>();
+        var ntResponse = NtResponse ?? Array.Empty<byte>();
+        var domainBytes = string.IsNullOrEmpty(Domain) ? Array.Empty<byte>() : encoding.GetBytes(Domain);
+        var userBytes = string.IsNullOrEmpty(User) ? Array.Empty<byte>() : encoding.GetBytes(User);
+        var workstationBytes = string.IsNullOrEmpty(Workstation) ? Array.Empty<byte>() : encoding.GetBytes(Workstation);
+        var sessionKey = EncryptedRandomSessionKey ?? Array.Empty<byte>();
+        var includeMic = _mic is { Length: 16 };
+        var includeVersion = (Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 || includeMic;
+        var headerSize = 64 + (includeVersion ? 8 : 0) + (includeMic ? 16 : 0);
+
+        var buffer = new byte[headerSize + lmResponse.Length + ntResponse.Length + domainBytes.Length +
+            userBytes.Length + workstationBytes.Length + sessionKey.Length];
+        var span = buffer.AsSpan();
+        var offset = headerSize;
+
+        WriteHeader(span, MessageType);
+        WritePayloadFields(span.Slice(12, 8), lmResponse, ref offset);
+        WritePayloadFields(span.Slice(20, 8), ntResponse, ref offset);
+        WritePayloadFields(span.Slice(28, 8), domainBytes, ref offset);
+        WritePayloadFields(span.Slice(36, 8), userBytes, ref offset);
+        WritePayloadFields(span.Slice(44, 8), workstationBytes, ref offset);
+        WritePayloadFields(span.Slice(52, 8), sessionKey, ref offset);
+        BinaryPrimitives.WriteUInt32LittleEndian(span.Slice(60, 4), (uint)Flags);
+        if (includeVersion)
+        {
+            (_version ?? Array.Empty<byte>()).AsSpan(0, Math.Min(_version?.Length ?? 0, 8)).CopyTo(span.Slice(64, 8));
+        }
+        if (includeMic)
+        {
+            _mic!.CopyTo(span.Slice(72, 16));
+        }
+
+        offset = headerSize;
+        CopyPayload(lmResponse, span, ref offset);
+        CopyPayload(ntResponse, span, ref offset);
+        CopyPayload(domainBytes, span, ref offset);
+        CopyPayload(userBytes, span, ref offset);
+        CopyPayload(workstationBytes, span, ref offset);
+        CopyPayload(sessionKey, span, ref offset);
+        return buffer;
+    }
+
+    public override string ToString() =>
+        $"Type3Message[Flags=0x{(uint)Flags:X8}, Domain={Domain}, User={User}, Workstation={Workstation}]";
+
+    internal static Type3Message FromObject(object message) =>
+        message switch
+        {
+            Type3Message wrapper => wrapper,
+            _ => throw new ArgumentException("Expected an NTLM Type3 message.", nameof(message)),
+        };
+
+    private void Parse(byte[] raw)
+    {
+        ArgumentNullException.ThrowIfNull(raw);
+        var span = raw.AsSpan();
+        if (ReadMessageType(span) != MessageType)
+        {
+            throw new ArgumentException("Not a Type 3 message.", nameof(raw));
+        }
+
+        if (span.Length < 64)
+        {
+            throw new ArgumentException("NTLM Type 3 message too short.", nameof(raw));
+        }
+
+        var lmFields = ReadFields(span.Slice(12, 8));
+        var ntFields = ReadFields(span.Slice(20, 8));
+        var domainFields = ReadFields(span.Slice(28, 8));
+        var userFields = ReadFields(span.Slice(36, 8));
+        var workstationFields = ReadFields(span.Slice(44, 8));
+        var sessionKeyFields = ReadFields(span.Slice(52, 8));
+        Flags = (NtlmFlags)BinaryPrimitives.ReadUInt32LittleEndian(span.Slice(60, 4));
+
+        var minimumPayloadOffset = MinimumPayloadOffset(
+            lmFields, ntFields, domainFields, userFields, workstationFields, sessionKeyFields);
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 72 && minimumPayloadOffset >= 72)
+        {
+            _version = span.Slice(64, 8).ToArray();
+        }
+        if (span.Length >= 88 && minimumPayloadOffset >= 88)
+        {
+            _mic = span.Slice(72, 16).ToArray();
+        }
+
+        var encoding = StringEncoding(Flags);
+        LmResponse = ReadBytes(span, lmFields.Length, lmFields.Offset);
+        NtResponse = ReadBytes(span, ntFields.Length, ntFields.Offset);
+        Domain = domainFields.Length == 0 ? string.Empty : encoding.GetString(ReadBytes(span, domainFields.Length, domainFields.Offset));
+        User = userFields.Length == 0 ? string.Empty : encoding.GetString(ReadBytes(span, userFields.Length, userFields.Offset));
+        Workstation = workstationFields.Length == 0
+            ? string.Empty
+            : encoding.GetString(ReadBytes(span, workstationFields.Length, workstationFields.Offset));
+        EncryptedRandomSessionKey = ReadBytes(span, sessionKeyFields.Length, sessionKeyFields.Offset);
+    }
+
+    private static byte[] CloneOrEmpty(byte[]? source) =>
+        source is null ? Array.Empty<byte>() : (byte[])source.Clone();
+
+    private static void WritePayloadFields(Span<byte> fields, byte[] payload, ref int offset)
+    {
+        WriteFields(fields, CheckedLength(payload.Length), (uint)offset);
+        offset += payload.Length;
+    }
+
+    private static void CopyPayload(byte[] payload, Span<byte> destination, ref int offset)
+    {
+        payload.CopyTo(destination[offset..]);
+        offset += payload.Length;
+    }
+
+    private static uint MinimumPayloadOffset(params (ushort Length, uint Offset)[] fields)
+    {
+        var minimum = uint.MaxValue;
+        foreach (var field in fields)
+        {
+            if (field.Length != 0 && field.Offset < minimum)
+            {
+                minimum = field.Offset;
+            }
+        }
+
+        return minimum == uint.MaxValue ? 0 : minimum;
+    }
 }

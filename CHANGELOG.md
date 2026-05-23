@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-(nothing new since 0.2.0-alpha.1)
+### Removed
+
+- SharpCifs.Std (LGPL-2.1) transitional dependency.
 
 ## [0.2.0-alpha.1] - 2026-05-23
 

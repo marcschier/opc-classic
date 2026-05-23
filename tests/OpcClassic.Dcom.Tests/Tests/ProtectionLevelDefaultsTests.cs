@@ -5,7 +5,7 @@
 
 using System.Reflection;
 using OpcClassic.Dcom.Internal;
-using SharpCifs.Ntlmssp;
+using OpcClassic.Dcom.Internal.Ntlm;
 using SharpInterop.Rpc;
 using SharpInterop.Rpc.Auth.ntlm;
 using TUnit.Core;

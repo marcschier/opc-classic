@@ -12,7 +12,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using OpcClassic.Dcom.Internal;
-using SharpCifs.Ntlmssp;
+using OpcClassic.Dcom.Internal.Ntlm;
 using SharpInterop.Crypto;
 using SharpInterop.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;

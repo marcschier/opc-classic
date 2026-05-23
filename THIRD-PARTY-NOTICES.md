@@ -11,13 +11,6 @@ The licenses governing the use of these components are included below.
 - Used in: OpcClassic.Dcom
 - Version: 10.0.0
 
-### SharpCifs.Std
-- Source: https://github.com/iyasai/SharpCifs.Std
-- License: LGPL-2.1
-- Status: TRANSITIONAL — will be replaced in Phase 2D
-- Used in: OpcClassic.Dcom
-- Version: 0.2.13
-
 ## Build/Generator Dependencies
 
 ### Microsoft.CodeAnalysis.CSharp
@@ -106,6 +99,13 @@ The licenses governing the use of these components are included below.
 - License: OPC Foundation specification (used for IDL definitions only)
 
 ## Historical / Archived
+
+### SharpCifs.Std
+- Source: https://github.com/iyasai/SharpCifs.Std
+- License: LGPL-2.1
+- Status: Removed in N7.6; transitional runtime dependency replaced by self-contained in-tree code
+- Formerly used in: OpcClassic.Dcom
+- Last version: 0.2.13
 
 ### SharpInterop (basis for src/OpcClassic.Dcom)
 - Original author: Vikram Roopchand (c) 2013

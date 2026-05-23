@@ -34,15 +34,11 @@
 
     <ItemGroup>
         <!--
-          TRANSITIONAL package set — Phase 2D replaces SharpCifs.Std (SMBLibrary or
-          hand-rolled). Phase 2E now COMPLETE: BouncyCastle removed, replaced by
-          hand-rolled MD4 + RC4 in Crypto/ plus BCL MD5/HMAC-MD5/DES via the
-          transitional Crypto/BcCompat.cs shim.
-          Phase 2G now COMPLETE: all 33 consumer files migrated from Serilog to
-          OpcClassic.Dcom.Internal.Log (the Microsoft.Extensions.Logging shim).
-          Serilog package reference removed.
+          TRANSITIONAL package set now cleared: Phase 2D replaced SharpCifs.Std with
+          self-contained NTLM/NDR compatibility code; Phase 2E replaced BouncyCastle
+          with hand-rolled MD4 + RC4 in Crypto/ plus BCL MD5/HMAC-MD5/DES via the
+          transitional Crypto/BcCompat.cs shim; Phase 2G removed Serilog.
         -->
-        <PackageReference Include="SharpCifs.Std" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     </ItemGroup>
 

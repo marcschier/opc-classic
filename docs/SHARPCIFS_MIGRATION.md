@@ -101,10 +101,14 @@ Remaining `SharpCifs.Smb` imports are for named-pipe SMB transport types such as
 
 N7.4 introduced `OpcClassic.Dcom.Internal.Ntlm` in `src/OpcClassic.Dcom/Common/Ntlm/`. The DCOM auth call sites now depend on local `NtlmFlags`, `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message` types instead of importing `SharpCifs.Ntlmssp` directly.
 
-This is intentionally a type-forwarding step: the local wrappers still delegate parsing and serialization to `SharpCifs.Std` internally so Type1/Type2/Type3 wire bytes stay unchanged. Full self-contained MS-NLMP serialization replaces those internals in the N7.4 follow-up, and the `SharpCifs.Std` package reference is removed only after the Dcerpc/NDR migration is complete.
+This was intentionally a type-forwarding step: the local wrappers delegated parsing and serialization to `SharpCifs.Std` internally so Type1/Type2/Type3 wire bytes stayed unchanged during the transition. N7.6 replaces those internals with self-contained MS-NLMP serialization and removes the `SharpCifs.Std` package reference after the Dcerpc/NDR migration completed.
 
 ## Phase 2D.5 / N7.5 — Dcerpc NDR wall
 
 N7.5 moved the legacy DCE/RPC NDR surface out of the `SharpCifs.Dcerpc.Ndr` namespace and into `OpcClassic.Dcom.Internal.LegacyNdr` under `src/OpcClassic.Dcom/Common/LegacyNdr/`. The local surface covers the DCOM call sites' current NDR primitives: `NdrBuffer`, `NdrCodec`, `NdrFormat`, `NdrOp`, `NdrObject`, and `NdrException`.
 
 All direct `SharpCifs.Dcerpc.Ndr` references in `src/OpcClassic.Dcom` were removed. The implementation is intentionally compatibility-shaped around the legacy API so the DCOM marshalling layer can keep its current call patterns while later milestones replace more of the internals with the span-based `OpcClassic.Ndr` reader/writer primitives.
+
+## Phase 2D COMPLETE / N7.6 — SharpCifs.Std removed
+
+N7.6 reimplements the remaining NTLMSSP message wrappers (`NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message`) directly in `OpcClassic.Dcom.Internal.Ntlm` per MS-NLMP §2.2.1.1-3. The production `SharpCifs.Std` package reference and central package version are removed, clearing the LGPL-2.1 transitional runtime dependency.
