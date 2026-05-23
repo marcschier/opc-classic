@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Testcontainers" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
   </ItemGroup>
 
