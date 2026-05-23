@@ -12,7 +12,7 @@ using System.IO.Pipelines;
 using System.Threading;
 using System.Threading.Tasks;
 using OpcClassic.Transport;
-using SharpCifs.Dcerpc.Ndr;
+using OpcClassic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
 using SharpInterop.Core;
 using SharpInterop.Rpc;

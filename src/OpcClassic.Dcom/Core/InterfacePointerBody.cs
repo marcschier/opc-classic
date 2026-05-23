@@ -8,7 +8,7 @@
 //
 
 namespace SharpInterop.Core {
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using OpcClassic.Dcom.Internal;
     using System;
 

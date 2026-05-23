@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Rpc.Core {
     using OpcClassic.Dcom.Internal;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
 
     /// <summary>
     /// Presentation layer context

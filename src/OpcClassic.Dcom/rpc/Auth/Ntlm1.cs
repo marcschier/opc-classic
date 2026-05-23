@@ -11,7 +11,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpInterop.Crypto;
     using OpcClassic.Dcom.Internal;
     using OpcClassic.Dcom.Internal.Ntlm;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using System;
     using System.IO;
 

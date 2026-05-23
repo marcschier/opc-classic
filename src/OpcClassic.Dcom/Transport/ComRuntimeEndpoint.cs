@@ -13,7 +13,7 @@ namespace SharpInterop.Transport {
     using SharpInterop.Rpc.Core;
     using SharpInterop.Rpc.pdu;
     using OpcClassic.Dcom.Internal;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using System;
     using System.Collections.Generic;
     using System.Threading;

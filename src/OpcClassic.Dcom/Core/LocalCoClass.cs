@@ -12,7 +12,7 @@ namespace SharpInterop.Core {
     using SharpInterop;
     using SharpInterop.Rpc.Core;
     using OpcClassic.Dcom.Internal;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Collections.Generic;

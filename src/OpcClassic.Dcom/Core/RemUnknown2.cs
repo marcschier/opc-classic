@@ -7,7 +7,7 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 namespace SharpInterop.Core {
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using SharpInterop.Common;
     using SharpInterop.Rpc.Core;
     using OpcClassic.Dcom.Internal;

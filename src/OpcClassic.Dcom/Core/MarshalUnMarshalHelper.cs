@@ -11,7 +11,7 @@ namespace SharpInterop.Core {
     using SharpInterop.Automation;
     using SharpInterop.Rpc.Core;
     using OpcClassic.Dcom.Internal;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.Buffers.Binary;

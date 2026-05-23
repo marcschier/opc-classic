@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Rpc.pdu {
     using SharpInterop.Rpc.Core;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
 
     /// <summary>
     /// Alter context pdu

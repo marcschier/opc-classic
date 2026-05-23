@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -12,7 +12,7 @@ namespace SharpInterop.Transport {
     using SharpInterop.Common;
     using SharpInterop.Rpc;
     using SharpInterop.Rpc.Core;
-    using SharpCifs.Dcerpc.Ndr;
+    using OpcClassic.Dcom.Internal.LegacyNdr;
     using System.IO;
     using System.Net.Sockets;
 
