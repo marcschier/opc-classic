@@ -3,6 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,4 +17,38 @@ public interface IOpcHdaServer
 
     /// <summary>Validates HDA item IDs and returns per-item HRESULTs.</summary>
     Task<int[]> ValidateItemIdsAsync(string[] itemIds, CancellationToken cancellationToken = default);
+
+    /// <summary>Reads raw historical values for each item in the requested time range.</summary>
+    Task<OpcHdaItem[]> ReadRawAsync(
+        string[] itemIds,
+        OpcHdaTime startTime,
+        OpcHdaTime endTime,
+        int maxValues,
+        CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(itemIds);
+        ArgumentNullException.ThrowIfNull(startTime);
+        ArgumentNullException.ThrowIfNull(endTime);
+        _ = maxValues;
+        ct.ThrowIfCancellationRequested();
+        return Task.FromResult(Array.Empty<OpcHdaItem>());
+    }
+
+    /// <summary>Reads processed historical values for each item in fixed resample intervals.</summary>
+    Task<OpcHdaItem[]> ReadProcessedAsync(
+        string[] itemIds,
+        OpcHdaTime startTime,
+        OpcHdaTime endTime,
+        TimeSpan resampleInterval,
+        HdaAggregate aggregate,
+        CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(itemIds);
+        ArgumentNullException.ThrowIfNull(startTime);
+        ArgumentNullException.ThrowIfNull(endTime);
+        _ = resampleInterval;
+        _ = aggregate;
+        ct.ThrowIfCancellationRequested();
+        return Task.FromResult(Array.Empty<OpcHdaItem>());
+    }
 }
