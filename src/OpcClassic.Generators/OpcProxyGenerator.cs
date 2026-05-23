@@ -465,7 +465,7 @@ namespace OpcClassic.Generators
         {
             if (!parameter.IsCancellationToken)
             {
-                EmitCodecWrite(sb, indent, writerLocal, parameter, method.DeclaringNamespace);
+                EmitCodecWrite(sb, indent, writerLocal, parameter, method);
             }
         }
 
@@ -546,7 +546,7 @@ namespace OpcClassic.Generators
         sb.Append(indent).Append("            var ").Append(responseSpanLocal).Append(" = ").Append(responsePayloadLocal).AppendLine(".Span;");
         sb.Append(indent).Append("            var ").Append(readerLocal).Append(" = new global::OpcClassic.Ndr.NdrReader(")
             .Append(responseSpanLocal).AppendLine(");");
-        sb.Append(indent).Append("            return ").Append(CodecReadExpression(readerLocal, method.TaskResultMarshallingType!, method.DeclaringNamespace)).AppendLine(";");
+        EmitCodecReadReturn(sb, indent, readerLocal, method, responsePayloadLocal, responseSpanLocal);
         sb.Append(indent).AppendLine("        }");
     }
     private static string InvokeCoreName(MethodModel method) => "__opcInvoke" + method.Name + "CoreAsync";
@@ -589,30 +589,107 @@ namespace OpcClassic.Generators
         string indent,
         string writerLocal,
         ParameterModel parameter,
-        string? declaringNamespace)
+        MethodModel method)
     {
-        sb.Append(indent).Append("                ");
-        if (TryGetCodec(parameter.MarshallingType, declaringNamespace, out var codec))
+        string statementIndent = indent + "                ";
+        if (TryGetCodec(parameter.MarshallingType, method.DeclaringNamespace, out var codec))
         {
-            sb.Append(FormatWriteExpression(codec, writerLocal, parameter.Name)).AppendLine(";");
+            if (codec.IsArray)
+            {
+                EmitArrayCodecWrite(sb, statementIndent, writerLocal, parameter.Name, codec, method.ParameterNames);
+                return;
+            }
+
+            sb.Append(statementIndent).Append(FormatWriteExpression(codec, writerLocal, parameter.Name)).AppendLine(";");
             return;
         }
 
-        sb.Append(writerLocal).AppendLine(".WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
+        sb.Append(statementIndent).Append(writerLocal).AppendLine(".WriteRawBytes(global::System.ReadOnlySpan<byte>.Empty);");
     }
 
-    private static string CodecReadExpression(string readerLocal, string marshallingType, string? declaringNamespace)
+    private static void EmitArrayCodecWrite(
+        StringBuilder sb,
+        string statementIndent,
+        string writerLocal,
+        string parameterName,
+        CodecEmitter codec,
+        ImmutableArray<string> parameterNames)
     {
-        if (TryGetCodec(marshallingType, declaringNamespace, out var codec))
+        string itemLocal = UniqueLocalName(parameterNames, "__opcItem", writerLocal, parameterName);
+        sb.Append(statementIndent).Append(writerLocal).Append(".WriteUInt32((uint)(").Append(parameterName).AppendLine("?.Length ?? 0));");
+        sb.Append(statementIndent).Append("if (").Append(parameterName).AppendLine(" != null)");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    foreach (var ").Append(itemLocal).Append(" in ").Append(parameterName).AppendLine(")");
+        sb.Append(statementIndent).AppendLine("    {");
+        sb.Append(statementIndent).Append("        ").Append(FormatWriteExpression(codec, writerLocal, itemLocal)).AppendLine(";");
+        sb.Append(statementIndent).AppendLine("    }");
+        sb.Append(statementIndent).AppendLine("}");
+    }
+
+    private static void EmitCodecReadReturn(
+        StringBuilder sb,
+        string indent,
+        string readerLocal,
+        MethodModel method,
+        string responsePayloadLocal,
+        string responseSpanLocal)
+    {
+        string statementIndent = indent + "            ";
+        if (TryGetCodec(method.TaskResultMarshallingType!, method.DeclaringNamespace, out var codec))
         {
-            return FormatReadExpression(codec, readerLocal);
+            if (codec.IsArray)
+            {
+                EmitArrayCodecReadReturn(
+                    sb,
+                    statementIndent,
+                    readerLocal,
+                    codec,
+                    method.ParameterNames,
+                    responsePayloadLocal,
+                    responseSpanLocal);
+                return;
+            }
+
+            sb.Append(statementIndent).Append("return ").Append(FormatReadExpression(codec, readerLocal)).AppendLine(";");
+            return;
         }
 
-        return "default!";
+        sb.Append(statementIndent).AppendLine("return default!;");
+    }
+
+    private static void EmitArrayCodecReadReturn(
+        StringBuilder sb,
+        string statementIndent,
+        string readerLocal,
+        CodecEmitter codec,
+        ImmutableArray<string> parameterNames,
+        string responsePayloadLocal,
+        string responseSpanLocal)
+    {
+        string countLocal = UniqueLocalName(parameterNames, "__opcCount", readerLocal, responsePayloadLocal, responseSpanLocal);
+        string arrayLocal = UniqueLocalName(parameterNames, "__opcArray", readerLocal, responsePayloadLocal, responseSpanLocal, countLocal);
+        string indexLocal = UniqueLocalName(parameterNames, "__opcIndex", readerLocal, responsePayloadLocal, responseSpanLocal, countLocal, arrayLocal);
+
+        sb.Append(statementIndent).Append("var ").Append(countLocal).Append(" = (int)").Append(readerLocal).AppendLine(".ReadUInt32();");
+        sb.Append(statementIndent).Append("var ").Append(arrayLocal).Append(" = new ").Append(codec.ArrayElementType!).Append('[').Append(countLocal).AppendLine("];");
+        sb.Append(statementIndent).Append("for (int ").Append(indexLocal).Append(" = 0; ").Append(indexLocal).Append(" < ").Append(countLocal).Append("; ").Append(indexLocal).AppendLine("++)");
+        sb.Append(statementIndent).AppendLine("{");
+        sb.Append(statementIndent).Append("    ").Append(arrayLocal).Append('[').Append(indexLocal).Append("] = ").Append(FormatReadExpression(codec, readerLocal)).AppendLine(";");
+        sb.Append(statementIndent).AppendLine("}");
+        sb.Append(statementIndent).Append("return ").Append(arrayLocal).AppendLine(";");
     }
 
     private static bool TryGetCodec(string typeName, string? declaringNamespace, out CodecEmitter codec)
     {
+        if (TryGetArrayElementTypeName(typeName, out string elementTypeName) &&
+            !TryGetArrayElementTypeName(elementTypeName, out _) &&
+            TryGetCodec(elementTypeName, declaringNamespace, out var elementCodec) &&
+            !elementCodec.IsArray)
+        {
+            codec = CodecEmitter.Array(elementTypeName, elementCodec);
+            return true;
+        }
+
         if (string.Equals(typeName, "global::OpcClassic.OpcServerStatus", System.StringComparison.Ordinal) &&
             IsAeNamespace(declaringNamespace))
         {
@@ -621,6 +698,18 @@ namespace OpcClassic.Generators
         }
 
         return Codecs.TryGetValue(typeName, out codec);
+    }
+
+    private static bool TryGetArrayElementTypeName(string typeName, out string elementTypeName)
+    {
+        if (typeName.EndsWith("[]", System.StringComparison.Ordinal))
+        {
+            elementTypeName = typeName.Substring(0, typeName.Length - 2);
+            return true;
+        }
+
+        elementTypeName = string.Empty;
+        return false;
     }
 
     private static CodecEmitter StaticCodec(string codecClassName) =>
@@ -887,13 +976,24 @@ namespace OpcClassic.Generators
     private readonly struct CodecEmitter
     {
         public CodecEmitter(string writeExpression, string readExpression)
+            : this(writeExpression, readExpression, arrayElementType: null)
+        {
+        }
+
+        private CodecEmitter(string writeExpression, string readExpression, string? arrayElementType)
         {
             WriteExpression = writeExpression;
             ReadExpression = readExpression;
+            ArrayElementType = arrayElementType;
         }
 
         public string WriteExpression { get; }
         public string ReadExpression { get; }
+        public string? ArrayElementType { get; }
+        public bool IsArray => ArrayElementType is not null;
+
+        public static CodecEmitter Array(string elementTypeName, CodecEmitter elementCodec) =>
+            new(elementCodec.WriteExpression, elementCodec.ReadExpression, elementTypeName);
     }
 
     private sealed class ParameterModel
