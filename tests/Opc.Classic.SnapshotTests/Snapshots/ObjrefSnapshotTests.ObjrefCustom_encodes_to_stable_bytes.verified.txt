@@ -1,0 +1,7 @@
+﻿Codec: OBJREF_CUSTOM known IID/custom CLSID and opaque extension payload
+Bytes: 62
+
+00000000  36 00 00 00 36 00 00 00  4d 45 4f 57 04 00 00 00  | 6...6...MEOW....|
+00000010  11 11 11 11 22 22 33 33  44 55 66 77 88 99 aa bb  | ....""33DUfw....|
+00000020  21 43 65 87 21 43 65 87  0f ed cb a9 87 65 43 21  | !Ce.!Ce......eC!|
+00000030  78 56 34 12 dd cc bb aa  de ad be ef 01 02        | xV4...........|

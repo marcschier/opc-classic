@@ -1,0 +1,4 @@
+﻿Codec: NdrUInt16 0xCAFE
+Bytes: 2
+
+00000000  fe ca                                             | ..|

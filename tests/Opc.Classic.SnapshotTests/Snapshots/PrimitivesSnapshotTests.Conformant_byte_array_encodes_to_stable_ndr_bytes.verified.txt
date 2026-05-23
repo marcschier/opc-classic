@@ -1,0 +1,4 @@
+﻿Codec: NdrConformantByteArray CA FE BA BE
+Bytes: 8
+
+00000000  04 00 00 00 ca fe ba be                           | ........|

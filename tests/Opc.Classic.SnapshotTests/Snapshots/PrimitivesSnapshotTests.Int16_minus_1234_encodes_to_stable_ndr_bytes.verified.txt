@@ -1,0 +1,4 @@
+﻿Codec: NdrInt16 -1234
+Bytes: 2
+
+00000000  2e fb                                             | ..|

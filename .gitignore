@@ -13,6 +13,7 @@
 /**/*.vc.db
 /**/zlog.lock
 /**/TestResults/**
+*.received.*
 /**/*.vsp*
 /**/*.psess
 /**/launchSettings.json
