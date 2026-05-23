@@ -10,8 +10,8 @@
 namespace SharpInterop.Rpc.Auth.ntlm {
     using SharpInterop.Crypto;
     using OpcClassic.Dcom.Internal;
+    using OpcClassic.Dcom.Internal.Ntlm;
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Ntlmssp;
     using System;
     using System.IO;
 
@@ -22,7 +22,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         "NTLMv1 (Ntlm1) is cryptographically broken and disabled by default in Phase 3C. " +
         "Use NtlmV2 (default). To re-enable NTLMv1 for compatibility with very old legacy " +
         "servers, set OpcConnectData.AllowNtlmV1 = true or properties.SetProperty(\"rpc.ntlm.allowV1\", \"true\").")]
-    public class Ntlm1 : NtlmFlags, ISecurity {
+    public class Ntlm1 : ISecurity {
 
         private const int kNTLM1_VERIFIER_LENGTH = 16;
 
@@ -47,9 +47,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <param name="flags"></param>
         /// <param name="sessionKey"></param>
         /// <param name="isServer"></param>
-        public Ntlm1(int flags, byte[] sessionKey, bool isServer) {
+        public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer) {
 
-            Protection = ((flags & NtlmsspNegotiateSeal) != 0) ?
+            Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != 0) ?
                 ProtectionLevel.PROTECTION_LEVEL_PRIVACY : ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 
             _isServer = isServer;

@@ -9,7 +9,7 @@
 
 namespace SharpInterop.Rpc.Auth.ntlm {
     using OpcClassic.Dcom.Internal;
-    using SharpCifs.Ntlmssp;
+    using OpcClassic.Dcom.Internal.Ntlm;
     using System;
     using System.Buffers.Binary;
     using SharpCifs;
@@ -111,14 +111,14 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// <exception cref="IOException"></exception>
         /// <returns></returns>
         public Type2Message CreateType2(Type1Message type1) {
-            int flags;
+            NtlmFlags flags;
             if (type1 == null) {
                 flags = DefaultFlags;
             }
             else {
                 flags = AdjustFlags(type1.GetFlags());
             }
-            flags |= 0x00020000; // challenge accept response flag
+            flags |= NtlmFlags.NtlmsspTargetTypeServer; // challenge accept response flag
             var challenge = (byte[])kDefaultServerChallenge.Clone();
             _serverChallenge = challenge;
             var type2Message = new Type2Message(flags, challenge,
@@ -142,7 +142,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 var flags = type2.GetFlags();
                 if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != 0) {
                     flags = AdjustFlags(flags);
-                    flags &= ~0x00020000;
+                    flags &= ~NtlmFlags.NtlmsspTargetTypeServer;
                 }
 
                 var clientNonce = new byte[8];
@@ -179,7 +179,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) // NTLM2 Session security response
                     {
                         flags = AdjustFlags(flags);
-                        flags &= ~0x00020000;
+                        flags &= ~NtlmFlags.NtlmsspTargetTypeServer;
                         // flags =  0xe2888235;
                         var challenge = type2.GetChallenge();
                         // LMReponse is 24 bytes. 8 byte random client nonce and the rest is null padded.
@@ -277,7 +277,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
   //          }
   //      }
 
-        private int DefaultFlags {
+        private NtlmFlags DefaultFlags {
             get {
                 var flags = kBASICFLAGS;
                 if (_lanManagerKey) {
@@ -308,7 +308,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             }
         }
 
-        private int AdjustFlags(int flags) {
+        private NtlmFlags AdjustFlags(NtlmFlags flags) {
             if (kUnicodeSupported && ((flags & NtlmFlags.NtlmsspNegotiateUnicode) != 0)) {
                 flags &= ~NtlmFlags.NtlmsspNegotiateOem;
                 flags |= NtlmFlags.NtlmsspNegotiateUnicode;
@@ -387,8 +387,8 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         /// Create security
         /// </summary>
         /// <param name="type3"></param>
-        internal void CreateSecurityWhenServer(NtlmMessage type3) {
-            var type3Message = (Type3Message)type3;
+        internal void CreateSecurityWhenServer(object type3) {
+            var type3Message = Type3Message.FromObject(type3);
             // two things here...check for anonymous, in that case the user response key is new byte[16].
             // in case anonymous has not been sent then create the key using credentials.
             var flags = type3Message.GetFlags();
@@ -396,7 +396,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             byte[] secondayMasterKey;
             byte[] sessionResponseUserSessionKey = null;
             var sessionResponseUserSessionKeyIsSecondaryMasterKey = false;
-            if (type3Message.GetFlag(0x00000800)) // anonymous flag
+            if (type3Message.GetFlag(NtlmFlags.NtlmsspNegotiateAnonymous)) // anonymous flag
             {
                 // if it is anonymous the user session key is new byte[16];
                 sessionResponseUserSessionKey = new byte[16];
@@ -474,10 +474,10 @@ namespace SharpInterop.Rpc.Auth.ntlm {
 
         private static readonly byte[] kDefaultServerChallenge = { 1, 2, 3, 4, 5, 6, 7, 8 };
         private static readonly bool kUnicodeSupported = Config.GetBoolean("SharpCifs.smb.client.useUnicode", true);
-        private static readonly int kBASICFLAGS =
+        private static readonly NtlmFlags kBASICFLAGS =
             NtlmFlags.NtlmsspRequestTarget | NtlmFlags.NtlmsspNegotiateNtlm |
             NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
-            (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : 0);
+            (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : NtlmFlags.None);
 
         private static bool GetBooleanProperty(PropertyBag properties, string name, bool defaultValue) {
             var value = properties.GetProperty(name);

@@ -9,9 +9,9 @@
 
 namespace SharpInterop.Rpc.Auth.ntlm {
     using OpcClassic.Dcom.Internal;
+    using OpcClassic.Dcom.Internal.Ntlm;
     using SharpInterop.Rpc.Core;
     using SharpCifs.Dcerpc.Ndr;
-    using SharpCifs.Ntlmssp;
     using SharpCifs.Util.Sharpen;
     using System;
     using System.IO;
