@@ -1,12 +1,14 @@
 # DCOM hardening: why PKT_INTEGRITY is the default
 
+Updated for Opc.Classic 0.4.0-alpha.1.
+
 ## What this covers
 
 Why Opc.Classic defaults to `PROTECTION_LEVEL_INTEGRITY` (`RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`, level 5) for cross-machine DCOM.
 
 ## Status / availability
 
-`OpcProtectionLevel.Integrity` and default expansion are in `src\Opc.Classic.Core\OpcProtectionLevel.cs` and `OpcConnectData.cs`. Roadmap references: Phase 3B default integrity, Phase 3C NTLMv2-only policy, Phase 3F channel binding / EPA.
+`OpcProtectionLevel.Integrity` and default expansion are in `src\Opc.Classic.Core\OpcProtectionLevel.cs` and `OpcConnectData.cs`. Opc.Classic 0.4.0-alpha.1 keeps this behavior after the `Opc.Classic.*` rename and MIT relicense. Roadmap references: Phase 3B default integrity, Phase 3C NTLMv2-only policy, and Phase 3F channel binding / EPA.
 
 ## Why integrity is the default
 
@@ -48,4 +50,4 @@ Bind-only authentication leaves later PDUs unsigned, exposing reads/writes to ta
 
 Use `OpcAuthMode.NtlmV2`. `OpcAuthMode.NtlmV1` is legacy and intended to require explicit `AllowNtlmV1` opt-in; do not enable it without a documented exception.
 
-For TLS-protected endpoints, Phase 3F adds EPA by including the `tls-server-end-point` certificate hash in the auth exchange. See [03-kerberos-in-active-directory.md](03-kerberos-in-active-directory.md).
+For TLS-protected endpoints, channel binding / EPA includes the `tls-server-end-point` certificate hash in the auth exchange. See [03-kerberos-in-active-directory.md](03-kerberos-in-active-directory.md).

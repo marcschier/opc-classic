@@ -1,114 +1,56 @@
-# SharpCifs.Std migration plan
+# SharpCifs.Std migration retrospective
 
-## Why migrate
+## Status: COMPLETE 2026-05-23
 
-`SharpCifs.Std` is licensed under LGPL-2.1 while this repository ships under MIT. That transitive licensing mismatch is the blocker for keeping the package in the distributable product. The package is also dormant, with no meaningful upstream activity in years, and it is not a good fit for the NativeAOT contract that the `src/*` assemblies are being moved toward. It brings Java-portability shims, NTLM helpers, SMB/NetBIOS code, and NDR helpers into the DCOM assembly even when only small slices are used.
+This document is now a historical retrospective. The migration is complete, N7.6 FINAL drop is confirmed, and the distributable repository is license-clean under MIT with no external `SharpCifs.Std` LGPL runtime dependency. Any remaining `SharpCifs.*` compatibility namespaces are in-tree Opc.Classic code, not the old package.
 
-The migration goal is to remove the package reference without changing wire behavior. Each step should be mechanical, tested, and independently buildable so regressions are isolated to one surface area at a time.
+Final outcome:
 
-## Inventory
+- ✅ ALL six phases, 2D.1 through 2D.6, are complete.
+- ✅ `SharpCifs.Std` package reference and central package version were removed.
+- ✅ NTLMSSP messages are self-contained in `Opc.Classic.Dcom.Internal.Ntlm`.
+- ✅ Legacy NDR and compatibility surfaces are in-tree and MIT-licensed with the rest of Opc.Classic.
+- ✅ The migration record below is preserved for auditability only; it is not an active work plan.
 
-The current `src/Opc.Classic.Dcom` SharpCifs usage, grouped by `using` namespace, is:
+## Why the migration existed
+
+`SharpCifs.Std` was licensed under LGPL-2.1 while this repository now ships under MIT. That transitive licensing mismatch blocked distribution. The package was also dormant and pulled Java-portability shims, NTLM helpers, SMB/NetBIOS code, and NDR helpers into the DCOM assembly even when only small slices were used.
+
+The migration goal was to remove the package reference without changing wire behavior. Each step was mechanical, tested, and independently buildable so regressions could be isolated to one surface area at a time.
+
+## Original inventory
+
+The original `src\Opc.Classic.Dcom` SharpCifs usage, grouped by namespace, was:
 
 | SharpCifs namespace | Using count | Primary role |
 | --- | ---: | --- |
 | `SharpCifs.Dcerpc.Ndr` | 74 | NDR buffer/codecs used by the legacy DCOM marshalling layer. |
 | `SharpCifs.Util.Sharpen` | 52 | Java-portability shims such as `Properties`, `Iterator`, `IOException`, `Collections`, and thread helpers. |
 | `SharpCifs.Util` | 5 | Utility helpers such as hex formatting. |
-| `SharpCifs.Ntlmssp` | 4 | NTLM Type1/Type2/Type3 message types and flags. Auth-critical. |
+| `SharpCifs.Ntlmssp` | 4 | NTLM Type1/Type2/Type3 message types and flags. |
 | `SharpCifs.Smb` | 4 | `NtlmPasswordAuthentication` credential carrier. |
-| `SharpCifs` root | 2 | `Config` access, currently used by NTLM defaults. |
+| `SharpCifs` root | 2 | `Config` access used by NTLM defaults. |
 | `SharpCifs.Netbios` | 1 | NetBIOS name helper. |
 
-`Properties` is concentrated in the DCOM transport/auth path: `ComServer`, `ComOxidRuntime`, `ComOxidStub`, `RemUnknown2ServerStub`, `TransportFactory`, `ITransport`, `Stub`, `NtlmAuthentication`, `NtlmConnectionContext`, `ComTransport`, `ComRuntimeTransport`, and the named-pipe `RpcTransport`. It is used for `GetProperty`, `SetProperty`, simple `Load`/`Store`, and copy-construction from defaults. One runtime call site stores a `List<string>` for supported interfaces, so the replacement must carry object values even though most keys contain strings.
+The larger-than-expected `SharpCifs.Dcerpc.Ndr` dependency made the final package drop impossible until the NDR buffer/object surface was replaced with managed in-repo code.
 
-The inventory also exposes a larger-than-expected `SharpCifs.Dcerpc.Ndr` dependency. Dropping `SharpCifs.Std` is not complete until the NDR buffer/object surface is either replaced with a managed in-repo implementation or vendored under an EPL-compatible disposition.
+## Final phase ledger
 
-## Strategy per sub-namespace
+| Phase | Final status | Result |
+| --- | --- | --- |
+| 2D.1 | ✅ Complete | Replaced `SharpCifs.Util.Sharpen.Properties` with `Opc.Classic.Dcom.Internal.PropertyBag`; updated DCOM call sites and focused tests. |
+| 2D.2 | ✅ Complete | Replaced `SharpCifs.Util` helpers with BCL/local equivalents such as `Convert.ToHexString`, `HMACMD5`, and `BinaryPrimitives`. |
+| 2D.3 | ✅ Complete | Replaced `SharpCifs.Smb.NtlmPasswordAuthentication` with `System.Net.NetworkCredential` and corrected constructor/accessor semantics. |
+| 2D.4 | ✅ Complete | Moved NTLMSSP message/flag call sites behind local `Opc.Classic.Dcom.Internal.Ntlm` wrappers. |
+| 2D.5 | ✅ Complete | Moved the DCE/RPC NDR surface into `Opc.Classic.Dcom.Internal.LegacyNdr` and cleared direct package-backed NDR dependencies. |
+| 2D.6 / N7.6 FINAL | ✅ Complete | Reimplemented `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message` directly per MS-NLMP §2.2.1.1-3 and removed `SharpCifs.Std` from production dependencies. |
 
-### `SharpCifs.Util.Sharpen`
+## Retrospective notes
 
-Replace Java shims with managed equivalents. `Properties` becomes `Opc.Classic.Dcom.Internal.PropertyBag`, a small concurrent key/value store with the call-site API needed today: `GetProperty`, `SetProperty`, and defaults copy construction. Later passes should replace `ArrayList`, `Iterator`, `Collections`, `IOException`, and thread shims with BCL collections, `System.IO.IOException`, and `System.Threading` primitives.
+- The Phase 2D.4 forwarding shim intentionally preserved Type1/Type2/Type3 wire bytes before N7.6 swapped in the self-contained implementation.
+- The Phase 2D.5 compatibility-shaped NDR surface let the DCOM marshalling layer keep existing call patterns while later milestones move more internals to span-based `Opc.Classic.Ndr` primitives.
+- Phase 2C's async transport work remains a separate modernization thread; it is no longer blocked by the SharpCifs package drop.
 
-### `SharpCifs.Util`
+## Validation record
 
-Replace utility helpers with BCL equivalents. Hex helpers should move to `Convert.ToHexString` or a tiny local formatting helper when offsets/lengths are required. Any encoding or byte helpers should be audited for exact output because the RPC and NTLM logs/tests may depend on formatting.
-
-### `SharpCifs.Ntlmssp`
-
-Keep behavior stable while removing the package. The safest transitional path is to vendor the minimal `NtlmFlags`, `Type1Message`, `Type2Message`, and `Type3Message` types into `src/Opc.Classic.Dcom/Common/Ntlm/` under a verified licensing path, then modernize the code around the in-repo types. As an alternative, Phase 3D's Kerberos.NET/SPNEGO work may provide usable NTLM message primitives; verify API coverage before choosing it. This is auth-critical and must be covered by the Crypto/NTLM tests before deletion of the package reference.
-
-### `SharpCifs.Smb.NtlmPasswordAuthentication`
-
-Replace with `System.Net.NetworkCredential`. The current usage is a credential container for domain, user, and password values; `NetworkCredential` already models this and avoids carrying SMB client code into DCOM. Callers should pass credential data explicitly through the DCOM auth path rather than depending on SMB-specific types.
-
-### `SharpCifs` root `Config`
-
-Replace with a managed config shim local to `Opc.Classic.Dcom`. The immediate root usage is a boolean NTLM default. A local class can read explicit property-bag values first and then optional process/environment configuration if needed; it should not reintroduce global mutable state.
-
-### `SharpCifs.Dcerpc.Ndr` and `SharpCifs.Netbios`
-
-These were discovered during the inventory and must be included before package removal. For NDR, either vendor the minimal `NdrBuffer`, `NdrObject`, and codec surface used by the DCOM marshalling layer, or hand-roll the small subset needed by the generated/legacy stubs. For NetBIOS, replace the single name helper with a local parser/formatter or remove it if named-pipe transport is dropped.
-
-## Phases
-
-1. **Phase 2D.1 (this commit):** Replace `SharpCifs.Util.Sharpen.Properties` with `Opc.Classic.Dcom.Internal.PropertyBag`; update the DCOM call sites and add focused tests.
-2. **Phase 2D.2:** Replace `SharpCifs.Util` helpers with BCL/local equivalents.
-3. **Phase 2D.3:** Replace `SharpCifs.Smb.NtlmPasswordAuthentication` with `System.Net.NetworkCredential`.
-4. **Phase 2D.4:** Vendor or replace `SharpCifs.Ntlmssp` message/flag types; verify whether Phase 3D Kerberos.NET can supply equivalent NTLM types.
-5. **Phase 2D.4b:** Replace or vendor the discovered `SharpCifs.Dcerpc.Ndr` and `SharpCifs.Netbios` surface so the package can actually be removed.
-6. **Phase 2D.5:** Drop the `SharpCifs.Std` `PackageReference`, remove remaining `using SharpCifs.*`, and run full solution build/test plus the AOT canary once available.
-
-## Risk and validation
-
-Each phase is intentionally a series of mechanical replacements. Build after every batch, keep the DCOM tests green, and avoid changing authentication or marshalling behavior while replacing types. The Crypto.Tests project added in Phase 2I is the safety net for MD4/RC4 and should be expanded with NTLM message vectors before Phase 2D.4. The DCOM legacy tests should continue to pass after every phase, and full `dotnet build Opc.Classic.slnx` plus `dotnet test Opc.Classic.slnx` gates Phase 2D.5.
-
-## Phase 2C — Async I/O end-to-end
-
-Phase 2C introduces the managed async transport surface in `Opc.Classic.Transport` without rewiring the legacy SharpInterop call sites yet. `IAsyncTransport` exposes the ncacn_ip_tcp byte stream as `System.IO.Pipelines.PipeReader` and `PipeWriter`, `IAsyncTransportFactory.ConnectAsync` becomes the future connector entry point, and `IAsyncEndpoint.AcceptConnectionsAsync` models server-side accepts as an `IAsyncEnumerable<IAsyncTransport>` for hosted-service consumers.
-
-The rollout is intentionally staged:
-
-1. Keep `SharpInterop.Rpc.ITransport` and its synchronous `Send` / `Receive` callers stable while focused tests cover the new contracts and pipe-backed test double.
-2. Add a DCOM or transport package implementation that adapts TCP sockets to `IAsyncTransport`, including cancellation-aware reads, writes, flushes, and disposal.
-3. Move connection-oriented RPC framing to consume `PipeReader` / `PipeWriter` directly, then bridge or replace legacy `IEndpoint.Call` with async call flow and `ICallChannel` integration.
-4. Convert server socket-accept loops from dedicated threads to hosted services that iterate `await foreach` over `AcceptConnectionsAsync` and dispatch accepted transports through channel-style workers.
-5. Retire the legacy `SharpInterop.Rpc.ITransport` surface after all client activation, call, callback, and subscription paths use the async contracts. OPC DA subscriptions already expose pushed changes as `IAsyncEnumerable`, so the transport refactor can align connection handling with that consumer pattern.
-
-## Phase 2D.2 — SharpCifs.Util replacement done
-
-N7.2 removed the remaining direct `SharpCifs.Util` helper usage from `src/Opc.Classic.Dcom`. Hex formatting now uses `Convert.ToHexString`, HMAC-MD5 uses `System.Security.Cryptography.HMACMD5`, and little-endian primitive reads/writes use `System.Buffers.Binary.BinaryPrimitives` plus `BitConverter` for floating-point bit conversion.
-
-Remaining SharpCifs migration sub-phases are queued as N7.3-N7.5:
-
-1. **Phase 2D.3:** Replace `SharpCifs.Smb` credential usage.
-2. **Phase 2D.4:** Vendor or replace `SharpCifs.Ntlmssp` message/flag types.
-3. **Phase 2D.5:** Replace or vendor the remaining `SharpCifs.Dcerpc.Ndr` surface, then remove the package reference once no `SharpCifs.*` usage remains.
-
-## N1.1 — DcomCallChannel landed
-
-N1.1 adds `Opc.Classic.Dcom.Transport.DcomCallChannel`, the first `ICallChannel` implementation built directly on `IAsyncTransport`. It performs the async DCE/RPC bind handshake, maps the first invoked IID to a presentation context, emits `RequestCoPdu` frames with an `ORPCTHIS` prefix, reads `ResponseCoPdu` / `FaultCoPdu` replies, and reassembles fragmented responses before returning `NdrCallResult` to generated shims.
-
-The new public auth contract lives in `Opc.Classic.IAuthContext`, with `NoOpAuthContext` available for unauthenticated tests and loopback scenarios. Downstream `OpcProxyGenerator`-emitted shims can now be wired by obtaining an `ICallChannel` from `DcomCallChannelFactory.ConnectAsync(endpoint, clsid, authContext, ct)` and passing their NDR request payloads to `InvokeAsync(iid, opnum, payload, ct)`. Non-empty auth tokens and packet verifiers are carried through the PDU auth trailer; production NTLM/Kerberos contexts fill in the concrete signing/sealing behavior in the follow-up auth integration work.
-
-## Phase 2D.3 / N7.3 — `NtlmPasswordAuthentication` replacement done
-
-N7.3 removed the `SharpCifs.Smb.NtlmPasswordAuthentication` credential carrier from `src/Opc.Classic.Dcom` and replaced it with `System.Net.NetworkCredential`. The constructor parameter order was corrected from SharpCifs `(domain, user, password)` to BCL `(userName, password, domain)`, and accessors now use `Domain`, `UserName`, and `Password`.
-
-Remaining `SharpCifs.Smb` imports are for named-pipe SMB transport types such as `SmbException` and `SmbNamedPipe`; those are outside N7.3. Phase 2D.4 / N7.4 is next and will vendor or replace the `SharpCifs.Ntlmssp` `Type1Message`, `Type2Message`, `Type3Message`, and `NtlmFlags` types under `Opc.Classic.Dcom/Common/Ntlm/`.
-
-## Phase 2D.4 / N7.4 — `SharpCifs.Ntlmssp` forwarding shim
-
-N7.4 introduced `Opc.Classic.Dcom.Internal.Ntlm` in `src/Opc.Classic.Dcom/Common/Ntlm/`. The DCOM auth call sites now depend on local `NtlmFlags`, `NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message` types instead of importing `SharpCifs.Ntlmssp` directly.
-
-This was intentionally a type-forwarding step: the local wrappers delegated parsing and serialization to `SharpCifs.Std` internally so Type1/Type2/Type3 wire bytes stayed unchanged during the transition. N7.6 replaces those internals with self-contained MS-NLMP serialization and removes the `SharpCifs.Std` package reference after the Dcerpc/NDR migration completed.
-
-## Phase 2D.5 / N7.5 — Dcerpc NDR wall
-
-N7.5 moved the legacy DCE/RPC NDR surface out of the `SharpCifs.Dcerpc.Ndr` namespace and into `Opc.Classic.Dcom.Internal.LegacyNdr` under `src/Opc.Classic.Dcom/Common/LegacyNdr/`. The local surface covers the DCOM call sites' current NDR primitives: `NdrBuffer`, `NdrCodec`, `NdrFormat`, `NdrOp`, `NdrObject`, and `NdrException`.
-
-All direct `SharpCifs.Dcerpc.Ndr` references in `src/Opc.Classic.Dcom` were removed. The implementation is intentionally compatibility-shaped around the legacy API so the DCOM marshalling layer can keep its current call patterns while later milestones replace more of the internals with the span-based `Opc.Classic.Ndr` reader/writer primitives.
-
-## Phase 2D COMPLETE / N7.6 — SharpCifs.Std removed
-
-N7.6 reimplements the remaining NTLMSSP message wrappers (`NtlmMessage`, `Type1Message`, `Type2Message`, and `Type3Message`) directly in `Opc.Classic.Dcom.Internal.Ntlm` per MS-NLMP §2.2.1.1-3. The production `SharpCifs.Std` package reference and central package version are removed, clearing the LGPL-2.1 transitional runtime dependency.
+The migration was accepted only after full solution build/test gates and NTLM vector coverage stayed green in the owning sessions. The release docs now treat 1.0.0 Gate 2 (clear LGPL dependency) as met because the old package is gone and the repository license is MIT.

@@ -1,8 +1,8 @@
 # Test coverage audit and gap analysis
 
-Snapshot: Phase 12 audit of the working tree test inventory and coverlet Cobertura output.
-The inventory counts source `*.cs` files under each test project and excludes `bin/` and `obj/`.
-The raw directory-based audit command can also report `tests/Opc.Classic.Dcom.Tests/Tests` as a nested `Tests` folder; it is not counted as a separate project below.
+Snapshot: Phase 12 audit of the working tree test inventory and coverlet Cobertura output, refreshed for the Opc.Classic 0.4.0-alpha.1 rename. The rename to `Opc.Classic.*` was textual and did not change the test inventory or the coverage baseline.
+
+The inventory counts source `*.cs` files under each test project and excludes `bin/` and `obj/`. The raw directory-based audit command can also report `tests\Opc.Classic.Dcom.Tests\Tests` as a nested `Tests` folder; it is not counted as a separate project below.
 
 ## Summary
 
@@ -29,24 +29,26 @@ The raw directory-based audit command can also report `tests/Opc.Classic.Dcom.Te
 | Opc.Classic.Dcom.Logging.Tests | 0 |
 | **Total** | **757** |
 
-All 15 `src/Opc.Classic.*` projects have a corresponding `tests/Opc.Classic.*.Tests` project. Two additional test projects cover cross-cutting work: `Opc.Classic.Integration.Tests` for Phase 13 plus 14B/C/D conformance work, and `Opc.Classic.PropertyTests` for CsCheck properties.
+All 15 `src\Opc.Classic.*` projects have a corresponding `tests\Opc.Classic.*.Tests` project. Two additional test projects cover cross-cutting work: `Opc.Classic.Integration.Tests` for Phase 13 plus 14B/C/D conformance work, and `Opc.Classic.PropertyTests` for CsCheck properties.
+
+Sample/conformance inventory now also includes `samples\Opc.Classic.Samples.AotCanary`, the three managed sample servers `samples\Opc.Classic.Samples.DaServer`, `samples\Opc.Classic.Samples.AeServer`, and `samples\Opc.Classic.Samples.HdaServer`, the CTT target `samples\Opc.Classic.Samples.CttServer`, and the OPC Foundation native sample servers under `COM\Sample Server\Da`, `COM\Sample Server\Ae`, and `COM\Sample Server\Hda`. These are release/conformance fixtures, not test projects, and do not change the test-count table above.
 
 ## Coverage seed
 
-`dotnet test Opc.Classic.slnx --no-build -c Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings` produced:
+`dotnet test Opc.Classic.slnx --no-build -c Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings` produced the baseline below before the rename; the 0.4.0-alpha.1 rename did not alter executable coverage.
 
 | Metric | Value |
 |---|---:|
 | Line coverage | 81.69% |
 | Branch coverage | 69.73% |
 
-The run emitted a `run failed` error from `Opc.Classic.Batch.Tests` after collection, so these numbers are a seed for gap prioritization rather than a green quality gate.
+The run emitted a `run failed` error from `Opc.Classic.Batch.Tests` after collection, so these numbers remain a seed for gap prioritization rather than a green quality gate.
 
 ## Completeness against p12
 
 ### Opc.Classic.Dcom PDU round-trips
 
-Dedicated source-level references to the DCOM PDU types were not found under `tests/Opc.Classic.Dcom.Tests`. Current coverage is therefore **0 of the requested 13 round-trip slots**. Required gaps are: `BindPdu`, `BindAcknowledgePdu`, `BindNoAcknowledgePdu`, `AlterContextPdu`, `AlterContextResponsePdu`, `Auth3Pdu`, `RequestCoPdu`, `ResponseCoPdu`, `FaultCoPdu`, `CancelCoPdu`, `OrphanedPdu`, `ShutdownPdu`, and the shared connection-oriented header/framing path.
+Dedicated source-level references to the DCOM PDU types were not found under `tests\Opc.Classic.Dcom.Tests`. Current coverage is therefore **0 of the requested 13 round-trip slots**. Required gaps are: `BindPdu`, `BindAcknowledgePdu`, `BindNoAcknowledgePdu`, `AlterContextPdu`, `AlterContextResponsePdu`, `Auth3Pdu`, `RequestCoPdu`, `ResponseCoPdu`, `FaultCoPdu`, `CancelCoPdu`, `OrphanedPdu`, `ShutdownPdu`, and the shared connection-oriented header/framing path.
 
 Existing DCOM tests exercise activation records, default NTLM/protection flags, property bags, and reflection dispatch, but not byte-for-byte PDU encode/decode.
 
@@ -88,12 +90,12 @@ Phase 3D follow-up remains open for a successful Kerberos.NET in-memory KDC tick
 
 | Priority | Missing test class or suite | Recommendation |
 |---|---|---|
-| blocking 1.0 | `tests/Opc.Classic.Dcom.Tests/Rpc/Pdu/*RoundTripTests.cs` | Add byte fixtures and encode/decode equality for all 13 DCOM PDU slots before declaring the managed RPC layer stable. |
+| blocking 1.0 | `tests\Opc.Classic.Dcom.Tests\Rpc\Pdu\*RoundTripTests.cs` | Add byte fixtures and encode/decode equality for all 13 DCOM PDU slots before declaring the managed RPC layer stable. |
 | blocking 1.0 | `NtlmMsNlmpVectorTests` | Add remaining MS-NLMP §4.2.4.2-§4.2.5 vectors, including negotiated flags, target-info AV pairs, MIC, and compatibility modes. |
 | blocking 1.0 | `NtlmSignSealRoundTripTests` | Add RC4/HMAC-MD5 sign/seal round-trips with sequence-number mutation checks so message integrity regressions are caught. |
 | blocking 1.0 | `KerberosInMemoryKdcTests` | Complete Phase 3D follow-up: acquire an AP-REQ from an in-memory Kerberos.NET KDC and validate the success path, not only expected KDC failure. |
 | before 1.0 | `SpnegoNegotiationStateMachineTests` | Drive accept-incomplete, accept-complete, reject, fallback, and no-common-mechanism transitions across NTLMv2 and Kerberos. |
-| before 1.0 | `Opc.Classic.Integration.Tests/Loopback/F4_Auth` | Unskip NTLMv2/Kerberos/SPNEGO loopback auth once Phase 3 auth wiring lands. |
+| before 1.0 | `Opc.Classic.Integration.Tests\Loopback\F4_Auth` | Unskip NTLMv2/Kerberos/SPNEGO loopback auth once Phase 3 auth wiring lands. |
 | before 1.0 | AE/HDA loopback shim suites | Unskip event-delivery and HDA-cancellation integration tests when hosting contracts land. |
 | before 1.0 | Cpx/DX/Batch/Commands shim contract suites | Expand from type/ID smoke tests to mocked `IComObject` call-shape and error-path assertions. |
 | post-1.0 | `Opc.Classic.Dcom.Logging.Tests` | Either add logger/diagnostic assertions or remove/merge the zero-test project. |

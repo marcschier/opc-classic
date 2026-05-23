@@ -1,12 +1,14 @@
 # Migrate from the .NET Framework OPC NET API to Opc.Classic.*
 
+Updated for Opc.Classic 0.4.0-alpha.1.
+
 ## What this covers
 
 Move an application from `OpcCom.Da.Server` to .NET 10 and `Opc.Classic.Da`.
 
 ## Status / availability
 
-`OpcUrl` / `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, and `SubscriptionState` are in `src\Opc.Classic.Da`. DCOM call shims are Phase 6B, so final factory names may change.
+`OpcUrl` / `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, and `SubscriptionState` are in `src\Opc.Classic.Da`. The 0.4.0-alpha.1 rename standardizes package IDs, namespaces, folders, and project names on `Opc.Classic.*`.
 
 ## Project file
 
@@ -24,6 +26,7 @@ Move an application from `OpcCom.Da.Server` to .NET 10 and `Opc.Classic.Da`.
 Remove WCF and Windows-only COM dependencies:
 
 ```bash
+dotnet add package Opc.Classic.Core
 dotnet add package Opc.Classic.Da
 ```
 
@@ -46,7 +49,7 @@ var connectData = OpcConnectData.WithNtlmV2(
     OpcProtectionLevel.Integrity);
 
 await using IDaServer server =
-    await DaClient.ConnectAsync(connectData, cancellationToken); // planned Phase 6B factory
+    await DaClient.ConnectAsync(connectData, cancellationToken);
 ```
 
 ## Subscription side-by-side
@@ -80,4 +83,4 @@ await foreach (DataChange change in subscription.DataChanges.WithCancellation(ca
 - Public DA values are `object?`; wire/NDR code uses `OpcVariant`.
 - `CoCreateInstance` becomes `OpcUrl` plus `OpcConnectData`.
 - Reflection-based marshaling becomes NDR codecs plus source-generated proxies. See `docs\ARCHITECTURE.md`.
-
+- Generator-emitted client proxy classes are now named without the underscore, for example `IOPCServerClientProxy`; IDL-spec identifiers such as `IOPCHDA_Server` retain their OPC-defined underscores.

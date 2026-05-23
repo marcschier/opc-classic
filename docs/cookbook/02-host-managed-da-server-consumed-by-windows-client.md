@@ -1,57 +1,54 @@
 # Host a managed OPC DA server consumed by a Windows COM client
 
+Updated for Opc.Classic 0.4.0-alpha.1.
+
 ## What this covers
 
-Run a managed OPC DA server on Linux or macOS while legacy Windows DA clients connect through DA COM interfaces.
+Run a managed OPC DA server on Linux, macOS, or Windows while legacy Windows DA clients connect through DA COM interfaces.
 
 ## Status / availability
 
-Forward-looking: this requires Phase 4 server hosting, generated `LocalCoClass` dispatch, and the planned `OpcLocalCoClass` API. `docs\ARCHITECTURE.md` explains the transport split above `ICallChannel`. End-to-end interop is the Phase 14B GOLD STANDARD deliverable.
+`samples\Opc.Classic.Samples.DaServer` is the general managed DA hosting sample. It uses `AddClassicServer`, `AddClassicClsidRegistry`, and `AddOpcDaServer<T>` and registers `Opc.Classic.Samples.DaServer.1`. The related `AeServer`, `HdaServer`, and `CttServer` samples cover AE/HDA hosting and the CTT DA workflow target. Full Windows COM-client compatibility remains gated by the Phase 14B/14D conformance matrix.
 
-## Planned hosting shape
+## Hosting shape
 
 ```csharp
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Opc.Classic;
-using Opc.Classic.Da;
-using Opc.Classic.Da.Dcom;
-using Opc.Classic.Hosting; // planned Phase 4 API
+using Opc.Classic.Da.Hosting;
+using Opc.Classic.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddSingleton<MyDaHandler>();
 
-builder.Services.AddOpcLocalCoClass(new OpcLocalCoClass
+builder.Services.AddClassicServer();
+builder.Services.AddClassicClsidRegistry(builder.Configuration);
+builder.Services.AddOpcDaServer<MyDaServer>(static options =>
 {
-    ProgId = "Contoso.ManagedOpcDa.1",
-    ClassId = Guid.Parse("7f41b3e9-32ec-40c9-9e42-3e0e0fce5a11"),
-    Interfaces = { typeof(IOPCServer), typeof(IOPCGroupStateMgt), typeof(IOPCSyncIO) },
-    HandlerType = typeof(MyDaHandler),
-});
-
-builder.Services.AddOpcDcomServer(o =>
-{
-    o.Listen("0.0.0.0", port: 13550); // TCP RPC endpoint
-    o.RequireProtectionLevel(OpcProtectionLevel.Integrity);
+    options.Clsid = Guid.Parse("7f41b3e9-32ec-40c9-9e42-3e0e0fce5a11");
+    options.ProgId = "Contoso.ManagedOpcDa.1";
+    options.FriendlyName = "Contoso Managed OPC DA Server";
+    options.ListenAddress = "0.0.0.0:13550";
 });
 
 await builder.Build().RunAsync();
 ```
 
-`MyDaHandler` maps `IOPCServer` calls to managed DA operations:
+`MyDaServer` maps `IOPCServer` calls to managed DA operations:
 
 ```csharp
-public sealed class MyDaHandler
+public sealed class MyDaServer : IOpcDaServer
 {
-    public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct) => ...;
-    public Task<IReadOnlyList<ItemValueResult>> ReadAsync(IReadOnlyList<Item> items, CancellationToken ct) => ...;
+    public Task<OpcServerStatus> GetStatusAsync(CancellationToken ct = default) => ...;
+    public Task<int> AddGroupAsync(string name, bool active, int requestedUpdateRate, int clientHandle, int localeId, CancellationToken ct = default) => ...;
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken ct = default) => ...;
+    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken ct = default) => ...;
 }
 ```
 
 ## Authentication model
 
-Pre-share an NTLMv2 machine or service account. The server validates NTLM Type3 messages per MS-NLMP and requires `OpcProtectionLevel.Integrity` or stronger. Kerberos/SPNEGO follows Phase 3D-F; see [03-kerberos-in-active-directory.md](03-kerberos-in-active-directory.md).
+Pre-share an NTLMv2 machine or service account. The server validates NTLM Type3 messages per MS-NLMP and requires `OpcProtectionLevel.Integrity` or stronger. Kerberos/SPNEGO follows the same `IAuthContext` seam; see [03-kerberos-in-active-directory.md](03-kerberos-in-active-directory.md).
 
 ## Windows client side
 
-The client still asks for `Contoso.ManagedOpcDa.1`. A Windows-side proxy registration points activation at the managed host endpoint, then `IOPCServer`, `IOPCGroupStateMgt`, and related calls flow to generated dispatch instead of reflection.
-
+The client still asks for `Contoso.ManagedOpcDa.1`. A Windows-side proxy registration points activation at the managed host endpoint, then `IOPCServer`, `IOPCGroupStateMgt`, and related calls flow to generated dispatch instead of reflection. Generator-emitted client proxy classes now use names like `IOPCServerClientProxy`; the pre-0.4 underscore form was removed in 0.4.0-alpha.1.

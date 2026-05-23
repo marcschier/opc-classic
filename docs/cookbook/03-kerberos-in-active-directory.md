@@ -1,12 +1,14 @@
 # Kerberos authentication in an Active Directory environment
 
+Updated for Opc.Classic 0.4.0-alpha.1.
+
 ## What this covers
 
 Use Kerberos through SPNEGO for enterprise DCOM authentication when the OPC client and server are in Active Directory.
 
 ## Status / availability
 
-Forward-looking: `OpcConnectData.WithKerberos` and `OpcAuthMode.Kerberos` exist in `src\Opc.Classic.Core`, but Kerberos.NET integration is Phase 3D, SPNEGO is Phase 3E, and channel binding is Phase 3F.
+`OpcConnectData.WithKerberos`, `OpcAuthMode.Kerberos`, Kerberos/SPNEGO token plumbing, and the `IAuthContext` seam are in the Opc.Classic tree. External Active Directory validation remains part of the 1.0.0 compatibility gate; test the exact SPN, DNS, clock, and packet-integrity policy used by your deployment.
 
 ## Request a DCOM service ticket
 
@@ -33,10 +35,10 @@ byte[] apReq = await krb.GetServiceTicket("RPCSS/opc01.corp.example.com", cancel
 
 ## Bind through SPNEGO
 
-Phase 3E wraps the Kerberos AP-REQ in a SPNEGO Init/Resp blob and places it in the DCE/RPC bind auth verifier. Generated DA shims still use `ICallChannel`; only auth changes.
+SPNEGO wraps the Kerberos AP-REQ in an Init/Resp blob and places it in the DCE/RPC bind auth verifier. Generated DA shims still use `ICallChannel`; only auth changes.
 
 ```csharp
-var bindOptions = new SpnegoBindOptions // planned Phase 3E type
+var bindOptions = new SpnegoBindOptions
 {
     Mechanism = SpnegoMechanism.Kerberos,
     InitialToken = apReq,
@@ -46,7 +48,7 @@ var bindOptions = new SpnegoBindOptions // planned Phase 3E type
 
 ## Channel binding / EPA
 
-For TLS-protected DCOM endpoints, Phase 3F adds EPA by including the `tls-server-end-point` certificate hash in the Kerberos AUTHENTICATOR checksum before SPNEGO wrapping.
+For TLS-protected DCOM endpoints, channel binding / EPA includes the `tls-server-end-point` certificate hash in the Kerberos authenticator checksum before SPNEGO wrapping.
 
 ## Diagnostics
 
