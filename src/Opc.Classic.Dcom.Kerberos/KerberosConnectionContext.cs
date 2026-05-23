@@ -47,13 +47,11 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         AcquireApRequestAsync(channelBindingsHash: null, cancellationToken);
 
     /// <summary>
-    /// Acquires an AP-REQ token for the configured SPN with an optional Phase 3F channel-bindings hash.
+    /// Acquires an AP-REQ token for the configured SPN with an optional channel-bindings hash.
     /// </summary>
     /// <param name="channelBindingsHash">
-    /// Optional Phase 3F channel-bindings hash. Kerberos.NET does not currently expose
-    /// the AP-REQ authorization-data hook needed to embed this value as
-    /// KERB_AD_RESTRICTION_ENTRY, so this is accepted for the integration point and
-    /// deferred until that API surface is available.
+    /// Optional RFC 2744 MD5 channel-bindings hash to embed in the
+    /// KRB_AP_CHKSUM_TYPE_GSS authenticator checksum.
     /// </param>
     /// <param name="cancellationToken">Cancellation token for the future KDC request flow.</param>
     /// <returns>The AP-REQ token bytes.</returns>
@@ -62,11 +60,6 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        if (channelBindingsHash.HasValue && !channelBindingsHash.Value.IsEmpty)
-        {
-            _ = channelBindingsHash.Value;
-        }
-
         var credential = CreateCredential();
         using var client = CreateKerberosClient();
 
@@ -74,14 +67,7 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         cancellationToken.ThrowIfCancellationRequested();
 
         var sessionContext = await client.GetServiceTicket(
-            new RequestServiceTicket
-            {
-                ServicePrincipalName = _info.Spn,
-                Realm = _info.Realm,
-                ApOptions = ApOptions.MutualRequired,
-                GssContextFlags = GssContextEstablishmentFlag.GSS_C_MUTUAL_FLAG,
-                IncludeSequenceNumber = true,
-            },
+            CreateRequestServiceTicket(_info, channelBindingsHash),
             cancellationToken).ConfigureAwait(false);
 
         _sessionContext = sessionContext;
@@ -106,6 +92,29 @@ public sealed class KerberosConnectionContext : IKerberosConnectionContext
         var sessionKey = sessionContext.AuthenticateServiceResponse(applicationToken);
         return Task.FromResult(sessionKey.KeyValue.ToArray());
     }
+
+    private static RequestServiceTicket CreateRequestServiceTicket(
+        KerberosAuthInfo info,
+        ReadOnlyMemory<byte>? channelBindingsHash)
+    {
+        var gssFlags = GssContextEstablishmentFlag.GSS_C_MUTUAL_FLAG;
+        KrbChecksum? authenticatorChecksum = null;
+        if (channelBindingsHash.HasValue && !channelBindingsHash.Value.IsEmpty)
+        {
+            authenticatorChecksum = KerberosChannelBindingChecksum.Create(channelBindingsHash.Value, gssFlags);
+        }
+
+        return new RequestServiceTicket
+        {
+            ServicePrincipalName = info.Spn,
+            Realm = info.Realm,
+            ApOptions = ApOptions.MutualRequired,
+            GssContextFlags = gssFlags,
+            IncludeSequenceNumber = true,
+            AuthenticatorChecksum = authenticatorChecksum,
+        };
+    }
+
 
     private KerberosClient CreateKerberosClient()
     {

@@ -13,6 +13,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
     using Opc.Classic.Dcom.Internal.LegacyNdr;
     using Opc.Classic.Dcom.Internal.Ntlm;
     using Opc.Classic.Dcom.Kerberos;
+    using Opc.Classic.Security;
     using System;
     using System.Buffers.Binary;
     using SharpCifs;
@@ -63,6 +64,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 _useNtlmV2 = GetBooleanProperty(properties, "rpc.ntlm.ntlmv2", true);
                 _allowNtlmV1 = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.allowV1"));
                 _useSSO = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.sso"));
+                _channelBindingsHash = CloneChannelBindingsHash(properties.GetProperty("rpc.ntlm.channelBindingsHash"));
                 domain = (string)properties.GetProperty("rpc.ntlm.domain");
                 user = (string)properties.GetProperty(SharpInterop.Rpc.Security.USERNAME);
                 password = (string)properties.GetProperty(SharpInterop.Rpc.Security.PASSWORD);
@@ -99,7 +101,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                 OpcAuthMode.Anonymous => NoOpAuthContext.Instance,
                 OpcAuthMode.Kerberos => new KerberosAuthContext(
                     BuildKerberosAuthInfo(connectData),
-                    channelBindings: null,
+                    channelBindings: connectData.ChannelBindings,
                     protectionLevel: connectData.ProtectionLevel),
                 OpcAuthMode.NtlmV2 => new NtlmAuthContext(connectData),
                 _ => throw new NotSupportedException($"Auth mode {connectData.AuthMode} not supported")
@@ -147,6 +149,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             properties.SetProperty("rpc.ntlm.allowV1", "false");
             properties.SetProperty("rpc.ntlm.sso", "false");
             properties.SetProperty("rpc.ntlm.domain", credentials.Domain);
+            if (connectData.ChannelBindings is not null) {
+                properties.SetProperty("rpc.ntlm.channelBindingsHash", ChannelBindingsHash.Compute(connectData.ChannelBindings));
+            }
             properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, credentials.UserName);
             properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, credentials.Password);
             return properties;
@@ -298,8 +303,9 @@ namespace SharpInterop.Rpc.Auth.ntlm {
                     try {
                         var lmv2Response = Responses.GetLMv2Response(target,
                             _credentials.UserName, _credentials.Password, type2.GetChallenge(), clientNonce);
+                        var targetInformation = ApplyChannelBindings(type2.GetTargetInformation());
                         var retval = Responses.GetNTLMv2Response(target,
-                            _credentials.UserName, _credentials.Password, type2.GetTargetInformation(),
+                            _credentials.UserName, _credentials.Password, targetInformation,
                             type2.GetChallenge(), clientNonce);
                         var ntlmv2Response = retval[0];
                         blob = retval[1];
@@ -584,6 +590,7 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             Array.Copy(ntResponse, 0, ntProofStr, 0, ntProofStr.Length);
             var temp = new byte[ntResponse.Length - ntProofStr.Length];
             Array.Copy(ntResponse, ntProofStr.Length, temp, 0, temp.Length);
+            ValidateChannelBindingsInNtChallengeResponse(temp);
 
             var target = type3Message.GetDomain() ?? _credentials.Domain;
             var user = type3Message.GetUser() ?? _credentials.UserName;
@@ -615,6 +622,119 @@ namespace SharpInterop.Rpc.Auth.ntlm {
             NtlmFlags.NtlmsspNegotiateOem | NtlmFlags.NtlmsspNegotiateAlwaysSign |
             (kUnicodeSupported ? NtlmFlags.NtlmsspNegotiateUnicode : NtlmFlags.None);
 
+        private byte[] ApplyChannelBindings(byte[] targetInformation) {
+            if (_channelBindingsHash == null || _channelBindingsHash.Length == 0) {
+                return targetInformation;
+            }
+
+            return AddOrReplaceAvPair(targetInformation, MsvAvChannelBindings, _channelBindingsHash);
+        }
+
+        private void ValidateChannelBindingsInNtChallengeResponse(byte[] temp) {
+            if (_channelBindingsHash == null || _channelBindingsHash.Length == 0) {
+                return;
+            }
+
+            const int avPairsOffset = 28;
+            if (temp.Length < avPairsOffset ||
+                !TryGetAvPair(temp.AsSpan(avPairsOffset), MsvAvChannelBindings, out var actualChannelBindings) ||
+                actualChannelBindings.Length != _channelBindingsHash.Length ||
+                !CryptographicOperations.FixedTimeEquals(actualChannelBindings, _channelBindingsHash)) {
+                throw new SecurityException("NTLMv2 channel bindings did not match the TLS endpoint.");
+            }
+        }
+
+        private static byte[] CloneChannelBindingsHash(object value) {
+            if (value == null) {
+                return null;
+            }
+
+            if (value is byte[] bytes) {
+                if (bytes.Length != 16) {
+                    throw new ArgumentException("NTLM channel bindings hash must be exactly 16 bytes.");
+                }
+
+                return (byte[])bytes.Clone();
+            }
+
+            throw new ArgumentException("NTLM channel bindings hash must be a byte array.");
+        }
+
+        private static byte[] AddOrReplaceAvPair(byte[] targetInformation, ushort avId, byte[] value) {
+            var source = targetInformation ?? Array.Empty<byte>();
+            using var output = new MemoryStream(source.Length + 4 + value.Length);
+            var offset = 0;
+            var wroteChannelBindings = false;
+
+            while (offset + 4 <= source.Length) {
+                var currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(source.AsSpan(offset, sizeof(ushort)));
+                var length = BinaryPrimitives.ReadUInt16LittleEndian(source.AsSpan(offset + sizeof(ushort), sizeof(ushort)));
+                offset += 4;
+                if (length > source.Length - offset) {
+                    throw new ArgumentException("NTLM target information AV_PAIR length is invalid.", nameof(targetInformation));
+                }
+
+                if (currentAvId == MsvAvEol) {
+                    if (!wroteChannelBindings) {
+                        WriteAvPair(output, avId, value);
+                    }
+
+                    WriteAvPair(output, MsvAvEol, Array.Empty<byte>());
+                    return output.ToArray();
+                }
+
+                if (currentAvId == avId) {
+                    WriteAvPair(output, avId, value);
+                    wroteChannelBindings = true;
+                }
+                else {
+                    WriteAvPair(output, currentAvId, source.AsSpan(offset, length));
+                }
+
+                offset += length;
+            }
+
+            if (!wroteChannelBindings) {
+                WriteAvPair(output, avId, value);
+            }
+            WriteAvPair(output, MsvAvEol, Array.Empty<byte>());
+            return output.ToArray();
+        }
+
+        private static bool TryGetAvPair(ReadOnlySpan<byte> targetInformation, ushort avId, out ReadOnlySpan<byte> value) {
+            var offset = 0;
+            while (offset + 4 <= targetInformation.Length) {
+                var currentAvId = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset, sizeof(ushort)));
+                var length = BinaryPrimitives.ReadUInt16LittleEndian(targetInformation.Slice(offset + sizeof(ushort), sizeof(ushort)));
+                offset += 4;
+                if (length > targetInformation.Length - offset) {
+                    break;
+                }
+
+                if (currentAvId == avId) {
+                    value = targetInformation.Slice(offset, length);
+                    return true;
+                }
+
+                if (currentAvId == MsvAvEol) {
+                    break;
+                }
+
+                offset += length;
+            }
+
+            value = ReadOnlySpan<byte>.Empty;
+            return false;
+        }
+
+        private static void WriteAvPair(Stream output, ushort avId, ReadOnlySpan<byte> value) {
+            Span<byte> header = stackalloc byte[4];
+            BinaryPrimitives.WriteUInt16LittleEndian(header, avId);
+            BinaryPrimitives.WriteUInt16LittleEndian(header[sizeof(ushort)..], checked((ushort)value.Length));
+            output.Write(header);
+            output.Write(value);
+        }
+
         private static bool GetBooleanProperty(PropertyBag properties, string name, bool defaultValue) {
             var value = properties.GetProperty(name);
             return value == null ? defaultValue : Convert.ToBoolean(value);
@@ -635,7 +755,10 @@ namespace SharpInterop.Rpc.Auth.ntlm {
         private readonly bool _useNtlmV2;
         private readonly bool _allowNtlmV1;
         private readonly bool _useSSO;
+        private readonly byte[] _channelBindingsHash;
         private byte[] _serverChallenge;
+        private const ushort MsvAvEol = 0x0000;
+        private const ushort MsvAvChannelBindings = 0x000A;
         private static readonly Random kRandomGen = new Random();
     }
 }

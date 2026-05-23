@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestData\*.cer" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
   </ItemGroup>
 

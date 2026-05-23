@@ -60,7 +60,7 @@ public sealed class KerberosAuthContextTests
     }
 
     [Test]
-    public async Task KerberosAuthContext_with_channel_bindings_documents_phase3f_integration_point()
+    public async Task KerberosAuthContext_with_channel_bindings_passes_hash_to_ap_req_builder()
     {
         var bindings = new ChannelBindings(
             InitiatorAddrType: 0,

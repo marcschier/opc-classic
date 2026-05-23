@@ -5,6 +5,7 @@
 
 using System;
 using System.Net;
+using Opc.Classic.Security;
 
 namespace Opc.Classic;
 
@@ -37,12 +38,16 @@ public sealed class OpcConnectData
     /// Per-operation timeout. <see langword="null"/> means use the global default
     /// (typically 30 seconds).
     /// </param>
+    /// <param name="channelBindings">
+    /// Optional RFC 5056 channel bindings for TLS-protected endpoints.
+    /// </param>
     public OpcConnectData(
         OpcUrl url,
         NetworkCredential? credentials = null,
         OpcAuthMode authMode = OpcAuthMode.NtlmV2,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
-        TimeSpan? operationTimeout = null)
+        TimeSpan? operationTimeout = null,
+        ChannelBindings? channelBindings = null)
     {
         ArgumentNullException.ThrowIfNull(url);
         if (authMode == OpcAuthMode.Anonymous && credentials is not null)
@@ -70,6 +75,7 @@ public sealed class OpcConnectData
             ? OpcProtectionLevel.Integrity
             : protectionLevel;
         OperationTimeout = operationTimeout;
+        ChannelBindings = channelBindings;
     }
 
     /// <summary>Target OPC URL.</summary>
@@ -87,6 +93,9 @@ public sealed class OpcConnectData
     /// <summary>Per-operation timeout, or <see langword="null"/> for global default.</summary>
     public TimeSpan? OperationTimeout { get; }
 
+    /// <summary>Optional RFC 5056 channel bindings for TLS-protected endpoints.</summary>
+    public ChannelBindings? ChannelBindings { get; }
+
     /// <summary>Construct anonymous connection data (no credentials, no NTLM).</summary>
     public static OpcConnectData Anonymous(OpcUrl url, TimeSpan? operationTimeout = null)
         => new(url, credentials: null, authMode: OpcAuthMode.Anonymous, operationTimeout: operationTimeout);
@@ -96,10 +105,11 @@ public sealed class OpcConnectData
         OpcUrl url,
         NetworkCredential credentials,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
-        TimeSpan? operationTimeout = null)
+        TimeSpan? operationTimeout = null,
+        ChannelBindings? channelBindings = null)
     {
         ArgumentNullException.ThrowIfNull(credentials);
-        return new OpcConnectData(url, credentials, OpcAuthMode.NtlmV2, protectionLevel, operationTimeout);
+        return new OpcConnectData(url, credentials, OpcAuthMode.NtlmV2, protectionLevel, operationTimeout, channelBindings);
     }
 
     /// <summary>Construct Kerberos / SPNEGO connection data (requires Phase 3D).</summary>
@@ -107,9 +117,10 @@ public sealed class OpcConnectData
         OpcUrl url,
         NetworkCredential credentials,
         OpcProtectionLevel protectionLevel = OpcProtectionLevel.Integrity,
-        TimeSpan? operationTimeout = null)
+        TimeSpan? operationTimeout = null,
+        ChannelBindings? channelBindings = null)
     {
         ArgumentNullException.ThrowIfNull(credentials);
-        return new OpcConnectData(url, credentials, OpcAuthMode.Kerberos, protectionLevel, operationTimeout);
+        return new OpcConnectData(url, credentials, OpcAuthMode.Kerberos, protectionLevel, operationTimeout, channelBindings);
     }
 }

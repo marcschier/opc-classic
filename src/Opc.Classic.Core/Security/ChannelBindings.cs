@@ -8,7 +8,7 @@ namespace Opc.Classic.Security;
 /// <summary>
 /// RFC 5056 / RFC 2744 channel bindings structure used for EPA hardening
 /// of NTLMv2 (MsvAvChannelBindings AV-pair) and Kerberos
-/// (KERB_AD_RESTRICTION_ENTRY).
+/// (KRB_AP_CHKSUM_TYPE_GSS authenticator checksum).
 /// </summary>
 public sealed record ChannelBindings(
     int InitiatorAddrType,

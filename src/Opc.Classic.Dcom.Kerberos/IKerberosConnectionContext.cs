@@ -18,8 +18,8 @@ public interface IKerberosConnectionContext
     /// Acquires an AP-REQ token for the configured service principal.
     /// </summary>
     /// <param name="channelBindingsHash">
-    /// Optional RFC 2744 MD5 channel-bindings hash to embed in the future
-    /// KERB_AD_RESTRICTION_ENTRY authorization-data element.
+    /// Optional RFC 2744 MD5 channel-bindings hash to embed in the
+    /// KRB_AP_CHKSUM_TYPE_GSS authenticator checksum.
     /// </param>
     /// <param name="cancellationToken">Cancellation token for KDC I/O.</param>
     /// <returns>The AP-REQ token bytes.</returns>

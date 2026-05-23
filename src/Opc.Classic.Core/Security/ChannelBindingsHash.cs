@@ -3,12 +3,14 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
+using System.Security.Authentication;
+
 namespace Opc.Classic.Security;
 
 /// <summary>
 /// Computes the 16-byte MD5 hash of the GSS-API channel-bindings struct
 /// for embedding in NTLMv2's MsvAvChannelBindings AV-pair or Kerberos's
-/// KERB_AD_RESTRICTION_ENTRY.
+/// KRB_AP_CHKSUM_TYPE_GSS authenticator checksum.
 /// </summary>
 public static class ChannelBindingsHash
 {
@@ -67,4 +69,11 @@ public static class ChannelBindingsHash
     /// </summary>
     public static byte[] ForTlsServerCert(System.ReadOnlySpan<byte> serverCertDer) =>
         Compute(ChannelBindingsFactory.ForTlsServerEndpoint(serverCertDer));
+
+    /// <summary>
+    /// Computes the NTLM/Kerberos channel-bindings hash directly from a
+    /// DER-encoded TLS server certificate and negotiated TLS protocol.
+    /// </summary>
+    public static byte[] ForTlsServerCert(System.ReadOnlySpan<byte> serverCertDer, SslProtocols sslProtocol) =>
+        Compute(ChannelBindingsFactory.ForTlsServerEndpoint(serverCertDer, sslProtocol));
 }
