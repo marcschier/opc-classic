@@ -10,7 +10,7 @@
 5. The `release` workflow auto-runs on tag push:
    - Validates tag format `v<MAJOR>.<MINOR>.<PATCH>[-<prerelease>.<N>]`
    - Builds + tests (excluding NativeConformance/MatrikonConformance/CompatMatrix)
-   - Packs every `OpcClassic.*` library to a nupkg + snupkg
+   - Packs every `Opc.Classic.*` library to a nupkg + snupkg
    - Pushes to nuget.org if `NUGET_API_KEY` secret is configured
    - Uploads artifacts unconditionally for manual review
    - Creates a GitHub Release with the changelog section as the description
@@ -19,7 +19,7 @@
 
 The 1.0.0 release waits for ALL of the following to be GREEN:
 
-- ✅ AOT canary verified (`samples/OpcClassic.AotCanary/`)
+- ✅ AOT canary verified (`samples/Opc.Classic.Samples.AotCanary/`)
 - ✅ Coverage ≥ 70% line / 60% branch (current ~82%/70% on Core)
 - ⏳ Phase 14B native COM conformance (NEEDS prerequisites in workflow)
 - ⏳ Phase 14C Matrikon conformance (NEEDS Matrikon installer secret)

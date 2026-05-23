@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit tests for Opc.Classic.Cpx.</Description>
+    <RootNamespace>Opc.Classic.Cpx.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Cpx.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Cpx\Opc.Classic.Cpx.csproj" />
+  </ItemGroup>
+
+</Project>

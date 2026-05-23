@@ -41,16 +41,16 @@ jobs:
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
       - name: Restore
-        run: dotnet restore OpcClassic.slnx
+        run: dotnet restore Opc.Classic.slnx
 
       - name: Build
-        run: dotnet build OpcClassic.slnx --no-restore -c Release -p:Version=${{ env.VERSION }}
+        run: dotnet build Opc.Classic.slnx --no-restore -c Release -p:Version=${{ env.VERSION }}
 
       - name: Test
-        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
+        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance&Category!=MatrikonConformance&Category!=CompatMatrix"
 
       - name: Pack
-        run: dotnet pack OpcClassic.slnx --no-build -c Release -p:Version=${{ env.VERSION }} -o ./.nupkg
+        run: dotnet pack Opc.Classic.slnx --no-build -c Release -p:Version=${{ env.VERSION }} -o ./.nupkg
 
       - name: Push to nuget.org
         env:
@@ -90,7 +90,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
-          name: 'OpcClassic ${{ env.VERSION }}'
+          name: 'Opc.Classic ${{ env.VERSION }}'
           body: |
             ## What's new
 
@@ -98,7 +98,7 @@ jobs:
 
             ## Packages
 
-            All `OpcClassic.*` packages published at version `${{ env.VERSION }}` to nuget.org.
+            All `Opc.Classic.*` packages published at version `${{ env.VERSION }}` to nuget.org.
 
             ## Status
 

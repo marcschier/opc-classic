@@ -36,15 +36,15 @@ jobs:
           global-json-file: global.json
 
       - name: Restore
-        if: hashFiles('OpcClassic.slnx') != ''
-        run: dotnet restore OpcClassic.slnx
+        if: hashFiles('Opc.Classic.slnx') != ''
+        run: dotnet restore Opc.Classic.slnx
 
       - name: Build
-        if: hashFiles('OpcClassic.slnx') != ''
-        run: dotnet build OpcClassic.slnx --configuration ${{ matrix.configuration }} --no-restore
+        if: hashFiles('Opc.Classic.slnx') != ''
+        run: dotnet build Opc.Classic.slnx --configuration ${{ matrix.configuration }} --no-restore
 
       - name: Test with coverage
-        if: hashFiles('OpcClassic.slnx') != ''
+        if: hashFiles('Opc.Classic.slnx') != ''
         shell: pwsh
         run: |
           $coverageRoot = Join-Path $PWD "coverage-results"
@@ -72,7 +72,7 @@ jobs:
           }
 
       - name: Install ReportGenerator
-        if: hashFiles('OpcClassic.slnx') != ''
+        if: hashFiles('Opc.Classic.slnx') != ''
         shell: pwsh
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
@@ -86,14 +86,14 @@ jobs:
           $toolPath | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Generate coverage report
-        if: hashFiles('OpcClassic.slnx') != ''
+        if: hashFiles('Opc.Classic.slnx') != ''
         shell: pwsh
         run: |
           reportgenerator `
             -reports:./coverage-results/**/coverage.cobertura.xml `
             -targetdir:./coverage-report `
             -reporttypes:"Cobertura;TextSummary;MarkdownSummaryGithub" `
-            -assemblyfilters:"+*;-OpcClassic.Dcom*;-SharpInterop*;-OpcClassic.Generators*;-*Tests*" `
+            -assemblyfilters:"+*;-Opc.Classic.Dcom*;-SharpInterop*;-Opc.Classic.Generators*;-*Tests*" `
             -classfilters:"+*;-*.Generated.*;-*Tests*" `
             -filefilters:"-**/obj/**;-**/bin/**;-**/*.g.cs"
 
@@ -108,7 +108,7 @@ jobs:
         run: cat ./coverage-report/SummaryGithub.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Coverage gate (line >=70%, branch >=60%)
-        if: hashFiles('OpcClassic.slnx') != ''
+        if: hashFiles('Opc.Classic.slnx') != ''
         shell: pwsh
         run: |
           [xml]$cov = Get-Content ./coverage-report/Cobertura.xml
@@ -140,8 +140,8 @@ jobs:
         with:
           global-json-file: global.json
       - name: dotnet format --verify-no-changes
-        if: hashFiles('OpcClassic.slnx') != ''
-        run: dotnet format OpcClassic.slnx --verify-no-changes --severity error
+        if: hashFiles('Opc.Classic.slnx') != ''
+        run: dotnet format Opc.Classic.slnx --verify-no-changes --severity error
 
   aot-canary:
     name: aot-canary-${{ matrix.os }}
@@ -157,8 +157,8 @@ jobs:
         with:
           global-json-file: global.json
       - name: Publish NativeAOT canary
-        if: hashFiles('samples/OpcClassic.AotCanary/*.csproj') != ''
-        run: dotnet publish samples/OpcClassic.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
+        if: hashFiles('samples/Opc.Classic.Samples.AotCanary/*.csproj') != ''
+        run: dotnet publish samples/Opc.Classic.Samples.AotCanary --configuration Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
 
   windows-conformance:
     needs: build
@@ -172,7 +172,7 @@ jobs:
 
       - name: Build managed solution for Windows tests
         shell: pwsh
-        run: dotnet build OpcClassic.slnx -c Release
+        run: dotnet build Opc.Classic.slnx -c Release
 
       - name: Install OPC Foundation Core Components
         shell: pwsh
@@ -234,11 +234,11 @@ jobs:
 
       - name: Run cross-platform managed tests on Windows
         shell: pwsh
-        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=windows-tests.trx"
+        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category!=NativeConformance" --logger "trx;LogFileName=windows-tests.trx"
 
       - name: Run native COM conformance tests (Phase 14B)
         shell: pwsh
-        run: dotnet test OpcClassic.slnx --no-build -c Release --filter "Category=NativeConformance"
+        run: dotnet test Opc.Classic.slnx --no-build -c Release --filter "Category=NativeConformance"
         if: success()
         continue-on-error: true  # native conformance is opt-in until Phase 14B+14C land
 

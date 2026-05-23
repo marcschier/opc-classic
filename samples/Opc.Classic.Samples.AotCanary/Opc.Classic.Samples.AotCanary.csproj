@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PublishAot>true</PublishAot>
+    <RootNamespace>Opc.Classic.Samples.AotCanary</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Da\Opc.Classic.Da.csproj" />
+  </ItemGroup>
+</Project>

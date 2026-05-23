@@ -79,7 +79,7 @@ AE registers `OPCSample.OPCEventServer.1` and
 
 ## Phase 14B test connection
 
-`tests/OpcClassic.Integration.Tests/Native/` uses these ProgIDs and CLSIDs
+`tests/Opc.Classic.Integration.Tests/Native/` uses these ProgIDs and CLSIDs
 via `NativeServerProbe.ShouldSkip(progId, clsid, out reason)`. Tests soft-skip
 on non-Windows, when the servers aren't registered, or when the registered
 ProgID maps to an unexpected CLSID.

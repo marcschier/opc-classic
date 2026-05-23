@@ -5,7 +5,7 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>cobertura,opencover</Format>
-          <Exclude>[*]OpcClassic.Dcom.*,[*]SharpInterop.*,[OpcClassic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
+          <Exclude>[*]Opc.Classic.Dcom.*,[*]SharpInterop.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
           <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
           <ExcludeByFile>**/obj/**,**/bin/**,**/*.g.cs</ExcludeByFile>
           <IncludeTestAssembly>false</IncludeTestAssembly>

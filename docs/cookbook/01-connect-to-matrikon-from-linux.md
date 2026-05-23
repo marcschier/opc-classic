@@ -6,20 +6,20 @@ A .NET 10 Linux client connects to a Windows Matrikon OPC DA Simulation Server, 
 
 ## Status / availability
 
-`OpcUrl` and `OpcConnectData` are in `src\OpcClassic.Core`; `IDaServer`, `IDaSubscription`, `SubscriptionState`, and `Item` are in `src\OpcClassic.Da`. DCOM call-shim emission for `IOPCServer` / `IOPCGroupStateMgt` is Phase 6B work; connection, auth, and NDR are in place. Phase 14C covers Matrikon connectivity.
+`OpcUrl` and `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `SubscriptionState`, and `Item` are in `src\Opc.Classic.Da`. DCOM call-shim emission for `IOPCServer` / `IOPCGroupStateMgt` is Phase 6B work; connection, auth, and NDR are in place. Phase 14C covers Matrikon connectivity.
 
 ## Install
 
 ```bash
-dotnet add package OpcClassic.Da
+dotnet add package Opc.Classic.Da
 ```
 
 ## Connect
 
 ```csharp
 using System.Net;
-using OpcClassic;
-using OpcClassic.Da;
+using Opc.Classic;
+using Opc.Classic.Da;
 
 var url = OpcUrl.Parse("opcda://win-opc01/Matrikon.OPC.Simulation.1");
 var connectData = OpcConnectData.WithNtlmV2(

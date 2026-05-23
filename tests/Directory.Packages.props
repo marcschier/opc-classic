@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup Label="TRANSITIONAL — Serilog package removed once Phase 2G migration complete.">
-    <!-- Serilog removed — all OpcClassic.Dcom consumers migrated to ILogger shim per Phase 2G. -->
+    <!-- Serilog removed — all Opc.Classic.Dcom consumers migrated to ILogger shim per Phase 2G. -->
   </ItemGroup>
 
   <!--

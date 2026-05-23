@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Security 1.00 managed records and helpers.</Description>
+    <RootNamespace>Opc.Classic.Security</RootNamespace>
+    <AssemblyName>Opc.Classic.Security</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+  </ItemGroup>
+
+</Project>

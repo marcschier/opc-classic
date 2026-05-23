@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Batch 2.00 managed records and NDR wire codecs.</Description>
+    <RootNamespace>Opc.Classic.Batch</RootNamespace>
+    <AssemblyName>Opc.Classic.Batch</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+  </ItemGroup>
+
+</Project>

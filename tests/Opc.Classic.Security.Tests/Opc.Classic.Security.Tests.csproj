@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit tests for Opc.Classic.Security.</Description>
+    <RootNamespace>Opc.Classic.Security.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Security.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Security\Opc.Classic.Security.csproj" />
+  </ItemGroup>
+
+</Project>

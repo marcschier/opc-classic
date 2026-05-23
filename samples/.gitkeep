@@ -1,2 +1,2 @@
-# Sample apps, including the OpcClassic.AotCanary that gates AOT-cleanliness in CI.
+# Sample apps, including the Opc.Classic.Samples.AotCanary that gates AOT-cleanliness in CI.
 # Populated by Phases 6+ and 16E.

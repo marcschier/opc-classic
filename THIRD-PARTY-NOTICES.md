@@ -3,12 +3,16 @@
 This project incorporates components from the projects listed below.
 The licenses governing the use of these components are included below.
 
+## Project License
+
+Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
+
 ## Production Dependencies (src/)
 
 ### Microsoft.Extensions.Logging.Abstractions
 - Source: https://github.com/dotnet/runtime
 - License: MIT
-- Used in: OpcClassic.Dcom
+- Used in: Opc.Classic.Dcom
 - Version: 10.0.0
 
 ## Build/Generator Dependencies
@@ -16,13 +20,13 @@ The licenses governing the use of these components are included below.
 ### Microsoft.CodeAnalysis.CSharp
 - Source: https://github.com/dotnet/roslyn
 - License: MIT
-- Used in: OpcClassic.Generators (build-time only, not redistributed at runtime)
+- Used in: Opc.Classic.Generators (build-time only, not redistributed at runtime)
 - Version: 4.11.0
 
 ### Microsoft.CodeAnalysis.Analyzers
 - Source: https://github.com/dotnet/roslyn-analyzers
 - License: MIT
-- Used in: OpcClassic.Generators (build-time analyzer dependency)
+- Used in: Opc.Classic.Generators (build-time analyzer dependency)
 - Version: 3.11.0
 
 ### Microsoft.CodeAnalysis.BannedApiAnalyzers
@@ -66,7 +70,7 @@ The licenses governing the use of these components are included below.
 ### CsCheck
 - Source: https://github.com/AnthonyLloyd/CsCheck
 - License: Apache-2.0
-- Used in: OpcClassic.PropertyTests
+- Used in: Opc.Classic.PropertyTests
 - Version: 4.4.0
 
 ### Verify.TUnit
@@ -78,13 +82,13 @@ The licenses governing the use of these components are included below.
 ### Microsoft.Extensions.Logging / Microsoft.Extensions.Logging.Abstractions
 - Source: https://github.com/dotnet/runtime
 - License: MIT
-- Used in: OpcClassic.Dcom.Logging.Tests
+- Used in: Opc.Classic.Dcom.Logging.Tests
 - Version: 10.0.0
 
 ### Microsoft.Extensions.Diagnostics.Testing
 - Source: https://github.com/dotnet/extensions
 - License: MIT
-- Used in: OpcClassic.Dcom.Logging.Tests for FakeLogger-based log assertions
+- Used in: Opc.Classic.Dcom.Logging.Tests for FakeLogger-based log assertions
 - Version: 10.0.0
 
 ## Reference / Conformance Assets (NOT redistributed in built packages)
@@ -104,17 +108,12 @@ The licenses governing the use of these components are included below.
 - Source: https://github.com/iyasai/SharpCifs.Std
 - License: LGPL-2.1
 - Status: Removed in N7.6; transitional runtime dependency replaced by self-contained in-tree code
-- Formerly used in: OpcClassic.Dcom
+- Formerly used in: Opc.Classic.Dcom
 - Last version: 0.2.13
 
-### SharpInterop (basis for src/OpcClassic.Dcom)
-- Original author: Vikram Roopchand (c) 2013
-- License: EPL-1.0
-- The OpcClassic.Dcom assembly preserves the EPL-1.0 lineage; project-wide license is also EPL-1.0.
-
-### j-Interop (Java upstream of SharpInterop)
-- License: LGPL-3.0
-- Status: Java sources removed from working tree; git history retains them
+### SharpInterop / j-Interop lineage
+- Status: Historical reference only; current `src/` code was substantively rewritten and no SharpInterop attribution remains in `src/`.
+- Formerly used for: early DCOM implementation experiments before the N7.6 self-contained rewrite.
 
 ### DotNet/ (OPC Foundation .NET Framework 4.6.2 API — design reference)
 - Source: OPC Foundation

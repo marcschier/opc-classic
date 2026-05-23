@@ -1,4 +1,4 @@
-﻿/**/*.i
+/**/*.i
 /**/*.user
 /**/obj/**
 /**/.vs
@@ -20,7 +20,7 @@
 /build/**
 # Don't ignore the strong-name key (it's not a secret)
 !/build/
-!/build/OpcClassic.snk
+!/build/Opc.Classic.snk
 *.user
 /**/packages/**
 /**/packages.config

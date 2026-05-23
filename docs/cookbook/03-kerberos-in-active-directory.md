@@ -6,7 +6,7 @@ Use Kerberos through SPNEGO for enterprise DCOM authentication when the OPC clie
 
 ## Status / availability
 
-Forward-looking: `OpcConnectData.WithKerberos` and `OpcAuthMode.Kerberos` exist in `src\OpcClassic.Core`, but Kerberos.NET integration is Phase 3D, SPNEGO is Phase 3E, and channel binding is Phase 3F.
+Forward-looking: `OpcConnectData.WithKerberos` and `OpcAuthMode.Kerberos` exist in `src\Opc.Classic.Core`, but Kerberos.NET integration is Phase 3D, SPNEGO is Phase 3E, and channel binding is Phase 3F.
 
 ## Request a DCOM service ticket
 
@@ -20,7 +20,7 @@ dotnet add package Kerberos.NET
 using System.Net;
 using Kerberos.NET.Client;
 using Kerberos.NET.Credentials;
-using OpcClassic;
+using Opc.Classic;
 
 var url = OpcUrl.Parse("opcda://opc01.corp.example.com/Matrikon.OPC.Simulation.1");
 var credential = new NetworkCredential("alice", password, "CORP");
@@ -50,7 +50,7 @@ For TLS-protected DCOM endpoints, Phase 3F adds EPA by including the `tls-server
 
 ## Diagnostics
 
-`LogHost.ConfigureFactory` is in `src\OpcClassic.Dcom\Internal\LogHost.cs`.
+`LogHost.ConfigureFactory` is in `src\Opc.Classic.Dcom\Internal\LogHost.cs`.
 
 ```csharp
 using ILoggerFactory loggerFactory = LoggerFactory.Create(b =>

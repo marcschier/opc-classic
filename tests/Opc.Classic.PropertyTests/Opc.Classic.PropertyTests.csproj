@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Property-based tests (CsCheck) over Opc.Classic.Core + Opc.Classic.Dcom.Crypto invariants.</Description>
+    <RootNamespace>Opc.Classic.PropertyTests</RootNamespace>
+    <AssemblyName>Opc.Classic.PropertyTests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsCheck" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj" />
+  </ItemGroup>
+
+</Project>

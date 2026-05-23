@@ -1,0 +1,44 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Opc.Classic.Ae/Opc.Classic.Ae.csproj" />
+    <Project Path="src/Opc.Classic.Batch/Opc.Classic.Batch.csproj" />
+    <Project Path="src/Opc.Classic.Commands/Opc.Classic.Commands.csproj" />
+    <Project Path="src/Opc.Classic.Core/Opc.Classic.Core.csproj" />
+    <Project Path="src/Opc.Classic.Cpx/Opc.Classic.Cpx.csproj" />
+    <Project Path="src/Opc.Classic.Da/Opc.Classic.Da.csproj" />
+    <Project Path="src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj" />
+    <Project Path="src/Opc.Classic.Dcom.Kerberos/Opc.Classic.Dcom.Kerberos.csproj" />
+    <Project Path="src/Opc.Classic.Discovery/Opc.Classic.Discovery.csproj" />
+    <Project Path="src/Opc.Classic.Dx/Opc.Classic.Dx.csproj" />
+    <Project Path="src/Opc.Classic.Generators/Opc.Classic.Generators.csproj" />
+    <Project Path="src/Opc.Classic.Hda/Opc.Classic.Hda.csproj" />
+    <Project Path="src/Opc.Classic.Hosting/Opc.Classic.Hosting.csproj" />
+    <Project Path="src/Opc.Classic.Security/Opc.Classic.Security.csproj" />
+    <Project Path="src/Opc.Classic.Xml/Opc.Classic.Xml.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Opc.Classic.Ae.Tests/Opc.Classic.Ae.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Batch.Tests/Opc.Classic.Batch.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Commands.Tests/Opc.Classic.Commands.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Core.Tests/Opc.Classic.Core.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Cpx.Tests/Opc.Classic.Cpx.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Da.Tests/Opc.Classic.Da.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Dcom.Crypto.Tests/Opc.Classic.Dcom.Crypto.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Dcom.Kerberos.Tests/Opc.Classic.Dcom.Kerberos.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Integration.Tests/Opc.Classic.Integration.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Dcom.Logging.Tests/Opc.Classic.Dcom.Logging.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Dcom.Tests/Opc.Classic.Dcom.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Discovery.Tests/Opc.Classic.Discovery.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Dx.Tests/Opc.Classic.Dx.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Generators.Tests/Opc.Classic.Generators.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Hda.Tests/Opc.Classic.Hda.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Hosting.Tests/Opc.Classic.Hosting.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.PropertyTests/Opc.Classic.PropertyTests.csproj" />
+    <Project Path="tests/Opc.Classic.Security.Tests/Opc.Classic.Security.Tests.csproj" />
+    <Project Path="tests/Opc.Classic.Xml.Tests/Opc.Classic.Xml.Tests.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Opc.Classic.Samples.AotCanary/Opc.Classic.Samples.AotCanary.csproj" />
+    <Project Path="samples/Opc.Classic.Samples.CttServer/Opc.Classic.Samples.CttServer.csproj" />
+  </Folder>
+</Solution>

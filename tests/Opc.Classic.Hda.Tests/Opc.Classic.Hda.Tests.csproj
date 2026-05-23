@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for Opc.Classic.Hda managed types.</Description>
+    <RootNamespace>Opc.Classic.Hda.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Hda.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Hda\Opc.Classic.Hda.csproj" />
+  </ItemGroup>
+
+</Project>

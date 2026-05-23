@@ -1,6 +1,6 @@
 //
-// SPDX-License-Identifier: EPL-1.0
-// Copyright (c) 2026 OPC Classic .NET Contributors
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
 using System;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 
-namespace OpcClassic.Tests.Fixtures;
+namespace Opc.Classic.Tests.Fixtures;
 
 /// <summary>
 /// Testcontainers-based MIT Kerberos KDC for cross-process integration tests.

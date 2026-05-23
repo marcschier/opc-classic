@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>OPC Commands 1.00 managed records and NDR wire codecs.</Description>
+    <RootNamespace>Opc.Classic.Commands</RootNamespace>
+    <AssemblyName>Opc.Classic.Commands</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opc.Classic.Core\Opc.Classic.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,11 +2,11 @@
 
 ## What this covers
 
-Why OpcClassic defaults to `PROTECTION_LEVEL_INTEGRITY` (`RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`, level 5) for cross-machine DCOM.
+Why Opc.Classic defaults to `PROTECTION_LEVEL_INTEGRITY` (`RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`, level 5) for cross-machine DCOM.
 
 ## Status / availability
 
-`OpcProtectionLevel.Integrity` and default expansion are in `src\OpcClassic.Core\OpcProtectionLevel.cs` and `OpcConnectData.cs`. Roadmap references: Phase 3B default integrity, Phase 3C NTLMv2-only policy, Phase 3F channel binding / EPA.
+`OpcProtectionLevel.Integrity` and default expansion are in `src\Opc.Classic.Core\OpcProtectionLevel.cs` and `OpcConnectData.cs`. Roadmap references: Phase 3B default integrity, Phase 3C NTLMv2-only policy, Phase 3F channel binding / EPA.
 
 ## Why integrity is the default
 

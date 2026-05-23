@@ -13,8 +13,8 @@ server hosting on Linux, macOS, and Windows.
 ## Quick start
 
 ```bash
-dotnet add package OpcClassic.Core
-dotnet add package OpcClassic.Da
+dotnet add package Opc.Classic.Core
+dotnet add package Opc.Classic.Da
 ```
 
 (Pre-1.0 — packages are not yet published to nuget.org.)

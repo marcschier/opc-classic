@@ -13,9 +13,9 @@ acceptance test before claiming OPC DA / AE / HDA spec compliance.
    the repo. Workflow dispatch can also override with a one-shot URL.
 
 3. **CTT-compliant managed server** — Phase 14E-followup will add
-   `samples/OpcClassic.CttServer/` exposing a fully-functional
+   `samples/Opc.Classic.Samples.CttServer/` exposing a fully-functional
    `OpcDaServerHost`-hosted server. The server's ProgID is
-   `OpcClassic.DaSample.1`.
+   `Opc.Classic.DaSample.1`.
 
 ## Triggering
 
@@ -31,7 +31,7 @@ acceptance criterion.
 ## Status
 
 Workflow is wired but **does not run today** — the secret is unset, and
-the managed CTT-compliant server (samples/OpcClassic.CttServer/) is not
+the managed CTT-compliant server (samples/Opc.Classic.Samples.CttServer/) is not
 yet built. Both are Phase 14E follow-ups.
 
 When this turns green, it gates the Phase 16E 1.0.0 release: a fully

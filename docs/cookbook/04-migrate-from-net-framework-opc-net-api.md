@@ -1,12 +1,12 @@
-# Migrate from the .NET Framework OPC NET API to OpcClassic.*
+# Migrate from the .NET Framework OPC NET API to Opc.Classic.*
 
 ## What this covers
 
-Move an application from `OpcCom.Da.Server` to .NET 10 and `OpcClassic.Da`.
+Move an application from `OpcCom.Da.Server` to .NET 10 and `Opc.Classic.Da`.
 
 ## Status / availability
 
-`OpcUrl` / `OpcConnectData` are in `src\OpcClassic.Core`; `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, and `SubscriptionState` are in `src\OpcClassic.Da`. DCOM call shims are Phase 6B, so final factory names may change.
+`OpcUrl` / `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, and `SubscriptionState` are in `src\Opc.Classic.Da`. DCOM call shims are Phase 6B, so final factory names may change.
 
 ## Project file
 
@@ -24,7 +24,7 @@ Move an application from `OpcCom.Da.Server` to .NET 10 and `OpcClassic.Da`.
 Remove WCF and Windows-only COM dependencies:
 
 ```bash
-dotnet add package OpcClassic.Da
+dotnet add package Opc.Classic.Da
 ```
 
 ## Connection side-by-side

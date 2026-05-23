@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Opc.Classic.Generators — Roslyn IIncrementalGenerator project.
+
+    Source generators MUST target netstandard2.0 per Roslyn requirements.
+    This project intentionally OVERRIDES the inherited net10 + AOT-strict
+    properties from src/Directory.Build.props because:
+      - Generators are build-time only (they run inside csc / MSBuild and emit
+        source into consumer projects); they're never AOT-published.
+      - The generator's *output* must be AOT-safe — that's the contract this
+        project upholds. The generator itself need not be.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+
+    <Description>Roslyn IIncrementalGenerator(s) for Opc.Classic.* — emits AOT-safe call shims, NDR marshallers, GUID tables, and dispatch tables.</Description>
+    <RootNamespace>Opc.Classic.Generators</RootNamespace>
+    <AssemblyName>Opc.Classic.Generators</AssemblyName>
+
+    <!-- Override inherited AOT / trim properties — generators are build-time only. -->
+    <IsAotCompatible>false</IsAotCompatible>
+    <IsTrimmable>false</IsTrimmable>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+    <EnableSingleFileAnalyzer>false</EnableSingleFileAnalyzer>
+
+    <!-- Generators are not packaged on their own; they're consumed via
+         <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false"/> -->
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+
+    <!-- Don't emit XML doc file for the generator project; we have CS1591 noise from
+         the Roslyn API surface that doesn't carry forward into consumers. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Per Roslyn analyzer release tracking convention; satisfies RS2008. -->
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
+</Project>

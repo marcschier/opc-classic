@@ -46,13 +46,13 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $installer
           Start-Process -FilePath $installer -ArgumentList '/S' -Wait
 
-      - name: Start managed OpcClassic.CttServer
+      - name: Start managed Opc.Classic.Samples.CttServer
         if: steps.check-secret.outputs.skip != 'true'
         shell: pwsh
         run: |
-          Start-Process dotnet -ArgumentList "run", "--project", "samples/OpcClassic.CttServer", "--no-build", "-c", "Release" -NoNewWindow
+          Start-Process dotnet -ArgumentList "run", "--project", "samples/Opc.Classic.Samples.CttServer", "--no-build", "-c", "Release" -NoNewWindow
           Start-Sleep -Seconds 5  # let the server bind
-          Write-Host "OpcClassic.CttServer launched"
+          Write-Host "Opc.Classic.Samples.CttServer launched"
 
       - name: Run OPC CTT against managed server
         if: steps.check-secret.outputs.skip != 'true'
@@ -62,7 +62,7 @@ jobs:
           if (Test-Path $cttExe) {
             # CTT is typically GUI; CI requires the headless mode (-headless or /AUTO).
             # The exact invocation depends on CTT version (verify against installer docs).
-            & $cttExe /AUTO /Output:$env:RUNNER_TEMP\ctt-results.xml /ServerProgId:OpcClassic.DaSample.1
+            & $cttExe /AUTO /Output:$env:RUNNER_TEMP\ctt-results.xml /ServerProgId:Opc.Classic.DaSample.1
           } else {
             Write-Warning "OPC CTT not installed at expected path"
             exit 1

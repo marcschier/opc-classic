@@ -4,12 +4,12 @@
 
 - [x] Build: 0 errors solution-wide
 - [x] Tests: ~700 tests across 17 test projects
-- [x] Coverage: 81%+ line / 70%+ branch on OpcClassic.Core
-- [x] AOT verified: samples/OpcClassic.AotCanary publishes clean
+- [x] Coverage: 81%+ line / 70%+ branch on Opc.Classic.Core
+- [x] AOT verified: samples/Opc.Classic.Samples.AotCanary publishes clean
 - [x] NuGet metadata in place (Phase 16A)
 - [x] SourceLink + snupkg (Phase 16C)
 - [x] Strong-named (Phase 16B; public key token 3a65daacab9a8cf3)
-- [x] LICENSE = EPL-1.0
+- [x] LICENSE = MIT
 - [x] CHANGELOG.md updated with 0.2.0-alpha.1 section
 - [x] Version bumped in src/Directory.Build.props
 
@@ -30,7 +30,7 @@ git push origin v0.2.0-alpha.1
 
 The workflow:
 1. Builds + tests (excluding NativeConformance/MatrikonConformance/CompatMatrix categories)
-2. Packs every OpcClassic.* assembly
+2. Packs every Opc.Classic.* assembly
 3. Pushes to nuget.org if `NUGET_API_KEY` secret is set
 4. Uploads artifacts unconditionally for review
 5. Creates a GitHub Release with the changelog section as the body

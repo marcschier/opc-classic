@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit-based unit tests for the Opc.Classic.Dcom.Kerberos scaffold API.</Description>
+    <RootNamespace>Opc.Classic.Dcom.Kerberos.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Dcom.Kerberos.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Dcom.Kerberos\Opc.Classic.Dcom.Kerberos.csproj" />
+  </ItemGroup>
+
+</Project>

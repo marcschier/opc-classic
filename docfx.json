@@ -4,19 +4,19 @@
       "src": [
         {
           "files": [
-            "src/OpcClassic.Core/OpcClassic.Core.csproj",
-            "src/OpcClassic.Da/OpcClassic.Da.csproj",
-            "src/OpcClassic.Ae/OpcClassic.Ae.csproj",
-            "src/OpcClassic.Hda/OpcClassic.Hda.csproj",
-            "src/OpcClassic.Dx/OpcClassic.Dx.csproj",
-            "src/OpcClassic.Cpx/OpcClassic.Cpx.csproj",
-            "src/OpcClassic.Batch/OpcClassic.Batch.csproj",
-            "src/OpcClassic.Commands/OpcClassic.Commands.csproj",
-            "src/OpcClassic.Security/OpcClassic.Security.csproj",
-            "src/OpcClassic.Xml/OpcClassic.Xml.csproj",
-            "src/OpcClassic.Hosting/OpcClassic.Hosting.csproj",
-            "src/OpcClassic.Discovery/OpcClassic.Discovery.csproj",
-            "src/OpcClassic.Dcom.Kerberos/OpcClassic.Dcom.Kerberos.csproj"
+            "src/Opc.Classic.Core/Opc.Classic.Core.csproj",
+            "src/Opc.Classic.Da/Opc.Classic.Da.csproj",
+            "src/Opc.Classic.Ae/Opc.Classic.Ae.csproj",
+            "src/Opc.Classic.Hda/Opc.Classic.Hda.csproj",
+            "src/Opc.Classic.Dx/Opc.Classic.Dx.csproj",
+            "src/Opc.Classic.Cpx/Opc.Classic.Cpx.csproj",
+            "src/Opc.Classic.Batch/Opc.Classic.Batch.csproj",
+            "src/Opc.Classic.Commands/Opc.Classic.Commands.csproj",
+            "src/Opc.Classic.Security/Opc.Classic.Security.csproj",
+            "src/Opc.Classic.Xml/Opc.Classic.Xml.csproj",
+            "src/Opc.Classic.Hosting/Opc.Classic.Hosting.csproj",
+            "src/Opc.Classic.Discovery/Opc.Classic.Discovery.csproj",
+            "src/Opc.Classic.Dcom.Kerberos/Opc.Classic.Dcom.Kerberos.csproj"
           ]
         }
       ],

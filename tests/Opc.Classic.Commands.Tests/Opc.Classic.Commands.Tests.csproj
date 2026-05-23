@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>TUnit tests for Opc.Classic.Commands (bootstrap — DCOM-projection IID coverage).</Description>
+    <RootNamespace>Opc.Classic.Commands.Tests</RootNamespace>
+    <AssemblyName>Opc.Classic.Commands.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opc.Classic.Commands\Opc.Classic.Commands.csproj" />
+  </ItemGroup>
+
+</Project>

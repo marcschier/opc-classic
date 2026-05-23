@@ -11,12 +11,12 @@ Install the .NET 10 SDK. The repository root `global.json` currently pins SDK `1
 ```powershell
 git clone https://github.com/marcschier/opc-classic.git
 cd opc-classic
-dotnet restore OpcClassic.slnx
-dotnet build OpcClassic.slnx
-dotnet test OpcClassic.slnx
+dotnet restore Opc.Classic.slnx
+dotnet build Opc.Classic.slnx
+dotnet test Opc.Classic.slnx
 ```
 
-`OpcClassic.slnx` is the .NET 10 XML solution format, not a legacy `.sln` file.
+`Opc.Classic.slnx` is the .NET 10 XML solution format, not a legacy `.sln` file.
 
 ## Project Layout
 
@@ -38,8 +38,8 @@ The old legacy trees are being migrated into this structure phase by phase. Do n
 Every new source file must carry the repository SPDX and copyright header:
 
 ```csharp
-// SPDX-License-Identifier: EPL-1.0
-// Copyright (c) 2026 OPC Classic .NET Contributors
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Opc.Classic .NET Contributors
 ```
 
 Follow the style enforced by `.editorconfig` and `src\Directory.Build.props`:
@@ -52,7 +52,7 @@ Follow the style enforced by `.editorconfig` and `src\Directory.Build.props`:
 - Satisfy CA1062 by validating public arguments with `ArgumentNullException.ThrowIfNull`.
 - Do not add broad analyzer suppressions to make a warning disappear. Fix the warning or document a narrow, local suppression.
 
-Fresh code must compile cleanly under the strict source-project defaults. Transitional code in `src\OpcClassic.Dcom\` may still carry temporary relaxations, but new code should not copy those relaxations.
+Fresh code must compile cleanly under the strict source-project defaults. Transitional code in `src\Opc.Classic.Dcom\` may still carry temporary relaxations, but new code should not copy those relaxations.
 
 ## Test Conventions
 
@@ -90,12 +90,12 @@ Keep tests deterministic. When a vulnerability report includes vectors, add them
 
 ## Coverage
 
-CI gates code coverage at **70% line / 60% branch** (initial thresholds; targeting 80%/70% by 1.0). Transitional code in `src\OpcClassic.Dcom\*` and source generators (`src\OpcClassic.Generators\`) are excluded from gating.
+CI gates code coverage at **70% line / 60% branch** (initial thresholds; targeting 80%/70% by 1.0). Transitional code in `src\Opc.Classic.Dcom\*` and source generators (`src\Opc.Classic.Generators\`) are excluded from gating.
 
 Run coverage locally for a targeted project:
 
 ```powershell
-dotnet test tests\OpcClassic.Core.Tests\OpcClassic.Core.Tests.csproj --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory .\coverage-results\OpcClassic.Core.Tests
+dotnet test tests\Opc.Classic.Core.Tests\Opc.Classic.Core.Tests.csproj --collect:"XPlat Code Coverage" --settings coverlet.runsettings --results-directory .\coverage-results\Opc.Classic.Core.Tests
 ```
 
 Generate a human-readable report:
@@ -144,7 +144,7 @@ The Banned API analyzer uses `src\BannedSymbols.txt` to reject NativeAOT-hostile
 - `[ComImport]`, `ole32.dll` P/Invoke, or Windows COM runtime dependencies in cross-platform source.
 - `MethodInfo.Invoke` or other reflection-dispatch paths that should be generated instead.
 
-If a feature needs runtime dispatch, prefer a source generator in `src\OpcClassic.Generators\`.
+If a feature needs runtime dispatch, prefer a source generator in `src\Opc.Classic.Generators\`.
 
 ## PR Process
 
@@ -153,8 +153,8 @@ Before opening a pull request:
 1. Keep the change small and focused.
 2. Avoid unrelated cleanup, formatting churn, or drive-by refactors.
 3. Use clear phase numbering when relevant, from Phase 1A through Phase 16E per the implementation plan.
-4. Run `dotnet build OpcClassic.slnx` from the repository root.
-5. Run targeted tests for the area you changed, and run `dotnet test OpcClassic.slnx` when practical.
+4. Run `dotnet build Opc.Classic.slnx` from the repository root.
+5. Run targeted tests for the area you changed, and run `dotnet test Opc.Classic.slnx` when practical.
 6. Explain behavior changes, compatibility concerns, and any skipped tests in the PR description.
 
 Use clear commit messages. Do not use PowerShell here-strings for commit messages in this repository. PowerShell 7+ can treat backtick-u sequences as Unicode escapes and break messages containing source snippets such as `using X;` lines. Write commit messages to a temporary file and commit with `git commit -F`, then remove the temporary file.
@@ -193,13 +193,13 @@ prerequisites, triggers, result artifacts, and release-gating status.
 
 ## License
 
-This project currently uses EPL-1.0 and carries license inheritance from SharpInterop and the j-Interop C# port, with preserved OPC Foundation material under legacy conformance paths.
+This project is licensed under MIT. Preserved OPC Foundation material under `COM\` and `External\` keeps its original notices.
 
 Every new source file must include:
 
 ```csharp
-// SPDX-License-Identifier: EPL-1.0
-// Copyright (c) 2026 OPC Classic .NET Contributors
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Opc.Classic .NET Contributors
 ```
 
 Do not remove existing third-party notices or OPC Foundation sample-code disclaimers from preserved files under `COM\` or `External\`.

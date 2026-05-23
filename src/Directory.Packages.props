@@ -49,7 +49,7 @@
 
   <!--
     Phase 2E complete: BouncyCastle is eliminated. MD4 + RC4 are hand-rolled
-    in src/OpcClassic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
+    in src/Opc.Classic.Dcom/Crypto/. MD5 / HMAC-MD5 / DES come from BCL via the
     transitional shim Crypto/BcCompat.cs. Phase 2D complete: LGPL transitional
     package removed. Phase 2G complete: Serilog package references removed.
   -->

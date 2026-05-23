@@ -12,10 +12,10 @@ Forward-looking: this requires Phase 4 server hosting, generated `LocalCoClass` 
 
 ```csharp
 using Microsoft.Extensions.Hosting;
-using OpcClassic;
-using OpcClassic.Da;
-using OpcClassic.Da.Dcom;
-using OpcClassic.Hosting; // planned Phase 4 API
+using Opc.Classic;
+using Opc.Classic.Da;
+using Opc.Classic.Da.Dcom;
+using Opc.Classic.Hosting; // planned Phase 4 API
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddSingleton<MyDaHandler>();
