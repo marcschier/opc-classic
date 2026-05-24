@@ -1,89 +1,138 @@
 # Opc.Classic adoption guide
 
-This guide is the practical starting point for adding `Opc.Classic` to an application, test suite, gateway, or managed OPC Classic server. It covers the concepts you need in the first twenty minutes, then points to the deeper architecture and cookbook material when you are ready to customize transport, authentication, hosting, and discovery.
+This guide is the practical starting point for adding `Opc.Classic` to an application, test suite, gateway, or managed OPC Classic server. It focuses on current APIs and current repository capabilities. For deeper design details, see [ARCHITECTURE.md](ARCHITECTURE.md). For task-oriented walkthroughs, see [cookbook](cookbook/README.md).
 
-> **Status note:** the repository is still pre-1.0. The package names and namespaces use the final dotted `Opc.Classic.*` form, but packages are not expected on nuget.org until the 1.0.0 release train. Until then, reference project outputs, a local feed, or CI-produced packages.
+The current package version is `0.6.0-alpha.1`. The next release train targets `1.0.0-rc.1`. Package IDs, namespaces, project names, and examples use the `Opc.Classic.*` root. The project is MIT licensed.
 
-## 1. Introduction
+## 1. When to use Opc.Classic
 
-`Opc.Classic` is a cross-platform, NativeAOT-compatible .NET 10 implementation of OPC Classic for legacy DA, AE, HDA, DX, Cpx, Batch, Commands, Security, and XML-DA integrations. Use it to talk to existing OPC Classic servers, host managed servers, remove .NET Framework-only client dependencies, and secure DCOM-style connections with NTLMv2 or Kerberos/SPNEGO.
+Use `Opc.Classic` when an application needs OPC Classic interoperability from .NET 10:
 
-OPC UA is recommended for greenfield systems, but many plants still depend on DCOM-based servers. `Opc.Classic` exists for those brownfield and bridge scenarios. The MIT license keeps adoption straightforward for proprietary products, internal tools, and open-source services. The managed DCOM stack avoids Windows COM runtime APIs for normal client/server use; Windows-only registry and native COM interop features stay behind platform guards.
+- collect DA values from existing Classic servers;
+- receive AE alarms and events;
+- query HDA historians;
+- host managed DA/AE/HDA servers for Classic clients;
+- bridge Classic systems to OPC UA, MQTT, REST, historians, or cloud services;
+- run Classic connectivity in Linux, macOS, Windows, containers, or NativeAOT workers.
 
-## 2. Installation
+OPC UA is the preferred protocol for new device models and new plant systems. `Opc.Classic` is for brownfield Classic compatibility and controlled bridging.
 
-When the 1.0.0 packages are published, install only the spec areas you need:
+## 2. Installation and reference options
+
+Install only the areas you need:
 
 ```bash
 dotnet add package Opc.Classic.Core
-dotnet add package Opc.Classic.Da      # DA client/server types and DCOM projections
-dotnet add package Opc.Classic.Ae      # AE client/server projections
-dotnet add package Opc.Classic.Hda     # HDA client/server projections
-dotnet add package Opc.Classic.Hosting # managed server hosting and CLSID registry support
+dotnet add package Opc.Classic.Da
+dotnet add package Opc.Classic.Ae
+dotnet add package Opc.Classic.Hda
+dotnet add package Opc.Classic.Hosting
 ```
 
-During the alpha period, packages may not exist on nuget.org. Use one of these approaches instead:
+For source builds of `0.6.0-alpha.1`, use one of these approaches:
 
 1. reference the projects directly in a repo-local solution;
 2. publish packages to a local folder feed from CI;
-3. consume artifacts from the repository build pipeline.
+3. consume packages produced by the repository build pipeline.
 
-Recommended minimum for a DA client is `Opc.Classic.Core`, `Opc.Classic.Da`, and the managed DCOM transport package. Recommended minimum for a managed DA server is `Opc.Classic.Core`, `Opc.Classic.Da`, `Opc.Classic.Hosting`, and `Microsoft.Extensions.Hosting`.
+Recommended sets:
 
-### Core concepts you will see everywhere
+| Scenario | Packages / projects |
+| --- | --- |
+| DA client | `Opc.Classic.Core`, `Opc.Classic.Da`, `Opc.Classic.Dcom` |
+| AE client | `Opc.Classic.Core`, `Opc.Classic.Ae`, `Opc.Classic.Dcom` |
+| HDA client | `Opc.Classic.Core`, `Opc.Classic.Hda`, `Opc.Classic.Dcom` |
+| Managed DA server | `Opc.Classic.Core`, `Opc.Classic.Da`, `Opc.Classic.Hosting`, `Microsoft.Extensions.Hosting` |
+| Discovery | `Opc.Classic.Core`, `Opc.Classic.Discovery`, `Opc.Classic.Dcom` |
+| Kerberos | `Opc.Classic.Dcom.Kerberos` plus domain/KDC configuration |
 
-`OpcUrl` parses `opcda://`, `opcae://`, `opchda://`, `opcdx://`, and `opc.xml-da://` URLs where the path is a ProgID or CLSID. `OpcConnectData` groups URL, `NetworkCredential`, authentication mode, packet protection, and optional timeout; it defaults to NTLMv2 plus packet integrity. `OpcVariant` is the AOT-clean COM `VARIANT` projection (`FromDouble`, `FromString`, `FromBoolean`, `FromSafeArray`). `OpcQuality` models the 16-bit DA quality word, including quality kind, substatus, limit bits, and vendor extension.
+## 3. Core concepts
 
-## 3. Hello World — DA client
+| Concept | Description |
+| --- | --- |
+| `OpcUrl` | Parses `opcda://`, `opcae://`, `opchda://`, `opcdx://`, and `opc.xml-da://` URLs where the path is a ProgID or CLSID. |
+| `OpcConnectData` | Groups URL, `NetworkCredential`, auth mode, protection level, optional timeout, and optional RFC 5056 channel bindings. |
+| `OpcProtectionLevel` | DCE/RPC packet protection. `Default` expands to `Integrity`. Use `Privacy` when confidentiality is required. |
+| `OpcVariant` | AOT-clean COM `VARIANT` projection used by wire and value layers. |
+| `OpcSafeArray` | Managed SAFEARRAY carrier for automation array payloads. |
+| `OpcQuality` | Models the DA 16-bit quality word, including quality kind, substatus, limit bits, and vendor extension bits. |
+| `ICallChannel` | Transport-independent generated proxy/dispatcher call surface. |
+| Generated proxies | Types such as `IOPCServerClientProxy` encode DCOM requests and decode responses. |
+| Generated dispatchers | Types such as `IOPCServerServerDispatcher` route DCOM opnums to managed server implementations. |
 
-The generated DA client surface lives in `Opc.Classic.Da.Dcom`. Each `[OpcInterface]` interface has a generated client proxy class, for example `IOPCServerClientProxy`, that encodes request bodies, calls an `ICallChannel`, and decodes response bodies.
+## 4. DA client patterns
 
-The following sample demonstrates the current low-level pattern: parse an OPC URL, create credentials, construct an auth context, connect an `ICallChannel`, and call `IOPCServer::GetStatus`. Replace the endpoint and CLSID with values discovered from your environment.
+The high-level DA contract is `IDaServer`. It is async-first and uses cancellation tokens throughout.
 
 ```csharp
-using Opc.Classic;
-using Opc.Classic.Da.Dcom;
-using Opc.Classic.Dcom.Transport;
-using Opc.Classic.Transport;
-using Opc.Classic.Dcom.Rpc.Auth.ntlm; // temporary low-level NTLM auth factory
-using System.Net;
+using Opc.Classic.Da;
 
-var url = OpcUrl.Parse("opcda://localhost/Opc.Classic.Samples.DaServer.1");
-var credentials = new NetworkCredential("user", "password", "WORKGROUP");
-var connectData = OpcConnectData.WithNtlmV2(url, credentials);
-var authCtx = NtlmAuthentication.CreateAuthContext(connectData);
-
-// The DcomCallChannel requires a concrete IAsyncTransportFactory. The Phase 2C
-// contract is in place; production TCP transport is queued. For tests today,
-// use InMemoryAsyncTransport or InMemoryCallChannel.
-var transportFactory = new TcpAsyncTransportFactory();
-var channelFactory = new DcomCallChannelFactory(transportFactory);
-var channel = await channelFactory.ConnectAsync(
-    new IPEndPoint(IPAddress.Parse("127.0.0.1"), 12345),
-    Guid.Empty, // already-bound channel; use a CLSID for activation flows
-    authCtx,
-    CancellationToken.None);
-
-var server = new IOPCServerClientProxy(channel);
-var status = await server.GetStatusAsync(CancellationToken.None);
-Console.WriteLine($"Server state: {status.State}, vendor: {status.VendorInfo}");
-
-if (channel is IAsyncDisposable disposable)
+public static async Task ReadValuesAsync(IDaServer server, CancellationToken ct)
 {
-    await disposable.DisposeAsync();
+    OpcServerStatus status = await server.GetStatusAsync(ct);
+    Console.WriteLine($"{status.VendorInfo}: {status.State}");
+
+    var items = new[]
+    {
+        new Item("Plant.Temperature") { ClientHandle = 1001 },
+        new Item("Plant.Pressure") { ClientHandle = 1002 },
+    };
+
+    IReadOnlyList<ItemValueResult> values = await server.ReadAsync(items, ct);
+    foreach (ItemValueResult value in values)
+    {
+        Console.WriteLine($"{value.ItemName}: {value.Value} {value.Quality} {value.Timestamp:O}");
+    }
 }
 ```
 
-> **Current transport caveat:** the generated client proxies are real, but the production TCP `IAsyncTransportFactory` is still part of the follow-up work. Use `Opc.Classic.Testing.InMemoryAsyncTransport` for transport-level unit tests and `Opc.Classic.Testing.InMemoryCallChannel` for proxy and loopback integration tests until the TCP factory lands.
-
-For tests, build an `InMemoryCallChannel` that returns fixture `NdrCallResult` payloads and pass it to the generated proxy. Current high-value DA surfaces include `IOPCServer`, `IOPCGroupStateMgt`, `IOPCItemMgt`, `IOPCSyncIO`, `IOPCSyncIO2`, `IOPCAsyncIO2`, `IOPCAsyncIO3`, `IOPCDataCallback`, `IOPCBrowse`, and discovery-related `IOPCServerList` interfaces. Multi-output COM pointer shapes are being filled in incrementally.
-
-## 4. Hello World — DA server
-
-Managed server hosting uses `Microsoft.Extensions.Hosting`. Register the shared OPC Classic hosted service, register a CLSID registry, then register your DA implementation with `AddOpcDaServer<T>()`.
+For group-oriented work, create a subscription:
 
 ```csharp
-using Microsoft.Extensions.Configuration;
+await using IDaSubscription group = await server.CreateSubscriptionAsync(
+    new SubscriptionState
+    {
+        Name = "process",
+        ClientHandle = 5000,
+        UpdateRateMs = 1000,
+        Active = true,
+        LocaleId = 0x0409,
+    },
+    cancellationToken);
+
+await group.AddItemsAsync(items, cancellationToken);
+IReadOnlyList<ItemValueResult> snapshot = await group.ReadAsync(
+    items.Select(static item => item.ClientHandle).ToArray(),
+    fromCache: true,
+    cancellationToken);
+
+await foreach (DataChange change in group.DataChanges.WithCancellation(cancellationToken))
+{
+    foreach (ItemValueResult item in change.Items)
+    {
+        Console.WriteLine($"{item.ItemName}: {item.Value} {item.Quality}");
+    }
+}
+```
+
+Generated DCOM proxies are available when you work directly at the IDL projection layer:
+
+```csharp
+using Opc.Classic.Da.Dcom;
+using Opc.Classic.Testing;
+
+var channel = new InMemoryCallChannel(dispatcher.DispatchAsync);
+var proxy = new IOPCServerClientProxy(channel);
+OpcServerStatus status = await proxy.GetStatusAsync(cancellationToken);
+```
+
+For a runnable client pattern, see `samples/Opc.Classic.Samples.DaClient` and `samples/Opc.Classic.Samples.LoopbackDemo`.
+
+## 5. Managed DA server hosting
+
+Managed server hosting uses `Microsoft.Extensions.Hosting`. Register the shared Classic hosted service, a CLSID registry, and your per-spec server implementation.
+
+```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Opc.Classic;
@@ -94,15 +143,21 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddClassicServer();
 builder.Services.AddClassicClsidRegistry(builder.Configuration);
-builder.Services.AddOpcDaServer<MyDaServer>(opt =>
+builder.Services.AddOpcDaServer<MyDaServer>(static options =>
 {
-    opt.Clsid = new Guid("8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A");
-    opt.ProgId = "My.OPC.Server.1";
-    opt.FriendlyName = "My Managed DA Server";
-    opt.ListenAddress = "127.0.0.1:0";
+    options.Clsid = new Guid("8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A");
+    options.ProgId = "My.OPC.Server.1";
+    options.FriendlyName = "My Managed DA Server";
+    options.ListenAddress = "127.0.0.1:0";
 });
 
 await builder.Build().RunAsync();
+```
+
+A minimal DA server implements `IOpcDaServer`:
+
+```csharp
+using Opc.Classic.Da.Hosting;
 
 public sealed class MyDaServer : IOpcDaServer
 {
@@ -129,251 +184,235 @@ public sealed class MyDaServer : IOpcDaServer
         CancellationToken ct = default) =>
         Task.FromResult(clientHandle + 0x1000);
 
-    public Task RemoveGroupAsync(
-        int serverGroupHandle,
-        bool force,
-        CancellationToken ct = default) =>
+    public Task RemoveGroupAsync(int serverGroupHandle, bool force, CancellationToken ct = default) =>
         Task.CompletedTask;
 
-    public Task<string> GetErrorStringAsync(
-        int errorCode,
-        int localeId,
-        CancellationToken ct = default) =>
+    public Task<string> GetErrorStringAsync(int errorCode, int localeId, CancellationToken ct = default) =>
         Task.FromResult($"Error 0x{errorCode:X8}");
 }
 ```
 
-The current extension method names are `AddClassicServer()` and `AddClassicClsidRegistry(...)`. If you see older draft snippets using `AddOpcClassicServer()` or `AddOpcClassicClsidRegistry(...)`, use the current names from `Opc.Classic.Hosting`.
+`AddClassicServer()` wires the hosted-service lifecycle. `AddClassicClsidRegistry(...)` supplies CLSID/ProgID metadata. `AddOpcDaServer<T>()` connects the implementation to generated DA dispatchers. AE and HDA hosting follow the same model in their sample apps.
 
-A configuration-backed registry uses the `Opc.Classic:Servers` section with `Clsid`, `ProgId`, `AssemblyName`, `TypeName`, and optional `FriendlyName` entries. See `samples/Opc.Classic.Samples.CttServer/Program.cs` for the repository's minimal CTT-oriented managed DA server pattern.
+## 6. Authentication scenarios
 
-## 5. Authentication scenarios
+OPC Classic over DCOM is sensitive to authentication and packet-protection policy. The safe baseline is NTLMv2 or Kerberos with packet integrity.
 
-OPC Classic over DCOM is sensitive to authentication settings. Hardened Windows hosts reject anonymous and low-protection activation. The safe baseline is NTLMv2 with packet integrity.
-
-### NTLMv2 default
-
-Use `NetworkCredential` and `OpcConnectData.WithNtlmV2(...)`:
+### NTLMv2
 
 ```csharp
+using System.Net;
+using Opc.Classic;
+
 var url = OpcUrl.Parse("opcda://plc-gateway/Matrikon.OPC.Simulation.1");
 var credential = new NetworkCredential("opc-reader", "password", "PLANT");
+
 var connectData = OpcConnectData.WithNtlmV2(
     url,
     credential,
-    OpcProtectionLevel.Integrity);
-
-var authCtx = NtlmAuthentication.CreateAuthContext(connectData);
+    OpcProtectionLevel.Integrity,
+    operationTimeout: TimeSpan.FromSeconds(30));
 ```
 
-NTLMv2 is the cross-platform default. It uses extended session security, 128-bit keys, and packet signing when `OpcProtectionLevel.Integrity` or `Privacy` is selected. Use `Privacy` when you need encryption in addition to signing.
+NTLMv2 uses extended session security and supports packet signing and sealing. `OpcProtectionLevel.Integrity` signs PDUs. `OpcProtectionLevel.Privacy` signs and encrypts.
 
-### Kerberos via Kerberos.NET
+### Kerberos and SPNEGO
 
-Kerberos is preferred in Active Directory environments because it avoids NTLM relay risks and gives you service-principal based identity. The public Kerberos context takes a `KerberosAuthInfo` record:
+Kerberos is preferred in Active Directory environments because it provides service-principal identity and avoids NTLM relay exposure.
 
 ```csharp
+using System.Net;
 using Opc.Classic;
-using Opc.Classic.Dcom.Kerberos;
 
-var kerberos = new KerberosAuthInfo(
-    realm: "PLANT.EXAMPLE.COM",
-    spn: "RPCSS/opc-host.plant.example.com",
-    username: "opc-reader@PLANT.EXAMPLE.COM",
-    domain: "PLANT",
-    password: "password",
-    keytabPath: null);
-
-var authCtx = new KerberosAuthContext(
-    kerberos,
-    channelBindings: null,
-    protectionLevel: OpcProtectionLevel.Integrity);
-```
-
-Kerberos requires a reachable KDC, correct DNS, time synchronization, and an SPN that matches the service account. Test environments in the repository use containerized KDC fixtures where possible.
-
-You can also ask `OpcConnectData` for Kerberos semantics and let the DCOM authentication factory build the `KerberosAuthInfo` from the URL and `NetworkCredential`:
-
-```csharp
+var url = OpcUrl.Parse("opcda://opc01.plant.example.com/Matrikon.OPC.Simulation.1");
 var credential = new NetworkCredential(
     "opc-reader@PLANT.EXAMPLE.COM",
     "password",
     "PLANT.EXAMPLE.COM");
-var connectData = OpcConnectData.WithKerberos(url, credential);
-var authCtx = NtlmAuthentication.CreateAuthContext(connectData);
-```
 
-### SPNEGO negotiation
-
-`KerberosAuthContext` emits SPNEGO tokens around the Kerberos AP-REQ/AP-REP exchange. In a domain environment, prefer Kerberos first and fall back to NTLMv2 only when policy allows it:
-
-```csharp
-IAuthContext authCtx;
-try
-{
-    authCtx = new KerberosAuthContext(kerberos);
-}
-catch (Exception) when (allowNtlmFallback)
-{
-    authCtx = NtlmAuthentication.CreateAuthContext(
-        OpcConnectData.WithNtlmV2(url, credential));
-}
-```
-
-Keep fallback explicit. Some regulated environments disable NTLM entirely. If fallback is enabled, log that the connection did not use Kerberos so operators can fix SPN or KDC issues.
-
-### Channel binding for TLS-protected endpoints
-
-Extended Protection for Authentication (EPA) binds the authentication token to the outer TLS channel. For TLS-protected DCOM endpoints, compute channel bindings from the server certificate and pass them to `KerberosAuthContext`:
-
-```csharp
-using Opc.Classic.Security;
-
-byte[] serverCertificateDer = GetServerCertificateBytes();
-var bindings = ChannelBindingsFactory.ForTlsServerEndpoint(serverCertificateDer);
-var authCtx = new KerberosAuthContext(
-    kerberos,
-    bindings,
+var connectData = OpcConnectData.WithKerberos(
+    url,
+    credential,
     OpcProtectionLevel.Integrity);
 ```
 
-For NTLMv2, the stack preserves the same EPA concept via the channel-binding AV pair. When you terminate TLS in a proxy, make sure the certificate hash given to the authentication layer is the certificate seen by the client.
+Kerberos requires a reachable KDC, synchronized clocks, DNS that matches the service principal, and a service principal such as `RPCSS/opc01.plant.example.com`. SPNEGO wraps Kerberos or NTLM tokens for negotiation with peers that expect [MS-SPNG]/RFC 4178 semantics. Keep fallback explicit and observable in logs when policy permits NTLMv2 fallback.
 
-## 6. Discovery — finding OPC servers
+### Channel binding
 
-Discovery is modeled as `IOpcDiscovery`, which returns an async stream of `OpcServerEntry` records.
+For TLS-protected endpoints, Extended Protection for Authentication binds authentication to the TLS server certificate. `OpcConnectData` accepts RFC 5056 channel bindings.
 
-Use `LocalEnum` for local configuration and, on Windows, local COM registry enumeration:
+```csharp
+using Opc.Classic;
+using Opc.Classic.Security;
+
+byte[] serverCertificateDer = GetServerCertificateBytes();
+ChannelBindings bindings = ChannelBindingsFactory.ForTlsServerEndpoint(serverCertificateDer);
+
+var connectData = OpcConnectData.WithNtlmV2(
+    url,
+    credential,
+    OpcProtectionLevel.Integrity,
+    channelBindings: bindings);
+```
+
+The channel-binding material follows RFC 5056 and RFC 5929 (`tls-server-end-point`).
+
+## 7. Discovery
+
+Discovery enumerates Classic servers before activation or connection.
 
 ```csharp
 using Opc.Classic.Discovery;
 
 var localEnum = new LocalEnum(configuration);
-await foreach (var entry in localEnum.DiscoverAsync())
+await foreach (OpcServerEntry entry in localEnum.DiscoverAsync(cancellationToken: cancellationToken))
 {
     Console.WriteLine($"{entry.ProgId} = {entry.Clsid}: {entry.FriendlyName}");
 }
 ```
 
-You can also seed `LocalEnum` directly from memory when you do not want configuration. Combine strategies with `OpcDiscoveryFactory`; it fans out and de-duplicates by CLSID:
+Available discovery strategies include local configuration, Windows local registry enumeration, remote registry enumeration, and OPCEnum/DCOM discovery. Compose strategies with `OpcDiscoveryFactory` when a deployment needs multiple sources and CLSID/ProgID de-duplication.
 
-```csharp
-var remoteRegistry = new RemoteRegistryEnum(
-    "opc-host.plant.example.com",
-    new NetworkCredential("opc-reader", "password", "PLANT"));
-
-var opcEnum = new OpcEnumClient(
-    OpcUrl.Parse("opcda://opc-host.plant.example.com/OPC.ServerList.1"));
-
-var discovery = new OpcDiscoveryFactory(localEnum, remoteRegistry, opcEnum);
-await foreach (var entry in discovery.DiscoverAsync("opc-host.plant.example.com"))
-{
-    Console.WriteLine($"{entry.Host} {entry.ProgId} {entry.Clsid}");
-}
-```
-
-Current status:
-
-- `LocalEnum` is implemented for configuration and Windows local registry enumeration.
-- `RemoteRegistryEnum` is the remote registry strategy scaffold.
-- `OpcEnumClient` is the OPC ServerList / OpcEnum strategy scaffold.
-- `OpcDiscoveryFactory` skips scaffold strategies that throw `NotImplementedException`, so you can compose the future strategies now without breaking local discovery.
-
-## 7. Cross-platform considerations
-
-`Opc.Classic` is designed to run on Linux, macOS, and Windows.
+## 8. Cross-platform considerations
 
 ### Linux and macOS
 
-Use the normal `Opc.Classic.*` packages. The DCOM/MSRPC pieces are managed and do not require the Windows COM runtime. This is the primary value proposition for gateways, collectors, cloud-side bridges, containerized services, and AOT workers that still need to reach legacy OPC Classic servers.
+Use the normal `Opc.Classic.*` packages. The DCOM/MSRPC stack is managed and does not require the Windows COM runtime. This supports gateways, collectors, cloud-side bridges, containers, and NativeAOT workers that need Classic connectivity.
 
-Typical deployment: discover or configure a Windows OPC Classic endpoint, authenticate with NTLMv2 or Kerberos/SPNEGO, connect through the managed DCOM channel, then expose the data through your application.
+Typical deployment:
+
+1. discover or configure a Windows OPC Classic endpoint;
+2. build `OpcConnectData` with NTLMv2 or Kerberos;
+3. connect through the managed DCOM channel;
+4. expose values, events, or HDA data through the application.
 
 ### Windows-specific integration
 
-Windows-only features are guarded with `[SupportedOSPlatform("windows")]`. Examples include local registry enumeration and `WindowsRegistryClsidWriter`, which writes `HKLM\SOFTWARE\Classes\CLSID` registrations for native COM client activation compatibility.
+Windows-only integration is guarded with `[SupportedOSPlatform("windows")]`. Examples include registry enumeration and `WindowsRegistryClsidWriter`, which writes `HKLM\SOFTWARE\Classes\CLSID` registrations for native COM client activation compatibility.
 
-Writing HKLM usually requires administrative rights. Treat registry writing as an installer or setup-time operation, not something your service does on every startup.
+Writing HKLM usually requires administrative rights. Treat registry writes as installer or setup-time work.
 
-### Native COM client interop
+### Native COM clients
 
-Native C++ COM clients can connect to managed `Opc.Classic` servers on Windows through the server activation flow. That interop path is Windows-only because native COM activation and registry-based COM catalogs are Windows concepts. The managed server implementation itself remains portable.
+Native Windows COM clients can activate managed `Opc.Classic` servers when the CLSID/ProgID registration and DCOM activation path are configured. Test native interop with the preserved C++ sample servers and representative client tools.
 
-## 8. AOT publishing
+## 9. AOT publishing
 
-The libraries are authored to be trimmable and NativeAOT-compatible. Publish your application normally with `PublishAot=true`:
+Runtime libraries are trimmable and NativeAOT-compatible. Publish an application normally:
 
 ```bash
 dotnet publish -c Release -r linux-x64 -p:PublishAot=true
 ```
 
-For stricter CI validation, publish `samples/Opc.Classic.Samples.AotCanary/` with `-p:TreatWarningsAsErrors=true`; it is the verified smoke test for AOT cleanliness. Keep reflection-heavy plugins, dynamic dispatch, or runtime-generated serializers outside `src/*` libraries or replace them with source generators.
+For repository validation, publish the AOT canary with warnings as errors:
 
-Avoid banned source-library patterns: `Reflection.Emit`, `Expression<T>.Compile()`, `MethodInfo.Invoke`, runtime string-to-type activation, `[ComImport]`, and native COM marshal helpers. The project uses generated dispatch and proxies instead.
+```powershell
+dotnet publish samples\Opc.Classic.Samples.AotCanary -c Release -p:PublishAot=true -p:TreatWarningsAsErrors=true
+```
 
-## 9. Spec coverage quick reference
+Keep reflection-heavy plugins, runtime-generated serializers, and dynamic dispatch outside runtime libraries. Use source generators for code that must be static under trimming.
 
-| Spec area | Current support | Notes |
-| --- | --- | --- |
-| DA | Full client + server path for the Phase 6 managed stack | Generated client proxies, server dispatchers, `IOpcDaServer`, hosting registration, loopback tests, and sample CTT server. Some COM pointer and multi-output shapes continue to be filled in as feature requests. |
-| AE | Client + server scaffold | Interfaces and hosting slots are in place; per-method bodies are Phase 7 work. |
-| HDA | Client + server scaffold | Interfaces and hosting slots are in place; per-method bodies are Phase 8 work. |
-| DX | Managed types + interface partials | Add concrete method bodies as scenarios require them. |
-| Cpx | Managed types + interface partials | Complex data codecs are represented; scenario coverage grows per feature request. |
-| Batch | Managed types + interface partials | Batch category IDs and projections are present; method bodies are incremental. |
-| Commands | Managed types + interface partials | Command interfaces are modeled for generator expansion. |
-| Security | Managed types + interface partials | DCOM authentication is active; OPC Security spec methods are partial/scaffold. |
-| XML-DA | Full HTTP/SOAP client + server | Phase 9F complete; use for HTTP/SOAP XML-DA endpoints instead of DCOM. |
+## 10. Spec coverage quick reference
 
-Treat the table as a release-readiness snapshot, not a permanent boundary. The generator architecture is intended to make method coverage additive without changing public modeling conventions.
+| Area | What you get |
+| --- | --- |
+| DA | Client/server contracts, generated proxies and dispatchers, hosting, subscriptions, browse, read/write, callbacks, DA client/server samples. |
+| AE | Event server/client contracts, categories, filters, subscriptions, generated projections, AE client/server samples. |
+| HDA | Historical read/update/annotation/playback contracts, generated projections, HDA client/server samples. |
+| Batch | Batch summaries, state/type models, filters, enumerations, generated projections. |
+| Commands | Command metadata, state, invocation, and callback projections. |
+| Cpx | Complex Data dictionaries, fields, type descriptions, and values. |
+| DX | Data eXchange source server, connection, and configuration models. |
+| Security | OPC Security projections plus DCOM authentication and packet-protection integration. |
+| Discovery | Local, remote-registry, and OPCEnum discovery strategies. |
 
-## 10. Migration paths
+The generated DCOM surface contains 47 dispatchers and 127 opnums. The tests currently report 1253 passed / 24 skipped / 0 failed.
 
-### From OPC Foundation .NET API
+## 11. Adoption from OPC NET API projects
 
-Older OPC Foundation .NET Framework APIs use types such as `Opc.URL`, `Opc.ConnectData`, `Opc.Da.Server`, `Opc.Da.Item`, and synchronous methods. `Opc.Classic` uses immutable/AOT-clean value types, `NetworkCredential`, and async methods.
+OPC Foundation .NET Framework projects commonly use `Opc.URL`, `Opc.ConnectData`, `Opc.Da.Server`, synchronous group APIs, and COM runtime activation. In `Opc.Classic`, use the following mappings.
 
-| OPC Foundation API | Opc.Classic equivalent |
+| OPC NET API concept | Opc.Classic concept |
 | --- | --- |
 | `Opc.URL` | `OpcUrl` |
 | `Opc.ConnectData` | `OpcConnectData` |
 | custom OPC credentials | `System.Net.NetworkCredential` |
-| `Opc.Da.Server` | generated DA proxies such as `IOPCServerClientProxy` over `ICallChannel` |
-| `Opc.Da.ItemValue` / `ItemValueResult` | `OpcVariant`, DA item result records, `OpcQuality` |
-| synchronous `Read` / `Write` | async generated methods, e.g. `WriteAsync`, `GetStatusAsync`, and spec-specific read methods as they land |
-| COM runtime activation | managed DCOM activation/channel flow |
+| `Opc.Da.Server` | `IDaServer` or generated `IOPCServerClientProxy` |
+| `Opc.Da.Subscription` | `IDaSubscription` |
+| `Opc.Da.Item` | `Item` |
+| `Opc.Da.ItemValue` | `ItemValue` / `ItemValueResult` |
+| synchronous callbacks | `IAsyncEnumerable<DataChange>` |
+| COM activation defaults | explicit `OpcConnectData` authentication and protection policy |
 
-Migration checklist: replace URL parsing with `OpcUrl.Parse(...)`, use `OpcConnectData.WithNtlmV2(...)` or `WithKerberos(...)`, move blocking calls to `await`, convert values through `OpcVariant`, dispose managed channels with `using`/`await using`, and keep packet-integrity defaults.
+Connection setup with `Opc.Classic`:
 
-### From OpcDaSDK or other third-party libraries
+```csharp
+using System.Net;
+using Opc.Classic;
 
-Most third-party libraries expose a familiar flow: create a server object, connect, add a group, add items, read/write, and subscribe. In `Opc.Classic`, those operations map to generated proxy methods over an `ICallChannel` and hosted server interfaces. The biggest changes are cross-platform managed DCOM, async APIs, explicit authentication, `OpcVariant`/`OpcQuality`, no runtime code generation, and DI-based managed hosting. Audit DCOM security defaults during migration; old anonymous or connect-level samples often fail on hardened Windows servers.
+var url = OpcUrl.Parse("opcda://win-opc01/Matrikon.OPC.Simulation.1");
+var connectData = OpcConnectData.WithNtlmV2(
+    url,
+    new NetworkCredential("opc-reader", "password", "CORP"),
+    OpcProtectionLevel.Integrity);
+```
 
-### From OPC UA
+Subscription setup with `Opc.Classic`:
 
-OPC UA and OPC Classic are not the same protocol family. UA is modern, service-oriented, firewall-friendly, and recommended for greenfield systems. OPC Classic is the legacy COM/DCOM family.
+```csharp
+await using IDaSubscription subscription = await server.CreateSubscriptionAsync(
+    new SubscriptionState { Name = "process", Active = true, UpdateRateMs = 1000 },
+    cancellationToken);
 
-Use `Opc.Classic` when you must integrate with existing DA/AE/HDA/XML-DA servers or expose a Classic-compatible server to legacy clients. For new plant models and new device connectivity, prefer OPC UA unless you have a specific Classic compatibility requirement.
+await subscription.AddItemsAsync(new[] { new Item("Random.Int1") { ClientHandle = 1 } }, cancellationToken);
 
-A common pattern is a bridge: read legacy DA tags through `Opc.Classic`, normalize values and qualities, then expose OPC UA, MQTT, historian, or REST output from your application.
+await foreach (DataChange change in subscription.DataChanges.WithCancellation(cancellationToken))
+{
+    foreach (ItemValueResult item in change.Items)
+    {
+        Console.WriteLine($"{item.ItemName}: {item.Value} {item.Quality} {item.Timestamp:O}");
+    }
+}
+```
 
-## 11. Common pitfalls and troubleshooting
+Adoption checklist:
 
-### NTLMv2 password encoding
+- parse Classic endpoints with `OpcUrl.Parse(...)`;
+- choose `OpcConnectData.WithNtlmV2(...)` or `OpcConnectData.WithKerberos(...)`;
+- keep packet integrity as the default;
+- move blocking calls to `await`;
+- represent values with `object?`, `OpcVariant`, and DA result records as appropriate;
+- dispose channels, servers, and subscriptions with `using` or `await using`;
+- use generated proxies/dispatchers or the high-level managed contracts rather than reflection-based COM wrappers.
 
-NTLMv2 hashes use the Unicode password representation required by MS-NLMP: UTF-16 little-endian. Do not pre-hash passwords, convert them through UTF-8 bytes, or trim domain/user casing unexpectedly. Pass the original password to `NetworkCredential` and let the stack derive the response.
+The repository also contains `Opc.Classic.MigrationAnalyzer` for projects that want Roslyn diagnostics and code fixes around OPC NET API usage.
+
+## 12. Common pitfalls and troubleshooting
 
 ### DCOM hardening and packet integrity
 
-Microsoft DCOM hardening for KB5004442 requires at least `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` for activation against patched Windows servers. `OpcConnectData` defaults `OpcProtectionLevel.Default` to `Integrity`. If you force `None`, `Connect`, or legacy `Call`, expect activation failures or Windows Event ID 10036 on the server.
+Microsoft DCOM hardening for KB5004442 requires at least `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` for activation against patched Windows servers. `OpcConnectData` defaults to `OpcProtectionLevel.Integrity`. If you force `None`, `Connect`, or `Call`, expect activation failures or Windows Event ID 10036 on the server.
 
-### SAFEARRAY limitations
+### NTLMv2 password handling
 
-`OpcVariant.FromSafeArray(...)` supports the current managed SAFEARRAY carrier. Today, focus on one-dimensional scalar arrays. Multi-dimensional arrays, arrays of nested variants, and unusual COM automation element types should be treated as compatibility work items.
+NTLMv2 hashes use the Unicode password representation required by [MS-NLMP]: UTF-16 little-endian. Pass the original password to `NetworkCredential`; do not pre-hash, UTF-8 encode, or trim domain/user casing.
+
+### Kerberos configuration
+
+Kerberos failures usually come from environment configuration: unreachable KDC, DNS/SPN mismatch, clock skew, missing `RPCSS/host` SPN, realm casing, or blocked KDC/DCOM ports. Validate with a known Kerberos tool before debugging application code.
+
+### SPNEGO fallback
+
+SPNEGO is a negotiation container, not a guarantee that Kerberos is selected. If policy requires Kerberos, fail closed when a Kerberos ticket cannot be acquired. If NTLMv2 fallback is acceptable, make it explicit and log the selected mechanism.
+
+### SAFEARRAY and VARIANT shapes
+
+Classic servers can return scalar values, arrays, nested variants, byref values, and automation-specific shapes. Use `OpcVariant` and `OpcSafeArray` conversion helpers rather than manual casts when working at the wire layer.
 
 ### Server hosting registration
 
-Calling `AddOpcDaServer<T>()` registers your `IOpcDaServer` and the DA host, but the process also needs the shared hosting service and a CLSID registry:
+Calling `AddOpcDaServer<T>()` registers the server implementation and per-spec host. The application also needs the shared hosted service and CLSID registry:
 
 ```csharp
 services.AddClassicServer();
@@ -381,34 +420,32 @@ services.AddClassicClsidRegistry(configuration);
 services.AddOpcDaServer<MyDaServer>(...);
 ```
 
-The hosted service drives all registered `IOpcServerHost` instances. If the service is missing, your server implementation may be in the container but no listener lifecycle is started.
+If the shared hosted service is missing, the DI container contains the server implementation but no listener lifecycle starts.
 
 ### ProgID and CLSID mismatches
 
-An OPC URL can identify a server by ProgID or CLSID. Discovery results and server registration must agree on both. If activation by ProgID fails, try resolving the CLSID with discovery and connecting with a CLSID URL. On Windows, verify `HKLM\SOFTWARE\Classes\CLSID\{...}` and `ProgID` registrations when native COM clients are involved.
+An OPC URL can identify a server by ProgID or CLSID. Discovery results and server registration must agree on both. If activation by ProgID fails, resolve the CLSID with discovery and connect with a CLSID URL. On Windows, verify `HKLM\SOFTWARE\Classes\CLSID\{...}` and `ProgID` registrations when native COM clients are involved.
 
-### Kerberos troubleshooting
+## 13. Samples to start from
 
-Kerberos failures usually come from environment configuration: unreachable KDC, DNS/SPN mismatch, clock skew, missing `RPCSS/host` SPN, realm casing, or blocked KDC/DCOM ports. Validate with a known Kerberos tool first, then run the repository Kerberos/Testcontainers fixture if you are changing the auth stack.
+| Sample | Start here when you need |
+| --- | --- |
+| `samples/Opc.Classic.Samples.DaClient` | DA reads, browse, subscriptions, and generated proxy wiring. |
+| `samples/Opc.Classic.Samples.DaServer` | Managed DA server hosting. |
+| `samples/Opc.Classic.Samples.AeClient` | AE subscription consumption. |
+| `samples/Opc.Classic.Samples.AeServer` | Managed AE server hosting. |
+| `samples/Opc.Classic.Samples.HdaClient` | HDA query/playback client flow. |
+| `samples/Opc.Classic.Samples.HdaServer` | Managed HDA historical server hosting. |
+| `samples/Opc.Classic.Samples.LoopbackDemo` | In-memory generated proxy/dispatcher loopback. |
+| `samples/Opc.Classic.Samples.CttServer` | DA server shape for OPC CTT workflows. |
+| `samples/Opc.Classic.Samples.AotCanary` | NativeAOT publish validation. |
 
-### SPNEGO fallback surprises
+## 14. Roadmap for release adoption
 
-SPNEGO is a negotiation container, not a guarantee that Kerberos was used. If your policy requires Kerberos, fail closed when Kerberos cannot be acquired. If fallback to NTLMv2 is acceptable, make it explicit and observable in logs.
+The `1.0.0-rc.1` release train focuses on release qualification:
 
-### Transport availability
-
-`DcomCallChannel` consumes an `IAsyncTransport`. The transport contract exists and in-memory implementations cover unit and loopback tests. Production TCP transport is tracked as follow-up work. Until that ships, do not promise remote production DA reads through the low-level DCOM channel without providing your own transport factory.
-
-### Native COM expectations
-
-Windows COM clients expect registry entries, apartment/threading conventions, and activation behavior. Managed hosting handles the server implementation, but native COM activation compatibility still needs Windows setup and the Phase 4C/4F activation path. Test with the native C++ samples in `COM/` when validating interoperability.
-
-## 12. Where to next
-
-- `docs/ARCHITECTURE.md` — full design of the managed DCOM stack, generated proxies, hosting, and AOT choices.
-- `docs/cookbook/` — focused how-to articles for specific adoption tasks.
-- `docs/RELEASE_PROCESS.md` — how the project builds, validates, and ships packages.
-- `samples/Opc.Classic.Samples.*` — runnable examples, including the CTT sample server and AOT canary.
-- `CHANGELOG.md` — feature inventory by alpha release and known limitations.
-
-For a first proof of concept, start with local discovery or a known ProgID, use NTLMv2 with packet integrity, call `IOPCServerClientProxy.GetStatusAsync`, then move to DA item/group methods or managed hosting.
+- compatibility matrix validation against native OPC Foundation samples and representative external servers;
+- OPC CTT workflows where installer access is available;
+- public API and package metadata stabilization;
+- continued AOT canary and cross-platform CI coverage;
+- external security review inputs for authentication and packet protection.

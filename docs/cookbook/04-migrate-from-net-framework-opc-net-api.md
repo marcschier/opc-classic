@@ -1,86 +1,100 @@
-# Migrate from the .NET Framework OPC NET API to Opc.Classic.*
-
-Updated for Opc.Classic 0.4.0-alpha.1.
+# Adopt Opc.Classic in OPC NET API projects
 
 ## What this covers
 
-Move an application from `OpcCom.Da.Server` to .NET 10 and `Opc.Classic.Da`.
+Map common OPC Foundation .NET Framework OPC NET API concepts to current .NET 10 `Opc.Classic.*` APIs.
 
-## Status / availability
+Core types:
 
-`OpcUrl` / `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, and `SubscriptionState` are in `src\Opc.Classic.Da`. The 0.4.0-alpha.1 rename standardizes package IDs, namespaces, folders, and project names on `Opc.Classic.*`.
+- `OpcUrl` and `OpcConnectData` are in `Opc.Classic`.
+- `IDaServer`, `IDaSubscription`, `Item`, `ItemValueResult`, `DataChange`, and `SubscriptionState` are in `Opc.Classic.Da`.
+- Generated DCOM projections such as `IOPCServerClientProxy` are in `Opc.Classic.Da.Dcom`.
 
 ## Project file
 
-```xml
-<!-- old -->
-<TargetFramework>net462</TargetFramework>
-```
+Use a current target framework and opt into AOT validation where your application supports it.
 
 ```xml
-<!-- new -->
 <TargetFramework>net10.0</TargetFramework>
 <IsAotCompatible>true</IsAotCompatible>
 ```
 
-Remove WCF and Windows-only COM dependencies:
+Reference the areas you need:
 
 ```bash
 dotnet add package Opc.Classic.Core
 dotnet add package Opc.Classic.Da
+dotnet add package Opc.Classic.Dcom
 ```
 
-## Connection side-by-side
+## API mapping
+
+| OPC NET API concept | Opc.Classic concept |
+| --- | --- |
+| `Opc.URL` | `OpcUrl` |
+| `Opc.ConnectData` | `OpcConnectData` |
+| custom OPC credentials | `System.Net.NetworkCredential` |
+| `Opc.Da.Server` | `IDaServer` or generated `IOPCServerClientProxy` |
+| `Opc.Da.Subscription` | `IDaSubscription` |
+| `Opc.Da.Item` | `Item` |
+| `Opc.Da.ItemValue` | `ItemValue` / `ItemValueResult` |
+| synchronous callbacks | `IAsyncEnumerable<DataChange>` |
+| COM activation defaults | explicit `OpcConnectData` authentication and protection policy |
+
+## Connection setup
 
 ```csharp
-// Old
-var server = new Opc.Da.Server(new OpcCom.Factory(), null);
-server.Connect(
-    new Opc.URL("opcda://win-opc01/Matrikon.OPC.Simulation.1"),
-    new Opc.ConnectData(new NetworkCredential("opc-reader", password, "CORP")));
-```
+using System.Net;
+using Opc.Classic;
 
-```csharp
-// New
 var url = OpcUrl.Parse("opcda://win-opc01/Matrikon.OPC.Simulation.1");
 var connectData = OpcConnectData.WithNtlmV2(
     url,
     new NetworkCredential("opc-reader", password, "CORP"),
     OpcProtectionLevel.Integrity);
-
-await using IDaServer server =
-    await DaClient.ConnectAsync(connectData, cancellationToken);
 ```
 
-## Subscription side-by-side
+Use `OpcConnectData.WithKerberos(...)` for Active Directory environments with a configured `RPCSS/<fqdn>` service principal.
+
+## DA read and subscription shape
 
 ```csharp
-// Old: synchronous callbacks and boxed values
-var group = (Opc.Da.Subscription)server.CreateSubscription(new Opc.Da.SubscriptionState
-{
-    Name = "process", Active = true, UpdateRate = 1000,
-});
-group.AddItems(new[] { new Opc.Da.Item { ItemName = "Random.Int1" } });
-group.DataChanged += (_, _, values) => { /* Value, Quality, Timestamp */ };
-```
+using Opc.Classic.Da;
 
-```csharp
-// New: async value-quality-timestamp triples
-await using var subscription = await server.CreateSubscriptionAsync(
+await using IDaSubscription subscription = await server.CreateSubscriptionAsync(
     new SubscriptionState { Name = "process", Active = true, UpdateRateMs = 1000 },
     cancellationToken);
 
-await subscription.AddItemsAsync(new[] { new Item("Random.Int1") { ClientHandle = 1 } }, cancellationToken);
+var items = new[] { new Item("Random.Int1") { ClientHandle = 1 } };
+await subscription.AddItemsAsync(items, cancellationToken);
 
 await foreach (DataChange change in subscription.DataChanges.WithCancellation(cancellationToken))
+{
     foreach (ItemValueResult item in change.Items)
+    {
         Console.WriteLine($"{item.ItemName}: {item.Value} {item.Quality} {item.Timestamp:O}");
+    }
+}
 ```
 
 ## Important differences
 
-- Async-first: `Task`, `IAsyncEnumerable<T>`, and `CancellationToken`.
-- Public DA values are `object?`; wire/NDR code uses `OpcVariant`.
-- `CoCreateInstance` becomes `OpcUrl` plus `OpcConnectData`.
-- Reflection-based marshaling becomes NDR codecs plus source-generated proxies. See `docs\ARCHITECTURE.md`.
-- Generator-emitted client proxy classes are now named without the underscore, for example `IOPCServerClientProxy`; IDL-spec identifiers such as `IOPCHDA_Server` retain their OPC-defined underscores.
+- Async-first: `Task`, `IAsyncEnumerable<T>`, and `CancellationToken` are the default shape.
+- Packet integrity is the default for cross-machine DCOM authentication.
+- Values are represented by DA result records and `OpcVariant` at the wire layer.
+- Source-generated proxies and dispatchers provide static AOT-safe DCOM bindings.
+- Generated client proxy names use the interface name plus `ClientProxy`, for example `IOPCServerClientProxy`.
+- OPC IDL-defined identifiers keep their spec spelling, including underscores where present.
+
+## Analyzer support
+
+`Opc.Classic.MigrationAnalyzer` provides Roslyn diagnostics and code fixes for common OPC NET API usage patterns. Use it when you want automated guidance while updating a larger application.
+
+## Validation path
+
+1. Start with a known ProgID or CLSID and `OpcUrl.Parse(...)`.
+2. Use NTLMv2 with `OpcProtectionLevel.Integrity`.
+3. Verify `GetStatusAsync` before adding item/group logic.
+4. Add reads and subscriptions.
+5. Enable Kerberos/SPNEGO where Active Directory policy requires it.
+6. Publish the application with trimming or NativeAOT if that is part of your deployment model.

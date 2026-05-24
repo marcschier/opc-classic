@@ -1,30 +1,30 @@
 # Connect to Matrikon OPC Simulation Server from Linux
 
-Updated for Opc.Classic 0.4.0-alpha.1.
-
 ## What this covers
 
-A .NET 10 Linux client connects to a Windows Matrikon OPC DA Simulation Server, creates a DA group, and reads values.
+A .NET 10 Linux client connects to a Windows Matrikon OPC DA Simulation Server, authenticates with NTLMv2 or Kerberos, uses packet integrity, and reads DA values.
 
-## Status / availability
+## Packages and namespaces
 
-`OpcUrl` and `OpcConnectData` are in `src\Opc.Classic.Core`; `IDaServer`, `IDaSubscription`, `SubscriptionState`, and `Item` are in `src\Opc.Classic.Da`. DCOM call-shim emission for `IOPCServer` / `IOPCGroupStateMgt` is wired through generated `IOPCServerClientProxy`-style classes; Phase 14C remains the real Matrikon connectivity gate.
-
-For in-repository samples, `samples\Opc.Classic.Samples.DaServer` mirrors a Matrikon-style DA tag tree, `samples\Opc.Classic.Samples.AotCanary` exercises the AOT-safe core/DA surface, and `samples\Opc.Classic.Samples.CttServer` exposes the CTT DA target registered as `Opc.Classic.DaSample.1`.
-
-## Install
+Use the `Opc.Classic.*` packages for the current source tree:
 
 ```bash
 dotnet add package Opc.Classic.Core
 dotnet add package Opc.Classic.Da
+dotnet add package Opc.Classic.Dcom
 ```
 
-## Connect
+Core types:
+
+- `OpcUrl` and `OpcConnectData` are in `Opc.Classic`.
+- `IDaServer`, `IDaSubscription`, `SubscriptionState`, `Item`, and `ItemValueResult` are in `Opc.Classic.Da`.
+- Generated DA DCOM proxies, such as `IOPCServerClientProxy`, are in `Opc.Classic.Da.Dcom`.
+
+## Connection policy
 
 ```csharp
 using System.Net;
 using Opc.Classic;
-using Opc.Classic.Da;
 
 var url = OpcUrl.Parse("opcda://win-opc01/Matrikon.OPC.Simulation.1");
 var connectData = OpcConnectData.WithNtlmV2(
@@ -32,35 +32,51 @@ var connectData = OpcConnectData.WithNtlmV2(
     new NetworkCredential("opc-reader", password, "CORP"),
     protectionLevel: OpcProtectionLevel.Integrity,
     operationTimeout: TimeSpan.FromSeconds(30));
-
-await using IDaServer server =
-    await DaClient.ConnectAsync(connectData, cancellationToken);
 ```
 
-For the hardening rationale, see [05-dcom-hardening-pkt-integrity-explainer.md](05-dcom-hardening-pkt-integrity-explainer.md).
+Use `OpcConnectData.WithKerberos(...)` when the Linux host has access to the domain KDC and the Matrikon host has a matching `RPCSS/<fqdn>` service principal. See [Kerberos in Active Directory](03-kerberos-in-active-directory.md).
 
-## Subscribe and read
+## Read and subscribe through `IDaServer`
 
 ```csharp
+using Opc.Classic.Da;
+
 var items = new[]
 {
     new Item("Random.Int1") { ClientHandle = 1001 },
     new Item("Random.Real8") { ClientHandle = 1002 },
 };
 
-await using var subscription = await server.CreateSubscriptionAsync(
+IReadOnlyList<ItemValueResult> snapshot = await server.ReadAsync(items, cancellationToken);
+foreach (ItemValueResult value in snapshot)
+{
+    Console.WriteLine($"{value.ItemName}: {value.Value} {value.Quality} {value.Timestamp:O}");
+}
+
+await using IDaSubscription subscription = await server.CreateSubscriptionAsync(
     new SubscriptionState { Name = "linux-matrikon-sim", UpdateRateMs = 1000, Active = true },
     cancellationToken);
 
 await subscription.AddItemsAsync(items, cancellationToken);
-var snapshot = await server.ReadAsync(items, cancellationToken);
-
-foreach (ItemValueResult value in snapshot)
-    Console.WriteLine($"{value.ItemName}: {value.Value} {value.Quality} {value.Timestamp:O}");
+await foreach (DataChange change in subscription.DataChanges.WithCancellation(cancellationToken))
+{
+    foreach (ItemValueResult item in change.Items)
+    {
+        Console.WriteLine($"{item.ItemName}: {item.Value} {item.Quality}");
+    }
+}
 ```
 
-For continuous updates, iterate `subscription.DataChanges`; each `DataChange` is one `IOPCDataCallback::OnDataChange` batch.
+`DataChanges` yields one managed batch per `IOPCDataCallback::OnDataChange` callback.
 
 ## Network requirements
 
 Open TCP/135 for the Endpoint Mapper plus the dynamic TCP range used by the Matrikon COM endpoint. Prefer constraining the dynamic range on Windows, then scope firewall rules to the Linux client IP and server process.
+
+## Validation aids
+
+- `samples\Opc.Classic.Samples.DaClient` shows the managed DA client shape.
+- `samples\Opc.Classic.Samples.LoopbackDemo` validates generated proxy/dispatcher flow without remote networking.
+- `samples\Opc.Classic.Samples.AotCanary` validates NativeAOT publish behavior.
+
+For packet-integrity rationale, see [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md).

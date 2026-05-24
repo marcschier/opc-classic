@@ -1,63 +1,72 @@
 # Kerberos authentication in an Active Directory environment
 
-Updated for Opc.Classic 0.4.0-alpha.1.
-
 ## What this covers
 
-Use Kerberos through SPNEGO for enterprise DCOM authentication when the OPC client and server are in Active Directory.
+Use Kerberos through SPNEGO for enterprise DCOM authentication when the OPC client and server are joined to, or trusted by, Active Directory.
 
-## Status / availability
+`OpcConnectData.WithKerberos`, `OpcAuthMode.Kerberos`, Kerberos packet protection, SPNEGO token wrapping, and the `IAuthContext` seam are available in the `Opc.Classic.*` tree.
 
-`OpcConnectData.WithKerberos`, `OpcAuthMode.Kerberos`, Kerberos/SPNEGO token plumbing, and the `IAuthContext` seam are in the Opc.Classic tree. External Active Directory validation remains part of the 1.0.0 compatibility gate; test the exact SPN, DNS, clock, and packet-integrity policy used by your deployment.
-
-## Request a DCOM service ticket
+## Service principal
 
 Use the server FQDN. DCOM commonly authenticates to `RPCSS/<server-fqdn>`.
 
-```bash
-dotnet add package Kerberos.NET
+```text
+RPCSS/opc01.corp.example.com
 ```
+
+Ensure DNS, reverse lookup expectations, realm casing, and clock synchronization are correct before testing application code.
+
+## Connection data
 
 ```csharp
 using System.Net;
-using Kerberos.NET.Client;
-using Kerberos.NET.Credentials;
 using Opc.Classic;
 
 var url = OpcUrl.Parse("opcda://opc01.corp.example.com/Matrikon.OPC.Simulation.1");
-var credential = new NetworkCredential("alice", password, "CORP");
-var connectData = OpcConnectData.WithKerberos(url, credential, OpcProtectionLevel.Integrity);
+var credential = new NetworkCredential("alice@CORP.EXAMPLE.COM", password, "CORP.EXAMPLE.COM");
 
-var krb = new KerberosClient();
-await krb.Authenticate(new KerberosPasswordCredential("alice@CORP.EXAMPLE.COM", password));
-byte[] apReq = await krb.GetServiceTicket("RPCSS/opc01.corp.example.com", cancellationToken);
+var connectData = OpcConnectData.WithKerberos(
+    url,
+    credential,
+    OpcProtectionLevel.Integrity,
+    operationTimeout: TimeSpan.FromSeconds(30));
 ```
 
-## Bind through SPNEGO
+## SPNEGO
 
-SPNEGO wraps the Kerberos AP-REQ in an Init/Resp blob and places it in the DCE/RPC bind auth verifier. Generated DA shims still use `ICallChannel`; only auth changes.
+SPNEGO wraps the Kerberos AP-REQ/AP-REP exchange for peers that negotiate through [MS-SPNG] / RFC 4178. Generated DA, AE, and HDA shims still use `ICallChannel`; only the authentication context changes.
 
-```csharp
-var bindOptions = new SpnegoBindOptions
-{
-    Mechanism = SpnegoMechanism.Kerberos,
-    InitialToken = apReq,
-    ProtectionLevel = connectData.ProtectionLevel,
-};
-```
+Keep NTLMv2 fallback explicit. Some environments disable NTLM entirely, and a silent fallback can violate policy.
 
 ## Channel binding / EPA
 
-For TLS-protected DCOM endpoints, channel binding / EPA includes the `tls-server-end-point` certificate hash in the Kerberos authenticator checksum before SPNEGO wrapping.
+For TLS-protected DCOM endpoints, channel binding includes the `tls-server-end-point` certificate hash in the authentication exchange.
+
+```csharp
+using Opc.Classic.Security;
+
+byte[] serverCertificateDer = GetServerCertificateBytes();
+ChannelBindings bindings = ChannelBindingsFactory.ForTlsServerEndpoint(serverCertificateDer);
+
+var connectData = OpcConnectData.WithKerberos(
+    url,
+    credential,
+    OpcProtectionLevel.Integrity,
+    channelBindings: bindings);
+```
+
+The helper follows RFC 5056 and RFC 5929.
 
 ## Diagnostics
 
-`LogHost.ConfigureFactory` is in `src\Opc.Classic.Dcom\Internal\LogHost.cs`.
+If negotiation fails, check:
 
-```csharp
-using ILoggerFactory loggerFactory = LoggerFactory.Create(b =>
-    b.AddConsole().SetMinimumLevel(LogLevel.Trace));
-LogHost.ConfigureFactory(loggerFactory);
-```
+- KDC reachability;
+- DNS and SPN match;
+- client/server clock skew;
+- account lockout or delegation policy;
+- DCOM firewall ports;
+- packet-integrity policy;
+- whether SPNEGO selected Kerberos or NTLMv2.
 
-If negotiation fails, check SPN, DNS, clock skew, and packet-integrity policy. See [05-dcom-hardening-pkt-integrity-explainer.md](05-dcom-hardening-pkt-integrity-explainer.md).
+Use application logging around the selected `OpcAuthMode` and protection level. For packet-integrity rationale, see [DCOM hardening and packet integrity](05-dcom-hardening-pkt-integrity-explainer.md).

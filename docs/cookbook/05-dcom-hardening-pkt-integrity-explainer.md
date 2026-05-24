@@ -1,20 +1,19 @@
-# DCOM hardening: why PKT_INTEGRITY is the default
-
-Updated for Opc.Classic 0.4.0-alpha.1.
+# DCOM hardening: why packet integrity is the default
 
 ## What this covers
 
-Why Opc.Classic defaults to `PROTECTION_LEVEL_INTEGRITY` (`RPC_C_AUTHN_LEVEL_PKT_INTEGRITY`, level 5) for cross-machine DCOM.
+`Opc.Classic` defaults to `OpcProtectionLevel.Integrity`, which corresponds to `RPC_C_AUTHN_LEVEL_PKT_INTEGRITY` for DCE/RPC/DCOM. This is the safe baseline for cross-machine OPC Classic connections.
 
-## Status / availability
-
-`OpcProtectionLevel.Integrity` and default expansion are in `src\Opc.Classic.Core\OpcProtectionLevel.cs` and `OpcConnectData.cs`. Opc.Classic 0.4.0-alpha.1 keeps this behavior after the `Opc.Classic.*` rename and MIT relicense. Roadmap references: Phase 3B default integrity, Phase 3C NTLMv2-only policy, and Phase 3F channel binding / EPA.
+`OpcProtectionLevel.Integrity` and default expansion are in `Opc.Classic` core connection policy. Authentication support includes self-contained NTLMv2, Kerberos, SPNEGO, and RFC 5056 / RFC 5929 channel binding.
 
 ## Why integrity is the default
 
-KB5004442 made DCOM hardening mandatory in March 2023. Patched Windows DCOM servers reject cross-machine activation below packet integrity, so `OpcConnectData` expands `Default` to `Integrity`.
+Microsoft DCOM hardening for KB5004442 requires packet integrity for cross-machine activation against patched Windows servers. `OpcConnectData` expands `OpcProtectionLevel.Default` to `Integrity`.
 
 ```csharp
+using System.Net;
+using Opc.Classic;
+
 var connectData = OpcConnectData.WithNtlmV2(
     OpcUrl.Parse("opcda://win-opc01/Matrikon.OPC.Simulation.1"),
     new NetworkCredential("opc-reader", password, "CORP"));
@@ -22,32 +21,33 @@ var connectData = OpcConnectData.WithNtlmV2(
 Console.WriteLine(connectData.ProtectionLevel); // Integrity
 ```
 
-## What PKT_INTEGRITY adds
+## What packet integrity adds
 
-Every DCE/RPC PDU carries a per-message HMAC signature. The receiver verifies it before accepting the PDU, detecting tampering and downgrade attempts. It does not encrypt values; use `OpcProtectionLevel.Privacy` for confidentiality.
+Every protected DCE/RPC PDU carries a per-message signature. The receiver verifies that signature before accepting the PDU, which detects tampering and downgrade attempts. Packet integrity does not encrypt values; use `OpcProtectionLevel.Privacy` when confidentiality is required.
 
-Cost is small: about a 20-byte verifier per PDU plus HMAC work. NTLM commonly uses HMAC-MD5; Kerberos/SPNEGO may negotiate SHA-based keys.
+The overhead is modest: an authentication verifier on each PDU plus the cryptographic work needed by the selected mechanism. NTLMv2 uses HMAC-MD5 session security; Kerberos/SPNEGO uses the negotiated Kerberos encryption type and checksum rules.
 
-## Opting out for legacy servers
+## Protection-level choices
 
-Only downgrade isolated legacy targets that cannot accept integrity.
+| Level | Use |
+| --- | --- |
+| `Integrity` | Default for cross-machine DCOM. Signs PDUs and satisfies DCOM hardening. |
+| `Privacy` | Signs and encrypts PDUs. Use when tag values or event payloads require confidentiality. |
+| `Connect` | Compatibility exception for isolated endpoints that cannot accept integrity. |
+
+Only downgrade isolated targets that cannot accept integrity, and document the exception.
 
 ```csharp
-var legacy = OpcConnectData.WithNtlmV2(url, credentials, OpcProtectionLevel.Connect);
+var compatibilityException = OpcConnectData.WithNtlmV2(
+    url,
+    credentials,
+    OpcProtectionLevel.Connect);
 ```
 
-Planned builder equivalent:
+Bind-only authentication leaves later PDUs unsigned, exposing reads, writes, callbacks, and activation flows to tampering.
 
-```csharp
-var legacy = OpcConnectData.Builder
-    .WithProtectionLevel(OpcProtectionLevel.Connect)
-    .Build();
-```
+## NTLMv2, Kerberos, and EPA
 
-Bind-only authentication leaves later PDUs unsigned, exposing reads/writes to tampering and downgrade attacks.
+Use `OpcAuthMode.NtlmV2` or `OpcAuthMode.Kerberos`. Kerberos/SPNEGO is preferred in Active Directory environments. For TLS-protected endpoints, channel binding / Extended Protection for Authentication includes the `tls-server-end-point` certificate hash in the authentication exchange.
 
-## NTLMv2 and EPA
-
-Use `OpcAuthMode.NtlmV2`. `OpcAuthMode.NtlmV1` is legacy and intended to require explicit `AllowNtlmV1` opt-in; do not enable it without a documented exception.
-
-For TLS-protected endpoints, channel binding / EPA includes the `tls-server-end-point` certificate hash in the auth exchange. See [03-kerberos-in-active-directory.md](03-kerberos-in-active-directory.md).
+See [Kerberos in Active Directory](03-kerberos-in-active-directory.md) for SPN and channel-binding setup.
