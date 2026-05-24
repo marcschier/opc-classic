@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -102,188 +103,81 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 FOUR_BYTE_SIGNED_INTEGER](#2211-fourbytesignedinteger)
+      - [2.2.1.2 FOUR_BYTE_FLOAT](#2212-fourbytefloat)
+      - [2.2.1.3 RDPLOCATION_HEADER](#2213-rdplocationheader)
+    - [2.2.2 Location Messages](#222-location-messages)
+      - [2.2.2.1 RDPLOCATION_SERVER_READY_PDU](#2221-rdplocationserverreadypdu)
+      - [2.2.2.2 RDPLOCATION_CLIENT_READY_PDU](#2222-rdplocationclientreadypdu)
+      - [2.2.2.3 RDPLOCATION_BASE_LOCATION3D_PDU](#2223-rdplocationbaselocation3dpdu)
+      - [2.2.2.4 RDPLOCATION_LOCATION2D_DELTA_PDU](#2224-rdplocationlocation2ddeltapdu)
+      - [2.2.2.5 RDPLOCATION_LOCATION3D_DELTA_PDU](#2225-rdplocationlocation3ddeltapdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Latitude](#3111-latitude)
+      - [3.1.1.2 Longitude](#3112-longitude)
+      - [3.1.1.3 Altitude](#3113-altitude)
+      - [3.1.1.4 Speed](#3114-speed)
+      - [3.1.1.5 Heading](#3115-heading)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Location Message](#3151-processing-a-location-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending an RDPLOCATION_SERVER_READY_PDU Message](#3251-sending-an-rdplocationserverreadypdu-message)
+      - [3.2.5.2 Processing an RDPLOCATION_CLIENT_READY_PDU Message](#3252-processing-an-rdplocationclientreadypdu-message)
+      - [3.2.5.3 Processing an RDPLOCATION_BASE_LOCATION3D_PDU Message](#3253-processing-an-rdplocationbaselocation3dpdu-message)
+      - [3.2.5.4 Processing an RDPLOCATION_LOCATION2D_DELTA_PDU Message](#3254-processing-an-rdplocationlocation2ddeltapdu-message)
+      - [3.2.5.5 Processing an RDPLOCATION_LOCATION3D_DELTA_PDU Message](#3255-processing-an-rdplocationlocation3ddeltapdu-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing an RDPLOCATION_SERVER_READY_PDU Message](#3351-processing-an-rdplocationserverreadypdu-message)
+      - [3.3.5.2 Sending an RDPLOCATION_CLIENT_READY_PDU Message](#3352-sending-an-rdplocationclientreadypdu-message)
+      - [3.3.5.3 Sending an RDPLOCATION_BASE_LOCATION3D_PDU Message](#3353-sending-an-rdplocationbaselocation3dpdu-message)
+      - [3.3.5.4 Sending an RDPLOCATION_LOCATION2D_DELTA_PDU Message](#3354-sending-an-rdplocationlocation2ddeltapdu-message)
+      - [3.3.5.5 Sending an RDPLOCATION_LOCATION3D_DELTA_PDU Message](#3355-sending-an-rdplocationlocation3ddeltapdu-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Common Data Types ..................................................................................... 8
-FOUR_BYTE_SIGNED_INTEGER ................................................................ 8
-FOUR_BYTE_FLOAT ................................................................................. 9
-RDPLOCATION_HEADER ........................................................................ 10
-Location Messages ...................................................................................... 11
-RDPLOCATION_SERVER_READY_PDU ...................................................... 11
-RDPLOCATION_CLIENT_READY_PDU ....................................................... 11
-RDPLOCATION_BASE_LOCATION3D_PDU ................................................. 12
-RDPLOCATION_LOCATION2D_DELTA_PDU ............................................... 13
-RDPLOCATION_LOCATION3D_DELTA_PDU ............................................... 14
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-
-2.2.2
-
-3.1
-
-3.1.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Latitude ............................................................................................... 16
-Longitude ............................................................................................. 16
-Altitude ................................................................................................ 16
-Speed .................................................................................................. 16
-Heading ............................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Processing a Location Message ............................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 18
-Sending an RDPLOCATION_SERVER_READY_PDU Message ........................ 18
-Processing an RDPLOCATION_CLIENT_READY_PDU Message ...................... 18
-Processing an RDPLOCATION_BASE_LOCATION3D_PDU Message ............... 18
-Processing an RDPLOCATION_LOCATION2D_DELTA_PDU Message .............. 18
-Processing an RDPLOCATION_LOCATION3D_DELTA_PDU Message .............. 18
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Client Details ................................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1
-3.3.2
-
-3.2.6
-3.2.7
-
-3.3
-
-3.2
-
-[MS-RDPEL] - v20240423
-Remote Desktop Protocol: Location Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 26
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.6
-3.3.7
-
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Processing an RDPLOCATION_SERVER_READY_PDU Message ..................... 19
-Sending an RDPLOCATION_CLIENT_READY_PDU Message ......................... 19
-Sending an RDPLOCATION_BASE_LOCATION3D_PDU Message ................... 20
-Sending an RDPLOCATION_LOCATION2D_DELTA_PDU Message ................. 20
-Sending an RDPLOCATION_LOCATION3D_DELTA_PDU Message ................. 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-4  Protocol Examples ................................................................................................. 21
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-RDPEL] - v20240423
-Remote Desktop Protocol: Location Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Location Virtual Channel Extension (RDPEL) applies to the Remote
 Desktop Protocol: Basic Connectivity and Graphics Remoting, as defined in [MS-RDPBCGR]. RDPEL is
@@ -296,7 +190,7 @@ parameters of the client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -318,14 +212,14 @@ connected client device.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -337,7 +231,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
@@ -349,11 +243,12 @@ Release: April 23, 2024
 
 5 / 26
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPEL].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Location Virtual Channel Extension (RDPEL), defined in section 2.2,
 adds the ability to redirect the client's location (latitude, longitude and altitude) to a server so that
@@ -387,7 +282,7 @@ RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages. The server decodes 
 updates and injects them into the user's session to ensure that any location-aware applications remain
 in-sync with the client's current position, altitude, speed, and heading.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Location Virtual Channel Extension is embedded in a dynamic virtual
 channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
@@ -399,7 +294,8 @@ Release: April 23, 2024
 
 6 / 26
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Location Virtual Channel Extension operates only after the dynamic
 virtual channel transport is fully established. If the dynamic virtual channel transport is terminated,
@@ -407,7 +303,7 @@ the Remote Desktop Protocol: Location Virtual Channel Extension is also terminat
 terminated by closing the underlying virtual channel. For details about closing the dynamic virtual
 channel, see [MS-RDPEDYC] section 3.2.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Location Virtual Channel Extension is applicable in scenarios where the
 location of the client device is required to provide a more relevant and contextually accurate user
@@ -420,9 +316,10 @@ Release: April 23, 2024
 
 7 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Location Virtual Channel Extension is designed to operate over a
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel
@@ -430,15 +327,15 @@ name is the null-terminated ANSI character string "Microsoft::Windows::RDS::Loca
 of channel names in the context of opening a dynamic virtual channel is specified in [MS-RDPEDYC]
 section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Location Virtual Channel Extension
 message syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte
 order, unless otherwise specified.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  FOUR_BYTE_SIGNED_INTEGER
+##### 2.2.1.1 FOUR_BYTE_SIGNED_INTEGER
 
 The FOUR_BYTE_SIGNED_INTEGER structure is used to encode a value in the range -0x1FFFFFFF
 to 0x1FFFFFFF by using a variable number of bytes. The three most significant bits of the first byte
@@ -524,7 +421,8 @@ Release: April 23, 2024
 
 8 / 26
 
-Value
+
+Value
 
 Meaning
 
@@ -550,7 +448,7 @@ Val4 (1 byte, optional): An 8-bit unsigned integer containing the least signific
 
 represented by this structure.
 
-2.2.1.2  FOUR_BYTE_FLOAT
+##### 2.2.1.2 FOUR_BYTE_FLOAT
 
 The FOUR_BYTE_FLOAT structure is used to encode a value in the range -0x3FFFFFF to 0x3FFFFFF
 to a precision of seven decimal places by using a variable number of bytes. The six most significant
@@ -635,7 +533,8 @@ Release: April 23, 2024
 
 9 / 26
 
-s (1 bit): A 1-bit unsigned integer field containing an encoded representation of whether the value is
+
+s (1 bit): A 1-bit unsigned integer field containing an encoded representation of whether the value is
 
 positive or negative.
 
@@ -675,7 +574,7 @@ val4 (1 byte, optional): An 8-bit unsigned integer containing the least signific
 
 represented by this structure.
 
-2.2.1.3  RDPLOCATION_HEADER
+##### 2.2.1.3 RDPLOCATION_HEADER
 
 The RDPLOCATION_HEADER structure is included in all location protocol data units (PDUs) and
 is used to identify the type and specify the length of the PDU.
@@ -740,13 +639,14 @@ Release: April 23, 2024
 
 10 / 26
 
-pduLength (4 bytes): A 32-bit unsigned integer that specifies the length of the location PDU in
+
+pduLength (4 bytes): A 32-bit unsigned integer that specifies the length of the location PDU in
 
 bytes. This value MUST include the length of the RDPLOCATION_HEADER (6 bytes).
 
-2.2.2  Location Messages
+#### 2.2.2 Location Messages
 
-2.2.2.1  RDPLOCATION_SERVER_READY_PDU
+##### 2.2.2.1 RDPLOCATION_SERVER_READY_PDU
 
 The RDPLOCATION_SERVER_READY_PDU message is sent by the server endpoint and is used to
 indicate readiness to commence with location remoting transactions.
@@ -807,7 +707,7 @@ flags (4 bytes, optional): An optional 32-bit unsigned integer that contains pro
 
 flags. There are currently no flags to insert into this field.
 
-2.2.2.2  RDPLOCATION_CLIENT_READY_PDU
+##### 2.2.2.2 RDPLOCATION_CLIENT_READY_PDU
 
 The RDPLOCATION_CLIENT_READY_PDU message is sent by the client endpoint and is used to
 indicate readiness to commence with location remoting transactions.
@@ -840,7 +740,8 @@ Release: April 23, 2024
 
 11 / 26
 
-...
+
+...
 
 header (6 bytes): An RDPLOCATION_HEADER (section 2.2.1.3) structure. The pduType field MUST
 
@@ -874,7 +775,7 @@ source.
 flags (4 bytes, optional): An optional 32-bit unsigned integer that contains protocol initialization
 flags. Currently there are no flags to insert into this field.
 
-2.2.2.3  RDPLOCATION_BASE_LOCATION3D_PDU
+##### 2.2.2.3 RDPLOCATION_BASE_LOCATION3D_PDU
 
 The RDPLOCATION_BASE_LOCATION3D_PDU message is sent by the client endpoint and is used to
 specify the physical location and attributes related to the client’s position and movement.
@@ -921,7 +822,8 @@ Release: April 23, 2024
 
 12 / 26
 
-horizontalAccuracy (variable)
+
+horizontalAccuracy (variable)
 
 ...
 
@@ -987,7 +889,7 @@ Global Navigation Satellite System
 
 0x03
 
-2.2.2.4  RDPLOCATION_LOCATION2D_DELTA_PDU
+##### 2.2.2.4 RDPLOCATION_LOCATION2D_DELTA_PDU
 
 The RDPLOCATION_LOCATION2D_DELTA_PDU message is sent by the client endpoint and is used to
 specify a change in location that does not include altitude.
@@ -999,7 +901,8 @@ Release: April 23, 2024
 
 13 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1060,7 +963,7 @@ currentHeading = previousHeading – headingDelta
 
 This field MUST be present if the speedDelta field is present.
 
-2.2.2.5  RDPLOCATION_LOCATION3D_DELTA_PDU
+##### 2.2.2.5 RDPLOCATION_LOCATION3D_DELTA_PDU
 
 The RDPLOCATION_LOCATION3D_DELTA_PDU message is sent by the client endpoint and is used to
 specify a change in location.
@@ -1072,7 +975,8 @@ Release: April 23, 2024
 
 14 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1150,11 +1054,12 @@ Remote Desktop Protocol: Location Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1166,42 +1071,42 @@ Note It is possible to implement the following conceptual data by using a variet
 as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.1.1.1  Latitude
+##### 3.1.1.1 Latitude
 
 The Latitude store contains the most recently sent or received client latitude and is used as the basis
 for delta calculations. This store MUST be updated when sending or processing the
 RDPLOCATION_BASE_LOCATION3D_PDU (section 2.2.2.3), RDPLOCATION_LOCATION2D_DELTA_PDU
 (section 2.2.2.4), or RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages.
 
-3.1.1.2  Longitude
+##### 3.1.1.2 Longitude
 
 The Longitude store contains the most recently sent or received client longitude and is used as the
 basis for delta calculations. This store MUST be updated when sending or processing the
 RDPLOCATION_BASE_LOCATION3D_PDU (section 2.2.2.3), RDPLOCATION_LOCATION2D_DELTA_PDU
 (section 2.2.2.4), or RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages.
 
-3.1.1.3  Altitude
+##### 3.1.1.3 Altitude
 
 The Altitude store contains the most recently sent or received client altitude and is used as the basis
 for delta calculations. This store MUST be updated when sending or processing the
 RDPLOCATION_BASE_LOCATION3D_PDU (section 2.2.2.3), RDPLOCATION_LOCATION2D_DELTA_PDU
 (section 2.2.2.4) or RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages.
 
-3.1.1.4  Speed
+##### 3.1.1.4 Speed
 
 The Speed store contains the most recently sent or received client speed and is used as the basis for
 delta calculations. This store MUST be updated when sending or processing the
 RDPLOCATION_BASE_LOCATION3D_PDU (section 2.2.2.3), RDPLOCATION_LOCATION2D_DELTA_PDU
 (section 2.2.2.4) or RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages.
 
-3.1.1.5  Heading
+##### 3.1.1.5 Heading
 
 The Heading store contains the most recently sent or received client heading and is used as the basis
 for delta calculations. This store MUST be updated when sending or processing the
 RDPLOCATION_BASE_LOCATION3D_PDU (section 2.2.2.3), RDPLOCATION_LOCATION2D_DELTA_PDU
 (section 2.2.2.4) or RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -1212,17 +1117,18 @@ Release: April 23, 2024
 
 16 / 26
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Processing a Location Message
+##### 3.1.5.1 Processing a Location Message
 
 All location messages are prefaced by the RDPLOCATION_HEADER (section 2.2.1.3) structure.
 
@@ -1234,30 +1140,30 @@ If the message is in the correct sequence, the pduLength field MUST be examined 
 it is consistent with the amount of data read from the "Microsoft::Windows::RDS::Location" dynamic
 virtual channel (section 2.1). If this is not the case, the message SHOULD be ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
+
+None.
+
+#### 3.2.3 Initialization
 
 The server MUST send the RDPLOCATION_SERVER_READY_PDU (section 2.2.2.1) message to the
 client, as specified in section 3.2.5.1, to initiate the process of remoting location data.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1268,9 +1174,10 @@ Release: April 23, 2024
 
 17 / 26
 
-3.2.5  Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending an RDPLOCATION_SERVER_READY_PDU Message
+#### 3.2.5 Message Processing Events and Sequencing Rules
+
+##### 3.2.5.1 Sending an RDPLOCATION_SERVER_READY_PDU Message
 
 The structure and fields of the RDPLOCATION_SERVER_READY_PDU message are specified in section
 2.2.2.1.
@@ -1279,7 +1186,7 @@ If the server does not support location injection, then it MUST NOT send this PD
 protocolVersion field SHOULD be set to at least RDPLOCATION_PROTOCOL_V200 (0x00020000) if the
 server supports the injection of speed, heading, horizontal accuracy and source location data.
 
-3.2.5.2  Processing an RDPLOCATION_CLIENT_READY_PDU Message
+##### 3.2.5.2 Processing an RDPLOCATION_CLIENT_READY_PDU Message
 
 The structure and fields of the RDPLOCATION_CLIENT_READY_PDU message are specified in section
 2.2.2.2.
@@ -1287,7 +1194,7 @@ The structure and fields of the RDPLOCATION_CLIENT_READY_PDU message are specifi
 The header field MUST be processed as specified in section section 3.1.5.1. If the message is valid,
 the server SHOULD perform any necessary steps to initialize the location injection subsystem.
 
-3.2.5.3  Processing an RDPLOCATION_BASE_LOCATION3D_PDU Message
+##### 3.2.5.3 Processing an RDPLOCATION_BASE_LOCATION3D_PDU Message
 
 The structure and fields of the RDPLOCATION_BASE_LOCATION3D_PDU message are specified in
 section 2.2.2.3.
@@ -1298,7 +1205,7 @@ server MUST store the latitude, longitude, altitude, speed and heading to ensure
 RDPLOCATION_LOCATION2D_DELTA_PDU (section 2.2.2.4) and
 RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages can be processed.
 
-3.2.5.4  Processing an RDPLOCATION_LOCATION2D_DELTA_PDU Message
+##### 3.2.5.4 Processing an RDPLOCATION_LOCATION2D_DELTA_PDU Message
 
 The structure and fields of the RDPLOCATION_LOCATION2D_DELTA_PDU message are specified in
 section 2.2.2.4.
@@ -1311,7 +1218,7 @@ longitude, altitude, speed, and heading to ensure that subsequent
 RDPLOCATION_LOCATION2D_DELTA_PDU (section 2.2.3.4) and
 RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages can be processed.
 
-3.2.5.5  Processing an RDPLOCATION_LOCATION3D_DELTA_PDU Message
+##### 3.2.5.5 Processing an RDPLOCATION_LOCATION3D_DELTA_PDU Message
 
 The structure and fields of the RDPLOCATION_LOCATION3D_DELTA_PDU message are specified in
 section 2.2.2.5.
@@ -1331,38 +1238,39 @@ Release: April 23, 2024
 
 18 / 26
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
-
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
+
+None.
+
+#### 3.3.3 Initialization
 
 The client SHOULD NOT open the "Microsoft::Windows::RDS::Location" virtual channel transport
 (section 2.1) if it is unable to query the local subsystem for location data. The client MUST send the
 RDPLOCATION_CLIENT_READY_PDU (section 2.2.2.2) message to the server, as specified in section
 3.3.5.2, to initiate the process of remoting location data.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Processing an RDPLOCATION_SERVER_READY_PDU Message
+##### 3.3.5.1 Processing an RDPLOCATION_SERVER_READY_PDU Message
 
 The structure and fields of the RDPLOCATION_SERVER_READY_PDU message are specified in section
 2.2.2.1.
@@ -1372,7 +1280,7 @@ SHOULD initialize the location acquisition subsystem and then send an
 RDPLOCATION_CLIENT_READY_PDU (section 2.2.2.2) message to the server, as specified in section
 3.3.5.2.
 
-3.3.5.2  Sending an RDPLOCATION_CLIENT_READY_PDU Message
+##### 3.3.5.2 Sending an RDPLOCATION_CLIENT_READY_PDU Message
 
 The structure and fields of the RDPLOCATION_CLIENT_READY_PDU message are specified in section
 2.2.2.2.
@@ -1389,7 +1297,8 @@ Release: April 23, 2024
 
 19 / 26
 
-3.3.5.3  Sending an RDPLOCATION_BASE_LOCATION3D_PDU Message
+
+##### 3.3.5.3 Sending an RDPLOCATION_BASE_LOCATION3D_PDU Message
 
 The structure and fields of the RDPLOCATION_BASE_LOCATION3D_PDU message are specified in
 section 2.2.2.3.
@@ -1400,7 +1309,7 @@ RDPLOCATION_LOCATION2D_DELTA_PDU (section 2.2.2.4) and
 RDPLOCATION_LOCATION3D_DELTA_PDU (section 2.2.2.5) messages can be constructed and
 transmitted.
 
-3.3.5.4  Sending an RDPLOCATION_LOCATION2D_DELTA_PDU Message
+##### 3.3.5.4 Sending an RDPLOCATION_LOCATION2D_DELTA_PDU Message
 
 The structure and fields of the RDPLOCATION_LOCATION2D_DELTA_PDU message are specified in
 section 2.2.2.4.
@@ -1419,7 +1328,7 @@ headingDelta = previousHeading – currentHeading
 After encoding and transmitting the location data, the client MUST update the Abstract Data Model
 with the current latitude, longitude, speed, and heading.
 
-3.3.5.5  Sending an RDPLOCATION_LOCATION3D_DELTA_PDU Message
+##### 3.3.5.5 Sending an RDPLOCATION_LOCATION3D_DELTA_PDU Message
 
 The structure and fields of the RDPLOCATION_LOCATION3D_DELTA_PDU message are specified in
 section 2.2.2.5.
@@ -1440,11 +1349,11 @@ headingDelta = previousHeading – currentHeading
 After encoding and transmitting the location data, the client MUST update the Abstract Data Model
 with the current latitude, longitude, altitude, speed, and heading.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1455,7 +1364,8 @@ Release: April 23, 2024
 
 20 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -1466,13 +1376,14 @@ Release: April 23, 2024
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1483,7 +1394,8 @@ Release: April 23, 2024
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1511,7 +1423,8 @@ Release: April 23, 2024
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1555,7 +1468,8 @@ Release: April 23, 2024
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1693,7 +1607,8 @@ Release: April 23, 2024
 
 25 / 26
 
-Security
+
+Security
    implementer considerations 22
    parameter index 22
 Sequencing rules

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: April 23, 2024
 
 3 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -580,338 +583,138 @@ Release: April 23, 2024
 
 4 / 48
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-PNP Device Info Subprotocol .......................................................................... 9
-PNP Device I/O Subprotocol ......................................................................... 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites and Preconditions .......................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3
-
-2.2.2.1
-
-2.2.1.3.2
-
-2.2.1.3.1
-
-2.2.1.3.1.1
-
-2.2.1.1
-2.2.1.2
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-PNP Device Info Subprotocol ........................................................................ 13
-Shared Message Header (PNP_INFO_HEADER) ......................................... 13
-PNP Device Info Initialization Messages.................................................... 14
-Server Version Message ................................................................... 14
-Client Version Message .................................................................... 14
-Authenticated Client Message............................................................ 15
-PNP Device Info Subprotocol Device Addition and Removal Messages .......... 15
-Client Device Addition Message ......................................................... 15
-PNP_DEVICE_DESCRIPTION ........................................................ 16
-Client Device Removal Message......................................................... 18
-PNP Device I/O Subprotocol ......................................................................... 19
-Shared Message Headers ....................................................................... 19
-Server Message Header (SERVER_IO_HEADER) .................................. 19
-Client Message Header (CLIENT_IO_HEADER) ..................................... 20
-Initialization Messages ........................................................................... 20
-Server Capabilities Request Message ................................................. 20
-Client Capabilities Reply Message ...................................................... 21
-Device I/O Messages ............................................................................. 21
-CreateFile Request Message .............................................................. 21
-CreateFile Reply Message ................................................................. 23
-Read Request Message ..................................................................... 23
-Read Reply Message ........................................................................ 24
-Write Request Message .................................................................... 24
-Write Reply Message ........................................................................ 25
-IOControl Request Message .............................................................. 26
-IOControl Reply Message .................................................................. 26
-Specific IoCancel Request Message .................................................... 27
-Client Device Custom Event Message ................................................. 28
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-2.2.2.3.4
-2.2.2.3.5
-2.2.2.3.6
-2.2.2.3.7
-2.2.2.3.8
-2.2.2.3.9
-2.2.2.3.10
-
-2.2.2.2.1
-2.2.2.2.2
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.2
-
-2.2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 29
-Common Details .............................................................................................. 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Message-Processing Events and Sequencing Rules .......................................... 29
-Timer Events .............................................................................................. 30
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-[MS-RDPEPNP] - v20240423
-Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 48
-
-3.2
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.2.5.1.2
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.2.2
-
-3.2.5.1.2.1
-3.2.5.1.2.2
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-3.2.5.2.2.3
-3.2.5.2.2.4
-3.2.5.2.2.5
-3.2.5.2.2.6
-3.2.5.2.2.7
-3.2.5.2.2.8
-3.2.5.2.2.9
-3.2.5.2.2.10
-
-Other Local Events ...................................................................................... 30
-Client Details ................................................................................................... 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message-Processing Events and Sequencing Rules .......................................... 30
-PNP Device Info Subprotocol .................................................................. 30
-Initialization Messages ..................................................................... 30
-Processing a Server Version Message ........................................... 30
-Sending a Client Version Message ................................................ 30
-Processing an Authenticated Client Message .................................. 30
-Device Addition and Removal Messages.............................................. 31
-Sending a Client Device Addition Message ..................................... 31
-Sending a Client Device Removal Message .................................... 31
-PNP Device I/O Subprotocol ................................................................... 31
-Initialization Messages ..................................................................... 31
-Processing a Server Capabilities Request Message ......................... 31
-Sending a Client Capabilities Reply ............................................... 31
-Device I/O Messages ....................................................................... 31
-Processing a CreateFile Request Message ...................................... 32
-Sending a CreateFile Reply Message ............................................. 32
-Processing a Read Request Message ............................................. 32
-Sending a Read Reply Message .................................................... 32
-Processing a Write Request Message ............................................ 32
-Sending a Write Reply Message ................................................... 32
-Processing an IOControl Request Message .................................... 32
-Sending an IOControl Reply Message ........................................... 33
-Processing a Specific IoCancel Request Message ............................ 33
-Sending a Client Device Custom Event Message ............................. 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-Server Details .................................................................................................. 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Message-Processing Events and Sequencing Rules .......................................... 34
-PNP Device Info Subprotocol .................................................................. 34
-Initialization Messages ..................................................................... 34
-Sending a Server Version Message ............................................... 34
-Processing a Client Version Message............................................. 34
-Sending an Authenticated Client Message ..................................... 34
-Device Addition and Removal Messages.............................................. 35
-Processing a Client Device Addition Message ................................. 35
-Processing a Client Device Removal Message ................................. 35
-Device I/O Subprotocol .......................................................................... 35
-Initialization Messages ..................................................................... 35
-Sending a Server Capabilities Request Message ............................. 35
-Processing a Client Capabilities Reply Message .............................. 35
-Device I/O Messages ....................................................................... 35
-Sending a CreateFile Request Message ......................................... 36
-Processing a CreateFile Reply Message ......................................... 36
-Sending a Read Request Message ................................................ 36
-Processing a Read Reply Message ................................................ 36
-Sending a Write Request Message ................................................ 36
-Processing a Write Reply Message ................................................ 36
-Sending an IOControl Request Message ........................................ 37
-
-3.3.5.2.2.1
-3.3.5.2.2.2
-3.3.5.2.2.3
-3.3.5.2.2.4
-3.3.5.2.2.5
-3.3.5.2.2.6
-3.3.5.2.2.7
-
-3.3.5.1.1.1
-3.3.5.1.1.2
-3.3.5.1.1.3
-
-3.3.5.1.2.1
-3.3.5.1.2.2
-
-3.3.5.2.1.1
-3.3.5.2.1.2
-
-3.3.5.1
-
-3.3.5.1.1
-
-3.3.5.1.2
-
-3.3.5.2
-
-3.3.5.2.1
-
-3.3.5.2.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-[MS-RDPEPNP] - v20240423
-Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 48
-
-3.3.5.2.2.8
-3.3.5.2.2.9
-3.3.5.2.2.10
-
-Processing an IOControl Reply Message ........................................ 37
-Sending a Specific IoCancel Request Message ............................... 37
-Processing a Client Device Custom Event Message ......................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 38
-PNP Device Redirection Initialization Sequence .................................................... 38
-Device Addition and Removal Messages .............................................................. 38
-Capabilities Initialization Messages ..................................................................... 39
-Device I/O Messages ........................................................................................ 39
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 43
-Security Considerations for Implementers ........................................................... 43
-Index of Security Parameters ............................................................................ 43
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 44
-
-7  Change Tracking .................................................................................................... 46
-
-8  Index ..................................................................................................................... 47
-
-[MS-RDPEPNP] - v20240423
-Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 48
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 PNP Device Info Subprotocol](#131-pnp-device-info-subprotocol)
+    - [1.3.2 PNP Device I/O Subprotocol](#132-pnp-device-io-subprotocol)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites and Preconditions](#15-prerequisites-and-preconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PNP Device Info Subprotocol](#221-pnp-device-info-subprotocol)
+      - [2.2.1.1 Shared Message Header (PNP_INFO_HEADER)](#2211-shared-message-header-pnpinfoheader)
+      - [2.2.1.2 PNP Device Info Initialization Messages](#2212-pnp-device-info-initialization-messages)
+        - [2.2.1.2.1 Server Version Message](#22121-server-version-message)
+        - [2.2.1.2.2 Client Version Message](#22122-client-version-message)
+        - [2.2.1.2.3 Authenticated Client Message](#22123-authenticated-client-message)
+      - [2.2.1.3 PNP Device Info Subprotocol Device Addition and Removal Messages](#2213-pnp-device-info-subprotocol-device-addition-and-removal-messages)
+        - [2.2.1.3.1 Client Device Addition Message](#22131-client-device-addition-message)
+          - [2.2.1.3.1.1 PNP_DEVICE_DESCRIPTION](#221311-pnpdevicedescription)
+        - [2.2.1.3.2 Client Device Removal Message](#22132-client-device-removal-message)
+    - [2.2.2 PNP Device I/O Subprotocol](#222-pnp-device-io-subprotocol)
+      - [2.2.2.1 Shared Message Headers](#2221-shared-message-headers)
+        - [2.2.2.1.1 Server Message Header (SERVER_IO_HEADER)](#22211-server-message-header-serverioheader)
+        - [2.2.2.1.2 Client Message Header (CLIENT_IO_HEADER)](#22212-client-message-header-clientioheader)
+      - [2.2.2.2 Initialization Messages](#2222-initialization-messages)
+        - [2.2.2.2.1 Server Capabilities Request Message](#22221-server-capabilities-request-message)
+        - [2.2.2.2.2 Client Capabilities Reply Message](#22222-client-capabilities-reply-message)
+      - [2.2.2.3 Device I/O Messages](#2223-device-io-messages)
+        - [2.2.2.3.1 CreateFile Request Message](#22231-createfile-request-message)
+        - [2.2.2.3.2 CreateFile Reply Message](#22232-createfile-reply-message)
+        - [2.2.2.3.3 Read Request Message](#22233-read-request-message)
+        - [2.2.2.3.4 Read Reply Message](#22234-read-reply-message)
+        - [2.2.2.3.5 Write Request Message](#22235-write-request-message)
+        - [2.2.2.3.6 Write Reply Message](#22236-write-reply-message)
+        - [2.2.2.3.7 IOControl Request Message](#22237-iocontrol-request-message)
+        - [2.2.2.3.8 IOControl Reply Message](#22238-iocontrol-reply-message)
+        - [2.2.2.3.9 Specific IoCancel Request Message](#22239-specific-iocancel-request-message)
+        - [2.2.2.3.10 Client Device Custom Event Message](#222310-client-device-custom-event-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message-Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message-Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 PNP Device Info Subprotocol](#3251-pnp-device-info-subprotocol)
+        - [3.2.5.1.1 Initialization Messages](#32511-initialization-messages)
+          - [3.2.5.1.1.1 Processing a Server Version Message](#325111-processing-a-server-version-message)
+          - [3.2.5.1.1.2 Sending a Client Version Message](#325112-sending-a-client-version-message)
+          - [3.2.5.1.1.3 Processing an Authenticated Client Message](#325113-processing-an-authenticated-client-message)
+        - [3.2.5.1.2 Device Addition and Removal Messages](#32512-device-addition-and-removal-messages)
+          - [3.2.5.1.2.1 Sending a Client Device Addition Message](#325121-sending-a-client-device-addition-message)
+          - [3.2.5.1.2.2 Sending a Client Device Removal Message](#325122-sending-a-client-device-removal-message)
+      - [3.2.5.2 PNP Device I/O Subprotocol](#3252-pnp-device-io-subprotocol)
+        - [3.2.5.2.1 Initialization Messages](#32521-initialization-messages)
+          - [3.2.5.2.1.1 Processing a Server Capabilities Request Message](#325211-processing-a-server-capabilities-request-message)
+          - [3.2.5.2.1.2 Sending a Client Capabilities Reply](#325212-sending-a-client-capabilities-reply)
+        - [3.2.5.2.2 Device I/O Messages](#32522-device-io-messages)
+          - [3.2.5.2.2.1 Processing a CreateFile Request Message](#325221-processing-a-createfile-request-message)
+          - [3.2.5.2.2.2 Sending a CreateFile Reply Message](#325222-sending-a-createfile-reply-message)
+          - [3.2.5.2.2.3 Processing a Read Request Message](#325223-processing-a-read-request-message)
+          - [3.2.5.2.2.4 Sending a Read Reply Message](#325224-sending-a-read-reply-message)
+          - [3.2.5.2.2.5 Processing a Write Request Message](#325225-processing-a-write-request-message)
+          - [3.2.5.2.2.6 Sending a Write Reply Message](#325226-sending-a-write-reply-message)
+          - [3.2.5.2.2.7 Processing an IOControl Request Message](#325227-processing-an-iocontrol-request-message)
+          - [3.2.5.2.2.8 Sending an IOControl Reply Message](#325228-sending-an-iocontrol-reply-message)
+          - [3.2.5.2.2.9 Processing a Specific IoCancel Request Message](#325229-processing-a-specific-iocancel-request-message)
+          - [3.2.5.2.2.10 Sending a Client Device Custom Event Message](#3252210-sending-a-client-device-custom-event-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message-Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 PNP Device Info Subprotocol](#3351-pnp-device-info-subprotocol)
+        - [3.3.5.1.1 Initialization Messages](#33511-initialization-messages)
+          - [3.3.5.1.1.1 Sending a Server Version Message](#335111-sending-a-server-version-message)
+          - [3.3.5.1.1.2 Processing a Client Version Message](#335112-processing-a-client-version-message)
+          - [3.3.5.1.1.3 Sending an Authenticated Client Message](#335113-sending-an-authenticated-client-message)
+        - [3.3.5.1.2 Device Addition and Removal Messages](#33512-device-addition-and-removal-messages)
+          - [3.3.5.1.2.1 Processing a Client Device Addition Message](#335121-processing-a-client-device-addition-message)
+          - [3.3.5.1.2.2 Processing a Client Device Removal Message](#335122-processing-a-client-device-removal-message)
+      - [3.3.5.2 Device I/O Subprotocol](#3352-device-io-subprotocol)
+        - [3.3.5.2.1 Initialization Messages](#33521-initialization-messages)
+          - [3.3.5.2.1.1 Sending a Server Capabilities Request Message](#335211-sending-a-server-capabilities-request-message)
+          - [3.3.5.2.1.2 Processing a Client Capabilities Reply Message](#335212-processing-a-client-capabilities-reply-message)
+        - [3.3.5.2.2 Device I/O Messages](#33522-device-io-messages)
+          - [3.3.5.2.2.1 Sending a CreateFile Request Message](#335221-sending-a-createfile-request-message)
+          - [3.3.5.2.2.2 Processing a CreateFile Reply Message](#335222-processing-a-createfile-reply-message)
+          - [3.3.5.2.2.3 Sending a Read Request Message](#335223-sending-a-read-request-message)
+          - [3.3.5.2.2.4 Processing a Read Reply Message](#335224-processing-a-read-reply-message)
+          - [3.3.5.2.2.5 Sending a Write Request Message](#335225-sending-a-write-request-message)
+          - [3.3.5.2.2.6 Processing a Write Reply Message](#335226-processing-a-write-reply-message)
+          - [3.3.5.2.2.7 Sending an IOControl Request Message](#335227-sending-an-iocontrol-request-message)
+          - [3.3.5.2.2.8 Processing an IOControl Reply Message](#335228-processing-an-iocontrol-reply-message)
+          - [3.3.5.2.2.9 Sending a Specific IoCancel Request Message](#335229-sending-a-specific-iocancel-request-message)
+          - [3.3.5.2.2.10 Processing a Client Device Custom Event Message](#3352210-processing-a-client-device-custom-event-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 PNP Device Redirection Initialization Sequence](#41-pnp-device-redirection-initialization-sequence)
+  - [4.2 Device Addition and Removal Messages](#42-device-addition-and-removal-messages)
+  - [4.3 Capabilities Initialization Messages](#43-capabilities-initialization-messages)
+  - [4.4 Device I/O Messages](#44-device-io-messages)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: Plug and Play Devices Virtual Channel
 Extension to the Remote Desktop Protocol.<1> This protocol is used to redirect Plug and Play (PNP)
@@ -921,7 +724,7 @@ are physically connected to the client as if the device were local to the server
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -986,20 +789,21 @@ Release: April 23, 2024
 
 8 / 48
 
-terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
+
+terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
 encoding scheme with no Byte Order Mark (BOM).
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1018,11 +822,11 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension specifies the
 communication used to enable the redirection of devices between a terminal client and a terminal
@@ -1043,7 +847,7 @@ Plug and Play (PNP) Device Info
 
 Plug and Play (PNP) Device Input/Output (I/O)
 
-1.3.1  PNP Device Info Subprotocol
+#### 1.3.1 PNP Device Info Subprotocol
 
 The PNP Device Info Subprotocol specifies the communication between the terminal server client and
 the terminal server component that handles the creation and removal of remote devices on the
@@ -1055,7 +859,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPEPNP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1070,7 +875,7 @@ This subprotocol consists of a versioning and capabilities negotiation phase, in
 addition and removal phase. The terminal client sends the device information to the terminal server,
 and the terminal server creates the remote device instances that represent the physical devices.
 
-1.3.2  PNP Device I/O Subprotocol
+#### 1.3.2 PNP Device I/O Subprotocol
 
 The PNP Device I/O Subprotocol specifies the communication between the terminal client and the
 remote devices on the terminal server, for handling I/O requests. This subprotocol is used to
@@ -1086,7 +891,8 @@ Release: April 23, 2024
 
 10 / 48
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEPNP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1099,12 +905,12 @@ passed on this subchannel. The server sends the I/O requests to the client on be
 running on the server. The client completes the I/O requests and passes the results back to the
 server.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension is embedded in a
 dynamic virtual channel transport, as specified in [MS-RDPEDYC].
 
-1.5  Prerequisites and Preconditions
+### 1.5 Prerequisites and Preconditions
 
 The Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension operates only after the
 dynamic virtual channel transport is fully established. If the dynamic virtual channel transport is
@@ -1112,7 +918,7 @@ terminated, the Remote Desktop Protocol: Plug and Play Devices Virtual Channel E
 terminated. The protocol is terminated by closing the underlying virtual channel. For details about
 closing the dynamic virtual channel, see [MS-RDPEDYC] section 3.2.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension is designed to run
 within the context of a Remote Desktop Protocol (RDP) virtual channel established between a client
@@ -1129,7 +935,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1145,7 +952,7 @@ This protocol redirects operating system-specific I/O calls such as Read, Write,
 CreateFile. Communication between the custom device driver and the application cannot be
 anything other than these basic calls. If it is, the device cannot be redirected using this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol defines specific messages for versioning and capability negotiations. The following
 messages are used for such negotiations:
@@ -1158,12 +965,12 @@ messages are used for such negotiations:
 
   Client Capabilities Reply Message
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs, as specified in [MS-ERREF] section 2.1. Vendors are free to choose
 their own values, as long as the C bit (0x20000000) is set, indicating that it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1174,9 +981,10 @@ Release: April 23, 2024
 
 12 / 48
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is designed to operate over dynamic virtual channels, as specified in [MS-RDPEDYC],
 using the names PNPDR and FileRedirectorChannel.
@@ -1186,15 +994,15 @@ devices. Multiple dynamic connections are established on the FileRedirectorChann
 connection for each create-file request (which establishes a file handle) and all corresponding I/O
 operations made using the file handle.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  PNP Device Info Subprotocol
+#### 2.2.1 PNP Device Info Subprotocol
 
 The messages in the following sections specify the common header and specific messages that make
 up the PNP Device Info Subprotocol. All multi-byte fields within a message MUST be processed in
 little-endian byte order, unless otherwise specified.
 
-2.2.1.1  Shared Message Header (PNP_INFO_HEADER)
+##### 2.2.1.1 Shared Message Header (PNP_INFO_HEADER)
 
 All messages in the PNP Device Info Subprotocol have a common header, which is followed by a
 message-specific payload, as described in the following sections.
@@ -1259,17 +1067,18 @@ Release: April 23, 2024
 
 13 / 48
 
-Message-specific payload (variable): An array of unsigned 8-bit integers describing the payload of
+
+Message-specific payload (variable): An array of unsigned 8-bit integers describing the payload of
 
 the message that corresponds to the interface for which the packet is sent. The specific structure
 of the payload is specified by the message descriptions in sections 2.2.1.2.1, 2.2.1.2.2, and
 2.2.1.2.3.
 
-2.2.1.2  PNP Device Info Initialization Messages
+##### 2.2.1.2 PNP Device Info Initialization Messages
 
 The messages in the following sections are used to initialize the PNP Device Info Subprotocol.
 
-2.2.1.2.1 Server Version Message
+###### 2.2.1.2.1 Server Version Message
 
 The server sends this message to the client to indicate the server protocol version and server
 capabilities.
@@ -1317,7 +1126,7 @@ Meaning
 
 0x00000001  The server supports dynamic addition of devices.
 
-2.2.1.2.2 Client Version Message
+###### 2.2.1.2.2 Client Version Message
 
  The client sends this message to the server to indicate the client protocol version and supported
 capabilities in response to a Server Version Message.
@@ -1342,7 +1151,8 @@ Release: April 23, 2024
 
 14 / 48
 
-...
+
+...
 
 MajorVersion
 
@@ -1373,7 +1183,7 @@ Meaning
 
 0x00000001  The client supports dynamic addition of devices.
 
-2.2.1.2.3 Authenticated Client Message
+###### 2.2.1.2.3 Authenticated Client Message
 
 The server notifies the client that the user has been authenticated by sending this message. This
 informs the client that the server is now ready to accept any device addition or removal of PNP
@@ -1400,11 +1210,11 @@ be set to IRPDR_ID_SERVER_LOGON (0x00000067).
 
 This message MUST NOT contain any payload.
 
-2.2.1.3  PNP Device Info Subprotocol Device Addition and Removal Messages
+##### 2.2.1.3 PNP Device Info Subprotocol Device Addition and Removal Messages
 
 The messages in the following sections are used to start and stop device redirection.
 
-2.2.1.3.1 Client Device Addition Message
+###### 2.2.1.3.1 Client Device Addition Message
 
 A client sends this message to redirect one or more devices. This message MUST be sent only after an
 Authenticated Client message is received from the server.
@@ -1416,7 +1226,8 @@ Release: April 23, 2024
 
 15 / 48
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1449,7 +1260,7 @@ DeviceDescriptions (variable):  An array of PNP_DEVICE_DESCRIPTION structures. T
 
 instances of PNP_DEVICE_DESCRIPTION is specified by the DeviceCount field.
 
-2.2.1.3.1.1  PNP_DEVICE_DESCRIPTION
+###### 2.2.1.3.1.1 PNP_DEVICE_DESCRIPTION
 
 A client device description structure. This structure contains the required information to redirect a
 particular device.
@@ -1494,7 +1305,8 @@ Release: April 23, 2024
 
 16 / 48
 
-cbDeviceDescriptionLength
+
+cbDeviceDescriptionLength
 
 DeviceDescription (variable)
 
@@ -1565,7 +1377,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-terminated. If the value contained in the cbDeviceDescriptionLength field is 0x00000000, the
+
+terminated. If the value contained in the cbDeviceDescriptionLength field is 0x00000000, the
 DeviceDescription buffer MUST NOT be present.
 
 CustomFlagLength (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0x00000004
@@ -1635,7 +1448,7 @@ The device can be removed unexpectedly.
 
 0x00000008
 
-2.2.1.3.2 Client Device Removal Message
+###### 2.2.1.3.2 Client Device Removal Message
 
 A client sends this message to stop redirecting a particular device. The remote device is removed
 from the server's perspective, and applications MAY no longer use it.
@@ -1660,7 +1473,8 @@ Release: April 23, 2024
 
 18 / 48
 
-...
+
+...
 
 ClientDeviceID
 
@@ -1672,17 +1486,17 @@ ClientDeviceID (4 bytes): A 32-bit unsigned integer. This value specifies the ID
 
 stop redirecting.
 
-2.2.2  PNP Device I/O Subprotocol
+#### 2.2.2 PNP Device I/O Subprotocol
 
 The messages in the following sections specify the common header and specific messages that make
 up the PNP Device I/O Subprotocol.
 
-2.2.2.1  Shared Message Headers
+##### 2.2.2.1 Shared Message Headers
 
 All messages sent in the PNP Device I/O Subprotocol use either a Request or a Reply header, as
 specified in the following sections.
 
-2.2.2.1.1 Server Message Header (SERVER_IO_HEADER)
+###### 2.2.2.1.1 Server Message Header (SERVER_IO_HEADER)
 
 All I/O Request messages (messages sent from the server to the client) use the following Request
 header.
@@ -1749,7 +1563,8 @@ Release: April 23, 2024
 
 19 / 48
 
-2.2.2.1.2 Client Message Header (CLIENT_IO_HEADER)
+
+###### 2.2.2.1.2 Client Message Header (CLIENT_IO_HEADER)
 
 All I/O Reply messages (messages from client to server) use the following Reply header.
 
@@ -1795,11 +1610,11 @@ CUSTOM_EVENT_PACKET
 Indicates that the message is a custom event message generated by the
 client.
 
-2.2.2.2  Initialization Messages
+##### 2.2.2.2 Initialization Messages
 
 The messages in the following sections are used to initialize the PNP Device I/O Subprotocol.
 
-2.2.2.2.1 Server Capabilities Request Message
+###### 2.2.2.2.1 Server Capabilities Request Message
 
 A server sends this message to indicate its version information to the client.
 
@@ -1839,11 +1654,12 @@ Release: April 23, 2024
 
 20 / 48
 
-Value  Meaning
+
+Value  Meaning
 
 0x0006  This server version supports custom event redirection.
 
-2.2.2.2.2 Client Capabilities Reply Message
+###### 2.2.2.2.2 Client Capabilities Reply Message
 
 The client replies to the server capabilities version with its own version.
 
@@ -1877,12 +1693,12 @@ Value  Meaning
 
 0x0006  This client version supports custom event redirection.
 
-2.2.2.3  Device I/O Messages
+##### 2.2.2.3 Device I/O Messages
 
 The messages in the following sections are used for device input and output operations in the PNP
 Device I/O Subprotocol.
 
-2.2.2.3.1 CreateFile Request Message
+###### 2.2.2.3.1 CreateFile Request Message
 
 A server sends this message to open a file handle on the client-side device. This message MUST be
 sent only once for a given connection within the dynamic virtual channel. A one-to-one
@@ -1915,7 +1731,8 @@ Release: April 23, 2024
 
 21 / 48
 
-dwDesiredAccess
+
+dwDesiredAccess
 
 dwShareMode
 
@@ -2011,7 +1828,8 @@ Release: April 23, 2024
 
 22 / 48
 
-Name
+
+Name
 
 Value
 
@@ -2053,7 +1871,7 @@ FILE_FLAG_WRITE_THROUGH
 
 0x80000000
 
-2.2.2.3.2 CreateFile Reply Message
+###### 2.2.2.3.2 CreateFile Reply Message
 
 The client responds to the server create-file request with this message.
 
@@ -2082,7 +1900,7 @@ Result (4 bytes): An HRESULT value that describes the result of the operation. T
 HRESULT values expected by this protocol because the value is returned by the client-side device
 when it completes the create request. The possible values will vary depending on the device.
 
-2.2.2.3.3 Read Request Message
+###### 2.2.2.3.3 Read Request Message
 
 The server sends this message to request a read operation from the specified redirected client device.
 
@@ -2112,7 +1930,8 @@ Release: April 23, 2024
 
 23 / 48
 
-OffsetLow
+
+OffsetLow
 
 Header (8 bytes): A SERVER_IO_HEADER request header. The FunctionId field MUST be set to
 
@@ -2130,7 +1949,7 @@ OffsetLow (4 bytes): A 32-bit unsigned integer. This field specifies the low off
 
 operation.
 
-2.2.2.3.4 Read Reply Message
+###### 2.2.2.3.4 Read Reply Message
 
 The client responds to the read file request from the server with this message.
 
@@ -2174,7 +1993,7 @@ client.
 
 UnusedByte (1 byte): An 8-bit unsigned integer. This field is unused and MUST be ignored.
 
-2.2.2.3.5 Write Request Message
+###### 2.2.2.3.5 Write Request Message
 
 The server sends this message to perform a write operation on a redirected client device.
 
@@ -2185,7 +2004,8 @@ Release: April 23, 2024
 
 24 / 48
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2232,7 +2052,7 @@ the particular device.
 
 UnusedByte (1 byte): An 8-bit unsigned integer. This field is unused and MUST be ignored.
 
-2.2.2.3.6 Write Reply Message
+###### 2.2.2.3.6 Write Reply Message
 
 A client responds to a Write Request message from the server with this message.
 
@@ -2270,11 +2090,12 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cbBytesWritten (4 bytes):  A 32-bit unsigned integer. This field specifies the size, in bytes, of the
+
+cbBytesWritten (4 bytes):  A 32-bit unsigned integer. This field specifies the size, in bytes, of the
 
 data written on the client device.
 
-2.2.2.3.7 IOControl Request Message
+###### 2.2.2.3.7 IOControl Request Message
 
 A server sends this message to perform an IOControl operation on the client-side device.
 
@@ -2338,7 +2159,7 @@ UnusedByte (1 byte):  An 8-bit unsigned integer. This field is unused, MAY be an
 
 be ignored.
 
-2.2.2.3.8 IOControl Reply Message
+###### 2.2.2.3.8 IOControl Reply Message
 
 [MS-RDPEPNP] - v20240423
 Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
@@ -2347,7 +2168,8 @@ Release: April 23, 2024
 
 26 / 48
 
-The client responds to the IOControl Request message from the server with this message.
+
+The client responds to the IOControl Request message from the server with this message.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2393,7 +2215,7 @@ client IOControl operation.
 
 UnusedByte (1 byte):  An 8-bit unsigned integer. This field is unused and MUST be ignored.
 
-2.2.2.3.9 Specific IoCancel Request Message
+###### 2.2.2.3.9 Specific IoCancel Request Message
 
 The server sends this message to the client to cancel a specific I/O request.
 
@@ -2433,9 +2255,10 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.3.10
 
-Client Device Custom Event Message
+###### 2.2.2.3.10 Client Device Custom Event Message
+
+
 
 A client sends this message to the server in response to a custom event occurring on the client device.
 This message MUST be sent only if both the server and client protocol version is 6 or later.
@@ -2490,11 +2313,12 @@ Release: April 23, 2024
 
 28 / 48
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -2527,21 +2351,21 @@ Outstanding requests list: A list maintained by the server of all valid Request 
 client. The list is invalidated when the underlying dynamic virtual channel for sending the requests
 or replies is terminated.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No common timers are used. Individual device drivers MAY implement time-out logic for I/O
 requests; however, the operation of these drivers is external to this specification.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The dynamic virtual channel MUST be established by using the parameters described in section 2.1
 before the protocol operation can commence.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Message-Processing Events and Sequencing Rules
+#### 3.1.5 Message-Processing Events and Sequencing Rules
 
 There are no common message-processing events or sequencing rules. See sections 3.2.5 and 3.3.5
 for client-specific and server-specific message processing.
@@ -2553,42 +2377,43 @@ Release: April 23, 2024
 
 29 / 48
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message-Processing Events and Sequencing Rules
+#### 3.2.5 Message-Processing Events and Sequencing Rules
 
-3.2.5.1  PNP Device Info Subprotocol
+##### 3.2.5.1 PNP Device Info Subprotocol
 
-3.2.5.1.1 Initialization Messages
+###### 3.2.5.1.1 Initialization Messages
 
 Initialization messages exchange the basic information necessary to establish the connection and to
 perform capabilities negotiation.
 
-3.2.5.1.1.1  Processing a Server Version Message
+###### 3.2.5.1.1.1 Processing a Server Version Message
 
 The structure and fields of the Server Version message are described in section 2.2.1.2.1.
 
@@ -2600,13 +2425,13 @@ information. This way, the server knows what messages the client supports. Futur
 protocol MAY support new packets that current versions do not support. As a result, this negotiation is
 important to ensure that no packets are sent from one side that the other cannot interpret.
 
-3.2.5.1.1.2  Sending a Client Version Message
+###### 3.2.5.1.1.2 Sending a Client Version Message
 
 The structure and fields of the Client Version message are described in section 2.2.1.2.2.
 
 No client-specific events or rules are required.
 
-3.2.5.1.1.3  Processing an Authenticated Client Message
+###### 3.2.5.1.1.3 Processing an Authenticated Client Message
 
 [MS-RDPEPNP] - v20240423
 Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
@@ -2615,16 +2440,17 @@ Release: April 23, 2024
 
 30 / 48
 
-The structure and fields of the Authenticated Client message are specified in section 2.2.1.2.3.
+
+The structure and fields of the Authenticated Client message are specified in section 2.2.1.2.3.
 
 The server sends the Authenticated Client message after it authenticates the client to the server
 session. The client MUST NOT send any device addition or removal messages until it receives this
 message. Only after receiving this message MAY the client send one or more Client Device Addition
 messages.
 
-3.2.5.1.2 Device Addition and Removal Messages
+###### 3.2.5.1.2 Device Addition and Removal Messages
 
-3.2.5.1.2.1  Sending a Client Device Addition Message
+###### 3.2.5.1.2.1 Sending a Client Device Addition Message
 
 The structure and fields of the Client Device Addition message are as specified in section 2.2.1.3.1.
 
@@ -2632,7 +2458,7 @@ The client MUST generate and assign a unique client device ID for each of the de
 device list that it wants to redirect to the server. This message MUST be sent only after the client
 receives an Authenticated Client message.
 
-3.2.5.1.2.2  Sending a Client Device Removal Message
+###### 3.2.5.1.2.2 Sending a Client Device Removal Message
 
 The structure and fields of the Client Device Removal message are as specified in section 2.2.1.3.2.
 
@@ -2640,9 +2466,9 @@ Before the client sends this message to stop redirecting a particular device, th
 MUST have previously been sent as part of a Client Device Addition message. The client also removes
 the device from its Client device list.
 
-3.2.5.2  PNP Device I/O Subprotocol
+##### 3.2.5.2 PNP Device I/O Subprotocol
 
-3.2.5.2.1 Initialization Messages
+###### 3.2.5.2.1 Initialization Messages
 
 These messages establish the logical connection between server and client, in addition to capabilities.
 Initialization messages MUST be sent immediately after creating a new dynamic channel connection
@@ -2650,7 +2476,7 @@ within the FileRedirectorChannel channel. A new channel connection MUST be estab
 CreateFile call. These messages are generally followed by the CreateFile message and then by Read,
 Write, or IOControl messages.
 
-3.2.5.2.1.1  Processing a Server Capabilities Request Message
+###### 3.2.5.2.1.1 Processing a Server Capabilities Request Message
 
 The structure and fields of the Server Capabilities Request message are defined in section 2.2.2.2.1.
 
@@ -2663,13 +2489,13 @@ packets that describe custom events.
 
 The client MUST reply with its own version by sending a Client Capabilities Reply message.
 
-3.2.5.2.1.2  Sending a Client Capabilities Reply
+###### 3.2.5.2.1.2 Sending a Client Capabilities Reply
 
 The structure and fields of the Client Capabilities Reply message are defined in section 2.2.2.2.2.
 
 This message MUST be sent only after receiving a Server Capabilities Request message.
 
-3.2.5.2.2 Device I/O Messages
+###### 3.2.5.2.2 Device I/O Messages
 
 The device I/O messages in the PNP Device I/O Subprotocol are used to perform real I/O operations
 on the client devices and to return the result to the server.
@@ -2681,7 +2507,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.2.2.1  Processing a CreateFile Request Message
+
+###### 3.2.5.2.2.1 Processing a CreateFile Request Message
 
 The structure and fields of the CreateFile Request message are defined in section 2.2.2.3.1.
 
@@ -2689,7 +2516,7 @@ The client MUST use the client device ID passed in the CreateFile Request messag
 device to use. The client interacts with the local device driver, using the attributes and flags specified
 in the CreateFile Request message, to service the I/O request.
 
-3.2.5.2.2.2  Sending a CreateFile Reply Message
+###### 3.2.5.2.2.2 Sending a CreateFile Reply Message
 
 The structure and fields of the CreateFile Reply message are defined in section 2.2.2.3.2.
 
@@ -2699,7 +2526,7 @@ the association of the file handle obtained through the dynamic virtual channel 
 received the CreateFile Request message, because all I/O requests on the connection are associated
 with the file handle.
 
-3.2.5.2.2.3  Processing a Read Request Message
+###### 3.2.5.2.2.3 Processing a Read Request Message
 
 The structure and fields of the Read Request message are described in section 2.2.2.3.3.
 
@@ -2708,7 +2535,7 @@ establishing a file handle for I/O on this connection. On receiving the Read Req
 client MUST use the associated file handle and the parameters specified in the Read Request message
 to interact with the local device driver in servicing this request.
 
-3.2.5.2.2.4  Sending a Read Reply Message
+###### 3.2.5.2.2.4 Sending a Read Reply Message
 
 The structure and fields of the Read Reply message are described in section 2.2.2.3.4.
 
@@ -2716,7 +2543,7 @@ The client MUST use the RequestId received in the corresponding Read Request mes
 constructing this reply. The result of the Read operation performed, along with all data read, MUST be
 returned in the response message.
 
-3.2.5.2.2.5  Processing a Write Request Message
+###### 3.2.5.2.2.5 Processing a Write Request Message
 
 The structure and fields of the Write Request message are described in section 2.2.2.3.5.
 
@@ -2725,7 +2552,7 @@ establishing a file handle for I/O on this connection. On receiving the Write Re
 client MUST use the associated file handle and the parameters specified in the Write Request message
 to interact with the local device driver in servicing this request.
 
-3.2.5.2.2.6  Sending a Write Reply Message
+###### 3.2.5.2.2.6 Sending a Write Reply Message
 
 The structure and fields of the Write Reply message are described in section 2.2.2.3.6.
 
@@ -2733,7 +2560,7 @@ The client MUST use the RequestId received in the corresponding Write Request me
 constructing this reply. The result of the Write operation performed MUST be returned in the response
 message.
 
-3.2.5.2.2.7  Processing an IOControl Request Message
+###### 3.2.5.2.2.7 Processing an IOControl Request Message
 
 The structure and fields of the IOControl Request message are described in section 2.2.2.3.7.
 
@@ -2747,7 +2574,8 @@ Release: April 23, 2024
 
 32 / 48
 
-client MUST use the associated file handle and the parameters specified in the IOControl Request
+
+client MUST use the associated file handle and the parameters specified in the IOControl Request
 message to interact with the local device driver in servicing this request.
 
 The DataIn field MUST contain input data of the size specified in the cbIn field, followed by output
@@ -2760,7 +2588,7 @@ the DataOut field is nonzero and does not match the value provided in the cbOut 
 will be completed with an error HRESULT that contains a Win32 error code
 (ERROR_INSUFFICIENT_BUFFER) as described in section 2.2 of [MS-ERREF].
 
-3.2.5.2.2.8  Sending an IOControl Reply Message
+###### 3.2.5.2.2.8 Sending an IOControl Reply Message
 
 The structure and fields of the IOControl Reply message are described in section 2.2.2.3.8.
 
@@ -2768,7 +2596,7 @@ The client MUST use the RequestId received in the corresponding IOControl Reques
 constructing this reply. The result of the IOControl operation performed and any output data MUST be
 returned in the response message.
 
-3.2.5.2.2.9  Processing a Specific IoCancel Request Message
+###### 3.2.5.2.2.9 Processing a Specific IoCancel Request Message
 
 The structure and fields of the Specific IoCancel Request message are described in section 2.2.2.3.9.
 
@@ -2782,7 +2610,7 @@ I/O requests, this request MUST be ignored. This applies when the client receive
 Request after the completion of the I/O request, and after the client receives multiple IoCancel
 requests.
 
-3.2.5.2.2.10  Sending a Client Device Custom Event Message
+###### 3.2.5.2.2.10 Sending a Client Device Custom Event Message
 
 The structure and fields of the Client Device Custom Event message are described in section
 2.2.2.3.10.
@@ -2793,11 +2621,11 @@ the data regarding the custom PNP event, as described in section 2.2.2.3.10. Thi
 sent only if the protocol version running on both the client and server is 6 or later. The version
 number is exchanged in packets described in sections 2.2.2.2.1 and 2.2.2.2.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2808,42 +2636,43 @@ Release: April 23, 2024
 
 33 / 48
 
-3.3  Server Details
 
-3.3.1  Abstract Data Model
+### 3.3 Server Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message-Processing Events and Sequencing Rules
+#### 3.3.5 Message-Processing Events and Sequencing Rules
 
-3.3.5.1  PNP Device Info Subprotocol
+##### 3.3.5.1 PNP Device Info Subprotocol
 
-3.3.5.1.1 Initialization Messages
+###### 3.3.5.1.1 Initialization Messages
 
 This section contains information about sending version request messages, processing version
 response messages, sending authenticated client messages, and processing device addition and device
 removal messages.
 
-3.3.5.1.1.1  Sending a Server Version Message
+###### 3.3.5.1.1.1 Sending a Server Version Message
 
 The structure and fields of the Server Version message are described in section 2.2.1.2.1.
 
 This MUST be the first message that the server sends after creating a dynamic virtual channel
 connection with the client. The server indicates its version and capabilities in this message.
 
-3.3.5.1.1.2  Processing a Client Version Message
+###### 3.3.5.1.1.2 Processing a Client Version Message
 
 The structure and fields of the Client Version message are described in section 2.2.1.2.2.
 
@@ -2854,7 +2683,7 @@ version will not understand.
 
 The server MUST receive this message before any meaningful exchange can take place.
 
-3.3.5.1.1.3  Sending an Authenticated Client Message
+###### 3.3.5.1.1.3 Sending an Authenticated Client Message
 
 The structure and fields of the Authenticated Client message are described in section 2.2.1.2.3.
 
@@ -2871,12 +2700,13 @@ Release: April 23, 2024
 
 34 / 48
 
-3.3.5.1.2 Device Addition and Removal Messages
+
+###### 3.3.5.1.2 Device Addition and Removal Messages
 
 The following messages are processed only after the client and server have completed initial
 versioning.
 
-3.3.5.1.2.1  Processing a Client Device Addition Message
+###### 3.3.5.1.2.1 Processing a Client Device Addition Message
 
 The structure and fields of the Client Device Addition message are described in section 2.2.1.3.1.
 
@@ -2896,7 +2726,7 @@ subprotocol dynamic virtual channel.<12> The FileRedirectorChannel channel conti
 for existing devices and is not terminated. These devices are removed when the session is
 disconnected.
 
-3.3.5.1.2.2  Processing a Client Device Removal Message
+###### 3.3.5.1.2.2 Processing a Client Device Removal Message
 
 The structure and fields of the Client Device Removal message are described in section 2.2.1.3.2.
 
@@ -2904,18 +2734,18 @@ For a device already instantiated on the server and identified by the value in t
 field, the server MUST remove all references to the remote device when this message is received,
 and also remove it from its Client device list.
 
-3.3.5.2  Device I/O Subprotocol
+##### 3.3.5.2 Device I/O Subprotocol
 
-3.3.5.2.1 Initialization Messages
+###### 3.3.5.2.1 Initialization Messages
 
-3.3.5.2.1.1  Sending a Server Capabilities Request Message
+###### 3.3.5.2.1.1 Sending a Server Capabilities Request Message
 
 The structure and fields of the Server Capabilities Request message are described in section 2.2.2.2.1.
 
 This MUST be the first message that the server sends for each dynamic virtual channel connection that
 it establishes with the client.
 
-3.3.5.2.1.2  Processing a Client Capabilities Reply Message
+###### 3.3.5.2.1.2 Processing a Client Capabilities Reply Message
 
 The structure and fields of the Client Capabilities Reply message are described in section 2.2.2.2.2.
 The server MUST receive this message prior to any other message that the client sends. The server
@@ -2924,7 +2754,7 @@ MUST NOT complete the initialization of the remote device until it receives this
 After receiving the Client Capabilities Reply message, the server MAY begin to process I/O messages.
 The server MUST NOT process any I/O messages until it receives a version from the client.
 
-3.3.5.2.2 Device I/O Messages
+###### 3.3.5.2.2 Device I/O Messages
 
 For every request message, the server maintains an entry in the outstanding requests list. The
 entry is invalidated as soon as a corresponding Reply Message is received by the server. If a reply is
@@ -2936,10 +2766,11 @@ Release: April 23, 2024
 
 35 / 48
 
-received by the server and the Request ID cannot be found in the outstanding requests list, the
+
+received by the server and the Request ID cannot be found in the outstanding requests list, the
 server MUST ignore the client message.
 
-3.3.5.2.2.1  Sending a CreateFile Request Message
+###### 3.3.5.2.2.1 Sending a CreateFile Request Message
 
 The structure and fields of the CreateFile Request message are described in section 2.2.2.3.1.
 
@@ -2948,14 +2779,14 @@ behalf of an application. The server MUST pass the client device ID to identify 
 MUST generate a unique ID for this request and pass it in the RequestId field of the
 SERVER_IO_HEADER along with any flags or attributes for the create-file request.
 
-3.3.5.2.2.2  Processing a CreateFile Reply Message
+###### 3.3.5.2.2.2 Processing a CreateFile Reply Message
 
 The structure and fields of the CreateFile Reply message are described in section 2.2.2.3.2.
 
 No server-specific events or rules are required other than that the server MUST pass the results of the
 operation contained in the reply to the actual application that made the create-file request.
 
-3.3.5.2.2.3  Sending a Read Request Message
+###### 3.3.5.2.2.3 Sending a Read Request Message
 
 The structure and fields of the Read Request message are described in section 2.2.2.3.3.
 
@@ -2965,7 +2796,7 @@ for this request and specify the number of bytes to read. The server also stores
 information required to complete the request (for example, a data buffer to store information and the
 location of a variable to store the result), and associates this information with the RequestId.
 
-3.3.5.2.2.4  Processing a Read Reply Message
+###### 3.3.5.2.2.4 Processing a Read Reply Message
 
 The structure and fields of the Read Reply message are described in section 2.2.2.3.4.
 
@@ -2974,7 +2805,7 @@ associated information stored after sending the request message. With this infor
 completes the original request. The server MUST redirect the result of the Read operation contained in
 the reply to the actual application that made the read request.
 
-3.3.5.2.2.5  Sending a Write Request Message
+###### 3.3.5.2.2.5 Sending a Write Request Message
 
 The structure and fields of the Write Request message are described in section 2.2.2.3.5.
 
@@ -2985,7 +2816,7 @@ actual data to be written in the Data buffer field. The server also stores all n
 required to complete the request (for example, the location of a variable to store the result), and
 associates this information with the RequestId.
 
-3.3.5.2.2.6  Processing a Write Reply Message
+###### 3.3.5.2.2.6 Processing a Write Reply Message
 
 The structure and fields of the Write Reply message are described in section 2.2.2.3.6.
 
@@ -3001,7 +2832,8 @@ Release: April 23, 2024
 
 36 / 48
 
-3.3.5.2.2.7  Sending an IOControl Request Message
+
+###### 3.3.5.2.2.7 Sending an IOControl Request Message
 
 The structure and fields of the IOControl Request message are described in section 2.2.2.3.7.
 
@@ -3011,7 +2843,7 @@ request and the server MUST pass along the rest of the IOControl parameters. The
 all necessary information required to complete the request (for example, the location of a variable to
 store the result), and associates this information with the RequestId.
 
-3.3.5.2.2.8  Processing an IOControl Reply Message
+###### 3.3.5.2.2.8 Processing an IOControl Reply Message
 
 The structure and fields of the IOControl Reply message are described in section 2.2.2.3.8.
 
@@ -3024,7 +2856,7 @@ If the cbBytesReadReturned field has value bigger than cbOut field of the corres
 Request Message, the underlying dynamic virtual channel transport for this subprotocol MUST be
 terminated.
 
-3.3.5.2.2.9  Sending a Specific IoCancel Request Message
+###### 3.3.5.2.2.9 Sending a Specific IoCancel Request Message
 
 The structure and fields of the Specific IoCancel Request message are described in section 2.2.2.3.9.
 
@@ -3035,7 +2867,7 @@ original I/O request.
 
 The server MUST NOT send more than one IoCancel Request Message per I/O request.
 
-3.3.5.2.2.10  Processing a Client Device Custom Event Message
+###### 3.3.5.2.2.10 Processing a Client Device Custom Event Message
 
 The structure and fields of the Client Device Custom Event message are described in section
 2.2.2.3.10.
@@ -3045,11 +2877,11 @@ for the event on the server system by using the parameters contained in the mess
 such application the message MUST be ignored. This message MUST be processed only if the protocol
 version running on both the client side and the server side is 6 or later. Otherwise it MUST be ignored.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3060,9 +2892,10 @@ Release: April 23, 2024
 
 37 / 48
 
-4  Protocol Examples
 
-4.1  PNP Device Redirection Initialization Sequence
+## 4 Protocol Examples
+
+### 4.1 PNP Device Redirection Initialization Sequence
 
  (1) Server Version Message
 
@@ -3095,7 +2928,7 @@ Release: April 23, 2024
  08 00 00 00  -> Size = 0x00000008
  67 00 00 00  -> Packet Id = 0x00000067
 
-4.2  Device Addition and Removal Messages
+### 4.2 Device Addition and Removal Messages
 
  (1) Client Device Addition Message
 
@@ -3129,7 +2962,8 @@ Release: April 23, 2024
 
 38 / 48
 
- 57 00 55 00  -> Hardware ID (variable size=cbHardwareID Length)
+
+ 57 00 55 00  -> Hardware ID (variable size=cbHardwareID Length)
  44 00 46 00  -> Hardware ID (continued)
  5c 00 4c 00  -> Hardware ID (continued)
  42 00 00 00  -> Hardware ID (continued)
@@ -3155,7 +2989,7 @@ Release: April 23, 2024
  68 00 00 00  -> Packet Id = 0x00000068
  04 00 00 00  -> Client Device Id = 0x00000004
 
-4.3  Capabilities Initialization Messages
+### 4.3 Capabilities Initialization Messages
 
  (1) Server Capabilities Request Message
 
@@ -3176,7 +3010,7 @@ Release: April 23, 2024
  00 00 00     -> Request Id = 0x000000
  06 00        -> Version = 0x0006
 
-4.4  Device I/O Messages
+### 4.4 Device I/O Messages
 
  (1) CreateFile Server Request Message
 
@@ -3198,7 +3032,8 @@ Release: April 23, 2024
 
 39 / 48
 
- 03 00 00 00  -> dwCreationDisposition = 0x00000003
+
+ 03 00 00 00  -> dwCreationDisposition = 0x00000003
  80 00 00 40  -> dwFlagsAndAttributes = 0x40000080
 
  (2) CreateFile Client Response Message
@@ -3264,7 +3099,8 @@ Release: April 23, 2024
 
 40 / 48
 
- ChannelName = FileRedirectorChannel,12,client to server
+
+ ChannelName = FileRedirectorChannel,12,client to server
  00000000 00 00 00 00 00 00 00 00 08 00 00 00             ............
 
  00          -> PacketType = 0x00
@@ -3333,7 +3169,8 @@ Release: April 23, 2024
 
 41 / 48
 
- 11 11 11 11  -> CustomEventGUID (128 bit)
+
+ 11 11 11 11  -> CustomEventGUID (128 bit)
  80 80 5f 42  -> CustomEventGUID (continued)
  92 2a da bf  -> CustomEventGUID (continued)
  3d e3 f6 9a  -> CustomEventGUID (continued)
@@ -3349,16 +3186,17 @@ Release: April 23, 2024
 
 42 / 48
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for the Remote Desktop Protocol: Plug and Play Devices Virtual
 Channel Extension because all traffic is secured by the underlying Remote Desktop Protocol (RDP)
 core protocol. For more information about implemented security-related mechanisms, see [MS-
 RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3369,7 +3207,8 @@ Release: April 23, 2024
 
 43 / 48
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3438,7 +3277,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<7> Section 2.2.1.3.1.1: This field is not used in Windows Vista or Windows Server 2008.
+
+<7> Section 2.2.1.3.1.1: This field is not used in Windows Vista or Windows Server 2008.
 
 <8> Section 2.2.1.3.1.1: This field is not used in Windows Vista or Windows Server 2008.
 
@@ -3463,7 +3303,8 @@ Release: April 23, 2024
 
 45 / 48
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3507,7 +3348,8 @@ Release: April 23, 2024
 
 46 / 48
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3651,7 +3493,8 @@ Remote Desktop Protocol: Plug and Play Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   server (section 3.1.6 30, section 3.3.6 37)
+
+   server (section 3.1.6 30, section 3.3.6 37)
 Timers
    client (section 3.1.2 29, section 3.2.2 30)
    server (section 3.1.2 29, section 3.3.2 34)

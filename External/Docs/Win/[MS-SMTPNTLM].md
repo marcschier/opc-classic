@@ -64,7 +64,8 @@ Release: January 13, 2025
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: January 13, 2025
 
 2 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -534,7 +536,8 @@ Release: January 13, 2025
 
 3 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -559,197 +562,77 @@ Release: January 13, 2025
 
 4 / 36
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SMTP AUTH Extensions](#221-smtp-auth-extensions)
+      - [2.2.1.1 SMTP_AUTH_NTLM_Initiation_Command Message](#2211-smtpauthntlminitiationcommand-message)
+      - [2.2.1.2 SMTP_NTLM_Supported_Response Message](#2212-smtpntlmsupportedresponse-message)
+      - [2.2.1.3 SMTP_AUTH_NTLM_BLOB_Response Message](#2213-smtpauthntlmblobresponse-message)
+      - [2.2.1.4 SMTP_AUTH_Fail_Response Message](#2214-smtpauthfailresponse-message)
+      - [2.2.1.5 SMTP_AUTH_Other_Failure_Response Message](#2215-smtpauthotherfailureresponse-message)
+      - [2.2.1.6 SMTP_AUTH_NTLM_Succeeded_Response Message](#2216-smtpauthntlmsucceededresponse-message)
+      - [2.2.1.7 SMTP_AUTH_NTLM_BLOB_Command Message](#2217-smtpauthntlmblobcommand-message)
+      - [2.2.1.8 SMTP_NTLM_Not_Supported_Response Message](#2218-smtpntlmnotsupportedresponse-message)
+      - [2.2.1.9 EHLO Discovery Message](#2219-ehlo-discovery-message)
+    - [2.2.2 SMTP Server Messages](#222-smtp-server-messages)
+    - [2.2.3 SMTP Client Messages](#223-smtp-client-messages)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 SMTP State Model](#3111-smtp-state-model)
+    - [3.1.5 defines the rules for how this state is reached. The completed_authentication represents the](#315-defines-the-rules-for-how-this-state-is-reached-the-completedauthentication-represents-the)
+      - [3.1.5.1 Receiving an SMTP_NTLM_Supported_Response Message](#3151-receiving-an-smtpntlmsupportedresponse-message)
+      - [3.1.5.2 Receiving an SMTP_NTLM_Not_Supported_Response Message](#3152-receiving-an-smtpntlmnotsupportedresponse-message)
+      - [3.1.5.3 Receiving an SMTP_AUTH_NTLM_BLOB_Response Message](#3153-receiving-an-smtpauthntlmblobresponse-message)
+        - [3.1.5.3.1 Error from NTLM](#31531-error-from-ntlm)
+        - [3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message](#31532-ntlm-reports-success-and-returns-an-ntlm-message)
+      - [3.1.5.4 Receiving an SMTP_AUTH_NTLM_Succeeded_Response Message](#3154-receiving-an-smtpauthntlmsucceededresponse-message)
+      - [3.1.5.5 Receiving an SMTP_AUTH_Fail_Response Message](#3155-receiving-an-smtpauthfailresponse-message)
+      - [3.1.5.6 Receiving an SMTP_AUTH_Other_Failure_Response Message](#3156-receiving-an-smtpauthotherfailureresponse-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 SMTP State Model](#3211-smtp-state-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an SMTP_AUTH_NTLM_Initiation_Command Message](#3251-receiving-an-smtpauthntlminitiationcommand-message)
+      - [3.2.5.2 Receiving an SMTP_AUTH_NTLM_BLOB_Command Message](#3252-receiving-an-smtpauthntlmblobcommand-message)
+        - [3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message](#32521-ntlm-returns-success-returning-an-ntlm-message)
+        - [3.2.5.2.2 NTLM Returns Success, Indicating that the Authentication Completed](#32522-ntlm-returns-success-indicating-that-the-authentication-completed)
+        - [3.2.5.2.3 NTLM Returns Status, Indicating that the User Name or Password Is](#32523-ntlm-returns-status-indicating-that-the-user-name-or-password-is)
+        - [3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error](#32524-ntlm-returns-a-failure-status-indicating-any-other-error)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 SMTP Client Successfully Authenticating to an SMTP Server](#41-smtp-client-successfully-authenticating-to-an-smtp-server)
+  - [4.2 SMTP Client Not Successfully Authenticating to an SMTP Server](#42-smtp-client-not-successfully-authenticating-to-an-smtp-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-SMTP AUTH Extensions ................................................................................ 12
-SMTP_AUTH_NTLM_Initiation_Command Message ..................................... 12
-SMTP_NTLM_Supported_Response Message ............................................. 12
-SMTP_AUTH_NTLM_BLOB_Response Message .......................................... 13
-SMTP_AUTH_Fail_Response Message ....................................................... 13
-SMTP_AUTH_Other_Failure_Response Message ........................................ 13
-SMTP_AUTH_NTLM_Succeeded_Response Message ................................... 13
-SMTP_AUTH_NTLM_BLOB_Command Message .......................................... 14
-SMTP_NTLM_Not_Supported_Response Message ...................................... 14
-EHLO Discovery Message ....................................................................... 14
-SMTP Server Messages ................................................................................ 14
-SMTP Client Messages ................................................................................. 15
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-
-2.2.2
-2.2.3
-
-3.1
-
-3.1.5
-
-3.1.1
-
-3.1.1.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 16
-Client Details ................................................................................................... 16
-Abstract Data Model .................................................................................... 16
-SMTP State Model ................................................................................. 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Sending an SMTP_AUTH_NTLM_Initiation_Command Message .................... 18
-Sending an SMTP_AUTH_NTLM_BLOB_Command Message ......................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Receiving an SMTP_NTLM_Supported_Response Message .......................... 18
-Receiving an SMTP_NTLM_Not_Supported_Response Message .................... 19
-Receiving an SMTP_AUTH_NTLM_BLOB_Response Message ........................ 19
-Error from NTLM .............................................................................. 19
-NTLM Reports Success and Returns an NTLM Message ......................... 19
-Receiving an SMTP_AUTH_NTLM_Succeeded_Response Message ................ 19
-Receiving an SMTP_AUTH_Fail_Response Message .................................... 19
-Receiving an SMTP_AUTH_Other_Failure_Response Message ...................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Server Details .................................................................................................. 20
-Abstract Data Model .................................................................................... 20
-SMTP State Model ................................................................................. 21
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.6
-3.1.7
-
-3.2.1.1
-
-3.2.1
-
-3.2
-
-[MS-SMTPNTLM] - v20250113
-NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension
-Copyright © 2025 Microsoft Corporation
-Release: January 13, 2025
-
-5 / 36
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-Message Processing Events and Sequencing Rules .......................................... 22
-Receiving an SMTP_AUTH_NTLM_Initiation_Command Message .................. 23
-Receiving an SMTP_AUTH_NTLM_BLOB_Command Message ....................... 23
-NTLM Returns Success, Returning an NTLM Message ............................ 24
-NTLM Returns Success, Indicating that the Authentication Completed
-Successfully .................................................................................... 24
-NTLM Returns Status, Indicating that the User Name or Password Is
-Incorrect ........................................................................................ 24
-NTLM Returns a Failure Status, Indicating Any Other Error ................... 24
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.2.3
-
-3.2.5.2.4
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 25
-SMTP Client Successfully Authenticating to an SMTP Server ................................... 25
-SMTP Client Not Successfully Authenticating to an SMTP Server ............................. 27
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 29
-Security Considerations for Implementers ........................................................... 29
-Index of Security Parameters ............................................................................ 29
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 30
-
-7  Change Tracking .................................................................................................... 34
-
-8  Index ..................................................................................................................... 35
-
-[MS-SMTPNTLM] - v20250113
-NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension
-Copyright © 2025 Microsoft Corporation
-Release: January 13, 2025
-
-6 / 36
-
-1  Introduction
+## 1 Introduction
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension specifies
 the use of NTLM authentication (as specified in [MS-NLMP]) by the Simple Mail Transfer Protocol
@@ -764,7 +647,7 @@ NTLM authentication and send authentication data.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -821,7 +704,8 @@ Release: January 13, 2025
 
 7 / 36
 
-NTLM NEGOTIATE_MESSAGE: The NEGOTIATE_MESSAGE packet defines an NTLM negotiate
+
+NTLM NEGOTIATE_MESSAGE: The NEGOTIATE_MESSAGE packet defines an NTLM negotiate
 message that is sent from the client to the server. The NTLM NEGOTIATE_MESSAGE is
 generated by the local NTLM software and passed to the application that supports embedded
 NTLM authentication. This message allows the client to specify its supported NTLM options to
@@ -841,14 +725,14 @@ to transport Internet messages, as described in [RFC5321].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -878,7 +762,7 @@ editor.org/rfc/rfc5321.txt
 [RFC5322] Resnick, P., Ed., "Internet Message Format", RFC 5322, October 2008, https://www.rfc-
 editor.org/info/rfc5322
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -889,7 +773,8 @@ Release: January 13, 2025
 
 8 / 36
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-SMTPNTLM].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -899,7 +784,7 @@ Release: January 13, 2025
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
 
-1.3  Overview
+### 1.3 Overview
 
 Client applications that connect to the Simple Mail Transfer Protocol (SMTP) service on supported
 operating systems (see section 6) can use NT LAN Manager Protocol (NTLM) authentication, as
@@ -949,7 +834,8 @@ Release: January 13, 2025
 
 9 / 36
 
-2.  The client applies both the base64 encoding and SMTP padding transformations mentioned earlier
+
+2.  The client applies both the base64 encoding and SMTP padding transformations mentioned earlier
 (and described in detail later in this document) to produce an SMTP message, and then sends this
 message to the server.
 
@@ -1014,7 +900,7 @@ Extension need to possess a working knowledge of the following:
 
  NTLM Authentication Protocol, as specified in [MS-NLMP]
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension uses the
 SMTP-AUTH extension mechanism, as specified in [RFC2554], and is an embedded protocol. Unlike
@@ -1027,7 +913,8 @@ Release: January 13, 2025
 
 10 / 36
 
-Authentication: SMTP Extension packets are embedded in Simple Mail Transfer Protocol (SMTP)
+
+Authentication: SMTP Extension packets are embedded in Simple Mail Transfer Protocol (SMTP)
 commands and server responses.
 
 SMTP specifies only the sequence in which an SMTP server and an SMTP client exchange NTLM
@@ -1038,20 +925,20 @@ implementation of the NTLM Authentication Protocol (as specified in [MS-NLMP]) t
 NTLM messages and on the availability of the base64 encoding and decoding mechanisms (as
 specified in [RFC1521]) to encode and decode the NTLM messages embedded in SMTP packets.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Because the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension
 depends on NTLM to authenticate the client to the server, both server and client require  access to an
 implementation of the NTLM Authentication Protocol (as specified in [MS-NLMP]) that is capable of
 supporting connection-oriented NTLM.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension must be
 used by an SMTP client and an SMTP server when the SMTP client authenticates to the SMTP server
 by using NTLM authentication.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1078,11 +965,11 @@ keyword that is advertised if NTLM authentication is supported is "NTLM". NTLM i
 mechanism (as defined in [RFC2554] section 3 bullet 3). The messages involved are formally
 specified in other sections of this document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1093,16 +980,17 @@ Release: January 13, 2025
 
 11 / 36
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension does not
 establish transport connections. Instead, its messages are encapsulated in SMTP commands and
 responses. How NTLM Authentication: SMTP Extension messages must be encapsulated in SMTP
 commands is specified in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension messages
 are divided into two categories, depending on whether the message is sent by the server or the client.
@@ -1110,7 +998,7 @@ are divided into two categories, depending on whether the message is sent by the
 The formal syntax of messages is provided in Augmented Backus-Naur Form (ABNF), as specified in
 [RFC4234].
 
-2.2.1  SMTP AUTH Extensions
+#### 2.2.1 SMTP AUTH Extensions
 
 The first category of SMTP messages is within the SMTP-AUTH extensibility framework. These
 messages are defined in [RFC2554]. The NT LAN Manager (NTLM) Authentication: Simple Mail
@@ -1132,7 +1020,7 @@ the SMTP_AUTH_NTLM_BLOB_Response message, for which [RFC2554] does not define th
 encapsulated within the SMTP message and leaves the definition and processing of that data to the
 extension mechanism. This specification will focus on precisely defining that data.
 
-2.2.1.1  SMTP_AUTH_NTLM_Initiation_Command Message
+##### 2.2.1.1 SMTP_AUTH_NTLM_Initiation_Command Message
 
 The SMTP_AUTH_NTLM_Initiation_Command message initiates the NTLM authentication process for
 SMTP.
@@ -1141,7 +1029,7 @@ SMTP.
 example, EHLO) to initiate authentication. The mechanism name for NTLM authentication is defined to
 be the string "NTLM" for the NTLM Authentication: SMTP Extension.
 
-2.2.1.2  SMTP_NTLM_Supported_Response Message
+##### 2.2.1.2 SMTP_NTLM_Supported_Response Message
 
 The SMTP_NTLM_Supported_Response message indicates that the server supports NTLM
 authentication for SMTP.
@@ -1157,7 +1045,8 @@ Release: January 13, 2025
 
 12 / 36
 
-the status code 334. The remaining data is a human-readable ASCII string whose contents are
+
+the status code 334. The remaining data is a human-readable ASCII string whose contents are
 constrained by the specifications in section 4.5.3 in [RFC2821]. This data has no bearing on the
 authentication. The syntax of this command is shown as follows.
 
@@ -1169,7 +1058,7 @@ A human-readable-string is formally defined in ABNF as follows.
 
 Note  CHAR is the US-ASCII character set, excluding NULL.
 
-2.2.1.3  SMTP_AUTH_NTLM_BLOB_Response Message
+##### 2.2.1.3 SMTP_AUTH_NTLM_BLOB_Response Message
 
 The SMTP_AUTH_NTLM_BLOB_Response message is defined as follows. This message is partially
 defined in [RFC2554] section 4 as a "server challenge response". The 334 status code indicates
@@ -1180,7 +1069,7 @@ by the authentication subsystem.
 
 Note that status code 334 is also returned by the SMTP_NTLM_Supported_Response message.
 
-2.2.1.4  SMTP_AUTH_Fail_Response Message
+##### 2.2.1.4 SMTP_AUTH_Fail_Response Message
 
 SMTP_AUTH_Fail_Response is defined as follows. This message, identified by the 535 status code, is
 defined in [RFC2554] section 4, and indicates that the authentication has terminated unsuccessfully
@@ -1188,7 +1077,7 @@ because the user name or password is incorrect.
 
   535 5.7.3 <human-readable-string><CR><LF>
 
-2.2.1.5  SMTP_AUTH_Other_Failure_Response Message
+##### 2.2.1.5 SMTP_AUTH_Other_Failure_Response Message
 
 The SMTP_AUTH_Other_Failure_Response message is defined as follows. This is actually a class of
 messages whose syntax and interpretation are defined in [RFC2821] section 4.2 and [RFC2554]
@@ -1200,7 +1089,7 @@ SMTP_AUTH_NTLM_BLOB_Response. The interpretation of SMTP_AUTH_Other_Failure_Resp
 the suggested client action when receiving such a message, is defined in [RFC2821] section 4.3. This
 message represents an exit from AUTH and, as such, is not really a part of AUTH negotiation.
 
-2.2.1.6  SMTP_AUTH_NTLM_Succeeded_Response Message
+##### 2.2.1.6 SMTP_AUTH_NTLM_Succeeded_Response Message
 
 The SMTP_AUTH_NTLM_Succeeded_Response message is defined as follows. This message is defined
 in [RFC2554] section 4 and indicates that the authentication negotiation has completed with the client
@@ -1215,7 +1104,8 @@ Release: January 13, 2025
 
 13 / 36
 
-2.2.1.7  SMTP_AUTH_NTLM_BLOB_Command Message
+
+##### 2.2.1.7 SMTP_AUTH_NTLM_BLOB_Command Message
 
 NTLM messages encapsulated by the client and sent to the server are referred to as
 SMTP_AUTH_NTLM_BLOB_Command messages in this document. They have the following syntax
@@ -1223,7 +1113,7 @@ defined and conform to the prescription of [RFC2554] section 4.
 
  <base64-encoded-NTLM-message><CR><LF>
 
-2.2.1.8  SMTP_NTLM_Not_Supported_Response Message
+##### 2.2.1.8 SMTP_NTLM_Not_Supported_Response Message
 
  The SMTP_NTLM_Not_Supported_Response_Message is defined as follows. This message is defined in
 [RFC2554] section 4 and indicates that the authentication mechanism is not supported by the server.
@@ -1231,7 +1121,7 @@ The server rejects the AUTH command with the following message.
 
  504 <human-readable-string><CR><LF>
 
-2.2.1.9  EHLO Discovery Message
+##### 2.2.1.9 EHLO Discovery Message
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension also
 supports the discovery of supported authentication procedures.
@@ -1251,7 +1141,7 @@ sends the EHLO command with or without an argument.
 SHOULD in [RFC2119] allows the client to exclude the EHLO argument in exceptional circumstances.
 The SMTP server MUST support such clients.
 
-2.2.2  SMTP Server Messages
+#### 2.2.2 SMTP Server Messages
 
 This section defines the creation of SMTP_AUTH_NTLM_BLOB_Response messages. These are NTLM
 messages that are sent by the server, and MUST be encapsulated as follows to conform to syntax
@@ -1278,7 +1168,8 @@ Release: January 13, 2025
 
 14 / 36
 
-De-encapsulation of these messages by the client follows the reverse logic:
+
+De-encapsulation of these messages by the client follows the reverse logic:
 
 1.  Remove the <CR> and <LF> characters (ASCII values 0x0D and 0x0A).
 
@@ -1288,7 +1179,7 @@ character 0x20).
 
 3.  base64 decode the SMTP data to produce the original NTLM message data.
 
-2.2.3  SMTP Client Messages
+#### 2.2.3 SMTP Client Messages
 
 This section defines the creation of SMTP_AUTH_NTLM_BLOB_Command messages. These NTLM
 messages sent by the client are encapsulated as follows to conform to the SMTP-AUTH mechanism:
@@ -1316,18 +1207,19 @@ Release: January 13, 2025
 
 15 / 36
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-SMTPNTLM].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
 This section specifies details of the SMTP client role. An implementation of the Simple Mail Transfer
 Protocol (SMTP) Extension SHOULD support the client role.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1338,7 +1230,7 @@ document.
 This section specifies details of the SMTP client role. An implementation of the Simple Mail Transfer
 Protocol (SMTP) Extension supports the client role
 
-3.1.1.1  SMTP State Model
+##### 3.1.1.1 SMTP State Model
 
 Figure 2: SMTP NTLM authentication client state model
 
@@ -1349,7 +1241,8 @@ Release: January 13, 2025
 
 16 / 36
 
-The abstract data model for the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol
+
+The abstract data model for the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol
 (SMTP) Extension has the following states:
 
 1.
@@ -1400,7 +1293,7 @@ SMTP_AUTH_Other_Failure_Response, or SMTP_AUTH_NTLM_Succeeded_Response.
  completed_authentication
 
 This is the state of the client on completion of authentication (successful or otherwise).. Section
-3.1.5 defines the rules for how this state is reached. The completed_authentication represents the
+#### 3.1.5 defines the rules for how this state is reached. The completed_authentication represents the
 end state of the authentication protocol.
 
 This document does not address the behavior of SMTP in this state.
@@ -1420,7 +1313,8 @@ Release: January 13, 2025
 
 17 / 36
 
-3.1.4  Higher-Layer Triggered Events
+
+3.1.4  Higher-Layer Triggered Events
 
 3.1.4.1  Sending an SMTP_AUTH_NTLM_Initiation_Command Message
 
@@ -1443,7 +1337,7 @@ the sequencing of commands and the internal states of the client and server are 
 combination of [RFC2554] and [MS-NLMP]. Section 3.1.1 completely defines how the rules specified in
 [RFC2554] and [MS-NLMP] govern SMTP authentication.
 
-3.1.5.1  Receiving an SMTP_NTLM_Supported_Response Message
+##### 3.1.5.1 Receiving an SMTP_NTLM_Supported_Response Message
 
 When the client state equals sent_authentication_request and on receiving this message, a client
 MUST generate the first NTLM message by calling the NTLM software. The NTLM software then
@@ -1486,7 +1380,8 @@ Release: January 13, 2025
 
 18 / 36
 
-3.1.5.2  Receiving an SMTP_NTLM_Not_Supported_Response Message
+
+##### 3.1.5.2 Receiving an SMTP_NTLM_Not_Supported_Response Message
 
 When the client state equals sent_authentication_request, the SMTP client MUST change its internal
 state to completed_authentication and consider that the authentication has failed. The client can then
@@ -1497,7 +1392,7 @@ the use of the three-digit status code to infer whether the failure is permanent
 or not to generate non-delivery notifications for messages queued on the client, and so on. As
 implemented, this will be an exception code: 504, which indicates a permanent error.
 
-3.1.5.3  Receiving an SMTP_AUTH_NTLM_BLOB_Response Message
+##### 3.1.5.3 Receiving an SMTP_AUTH_NTLM_BLOB_Response Message
 
 When the client state equals sent_command and on receiving this message, a client MUST change its
 internal state to received_response, de-encapsulate it to obtain the embedded NTLM message, and
@@ -1506,32 +1401,32 @@ CHALLENGE_MESSAGE and produces an NTLM AUTHENTICATE_MESSAGE response. The client
 MUST then encapsulate the NTLM message, as defined in section 3.1.4.2, send it to the server, and
 transition to the sent_command state.
 
-3.1.5.3.1 Error from NTLM
+###### 3.1.5.3.1 Error from NTLM
 
 If the NTLM software reports an error, the implementation of this extension MUST change its
 internal state to completed_authentication and fail the authentication. Handling of failures is specified
 in [RFC2554], section 4.
 
-3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
+###### 3.1.5.3.2 NTLM Reports Success and Returns an NTLM Message
 
 The NTLM message MUST be encapsulated and sent to the server. A change MUST NOT occur in the
 state of the client.
 
-3.1.5.4  Receiving an SMTP_AUTH_NTLM_Succeeded_Response Message
+##### 3.1.5.4 Receiving an SMTP_AUTH_NTLM_Succeeded_Response Message
 
 When this message is received and the client state equals sent_command, the SMTP client MUST
 change its internal state to completed_authentication and consider that the authentication has
 succeeded. The client then takes any action it considers appropriate. This document does not mandate
 any specific course of action.
 
-3.1.5.5  Receiving an SMTP_AUTH_Fail_Response Message
+##### 3.1.5.5 Receiving an SMTP_AUTH_Fail_Response Message
 
 When this message is received and the client state equals sent_command, the SMTP client MUST
 change its internal state to completed_authentication and consider that the authentication has failed.
 The client then takes any action it considers appropriate. This document does not mandate any
 specific course of action.
 
-3.1.5.6  Receiving an SMTP_AUTH_Other_Failure_Response Message
+##### 3.1.5.6 Receiving an SMTP_AUTH_Other_Failure_Response Message
 
 When this message is received and the client state equals sent_command, the SMTP client MUST
 change its internal state to completed_authentication and consider that the authentication has failed.
@@ -1549,20 +1444,21 @@ Release: January 13, 2025
 
 19 / 36
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 This section specifies details of the SMTP server role. An implementation of the Simple Mail Transfer
 Protocol (SMTP) Extension MAY<3> support the server role.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1580,11 +1476,12 @@ Release: January 13, 2025
 
 20 / 36
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-SMTPNTLM].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-3.2.1.1  SMTP State Model
+##### 3.2.1.1 SMTP State Model
 
 Figure 3: SMTP NTLM authentication server state model
 
@@ -1614,7 +1511,8 @@ Release: January 13, 2025
 
 21 / 36
 
-During this state the server waits for SMTP_AUTH_NTLM_BLOB_Command (section 2.2.1.7) from
+
+During this state the server waits for SMTP_AUTH_NTLM_BLOB_Command (section 2.2.1.7) from
 the client and transition the state to received_response after receiving the
 SMTP_AUTH_NTLM_BLOB_Command.
 
@@ -1650,19 +1548,19 @@ represents the end state of the authentication protocol.
 
 This document does not address the behavior of SMTP in this state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP) Extension is driven
 by a series of message exchanges between an SMTP server and an SMTP client. The rules governing
@@ -1677,7 +1575,8 @@ Release: January 13, 2025
 
 22 / 36
 
-3.2.5.1  Receiving an SMTP_AUTH_NTLM_Initiation_Command Message
+
+##### 3.2.5.1 Receiving an SMTP_AUTH_NTLM_Initiation_Command Message
 
 When this message is received and the server state equals start, the server examines the received
 message to determine if the [initial-response] parameter is present in the message.
@@ -1714,7 +1613,7 @@ an SMTP_AUTH_Other_Failure_Response message.
 received_authenticaton_request and reply with the SMTP_NTLM_Supported_Response message if
 it supports NTLM and change its state to the sent_response state.
 
-3.2.5.2  Receiving an SMTP_AUTH_NTLM_BLOB_Command Message
+##### 3.2.5.2 Receiving an SMTP_AUTH_NTLM_BLOB_Command Message
 
 Expected state is sent_response.
 
@@ -1749,19 +1648,20 @@ Release: January 13, 2025
 
 23 / 36
 
-  Report that the authentication failed, which could be due to some other software error or message
+
+  Report that the authentication failed, which could be due to some other software error or message
 
 corruption.
 
 For an overview of SMTP server authentication, see the SMTP server state model specified in section
 3.2.1.1.
 
-3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message
+###### 3.2.5.2.1 NTLM Returns Success, Returning an NTLM Message
 
 When this message is received and the server state equals received_command, the server MUST
 encapsulate the NTLM message, send it to the client, and change its internal state to sent_response.
 
-3.2.5.2.2 NTLM Returns Success, Indicating that the Authentication Completed
+###### 3.2.5.2.2 NTLM Returns Success, Indicating that the Authentication Completed
 
 Successfully
 
@@ -1769,7 +1669,7 @@ When this message is received and the server state equals received_command, the 
 return the SMTP_AUTH_NTLM_Succeeded_Response message and change its internal state to
 completed_authentication.<4>
 
-3.2.5.2.3 NTLM Returns Status, Indicating that the User Name or Password Is
+###### 3.2.5.2.3 NTLM Returns Status, Indicating that the User Name or Password Is
 
 Incorrect
 
@@ -1777,17 +1677,17 @@ When this message is received and the server state equals received_command, the 
 return the SMTP_AUTH_Fail_Response message and change its internal state to
 completed_authentication.
 
-3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error
+###### 3.2.5.2.4 NTLM Returns a Failure Status, Indicating Any Other Error
 
 When this message is received and the server state equals received_command, the server MUST
 return the SMTP_AUTH_Other_Failure_Response message and change its internal state to
 completed_authentication.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1798,13 +1698,14 @@ Release: January 13, 2025
 
 24 / 36
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-SMTPNTLM].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  SMTP Client Successfully Authenticating to an SMTP Server
+### 4.1 SMTP Client Successfully Authenticating to an SMTP Server
 
 This section illustrates the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol
 (SMTP) Extension with an example scenario in which an SMTP client successfully authenticates to an
@@ -1828,7 +1729,8 @@ Release: January 13, 2025
 
 25 / 36
 
- 250-exch-cli-66 Hello [127.0.0.1]
+
+ 250-exch-cli-66 Hello [127.0.0.1]
  250-AUTH GSSAPI NTLM
  250-TURN
  250-SIZE 2097152
@@ -1890,11 +1792,12 @@ Release: January 13, 2025
 
 26 / 36
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-SMTPNTLM].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-4.2  SMTP Client Not Successfully Authenticating to an SMTP Server
+### 4.2 SMTP Client Not Successfully Authenticating to an SMTP Server
 
 This section illustrates the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol
 (SMTP) Extension with an example scenario in which an SMTP client attempts NTLM authentication to
@@ -1923,7 +1826,8 @@ Release: January 13, 2025
 
 27 / 36
 
-4.  The client sends an SMTP_AUTH_NTLM_BLOB_Command message.
+
+4.  The client sends an SMTP_AUTH_NTLM_BLOB_Command message.
 
  TlRMTVNTUAABAAAAt4II4gAAAAAAAAAAAAAAAAAAAAAFAs4OAAAADw==
 
@@ -1951,15 +1855,16 @@ Release: January 13, 2025
 
 28 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers of the NT LAN Manager (NTLM) Authentication: Simple Mail Transfer Protocol (SMTP)
 Extension need to be aware of the security considerations of using NTLM authentication (see [MS-
 NLMP] section 5.1).
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1976,7 +1881,8 @@ Release: January 13, 2025
 
 29 / 36
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2045,7 +1951,8 @@ Release: January 13, 2025
 
 30 / 36
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -2113,7 +2020,8 @@ Release: January 13, 2025
 
 31 / 36
 
-NOTE: The values in parentheses is the hexadecimal values of the RID.
+
+NOTE: The values in parentheses is the hexadecimal values of the RID.
 
 Built-In Users
 
@@ -2180,7 +2088,8 @@ Release: January 13, 2025
 
 32 / 36
 
-NT AUTHORITY\NETWORK SERVICE S-1-5-20
+
+NT AUTHORITY\NETWORK SERVICE S-1-5-20
 
 * For Windows NT 4.0 Service Pack 3 and later only
 
@@ -2195,7 +2104,8 @@ Release: January 13, 2025
 
 33 / 36
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2239,7 +2149,8 @@ Release: January 13, 2025
 
 34 / 36
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2372,7 +2283,8 @@ Release: January 13, 2025
 
 35 / 36
 
-   timer events 24
+
+   timer events 24
    timers 22
 SMTP AUTH extensions 12
 SMTP AUTH Extensions message 12

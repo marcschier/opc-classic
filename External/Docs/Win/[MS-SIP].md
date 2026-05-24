@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 93
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: June 1, 2017
 
 2 / 93
 
-Date
+
+Date
 
 Revision
 History
@@ -492,358 +494,146 @@ Release: June 1, 2017
 
 3 / 93
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-text/xml+msrtc.pidf Presence Document Format ............................................ 14
-SIP Extensions to XPIDF Presence Document Format ...................................... 16
-application/vnd-microsoft-roaming-acls+xml Document Format ....................... 16
-Contacts/Groups Document Formats ............................................................. 17
-application/vnd-microsoft-roaming-contacts+xml Document Format ........... 17
-Contacts/Groups Management Document Formats .................................... 18
-Directory Service Schema Elements ................................................................... 19
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.2.4.1
-2.2.4.2
-
-2.3
-
-3.2
-
-3.1
-
-3.1.5
-
-3.1.6
-3.1.7
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3  Protocol Details ..................................................................................................... 20
-NTLM/Kerberos Authentication Extensions Details ................................................ 20
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Initiating the Login Sequence ................................................................. 21
-Sending a SIP Message .......................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 23
-Overview of Authentication Protocol Elements .......................................... 23
-Verifying Message Signature for Incoming Messages ................................. 25
-proxy=replace Extension for Firewall Traversal ......................................... 25
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-Presence Extensions Details .............................................................................. 25
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 27
-Indicating Support for Presence Extensions .............................................. 27
-Setting Presence for Self User (setPresence SERVICE Request) ................... 27
-Subscribing to a User's Presence Information ........................................... 28
-Getting Presence Information of Another User (getPresence SERVICE Request)
- .......................................................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 29
-Processing Response to a getPresence SERVICE Request ........................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Batched SUBSCRIBE and NOTIFY Extension Details .............................................. 29
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.3.1
-3.3.2
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2.5
-
-3.3
-
-[MS-SIP] - v20170601
-Session Initiation Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 93
-
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-
-3.4.4.1
-
-3.4.5.1
-
-3.5
-
-3.5.1.1
-
-3.4
-
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-
-3.4.6
-3.4.7
-
-3.5.1
-
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-3.6
-
-3.5.6
-3.5.7
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-
-3.6.5
-
-3.7
-
-3.6.6
-3.6.7
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-
-3.5.5.1
-3.5.5.2
-3.5.5.3
-
-3.6.4.1
-
-3.6.5.1
-3.6.5.2
-
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Sending a Batched SUBSCRIBE Request .................................................. 30
-Message Processing Events and Sequencing Rules .......................................... 33
-Receiving a NOTIFY Response to a Batched SUBSCRIBE Request ................ 33
-Receiving a Failure Response to a Batched SUBSCRIBE Request ................. 35
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Piggyback Notification in 200 OK Response Details ............................................... 35
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Indicating Support for Piggyback Notification ............................................ 36
-Message Processing Events and Sequencing Rules .......................................... 36
-Receiving a Piggyback Notification in a 200 OK ......................................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-Best Effort NOTIFY (BENOTIFY) Extension Details ................................................. 37
-Abstract Data Model .................................................................................... 37
-Indicating Support for BENOTIFY ............................................................ 38
-Timers ...................................................................................................... 38
-Initialization ............................................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 38
-Message Processing Events and Sequencing Rules .......................................... 38
-Receiving a Failure Response to SUBSCRIBE ............................................ 38
-Receiving a Success Response to SUBSCRIBE ........................................... 38
-Receiving a BENOTIFY Request ............................................................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-Auto-Extension of Subscriptions Details .............................................................. 39
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Indicating Support for Auto-Extension of Subscriptions .............................. 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Receiving a 200 OK Response to SUBSCRIBE ........................................... 40
-Receiving a NOTIFY Request ................................................................... 40
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-Contact Management Extensions Details ............................................................. 41
-Abstract Data Model .................................................................................... 42
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Subscribing to the Contact/Group List ...................................................... 43
-Subscribing for the ACL ......................................................................... 43
-Add/Modify/Delete Contact ..................................................................... 44
-Add/Modify/Delete Group ....................................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 44
-Setting ACEs for a Contact ..................................................................... 44
-Receiving the Contact List from the Server ............................................... 44
-Receiving the ACL from the Server .......................................................... 45
-Timer Events .............................................................................................. 45
-Other Local Events ...................................................................................... 45
-
-3.7.4.1
-3.7.4.2
-3.7.4.3
-3.7.4.4
-
-3.7.5.1
-3.7.5.2
-3.7.5.3
-
-3.7.5
-
-3.7.6
-3.7.7
-
-4  Protocol Examples ................................................................................................. 46
-
-5 / 93
-
-[MS-SIP] - v20170601
-Session Initiation Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-4.11
-
-Registration with Kerberos ................................................................................ 46
-Registration with NTLM ..................................................................................... 50
-Batched SUBSCRIBE and Piggybacked NOTIFY Example ........................................ 55
-Best Effort NOTIFY Example .............................................................................. 57
-setPresence Example ........................................................................................ 58
-AddContact Example ........................................................................................ 60
-DeleteContact Example ..................................................................................... 61
-AddGroup Example ........................................................................................... 62
-DeleteGroup Example ....................................................................................... 63
-setACE Example ............................................................................................... 65
-P2P Subscription and XPIDF Presence Format Example ......................................... 66
-
-5  Security ................................................................................................................. 68
-Security Considerations for Implementers ........................................................... 68
-Index of Security Parameters ............................................................................ 68
-
-5.1
-5.2
-
-6  Appendix A: Full text/xml+msrtc.pidf Presence Document Format ....................... 69
-
-7  Appendix B: XPIDF Presence Document Format .................................................... 74
-
-8  Appendix C: ACL XML Schema ............................................................................... 78
-
-9  Appendix D: Contact Management Schema ............................................................ 80
-Contact Schema ............................................................................................... 80
-SetContact Schema .......................................................................................... 84
-ModifyGroup Schema ........................................................................................ 84
-DeleteContact Schema ...................................................................................... 85
-DeleteGroup Schema ........................................................................................ 86
-
-9.1
-9.2
-9.3
-9.4
-9.5
-
-10  Appendix E: common.xsd ...................................................................................... 87
-
-11  Appendix F: Product Behavior ............................................................................... 89
-
-12  Change Tracking .................................................................................................... 90
-
-13  Index ..................................................................................................................... 91
-
-[MS-SIP] - v20170601
-Session Initiation Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 93
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 text/xml+msrtc.pidf Presence Document Format](#221-textxmlmsrtcpidf-presence-document-format)
+    - [2.2.2 SIP Extensions to XPIDF Presence Document Format](#222-sip-extensions-to-xpidf-presence-document-format)
+    - [2.2.3 application/vnd-microsoft-roaming-acls+xml Document Format](#223-applicationvnd-microsoft-roaming-aclsxml-document-format)
+    - [2.2.4 Contacts/Groups Document Formats](#224-contactsgroups-document-formats)
+      - [2.2.4.1 application/vnd-microsoft-roaming-contacts+xml Document Format](#2241-applicationvnd-microsoft-roaming-contactsxml-document-format)
+      - [2.2.4.2 Contacts/Groups Management Document Formats](#2242-contactsgroups-management-document-formats)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 NTLM/Kerberos Authentication Extensions Details](#31-ntlmkerberos-authentication-extensions-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Initiating the Login Sequence](#3141-initiating-the-login-sequence)
+      - [3.1.4.2 Sending a SIP Message](#3142-sending-a-sip-message)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Overview of Authentication Protocol Elements](#3151-overview-of-authentication-protocol-elements)
+      - [3.1.5.2 Verifying Message Signature for Incoming Messages](#3152-verifying-message-signature-for-incoming-messages)
+      - [3.1.5.3 proxy=replace Extension for Firewall Traversal](#3153-proxyreplace-extension-for-firewall-traversal)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Presence Extensions Details](#32-presence-extensions-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Indicating Support for Presence Extensions](#3241-indicating-support-for-presence-extensions)
+      - [3.2.4.2 Setting Presence for Self User (setPresence SERVICE Request)](#3242-setting-presence-for-self-user-setpresence-service-request)
+      - [3.2.4.3 Subscribing to a User's Presence Information](#3243-subscribing-to-a-users-presence-information)
+      - [3.2.4.4 Getting Presence Information of Another User (getPresence SERVICE](#3244-getting-presence-information-of-another-user-getpresence-service)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing Response to a getPresence SERVICE Request](#3251-processing-response-to-a-getpresence-service-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Batched SUBSCRIBE and NOTIFY Extension Details](#33-batched-subscribe-and-notify-extension-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Sending a Batched SUBSCRIBE Request](#3341-sending-a-batched-subscribe-request)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a NOTIFY Response to a Batched SUBSCRIBE Request](#3351-receiving-a-notify-response-to-a-batched-subscribe-request)
+      - [3.3.5.2 Receiving a Failure Response to a Batched SUBSCRIBE Request](#3352-receiving-a-failure-response-to-a-batched-subscribe-request)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Piggyback Notification in 200 OK Response Details](#34-piggyback-notification-in-200-ok-response-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 Indicating Support for Piggyback Notification](#3441-indicating-support-for-piggyback-notification)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Receiving a Piggyback Notification in a 200 OK](#3451-receiving-a-piggyback-notification-in-a-200-ok)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 Best Effort NOTIFY (BENOTIFY) Extension Details](#35-best-effort-notify-benotify-extension-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+      - [3.5.1.1 Indicating Support for BENOTIFY](#3511-indicating-support-for-benotify)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Receiving a Failure Response to SUBSCRIBE](#3551-receiving-a-failure-response-to-subscribe)
+      - [3.5.5.2 Receiving a Success Response to SUBSCRIBE](#3552-receiving-a-success-response-to-subscribe)
+      - [3.5.5.3 Receiving a BENOTIFY Request](#3553-receiving-a-benotify-request)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+  - [3.6 Auto-Extension of Subscriptions Details](#36-auto-extension-of-subscriptions-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+      - [3.6.4.1 Indicating Support for Auto-Extension of Subscriptions](#3641-indicating-support-for-auto-extension-of-subscriptions)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Receiving a 200 OK Response to SUBSCRIBE](#3651-receiving-a-200-ok-response-to-subscribe)
+      - [3.6.5.2 Receiving a NOTIFY Request](#3652-receiving-a-notify-request)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+  - [3.7 Contact Management Extensions Details](#37-contact-management-extensions-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+      - [3.7.4.1 Subscribing to the Contact/Group List](#3741-subscribing-to-the-contactgroup-list)
+      - [3.7.4.2 Subscribing for the ACL](#3742-subscribing-for-the-acl)
+      - [3.7.4.3 Add/Modify/Delete Contact](#3743-addmodifydelete-contact)
+      - [3.7.4.4 Add/Modify/Delete Group](#3744-addmodifydelete-group)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Setting ACEs for a Contact](#3751-setting-aces-for-a-contact)
+      - [3.7.5.2 Receiving the Contact List from the Server](#3752-receiving-the-contact-list-from-the-server)
+      - [3.7.5.3 Receiving the ACL from the Server](#3753-receiving-the-acl-from-the-server)
+    - [3.7.6 Timer Events](#376-timer-events)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Registration with Kerberos](#41-registration-with-kerberos)
+  - [4.2 Registration with NTLM](#42-registration-with-ntlm)
+  - [4.3 Batched SUBSCRIBE and Piggybacked NOTIFY Example](#43-batched-subscribe-and-piggybacked-notify-example)
+  - [4.4 Best Effort NOTIFY Example](#44-best-effort-notify-example)
+  - [4.5 setPresence Example](#45-setpresence-example)
+  - [4.6 AddContact Example](#46-addcontact-example)
+  - [4.7 DeleteContact Example](#47-deletecontact-example)
+  - [4.8 AddGroup Example](#48-addgroup-example)
+  - [4.9 DeleteGroup Example](#49-deletegroup-example)
+  - [4.10 setACE Example](#410-setace-example)
+  - [4.11 P2P Subscription and XPIDF Presence Format Example](#411-p2p-subscription-and-xpidf-presence-format-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full text/xml+msrtc.pidf Presence Document Format](#6-appendix-a-full-textxmlmsrtcpidf-presence-document-format)
+- [7 Appendix B: XPIDF Presence Document Format](#7-appendix-b-xpidf-presence-document-format)
+- [8 Appendix C: ACL XML Schema](#8-appendix-c-acl-xml-schema)
+- [9 Appendix D: Contact Management Schema](#9-appendix-d-contact-management-schema)
+  - [9.1 Contact Schema](#91-contact-schema)
+  - [9.2 SetContact Schema](#92-setcontact-schema)
+  - [9.3 ModifyGroup Schema](#93-modifygroup-schema)
+  - [9.4 DeleteContact Schema](#94-deletecontact-schema)
+  - [9.5 DeleteGroup Schema](#95-deletegroup-schema)
+- [10 Appendix E: common.xsd](#10-appendix-e-commonxsd)
+- [11 Appendix F: Product Behavior](#11-appendix-f-product-behavior)
+- [12 Change Tracking](#12-change-tracking)
+
+## 1 Introduction
 
 This document describes Microsoft extensions to the Session Initiation Protocol (SIP). SIP is used
 by terminals to establish, modify, and terminate multimedia sessions or calls. SIP is specified in
@@ -856,7 +646,7 @@ Windows Messenger and the Real-Time Communications (RTC) Client API.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -914,7 +704,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
+
+fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
 
 location in the Domain Name System's (DNS) hierarchy tree, as defined in [RFC1035] section
 3.1 and [RFC2181] section 11.
@@ -999,7 +790,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SIP client (client): Any network client that sends SIP requests and receives SIP responses.
+
+SIP client (client): Any network client that sends SIP requests and receives SIP responses.
 Clients might or might not interact with a human user. User agent clients (UACs) and proxies
 are clients.
 
@@ -1076,21 +868,22 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-watcher: An entity that requests presence information on a presentity from the presence service.
+
+watcher: An entity that requests presence information on a presentity from the presence service.
 
 XPIDF: A data format for presence using XML (for more information, see [DATAFORMATXML]).
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1140,14 +933,15 @@ Release: June 1, 2017
 
 10 / 93
 
-[XMLNS-2ED] Bray, T., Hollander, D., Layman, A., and Tobin, R., Eds., "Namespaces in XML 1.0
+
+[XMLNS-2ED] Bray, T., Hollander, D., Layman, A., and Tobin, R., Eds., "Namespaces in XML 1.0
 (Second Edition)", W3C Recommendation, August 2006, https://www.w3.org/TR/2006/REC-xml-
 names-20060816/
 
 [XMLSCHEMA] World Wide Web Consortium, "XML Schema", September 2005,
 http://www.w3.org/2001/XMLSchema
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1341] Borenstein, N., and Freed, N., "MIME (Multipurpose Internet Mail Extensions): Mechanisms
 for Specifying and Describing the Format of Internet Message Bodies", RFC 1341, June 1992,
@@ -1164,7 +958,7 @@ http://www.w3.org/TR/2007/REC-soap12-part1-20070427/
 (Second Edition)", W3C Recommendation, April 2007, http://www.w3.org/TR/2007/REC-soap12-
 part2-20070427
 
-1.3  Overview
+### 1.3 Overview
 
 Session Initiation Protocol Extensions is an extension of the original Session Initiation Protocol
 (SIP), as specified in [RFC3261].
@@ -1206,7 +1000,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-refresh the subscription. Another notification during this time can again reset the timer. This extension
+
+refresh the subscription. Another notification during this time can again reset the timer. This extension
 reduces the number of SUBSCRIBE requests sent by the client to refresh a subscription.
 
 Microsoft also has made extensions to the Presence Information Data Format (PIDF). The
@@ -1230,7 +1025,7 @@ management operations such as adding or deleting a contact or a group, and setti
 lists (ACLs) for viewing and establishing communication with a presence. All of these operations can
 be done by sending SOAP requests carried within the body of a SERVICE request.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Session Initiation Protocol Extensions is dependent on SIP. Session Initiation Protocol Extensions
 defines additional SIP primitives and XML schema to support various extensions specified in this
@@ -1241,19 +1036,19 @@ Kerberos protocols. For more information on XML, see [XML10], [XMLNS-2ED], and [
 Session Initiation Protocol Extensions is invoked as an extension of SIP and is dependent on all the
 protocols on which the SIP specification depends.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Session Initiation Protocol Extensions assumes that both the SIP clients and the server support
 SIP. The prerequisites for Session Initiation Protocol Extensions are the same as the prerequisites for
 SIP.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Session Initiation Protocol Extensions is applicable when both the SIP clients and the server
 support SIP and want to utilize one or more of the enhancements offered by Session Initiation
 Protocol Extensions.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no protocol versioning in the Session Initiation Protocol Extensions. Instead, explicit capability
 negotiation is done as specified in this section by using the Supported header to indicate support of
@@ -1267,12 +1062,13 @@ Release: June 1, 2017
 
 12 / 93
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields specific to the Session Initiation Protocol Extensions. Standard
 extension mechanisms of the SIP MAY be used by vendors as needed.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1283,25 +1079,26 @@ Release: June 1, 2017
 
 13 / 93
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Session Initiation Protocol Extensions messages are transported
 and the message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 Microsoft extensions to SIP do not introduce a new transport to exchange messages but these
 extensions can be used with any transport that is used by SIP. SIP messages can be transported
 over User Datagram Protocol (UDP), Transmission Control Protocol (TCP), or Transport
 Layer Security (TLS).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Microsoft extensions to SIP do not introduce a new message format. They rely on the SIP message
 format, as specified in [RFC3261] section 7. The Session Initiation Protocol Extensions does define a
 new format for the Presence Document (see section 2.2.1).
 
-2.2.1  text/xml+msrtc.pidf Presence Document Format
+#### 2.2.1 text/xml+msrtc.pidf Presence Document Format
 
 These extensions support a nonstandard Presence Document Format that has a number of
 enhancements, such as the capability to carry device capabilities and the capability to support multiple
@@ -1355,7 +1152,8 @@ Release: June 1, 2017
 
 14 / 93
 
-that within the XML sent by the client, the client does not specify the class code, but rather, the
+
+that within the XML sent by the client, the client does not specify the class code, but rather, the
 actual value. The server interprets the values as being within the following classes.
 
 Class
@@ -1468,7 +1266,8 @@ Release: June 1, 2017
 
 15 / 93
 
-  A version that is generated by the server and sent in a NOTIFY or BENOTIFY request to the
+
+  A version that is generated by the server and sent in a NOTIFY or BENOTIFY request to the
 
 watcher containing the aggregation of the various presence information published by the 1+
 devices of the user.
@@ -1480,7 +1279,7 @@ Document indicate the availability and activity information from the most availa
 The server MAY also include the displayName, email, and phoneNumber of the user in the aggregated
 Presence Document.
 
-2.2.2  SIP Extensions to XPIDF Presence Document Format
+#### 2.2.2 SIP Extensions to XPIDF Presence Document Format
 
 SIP allows the SIP endpoints to communicate in a P2P mode without requiring an SIP server. The
 endpoints can also subscribe for presence information and send notifications carrying such
@@ -1537,7 +1336,7 @@ outtolunch
 
 User is out to lunch.
 
-2.2.3  application/vnd-microsoft-roaming-acls+xml Document Format
+#### 2.2.3 application/vnd-microsoft-roaming-acls+xml Document Format
 
 Session Initiation Protocol Extensions support retrieving the ACL from the server in the form of an
 XML document. The ACL document contains a list of access control entries (ACEs). An ACE is a set
@@ -1555,7 +1354,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-"sip:user3@example.com". A type value of USER implies that the ACE applies to a specific user
+
+"sip:user3@example.com". A type value of USER implies that the ACE applies to a specific user
 specified by the mask field.
 
 Mask: A user URI or DNSdomain to which the ACE applies.
@@ -1604,9 +1404,9 @@ Note  The deltaNum attribute in the ACLlist element is a monotonically increasin
 provided by the server that the client uses to ensure that its local copy is in sync with the server. The
 initial value MUST be nonzero and is generally one.
 
-2.2.4  Contacts/Groups Document Formats
+#### 2.2.4 Contacts/Groups Document Formats
 
-2.2.4.1  application/vnd-microsoft-roaming-contacts+xml Document Format
+##### 2.2.4.1 application/vnd-microsoft-roaming-contacts+xml Document Format
 
 Session Initiation Protocol Extensions supports retrieving the contact list from the server in the form of
 an XML document. The server can return the full contact list, or a partial contact list. Both lists use
@@ -1635,7 +1435,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-uri: The SIP URI of the contact.
+
+uri: The SIP URI of the contact.
 
 name: The name of the contact.
 
@@ -1687,7 +1488,7 @@ integer attribute is the updated sequence number for the contact list after the 
 place. The prevDeltaNum nonnegative integer attribute is the previous sequence number for the
 contact list before the changes take place.
 
-2.2.4.2  Contacts/Groups Management Document Formats
+##### 2.2.4.2 Contacts/Groups Management Document Formats
 
 Session Initiation Protocol Extensions support modification to the contact list. These primitives are
 defined as SOAP elements and are sent to the server by using a SERVICE request. Session Initiation
@@ -1711,7 +1512,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-subscribed: A Boolean that indicates whether this contact is merely stored as an offline contact or
+
+subscribed: A Boolean that indicates whether this contact is merely stored as an offline contact or
 
 whether the client needs to subscribe to its presence.
 
@@ -1749,7 +1551,7 @@ Each primitive must also include the deltaNum element. This nonnegative integer 
 sequence number for the contact/group management view, and each primitive must include the
 deltaNum equal to the current sequence number.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol MAY access the directory service schema class and attributes listed in the following
 table and include them in the presence document. For the syntactic specifications of the following
@@ -1770,12 +1572,13 @@ Release: June 1, 2017
 
 19 / 93
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of Session Initiation Protocol Extensions, including abstract data
 models, message processing rules, and the SIP client and server roles.
 
-3.1  NTLM/Kerberos Authentication Extensions Details
+### 3.1 NTLM/Kerberos Authentication Extensions Details
 
 Session Initiation Protocol Extensions implements a proprietary Kerberos and NTLM Authentication
 Protocol authentication mechanism that is used by the client for client-to-server authentication and
@@ -1841,7 +1644,8 @@ Release: June 1, 2017
 
 20 / 93
 
-3.1.1  Abstract Data Model
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1860,20 +1664,20 @@ respectively, for a 256-size sliding window.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementation is at liberty to implement such data in any way convenient.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required other than the timers specified in [RFC3261].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No initialization is required beyond the initialization that is specified in [RFC3261].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261].
 
-3.1.4.1  Initiating the Login Sequence
+##### 3.1.4.1 Initiating the Login Sequence
 
 The client initiates the login sequence by sending a REGISTER request without any credentials, as
 suggested in [RFC3261]. If the REGISTER request is challenged by a server request for NTLM
@@ -1881,7 +1685,7 @@ Authentication Protocol or Kerberos authentication, the client then resends the 
 with credentials. This step also establishes an SA between the client and the server that is used to
 sign any future messages.
 
-3.1.4.2  Sending a SIP Message
+##### 3.1.4.2 Sending a SIP Message
 
 Before sending a message, the sender MUST generate a message signature or checksum that it will
 send with the message so that the receiver can authenticate the message. The client and the server
@@ -1905,7 +1709,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.  cnum for client or snum for server
+
+3.  cnum for client or snum for server
 
 4.  realm
 
@@ -1977,7 +1782,8 @@ Release: June 1, 2017
 
 22 / 93
 
-    opaque="9C55D687",
+
+    opaque="9C55D687",
     crand="009139df",
     cnum="1",
     targetname="pstn.pstntest.rtmp.selfhost.corp.microsoft.com",
@@ -2004,12 +1810,12 @@ which is included in the response parameter of the Proxy-Authorization header.
 the preceding NTLM example. The only differences are that the first element in the signature buffer is
 <Kerberos> instead of <NTLM> and that Kerberos GSS-GetMIC() is used to compute the signature.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following section, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.1.5.1  Overview of Authentication Protocol Elements
+##### 3.1.5.1 Overview of Authentication Protocol Elements
 
 The server issues an authentication challenge by using either a 401 or 407 response to a SIP
 request. The client SHOULD be capable of processing either response. The server uses the following
@@ -2080,7 +1886,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SIP header
+
+SIP header
 
 Purpose
 
@@ -2276,7 +2083,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SA. The initial range of this window is 1 to 256, and is adjusted as messages are received. (The size of
+
+SA. The initial range of this window is 1 to 256, and is adjusted as messages are received. (The size of
 this window is 256.) This means that the server can issue as many as 256 simultaneous requests
 before waiting for a response from the client. The purpose of maintaining this sliding window is to
 provide replay protection while allowing pipelining of requests for performance reasons.
@@ -2294,12 +2102,12 @@ Replayed requests and responses are dropped. New values are marked as having bee
 If the snum value is lower than the last snum received and is outside the active window, the client
 MUST drop the message.
 
-3.1.5.2  Verifying Message Signature for Incoming Messages
+##### 3.1.5.2 Verifying Message Signature for Incoming Messages
 
 After receiving a SIP message, the receiver MUST verify the message signature by using
 GSS_VerifyMIC(). If the signature verification fails, the message MUST be discarded.
 
-3.1.5.3  proxy=replace Extension for Firewall Traversal
+##### 3.1.5.3 proxy=replace Extension for Firewall Traversal
 
 Session Initiation Protocol Extensions introduces a new header parameter, proxy=replace, to enable
 firewall traversal for the SIP channel. This parameter tells the outbound proxy to replace the contact
@@ -2312,15 +2120,15 @@ parameter is present. Any entity receiving this contact header SHOULD send any n
 new IP address in the maddr parameter, which is the IP address of the proxy. The proxy SHOULD then
 route this request to the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Presence Extensions Details
+### 3.2 Presence Extensions Details
 
 Session Initiation Protocol Extensions introduces several extensions to enhance presence. These
 include the new Presence Document Format, msrtc.pidf (see text/xml+msrtc.pidf Presence Document
@@ -2341,7 +2149,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The client can publish its presence to the server by sending a setPresence SOAP request inside the
+
+The client can publish its presence to the server by sending a setPresence SOAP request inside the
 body of a SERVICE method. The client can use the setPresence request only to set the logged in user's
 presence. A user cannot publish presence on behalf of another user. The server sends a 200 OK SIP
 response to indicate that the setPresence request was successful.
@@ -2386,7 +2195,7 @@ response.
 
 These extensions are optional. An implementation may support them.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2407,22 +2216,23 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 No timers are required other than the timers specified in [RFC3261] and [RFC3265].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client SHOULD be registered with the server before publishing or subscribing to presence
 information. This is done by sending a REGISTER request to the server, as specified in [RFC3261].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265]. When the user logs in, the client subscribes to the presence information of
 the contacts using a batched SUBSCRIBE request.
 
-3.2.4.1  Indicating Support for Presence Extensions
+##### 3.2.4.1 Indicating Support for Presence Extensions
 
 Session Initiation Protocol Extensions defines a new header to indicate support for presence. The client
 SHOULD insert the following header in its REGISTER requests as part of the login sequence.
@@ -2437,7 +2247,7 @@ set its presence state. Failure to do so will cause the server to show the clien
 period of time. The exact interval SHOULD be a configurable parameter on the server and can be set
 to a suitable value between 3 minutes and 15 minutes.
 
-3.2.4.2  Setting Presence for Self User (setPresence SERVICE Request)
+##### 3.2.4.2 Setting Presence for Self User (setPresence SERVICE Request)
 
 The client uses a SOAP request, carried in the body of a SERVICE request, to set or update its own
 presence information. This is done at least once (during login) and whenever the presence state of the
@@ -2473,7 +2283,8 @@ Release: June 1, 2017
 
 27 / 93
 
-    targetname="tradewind.com",
+
+    targetname="tradewind.com",
     response="0100000038393462892479edd2994f63"
  Content-Type: application/SOAP+xml
  Content-Length:
@@ -2510,7 +2321,7 @@ header URIs. The remaining content of the setPresence body is a text/xml+msrtc.p
 Document. Note the namespace of the XML document that MUST match exactly for the server to
 recognize this SOAP request.
 
-3.2.4.3  Subscribing to a User's Presence Information
+##### 3.2.4.3 Subscribing to a User's Presence Information
 
 The client can subscribe to a user's presence information by sending a SUBSCRIBE request with the
 request URI set to that user's SIP URI. In the client/server mode, this request creates a
@@ -2519,7 +2330,7 @@ clients. The presence information is sent back in the 200 OK to the SUBSCRIBE if
 notification extension is enabled. Otherwise, it is sent in a NOTIFY or BENOTIFY request. Any
 further updates to presence are sent using NOTIFY or BENOTIFY requests.
 
-3.2.4.4  Getting Presence Information of Another User (getPresence SERVICE
+##### 3.2.4.4 Getting Presence Information of Another User (getPresence SERVICE
 
 Request)
 
@@ -2543,7 +2354,8 @@ Release: June 1, 2017
 
 28 / 93
 
- CSeq: 1 SERVICE
+
+ CSeq: 1 SERVICE
  Contact: <sip:user@tradewind.com:3485;
    maddr=157.56.65.142;transport=tls>;proxy=replace
  User-Agent: RTC/1.3.5315 (Messenger 5.1.0530)
@@ -2572,7 +2384,7 @@ wanted. Note that presence ACLs are enforced for getPresence requests as well; i
 from seeing the target user's presence, the getPresence request returns a 403 Forbidden SIP
 response.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following section, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
@@ -2583,21 +2395,21 @@ The following event is specified in this section:
 
 Processing Response to a getPresence SERVICE Request (section 3.2.5.1)
 
-3.2.5.1  Processing Response to a getPresence SERVICE Request
+##### 3.2.5.1 Processing Response to a getPresence SERVICE Request
 
 The client SHOULD receive the Presence Document in the body of the 200 OK response to the
 SERVICE request. The client SHOULD parse the Presence Document as if it was received inside a
 NOTIFY method.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Batched SUBSCRIBE and NOTIFY Extension Details
+### 3.3 Batched SUBSCRIBE and NOTIFY Extension Details
 
 Session Initiation Protocol Extensions uses the SUBSCRIBE and NOTIFY mechanism, as specified in
 [RFC3265], to accept subscriptions for and send presence updates on members of the user's contact
@@ -2610,14 +2422,15 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Session Initiation Protocol Extensions defines additional optimizations of that basic SUBSCRIBE and
+
+Session Initiation Protocol Extensions defines additional optimizations of that basic SUBSCRIBE and
 NOTIFY mechanism to reduce message overhead associated with presence. The first such extension is
 the batched SUBSCRIBE mechanism. This mechanism allows the client to subscribe to a list of
 contacts at once rather than send an individual SUBSCRIBE for each contact.
 
 This extension is optional. An implementation may support it.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2637,21 +2450,21 @@ the limit on how many contacts that user can have.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementation is at liberty to implement such data in any way convenient.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are required other than the timers specified in [RFC3261] and [RFC3265].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client SHOULD be registered with the server before sending a batched SUBSCRIBE request.
 This is done by sending a REGISTER request to the server, as specified in [RFC3261].
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.3.4.1  Sending a Batched SUBSCRIBE Request
+##### 3.3.4.1 Sending a Batched SUBSCRIBE Request
 
 The client can subscribe to presence information of a list of contacts by sending a batched
 SUBSCRIBE request to the server. This is typically done after the client has logged in to the server by
@@ -2676,7 +2489,8 @@ Release: June 1, 2017
 
 30 / 93
 
-     Contact:
+
+     Contact:
         <sip:watcher@tradewind.com:3485;
         maddr=157.56.65.142;
         transport="tls">;
@@ -2745,7 +2559,8 @@ Release: June 1, 2017
 
 31 / 93
 
- <?xml version="1.0" ?>
+
+ <?xml version="1.0" ?>
  <xs:schema id="batch subscribe" version="2.0"
             elementFormDefault="qualified"
             targetNamespace="urn:ietf:params:xml:ns:adrl"
@@ -2821,10 +2636,11 @@ Release: June 1, 2017
 
 32 / 93
 
-   <xs:element name="adhoclist" type="tns:adhoclist" />
+
+   <xs:element name="adhoclist" type="tns:adhoclist" />
  </xs:schema>
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following section, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
@@ -2835,7 +2651,7 @@ The following events are specified in this section:
 
   Receiving a Failure Response to a Batched SUBSCRIBE Request (section 3.3.5.2)
 
-3.3.5.1  Receiving a NOTIFY Response to a Batched SUBSCRIBE Request
+##### 3.3.5.1 Receiving a NOTIFY Response to a Batched SUBSCRIBE Request
 
 On receiving a NOTIFY SIP response to a batched SUBSCRIBE request, the client parses the
 response and retrieves the presence information for all contacts.
@@ -2891,7 +2707,8 @@ Release: June 1, 2017
 
 33 / 93
 
-     --50UBfW7LSCVLtggUPe5z
+
+     --50UBfW7LSCVLtggUPe5z
      Content-Transfer-Encoding: binary
      Content-ID: contact1@tradewind.com
      Content-Type: text/xml+msrtc.pidf
@@ -2968,7 +2785,8 @@ Release: June 1, 2017
 
 34 / 93
 
-                           ageOfPresence="3617" >
+
+                           ageOfPresence="3617" >
              <availability aggregate="300"
                            description="online"  />
              <activity aggregate="400"
@@ -3005,21 +2823,21 @@ and a flag—indicating whether this notification contains information for the c
 just a subset—are defined in the list portion of the body. The client SHOULD ignore out-of-order CSeq
 for NOTIFY/BENOTIFY requests for batched subscriptions and rely on the version number instead.
 
-3.3.5.2  Receiving a Failure Response to a Batched SUBSCRIBE Request
+##### 3.3.5.2 Receiving a Failure Response to a Batched SUBSCRIBE Request
 
 If the server does not support batched SUBSCRIBE and NOTIFY requests, it will send a failure
 response to the batched SUBSCRIBE request. The client MAY set the BatchSubscribeEnabled flag to
 false and fall back to sending individual SUBSCRIBE requests for each of the contacts.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  Piggyback Notification in 200 OK Response Details
+### 3.4 Piggyback Notification in 200 OK Response Details
 
 As a performance optimization, Session Initiation Protocol Extensions introduces a mechanism
 whereby the content of the first NOTIFY request that is normally sent in the SIP response to a
@@ -3033,7 +2851,8 @@ Release: June 1, 2017
 
 35 / 93
 
-The benefit of this extension is in saving the traffic of the first NOTIFY request and its subsequent 200
+
+The benefit of this extension is in saving the traffic of the first NOTIFY request and its subsequent 200
 OK response on the wire, reducing the total number of messages that must be processed as part of
 the usual login sequence for the client.
 
@@ -3042,7 +2861,7 @@ mechanism defined previously.
 
 This extension is optional. An implementation may support it.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
  This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3059,29 +2878,29 @@ whether piggyback NOTIFY is supported for that subscription.
  Note that the preceding conceptual data can be implemented by using a variety of techniques. An
 implementation is at liberty to implement such data in any way convenient.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 No additional timers are required other than the timers specified in [RFC3261] and [RFC3265].
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The client SHOULD be registered with the server before indicating support for piggyback NOTIFY in
 a SUBSCRIBE request. This is done by sending a REGISTER request to the server, as specified in
 [RFC3261].
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.4.4.1  Indicating Support for Piggyback Notification
+##### 3.4.4.1 Indicating Support for Piggyback Notification
 
 The client can indicate support for this extension to the server by including the following header in the
 SUBSCRIBE request.
 
  Supported: ms-piggyback-first-notify
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following section, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
@@ -3097,7 +2916,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.4.5.1  Receiving a Piggyback Notification in a 200 OK
+
+##### 3.4.5.1 Receiving a Piggyback Notification in a 200 OK
 
 If the server supports piggyback NOTIFY requests, it sends the content that is typically placed in the
 first NOTIFY request within the 200 OK SIP response to the SUBSCRIBE request. The content of
@@ -3115,15 +2935,15 @@ NOTIFY request, and parse the content to obtain the presence information.
 The first NOTIFY request that the server sends is then delayed until an actual change in presence
 occurs.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
-3.5  Best Effort NOTIFY (BENOTIFY) Extension Details
+### 3.5 Best Effort NOTIFY (BENOTIFY) Extension Details
 
 Session Initiation Protocol Extensions introduces a variant of the regular NOTIFY request that is
 known as Best Effort NOTIFY (BENOTIFY). The only difference between a BENOTIFY request and a
@@ -3137,7 +2957,7 @@ mechanism.
 
 This extension is optional. An implementation MAY support it.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3161,7 +2981,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.5.1.1  Indicating Support for BENOTIFY
+
+##### 3.5.1.1 Indicating Support for BENOTIFY
 
 The client signals support for the BENOTIFY mechanism by inserting two headers in the SUBSCRIBE
 request.
@@ -3174,22 +2995,22 @@ extension and that expects a SIP response to every SIP request to maintain prope
 state will reject the initial subscription at which time the client can resend the SUBSCRIBE minus these
 headers and disable the BENOTIFY mechanism for this subscription.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 No additional timers are required other than the timers specified in [RFC3261] and [RFC3265].
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 The client SHOULD be registered with the server before sending a SUBSCRIBE request indicating
 support for BENOTIFY. This is done by sending a REGISTER request to the server, as specified in
 [RFC3261].
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
@@ -3202,14 +3023,14 @@ The following events are specified in this section:
 
   Receiving a BENOTIFY (section 3.5.5.3)
 
-3.5.5.1  Receiving a Failure Response to SUBSCRIBE
+##### 3.5.5.1 Receiving a Failure Response to SUBSCRIBE
 
 If the client receives a failure response to the SUBSCRIBE request because an intermediate proxy
 did not support the BENOTIFY extension, it MAY set the BENOTIFYEnabled flag to false and resend
 the SUBSCRIBE request without the supported:ms-benotify and proxy-require:ms-benotify headers. In
 this case, the BENOTIFY extension is disabled.
 
-3.5.5.2  Receiving a Success Response to SUBSCRIBE
+##### 3.5.5.2 Receiving a Success Response to SUBSCRIBE
 
 When a client receives a success response (that is, a 200 OK to the SUBSCRIBE request), it MAY
 determine whether the server supports BENOTIFY. In a 200 OK response to a SUBSCRIBE request,
@@ -3222,28 +3043,29 @@ Release: June 1, 2017
 
 38 / 93
 
- Supported: ms-benotify
+
+ Supported: ms-benotify
 
 If the preceding header is present in 200 OK, the client MAY set the BENOTIFYEnabled flag to true.
 
 The server MAY choose not to enable BENOTIFY for clients that are known to have unreliable network
 connectivity. The client SHOULD also be prepared to handle regular NOTIFY requests.
 
-3.5.5.3  Receiving a BENOTIFY Request
+##### 3.5.5.3 Receiving a BENOTIFY Request
 
 On receiving a BENOTIFY request, the client MUST NOT send back a SIP response. The server
 MUST ignore responses it receives to a BENOTIFY request. The client SHOULD process the content of a
 BENOTIFY request in a manner identical to the way in which it processes a NOTIFY request.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 None.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
 None.
 
-3.6  Auto-Extension of Subscriptions Details
+### 3.6 Auto-Extension of Subscriptions Details
 
 As another performance optimization, Session Initiation Protocol Extensions introduce auto-extension
 of the expiration time of a subscription. Normally with [RFC3265], the client must resend the
@@ -3254,7 +3076,7 @@ re-SUBSCRIBE if no NOTIFY traffic is received for the subscription, but this is 
 
 This extension is optional. An implementation may support it.
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3271,7 +3093,7 @@ subscription to indicate whether or not auto-extension of that subscription is e
 Note  The preceding conceptual data can be implemented using a variety of techniques. An
 implementation is at liberty to implement such data in any way convenient.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 Beyond what is specified in [RFC3261] and [RFC3265], the following timer is required.
 
@@ -3284,22 +3106,23 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Timer to track when a subscription expires. The client SHOULD refresh the subscription before
+
+Timer to track when a subscription expires. The client SHOULD refresh the subscription before
 the timer expires. A subscription can be refreshed by sending a SUBSCRIBE request on the
 dialog established by the first SUBSCRIBE request that resulted in creation of the subscription.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 The client SHOULD be registered with the server before sending a SUBSCRIBE request with auto-
 extension support. This is done by sending a REGISTER request to the server, as specified in
 [RFC3261].
 
-3.6.4  Higher-Layer Triggered Events
+#### 3.6.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.6.4.1  Indicating Support for Auto-Extension of Subscriptions
+##### 3.6.4.1 Indicating Support for Auto-Extension of Subscriptions
 
 Support for the auto-extension mechanism is signaled in a header inserted in the SUBSCRIBE request
 by the client.
@@ -3308,7 +3131,7 @@ by the client.
 
 This header indicates to the server that the client supports the auto-extension mechanism.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
@@ -3319,7 +3142,7 @@ The following events are specified in this section:
 
   Receiving a NOTIFY (section 3.6.5.2)
 
-3.6.5.1  Receiving a 200 OK Response to SUBSCRIBE
+##### 3.6.5.1 Receiving a 200 OK Response to SUBSCRIBE
 
 When a client receives a 200 OK success response to the SUBSCRIBE request, it SHOULD determine
 whether the server supports auto-extension by looking for the Supported: com.microsoft.autoextend
@@ -3333,7 +3156,7 @@ is present in the SIP response; otherwise, the client sets the flag to False. If
 the client and the server are ready to auto-extend the subscriptions after they receive a
 notification. The client operation is explained in Receiving a NOTIFY Request (section 3.6.5.2).
 
-3.6.5.2  Receiving a NOTIFY Request
+##### 3.6.5.2 Receiving a NOTIFY Request
 
 If the client and server have successfully negotiated the auto-extension for this subscription and the
 AutoExtendSubscriptionExpireTimerEnabled flag is set to true, the client SHOULD reset the
@@ -3346,18 +3169,19 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The client SHOULD also reset this timer in a similar manner after it receives any subsequent NOTIFY
+
+The client SHOULD also reset this timer in a similar manner after it receives any subsequent NOTIFY
 requests.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 None.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
 None.
 
-3.7  Contact Management Extensions Details
+### 3.7 Contact Management Extensions Details
 
 Session Initiation Protocol Extensions supports contact management. A client can store on the server
 a list of contacts with which the client frequently communicates, and can retrieve and subsequently
@@ -3412,9 +3236,10 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The contact management extensions are optional. An implementation may support them.
 
-3.7.1  Abstract Data Model
+The contact management extensions are optional. An implementation may support them.
+
+#### 3.7.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3464,7 +3289,7 @@ out-of-sync.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementation can implement this data in any way that is convenient.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 There are no additional timers required beyond what is specified in [RFC3261] and [RFC3265].
 
@@ -3475,18 +3300,19 @@ Release: June 1, 2017
 
 42 / 93
 
-3.7.3  Initialization
+
+#### 3.7.3 Initialization
 
 The client SHOULD be registered with the server before retrieving the contact list or performing any
 contact management operations. Registration is done by sending a REGISTER request to the server,
 as specified in [RFC3261].
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.7.4.1  Subscribing to the Contact/Group List
+##### 3.7.4.1 Subscribing to the Contact/Group List
 
 A client retrieves its contact list and learns of changes to the contact list (made by other clients for
 this user) through a subscription. The client subscribes to the roaming contact list by sending a
@@ -3529,7 +3355,7 @@ The full or delta contact/group list is returned by the server in NOTIFY and BEN
 the body of a 200 OK response (also called a piggyback NOTIFY). See Receiving the Contact List from
 the Server (section 3.7.5.2).
 
-3.7.4.2  Subscribing for the ACL
+##### 3.7.4.2 Subscribing for the ACL
 
 The ACL is stored at the server and the client can obtain the ACL after it is registered with the server
 by using a SUBSCRIBE request. The client sends a SUBSCRIBE with an Event: type of vnd-microsoft-
@@ -3543,13 +3369,14 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-contain the ACL for the user. The initial notification carries the complete ACL, and any changes are
+
+contain the ACL for the user. The initial notification carries the complete ACL, and any changes are
 conveyed in subsequent notifications. This allows changes made by one device for a user to be
 communicated to all other devices for the user maintaining a consistent ACL across all devices. The
 server SHOULD maintain a database to hold the master copy of this ACL, which all devices sync to at
 login time.
 
-3.7.4.3  Add/Modify/Delete Contact
+##### 3.7.4.3 Add/Modify/Delete Contact
 
 Adding, modifying, or deleting a contact is done through setContact and deleteContact SOAP requests
 carried within a SIP SERVICE verb from the client to the server. Note that in all of these SERVICE
@@ -3560,7 +3387,7 @@ Schema (section 9).
 The server indicates that a setContact or a deleteContact request was successful by sending a 200 OK
 response to the SERVICE request.
 
-3.7.4.4  Add/Modify/Delete Group
+##### 3.7.4.4 Add/Modify/Delete Group
 
 Similarly to managing contacts, managing groups within the contact list is done through modifyGroup,
 and deleteGroup SOAP requests carried in a SIP SERVICE request from the client to the server.
@@ -3575,12 +3402,12 @@ Management Schema (section 9).
 The server indicates that a modifyGroup request or a deleteGroup request was successful by sending a
 200 OK response to the SERVICE request.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
 Except as specified in the following sections, the rules for message processing are as specified in
 [RFC3261] and [RFC3265].
 
-3.7.5.1  Setting ACEs for a Contact
+##### 3.7.5.1 Setting ACEs for a Contact
 
 Adding a contact is usually accompanied by a setACE operation to allow that contact to view user
 presence and communicate with the user.
@@ -3595,7 +3422,7 @@ session initiation (INVITE) portion of the ACE. Finally, note that the ACE compa
 three forms: it can apply to all URIs, it can apply to a specific SIP URI, or it can apply to a specific SIP
 domain.
 
-3.7.5.2  Receiving the Contact List from the Server
+##### 3.7.5.2 Receiving the Contact List from the Server
 
 The server responds by sending the contact list in a notification. The initial notification is the full
 contact list. Subsequent notifications are partial notifications containing only the delta from the last
@@ -3607,7 +3434,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-notification. The version number ("deltaNum") allows the client to keep in sync with the version stored
+
+notification. The version number ("deltaNum") allows the client to keep in sync with the version stored
 on the server. In the following example, the contact list is piggybacked on the 200 OK to the
 SUBSCRIBE. For piggybacking information, see Piggyback Notification in 200 OK Response
 Details (section 3.4).
@@ -3642,17 +3470,17 @@ Details (section 3.4).
                   groups="1 " subscribed="true" externalURI="" />
        </contactList>
 
-3.7.5.3  Receiving the ACL from the Server
+##### 3.7.5.3 Receiving the ACL from the Server
 
 On receiving the ACL from the server in NOTIFY and BENOTIFY requests or in a piggybacked
 notification, the client SHOULD process it and store all ACEs locally. On receiving any subsequent
 notifications containing changes to the ACL, the client SHOULD update its local copy.
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
 None.
 
-3.7.7  Other Local Events
+#### 3.7.7 Other Local Events
 
 None.
 
@@ -3663,16 +3491,17 @@ Release: June 1, 2017
 
 45 / 93
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-SIP].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of Session Initiation Protocol Extensions.
 
-4.1  Registration with Kerberos
+### 4.1 Registration with Kerberos
 
 The following flow outlines how the Kerberos authentication mechanism works during the registration
 process. At this point in time, the client discovers its outbound proxy and initializes an SA (or
@@ -3702,7 +3531,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- To: "Alice" sip:Alice@contoso.com
+
+ To: "Alice" sip:Alice@contoso.com
  Call-ID: 123213@Alice1.contoso.com
  CSeq: 12345 REGISTER
  Max-Forwards: 70
@@ -3769,7 +3599,8 @@ Release: June 1, 2017
 
 47 / 93
 
-The targetname parameter echoes the value of the targetname parameter in the previous Proxy-
+
+The targetname parameter echoes the value of the targetname parameter in the previous Proxy-
 Authenticate: header. The gssapi-data parameter contains the Kerberos ticket information. The
 choice of Kerberos authentication is indicated by the scheme (Kerberos) as the first token in the
 header.
@@ -3841,7 +3672,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-    targetname="sip/hs2.contoso.com", qop="auth"
+
+    targetname="sip/hs2.contoso.com", qop="auth"
  Proxy-Authenticate: NTLM realm="Contoso RTC Service Provider",
     targetname="hs2.contoso.com", qop="auth"
  Content-Length: 0
@@ -3908,11 +3740,12 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-SIP].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
-4.2  Registration with NTLM
+### 4.2 Registration with NTLM
 
 The following call flow outlines how the NTLM Authentication Protocol authentication mechanism
 works.
@@ -3935,7 +3768,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Call-ID: 123213@alice1.contoso.com
+
+ Call-ID: 123213@alice1.contoso.com
  CSeq: 12345 REGISTER
  Max-Forwards: 70
  User-Agent: Windows RTC/1.1.2600
@@ -4004,7 +3838,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.  The outbound server responds with a 407 containing a Proxy-Authenticate: header, which includes
+
+4.  The outbound server responds with a 407 containing a Proxy-Authenticate: header, which includes
 
 the NTLM challenge.
 
@@ -4071,7 +3906,8 @@ Release: June 1, 2017
 
 52 / 93
 
-The Proxy-Authentication-Info: header carries the signature for this SIP message. The snum is
+
+The Proxy-Authentication-Info: header carries the signature for this SIP message. The snum is
 set to 1 because this is the first message signed with the newly established SA. The srand
 parameter contains the (random) salt value used by the server to generate the signature.
 
@@ -4141,7 +3977,8 @@ Release: June 1, 2017
 
 53 / 93
 
-The Cseq: number is incremented. The Call-ID and epid remain the same. The Proxy-
+
+The Cseq: number is incremented. The Call-ID and epid remain the same. The Proxy-
 Authorization: header indicates support for NTLM authentication.
 
 10. Alice's home server receives the REGISTER request and issues an appropriate NTLM challenge.
@@ -4210,7 +4047,8 @@ Release: June 1, 2017
 
 54 / 93
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-SIP].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -4218,7 +4056,7 @@ The epid parameter on the From: header is used by the server to determine how to
 response (find the SA). The signature for this response is carried in the rspauth parameter of the
 Proxy-Authentication-Info: header.
 
-4.3  Batched SUBSCRIBE and Piggybacked NOTIFY Example
+### 4.3 Batched SUBSCRIBE and Piggybacked NOTIFY Example
 
 This example shows the use of a batched SUBSCRIBE request by the client to subscribe for presence
 information of multiple contacts with a single subscription. It also shows how the server returns the
@@ -4270,7 +4108,8 @@ Release: June 1, 2017
 
 55 / 93
 
-     <adhoclist xmlns="urn:ietf:params:xml:ns:adrl"
+
+     <adhoclist xmlns="urn:ietf:params:xml:ns:adrl"
                 uri="sip:user1@server.contoso.com"
                 name="sip:user1@server.contoso.com">
        <create xmlns="">
@@ -4343,7 +4182,8 @@ Release: June 1, 2017
 
 56 / 93
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-SIP].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -4363,7 +4203,7 @@ Release: June 1, 2017
      </presentity>
      --e7904a528704417c9a90297d24081f8e--
 
-4.4  Best Effort NOTIFY Example
+### 4.4 Best Effort NOTIFY Example
 
 This example demonstrates the use of a BENOTIFY request to eliminate the need for the client to
 send a response to the notifications sent by the server.
@@ -4400,7 +4240,8 @@ Release: June 1, 2017
 
 57 / 93
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-SIP].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -4444,7 +4285,7 @@ Release: June 1, 2017
        </devices>
      </presentity>
 
-4.5  setPresence Example
+### 4.5 setPresence Example
 
 This example demonstrates the use of the setPresence request.
 
@@ -4461,7 +4302,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- SERVICE sip:user2@server.contoso.com SIP/2.0
+
+ SERVICE sip:user2@server.contoso.com SIP/2.0
  Via: SIP/2.0/TCP 11.22.33.44:14423
  Max-Forwards: 70
  From: "User 2" <sip:user2@server.contoso.com>
@@ -4533,11 +4375,12 @@ Release: June 1, 2017
 
 59 / 93
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-SIP].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
-4.6  AddContact Example
+### 4.6 AddContact Example
 
 This example demonstrates an AddContact request sent by the client to the server to add a contact to
 its contact list.
@@ -4595,7 +4438,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-SIP].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4615,7 +4459,7 @@ Release: June 1, 2017
  CSeq: 2 SERVICE
  Content-Length: 0
 
-4.7  DeleteContact Example
+### 4.7 DeleteContact Example
 
 This example demonstrates a DeleteContact request sent by the client to the server to delete a
 contact from its contact list.
@@ -4656,7 +4500,8 @@ Release: June 1, 2017
 
 61 / 93
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-SIP].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4690,7 +4535,7 @@ was successful. The 200 OK response does not have a body.
      CSeq: 5 SERVICE
      Content-Length: 0
 
-4.8  AddGroup Example
+### 4.8 AddGroup Example
 
 This example demonstrates an AddGroup request that is sent by the client to the server to add a
 group to the list of groups for this client.
@@ -4715,7 +4560,8 @@ Release: June 1, 2017
 
 62 / 93
 
-     ;tag=5FDD7BA7
+
+     ;tag=5FDD7BA7
      Call-ID: f34928e3852c434a85a1f3c0e1e8a449
      CSeq: 2 SERVICE
      Contact: <sip:user1@server.contoso.com:14383;
@@ -4772,7 +4618,7 @@ was successful. The 200 OK response can have a body.
        </SOAP-ENV:Body>
      </SOAP-ENV:Envelope>
 
-4.9  DeleteGroup Example
+### 4.9 DeleteGroup Example
 
 This example demonstrates a DeleteGroup request sent by the client to the server to delete a group
 from the list of groups for this client.
@@ -4784,7 +4630,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-SIP].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
@@ -4846,7 +4693,8 @@ Release: June 1, 2017
 
 64 / 93
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-SIP].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -4857,7 +4705,7 @@ Release: June 1, 2017
      CSeq: 3 SERVICE
      Content-Length: 0
 
-4.10  setACE Example
+### 4.10 setACE Example
 
 This example demonstrates a setACE request sent by the client to the server to add a contact to its
 contact list.
@@ -4906,7 +4754,8 @@ Release: June 1, 2017
 
 65 / 93
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-SIP].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -4926,7 +4775,7 @@ was successful. The 200 OK response does not have a body.
  CSeq: 40 SERVICE
  Content-Length: 0
 
-4.11  P2P Subscription and XPIDF Presence Format Example
+### 4.11 P2P Subscription and XPIDF Presence Format Example
 
 This example demonstrates how XPIDF format can be used in a P2P presence subscription.
 
@@ -4959,7 +4808,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- SIP/2.0 200 OK
+
+ SIP/2.0 200 OK
  From: "user1" <sip:host1>;tag=12e78ca4-85f7-4094-bbdf-e8e819188ae6
  To: <sip:user2@193.12.62.199>;tag=112040_T193.12.62.199
  Call-ID: 21824beb-0ee4-4953-ad36-745a0614a0e9@193.12.63.150
@@ -5016,17 +4866,18 @@ Release: June 1, 2017
 
 67 / 93
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of Session Initiation Protocol
 Extensions.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The Microsoft extensions defined in this specification do not require any special security considerations
 beyond what is natively defined for the Session Initiation Protocol (SIP).
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5037,7 +4888,8 @@ Release: June 1, 2017
 
 68 / 93
 
-6  Appendix A: Full text/xml+msrtc.pidf Presence Document Format
+
+## 6 Appendix A: Full text/xml+msrtc.pidf Presence Document Format
 
  <?xml version="1.0" ?>
  <xs:schema id="presence" version="2.0"
@@ -5113,7 +4965,8 @@ Release: June 1, 2017
 
 69 / 93
 
-     <xs:attribute
+
+     <xs:attribute
         name="aggregate" type="tns:aggregate" use="required" >
        <xs:annotation>
          <xs:documentation>
@@ -5189,7 +5042,8 @@ Release: June 1, 2017
 
 70 / 93
 
-           Rather than using a hard-coded enumeration a numeric value
+
+           Rather than using a hard-coded enumeration a numeric value
            is value.  This makes it easy to compare the activity sent
            by two different PUAs.
          </xs:documentation>
@@ -5265,7 +5119,8 @@ Release: June 1, 2017
 
 71 / 93
 
-         user's availability on a particular device. This is the
+
+         user's availability on a particular device. This is the
          document sent from a Presence User Agent that intends to
          publish its presence.
        </xs:documentation>
@@ -5342,7 +5197,8 @@ Release: June 1, 2017
 
 72 / 93
 
-           </xs:attribute>
+
+           </xs:attribute>
 
            <xs:attribute
              name="number"
@@ -5390,7 +5246,8 @@ Release: June 1, 2017
 
 73 / 93
 
-7  Appendix B: XPIDF Presence Document Format
+
+## 7 Appendix B: XPIDF Presence Document Format
 
 The XPIDF Presence Document always contains the top-level element "presence", which indicates
 that the remainder of the document contains presence information.
@@ -5452,7 +5309,8 @@ Release: June 1, 2017
 
 74 / 93
 
-An indicator meant for machine consumption that indicates the status of this communications
+
+An indicator meant for machine consumption that indicates the status of this communications
 address. Valid values are "open", which means communications can be attempted to this address,
 "closed", which means communications cannot be attempted, and "inuse", which means
 communications is currently being actively used with the entity receiving the Presence Document.
@@ -5524,7 +5382,8 @@ Session Initiation Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <!ELEMENT note (#PCDATA)>
+
+ <!ELEMENT note (#PCDATA)>
 
   msnsubstatus
 
@@ -5590,7 +5449,8 @@ Release: June 1, 2017
 
 76 / 93
 
-    <!ATTLIST display name CDATA #REQUIRED>
+
+    <!ATTLIST display name CDATA #REQUIRED>
 
 [MS-SIP] - v20170601
 Session Initiation Protocol Extensions
@@ -5599,7 +5459,8 @@ Release: June 1, 2017
 
 77 / 93
 
-8  Appendix C: ACL XML Schema
+
+## 8 Appendix C: ACL XML Schema
 
  <?xml version="1.0" ?>
  <xsd:schema id="acl"
@@ -5676,7 +5537,8 @@ Release: June 1, 2017
 
 78 / 93
 
- For example "redmond.microsoft.com." and "microsoft.com.".
+
+ For example "redmond.microsoft.com." and "microsoft.com.".
  SIP:roberbr@redmond.microsoft.com would match either of these.
  SIP:roberbr@southpacific.microsoft.com would
     only match "microsoft.com."
@@ -5750,9 +5612,10 @@ Release: June 1, 2017
 
 79 / 93
 
-9  Appendix D: Contact Management Schema
 
-9.1  Contact Schema
+## 9 Appendix D: Contact Management Schema
+
+### 9.1 Contact Schema
 
  <?xml version="1.0" ?>
  <xs:schema id="contact"
@@ -5825,7 +5688,8 @@ Release: June 1, 2017
 
 80 / 93
 
-       <xs:minInclusive value="0" />
+
+       <xs:minInclusive value="0" />
        <xs:maxInclusive value="64" />
      </xs:restriction>
    </xs:simpleType>
@@ -5902,7 +5766,8 @@ Release: June 1, 2017
 
 81 / 93
 
-     <xs:attribute name="id" type="tns:groupID" use="required" />
+
+     <xs:attribute name="id" type="tns:groupID" use="required" />
      <xs:attribute name="name" type="tns:groupName" use="required" />
 
      <xs:attribute name="externalURI" type="tns:externalUri">
@@ -5978,7 +5843,8 @@ Release: June 1, 2017
 
 82 / 93
 
-                   maxOccurs="64" />
+
+                   maxOccurs="64" />
        <xs:element name="contact" type="tns:contact" minOccurs="0"
                    maxOccurs="unbounded" >
          <xs:annotation>
@@ -6052,7 +5918,8 @@ Release: June 1, 2017
 
 83 / 93
 
-9.2  SetContact Schema
+
+### 9.2 SetContact Schema
 
  <?xml version="1.0" ?>
  <xs:schema id="SetContact" version="2.0"
@@ -6101,7 +5968,7 @@ Release: June 1, 2017
    <xs:element name="setContact" type="tns:SetContact" />
  </xs:schema>
 
-9.3  ModifyGroup Schema
+### 9.3 ModifyGroup Schema
 
  <?xml version="1.0" ?>
  <xs:schema id="ModifyGroup" version="2.0"
@@ -6126,7 +5993,8 @@ Release: June 1, 2017
 
 84 / 93
 
-       group by sending a SIP SERVICE request to their Live
+
+       group by sending a SIP SERVICE request to their Live
        Communications Server. The content of this SERVICE request
        is a SOAP request. The body of the SOAP request contains
        an XML instance conforming to the structure specified in
@@ -6157,7 +6025,7 @@ Release: June 1, 2017
    <xs:element name=”addGroup” type=”tns:ModifyGroup” />
  </xs:schema>
 
-9.4  DeleteContact Schema
+### 9.4 DeleteContact Schema
 
  <?xml version="1.0" ?>
  <xs:schema id="DeleteContact" version="2.0"
@@ -6198,7 +6066,8 @@ Release: June 1, 2017
 
 85 / 93
 
-9.5  DeleteGroup Schema
+
+### 9.5 DeleteGroup Schema
 
  <?xml version="1.0" ?
  <xs:schema id="DeleteGroup" version="2.0"
@@ -6250,7 +6119,8 @@ Release: June 1, 2017
 
 86 / 93
 
-10  Appendix E: common.xsd
+
+## 10 Appendix E: common.xsd
 
  <?xml version="1.0" ?>
  <xs:schema id="contact" version="2.0"
@@ -6326,7 +6196,8 @@ Release: June 1, 2017
 
 87 / 93
 
-   <xs:simpleType name="office">
+
+   <xs:simpleType name="office">
      <xs:annotation>
        <xs:documentation>
          This value is retrieved by the server from the Active Directory
@@ -6385,7 +6256,8 @@ Release: June 1, 2017
 
 88 / 93
 
-11  Appendix F: Product Behavior
+
+## 11 Appendix F: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6413,7 +6285,8 @@ Release: June 1, 2017
 
 89 / 93
 
-12  Change Tracking
+
+## 12 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -6425,7 +6298,8 @@ Release: June 1, 2017
 
 90 / 93
 
-13  Index
+
+13  Index
 2
 
 200 OK
@@ -6561,7 +6435,8 @@ Higher-layer triggered events
 
 91 / 93
 
-   Contact Management Extensions 43
+
+   Contact Management Extensions 43
    NTLM/Kerberos Authentication Extensions 21
    Piggyback Notification in 200 OK Response 36
    Presence Extensions 27
@@ -6706,7 +6581,8 @@ Sequencing rules
 
 92 / 93
 
-   Best Effort NOTIFY Extension 38
+
+   Best Effort NOTIFY Extension 38
    Contact Management Extensions 44
    NTLM/Kerberos Authentication Extensions 23
    Piggyback Notification in 200 OK Response 36

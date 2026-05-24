@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -228,79 +229,39 @@ Release: April 23, 2024
 
 2 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 OSInfo Service](#21-osinfo-service)
+  - [2.2 WANCommonInterfaceConfig Extensions](#22-wancommoninterfaceconfig-extensions)
+  - [2.3 WANIPConnection Extensions](#23-wanipconnection-extensions)
+  - [2.4 WANPPPConnection Extensions](#24-wanpppconnection-extensions)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 OSInfo](#31-osinfo)
+  - [3.2 WANCommonInterfaceConfig](#32-wancommoninterfaceconfig)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: XML schema](#5-appendix-a-xml-schema)
+  - [5.1 WAN Common Interface Config](#51-wan-common-interface-config)
+  - [5.2 WAN IP Connection](#52-wan-ip-connection)
+  - [5.3 WAN PPP Connection](#53-wan-ppp-connection)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Structures ...................................................... 5
-Applicability Statement ....................................................................................... 5
-Versioning and Localization ................................................................................. 5
-Vendor-Extensible Fields ..................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 6
-OSInfo Service................................................................................................... 6
-WANCommonInterfaceConfig Extensions ............................................................... 6
-WANIPConnection Extensions .............................................................................. 8
-WANPPPConnection Extensions ............................................................................ 8
-
-2.1
-2.2
-2.3
-2.4
-
-3  Structure Examples ................................................................................................. 9
-OSInfo .............................................................................................................. 9
-WANCommonInterfaceConfig ............................................................................... 9
-
-3.1
-3.2
-
-4  Security ................................................................................................................. 10
-Security Considerations for Implementers ........................................................... 10
-Index of Security Fields .................................................................................... 10
-
-4.1
-4.2
-
-5  Appendix A: XML schema ....................................................................................... 11
-WAN Common Interface Config .......................................................................... 11
-WAN IP Connection .......................................................................................... 13
-WAN PPP Connection ........................................................................................ 19
-
-5.1
-5.2
-5.3
-
-6  Appendix B: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 27
-
-8  Index ..................................................................................................................... 28
-
-[MS-UPIGD] - v20240423
-UPnP Device and Service Templates: Internet Gateway Device (IGD) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 28
-
-1  Introduction
+## 1 Introduction
 
 The UPnP: Device & Service Templates: Internet Gateway Device (IGD) Extensions describe
 extensions to the Universal Plug-n-Play (UPnP) device schema that describes an Internet gateway
@@ -309,7 +270,7 @@ device.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -334,14 +295,14 @@ filling in any placeholders in a UPnP Service Template (was SCPD). For more info
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -369,12 +330,13 @@ UPnP Device and Service Templates: Internet Gateway Device (IGD) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [RFC2863] McCloghrie, K., and Kastenholz, F., "The Interfaces Group MIB", RFC 2863, June 2000,
 https://www.rfc-editor.org/info/rfc2863
 
-1.3  Overview
+### 1.3 Overview
 
 The Internet gateway device (IGD) extensions specified in this document comprise four UPnP
 services:
@@ -399,22 +361,22 @@ device.
 customization of the name of the interface alias on the WAN interface of the Internet gateway
 device.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The interface alias of the WAN interface is manageable with either the WANIPConnection service or the
 WANPPPConnection service (depending on the type of WAN connection). This same state variable can
 also be exposed via other mechanisms, such as the Interfaces Group MIB [RFC2863].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The IGD extensions specified in this document are applicable only to an IGD that has a single WAN
 interface.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 There are no localization-dependent structures specified in this document.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -425,11 +387,12 @@ Release: April 23, 2024
 
 5 / 28
 
-2  Structures
+
+## 2 Structures
 
 Data types used in this document are specified in [UPNPARCH1.1] section 2.5.
 
-2.1  OSInfo Service
+### 2.1 OSInfo Service
 
 The OSInfo Service is a service in the Internet gateway device (IGD). Its service description is
 specified as follows, in the UPnP Template Language as defined in [UPNPARCH1.1] section 2.6.
@@ -481,7 +444,7 @@ OSBuildNumber: The build number of the operating system.
 
 OSMachineName: The computer name of the Internet gateway device.
 
-2.2  WANCommonInterfaceConfig Extensions
+### 2.2 WANCommonInterfaceConfig Extensions
 
 The WANCommonInterfaceConfig service is specified in [UPNPWCIC]. Its service description is
 extended as follows, in the UPnP Template Language.
@@ -493,7 +456,8 @@ Release: April 23, 2024
 
 6 / 28
 
- <actionList>
+
+ <actionList>
  <action>
      <name>X_GetICSStatistics</name>
        <argumentList>
@@ -572,11 +536,12 @@ Release: April 23, 2024
 
 7 / 28
 
-X_PersonalFirewallEnabled: If the WAN interface on the Internet gateway device is protected by a
+
+X_PersonalFirewallEnabled: If the WAN interface on the Internet gateway device is protected by a
 
 firewall, this SHOULD<1> be set to TRUE; otherwise FALSE.
 
-2.3  WANIPConnection Extensions
+### 2.3 WANIPConnection Extensions
 
 The WANIPConnection service is specified in [UPNPWIPC]. Its service description is extended as
 follows, in the UPnP Template Language.
@@ -592,7 +557,7 @@ The following state variable is defined in the service description above:
 
 X_Name: The interface alias of the external (WAN) interface of the Internet gateway device.
 
-2.4  WANPPPConnection Extensions
+### 2.4 WANPPPConnection Extensions
 
 The WANPPPConnection service is specified in [UPNPWPPC]. Its service description is extended as
 follows, in the UPnP Template Language.
@@ -615,9 +580,10 @@ Release: April 23, 2024
 
 8 / 28
 
-3  Structure Examples
 
-3.1  OSInfo
+## 3 Structure Examples
+
+### 3.1 OSInfo
 
 In this example, the IGD is named "SAMPLE-IGD", and a client retrieves operating system
 information. It does so as follows.
@@ -644,7 +610,7 @@ dt:dt="i4">7600</OSBuildNumber></e:property>
 dt:dt="string">SAMPLE-IGD</OSMachineName></e:property>
  </e:propertyset>
 
-3.2  WANCommonInterfaceConfig
+### 3.2 WANCommonInterfaceConfig
 
 In the example below, the client computes rate information across a 5-second period of time.
 
@@ -670,9 +636,10 @@ Release: April 23, 2024
 
 9 / 28
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 This document has the same security considerations as those defined in [UPNPARCH1.1].
 
@@ -680,7 +647,7 @@ Note that the OS_MachineName could be considered private information. Also opera
 version number information could be used to fingerprint the device in order to identify potential
 vulnerabilities.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -691,12 +658,13 @@ Release: April 23, 2024
 
 10 / 28
 
-5  Appendix A: XML schema
+
+## 5 Appendix A: XML schema
 
 The full service description for the OSInfo service appears in section 2.1. The full service
 descriptions for the services extended are given in the following sections.
 
-5.1  WAN Common Interface Config
+### 5.1 WAN Common Interface Config
 
  <?xml version="1.0"?>
  <scpd xmlns="urn:schemas-upnp-org:service-1-0">
@@ -764,7 +732,8 @@ Release: April 23, 2024
 
 11 / 28
 
-           <relatedStateVariable>TotalPacketsSent</relatedStateVariable>
+
+           <relatedStateVariable>TotalPacketsSent</relatedStateVariable>
          </argument>
        </argumentList>
      </action>
@@ -841,7 +810,8 @@ Release: April 23, 2024
 
 12 / 28
 
- </stateVariable>
+
+ </stateVariable>
  <stateVariable sendEvents="yes">
  <name>PhysicalLinkStatus</name>
  <dataType>string</dataType>
@@ -892,7 +862,7 @@ Release: April 23, 2024
  </serviceStateTable>
  </scpd>
 
-5.2  WAN IP Connection
+### 5.2 WAN IP Connection
 
  <?xml version="1.0"?>
  <scpd xmlns="urn:schemas-upnp-org:service-1-0">
@@ -915,7 +885,8 @@ Release: April 23, 2024
 
 13 / 28
 
-           <relatedStateVariable>ConnectionType</relatedStateVariable>
+
+           <relatedStateVariable>ConnectionType</relatedStateVariable>
          </argument>
        </argumentList>
      </action>
@@ -992,7 +963,8 @@ Release: April 23, 2024
 
 14 / 28
 
-           <name>NewRemoteHost</name>
+
+           <name>NewRemoteHost</name>
            <direction>out</direction>
            <relatedStateVariable>RemoteHost</relatedStateVariable>
          </argument>
@@ -1069,7 +1041,8 @@ Release: April 23, 2024
 
 15 / 28
 
-         <argument>
+
+         <argument>
            <name>NewEnabled</name>
            <direction>out</direction>
            <relatedStateVariable>PortMappingEnabled</relatedStateVariable>
@@ -1146,7 +1119,8 @@ Release: April 23, 2024
 
 16 / 28
 
-         </argument>
+
+         </argument>
          <argument>
            <name>NewExternalPort</name>
            <direction>in</direction>
@@ -1223,7 +1197,8 @@ Release: April 23, 2024
 
 17 / 28
 
-       <name>NATEnabled</name>
+
+       <name>NATEnabled</name>
        <dataType>boolean</dataType>
        <defaultValue>1</defaultValue>
      </stateVariable>
@@ -1300,7 +1275,8 @@ Release: April 23, 2024
 
 18 / 28
 
-     </stateVariable>
+
+     </stateVariable>
      <stateVariable sendEvents="no">
        <name>PortMappingEnabled</name>
        <dataType>boolean</dataType>
@@ -1316,7 +1292,7 @@ Release: April 23, 2024
    </serviceStateTable>
  </scpd>
 
-5.3  WAN PPP Connection
+### 5.3 WAN PPP Connection
 
  <?xml version="1.0"?>
  <scpd xmlns="urn:schemas-upnp-org:service-1-0">
@@ -1374,7 +1350,8 @@ Release: April 23, 2024
 
 19 / 28
 
-           <direction>out</direction>
+
+           <direction>out</direction>
            <relatedStateVariable>LastConnectionError</relatedStateVariable>
          </argument>
          <argument>
@@ -1451,7 +1428,8 @@ Release: April 23, 2024
 
 20 / 28
 
-           <name>NewInternalClient</name>
+
+           <name>NewInternalClient</name>
            <direction>out</direction>
            <relatedStateVariable>InternalClient</relatedStateVariable>
          </argument>
@@ -1528,7 +1506,8 @@ Release: April 23, 2024
 
 21 / 28
 
-         <argument>
+
+         <argument>
            <name>NewRemoteHost</name>
            <direction>in</direction>
            <relatedStateVariable>RemoteHost</relatedStateVariable>
@@ -1605,7 +1584,8 @@ Release: April 23, 2024
 
 22 / 28
 
-         </argument>
+
+         </argument>
        </argumentList>
      </action>
    </actionList>
@@ -1682,7 +1662,8 @@ Release: April 23, 2024
 
 23 / 28
 
-         <allowedValue>ERROR_USER_DISCONNECT</allowedValue>
+
+         <allowedValue>ERROR_USER_DISCONNECT</allowedValue>
          <allowedValue>ERROR_ISP_DISCONNECT</allowedValue>
          <allowedValue>ERROR_IDLE_DISCONNECT</allowedValue>
          <allowedValue>ERROR_FORCED_DISCONNECT</allowedValue>
@@ -1759,7 +1740,8 @@ Release: April 23, 2024
 
 24 / 28
 
-     </stateVariable>
+
+     </stateVariable>
      <stateVariable sendEvents="no">
        <name>PortMappingLeaseDuration</name>
        <dataType>ui4</dataType>
@@ -1778,7 +1760,8 @@ Release: April 23, 2024
 
 25 / 28
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1837,7 +1820,8 @@ Release: April 23, 2024
 
 26 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1881,7 +1865,8 @@ Release: April 23, 2024
 
 27 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 5

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 173
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 173
 
-Date
+
+Date
 
 Revision
 History
@@ -544,715 +546,202 @@ Release: April 23, 2024
 
 3 / 173
 
-Table of Contents
 
-1.3
-
-1.3.3
-
-1.3.2
-
-1.3.1
-
-1.1
-1.2
-
-1.3.3.1
-
-1.3.2.1
-
-1.3.1.1
-
-1.2.1
-1.2.2
-
-1.3.1.1.1
-1.3.1.1.2
-1.3.1.1.3
-
-1.3.2.1.1
-1.3.2.1.2
-1.3.2.1.3
-1.3.2.1.4
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 15
-RPC Over HTTP Transport ............................................................................ 16
-RDGSP Protocol Phases Using RPC Over HTTP Transport ............................ 16
-Connection Setup Phase ................................................................... 16
-Data Transfer Phase ........................................................................ 18
-Shutdown Phase .............................................................................. 19
-HTTP Transport .......................................................................................... 21
-RDGHTTP Protocol Phases Using HTTP Transport ....................................... 21
-Connection Setup and Authentication Phase ........................................ 21
-Tunnel and Channel Creation Phase ................................................... 21
-Data and Server Message Exchange Phase ......................................... 22
-Connection Close Phase .................................................................... 23
-UDP Transport ............................................................................................ 24
-RDGUDP Protocol Phases Using UDP Transport ......................................... 24
-DTLS Handshake Phase .................................................................... 24
-Connection Setup Phase ................................................................... 25
-Data Transfer Phase ........................................................................ 26
-Shutdown Phase .............................................................................. 26
-Relationship to Other Protocols .......................................................................... 27
-Prerequisites/Preconditions ............................................................................... 27
-Common Prerequisites/Preconditions ............................................................. 27
-Prerequisites/Preconditions for RPC Transport ................................................ 27
-Prerequisites/Preconditions for HTTP Transport ............................................... 27
-Prerequisites/Preconditions for UDP Transport ................................................ 28
-Applicability Statement ..................................................................................... 28
-Versioning and Capability Negotiation ................................................................. 28
-RPC Over HTTP Transport ............................................................................ 28
-HTTP Transport .......................................................................................... 28
-UDP Transport ............................................................................................ 29
-Vendor-Extensible Fields ................................................................................... 29
-Standards Assignments ..................................................................................... 29
-RPC Over HTTP Transport ............................................................................ 29
-HTTP Transport .......................................................................................... 29
-UDP Transport ............................................................................................ 30
-
-1.3.3.1.1
-1.3.3.1.2
-1.3.3.1.3
-1.3.3.1.4
-
-1.5.1
-1.5.2
-1.5.3
-1.5.4
-
-1.7.1
-1.7.2
-1.7.3
-
-1.9.1
-1.9.2
-1.9.3
-
-1.4
-1.5
-
-1.6
-1.7
-
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.1.1
-2.1.2
-2.1.3
-
-2  Messages ............................................................................................................... 31
-Transport ........................................................................................................ 31
-RPC Over HTTP Transport ............................................................................ 31
-HTTP Transport .......................................................................................... 31
-UDP Transport ............................................................................................ 31
-Data Types ...................................................................................................... 31
-Common Data Types ................................................................................... 31
-RESOURCENAME ................................................................................... 32
-RPC Over HTTP Transport Data Types ........................................................... 32
-PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE ............................................ 32
-PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE .......................................... 32
-PTUNNEL_CONTEXT_HANDLE_SERIALIZE ................................................ 33
-PCHANNEL_CONTEXT_HANDLE_SERIALIZE .............................................. 33
-HTTP Transport Data Types .......................................................................... 33
-Custom HTTP Methods ........................................................................... 33
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.3.1
-
-2.2.1.1
-
-2.2.3
-
-2.2.2
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 173
-
-2.2.4
-2.2.5
-
-2.2.5.1
-2.2.5.2
-
-2.2.3.1.1
-2.2.3.1.2
-
-2.2.3.2
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-
-2.2.3.3
-
-2.2.3.3.1
-2.2.3.3.2
-2.2.3.3.3
-2.2.3.3.4
-2.2.3.3.5
-2.2.3.3.6
-2.2.3.3.7
-
-RDG_IN_DATA ................................................................................ 33
-RDG_OUT_DATA ............................................................................. 33
-Custom HTTP Headers ........................................................................... 34
-RDG-Connection-Id .......................................................................... 34
-RDG-Correlation-Id .......................................................................... 34
-RDG-User-Id ................................................................................... 34
-Custom URL Query Parameters ............................................................... 34
-ConId ............................................................................................ 35
-CorId ............................................................................................. 35
-UsrId ............................................................................................. 35
-AuthS ............................................................................................ 35
-ClGen ............................................................................................ 35
-ClBld .............................................................................................. 35
-ClmTk ............................................................................................ 35
-UDP Transport Data Types ........................................................................... 35
-Constants .................................................................................................. 36
-Common Constants ............................................................................... 36
-RPC Transport Constants ....................................................................... 36
-MAX_RESOURCE_NAMES .................................................................. 36
-TSG_PACKET_TYPE_HEADER ............................................................ 36
-TSG_PACKET_TYPE_VERSIONCAPS .................................................... 36
-TSG_PACKET_TYPE_QUARCONFIGREQUEST ....................................... 36
-TSG_PACKET_TYPE_QUARREQUEST ................................................... 36
-TSG_PACKET_TYPE_RESPONSE ......................................................... 37
-TSG_PACKET_TYPE_QUARENC_RESPONSE ......................................... 37
-TSG_CAPABILITY_TYPE_NAP............................................................. 37
-TSG_PACKET_TYPE_CAPS_RESPONSE ................................................ 37
-TSG_PACKET_TYPE_MSGREQUEST_PACKET ........................................ 37
-TSG_PACKET_TYPE_MESSAGE_PACKET .............................................. 38
-TSG_PACKET_TYPE_AUTH ................................................................ 38
-TSG_PACKET_TYPE_REAUTH ............................................................ 38
-TSG_ASYNC_MESSAGE_CONSENT_MESSAGE ..................................... 38
-TSG_ASYNC_MESSAGE_SERVICE_MESSAGE ....................................... 38
-TSG_ASYNC_MESSAGE_REAUTH ....................................................... 38
-TSG_TUNNEL_CALL_ASYNC_MSG_REQUEST ....................................... 39
-TSG_TUNNEL_CANCEL_ASYNC_MSG_REQUEST ................................... 39
-TSG_NAP_CAPABILITY_QUAR_SOH ................................................... 39
-TSG_NAP_CAPABILITY_IDLE_TIMEOUT .............................................. 39
-TSG_MESSAGING_CAP_CONSENT_SIGN ............................................ 39
-TSG_MESSAGING_CAP_SERVICE_MSG .............................................. 40
-TSG_MESSAGING_CAP_REAUTH ....................................................... 40
-HTTP Transport Constants ...................................................................... 40
-HTTP_CHANNEL_RESPONSE_FIELDS_PRESENT_FLAGS Enumeration ..... 40
-HTTP_EXTENDED_AUTH Enumeration ................................................ 41
-HTTP_PACKET_TYPE Enumeration ..................................................... 41
-HTTP_TUNNEL_AUTH_FIELDS_PRESENT_FLAGS Enumeration ............... 42
-HTTP_TUNNEL_AUTH_RESPONSE_FIELDS_PRESENT_FLAGS Enumeration42
-HTTP_TUNNEL_PACKET_FIELDS_PRESENT_FLAGS Enumeration ............ 42
-HTTP_TUNNEL_REDIR_FLAGS Enumeration ........................................ 43
-HTTP_TUNNEL_RESPONSE_FIELDS_PRESENT_FLAGS Enumeration ........ 43
-HTTP_CAPABILITY_TYPE Enumeration ................................................ 44
-Custom HTTP Authentication Scheme Names ...................................... 44
-UDP Transport Constants ....................................................................... 44
-UdpPktType Enumeration ................................................................. 44
-Return Codes ............................................................................................. 45
-Common Return Codes .......................................................................... 45
-RPC Transport Return Codes................................................................... 47
-HTTP Transport Return Codes ................................................................. 48
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-2.2.5.2.4
-2.2.5.2.5
-2.2.5.2.6
-2.2.5.2.7
-2.2.5.2.8
-2.2.5.2.9
-2.2.5.2.10
-2.2.5.2.11
-2.2.5.2.12
-2.2.5.2.13
-2.2.5.2.14
-2.2.5.2.15
-2.2.5.2.16
-2.2.5.2.17
-2.2.5.2.18
-2.2.5.2.19
-2.2.5.2.20
-2.2.5.2.21
-2.2.5.2.22
-2.2.5.2.23
-
-2.2.5.3.1
-2.2.5.3.2
-2.2.5.3.3
-2.2.5.3.4
-2.2.5.3.5
-2.2.5.3.6
-2.2.5.3.7
-2.2.5.3.8
-2.2.5.3.9
-2.2.5.3.10
-
-2.2.5.3
-
-2.2.5.4
-
-2.2.5.4.1
-
-2.2.6
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 173
-
-2.2.6.4
-
-2.2.9.2.1
-
-2.2.9.2.1.9.1
-
-2.2.9.2.1.2.1
-
-2.2.9.2.1.11.1
-
-2.2.9.1
-2.2.9.2
-
-2.2.9.3
-2.2.9.4
-
-2.2.7
-2.2.8
-2.2.9
-
-2.2.9.2.1.1
-2.2.9.2.1.2
-
-2.2.9.2.1.10
-2.2.9.2.1.11
-
-2.2.9.2.1.5.1
-2.2.9.2.1.5.2
-
-2.2.9.2.1.9.1.1
-2.2.9.2.1.9.1.2
-
-2.2.9.2.1.2.1.1
-2.2.9.2.1.2.1.2
-
-2.2.9.2.1.3
-2.2.9.2.1.4
-2.2.9.2.1.5
-
-2.2.9.2.1.6
-2.2.9.2.1.7
-2.2.9.2.1.8
-2.2.9.2.1.9
-
-UDP Transport Return Codes .................................................................. 48
-Structures and Unions ................................................................................. 48
-Common Structures and Unions ................................................................... 48
-RPC over HTTP Transport Structures and Unions ............................................. 48
-TSENDPOINTINFO ................................................................................. 48
-TSG_PACKET ........................................................................................ 49
-TSG_PACKET_TYPE_UNION .............................................................. 49
-TSG_PACKET_HEADER ............................................................... 50
-TSG_PACKET_VERSIONCAPS ....................................................... 50
-TSG_PACKET_CAPABILITIES .................................................. 51
-TSG_CAPABILITIES_UNION ............................................. 52
-TSG_CAPABILITY_NAP..................................................... 52
-TSG_PACKET_QUARCONFIGREQUEST........................................... 52
-TSG_PACKET_QUARREQUEST ...................................................... 53
-TSG_PACKET_RESPONSE ............................................................ 53
-responseData Format ............................................................ 54
-TSG_REDIRECTION_FLAGS .................................................... 54
-TSG_PACKET_QUARENC_RESPONSE ............................................ 56
-TSG_PACKET_CAPS_RESPONSE ................................................... 57
-TSG_PACKET_MSG_REQUEST ...................................................... 57
-TSG_PACKET_MSG_RESPONSE .................................................... 57
-TSG_PACKET_TYPE_MESSAGE_UNION .................................... 58
-TSG_PACKET_STRING_MESSAGE ..................................... 59
-TSG_PACKET_REAUTH_MESSAGE ..................................... 59
-TSG_PACKET_AUTH ................................................................... 59
-TSG_PACKET_REAUTH ................................................................ 60
-TSG_INITIAL_PACKET_TYPE_UNION ....................................... 60
-Generic Send Data Message Packet ......................................................... 61
-Generic Receive Pipe Message Packet ...................................................... 62
-RDG Client to RDG Server Packet Format ........................................... 62
-RDG Server to RDG Client Packet Format for Intermediate Responses .... 62
-RDG Server to RDG Client Packet Format for Final Response ................. 63
-2.2.10  HTTP Transport Structures and Unions .......................................................... 63
-2.2.10.1  HTTP_byte_BLOB Structure .................................................................... 63
-2.2.10.2  HTTP_CHANNEL_PACKET Structure ......................................................... 63
-2.2.10.3  HTTP_CHANNEL_PACKET_VARIABLE Structure ......................................... 64
-2.2.10.4  HTTP_CHANNEL_RESPONSE Structure ..................................................... 64
-2.2.10.5  HTTP_CHANNEL_RESPONSE_OPTIONAL Structure ..................................... 65
-2.2.10.6  HTTP_DATA_PACKET Structure ............................................................... 65
-2.2.10.7  HTTP_EXTENDED_AUTH_PACKET Structure .............................................. 66
-2.2.10.8  HTTP_KEEPALIVE_PACKET Structure ....................................................... 66
-2.2.10.9  HTTP_PACKET_HEADER Structure ........................................................... 67
-2.2.10.10  HTTP_HANDSHAKE_REQUEST_PACKET Structure ...................................... 67
-2.2.10.11  HTTP_HANDSHAKE_RESPONSE_PACKET Structure .................................... 67
-2.2.10.12  HTTP_REAUTH_MESSAGE Structure ........................................................ 68
-2.2.10.13  HTTP_SERVICE_MESSAGE Structure ....................................................... 68
-2.2.10.14  HTTP_TUNNEL_AUTH_PACKET Structure .................................................. 69
-2.2.10.15  HTTP_TUNNEL_AUTH_PACKET_OPTIONAL Structure .................................. 69
-2.2.10.16  HTTP_TUNNEL_AUTH_RESPONSE Structure .............................................. 70
-2.2.10.17  HTTP_TUNNEL_AUTH_RESPONSE_OPTIONAL Structure ............................. 70
-2.2.10.18  HTTP_TUNNEL_PACKET Structure ........................................................... 71
-2.2.10.19  HTTP_TUNNEL_PACKET_OPTIONAL Structure ........................................... 71
-2.2.10.20  HTTP_TUNNEL_RESPONSE Structure ....................................................... 72
-2.2.10.21  HTTP_TUNNEL_RESPONSE_OPTIONAL Structure ....................................... 72
-2.2.10.22  HTTP_UNICODE_STRING Structure ......................................................... 73
-2.2.10.23  HTTP_CLOSE_PACKET Structure ............................................................. 73
-2.2.11  UDP Transport Structures and Unions ............................................................ 74
-AASYNDATA Structure ........................................................................... 74
-
-2.2.9.4.1
-2.2.9.4.2
-2.2.9.4.3
-
-2.2.11.1
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 173
-
-2.2.11.2
-AASYNDATARESP Structure .................................................................... 74
-2.2.11.3
-CONNECT_PKT Structure ....................................................................... 75
-CONNECT_PKT_RESP Structure .............................................................. 76
-2.2.11.4
-2.2.11.5  DATA_PKT Structure.............................................................................. 76
-2.2.11.6  DISC_PKT Structure .............................................................................. 76
-2.2.11.7  UDP_PACKET_HEADER Structure ............................................................ 77
-AUTHN_COOKIE_DATA Structure ............................................................ 77
-2.2.11.8
-2.2.11.9  UDP_CORRELATION_INFO Structure ....................................................... 78
-2.2.11.10  CONNECT_PKT_FRAGMENT Structure ...................................................... 78
-
-3.2
-
-3.1
-
-3.1.3
-
-3.2.6.3
-
-3.2.6.1
-
-3.2.6.2
-
-3.2.4.1
-
-3.1.1
-3.1.2
-
-3.2.5
-3.2.6
-
-3.1.2.1
-3.1.2.2
-
-3.2.6.2.1
-3.2.6.2.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6.1.1
-3.2.6.1.2
-3.2.6.1.3
-3.2.6.1.4
-
-3  Protocol Details ..................................................................................................... 80
-Common Server Protocol Details ........................................................................ 80
-Abstract Data Model .................................................................................... 80
-Timers ...................................................................................................... 82
-Session Timeout Timer .......................................................................... 82
-Reauthentication Timer .......................................................................... 82
-Local Events............................................................................................... 83
-RPC Transport - Server Protocol Details .............................................................. 84
-TsProxyRpcInterface Server Details............................................................... 84
-Abstract Data Model .................................................................................... 84
-RPC over HTTP Transport - RDG Server States ............................................... 84
-Timers ...................................................................................................... 86
-Connection Timer .................................................................................. 86
-Initialization ............................................................................................... 86
-Message Processing Events and Sequencing Rules .......................................... 87
-Connection Setup Phase ........................................................................ 88
-TsProxyCreateTunnel (Opnum 1) ....................................................... 88
-TsProxyAuthorizeTunnel (Opnum 2) ................................................... 91
-TsProxyMakeTunnelCall (Opnum 3).................................................... 94
-TsProxyCreateChannel (Opnum 4) ..................................................... 98
-Data Transfer Phase ............................................................................. 100
-TsProxySendToServer (Opnum 9) ..................................................... 100
-TsProxySetupReceivePipe (Opnum 8) ................................................ 101
-Shutdown Phase .................................................................................. 107
-TsProxyCloseChannel (Opnum 6) ...................................................... 107
-TsProxyMakeTunnelCall (Opnum 3)................................................... 108
-TsProxyCloseTunnel (Opnum 7) ....................................................... 108
-Server Initiated Shutdown ............................................................... 109
-Timer Events ............................................................................................. 110
-Session Timeout Timer ......................................................................... 110
-Reauthentication Timer ......................................................................... 111
-Connection Timer ................................................................................. 111
-Data Arrival From the Target Server ....................................................... 112
-HTTP Transport - Server Protocol Details ............................................................ 112
-HTTP Transport – RDG Server States ........................................................... 112
-Abstract Data Model ................................................................................... 114
-Timers ..................................................................................................... 114
-Keep-alive Timer .................................................................................. 114
-Initialization .............................................................................................. 114
-Message Processing Events and Sequencing Rules ......................................... 115
-Connection Setup and Authentication ..................................................... 115
-Tunnel and Channel Creation ................................................................. 117
-NTLM Extended Authentication .............................................................. 119
-During HTTP and WebSocket Transport Setup .................................... 119
-During Version and Capability Negotiation ......................................... 120
-During the Extended Authentication Phase ......................................... 120
-Data and Server Message Exchange ....................................................... 121
-Connection Close ................................................................................. 121
-
-3.2.6.3.1
-3.2.6.3.2
-3.2.6.3.3
-3.2.6.3.4
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-3.2.7.4
-
-3.3.5.3.1
-3.3.5.3.2
-3.3.5.3.3
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.1
-3.3.2
-3.3.3
-
-3.3.5.4
-3.3.5.5
-
-3.3.4
-3.3.5
-
-3.3.3.1
-
-3.2.7
-
-3.3
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 173
-
-3.3.6
-
-3.3.6.1
-3.3.6.2
-3.3.6.3
-3.3.6.4
-
-Timer Events ............................................................................................. 122
-Session Timeout Timer ......................................................................... 122
-Reauthentication Timer ......................................................................... 122
-Connection Timer ................................................................................. 123
-Keep-alive Timer .................................................................................. 123
-Other Local Events ..................................................................................... 123
-Data Arrival from Target Server ................................................................... 123
-UDP Transport - Server Protocol Details ............................................................. 123
-UDP Transport – RDG Server States ............................................................. 123
-Initialization .............................................................................................. 124
-Message Processing Events and Sequencing Rules ......................................... 124
-DTLS Handshake Phase ........................................................................ 124
-Connection Setup Phase ....................................................................... 125
-Data Transfer Phase ............................................................................. 126
-Shut Down Phase ................................................................................. 126
-Common Client Protocol Details ........................................................................ 126
-Abstract Data Model ................................................................................... 126
-Timer Events ............................................................................................. 127
-Idle Timeout Timer ............................................................................... 127
-Other Local Events ..................................................................................... 127
-RPC Transport - Client Protocol Details ............................................................... 128
-Abstract Data Model ................................................................................... 128
-Timers ..................................................................................................... 128
-Idle Timeout Timer ............................................................................... 128
-Idle Time Processing ....................................................................... 128
-Initialization .............................................................................................. 128
-Message Processing Events and Sequencing Rules ......................................... 129
-Data Representation forTsProxySetupReceivePipe and TsProxySendToServer .... 132
-TsProxySendToServer Request .............................................................. 132
-TsProxySendToServer Response ............................................................ 133
-TsProxySetupReceivePipe Request ......................................................... 133
-TsProxySetupReceivePipe Response ....................................................... 134
-TsProxySetupReceivePipe Final Response ................................................ 134
-HTTP Transport - Client Protocol Details ............................................................. 134
-Abstract Data Model ................................................................................... 135
-Timers ..................................................................................................... 135
-Initialization .............................................................................................. 135
-Higher-Layer Triggered Events .................................................................... 135
-Message Processing Events and Sequencing Rules ......................................... 136
-Connection Setup and Authentication ..................................................... 136
-Tunnel and Channel Creation ................................................................. 136
-Data and Server Message Exchange ....................................................... 137
-Connection Close ................................................................................. 138
-UDP Transport - Client Protocol Details .............................................................. 138
-Initialization .............................................................................................. 138
-Message Processing Events and Sequencing Rules ......................................... 138
-Establishing a Connection ........................................................................... 139
-
-3.4.3.1
-3.4.3.2
-3.4.3.3
-3.4.3.4
-
-3.5.2.1
-
-3.4
-
-3.3.7
-3.3.8
-
-3.4.1
-3.4.2
-3.4.3
-
-3.5
-
-3.5.1
-3.5.2
-
-3.5.3
-
-3.6.1
-3.6.2
-
-3.6
-
-3.6.3
-3.6.4
-3.6.5
-
-3.6.5.1
-3.6.5.2
-3.6.5.3
-3.6.5.4
-3.6.5.5
-
-3.7
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-
-3.8
-
-3.8.1
-3.8.2
-3.8.3
-
-3.7.5.1
-3.7.5.2
-3.7.5.3
-3.7.5.4
-
-3.6.2.1
-
-3.6.2.1.1
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ............................................................................................... 141
-RPC Transport Protocol Examples ...................................................................... 141
-Normal Scenario ........................................................................................ 141
-Pluggable Authentication Scenario with Consent Message Returned ................. 148
-Reauthentication ....................................................................................... 151
-HTTP Transport Protocol Examples .................................................................... 153
-Normal Scenario ........................................................................................ 153
-UDP Transport Protocol Examples ...................................................................... 155
-Normal Scenario ........................................................................................ 155
-
-4.3.1
-
-4.2.1
-
-4.2
-
-4.3
-
-5  Security ............................................................................................................... 157
-
-8 / 173
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.1
-5.2
-
-Security Considerations for Implementers .......................................................... 157
-Index of Security Parameters ........................................................................... 157
-
-6  Appendix A: Full IDL ............................................................................................ 158
-
-7  Appendix B: Product Behavior ............................................................................. 163
-
-8  Change Tracking .................................................................................................. 170
-
-9  Index ................................................................................................................... 171
-
-[MS-TSGU] - v20240423
-Terminal Services Gateway Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 173
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 RPC Over HTTP Transport](#131-rpc-over-http-transport)
+      - [1.3.1.1 RDGSP Protocol Phases Using RPC Over HTTP Transport](#1311-rdgsp-protocol-phases-using-rpc-over-http-transport)
+        - [1.3.1.1.1 Connection Setup Phase](#13111-connection-setup-phase)
+        - [1.3.1.1.2 Data Transfer Phase](#13112-data-transfer-phase)
+        - [1.3.1.1.3 Shutdown Phase](#13113-shutdown-phase)
+    - [1.3.2 HTTP Transport](#132-http-transport)
+      - [1.3.2.1 RDGHTTP Protocol Phases Using HTTP Transport](#1321-rdghttp-protocol-phases-using-http-transport)
+        - [1.3.2.1.1 Connection Setup and Authentication Phase](#13211-connection-setup-and-authentication-phase)
+        - [1.3.2.1.2 Tunnel and Channel Creation Phase](#13212-tunnel-and-channel-creation-phase)
+        - [1.3.2.1.3 Data and Server Message Exchange Phase](#13213-data-and-server-message-exchange-phase)
+        - [1.3.2.1.4 Connection Close Phase](#13214-connection-close-phase)
+    - [1.3.3 UDP Transport](#133-udp-transport)
+      - [1.3.3.1 RDGUDP Protocol Phases Using UDP Transport](#1331-rdgudp-protocol-phases-using-udp-transport)
+        - [1.3.3.1.1 DTLS Handshake Phase](#13311-dtls-handshake-phase)
+        - [1.3.3.1.2 Connection Setup Phase](#13312-connection-setup-phase)
+        - [1.3.3.1.3 Data Transfer Phase](#13313-data-transfer-phase)
+        - [1.3.3.1.4 Shutdown Phase](#13314-shutdown-phase)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Common Prerequisites/Preconditions](#151-common-prerequisitespreconditions)
+    - [1.5.2 Prerequisites/Preconditions for RPC Transport](#152-prerequisitespreconditions-for-rpc-transport)
+    - [1.5.3 Prerequisites/Preconditions for HTTP Transport](#153-prerequisitespreconditions-for-http-transport)
+    - [1.5.4 Prerequisites/Preconditions for UDP Transport](#154-prerequisitespreconditions-for-udp-transport)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 RPC Over HTTP Transport](#171-rpc-over-http-transport)
+    - [1.7.2 HTTP Transport](#172-http-transport)
+    - [1.7.3 UDP Transport](#173-udp-transport)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+    - [1.9.1 RPC Over HTTP Transport](#191-rpc-over-http-transport)
+    - [1.9.2 HTTP Transport](#192-http-transport)
+    - [1.9.3 UDP Transport](#193-udp-transport)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 RPC Over HTTP Transport](#211-rpc-over-http-transport)
+    - [2.1.2 HTTP Transport](#212-http-transport)
+    - [2.1.3 UDP Transport](#213-udp-transport)
+  - [2.2 Data Types](#22-data-types)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 RESOURCENAME](#2211-resourcename)
+    - [2.2.2 RPC Over HTTP Transport Data Types](#222-rpc-over-http-transport-data-types)
+      - [2.2.2.1 PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE](#2221-ptunnelcontexthandlenoserialize)
+      - [2.2.2.2 PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE](#2222-pchannelcontexthandlenoserialize)
+      - [2.2.2.3 PTUNNEL_CONTEXT_HANDLE_SERIALIZE](#2223-ptunnelcontexthandleserialize)
+      - [2.2.2.4 PCHANNEL_CONTEXT_HANDLE_SERIALIZE](#2224-pchannelcontexthandleserialize)
+    - [2.2.3 HTTP Transport Data Types](#223-http-transport-data-types)
+      - [2.2.3.1 Custom HTTP Methods](#2231-custom-http-methods)
+        - [2.2.3.1.1 RDG_IN_DATA](#22311-rdgindata)
+        - [2.2.3.1.2 RDG_OUT_DATA](#22312-rdgoutdata)
+      - [2.2.3.2 Custom HTTP Headers](#2232-custom-http-headers)
+        - [2.2.3.2.1 RDG-Connection-Id](#22321-rdg-connection-id)
+        - [2.2.3.2.2 RDG-Correlation-Id](#22322-rdg-correlation-id)
+        - [2.2.3.2.3 RDG-User-Id](#22323-rdg-user-id)
+      - [2.2.3.3 Custom URL Query Parameters](#2233-custom-url-query-parameters)
+        - [2.2.3.3.1 ConId](#22331-conid)
+        - [2.2.3.3.2 CorId](#22332-corid)
+        - [2.2.3.3.3 UsrId](#22333-usrid)
+        - [2.2.3.3.4 AuthS](#22334-auths)
+        - [2.2.3.3.5 ClGen](#22335-clgen)
+        - [2.2.3.3.6 ClBld](#22336-clbld)
+        - [2.2.3.3.7 ClmTk](#22337-clmtk)
+    - [2.2.4 UDP Transport Data Types](#224-udp-transport-data-types)
+    - [2.2.5 Constants](#225-constants)
+      - [2.2.5.1 Common Constants](#2251-common-constants)
+      - [2.2.5.2 RPC Transport Constants](#2252-rpc-transport-constants)
+        - [2.2.5.2.1 MAX_RESOURCE_NAMES](#22521-maxresourcenames)
+        - [2.2.5.2.2 TSG_PACKET_TYPE_HEADER](#22522-tsgpackettypeheader)
+      - [2.2.9.2 and 2.2.9.2.1.1.](#2292-and-229211)
+        - [2.2.9.2.1 TSG_PACKET_TYPE_UNION](#22921-tsgpackettypeunion)
+          - [2.2.9.2.1.1 TSG_PACKET_HEADER](#229211-tsgpacketheader)
+          - [2.2.9.2.1.2 TSG_PACKET_VERSIONCAPS](#229212-tsgpacketversioncaps)
+            - [2.2.9.2.1.2.1 TSG_PACKET_CAPABILITIES](#2292121-tsgpacketcapabilities)
+              - [2.2.9.2.1.2.1.1 TSG_CAPABILITIES_UNION](#22921211-tsgcapabilitiesunion)
+              - [2.2.9.2.1.2.1.2 TSG_CAPABILITY_NAP](#22921212-tsgcapabilitynap)
+          - [2.2.9.2.1.3 TSG_PACKET_QUARCONFIGREQUEST](#229213-tsgpacketquarconfigrequest)
+          - [2.2.9.2.1.4 TSG_PACKET_QUARREQUEST](#229214-tsgpacketquarrequest)
+          - [2.2.9.2.1.5 TSG_PACKET_RESPONSE](#229215-tsgpacketresponse)
+            - [2.2.9.2.1.5.1 responseData Format](#2292151-responsedata-format)
+            - [2.2.9.2.1.5.2 TSG_REDIRECTION_FLAGS](#2292152-tsgredirectionflags)
+          - [2.2.9.2.1.6 TSG_PACKET_QUARENC_RESPONSE](#229216-tsgpacketquarencresponse)
+          - [2.2.9.2.1.7 TSG_PACKET_CAPS_RESPONSE](#229217-tsgpacketcapsresponse)
+          - [2.2.9.2.1.8 TSG_PACKET_MSG_REQUEST](#229218-tsgpacketmsgrequest)
+          - [2.2.9.2.1.9 TSG_PACKET_MSG_RESPONSE](#229219-tsgpacketmsgresponse)
+            - [2.2.9.2.1.9.1 TSG_PACKET_TYPE_MESSAGE_UNION](#2292191-tsgpackettypemessageunion)
+              - [2.2.9.2.1.9.1.1 TSG_PACKET_STRING_MESSAGE](#22921911-tsgpacketstringmessage)
+              - [2.2.9.2.1.9.1.2 TSG_PACKET_REAUTH_MESSAGE](#22921912-tsgpacketreauthmessage)
+          - [2.2.9.2.1.10 TSG_PACKET_AUTH](#2292110-tsgpacketauth)
+          - [2.2.9.2.1.11 TSG_PACKET_REAUTH](#2292111-tsgpacketreauth)
+            - [2.2.9.2.1.11.1 TSG_INITIAL_PACKET_TYPE_UNION](#22921111-tsginitialpackettypeunion)
+      - [2.2.9.3 Generic Send Data Message Packet](#2293-generic-send-data-message-packet)
+      - [2.2.9.4 Generic Receive Pipe Message Packet](#2294-generic-receive-pipe-message-packet)
+        - [2.2.9.4.1 RDG Client to RDG Server Packet Format](#22941-rdg-client-to-rdg-server-packet-format)
+        - [2.2.9.4.2 RDG Server to RDG Client Packet Format for Intermediate Responses](#22942-rdg-server-to-rdg-client-packet-format-for-intermediate-responses)
+        - [2.2.9.4.3 RDG Server to RDG Client Packet Format for Final Response](#22943-rdg-server-to-rdg-client-packet-format-for-final-response)
+    - [2.2.10 HTTP Transport Structures and Unions](#2210-http-transport-structures-and-unions)
+      - [2.2.10.1 HTTP_byte_BLOB Structure](#22101-httpbyteblob-structure)
+      - [2.2.10.2 HTTP_CHANNEL_PACKET Structure](#22102-httpchannelpacket-structure)
+      - [2.2.10.3 HTTP_CHANNEL_PACKET_VARIABLE Structure](#22103-httpchannelpacketvariable-structure)
+      - [2.2.10.4 HTTP_CHANNEL_RESPONSE Structure](#22104-httpchannelresponse-structure)
+      - [2.2.10.5 HTTP_CHANNEL_RESPONSE_OPTIONAL Structure](#22105-httpchannelresponseoptional-structure)
+      - [2.2.10.6 HTTP_DATA_PACKET Structure](#22106-httpdatapacket-structure)
+      - [2.2.10.7 HTTP_EXTENDED_AUTH_PACKET Structure](#22107-httpextendedauthpacket-structure)
+      - [2.2.10.8 HTTP_KEEPALIVE_PACKET Structure](#22108-httpkeepalivepacket-structure)
+      - [2.2.10.9 HTTP_PACKET_HEADER Structure](#22109-httppacketheader-structure)
+      - [2.2.10.10 HTTP_HANDSHAKE_REQUEST_PACKET Structure](#221010-httphandshakerequestpacket-structure)
+      - [2.2.10.11 HTTP_HANDSHAKE_RESPONSE_PACKET Structure](#221011-httphandshakeresponsepacket-structure)
+      - [2.2.10.12 HTTP_REAUTH_MESSAGE Structure](#221012-httpreauthmessage-structure)
+      - [2.2.10.13 HTTP_SERVICE_MESSAGE Structure](#221013-httpservicemessage-structure)
+      - [2.2.10.14 HTTP_TUNNEL_AUTH_PACKET Structure](#221014-httptunnelauthpacket-structure)
+      - [2.2.10.15 HTTP_TUNNEL_AUTH_PACKET_OPTIONAL Structure](#221015-httptunnelauthpacketoptional-structure)
+      - [2.2.10.16 HTTP_TUNNEL_AUTH_RESPONSE Structure](#221016-httptunnelauthresponse-structure)
+      - [2.2.10.17 HTTP_TUNNEL_AUTH_RESPONSE_OPTIONAL Structure](#221017-httptunnelauthresponseoptional-structure)
+      - [2.2.10.18 HTTP_TUNNEL_PACKET Structure](#221018-httptunnelpacket-structure)
+      - [2.2.10.19 HTTP_TUNNEL_PACKET_OPTIONAL Structure](#221019-httptunnelpacketoptional-structure)
+      - [2.2.10.20 HTTP_TUNNEL_RESPONSE Structure](#221020-httptunnelresponse-structure)
+      - [2.2.10.21 HTTP_TUNNEL_RESPONSE_OPTIONAL Structure](#221021-httptunnelresponseoptional-structure)
+      - [2.2.10.22 HTTP_UNICODE_STRING Structure](#221022-httpunicodestring-structure)
+      - [2.2.10.23 HTTP_CLOSE_PACKET Structure](#221023-httpclosepacket-structure)
+    - [2.2.11 UDP Transport Structures and Unions](#2211-udp-transport-structures-and-unions)
+      - [2.2.11.1 AASYNDATA Structure](#22111-aasyndata-structure)
+      - [2.2.11.2 AASYNDATARESP Structure](#22112-aasyndataresp-structure)
+      - [2.2.11.3 CONNECT_PKT Structure](#22113-connectpkt-structure)
+      - [2.2.11.4 CONNECT_PKT_RESP Structure](#22114-connectpktresp-structure)
+      - [2.2.11.5 DATA_PKT Structure](#22115-datapkt-structure)
+      - [2.2.11.6 DISC_PKT Structure](#22116-discpkt-structure)
+      - [2.2.11.7 UDP_PACKET_HEADER Structure](#22117-udppacketheader-structure)
+      - [2.2.11.8 AUTHN_COOKIE_DATA Structure](#22118-authncookiedata-structure)
+      - [2.2.11.9 UDP_CORRELATION_INFO Structure](#22119-udpcorrelationinfo-structure)
+      - [2.2.11.10 CONNECT_PKT_FRAGMENT Structure](#221110-connectpktfragment-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Server Protocol Details](#31-common-server-protocol-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Session Timeout Timer](#3121-session-timeout-timer)
+      - [3.1.2.2 Reauthentication Timer](#3122-reauthentication-timer)
+    - [3.1.3 Local Events](#313-local-events)
+  - [3.2 RPC Transport - Server Protocol Details](#32-rpc-transport-server-protocol-details)
+    - [3.2.1 TsProxyRpcInterface Server Details](#321-tsproxyrpcinterface-server-details)
+    - [3.2.2 Abstract Data Model](#322-abstract-data-model)
+    - [3.2.3 RPC over HTTP Transport - RDG Server States](#323-rpc-over-http-transport-rdg-server-states)
+    - [3.2.4 Timers](#324-timers)
+      - [3.2.4.1 Connection Timer](#3241-connection-timer)
+    - [3.2.5 Initialization](#325-initialization)
+    - [3.2.6 Message Processing Events and Sequencing Rules](#326-message-processing-events-and-sequencing-rules)
+      - [3.2.6.1 Connection Setup Phase](#3261-connection-setup-phase)
+        - [3.2.6.1.1 TsProxyCreateTunnel (Opnum 1)](#32611-tsproxycreatetunnel-opnum-1)
+        - [3.2.6.1.2 TsProxyAuthorizeTunnel (Opnum 2)](#32612-tsproxyauthorizetunnel-opnum-2)
+        - [3.2.6.1.3 TsProxyMakeTunnelCall (Opnum 3)](#32613-tsproxymaketunnelcall-opnum-3)
+        - [3.2.6.1.4 TsProxyCreateChannel (Opnum 4)](#32614-tsproxycreatechannel-opnum-4)
+      - [3.2.6.2 Data Transfer Phase](#3262-data-transfer-phase)
+        - [3.2.6.2.1 TsProxySendToServer (Opnum 9)](#32621-tsproxysendtoserver-opnum-9)
+        - [3.2.6.2.2 TsProxySetupReceivePipe (Opnum 8)](#32622-tsproxysetupreceivepipe-opnum-8)
+      - [3.6.5.4 and section 3.6.5.5 give details on wire representation of data for responses to](#3654-and-section-3655-give-details-on-wire-representation-of-data-for-responses-to)
+      - [3.6.5.5 TsProxySetupReceivePipe Final Response](#3655-tsproxysetupreceivepipe-final-response)
+  - [3.7 HTTP Transport - Client Protocol Details](#37-http-transport-client-protocol-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Connection Setup and Authentication](#3751-connection-setup-and-authentication)
+      - [3.7.5.2 Tunnel and Channel Creation](#3752-tunnel-and-channel-creation)
+      - [3.7.5.3 Data and Server Message Exchange](#3753-data-and-server-message-exchange)
+      - [3.7.5.4 Connection Close](#3754-connection-close)
+  - [3.8 UDP Transport - Client Protocol Details](#38-udp-transport-client-protocol-details)
+    - [3.8.1 Initialization](#381-initialization)
+    - [3.8.2 Message Processing Events and Sequencing Rules](#382-message-processing-events-and-sequencing-rules)
+    - [3.8.3 Establishing a Connection](#383-establishing-a-connection)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 RPC Transport Protocol Examples](#41-rpc-transport-protocol-examples)
+    - [4.1.1 Normal Scenario](#411-normal-scenario)
+    - [4.1.2 Pluggable Authentication Scenario with Consent Message Returned](#412-pluggable-authentication-scenario-with-consent-message-returned)
+    - [4.1.3 Reauthentication](#413-reauthentication)
+  - [4.2 HTTP Transport Protocol Examples](#42-http-transport-protocol-examples)
+    - [4.2.1 Normal Scenario](#421-normal-scenario)
+  - [4.3 UDP Transport Protocol Examples](#43-udp-transport-protocol-examples)
+    - [4.3.1 Normal Scenario](#431-normal-scenario)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Remote Desktop Gateway Server Protocol (RDGSP Protocol)<1>  is used primarily for tunneling
 client to server traffic across firewalls when the Remote Desktop Gateway (RDG)<2> server is
@@ -1268,7 +757,7 @@ only when the main channel uses HTTP.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1321,7 +810,8 @@ Release: April 23, 2024
 
 10 / 173
 
-cryptographic service provider: An independent software module that performs authentication,
+
+cryptographic service provider: An independent software module that performs authentication,
 
 encoding, and encryption services that Windows-based applications access through the
 CryptoAPI.
@@ -1394,7 +884,8 @@ Release: April 23, 2024
 
 11 / 173
 
-Interface Definition Language (IDL): The International Standards Organization (ISO) standard
+
+Interface Definition Language (IDL): The International Standards Organization (ISO) standard
 language for specifying the interface for remote procedure calls. For more information, see
 [C706] section 4.
 
@@ -1469,7 +960,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-credentials and user authorization periodically, and disconnect the connection if the user
+
+credentials and user authorization periodically, and disconnect the connection if the user
 credentials become invalid. In the process of reauthentication, the RDG server expects the
 client to follow the same sequence of connection setup phase steps, as specified in section
 1.3.1.1.1, to enable the credentials of the user to be rechecked, or reauthenticated. If the
@@ -1544,7 +1036,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-terminal server: A computer on which terminal services is running.
+
+terminal server: A computer on which terminal services is running.
 
 Triple Data Encryption Standard: A block cipher that is formed from the Data Encryption
 
@@ -1593,14 +1086,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1618,7 +1111,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -1647,7 +1141,7 @@ https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
 [URL] van Kesteren, A., "URL: Living Standard", June 2017, https://url.spec.whatwg.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDSOD] Microsoft Corporation, "Remote Desktop Services Protocols Overview".
 
@@ -1672,7 +1166,7 @@ Syntax and Routing", RFC 7230, June 2014, https://www.rfc-editor.org/info/rfc723
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.3  Overview
+### 1.3 Overview
 
 The RDGSP Protocol is designed for remote connections from RDG clients originating on the Internet
 to target servers behind a firewall.<3> The protocol establishes a connection, called a tunnel (2),
@@ -1685,7 +1179,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-a channel between the RDG client and the target server with the RDG server acting as a proxy. Data
+
+a channel between the RDG client and the target server with the RDG server acting as a proxy. Data
 transfer between the RDG client and the target server occurs by using the channel. The tunnel and
 channel maintain active connections.
 
@@ -1714,7 +1209,7 @@ distinguished as follows:
 
 "UDP Transport" in the title.
 
-1.3.1  RPC Over HTTP Transport
+#### 1.3.1 RPC Over HTTP Transport
 
 Communication from the RDG server to the RDG client is performed by using an RPC out pipe.
 Communication from the RDG client to the RDG server is performed by using RPC calls.
@@ -1737,13 +1232,13 @@ before TsProxyCloseChannel, the RDG server closes the channel and then closes th
 TsProxyCloseChannel is called after TsProxyCloseTunnel, the RDG client receives an RPC exception.
 For details about the possible errors returned, see the description of the Return Codes (section 2.2.6).
 
-1.3.1.1  RDGSP Protocol Phases Using RPC Over HTTP Transport
+##### 1.3.1.1 RDGSP Protocol Phases Using RPC Over HTTP Transport
 
 The RDGSP Protocol uses RPC over HTTP as the transport by operating in three phases: connection
 setup, data transfer, and shutdown. The following sections provide an overview of these phases. For
 specific details about each phase, see section 3.
 
-1.3.1.1.1 Connection Setup Phase
+###### 1.3.1.1.1 Connection Setup Phase
 
 [MS-TSGU] - v20240423
 Terminal Services Gateway Server Protocol
@@ -1752,7 +1247,8 @@ Release: April 23, 2024
 
 16 / 173
 
-During the connection setup phase, a connection between the RDG client and RDG server is first
+
+During the connection setup phase, a connection between the RDG client and RDG server is first
 established, and then the RDG server establishes a connection to the target server. This phase
 consists of the following four operations:
 
@@ -1803,7 +1299,8 @@ Release: April 23, 2024
 
 17 / 173
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-TSGU].images/page018-img01.png)
 ![Extracted image 2 from page 18]([MS-TSGU].images/page018-img02.png)
 <!-- /Extracted images from page 18 -->
@@ -1811,7 +1308,7 @@ Release: April 23, 2024
 Figure 1: Message sequence between the RDG client and RDG server during connection
 setup phase
 
-1.3.1.1.2 Data Transfer Phase
+###### 1.3.1.1.2 Data Transfer Phase
 
 The data transfer phase allows for data transfer between the RDG client and the target server via
 the RDG server. In this phase, the RDG server acts as a proxy between the RDG client and the target
@@ -1839,7 +1336,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-TSGU].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1857,7 +1355,7 @@ sequence. This method can be called multiple times within a channel.
 
 Figure 3: Message sequence between RDG client and RDG server during data transfer phase
 
-1.3.1.1.3 Shutdown Phase
+###### 1.3.1.1.3 Shutdown Phase
 
 This shutdown phase is used to terminate the channel and tunnel (2). The phase consists of three
 operations:
@@ -1869,7 +1367,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-TSGU].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1908,23 +1407,24 @@ Release: April 23, 2024
 
 20 / 173
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-TSGU].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-1.3.2  HTTP Transport
+#### 1.3.2 HTTP Transport
 
 The RDGHTTP Protocol uses the HTTP transport by creating two HTTP 1.1 connections for use as
 communication channels to and from the RDG server. Each channel is protected by SSL (HTTPS).<4>
 
-1.3.2.1  RDGHTTP Protocol Phases Using HTTP Transport
+##### 1.3.2.1 RDGHTTP Protocol Phases Using HTTP Transport
 
 The RDGHTTP Protocol uses HTTP transport by operating in four phases: connection setup and
 authentication, tunnel and channel creation, data and server message transfer, and connection close.
 The following sections provide an overview of these phases. For specific details about each phase, see
 section 3.
 
-1.3.2.1.1 Connection Setup and Authentication Phase
+###### 1.3.2.1.1 Connection Setup and Authentication Phase
 
 The connection setup and authentication phase only involves the exchange of HTTP header
 information and consists of three operations:
@@ -1945,7 +1445,7 @@ the OUT channel is used only for outbound communication.
 Figure 5: Message sequence between RDG client and RDG server during connection setup
 and authentication phase
 
-1.3.2.1.2 Tunnel and Channel Creation Phase
+###### 1.3.2.1.2 Tunnel and Channel Creation Phase
 
 In the tunnel (2) and channel creation phase, the RDG client and RDG server exchange protocol
 messages as HTTP request and response entity bodies. The exchange of messages is in a strict
@@ -1959,7 +1459,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-TSGU].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1986,7 +1487,7 @@ creation can fail on a tunnel that was previously associated with a channel. In 
 failure, the RDG client closes the connection and reconnects to the RDG server using the steps
 outlined in sections 1.3.2.1.1 and 1.3.2.1.2.
 
-1.3.2.1.3 Data and Server Message Exchange Phase
+###### 1.3.2.1.3 Data and Server Message Exchange Phase
 
 [MS-TSGU] - v20240423
 Terminal Services Gateway Server Protocol
@@ -1995,7 +1496,8 @@ Release: April 23, 2024
 
 22 / 173
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-TSGU].images/page023-img01.png)
 ![Extracted image 2 from page 23]([MS-TSGU].images/page023-img02.png)
 <!-- /Extracted images from page 23 -->
@@ -2008,7 +1510,7 @@ required.
 Figure 7: Message sequence between the RDG client and RDG server during the data and
 server message exchange phase
 
-1.3.2.1.4 Connection Close Phase
+###### 1.3.2.1.4 Connection Close Phase
 
 In the connection close phase, the RDG client, the RDG server, or both parties can close the
 connection. In the following figure, the RDG client is the initiator of the connection close request. This
@@ -2028,7 +1530,8 @@ Release: April 23, 2024
 
 23 / 173
 
-1.3.3  UDP Transport
+
+#### 1.3.3 UDP Transport
 
 The RDGUDP Protocol is designed for tunneling graphics and the audio and video data for remote
 connections from RDG clients originating on the Internet to target servers behind a firewall.<6>
@@ -2051,13 +1554,13 @@ received with a success result code, the UDP channel is ready to transfer Remote
 Before creating the UDP channel (side channel), the RDG client establishes a main channel to the
 target server through the RDG server.
 
-1.3.3.1  RDGUDP Protocol Phases Using UDP Transport
+##### 1.3.3.1 RDGUDP Protocol Phases Using UDP Transport
 
 The RDGUDP Protocol uses the UDP transport by operating in four phases: DTLS handshake,
 connection setup, data transfer, and shutdown. The following sections provide an overview of these
 phases. For specific details about each phase, see section 3.
 
-1.3.3.1.1 DTLS Handshake Phase
+###### 1.3.3.1.1 DTLS Handshake Phase
 
 The DTLS handshake phase involves the establishment of a secure connection between the RDG
 client and the RDG server. After all the data packets have been transmitted during the handshake,
@@ -2088,7 +1591,8 @@ Release: April 23, 2024
 
 24 / 173
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-TSGU].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -2101,7 +1605,7 @@ GUID, containing the same GUID value as described in the custom HTTP header RDG-
 (section 2.2.3.2.2.)  This structure extends the initial RFC4347 packet's size, but is not included in the
 DTLS verify_data calculations.
 
-1.3.3.1.2 Connection Setup Phase
+###### 1.3.3.1.2 Connection Setup Phase
 
 The connection setup phase consists of three operations:
 
@@ -2129,7 +1633,8 @@ Release: April 23, 2024
 
 25 / 173
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-TSGU].images/page026-img01.png)
 ![Extracted image 2 from page 26]([MS-TSGU].images/page026-img02.png)
 <!-- /Extracted images from page 26 -->
@@ -2137,7 +1642,7 @@ Release: April 23, 2024
 Figure 10: Message sequence between RDG client and RDG server during connection setup
 phase
 
-1.3.3.1.3 Data Transfer Phase
+###### 1.3.3.1.3 Data Transfer Phase
 
 The data transfer phase enables the transmission of data packets between the RDG client and the
 target server by using the RDG server as a proxy. In contrast to the use of RPC over HTTP as the
@@ -2148,7 +1653,7 @@ channel.
 Figure 11: Message sequence between RDG client and RDG server during data transfer
 phase
 
-1.3.3.1.4 Shutdown Phase
+###### 1.3.3.1.4 Shutdown Phase
 
 The shutdown phase is used to terminate the UDP channel and end the connection between the RDG
 client and the RDG server. To tear down the channel and terminate the connection, either the RDG
@@ -2161,14 +1666,15 @@ Release: April 23, 2024
 
 26 / 173
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-TSGU].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 12: Message sequence between the RDG client and RDG server during shutdown
 phase
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is dependent upon the Remote Procedure Call over HTTP Protocol [MS-RPCH] for the use
 of RPC as a transport.
@@ -2185,9 +1691,9 @@ The RDP client and target server can use the RDGSP Protocol as its transport for
 corporate firewalls. RDP data is passed through this transport. As a result, RDP does not track the TSG
 protocol. RDP is specified in [MS-RDPBCGR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
-1.5.1  Common Prerequisites/Preconditions
+#### 1.5.1 Common Prerequisites/Preconditions
 
 The RDG client is required to obtain the name of the RDG server that supports the RDG service
 before the RDGSP Protocol is invoked.
@@ -2197,12 +1703,12 @@ The RDG client is required to obtain the name of the target server for making a 
 A certificate is required to be deployed on the RDG server. The root authority of the certificate has to
 be trusted on the client as required by HTTPS and DTLS.
 
-1.5.2  Prerequisites/Preconditions for RPC Transport
+#### 1.5.2 Prerequisites/Preconditions for RPC Transport
 
 The RDGSP Protocol is an RPC over HTTP Protocol type interface, and therefore has the prerequisites
 specified in [C706] part 2, 3, and 4, [MS-RPCE] sections 2 and 3, and [MS-RPCH] section 2.1.
 
-1.5.3  Prerequisites/Preconditions for HTTP Transport
+#### 1.5.3 Prerequisites/Preconditions for HTTP Transport
 
 The RDGHTTP Protocol requires RDG clients to support HTTP version 1.1. When an RDG client
 supports only HTTP version 1.0, some features available in HTTP version 1.1 cannot be used. For
@@ -2216,19 +1722,20 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.5.4  Prerequisites/Preconditions for UDP Transport
+
+#### 1.5.4 Prerequisites/Preconditions for UDP Transport
 
 The RDGUDP Protocol requires the RDG client to establish a main channel to the target server
 through the RDG server.
 
 The RDG client is required to obtain the UDP authentication cookie on the main channel.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when a client on the Internet or local private network requires a connection
 to a target server that is behind a firewall.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The supported transports for this protocol are as follows:
 
@@ -2238,7 +1745,7 @@ The supported transports for this protocol are as follows:
 
   UDP transport is used for the side channel.
 
-1.7.1  RPC Over HTTP Transport
+#### 1.7.1 RPC Over HTTP Transport
 
 
 
@@ -2269,7 +1776,7 @@ RDG server announce their version and capabilities by using the TsProxyCreateTun
 For specifications on the current version and capabilities announced by the RDG client and RDG
 server, see section 2.2.7.
 
-1.7.2  HTTP Transport
+#### 1.7.2 HTTP Transport
 
 Protocol Version: The RDGHTTP protocol exchanges protocol version information in the initial packet
 exchanges. If the version exchanged is not supported by the receiver, the connection is dropped. If
@@ -2284,7 +1791,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-with an error message. If the RDG server receives a higher version number than it supports, it
+
+with an error message. If the RDG server receives a higher version number than it supports, it
 responds with an error and drops the connection. The RDG client employs the same logic for
 responding to a different version number.
 
@@ -2299,7 +1807,7 @@ its capabilities are supported and matched by the RDG server. The RDG client and
 announce their capabilities in the initial packet exchange. For specifications on the capabilities
 announced by the RDG client and RDG server, see section 2.2.7.
 
-1.7.3  UDP Transport
+#### 1.7.3 UDP Transport
 
   Supported Transports: Use of the UDP transport by the RDGUDP Protocol works only with the
 main channel after it has been established by the RDGHTTP Protocol using HTTP transport.
@@ -2314,15 +1822,15 @@ cookie and smart card authentication methods.
 
   Capability Negotiation: None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT datatypes as specified in [MS-ERREF] section 2.1. Vendors can choose
 their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a customer
 code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
-1.9.1  RPC Over HTTP Transport
+#### 1.9.1 RPC Over HTTP Transport
 
 The following table contains the RPC interface universal unique identifier (UUID), protocol
 sequence, and endpoint ports used by this protocol.
@@ -2349,7 +1857,7 @@ Section 1.5
 
 Section 2.1
 
-1.9.2  HTTP Transport
+#### 1.9.2 HTTP Transport
 
 The RDG server binds on the following HTTP/HTTPS binding URLs and listens on the following default
 endpoint ports.
@@ -2361,7 +1869,8 @@ Release: April 23, 2024
 
 29 / 173
 
-Parameter
+
+Parameter
 
 Value
 
@@ -2391,7 +1900,7 @@ Section
 Section
 2.1.2
 
-1.9.3  UDP Transport
+#### 1.9.3 UDP Transport
 
 The following is the endpoint port used to listen for incoming UDP packets.
 
@@ -2410,14 +1919,15 @@ Release: April 23, 2024
 
 30 / 173
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how the Remote Desktop Gateway Server Protocol messages are
 transported and common data types.
 
-2.1  Transport
+### 2.1 Transport
 
-2.1.1  RPC Over HTTP Transport
+#### 2.1.1 RPC Over HTTP Transport
 
 The RDGSP Protocol uses the Remote Procedure Call over HTTP Protocol [MS-RPCH] as transport.
 
@@ -2445,7 +1955,7 @@ Port 3388 endpoint and at least one of Port 80 and Port 443 endpoints MUST be su
 
  The RDGSP Protocol MUST use the UUID, as specified in section 1.9. The RPC version number is 1.3.
 
-2.1.2  HTTP Transport
+#### 2.1.2 HTTP Transport
 
 The HTTP transport based RDG protocol is transported by an HTTPS connection. By default the RDG
 server listens on the URL HTTPS Binding URL with port 443. However, the port number can be
@@ -2456,7 +1966,7 @@ terminated and another connection to the RDG server is created, over which data 
 connection between the reverse proxy and the RDG server can then be over HTTP without SSL, for
 which the RDG server also binds on the HTTP binding URL.
 
-2.1.3  UDP Transport
+#### 2.1.3 UDP Transport
 
 This protocol uses UDP transport.
 
@@ -2466,9 +1976,9 @@ This protocol uses the following endpoints.
 
 Port 3391: This endpoint is used by the RDG server to listen for incoming UDP packets.
 
-2.2  Data Types
+### 2.2 Data Types
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 The following sections describe the data types that are used by all the transports of RDG.
 
@@ -2479,7 +1989,8 @@ Release: April 23, 2024
 
 31 / 173
 
-2.2.1.1  RESOURCENAME
+
+##### 2.2.1.1 RESOURCENAME
 
 This type is declared as follows:
 
@@ -2495,7 +2006,7 @@ names—for example, there are differences in the allowed characters, difference
 differences in composition rules. Therefore, RESOURCENAME can be a NetBIOS name if the NetBIOS
 name uses characters and length restrictions allowed by DNS which enables DNS to resolve the name.
 
-2.2.2  RPC Over HTTP Transport Data Types
+#### 2.2.2 RPC Over HTTP Transport Data Types
 
 In addition to the RPC base types and definitions as specified in [C706] section 3.1, [MS-RPCE]
 section 2.2 and [MS-DTYP], additional data types are defined in the following sections.
@@ -2503,7 +2014,7 @@ section 2.2 and [MS-DTYP], additional data types are defined in the following se
 In addition to the RPC base types and definitions described, the additional data types are defined in
 the MIDL specification for this RPC interface.
 
-2.2.2.1  PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE
+##### 2.2.2.1 PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE
 
 An RPC context handle representing the tunnel (2) for the given connection. For details about the
 modes of the context handles, see [MSDN-MMSCH]. For the NOSERIALIZE context handle, there can
@@ -2518,7 +2029,7 @@ The context handle MUST NOT be type_strict, but it MUST be strict. More details 
 handles are specified in [C706] sections 4.2.16.6, 5.1.6, and 6.1 and [MS-RPCE] sections
 3.1.1.5.3.2.2.2 and 3.3.1.4.1.
 
-2.2.2.2  PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE
+##### 2.2.2.2 PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE
 
 An RPC context handle representing the channel for the given connection. For details on modes of
 the context handles, see [MSDN-MMSCH]. For the NOSERIALIZE context handle, there can be more
@@ -2540,7 +2051,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.3  PTUNNEL_CONTEXT_HANDLE_SERIALIZE
+
+##### 2.2.2.3 PTUNNEL_CONTEXT_HANDLE_SERIALIZE
 
 An RPC context handle representing the tunnel (2) for the given connection. For details about the
 modes of the context handles, see [MSDN-MMSCH]. For this context handle, there can be no more
@@ -2555,7 +2067,7 @@ The context handle MUST NOT be type_strict, but it MUST be strict. More details 
 handles are specified in [C706] sections 4.2.16.6, 5.1.6, and 6.1 and [MS-RPCE] section
 3.1.1.5.3.2.2.2 and 3.3.1.4.1.
 
-2.2.2.4  PCHANNEL_CONTEXT_HANDLE_SERIALIZE
+##### 2.2.2.4 PCHANNEL_CONTEXT_HANDLE_SERIALIZE
 
 An RPC context handle representing the channel for the given connection. For details on the modes
 of the context handles, see [MSDN-MMSCH]. For this context handle, there can be no more than one
@@ -2571,9 +2083,9 @@ The context handle MUST NOT be type_strict, but it MUST be strict. More details 
 handles are specified in [C706] sections 4.2.16.6, 5.1.6, and 6.1 and [MS-RPCE] section
 3.1.1.5.3.2.2.2 and 3.3.1.4.1.
 
-2.2.3  HTTP Transport Data Types
+#### 2.2.3 HTTP Transport Data Types
 
-2.2.3.1  Custom HTTP Methods
+##### 2.2.3.1 Custom HTTP Methods
 
 This protocol defines the following custom HTTP methods.
 
@@ -2587,13 +2099,13 @@ Request to create an IN channel.
 
 RDG_OUT_DATA (section 2.2.3.1.2)  Request to create an OUT channel.
 
-2.2.3.1.1 RDG_IN_DATA
+###### 2.2.3.1.1 RDG_IN_DATA
 
 This method is used to create an IN channel by the RDG server. The custom header RDG-
 Connection-Id (section 2.2.3.2.1) is set to a unique identifier, a GUID that is generated by the RDG
 client and is used to correlate IN channel and OUT channel. The client disallows caching.
 
-2.2.3.1.2 RDG_OUT_DATA
+###### 2.2.3.1.2 RDG_OUT_DATA
 
 [MS-TSGU] - v20240423
 Terminal Services Gateway Server Protocol
@@ -2602,11 +2114,12 @@ Release: April 23, 2024
 
 33 / 173
 
-This method is used to create an OUT channel by the RDG server. The custom header RDG-
+
+This method is used to create an OUT channel by the RDG server. The custom header RDG-
 Connection-Id (section 2.2.3.2.1) is set to a unique identifier, a GUID which is used in creating the IN
 channel request. The client disallows caching.
 
-2.2.3.2  Custom HTTP Headers
+##### 2.2.3.2 Custom HTTP Headers
 
 The messages exchanged in this protocol use the following HTTP headers in addition to the existing
 set of standard HTTP headers.
@@ -2632,12 +2145,12 @@ Optional GUID used to specify a correlation identifier for the connection.
 
 Optional user name associated with the connection.
 
-2.2.3.2.1 RDG-Connection-Id
+###### 2.2.3.2.1 RDG-Connection-Id
 
 A GUID generated by the RDG client, which is used by RDG_IN_DATA (section 2.2.3.1.1) and
 RDG_OUT_DATA (section 2.2.3.1.2) methods to correlate the IN channel and the OUT channel.
 
-2.2.3.2.2 RDG-Correlation-Id
+###### 2.2.3.2.2 RDG-Correlation-Id
 
 An optional header containing a GUID, generated by the RDG client, which specifies the correlation
 identifier for the connection, which can appear in some of the RDG or terminal server's event logs.
@@ -2647,14 +2160,14 @@ RDPEUDP] section 2.2.2.8).
 
 The RDG-Correlation-Id header value is an ASCII representation of a GUID, including curly braces.
 
-2.2.3.2.3 RDG-User-Id
+###### 2.2.3.2.3 RDG-User-Id
 
 An optional header containing the name of the user requesting use of the RDG. This value, if provided,
 is used only for event logging purposes, as an aid to identify the specific user related to an event.
 
 The RDG-User-Id header value is the user’s name in Unicode, encoded using BASE64.
 
-2.2.3.3  Custom URL Query Parameters
+##### 2.2.3.3 Custom URL Query Parameters
 
 The protocol supports several URL query parameters in HTTP and WebSocket protocol requests from
 the client. The parameters provide an alternative to the custom HTTP headers defined in section
@@ -2674,7 +2187,8 @@ Release: April 23, 2024
 
 34 / 173
 
-Name
+
+Name
 
 Description
 
@@ -2706,38 +2220,38 @@ ClmTk (section 2.2.3.3.7)
 
 Reserved for future use.
 
-2.2.3.3.1 ConId
+###### 2.2.3.3.1 ConId
 
 A GUID generated by the RDG client, equivalent to the RDG-Connection-Id (section 2.2.3.2.1)
 header.
 
-2.2.3.3.2 CorId
+###### 2.2.3.3.2 CorId
 
 An optional client-generated GUID, equivalent to the RDG-Correlation-Id (section 2.2.3.2.2) header.
 
-2.2.3.3.3 UsrId
+###### 2.2.3.3.3 UsrId
 
 An optional value containing the name of the user requesting use of the RDG, equivalent to the RDG-
 User-Id (section 2.2.3.2.3) header.
 
-2.2.3.3.4 AuthS
+###### 2.2.3.3.4 AuthS
 
 An optional value containing the name of a custom authentication scheme. This field is used in a
 similar way to the HTTP Authorization header when specifying an extended authentication scheme.
 
-2.2.3.3.5 ClGen
+###### 2.2.3.3.5 ClGen
 
 An optional string identifying the type and "generation" of the client program.
 
-2.2.3.3.6 ClBld
+###### 2.2.3.3.6 ClBld
 
 An optional string identifying the specific build of the client program.
 
-2.2.3.3.7 ClmTk
+###### 2.2.3.3.7 ClmTk
 
 This field is reserved for future use.
 
-2.2.4  UDP Transport Data Types
+#### 2.2.4 UDP Transport Data Types
 
 None.
 
@@ -2748,15 +2262,16 @@ Release: April 23, 2024
 
 35 / 173
 
-2.2.5  Constants
 
-2.2.5.1  Common Constants
+#### 2.2.5 Constants
+
+##### 2.2.5.1 Common Constants
 
 None.
 
-2.2.5.2  RPC Transport Constants
+##### 2.2.5.2 RPC Transport Constants
 
-2.2.5.2.1 MAX_RESOURCE_NAMES
+###### 2.2.5.2.1 MAX_RESOURCE_NAMES
 
 Constant/value
 
@@ -2769,7 +2284,7 @@ MAX_RESOURCE_NAMES
 The maximum range allowed by the RDG server for the numResourceNames data
 type in the TSENDPOINTINFO structure.
 
-2.2.5.2.2 TSG_PACKET_TYPE_HEADER
+###### 2.2.5.2.2 TSG_PACKET_TYPE_HEADER
 
 Constant/value
 
@@ -2781,7 +2296,7 @@ TSG_PACKET_TYPE_HEADER
 
 This constant is used by the packetId field of the TSG_PACKET structure. The
 RDG client and RDG server SHOULD not use this type, as specified in sections
-2.2.9.2 and 2.2.9.2.1.1.
+##### 2.2.9.2 and 2.2.9.2.1.1.
 
 2.2.5.2.3 TSG_PACKET_TYPE_VERSIONCAPS
 
@@ -2837,7 +2352,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2927,7 +2443,8 @@ Release: April 23, 2024
 
 37 / 173
 
-2.2.5.2.11
+
+2.2.5.2.11
 
 TSG_PACKET_TYPE_MESSAGE_PACKET
 
@@ -3031,7 +2548,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3125,7 +2643,8 @@ Release: April 23, 2024
 
 39 / 173
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3220,7 +2739,8 @@ Release: April 23, 2024
 
 40 / 173
 
-2.2.5.3.2 HTTP_EXTENDED_AUTH Enumeration
+
+2.2.5.3.2 HTTP_EXTENDED_AUTH Enumeration
 
 Constant/value
 
@@ -3334,7 +2854,8 @@ Release: April 23, 2024
 
 41 / 173
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3433,7 +2954,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3539,7 +3061,8 @@ Release: April 23, 2024
 
 43 / 173
 
-2.2.5.3.9 HTTP_CAPABILITY_TYPE Enumeration
+
+2.2.5.3.9 HTTP_CAPABILITY_TYPE Enumeration
 
 Constant/value
 
@@ -3643,7 +3166,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3749,7 +3273,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 0x800759F9
 
@@ -3872,7 +3397,8 @@ contains TSG_NAP_CAPABILITY_IDLE_TIMEOUT.
 
 46 / 173
 
-Return value/code
+
+Return value/code
 
 0x000059FC
 
@@ -3965,7 +3491,8 @@ Release: April 23, 2024
 
 47 / 173
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4044,7 +3571,8 @@ Release: April 23, 2024
 
 48 / 173
 
-resourceName:  An array of RESOURCENAME strings, as specified in section 2.2.1.1. The range is
+
+resourceName:  An array of RESOURCENAME strings, as specified in section 2.2.1.1. The range is
 
 from 0 to numResourceNames. This array, in conjunction with alternateResourceNames
 parameter array, comprises the alias names of the target server to which the RDG server can
@@ -4090,7 +3618,7 @@ contained in the packetId field. Valid structures for this field are specified i
 2.2.9.2.1.2, 2.2.9.2.1.3, 2.2.9.2.1.4, 2.2.9.2.1.5, 2.2.9.2.1.6, 2.2.9.2.1.7, 2.2.9.2.1.8,
 2.2.9.2.1.9, 2.2.9.2.1.10, and 2.2.9.2.1.11.
 
-2.2.9.2.1 TSG_PACKET_TYPE_UNION
+###### 2.2.9.2.1 TSG_PACKET_TYPE_UNION
 
 The TSG_PACKET_TYPE_UNION union specifies an RPC switch_type union of structures as follows.
 
@@ -4119,7 +3647,8 @@ Release: April 23, 2024
 
 49 / 173
 
-   [case(TSG_PACKET_TYPE_MSGREQUEST_PACKET)]
+
+   [case(TSG_PACKET_TYPE_MSGREQUEST_PACKET)]
      PTSG_PACKET_MSG_REQUEST packetMsgRequest;
    [case(TSG_PACKET_TYPE_MESSAGE_PACKET)]
      PTSG_PACKET_MSG_RESPONSE packetMsgResponse;
@@ -4156,7 +3685,7 @@ packetAuth:  A PTSG_PACKET_AUTH as specified in section 2.2.9.2.1.10.
 
 packetReauth:  A PTSG_PACKET_REAUTH as specified in section 2.2.9.2.1.11.
 
-2.2.9.2.1.1  TSG_PACKET_HEADER
+###### 2.2.9.2.1.1 TSG_PACKET_HEADER
 
 The TSG_PACKET_HEADER structure contains information about the ComponentId and PacketId
 fields of the TSG_PACKET structure. The value of PacketId in TSG_PACKET MUST be set to
@@ -4179,7 +3708,7 @@ PacketId:  Unused.
 This structure cannot be used by itself as part of any method call. It can be used only in the context of
 other structures.
 
-2.2.9.2.1.2  TSG_PACKET_VERSIONCAPS
+###### 2.2.9.2.1.2 TSG_PACKET_VERSIONCAPS
 
 50 / 173
 
@@ -4188,7 +3717,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The TSG_PACKET_VERSIONCAPS structure is used for version and capabilities negotiation. The value
+
+The TSG_PACKET_VERSIONCAPS structure is used for version and capabilities negotiation. The value
 of the packetId field in TSG_PACKET MUST be set to TSG_PACKET_TYPE_VERSIONCAPS.
 
 This structure MUST be embedded in the TSG_PACKET_QUARENC_RESPONSE.
@@ -4237,7 +3767,7 @@ Value  Meaning
 
 0x0001  Quarantine is supported and required by the RDG server.
 
-2.2.9.2.1.2.1  TSG_PACKET_CAPABILITIES
+###### 2.2.9.2.1.2.1 TSG_PACKET_CAPABILITIES
 
 The TSG_PACKET_CAPABILITIES structure contains information about the capabilities of the RDG
 client and RDG server.
@@ -4257,7 +3787,8 @@ Release: April 23, 2024
 
 51 / 173
 
-capabilityType:  Indicates the type of NAP capability supported by the RDG client or the RDG server.
+
+capabilityType:  Indicates the type of NAP capability supported by the RDG client or the RDG server.
 
 This member MUST be the following value:
 
@@ -4272,9 +3803,9 @@ TSGPacket:  Specifies the union containing the actual structure corresponding to
 the capabilityType field. Valid structures are specified in sections 2.2.9.2.1.2.1.1 and
 2.2.9.2.1.2.1.2.
 
-2.2.9.2.1.2.1.1
+###### 2.2.9.2.1.2.1.1 TSG_CAPABILITIES_UNION
 
-TSG_CAPABILITIES_UNION
+
 
 The TSG_CAPABILITIES_UNION union specifies an RPC switch_type union of structures as follows.
 
@@ -4288,9 +3819,9 @@ The TSG_CAPABILITIES_UNION union specifies an RPC switch_type union of structure
 
 TSGCapNap:  A TSG_CAPABILITY_NAP structure.
 
-2.2.9.2.1.2.1.2
+###### 2.2.9.2.1.2.1.2 TSG_CAPABILITY_NAP
 
-TSG_CAPABILITY_NAP
+
 
 The TSG_CAPABILITY_NAP structure contains information about the NAP capabilities of the RDG
 client and RDG server.
@@ -4318,7 +3849,7 @@ TSG_MESSAGING_CAP_SERVICE_MSG
 
 TSG_MESSAGING_CAP_REAUTH
 
-2.2.9.2.1.3  TSG_PACKET_QUARCONFIGREQUEST
+###### 2.2.9.2.1.3 TSG_PACKET_QUARCONFIGREQUEST
 
 The TSG_PACKET_QUARCONFIGREQUEST structure contains information about quarantine
 configuration. RDG server and RDG client MAY support this structure.<13> If the RDG server or RDG
@@ -4330,7 +3861,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client do not support the TSG_PACKET_QUARCONFIGREQUEST structure, then the error code
+
+client do not support the TSG_PACKET_QUARCONFIGREQUEST structure, then the error code
 HRESULT_CODE(E_PROXY_NOTSUPPORTED) is returned.
 
  typedef struct _TSG_PACKET_QUARCONFIGREQUEST {
@@ -4340,7 +3872,7 @@ HRESULT_CODE(E_PROXY_NOTSUPPORTED) is returned.
 
 flags:  Contains information about quarantine configuration.
 
-2.2.9.2.1.4  TSG_PACKET_QUARREQUEST
+###### 2.2.9.2.1.4 TSG_PACKET_QUARREQUEST
 
 The TSG_PACKET_QUARREQUEST structure<14> contains information about the RDG client's
 statement of health (SoH) and the name of the RDG client machine. The value of the packetId
@@ -4376,7 +3908,7 @@ dataLen:  The length, in bytes, of the data field. This value MUST be in the ran
 
 8000, both inclusive.
 
-2.2.9.2.1.5  TSG_PACKET_RESPONSE
+###### 2.2.9.2.1.5 TSG_PACKET_RESPONSE
 
 The TSG_PACKET_RESPONSE structure contains the response of the RDG server to the RDG client
 for the TsProxyAuthorizeTunnel method call. The value of the packetId field in TSG_PACKET MUST be
@@ -4398,7 +3930,8 @@ Release: April 23, 2024
 
 53 / 173
 
-flags:  The RDG server MUST set this value to TSG_PACKET_TYPE_QUARREQUEST to indicate that
+
+flags:  The RDG server MUST set this value to TSG_PACKET_TYPE_QUARREQUEST to indicate that
 this structure is in response to the TsProxyAuthorizeTunnel method call. The RDG client MAY
 ignore this field.
 
@@ -4424,7 +3957,7 @@ responseDataLen:  Length, in bytes, of the data specified by the responseData fi
 
 redirectionFlags:  A TSG_REDIRECTION_FLAGS structure.<18>
 
-2.2.9.2.1.5.1  responseData Format
+###### 2.2.9.2.1.5.1 responseData Format
 
 The RDG server uses the responseData to send various data to the RDG client after tunnel (2)
 authorization. The responseData is shown below.
@@ -4462,7 +3995,7 @@ TSG_NAP_CAPABILITY_QUAR_SOH and the Statement of health is passed in the
 TsProxyAuthorizeTunnel call as specified in 2.2.9.2.1.4, then the remaining number of bytes of the
 responseData field is the Statement of health response.
 
-2.2.9.2.1.5.2  TSG_REDIRECTION_FLAGS
+###### 2.2.9.2.1.5.2 TSG_REDIRECTION_FLAGS
 
 The TSG_REDIRECTION_FLAGS structure specifies the device redirection settings that MUST be
 enforced by the RDG client. For details about device redirection, see  [MS-RDSOD] section 2.1.1.2.
@@ -4474,7 +4007,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This structure MUST be embedded in the TSG_PACKET_RESPONSE structure.
+
+This structure MUST be embedded in the TSG_PACKET_RESPONSE structure.
 
 Note  Both enableAllRedirections and disableAllRedirections MUST NOT be TRUE.
 
@@ -4577,7 +4111,8 @@ Release: April 23, 2024
 
 55 / 173
 
-Value
+
+Value
 
 Meaning
 
@@ -4652,7 +4187,7 @@ PnP redirection is disabled.
 
 0x00000001
 
-2.2.9.2.1.6  TSG_PACKET_QUARENC_RESPONSE
+###### 2.2.9.2.1.6 TSG_PACKET_QUARENC_RESPONSE
 
 The TSG_PACKET_QUARENC_RESPONSE structure contains the response of the RDG server for the
 TsProxyCreateTunnel method call. The value of the packetId field in TSG_PACKET MUST be set to
@@ -4675,7 +4210,8 @@ Release: April 23, 2024
 
 56 / 173
 
-flags:  Unused. MUST be 0.
+
+flags:  Unused. MUST be 0.
 
 certChainLen:  An unsigned long specifying the number of characters in certChainData, including
 
@@ -4697,7 +4233,7 @@ versionCaps:  A pointer to a TSG_PACKET_VERSIONCAPS structure, as specified in s
 
 2.2.9.2.1.2.
 
-2.2.9.2.1.7  TSG_PACKET_CAPS_RESPONSE
+###### 2.2.9.2.1.7 TSG_PACKET_CAPS_RESPONSE
 
 The TSG_PACKET_CAPS_RESPONSE structure contains the response of the RDG server, which
 supports Consent Signing capability, to the RDG client for the TsProxyCreateTunnel method call. This
@@ -4716,7 +4252,7 @@ pktQuarEncResponse:  A TSG_PACKET_QUARENC_RESPONSE structure as specified in sec
 
 pktConsentMessage:  A TSG_PACKET_MSG_RESPONSE structure as specified in section 2.2.9.2.1.9.
 
-2.2.9.2.1.8  TSG_PACKET_MSG_REQUEST
+###### 2.2.9.2.1.8 TSG_PACKET_MSG_REQUEST
 
 The TSG_PACKET_MSG_REQUEST structure contains the request from the client to the RDG server to
 send across an administrative message whenever there is any. The value of the packetId field in
@@ -4731,7 +4267,7 @@ maxMessagesPerBatch:  An unsigned long that specifies how many messages can be s
 
 server at one time.
 
-2.2.9.2.1.9  TSG_PACKET_MSG_RESPONSE
+###### 2.2.9.2.1.9 TSG_PACKET_MSG_RESPONSE
 
 The TSG_PACKET_MSG_RESPONSE structure contains the response of the RDG server to the client
 when a message needs to be sent to the client. The value of the packetId field in TSG_PACKET MUST
@@ -4744,7 +4280,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct _TSG_PACKET_MSG_RESPONSE {
+
+ typedef struct _TSG_PACKET_MSG_RESPONSE {
    unsigned long msgID;
    unsigned long msgType;
    long isMsgPresent;
@@ -4788,7 +4325,7 @@ messagePacket:  A TSG_PACKET_TYPE_MESSAGE_UNION union, as specified in section
 
 2.2.9.2.1.9.1.
 
-2.2.9.2.1.9.1  TSG_PACKET_TYPE_MESSAGE_UNION
+###### 2.2.9.2.1.9.1 TSG_PACKET_TYPE_MESSAGE_UNION
 
 The TSG_PACKET_TYPE_MESSAGE_UNION union contains the actual message that is sent by the TS
 Gateway server to the client. The exact type of message depends on msgType field as specified in
@@ -4821,13 +4358,14 @@ Release: April 23, 2024
 
 58 / 173
 
-reauthMessage:  A pointer to a TSG_PACKET_REAUTH_MESSAGE structure, as defined in section
+
+reauthMessage:  A pointer to a TSG_PACKET_REAUTH_MESSAGE structure, as defined in section
 2.2.9.2.1.9.1.2. This field is used if msgType field specified in section 2.2.9.2.1.9 is set to
 TSG_ASYNC_MESSAGE_REAUTH.
 
-2.2.9.2.1.9.1.1
+###### 2.2.9.2.1.9.1.1 TSG_PACKET_STRING_MESSAGE
 
-TSG_PACKET_STRING_MESSAGE
+
 
 The TSG_PACKET_STRING_MESSAGE structure contains either the Consent Signing Message or the
 Administrative Message that is being sent from the RDG server to the client.
@@ -4860,9 +4398,9 @@ msgBuffer:  An array of wchar_t specifying the string. The size of the buffer is
 
 msgBytes.
 
-2.2.9.2.1.9.1.2
+###### 2.2.9.2.1.9.1.2 TSG_PACKET_REAUTH_MESSAGE
 
-TSG_PACKET_REAUTH_MESSAGE
+
 
 The TSG_PACKET_REAUTH_MESSAGE structure is sent by the RDG server to the client when the
 server requires the user credential to be reauthenticated.
@@ -4876,7 +4414,7 @@ tunnelContext:  A unsigned __int64 that is sent by the server to client. When th
 reauthentication sequence, it MUST include this context. This is used by the server to validate
 successful reauthentication by the client.
 
-2.2.9.2.1.10  TSG_PACKET_AUTH
+###### 2.2.9.2.1.10 TSG_PACKET_AUTH
 
 The TSG_PACKET_AUTH structure is sent by the client to the TS Gateway server when Pluggable
 Authentication is used. This packet includes TSG_PACKET_VERSIONCAPS, which is used for capability
@@ -4891,7 +4429,8 @@ Release: April 23, 2024
 
 59 / 173
 
- typedef struct _TSG_PACKET_AUTH {
+
+ typedef struct _TSG_PACKET_AUTH {
    TSG_PACKET_VERSIONCAPS TSGVersionCaps;
    [range(0,65536)] unsigned long cookieLen;
    [size_is(cookieLen)] byte* cookie;
@@ -4904,7 +4443,7 @@ cookieLen:  An unsigned long that specifies the size in bytes for the field cook
 
 cookie:  A byte pointer that points to the cookie data. The cookie is used for authentication.
 
-2.2.9.2.1.11  TSG_PACKET_REAUTH
+###### 2.2.9.2.1.11 TSG_PACKET_REAUTH
 
 The TSG_PACKET_REAUTH structure is sent by the client to the TS Gateway server when the client is
 reauthenticating the connection. The value of the packetId field in TSG_PACKET MUST be set to
@@ -4943,9 +4482,9 @@ TSGInitialPacket:  A TSG_INITIAL_PACKET_TYPE_UNION union as specified in section
 
 2.2.9.2.1.11.1.
 
-2.2.9.2.1.11.1
+###### 2.2.9.2.1.11.1 TSG_INITIAL_PACKET_TYPE_UNION
 
-TSG_INITIAL_PACKET_TYPE_UNION
+
 
 The TSG_INITIAL_PACKET_TYPE_UNION union is sent by the client to the TS Gateway server when
 the client is reauthenticating the connection. Depending on packetId as specified in section
@@ -4968,13 +4507,14 @@ Release: April 23, 2024
 
 60 / 173
 
-packetVersionCaps:  A pointer to a TSG_PACKET_VERSIONCAPS structure as specified in section
+
+packetVersionCaps:  A pointer to a TSG_PACKET_VERSIONCAPS structure as specified in section
 
 2.2.9.2.1.2.
 
 packetAuth:  A pointer to a TSG_PACKET_AUTH structure as specified in section 2.2.9.2.1.10.
 
-2.2.9.3  Generic Send Data Message Packet
+##### 2.2.9.3 Generic Send Data Message Packet
 
 This packet contains data sent by the RDG client to the RDG server which is then sent to the target
 server. The data is sent by the RDG client for the TsProxySendToServer method call.
@@ -5041,7 +4581,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-buffer1Length (4 bytes): An unsigned long specifying the length of the first buffer. This MUST be
+
+buffer1Length (4 bytes): An unsigned long specifying the length of the first buffer. This MUST be
 
 in a network-order representation and be nonzero.
 
@@ -5069,7 +4610,7 @@ buffer3Length. If buffer3Length is 0, this SHOULD be NULL. If buffer3Length is z
 buffer3 is non-NULL, then buffer3 MUST be ignored. The contents of buffer3 are opaque to the
 Remote Desktop Gateway Server Protocol.
 
-2.2.9.4  Generic Receive Pipe Message Packet
+##### 2.2.9.4 Generic Receive Pipe Message Packet
 
 The Generic Receive Pipe Message packet has dual purposes. The packet is used by both the RDG
 client for setting up the receive pipe and the RDG server to send the data that is received from the
@@ -5080,7 +4621,7 @@ the receive pipe between the RDG server and the RDG client.
 
 The packet has three different formats in various phases as explained in the following sections.
 
-2.2.9.4.1 RDG Client to RDG Server Packet Format
+###### 2.2.9.4.1 RDG Client to RDG Server Packet Format
 
 The RDG client sends the packet to the RDG server in the format below.
 
@@ -5107,7 +4648,7 @@ representation of the PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE (section 2.2.2.2) data
 returned by the RDG server obtained by using the TsProxyCreateChannel (section 3.2.6.1.4)
 method call. Network representation of a context handle is described in [C706] Appendix N.
 
-2.2.9.4.2 RDG Server to RDG Client Packet Format for Intermediate Responses
+###### 2.2.9.4.2 RDG Server to RDG Client Packet Format for Intermediate Responses
 
 [MS-TSGU] - v20240423
 Terminal Services Gateway Server Protocol
@@ -5116,7 +4657,8 @@ Release: April 23, 2024
 
 62 / 173
 
-The RDG server to RDG client Packet Format for Intermediate Responses is the intermediate
+
+The RDG server to RDG client Packet Format for Intermediate Responses is the intermediate
 responses from the RDG server to the RDG client.
 
 0  1  2  3  4  5  6  7  8  9
@@ -5139,7 +4681,7 @@ Data (variable): This is data that the RDG server received from the target serve
 the RDG client. The size of this data is in the RPC headers' alloc_hint field specified in [C706].
 Only the RDG server uses the Data field. This field MUST NOT be sent by the RDG client.
 
-2.2.9.4.3 RDG Server to RDG Client Packet Format for Final Response
+###### 2.2.9.4.3 RDG Server to RDG Client Packet Format for Final Response
 
 This is the final response from the RDG server to the RDG client. To indicate connection disconnect,
 RDG server MUST set the PFC_LAST_FRAG bit in pfc_flags of the header of the RPC response PDU as
@@ -5164,11 +4706,11 @@ ReturnValue (4 bytes): Return value of the TsProxySetupReceivePipe (section 3.2.
 
 call.
 
-2.2.10 HTTP Transport Structures and Unions
+#### 2.2.10 HTTP Transport Structures and Unions
 
-2.2.10.1
+##### 2.2.10.1 HTTP_byte_BLOB Structure
 
-HTTP_byte_BLOB Structure
+
 
 This structure is used for storing and exchanging binary data.
 
@@ -5193,9 +4735,9 @@ cbLen (2 bytes): An unsigned short representing the size of the data in the blob
 
 blob (variable): An array of bytes, which contains the binary data of the length of cbLen.
 
-2.2.10.2
+##### 2.2.10.2 HTTP_CHANNEL_PACKET Structure
 
-HTTP_CHANNEL_PACKET Structure
+
 
 This packet is used for channel creation.
 
@@ -5206,7 +4748,8 @@ Release: April 23, 2024
 
 63 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5249,9 +4792,9 @@ protocol (2 bytes): An unsigned short that represents the protocol number used f
 
 the target server. The value MUST be set to 3.
 
-2.2.10.3
+##### 2.2.10.3 HTTP_CHANNEL_PACKET_VARIABLE Structure
 
-HTTP_CHANNEL_PACKET_VARIABLE Structure
+
 
 This packet is used for channel creation.
 
@@ -5284,9 +4827,9 @@ pAltResources (variable): An array of HTTP_UNICODE_STRING Structure (section 2.2
 number of elements in the array is represented in the numAltResources field of the
 corresponding HTTP_CHANNEL_PACKET structure.
 
-2.2.10.4
+##### 2.2.10.4 HTTP_CHANNEL_RESPONSE Structure
 
-HTTP_CHANNEL_RESPONSE Structure
+
 
 This packet is sent by the RDG server in response to a channel creation request.
 
@@ -5297,7 +4840,8 @@ Release: April 23, 2024
 
 64 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5332,9 +4876,9 @@ HTTP_CHANNEL_RESPONSE_FIELDS_PRESENT_FLAGS (section 2.2.5.3.1) enumeration.
 
 reserved (2 bytes): Reserved for future use.
 
-2.2.10.5
+##### 2.2.10.5 HTTP_CHANNEL_RESPONSE_OPTIONAL Structure
 
-HTTP_CHANNEL_RESPONSE_OPTIONAL Structure
+
 
 This packet is optionally sent by the RDG server in response to a channel creation request.
 
@@ -5366,9 +4910,9 @@ udpPort (2 bytes): An unsigned short representing the port number of the RDGUDP 
 authnCookie (variable): An HTTP_byte_BLOB (section 2.2.10.1) structure. It contains the cookie to
 be used for the RDGUDP connection authentication in the UDPAuthCookie ADM element format.
 
-2.2.10.6
+##### 2.2.10.6 HTTP_DATA_PACKET Structure
 
-HTTP_DATA_PACKET Structure
+
 
 This packet is used for sending or receiving RDP data.
 
@@ -5394,7 +4938,8 @@ Release: April 23, 2024
 
 65 / 173
 
-cbDataLen
+
+cbDataLen
 
 data (variable)
 
@@ -5408,9 +4953,9 @@ cbDataLen (2 bytes): An unsigned short representing the length of data in the da
 
 data (variable): An array of bytes representing data.
 
-2.2.10.7
+##### 2.2.10.7 HTTP_EXTENDED_AUTH_PACKET Structure
 
-HTTP_EXTENDED_AUTH_PACKET Structure
+
 
 This packet is used for extended tunnel (2) authorization messages from the RDG server to the RDG
 client.
@@ -5450,9 +4995,9 @@ cbBlobLen (2 bytes): An unsigned short representing the length of the authBlob f
 
 authBlob (variable): An array of bytes which contains authorization data.
 
-2.2.10.8
+##### 2.2.10.8 HTTP_KEEPALIVE_PACKET Structure
 
-HTTP_KEEPALIVE_PACKET Structure
+
 
 This packet is sent by the RDG client and RDG server to ensure that the HTTP connection is not lost if
 there is no RDP data.
@@ -5483,9 +5028,10 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.10.9
 
-HTTP_PACKET_HEADER Structure
+##### 2.2.10.9 HTTP_PACKET_HEADER Structure
+
+
 
 This structure describes an HTTP packet.
 
@@ -5514,9 +5060,9 @@ reserved (2 bytes): Reserved for future use.
 
 packetLength (4 bytes): An unsigned integer representing the length of the packet.
 
-2.2.10.10
+##### 2.2.10.10 HTTP_HANDSHAKE_REQUEST_PACKET Structure
 
-HTTP_HANDSHAKE_REQUEST_PACKET Structure
+
 
 This packet is sent from the RDG client to the RDG server to negotiate the appropriate protocol
 version to use.
@@ -5560,9 +5106,9 @@ ExtendedAuth (2 bytes): An unsigned short representing the extended authenticati
 
 by the RDG client, in an HTTP_EXTENDED_AUTH Enumeration (section 2.2.5.3.2) format.
 
-2.2.10.11
+##### 2.2.10.11 HTTP_HANDSHAKE_RESPONSE_PACKET Structure
 
-HTTP_HANDSHAKE_RESPONSE_PACKET Structure
+
 
 This packet is sent from the RDG server to provide details of its protocol version and the supported
 authentication schemes.
@@ -5574,7 +5120,8 @@ Release: April 23, 2024
 
 67 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5619,9 +5166,9 @@ ExtendedAuth (2 bytes): An unsigned short representing the extended authenticati
 
 by the RDG client, in an HTTP_EXTENDED_AUTH Enumeration (section 2.2.5.3.2) format.
 
-2.2.10.12
+##### 2.2.10.12 HTTP_REAUTH_MESSAGE Structure
 
-HTTP_REAUTH_MESSAGE Structure
+
 
 This structure describes a reauthentication message.
 
@@ -5652,9 +5199,9 @@ reauthTunnelContext (8 bytes): An unsigned long representing which tunnel (2) is
 
 reauthenticated.
 
-2.2.10.13
+##### 2.2.10.13 HTTP_SERVICE_MESSAGE Structure
 
-HTTP_SERVICE_MESSAGE Structure
+
 
 This structure describes a service message.
 
@@ -5665,7 +5212,8 @@ Release: April 23, 2024
 
 68 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5696,9 +5244,9 @@ message (variable): An array of bytes which specifies the message string. The si
 
 string is as indicated by cbMessageLen field.
 
-2.2.10.14
+##### 2.2.10.14 HTTP_TUNNEL_AUTH_PACKET Structure
 
-HTTP_TUNNEL_AUTH_PACKET Structure
+
 
 This packet is used by the client to request tunnel (2) authorization.
 
@@ -5738,9 +5286,9 @@ cbClientName (2 bytes): An unsigned short representing the length of the clientN
 
 clientName (variable): An array of bytes representing the name of the client machine.
 
-2.2.10.15
+##### 2.2.10.15 HTTP_TUNNEL_AUTH_PACKET_OPTIONAL Structure
 
-HTTP_TUNNEL_AUTH_PACKET_OPTIONAL Structure
+
 
 This packet is used for sending optional information for tunnel (2) authorization.
 
@@ -5751,7 +5299,8 @@ Release: April 23, 2024
 
 69 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5778,9 +5327,9 @@ statementOfHealth (variable): An HTTP_byte_BLOB (section 2.2.10.1) structure rep
 
 statement of health (SoH) of the RDG client machine.
 
-2.2.10.16
+##### 2.2.10.16 HTTP_TUNNEL_AUTH_RESPONSE Structure
 
-HTTP_TUNNEL_AUTH_RESPONSE Structure
+
 
 This packet is used by the RDG server to send the tunnel (2) authorization response back to the RDG
 client.
@@ -5822,9 +5371,9 @@ defined in the HTTP_TUNNEL_AUTH_RESPONSE_FIELDS_PRESENT_FLAGS Enumeration (secti
 
 reserved (2 bytes): Reserved for future use.
 
-2.2.10.17
+##### 2.2.10.17 HTTP_TUNNEL_AUTH_RESPONSE_OPTIONAL Structure
 
-HTTP_TUNNEL_AUTH_RESPONSE_OPTIONAL Structure
+
 
 This packet is returned by the RDG server in response to the tunnel (2) authorization request.
 
@@ -5848,7 +5397,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-idleTimeout
+
+idleTimeout
 
 SoHResponse (variable)
 
@@ -5866,9 +5416,9 @@ SoHResponse (variable): An HTTP_byte_BLOB (section 2.2.10.1) structure represent
 
 statement of health (SoH) of the RDG client machine.
 
-2.2.10.18
+##### 2.2.10.18 HTTP_TUNNEL_PACKET Structure
 
-HTTP_TUNNEL_PACKET Structure
+
 
 This packet is used by the RDG client to send an RDG tunnel (2) creation request.
 
@@ -5908,9 +5458,9 @@ en HTTP_TUNNEL_PACKET_FIELDS_PRESENT_FLAGS Enumeration (section 2.2.5.3.6).
 
 reserved (2 bytes): Reserved for future use.
 
-2.2.10.19
+##### 2.2.10.19 HTTP_TUNNEL_PACKET_OPTIONAL Structure
 
-HTTP_TUNNEL_PACKET_OPTIONAL Structure
+
 
 This packet is optionally used in a RDG tunnel (2) creation request.
 
@@ -5936,7 +5486,8 @@ Release: April 23, 2024
 
 71 / 173
 
-PAACookie (variable)
+
+PAACookie (variable)
 
 ...
 
@@ -5948,9 +5499,9 @@ PAACookie (variable): An HTTP_byte_BLOB (section 2.2.10.1) structure representin
 
 pluggable authentication.
 
-2.2.10.20
+##### 2.2.10.20 HTTP_TUNNEL_RESPONSE Structure
 
-HTTP_TUNNEL_RESPONSE Structure
+
 
 The RDG server uses this structure to send a tunnel (2) creation response to the RDG client.
 
@@ -5996,9 +5547,9 @@ defined in an HTTP_TUNNEL_RESPONSE_FIELDS_PRESENT_FLAGS Enumeration (section
 
 reserved (2 bytes): Reserved for future use.
 
-2.2.10.21
+##### 2.2.10.21 HTTP_TUNNEL_RESPONSE_OPTIONAL Structure
 
-HTTP_TUNNEL_RESPONSE_OPTIONAL Structure
+
 
 This structure is optionally sent by the RDG server in response to a tunnel (2) creation request.
 
@@ -6024,7 +5575,8 @@ Release: April 23, 2024
 
 72 / 173
 
-nonce (16 bytes)
+
+nonce (16 bytes)
 
 ...
 
@@ -6059,9 +5611,9 @@ consentMsg (variable): An HTTP_UNICODE_STRING (section 2.2.10.22). It contains t
 message set by the admin on the RDG server, that is delivered to the RDG client prior to allowing
 the connection.
 
-2.2.10.22
+##### 2.2.10.22 HTTP_UNICODE_STRING Structure
 
-HTTP_UNICODE_STRING Structure
+
 
 This structure describes a Unicode string.
 
@@ -6086,9 +5638,9 @@ cbLen (2 bytes): An unsigned short representing the length of the str field.
 
 str (variable):  String of length cbLen.
 
-2.2.10.23
+##### 2.2.10.23 HTTP_CLOSE_PACKET Structure
 
-HTTP_CLOSE_PACKET Structure
+
 
 This packet is used to end a session.
 
@@ -6112,7 +5664,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 statusCode
 
@@ -6127,11 +5680,11 @@ statusCode (4 bytes): An unsigned integer representing errors that are detected 
 in the process of creating a channel, in an HRESULT format. The expected return codes are
 described in section 2.2.6.
 
-2.2.11 UDP Transport Structures and Unions
+#### 2.2.11 UDP Transport Structures and Unions
 
-2.2.11.1
+##### 2.2.11.1 AASYNDATA Structure
 
-AASYNDATA Structure
+
 
 The AASYNDATA structure contains the RDGUDP channel properties sent between the RDG client and
 RDG server.
@@ -6176,9 +5729,9 @@ determined by the consumer of the RDG protocol ([MS-RDPEUDP]). The RDG client fo
 flag to the RDG server, which in turn sends the flag to the target server during the Connection
 Setup Phase.
 
-2.2.11.2
+##### 2.2.11.2 AASYNDATARESP Structure
 
-AASYNDATARESP Structure
+
 
 The AASYNDATARESP structure contains the RDGUDP channel properties sent by the RDG server to
 the RDG client during the Connection Setup Phase (section 1.3.1.1.1).
@@ -6190,7 +5743,8 @@ Release: April 23, 2024
 
 74 / 173
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6222,9 +5776,9 @@ snRecvISN (4 bytes): An integer representing the initial sequence number used by
 correction (FEC) receive window between the target server and the RDG client. The integer value
 is sent by the target server to the RDG server during the Connection Setup Phase.
 
-2.2.11.3
+##### 2.2.11.3 CONNECT_PKT Structure
 
-CONNECT_PKT Structure
+
 
 The CONNECT_PKT structure carries the UDP channel authentication information as specified in the
 AASYNDATA structure (section 2.2.11.1), from the RDG client to the RDG server.
@@ -6275,9 +5829,10 @@ Release: April 23, 2024
 
 75 / 173
 
-2.2.11.4
 
-CONNECT_PKT_RESP Structure
+##### 2.2.11.4 CONNECT_PKT_RESP Structure
+
+
 
 The CONNECT_PKT_RESP structure is sent from the RDG server as a response to UDP channel
 authentication.
@@ -6309,9 +5864,9 @@ SynResponse (8 bytes): An AASYNDATARESP Structure (section 2.2.11.2).
 
 result (8 bytes): A LONG specifying whether the connection was established successfully.
 
-2.2.11.5
+##### 2.2.11.5 DATA_PKT Structure
 
-DATA_PKT Structure
+
 
 This structure contains RDP UDP data.
 
@@ -6336,9 +5891,9 @@ hdr (4 bytes): A UDP_PACKET_HEADER Structure (section 2.2.11.7).
 
 data (variable): An array of BYTE containing the RDP UDP data.
 
-2.2.11.6
+##### 2.2.11.6 DISC_PKT Structure
 
-DISC_PKT Structure
+
 
 This structure contains an error code or reason for a UDP disconnect.
 
@@ -6366,13 +5921,14 @@ Release: April 23, 2024
 
 76 / 173
 
-hdr (4 bytes): A UDP_PACKET_HEADER Structure (section 2.2.11.7).
+
+hdr (4 bytes): A UDP_PACKET_HEADER Structure (section 2.2.11.7).
 
 discReason (8 bytes): A LONG specifying the error code or reason for the disconnect.
 
-2.2.11.7
+##### 2.2.11.7 UDP_PACKET_HEADER Structure
 
-UDP_PACKET_HEADER Structure
+
 
 This structure describes a UDP packet.
 
@@ -6397,9 +5953,9 @@ pktID (2 bytes): The packet type information, which can be one of the enumeratio
 
 pktLen (2 bytes): Specifies the packet length excluding the length of UDP_PACKET_HEADER.
 
-2.2.11.8
+##### 2.2.11.8 AUTHN_COOKIE_DATA Structure
 
-AUTHN_COOKIE_DATA Structure
+
 
 The AUTHN_COOKIE_DATA structure is used to authenticate a UDP connection.
 
@@ -6453,11 +6009,12 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-uTSPortNumber (4 bytes): The port number where RDG is listening for incoming UDP connections.
 
-2.2.11.9
+uTSPortNumber (4 bytes): The port number where RDG is listening for incoming UDP connections.
 
-UDP_CORRELATION_INFO Structure
+##### 2.2.11.9 UDP_CORRELATION_INFO Structure
+
+
 
 This structure SHOULD be appended to the initial DTLS "ClientHello" packet.  It is independent of the
 DTLS request, and not included in any DTLS field size or calculations.
@@ -6505,9 +6062,9 @@ uSignature2 (2 bytes): An unsigned short with value 0xAA1D.
 
 uCbStruct (2 bytes): An unsigned short with value 26 decimal (size of this structure in bytes.)
 
-2.2.11.10
+##### 2.2.11.10 CONNECT_PKT_FRAGMENT Structure
 
-CONNECT_PKT_FRAGMENT Structure
+
 
 The RDG client MUST use the PKT_TYPE_CONNECT_REQ_FRAGMENT packet type to send connection
 requests to the RDP server. It MUST do so by splitting a CONNECT_PKT request into one or more
@@ -6543,7 +6100,8 @@ Release: April 23, 2024
 
 78 / 173
 
-Multi-byte values in this structure are transmitted in little-endian byte order.
+
+Multi-byte values in this structure are transmitted in little-endian byte order.
 
  typedef struct _CONNECT_PKT_FRAGMENT
  {
@@ -6571,16 +6129,17 @@ Release: April 23, 2024
 
 79 / 173
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Remote Desktop Gateway Server Protocol, including
 abstract data models, interface method syntax, and message processing rules.
 
-3.1  Common Server Protocol Details
+### 3.1 Common Server Protocol Details
 
 The following sections specify details of the RDG Server Protocol that are common for all transports.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Target server names: An array of alias names for a target server. A target server alias name is a
 string of Unicode characters. The server name applies to the machine to which the RDG server
@@ -6655,7 +6214,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Nonce: A unique GUID created by the RDG server to identify the current connection. This is used to
+
+Nonce: A unique GUID created by the RDG server to identify the current connection. This is used to
 
 prevent statement of health (SoH) replay attacks.
 
@@ -6746,7 +6306,8 @@ Release: April 23, 2024
 
 81 / 173
 
-NAP Capability Value
+
+NAP Capability Value
 
 TSG_NAP_CAPABILITY_IDLE_TIMEOUT
 
@@ -6794,9 +6355,9 @@ Both the user and the client are trusted.
 
 0x00000002
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Session Timeout Timer
+##### 3.1.2.1 Session Timeout Timer
 
 After a main channel is successfully created, if the session timeout is configured on the RDG
 server,<26> the RDG server MUST start this timer with the configured session-timeout value. If the
@@ -6806,7 +6367,7 @@ request that the client initiate reauthentication, depending on the value of the
 TimeoutAction. The default value of the timer is zero, which means no session timeout. The timeout
 value MUST be between 0 and 4294967295 minutes.
 
-3.1.2.2  Reauthentication Timer
+##### 3.1.2.2 Reauthentication Timer
 
 The default value of the timer is 1 minute.<27> The time value MUST be between 1 and 3, both
 inclusive, in minutes. The RDG server MUST start this timer after it sends the reauthentication
@@ -6819,7 +6380,8 @@ Release: April 23, 2024
 
 82 / 173
 
-3.1.3  Local Events
+
+#### 3.1.3 Local Events
 
 This section describes an abstract interface on the server between the NAP Policy Server (NPS) and
 the TSGU server.<28> This interface is not used between the TSGU client and the TSGU server. This
@@ -6908,18 +6470,19 @@ Release: April 23, 2024
 
 83 / 173
 
-
+
+
 
 The RDG server MUST not allow the connection if the value of the dwResponse indicates that
 both the RDG user and the client are not trusted.
 
-3.2  RPC Transport - Server Protocol Details
+### 3.2 RPC Transport - Server Protocol Details
 
-3.2.1  TsProxyRpcInterface Server Details
+#### 3.2.1 TsProxyRpcInterface Server Details
 
 The following sections contain the details of the TsProxyRpcInterface on the server.
 
-3.2.2  Abstract Data Model
+#### 3.2.2 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6934,7 +6497,7 @@ represented by an array of 20 bytes on the RDG server.
 Channel Context handle: An RPC context handle for the connection from the RDG client to the
 target server via a RDG server represented by an array of 20 bytes on the RDG server.
 
-3.2.3  RPC over HTTP Transport - RDG Server States
+#### 3.2.3 RPC over HTTP Transport - RDG Server States
 
 Connection State: An enumeration of different connection states. This is updated as per the state
 transition rules mentioned in section 3.2.6. The following diagram represents the connection state
@@ -6953,7 +6516,8 @@ Release: April 23, 2024
 
 84 / 173
 
-<!-- Extracted images from page 85 -->
+
+<!-- Extracted images from page 85 -->
 ![Extracted image 1 from page 85]([MS-TSGU].images/page085-img01.png)
 <!-- /Extracted images from page 85 -->
 
@@ -6989,7 +6553,8 @@ Release: April 23, 2024
 
 85 / 173
 
-When TsProxyCloseTunnel is called in this state before a call to TsProxyCloseChannel, the RDG server
+
+When TsProxyCloseTunnel is called in this state before a call to TsProxyCloseChannel, the RDG server
 closes the channel and completes the TsProxyCloseTunnel call. After completing this call, the RDG
 server moves to the End state.
 
@@ -7022,9 +6587,9 @@ SHOULD be made by the RDG client to end the protocol.
 End: The RDG server MUST transition to this state when the TsProxyCloseTunnel method is called. At
 this stage, the connection between the RDG client and the RDG server is disconnected.
 
-3.2.4  Timers
+#### 3.2.4 Timers
 
-3.2.4.1  Connection Timer
+##### 3.2.4.1 Connection Timer
 
 The RDG server MAY use this timer to recover early instead of waiting for long periods for a
 successful connection to the target server.<30>
@@ -7040,7 +6605,7 @@ If the call to the TsProxySetupReceivePipe is received by the RDG server after t
 the server MUST disconnect with the ERROR_BAD_ARGUMENTS return value, as specified in section
 2.2.6.
 
-3.2.5  Initialization
+#### 3.2.5 Initialization
 
 The protocol uses the transport and endpoints as described in section 2.1.
 
@@ -7055,7 +6620,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST register for RPC_C_AUTHN_GSS_NEGOTIATE and SHOULD register for
+
+MUST register for RPC_C_AUTHN_GSS_NEGOTIATE and SHOULD register for
 RPC_C_AUTHN_GSS_SCHANNEL as authentication services, as specified in [MS-RPCE] section
 2.2.1.1.7. The RDG client MUST use a minimum authentication level of
 RPC_C_AUTHN_LEVEL_PKT_INTEGRITY (see [MS-RPCE] section 2.2.1.1.8) and MUST use one of the
@@ -7064,7 +6630,7 @@ RPC_C_AUTHN_GSS_SCHANNEL, or RPC_C_AUTHN_WINNT.<32>
 
 All timers are connection-specific timers, and MUST not be started on initialization.
 
-3.2.6  Message Processing Events and Sequencing Rules
+#### 3.2.6 Message Processing Events and Sequencing Rules
 
 This protocol asks the RPC runtime to perform a strict NDR data consistency check at target level 7.0
 for all methods unless otherwise specified, as specified in [MS-RPCE] section 3.
@@ -7151,7 +6717,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -7160,9 +6727,9 @@ Opnum: 9
 Note  In the preceding table, the term "Reserved for local use" means that the client MUST NOT send
 the opnum, and the RDG server behavior is undefined<35> because it does not affect interoperability.
 
-3.2.6.1  Connection Setup Phase
+##### 3.2.6.1 Connection Setup Phase
 
-3.2.6.1.1 TsProxyCreateTunnel (Opnum 1)
+###### 3.2.6.1.1 TsProxyCreateTunnel (Opnum 1)
 
 The TsProxyCreateTunnel method sets up the tunnel (2) in which all further communication between
 the RDG client and the RDG server occurs. This is also used to exchange versioning and capability
@@ -7225,7 +6792,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The RDG server MUST initialize the ADM element Reauthentication Status to NONE.
+
+2.  The RDG server MUST initialize the ADM element Reauthentication Status to NONE.
 
 3.  The RDG server MUST initialize the ADM element Reauthentication Tunnel Context with a
 
@@ -7301,7 +6869,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-field MUST be a pointer to the TSG_PACKET_AUTH structure. If TSG_PACKET_AUTH is not
+
+field MUST be a pointer to the TSG_PACKET_AUTH structure. If TSG_PACKET_AUTH is not
 populated correctly, the error E_PROXY_COOKIE_BADPACKET is returned.<38>
 
 TSGPacketResponse: Pointer to the TSG_PACKET structure. If
@@ -7407,7 +6976,8 @@ when this error is
 
 90 / 173
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -7482,7 +7052,7 @@ capability, but the RDG
 client doesn't support
 the capability.
 
-3.2.6.1.2 TsProxyAuthorizeTunnel (Opnum 2)
+###### 3.2.6.1.2 TsProxyAuthorizeTunnel (Opnum 2)
 
 The TsProxyAuthorizeTunnel method is used to authorize the tunnel (2) based on rules defined by
 the RDG server. The RDG server SHOULD perform security authorization for the RDG client. The RDG
@@ -7505,7 +7075,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Sequential Processing Rules:
+
+Sequential Processing Rules:
 
 1.  The RDG server MUST verify that the packetId field of the TSGPacket parameter is
 
@@ -7587,7 +7158,8 @@ Release: April 23, 2024
 
 92 / 173
 
-1.  The RDG server MUST find the original connection which has initiated the reauthentication
+
+1.  The RDG server MUST find the original connection which has initiated the reauthentication
 
 using Reauthentication Tunnel Context and MUST set its ADM element Reauthentication
 Status to UserAuthorizationCompleted.
@@ -7688,7 +7260,8 @@ received.
 
 93 / 173
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -7770,7 +7343,7 @@ TSGPacket-
 >TSGPacket.packetQuarRequest-
 >data is not prefixed with Nonce.
 
-3.2.6.1.3 TsProxyMakeTunnelCall (Opnum 3)
+###### 3.2.6.1.3 TsProxyMakeTunnelCall (Opnum 3)
 
 The TsProxyMakeTunnelCall method is designed to be used as a general purpose API. If both the client
 and the server support the administrative message, the client MAY request the same from the RDG
@@ -7792,7 +7365,8 @@ Release: April 23, 2024
 
 94 / 173
 
-1.  The RDG server MUST verify that the procId parameter is either
+
+1.  The RDG server MUST verify that the procId parameter is either
 
 TSG_TUNNEL_CALL_ASYNC_MSG_REQUEST or TSG_TUNNEL_CANCEL_ASYNC_MSG_REQUEST.
 Otherwise, it MUST return ERROR_ACCESS_DENIED.
@@ -7878,7 +7452,8 @@ Release: April 23, 2024
 
 95 / 173
 
-3.  Or else, if the RDG client cancels the call by calling another TsProxyMakeTunnelCall with
+
+3.  Or else, if the RDG client cancels the call by calling another TsProxyMakeTunnelCall with
 
 procId TSG_TUNNEL_CANCEL_ASYNC_MSG_REQUEST, then the RDG server MUST return
 HRESULT_FROM_WIN32(RPC_S_CALL_CANCELLED).
@@ -7959,7 +7534,8 @@ Release: April 23, 2024
 
 96 / 173
 
-Return value
+
+Return value
 
 ERROR_SUCCESS (0x00000000)
 
@@ -8060,7 +7636,8 @@ element is TRUE.
 
 97 / 173
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -8083,7 +7660,7 @@ canceled because a
 shutdown sequence is
 initiated.
 
-3.2.6.1.4 TsProxyCreateChannel (Opnum 4)
+###### 3.2.6.1.4 TsProxyCreateChannel (Opnum 4)
 
 The TsProxyCreateChannel method is used to create a channel between the RDG client and the RDG
 server.<44> The RDG server SHOULD connect to the target server during this call to start
@@ -8138,7 +7715,8 @@ Release: April 23, 2024
 
 98 / 173
 
-8.  The RDG server MUST create the channelId and channelContext RPC content handles and MUST
+
+8.  The RDG server MUST create the channelId and channelContext RPC content handles and MUST
 
 initialize the corresponding ADM elements.
 
@@ -8228,7 +7806,8 @@ tsEndPointInfo parameter is zero.
 
 99 / 173
 
-Return value
+
+Return value
 
 E_PROXY_RAP_ACCESSDENIED (0x800759DA)
 
@@ -8277,9 +7856,9 @@ of tsEndPointInfo.
 The error ERROR_ACCESS_DENIED is returned when this call is made on a tunnel which is not
 authorized.
 
-3.2.6.2  Data Transfer Phase
+##### 3.2.6.2 Data Transfer Phase
 
-3.2.6.2.1 TsProxySendToServer (Opnum 9)
+###### 3.2.6.2.1 TsProxySendToServer (Opnum 9)
 
 The method is used for data transfer from the RDG client to the target server, via the RDG server.
 The RDG server SHOULD send the buffer data received in this method to the target server. The RPC
@@ -8326,7 +7905,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The RDG server MUST verify that the totalDataBytes field in pRpcMessage is not zero.
+
+1.  The RDG server MUST verify that the totalDataBytes field in pRpcMessage is not zero.
 
 Otherwise, it MUST return ERROR_ACCESS_DENIED.
 
@@ -8416,7 +7996,7 @@ occurs in TsProxySendToServer. The
 RDG client MUST end the protocol
 when this error is received.
 
-3.2.6.2.2 TsProxySetupReceivePipe (Opnum 8)
+###### 3.2.6.2.2 TsProxySetupReceivePipe (Opnum 8)
 
 [MS-TSGU] - v20240423
 Terminal Services Gateway Server Protocol
@@ -8425,11 +8005,12 @@ Release: April 23, 2024
 
 101 / 173
 
-The TsProxySetupReceivePipe method is used for data transfer from the RDG server to the RDG
+
+The TsProxySetupReceivePipe method is used for data transfer from the RDG server to the RDG
 client. The RDG server MUST create an RPC out pipe upon receiving this method call from the RDG
 client. This call bypasses the NDR and hence, the RPC runtime MUST NOT perform a strict NDR data
 consistency check for this method. Refer to section 3.6.5 for details on NDR-bypassing. Section
-3.6.5.4 and section 3.6.5.5 give details on wire representation of data for responses to
+##### 3.6.5.4 and section 3.6.5.5 give details on wire representation of data for responses to
 TsProxySetupReceivePipe. The out pipe MUST be created by the RDG server in the same manner as
 NDR creates it for a call.<49> The RDG server MUST use this out pipe and Stub Data field in RPC
 response PDUs to send all data from the target server to the RDG client on the channel. The RDG
@@ -8497,7 +8078,8 @@ Release: April 23, 2024
 
 102 / 173
 
-9.  The RDG server MUST start receiving data from the target server and stream the same to the RDG
+
+9.  The RDG server MUST start receiving data from the target server and stream the same to the RDG
 
 client. This process MUST be continued until one of the following events occurs.
 
@@ -8583,7 +8165,8 @@ Release: April 23, 2024
 
 103 / 173
 
-2.  If the ADM element Negotiated Capabilities does not contain
+
+2.  If the ADM element Negotiated Capabilities does not contain
 
 TSG_NAP_CAPABILITY_IDLE_TIMEOUT, then the RDG server MUST disconnect the
 connection with HRESULT_CODE(E_PROXY_CONNECTIONABORTED).
@@ -8690,7 +8273,8 @@ MUST end the protocol when this
 
 104 / 173
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -8828,7 +8412,8 @@ Negotiated Capabilities
 
 105 / 173
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -8925,7 +8510,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value
+
+Return value
 
 State
 transition  Description
@@ -9020,7 +8606,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-server initiated the disconnect, the RDG client will also receive a return code for
+
+server initiated the disconnect, the RDG client will also receive a return code for
 TsProxySetupReceivePipe in an RPC response PDU with the PFC_LAST_FRAG bit set in the pfc_flags.
 For a description of RPC response PDU, pfc_flags, and PFC_LAST_FRAG, refer to [C706] sections
 12.6.2 and 12.6.14.10.
@@ -9103,7 +8690,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The TsProxyCloseTunnel method is used to terminate the tunnel (1) between the RDG client and the
+
+The TsProxyCloseTunnel method is used to terminate the tunnel (1) between the RDG client and the
 RDG server. All communication between the RDG client and RDG server MUST stop after the RDG
 server executes this method. The RDG client MUST NOT use this tunnel context handle in any
 subsequent operations after this method call. This MUST be the final tear down phase of the RDG
@@ -9185,7 +8773,8 @@ Release: April 23, 2024
 
 109 / 173
 
-The server initiates shutdown by sending the final response packet to TsProxySetupReceivePipe call
+
+The server initiates shutdown by sending the final response packet to TsProxySetupReceivePipe call
 with the PFC_LAST_FRAG bit set in the pfc_flags field. The server closes the channel after sending
 this response. The client SHOULD not call TsProxyCloseChannel after receiving this final response.
 The client SHOULD call the TsProxyCloseChannel method if the client initiates the shutdown, but not if
@@ -9258,7 +8847,8 @@ Release: April 23, 2024
 
 110 / 173
 
-3.2.7.2  Reauthentication Timer
+
+3.2.7.2  Reauthentication Timer
 
 If the Reauthentication Timer expires, the RDG server MUST check the ADM element
 Reauthentication Status value.
@@ -9339,7 +8929,8 @@ Release: April 23, 2024
 
 111 / 173
 
-3.2.7.4  Data Arrival From the Target Server
+
+3.2.7.4  Data Arrival From the Target Server
 
 This event occurs when the target server data arrives at the RDG server that is destined for the
 RDG client. When this event occurs, the RDG server MUST stream the data to the RDG client, in
@@ -9366,7 +8957,8 @@ Release: April 23, 2024
 
 112 / 173
 
-<!-- Extracted images from page 113 -->
+
+<!-- Extracted images from page 113 -->
 ![Extracted image 1 from page 113]([MS-TSGU].images/page113-img01.png)
 <!-- /Extracted images from page 113 -->
 
@@ -9382,7 +8974,8 @@ Release: April 23, 2024
 
 113 / 173
 
-<!-- Extracted images from page 114 -->
+
+<!-- Extracted images from page 114 -->
 ![Extracted image 1 from page 114]([MS-TSGU].images/page114-img01.png)
 <!-- /Extracted images from page 114 -->
 
@@ -9418,7 +9011,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 115 -->
+
+<!-- Extracted images from page 115 -->
 ![Extracted image 1 from page 115]([MS-TSGU].images/page115-img01.png)
 <!-- /Extracted images from page 115 -->
 
@@ -9453,7 +9047,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The RDG client sends a request with the RDG_OUT_DATA (section 2.2.3.1.2) custom command
+
+The RDG client sends a request with the RDG_OUT_DATA (section 2.2.3.1.2) custom command
 and the custom header RDG-Connection-Id (section 2.2.3.2.1) set to a unique identifier. A GUID
 generated by the RDG client is used for this purpose. The RDG client disallows caching and uses
 "*/*" as the accept type.
@@ -9487,7 +9082,8 @@ Release: April 23, 2024
 
 116 / 173
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-TSGU].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
@@ -9516,7 +9112,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  Packets from the RDG client to the RDG server are sent as the request entity body of the IN
+
+1.  Packets from the RDG client to the RDG server are sent as the request entity body of the IN
 
 channel. These packets are sent as self-delimiting chunks. Packets from the RDG server to the
 RDG client are sent as the response entity body of the OUT channel. The packet formats are
@@ -9567,7 +9164,8 @@ Release: April 23, 2024
 
 118 / 173
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-TSGU].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -9593,7 +9191,8 @@ Release: April 23, 2024
 
 119 / 173
 
-If a client is configured to use NTLM extended authentication for a connection, it MUST do one of the
+
+If a client is configured to use NTLM extended authentication for a connection, it MUST do one of the
 following when performing a WebSocket Upgrade, RDG_OUT_DATA, or RDG_IN_DATA request:
 
   Set the request's Authorization header to equal HTTP_TRANS_CUSTOM_AUTH_SSPI_NTLM.
@@ -9662,7 +9261,8 @@ Release: April 23, 2024
 
 120 / 173
 
-The RDG server begins the Extended Authentication phase by waiting for incoming
+
+The RDG server begins the Extended Authentication phase by waiting for incoming
 HTTP_EXTENDED_AUTH_PACKET messages. When an HTTP_EXTENDED_AUTH_PACKET message is
 received, the RDG server MUST process it as follows:
 
@@ -9727,7 +9327,8 @@ Release: April 23, 2024
 
 121 / 173
 
-3.3.6  Timer Events
+
+3.3.6  Timer Events
 
 3.3.6.1  Session Timeout Timer
 
@@ -9816,7 +9417,8 @@ Release: April 23, 2024
 
 122 / 173
 
-
+
+
 
 
 
@@ -9887,7 +9489,8 @@ Release: April 23, 2024
 
 123 / 173
 
-<!-- Extracted images from page 124 -->
+
+<!-- Extracted images from page 124 -->
 ![Extracted image 1 from page 124]([MS-TSGU].images/page124-img01.png)
 <!-- /Extracted images from page 124 -->
 
@@ -9927,7 +9530,8 @@ Release: April 23, 2024
 
 124 / 173
 
-<!-- Extracted images from page 125 -->
+
+<!-- Extracted images from page 125 -->
 ![Extracted image 1 from page 125]([MS-TSGU].images/page125-img01.png)
 <!-- /Extracted images from page 125 -->
 
@@ -9990,7 +9594,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The RDGUDP server sends the CONNECT_PKT_RESP to the RDGUDP client.
+
+5.  The RDGUDP server sends the CONNECT_PKT_RESP to the RDGUDP client.
 
 6.  If the Result is S_OK, move the connection state to Connected; otherwise, move it to the
 
@@ -10063,7 +9668,8 @@ Release: April 23, 2024
 
 126 / 173
 
-CertChainData: A string of variable data returned by the RDG server representing the certificate
+
+CertChainData: A string of variable data returned by the RDG server representing the certificate
 
 chain used by the RDG server for the HTTPS communication between RDG client and RDG server.
 The RDG client MAY use this data to verify the identity of the RDG server before sending sensitive
@@ -10133,7 +9739,8 @@ Release: April 23, 2024
 
 127 / 173
 
-3.6  RPC Transport - Client Protocol Details
+
+3.6  RPC Transport - Client Protocol Details
 
 The following sections contain the details of the TsProxyRpcInterface (section 3.2.1) on the client.
 
@@ -10197,7 +9804,8 @@ Release: April 23, 2024
 
 128 / 173
 
-If an authenticated binding handle is established, the RDG client MUST match the version and
+
+If an authenticated binding handle is established, the RDG client MUST match the version and
 capabilities of the RDG server; if no match can be made, the RDG client SHOULD stop further
 progress on the protocol connection.
 
@@ -10271,7 +9879,8 @@ Release: April 23, 2024
 
 129 / 173
 
-4.  The RDG client MUST get its statement of health (SoH) by calling NAP EC API.<59> Details of
+
+4.  The RDG client MUST get its statement of health (SoH) by calling NAP EC API.<59> Details of
 the SoH format are specified in [TNC-IF-TNCCSPBSoH]. If the SoH is received successfully, then
 the RDG client MUST create an enveloped data message for the server that encrypts the SoH
 using the Triple Data Encryption Standard algorithm and encode it using one of PKCS #7 or
@@ -10344,7 +9953,8 @@ Release: April 23, 2024
 
 130 / 173
 
-1.  The RDG client MUST initialize the ADM element Channel id with the channelId out
+
+1.  The RDG client MUST initialize the ADM element Channel id with the channelId out
 
 parameter.
 
@@ -10419,7 +10029,8 @@ Release: April 23, 2024
 
 131 / 173
 
-3.6.5  Data Representation forTsProxySetupReceivePipe and TsProxySendToServer
+
+3.6.5  Data Representation forTsProxySetupReceivePipe and TsProxySendToServer
 
 NDR64 specifies a method to package the data before sending it on the wire. For improved
 performance, TsProxySetupReceivePipe and TsProxySendToServer deviate from the [C706]
@@ -10499,7 +10110,8 @@ Release: April 23, 2024
 
 132 / 173
 
-...
+
+...
 
 Buffer2 (variable)
 
@@ -10582,7 +10194,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -10615,7 +10228,7 @@ Data (variable): Must be set to the data to be sent to the RDG client. The size 
 
 RPC header alloc_hint field specified in [C706].
 
-3.6.5.5  TsProxySetupReceivePipe Final Response
+##### 3.6.5.5 TsProxySetupReceivePipe Final Response
 
 The following represents the Stub data for the TsProxySetupReceivePipe call. For the final response
 PDU, the PFC_LAST_FRAG bit MUST be set in the pfc_flags field of the RPC response PDU.
@@ -10635,7 +10248,7 @@ ReturnValue
 
 ReturnValue (4 bytes): Must be set to the return value of the call.
 
-3.7  HTTP Transport - Client Protocol Details
+### 3.7 HTTP Transport - Client Protocol Details
 
 The following sections contain the details of the RDG client HTTP protocol interface on the client.
 
@@ -10657,13 +10270,14 @@ Release: April 23, 2024
 
 134 / 173
 
-<!-- Extracted images from page 135 -->
+
+<!-- Extracted images from page 135 -->
 ![Extracted image 1 from page 135]([MS-TSGU].images/page135-img01.png)
 <!-- /Extracted images from page 135 -->
 
 Figure 21: RDG HTTP client channel state machine
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 UDPAuthCookie: A signed and encoded byte BLOB containing an AUTHN_COOKIE_DATA
 
@@ -10671,17 +10285,17 @@ structure.
 
 udpPort: The UDP port number to which the RDG server listens in order to create the side channel.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 None.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 The RDG client SHOULD create its tunnel and channel objects and set the state to Initial. The RDG
 client MUST match the version and capabilities of the RDG server. If no match can be made, the RDG
 client SHOULD stop further progress on the protocol connection.
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 When a create tunnel is requested by the higher layer, it can also issue a Cancel Tunnel Creation
 request before the tunnel is created. Once the tunnel is created, the higher layer can also issue a
@@ -10694,11 +10308,12 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The higher layer initiates the channel creation once the tunnel has been authorized. After issuing a
+
+The higher layer initiates the channel creation once the tunnel has been authorized. After issuing a
 Channel Creation request, it can issue a Cancel Channel Creation request before the channel is
 created. After the channel is created, the higher layer can issue a Close Channel request.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
 The RDG client uses the following sequencing rules and message processing in its various phases. The
 RDG client SHOULD process errors returned from the RDG server and notify the application invoker of
@@ -10714,14 +10329,14 @@ Tunnel and Channel Creation (section 3.7.5.2)
 
   Connection Close (section 3.7.5.4)
 
-3.7.5.1  Connection Setup and Authentication
+##### 3.7.5.1 Connection Setup and Authentication
 
 In this phase, the client creates two channels with the RDG server: an IN channel and an OUT
 channel. The client MUST create the OUT channel before the IN channel.
 
 Sequential processing rules for creating OUT and IN channels are described in section 3.3.5.1.
 
-3.7.5.2  Tunnel and Channel Creation
+##### 3.7.5.2 Tunnel and Channel Creation
 
 After the connection setup and handshake of version and capability exchange described in 3.3.5.1,
 tunnels and channels are created. The sequential processing rules for tunnel and channel creation are
@@ -10770,7 +10385,8 @@ Release: April 23, 2024
 
 136 / 173
 
-
+
+
 
 The RDG client MUST initialize the ADM element CertChainData with serverCert of the
 HTTP_TUNNEL_RESPONSE_OPTIONAL structure if it is present
@@ -10825,7 +10441,7 @@ RDG client MUST end the protocol.
 with the channelId, udpPort and authnCookie parameters of the
 HTTP_CHANNEL_RESPONSE_OPTIONAL structure.
 
-3.7.5.3  Data and Server Message Exchange
+##### 3.7.5.3 Data and Server Message Exchange
 
 The sequential processing rules for data transfer are as follows:
 
@@ -10847,10 +10463,11 @@ Release: April 23, 2024
 
 137 / 173
 
-4.  If the received packet type is PKT_TYPE_REAUTH_MESSAGE, then the RDG client MUST consider it
+
+4.  If the received packet type is PKT_TYPE_REAUTH_MESSAGE, then the RDG client MUST consider it
 as an HTTP_REAUTH_MESSAGE (section 2.2.10.12) and pass it on to the higher layer accordingly.
 
-3.7.5.4  Connection Close
+##### 3.7.5.4 Connection Close
 
 The sequential processing rules for closing a connection initiated by the client are as follows:
 
@@ -10898,13 +10515,13 @@ notification from HTTP.
 
 packet to the RDG server or waiting for HTTP_CLOSE_PACKET.
 
-3.8  UDP Transport - Client Protocol Details
+### 3.8 UDP Transport - Client Protocol Details
 
-3.8.1  Initialization
+#### 3.8.1 Initialization
 
 The RD Gateway UDP client initializes DTLS.
 
-3.8.2  Message Processing Events and Sequencing Rules
+#### 3.8.2 Message Processing Events and Sequencing Rules
 
 1.  The RDGUDP client MUST perform a DTLS handshake with the RDGUDP server as specified in
 [RFC4347]. This exchange is as defined in [RFC4347], except that the client SHOULD append a
@@ -10921,7 +10538,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  The RDG client MUST encrypt and send the CONNECT_PKT to the RDGUDP server in a reliable
+
+3.  The RDG client MUST encrypt and send the CONNECT_PKT to the RDGUDP server in a reliable
 
 way until it receives a UDP packet. If the RDGUDP client does not receive the UDP message after
 a predetermined number of retries, it ends the connection.
@@ -10958,7 +10576,7 @@ DATA_PKT.data to the Remote Desktop Protocol UDP Transport Extension specified i
 RDPEUDP] for processing. Otherwise, if the decrypted message contains DISC_PKT, then the
 RDG client MUST end the connection.
 
-3.8.3  Establishing a Connection
+#### 3.8.3 Establishing a Connection
 
 The client MUST transmit one or more CONNECT_PKT_FRAGMENT structures, as specified in section
 2.2.11.10, to the server to establish the connection.
@@ -11000,7 +10618,8 @@ Release: April 23, 2024
 
 139 / 173
 
-2.  Allocate a buffer for connectPktBuff of size connectReqBufferLen for the CONNECT_PKT
+
+2.  Allocate a buffer for connectPktBuff of size connectReqBufferLen for the CONNECT_PKT
 
 structure and set values for each of its fields.
 
@@ -11053,11 +10672,12 @@ Release: April 23, 2024
 
 140 / 173
 
-4  Protocol Examples
 
-4.1  RPC Transport Protocol Examples
+## 4 Protocol Examples
 
-4.1.1  Normal Scenario
+### 4.1 RPC Transport Protocol Examples
+
+#### 4.1.1 Normal Scenario
 
 1.  The RDG client obtains the name of an RDG server by using an out-of-band mechanism. The
 
@@ -11126,7 +10746,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- HRESULT = {to be filled in by server}
+
+ HRESULT = {to be filled in by server}
  TsProxyCreateTunnel(
      [in, ref] PTSG_PACKET TSGPacket;
      [out, ref] PTSG_PACKET* TSGPacketResponse =
@@ -11192,7 +10813,8 @@ Release: April 23, 2024
 
 142 / 173
 
- } TSG_PACKET;
+
+ } TSG_PACKET;
 
 Where the TSG_PACKET_QUARENC_RESPONSE is set as follows.
 
@@ -11256,7 +10878,8 @@ Release: April 23, 2024
 
 143 / 173
 
-    byte *data = {statement of health prefixed with Nonce, which is received in response to
+
+    byte *data = {statement of health prefixed with Nonce, which is received in response to
 TsProxyCreateTunnel};
     unsigned long dataLen = {Number of bytes in the data field};
  } TSG_PACKET_QUARREQUEST;
@@ -11317,7 +10940,8 @@ Release: April 23, 2024
 
 144 / 173
 
- Where the TSG_PACKET_MSG_REQUEST is set as follows.
+
+ Where the TSG_PACKET_MSG_REQUEST is set as follows.
 
  typedef struct _TSG_PACKET_MSG_REQUEST
      {
@@ -11378,7 +11002,8 @@ Release: April 23, 2024
 
 145 / 173
 
-         long isConsentMandatory = 1;
+
+         long isConsentMandatory = 1;
          [range(0, 65536)] unsigned long msgBytes = 4;
          [size_is(msgBytes)] wchar_t* msgBuffer = "Test";
      } TSG_PACKET_STRING_MESSAGE;
@@ -11439,7 +11064,8 @@ Release: April 23, 2024
 
 146 / 173
 
-    PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE m_channelContextHandle; //as above
+
+    PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE m_channelContextHandle; //as above
     DWORD totalDataLength = 0x00000008; //buffer1Length+sizeof(buffer1Length)
     DWORD numBuffers = 0x00000001; //number of buffers that follow is 1
     DWORD buffer1Length=0x04; //length of data that follows is 4 bytes
@@ -11497,7 +11123,8 @@ Release: April 23, 2024
 
 147 / 173
 
- TsProxyCloseChannel(
+
+ TsProxyCloseChannel(
      [in, out] PCHANNEL_CONTEXT_HANDLE_NOSERIALIZE* context = NULL;
  );
 
@@ -11516,7 +11143,7 @@ The RDG server receives this method and returns:
      [in, out] PTUNNEL_CONTEXT_HANDLE_SERIALIZE* context = NULL;
  );
 
-4.1.2  Pluggable Authentication Scenario with Consent Message Returned
+#### 4.1.2 Pluggable Authentication Scenario with Consent Message Returned
 
 
 
@@ -11562,7 +11189,8 @@ Release: April 23, 2024
 
 148 / 173
 
- {
+
+ {
     unsigned long packetId = TSG_PACKET_TYPE_AUTH;
     TSG_PACKET_TYPE_UNION TSGPacket {= packetAuth};
  } TSG_PACKET;
@@ -11623,7 +11251,8 @@ Release: April 23, 2024
 
 149 / 173
 
-Where the TSG_PACKET_CAPS_RESPONSE is set as follows.
+
+Where the TSG_PACKET_CAPS_RESPONSE is set as follows.
 
  typedef struct _TSG_PACKET_CAPS_RESPONSE
      {
@@ -11687,7 +11316,8 @@ Release: April 23, 2024
 
 150 / 173
 
-Where the consentMessage is set as follows.
+
+Where the consentMessage is set as follows.
 
  typedef struct _TSG_PACKET_STRING_MESSAGE
      {
@@ -11697,7 +11327,7 @@ Release: April 23, 2024
          [size_is(msgBytes)] wchar_t* msgBuffer = "Accept";
      } TSG_PACKET_STRING_MESSAGE;
 
-4.1.3  Reauthentication
+#### 4.1.3 Reauthentication
 
   Reauthentication is possible only if both the client and the server have the capability to handle the
 same. This capability is found out during the capability exchange during tunnel creation. This
@@ -11753,7 +11383,8 @@ Release: April 23, 2024
 
 151 / 173
 
-Where the messagePacket is set as follows:
+
+Where the messagePacket is set as follows:
 
  typedef [switch_type(unsigned long)] union
      {
@@ -11814,7 +11445,8 @@ Release: April 23, 2024
 
 152 / 173
 
-     {
+
+     {
          [case (TSG_PACKET_TYPE_VERSIONCAPS)]
              PTSG_PACKET_VERSIONCAPS packetVersionCaps;
          [case (TSG_PACKET_TYPE_AUTH)]
@@ -11831,9 +11463,9 @@ packetVersionCaps has been specified as defined in section 4.1.1.
 
 packetAuth has been specified as defined in section 4.1.2.
 
-4.2  HTTP Transport Protocol Examples
+### 4.2 HTTP Transport Protocol Examples
 
-4.2.1  Normal Scenario
+#### 4.2.1 Normal Scenario
 
 Initialization: The RDG client obtains the name of an RDG server by using an out-of-band mechanism.
 The RDG client creates an HTTP session as follows:
@@ -11898,7 +11530,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The RDG client resends the request on the same connection. The RDG server recognizes this
+
+5.  The RDG client resends the request on the same connection. The RDG server recognizes this
 
 second request as an authenticated connection request.
 
@@ -11968,7 +11601,8 @@ Release: April 23, 2024
 
 154 / 173
 
-15. The RDG client sends HTTP_TUNNEL_AUTH_PACKET (section 2.2.10.14) and
+
+15. The RDG client sends HTTP_TUNNEL_AUTH_PACKET (section 2.2.10.14) and
 
 HTTP_TUNNEL_AUTH_PACKET_OPTIONAL (section 2.2.10.15) to the RDG server to request tunnel
 authorization.
@@ -12000,9 +11634,9 @@ HTTP_CHANNEL_RESPONSE_FIELD_UDPPORT| HTTP_CHANNEL_RESPONSE_FIELD_AUTHNCOOKIE;
 pChannelRespOpt->channelId = 1;    pChannelRespOpt->udpPort = 3391;    pChannelRespOpt-
 >authnCookie.cbLen = 1433;    pChannelRespOpt->authnCookie.blob = <encrypted blob>
 
-4.3  UDP Transport Protocol Examples
+### 4.3 UDP Transport Protocol Examples
 
-4.3.1  Normal Scenario
+#### 4.3.1 Normal Scenario
 
 1.  Initialization: The RDG client obtains the name of a RDG server by using an out-of-band
 
@@ -12036,7 +11670,8 @@ Release: April 23, 2024
 
 155 / 173
 
-6.  The RDG server decrypts the packet received with DTLS. The RDG server decodes the message
+
+6.  The RDG server decrypts the packet received with DTLS. The RDG server decodes the message
 
 and verifies the signature on the decoded message. The RDG server maps the decoded message
 to the AUTHN_COOKIE_DATA structure.
@@ -12061,12 +11696,13 @@ Release: April 23, 2024
 
 156 / 173
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Gateway Server Protocol and an index of security parameters.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 For RPC over HTTP transport, it is recommended that authenticated RPC be used by this protocol, as
 specified in [C706] section 13.
@@ -12079,7 +11715,7 @@ During the tunnel creation for main channel, the RDG server sends a nonce repres
 to uniquely identify the connection to prevent SoH replay attacks. The RDG client MUST send this
 GUID if it sends the SoH, as specified in section 2.2.9.2.1.4.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -12094,7 +11730,8 @@ Release: April 23, 2024
 
 157 / 173
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 This section is not applicable for HTTP and UDP transports.
 
@@ -12169,7 +11806,8 @@ Release: April 23, 2024
 
 158 / 173
 
- #define TSG_MESSAGING_CAP_SERVICE_MSG 0x00000008
+
+ #define TSG_MESSAGING_CAP_SERVICE_MSG 0x00000008
  #define TSG_MESSAGING_CAP_REAUTH 0x00000010
 
      typedef struct _TSG_PACKET_HEADER {
@@ -12244,7 +11882,8 @@ Release: April 23, 2024
 
 159 / 173
 
-         [size_is(responseDataLen)] byte* responseData;
+
+         [size_is(responseDataLen)] byte* responseData;
          [range(0, 24000)] unsigned long responseDataLen;
          TSG_REDIRECTION_FLAGS redirectionFlags;
      } TSG_PACKET_RESPONSE,
@@ -12320,7 +11959,8 @@ Release: April 23, 2024
 
 160 / 173
 
- PTSG_PACKET_AUTH packetAuth;
+
+ PTSG_PACKET_AUTH packetAuth;
  } TSG_INITIAL_PACKET_TYPE_UNION,
   *PTSG_INITIAL_PACKET_TYPE_UNION;
 
@@ -12395,7 +12035,8 @@ Release: April 23, 2024
 
 161 / 173
 
-    HRESULT
+
+    HRESULT
     TsProxyCreateChannel(
         [in] PTUNNEL_CONTEXT_HANDLE_NOSERIALIZE tunnelContext,
         [in, ref] PTSENDPOINTINFO tsEndPointInfo ,
@@ -12436,7 +12077,8 @@ Release: April 23, 2024
 
 162 / 173
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12505,7 +12147,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TSGU client
+
+TSGU client
 
   Windows 7 with RDP 8.0/8.1 Client Update
 
@@ -12574,7 +12217,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<13> Section 2.2.9.2.1.3: The TSG_PACKET_QUARCONFIGREQUEST structure is not used by any
+
+<13> Section 2.2.9.2.1.3: The TSG_PACKET_QUARCONFIGREQUEST structure is not used by any
 version of Windows. If this structure is used, an error code of
 HRESULT_CODE(E_PROXY_NOTSUPPORTED) is returned.
 
@@ -12632,7 +12276,8 @@ Release: April 23, 2024
 
 165 / 173
 
-Windows 8.1,
+
+Windows 8.1,
 Windows Server
 2012 R2
 
@@ -12719,7 +12364,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-made within 30 seconds of a call to TsProxyCreateChannel, the Windows Server 2008 RDG server will
+
+made within 30 seconds of a call to TsProxyCreateChannel, the Windows Server 2008 RDG server will
 disconnect the connection. The disconnection will occur in order to implement TsProxyCreateChannel.
 Note that the protocol, however, does not mandate the timer.
 
@@ -12789,7 +12435,8 @@ Terminal Services Gateway Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(password or smartcard), and client computer health status (optional). These authorization conditions
+
+(password or smartcard), and client computer health status (optional). These authorization conditions
 are specified using connection authorization policies (CAPs). When the CAPs set by the administrator
 require RDG client computer health status checks, the RDG server will require that RDG clients send
 health information and remediate themselves if health check is not met.
@@ -12856,7 +12503,8 @@ Release: April 23, 2024
 
 168 / 173
 
-<53> Section 3.3.3.1: In the following TSGU clients the default timer value on the client is 8 minutes.
+
+<53> Section 3.3.3.1: In the following TSGU clients the default timer value on the client is 8 minutes.
 
   Windows 7 with RDP 8.0/8.1 Client Update
 
@@ -12920,7 +12568,8 @@ Release: April 23, 2024
 
 169 / 173
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12964,7 +12613,8 @@ Release: April 23, 2024
 
 170 / 173
 
-9  Index
+
+## 9 Index
 A
 
 AASYNDATA packet 74
@@ -13111,7 +12761,8 @@ HTTP_TUNNEL_RESPONSE packet 72
 
 171 / 173
 
-HTTP_TUNNEL_RESPONSE_FIELD_CAPS 43
+
+HTTP_TUNNEL_RESPONSE_FIELD_CAPS 43
 HTTP_TUNNEL_RESPONSE_FIELD_CONSENT_MSG
 
 P
@@ -13270,7 +12921,8 @@ References 14
 
 172 / 173
 
-   informative 15
+
+   informative 15
    normative 14
 Relationship to other protocols 27
 RESOURCENAME data type 32

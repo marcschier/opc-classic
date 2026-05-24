@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 38
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 23, 2024
 
 2 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -547,262 +550,116 @@ Release: April 23, 2024
 
 4 / 38
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Purpose of Print Virtual Channel Extension](#131-purpose-of-print-virtual-channel-extension)
+    - [1.3.2 Protocol Initialization](#132-protocol-initialization)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 Server Printer Cache Event (SERVER_PRINTER_CACHE_EVENT)](#2211-server-printer-cache-event-serverprintercacheevent)
+    - [2.2.2 Printer Redirection Messages](#222-printer-redirection-messages)
+      - [2.2.2.1 Client Device List Announce Request (DR_PRN_DEVICE_ANNOUNCE)](#2221-client-device-list-announce-request-drprndeviceannounce)
+      - [2.2.2.2 Server Printer Set XPS Mode (DR_PRN_USING_XPS)](#2222-server-printer-set-xps-mode-drprnusingxps)
+      - [2.2.2.3 Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)](#2223-add-printer-cachedata-drprnaddcachedata)
+      - [2.2.2.4 Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)](#2224-update-printer-cachedata-drprnupdatecachedata)
+      - [2.2.2.5 Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)](#2225-delete-printer-cachedata-drprndeletecachedata)
+      - [2.2.2.6 Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)](#2226-rename-printer-cachedata-drprnrenamecachedata)
+      - [2.2.2.7 Server Create Request (DR_PRN_CREATE_REQ)](#2227-server-create-request-drprncreatereq)
+      - [2.2.2.8 Server Printer Close Request (DR_PRN_CLOSE_REQ)](#2228-server-printer-close-request-drprnclosereq)
+      - [2.2.2.9 Server Printer Write Request (DR_PRN_WRITE_REQ)](#2229-server-printer-write-request-drprnwritereq)
+      - [2.2.2.10 Client Printer Create Response (DR_PRN_CREATE_RSP)](#22210-client-printer-create-response-drprncreatersp)
+      - [2.2.2.11 Client Printer Close Response (DR_PRN_CLOSE_RSP)](#22211-client-printer-close-response-drprnclosersp)
+      - [2.2.2.12 Client Printer Write Response (DR_PRN_WRITE_RSP)](#22212-client-printer-write-response-drprnwritersp)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Cached Printer Config Data](#3111-cached-printer-config-data)
+      - [3.1.1.2 XPS Mode](#3112-xps-mode)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Printer Redirection Messages](#3251-printer-redirection-messages)
+        - [3.2.5.1.1 Sending a Client Device List Announce Request Message](#32511-sending-a-client-device-list-announce-request-message)
+        - [3.2.5.1.2 Processing a Printer Set XPS Mode Message](#32512-processing-a-printer-set-xps-mode-message)
+        - [3.2.5.1.3 Processing an Add Printer Cachedata Message](#32513-processing-an-add-printer-cachedata-message)
+        - [3.2.5.1.4 Processing an Update Printer Cachedata Message](#32514-processing-an-update-printer-cachedata-message)
+        - [3.2.5.1.5 Processing a Delete Printer Cachedata Message](#32515-processing-a-delete-printer-cachedata-message)
+        - [3.2.5.1.6 Processing a Rename Printer Cachedata Message](#32516-processing-a-rename-printer-cachedata-message)
+        - [3.2.5.1.7 Processing a Create Request Message](#32517-processing-a-create-request-message)
+        - [3.2.5.1.8 Processing a Close Request Message](#32518-processing-a-close-request-message)
+        - [3.2.5.1.9 Processing a Write Request Message](#32519-processing-a-write-request-message)
+        - [3.2.5.1.10 Sending a Printer Create Response Message](#325110-sending-a-printer-create-response-message)
+        - [3.2.5.1.11 Sending a Printer Close Response Message](#325111-sending-a-printer-close-response-message)
+        - [3.2.5.1.12 Sending a Printer Write Response Message](#325112-sending-a-printer-write-response-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Printer Redirection Messages](#3351-printer-redirection-messages)
+        - [3.3.5.1.1 Processing a Client Device List Announce Request Message](#33511-processing-a-client-device-list-announce-request-message)
+        - [3.3.5.1.2 Sending a Printer Set XPS Mode Message](#33512-sending-a-printer-set-xps-mode-message)
+        - [3.3.5.1.3 Sending an Add Printer Cachedata Message](#33513-sending-an-add-printer-cachedata-message)
+        - [3.3.5.1.4 Sending an Update Printer Cachedata Message](#33514-sending-an-update-printer-cachedata-message)
+        - [3.3.5.1.5 Sending Delete Printer Cachedata](#33515-sending-delete-printer-cachedata)
+        - [3.3.5.1.6 Sending a Rename Printer Cachedata Message](#33516-sending-a-rename-printer-cachedata-message)
+        - [3.3.5.1.7 Sending a Printer Create Request Message](#33517-sending-a-printer-create-request-message)
+        - [3.3.5.1.8 Sending a Printer Close Request Message](#33518-sending-a-printer-close-request-message)
+        - [3.3.5.1.9 Sending a Printer Write Request Message](#33519-sending-a-printer-write-request-message)
+        - [3.3.5.1.10 Processing a Printer Create Response Message](#335110-processing-a-printer-create-response-message)
+        - [3.3.5.1.11 Processing a Printer Close Response Message](#335111-processing-a-printer-close-response-message)
+        - [3.3.5.1.12 Processing a Printer Write Response Message](#335112-processing-a-printer-write-response-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Annotations for Printer Redirection](#41-annotations-for-printer-redirection)
+    - [4.1.1 Client Printer Device (DR_PRN_DEVICE_ANNOUNCE)](#411-client-printer-device-drprndeviceannounce)
+    - [4.1.2 Server Printer Set XPS Mode (DR_PRN_USING_XPS)](#412-server-printer-set-xps-mode-drprnusingxps)
+    - [4.1.3 Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)](#413-add-printer-cachedata-drprnaddcachedata)
+    - [4.1.4 Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)](#414-update-printer-cachedata-drprnupdatecachedata)
+    - [4.1.5 Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)](#415-delete-printer-cachedata-drprndeletecachedata)
+    - [4.1.6 Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)](#416-rename-printer-cachedata-drprnrenamecachedata)
+    - [4.1.7 Server Printer Create Request (DR_PRN_CREATE_REQ)](#417-server-printer-create-request-drprncreatereq)
+    - [4.1.8 Server Printer Close Request (DR_PRN_CLOSE_REQ)](#418-server-printer-close-request-drprnclosereq)
+    - [4.1.9 Server Printer Write Request (DR_PRN_WRITE_REQ)](#419-server-printer-write-request-drprnwritereq)
+    - [4.1.10 Client Printer Create Response (DR_PRN_CREATE_RSP)](#4110-client-printer-create-response-drprncreatersp)
+    - [4.1.11 Client Printer Close Response (DR_PRN_CLOSE_RSP)](#4111-client-printer-close-response-drprnclosersp)
+    - [4.1.12 Client Printer Write Response (DR_PRN_WRITE_RSP)](#4112-client-printer-write-response-drprnwritersp)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Purpose of Print Virtual Channel Extension ....................................................... 8
-Protocol Initialization ..................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.2.2
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Common Data Types ................................................................................... 10
-Server Printer Cache Event (SERVER_PRINTER_CACHE_EVENT) ................. 10
-Printer Redirection Messages ........................................................................ 11
-Client Device List Announce Request (DR_PRN_DEVICE_ANNOUNCE) .......... 11
-Server Printer Set XPS Mode (DR_PRN_USING_XPS) ................................. 13
-Add Printer Cachedata (DR_PRN_ADD_CACHEDATA) ................................. 13
-Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA) ....................... 15
-Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA) ......................... 15
-Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA) ..................... 16
-Server Create Request (DR_PRN_CREATE_REQ) ....................................... 17
-Server Printer Close Request (DR_PRN_CLOSE_REQ) ................................ 18
-Server Printer Write Request (DR_PRN_WRITE_REQ) ................................ 18
-Client Printer Create Response (DR_PRN_CREATE_RSP) ............................. 18
-Client Printer Close Response (DR_PRN_CLOSE_RSP) ................................ 19
-Client Printer Write Response (DR_PRN_WRITE_RSP) ................................ 19
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 20
-Common Details .............................................................................................. 20
-Abstract Data Model .................................................................................... 20
-Cached Printer Config Data .................................................................... 20
-XPS Mode ............................................................................................ 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Printer Redirection Messages .................................................................. 21
-Sending a Client Device List Announce Request Message ...................... 21
-Processing a Printer Set XPS Mode Message ........................................ 22
-Processing an Add Printer Cachedata Message .................................... 22
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2
-
-[MS-RDPEPC] - v20240423
-Remote Desktop Protocol: Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 38
-
-3.2.6
-3.2.7
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-3.2.5.1.9
-3.2.5.1.10
-3.2.5.1.11
-3.2.5.1.12
-
-Processing an Update Printer Cachedata Message ................................ 22
-Processing a Delete Printer Cachedata Message ................................... 22
-Processing a Rename Printer Cachedata Message ................................ 22
-Processing a Create Request Message ................................................ 22
-Processing a Close Request Message .................................................. 22
-Processing a Write Request Message .................................................. 22
-Sending a Printer Create Response Message ....................................... 22
-Sending a Printer Close Response Message ......................................... 23
-Sending a Printer Write Response Message ......................................... 23
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-Server Details .................................................................................................. 24
-Abstract Data Model .................................................................................... 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Printer Redirection Messages .................................................................. 24
-Processing a Client Device List Announce Request Message .................. 24
-Sending a Printer Set XPS Mode Message ........................................... 25
-Sending an Add Printer Cachedata Message ........................................ 25
-Sending an Update Printer Cachedata Message ................................... 25
-Sending Delete Printer Cachedata ...................................................... 25
-Sending a Rename Printer Cachedata Message .................................... 25
-Sending a Printer Create Request Message ......................................... 25
-Sending a Printer Close Request Message ........................................... 25
-Sending a Printer Write Request Message ........................................... 25
-Processing a Printer Create Response Message .................................... 25
-Processing a Printer Close Response Message ..................................... 26
-Processing a Printer Write Response Message ..................................... 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-3.3.5.1.9
-3.3.5.1.10
-3.3.5.1.11
-3.3.5.1.12
-
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 27
-Annotations for Printer Redirection ..................................................................... 27
-Client Printer Device (DR_PRN_DEVICE_ANNOUNCE) ...................................... 27
-Server Printer Set XPS Mode (DR_PRN_USING_XPS) ....................................... 28
-Add Printer Cachedata (DR_PRN_ADD_CACHEDATA) ....................................... 28
-Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA) ............................. 28
-Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA) ............................... 29
-Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA) ........................... 29
-Server Printer Create Request (DR_PRN_CREATE_REQ) ................................... 30
-Server Printer Close Request (DR_PRN_CLOSE_REQ) ...................................... 30
-Server Printer Write Request (DR_PRN_WRITE_REQ) ...................................... 30
-Client Printer Create Response (DR_PRN_CREATE_RSP) .................................. 31
-Client Printer Close Response (DR_PRN_CLOSE_RSP) ...................................... 31
-Client Printer Write Response (DR_PRN_WRITE_RSP) ...................................... 31
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-4.1.7
-4.1.8
-4.1.9
-4.1.10
-4.1.11
-4.1.12
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 34
-
-7  Change Tracking .................................................................................................... 36
-
-8  Index ..................................................................................................................... 37
-
-[MS-RDPEPC] - v20240423
-Remote Desktop Protocol: Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 38
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Print Virtual Channel Extension to the Remote Desktop Protocol. This
 protocol is used to redirect printers from a terminal client to the terminal server. This allows the
@@ -811,7 +668,7 @@ server access to printers physically connected to the client as if the devices w
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -875,7 +732,8 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-technologies to describe the content and appearance of paginated documents. For more
+
+technologies to describe the content and appearance of paginated documents. For more
 information, see [MSFT-XMLPAPER].
 
 XPS file: A type of file that contains XPS data. Such files contain all document elements as well as
@@ -885,14 +743,14 @@ printer-specific rendering information.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -912,23 +770,23 @@ Virtual Channel Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Print Virtual Channel Extension specifies the communication used to enable the redirection of
 printers between a terminal client and a terminal server. By redirecting printers from the terminal
 client to the terminal server, applications running on a server machine can access the remote
 devices as if they were local printers.
 
-1.3.1  Purpose of Print Virtual Channel Extension
+#### 1.3.1 Purpose of Print Virtual Channel Extension
 
 The Print Virtual Channel Extension enables printer redirection. It allows applications running a
 terminal server to access the printers attached to the terminal client.
 
-1.3.2  Protocol Initialization
+#### 1.3.2 Protocol Initialization
 
 This protocol relies for transportation of its packets on the Remote Desktop Protocol: File System
 Virtual Channel Extension as specified in [MS-RDPEFS]. It describes the format of messages for printer
@@ -940,39 +798,40 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-devices. This protocol is considered initialized after at least one printer device is advertised by the
+
+devices. This protocol is considered initialized after at least one printer device is advertised by the
 client, and after the "Server Device Announce Response" message that indicates successful
 initialization for that device is sent by the server as illustrated in the figure in section 1.3.1 of [MS-
 RDPEFS].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol relies for transportation of its packets on the Remote Desktop Protocol: File System
 Virtual Channel Extension as specified in [MS-RDPEFS]. This protocol extends the File System Virtual
 Channel Extension to enable printer redirection.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Print Virtual Channel Extension operates only after the Remote Desktop Protocol: File System
 Virtual Channel Extension [MS-RDPEFS] transport is fully established and a printer device is advertised
 by the client. This protocol describes the messages for printer devices only.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
  The Print Virtual Channel Extension is designed to be run within the context of a Remote Desktop
 Protocol virtual channel established between a client and server. This protocol extension is applicable
 when applications running on the terminal server need to access the printers physically connected to
 a client machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol relies on the Print Virtual Channel to perform basic versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol contains no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol does not use any standards assignments.
 
@@ -983,13 +842,14 @@ Release: April 23, 2024
 
 9 / 38
 
-2  Messages
+
+## 2 Messages
 
 This protocol shares messages and common data types that are specified in [MS-RDPEFS] section 2 of
 Remote Desktop Protocol: File System Virtual Channel Extension. This section describes the messages
 and data types used by the Print Virtual Channel Extension.
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be transported over an established Remote Desktop Protocol device extensions
 channel (as specified in [MS-RDPEFS] section 2.1).
@@ -998,17 +858,17 @@ The static virtual channel is considered terminated if the client and server are
 are errors in processing the packet, as described in [MS-RDPEFS] section 3.1.5.2 "Processing Packet
 Errors".
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
  The following sections contain Print Virtual Channel Extension message syntax.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 Printer redirection uses common data types defined and explained in the Remote Desktop Protocol:
 File System Virtual Channel Extension. The following are the data types that are specific to the Print
 Virtual Channel Extension.
 
-2.2.1.1  Server Printer Cache Event (SERVER_PRINTER_CACHE_EVENT)
+##### 2.2.1.1 Server Printer Cache Event (SERVER_PRINTER_CACHE_EVENT)
 
 The Server Printer Cache Event is used to identify various server events associated with Printer
 Cached Config Data (section 3.1.1.1) in the messages sent from the server to the client.
@@ -1065,9 +925,10 @@ Release: April 23, 2024
 
 10 / 38
 
-2.2.2  Printer Redirection Messages
 
-2.2.2.1  Client Device List Announce Request (DR_PRN_DEVICE_ANNOUNCE)
+#### 2.2.2 Printer Redirection Messages
+
+##### 2.2.2.1 Client Device List Announce Request (DR_PRN_DEVICE_ANNOUNCE)
 
 This message is specified in [MS-RDPEFS] section 2.2.2.9 (Client Device List Announce Request). For
 each redirected printer, a DEVICE_ANNOUNCE header (as specified in [MS-RDPEFS] section 2.2.1.3) is
@@ -1133,7 +994,8 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DeviceId (4 bytes): This field is defined in [MS-RDPEFS] section 2.2.1.3. The DeviceId field MUST
+
+DeviceId (4 bytes): This field is defined in [MS-RDPEFS] section 2.2.1.3. The DeviceId field MUST
 be set to the unique device ID to identify this printer device. This field is later used to refer to the
 same printer device by both the client and the server.
 
@@ -1230,7 +1092,8 @@ Release: April 23, 2024
 
 12 / 38
 
-PrinterName (variable): The PrinterName field is a null-terminated Unicode string. The client
+
+PrinterName (variable): The PrinterName field is a null-terminated Unicode string. The client
 
 MUST specify the user-assigned printer name of the local printer in this field. This name is used
 by the server to generate the server-side redirected printer queue.
@@ -1238,7 +1101,7 @@ by the server to generate the server-side redirected printer queue.
 CachedPrinterConfigData (variable): A variable-length array of bytes. This field is a binary large
 object (BLOB) of data that describes the cached printer configuration (see section 3.1.1.1).
 
-2.2.2.2  Server Printer Set XPS Mode (DR_PRN_USING_XPS)
+##### 2.2.2.2 Server Printer Set XPS Mode (DR_PRN_USING_XPS)
 
 This message is sent from server to client to set the device in XPS mode (see section 3.1.1.2) and
 indicate to the client that future Printer Write Request (section 2.2.2.9) messages will use the XPS
@@ -1273,7 +1136,7 @@ Flags (4 bytes): A 32-bit unsigned integer. This field is unused. It can contain
 
 be ignored on receipt.
 
-2.2.2.3  Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)
+##### 2.2.2.3 Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)
 
 This message is sent from the server to the client when a printer queue is created manually on the
 redirected port (port redirection is explained in [MS-RDPESP]) on the server.
@@ -1310,7 +1173,8 @@ Release: April 23, 2024
 
 13 / 38
 
-CachedFieldsLen
+
+CachedFieldsLen
 
 PnPName (variable)
 
@@ -1380,7 +1244,8 @@ Release: April 23, 2024
 
 14 / 38
 
-2.2.2.4  Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)
+
+##### 2.2.2.4 Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1433,7 +1298,7 @@ CachedPrinterConfigData (variable):  A variable-length array of bytes. This fiel
 
 that describes the cached printer configuration (see section 3.1.1.1).
 
-2.2.2.5  Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)
+##### 2.2.2.5 Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)
 
 This message is sent by the server when a manually created printer on the redirected port is deleted.
 
@@ -1463,7 +1328,8 @@ Release: April 23, 2024
 
 15 / 38
 
-...
+
+...
 
 Header (4 bytes):  The common message header (as specified in [MS-RDPEFS] section 2.2.1.1). The
 
@@ -1482,7 +1348,7 @@ PrinterName (variable): A null-terminated Unicode string that specifies the prin
 
 deleted.
 
-2.2.2.6  Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)
+##### 2.2.2.6 Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)
 
 This message is sent by the server when the user renames a redirected printer.
 
@@ -1541,11 +1407,12 @@ Release: April 23, 2024
 
 16 / 38
 
-NewPrinterName (variable): A null-terminated Unicode string that specifies the printer name after
+
+NewPrinterName (variable): A null-terminated Unicode string that specifies the printer name after
 
 the rename operation.
 
-2.2.2.7  Server Create Request (DR_PRN_CREATE_REQ)
+##### 2.2.2.7 Server Create Request (DR_PRN_CREATE_REQ)
 
 This message is sent by the server to request the opening of the client printer queue and to prepare
 for receiving print data.
@@ -1619,13 +1486,14 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CreateOptions (4 bytes): A 32-bit unsigned integer. Unused. This field can contain any value and
+
+CreateOptions (4 bytes): A 32-bit unsigned integer. Unused. This field can contain any value and
 
 MUST be ignored on receipt.
 
 PathLength (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0 for the printer devices.
 
-2.2.2.8  Server Printer Close Request (DR_PRN_CLOSE_REQ)
+##### 2.2.2.8 Server Printer Close Request (DR_PRN_CLOSE_REQ)
 
 This message is sent by the server to request the closing of the printer queue that was previously
 created by a DR_PRN_CREATE_REQ (section 2.2.2.7).
@@ -1650,7 +1518,7 @@ DeviceCloseRequest (56 bytes)
 DeviceCloseRequest (56 bytes): A DR_CLOSE_REQ message (as specified in [MS-RDPEFS] section
 2.2.1.4.2). This request closes a printer opened by DR_PRN_CREATE_REQ (section 2.2.2.7).
 
-2.2.2.9  Server Printer Write Request (DR_PRN_WRITE_REQ)
+##### 2.2.2.9 Server Printer Write Request (DR_PRN_WRITE_REQ)
 
 This message is sent from the server to send the print data to the client printer.
 
@@ -1676,9 +1544,9 @@ can contain any value and MUST be ignored on receipt.
 
 The WriteData field of the request could be either in PRN file or XPS file format.
 
-2.2.2.10
+##### 2.2.2.10 Client Printer Create Response (DR_PRN_CREATE_RSP)
 
-Client Printer Create Response (DR_PRN_CREATE_RSP)
+
 
 The client responds to the DR_PRN_CREATE_REQ with this message.
 
@@ -1708,7 +1576,8 @@ Release: April 23, 2024
 
 18 / 38
 
-DeviceIoReply (16 bytes):  A DR_DEVICE_IOCOMPLETION header (as specified in [MS-RDPEFS]
+
+DeviceIoReply (16 bytes):  A DR_DEVICE_IOCOMPLETION header (as specified in [MS-RDPEFS]
 
 section 2.2.1.5). The CompletionId field of this header MUST match the CompletionId of a
 Device I/O Request message that had the MajorFunction field set to IRP_MJ_CREATE.
@@ -1718,9 +1587,9 @@ FileId (4 bytes):  A 32-bit unsigned integer that specifies a unique ID that ide
 object. The ID MUST be reused after sending a Device Close Response (as specified in [MS-
 RDPEFS] section 2.2.1.5.2).
 
-2.2.2.11
+##### 2.2.2.11 Client Printer Close Response (DR_PRN_CLOSE_RSP)
 
-Client Printer Close Response (DR_PRN_CLOSE_RSP)
+
 
 The client responds to the DR_PRN_CLOSE_REQ with this message.
 
@@ -1750,9 +1619,9 @@ Device I/O Request message that had the MajorFunction field set to IRP_MJ_CLOSE.
 
 Padding  (4 bytes):  An array of 4 bytes. This field is reserved for future use.
 
-2.2.2.12
+##### 2.2.2.12 Client Printer Write Response (DR_PRN_WRITE_RSP)
 
-Client Printer Write Response (DR_PRN_WRITE_RSP)
+
 
 The client responds to the DR_PRN_WRITE_REQ with this message.
 
@@ -1787,14 +1656,15 @@ Release: April 23, 2024
 
 19 / 38
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify protocol details, including abstract data models and message processing
 rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -1804,7 +1674,7 @@ external behavior is consistent with that described in this document.
 The Remote Desktop Protocol: Print Virtual Channel Extension follows the abstract data model
 specified in [MS-RDPEFS] section 3.1.1. The following abstract entities are specific to this protocol.
 
-3.1.1.1  Cached Printer Config Data
+##### 3.1.1.1 Cached Printer Config Data
 
 Printer drivers store default printing preferences for each printer. The format of these preferences is
 driver-specific. For the redirected printers, when a user modifies printing preferences on the server
@@ -1817,7 +1687,7 @@ client SHOULD treat the printer name and data BLOB pairs as records in a databas
 packets to the client to add, rename, delete or update the printer name or the data BLOB of an
 existing record.
 
-3.1.1.2  XPS Mode
+##### 3.1.1.2 XPS Mode
 
 When a client redirects printers, it adds a special flag
 (RDPDR_PRINTER_ANNOUNCE_FLAG_XPSFORMAT) if the client can handle the XPS format for the
@@ -1828,15 +1698,15 @@ the XPS format. When this type of message is received, the client marks the prin
 Redirection of XPS data using the Remote Desktop Protocol: XML Paper Specification (XPS) Print
 Virtual Channel Extension is described in [MS-RDPEXPS].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No common timers are used.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Print Virtual Channel Extension protocol MUST be initialized before the printer can be redirected.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
@@ -1847,43 +1717,44 @@ Release: April 23, 2024
 
 20 / 38
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The common message processing events and rules that are described in [MS-RDPEFS] section 3.1.5
 apply to this protocol. For client-specific and server-specific message processing, see sections 3.2.5
 and 3.3.5.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No common timer events are used.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no common local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are used.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No client higher-layer triggered events are used.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Printer Redirection Messages
+##### 3.2.5.1 Printer Redirection Messages
 
-3.2.5.1.1 Sending a Client Device List Announce Request Message
+###### 3.2.5.1.1 Sending a Client Device List Announce Request Message
 
 After the Remote Desktop Protocol: File System Virtual Channel Extension completes its initialization,
 the client MUST send a DR_CORE_DEVICELIST_ANNOUNCE_REQ message to the server with
@@ -1913,11 +1784,12 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Printer cache data, if this data exists. See section 3.1.1.1.
 
-3.2.5.1.2 Processing a Printer Set XPS Mode Message
+###### 3.2.5.1.2 Processing a Printer Set XPS Mode Message
 
 This message MUST be received only for the printers that were marked with
 RDPDR_PRINTER_ANNOUNCE_FLAG_XPSFORMAT. When a server chooses to use an XPS driver for
@@ -1926,51 +1798,51 @@ to be in XPS mode (see section 3.1.1.2). When printer data arrives for these pri
 treated as an XPS file and not a PRN file. For other printers, the I/O data MUST be treated as a PRN
 file.
 
-3.2.5.1.3 Processing an Add Printer Cachedata Message
+###### 3.2.5.1.3 Processing an Add Printer Cachedata Message
 
 This message is received when a printer queue is manually installed on the server on the client's
 redirected port. The name of the port is stored in the PortDosName field. The client SHOULD store
 this manual printer configuration in its persistent storage, and it MUST use this configuration to
 redirect the printer the next time the client connects to the same server.
 
-3.2.5.1.4 Processing an Update Printer Cachedata Message
+###### 3.2.5.1.4 Processing an Update Printer Cachedata Message
 
 This message is received when the configuration information of a redirected printer queue is updated
 on the server. The client MUST store the updated CachedPrinterConfigData field (see section
 3.1.1.1), and it MUST use it when redirecting the printer next time.
 
-3.2.5.1.5 Processing a Delete Printer Cachedata Message
+###### 3.2.5.1.5 Processing a Delete Printer Cachedata Message
 
 This message is received when a redirected printer queue is deleted by the server. The client MUST
 delete the cached configuration data previously stored for this printer.
 
-3.2.5.1.6 Processing a Rename Printer Cachedata Message
+###### 3.2.5.1.6 Processing a Rename Printer Cachedata Message
 
 This message is received when the user renames the redirected printer on the server. The client MUST
 modify its local cached data for this printer to reflect this change, and the client MUST rename the
 local printer queue.
 
-3.2.5.1.7 Processing a Create Request Message
+###### 3.2.5.1.7 Processing a Create Request Message
 
 When the server starts a print job on a redirected printer, before sending the actual printing data it
 sends a create request. The client MUST prepare the printer specified by the DeviceId field to receive
 the printer output.
 
-3.2.5.1.8 Processing a Close Request Message
+###### 3.2.5.1.8 Processing a Close Request Message
 
 When the server finishes sending a print job to a redirected printer, it sends a close request. The client
 MUST end the printing process initiated when the create request was made.
 
-3.2.5.1.9 Processing a Write Request Message
+###### 3.2.5.1.9 Processing a Write Request Message
 
 Multiple write requests are received along with the printing data. These write requests are sent
 between create and close requests. The client MUST send the data associated with the write requests
 to the corresponding printer queue. The format of this data could be either printer driver-specific
 (non-XPS mode) or XPS format (XPS mode).
 
-3.2.5.1.10
+###### 3.2.5.1.10 Sending a Printer Create Response Message
 
-Sending a Printer Create Response Message
+
 
 The client MUST fill out the various members of the DR_DEVICE_IOCOMPLETION message (as
 specified in [MS-RDPEFS] section 2.2.1.5) as shown here.
@@ -1982,7 +1854,8 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For the RDPDR_HEADER:
+
+For the RDPDR_HEADER:
 
 
 
@@ -2008,9 +1881,9 @@ The DeviceId field MUST be set to match the corresponding DeviceId field from th
 The IoStatus field MUST be set to the NTSTATUS value indicating the result of the operation.
 NTSTATUS codes are specified in [MS-ERREF] section 2.3.
 
-3.2.5.1.11
+###### 3.2.5.1.11 Sending a Printer Close Response Message
 
-Sending a Printer Close Response Message
+
 
 The client MUST fill out the various members of the DR_DEVICE_IOCOMPLETION message (as
 specified in [MS-RDPEFS] section 2.2.1.5) as shown here.
@@ -2041,9 +1914,9 @@ The DeviceId MUST be set to match the corresponding DeviceId from the I/O reques
 The IoStatus field MUST be set to the NTSTATUS value indicating the result of the operation.
 NTSTATUS codes are specified in [MS-ERREF] section 2.3.
 
-3.2.5.1.12
+###### 3.2.5.1.12 Sending a Printer Write Response Message
 
-Sending a Printer Write Response Message
+
 
 The client MUST fill out the various members of the DR_DEVICE_IOCOMPLETION message (as
 specified in [MS-RDPEFS] section 2.2.1.5) as shown here.
@@ -2084,29 +1957,30 @@ Release: April 23, 2024
 
 23 / 38
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 No timer events are used.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are used.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The server sends various messages to the client in response to the following application and user-
 driven events:
@@ -2140,11 +2014,11 @@ printer close request to the client (see section 3.3.5.1.8).
 
 the server sends printer write requests to the client (see section 3.3.5.1.9).
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Printer Redirection Messages
+##### 3.3.5.1 Printer Redirection Messages
 
-3.3.5.1.1 Processing a Client Device List Announce Request Message
+###### 3.3.5.1.1 Processing a Client Device List Announce Request Message
 
 [MS-RDPEPC] - v20240423
 Remote Desktop Protocol: Print Virtual Channel Extension
@@ -2153,7 +2027,8 @@ Release: April 23, 2024
 
 24 / 38
 
-After receiving a Client Device List Announce Request (section 2.2.2.1), the server creates a printer
+
+After receiving a Client Device List Announce Request (section 2.2.2.1), the server creates a printer
 queue to represent each client-side printer device. The server MUST use the appropriate driver for this
 redirected printer queue. The server MAY use a pseudo driver that produces XPS-format output if the
 RDPDR_PRINTER_ANNOUNCE_FLAG_XPSFORMAT flag is supplied for the device. If this flag is not
@@ -2163,7 +2038,7 @@ the server MUST use the information contained to configure the instance of the p
 server MAY use the PrinterName field specified in the message to generate the name for the
 redirected printer queue.
 
-3.3.5.1.2 Sending a Printer Set XPS Mode Message
+###### 3.3.5.1.2 Sending a Printer Set XPS Mode Message
 
 If the client printer supports XPS format, it indicates this support using the
 RDPDR_PRINTER_ANNOUNCE_FLAG_XPSFORMAT flag when redirecting this printer (see section
@@ -2172,45 +2047,45 @@ format.<3> If the server chooses to send print data in XPS format, the server MU
 message to the client prior to sending any data in the Printer Write Request (section 2.2.2.9)
 message.
 
-3.3.5.1.3 Sending an Add Printer Cachedata Message
+###### 3.3.5.1.3 Sending an Add Printer Cachedata Message
 
 When a user manually installs a printer driver for the redirected port, the server collects the
 configuration data for such a printer queue and sends it to the client using this message.
 
-3.3.5.1.4 Sending an Update Printer Cachedata Message
+###### 3.3.5.1.4 Sending an Update Printer Cachedata Message
 
 When a user modifies the configuration data, such as the printing preferences for the redirected
 printer queue, the server sends this message along with the configuration data to inform the client.
 
-3.3.5.1.5 Sending Delete Printer Cachedata
+###### 3.3.5.1.5 Sending Delete Printer Cachedata
 
 When a user deletes the printer queue, the server sends this message to the client.
 
-3.3.5.1.6 Sending a Rename Printer Cachedata Message
+###### 3.3.5.1.6 Sending a Rename Printer Cachedata Message
 
 When a user manually renames the redirected printer queue, the server sends this message to the
 client specifying old and new printer names.
 
-3.3.5.1.7 Sending a Printer Create Request Message
+###### 3.3.5.1.7 Sending a Printer Create Request Message
 
 When a server application starts printing to the redirected printer queue, the server MUST send this
 message to the client before sending any printer data so that the client can prepare for receiving
 printer data.
 
-3.3.5.1.8 Sending a Printer Close Request Message
+###### 3.3.5.1.8 Sending a Printer Close Request Message
 
 When the server application is done with a printing job, the server MUST send this message to the
 client.
 
-3.3.5.1.9 Sending a Printer Write Request Message
+###### 3.3.5.1.9 Sending a Printer Write Request Message
 
 As a server application prints to the redirected printer queue, the server MUST send the printer job
 data to the client. A print job can be distributed over multiple write requests. This message MUST be
 sent only after the DR_PRN_CREATE_RSP (section 2.2.2.10) message is received.
 
-3.3.5.1.10
+###### 3.3.5.1.10 Processing a Printer Create Response Message
 
-Processing a Printer Create Response Message
+
 
 [MS-RDPEPC] - v20240423
 Remote Desktop Protocol: Print Virtual Channel Extension
@@ -2219,28 +2094,29 @@ Release: April 23, 2024
 
 25 / 38
 
-The server MUST inspect the result of the printer create operation and abort/fail the printer operation
+
+The server MUST inspect the result of the printer create operation and abort/fail the printer operation
 if the create request failed.
 
-3.3.5.1.11
+###### 3.3.5.1.11 Processing a Printer Close Response Message
 
-Processing a Printer Close Response Message
+
 
 The server MUST ignore this message after validating it according to the rules specified in [MS-
 RDPEFS] section 3.1.5.2.
 
-3.3.5.1.12
+###### 3.3.5.1.12 Processing a Printer Write Response Message
 
-Processing a Printer Write Response Message
+
 
 The server MUST inspect the amount of data written and send the next packet of data if there are any
 packets remaining.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events used.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events.
 
@@ -2251,11 +2127,12 @@ Release: April 23, 2024
 
 26 / 38
 
-4  Protocol Examples
 
-4.1  Annotations for Printer Redirection
+## 4 Protocol Examples
 
-4.1.1  Client Printer Device (DR_PRN_DEVICE_ANNOUNCE)
+### 4.1 Annotations for Printer Redirection
+
+#### 4.1.1 Client Printer Device (DR_PRN_DEVICE_ANNOUNCE)
 
 The client sends this message to the server to indicate the list of printers that it wants to redirect.
 
@@ -2324,11 +2201,12 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 02 00 00 00               -> DeviceId                                = 0x00000002
+
+ 02 00 00 00               -> DeviceId                                = 0x00000002
  4c 50 54 31 00 00 00 00   -> PreferredDosName (8 characters)
  00 00 00 00               -> DeviceDataLength                        = 0x00000000
 
-4.1.2  Server Printer Set XPS Mode (DR_PRN_USING_XPS)
+#### 4.1.2 Server Printer Set XPS Mode (DR_PRN_USING_XPS)
 
 When the server decides to use the XPS format for the output, it sends this message to prepare the
 client.
@@ -2341,7 +2219,7 @@ client.
  01 00 00 00          -> PrinterId           = 0x00000001
  f8 5b fa 7f          -> Flags               = 0x7ffa5bf8
 
-4.1.3  Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)
+#### 4.1.3 Add Printer Cachedata (DR_PRN_ADD_CACHEDATA)
 
 When a printer is manually installed on the redirected port, the server sends this message to allow the
 client an opportunity to cache the configuration.
@@ -2373,7 +2251,7 @@ client an opportunity to cache the configuration.
                       -> PrinterName (variable - 42 bytes)
                                     = "Brother DCP-1000 USB"
 
-4.1.4  Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)
+#### 4.1.4 Update Printer Cachedata (DR_PRN_UPDATE_CACHEDATA)
 
 When printing preferences or other configuration settings are modified on the server for a redirected
 printer, the server notifies the client with the configuration data.
@@ -2389,7 +2267,8 @@ Remote Desktop Protocol: Print Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000020 44 00 43 00 50 00 2d 00 31 00 30 00 30 00 30 00
+
+ 00000020 44 00 43 00 50 00 2d 00 31 00 30 00 30 00 30 00
  00000030 20 00 55 00 53 00 42 00 00 00 48 00 00 00 00 00
  00000040 00 00 94 20 00 00 00 00 00 00 37 00 00 00 00 00
 
@@ -2404,7 +2283,7 @@ Release: April 23, 2024
                            = "Brother DCP-1000 USB"
  48 00 00 00 00 00 ...  -> ConfigData (variable)
 
-4.1.5  Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)
+#### 4.1.5 Delete Printer Cachedata (DR_PRN_DELETE_CACHEDATA)
 
 The redirected printer was deleted manually.
 
@@ -2424,7 +2303,7 @@ The redirected printer was deleted manually.
                      -> PrinterName (42 bytes)
                                  = "Brother DCP-1000 USB"
 
-4.1.6  Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)
+#### 4.1.6 Rename Printer Cachedata (DR_PRN_RENAME_CACHEDATA)
 
 The redirected printer was renamed.
 
@@ -2458,11 +2337,12 @@ Release: April 23, 2024
 
 29 / 38
 
- 28 00 72 00 65 00 6e 00 61 00 6d 00 65 00 64 00 29 00 00 00
+
+ 28 00 72 00 65 00 6e 00 61 00 6d 00 65 00 64 00 29 00 00 00
                      -> NewPrinterName (62 bytes)
                                     = "Brother DCP-1000 USB (renamed)"
 
-4.1.7  Server Printer Create Request (DR_PRN_CREATE_REQ)
+#### 4.1.7 Server Printer Create Request (DR_PRN_CREATE_REQ)
 
 The server sends a create request before starting a print job.
 
@@ -2487,7 +2367,7 @@ The server sends a create request before starting a print job.
  40 00 00 00             -> CreateOptions                  = 0x00000004
  00 00 00 00             -> PathLength                     = 0x00000000
 
-4.1.8  Server Printer Close Request (DR_PRN_CLOSE_REQ)
+#### 4.1.8 Server Printer Close Request (DR_PRN_CLOSE_REQ)
 
 The server sends a close message when it finishes sending a print job.
 
@@ -2506,7 +2386,7 @@ The server sends a close message when it finishes sending a print job.
  00 00 00 00          -> MinorFunction                  = 0x00000000
  00 00 ......         -> Padding (32 bytes)
 
-4.1.9  Server Printer Write Request (DR_PRN_WRITE_REQ)
+#### 4.1.9 Server Printer Write Request (DR_PRN_WRITE_REQ)
 
 The server sends multiple write requests to send the print job to the client.
 
@@ -2523,7 +2403,8 @@ Release: April 23, 2024
 
 30 / 38
 
- 72 44                   -> RDPDR_CTYP_CORE                = 0x4472
+
+ 72 44                   -> RDPDR_CTYP_CORE                = 0x4472
  52 49                   -> PAKID_CORE_DEVICE_IOREQUEST    = 0x4952
  02 00 00 00             -> DeviceId                       = 0x00000002
  00 00 00 00             -> FileId                         = 0x00000000
@@ -2536,7 +2417,7 @@ Release: April 23, 2024
 
  (skipped)
 
-4.1.10 Client Printer Create Response (DR_PRN_CREATE_RSP)
+#### 4.1.10 Client Printer Create Response (DR_PRN_CREATE_RSP)
 
 The client responds to the create request from the server.
 
@@ -2551,7 +2432,7 @@ The client responds to the create request from the server.
  00 00 00 00         -> IoStatus                       = 0x00000000
  00 00 00 00         -> FileId                         = 0x00000000
 
-4.1.11 Client Printer Close Response (DR_PRN_CLOSE_RSP)
+#### 4.1.11 Client Printer Close Response (DR_PRN_CLOSE_RSP)
 
 The client responds to the close request.
 
@@ -2566,7 +2447,7 @@ The client responds to the close request.
  00 00 00 00         -> IoStatus                       = 0x00000000
  00 00 00 00         -> Padding                        = 0x00000000
 
-4.1.12 Client Printer Write Response (DR_PRN_WRITE_RSP)
+#### 4.1.12 Client Printer Write Response (DR_PRN_WRITE_RSP)
 
 The client responds to the write request.
 
@@ -2587,7 +2468,8 @@ Release: April 23, 2024
 
 31 / 38
 
- 00 00 01 00         -> Length                         = 0x00010000
+
+ 00 00 01 00         -> Length                         = 0x00010000
 
 [MS-RDPEPC] - v20240423
 Remote Desktop Protocol: Print Virtual Channel Extension
@@ -2596,13 +2478,14 @@ Release: April 23, 2024
 
 32 / 38
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for Print Virtual Channel Extension.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters in the Remote Desktop Protocol: Print Virtual Channel Extension.
 
@@ -2613,7 +2496,8 @@ Release: April 23, 2024
 
 33 / 38
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2681,7 +2565,8 @@ Release: April 23, 2024
 
 34 / 38
 
-Request (section 2.2.2.1) message), Windows implementations use the terminal server–specific XPS-
+
+Request (section 2.2.2.1) message), Windows implementations use the terminal server–specific XPS-
 capable printer driver and ignore the DriverName field.
 
 <2> Section 3.1.1.2: XPS Mode is not supported for Windows 2000, Windows XP, and Windows Server
@@ -2697,7 +2582,8 @@ Release: April 23, 2024
 
 35 / 38
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2741,7 +2627,8 @@ Release: April 23, 2024
 
 36 / 38
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2887,7 +2774,8 @@ Normative references 8
 
 37 / 38
 
-   server (section 3.1.5 21, section 3.3.5 24)
+
+   server (section 3.1.5 21, section 3.3.5 24)
 Server
    abstract data model (section 3.1.1 20, section
 

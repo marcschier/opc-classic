@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 53
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -290,7 +291,8 @@ Release: April 23, 2024
 
 2 / 53
 
-Date
+
+Date
 
 Revision
 History
@@ -432,240 +434,102 @@ Release: April 23, 2024
 
 3 / 53
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 VSS_ID](#2211-vssid)
+      - [2.2.1.2 VSS_PWSZ](#2212-vsspwsz)
+      - [2.2.1.3 VSS_TIMESTAMP](#2213-vsstimestamp)
+    - [2.2.2 Enumerations](#222-enumerations)
+      - [2.2.2.1 VSS_OBJECT_TYPE Enumeration](#2221-vssobjecttype-enumeration)
+      - [2.2.2.2 VSS_MGMT_OBJECT_TYPE Enumeration](#2222-vssmgmtobjecttype-enumeration)
+      - [2.2.2.3 VSS_VOLUME_SNAPSHOT_ATTRIBUTES Enumeration](#2223-vssvolumesnapshotattributes-enumeration)
+      - [2.2.2.4 VSS_SNAPSHOT_STATE Enumeration](#2224-vsssnapshotstate-enumeration)
+      - [2.2.2.5 VSS_PROVIDER_TYPE Enumeration](#2225-vssprovidertype-enumeration)
+    - [2.2.3 Structures](#223-structures)
+      - [2.2.3.1 VSS_OBJECT_UNION Union](#2231-vssobjectunion-union)
+      - [2.2.3.2 VSS_OBJECT_PROP Structure](#2232-vssobjectprop-structure)
+      - [2.2.3.3 VSS_SNAPSHOT_PROP Structure](#2233-vsssnapshotprop-structure)
+      - [2.2.3.4 VSS_PROVIDER_PROP Structure](#2234-vssproviderprop-structure)
+      - [2.2.3.5 VSS_MGMT_OBJECT_UNION Union](#2235-vssmgmtobjectunion-union)
+      - [2.2.3.6 VSS_MGMT_OBJECT_PROP Structure](#2236-vssmgmtobjectprop-structure)
+      - [2.2.3.7 VSS_VOLUME_PROP Structure](#2237-vssvolumeprop-structure)
+      - [2.2.3.8 VSS_DIFF_VOLUME_PROP Structure](#2238-vssdiffvolumeprop-structure)
+      - [2.2.3.9 VSS_DIFF_AREA_PROP Structure](#2239-vssdiffareaprop-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 IVssSnapshotMgmt Details](#311-ivsssnapshotmgmt-details)
+      - [3.1.1.1 Abstract Data Model](#3111-abstract-data-model)
+      - [3.1.1.2 Timers](#3112-timers)
+      - [3.1.1.3 Initialization](#3113-initialization)
+      - [3.1.1.4 Message Processing Events and Sequencing Rules](#3114-message-processing-events-and-sequencing-rules)
+        - [3.1.1.4.1 GetProviderMgmtInterface (Opnum 3)](#31141-getprovidermgmtinterface-opnum-3)
+        - [3.1.1.4.2 QueryVolumesSupportedForSnapshots (Opnum 4)](#31142-queryvolumessupportedforsnapshots-opnum-4)
+          - [3.1.1.4.2.1 Volume Object Enumeration](#311421-volume-object-enumeration)
+        - [3.1.1.4.3 QuerySnapshotsByVolume (Opnum 5)](#31143-querysnapshotsbyvolume-opnum-5)
+          - [3.1.1.4.3.1 Shadow Copy Enumeration Return Value](#311431-shadow-copy-enumeration-return-value)
+      - [3.1.1.5 Timer Events](#3115-timer-events)
+      - [3.1.1.6 Other Local Events](#3116-other-local-events)
+    - [3.1.2 IVssEnumObject Details](#312-ivssenumobject-details)
+      - [3.1.2.1 Next (Opnum 3)](#3121-next-opnum-3)
+      - [3.1.2.2 Skip (Opnum 4)](#3122-skip-opnum-4)
+      - [3.1.2.3 Reset (Opnum 5)](#3123-reset-opnum-5)
+      - [3.1.2.4 Clone (Opnum 6)](#3124-clone-opnum-6)
+    - [3.1.3 IVssEnumMgmtObject Details](#313-ivssenummgmtobject-details)
+      - [3.1.3.1 Next (Opnum 3)](#3131-next-opnum-3)
+      - [3.1.3.2 Skip (Opnum 4)](#3132-skip-opnum-4)
+      - [3.1.3.3 Reset (Opnum 5)](#3133-reset-opnum-5)
+      - [3.1.3.4 Clone (Opnum 6)](#3134-clone-opnum-6)
+    - [3.1.4 IVssDifferentialSoftwareSnapshotMgmt Details](#314-ivssdifferentialsoftwaresnapshotmgmt-details)
+      - [3.1.4.1 Abstract Data Model](#3141-abstract-data-model)
+      - [3.1.4.2 Timers](#3142-timers)
+      - [3.1.4.3 Initialization](#3143-initialization)
+      - [3.1.4.4 Message Processing Events and Sequencing Rules](#3144-message-processing-events-and-sequencing-rules)
+        - [3.1.4.4.1 Shadow Copy Storage Association Object Enumeration](#31441-shadow-copy-storage-association-object-enumeration)
+        - [3.1.4.4.2 AddDiffArea (Opnum 3)](#31442-adddiffarea-opnum-3)
+        - [3.1.4.4.3 ChangeDiffAreaMaximumSize (Opnum 4)](#31443-changediffareamaximumsize-opnum-4)
+        - [3.1.4.4.4 QueryVolumesSupportedForDiffAreas (Opnum 5)](#31444-queryvolumessupportedfordiffareas-opnum-5)
+        - [3.1.4.4.5 QueryDiffAreasForVolume (Opnum 6)](#31445-querydiffareasforvolume-opnum-6)
+        - [3.1.4.4.6 QueryDiffAreasOnVolume (Opnum 7)](#31446-querydiffareasonvolume-opnum-7)
+      - [3.1.4.5 Timer Events](#3145-timer-events)
+      - [3.1.4.6 Other Local Events](#3146-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Processing Server Replies to Method Calls](#3241-processing-server-replies-to-method-calls)
+        - [3.2.4.1.1 Shadow Copy Management Protocol Object Relationships](#32411-shadow-copy-management-protocol-object-relationships)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Enumerate Volumes Supporting Shadow Copies](#41-enumerate-volumes-supporting-shadow-copies)
+  - [4.2 Calculate Shadow Copy Storage Space on a Volume](#42-calculate-shadow-copy-storage-space-on-a-volume)
+  - [4.3 Store Shadow Copies on a Different Volume](#43-store-shadow-copies-on-a-different-volume)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-Data Types ................................................................................................ 12
-VSS_ID................................................................................................ 12
-VSS_PWSZ ........................................................................................... 12
-VSS_TIMESTAMP .................................................................................. 12
-Enumerations ............................................................................................. 13
-VSS_OBJECT_TYPE Enumeration ............................................................. 13
-VSS_MGMT_OBJECT_TYPE Enumeration .................................................. 13
-VSS_VOLUME_SNAPSHOT_ATTRIBUTES Enumeration ................................ 14
-VSS_SNAPSHOT_STATE Enumeration ...................................................... 14
-VSS_PROVIDER_TYPE Enumeration ......................................................... 14
-Structures ................................................................................................. 15
-VSS_OBJECT_UNION Union .................................................................... 15
-VSS_OBJECT_PROP Structure ................................................................. 15
-VSS_SNAPSHOT_PROP Structure ............................................................ 15
-VSS_PROVIDER_PROP Structure ............................................................. 16
-VSS_MGMT_OBJECT_UNION Union ......................................................... 17
-VSS_MGMT_OBJECT_PROP Structure ...................................................... 17
-VSS_VOLUME_PROP Structure ................................................................ 17
-VSS_DIFF_VOLUME_PROP Structure........................................................ 18
-VSS_DIFF_AREA_PROP Structure ............................................................ 18
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-
-2.2.3
-
-3.1
-
-3.1.1
-
-3.1.1.4.1
-3.1.1.4.2
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Server Details .................................................................................................. 19
-IVssSnapshotMgmt Details ........................................................................... 19
-Abstract Data Model .............................................................................. 19
-Timers ................................................................................................. 19
-Initialization ......................................................................................... 19
-Message Processing Events and Sequencing Rules .................................... 19
-GetProviderMgmtInterface (Opnum 3) ............................................... 20
-QueryVolumesSupportedForSnapshots (Opnum 4) ............................... 21
-Volume Object Enumeration ........................................................ 22
-QuerySnapshotsByVolume (Opnum 5) ............................................... 22
-Shadow Copy Enumeration Return Value ...................................... 23
-Timer Events ........................................................................................ 23
-Other Local Events ................................................................................ 23
-IVssEnumObject Details .............................................................................. 23
-Next (Opnum 3) ................................................................................... 24
-Skip (Opnum 4) .................................................................................... 24
-Reset (Opnum 5) .................................................................................. 25
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-
-3.1.1.5
-3.1.1.6
-
-3.1.1.4.3.1
-
-3.1.1.4.2.1
-
-3.1.1.4.3
-
-3.1.2
-
-[MS-SCMP] - v20240423
-Shadow Copy Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 53
-
-3.1.4
-
-3.1.2.4
-
-3.1.3
-
-3.1.3.1
-3.1.3.2
-3.1.3.3
-3.1.3.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-3.1.4.4.4
-3.1.4.4.5
-3.1.4.4.6
-
-Clone (Opnum 6) .................................................................................. 25
-IVssEnumMgmtObject Details ....................................................................... 26
-Next (Opnum 3) ................................................................................... 26
-Skip (Opnum 4) .................................................................................... 27
-Reset (Opnum 5) .................................................................................. 27
-Clone (Opnum 6) .................................................................................. 28
-IVssDifferentialSoftwareSnapshotMgmt Details ............................................... 28
-Abstract Data Model .............................................................................. 28
-Timers ................................................................................................. 29
-Initialization ......................................................................................... 29
-Message Processing Events and Sequencing Rules .................................... 29
-Shadow Copy Storage Association Object Enumeration ........................ 30
-AddDiffArea (Opnum 3) .................................................................... 30
-ChangeDiffAreaMaximumSize (Opnum 4) ........................................... 31
-QueryVolumesSupportedForDiffAreas (Opnum 5) ................................ 32
-QueryDiffAreasForVolume (Opnum 6) ................................................ 33
-QueryDiffAreasOnVolume (Opnum 7) ................................................. 34
-Timer Events ........................................................................................ 35
-Other Local Events ................................................................................ 35
-Client Details ................................................................................................... 35
-Abstract Data Model .................................................................................... 35
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Processing Server Replies to Method Calls ................................................ 36
-Shadow Copy Management Protocol Object Relationships ..................... 36
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 37
-
-3.2.4.1.1
-
-3.1.4.5
-3.1.4.6
-
-3.2.4.1
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 38
-Enumerate Volumes Supporting Shadow Copies ................................................... 38
-Calculate Shadow Copy Storage Space on a Volume ............................................. 39
-Store Shadow Copies on a Different Volume ........................................................ 41
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 44
-Security Considerations for Implementers ........................................................... 44
-
-5.1
-
-6  Appendix A: Full IDL .............................................................................................. 45
-
-7  Appendix B: Product Behavior ............................................................................... 49
-
-8  Change Tracking .................................................................................................... 51
-
-9  Index ..................................................................................................................... 52
-
-[MS-SCMP] - v20240423
-Shadow Copy Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 53
-
-1  Introduction
+## 1 Introduction
 
 The Shadow Copy Management Protocol is used to programmatically enumerate shadow copies and
 configure shadow copy storage on remote machines. The protocol uses a set of Distributed
@@ -688,7 +552,7 @@ programming tools and environments are free to take advantage of them.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -738,7 +602,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Specifically, the use of this term does not imply or require that the algorithms described in
+
+Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
@@ -816,7 +681,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-shadow copy storage volume: The volume on which shadow copy storage is located.
+
+shadow copy storage volume: The volume on which shadow copy storage is located.
 
 snapshot: The point in time at which a shadow copy of a volume is made.
 
@@ -843,14 +709,14 @@ Applications can use this path to open the volume.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -872,7 +738,7 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-SMB] Microsoft Corporation, "Server Message Block (SMB) Protocol".
 
@@ -883,7 +749,8 @@ Release: April 23, 2024
 
 8 / 53
 
-[MSDN-SHADOW] Microsoft Corporation, "Volume Shadow Copy Service",
+
+[MSDN-SHADOW] Microsoft Corporation, "Volume Shadow Copy Service",
 http://msdn.microsoft.com/en-us/library/bb968832(VS.85).aspx
 
 [MSDN-STC] Microsoft Corporation, "Storage Technologies Collection", March 2003,
@@ -893,7 +760,7 @@ ba229ccd81721033.mspx
 [MSDN-VOLMAN] Microsoft Corporation, "Volume Management", http://msdn.microsoft.com/en-
 us/library/aa365728.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Shadow Copy Management Protocol provides a mechanism for remote configuration of shadow
 copies. Through the Shadow Copy Management Protocol, a client performs operations to enumerate
@@ -930,7 +797,7 @@ storage for a specified original volume.
 
 specified shadow copy storage volume.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Shadow Copy Management Protocol relies on the Distributed Component Object Model (DCOM)
 Remote Protocol, as specified in [MS-DCOM], which uses remote procedure call (RPC) as its
@@ -940,7 +807,7 @@ The Shadow Copy Management Protocol provides remote management of the storage co
 shadow copies for shared folders, which are remotely accessible through the Server Message Block
 (SMB) Protocol, as specified in [MS-SMB].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Shadow Copy Management Protocol is implemented over DCOM and RPC, and as a result, has the
 prerequisites that are specified in [MS-DCOM], [MS-OAUT], and [MS-RPCE] as being common to
@@ -958,7 +825,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An operating system on which an implementation of the Shadow Copy Management Protocol is to run
+
+An operating system on which an implementation of the Shadow Copy Management Protocol is to run
 must support the ability to dynamically enumerate the list of volumes and shadow copies that are
 configured on the server during run time.
 
@@ -969,12 +837,12 @@ IVssDifferentialSoftwareSnapshotMgmt::QueryVolumesSupportedForDiffAreas (section
 IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasForVolume (section 3.1.4.4.5), and
 IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasOnVolume (section 3.1.4.4.6).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 An application uses this protocol to remotely configure shadow copies and shadow copy storage
 on the server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: This protocol uses the Distributed Component Object Model (DCOM) Remote
 
@@ -994,11 +862,11 @@ is provided by the DCOM Remote Protocol, as specified in [MS-DCOM], and the Remo
 Call Protocol Extensions, as specified in [MS-RPCE]. This protocol configures security and
 authentication as specified in Transport (section 2.1).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following UUID assignments are Microsoft private assignments.
 
@@ -1051,16 +919,18 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-SCMP] - v20240423
+
+[MS-SCMP] - v20240423
 Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
 11 / 53
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 For its transport, this protocol uses the Distributed Component Object Model (DCOM) Remote Protocol,
 as specified in [MS-DCOM]. The DCOM Remote Protocol uses the following RPC protocol sequence:
@@ -1079,15 +949,15 @@ The Shadow Copy Management Protocol interfaces make use of the underlying DCOM s
 framework, as specified in [MS-DCOM], and rely on it for access control. DCOM differentiates between
 launch and access.<4>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC base types and definitions specified in [C706] and [MS-RPCE], additional data
 types are defined in the following sections, which summarize the types that are defined in this
 specification.
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
-2.2.1.1  VSS_ID
+##### 2.2.1.1 VSS_ID
 
 The VSS_ID data type defines the identifier (ID) as a GUID for shadow copy objects. GUID is
 defined in [MS-DTYP] section 2.3.4.
@@ -1096,7 +966,7 @@ This type is declared as follows:
 
  typedef GUID VSS_ID;
 
-2.2.1.2  VSS_PWSZ
+##### 2.2.1.2 VSS_PWSZ
 
 The VSS_PWSZ data type defines a null-terminated character string.
 
@@ -1104,7 +974,7 @@ This type is declared as follows:
 
  typedef [unique, string] WCHAR* VSS_PWSZ;
 
-2.2.1.3  VSS_TIMESTAMP
+##### 2.2.1.3 VSS_TIMESTAMP
 
 The VSS_TIMESTAMP data type defines a time stamp value. This data type is identical in format to the
 FILETIME data type.
@@ -1118,11 +988,12 @@ Release: April 23, 2024
 
 12 / 53
 
- typedef LONGLONG VSS_TIMESTAMP;
 
-2.2.2  Enumerations
+ typedef LONGLONG VSS_TIMESTAMP;
 
-2.2.2.1  VSS_OBJECT_TYPE Enumeration
+#### 2.2.2 Enumerations
+
+##### 2.2.2.1 VSS_OBJECT_TYPE Enumeration
 
 The VSS_OBJECT_TYPE enumeration defines the types of objects that can be queried by the
 IVssEnumObject interface.
@@ -1153,7 +1024,7 @@ VSS_OBJECT_TYPE_COUNT:  This value is the number of VSS_OBJECT_TYPE values in th
 
 enumeration.
 
-2.2.2.2  VSS_MGMT_OBJECT_TYPE Enumeration
+##### 2.2.2.2 VSS_MGMT_OBJECT_TYPE Enumeration
 
 The VSS_MGMT_OBJECT_TYPE enumeration defines the types of objects that can be queried by the
 IVssEnumMgmtType interface.
@@ -1181,7 +1052,8 @@ Release: April 23, 2024
 
 13 / 53
 
-2.2.2.3  VSS_VOLUME_SNAPSHOT_ATTRIBUTES Enumeration
+
+##### 2.2.2.3 VSS_VOLUME_SNAPSHOT_ATTRIBUTES Enumeration
 
 The VSS_VOLUME_SNAPSHOT_ATTRIBUTES enumeration defines the set of valid attribute flags for a
 shadow copy.
@@ -1215,7 +1087,7 @@ VSS_VOLSNAP_ATTR_NO_WRITERS:  The shadow copy is created without any application
 
 participation.
 
-2.2.2.4  VSS_SNAPSHOT_STATE Enumeration
+##### 2.2.2.4 VSS_SNAPSHOT_STATE Enumeration
 
 The VSS_SNAPSHOT_STATE enumeration defines the set of valid states of a shadow copy.
 
@@ -1231,7 +1103,7 @@ Shadow copies that are managed with this protocol MUST NOT appear in this state.
 
 VSS_SS_CREATED:  The shadow copy is created.
 
-2.2.2.5  VSS_PROVIDER_TYPE Enumeration
+##### 2.2.2.5 VSS_PROVIDER_TYPE Enumeration
 
 The VSS_PROVIDER_TYPE enumeration defines the set of valid shadow copy provider types. This
 enumeration is not used by the Shadow Copy Management Protocol; it MUST NOT be referenced and
@@ -1251,9 +1123,10 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Structures
 
-2.2.3.1  VSS_OBJECT_UNION Union
+#### 2.2.3 Structures
+
+##### 2.2.3.1 VSS_OBJECT_UNION Union
 
 The VSS_OBJECT_UNION defines the union of object types that can be defined by the
 VSS_OBJECT_PROP structure (section 2.2.3.2).
@@ -1276,7 +1149,7 @@ Prov:  The structure specifies a VSS provider object. The Shadow Copy Management
 used to manage VSS provider objects; therefore, this member MUST NOT be referenced and MUST
 be ignored on receipt.
 
-2.2.3.2  VSS_OBJECT_PROP Structure
+##### 2.2.3.2 VSS_OBJECT_PROP Structure
 
 The VSS_OBJECT_PROP structure specifies the union of object types that can be enumerated by the
 IVssEnumObject interface.
@@ -1292,7 +1165,7 @@ of object that is contained in the Obj union structure.
 
 Obj:  A VSS_OBJECT_UNION structure (section 2.2.3.1).
 
-2.2.3.3  VSS_SNAPSHOT_PROP Structure
+##### 2.2.3.3 VSS_SNAPSHOT_PROP Structure
 
 The VSS_SNAPSHOT_PROP structure provides information about a shadow copy object.
 
@@ -1319,7 +1192,8 @@ Release: April 23, 2024
 
 15 / 53
 
-m_SnapshotId:  The VSS_ID (section 2.2.1.1) that identifies this shadow copy object.
+
+m_SnapshotId:  The VSS_ID (section 2.2.1.1) that identifies this shadow copy object.
 
 m_SnapshotSetId:  The VSS_ID that identifies the shadow copy set of which this shadow copy
 
@@ -1372,7 +1246,7 @@ m_tsCreationTimestamp:  The time stamp that defines when the shadow copy was cre
 m_eStatus:  A value from the VSS_SNAPSHOT_STATE enumeration (section 2.2.2.4) that defines the
 state of the snapshot. For this protocol, the value of m_eStatus MUST be VSS_SS_CREATED.
 
-2.2.3.4  VSS_PROVIDER_PROP Structure
+##### 2.2.3.4 VSS_PROVIDER_PROP Structure
 
 The VSS_PROVIDER_PROP structure provides information about a shadow copy provider. This
 structure is not used by this protocol. It MUST NOT be referenced and MUST be ignored on receipt.
@@ -1393,7 +1267,8 @@ Release: April 23, 2024
 
 16 / 53
 
-2.2.3.5  VSS_MGMT_OBJECT_UNION Union
+
+##### 2.2.3.5 VSS_MGMT_OBJECT_UNION Union
 
 The VSS_MGMT_OBJECT_UNION specifies the union of object types that can be defined by the
 VSS_MGMT_OBJECT_PROP structure (section 2.2.3.6).
@@ -1419,7 +1294,7 @@ structure.
 
 DiffArea:  The structure specifies a shadow copy storage object as a VSS_DIFF_AREA_PROP.
 
-2.2.3.6  VSS_MGMT_OBJECT_PROP Structure
+##### 2.2.3.6 VSS_MGMT_OBJECT_PROP Structure
 
 The VSS_MGMT_OBJECT_PROP structure defines the union of object types that can be enumerated by
 the IVssEnumMgmtObject interface.
@@ -1435,7 +1310,7 @@ object that is contained in the Obj union structure.
 
 Obj:  A VSS_MGMT_OBJECT_UNION structure.
 
-2.2.3.7  VSS_VOLUME_PROP Structure
+##### 2.2.3.7 VSS_VOLUME_PROP Structure
 
 The VSS_VOLUME_PROP structure defines properties of a volume.
 
@@ -1460,7 +1335,8 @@ Release: April 23, 2024
 
 17 / 53
 
-2.2.3.8  VSS_DIFF_VOLUME_PROP Structure
+
+##### 2.2.3.8 VSS_DIFF_VOLUME_PROP Structure
 
 The VSS_DIFF_VOLUME_PROP structure defines the properties of a shadow copy storage volume.
 
@@ -1483,7 +1359,7 @@ m_llVolumeFreeSpace:  The amount of free space, in BYTEs, on the volume.
 
 m_llVolumeTotalSpace:  The total size, in BYTEs, of the volume.
 
-2.2.3.9  VSS_DIFF_AREA_PROP Structure
+##### 2.2.3.9 VSS_DIFF_AREA_PROP Structure
 
 The VSS_DIFF_AREA_PROP structure defines a shadow copy storage association and the current
 sizes of the shadow copy storage.
@@ -1522,18 +1398,19 @@ Release: April 23, 2024
 
 18 / 53
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through: no additional timers or other state is required
 on the client side of this protocol. Calls made by the higher-layer protocol or application are passed
 directly to the transport, and the results returned by the transport are passed directly back to the
 higher-layer protocol or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  IVssSnapshotMgmt Details
+#### 3.1.1 IVssSnapshotMgmt Details
 
-3.1.1.1  Abstract Data Model
+##### 3.1.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1558,16 +1435,16 @@ on a specific volume on the server and exposes that enumeration through the IVss
 interface. Each shadow copy that is returned by the IVssEnumObject interface is represented as a
 VSS_SNAPSHOT_PROP structure.
 
-3.1.1.2  Timers
+##### 3.1.1.2 Timers
 
 None.
 
-3.1.1.3  Initialization
+##### 3.1.1.3 Initialization
 
 The server MUST register the Shadow Copy Management Protocol DCOM interfaces and begin
 listening on the DCOM ports as specified in [MS-DCOM].
 
-3.1.1.4  Message Processing Events and Sequencing Rules
+##### 3.1.1.4 Message Processing Events and Sequencing Rules
 
 For all the following methods, the server SHOULD obtain the identity and authorization information
 before processing the method about the client from the underlying DCOM or RPC runtime to verify
@@ -1586,7 +1463,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-values 0 through 2 represent IUnknown::QueryInterface, IUnknown::AddRef, and IUnknown::Release,
+
+values 0 through 2 represent IUnknown::QueryInterface, IUnknown::AddRef, and IUnknown::Release,
 respectively. Details are specified in [MS-DCOM].
 
 To retrieve an interface of a particular object, call the QueryInterface method on the DCOM IUnknown
@@ -1645,7 +1523,7 @@ Perform a strict NDR data consistency check at target level 6.0, as specified in
 
 section 3.1.1.5.
 
-3.1.1.4.1 GetProviderMgmtInterface (Opnum 3)
+###### 3.1.1.4.1 GetProviderMgmtInterface (Opnum 3)
 
 The GetProviderMgmtInterface method retrieves the IVssDifferentialSoftwareSnapshotMgmt
 interface.
@@ -1667,7 +1545,8 @@ Release: April 23, 2024
 
 20 / 53
 
-InterfaceId: MUST be set to the UUID for the IVssDifferentialSoftwareSnapshotMgmt interface in
+
+InterfaceId: MUST be set to the UUID for the IVssDifferentialSoftwareSnapshotMgmt interface in
 
 Standards Assignments (section 1.9).
 
@@ -1712,7 +1591,7 @@ When the server receives this message, it MUST verify that ppItf is not NULL.
 The server MUST set ppItf to the IUnknown interface of an object that also implements
 IVssDifferentialSoftwareSnapshotMgmt or return an implementation-specific nonzero error code.
 
-3.1.1.4.2 QueryVolumesSupportedForSnapshots (Opnum 4)
+###### 3.1.1.4.2 QueryVolumesSupportedForSnapshots (Opnum 4)
 
 The QueryVolumesSupportedForSnapshots method retrieves from the server a collection of volumes
 that support shadow copies.
@@ -1752,7 +1631,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-VSS_VOLUME_PROP structure. A caller MUST release the received ppEnum when the caller is done
+
+VSS_VOLUME_PROP structure. A caller MUST release the received ppEnum when the caller is done
 with it.
 
 Return Values: The method MUST return zero when it has succeeded or an implementation-specific
@@ -1792,13 +1672,13 @@ VSS_VOLUME_PROP structure for each volume on the server that is capable of suppo
 copies. If the server has no volumes that support shadow copies, it MUST return an empty
 IVssEnumMgmtObject.
 
-3.1.1.4.2.1  Volume Object Enumeration
+###### 3.1.1.4.2.1 Volume Object Enumeration
 
 QueryVolumesSupportedForSnapshots returns an instance of the IVssEnumMgmtObject interface.
 This interface is used to enumerate through a list of VSS_MGMT_OBJECT_PROP structures, which in
 turn, contain a VSS_MGMT_OBJECT_UNION structure, each of which contains a VSS_VOLUME_PROP.
 
-3.1.1.4.3 QuerySnapshotsByVolume (Opnum 5)
+###### 3.1.1.4.3 QuerySnapshotsByVolume (Opnum 5)
 
 The QuerySnapshotsByVolume method retrieves a collection of shadow copy objects that are present
 on a specified volume of the server.
@@ -1834,7 +1714,8 @@ Release: April 23, 2024
 
 22 / 53
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1868,21 +1749,21 @@ VSS_SNAPSHOT_PROP structure for each shadow copy for the specified volume on the
 server has no shadow copies on the specified volume, it MUST return an empty IVssEnumObject
 object.
 
-3.1.1.4.3.1  Shadow Copy Enumeration Return Value
+###### 3.1.1.4.3.1 Shadow Copy Enumeration Return Value
 
  The QuerySnapshotsByVolume method returns an instance of the IVssEnumObject interface. This
 interface is used to enumerate through a list of VSS_OBJECT_PROP structures, which in turn, contain
 a VSS_OBJECT_UNION structure, each of which contains a VSS_SNAPSHOT_PROP.
 
-3.1.1.5  Timer Events
+##### 3.1.1.5 Timer Events
 
 None.
 
-3.1.1.6  Other Local Events
+##### 3.1.1.6 Other Local Events
 
 None.
 
-3.1.2  IVssEnumObject Details
+#### 3.1.2 IVssEnumObject Details
 
 The IVssEnumObject interface is used to enumerate forward through a collection of objects.
 
@@ -1924,7 +1805,8 @@ Release: April 23, 2024
 
 23 / 53
 
-3.1.2.1  Next (Opnum 3)
+
+##### 3.1.2.1 Next (Opnum 3)
 
 The Next method retrieves the next specified number of objects in the collection.
 
@@ -1989,7 +1871,7 @@ After the objects are copied to the rgelt array, the server MUST update an inter
 point to the first object after the last object retrieved, so that a subsequent call to Next begins to
 retrieve objects that start immediately after those returned on the former call.
 
-3.1.2.2  Skip (Opnum 4)
+##### 3.1.2.2 Skip (Opnum 4)
 
 The Skip method is used to skip beyond the specified number of objects in the collection.
 
@@ -2004,7 +1886,8 @@ Release: April 23, 2024
 
 24 / 53
 
-celt: The number of objects to skip beyond in the collection.
+
+celt: The number of objects to skip beyond in the collection.
 
 Return Values: The method MUST return the following error code for the specific condition.
 
@@ -2030,7 +1913,7 @@ When the server receives this message, it MUST verify that celt is greater than 
 The server MUST update an internal cursor variable so that a subsequent call to Next begins to
 retrieve objects that start immediately after the celt skipped objects.
 
-3.1.2.3  Reset (Opnum 5)
+##### 3.1.2.3 Reset (Opnum 5)
 
 The Reset method is used to reset the enumeration sequence to the beginning of the collection.
 
@@ -2047,7 +1930,7 @@ No exceptions are thrown except those that are thrown by the underlying RPC prot
 The server MUST update an internal cursor variable so that a subsequent call to Next begins to
 retrieve objects that start at the beginning of the collection.
 
-3.1.2.4  Clone (Opnum 6)
+##### 3.1.2.4 Clone (Opnum 6)
 
 The Clone method is used to create a copy of the collection object that contains an identical copy of
 the data and state as the original collection.
@@ -2076,11 +1959,12 @@ Release: April 23, 2024
 
 25 / 53
 
-The server MUST create a new IVssEnumObject instance that contains a copy of the object collection.
+
+The server MUST create a new IVssEnumObject instance that contains a copy of the object collection.
 The internal cursor of the collection copy MUST point to the same object as the cursor in the original
 collection.
 
-3.1.3  IVssEnumMgmtObject Details
+#### 3.1.3 IVssEnumMgmtObject Details
 
 The IVssEnumMgmtObject interface is used to enumerate forward through a collection of objects.
 
@@ -2115,7 +1999,7 @@ Opnum: 6
 
 All methods MUST NOT throw exceptions.
 
-3.1.3.1  Next (Opnum 3)
+##### 3.1.3.1 Next (Opnum 3)
 
 The Next method is used to retrieve the next specified number of objects in the collection.
 
@@ -2159,7 +2043,8 @@ Release: April 23, 2024
 
 26 / 53
 
-For any other conditions, the method MUST return zero when it has succeeded or an
+
+For any other conditions, the method MUST return zero when it has succeeded or an
 implementation-specific nonzero error code on failure.
 
 No exceptions are thrown except those that are thrown by the underlying RPC protocol [MS-RPCE].
@@ -2186,7 +2071,7 @@ update an internal cursor variable to point to the first object after the last o
 subsequent call to Next begins to retrieve objects that start immediately after those that are returned
 on the former call.
 
-3.1.3.2  Skip (Opnum 4)
+##### 3.1.3.2 Skip (Opnum 4)
 
 The Skip method is used to skip beyond the specified number of objects in the collection.
 
@@ -2220,7 +2105,7 @@ When the server receives this message, it MUST verify that celt is greater than 
 The server MUST update an internal cursor variable so that a subsequent call to Next begins to
 retrieve objects that start immediately after the celt skipped objects.
 
-3.1.3.3  Reset (Opnum 5)
+##### 3.1.3.3 Reset (Opnum 5)
 
 The Reset method is used to reset the enumeration sequence to the beginning of the collection.
 
@@ -2235,7 +2120,8 @@ Release: April 23, 2024
 
 27 / 53
 
-Return Values: The method MUST return zero when it has succeeded or an implementation-specific
+
+Return Values: The method MUST return zero when it has succeeded or an implementation-specific
 
 nonzero error code on failure.
 
@@ -2244,7 +2130,7 @@ No exceptions are thrown except those that are thrown by the underlying RPC prot
 The server MUST update an internal cursor variable so that a subsequent call to Next begins to
 retrieve objects that start at the beginning of the collection.
 
-3.1.3.4  Clone (Opnum 6)
+##### 3.1.3.4 Clone (Opnum 6)
 
 The Clone method creates a copy of the collection object that contains an identical copy of the data
 and state as the original collection.
@@ -2269,9 +2155,9 @@ The server MUST create a new IVssEnumMgmtObject instance that contains a copy of
 collection. The internal cursor of the collection copy MUST point to the same object as the cursor in
 the original collection.
 
-3.1.4  IVssDifferentialSoftwareSnapshotMgmt Details
+#### 3.1.4 IVssDifferentialSoftwareSnapshotMgmt Details
 
-3.1.4.1  Abstract Data Model
+##### 3.1.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2302,7 +2188,8 @@ Release: April 23, 2024
 
 28 / 53
 
-Shadow copy storage association creation: The protocol can enforce restrictions on the number of
+
+Shadow copy storage association creation: The protocol can enforce restrictions on the number of
 
 shadow copy associations that are permitted to exist between two volumes and can impose
 restrictions on which volumes can contain shadow copy storage.
@@ -2333,16 +2220,16 @@ Shadow copy storage association deletion: The server supports the deletion of sh
 storage association objects by resizing the object to zero BYTEs by using the
 ChangeDiffAreaMaximumSize method.
 
-3.1.4.2  Timers
+##### 3.1.4.2 Timers
 
 None.
 
-3.1.4.3  Initialization
+##### 3.1.4.3 Initialization
 
 The server MUST register the Shadow Copy Management Protocol DCOM interfaces and begin
 listening on the DCOM ports as specified in [MS-DCOM].
 
-3.1.4.4  Message Processing Events and Sequencing Rules
+##### 3.1.4.4 Message Processing Events and Sequencing Rules
 
 This protocol indicates to the RPC runtime that it is to perform a strict NDR data consistency check at
 target level 5.0, as specified in [MS-RPCE] section 3.1.1.5.3.2.
@@ -2380,7 +2267,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2414,7 +2302,7 @@ Opnum: 7
 
 All methods MUST NOT throw exceptions.
 
-3.1.4.4.1 Shadow Copy Storage Association Object Enumeration
+###### 3.1.4.4.1 Shadow Copy Storage Association Object Enumeration
 
 The IVssDifferentialSoftwareSnapshotMgmt interface is used to enumerate shadow copy storage
 volumes and shadow copy storage associations.
@@ -2426,7 +2314,7 @@ structure, each of which contains either a VSS_DIFF_VOLUME_PROP structure (in th
 QueryVolumesSupportedForDiffAreas), or a VSS_DIFF_AREA_PROP structure (in the case of
 QueryDiffAreasForVolume and QueryDiffAreasOnVolume).
 
-3.1.4.4.2 AddDiffArea (Opnum 3)
+###### 3.1.4.4.2 AddDiffArea (Opnum 3)
 
 The AddDiffArea method creates a shadow copy storage association for a shadow copy.
 
@@ -2459,7 +2347,8 @@ Release: April 23, 2024
 
 30 / 53
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2540,7 +2429,7 @@ The server MUST create a new shadow copy storage association that has the specif
 property in the server abstract model or return an implementation-specific nonzero error code or an
 error code from the preceding table.
 
-3.1.4.4.3 ChangeDiffAreaMaximumSize (Opnum 4)
+###### 3.1.4.4.3 ChangeDiffAreaMaximumSize (Opnum 4)
 
 The ChangeDiffAreaMaximumSize method changes the maximum size of a shadow copy storage
 association on the server.
@@ -2563,7 +2452,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pwszDiffAreaVolumeName: A null-terminated UNICODE string that contains the drive letter, mount
+
+pwszDiffAreaVolumeName: A null-terminated UNICODE string that contains the drive letter, mount
 point, or volume mount name of the volume on which the shadow copy storage is located for
 the volume specified in pwszVolumeName. This is the shadow copy storage volume.
 
@@ -2636,7 +2526,7 @@ error code or an error code from the previous table. If the shadow copy storage 
 found, the server MUST fail with an implementation-specific nonzero error code or an error code from
 the previous table.
 
-3.1.4.4.4 QueryVolumesSupportedForDiffAreas (Opnum 5)
+###### 3.1.4.4.4 QueryVolumesSupportedForDiffAreas (Opnum 5)
 
 The QueryVolumesSupportedForDiffAreas method retrieves from the server the collection of volumes
 that can be used as a shadow copy storage volume for a specified original volume.
@@ -2653,7 +2543,8 @@ Release: April 23, 2024
 
 32 / 53
 
-pwszOriginalVolumeName: A null-terminated UNICODE string that contains the drive letter,
+
+pwszOriginalVolumeName: A null-terminated UNICODE string that contains the drive letter,
 
 mount point, or volume mount name of the original volume.
 
@@ -2701,7 +2592,7 @@ VSS_DIFF_VOLUME_PROP structure for each volume that can provide shadow copy stor
 specified original volume. If the server contains no volumes that can provide shadow copy storage for
 the specified volume, the server MUST return an empty IVssEnumMgmtObject object.
 
-3.1.4.4.5 QueryDiffAreasForVolume (Opnum 6)
+###### 3.1.4.4.5 QueryDiffAreasForVolume (Opnum 6)
 
 The QueryDiffAreasForVolume method retrieves from the server the collection of shadow copy
 storage associations that are being used for shadow copy storage for a specified original
@@ -2733,7 +2624,8 @@ Release: April 23, 2024
 
 33 / 53
 
-Return
+
+Return
 value/code
 
 Description
@@ -2772,7 +2664,7 @@ All the shadow copy storage association objects that are returned in the collect
 VSS_DIFF_AREA_PROP structures where the m_pwszVolumeName member matches
 pwszVolumeName.
 
-3.1.4.4.6 QueryDiffAreasOnVolume (Opnum 7)
+###### 3.1.4.4.6 QueryDiffAreasOnVolume (Opnum 7)
 
 The QueryDiffAreasOnVolume method retrieves from the server the collection of shadow copy
 storage associations that are located on a specified volume.
@@ -2820,7 +2712,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2837,25 +2730,25 @@ All the shadow copy storage association objects that are returned in the collect
 VSS_DIFF_AREA_PROP structures where the m_pwszDiffAreaVolumeName member matches
 pwszVolumeName.
 
-3.1.4.5  Timer Events
+##### 3.1.4.5 Timer Events
 
 No timer events are used.
 
-3.1.4.6  Other Local Events
+##### 3.1.4.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client is not required to maintain any information for this protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 A client initializes by creating an RPC binding handle to the interfaces that relate to the features with
 which it is to work. In the case of the Shadow Copy Management Protocol, only one interface is
@@ -2869,7 +2762,7 @@ IVssSnapshotMgmt: Create an RPC binding handle to IVssSnapshotMgmt to query for 
 copies and shadow copy–capable volumes; and to retrieve a client-side RPC binding handle to
 IVssDifferentialSoftwareSnapshotMgmt.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol indicates to the RPC runtime that it is to do the following:
 
@@ -2894,11 +2787,12 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Reject a NULL unique or full pointer with a nonzero conformant value, as specified in [MS-RPCE]
+
+  Reject a NULL unique or full pointer with a nonzero conformant value, as specified in [MS-RPCE]
 
 section 3.1.1.5.3.2.1.1.
 
-3.2.4.1  Processing Server Replies to Method Calls
+##### 3.2.4.1 Processing Server Replies to Method Calls
 
 When the client receives a reply from the server in response to a method call, it MUST validate the
 return code. Return codes from all method calls are HRESULTs. If the HRESULT indicates success, the
@@ -2915,7 +2809,7 @@ Shadow Copy Management Protocol objects, such as shadow copies, shadow copy stor
 associations, and volumes. Interfaces that are returned by the query method are then used to
 iterate through a collection of object-specific structures.
 
-3.2.4.1.1 Shadow Copy Management Protocol Object Relationships
+###### 3.2.4.1.1 Shadow Copy Management Protocol Object Relationships
 
 This section describes the hierarchy of interfaces and objects that are used by the Shadow Copy
 Management Protocol and the relationships between those objects.
@@ -2949,7 +2843,7 @@ shadow copy storage associations that are in use to store differential data on a
 The server MUST respond with an IVssEnumMgmtObject interface on which the client can call
 methods to iterate through the collection.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No timer events are used.
 
@@ -2960,7 +2854,8 @@ Release: April 23, 2024
 
 36 / 53
 
-3.2.6  Other Local Events
+
+#### 3.2.6 Other Local Events
 
 No other local events require special processing on the client.
 
@@ -2971,12 +2866,13 @@ Release: April 23, 2024
 
 37 / 53
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections provide examples of how a Shadow Copy Management Protocol client and
 server communicate in common scenarios.
 
-4.1  Enumerate Volumes Supporting Shadow Copies
+### 4.1 Enumerate Volumes Supporting Shadow Copies
 
 The following message sequence illustrates how a client requests from a server the list of volumes for
 which a shadow copy can be made.
@@ -3028,13 +2924,14 @@ Release: April 23, 2024
 
 38 / 53
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-SCMP].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 Figure 1: Enumerate Volumes Supporting Shadow Copies
 
-4.2  Calculate Shadow Copy Storage Space on a Volume
+### 4.2 Calculate Shadow Copy Storage Space on a Volume
 
 The following message sequence illustrates how a client can query the list of shadow copy storage
 associations where the storage is located on a specified volume and then calculate the total amount
@@ -3059,7 +2956,8 @@ Shadow Copy Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The client initializes a LONGLONG storage area byte-count variable to zero and calls
+
+5.  The client initializes a LONGLONG storage area byte-count variable to zero and calls
 
 IVssDifferentialSoftwareSnapshotMgmt::QueryDiffAreasOnVolume, passing in the drive letter,
 mount point, or volume mount name (with trailing backslash [\'] character) of a volume of
@@ -3111,13 +3009,14 @@ Release: April 23, 2024
 
 40 / 53
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-SCMP].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
 Figure 2: Calculate Shadow Copy Storage Space on a Volume
 
-4.3  Store Shadow Copies on a Different Volume
+### 4.3 Store Shadow Copies on a Different Volume
 
 The following message sequence illustrates how a client can set up a shadow copy storage
 association on a server so that shadow copies for one volume are stored on another volume.
@@ -3142,7 +3041,8 @@ Release: April 23, 2024
 
 41 / 53
 
-5.  The client calls IVssDifferentialSoftwareSnapshotMgmt::QueryVolumesSupportedForDiffAreas,
+
+5.  The client calls IVssDifferentialSoftwareSnapshotMgmt::QueryVolumesSupportedForDiffAreas,
 
 passing in the name of the original volume to be shadow copied, either selected as described in
 section 4.1 or determined through some other means external to this protocol.
@@ -3209,7 +3109,8 @@ Release: April 23, 2024
 
 42 / 53
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-SCMP].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -3222,9 +3123,10 @@ Release: April 23, 2024
 
 43 / 53
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol introduces no security considerations except those that apply to DCOM interfaces. For
 more information, see [MS-DCOM] section 5.
@@ -3236,7 +3138,8 @@ Release: April 23, 2024
 
 44 / 53
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  For ease of implementation the full IDL is provided here, where "ms-dtyp.idl" refers to the IDL found
 in [MS-DTYP] Appendix A. The syntax uses the IDL syntax extensions that are defined in [MS-RPCE]
@@ -3310,7 +3213,8 @@ Release: April 23, 2024
 
 45 / 53
 
- typedef struct _VSS_PROVIDER_PROP {
+
+ typedef struct _VSS_PROVIDER_PROP {
     VSS_ID m_ProviderId;
     VSS_PWSZ m_pwszProviderName;
     VSS_PROVIDER_TYPE m_eProviderType;
@@ -3387,7 +3291,8 @@ Release: April 23, 2024
 
 46 / 53
 
-        [out, iid_is(InterfaceId)] IUnknown** ppItf
+
+        [out, iid_is(InterfaceId)] IUnknown** ppItf
         );
 
     HRESULT QueryVolumesSupportedForSnapshots(
@@ -3464,7 +3369,8 @@ Release: April 23, 2024
 
 47 / 53
 
-        HRESULT Reset();
+
+        HRESULT Reset();
 
         HRESULT Clone(
             [in, out] IVssEnumObject **ppenum
@@ -3502,7 +3408,8 @@ Release: April 23, 2024
 
 48 / 53
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3555,7 +3462,8 @@ Release: April 23, 2024
 
 49 / 53
 
-Interface
+
+Interface
 
 IVssSnapshotMgmt
 
@@ -3708,7 +3616,8 @@ Release: April 23, 2024
 
 50 / 53
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3752,7 +3661,8 @@ Release: April 23, 2024
 
 51 / 53
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3897,7 +3807,8 @@ Messages
 
 52 / 53
 
-      enumerations 13
+
+      enumerations 13
       overview 12
       specific data types 12
       structures 15

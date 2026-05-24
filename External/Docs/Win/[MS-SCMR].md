@@ -63,7 +63,8 @@ Release: August 11, 2025
 
 1 / 178
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: August 11, 2025
 
 2 / 178
 
-Date
+
+Date
 
 Revision
 History
@@ -548,7 +550,8 @@ Significantly changed the technical content.
 
 3 / 178
 
-Date
+
+Date
 
 Revision
 History
@@ -573,326 +576,153 @@ Release: August 11, 2025
 
 4 / 178
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server](#211-server)
+    - [2.1.2 Client](#212-client)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 SECURITY_INFORMATION](#221-securityinformation)
+    - [2.2.2 SVCCTL_HANDLEA](#222-svcctlhandlea)
+    - [2.2.3 SVCCTL_HANDLEW](#223-svcctlhandlew)
+    - [2.2.4 SC_RPC_HANDLE](#224-scrpchandle)
+    - [2.2.5 SC_RPC_LOCK](#225-scrpclock)
+    - [2.2.6 SC_NOTIFY_RPC_HANDLE](#226-scnotifyrpchandle)
+    - [2.2.7 BOUNDED_DWORD_4K](#227-boundeddword4k)
+    - [2.2.8 BOUNDED_DWORD_8K](#228-boundeddword8k)
+    - [2.2.9 BOUNDED_DWORD_256K](#229-boundeddword256k)
+    - [2.2.10 ENUM_SERVICE_STATUSA](#2210-enumservicestatusa)
+    - [2.2.11 ENUM_SERVICE_STATUSW](#2211-enumservicestatusw)
+    - [2.2.12 ENUM_SERVICE_STATUS_PROCESSA](#2212-enumservicestatusprocessa)
+    - [2.2.13 ENUM_SERVICE_STATUS_PROCESSW](#2213-enumservicestatusprocessw)
+    - [2.2.14 QUERY_SERVICE_CONFIGA](#2214-queryserviceconfiga)
+    - [2.2.15 QUERY_SERVICE_CONFIGW](#2215-queryserviceconfigw)
+    - [2.2.16 QUERY_SERVICE_LOCK_STATUSA](#2216-queryservicelockstatusa)
+    - [2.2.17 QUERY_SERVICE_LOCK_STATUSW](#2217-queryservicelockstatusw)
+    - [2.2.18 SC_ACTION_TYPE](#2218-scactiontype)
+    - [2.2.19 SC_ACTION](#2219-scaction)
+    - [2.2.20 SC_ENUM_TYPE](#2220-scenumtype)
+    - [2.2.21 SC_RPC_CONFIG_INFOA](#2221-scrpcconfiginfoa)
+    - [2.2.22 SC_RPC_CONFIG_INFOW](#2222-scrpcconfiginfow)
+    - [2.2.23 SC_RPC_NOTIFY_PARAMS](#2223-scrpcnotifyparams)
+    - [2.2.24 SC_RPC_NOTIFY_PARAMS_LIST](#2224-scrpcnotifyparamslist)
+    - [2.2.25 SC_RPC_SERVICE_CONTROL_IN_PARAMSA](#2225-scrpcservicecontrolinparamsa)
+    - [2.2.26 SC_RPC_SERVICE_CONTROL_IN_PARAMSW](#2226-scrpcservicecontrolinparamsw)
+    - [2.2.27 SC_RPC_SERVICE_CONTROL_OUT_PARAMSA](#2227-scrpcservicecontroloutparamsa)
+    - [2.2.28 SC_RPC_SERVICE_CONTROL_OUT_PARAMSW](#2228-scrpcservicecontroloutparamsw)
+    - [2.2.29 SC_STATUS_TYPE](#2229-scstatustype)
+    - [2.2.30 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSA](#2230-servicecontrolstatusreasoninparamsa)
+    - [2.2.31 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSW](#2231-servicecontrolstatusreasoninparamsw)
+    - [2.2.32 SERVICE_CONTROL_STATUS_REASON_OUT_PARAMS](#2232-servicecontrolstatusreasonoutparams)
+    - [2.2.33 SERVICE_DELAYED_AUTO_START_INFO](#2233-servicedelayedautostartinfo)
+    - [2.2.34 SERVICE_DESCRIPTIONA](#2234-servicedescriptiona)
+    - [2.2.35 SERVICE_DESCRIPTIONW](#2235-servicedescriptionw)
+    - [2.2.36 SERVICE_DESCRIPTION_WOW64](#2236-servicedescriptionwow64)
+    - [2.2.37 SERVICE_FAILURE_ACTIONS_WOW64](#2237-servicefailureactionswow64)
+    - [2.2.38 SERVICE_REQUIRED_PRIVILEGES_INFO_WOW64](#2238-servicerequiredprivilegesinfowow64)
+    - [2.2.39 SERVICE_FAILURE_ACTIONSA](#2239-servicefailureactionsa)
+    - [2.2.40 SERVICE_FAILURE_ACTIONSW](#2240-servicefailureactionsw)
+    - [2.2.41 SERVICE_FAILURE_ACTIONS_FLAG](#2241-servicefailureactionsflag)
+    - [2.2.42 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS](#2242-servicenotifystatuschangeparams)
+    - [2.2.43 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_1](#2243-servicenotifystatuschangeparams1)
+    - [2.2.44 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2](#2244-servicenotifystatuschangeparams2)
+    - [2.2.45 SERVICE_PRESHUTDOWN_INFO](#2245-servicepreshutdowninfo)
+    - [2.2.46 SERVICE_SID_INFO](#2246-servicesidinfo)
+    - [2.2.47 SERVICE_STATUS](#2247-servicestatus)
+    - [2.2.48 SERVICE_RPC_REQUIRED_PRIVILEGES_INFO](#2248-servicerpcrequiredprivilegesinfo)
+    - [2.2.49 SERVICE_STATUS_PROCESS](#2249-servicestatusprocess)
+    - [2.2.50 STRING_PTRSA](#2250-stringptrsa)
+    - [2.2.51 STRING_PTRSW](#2251-stringptrsw)
+    - [2.2.52 SERVICE_TRIGGER_SPECIFIC_DATA_ITEM](#2252-servicetriggerspecificdataitem)
+    - [2.2.53 SERVICE_TRIGGER](#2253-servicetrigger)
+    - [2.2.54 SERVICE_TRIGGER_INFO](#2254-servicetriggerinfo)
+    - [2.2.55 SERVICE_PREFERRED_NODE_INFO](#2255-servicepreferrednodeinfo)
+    - [2.2.56 svcctl Interface Constants](#2256-svcctl-interface-constants)
+    - [2.2.57 Common Error Codes](#2257-common-error-codes)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 RCloseServiceHandle (Opnum 0)](#3141-rcloseservicehandle-opnum-0)
+      - [3.1.4.2 RControlService (Opnum 1)](#3142-rcontrolservice-opnum-1)
+      - [3.1.4.3 RDeleteService (Opnum 2)](#3143-rdeleteservice-opnum-2)
+      - [3.1.4.4 RLockServiceDatabase (Opnum 3)](#3144-rlockservicedatabase-opnum-3)
+      - [3.1.4.5 RQueryServiceObjectSecurity (Opnum 4)](#3145-rqueryserviceobjectsecurity-opnum-4)
+      - [3.1.4.6 RSetServiceObjectSecurity (Opnum 5)](#3146-rsetserviceobjectsecurity-opnum-5)
+      - [3.1.4.7 RQueryServiceStatus (Opnum 6)](#3147-rqueryservicestatus-opnum-6)
+      - [3.1.4.8 RSetServiceStatus (Opnum 7)](#3148-rsetservicestatus-opnum-7)
+      - [3.1.4.9 RUnlockServiceDatabase (Opnum 8)](#3149-runlockservicedatabase-opnum-8)
+      - [3.1.4.10 RNotifyBootConfigStatus (Opnum 9)](#31410-rnotifybootconfigstatus-opnum-9)
+      - [3.1.4.11 RChangeServiceConfigW (Opnum 11)](#31411-rchangeserviceconfigw-opnum-11)
+      - [3.1.4.12 RCreateServiceW (Opnum 12)](#31412-rcreateservicew-opnum-12)
+      - [3.1.4.13 REnumDependentServicesW (Opnum 13)](#31413-renumdependentservicesw-opnum-13)
+      - [3.1.4.14 REnumServicesStatusW (Opnum 14)](#31414-renumservicesstatusw-opnum-14)
+      - [3.1.4.15 ROpenSCManagerW (Opnum 15)](#31415-ropenscmanagerw-opnum-15)
+      - [3.1.4.16 ROpenServiceW (Opnum 16)](#31416-ropenservicew-opnum-16)
+      - [3.1.4.17 RQueryServiceConfigW (Opnum 17)](#31417-rqueryserviceconfigw-opnum-17)
+      - [3.1.4.18 RQueryServiceLockStatusW (Opnum 18)](#31418-rqueryservicelockstatusw-opnum-18)
+      - [3.1.4.19 RStartServiceW (Opnum 19)](#31419-rstartservicew-opnum-19)
+      - [3.1.4.20 RGetServiceDisplayNameW (Opnum 20)](#31420-rgetservicedisplaynamew-opnum-20)
+      - [3.1.4.21 RGetServiceKeyNameW (Opnum 21)](#31421-rgetservicekeynamew-opnum-21)
+      - [3.1.4.22 RChangeServiceConfigA (Opnum 23)](#31422-rchangeserviceconfiga-opnum-23)
+      - [3.1.4.23 RCreateServiceA (Opnum 24)](#31423-rcreateservicea-opnum-24)
+      - [3.1.4.24 REnumDependentServicesA (Opnum 25)](#31424-renumdependentservicesa-opnum-25)
+      - [3.1.4.25 REnumServicesStatusA (Opnum 26)](#31425-renumservicesstatusa-opnum-26)
+      - [3.1.4.26 ROpenSCManagerA (Opnum 27)](#31426-ropenscmanagera-opnum-27)
+      - [3.1.4.27 ROpenServiceA (Opnum 28)](#31427-ropenservicea-opnum-28)
+      - [3.1.4.28 RQueryServiceConfigA (Opnum 29)](#31428-rqueryserviceconfiga-opnum-29)
+      - [3.1.4.29 RQueryServiceLockStatusA (Opnum 30)](#31429-rqueryservicelockstatusa-opnum-30)
+      - [3.1.4.30 RStartServiceA (Opnum 31)](#31430-rstartservicea-opnum-31)
+      - [3.1.4.31 RGetServiceDisplayNameA (Opnum 32)](#31431-rgetservicedisplaynamea-opnum-32)
+      - [3.1.4.32 RGetServiceKeyNameA (Opnum 33)](#31432-rgetservicekeynamea-opnum-33)
+      - [3.1.4.33 REnumServiceGroupW (Opnum 35)](#31433-renumservicegroupw-opnum-35)
+      - [3.1.4.34 RChangeServiceConfig2A (Opnum 36)](#31434-rchangeserviceconfig2a-opnum-36)
+      - [3.1.4.35 RChangeServiceConfig2W (Opnum 37)](#31435-rchangeserviceconfig2w-opnum-37)
+      - [3.1.4.36 RQueryServiceConfig2A (Opnum 38)](#31436-rqueryserviceconfig2a-opnum-38)
+      - [3.1.4.37 RQueryServiceConfig2W (Opnum 39)](#31437-rqueryserviceconfig2w-opnum-39)
+      - [3.1.4.38 RQueryServiceStatusEx (Opnum 40)](#31438-rqueryservicestatusex-opnum-40)
+      - [3.1.4.39 REnumServicesStatusExA (Opnum 41)](#31439-renumservicesstatusexa-opnum-41)
+      - [3.1.4.40 REnumServicesStatusExW (Opnum 42)](#31440-renumservicesstatusexw-opnum-42)
+      - [3.1.4.41 RCreateServiceWOW64A (Opnum 44)](#31441-rcreateservicewow64a-opnum-44)
+      - [3.1.4.42 RCreateServiceWOW64W (Opnum 45)](#31442-rcreateservicewow64w-opnum-45)
+      - [3.1.4.43 RNotifyServiceStatusChange (Opnum 47)](#31443-rnotifyservicestatuschange-opnum-47)
+      - [3.1.4.44 RGetNotifyResults (Opnum 48)](#31444-rgetnotifyresults-opnum-48)
+      - [3.1.4.45 RCloseNotifyHandle (Opnum 49)](#31445-rclosenotifyhandle-opnum-49)
+      - [3.1.4.46 RControlServiceExA (Opnum 50)](#31446-rcontrolserviceexa-opnum-50)
+      - [3.1.4.47 RControlServiceExW (Opnum 51)](#31447-rcontrolserviceexw-opnum-51)
+      - [3.1.4.48 RQueryServiceConfigEx (Opnum 56)](#31448-rqueryserviceconfigex-opnum-56)
+      - [3.1.4.49 RCreateWowService (Opnum 60)](#31449-rcreatewowservice-opnum-60)
+      - [3.1.4.50 ROpenSCManager2 (Opnum 64)](#31450-ropenscmanager2-opnum-64)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+    - [3.1.7 Conversion Between ANSI and Unicode String Formats](#317-conversion-between-ansi-and-unicode-string-formats)
+  - [3.2 RPC Runtime Check Notes](#32-rpc-runtime-check-notes)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Server ....................................................................................................... 14
-Client ........................................................................................................ 14
-Common Data Types ........................................................................................ 14
-SECURITY_INFORMATION ............................................................................ 15
-2.2.1
-SVCCTL_HANDLEA ...................................................................................... 15
-2.2.2
-SVCCTL_HANDLEW ..................................................................................... 15
-2.2.3
-SC_RPC_HANDLE ........................................................................................ 15
-2.2.4
-SC_RPC_LOCK ........................................................................................... 16
-2.2.5
-SC_NOTIFY_RPC_HANDLE ........................................................................... 16
-2.2.6
-BOUNDED_DWORD_4K ............................................................................... 16
-2.2.7
-BOUNDED_DWORD_8K ............................................................................... 16
-2.2.8
-BOUNDED_DWORD_256K ............................................................................ 16
-2.2.9
-ENUM_SERVICE_STATUSA ........................................................................... 17
-2.2.10
-ENUM_SERVICE_STATUSW .......................................................................... 17
-2.2.11
-ENUM_SERVICE_STATUS_PROCESSA ............................................................ 17
-2.2.12
-2.2.13
-ENUM_SERVICE_STATUS_PROCESSW ........................................................... 18
-2.2.14  QUERY_SERVICE_CONFIGA ......................................................................... 18
-2.2.15  QUERY_SERVICE_CONFIGW ......................................................................... 20
-2.2.16  QUERY_SERVICE_LOCK_STATUSA ................................................................ 21
-2.2.17  QUERY_SERVICE_LOCK_STATUSW ............................................................... 22
-SC_ACTION_TYPE ....................................................................................... 22
-2.2.18
-SC_ACTION ............................................................................................... 23
-2.2.19
-SC_ENUM_TYPE.......................................................................................... 23
-2.2.20
-SC_RPC_CONFIG_INFOA ............................................................................. 23
-2.2.21
-SC_RPC_CONFIG_INFOW ............................................................................ 24
-2.2.22
-SC_RPC_NOTIFY_PARAMS ........................................................................... 25
-2.2.23
-SC_RPC_NOTIFY_PARAMS_LIST ................................................................... 25
-2.2.24
-SC_RPC_SERVICE_CONTROL_IN_PARAMSA ................................................... 26
-2.2.25
-SC_RPC_SERVICE_CONTROL_IN_PARAMSW .................................................. 26
-2.2.26
-SC_RPC_SERVICE_CONTROL_OUT_PARAMSA ................................................ 26
-2.2.27
-SC_RPC_SERVICE_CONTROL_OUT_PARAMSW ............................................... 26
-2.2.28
-SC_STATUS_TYPE ....................................................................................... 27
-2.2.29
-SERVICE_CONTROL_STATUS_REASON_IN_PARAMSA ..................................... 27
-2.2.30
-SERVICE_CONTROL_STATUS_REASON_IN_PARAMSW ..................................... 29
-2.2.31
-SERVICE_CONTROL_STATUS_REASON_OUT_PARAMS ..................................... 32
-2.2.32
-SERVICE_DELAYED_AUTO_START_INFO ........................................................ 32
-2.2.33
-SERVICE_DESCRIPTIONA ............................................................................ 32
-2.2.34
-SERVICE_DESCRIPTIONW ........................................................................... 33
-2.2.35
-SERVICE_DESCRIPTION_WOW64 ................................................................. 33
-2.2.36
-SERVICE_FAILURE_ACTIONS_WOW64 .......................................................... 33
-2.2.37
-
-[MS-SCMR] - v20250811
-Service Control Manager Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-5 / 178
-
-2.2.38
-2.2.39
-2.2.40
-2.2.41
-2.2.42
-2.2.43
-2.2.44
-2.2.45
-2.2.46
-2.2.47
-2.2.48
-2.2.49
-2.2.50
-2.2.51
-2.2.52
-2.2.53
-2.2.54
-2.2.55
-2.2.56
-2.2.57
-
-SERVICE_REQUIRED_PRIVILEGES_INFO_WOW64 .......................................... 34
-SERVICE_FAILURE_ACTIONSA ..................................................................... 34
-SERVICE_FAILURE_ACTIONSW .................................................................... 34
-SERVICE_FAILURE_ACTIONS_FLAG .............................................................. 35
-SERVICE_NOTIFY_STATUS_CHANGE_PARAMS ............................................... 35
-SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_1 ............................................ 36
-SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2 ............................................ 37
-SERVICE_PRESHUTDOWN_INFO ................................................................... 38
-SERVICE_SID_INFO .................................................................................... 38
-SERVICE_STATUS ....................................................................................... 39
-SERVICE_RPC_REQUIRED_PRIVILEGES_INFO ................................................ 41
-SERVICE_STATUS_PROCESS ........................................................................ 41
-STRING_PTRSA .......................................................................................... 44
-STRING_PTRSW ......................................................................................... 44
-SERVICE_TRIGGER_SPECIFIC_DATA_ITEM .................................................... 44
-SERVICE_TRIGGER ..................................................................................... 44
-SERVICE_TRIGGER_INFO ............................................................................ 47
-SERVICE_PREFERRED_NODE_INFO ............................................................... 47
-svcctl Interface Constants ............................................................................ 48
-Common Error Codes .................................................................................. 48
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 49
-Server Details .................................................................................................. 49
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 57
-Initialization ............................................................................................... 58
-Message Processing Events and Sequencing Rules .......................................... 58
-RCloseServiceHandle (Opnum 0) ............................................................. 63
-RControlService (Opnum 1) .................................................................... 64
-RDeleteService (Opnum 2) ..................................................................... 66
-RLockServiceDatabase (Opnum 3) .......................................................... 67
-RQueryServiceObjectSecurity (Opnum 4) ................................................. 68
-RSetServiceObjectSecurity (Opnum 5) ..................................................... 69
-RQueryServiceStatus (Opnum 6) ............................................................ 70
-RSetServiceStatus (Opnum 7) ................................................................ 71
-RUnlockServiceDatabase (Opnum 8) ....................................................... 72
-RNotifyBootConfigStatus (Opnum 9) ........................................................ 73
-RChangeServiceConfigW (Opnum 11) ...................................................... 74
-RCreateServiceW (Opnum 12) ................................................................ 78
-REnumDependentServicesW (Opnum 13) ................................................. 82
-REnumServicesStatusW (Opnum 14) ....................................................... 83
-ROpenSCManagerW (Opnum 15) ............................................................ 85
-ROpenServiceW (Opnum 16) .................................................................. 86
-RQueryServiceConfigW (Opnum 17) ........................................................ 87
-RQueryServiceLockStatusW (Opnum 18).................................................. 88
-RStartServiceW (Opnum 19) .................................................................. 89
-RGetServiceDisplayNameW (Opnum 20) .................................................. 91
-RGetServiceKeyNameW (Opnum 21) ....................................................... 92
-RChangeServiceConfigA (Opnum 23) ....................................................... 92
-RCreateServiceA (Opnum 24) ................................................................. 96
-REnumDependentServicesA (Opnum 25) ................................................ 100
-REnumServicesStatusA (Opnum 26) ....................................................... 102
-ROpenSCManagerA (Opnum 27) ............................................................ 104
-ROpenServiceA (Opnum 28) .................................................................. 105
-RQueryServiceConfigA (Opnum 29) ........................................................ 106
-RQueryServiceLockStatusA (Opnum 30) ................................................. 107
-RStartServiceA (Opnum 31) .................................................................. 107
-RGetServiceDisplayNameA (Opnum 32) .................................................. 109
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-3.1.4.25
-3.1.4.26
-3.1.4.27
-3.1.4.28
-3.1.4.29
-3.1.4.30
-3.1.4.31
-
-[MS-SCMR] - v20250811
-Service Control Manager Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-6 / 178
-
-3.1.4.32
-3.1.4.33
-3.1.4.34
-3.1.4.35
-3.1.4.36
-3.1.4.37
-3.1.4.38
-3.1.4.39
-3.1.4.40
-3.1.4.41
-3.1.4.42
-3.1.4.43
-3.1.4.44
-3.1.4.45
-3.1.4.46
-3.1.4.47
-3.1.4.48
-3.1.4.49
-3.1.4.50
-
-RGetServiceKeyNameA (Opnum 33) ....................................................... 110
-REnumServiceGroupW (Opnum 35) ........................................................ 111
-RChangeServiceConfig2A (Opnum 36) .................................................... 113
-RChangeServiceConfig2W (Opnum 37) ................................................... 114
-RQueryServiceConfig2A (Opnum 38) ...................................................... 115
-RQueryServiceConfig2W (Opnum 39) ..................................................... 117
-RQueryServiceStatusEx (Opnum 40) ...................................................... 119
-REnumServicesStatusExA (Opnum 41) ................................................... 120
-REnumServicesStatusExW (Opnum 42) .................................................. 122
-RCreateServiceWOW64A (Opnum 44) ..................................................... 125
-RCreateServiceWOW64W (Opnum 45) .................................................... 129
-RNotifyServiceStatusChange (Opnum 47) ............................................... 132
-RGetNotifyResults (Opnum 48) .............................................................. 134
-RCloseNotifyHandle (Opnum 49) ............................................................ 134
-RControlServiceExA (Opnum 50) ............................................................ 135
-RControlServiceExW (Opnum 51) ........................................................... 138
-RQueryServiceConfigEx (Opnum 56) ...................................................... 140
-RCreateWowService (Opnum 60) ........................................................... 141
-ROpenSCManager2 (Opnum 64) ............................................................ 147
-Timer Events ............................................................................................. 148
-Other Local Events ..................................................................................... 148
-Conversion Between ANSI and Unicode String Formats................................... 148
-RPC Runtime Check Notes ................................................................................ 148
-
-3.1.5
-3.1.6
-3.1.7
-
-3.2
-
-4  Protocol Examples ............................................................................................... 149
-
-5  Security ............................................................................................................... 150
-Security Considerations for Implementers .......................................................... 150
-Index of Security Parameters ........................................................................... 150
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 151
-
-7  Appendix B: Product Behavior ............................................................................. 166
-
-8  Change Tracking .................................................................................................. 174
-
-9  Index ................................................................................................................... 175
-
-[MS-SCMR] - v20250811
-Service Control Manager Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-7 / 178
-
-1  Introduction
+## 1 Introduction
 
 The Service Control Manager Remote Protocol is a remote procedure call (RPC)–based client/server
 protocol that is used for remotely managing the Service Control Manager (SCM). The SCM is an
@@ -902,7 +732,7 @@ see [MSDN-WINSVC].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -959,7 +789,8 @@ Release: August 11, 2025
 
 8 / 178
 
-discretionary access control list (DACL): An access control list (ACL) that is controlled by the
+
+discretionary access control list (DACL): An access control list (ACL) that is controlled by the
 owner of an object and that specifies the access particular users or groups can have to the
 object.
 
@@ -1037,7 +868,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-status. The security descriptor is used to guard access to an object as well as to control which
+
+status. The security descriptor is used to guard access to an object as well as to control which
 type of auditing takes place when the object is accessed. The security descriptor format is
 specified in [MS-DTYP] section 2.4.6; a string representation of security descriptors, called
 SDDL, is specified in [MS-DTYP] section 2.5.1.
@@ -1108,14 +940,15 @@ Release: August 11, 2025
 
 10 / 178
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1141,7 +974,7 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-AZOD] Microsoft Corporation, "Authorization Protocols Overview".
 
@@ -1173,13 +1006,14 @@ Release: August 11, 2025
 
 11 / 178
 
-[MSDN-WINSVC] Microsoft Corporation, "Services", http://msdn.microsoft.com/en-
+
+[MSDN-WINSVC] Microsoft Corporation, "Services", http://msdn.microsoft.com/en-
 us/library/ms685141.aspx
 
 [SPNNAMES] Microsoft Corporation, "Name Formats for Unique SPNs", http://msdn.microsoft.com/en-
 us/library/ms677601.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Service Control Manager Remote Protocol is a client/server protocol used for configuring and
 controlling service programs running on a remote computer. A remote service management session
@@ -1210,21 +1044,21 @@ the persistent part of the database directly in the persistent storage is not a 
 will result in possible inconsistencies. Finally, if SCM were to be forcefully terminated, the operating
 system will shut down and restart.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Service Control Manager Remote Protocol uses RPC as its transport protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the client and server be able to communicate via an RPC connection, as
 specified in section 2.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate for managing a service management agent, such as an SCM, on a remote
 computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1235,7 +1069,8 @@ Release: August 11, 2025
 
 12 / 178
 
-  Supported Transports: This protocol uses multiple RPC protocol sequences, as specified in
+
+  Supported Transports: This protocol uses multiple RPC protocol sequences, as specified in
 
 section 2.1.
 
@@ -1244,11 +1079,11 @@ section 2.1.
 RPC_C_AUTHN_GSS_NEGOTIATE or RPC_C_AUTHN_WINNT authorization. This is discussed in
 section 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Service Control Manager Remote Protocol has no standards assignments, only private
 assignments made by Microsoft using allocation procedures specified in other protocols.
@@ -1274,16 +1109,17 @@ Release: August 11, 2025
 
 13 / 178
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Service Control Manager Remote Protocol messages are
 transported and specify common data types.
 
-2.1  Transport
+### 2.1 Transport
 
 The Service Control Manager Remote Protocol MUST use RPC as the transport protocol.
 
-2.1.1  Server
+#### 2.1.1 Server
 
 The server interface is identified by UUID 367ABB81-9844-35F1-AD32-98F038001003, version 2.0,
 using the RPC well-known endpoint "\PIPE\svcctl". The server MUST use RPC over SMB, ncacn_np
@@ -1292,7 +1128,7 @@ specified in [MS-RPCE]. The server MUST specify the Simple and Protected GSS-API
 Mechanism (SPNEGO) (0x9) or NT LAN Manager (NTLM) (0xA), or both, as the RPC Authentication
 Service (as specified in [MS-RPCE]). See [MS-RPCE] section 3.3.1.5.2.2 and [C706] section 13.
 
-2.1.2  Client
+#### 2.1.2 Client
 
 The client MUST use RPC over SMB, ncacn_np (as specified in [MS-RPCE]) or RPC over TCP,
 ncacn_ip_tcp (as specified in [MS-RPCE]) as the RPC protocol sequence to communicate with the
@@ -1305,7 +1141,7 @@ server to which the client is connecting and host is the literal string "host/" 
 
 The RPC client MAY use an authentication level of RPC_C_AUTHN_LEVEL_PKT_PRIVACY.<1>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-RPCE], the following
 sections use these definitions, as specified in [MS-DTYP]. Unless specified, all characters are accepted
@@ -1346,12 +1182,13 @@ Release: August 11, 2025
 
 14 / 178
 
-  WCHAR
+
+  WCHAR
 
 The additional data types given in the following sections are defined in the MIDL specification of this
 RPC interface.
 
-2.2.1  SECURITY_INFORMATION
+#### 2.2.1 SECURITY_INFORMATION
 
 The following bit flags indicate which components to include in a SECURITY_DESCRIPTOR structure
 that clients and servers can use to specify access types.
@@ -1402,7 +1239,7 @@ This type is declared as follows:
 
  typedef unsigned long SECURITY_INFORMATION;
 
-2.2.2  SVCCTL_HANDLEA
+#### 2.2.2 SVCCTL_HANDLEA
 
 An RPC binding handle to the server, represented as an American National Standards Institute
 (ANSI) character set string. This ANSI string and all ANSI references in the rest of this document
@@ -1412,7 +1249,7 @@ This type is declared as follows:
 
  typedef [handle] LPSTR SVCCTL_HANDLEA;
 
-2.2.3  SVCCTL_HANDLEW
+#### 2.2.3 SVCCTL_HANDLEW
 
 An RPC binding handle represented as a Unicode string.
 
@@ -1420,7 +1257,7 @@ This type is declared as follows:
 
  typedef [handle] wchar_t* SVCCTL_HANDLEW;
 
-2.2.4  SC_RPC_HANDLE
+#### 2.2.4 SC_RPC_HANDLE
 
 Defines an RPC context handle to the SCM or a service on the server.
 
@@ -1431,24 +1268,25 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- typedef [context_handle] PVOID SC_RPC_HANDLE;
+
+ typedef [context_handle] PVOID SC_RPC_HANDLE;
  typedef SC_RPC_HANDLE* LPSC_RPC_HANDLE;
 
-2.2.5  SC_RPC_LOCK
+#### 2.2.5 SC_RPC_LOCK
 
 Defines an RPC context handle to a locked SCM database on the server.
 
  typedef [context_handle] PVOID SC_RPC_LOCK;
  typedef SC_RPC_LOCK* LPSC_RPC_LOCK;
 
-2.2.6  SC_NOTIFY_RPC_HANDLE
+#### 2.2.6 SC_NOTIFY_RPC_HANDLE
 
 Defines an RPC context handle used to monitor changes on a service on the server.
 
  typedef [context_handle] PVOID SC_NOTIFY_RPC_HANDLE;
  typedef SC_NOTIFY_RPC_HANDLE* LPSC_NOTIFY_RPC_HANDLE;
 
-2.2.7  BOUNDED_DWORD_4K
+#### 2.2.7 BOUNDED_DWORD_4K
 
 A 4-kilobyte ranged DWORD data type used for the size given by reference in an in/out parameter.
 
@@ -1460,7 +1298,7 @@ parameter.
 
 LPBOUNDED_DWORD_4K: Pointer to a BOUNDED_DWORD_4K.
 
-2.2.8  BOUNDED_DWORD_8K
+#### 2.2.8 BOUNDED_DWORD_8K
 
 An 8-kilobyte ranged DWORD data type used for the size given by reference in an in/out parameter.
 
@@ -1472,7 +1310,7 @@ parameter.
 
 LPBOUNDED_DWORD_8K: Pointer to a BOUNDED_DWORD_8K.
 
-2.2.9  BOUNDED_DWORD_256K
+#### 2.2.9 BOUNDED_DWORD_256K
 
 A 256-kilobyte ranged DWORD data type used for the size given by reference in an in/out parameter.
 
@@ -1490,9 +1328,10 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-LPBOUNDED_DWORD_256K: Pointer to a BOUNDED_DWORD_256K.
 
-2.2.10 ENUM_SERVICE_STATUSA
+LPBOUNDED_DWORD_256K: Pointer to a BOUNDED_DWORD_256K.
+
+#### 2.2.10 ENUM_SERVICE_STATUSA
 
 The ENUM_SERVICE_STATUSA structure defines the name and status of a service in an SCM database
 and returns information about the service. String values are stored in ANSI.
@@ -1514,7 +1353,7 @@ the service.
 
 ServiceStatus:  A SERVICE_STATUS (section 2.2.47) structure that contains status information.
 
-2.2.11 ENUM_SERVICE_STATUSW
+#### 2.2.11 ENUM_SERVICE_STATUSW
 
 The ENUM_SERVICE_STATUSW structure defines the name and status of a service in an SCM database
 and returns information about the service. String values are stored in Unicode.
@@ -1536,7 +1375,7 @@ the service.
 
 ServiceStatus:  A SERVICE_STATUS (section 2.2.47) structure that contains status information.
 
-2.2.12 ENUM_SERVICE_STATUS_PROCESSA
+#### 2.2.12 ENUM_SERVICE_STATUS_PROCESSA
 
 The ENUM_SERVICE_STATUS_PROCESSA structure contains information used by the
 REnumServicesStatusExA method to return the name of a service in an SCM database. The structure
@@ -1556,7 +1395,8 @@ Release: August 11, 2025
 
 17 / 178
 
-lpServiceName:  A pointer to a null-terminated string that names a service in an SCM database.
+
+lpServiceName:  A pointer to a null-terminated string that names a service in an SCM database.
 
 The forward slash, back slash, comma, and space characters are illegal in service names.
 
@@ -1566,7 +1406,7 @@ ServiceStatusProcess:  A SERVICE_STATUS_PROCESS (section 2.2.49) structure that 
 
 status information for the lpServiceName service.
 
-2.2.13 ENUM_SERVICE_STATUS_PROCESSW
+#### 2.2.13 ENUM_SERVICE_STATUS_PROCESSW
 
 The ENUM_SERVICE_STATUS_PROCESSW structure contains information used by the
 REnumServicesStatusExW method to return the name of a service in an SCM database. The structure
@@ -1589,7 +1429,7 @@ ServiceStatusProcess:  A SERVICE_STATUS_PROCESS (section 2.2.49) structure that 
 
 status information for the lpServiceName service.
 
-2.2.14 QUERY_SERVICE_CONFIGA
+#### 2.2.14 QUERY_SERVICE_CONFIGA
 
 The QUERY_SERVICE_CONFIGA structure defines configuration information about an installed
 service. String values are stored in ANSI.
@@ -1634,7 +1474,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -1747,7 +1588,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-lpDependencies:  A pointer to an array of null-separated names of services or names of service
+
+lpDependencies:  A pointer to an array of null-separated names of services or names of service
 
 groups that MUST start before this service. The array is doubly null-terminated. Service group
 names are prefixed with a "+" character (to distinguish them from service names). If the pointer
@@ -1761,7 +1603,7 @@ lpServiceStartName:  A pointer to a null-terminated string that contains the ser
 
 lpDisplayName:  A pointer to a null-terminated string that contains the service display name.
 
-2.2.15 QUERY_SERVICE_CONFIGW
+#### 2.2.15 QUERY_SERVICE_CONFIGW
 
 The QUERY_SERVICE_CONFIGW structure defines configuration information about an installed service.
 String values are stored in Unicode.
@@ -1843,7 +1685,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000002
 
@@ -1926,7 +1769,7 @@ name.
 
 lpDisplayName:  A pointer to a null-terminated string that contains the service display name.
 
-2.2.16 QUERY_SERVICE_LOCK_STATUSA
+#### 2.2.16 QUERY_SERVICE_LOCK_STATUSA
 
 The QUERY_SERVICE_LOCK_STATUSA structure defines information about the lock status of an SCM
 database. String values are stored in ANSI.
@@ -1938,7 +1781,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- typedef struct {
+
+ typedef struct {
    DWORD fIsLocked;
    [string,range(0, 8 * 1024)] char* lpLockOwner;
    DWORD dwLockDuration;
@@ -1955,7 +1799,7 @@ the lock.
 
 dwLockDuration:  The elapsed time, in seconds, since the lock was first acquired.
 
-2.2.17 QUERY_SERVICE_LOCK_STATUSW
+#### 2.2.17 QUERY_SERVICE_LOCK_STATUSW
 
 The QUERY_SERVICE_LOCK_STATUSW structure defines information about the lock status of an SCM
 database. String values are stored in Unicode.
@@ -1977,7 +1821,7 @@ the lock.
 
 dwLockDuration:  The elapsed time, in seconds, since the lock was first acquired.
 
-2.2.18 SC_ACTION_TYPE
+#### 2.2.18 SC_ACTION_TYPE
 
 The SC_ACTION_TYPE enumeration specifies action levels for the Type member of the SC_ACTION
 structure.
@@ -2005,7 +1849,8 @@ Release: August 11, 2025
 
 22 / 178
 
-2.2.19 SC_ACTION
+
+#### 2.2.19 SC_ACTION
 
 The SC_ACTION structure defines an action that the SCM can perform.
 
@@ -2021,7 +1866,7 @@ SC_ACTION_TYPE (section 2.2.18) enumeration.
 
 Delay:  The time, in milliseconds, to wait before performing the specified action.
 
-2.2.20 SC_ENUM_TYPE
+#### 2.2.20 SC_ENUM_TYPE
 
 The SC_ENUM_TYPE enumeration specifies information levels for the REnumServicesStatusExA and
 REnumServicesStatusExW methods.
@@ -2033,7 +1878,7 @@ REnumServicesStatusExW methods.
 
 SC_ENUM_PROCESS_INFO:  Information level.
 
-2.2.21 SC_RPC_CONFIG_INFOA
+#### 2.2.21 SC_RPC_CONFIG_INFOA
 
 The SC_RPC_CONFIG_INFOA structure defines the service configuration based on a supplied level.
 String values are stored in ANSI.
@@ -2073,7 +1918,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-psd:  A structure that contains a description of the service, as specified in section 2.2.34.
+
+psd:  A structure that contains a description of the service, as specified in section 2.2.34.
 
 The following structures SHOULD<2> be available:
 
@@ -2101,7 +1947,7 @@ pspn:  A structure that defines the preferred node information for the service, 
 
 2.2.55.
 
-2.2.22 SC_RPC_CONFIG_INFOW
+#### 2.2.22 SC_RPC_CONFIG_INFOW
 
 The SC_RPC_CONFIG_INFOW structure SHOULD<3> define, based on a supplied level, either the
 service configuration or a list of failure actions. String values are stored as Unicode.
@@ -2143,7 +1989,8 @@ Release: August 11, 2025
 
 24 / 178
 
-psda:  A structure that specifies whether the service is part of the delayed start group, as specified in
+
+psda:  A structure that specifies whether the service is part of the delayed start group, as specified in
 
 section 2.2.33.
 
@@ -2165,7 +2012,7 @@ pspn:  A structure that defines the preferred node information for the service, 
 
 2.2.55.<5>
 
-2.2.23 SC_RPC_NOTIFY_PARAMS
+#### 2.2.23 SC_RPC_NOTIFY_PARAMS
 
 The SC_RPC_NOTIFY_PARAMS structure<6> contains the parameters associated with the notification
 information of the service status.
@@ -2190,7 +2037,7 @@ pStatusChangeParams:  A SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2 (section 2.2.44)
 
 structure that contains the service status notification information.
 
-2.2.24 SC_RPC_NOTIFY_PARAMS_LIST
+#### 2.2.24 SC_RPC_NOTIFY_PARAMS_LIST
 
 The SC_RPC_NOTIFY_PARAMS_LIST structure<7> defines an array of service state change
 parameters.
@@ -2212,7 +2059,8 @@ Release: August 11, 2025
 
 25 / 178
 
-2.2.25 SC_RPC_SERVICE_CONTROL_IN_PARAMSA
+
+#### 2.2.25 SC_RPC_SERVICE_CONTROL_IN_PARAMSA
 
 The SC_RPC_SERVICE_CONTROL_IN_PARAMSA union contains information associated with the service
 control parameters. String values are in ANSI.
@@ -2229,7 +2077,7 @@ psrInParams:  A structure that contains the service control parameter associated
 
 specified in section 2.2.30.
 
-2.2.26 SC_RPC_SERVICE_CONTROL_IN_PARAMSW
+#### 2.2.26 SC_RPC_SERVICE_CONTROL_IN_PARAMSW
 
 The SC_RPC_SERVICE_CONTROL_IN_PARAMSW union contains information associated with the
 service control parameters. String values are in Unicode.
@@ -2246,7 +2094,7 @@ psrInParams:  A structure that contains the service control parameter associated
 
 specified in section 2.2.31.
 
-2.2.27 SC_RPC_SERVICE_CONTROL_OUT_PARAMSA
+#### 2.2.27 SC_RPC_SERVICE_CONTROL_OUT_PARAMSA
 
 The SC_RPC_SERVICE_CONTROL_OUT_PARAMSA union contains resulting status information
 associated with the service control parameters. String values are in ANSI.
@@ -2263,7 +2111,7 @@ psrOutParams:  A structure that contains the resulting status information associ
 
 control parameter associated with a control as specified in section 2.2.32.
 
-2.2.28 SC_RPC_SERVICE_CONTROL_OUT_PARAMSW
+#### 2.2.28 SC_RPC_SERVICE_CONTROL_OUT_PARAMSW
 
 The SC_RPC_SERVICE_CONTROL_OUT_PARAMSW union contains resulting status information
 associated with the service control parameters. String values are in Unicode.
@@ -2280,7 +2128,8 @@ Release: August 11, 2025
 
 26 / 178
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-SCMR].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2292,7 +2141,7 @@ psrOutParams:  A structure that contains the resulting status information associ
 
 control parameter associated with a control as specified in section 2.2.32.
 
-2.2.29 SC_STATUS_TYPE
+#### 2.2.29 SC_STATUS_TYPE
 
 The SC_STATUS_TYPE enumeration specifies the information level for the RQueryServiceStatusEx
 method.
@@ -2304,7 +2153,7 @@ method.
 
 SC_STATUS_PROCESS_INFO:  The information level
 
-2.2.30 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSA
+#### 2.2.30 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSA
 
 The SERVICE_CONTROL_STATUS_REASON_IN_PARAMSA structure<8> contains the reason
 associated with the SERVICE_CONTROL_STOP control. String values are in ANSI.
@@ -2353,7 +2202,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
  0x40000000
 
@@ -2472,7 +2322,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000009
 
@@ -2566,7 +2417,7 @@ pszComment:  A pointer to a string that specifies a comment associated with the 
 
 parameter. String values are in ANSI.
 
-2.2.31 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSW
+#### 2.2.31 SERVICE_CONTROL_STATUS_REASON_IN_PARAMSW
 
 The SERVICE_CONTROL_STATUS_REASON_IN_PARAMSW structure<9> contains the reason
 associated with the SERVICE_CONTROL_STOP. String values are in Unicode.
@@ -2584,7 +2435,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-SCMR].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2679,7 +2531,8 @@ Release: August 11, 2025
 
 30 / 178
 
-Value
+
+Value
 
 SERVICE_STOP_REASON_MINOR_DISK
 
@@ -2804,7 +2657,8 @@ Release: August 11, 2025
 
 31 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -2836,7 +2690,7 @@ pszComment:  A pointer to a string that specifies a comment associated with the 
 
 parameter. String values are in Unicode.
 
-2.2.32 SERVICE_CONTROL_STATUS_REASON_OUT_PARAMS
+#### 2.2.32 SERVICE_CONTROL_STATUS_REASON_OUT_PARAMS
 
 The SERVICE_CONTROL_STATUS_REASON_OUT_PARAMS structure<10> contains the status of the
 service.
@@ -2850,7 +2704,7 @@ ServiceStatus:  A SERVICE_STATUS_PROCESS (section 2.2.49) structure that contain
 
 status of the service.
 
-2.2.33 SERVICE_DELAYED_AUTO_START_INFO
+#### 2.2.33 SERVICE_DELAYED_AUTO_START_INFO
 
 The SERVICE_DELAYED_AUTO_START_INFO structure<11> defines the delayed autostart setting of
 an autostart service.
@@ -2871,7 +2725,7 @@ member of the QUERY_SERVICE_CONFIGA structure (section 2.2.14) and the
 QUERY_SERVICE_CONFIGW structure (section 2.2.15), then those services are started before this
 service.
 
-2.2.34 SERVICE_DESCRIPTIONA
+#### 2.2.34 SERVICE_DESCRIPTIONA
 
 The SERVICE_DESCRIPTIONA structure contains the description of the service. String values are in
 ANSI.
@@ -2883,14 +2737,15 @@ Release: August 11, 2025
 
 32 / 178
 
- typedef struct _SERVICE_DESCRIPTIONA {
+
+ typedef struct _SERVICE_DESCRIPTIONA {
    [string, range(0, 8 * 1024)] LPSTR lpDescription;
  } SERVICE_DESCRIPTIONA,
   *LPSERVICE_DESCRIPTIONA;
 
 lpDescription:  A pointer to a string that contains the description of the service in ANSI.
 
-2.2.35 SERVICE_DESCRIPTIONW
+#### 2.2.35 SERVICE_DESCRIPTIONW
 
 The SERVICE_DESCRIPTIONW structure contains the description of the service. String values are in
 Unicode.
@@ -2902,7 +2757,7 @@ Unicode.
 
 lpDescription:  A pointer to a string that contains the description of the service in Unicode.
 
-2.2.36 SERVICE_DESCRIPTION_WOW64
+#### 2.2.36 SERVICE_DESCRIPTION_WOW64
 
 The SERVICE_DESCRIPTION_WOW64 structure defines the offset at which SERVICE_DESRIPTIONW is
 present.
@@ -2915,7 +2770,7 @@ dwDescriptionOffset:  A pointer to the offset for the SERVICE_DESCRIPTIONW (sect
 
 structure, which contains the service description in Unicode.
 
-2.2.37 SERVICE_FAILURE_ACTIONS_WOW64
+#### 2.2.37 SERVICE_FAILURE_ACTIONS_WOW64
 
 The SERVICE_FAILURE_ACTIONS_WOW64 structure defines the action that the service controller
 takes on each failure of a service.
@@ -2948,13 +2803,14 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-cActions:  The number of SC_ACTION (section 2.2.19) structures in the array that is offset by the
+
+cActions:  The number of SC_ACTION (section 2.2.19) structures in the array that is offset by the
 
 value of dwsaActionsOffset.
 
 dwsaActionsOffset:  The offset for the buffer that contains an array of SC_ACTION structures.
 
-2.2.38 SERVICE_REQUIRED_PRIVILEGES_INFO_WOW64
+#### 2.2.38 SERVICE_REQUIRED_PRIVILEGES_INFO_WOW64
 
 The SERVICE_REQUIRED_PRIVILEGES_INFO_WOW64 structure defines the offset at which the
 SERVICE_RPC_REQUIRED_PRIVILEGES_INFO (section 2.2.48) structure is present.
@@ -2965,7 +2821,7 @@ SERVICE_RPC_REQUIRED_PRIVILEGES_INFO (section 2.2.48) structure is present.
 
 dwRequiredPrivilegesOffset:  Offset of the SERVICE_RPC_REQUIRED_PRIVILEGES_INFO structure.
 
-2.2.39 SERVICE_FAILURE_ACTIONSA
+#### 2.2.39 SERVICE_FAILURE_ACTIONSA
 
 The SERVICE_FAILURE_ACTIONSA structure defines the action that the service controller takes on
 each failure of a service. String values are stored in ANSI.
@@ -3000,7 +2856,7 @@ fails for the Nth time, the service controller performs the action specified in 
 lpsaActions array. If N is greater than cActions, the service controller repeats the last action in
 the array.
 
-2.2.40 SERVICE_FAILURE_ACTIONSW
+#### 2.2.40 SERVICE_FAILURE_ACTIONSW
 
 The SERVICE_FAILURE_ACTIONSW structure defines the action that the service controller takes on
 each failure of a service. String values are stored in Unicode.
@@ -3016,7 +2872,8 @@ Release: August 11, 2025
 
 34 / 178
 
-   [string, range(0, 8 * 1024)] LPWSTR lpCommand;
+
+   [string, range(0, 8 * 1024)] LPWSTR lpCommand;
    [range(0, 1024)] DWORD cActions;
    [size_is(cActions)] SC_ACTION* lpsaActions;
  } SERVICE_FAILURE_ACTIONSW,
@@ -3043,7 +2900,7 @@ fails for the Nth time, the service controller performs the action specified in 
 lpsaActions array. If N is greater than cActions, the service controller repeats the last action in
 the array.
 
-2.2.41 SERVICE_FAILURE_ACTIONS_FLAG
+#### 2.2.41 SERVICE_FAILURE_ACTIONS_FLAG
 
 The SERVICE_FAILURE_ACTIONS_FLAG structure<12> defines the failure action setting of a service.
 This setting determines when failure actions are to be executed.
@@ -3065,7 +2922,7 @@ queued only if the service terminates without reporting a status of SERVICE_STOP
 
 This setting is ignored unless the service has configured failure actions.
 
-2.2.42 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS
+#### 2.2.42 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS
 
 The latest supported version of the service notification status structure.<13>
 
@@ -3081,7 +2938,8 @@ Release: August 11, 2025
 
 35 / 178
 
-2.2.43 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_1
+
+#### 2.2.43 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_1
 
 The SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_1 structure defines the service status notification
 information. If a client uses this structure, the server copies data from this structure to the newer
@@ -3179,7 +3037,8 @@ Release: August 11, 2025
 
 36 / 178
 
-ServiceStatus:  A SERVICE_STATUS_PROCESS (section 2.2.49) structure that contains information
+
+ServiceStatus:  A SERVICE_STATUS_PROCESS (section 2.2.49) structure that contains information
 
 about the service.
 
@@ -3192,7 +3051,7 @@ failed.
 
 dwSequence:  Not used.
 
-2.2.44 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2
+#### 2.2.44 SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2
 
 The SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2 structure<14> defines the service status
 notification information.
@@ -3275,7 +3134,8 @@ Release: August 11, 2025
 
 37 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -3322,7 +3182,7 @@ The forward slash, back slash, comma, and space characters are illegal in servic
 The names of the created services are prefixed by "/" to distinguish them from the names of the
 deleted services.
 
-2.2.45 SERVICE_PRESHUTDOWN_INFO
+#### 2.2.45 SERVICE_PRESHUTDOWN_INFO
 
 The SERVICE_PRESHUTDOWN_INFO structure<15> defines the time-out value in milliseconds.
 
@@ -3334,7 +3194,7 @@ The SERVICE_PRESHUTDOWN_INFO structure<15> defines the time-out value in millise
 dwPreshutdownTimeout:  Time, in milliseconds, that the SCM waits for the service to enter the
 SERVICE_STOPPED state after sending the SERVICE_CONTROL_PRESHUTDOWN message.
 
-2.2.46 SERVICE_SID_INFO
+#### 2.2.46 SERVICE_SID_INFO
 
 The SERVICE_SID_INFO structure<16> defines the type of service security identifier (SID) associated
 with a service.
@@ -3351,7 +3211,8 @@ Release: August 11, 2025
 
 38 / 178
 
-dwServiceSidType:  The type of service SID. This MUST be one of the following values.
+
+dwServiceSidType:  The type of service SID. This MUST be one of the following values.
 
 Value
 
@@ -3391,7 +3252,7 @@ When the service process is created, the service SID is added to the
 service process token with the following attributes:
 SE_GROUP_ENABLED_BY_DEFAULT | SE_GROUP_OWNER.
 
-2.2.47 SERVICE_STATUS
+#### 2.2.47 SERVICE_STATUS
 
 The SERVICE_STATUS structure defines information about a service.
 
@@ -3451,7 +3312,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Only SERVICE_WIN32_OWN_PROCESS and SERVICE_INTERACTIVE_PROCESS OR
+
+Only SERVICE_WIN32_OWN_PROCESS and SERVICE_INTERACTIVE_PROCESS OR
 SERVICE_WIN32_SHARE_PROCESS and SERVICE_INTERACTIVE_PROCESS can be combined.
 
 dwCurrentState:  The current state of the service.
@@ -3535,7 +3397,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -3571,7 +3434,7 @@ occurred and the service can be stopped. However, if the service shares a proces
 services, the server cannot terminate the service application because it would have to terminate
 the other services sharing the process as well.
 
-2.2.48 SERVICE_RPC_REQUIRED_PRIVILEGES_INFO
+#### 2.2.48 SERVICE_RPC_REQUIRED_PRIVILEGES_INFO
 
 The SERVICE_RPC_REQUIRED_PRIVILEGES_INFO structure<21> defines the required privileges for a
 service.
@@ -3590,7 +3453,7 @@ pRequiredPrivileges:  Buffer that contains the required privileges of a service 
 sequence of null-terminated strings, terminated by an empty string (\0). The privilege constants
 are detailed in [MS-LSAD] section 3.1.1.2.1.
 
-2.2.49 SERVICE_STATUS_PROCESS
+#### 2.2.49 SERVICE_STATUS_PROCESS
 
 The SERVICE_STATUS_PROCESS structure contains information about a service that is used by the
 RQueryServiceStatusEx method.
@@ -3605,7 +3468,8 @@ Release: August 11, 2025
 
 41 / 178
 
-   DWORD dwCurrentState;
+
+   DWORD dwCurrentState;
    DWORD dwControlsAccepted;
    DWORD dwWin32ExitCode;
    DWORD dwServiceSpecificExitCode;
@@ -3695,7 +3559,8 @@ Release: August 11, 2025
 
 42 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -3781,7 +3646,8 @@ Release: August 11, 2025
 
 43 / 178
 
-2.2.50 STRING_PTRSA
+
+#### 2.2.50 STRING_PTRSA
 
 The STRING_PTRSA structure defines a pointer to an ANSI character string.
 
@@ -3794,7 +3660,7 @@ The STRING_PTRSA structure defines a pointer to an ANSI character string.
 
 StringPtr:  Pointer to an ANSI character string.
 
-2.2.51 STRING_PTRSW
+#### 2.2.51 STRING_PTRSW
 
 The STRING_PTRSW structure defines a pointer to a Unicode character string.
 
@@ -3807,7 +3673,7 @@ The STRING_PTRSW structure defines a pointer to a Unicode character string.
 
 StringPtr:  A pointer to a Unicode character string.
 
-2.2.52 SERVICE_TRIGGER_SPECIFIC_DATA_ITEM
+#### 2.2.52 SERVICE_TRIGGER_SPECIFIC_DATA_ITEM
 
 The SERVICE_TRIGGER_SPECIFIC_DATA_ITEM <25> structure contains information about one trigger
 data item of a service.
@@ -3837,7 +3703,7 @@ pData:  Trigger data. When dwDataType is set equal to 0x00000002
 terminating null character. This string can contain data in the format of a sequence of null-
 terminated strings, terminated by an empty string (\0).
 
-2.2.53 SERVICE_TRIGGER
+#### 2.2.53 SERVICE_TRIGGER
 
 The SERVICE_TRIGGER <26> structure contains information about one trigger of a service.
 
@@ -3848,7 +3714,8 @@ Release: August 11, 2025
 
 44 / 178
 
- typedef struct _SERVICE_TRIGGER {
+
+ typedef struct _SERVICE_TRIGGER {
    DWORD dwTriggerType;
    DWORD dwAction;
    GUID* pTriggerSubtype;
@@ -3931,7 +3798,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -4035,7 +3903,8 @@ member MUST be
 
 46 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -4076,7 +3945,7 @@ cDataItems:  Number of data items in the pDataItems array.
 
 pDataItems:  Array of SERVICE_TRIGGER_SPECIFIC_DATA_ITEM structures.
 
-2.2.54 SERVICE_TRIGGER_INFO
+#### 2.2.54 SERVICE_TRIGGER_INFO
 
 The SERVICE_TRIGGER_INFO <27> structure contains trigger information about a service.
 
@@ -4093,7 +3962,7 @@ pTriggers:  Array of triggers each element of type SERVICE_TRIGGER.
 
 pReserved:  Reserved, MUST be NULL.
 
-2.2.55 SERVICE_PREFERRED_NODE_INFO
+#### 2.2.55 SERVICE_PREFERRED_NODE_INFO
 
 The server MUST support initializing and executing a given service within a specified node when the
 server is running on a system supporting Non-Uniform Memory Access (NUMA) technology [MSDN-
@@ -4115,11 +3984,12 @@ Release: August 11, 2025
 
 47 / 178
 
-fDelete:  If the preferred NUMA node information of the service can be deleted, set to 1; otherwise
+
+fDelete:  If the preferred NUMA node information of the service can be deleted, set to 1; otherwise
 
 set to 0.
 
-2.2.56 svcctl Interface Constants
+#### 2.2.56 svcctl Interface Constants
 
 The following are constants that are used by the svcctl interface.
 
@@ -4204,7 +4074,7 @@ unsigned short. The length includes the terminating null character.
 This constant is the maximum size of the password strings. It is defined
 as an unsigned short. The length includes the terminating null character.
 
-2.2.57 Common Error Codes
+#### 2.2.57 Common Error Codes
 
 Unless specified explicitly, the methods in the svcctl interface return 0 on success and a nonzero
 implementation-specific value on failure in the return code of the response. All failure values MUST be
@@ -4218,11 +4088,12 @@ Release: August 11, 2025
 
 48 / 178
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-SCMR].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the Service Control Manager Remote Protocol, including
 abstract data models, interface method syntax, and message processing rules.
@@ -4232,13 +4103,13 @@ required on the client side of this protocol. Calls made by the higher-layer pro
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The Service Control Manager Remote Protocol server handles client requests for any of the messages
 specified in section 3.1.4 and operates on services on the server. For each of those messages, the
 behavior of the server is specified in section 3.1.4.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Services are programs that execute on a machine whose life cycle and execution properties are
 governed by the rules defined by the SCM. The state diagram that models these rules follows.
@@ -4250,7 +4121,8 @@ Release: August 11, 2025
 
 49 / 178
 
-Figure 1: State Diagram in which life cycle and execution properties are governed by the
+
+Figure 1: State Diagram in which life cycle and execution properties are governed by the
 rules defined in SCM
 
 From state
@@ -4359,7 +4231,8 @@ information, see [MSDN-CtrlSvc] and
 
 50 / 178
 
-From state
+
+From state
 
 To state
 
@@ -4465,7 +4338,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-From state
+
+From state
 
 To state
 
@@ -4566,7 +4440,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-From state
+
+From state
 
 To state
 
@@ -4673,7 +4548,8 @@ service status to
 
 53 / 178
 
-From state
+
+From state
 
 To state
 
@@ -4773,7 +4649,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-From state
+
+From state
 
 To state
 
@@ -4876,7 +4753,8 @@ Release: August 11, 2025
 
 55 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -4981,7 +4859,8 @@ Release: August 11, 2025
 
 56 / 178
 
-Value
+
+Value
 
 ObjectName
 
@@ -5068,7 +4947,7 @@ HandleCount
 
 Deleted
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -5079,13 +4958,14 @@ Release: August 11, 2025
 
 57 / 178
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 The Service Control Manager Remote Protocol server is initialized by registering the RPC interface and
 listening on the RPC well-known endpoint, as specified in section 2.1. The server MUST then wait
 for Service Control Manager Remote Protocol clients to establish a connection.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 All Service Control Manager Remote Protocol operations begin with the client connection to the remote
 SCM and the client request to open the SCM database. After this database is opened, an RPC context
@@ -5175,7 +5055,8 @@ Release: August 11, 2025
 
 58 / 178
 
-Value
+
+Value
 
 0x00000020
 
@@ -5283,7 +5164,8 @@ Release: August 11, 2025
 
 59 / 178
 
-Method
+
+Method
 
 Description
 
@@ -5408,7 +5290,8 @@ Release: August 11, 2025
 
 60 / 178
 
-Method
+
+Method
 
 Description
 
@@ -5531,7 +5414,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 Description
 
@@ -5649,7 +5533,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Method
+
+Method
 
 Description
 
@@ -5704,7 +5589,7 @@ All methods MUST NOT throw exceptions.
 Note that gaps in the opnum numbering sequence represent opnums that MUST NOT<34> be used
 over the wire.
 
-3.1.4.1  RCloseServiceHandle (Opnum 0)
+##### 3.1.4.1 RCloseServiceHandle (Opnum 0)
 
 The RCloseServiceHandle method is called by the client. In response, the server releases the handle to
 the specified service or the SCM database.
@@ -5748,7 +5633,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5764,7 +5650,7 @@ indicates that RDeleteService has been successfully called with the RPC control 
 same service record, and HandleCount indicates that hSCObject is the last RPC control handle
 created for this service record, the server MUST delete the service record.
 
-3.1.4.2  RControlService (Opnum 1)
+##### 3.1.4.2 RControlService (Opnum 1)
 
 The RControlService method receives a control code for a specific service handle, as specified by the
 client.
@@ -5838,7 +5724,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000009
 
@@ -5951,7 +5838,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6013,7 +5901,7 @@ following error codes: NO_ERROR, ERROR_INVALID_SERVICE_CONTROL,
 ERROR_SERVICE_CANNOT_ACCEPT_CTRL, ERROR_DEPENDENT_SERVICES_RUNNING, or
 ERROR_SERVICE_NOT_ACTIVE.
 
-3.1.4.3  RDeleteService (Opnum 2)
+##### 3.1.4.3 RDeleteService (Opnum 2)
 
 The RDeleteService method marks the specified service for deletion from the SCM database.
 
@@ -6034,7 +5922,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return Values: The method returns 0x00000000 (ERROR_SUCCESS) on success; otherwise, it
+
+Return Values: The method returns 0x00000000 (ERROR_SUCCESS) on success; otherwise, it
 
 returns one of the following error codes.
 
@@ -6076,7 +5965,7 @@ pending.
 The server MUST delete the service record when the last RPC context handle created for the service
 has been closed by a call to the RCloseServiceHandle (section 3.1.4.1) function.
 
-3.1.4.4  RLockServiceDatabase (Opnum 3)
+##### 3.1.4.4 RLockServiceDatabase (Opnum 3)
 
 The RLockServiceDatabase method acquires a lock on an SCM database.
 
@@ -6131,7 +6020,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-After the database is locked, the server MUST respond with error code
+
+After the database is locked, the server MUST respond with error code
 ERROR_SERVICE_DATABASE_LOCKED (1055) for future RLockServiceDatabase, RStartServiceW, and
 RStartServiceA RPCs. All other methods are unaffected.<37>
 
@@ -6139,7 +6029,7 @@ If the client holding the lock crashes or does not cleanly shut down, then an RP
 rundown callback executes on the server to release the lock. See [MS-RPCE] section 3.3.3.2.1
 Connection Time-out.
 
-3.1.4.5  RQueryServiceObjectSecurity (Opnum 4)
+##### 3.1.4.5 RQueryServiceObjectSecurity (Opnum 4)
 
 The RQueryServiceObjectSecurity method returns a copy of the SECURITY_DESCRIPTOR structure
 associated with a service object.
@@ -6214,7 +6104,8 @@ Release: August 11, 2025
 
 68 / 178
 
-If SACL_SECURITY_INFORMATION is specified for the dwSecurityInformation parameter, then an
+
+If SACL_SECURITY_INFORMATION is specified for the dwSecurityInformation parameter, then an
 ACCESS_SYSTEM_SECURITY right MUST have been granted to the caller when hService was created.
 (See AS in ACCESS_MASK in [MS-DTYP] 2.4.3.)
 
@@ -6238,7 +6129,7 @@ the call with ERROR_INSUFFICIENT_BUFFER (122).
 The server MUST return ERROR_INVALID_PARAMETER (87) if dwSecurityInformation contains bits
 not defined for SECURITY_INFORMATION (section 2.2.1).
 
-3.1.4.6  RSetServiceObjectSecurity (Opnum 5)
+##### 3.1.4.6 RSetServiceObjectSecurity (Opnum 5)
 
 The RSetServiceObjectSecurity method sets the SECURITY_DESCRIPTOR structure associated with a
 service object.
@@ -6295,7 +6186,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6330,7 +6222,7 @@ information from the SECURITY_DESCRIPTOR structure specified in the lpSecurityDe
 parameter to the SecurityDescriptor associated with the SCM or the service record identified by the
 hService parameter of the request.
 
-3.1.4.7  RQueryServiceStatus (Opnum 6)
+##### 3.1.4.7 RQueryServiceStatus (Opnum 6)
 
 The RQueryServiceStatus method returns the current status of the specified service.
 
@@ -6380,7 +6272,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6407,7 +6300,7 @@ If no attempts to start the service for the service record identified by the hSe
 been made since the last boot, the server MUST set the dwWin32ExitCode member of the
 lpServiceStatus parameter to 1077 ERROR_SERVICE_NEVER_STARTED.
 
-3.1.4.8  RSetServiceStatus (Opnum 7)
+##### 3.1.4.8 RSetServiceStatus (Opnum 7)
 
 The RSetServiceStatus method updates the SCM status information for the calling service.
 
@@ -6466,7 +6359,8 @@ Release: August 11, 2025
 
 71 / 178
 
-  SERVICE_RUNNING
+
+  SERVICE_RUNNING
 
   SERVICE_CONTINUE_PENDING
 
@@ -6527,7 +6421,7 @@ service for the service record identified by the hService parameter to a new sta
 of ServiceStatus.dwCurrentState in the service record ServiceState is different from lpServiceStatus-
 >dwCurrentState (section 3.1.1).
 
-3.1.4.9  RUnlockServiceDatabase (Opnum 8)
+##### 3.1.4.9 RUnlockServiceDatabase (Opnum 8)
 
 The RUnlockServiceDatabase method releases a lock on a service database.
 
@@ -6538,7 +6432,8 @@ Release: August 11, 2025
 
 72 / 178
 
- DWORD RUnlockServiceDatabase(
+
+ DWORD RUnlockServiceDatabase(
    [in, out] LPSC_RPC_LOCK Lock
  );
 
@@ -6566,9 +6461,9 @@ unlocked, the server MUST stop responding with error code ERROR_SERVICE_DATABASE
 (1055) for future RLockServiceDatabase, RStartServiceW, and RStartServiceA RPCs until the
 database is locked again. All other methods are unaffected.<38>
 
-3.1.4.10
+##### 3.1.4.10 RNotifyBootConfigStatus (Opnum 9)
 
-RNotifyBootConfigStatus (Opnum 9)
+
 
 The RNotifyBootConfigStatus method reports the boot status to the SCM.
 
@@ -6630,7 +6525,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6651,9 +6547,9 @@ ERROR_BOOT_ALREADY_ACCEPTED.
 
 If the BootAcceptable parameter is 0x00000000, the method does not return.
 
-3.1.4.11
+##### 3.1.4.11 RChangeServiceConfigW (Opnum 11)
 
-RChangeServiceConfigW (Opnum 11)
+
 
 The RChangeServiceConfigW method changes a service's configuration parameters in the SCM
 database.
@@ -6714,7 +6610,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000002
 
@@ -6835,7 +6732,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -6922,7 +6820,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7029,7 +6928,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-If the service is a member of a load-order group has a start type of delayed autostart (see section
+
+If the service is a member of a load-order group has a start type of delayed autostart (see section
 2.2.33), then the server MUST fail the call with ERROR_INVALID_PARAMETER (87).
 
 If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
@@ -7041,9 +6941,9 @@ back up, except in the case of lpDisplayName. Changes to lpDisplayName take effe
 If lpBinaryPathName contains arguments, the server MUST pass these arguments to the service entry
 point.
 
-3.1.4.12
+##### 3.1.4.12 RCreateServiceW (Opnum 12)
 
-RCreateServiceW (Opnum 12)
+
 
 The RCreateServiceW method creates the service record in the SCM database.
 
@@ -7106,7 +7006,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -7230,7 +7131,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-MUST be quoted so that it is correctly interpreted. For example, "d:\\my share\\myservice.exe" is
+
+MUST be quoted so that it is correctly interpreted. For example, "d:\\my share\\myservice.exe" is
 specified as "\"d:\\my share\\myservice.exe\"".
 
 lpLoadOrderGroup: A pointer to a null-terminated UNICODE string that names the load-ordering
@@ -7331,7 +7233,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7392,9 +7295,9 @@ point.
 lpdwTagId tags MUST be evaluated by the server for driver services that have SERVICE_BOOT_START
 or SERVICE_BOOT_SYSTEM_START start types.
 
-3.1.4.13
+##### 3.1.4.13 REnumDependentServicesW (Opnum 13)
 
-REnumDependentServicesW (Opnum 13)
+
 
 The REnumDependentServicesW method returns the ServiceName, DisplayName, and ServiceStatus
 values of service records that are listed as dependents of a specified service.
@@ -7414,7 +7317,8 @@ Release: August 11, 2025
 
 81 / 178
 
- );
+
+ );
 
 hService: An SC_RPC_HANDLE data type that defines the handle to the service record that MUST
 have been created previously, using one of the open methods specified in section 3.1.4. The
@@ -7517,7 +7421,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-client request. The server MUST return this list by setting the ServiceName, DisplayName, and
+
+client request. The server MUST return this list by setting the ServiceName, DisplayName, and
 ServiceStatus.dwCurrentState of each service record in this list in the array of
 ENUM_SERVICE_STATUSW (section 2.2.11) structures pointed to by the lpServices parameter and
 MUST set the number of services returned in the lpServicesReturned parameter.
@@ -7539,9 +7444,9 @@ The server MUST return the services in reverse sequence of the start order of th
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceState
 contains undefined values.
 
-3.1.4.14
+##### 3.1.4.14 REnumServicesStatusW (Opnum 14)
 
-REnumServicesStatusW (Opnum 14)
+
 
 The REnumServicesStatusW method enumerates service records in the specified SCM database.
 
@@ -7603,7 +7508,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-dwServiceState: A value that specifies the service records to enumerate based on the value of their
+
+dwServiceState: A value that specifies the service records to enumerate based on the value of their
 
 ServiceStatus.dwCurrentState. This MUST be one of the following values.
 
@@ -7705,7 +7611,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-If the lpResumeIndex value is not zero, the server MUST use that as the offset to the list of services
+
+If the lpResumeIndex value is not zero, the server MUST use that as the offset to the list of services
 and return only services starting at this offset. If the lpResumeIndex value is zero, the server MUST
 return all services. The server MUST set this parameter to zero if the operation is successful. If the
 lpResumeIndex value is set by the client to any nonzero number not returned by the server, the
@@ -7727,9 +7634,9 @@ dwServiceState parameter is zero or contains undefined values.
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in the
 dwServiceType parameter is zero or contains undefined values.
 
-3.1.4.15
+##### 3.1.4.15 ROpenSCManagerW (Opnum 15)
 
-ROpenSCManagerW (Opnum 15)
+
 
 The ROpenSCManagerW method establishes a connection to server and opens the SCM database on
 the specified server.
@@ -7784,7 +7691,8 @@ Release: August 11, 2025
 
 85 / 178
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7821,9 +7729,9 @@ ServicesActive or ServicesFailed.
 The server MUST return ERROR_DATABASE_DOES_NOT_EXIST (1065) if lpDatabaseName is
 ServicesFailed.
 
-3.1.4.16
+##### 3.1.4.16 ROpenServiceW (Opnum 16)
 
-ROpenServiceW (Opnum 16)
+
 
 The ROpenServiceW method creates an RPC context handle to an existing service record.
 
@@ -7872,7 +7780,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7912,9 +7821,9 @@ found in the service record against the caller's security context for the reques
 MUST increment the HandleCount field of the service record and return this handle by setting the
 lpScHandle parameter.
 
-3.1.4.17
+##### 3.1.4.17 RQueryServiceConfigW (Opnum 17)
 
-RQueryServiceConfigW (Opnum 17)
+
 
 The RQueryServiceConfigW method returns the configuration parameters of the specified service.
 
@@ -7969,7 +7878,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7994,9 +7904,9 @@ The server MUST set the required buffer size, in bytes, in the pcbBytesNeeded pa
 pointed to by lpServiceConfig is insufficient to hold all the configuration data, the server MUST fail the
 call with ERROR_INSUFFICIENT_BUFFER (122).
 
-3.1.4.18
+##### 3.1.4.18 RQueryServiceLockStatusW (Opnum 18)
 
-RQueryServiceLockStatusW (Opnum 18)
+
 
 The RQueryServiceLockStatusW method returns the lock status of the specified SCM database.
 
@@ -8057,7 +7967,8 @@ Release: August 11, 2025
 
 88 / 178
 
-In response to this request from the client, for a successful operation the server MUST query the lock
+
+In response to this request from the client, for a successful operation the server MUST query the lock
 status of the SCM database identified by the hSCManager parameter of the client request. The server
 MUST return this lock status by setting the lpLockStatus parameter as specified in 2.2.17.
 
@@ -8066,9 +7977,9 @@ fail the call with ERROR_INSUFFICIENT_BUFFER (122) and set the required buffer s
 pcbBytesNeeded parameter. If the size is sufficient for data returned, the server also returns the
 required size, in bytes.
 
-3.1.4.19
+##### 3.1.4.19 RStartServiceW (Opnum 19)
 
-RStartServiceW (Opnum 19)
+
 
 The RStartServiceW method starts a specified service.
 
@@ -8155,7 +8066,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8235,9 +8147,9 @@ service process.
 If argv does not contain as many non-NULL pointers as indicated by argc, the server MUST fail the call
 with ERROR_INVALID_PARAMETER (87).
 
-3.1.4.20
+##### 3.1.4.20 RGetServiceDisplayNameW (Opnum 20)
 
-RGetServiceDisplayNameW (Opnum 20)
+
 
 The RGetServiceDisplayNameW method returns the display name of the specified service.
 
@@ -8253,7 +8165,8 @@ Release: August 11, 2025
 
 90 / 178
 
-   [out, string, range(1, 4*1024+1), size_is(*               lpcchBuffer +1)]
+
+   [out, string, range(1, 4*1024+1), size_is(*               lpcchBuffer +1)]
      wchar_t* lpDisplayName,
    [in, out] DWORD* lpcchBuffer
  );
@@ -8313,9 +8226,9 @@ MUST fail the call with ERROR_INSUFFICIENT_BUFFER (122) and set the size in wcha
 display name excluding the terminating null character in lpcchBuffer. If the size is sufficient for data
 returned, the server also returns the required size, in bytes.
 
-3.1.4.21
+##### 3.1.4.21 RGetServiceKeyNameW (Opnum 21)
 
-RGetServiceKeyNameW (Opnum 21)
+
 
 The RGetServiceKeyNameW method returns the ServiceName of the service record with the
 specified DisplayName.
@@ -8336,7 +8249,8 @@ Release: August 11, 2025
 
 91 / 178
 
-hSCManager: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the SCM
+
+hSCManager: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the SCM
 
 database created using one of the open methods specified in section 3.1.4.
 
@@ -8391,9 +8305,9 @@ MUST fail the call with ERROR_INSUFFICIENT_BUFFER (122) and set the size in wcha
 service name excluding the terminating null character in the lpcchBuffer parameter. If the size is
 sufficient for data returned, the server also returns the required size, in bytes.
 
-3.1.4.22
+##### 3.1.4.22 RChangeServiceConfigA (Opnum 23)
 
-RChangeServiceConfigA (Opnum 23)
+
 
 The RChangeServiceConfigA method changes a service's configuration parameters in the SCM
 database.
@@ -8422,7 +8336,8 @@ Release: August 11, 2025
 
 92 / 178
 
-   [in, unique, size_is(dwPwSize)]
+
+   [in, unique, size_is(dwPwSize)]
      LPBYTE lpPassword,
    [in, range(0, SC_MAX_PWD_SIZE)]
      DWORD dwPwSize,
@@ -8529,7 +8444,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -8626,7 +8542,8 @@ Release: August 11, 2025
 
 94 / 178
 
-lpPassword: A Password value for the service record (section 3.1.1) as a pointer to a null-terminated
+
+lpPassword: A Password value for the service record (section 3.1.1) as a pointer to a null-terminated
 
 ANSI string that contains the password of the account whose name was specified by the
 lpServiceStartName parameter.
@@ -8738,7 +8655,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-
+
+
 
 If the client passes NULL for lpDisplayName, the server MUST keep the existing DisplayName
 value.
@@ -8771,9 +8689,9 @@ back up, except in the case of lpDisplayName. Changes to lpDisplayName take effe
 If lpBinaryPathName contains arguments, the server MUST pass these arguments to the service entry
 point.
 
-3.1.4.23
+##### 3.1.4.23 RCreateServiceA (Opnum 24)
 
-RCreateServiceA (Opnum 24)
+
 
 The RCreateServiceA method creates the service record in the SCM database.
 
@@ -8813,7 +8731,8 @@ Release: August 11, 2025
 
 96 / 178
 
-hSCManager: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the SCM
+
+hSCManager: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the SCM
 
 database created using one of the open methods specified in section 3.1.4. The
 SC_MANAGER_CREATE_SERVICE access right MUST have been granted to the caller when the RPC
@@ -8924,7 +8843,8 @@ Release: August 11, 2025
 
 97 / 178
 
-dwErrorControl: A value that specifies the severity of the error if the service fails to start and
+
+dwErrorControl: A value that specifies the severity of the error if the service fails to start and
 
 determines the action that the SCM takes. This MUST be one of the following values.
 
@@ -9019,7 +8939,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9125,7 +9046,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-SERVICE_WIN32_SHARE_PROCESS. If the value of dwServiceType has more than one bit set and the
+
+SERVICE_WIN32_SHARE_PROCESS. If the value of dwServiceType has more than one bit set and the
 combination of bits is not equal to SERVICE_INTERACTIVE_PROCESS and
 SERVICE_WIN32_OWN_PROCESS or SERVICE_INTERACTIVE_PROCESS and
 SERVICE_WIN32_SHARE_PROCESS, the server MUST fail the method and return the error
@@ -9137,9 +9059,9 @@ point.
 If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
 server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.4.24
+##### 3.1.4.24 REnumDependentServicesA (Opnum 25)
 
-REnumDependentServicesA (Opnum 25)
+
 
 The REnumDependentServicesA method returns the ServiceName, DisplayName, and ServiceStatus of
 each service record that depends on the specified service.
@@ -9209,7 +9131,8 @@ Release: August 11, 2025
 
 100 / 178
 
-lpServicesReturned: An LPBOUNDED_DWORD_256K (section 2.2.9) pointer to a variable that
+
+lpServicesReturned: An LPBOUNDED_DWORD_256K (section 2.2.9) pointer to a variable that
 
 contains the number of service entries returned.
 
@@ -9277,9 +9200,9 @@ The server MUST return the services in reverse sequence of the start order of th
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceState
 contains undefined values.
 
-3.1.4.25
+##### 3.1.4.25 REnumServicesStatusA (Opnum 26)
 
-REnumServicesStatusA (Opnum 26)
+
 
 The REnumServicesStatusA method enumerates service records in the specified SCM database.
 
@@ -9299,7 +9222,8 @@ Release: August 11, 2025
 
 101 / 178
 
-   [in, out, unique] LPBOUNDED_DWORD_256K lpResumeIndex
+
+   [in, out, unique] LPBOUNDED_DWORD_256K lpResumeIndex
  );
 
 hSCManager: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the SCM
@@ -9400,7 +9324,8 @@ Release: August 11, 2025
 
 102 / 178
 
-service addition. The value of the lpResumeIndex parameter is one of these numbers, which the
+
+service addition. The value of the lpResumeIndex parameter is one of these numbers, which the
 server can use to determine the resumption point for the enumeration.
 
 Return Values: The method returns 0x00000000 (ERROR_SUCCESS) on success; otherwise, it
@@ -9468,9 +9393,9 @@ zero or contains undefined values.
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceType is
 zero or contains undefined values.
 
-3.1.4.26
+##### 3.1.4.26 ROpenSCManagerA (Opnum 27)
 
-ROpenSCManagerA (Opnum 27)
+
 
 The ROpenSCManagerA method opens a connection to the SCM from the client and then opens the
 specified SCM database.
@@ -9484,7 +9409,8 @@ Release: August 11, 2025
 
 103 / 178
 
-   [in, string, unique, range(0, SC_MAX_COMPUTER_NAME_LENGTH)]
+
+   [in, string, unique, range(0, SC_MAX_COMPUTER_NAME_LENGTH)]
      SVCCTL_HANDLEA lpMachineName,
    [in, string, unique, range(0, SC_MAX_NAME_LENGTH)]
      LPSTR lpDatabaseName,
@@ -9567,9 +9493,10 @@ Release: August 11, 2025
 
 104 / 178
 
-3.1.4.27
 
-ROpenServiceA (Opnum 28)
+##### 3.1.4.27 ROpenServiceA (Opnum 28)
+
+
 
 The ROpenServiceA method creates an RPC context handle to an existing service record.
 
@@ -9656,9 +9583,10 @@ Release: August 11, 2025
 
 105 / 178
 
-3.1.4.28
 
-RQueryServiceConfigA (Opnum 29)
+##### 3.1.4.28 RQueryServiceConfigA (Opnum 29)
+
+
 
 The RQueryServiceConfigA method returns the configuration parameters of the specified service.
 
@@ -9727,9 +9655,9 @@ call with ERROR_INSUFFICIENT_BUFFER (122).
 The server MUST use the process described in Conversion Between ANSI and Unicode String
 Formats (section 3.1.7) to convert a string to the appropriate format.
 
-3.1.4.29
+##### 3.1.4.29 RQueryServiceLockStatusA (Opnum 30)
 
-RQueryServiceLockStatusA (Opnum 30)
+
 
 The RQueryServiceLockStatusA method returns the lock status of the specified SCM database.
 
@@ -9742,7 +9670,8 @@ Release: August 11, 2025
 
 106 / 178
 
-   [in] SC_RPC_HANDLE hSCManager,
+
+   [in] SC_RPC_HANDLE hSCManager,
    [out] LPQUERY_SERVICE_LOCK_STATUSA lpLockStatus,
    [in, range(0, 1024*4)] DWORD cbBufSize,
    [out] LPBOUNDED_DWORD_4K pcbBytesNeeded
@@ -9802,9 +9731,9 @@ required size, in bytes.
 The server MUST use the process described in Conversion Between ANSI and Unicode String
 Formats (section 3.1.7) to convert a string to the appropriate format.
 
-3.1.4.30
+##### 3.1.4.30 RStartServiceA (Opnum 31)
 
-RStartServiceA (Opnum 31)
+
 
 The RStartServiceA method starts a specified service.
 
@@ -9823,7 +9752,8 @@ Release: August 11, 2025
 
 107 / 178
 
-hService: An SC_RPC_HANDLE (section 2.2.4) that defines the handle to the service record that
+
+hService: An SC_RPC_HANDLE (section 2.2.4) that defines the handle to the service record that
 
 MUST have been created previously, using one of the open methods specified in section 3.1.4. The
 SERVICE_START access right MUST have been granted to the caller when the RPC context
@@ -9948,7 +9878,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-In response to this request from the client, for a successful operation the server MUST start the
+
+In response to this request from the client, for a successful operation the server MUST start the
 service using the information from the service record identified by the hService parameter and pass
 the arguments specified in the argv parameter as part of the service launch command.
 
@@ -9975,9 +9906,9 @@ service process.
 If argv does not contain as many non-NULL pointers as indicated by argc, the server MUST fail the call
 with ERROR_INVALID_PARAMETER (87).
 
-3.1.4.31
+##### 3.1.4.31 RGetServiceDisplayNameA (Opnum 32)
 
-RGetServiceDisplayNameA (Opnum 32)
+
 
 The RGetServiceDisplayNameA method returns the display name of the specified service.
 
@@ -10018,7 +9949,8 @@ Release: August 11, 2025
 
 109 / 178
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10057,9 +9989,9 @@ then the server MUST convert the display name to an ANSI string before returning
 process is specified in [MS-UCODEREF] section 3.1.5.1.1.2, Pseudocode for Mapping a UTF-16 String
 to an ANSI Codepage.
 
-3.1.4.32
+##### 3.1.4.32 RGetServiceKeyNameA (Opnum 33)
 
-RGetServiceKeyNameA (Opnum 33)
+
 
 The RGetServiceKeyNameA method returns the ServiceName of the service record with the specified
 DisplayName.
@@ -10099,7 +10031,8 @@ Release: August 11, 2025
 
 110 / 178
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10143,9 +10076,9 @@ conversion process is specified in [MS-UCODEREF] section 3.1.5.1.1.2, Pseudocode
 The server MUST use the process described in Conversion Between ANSI and Unicode String
 Formats (section 3.1.7) to convert a string to the appropriate format.
 
-3.1.4.33
+##### 3.1.4.33 REnumServiceGroupW (Opnum 35)
 
-REnumServiceGroupW (Opnum 35)
+
 
 The REnumServiceGroupW method returns the members of a service group.
 
@@ -10179,7 +10112,8 @@ Release: August 11, 2025
 
 111 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -10288,7 +10222,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10353,9 +10288,9 @@ zero or contains undefined values.
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceType is
 zero or contains undefined values.
 
-3.1.4.34
+##### 3.1.4.34 RChangeServiceConfig2A (Opnum 36)
 
-RChangeServiceConfig2A (Opnum 36)
+
 
 The RChangeServiceConfig2A method SHOULD<51> change the optional configuration parameters of
 a service.
@@ -10372,7 +10307,8 @@ Release: August 11, 2025
 
 113 / 178
 
-hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
+
+hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
 record that MUST have been created previously, using one of the open methods specified in
 section 3.1.4. The SERVICE_CHANGE_CONFIG access right MUST have been granted to the caller
 when the RPC context handle to the service record was created.
@@ -10445,9 +10381,9 @@ If the service record ServiceGroup value is set and the client specifies a start
 The server MUST use the process described in Conversion Between ANSI and Unicode String
 Formats (section 3.1.7) to convert a string to the appropriate format.
 
-3.1.4.35
+##### 3.1.4.35 RChangeServiceConfig2W (Opnum 37)
 
-RChangeServiceConfig2W (Opnum 37)
+
 
 The RChangeServiceConfig2W <53> method changes the optional configuration parameters of a
 service.
@@ -10464,7 +10400,8 @@ Release: August 11, 2025
 
 114 / 178
 
-hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
+
+hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
 record that MUST have been created previously, using one of the open methods specified in
 section 3.1.4. The SERVICE_CHANGE_CONFIG access right MUST have been granted to the caller
 when the RPC context handle to the service record was created.
@@ -10534,9 +10471,9 @@ ERROR_INVALID_PARAMETER (87).
 If the service record ServiceGroup value is set and the client specifies a start type of delayed autostart
 (see section 2.2.33), the server MUST fail the call with ERROR_INVALID_PARAMETER (87).
 
-3.1.4.36
+##### 3.1.4.36 RQueryServiceConfig2A (Opnum 38)
 
-RQueryServiceConfig2A (Opnum 38)
+
 
 The RQueryServiceConfig2A <55> method returns the optional configuration parameters of the
 specified service based on the specified information level.
@@ -10556,7 +10493,8 @@ Release: August 11, 2025
 
 115 / 178
 
-hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
+
+hService: An SC_RPC_HANDLE (section 2.2.4) data type that defines the handle to the service
 record that MUST have been created previously, using one of the open methods specified in
 section 3.1.4. The SERVICE_QUERY_CONFIG access right MUST have been granted to the caller
 when the RPC context handle to the service record was created.
@@ -10675,7 +10613,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10709,9 +10648,9 @@ Formats (section 3.1.7) to convert a string to the appropriate format.
 The server MUST return ERROR_INVALID_PARAMETER (87) if either or both lpBuffer and
 pcbBytesNeeded are NULL.<63>
 
-3.1.4.37
+##### 3.1.4.37 RQueryServiceConfig2W (Opnum 39)
 
-RQueryServiceConfig2W (Opnum 39)
+
 
 The RQueryServiceConfig2W <64> method returns the optional configuration parameters of the
 specified service based on the specified information level.
@@ -10766,7 +10705,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-0x00000004<66>
+
+0x00000004<66>
 
 SERVICE_FAILURE_ACTIONS_FLAG structure.
 
@@ -10875,7 +10815,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The server MUST return this configuration data by setting the lpBuffer parameter with the appropriate
+
+The server MUST return this configuration data by setting the lpBuffer parameter with the appropriate
 structure filled with the configuration data based on dwInfoLevel.
 
 The server MUST set the required buffer size in the pcbBytesNeeded parameter.
@@ -10886,9 +10827,9 @@ fail the call with ERROR_INSUFFICIENT_BUFFER (122).
 The server MUST return ERROR_INVALID_PARAMETER (87) if either or both lpBuffer and
 pcbBytesNeeded are NULL.<72>
 
-3.1.4.38
+##### 3.1.4.38 RQueryServiceStatusEx (Opnum 40)
 
-RQueryServiceStatusEx (Opnum 40)
+
 
 The RQueryServiceStatusEx method returns the current status of the specified service, based on the
 specified information level.
@@ -10964,7 +10905,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10986,9 +10928,9 @@ If the buffer pointed to by lpBuffer is insufficient to hold all the configurati
 fail the call with ERROR_INSUFFICIENT_BUFFER (122) and set the required buffer size in the
 pcbBytesNeeded parameter.
 
-3.1.4.39
+##### 3.1.4.39 REnumServicesStatusExA (Opnum 41)
 
-REnumServicesStatusExA (Opnum 41)
+
 
 The REnumServicesStatusExA method enumerates services in the specified SCM database, based on
 the specified information level.
@@ -11052,7 +10994,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000020
 
@@ -11156,7 +11099,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11217,9 +11161,9 @@ zero or contains undefined values.
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceType is
 zero or contains undefined values.
 
-3.1.4.40
+##### 3.1.4.40 REnumServicesStatusExW (Opnum 42)
 
-REnumServicesStatusExW (Opnum 42)
+
 
 The REnumServicesStatusExW method enumerates services in the specified SCM database, based on
 the specified information level.
@@ -11237,7 +11181,8 @@ Release: August 11, 2025
 
 122 / 178
 
-   [out, size_is(cbBufSize)] LPBYTE lpBuffer,
+
+   [out, size_is(cbBufSize)] LPBYTE lpBuffer,
    [in, range(0, 1024*256)] DWORD cbBufSize,
    [out] LPBOUNDED_DWORD_256K pcbBytesNeeded,
    [out] LPBOUNDED_DWORD_256K lpServicesReturned,
@@ -11338,7 +11283,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-lpServicesReturned: An LPBOUNDED_DWORD_256K (section 2.2.9) pointer to a variable that
+
+lpServicesReturned: An LPBOUNDED_DWORD_256K (section 2.2.9) pointer to a variable that
 
 contains the number of service entries returned.
 
@@ -11433,7 +11379,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-If the size of the lpBuffer array is insufficient for the list of services returned, the server MUST fail the
+
+If the size of the lpBuffer array is insufficient for the list of services returned, the server MUST fail the
 call with ERROR_MORE_DATA (234) and return the size in bytes required in the pcbBytesNeeded
 parameter. If the size is sufficient for data returned, the server also returns the required size, in
 bytes.
@@ -11447,9 +11394,9 @@ zero or contains undefined values.
 The server MUST return ERROR_INVALID_PARAMETER (87) if a bitmask specified in dwServiceType is
 zero or contains undefined values.
 
-3.1.4.41
+##### 3.1.4.41 RCreateServiceWOW64A (Opnum 44)
 
-RCreateServiceWOW64A (Opnum 44)
+
 
 The RCreateServiceWOW64A method creates the service record for a 32-bit service on a 64-bit system
 with the path to the file image automatically adjusted to point to a 32-bit file location on the system.
@@ -11506,7 +11453,8 @@ Release: August 11, 2025
 
 125 / 178
 
-dwServiceType: A value that specifies the type of service. This MUST be one or a combination of the
+
+dwServiceType: A value that specifies the type of service. This MUST be one or a combination of the
 
 following values.
 
@@ -11630,7 +11578,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-lpBinaryPathName: A pointer to a null-terminated ANSI string that contains the fully qualified path
+
+lpBinaryPathName: A pointer to a null-terminated ANSI string that contains the fully qualified path
 to the service binary file. The path MAY include arguments. If the path contains a space, it MUST
 be quoted so that it is correctly interpreted. For example, "d:\\my share\\myservice.exe" is
 specified as "\"d:\\my share\\myservice.exe\"".
@@ -11728,7 +11677,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11791,9 +11741,9 @@ point.
 If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
 server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.4.42
+##### 3.1.4.42 RCreateServiceWOW64W (Opnum 45)
 
-RCreateServiceWOW64W (Opnum 45)
+
 
 The RCreateServiceWOW64W method creates the service record for a 32-bit service on a 64-bit
 system with the path to the file image automatically adjusted to point to a 32-bit file location on the
@@ -11815,7 +11765,8 @@ Release: August 11, 2025
 
 128 / 178
 
-   [in] DWORD dwStartType,
+
+   [in] DWORD dwStartType,
    [in] DWORD dwErrorControl,
    [in, string, range(0, SC_MAX_PATH_LENGTH)]
      wchar_t* lpBinaryPathName,
@@ -11906,7 +11857,8 @@ Release: August 11, 2025
 
 129 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -12012,7 +11964,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-lpServiceStartName: A pointer to a null-terminated UNICODE string that specifies the name of the
+
+lpServiceStartName: A pointer to a null-terminated UNICODE string that specifies the name of the
 
 account under which the service runs.
 
@@ -12122,7 +12075,8 @@ Release: August 11, 2025
 
 131 / 178
 
-If the service is created successfully, the server MUST return a handle to the service in the
+
+If the service is created successfully, the server MUST return a handle to the service in the
 lpServiceHandle parameter with the access rights associated with this handle as specified in the
 dwDesiredAccess parameter of the client request.
 
@@ -12140,9 +12094,9 @@ point.
 If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
 server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.4.43
+##### 3.1.4.43 RNotifyServiceStatusChange (Opnum 47)
 
-RNotifyServiceStatusChange (Opnum 47)
+
 
 The RNotifyServiceStatusChange method<74> allows the client to register for notifications and check,
 via RGetNotifyResults (section 3.1.4.44), when the specified service of type
@@ -12192,7 +12146,8 @@ Release: August 11, 2025
 
 132 / 178
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12276,9 +12231,9 @@ SERVICE_NOTIFY_STATUS_CHANGE.
 The server MUST return ERROR_INVALID_LEVEL (124) if the value of dwInfoLevel is not
 SERVICE_NOTIFY_STATUS_CHANGE (0x2) or SERVICE_NOTIFY_STATUS_CHANGE_1 (0x1).
 
-3.1.4.44
+##### 3.1.4.44 RGetNotifyResults (Opnum 48)
 
-RGetNotifyResults (Opnum 48)
+
 
 The RGetNotifyResults method<75> returns notification information when the specified status change
 that was previously requested by the client via RNotifyServiceStatusChange (section 3.1.4.43) occurs
@@ -12295,7 +12250,8 @@ Release: August 11, 2025
 
 133 / 178
 
-   [in] SC_NOTIFY_RPC_HANDLE hNotify,
+
+   [in] SC_NOTIFY_RPC_HANDLE hNotify,
    [out] PSC_RPC_NOTIFY_PARAMS_LIST* ppNotifyParams
  );
 
@@ -12343,9 +12299,9 @@ values in the ppNotifyParams parameter and returning the call.<76>
 
 The client MUST ignore any value set in the ullThreadId parameter in ppNotifyParams.
 
-3.1.4.45
+##### 3.1.4.45 RCloseNotifyHandle (Opnum 49)
 
-RCloseNotifyHandle (Opnum 49)
+
 
 The RCloseNotifyHandle method<77> unregisters the client from receiving future notifications via the
 RGetNotifyResults (section 3.1.4.44) method from the server for specified status changes on a
@@ -12375,7 +12331,8 @@ Release: August 11, 2025
 
 134 / 178
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12389,9 +12346,9 @@ In response to this request from the client, for a successful operation the serv
 handle specified in the phNotify parameter and stop notifying the client about status changes for the
 service record associated with the handle.
 
-3.1.4.46
+##### 3.1.4.46 RControlServiceExA (Opnum 50)
 
-RControlServiceExA (Opnum 50)
+
 
 The RControlServiceExA method<78> receives a control code for a specific service.
 
@@ -12472,7 +12429,8 @@ Release: August 11, 2025
 
 135 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -12580,7 +12538,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12658,9 +12617,9 @@ NULL. If not, the server MUST fail the call and return ERROR_INVALID_PARAMETER (
 The server MUST use the process described in Conversion Between ANSI and Unicode String
 Formats (section 3.1.7) to convert a string to the appropriate format.
 
-3.1.4.47
+##### 3.1.4.47 RControlServiceExW (Opnum 51)
 
-RControlServiceExW (Opnum 51)
+
 
 The RControlServiceExW method<80> receives a control code for a specific service.
 
@@ -12671,7 +12630,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- DWORD RControlServiceExW(
+
+ DWORD RControlServiceExW(
    [in] SC_RPC_HANDLE hService,
    [in] DWORD dwControl,
    [in] DWORD dwInfoLevel,
@@ -12775,7 +12735,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0x00000009
 
@@ -12890,7 +12851,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12933,9 +12895,9 @@ The server MUST provide information in pControlOutParams.
 If dwControl is not equal to SERVICE_CONTROL_STOP, pControlInParams->pszComment MUST be
 NULL. If not, the server MUST fail the call and return ERROR_INVALID_PARAMETER (87).
 
-3.1.4.48
+##### 3.1.4.48 RQueryServiceConfigEx (Opnum 56)
 
-RQueryServiceConfigEx (Opnum 56)
+
 
 The RQueryServiceConfigEx  method SHOULD<82> query the optional configuration parameters of a
 service.
@@ -12962,7 +12924,8 @@ Release: August 11, 2025
 
 140 / 178
 
-pInfo: A pointer to an SC_RPC_CONFIG_INFOW (section 2.2.22) structure that contains optional
+
+pInfo: A pointer to an SC_RPC_CONFIG_INFOW (section 2.2.22) structure that contains optional
 
 configuration information.
 
@@ -13009,9 +12972,9 @@ the configuration data based on dwInfoLevel.
 The server MUST return a service's trigger information by returning a SERVICE_TRIGGER_INFO
 structure.
 
-3.1.4.49
+##### 3.1.4.49 RCreateWowService (Opnum 60)
 
-RCreateWowService (Opnum 60)
+
 
 The RCreateWowService method creates a service whose binary is compiled for a specified computer
 architecture.<83> The path to the file image is automatically adjusted to point to the correct WoW-
@@ -13051,7 +13014,8 @@ Release: August 11, 2025
 
 141 / 178
 
-   [in] USHORT dwServiceWowType,
+
+   [in] USHORT dwServiceWowType,
    [out] LPSC_RPC_HANDLE lpServiceHandle
  );
 
@@ -13157,7 +13121,8 @@ Release: August 11, 2025
 
 142 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -13249,7 +13214,8 @@ Release: August 11, 2025
 
 143 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -13374,7 +13340,8 @@ Release: August 11, 2025
 
 144 / 178
 
-Value
+
+Value
 
 Meaning
 
@@ -13493,7 +13460,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13595,12 +13563,13 @@ Release: August 11, 2025
 
 146 / 178
 
-If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
+
+If lpdwTagId has a valid value and lpLoadOrderGroup is either NULL or an empty string, then the
 server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.4.50
+##### 3.1.4.50 ROpenSCManager2 (Opnum 64)
 
-ROpenSCManager2 (Opnum 64)
+
 
 The ROpenSCManager2 method establishes a connection to server and opens the SCM database on
 the specified server.<87>
@@ -13683,23 +13652,24 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The server MUST return ERROR_DATABASE_DOES_NOT_EXIST (1065) if lpDatabaseName is
+
+The server MUST return ERROR_DATABASE_DOES_NOT_EXIST (1065) if lpDatabaseName is
 ServicesFailed.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
  None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
  None.
 
-3.1.7  Conversion Between ANSI and Unicode String Formats
+#### 3.1.7 Conversion Between ANSI and Unicode String Formats
 
 For all methods that require conversion, the server utilizes the conversion process specified in [MS-
 UCODEREF] section 3.1.5.1.1.2.
 
-3.2  RPC Runtime Check Notes
+### 3.2 RPC Runtime Check Notes
 
 The behavior of the client when methods are executed can be affected by the RPC protocol runtime
 checks and MIDL compiler options used when generating stubs. For example, this often concerns
@@ -13716,7 +13686,8 @@ Release: August 11, 2025
 
 148 / 178
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The client receives a request from an application such as Services.msc to open the SCM database on
 the server for reading. After establishing a connection to the server, the client sends an
@@ -13762,16 +13733,17 @@ Release: August 11, 2025
 
 149 / 178
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Service Control Manager
 Remote Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
  None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -13798,7 +13770,8 @@ Release: August 11, 2025
 
 150 / 178
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 For ease of implementation, the full Interface Definition Language (IDL) is provided as follows, where
 "ms-dtyp.idl" is the IDL found in [MS-DTYP] Appendix A.
 
@@ -13872,7 +13845,8 @@ Release: August 11, 2025
 
 151 / 178
 
-   DWORD dwServiceType;
+
+   DWORD dwServiceType;
    DWORD dwCurrentState;
    DWORD dwControlsAccepted;
    DWORD dwWin32ExitCode;
@@ -13949,7 +13923,8 @@ Release: August 11, 2025
 
 152 / 178
 
- typedef struct _SERVICE_FAILURE_ACTIONSA {
+
+ typedef struct _SERVICE_FAILURE_ACTIONSA {
    DWORD dwResetPeriod;
    [string,range(0, 8 * 1024)] LPSTR lpRebootMsg;
    [string,range(0, 8 * 1024)] LPSTR lpCommand;
@@ -14025,7 +14000,8 @@ Release: August 11, 2025
 
 153 / 178
 
-     DWORD                       dwAction;
+
+     DWORD                       dwAction;
      GUID    *                   pTriggerSubtype;
      [range(0, 64)]
      DWORD                       cDataItems;
@@ -14102,7 +14078,8 @@ Release: August 11, 2025
 
 154 / 178
 
-     [out] LPSERVICE_STATUS  lpServiceStatus
+
+     [out] LPSERVICE_STATUS  lpServiceStatus
      );
 
  DWORD
@@ -14178,7 +14155,8 @@ Release: August 11, 2025
 
 155 / 178
 
-     [in,unique,size_is(dwDependSize)] LPBYTE  lpDependencies,
+
+     [in,unique,size_is(dwDependSize)] LPBYTE  lpDependencies,
      [in, range (0, SC_MAX_DEPEND_SIZE)] DWORD  dwDependSize,
      [in,string,unique,range(0, SC_MAX_ACCOUNT_NAME_LENGTH)]
                  wchar_t *  lpServiceStartName,
@@ -14255,7 +14233,8 @@ Release: August 11, 2025
 
 156 / 178
 
-     [in] SC_RPC_HANDLE  hSCManager,
+
+     [in] SC_RPC_HANDLE  hSCManager,
      [in,string,range(0, SC_MAX_NAME_LENGTH)]
                  wchar_t *  lpServiceName,
      [in] DWORD  dwDesiredAccess,
@@ -14330,7 +14309,8 @@ Release: August 11, 2025
 
 157 / 178
 
-     [in,unique,size_is(dwPwSize)] LPBYTE  lpPassword,
+
+     [in,unique,size_is(dwPwSize)] LPBYTE  lpPassword,
      [in, range(0, SC_MAX_PWD_SIZE)] DWORD  dwPwSize,
      [in,string,unique,range(0, SC_MAX_NAME_LENGTH)]
              LPSTR  lpDisplayName
@@ -14407,7 +14387,8 @@ Release: August 11, 2025
 
 158 / 178
 
-     [out] LPSC_RPC_HANDLE lpServiceHandle
+
+     [out] LPSC_RPC_HANDLE lpServiceHandle
      );
 
  DWORD
@@ -14479,7 +14460,8 @@ Release: August 11, 2025
 
 159 / 178
 
- typedef struct _SC_RPC_CONFIG_INFOA
+
+ typedef struct _SC_RPC_CONFIG_INFOA
  {
      DWORD  dwInfoLevel;
      [switch_is(dwInfoLevel)] union
@@ -14556,7 +14538,8 @@ Release: August 11, 2025
 
 160 / 178
 
-     [in, range(0, 1024 * 8)] DWORD  cbBufSize,
+
+     [in, range(0, 1024 * 8)] DWORD  cbBufSize,
      [out] LPBOUNDED_DWORD_8K  pcbBytesNeeded
      );
 
@@ -14631,7 +14614,8 @@ Release: August 11, 2025
 
 161 / 178
 
-     [in,string,unique,range(0, SC_MAX_NAME_LENGTH)]
+
+     [in,string,unique,range(0, SC_MAX_NAME_LENGTH)]
                  LPSTR  lpLoadOrderGroup,
      [in,out,unique] LPDWORD  lpdwTagId,
      [in,unique,size_is(dwDependSize)] LPBYTE  lpDependencies,
@@ -14705,7 +14689,8 @@ Release: August 11, 2025
 
 162 / 178
 
-         SERVICE_NOTIFY_STATUS_CHANGE_PARAMS,
+
+         SERVICE_NOTIFY_STATUS_CHANGE_PARAMS,
          *PSERVICE_NOTIFY_STATUS_CHANGE_PARAMS;
 
  typedef struct _SC_RPC_NOTIFY_PARAMS
@@ -14781,7 +14766,8 @@ Release: August 11, 2025
 
 163 / 178
 
- {
+
+ {
      [case(1)]
          PSERVICE_CONTROL_STATUS_REASON_OUT_PARAMS  psrOutParams;
  } SC_RPC_SERVICE_CONTROL_OUT_PARAMSA,
@@ -14857,7 +14843,8 @@ Release: August 11, 2025
 
 164 / 178
 
- void Opnum59NotUsedOnWire(void);
+
+ void Opnum59NotUsedOnWire(void);
 
  DWORD
  RCreateWowService(
@@ -14911,7 +14898,8 @@ Release: August 11, 2025
 
 165 / 178
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -14981,7 +14969,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 2.1.2: An authentication level of RPC_C_AUTHN_LEVEL_PKT_PRIVACY is used only in
@@ -15048,7 +15037,8 @@ Release: August 11, 2025
 
 167 / 178
 
-<20> Section 2.2.47: Windows services indicate service-specific error codes by setting
+
+<20> Section 2.2.47: Windows services indicate service-specific error codes by setting
 dwWin32ExitCode to ERROR_SERVICE_SPECIFIC_ERROR (1066) and setting the specific error in the
 dwServiceSpecificExitCode member.
 
@@ -15133,7 +15123,8 @@ Release: August 11, 2025
 
 168 / 178
 
-<36> Section 3.1.4.4: In Windows NT, Windows 2000, Windows XP, Windows Server 2003, and
+
+<36> Section 3.1.4.4: In Windows NT, Windows 2000, Windows XP, Windows Server 2003, and
 Windows Server 2003 R2, after the database is locked, the server does not allow further client
 operations on the database until it is unlocked. In Windows Vista, Windows Server 2008, Windows 7,
 and Windows Server 2008 R2, the server ignores the database lock.
@@ -15199,7 +15190,8 @@ Release: August 11, 2025
 
 169 / 178
 
-In Windows NT 3.51, Windows NT 4.0, Windows 2000, Windows 2000 Server, Windows XP, Windows
+
+In Windows NT 3.51, Windows NT 4.0, Windows 2000, Windows 2000 Server, Windows XP, Windows
 Server 2003, and Windows Server 2003 R2, the server responds with the error code
 ERROR_SERVICE_DATABASE_LOCKED (1055) for RStartServiceA (section 3.1.4.30) and
 RStartServiceW (section 3.1.4.19) RPCs if the database has been locked using
@@ -15267,7 +15259,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-ERROR_SERVICE_DATABASE_LOCKED (1055) for RStartServiceA (section 3.1.4.30) and
+
+ERROR_SERVICE_DATABASE_LOCKED (1055) for RStartServiceA (section 3.1.4.30) and
 RStartServiceW (section 3.1.4.19) RPCs if the database has been locked using
 RLockServiceDatabase (section 3.1.4.4).
 
@@ -15336,7 +15329,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<67> Section 3.1.4.37: Windows returns ERROR_INVALID_PARAMETER (87) for Windows 2000,
+
+<67> Section 3.1.4.37: Windows returns ERROR_INVALID_PARAMETER (87) for Windows 2000,
 Windows XP, Windows Server 2003, and Windows Server 2003 R2.
 
 <68> Section 3.1.4.37: Windows returns ERROR_INVALID_PARAMETER (87) for Windows 2000,
@@ -15405,7 +15399,8 @@ Service Control Manager Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<88> Section 3.1.4.50: Windows fails the request with ERROR_ACCESS_DENIED (5) if the client does
+
+<88> Section 3.1.4.50: Windows fails the request with ERROR_ACCESS_DENIED (5) if the client does
 not have sufficient access rights or for operations that do not match the granted access right.
 
 [MS-SCMR] - v20250811
@@ -15415,7 +15410,8 @@ Release: August 11, 2025
 
 173 / 178
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -15459,7 +15455,8 @@ Release: August 11, 2025
 
 174 / 178
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 49
@@ -15592,7 +15589,8 @@ Methods
 
 175 / 178
 
-   RGetServiceDisplayNameW (Opnum 20) 91
+
+   RGetServiceDisplayNameW (Opnum 20) 91
    RGetServiceKeyNameA (Opnum 33) 110
    RGetServiceKeyNameW (Opnum 21) 92
    RLockServiceDatabase (Opnum 3) 67
@@ -15737,7 +15735,8 @@ RNotifyServiceStatusChange (Opnum 47) method
 
 176 / 178
 
-RNotifyServiceStatusChange method 132
+
+RNotifyServiceStatusChange method 132
 ROpenSCManager2 (Opnum 64) method 147
 ROpenSCManagerA (Opnum 27) method 104
 ROpenSCManagerA method 104
@@ -15896,7 +15895,8 @@ Server
 
 177 / 178
 
-   RStartServiceA (Opnum 31) method 107
+
+   RStartServiceA (Opnum 31) method 107
    RStartServiceW (Opnum 19) method 89
    RUnlockServiceDatabase (Opnum 8) method 72
    sequencing rules 58

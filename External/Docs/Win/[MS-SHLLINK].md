@@ -63,7 +63,8 @@ Release: November 21, 2025
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -264,7 +265,8 @@ Release: November 21, 2025
 
 2 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -346,108 +348,51 @@ Release: November 21, 2025
 
 3 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 ShellLinkHeader](#21-shelllinkheader)
+    - [2.1.1 LinkFlags](#211-linkflags)
+    - [2.1.2 FileAttributesFlags](#212-fileattributesflags)
+    - [2.1.3 HotKeyFlags](#213-hotkeyflags)
+  - [2.2 LinkTargetIDList](#22-linktargetidlist)
+    - [2.2.1 IDList](#221-idlist)
+    - [2.2.2 ItemID](#222-itemid)
+  - [2.3 LinkInfo](#23-linkinfo)
+    - [2.3.1 VolumeID](#231-volumeid)
+    - [2.3.2 CommonNetworkRelativeLink](#232-commonnetworkrelativelink)
+  - [2.4 StringData](#24-stringdata)
+  - [2.5 ExtraData](#25-extradata)
+    - [2.5.1 ConsoleDataBlock](#251-consoledatablock)
+    - [2.5.2 ConsoleFEDataBlock](#252-consolefedatablock)
+    - [2.5.3 DarwinDataBlock](#253-darwindatablock)
+    - [2.5.4 EnvironmentVariableDataBlock](#254-environmentvariabledatablock)
+    - [2.5.5 IconEnvironmentDataBlock](#255-iconenvironmentdatablock)
+    - [2.5.6 KnownFolderDataBlock](#256-knownfolderdatablock)
+    - [2.5.7 PropertyStoreDataBlock](#257-propertystoredatablock)
+    - [2.5.8 ShimDataBlock](#258-shimdatablock)
+    - [2.5.9 SpecialFolderDataBlock](#259-specialfolderdatablock)
+    - [2.5.10 TrackerDataBlock](#2510-trackerdatablock)
+    - [2.5.11 VistaAndAboveIDListDataBlock](#2511-vistaandaboveidlistdatablock)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Shortcut to a File](#31-shortcut-to-a-file)
+- [4 Security](#4-security)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 9
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.3
-
-2.1
-
-2.2
-
-2.3.1
-2.3.2
-
-2.2.1
-2.2.2
-
-2.1.1
-2.1.2
-2.1.3
-
-2  Structures ............................................................................................................. 10
-ShellLinkHeader ............................................................................................... 10
-LinkFlags ................................................................................................... 12
-FileAttributesFlags ...................................................................................... 14
-HotKeyFlags ............................................................................................... 15
-LinkTargetIDList .............................................................................................. 18
-IDList ........................................................................................................ 19
-ItemID ...................................................................................................... 19
-LinkInfo .......................................................................................................... 20
-VolumeID .................................................................................................. 22
-CommonNetworkRelativeLink ....................................................................... 24
-StringData ...................................................................................................... 27
-ExtraData ....................................................................................................... 28
-ConsoleDataBlock ....................................................................................... 29
-ConsoleFEDataBlock .................................................................................... 33
-DarwinDataBlock ........................................................................................ 34
-EnvironmentVariableDataBlock ..................................................................... 35
-IconEnvironmentDataBlock .......................................................................... 35
-KnownFolderDataBlock ................................................................................ 36
-PropertyStoreDataBlock ............................................................................... 37
-ShimDataBlock ........................................................................................... 37
-SpecialFolderDataBlock ............................................................................... 37
-TrackerDataBlock ....................................................................................... 38
-VistaAndAboveIDListDataBlock ..................................................................... 39
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-2.5.6
-2.5.7
-2.5.8
-2.5.9
-2.5.10
-2.5.11
-
-2.4
-2.5
-
-3  Structure Examples ............................................................................................... 40
-Shortcut to a File ............................................................................................. 40
-
-3.1
-
-4  Security ................................................................................................................. 44
-
-5  Appendix A: Product Behavior ............................................................................... 45
-
-6  Change Tracking .................................................................................................... 47
-
-7  Index ..................................................................................................................... 48
-
-[MS-SHLLINK] - v20251121
-Shell Link (.LNK) Binary File Format
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Shell Link Binary File Format. In this format a structure is called a shell
 link, or shortcut, and is a data object that contains information that can be used to access another
@@ -460,7 +405,7 @@ store a reference to a target file.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -520,7 +465,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Specifically, the use of this term does not imply or require that the algorithms described in
+
+Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
@@ -597,7 +543,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-shell link: A structure in Shell Link Binary File Format.
+
+shell link: A structure in Shell Link Binary File Format.
 
 shim: A mechanism used to provide custom behavior to applications that do not work on newer
 
@@ -630,14 +577,14 @@ references to UTC refer to the time at UTC–0 (or GMT).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -665,7 +612,8 @@ Release: November 21, 2025
 
 7 / 48
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-CFB] Microsoft Corporation, "Compound File Binary File Format".
 
@@ -689,7 +637,7 @@ us/globalization/encoding/code-pages
 [MSLEARN-MaxPathLength] Microsoft Corporation, "Maximum Path Length Limitation",
 https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry
 
-1.3  Overview
+### 1.3 Overview
 
 The Shell Link Binary File Format specifies a structure called a shell link. That structure is used to
 store a reference to a location in a link target namespace, which is referred to as a link target. The
@@ -718,7 +666,7 @@ ISHELLLINK].
 
 Multi-byte data values in the Shell Link Binary File Format are stored in little-endian format.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The Shell Link Binary File Format is used by the Compound File Binary File Format [MS-CFB].
 
@@ -731,13 +679,14 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-1.5  Applicability Statement
+
+### 1.5 Applicability Statement
 
 This document specifies a persistence format for links to files in a file system or to applications that
 are available for installation. This persistence format is applicable for use as a stand-alone file and for
 containment within other structures.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification covers versioning issues in the following areas:
 
@@ -745,7 +694,7 @@ Localization: The Shell Link Binary File Format defines the ConsoleFEDataBlock s
 2.5.2), which specifies a code page for displaying text. That value can be used to specify a set of
 characters for a particular language or locale.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 A shell data source can extend the persistence format by storing custom data inside ItemID
 structure.
@@ -763,7 +712,8 @@ Release: November 21, 2025
 
 9 / 48
 
-2  Structures
+
+## 2 Structures
 
 The Shell Link Binary File Format consists of a sequence of structures that conform to the following
 ABNF rules [RFC5234].
@@ -801,7 +751,7 @@ ShellLinkHeader structure (section 2.1) and LinkInfoSize in the LinkInfo structu
 Unless otherwise specified, the value contained by these size fields includes the size of size field
 itself.
 
-2.1  ShellLinkHeader
+### 2.1 ShellLinkHeader
 
 The ShellLinkHeader structure contains identification information, timestamps, and flags that specify
 the presence of optional structures, including LinkTargetIDList (section 2.2), LinkInfo (section 2.3),
@@ -833,7 +783,8 @@ Release: November 21, 2025
 
 10 / 48
 
-LinkFlags
+
+LinkFlags
 
 FileAttributes
 
@@ -901,7 +852,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-IconIndex (4 bytes): A 32-bit signed integer that specifies the index of an icon within a given icon
+
+IconIndex (4 bytes): A 32-bit signed integer that specifies the index of an icon within a given icon
 
 location.
 
@@ -946,7 +898,7 @@ Reserved2 (4 bytes): A value that MUST be zero.
 
 Reserved3 (4 bytes): A value that MUST be zero.
 
-2.1.1  LinkFlags
+#### 2.1.1 LinkFlags
 
 The LinkFlags structure defines bits that specify which shell link structures are present in the file
 format after the ShellLinkHeader structure (section 2.1).
@@ -1011,7 +963,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Description
 
@@ -1144,7 +1097,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Description
 
@@ -1194,7 +1148,7 @@ machine, the local path IDList in the
 PropertyStoreDataBlock (section 2.5.7) SHOULD be stored, so it can be
 used when the link is loaded on the local machine.
 
-2.1.2  FileAttributesFlags
+#### 2.1.2 FileAttributesFlags
 
 The FileAttributesFlags structure defines bits that specify the file attributes of the link target, if the
 target is a file system item. File attributes can be used if the link target is not available, or if accessing
@@ -1260,7 +1214,8 @@ The link target is a directory instead of a file.
 
 14 / 48
 
-Value
+
+Value
 
 Description
 
@@ -1334,7 +1289,7 @@ all data in the file is encrypted. For a directory, this means
 that encryption is the default for newly created files and
 subdirectories.
 
-2.1.3  HotKeyFlags
+#### 2.1.3 HotKeyFlags
 
 The HotKeyFlags structure specifies input generated by a combination of keyboard keys being
 pressed.
@@ -1377,7 +1332,8 @@ Release: November 21, 2025
 
 15 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -1516,7 +1472,8 @@ Release: November 21, 2025
 
 16 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -1641,7 +1598,8 @@ Release: November 21, 2025
 
 17 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -1729,7 +1687,7 @@ The "ALT" key on the keyboard.
 
 0x04
 
-2.2  LinkTargetIDList
+### 2.2 LinkTargetIDList
 
 The LinkTargetIDList structure specifies the target of the link. The presence of this optional structure
 is specified by the HasLinkTargetIDList bit (LinkFlags section 2.1.1) in the
@@ -1757,7 +1715,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-...
+
+...
 
 IDListSize (2 bytes): The size, in bytes, of the IDList field.
 
@@ -1767,7 +1726,7 @@ structure conforms to the following ABNF [RFC5234]:
 
  IDLIST = *ITEMID TERMINALID
 
-2.2.1  IDList
+#### 2.2.1 IDList
 
 The stored IDList structure specifies the format of a persisted item ID list.
 
@@ -1794,7 +1753,7 @@ TerminalID (2 bytes): A 16-bit, unsigned integer that indicates the end of the i
 
 MUST be zero.
 
-2.2.2  ItemID
+#### 2.2.2 ItemID
 
 An ItemID is an element in an IDList structure (section 2.2.1). The data stored in a given ItemID is
 defined by the source that corresponds to the location in the target namespace of the preceding
@@ -1823,7 +1782,7 @@ structure, including the ItemIDSize field.
 
 Data (variable): The shell data source-defined data that specifies an item.
 
-2.3  LinkInfo
+### 2.3 LinkInfo
 
 The LinkInfo structure specifies information necessary to resolve a link target if it is not found in its
 original location. This includes information about the volume that the target was stored on, the
@@ -1837,7 +1796,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1904,7 +1864,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-LinkInfoFlags, VolumeIDOffset, LocalBasePathOffset,
+
+LinkInfoFlags, VolumeIDOffset, LocalBasePathOffset,
 CommonNetworkRelativeLinkOffset, CommonPathSuffixOffset fields, and, if included, the
 LocalBasePathOffsetUnicode and CommonPathSuffixOffsetUnicode fields.<1>
 
@@ -2053,7 +2014,8 @@ Release: November 21, 2025
 
 21 / 48
 
-CommonPathSuffixOffset (4 bytes): A 32-bit, unsigned integer that specifies the location of the
+
+CommonPathSuffixOffset (4 bytes): A 32-bit, unsigned integer that specifies the location of the
 
 CommonPathSuffix field. This value is an offset, in bytes, from the start of the LinkInfo
 structure.
@@ -2101,7 +2063,7 @@ to construct the full path to the link item or link target by being appended to 
 LocalBasePathUnicode field. This field can be present only if the value of the
 LinkInfoHeaderSize field is greater than or equal to 0x00000024.
 
-2.3.1  VolumeID
+#### 2.3.1 VolumeID
 
 The VolumeID structure specifies information about the volume that a link target was on when the
 link was created. This information is useful for resolving the link if the file is not found in its original
@@ -2131,7 +2093,8 @@ Release: November 21, 2025
 
 22 / 48
 
-VolumeLabelOffset
+
+VolumeLabelOffset
 
 VolumeLabelOffsetUnicode (optional)
 
@@ -2223,7 +2186,8 @@ Release: November 21, 2025
 
 23 / 48
 
-If the value of the VolumeLabelOffset field is not 0x00000014, this field MUST NOT be present;
+
+If the value of the VolumeLabelOffset field is not 0x00000014, this field MUST NOT be present;
 instead, the value of the VolumeLabelOffset field MUST be used to locate the volume label
 string.
 
@@ -2231,7 +2195,7 @@ Data (variable): A buffer of data that contains the volume label of the drive as
 
 the system default code page or Unicode characters, as specified by preceding fields.
 
-2.3.2  CommonNetworkRelativeLink
+#### 2.3.2 CommonNetworkRelativeLink
 
 The CommonNetworkRelativeLink structure specifies information about the network location where a
 link target is stored, including the mapped drive letter and the UNC path prefix. For details on UNC
@@ -2290,7 +2254,8 @@ Release: November 21, 2025
 
 24 / 48
 
-CommonNetworkRelativeLinkFlags (4 bytes): Flags that specify the contents of the
+
+CommonNetworkRelativeLinkFlags (4 bytes): Flags that specify the contents of the
 
 DeviceNameOffset and NetProviderType fields.
 
@@ -2408,7 +2373,8 @@ Release: November 21, 2025
 
 25 / 48
 
-Vendor name
+
+Vendor name
 
 Value
 
@@ -2533,7 +2499,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-CommonNetworkRelativeLink structure. This field MUST be present if the value of the
+
+CommonNetworkRelativeLink structure. This field MUST be present if the value of the
 DeviceNameOffset field is greater than 0x00000014; otherwise, this field MUST NOT be present.
 
 NetName (variable, optional): An optional, NULL–terminated string, as defined by the system
@@ -2555,7 +2522,7 @@ the Unicode version of the DeviceName string. This field MUST be present if
 the ValidDevice flag is set and the value of NetNameOffset field is greater than 0x00000014;
 otherwise, this field MUST NOT be present.
 
-2.4  StringData
+### 2.4 StringData
 
 StringData refers to a set of structures that convey user interface and path identification information.
 The presence of these optional structures is controlled by LinkFlags (section 2.1.1) in the
@@ -2596,7 +2563,8 @@ Release: November 21, 2025
 
 27 / 48
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2623,7 +2591,7 @@ String (variable): An optional set of characters, defined by the system default 
 Unicode string with a length specified by the CountCharacters field. This string MUST NOT be
 NULL-terminated.
 
-2.5  ExtraData
+### 2.5 ExtraData
 
 ExtraData refers to a set of structures that convey additional information about a link target. These
 optional structures can be present in an extra data section that is appended to the basic Shell Link
@@ -2673,7 +2641,8 @@ Release: November 21, 2025
 
 28 / 48
 
-  VISTA_AND_ABOVE_IDLIST_PROPS: A VistaAndAboveIDListDataBlock structure (section
+
+  VISTA_AND_ABOVE_IDLIST_PROPS: A VistaAndAboveIDListDataBlock structure (section
 
 2.5.11).
 
@@ -2706,7 +2675,7 @@ TerminalBlock (4 bytes): A 32-bit, unsigned integer that indicates the end of th
 
 This value MUST be less than 0x00000004.
 
-2.5.1  ConsoleDataBlock
+#### 2.5.1 ConsoleDataBlock
 
 The ConsoleDataBlock structure specifies the display settings to use when a link target specifies an
 application that is run in a console window.<2>
@@ -2761,7 +2730,8 @@ Release: November 21, 2025
 
 29 / 48
 
-...
+
+...
 
 ...
 
@@ -2841,7 +2811,8 @@ Release: November 21, 2025
 
 30 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -2939,7 +2910,8 @@ Release: November 21, 2025
 
 31 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -3037,7 +3009,8 @@ Release: November 21, 2025
 
 32 / 48
 
-Value
+
+Value
 
 Meaning
 
@@ -3117,7 +3090,7 @@ used for text in the console window. The values of the fill attribute fields Fil
 PopupFillAttributes are used as indexes into this table to specify the final foreground and
 background color for a character.
 
-2.5.2  ConsoleFEDataBlock
+#### 2.5.2 ConsoleFEDataBlock
 
 The ConsoleFEDataBlock structure specifies the code page to use for displaying text when a link
 target specifies an application that is run in a console window.<3>
@@ -3129,7 +3102,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3158,7 +3132,7 @@ CodePage (4 bytes): A 32-bit, unsigned integer that specifies a code page langua
 For details concerning the structure and meaning of language code identifiers, see [MS-LCID]. For
 additional background information, see [MSCHARSET], [MSDN-CS], and [MSDOCS-CodePage].
 
-2.5.3  DarwinDataBlock
+#### 2.5.3 DarwinDataBlock
 
 The DarwinDataBlock structure specifies an application identifier that can be used instead of a link
 target IDList to install an application when a shell link is activated.
@@ -3213,7 +3187,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.5.4  EnvironmentVariableDataBlock
+
+#### 2.5.4 EnvironmentVariableDataBlock
 
 The EnvironmentVariableDataBlock structure specifies a path to environment variable information
 when the link target refers to a location that has a corresponding environment variable.
@@ -3260,7 +3235,7 @@ TargetUnicode (520 bytes): An optional, NULL-terminated, Unicode string that spe
 
 environment variable information.
 
-2.5.5  IconEnvironmentDataBlock
+#### 2.5.5 IconEnvironmentDataBlock
 
 The IconEnvironmentDataBlock structure specifies the path to an icon. The path is encoded using
 environment variables, which makes it possible to find the icon across machines where the locations
@@ -3292,7 +3267,8 @@ Release: November 21, 2025
 
 35 / 48
 
-...
+
+...
 
 TargetUnicode (520 bytes)
 
@@ -3314,7 +3290,7 @@ TargetUnicode (520 bytes): An optional, NULL-terminated, Unicode string that spe
 
 that is constructed with environment variables.
 
-2.5.6  KnownFolderDataBlock
+#### 2.5.6 KnownFolderDataBlock
 
 The KnownFolderDataBlock structure specifies the location of a known folder. This data can be used
 when a link target is a known folder to keep track of the folder so that the link target IDList can be
@@ -3367,7 +3343,8 @@ Release: November 21, 2025
 
 36 / 48
 
-2.5.7  PropertyStoreDataBlock
+
+#### 2.5.7 PropertyStoreDataBlock
 
 A PropertyStoreDataBlock structure specifies a set of properties that can be used by applications to
 store extra data in the shell link.
@@ -3401,7 +3378,7 @@ PropertyStoreDataBlock extra data section. This value MUST be 0xA0000009.
 
 PropertyStore (variable): A serialized property storage structure ([MS-PROPSTORE] section 2.2).
 
-2.5.8  ShimDataBlock
+#### 2.5.8 ShimDataBlock
 
 The ShimDataBlock structure specifies the name of a shim that can be applied when activating a link
 target.
@@ -3437,7 +3414,7 @@ LayerName (variable): A Unicode string that specifies the name of a shim layer t
 
 target when it is being activated.
 
-2.5.9  SpecialFolderDataBlock
+#### 2.5.9 SpecialFolderDataBlock
 
 The SpecialFolderDataBlock structure specifies the location of a special folder. This data can be used
 when a link target is a special folder to keep track of the folder, so that the link target IDList can be
@@ -3450,7 +3427,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3484,7 +3462,7 @@ Offset (4 bytes): A 32-bit, unsigned integer that specifies the location of the 
 child segment of the IDList specified by SpecialFolderID. This value is the offset, in bytes, into
 the link target IDList.
 
-2.5.10 TrackerDataBlock
+#### 2.5.10 TrackerDataBlock
 
 The TrackerDataBlock structure specifies data that can be used to resolve a link target if it is not
 found in its original location when the link is resolved. This data is passed to the Link Tracking service
@@ -3528,7 +3506,8 @@ Release: November 21, 2025
 
 38 / 48
 
-DroidBirth (32 bytes)
+
+DroidBirth (32 bytes)
 
 ...
 
@@ -3560,7 +3539,7 @@ DroidBirth (32 bytes): Two values in GUID packet representation that are used to
 
 target with the Link Tracking service
 
-2.5.11 VistaAndAboveIDListDataBlock
+#### 2.5.11 VistaAndAboveIDListDataBlock
 
 The VistaAndAboveIDListDataBlock structure specifies an alternate IDList that can be used instead of
 the LinkTargetIDList structure (section 2.2) on platforms that support it.<5>
@@ -3601,9 +3580,10 @@ Release: November 21, 2025
 
 39 / 48
 
-3  Structure Examples
 
-3.1  Shortcut to a File
+## 3 Structure Examples
+
+### 3.1 Shortcut to a File
 
 This section presents a sample of the Shell Link Binary File Format, consisting of a shortcut to a file
 with the path "C:\test\a.txt".
@@ -3729,7 +3709,8 @@ Release: November 21, 2025
 
 40 / 48
 
-x0  x1  x2  x3  x4  x5  x6  x7  x8  x9  xA  xB  xC  xD  xE  xF
+
+x0  x1  x2  x3  x4  x5  x6  x7  x8  x9  xA  xB  xC  xD  xE  xF
 
 01A0  99  00  13  72  16  87  4A  40  78  C7  94  47
 
@@ -3818,7 +3799,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 ItemIDSize: (2 bytes, offset 0x0062), 0x0019
 
@@ -3903,7 +3885,8 @@ Shell Link (.LNK) Binary File Format
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-  String (14 bytes, offset 0x0159), the Unicode string: "c:\test".
+
+  String (14 bytes, offset 0x0159), the Unicode string: "c:\test".
 
 Extra data section: (100 bytes, offset 0x0167), an ExtraData structure (section 2.5) follows:
 
@@ -3940,7 +3923,8 @@ Release: November 21, 2025
 
 43 / 48
 
-4  Security
+
+## 4 Security
 
 None.
 
@@ -3951,7 +3935,8 @@ Release: November 21, 2025
 
 44 / 48
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4017,7 +4002,8 @@ Release: November 21, 2025
 
 45 / 48
 
-<1> Section 2.3: In Windows, Unicode characters are stored in this structure if the data cannot be
+
+<1> Section 2.3: In Windows, Unicode characters are stored in this structure if the data cannot be
 represented as ANSI characters due to truncation of the values. In this case, the value of the
 LinkInfoHeaderSize field is greater than or equal to 36.
 
@@ -4040,7 +4026,8 @@ Release: November 21, 2025
 
 46 / 48
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4077,7 +4064,8 @@ Release: November 21, 2025
 
 47 / 48
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 9

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 73
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -310,7 +311,8 @@ Release: April 23, 2024
 
 2 / 73
 
-Date
+
+Date
 
 Revision
 History
@@ -523,7 +525,8 @@ Release: April 23, 2024
 
 3 / 73
 
-Date
+
+Date
 
 Revision
 History
@@ -557,278 +560,133 @@ Release: April 23, 2024
 
 4 / 73
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 User Name Mapping Protocol Message Headers](#221-user-name-mapping-protocol-message-headers)
+      - [2.2.1.1 SUNRPC Request Header](#2211-sunrpc-request-header)
+      - [2.2.1.2 SUNRPC Response Header](#2212-sunrpc-response-header)
+    - [2.2.2 Common User Name Mapping Protocol Data Types](#222-common-user-name-mapping-protocol-data-types)
+      - [2.2.2.1 Sizes](#2221-sizes)
+      - [2.2.2.2 MapSvrMBCSNameString](#2222-mapsvrmbcsnamestring)
+      - [2.2.2.3 MapSvrUnicodeNameString](#2223-mapsvrunicodenamestring)
+      - [2.2.2.4 MapSvrMBCSWindowsNameString](#2224-mapsvrmbcswindowsnamestring)
+      - [2.2.2.5 MapSvrUnicodeWindowsNameString](#2225-mapsvrunicodewindowsnamestring)
+      - [2.2.2.6 MapSvrMBCSMapString](#2226-mapsvrmbcsmapstring)
+      - [2.2.2.7 MapSvrUnicodeMapString](#2227-mapsvrunicodemapstring)
+      - [2.2.2.8 unix_account](#2228-unixaccount)
+      - [2.2.2.9 unix_accountW](#2229-unixaccountw)
+      - [2.2.2.10 unix_user_auth](#22210-unixuserauth)
+      - [2.2.2.11 unix_user_authW](#22211-unixuserauthw)
+      - [2.2.2.12 windows_creds](#22212-windowscreds)
+      - [2.2.2.13 windows_credsW](#22213-windowscredsw)
+      - [2.2.2.14 windows_account](#22214-windowsaccount)
+      - [2.2.2.15 windows_accountW](#22215-windowsaccountw)
+      - [2.2.2.16 unix_auth](#22216-unixauth)
+      - [2.2.2.17 unix_authW](#22217-unixauthw)
+      - [2.2.2.18 unix_creds](#22218-unixcreds)
+      - [2.2.2.19 unix_credsW](#22219-unixcredsw)
+      - [2.2.2.20 dump_map_req](#22220-dumpmapreq)
+      - [2.2.2.21 sequence_number](#22221-sequencenumber)
+      - [2.2.2.22 mapping_record](#22222-mappingrecord)
+      - [2.2.2.23 sid](#22223-sid)
+      - [2.2.2.24 mapping_recordW](#22224-mappingrecordw)
+    - [2.2.3 Non-XDR-Compliant Data Structures](#223-non-xdr-compliant-data-structures)
+      - [2.2.3.1 mapping](#2231-mapping)
+      - [2.2.3.2 maps](#2232-maps)
+      - [2.2.3.3 mappingW](#2233-mappingw)
+      - [2.2.3.4 mapsW](#2234-mapsw)
+    - [2.2.4 Standard Failure Responses](#224-standard-failure-responses)
+    - [2.2.5 User Name Mapping Protocol Messages](#225-user-name-mapping-protocol-messages)
+      - [2.2.5.1 MAPPROC_NULL (PROC 0)](#2251-mapprocnull-proc-0)
+      - [2.2.5.2 GETWINDOWSCREDSFROMUNIXUSERNAME_PROC (PROC 1)](#2252-getwindowscredsfromunixusernameproc-proc-1)
+      - [2.2.5.3 GETUNIXCREDSFROMNTUSERNAME_PROC (PROC 2)](#2253-getunixcredsfromntusernameproc-proc-2)
+      - [2.2.5.4 AUTHUSINGUNIXCREDS_PROC (PROC 3)](#2254-authusingunixcredsproc-proc-3)
+      - [2.2.5.5 DUMPALLMAPS_PROC (PROC 4)](#2255-dumpallmapsproc-proc-4)
+      - [2.2.5.6 GETCURRENTVERSIONTOKEN_PROC (PROC 5)](#2256-getcurrentversiontokenproc-proc-5)
+      - [2.2.5.7 DUMPALLMAPSEX_PROC (PROC 6)](#2257-dumpallmapsexproc-proc-6)
+      - [2.2.5.8 GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC (PROC 7)](#2258-getwindowsgroupfromunixgroupnameproc-proc-7)
+      - [2.2.5.9 GETUNIXCREDSFROMNTGROUPNAME_PROC (PROC 8)](#2259-getunixcredsfromntgroupnameproc-proc-8)
+      - [2.2.5.10 GETUNIXCREDSFROMNTUSERSID_PROC (PROC 9)](#22510-getunixcredsfromntusersidproc-proc-9)
+      - [2.2.5.11 DUMPALLMAPSW_PROC (PROC 10)](#22511-dumpallmapswproc-proc-10)
+      - [2.2.5.12 DUMPALLMAPSEXW_PROC (PROC 11)](#22512-dumpallmapsexwproc-proc-11)
+      - [2.2.5.13 GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC (PROC 12)](#22513-getwindowsuserfromunixusernamewproc-proc-12)
+      - [2.2.5.14 GETUNIXCREDSFROMNTUSERNAMEW_PROC (PROC 13)](#22514-getunixcredsfromntusernamewproc-proc-13)
+      - [2.2.5.15 AUTHUSINGUNIXCREDSW_PROC (PROC 14)](#22515-authusingunixcredswproc-proc-14)
+      - [2.2.5.16 GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC (PROC 15)](#22516-getwindowsgroupfromunixgroupnamewproc-proc-15)
+      - [2.2.5.17 GETUNIXCREDSFROMNTGROUPNAMEW_PROC (PROC 16)](#22517-getunixcredsfromntgroupnamewproc-proc-16)
+      - [2.2.5.18 GETUNIXCREDSFROMNTUSERSIDW_PROC (PROC 17)](#22518-getunixcredsfromntusersidwproc-proc-17)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Making the Initial Account Mapping Request to the Server](#3151-making-the-initial-account-mapping-request-to-the-server)
+      - [3.1.5.2 Processing the Account Mapping Response from the Server](#3152-processing-the-account-mapping-response-from-the-server)
+      - [3.1.5.3 Making Further Account Mapping Requests to the Server](#3153-making-further-account-mapping-requests-to-the-server)
+      - [3.1.5.4 Polling for Cache Consistency](#3154-polling-for-cache-consistency)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Local Events](#317-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing for All Procedures](#3251-processing-for-all-procedures)
+      - [3.2.5.2 Processing of DUMPALLMAPSXXX_PROC Request and](#3252-processing-of-dumpallmapsxxxproc-request-and)
+        - [3.2.5.2.1 Processing the Initial Account Mapping Request from the Client](#32521-processing-the-initial-account-mapping-request-from-the-client)
+        - [3.2.5.2.2 Processing Further Account Mapping Requests from the Client](#32522-processing-further-account-mapping-requests-from-the-client)
+        - [3.2.5.2.3 Processing the Client Account Mapping Cache Refresh](#32523-processing-the-client-account-mapping-cache-refresh)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 GETWINDOWSCREDSFROMUNIXUSERNAME_PROC](#41-getwindowscredsfromunixusernameproc)
+  - [4.2 GETUNIXCREDSFROMNTUSERNAME_PROC](#42-getunixcredsfromntusernameproc)
+  - [4.3 AUTHUSINGUNIXCREDS_PROC](#43-authusingunixcredsproc)
+  - [4.4 DUMPALLMAPS_PROC](#44-dumpallmapsproc)
+  - [4.5 GETCURRENTVERSIONTOKEN_PROC](#45-getcurrentversiontokenproc)
+  - [4.6 DUMPALLMAPSEX_PROC](#46-dumpallmapsexproc)
+  - [4.7 GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC](#47-getwindowsgroupfromunixgroupnameproc)
+  - [4.8 GETUNIXCREDSFROMNTGROUPNAME_PROC](#48-getunixcredsfromntgroupnameproc)
+  - [4.9 GETUNIXCREDSFROMNTUSERSID_PROC](#49-getunixcredsfromntusersidproc)
+  - [4.10 DUMPALLMAPSW_PROC](#410-dumpallmapswproc)
+  - [4.11 DUMPALLMAPSEXW_PROC](#411-dumpallmapsexwproc)
+  - [4.12 GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC](#412-getwindowsuserfromunixusernamewproc)
+  - [4.13 GETUNIXCREDSFROMNTUSERNAMEW_PROC](#413-getunixcredsfromntusernamewproc)
+  - [4.14 AUTHUSINGUNIXCREDSW_PROC](#414-authusingunixcredswproc)
+  - [4.15 GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC](#415-getwindowsgroupfromunixgroupnamewproc)
+  - [4.16 GETUNIXCREDSFROMNTGROUPNAMEW_PROC](#416-getunixcredsfromntgroupnamewproc)
+  - [4.17 GETUNIXCREDSFROMNTUSERSIDW_PROC](#417-getunixcredsfromntusersidwproc)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full SunRPC IDL](#6-appendix-a-full-sunrpc-idl)
+- [7 Appendix B: Sample Code to Encode and Decode Non-XDR-](#7-appendix-b-sample-code-to-encode-and-decode-non-xdr-)
+  - [7.1 Header File Content](#71-header-file-content)
+  - [7.2 Encode/Decode Routines for Non-XDR Data Types Using XDR Primitives](#72-encodedecode-routines-for-non-xdr-data-types-using-xdr-primitives)
+- [8 Appendix C: Product Behavior](#8-appendix-c-product-behavior)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-User Name Mapping Protocol Message Headers .............................................. 13
-SUNRPC Request Header........................................................................ 13
-SUNRPC Response Header ..................................................................... 13
-Common User Name Mapping Protocol Data Types.......................................... 13
-Sizes ................................................................................................... 13
-2.2.2.1
-MapSvrMBCSNameString ....................................................................... 14
-2.2.2.2
-MapSvrUnicodeNameString .................................................................... 14
-2.2.2.3
-MapSvrMBCSWindowsNameString ........................................................... 14
-2.2.2.4
-MapSvrUnicodeWindowsNameString ........................................................ 14
-2.2.2.5
-MapSvrMBCSMapString .......................................................................... 14
-2.2.2.6
-MapSvrUnicodeMapString ....................................................................... 16
-2.2.2.7
-unix_account ........................................................................................ 16
-2.2.2.8
-unix_accountW ..................................................................................... 17
-2.2.2.9
-unix_user_auth..................................................................................... 17
-2.2.2.10
-2.2.2.11
-unix_user_authW .................................................................................. 18
-2.2.2.12  windows_creds ..................................................................................... 18
-2.2.2.13  windows_credsW .................................................................................. 19
-2.2.2.14  windows_account .................................................................................. 19
-2.2.2.15  windows_accountW ............................................................................... 19
-unix_auth ............................................................................................ 20
-2.2.2.16
-unix_authW .......................................................................................... 20
-2.2.2.17
-unix_creds ........................................................................................... 20
-2.2.2.18
-unix_credsW ........................................................................................ 21
-2.2.2.19
-2.2.2.20
-dump_map_req .................................................................................... 21
-sequence_number ................................................................................. 21
-2.2.2.21
-2.2.2.22  mapping_record .................................................................................... 22
-2.2.2.23
-sid ...................................................................................................... 22
-2.2.2.24  mapping_recordW ................................................................................. 23
-Non-XDR-Compliant Data Structures ............................................................. 23
-mapping .............................................................................................. 23
-maps ................................................................................................... 24
-mappingW ........................................................................................... 24
-mapsW ................................................................................................ 24
-Standard Failure Responses ......................................................................... 25
-User Name Mapping Protocol Messages ......................................................... 26
-MAPPROC_NULL (PROC 0) ...................................................................... 26
-GETWINDOWSCREDSFROMUNIXUSERNAME_PROC (PROC 1) ...................... 27
-GETUNIXCREDSFROMNTUSERNAME_PROC (PROC 2) ................................. 27
-AUTHUSINGUNIXCREDS_PROC (PROC 3) ................................................. 27
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.2.4
-2.2.5
-
-2.2.3
-
-[MS-UNMP] - v20240423
-User Name Mapping Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 73
-
-DUMPALLMAPS_PROC (PROC 4) .............................................................. 28
-2.2.5.5
-GETCURRENTVERSIONTOKEN_PROC (PROC 5) ......................................... 28
-2.2.5.6
-DUMPALLMAPSEX_PROC (PROC 6) .......................................................... 29
-2.2.5.7
-GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC (PROC 7) ................... 29
-2.2.5.8
-2.2.5.9
-GETUNIXCREDSFROMNTGROUPNAME_PROC (PROC 8) .............................. 29
-2.2.5.10  GETUNIXCREDSFROMNTUSERSID_PROC (PROC 9) .................................... 30
-2.2.5.11  DUMPALLMAPSW_PROC (PROC 10) ......................................................... 30
-2.2.5.12  DUMPALLMAPSEXW_PROC (PROC 11) ...................................................... 30
-2.2.5.13  GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC (PROC 12) ................... 31
-2.2.5.14  GETUNIXCREDSFROMNTUSERNAMEW_PROC (PROC 13) ............................ 31
-2.2.5.15
-AUTHUSINGUNIXCREDSW_PROC (PROC 14) ............................................ 32
-2.2.5.16  GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC (PROC 15) .............. 32
-2.2.5.17  GETUNIXCREDSFROMNTGROUPNAMEW_PROC (PROC 16) .......................... 32
-2.2.5.18  GETUNIXCREDSFROMNTUSERSIDW_PROC (PROC 17) ............................... 33
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 34
-Client Details ................................................................................................... 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Making the Initial Account Mapping Request to the Server.......................... 36
-Processing the Account Mapping Response from the Server ........................ 36
-Making Further Account Mapping Requests to the Server ........................... 36
-Polling for Cache Consistency ................................................................. 36
-Timer Events .............................................................................................. 37
-Local Events............................................................................................... 37
-Server Details .................................................................................................. 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 38
-Initialization ............................................................................................... 38
-Higher-Layer Triggered Events ..................................................................... 38
-Message Processing Events and Sequencing Rules .......................................... 38
-Processing for All Procedures .................................................................. 38
-Processing of DUMPALLMAPSXXX_PROC Request and
-GETCURRENTVERSIONTOKEN_PROC Request ........................................... 38
-Processing the Initial Account Mapping Request from the Client............. 38
-Processing Further Account Mapping Requests from the Client .............. 38
-Processing the Client Account Mapping Cache Refresh .......................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 40
-GETWINDOWSCREDSFROMUNIXUSERNAME_PROC ............................................... 40
-4.1
-GETUNIXCREDSFROMNTUSERNAME_PROC .......................................................... 41
-4.2
-AUTHUSINGUNIXCREDS_PROC .......................................................................... 42
-4.3
-DUMPALLMAPS_PROC ....................................................................................... 43
-4.4
-GETCURRENTVERSIONTOKEN_PROC .................................................................. 46
-4.5
-DUMPALLMAPSEX_PROC ................................................................................... 46
-4.6
-GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC ............................................ 48
-4.7
-GETUNIXCREDSFROMNTGROUPNAME_PROC........................................................ 49
-4.8
-4.9
-GETUNIXCREDSFROMNTUSERSID_PROC ............................................................. 50
-4.10  DUMPALLMAPSW_PROC .................................................................................... 51
-4.11  DUMPALLMAPSEXW_PROC................................................................................. 53
-4.12  GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC .............................................. 54
-4.13  GETUNIXCREDSFROMNTUSERNAMEW_PROC ....................................................... 55
-4.14
-AUTHUSINGUNIXCREDSW_PROC ....................................................................... 56
-4.15  GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC ......................................... 57
-
-6 / 73
-
-[MS-UNMP] - v20240423
-User Name Mapping Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.16  GETUNIXCREDSFROMNTGROUPNAMEW_PROC ..................................................... 58
-4.17  GETUNIXCREDSFROMNTUSERSIDW_PROC .......................................................... 59
-
-5  Security ................................................................................................................. 61
-Security Considerations for Implementers ........................................................... 61
-Index of Security Parameters ............................................................................ 61
-
-5.1
-5.2
-
-6  Appendix A: Full SunRPC IDL ................................................................................. 62
-
-7  Appendix B: Sample Code to Encode and Decode Non-XDR-Compliant Data Types 65
-Header File Content .......................................................................................... 65
-Encode/Decode Routines for Non-XDR Data Types Using XDR Primitives ................. 66
-
-7.1
-7.2
-
-8  Appendix C: Product Behavior ............................................................................... 68
-
-9  Change Tracking .................................................................................................... 70
-
-10  Index ..................................................................................................................... 71
-
-[MS-UNMP] - v20240423
-User Name Mapping Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 73
-
-1  Introduction
+## 1 Introduction
 
 The Windows and UNIX operating systems use different mechanisms for user identification,
 authentication, and resource access control. Users have separate accounts in the Windows portion and
@@ -847,7 +705,7 @@ mappings; it does not include procedures for changing user mappings.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -901,7 +759,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-depends on the code page in use. For example, Japanese code page 932 uses the range 0x81
+
+depends on the code page in use. For example, Japanese code page 932 uses the range 0x81
 through 0x9F as lead bytes, but Korean code page 949 uses a different range.
 
 Network File System (NFS): A Network File System protocol, as specified in [RFC1094] and
@@ -977,17 +836,18 @@ Release: April 23, 2024
 
 9 / 73
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1010,7 +870,7 @@ August 1995, https://www.rfc-editor.org/info/rfc1831
 [RFC4506] Network Appliance, Inc., "XDR: External Data Representation Standard", STD 67, RFC
 4506, May 2006, https://www.rfc-editor.org/info/rfc4506
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-ADNaming] Microsoft Corporation, "Naming conventions in Active Directory for computers,
 domains, sites, and OUs", https://learn.microsoft.com/en-US/troubleshoot/windows-
@@ -1025,7 +885,7 @@ us/library/bb463203.aspx
 [NIS] Sun Microsystems, Inc., "System Administration Guide: Naming and Directory Services (DNS,
 NIS, and LDAP)", https://docs.oracle.com/cd/E19253-01/816-4556/
 
-1.3  Overview
+### 1.3 Overview
 
 The User Name Mapping Protocol maps Windows domain identities (user and group account names) to
 UNIX user and UNIX group identities (user and group account names and their corresponding UID
@@ -1042,7 +902,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The User Name Mapping Protocol is invoked by a client application when the application needs to
+
+The User Name Mapping Protocol is invoked by a client application when the application needs to
 provide a user map or a group map between a UNIX user or group and the corresponding Windows
 user or group. This need is application specific and is not specified by the User Name Mapping
 Protocol. The UNIX or Windows user, or UNIX or Windows group, that needs to be mapped is supplied
@@ -1104,7 +965,7 @@ takes a Windows account SID and returns an MBCS character-encoded UNIX account m
 corresponds to the Windows account represented by that SID. The wide character (Unicode)
 counterpart to procedure 9 is procedure 17.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The User Name Mapping Protocol relies on [RFC1057] and [RFC4506] for communicating with clients
 by means of the SUNRPC message version 2 and XDR protocols as specified in those documents. The
@@ -1117,11 +978,12 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC1057]). The User Name Mapping Protocol uses SUNRPC message version 2 implemented on top of
+
+[RFC1057]). The User Name Mapping Protocol uses SUNRPC message version 2 implemented on top of
 TCP and UDP. The User Name Mapping Protocol message formats are not sensitive to which underlying
 transports (TCP or UDP) are being used.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is required that the User Name Mapping Protocol server has been previously configured with all the
 appropriate UNIX and Windows domain name and group mapping information, and that it has
@@ -1129,14 +991,14 @@ registered with the portmapper service (as specified in [RFC1057] Appendix A) on
 computer as the User Name Mapping Protocol server. Normal TCP/IP services sufficient to provide
 TCP-based or UDP-based communications must be available.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The User Name Mapping Protocol is applicable in a heterogeneous network environment where users
 have separate accounts in UNIX and Windows infrastructures. This protocol provides a means to
 associate user and group accounts in two networks for users or groups that have different identities in
 UNIX-based and Windows-based administrative domains.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1153,11 +1015,11 @@ Mapping Protocol server. It is recommended that requests made to the User Name M
 Protocol server for versions other than those supported with a SUNRPC PROG_MISMATCH
 message, as specified in [RFC1057].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1176,9 +1038,10 @@ Release: April 23, 2024
 
 12 / 73
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The User Name Mapping Protocol is a SUNRPC protocol (as specified in [RFC1057]) that runs on
 TCP/IP using TCP and/or UDP transports, with a well-known program number of MAPSVC_PROGRAM
@@ -1202,32 +1065,32 @@ The User Name Mapping Protocol server accepts all SUNRPC packets with an authent
 AUTH_NULL, as specified in [RFC1057] section 9.1. Therefore, no authentication information is
 required by the client.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following structures are specified in XDR Data Definition Language syntax (as specified in
 [RFC4506] section 6) while procedures are defined in the SUNRPC language, as specified in
 [RFC1057] section 11.
 
-2.2.1  User Name Mapping Protocol Message Headers
+#### 2.2.1 User Name Mapping Protocol Message Headers
 
-2.2.1.1  SUNRPC Request Header
+##### 2.2.1.1 SUNRPC Request Header
 
 The User Name Mapping Protocol uses standard SUNRPC version 2 msg_type CALL headers. Requests
 are made with an authentication level of AUTH_NULL. This header format and its fields and values are
 specified in [RFC1057] section 8.
 
-2.2.1.2  SUNRPC Response Header
+##### 2.2.1.2 SUNRPC Response Header
 
 The User Name Mapping Protocol uses standard SUNRPC version 2 msg_type REPLY headers. This
 header format and its fields and values are specified in [RFC1057] section 8.
 
-2.2.2  Common User Name Mapping Protocol Data Types
+#### 2.2.2 Common User Name Mapping Protocol Data Types
 
 In this section, the XDR Data Description Language (as specified in [RFC4506]) is used to specify the
 XDR format parameters and results of each of the SUNRPC service procedures that a User Name
 Mapping Protocol server provides.
 
-2.2.2.1  Sizes
+##### 2.2.2.1 Sizes
 
  const MAXNAMELEN = 128;
  const MAXNAMELENx2 = 256;
@@ -1239,7 +1102,8 @@ Release: April 23, 2024
 
 13 / 73
 
- const MAXLINELEN = 256;
+
+ const MAXLINELEN = 256;
  const MAXLINELENx2 = 512;
  const MAXGIDS = 32;
  const MAXSIDLEN = 72;
@@ -1247,7 +1111,7 @@ Release: April 23, 2024
 (MAXGIDS is the maximum count of GIDs. This includes both the primary GID and any supplementary
 GIDs.)
 
-2.2.2.2  MapSvrMBCSNameString
+##### 2.2.2.2 MapSvrMBCSNameString
 
  typedef opaque MapSvrMBCSNameString<MAXNAMELEN>;
 
@@ -1257,7 +1121,7 @@ OEM code page (OEMCP), including multibyte characters, as specified by the lengt
 precedes the byte stream. The value of the length field MUST NOT exceed the value MAXNAMELEN.
 Minimum length is 0.
 
-2.2.2.3  MapSvrUnicodeNameString
+##### 2.2.2.3 MapSvrUnicodeNameString
 
  typedef opaque MapSvrUnicodeNameString<MAXNAMELENx2>;
 
@@ -1267,7 +1131,7 @@ stream. The value of the length field MUST NOT exceed the value MAXNAMELENx2. Th
 length of the character string is equal to as many 2-byte Unicode (UTF-16) characters as can be
 stored in a MapSvrUnicodeNameString, with a maximum length equal to length. Minimum length is 0.
 
-2.2.2.4  MapSvrMBCSWindowsNameString
+##### 2.2.2.4 MapSvrMBCSWindowsNameString
 
  typedef opaque MapSvrMBCSWindowsNameString<MAXLINELEN>;
 
@@ -1276,7 +1140,7 @@ length is specified in bytes. The length is equal to the number of MBCS bytes en
 OEMCP, including multibyte characters, as specified by the length field that precedes the byte
 stream. The value of the length field MUST NOT exceed the value MAXLINELEN. Minimum length is 0.
 
-2.2.2.5  MapSvrUnicodeWindowsNameString
+##### 2.2.2.5 MapSvrUnicodeWindowsNameString
 
  typedef opaque MapSvrUnicodeWindowsNameString<MAXLINELENx2>;
 
@@ -1287,7 +1151,7 @@ length of the character string is equal to as many 2-byte Unicode (UTF-16) chara
 stored in a MapSvrUnicodeWindowsNameString, with a maximum length equal to length. Minimum
 length is 0.
 
-2.2.2.6  MapSvrMBCSMapString
+##### 2.2.2.6 MapSvrMBCSMapString
 
  typedef opaque MapSvrMBCSMapString<MAXLINELEN>;
 
@@ -1298,7 +1162,8 @@ Release: April 23, 2024
 
 14 / 73
 
-An XDR variable-length opaque data field, as specified in [RFC4506] section 4.10, whose maximum
+
+An XDR variable-length opaque data field, as specified in [RFC4506] section 4.10, whose maximum
 length is specified in bytes. The length is equal to the number of MBCS bytes encoded in the system
 OEMCP, including multibyte characters, as specified by the length field that precedes the byte
 stream. The value of the length field MUST NOT exceed the value MAXLINELEN. Minimum length is 0.
@@ -1381,7 +1246,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UNIXAccountName: A string of MBCS characters that represents the UNIX account name.
+
+UNIXAccountName: A string of MBCS characters that represents the UNIX account name.
 
 UNIXPassword: A sequence of bytes that represents the password for a user record as returned by a
 
@@ -1397,7 +1263,7 @@ GIDArray: A string of MBCS characters that contains the primary and supplementar
 UNIX account, with each supplementary GID after the primary GID, and separated by additional
 colon characters.
 
-2.2.2.7  MapSvrUnicodeMapString
+##### 2.2.2.7 MapSvrUnicodeMapString
 
  typedef opaque MapSvrUnicodeMapString<MAXLINELENx2>;
 
@@ -1413,7 +1279,7 @@ output from the map enumeration procedure. For more details, see section 2.2.3.4
 The format of a MapSvrUnicodeMapString field is a sequence of colon-delimited fields as specified in
 section 2.2.2.6, substituting Unicode characters for MBCS characters.
 
-2.2.2.8  unix_account
+##### 2.2.2.8 unix_account
 
 This type is used to specify a UNIX account name in MBCS format, in addition to an ID used to
 search for the corresponding Windows account information when mapping a UNIX account name to a
@@ -1454,7 +1320,8 @@ Release: April 23, 2024
 
 16 / 73
 
-Reserved: A 32-bit signed integer that MUST be sent as 0x00000000 and MUST be ignored on
+
+Reserved: A 32-bit signed integer that MUST be sent as 0x00000000 and MUST be ignored on
 
 receipt.
 
@@ -1466,7 +1333,7 @@ account to use as the search criterion. The length of the string MUST NOT exceed
 POSIX user and group account name constraints are specified in [IEEE1003.1]. If SearchOption
 is not 0x00000001 or 0x00000003, this value MUST be ignored.
 
-2.2.2.9  unix_accountW
+##### 2.2.2.9 unix_accountW
 
 This type is used to specify a UNIX account name in Unicode format, in addition to an ID used to
 search for the corresponding Windows account information when mapping a UNIX account name to a
@@ -1513,9 +1380,9 @@ UNIX account to use as the search criterion. The length of the string MUST NOT e
 POSIX user and group account name constraints are specified in [IEEE1003.1]. If SearchOption
 is not 0x00000001 or 0x00000003, this value MUST be ignored.
 
-2.2.2.10
+##### 2.2.2.10 unix_user_auth
 
-unix_user_auth
+
 
 This type is used to specify a UNIX account name (in MBCS format) and a password to retrieve the
 set of UNIX account details that correspond to the account. For more details, see section 2.2.5.4.
@@ -1532,7 +1399,8 @@ Release: April 23, 2024
 
 17 / 73
 
-UnixUserAccountName: A MapSvrMBCSNameString (section 2.2.2.2) that contains the name of the
+
+UnixUserAccountName: A MapSvrMBCSNameString (section 2.2.2.2) that contains the name of the
 UNIX user account to use as the search criterion. The length of this string MUST NOT exceed 128
 bytes. POSIX user and group account name constraints are specified in [IEEE1003.1].
 
@@ -1543,9 +1411,9 @@ The length of this field MUST NOT exceed 128 bytes. This string MUST be generate
 the POSIX crypt function, as specified in [IEEE1003.1] System Interfaces Volume (XSH) Chapter
 3.
 
-2.2.2.11
+##### 2.2.2.11 unix_user_authW
 
-unix_user_authW
+
 
 This type is used to specify a UNIX account name (in Unicode format) and a password to retrieve the
 set of UNIX account details that correspond to the account. For more details, see section 2.2.5.15.
@@ -1565,9 +1433,9 @@ password of the UNIX user account to use as the search criterion. The length of 
 NOT exceed 256 bytes. This string MUST be generated by a call to the POSIX crypt function, as
 specified in [IEEE1003.1] System Interfaces Volume (XSH) Chapter 3.
 
-2.2.2.12
+##### 2.2.2.12 windows_creds
 
-windows_creds
+
 
 This type represents the Windows account name (in MBCS format) when used as an output parameter
 from a search for the corresponding UNIX account name (in MBCS format) and/or UNIX ID. For more
@@ -1600,9 +1468,10 @@ Release: April 23, 2024
 
 18 / 73
 
-2.2.2.13
 
-windows_credsW
+##### 2.2.2.13 windows_credsW
+
+
 
 This type represents the Windows account name (in Unicode format) when used as an output
 parameter from a search for the corresponding UNIX account name (in Unicode format) and/or UNIX
@@ -1628,9 +1497,9 @@ name constraints are specified in [MSFT-SFUPerms], and Windows domain naming con
 are specified in [MSFT-ADNaming]. If Status does not equal 0x00000000, this value MUST be
 ignored.
 
-2.2.2.14
+##### 2.2.2.14 windows_account
 
-windows_account
+
 
 This type is used to specify a Windows account name in MBCS format used to search for the
 corresponding UNIX account information. For more details, see sections 2.2.5.3 and 2.2.5.9.
@@ -1646,9 +1515,9 @@ user account and group account name constraints are specified in [MSFT-SFUPerms]
 Windows domain naming conventions are specified in [MSFT-ADNaming]. The length of the string
 MUST NOT exceed 256 bytes.
 
-2.2.2.15
+##### 2.2.2.15 windows_accountW
 
-windows_accountW
+
 
 This type is used to specify a Windows account name in Unicode format used to search for the
 corresponding UNIX account information. For more details, see sections 2.2.5.14 and 2.2.5.17.
@@ -1670,9 +1539,10 @@ Release: April 23, 2024
 
 19 / 73
 
-2.2.2.16
 
-unix_auth
+##### 2.2.2.16 unix_auth
+
+
 
 This type is used to specify UNIX account details returned as a result of an authentication operation
 on the server. For more details, see sections 2.2.5.4 and 2.2.5.15.
@@ -1695,9 +1565,9 @@ GIDArray: An array of XDR-encoded, 32-bit signed integers that contains the grou
 
 UnixAccountPassword that was looked up. The maximum size of this array is MAXGIDS.
 
-2.2.2.17
+##### 2.2.2.17 unix_authW
 
-unix_authW
+
 
 This type is used to specify UNIX account details returned as a result of an authentication operation
 on the server. For more details, see sections 2.2.5.4 and 2.2.5.15.
@@ -1720,9 +1590,9 @@ GIDArray: An array of XDR-encoded, 32-bit signed integers that contains the grou
 
 UnixAccountPassword that was looked up. The maximum size of this array is MAXGIDS.
 
-2.2.2.18
+##### 2.2.2.18 unix_creds
 
-unix_creds
+
 
 This type is used to specify UNIX account details returned as a result of a lookup operation on the
 server. For more details, see sections 2.2.5.3, 2.2.5.9, and 2.2.5.10.
@@ -1746,13 +1616,14 @@ Release: April 23, 2024
 
 20 / 73
 
-GIDArray: An array of XDR-encoded, 32-bit signed integers that contains the group IDs for
+
+GIDArray: An array of XDR-encoded, 32-bit signed integers that contains the group IDs for
 
 UnixAccountName. The maximum size of this array is MAXGIDS.
 
-2.2.2.19
+##### 2.2.2.19 unix_credsW
 
-unix_credsW
+
 
 This type is used to specify UNIX account details returned as a result of a lookup operation on the
 server. For more details, see sections 2.2.5.14, 2.2.5.17, and 2.2.5.18.
@@ -1773,9 +1644,9 @@ GIDArray: An array of XDR-encoded, 32-bit signed integers that contains the grou
 
 UnixAccountName. The maximum size of this array is MAXGIDS.
 
-2.2.2.20
+##### 2.2.2.20 dump_map_req
 
-dump_map_req
+
 
 This type is used to specify an input parameter to start or continue a map enumeration request to the
 server. For more details, see sections 2.2.5.5, 2.2.5.7, 2.2.5.11, and 2.2.5.12.
@@ -1803,9 +1674,9 @@ records. This MUST be set to 0 on the first call in an enumeration sequence, and
 the records returned by all preceding replies on subsequent calls in the enumeration sequence. For
 more information on enumeration sequences, see sections 3.1.5 and 3.2.5.
 
-2.2.2.21
+##### 2.2.2.21 sequence_number
 
-sequence_number
+
 
 This type is used by the server to define a version for a set of account mappings at a given point in
 time. This number is changed by the server whenever any changes are made to the set of account
@@ -1823,7 +1694,8 @@ Release: April 23, 2024
 
 21 / 73
 
- };
+
+ };
 
 CurrentVersionTokenLowPart: An XDR-encoded, 32-bit signed integer that MUST be either
 
@@ -1837,9 +1709,9 @@ CurrentVersionTokenHighPart: An XDR-encoded, 32-bit signed integer that MUST be 
 GETCURRENTVERSIONTOKEN_PROC or DUMPALLMAPSXXX_PROC. For more information about
 CurrentVersionTokenHighPart, see sections 3.1.5 and 3.2.5.
 
-2.2.2.22
+##### 2.2.2.22 mapping_record
 
-mapping_record
+
 
 This type is used to define a single account map when returned as an output from the map
 enumeration procedure. For more details, see section 2.2.3.1.
@@ -1861,9 +1733,9 @@ account in the enumeration. The length of the string MUST NOT exceed 128 bytes.
 ID: An XDR-encoded, 32-bit signed integer that contains the UNIX user ID or group ID for
 UnixAccountName as specified by PrincipalType in the request (section 2.2.5.5).
 
-2.2.2.23
+##### 2.2.2.23 sid
 
-sid
+
 
 This type is used to define a Windows account SID when used as input to look up the UNIX account
 mapping details that correspond to the Windows account represented by this SID. For more details,
@@ -1894,9 +1766,10 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.24
 
-mapping_recordW
+##### 2.2.2.24 mapping_recordW
+
+
 
 This type is used to define a single account map when returned as output from the map enumeration
 procedure. For more details, see section 2.2.3.3.
@@ -1919,7 +1792,7 @@ ID: An XDR-encoded, 32-bit signed integer that contains the UNIX user ID or grou
 
 UnixAccountName, as specified by PrincipalType in the request (section 2.2.5.11).
 
-2.2.3  Non-XDR-Compliant Data Structures
+#### 2.2.3 Non-XDR-Compliant Data Structures
 
 There are four data structures that cannot be defined using a pure XDR definition. Instead they are
 defined in terms of lower-level XDR primitives. The difference is as follows. XDR defines fixed-size
@@ -1932,7 +1805,7 @@ variable-sized array but with a separate size value rather than one built into t
 
 See section 7 for sample code that shows how to encode and decode each of the four data structures.
 
-2.2.3.1  mapping
+##### 2.2.3.1 mapping
 
 This type is used to define a set of account maps when returned as output from the map enumeration
 procedure. For more details, see section 2.2.5.5.
@@ -1964,11 +1837,12 @@ Release: April 23, 2024
 
 23 / 73
 
-MapArray: An array of account mapping records that is returned as a part of the current enumeration
+
+MapArray: An array of account mapping records that is returned as a part of the current enumeration
 
 sequence, as specified in section 2.2.2.22.
 
-2.2.3.2  maps
+##### 2.2.3.2 maps
 
 This type is used to define a set of account maps in colon-delimited string format when returned as
 output from the map enumeration procedure. For more details, see section 2.2.5.7.
@@ -1997,7 +1871,7 @@ MapArray: An array of account mapping records that is returned as a part of the 
 
 sequence (as specified in section 2.2.2.6).
 
-2.2.3.3  mappingW
+##### 2.2.3.3 mappingW
 
 This type is used to define a set of account maps when returned as output from the map enumeration
 procedure. For more details, see section 2.2.5.11.
@@ -2026,7 +1900,7 @@ MapArray: An array of account mapping records that is returned as a part of the 
 
 sequence. For more details, see section 2.2.2.24.
 
-2.2.3.4  mapsW
+##### 2.2.3.4 mapsW
 
 This type is used to define a set of account maps in colon-delimited string format when returned as an
 output from the map enumeration procedure. For more details, see section 2.2.5.12.
@@ -2038,7 +1912,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- struct mapsW {
+
+ struct mapsW {
      sequence_number Token;
      long MappingRecordCount;
      long TotalMappingRecordCount;
@@ -2058,7 +1933,7 @@ available to be enumerated.
 
 MapArray: An array of MapSvrUnicodeMapString (section 2.2.2.7).
 
-2.2.4  Standard Failure Responses
+#### 2.2.4 Standard Failure Responses
 
 SUNRPC defines a set of standard responses to requests that the User Name Mapping Protocol server
 is unable to service. The following tables list the set of status codes that can be returned by the User
@@ -2117,7 +1992,8 @@ Release: April 23, 2024
 
 25 / 73
 
-  SYSTEM_ERR: Errors like memory allocation failure ([RFC1831]).
+
+  SYSTEM_ERR: Errors like memory allocation failure ([RFC1831]).
 
   RPC_MISMATCH: Invalid SUNRPC version number ([RFC1057]).
 
@@ -2125,7 +2001,7 @@ Release: April 23, 2024
 
   AUTH_BADCRED: Bad credentials in RPC call ([RFC1057]).<3>
 
-2.2.5  User Name Mapping Protocol Messages
+#### 2.2.5 User Name Mapping Protocol Messages
 
 The User Name Mapping Protocol procedure messages are defined in the SUNRPC request and
 response headers, as specified in [RFC1057] section 8. The following table lists the procedure
@@ -2241,7 +2117,7 @@ GETUNIXCREDSFROMNTUSERSIDW_PROC
 
 2
 
-2.2.5.1  MAPPROC_NULL (PROC 0)
+##### 2.2.5.1 MAPPROC_NULL (PROC 0)
 
 A null procedure that is used for service discovery as specified in [RFC1057] section A.2.
 
@@ -2256,7 +2132,8 @@ Release: April 23, 2024
 
 26 / 73
 
- );
+
+ );
 
 This procedure requires no arguments, and a successful reply MUST contain no data other than a
 SUNRPC reply status of MSG_ACCEPTED, as specified in [RFC1057].
@@ -2264,7 +2141,7 @@ SUNRPC reply status of MSG_ACCEPTED, as specified in [RFC1057].
 The typical use of a null procedure is for the clients to discover whether the service is started and
 available. This procedure has a procedure number equal to 0.
 
-2.2.5.2  GETWINDOWSCREDSFROMUNIXUSERNAME_PROC (PROC 1)
+##### 2.2.5.2 GETWINDOWSCREDSFROMUNIXUSERNAME_PROC (PROC 1)
 
 A request to fetch the mapped Windows user account name for a specified UNIX user name and/or
 UNIX user.
@@ -2286,7 +2163,7 @@ success or failure of the request MUST be set in the Status member of the return
 Status is a Boolean value, with 0 indicating a successful lookup request and 1 indicating a failed
 lookup request.
 
-2.2.5.3  GETUNIXCREDSFROMNTUSERNAME_PROC (PROC 2)
+##### 2.2.5.3 GETUNIXCREDSFROMNTUSERNAME_PROC (PROC 2)
 
 A request to fetch the mapped UNIX user account details for a specified Windows user account name.
 
@@ -2303,7 +2180,7 @@ a corresponding UNIX account map, the User Name Mapping Protocol server MUST ret
 SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also return a zero-
 length string in the UnixAccountName member of the returned structure.
 
-2.2.5.4  AUTHUSINGUNIXCREDS_PROC (PROC 3)
+##### 2.2.5.4 AUTHUSINGUNIXCREDS_PROC (PROC 3)
 
 A request to fetch the UNIX account details for a given UNIX user name and password.
 
@@ -2319,7 +2196,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- unix_auth
+
+ unix_auth
  AUTHUSINGUNIXCREDS_PROC(
  unix_user_auth UnixUserAuth
  );
@@ -2333,7 +2211,7 @@ corresponding UNIX account map, the User Name Mapping Protocol server MUST retur
 SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also return a zero-
 length string in the UnixAccountPassword member of the returned structure.
 
-2.2.5.5  DUMPALLMAPS_PROC (PROC 4)
+##### 2.2.5.5 DUMPALLMAPS_PROC (PROC 4)
 
 A request to enumerate all account mappings held by the service.
 
@@ -2354,7 +2232,7 @@ also return current values for the server sequence_number in the Token field and
 mapping record count for the specified enumeration in the TotalMappingRecordCount field of
 the returned structure.
 
-2.2.5.6  GETCURRENTVERSIONTOKEN_PROC (PROC 5)
+##### 2.2.5.6 GETCURRENTVERSIONTOKEN_PROC (PROC 5)
 
 A request for the current account-mapping sequence number for the set of mapping records held by
 the server. This procedure is used by clients to check whether any map records changed since the last
@@ -2384,7 +2262,8 @@ Release: April 23, 2024
 
 28 / 73
 
-2.2.5.7  DUMPALLMAPSEX_PROC (PROC 6)
+
+##### 2.2.5.7 DUMPALLMAPSEX_PROC (PROC 6)
 
 A request to enumerate all account mappings held by the service.
 
@@ -2407,7 +2286,7 @@ The User Name Mapping Protocol server MUST also return current values for the se
 sequence_number in the Token field and the total mapping record count for the specified
 enumeration in the TotalMappingRecordCount field of the returned structure.
 
-2.2.5.8  GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC (PROC 7)
+##### 2.2.5.8 GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC (PROC 7)
 
 A request to fetch the Windows group account information that corresponds to a UNIX group name.
 
@@ -2428,7 +2307,7 @@ success or failure of the request MUST be set in the Status member of the return
 Status is a Boolean value, with 0 indicating a successful lookup request and 1 indicating a failed
 lookup request.
 
-2.2.5.9  GETUNIXCREDSFROMNTGROUPNAME_PROC (PROC 8)
+##### 2.2.5.9 GETUNIXCREDSFROMNTGROUPNAME_PROC (PROC 8)
 
 A request to fetch the UNIX group account information that corresponds to a Windows group name.
 
@@ -2451,12 +2330,13 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-return a SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also
+
+return a SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also
 return a zero-length string in the UnixAccountName member of the returned structure.
 
-2.2.5.10
+##### 2.2.5.10 GETUNIXCREDSFROMNTUSERSID_PROC (PROC 9)
 
-GETUNIXCREDSFROMNTUSERSID_PROC (PROC 9)
+
 
 A request for the UNIX account information that corresponds to the Windows account specified by the
 SID.
@@ -2475,9 +2355,9 @@ corresponding UNIX account map, the User Name Mapping Protocol server MUST retur
 SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also return a zero-
 length string in the UnixAccountName member of the returned structure.
 
-2.2.5.11
+##### 2.2.5.11 DUMPALLMAPSW_PROC (PROC 10)
 
-DUMPALLMAPSW_PROC (PROC 10)
+
 
 This procedure is the wide character counterpart of DUMPALLMAPS_PROC. The request and response
 packets are identical to DUMPALLMAPS_PROC, except that the return value is a mappingW data
@@ -2501,9 +2381,9 @@ also return current values for the server sequence_number in the Token field, an
 mapping record count for the specified enumeration in the TotalMappingRecordCount field of
 the returned structure.
 
-2.2.5.12
+##### 2.2.5.12 DUMPALLMAPSEXW_PROC (PROC 11)
 
-DUMPALLMAPSEXW_PROC (PROC 11)
+
 
 This procedure is the wide character counterpart of DUMPALLMAPSEX_PROC. The request and
 response packets are identical to DUMPALLMAPSEX_PROC, except that the MapSvrMBCSMapString
@@ -2521,7 +2401,8 @@ Release: April 23, 2024
 
 30 / 73
 
-EnumCursor: A PrincipalType and index to start or continue an enumeration.
+
+EnumCursor: A PrincipalType and index to start or continue an enumeration.
 
 Return Value: A mapsW type record that describes an array of zero or more
 
@@ -2534,9 +2415,9 @@ Name Mapping Protocol server MUST also return current values for the server sequ
 in the Token field, and the total mapping record count for the specified enumeration in the
 TotalMappingRecordCount field of the returned structure.
 
-2.2.5.13
+##### 2.2.5.13 GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC (PROC 12)
 
-GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC (PROC 12)
+
 
 This procedure is the wide character counterpart to
 GETWINDOWSCREDSFROMUNIXUSERNAME_PROC. The request and response packets are identical to
@@ -2561,9 +2442,9 @@ actual success or failure of the request MUST be set in the Status member of the
 structure. Status is a Boolean value, with 0 indicating a successful lookup request and 1
 indicating a failed lookup request.
 
-2.2.5.14
+##### 2.2.5.14 GETUNIXCREDSFROMNTUSERNAMEW_PROC (PROC 13)
 
-GETUNIXCREDSFROMNTUSERNAMEW_PROC (PROC 13)
+
 
 This procedure is the wide character counterpart to GETUNIXCREDSFROMNTUSERNAME_PROC. The
 request and response packets are identical to GETUNIXCREDSFROMNTUSERNAME_PROC, except
@@ -2591,9 +2472,10 @@ Release: April 23, 2024
 
 31 / 73
 
-2.2.5.15
 
-AUTHUSINGUNIXCREDSW_PROC (PROC 14)
+##### 2.2.5.15 AUTHUSINGUNIXCREDSW_PROC (PROC 14)
+
+
 
 This procedure is the wide character counterpart to AUTHUSINGUNIXCREDS_PROC. The request and
 response packets are identical to AUTHUSINGUNIXCREDS_PROC, except that the
@@ -2614,9 +2496,9 @@ corresponding UNIX account map, the User Name Mapping Protocol server MUST retur
 SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also return a zero-
 length string in the UnixAccountPassword member of the returned structure.
 
-2.2.5.16
+##### 2.2.5.16 GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC (PROC 15)
 
-GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC (PROC 15)
+
 
 This procedure is the wide character counterpart to
 GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC. The request and response packets are identical
@@ -2642,9 +2524,9 @@ success or failure of the request MUST be set in the Status member of the return
 Status is a Boolean value, with 0 indicating a successful lookup request and 1 indicating a failed
 lookup request.
 
-2.2.5.17
+##### 2.2.5.17 GETUNIXCREDSFROMNTGROUPNAMEW_PROC (PROC 16)
 
-GETUNIXCREDSFROMNTGROUPNAMEW_PROC (PROC 16)
+
 
 This procedure is the wide character counterpart to GETUNIXCREDSFROMNTGROUPNAME_PROC.
 The request and response packets are identical to GETUNIXCREDSFROMNTGROUPNAME_PROC,
@@ -2663,7 +2545,8 @@ Release: April 23, 2024
 
 32 / 73
 
-WindowsGroupAccountName: A Windows group to use as the account name in the search criteria.
+
+WindowsGroupAccountName: A Windows group to use as the account name in the search criteria.
 
 Return Value: A unix_credsW record that contains the mapped UNIX group account details for the
 specified Windows account name. Whenever the lookup request for a specified Windows account
@@ -2671,9 +2554,9 @@ fails to find a corresponding UNIX account map, the User Name Mapping Protocol s
 return a SUNRPC status of MSG_ACCEPTED with an accept status of SUCCESS. It MUST also
 return a zero-length string in the UnixAccountName member of the returned structure.
 
-2.2.5.18
+##### 2.2.5.18 GETUNIXCREDSFROMNTUSERSIDW_PROC (PROC 17)
 
-GETUNIXCREDSFROMNTUSERSIDW_PROC (PROC 17)
+
 
 This procedure is the wide character counterpart to GETUNIXCREDSFROMNTUSERSID_PROC. The
 request and response packets are identical to GETUNIXCREDSFROMNTUSERSID_PROC, except
@@ -2701,7 +2584,8 @@ Release: April 23, 2024
 
 33 / 73
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 With the exception of the DUMPALLMAPSXXX_PROC procedures, requests sent by the User Name
 Mapping Protocol client generate a single response from the User Name Mapping Protocol server.
@@ -2719,9 +2603,9 @@ between the User Name Mapping Protocol client and server. Therefore, multiple en
 the same or different clients) for user map and group map can proceed in parallel without any
 interference.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2759,7 +2643,8 @@ Release: April 23, 2024
 
 34 / 73
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-UNMP].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2784,19 +2669,19 @@ guaranteed by the server to be different for different versions of the MapCache.
 this element to implement cache consistency with respect to the server by periodically polling this
 token by using the GETCURRENTVERSIONTOKEN_PROC procedure.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers in the User Name Mapping Protocol beyond those used by SUNRPC.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The User Name Mapping Protocol allows a User Name Mapping Protocol client to retrieve a complete
 set of account mappings from the server and to maintain a copy of these mappings in a local cache.
@@ -2817,17 +2702,18 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For all procedures, the processing rules for a server-returned response packet are specified in
+
+For all procedures, the processing rules for a server-returned response packet are specified in
 [RFC1057] section 8. The client MUST interpret server procedure response status of MSG_ACCEPTED
 or MSG_DENIED according to those rules.
 
-3.1.5.1  Making the Initial Account Mapping Request to the Server
+##### 3.1.5.1 Making the Initial Account Mapping Request to the Server
 
 The sequence begins when a User Name Mapping Protocol client sends a DUMPALLMAPSXXX_PROC
 procedure request to the server, with the MapRecordIndex field equal to 0 to indicate the start of a
 new enumeration sequence and the PrincipalType field equal to the record type to be returned.
 
-3.1.5.2  Processing the Account Mapping Response from the Server
+##### 3.1.5.2 Processing the Account Mapping Response from the Server
 
 If the DUMPALLMAPSXXX_PROC response from the server indicates success and the returned value
 of MappingRecordCount is less than the returned value of TotalMappingRecordCount, the client
@@ -2837,7 +2723,7 @@ incomplete and there are more records to retrieve.
 Otherwise, the enumeration returned is complete if the response indicates success. The client MAY
 send another DUMPALLMAPSXXX_PROC request to the server if the response indicates failure.
 
-3.1.5.3  Making Further Account Mapping Requests to the Server
+##### 3.1.5.3 Making Further Account Mapping Requests to the Server
 
 The User Name Mapping Protocol client continues to make further DUMPALLMAPSXXX_PROC
 requests, each time increasing the value of MapRecordIndex to the total number of map records
@@ -2856,7 +2742,7 @@ change from the initial values returned when MapRecordIndex was set to 0 in the
 DUMPALLMAPSXXX_PROC request, the current enumeration MUST be abandoned and restarted
 with a new DUMPALLMAPSXXX_PROC request (MapRecordIndex equal to 0).
 
-3.1.5.4  Polling for Cache Consistency
+##### 3.1.5.4 Polling for Cache Consistency
 
 The User Name Mapping Protocol client uses GETCURRENTVERSIONTOKEN_PROC to periodically check
 the server for cache consistency. Whenever any of the user or group account mappings on the server
@@ -2880,21 +2766,22 @@ Release: April 23, 2024
 
 36 / 73
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-UNMP].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Local Events
+#### 3.1.7 Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2938,21 +2825,22 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Processing for All Procedures
+##### 3.2.5.1 Processing for All Procedures
 
 The User Name Mapping Protocol server performs a simple lookup or enumeration service on behalf of
 clients. As defined in section 3.2.1, the server maintains a set of current mappings that it traverses to
@@ -2975,10 +2863,10 @@ In all cases where the lookup or enumeration request succeeds, the server MUST r
 status in the reply body and encode the procedure-specific return values according to the XDR rules
 defined in [RFC4506].
 
-3.2.5.2  Processing of DUMPALLMAPSXXX_PROC Request and
+##### 3.2.5.2 Processing of DUMPALLMAPSXXX_PROC Request and
 GETCURRENTVERSIONTOKEN_PROC Request
 
-3.2.5.2.1 Processing the Initial Account Mapping Request from the Client
+###### 3.2.5.2.1 Processing the Initial Account Mapping Request from the Client
 
 The User Name Mapping Protocol server replies to the DUMPALLMAPSXXX_PROC request with a
 two-part version token (CurrentVersionTokenHighPart and CurrentVersionTokenLowPart), a
@@ -2987,7 +2875,7 @@ available on the server (TotalMappingRecordCount), and a list of MappingRecordCo
 records that begin at the MapRecordIndex index equal to 0. The number of account mapping
 records returned by the server to the client is implementation specific.<7><8>
 
-3.2.5.2.2 Processing Further Account Mapping Requests from the Client
+###### 3.2.5.2.2 Processing Further Account Mapping Requests from the Client
 
 The User Name Mapping Protocol server replies to the DUMPALLMAPSXXX_PROC request with the
 next set of mapping records, starting with the map record at the MapRecordIndex index requested.
@@ -3002,11 +2890,12 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client is implementation specific. For example, the server might limit the number of mappings
+
+client is implementation specific. For example, the server might limit the number of mappings
 returned to the amount of data that can fit in a single SUNRPC packet of a chosen maximum
 size.<9><10><11>
 
-3.2.5.2.3 Processing the Client Account Mapping Cache Refresh
+###### 3.2.5.2.3 Processing the Client Account Mapping Cache Refresh
 
 The User Name Mapping Protocol server replies with CurrentVersionTokenHighPart and
 CurrentVersionTokenLowPart in the GETCURRENTVERSIONTOKEN_PROC reply set to an
@@ -3018,11 +2907,11 @@ changes in account mappings is implementation specific.) If the account mappings
 the values returned to the client MUST be the values returned for the previous request to
 GETCURRENTVERSIONTOKEN_PROC or DUMPALLMAPSXXX_PROC.<12>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3033,7 +2922,8 @@ Release: April 23, 2024
 
 39 / 73
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Several examples of network traffic for common User Name Mapping Protocol SUNRPC procedures
 are outlined in the following sections, giving an indication of normal traffic flow. The example network
@@ -3154,7 +3044,7 @@ g4
 
 404
 
-4.1  GETWINDOWSCREDSFROMUNIXUSERNAME_PROC
+### 4.1 GETWINDOWSCREDSFROMUNIXUSERNAME_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the
 Windows account mapping for POSIX user "root". The client asks for a match on the POSIX username
@@ -3167,7 +3057,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   Frame:
+
+   Frame:
  + Ethernet: Etype = Internet IP (IPv4)
  + Ipv4: Next Protocol = UDP, Packet ID = 33455, Total IP Length = 88
  + Udp: SrcPort = 965, DstPort = UNM(819), Length = 68
@@ -3224,7 +3115,7 @@ follows.
            Data: nfs-dom-1\administrator
            Padding: Binary Large Object (1 Bytes)
 
-4.2  GETUNIXCREDSFROMNTUSERNAME_PROC
+### 4.2 GETUNIXCREDSFROMNTUSERNAME_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service that requests the
 POSIX account mapping for the Windows user "nfs-dom-1\administrator".
@@ -3238,7 +3129,8 @@ Release: April 23, 2024
 
 41 / 73
 
- + Ethernet: Etype = Internet IP (IPv4)
+
+ + Ethernet: Etype = Internet IP (IPv4)
  + Ipv4: Next Protocol = UDP, Packet ID = 40198, Total IP Length = 96
  + Udp: SrcPort = 965, DstPort = UNM(819), Length = 76
  - Rpc: Call, Program = mapsvc, Procedure =
@@ -3294,7 +3186,7 @@ GID 0, illustrated as follows.
          GID: 1
          GID: 1
 
-4.3  AUTHUSINGUNIXCREDS_PROC
+### 4.3 AUTHUSINGUNIXCREDS_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 account details for the POSIX user "root" with an empty password.
@@ -3309,7 +3201,8 @@ Release: April 23, 2024
 
 42 / 73
 
- + Ipv4: Next Protocol = UDP, Packet ID = 41135, Total IP Length = 80
+
+ + Ipv4: Next Protocol = UDP, Packet ID = 41135, Total IP Length = 80
  + Udp: SrcPort = 965, DstPort = UNM(819), Length = 60
  - Rpc: Call, Program = mapsvc, Procedure = AUTHUSINGUNIXCREDS_PROC
      TransactionID: 1322076498 (0x4ECD4952)
@@ -3366,7 +3259,7 @@ the mapped POSIX account details for the user "root", illustrated as follows.
          GID: 1
          GID: 1
 
-4.4  DUMPALLMAPS_PROC
+### 4.4 DUMPALLMAPS_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service that requests an
 enumeration of all user maps (PrincipalType=0) starting at index zero (MapRecordIndex=0).
@@ -3380,7 +3273,8 @@ Release: April 23, 2024
 
 43 / 73
 
- + Ethernet: Etype = Internet IP (IPv4)
+
+ + Ethernet: Etype = Internet IP (IPv4)
  + Ipv4: Next Protocol = UDP, Packet ID = 57181, Total IP Length = 76
  + Udp: SrcPort = 965, DstPort = UNM(819), Length = 56
  - Rpc: Call, Program = mapsvc, Procedure = DUMPALLMAPS_PROC
@@ -3454,7 +3348,8 @@ Release: April 23, 2024
 
 44 / 73
 
-         - UNMName: u1
+
+         - UNMName: u1
              Length: 2
              Data: u1
              Padding: Binary Large Object (2 Bytes)
@@ -3531,10 +3426,11 @@ Release: April 23, 2024
 
 45 / 73
 
-             Padding: Binary Large Object (2 Bytes)
+
+             Padding: Binary Large Object (2 Bytes)
          ID: 406
 
-4.5  GETCURRENTVERSIONTOKEN_PROC
+### 4.5 GETCURRENTVERSIONTOKEN_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service that requests the
 current account mapping sequence number for the set of mapping records held by the server.
@@ -3584,7 +3480,7 @@ the current sequence number value for the set of mapping records held by it, ill
        CurrentVersionTokenLowPart: 19924186
        CurrentVersionTokenHighPart: 0
 
-4.6  DUMPALLMAPSEX_PROC
+### 4.6 DUMPALLMAPSEX_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting an
 enumeration of all user maps (PrincipalType=0) starting at index zero (MapRecordIndex=0).
@@ -3599,7 +3495,8 @@ Release: April 23, 2024
 
 46 / 73
 
- + Ipv4: Next Protocol = UDP, Packet ID = 48740, Total IP Length = 76
+
+ + Ipv4: Next Protocol = UDP, Packet ID = 48740, Total IP Length = 76
  + Udp: SrcPort = 965, DstPort = UNM(819), Length = 56
  - Rpc: Call, Program = mapsvc, Procedure = DUMPALLMAPSEX_PROC
      TransactionID: 1439517010 (0x55CD4952)
@@ -3673,7 +3570,8 @@ Release: April 23, 2024
 
 47 / 73
 
-           Data: *:NFS-DOM-1\u3:0:PCNFS:PCNFS:u3:x:403:402
+
+           Data: *:NFS-DOM-1\u3:0:PCNFS:PCNFS:u3:x:403:402
            Padding: Binary Large Object (3 Bytes)
      - Map: 0x1
        - UNMMapString: -:NFS-DOM-1\spec:0:PCNFS:PCNFS:spec:x:500:500
@@ -3696,7 +3594,7 @@ Release: April 23, 2024
            Data: -:NFS-DOM-1\u6:0:PCNFS:PCNFS:u6:x:406:402
            Padding: Binary Large Object (3 Bytes)
 
-4.7  GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC
+### 4.7 GETWINDOWSGROUPFROMUNIXGROUPNAME_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the
 Windows group mapping for POSIX group "bin".
@@ -3744,7 +3642,8 @@ Release: April 23, 2024
 
 48 / 73
 
- + Ethernet: Etype = Internet IP (IPv4)
+
+ + Ethernet: Etype = Internet IP (IPv4)
  + Ipv4: Next Protocol = UDP, Packet ID = 49784, Total IP Length = 88
  + Udp: SrcPort = UNM(819), DstPort = 965, Length = 68
  - Rpc: Reply, Status = Message accepted, Detail = Call succeeded
@@ -3767,7 +3666,7 @@ Release: April 23, 2024
            Data: NFS-DOM-1\Domain Admins
            Padding: Binary Large Object (1 Bytes)
 
-4.8  GETUNIXCREDSFROMNTGROUPNAME_PROC
+### 4.8 GETUNIXCREDSFROMNTGROUPNAME_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 group mapping for the Windows group "nfs-dom-1\g1".
@@ -3815,7 +3714,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     MessageType: Reply
+
+     MessageType: Reply
    - ServiceReply:
        ReplyStatus: Message accepted
      - MessageAccepted:
@@ -3833,7 +3733,7 @@ Release: April 23, 2024
        ID: 401
        GidCount: 0
 
-4.9  GETUNIXCREDSFROMNTUSERSID_PROC
+### 4.9 GETUNIXCREDSFROMNTUSERSID_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 credentials for the Windows user SID "S-1-5-21-3994172400-2625080034-4079281819-500" that
@@ -3886,7 +3786,8 @@ Release: April 23, 2024
 
 50 / 73
 
-       - Verification:
+
+       - Verification:
            Flavor: No Identity Authentication
            AuthDataLength: 0 (0x0)
          AcceptState: Call succeeded
@@ -3902,7 +3803,7 @@ Release: April 23, 2024
          GID: 1
          GID: 1
 
-4.10  DUMPALLMAPSW_PROC
+### 4.10 DUMPALLMAPSW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting an
 enumeration of all user maps (PrincipalType=0) starting at index zero (MapRecordIndex=0).
@@ -3957,7 +3858,8 @@ Release: April 23, 2024
 
 51 / 73
 
-         AcceptState: Call succeeded
+
+         AcceptState: Call succeeded
  - Unm: DUMPALLMAPSW_PROC Reply
    - MappingW:
      - Token:
@@ -4034,7 +3936,8 @@ Release: April 23, 2024
 
 52 / 73
 
-     - Map:
+
+     - Map:
        - WindowsAccountName: 0x1
          - UNMNameW: NFS-DOM-1\u5
              Length: 24
@@ -4055,7 +3958,7 @@ Release: April 23, 2024
              Data: u6
          ID: 406
 
-4.11  DUMPALLMAPSEXW_PROC
+### 4.11 DUMPALLMAPSEXW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting an
 enumeration of all user maps (PrincipalType=0) starting at index zero (MapRecordIndex=0).
@@ -4105,7 +4008,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       ReplyStatus: Message accepted
+
+       ReplyStatus: Message accepted
      - MessageAccepted:
        - Verification:
            Flavor: No Identity Authentication
@@ -4159,7 +4063,7 @@ Release: April 23, 2024
            Data: -:NFS-DOM-1\u6:0:PCNFS:PCNFS:u6:x:406:402
            Padding: Binary Large Object (2 Bytes)
 
-4.12  GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC
+### 4.12 GETWINDOWSUSERFROMUNIXUSERNAMEW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the
 Windows user mapping for POSIX user "root".
@@ -4179,7 +4083,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     MessageType: Call
+
+     MessageType: Call
    - ServiceCall:
        RPCVersionNumber: 2 (0x2)
        ProgramNumber: mapsvc, 351455(0x00055CDF)
@@ -4229,7 +4134,7 @@ follows.
            Data: nfs-dom-1\administrator
            Padding: Binary Large Object (2 Bytes)
 
-4.13  GETUNIXCREDSFROMNTUSERNAMEW_PROC
+### 4.13 GETUNIXCREDSFROMNTUSERNAMEW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 user mapping for the Windows user "nfs-dom-1\Administrator".
@@ -4250,7 +4155,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   - ServiceCall:
+
+   - ServiceCall:
        RPCVersionNumber: 2 (0x2)
        ProgramNumber: mapsvc, 351455(0x00055CDF)
        ProgramVersion: 2 (0x2)
@@ -4299,7 +4205,7 @@ follows.
          GID: 1
          GID: 1
 
-4.14  AUTHUSINGUNIXCREDSW_PROC
+### 4.14 AUTHUSINGUNIXCREDSW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 account details for the POSIX user "root" with an empty password.
@@ -4321,7 +4227,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       ProgramNumber: mapsvc, 351455(0x00055CDF)
+
+       ProgramNumber: mapsvc, 351455(0x00055CDF)
        ProgramVersion: 2 (0x2)
        ProcedureNumber: AUTHUSINGUNIXCREDSW_PROC
      - Credential: No Identity Authentication
@@ -4371,7 +4278,7 @@ the mapped POSIX account details for the user "root", illustrated as follows.
          GID: 1
          GID: 1
 
-4.15  GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC
+### 4.15 GETWINDOWSGROUPFROMUNIXGROUPNAMEW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the
 Windows group mapping for POSIX group "g1".
@@ -4392,7 +4299,8 @@ Release: April 23, 2024
 
 57 / 73
 
-   - ServiceCall:
+
+   - ServiceCall:
        RPCVersionNumber: 2 (0x2)
        ProgramNumber: mapsvc, 351455(0x00055CDF)
        ProgramVersion: 2 (0x2)
@@ -4440,7 +4348,7 @@ follows.
            Length: 24
            Data: NFS-DOM-1\g1
 
-4.16  GETUNIXCREDSFROMNTGROUPNAMEW_PROC
+### 4.16 GETUNIXCREDSFROMNTGROUPNAMEW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 group mapping for the Windows group "nfs-dom-1\Domain Admins".
@@ -4463,7 +4371,8 @@ Release: April 23, 2024
 
 58 / 73
 
-       ProgramNumber: mapsvc, 351455(0x00055CDF)
+
+       ProgramNumber: mapsvc, 351455(0x00055CDF)
        ProgramVersion: 2 (0x2)
        ProcedureNumber: GETUNIXCREDSFROMNTGROUPNAMEW_PROC
      - Credential: No Identity Authentication
@@ -4508,7 +4417,7 @@ as follows.
        ID: 1
        GidCount: 0
 
-4.17  GETUNIXCREDSFROMNTUSERSIDW_PROC
+### 4.17 GETUNIXCREDSFROMNTUSERSIDW_PROC
 
 The client sends a SUNRPC packet to the User Name Mapping Protocol service requesting the POSIX
 credentials for the Windows user SID "S-1-5-21-3994172400-2625080034-4079281819-500"
@@ -4534,7 +4443,8 @@ Release: April 23, 2024
 
 59 / 73
 
-       ProcedureNumber: GETUNIXCREDSFROMNTUSERSIDW_PROC
+
+       ProcedureNumber: GETUNIXCREDSFROMNTUSERSIDW_PROC
      - Credential: No Identity Authentication
          Flavor: No Identity Authentication
          AuthDataLength: 0 (0x0)
@@ -4586,15 +4496,16 @@ Release: April 23, 2024
 
 60 / 73
 
-5  Security
+
+## 5 Security
 
 The User Name Mapping Protocol accepts requests with SUNRPC authentication level AUTH_NULL.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4605,7 +4516,8 @@ Release: April 23, 2024
 
 61 / 73
 
-6  Appendix A: Full SunRPC IDL
+
+## 6 Appendix A: Full SunRPC IDL
 
 This IDL section excludes the following procedures, which need to be coded separately because the
 IDL is unable to describe the returned data types. Sample code for the required structure definitions
@@ -4678,7 +4590,8 @@ Release: April 23, 2024
 
 62 / 73
 
- struct windows_credsW {
+
+ struct windows_credsW {
      long Status;
      long Reserved;
      MapSvrUnicodeWindowsNameString WindowsAccountName;
@@ -4754,7 +4667,8 @@ Release: April 23, 2024
 
 63 / 73
 
-         windows_creds
+
+         windows_creds
          GETWINDOWSCREDSFROMUNIXUSERNAME_PROC(unix_account)= 1;
 
          unix_creds
@@ -4828,20 +4742,22 @@ Release: April 23, 2024
 
 64 / 73
 
-[MS-UNMP] - v20240423
+
+[MS-UNMP] - v20240423
 User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
 65 / 73
 
-7  Appendix B: Sample Code to Encode and Decode Non-XDR-
+
+## 7 Appendix B: Sample Code to Encode and Decode Non-XDR-
 
 Compliant Data Types
 
 Interpret the sample code in the following sections as being written in the C programming language.
 
-7.1  Header File Content
+### 7.1 Header File Content
 
  struct mapping {
      sequence_number Token;
@@ -4907,7 +4823,8 @@ Release: April 23, 2024
 
 66 / 73
 
- #define DUMPALLMAPSEXW_PROC 11
+
+ #define DUMPALLMAPSEXW_PROC 11
  extern  mapsW * dumpallmapsexw_proc_2(dump_map_req *, CLIENT *);
  extern  mapsW * dumpallmapsexw_proc_2_svc(dump_map_req *,
                                            struct svc_req *);
@@ -4917,7 +4834,7 @@ Release: April 23, 2024
  extern  bool_t xdr_mappingW(XDR *, mappingW*);
  extern  bool_t xdr_mapsW(XDR *, mapsW*);
 
-7.2  Encode/Decode Routines for Non-XDR Data Types Using XDR Primitives
+### 7.2 Encode/Decode Routines for Non-XDR Data Types Using XDR Primitives
 
  bool_t
  xdr_mapping(register XDR *xdrs, mapping *objp)
@@ -4979,7 +4896,8 @@ Release: April 23, 2024
 
 67 / 73
 
- {
+
+ {
      if (!xdr_sequence_number(xdrs, &objp->Token))
          return (FALSE);
      if (!xdr_u_int(xdrs, &objp->MappingRecordCount))
@@ -5036,7 +4954,8 @@ Release: April 23, 2024
 
 68 / 73
 
-8  Appendix C: Product Behavior
+
+## 8 Appendix C: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5105,7 +5024,8 @@ User Name Mapping Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Protocol server returns a SUNRPC status of MSG_DENIED with a reject status of AUTH_ERROR, and
+
+Protocol server returns a SUNRPC status of MSG_DENIED with a reject status of AUTH_ERROR, and
 an authentication status of AUTH_BADCRED, whenever the client IP address does not match the list of
 trusted client addresses as configured by the administrator.
 
@@ -5161,7 +5081,8 @@ Release: April 23, 2024
 
 70 / 73
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -5173,7 +5094,8 @@ Release: April 23, 2024
 
 71 / 73
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model
@@ -5335,7 +5257,8 @@ MapSvrMBCSNameString 14
 
 72 / 73
 
-MapSvrMBCSWindowsNameString 14
+
+MapSvrMBCSWindowsNameString 14
 MapSvrUnicodeMapString 16
 MapSvrUnicodeNameString 14
 MapSvrUnicodeWindowsNameString 14

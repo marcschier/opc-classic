@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -238,208 +239,83 @@ Release: November 19, 2024
 
 2 / 47
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 PCONTEXT_HANDLE](#2211-pcontexthandle)
+      - [2.2.1.2 PPCONTEXT_HANDLE](#2212-ppcontexthandle)
+      - [2.2.1.3 PCONTEXT_HANDLE_SHARED](#2213-pcontexthandleshared)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.6 The WITNESS_INTERFACE_LIST structure specifies the list of interfaces](#2226-the-witnessinterfacelist-structure-specifies-the-list-of-interfaces)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Witness Server Details](#31-witness-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.1.2 Per Interface in InterfaceList](#3112-per-interface-in-interfacelist)
+      - [3.1.1.3 Per WitnessRegistration in WitnessRegistrationList](#3113-per-witnessregistration-in-witnessregistrationlist)
+      - [3.1.1.4 Per Notification in PendingChangeNotifications](#3114-per-notification-in-pendingchangenotifications)
+      - [3.1.1.5 PendingMoveNotification](#3115-pendingmovenotification)
+      - [3.1.1.6 PendingShareMoveNotification](#3116-pendingsharemovenotification)
+      - [3.1.1.7 PendingIPNotification](#3117-pendingipnotification)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Unused Registration Timer](#3121-unused-registration-timer)
+      - [3.1.2.2 AsyncNotify Pending Timer](#3122-asyncnotify-pending-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 WitnessrGetInterfaceList (Opnum 0)](#3141-witnessrgetinterfacelist-opnum-0)
+      - [3.1.4.2 WitnessrRegister (Opnum 1)](#3142-witnessrregister-opnum-1)
+      - [3.1.4.3 WitnessrUnRegister (Opnum 2)](#3143-witnessrunregister-opnum-2)
+      - [3.1.4.4 WitnessrAsyncNotify (Opnum 3)](#3144-witnessrasyncnotify-opnum-3)
+      - [3.1.4.5 WitnessrRegisterEx (Opnum 4)](#3145-witnessrregisterex-opnum-4)
+      - [3.1.4.6 WitnessrUnRegisterEx (Opnum 5)](#3146-witnessrunregisterex-opnum-5)
+    - [3.1.5 Timer Events](#315-timer-events)
+      - [3.1.5.1 Unused Registration Timer Event](#3151-unused-registration-timer-event)
+      - [3.1.5.2 AsyncNotify Pending Timer Event](#3152-asyncnotify-pending-timer-event)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Server Application Notifies of an Interface Being Enabled or Disabled](#3161-server-application-notifies-of-an-interface-being-enabled-or-disabled)
+      - [3.1.6.2 Server Application Notifies of a Request to Move to a New Resource](#3162-server-application-notifies-of-a-request-to-move-to-a-new-resource)
+      - [3.1.6.3 Server Application Notifies of a Change in the Resource that Owns a Share](#3163-server-application-notifies-of-a-change-in-the-resource-that-owns-a-share)
+      - [3.1.6.4 Server Application Notifies of an IP Address Being Added, Removed, Enabled](#3164-server-application-notifies-of-an-ip-address-being-added-removed-enabled)
+      - [3.1.6.5 Transport Connection Shutdown](#3165-transport-connection-shutdown)
+  - [3.2 Witness Client Details](#32-witness-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per WitnessRegistration](#3212-per-witnessregistration)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Application Requests Witness Register](#3241-application-requests-witness-register)
+      - [3.2.4.2 Application Requests Witness Event Notification](#3242-application-requests-witness-event-notification)
+      - [3.2.4.3 Application Requests Witness UnRegister](#3243-application-requests-witness-unregister)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Registering Notification Changes from the Witness Server](#41-registering-notification-changes-from-the-witness-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Data Types .......................................................................................... 9
-Data Types .................................................................................................. 9
-PCONTEXT_HANDLE .............................................................................. 10
-PPCONTEXT_HANDLE ............................................................................ 10
-PCONTEXT_HANDLE_SHARED ................................................................. 10
-Structures ................................................................................................. 10
-IPADDR_INFO ....................................................................................... 10
-IPADDR_INFO_LIST .............................................................................. 11
-RESOURCE_CHANGE ............................................................................. 12
-RESP_ASYNC_NOTIFY............................................................................ 12
-WITNESS_INTERFACE_INFO ................................................................... 13
-WITNESS_INTERFACE_LIST ................................................................... 14
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2.2.2
-
-3.1
-
-3.1.2
-
-3.1.1
-
-3.1.2.1
-3.1.2.2
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-
-3  Protocol Details ..................................................................................................... 15
-Witness Server Details ...................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Global.................................................................................................. 15
-Per Interface in InterfaceList .................................................................. 15
-Per WitnessRegistration in WitnessRegistrationList .................................... 15
-Per Notification in PendingChangeNotifications .......................................... 16
-PendingMoveNotification ........................................................................ 16
-PendingShareMoveNotification ................................................................ 16
-PendingIPNotification ............................................................................. 16
-Timers ...................................................................................................... 16
-Unused Registration Timer ..................................................................... 16
-AsyncNotify Pending Timer ..................................................................... 17
-Initialization ............................................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-WitnessrGetInterfaceList (Opnum 0) ....................................................... 18
-WitnessrRegister (Opnum 1) .................................................................. 19
-WitnessrUnRegister (Opnum 2) ............................................................... 21
-WitnessrAsyncNotify (Opnum 3) ............................................................. 21
-WitnessrRegisterEx (Opnum 4) ............................................................... 24
-WitnessrUnRegisterEx (Opnum 5) ........................................................... 27
-Timer Events .............................................................................................. 27
-Unused Registration Timer Event ............................................................ 27
-AsyncNotify Pending Timer Event ............................................................ 28
-Other Local Events ...................................................................................... 28
-Server Application Notifies of an Interface Being Enabled or Disabled .......... 28
-Server Application Notifies of a Request to Move to a New Resource ............ 29
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-
-3.1.6.1
-3.1.6.2
-
-3.1.5.1
-3.1.5.2
-
-3.1.3
-3.1.4
-
-3.1.6
-
-3.1.5
-
-[MS-SWN] - v20241119
-Service Witness Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-3 / 47
-
-3.2
-
-3.2.1
-
-3.1.6.3
-3.1.6.4
-
-3.1.6.5
-
-Server Application Notifies of a Change in the Resource that Owns a Share .. 29
-Server Application Notifies of an IP Address Being Added, Removed, Enabled or
-Disabled .............................................................................................. 29
-Transport Connection Shutdown ............................................................. 29
-Witness Client Details ....................................................................................... 29
-Abstract Data Model .................................................................................... 30
-Global.................................................................................................. 30
-Per WitnessRegistration ......................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 31
-Application Requests Witness Register ..................................................... 31
-Application Requests Witness Event Notification ........................................ 33
-Application Requests Witness UnRegister ................................................. 34
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ................................................................................................. 36
-Registering Notification Changes from the Witness Server ..................................... 36
-
-4.1
-
-5  Security ................................................................................................................. 39
-Security Considerations for Implementers ........................................................... 39
-Index of Security Parameters ............................................................................ 39
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 40
-
-7  Appendix B: Product Behavior ............................................................................... 42
-
-8  Change Tracking .................................................................................................... 44
-
-9  Index ..................................................................................................................... 45
-
-[MS-SWN] - v20241119
-Service Witness Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 47
-
-1  Introduction
+## 1 Introduction
 
 The Service Witness Protocol is a remote procedure call (RPC)-based protocol that is used to promptly
 notify a client of resource changes that have occurred on a highly available server.
@@ -447,7 +323,7 @@ notify a client of resource changes that have occurred on a highly available ser
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -514,7 +390,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does not
+
+Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does not
 imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the use of
 this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
@@ -522,14 +399,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -551,14 +428,14 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
 [SPNNAMES] Microsoft Corporation, "Name Formats for Unique SPNs", http://msdn.microsoft.com/en-
 us/library/ms677601.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 In highly available systems, there can be many instances of a service (for instance an SMB3 file
 service [MS-SMB2]) that runs on a server or group of servers. These service instances are accessed
@@ -578,22 +455,23 @@ Release: November 19, 2024
 
 6 / 47
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-SWN].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1: Witness clients communicating with Witness servers
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the RPC transport and uses RPC over TCP, as specified in section 2.1.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Service Witness Protocol is an RPC interface and, as a result, has the prerequisites that are
 described in [MS-RPCE] section 1.5 as common to RPC interfaces.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol applies in the following environments, where it is important that:
 
@@ -613,7 +491,8 @@ Release: November 19, 2024
 
 7 / 47
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The protocol supports versioning negotiation. The current protocol supports two versions.
 
@@ -625,7 +504,7 @@ Witness protocol version 1  0x00010001
 
 Witness protocol version 2  0x00020000
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
@@ -633,7 +512,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -654,9 +533,10 @@ Release: November 19, 2024
 
 8 / 47
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the UUID as specified in section 1.9. The RPC version number is 1.0.
 
@@ -665,7 +545,7 @@ underlying RPC protocol to retrieve the identity of the caller that made the met
 [MS-RPCE] section 3.3.3.4.3. The server SHOULD use this identity to perform method-specific access
 checks as specified in section 3.1.4.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types defined in [C706] and [MS-RPCE], the data types that follow are defined
 in the Microsoft Interface Definition Language (MIDL) specification for this RPC interface.
@@ -710,7 +590,7 @@ WCHAR
 
 section 2.2.60
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
 DataType name
 
@@ -743,7 +623,8 @@ Release: November 19, 2024
 
 9 / 47
 
-2.2.1.1  PCONTEXT_HANDLE
+
+##### 2.2.1.1 PCONTEXT_HANDLE
 
 PCONTEXT_HANDLE: An RPC context handle, as specified in [C706] Chapter 6, returned by the
 WitnessrRegister or WitnessrRegisterEx method, to be provided as an input parameter to the
@@ -751,13 +632,13 @@ WitnessrUnRegister or WitnessrUnRegisterEx method.
 
  typedef [context_handle] void* PCONTEXT_HANDLE;
 
-2.2.1.2  PPCONTEXT_HANDLE
+##### 2.2.1.2 PPCONTEXT_HANDLE
 
 PPCONTEXT_HANDLE: A reference to PCONTEXT_HANDLE, as specified in section 2.2.1.1.
 
  typedef [ref] PCONTEXT_HANDLE *PPCONTEXT_HANDLE;
 
-2.2.1.3  PCONTEXT_HANDLE_SHARED
+##### 2.2.1.3 PCONTEXT_HANDLE_SHARED
 
 PCONTEXT_HANDLE_SHARED: An RPC context handle, as specified in [C706] Chapter 6, returned
 by the WitnessrRegister or WitnessrRegisterEx method, to be provided as a parameter to the
@@ -765,7 +646,7 @@ WitnessrAsyncNotify method.
 
  typedef [context_handle] PCONTEXT_HANDLE PCONTEXT_HANDLE_SHARED;
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 Unless otherwise specified, multiple-byte fields (16-bit, 32-bit, and 64-bit fields) MUST be transmitted
 in little-endian order (least-significant byte first) for the structures specified in section 2.2.2.1
@@ -809,9 +690,9 @@ the interface.
 
 WITNESS_INTERFACE_LIST
 
-2.2.2.6
+##### 2.2.2.6 The WITNESS_INTERFACE_LIST structure specifies the list of interfaces
 
-The WITNESS_INTERFACE_LIST structure specifies the list of interfaces
+
 available for witness registration.
 
 2.2.2.1  IPADDR_INFO
@@ -825,7 +706,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -921,7 +803,8 @@ Release: November 19, 2024
 
 11 / 47
 
-Length (4 bytes):  The size of the IPADDR_INFO_LIST structure, in bytes.
+
+Length (4 bytes):  The size of the IPADDR_INFO_LIST structure, in bytes.
 
 Reserved (4 bytes):  This field MUST NOT be used and MUST be reserved. The server MUST set this
 
@@ -998,7 +881,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 1
 
@@ -1084,7 +968,8 @@ Release: November 19, 2024
 
 13 / 47
 
-Value
+
+Value
 
 IPv4
 
@@ -1130,22 +1015,23 @@ Release: November 19, 2024
 
 14 / 47
 
-3  Protocol Details
 
-3.1  Witness Server Details
+## 3 Protocol Details
+
+### 3.1 Witness Server Details
 
 The server responds to messages it receives from the client and also produces notifications as
 requested by the client. The server performs additional actions in response to administrative,
 configuration, and status changes on the machine, as driven by applications local to the server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
 how the protocol behaves. This specification does not mandate that implementations adhere to this
 model as long as their external behaviors are consistent with that described in this specification.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 The server implements the following properties:
 
@@ -1163,7 +1049,7 @@ The value MUST be one of those listed in section 1.7.
 
   ServerGlobalName: A hostname by which clients access the server being witnessed.
 
-3.1.1.2  Per Interface in InterfaceList
+##### 3.1.1.2 Per Interface in InterfaceList
 
 
 
@@ -1181,7 +1067,7 @@ IPv4Address: An IPv4 address of the interface, if any.
 
 IPv6Address: An IPv6 address of the interface, if any.
 
-3.1.1.3  Per WitnessRegistration in WitnessRegistrationList
+##### 3.1.1.3 Per WitnessRegistration in WitnessRegistrationList
 
 The server implements the following properties per witness registration.
 
@@ -1210,7 +1096,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-If the server implements version 2 of the protocol, the server also implements the following
+
+If the server implements version 2 of the protocol, the server also implements the following
 properties:
 
   WitnessClientVersion: The Witness protocol version implemented by the client.
@@ -1246,31 +1133,31 @@ notify request, or at which time the server sent a response to an asynchronous n
 IsAsyncNotifyRegistered: A Boolean flag that indicates whether asynchronous notification is
 registered or not.
 
-3.1.1.4  Per Notification in PendingChangeNotifications
+##### 3.1.1.4 Per Notification in PendingChangeNotifications
 
   ResourceName: The name of the resource whose state has changed.
 
   NewState: The new resource state.
 
-3.1.1.5  PendingMoveNotification
+##### 3.1.1.5 PendingMoveNotification
 
   Destination: A null-terminated string that describes the resource to move to.
 
-3.1.1.6  PendingShareMoveNotification
+##### 3.1.1.6 PendingShareMoveNotification
 
 If the server implements version 2 of the protocol, the server also implements the following:
 
   Destination: A null-terminated string that describes the resource the share has been moved to.
 
-3.1.1.7  PendingIPNotification
+##### 3.1.1.7 PendingIPNotification
 
 If the server implements version 2 of the protocol, the server also implements the following:
 
   ChangeIndication: A null-terminated string that describes the IP changes on the server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Unused Registration Timer
+##### 3.1.2.1 Unused Registration Timer
 
 If the server implements version 2 of the protocol, it MUST implement this timer.
 
@@ -1284,10 +1171,11 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-notifications. The server MUST schedule this timer periodically with an implementation-specific interval
+
+notifications. The server MUST schedule this timer periodically with an implementation-specific interval
 and remove unused registrations.
 
-3.1.2.2  AsyncNotify Pending Timer
+##### 3.1.2.2 AsyncNotify Pending Timer
 
 If the server implements version 2 of the protocol, it MUST implement this timer.
 
@@ -1295,7 +1183,7 @@ This timer controls the scheduling of periodic searches for pending asynchronous
 have passed their expiration time. This value is based on the KeepAliveTimeout value provided by
 the client as specified in section 3.1.4.5.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST initialize WitnessRegistrationList to empty.
 
@@ -1307,7 +1195,7 @@ by the server.<2>
 
 The server MUST initialize ServerGlobalName with an administrator-defined string.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The Witness interface defines the following methods:
 
@@ -1369,11 +1257,12 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-does not have the required credentials, then the server MUST fail the call and return
+
+does not have the required credentials, then the server MUST fail the call and return
 ERROR_ACCESS_DENIED. For more details about how to determine the identity of the caller for the
 purpose of performing an access check, see [MS-RPCE] section 3.3.3.1.3.
 
-3.1.4.1  WitnessrGetInterfaceList (Opnum 0)
+##### 3.1.4.1 WitnessrGetInterfaceList (Opnum 0)
 
 The WitnessrGetInterfaceList method returns information about the interfaces to which witness client
 connections can be made.
@@ -1458,7 +1347,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 
 
@@ -1485,7 +1375,7 @@ The WITNESS_INTERFACE_LIST structures MUST be copied into the InterfaceList para
 
 The server MUST return ERROR_SUCCESS and the InterfaceList parameter to the caller.
 
-3.1.4.2  WitnessrRegister (Opnum 1)
+##### 3.1.4.2 WitnessrRegister (Opnum 1)
 
 The WitnessrRegister method allows the witness client to register for resource state change
 notifications of a NetName and IPAddress. The client can subsequently call the WitnessrAsyncNotify
@@ -1540,7 +1430,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1627,13 +1518,14 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  WitnessRegistration.PendingIPNotification MUST be set to empty.
+
+  WitnessRegistration.PendingIPNotification MUST be set to empty.
 
 The server MUST copy the WitnessRegistration.RegistrationKey into the ppContext parameter.
 
 The server MUST return ERROR_SUCCESS and the ppContext parameter to the caller.
 
-3.1.4.3  WitnessrUnRegister (Opnum 2)
+##### 3.1.4.3 WitnessrUnRegister (Opnum 2)
 
 The WitnessrUnRegister method allows the client to unregister for notifications from the server. The
 Witness Service removes its internal state of the registration and no longer notifies the client in the
@@ -1684,7 +1576,7 @@ error code ERROR_INVALID_PARAMETER.
 If the matching entry is found, the server MUST remove the WitnessRegistration entry from the
 WitnessRegistrationList and return ERROR_SUCCESS to the caller.
 
-3.1.4.4  WitnessrAsyncNotify (Opnum 3)
+##### 3.1.4.4 WitnessrAsyncNotify (Opnum 3)
 
 The WitnessrAsyncNotify method is used by the client to request notification of registered resource
 changes from the server.
@@ -1701,7 +1593,8 @@ Release: November 19, 2024
 
 21 / 47
 
-Handle:  An RPC binding handle [C706].
+
+Handle:  An RPC binding handle [C706].
 
 pContext: A context handle of type PCONTEXT_HANDLE_SHARED, as specified in section 2.2.1.3, that
 
@@ -1800,7 +1693,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-If the WitnessRegistration.PendingMoveNotification is not empty, the server MUST construct the
+
+If the WitnessRegistration.PendingMoveNotification is not empty, the server MUST construct the
 structure as follows:
 
 
@@ -1914,7 +1808,8 @@ Release: November 19, 2024
 
 23 / 47
 
-
+
+
 
 pResp.Length: MUST be set to the length of the MessageBuffer field.
 
@@ -1983,7 +1878,7 @@ WitnessRegistration.IsAsyncNotifyRegistered to FALSE.
 
 The server MUST return ERROR_SUCCESS and the pResp parameter to the client.
 
-3.1.4.5  WitnessrRegisterEx (Opnum 4)
+##### 3.1.4.5 WitnessrRegisterEx (Opnum 4)
 
 The WitnessrRegisterEx method allows the witness client to register for resource state change
 notifications of a NetName, ShareName and multiple IPAddresses. The client can subsequently call the
@@ -2007,7 +1902,8 @@ Release: November 19, 2024
 
 24 / 47
 
-         [in] ULONG KeepAliveTimeout);
+
+         [in] ULONG KeepAliveTimeout);
 
 Handle:  An RPC binding handle [C706].
 
@@ -2106,7 +2002,8 @@ Release: November 19, 2024
 
 25 / 47
 
-This opnum is applicable only to servers that implement Witness protocol version 2.
+
+This opnum is applicable only to servers that implement Witness protocol version 2.
 
 If the Version field of the request is not 0x00020000, the server MUST stop processing the request
 and return the error code ERROR_REVISION_MISMATCH.
@@ -2183,9 +2080,10 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The server MUST return ERROR_SUCCESS and the ppContext parameter to the caller.
 
-3.1.4.6  WitnessrUnRegisterEx (Opnum 5)
+The server MUST return ERROR_SUCCESS and the ppContext parameter to the caller.
+
+##### 3.1.4.6 WitnessrUnRegisterEx (Opnum 5)
 
 The WitnessrUnRegisterEx method allows the client to unregister for notifications from the
 server.<6> The Witness Service removes its internal state of the registration and no longer notifies
@@ -2237,9 +2135,9 @@ If the matching entry is found, the server MUST remove the WitnessRegistration e
 WitnessRegistrationList. The server MUST set ppContext to NULL and return ERROR_SUCCESS to
 the caller.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
-3.1.5.1  Unused Registration Timer Event
+##### 3.1.5.1 Unused Registration Timer Event
 
 If the server implements version 2 of the protocol, it MUST implement this timer event.
 
@@ -2256,7 +2154,8 @@ Release: November 19, 2024
 
 27 / 47
 
-3.1.5.2  AsyncNotify Pending Timer Event
+
+##### 3.1.5.2 AsyncNotify Pending Timer Event
 
 If the server implements version 2 of the protocol, it MUST implement this timer event.
 
@@ -2266,7 +2165,7 @@ WitnessRegistration.IsAsyncNotifyRegistered is TRUE and WitnessRegistration.Last
 plus WitnessRegistration.KeepAliveTime is earlier than the current time, the server MUST fail the
 request with ERROR_TIMEOUT.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 The Service Witness Protocol is driven by a series of higher-layer triggered events in the following
 categories:
@@ -2281,7 +2180,7 @@ The ownership of a share moving between resources.
 
   An IP address being added, removed, enabled, or disabled.
 
-3.1.6.1  Server Application Notifies of an Interface Being Enabled or Disabled
+##### 3.1.6.1 Server Application Notifies of an Interface Being Enabled or Disabled
 
 The calling application provides the interface group name, IPv4 and/or IPv6 addresses, and state.
 
@@ -2329,7 +2228,8 @@ Release: November 19, 2024
 
 28 / 47
 
-3.1.6.2  Server Application Notifies of a Request to Move to a New Resource
+
+##### 3.1.6.2 Server Application Notifies of a Request to Move to a New Resource
 
 The calling application provides the Witness client name and resource name. The resource name can
 be an interface group name, an IP address, or a host name.
@@ -2343,7 +2243,7 @@ application-provided resource name.
 
 The server MUST awaken any client requests awaiting notification in section 3.1.4.4.
 
-3.1.6.3  Server Application Notifies of a Change in the Resource that Owns a Share
+##### 3.1.6.3 Server Application Notifies of a Change in the Resource that Owns a Share
 
 This notification is applicable only to servers that implement version 2 (0x00020000). The calling
 application provides the Witness client name, share name, and resource name. The resource name
@@ -2360,7 +2260,7 @@ the application-provided resource name.
 
 The server MUST awaken any client requests awaiting notification in section 3.1.4.4.
 
-3.1.6.4  Server Application Notifies of an IP Address Being Added, Removed, Enabled
+##### 3.1.6.4 Server Application Notifies of an IP Address Being Added, Removed, Enabled
 
 or Disabled
 
@@ -2378,13 +2278,13 @@ application-provided resource name.
 
 The server MUST awaken any client requests awaiting notification in section 3.1.4.4.
 
-3.1.6.5  Transport Connection Shutdown
+##### 3.1.6.5 Transport Connection Shutdown
 
 When the RPC transport indicates that an RPC connection with a client has timed out, as specified in
 [MS-RPCE] section 3.3.3.2.1, the server MUST delete the WitnessRegistration entry for that client
 from the WitnessRegistrationList.
 
-3.2  Witness Client Details
+### 3.2 Witness Client Details
 
 The client performs requests made to it by the application.
 
@@ -2395,14 +2295,15 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
 how the protocol behaves. This specification does not mandate that implementations adhere to this
 model as long as their external behaviors are consistent with that described in this specification.
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 The client implements the following properties:
 
@@ -2414,7 +2315,7 @@ servers. The structure of registration is as specified in section 3.2.1.2.
 
 The value MUST be one of those listed in section 1.7.
 
-3.2.1.2  Per WitnessRegistration
+##### 3.2.1.2 Per WitnessRegistration
 
 The client implements the following properties per witness registration.
 
@@ -2456,12 +2357,12 @@ notifications based on the IP address changes on the server associated with NetN
 
 registration.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The client uses non-default behavior for the RPC Call Timeout timer defined in [MS-RPCE] section
 3.3.2.2.2. The timer value that the client uses is implementation-specific.<9>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST initialize WitnessRegistrationList to empty.
 
@@ -2472,14 +2373,15 @@ Release: November 19, 2024
 
 30 / 47
 
-The client MUST initialize WitnessClientVersion in an implementation-specific manner<10>.
 
-3.2.4  Message Processing Events and Sequencing Rules
+The client MUST initialize WitnessClientVersion in an implementation-specific manner<10>.
+
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 After the client is initialized, it is subsequently driven by the higher-layer events triggered by the
 applications. The following sections describe events triggered by the higher layer.
 
-3.2.4.1  Application Requests Witness Register
+##### 3.2.4.1 Application Requests Witness Register
 
 The caller provides the following:
 
@@ -2548,7 +2450,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-used for the connection. If the IPv6 flag is set, the address in Interface.IPv6 SHOULD be used for
+
+used for the connection. If the IPv6 flag is set, the address in Interface.IPv6 SHOULD be used for
 the connection. If the connection is not established, the error result MUST be returned to the caller.
 
 If WitnessClientVersion is 0x00020000, and if IsShareNameNotificationRequired or
@@ -2626,7 +2529,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  RPCHandle: This value MUST be set to the RPC handle used in the previous step.
+
+  RPCHandle: This value MUST be set to the RPC handle used in the previous step.
 
 
 
@@ -2636,7 +2540,7 @@ be set to FALSE, and IPNotificationRequiredRequired MUST be set to FALSE.
 
 The client MUST return success to the caller.
 
-3.2.4.2  Application Requests Witness Event Notification
+##### 3.2.4.2 Application Requests Witness Event Notification
 
 The caller provides the following:
 
@@ -2705,10 +2609,11 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The status and any received RESP_ASYNC_NOTIFY result obtained from the server in the previous
+
+The status and any received RESP_ASYNC_NOTIFY result obtained from the server in the previous
 step MUST be returned to the caller.
 
-3.2.4.3  Application Requests Witness UnRegister
+##### 3.2.4.3 Application Requests Witness UnRegister
 
 The caller provides the following:
 
@@ -2780,12 +2685,13 @@ Release: November 19, 2024
 
 34 / 47
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 Upon the expiration of RPC Call Timeout Timer, as specified in section 3.2.2, the client MUST close the
 RPC connection to the server and release the binding handle.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -2796,16 +2702,17 @@ Release: November 19, 2024
 
 35 / 47
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-SWN].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Service Witness Protocol.
 
-4.1  Registering Notification Changes from the Witness Server
+### 4.1 Registering Notification Changes from the Witness Server
 
 The following diagram demonstrates the steps taken to register and unregister the client to receive
 notification changes from the server.
@@ -2835,7 +2742,8 @@ Release: November 19, 2024
 
 36 / 47
 
-                      Size: 2 Elements
+
+                      Size: 2 Elements
                       MaxCount: 2
                   Element:
                       InterfaceGroupName: NODE02
@@ -2910,7 +2818,8 @@ Service Witness Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-    SWN: WitnessrRegister Response, Context=0x1, ReturnValue=0
+
+    SWN: WitnessrRegister Response, Context=0x1, ReturnValue=0
          Context: 0x1
          ContextType: 0 (0x0)
          ContextUuid: {8FC957B7-6C9B-9790-496A-F8A0F2193318}
@@ -2971,15 +2880,16 @@ Release: November 19, 2024
 
 38 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol allows any user to connect to the server; therefore, any security weakness in the server
 implementation could be exploitable. The server implementation ought to enforce security on each
 method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol allows any user to establish a connection to the RPC server as specified in section 2.1.
 
@@ -2990,7 +2900,8 @@ Release: November 19, 2024
 
 39 / 47
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL found
 in [MS-DTYP] Appendix A. The syntax uses the IDL syntax extensions defined in [MS-RPCE] section
@@ -3063,7 +2974,8 @@ Release: November 19, 2024
 
 40 / 47
 
-         [in] ULONG Flags,
+
+         [in] ULONG Flags,
          [in] ULONG KeepAliveTimeout);
      DWORD WitnessrUnRegisterEx(
          [in] handle_t Handle,
@@ -3077,7 +2989,8 @@ Release: November 19, 2024
 
 41 / 47
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3144,7 +3057,8 @@ Release: November 19, 2024
 
 42 / 47
 
-<6> Section 3.1.4.6: Windows Server 2022 and earlier do not support this opnum and return
+
+<6> Section 3.1.4.6: Windows Server 2022 and earlier do not support this opnum and return
 RPC_S_PROCNUM_OUT_OF_RANGE when called.
 
 <7> Section 3.1.5.1: Windows Server 2012 R2 operating system and later server use a 30-second
@@ -3199,7 +3113,8 @@ Release: November 19, 2024
 
 43 / 47
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3211,7 +3126,8 @@ Release: November 19, 2024
 
 44 / 47
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3357,7 +3273,8 @@ M
 
 45 / 47
 
-Message processing
+
+Message processing
    client 31
       Witness 31
    server 17
@@ -3499,7 +3416,8 @@ WitnessrGetInterfaceList (Opnum 0) method 18
 
 46 / 47
 
-WitnessrRegister (Opnum 1) method 19
+
+WitnessrRegister (Opnum 1) method 19
 WitnessrRegisterEx (Opnum 4) method 24
 WitnessrUnRegister (Opnum 2) method (section
 

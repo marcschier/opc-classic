@@ -64,7 +64,8 @@ Release: March 30, 2026
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -318,7 +319,8 @@ Release: March 30, 2026
 
 2 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -548,7 +550,8 @@ Release: March 30, 2026
 
 3 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -614,191 +617,81 @@ Release: March 30, 2026
 
 4 / 39
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 S4U2self](#131-s4u2self)
+    - [1.3.2 S4U2proxy](#132-s4u2proxy)
+    - [1.3.3 Protocol Overview](#133-protocol-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 PA-FOR-USER](#221-pa-for-user)
+    - [2.2.2 PA_S4U_X509_USER](#222-pas4ux509user)
+    - [2.2.3 CNAME-IN-ADDL-TKT](#223-cname-in-addl-tkt)
+    - [2.2.4 S4U_DELEGATION_INFO](#224-s4udelegationinfo)
+    - [2.2.5 PA-PAC-OPTIONS](#225-pa-pac-options)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Service Details](#31-service-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 S4U2self Triggered Events](#3141-s4u2self-triggered-events)
+      - [3.1.4.2 S4U2proxy Triggered Events](#3142-s4u2proxy-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Service for User to Self](#3151-service-for-user-to-self)
+        - [3.1.5.1.1 Service Sends S4U2self KRB_TGS_REQ](#31511-service-sends-s4u2self-krbtgsreq)
+          - [3.1.5.1.1.1 When to Use Each padata Type](#315111-when-to-use-each-padata-type)
+          - [3.1.5.1.1.2 Sending the S4USelf KRB_TGT_REQ](#315112-sending-the-s4uself-krbtgtreq)
+        - [3.1.5.1.2 Service Receives S4U2self KRB_TGS_REP](#31512-service-receives-s4u2self-krbtgsrep)
+      - [3.1.5.2 Service for User to Proxy](#3152-service-for-user-to-proxy)
+        - [3.1.5.2.1 Sends S4U2proxy KRB_TGS_REQ](#31521-sends-s4u2proxy-krbtgsreq)
+        - [3.1.5.2.2 Receives Referral](#31522-receives-referral)
+        - [3.1.5.2.3 Receives KRB-ERR-BADOPTION](#31523-receives-krb-err-badoption)
+        - [3.1.5.2.4 Receives S4U2proxy KRB_TGS_REP](#31524-receives-s4u2proxy-krbtgsrep)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 KDC Details](#32-kdc-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 KDC Receives S4U2self KRB_TGS_REQ](#3251-kdc-receives-s4u2self-krbtgsreq)
+        - [3.2.5.1.1 KDC Replies with Referral TGT](#32511-kdc-replies-with-referral-tgt)
+        - [3.2.5.1.2 KDC Replies with Service Ticket](#32512-kdc-replies-with-service-ticket)
+      - [3.2.5.2 KDC Receives S4U2proxy KRB_TGS_REQ](#3252-kdc-receives-s4u2proxy-krbtgsreq)
+        - [3.2.5.2.1 Using ServicesAllowedToSendForwardedTicketsTo](#32521-using-servicesallowedtosendforwardedticketsto)
+        - [3.2.5.2.2 Verification of the PAC](#32522-verification-of-the-pac)
+        - [3.2.5.2.3 Using ServicesAllowedToReceiveForwardedTicketsFrom](#32523-using-servicesallowedtoreceiveforwardedticketsfrom)
+        - [3.2.5.2.4 KDC Replies with Service Ticket](#32524-kdc-replies-with-service-ticket)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 S4U2self Single Realm Example](#41-s4u2self-single-realm-example)
+  - [4.2 S4U2self Multiple Realm Example](#42-s4u2self-multiple-realm-example)
+  - [4.3 S4U2proxy Example](#43-s4u2proxy-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-S4U2self .................................................................................................... 11
-S4U2proxy ................................................................................................. 11
-Protocol Overview ....................................................................................... 12
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-PA-FOR-USER............................................................................................. 17
-PA_S4U_X509_USER ................................................................................... 18
-CNAME-IN-ADDL-TKT .................................................................................. 19
-S4U_DELEGATION_INFO ............................................................................. 20
-PA-PAC-OPTIONS ....................................................................................... 20
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-3.1
-
-3.1.5
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.5.1.2
-
-3.1.5.1.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-
-3  Protocol Details ..................................................................................................... 21
-Service Details ................................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-S4U2self Triggered Events ..................................................................... 21
-S4U2proxy Triggered Events .................................................................. 21
-Message Processing Events and Sequencing Rules .......................................... 22
-Service for User to Self .......................................................................... 22
-Service Sends S4U2self KRB_TGS_REQ .............................................. 22
-When to Use Each padata Type.................................................... 22
-Sending the S4USelf KRB_TGT_REQ ............................................. 23
-Service Receives S4U2self KRB_TGS_REP ........................................... 24
-Service for User to Proxy ....................................................................... 24
-Sends S4U2proxy KRB_TGS_REQ ...................................................... 24
-Receives Referral ............................................................................. 25
-Receives KRB-ERR-BADOPTION ......................................................... 25
-Receives S4U2proxy KRB_TGS_REP ................................................... 25
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-KDC Details ..................................................................................................... 25
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-KDC Receives S4U2self KRB_TGS_REQ .................................................... 27
-KDC Replies with Referral TGT .......................................................... 27
-KDC Replies with Service Ticket ........................................................ 27
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2
-
-[MS-SFU] - v20260330
-Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-5 / 39
-
-3.2.5.2
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-KDC Receives S4U2proxy KRB_TGS_REQ ................................................. 28
-Using ServicesAllowedToSendForwardedTicketsTo ............................... 28
-Verification of the PAC ..................................................................... 28
-Using ServicesAllowedToReceiveForwardedTicketsFrom ........................ 28
-KDC Replies with Service Ticket ........................................................ 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 30
-S4U2self Single Realm Example ......................................................................... 30
-S4U2self Multiple Realm Example ....................................................................... 30
-S4U2proxy Example ......................................................................................... 32
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 34
-
-7  Change Tracking .................................................................................................... 37
-
-8  Index ..................................................................................................................... 38
-
-[MS-SFU] - v20260330
-Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-6 / 39
-
-1  Introduction
+## 1 Introduction
 
 The Kerberos Network Authentication Service (V5) Service for User (S4U) Extension provides two
 extensions to the Kerberos Protocol. Collectively, these two extensions enable an application service
@@ -826,7 +719,7 @@ service ticket and sent it to the back end service directly. Local policy at the
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -868,7 +761,8 @@ Release: March 30, 2026
 
 7 / 39
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller
 (DC) and host a member list that identifies all members of the domain, as well as optionally
@@ -943,7 +837,8 @@ Kerberos Protocol Extensions: Service for User and Constrained Delegation Protoc
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Service for User (S4U): Extensions to the Kerberos protocol that allow a service to obtain a
+
+Service for User (S4U): Extensions to the Kerberos protocol that allow a service to obtain a
 
 Kerberos service ticket for a user that has not authenticated to the Key Distribution Center
 (KDC). S4U includes S4U2proxy and S4U2self.
@@ -989,14 +884,14 @@ obtain subsequent tickets.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1015,7 +910,8 @@ Release: March 30, 2026
 
 9 / 39
 
-[MS-ERREF] Microsoft Corporation, "Windows Error Codes".
+
+[MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
 [MS-KILE] Microsoft Corporation, "Kerberos Protocol Extensions".
 
@@ -1047,7 +943,7 @@ by Microsoft Windows", RFC 4757, December 2006, https://www.rfc-editor.org/info/
 [RFC6806] Hartman, S. Ed., Raeburn, K., and Zhu, L., "Kerberos Principal Name Canonicalization and
 Cross-Realm Referrals", RFC 6806, November 2012, https://www.rfc-editor.org/info/rfc6806
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2020-16996] Microsoft Corporation, "Kerberos Security Feature Bypass Vulnerability",
 CVE-2020-16996 Dec 8, 2020, https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-
@@ -1066,7 +962,7 @@ User changes for CVE-2020-16996", https://support.microsoft.com/en-us/topic/mana
 deployment-of-rbcd-protected-user-changes-for-cve-2020-16996-9a59a49f-20b9-a292-f205-
 da9da0ff24d3
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol extends Kerberos by specifying Service for User (S4U) extensions in relation to
 [RFC4120] and [RFC6806].
@@ -1081,14 +977,15 @@ Release: March 30, 2026
 
 10 / 39
 
-Distribution Center (KDC) on behalf of a user. A ticket can be retrieved by the service to itself by
+
+Distribution Center (KDC) on behalf of a user. A ticket can be retrieved by the service to itself by
 using S4U2self or to another service via S4U2proxy. The client name, realm, and authorization
 data in the service ticket that uses these extensions are of the user, not of the service making the
 S4U request. This contrasts with the Kerberos Protocol specified in [RFC4120] where any service
 tickets requested by a service will have the client name, realm, and authorization data of that
 requesting service.
 
-1.3.1  S4U2self
+#### 1.3.1 S4U2self
 
 The S4U2self extension allows a service to obtain a service ticket to itself on behalf of a user. The
 user is identified to the KDC using the user's name and realm. Alternatively, the user might be
@@ -1100,7 +997,7 @@ user certificate is presented to the KDC to obtain the authorization information
 service ticket to itself on behalf of the user, the service receives the user's authorization data in the
 ticket.
 
-1.3.2  S4U2proxy
+#### 1.3.2 S4U2proxy
 
 The Service for User to Proxy (S4U2proxy) extension provides a service that obtains a service
 ticket to another service on behalf of a user. This feature is known as constrained delegation. The
@@ -1155,11 +1052,12 @@ Release: March 30, 2026
 
 11 / 39
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-SFU].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3.3  Protocol Overview
+#### 1.3.3 Protocol Overview
 
 The following figure shows the message sequence for Kerberos delegation with a forwarded ticket-
 granting ticket (TGT). This is background information designed to show the workings of Kerberos
@@ -1202,7 +1100,8 @@ Kerberos Protocol Extensions: Service for User and Constrained Delegation Protoc
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Note: The KRB_AP_REQ message is the request message in the Authentication Protocol (AP)
+
+Note: The KRB_AP_REQ message is the request message in the Authentication Protocol (AP)
 exchange.
 
 8.  To fulfill the user's request, Service 1 needs Service 2 to perform some action on behalf of the
@@ -1249,7 +1148,8 @@ Release: March 30, 2026
 
 13 / 39
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-SFU].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1295,7 +1195,8 @@ Kerberos Protocol Extensions: Service for User and Constrained Delegation Protoc
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-with the KDC and has a valid TGT. Second, Service 1 has a forwardable service ticket from the
+
+with the KDC and has a valid TGT. Second, Service 1 has a forwardable service ticket from the
 user to Service 1. This forwardable service ticket might have been obtained by a KRB_AP_REQ
 message, as specified in [RFC4120] section 3.2 or by an S4U2self request.
 
@@ -1318,7 +1219,7 @@ coming from the user and assumes that the user was authenticated by the KDC.
 
 10. Service 1 responds to the user's request of message 5.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The S4U extensions are based on the Kerberos Protocol, as specified in [RFC4120]. [RFC4120] also
 details the dependence on lower-layer protocols such as TCP and UDP. Applications using other
@@ -1335,7 +1236,7 @@ Microsoft Kerberos Protocol Extensions, as specified in [MS-KILE], includes exte
 platform-specific data to support the encoding of authorization data ([MS-PAC], section 2) in the
 authorization data field ([RFC4120], sections 5.2.6 and 5.2.7) of the ticket.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All Key Distribution Centers (KDCs) and Kerberos servers that send or receive the Service for
 User (S4U) extensions in the KRB_TGS_REQ and KRB_TGS_REP messages have to recognize the
@@ -1348,7 +1249,7 @@ making the request.<2>
 To support the lookup of users based on a supplied certificate, an accounts database is available to
 the KDC that supports looking up user accounts using one or more fields present in the certificate.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Service for User to Proxy (S4U2proxy) extension supports delegation that is transparent to
 the client. Activities are performed under the user's identity in one or more services. Local policy can
@@ -1361,18 +1262,19 @@ Release: March 30, 2026
 
 15 / 39
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 There is no version information in the Service for User (S4U) extensions. A service that uses these
 extensions will send the new options or data structures in the KRB_TGS_REQ and KRB_TGS_REP
 messages. Detecting whether a given Key Distribution Center (KDC) can support the extensions is
 specified in section 1.5.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1383,20 +1285,21 @@ Release: March 30, 2026
 
 16 / 39
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 For details on the Kerberos Protocol as well as dependencies on lower-level protocols, see [RFC4120],
 section 7.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Service for User (S4U) extensions<3> use new structures conforming to the extensibility
 mechanisms provided in [RFC4120] section 1.5, and new values for options specified by Kerberos in
 [RFC4120] section 1.1. The following sections describe these new structures and values.
 
-2.2.1  PA-FOR-USER
+#### 2.2.1 PA-FOR-USER
 
 In a KRB_TGS_REQ and KRB_TGS_REP subprotocol message sequence, as specified in [RFC4120]
 section 3.3, a Kerberos principal uses its ticket-granting ticket (TGT) to request a service ticket
@@ -1447,7 +1350,8 @@ Release: March 30, 2026
 
 17 / 39
 
-calling the KERB_CHECKSUM_HMAC_MD5 hash with the following three parameters: the session
+
+calling the KERB_CHECKSUM_HMAC_MD5 hash with the following three parameters: the session
 key of the TGT of the service performing the S4U2self request, the message type value of 17, and the
 byte array S4UByteArray.
 
@@ -1457,7 +1361,7 @@ Note  The term "message type" is used here as in [RFC4757]. This usage correspon
 auth-package: A string name of the authentication mechanism used to authenticate the user. This
 MUST be set to the string, "Kerberos". This value is not case-sensitive.
 
-2.2.2  PA_S4U_X509_USER
+#### 2.2.2 PA_S4U_X509_USER
 
 If the service possesses the user certificate, it can obtain a service ticket to itself on that user's
 behalf using the S4U2self TGS exchange subprotocol extension, with a new padata type PA-S4U-
@@ -1515,7 +1419,8 @@ Release: March 30, 2026
 
 18 / 39
 
-receiving this padata type in the encrypted-pa-data field MUST verify the checksum values match
+
+receiving this padata type in the encrypted-pa-data field MUST verify the checksum values match
 with the corresponding checksum values in the request and the reply.
 
 nonce: This contains the identically named field in the KDC body of the containing request.
@@ -1576,7 +1481,7 @@ The SFU client needs to be able to locate the KDC of the user's realm. If the S4
 certificate and no user name is supplied, the client uses a PA_S4U_X509_USER padata type and the
 corresponding data contains the user's X509 certificate encoded as specified in [RFC3280].
 
-2.2.3  CNAME-IN-ADDL-TKT
+#### 2.2.3 CNAME-IN-ADDL-TKT
 
 This is a new Key Distribution Center (KDC) option that MUST be set in a KRB_TGS_REQ message
 to request Service for User to Proxy (S4U2proxy) functionality. The kdc-options flags are specified
@@ -1592,16 +1497,17 @@ Release: March 30, 2026
 
 19 / 39
 
-         -- cname-in-addl-tkt (14)
 
-2.2.4  S4U_DELEGATION_INFO
+         -- cname-in-addl-tkt (14)
+
+#### 2.2.4 S4U_DELEGATION_INFO
 
 The S4U_DELEGATION_INFO structure ([MS-PAC] section 2.9) lists the services that have been
 delegated by this client and subsequent services or servers. The list is meaningful as the Service for
 User to Proxy (S4U2proxy) feature could be used multiple times in succession from service to
 service. This is useful for auditing purposes.
 
-2.2.5  PA-PAC-OPTIONS
+#### 2.2.5 PA-PAC-OPTIONS
 
 The PA-PAC-OPTIONS structure ([MS-KILE] section 2.2.10) specifies explicitly requested options in
 the PAC. Using resource-based constrained delegation, S4U2proxy SHOULD<9> extend the PA-
@@ -1617,30 +1523,31 @@ Release: March 30, 2026
 
 20 / 39
 
-3  Protocol Details
 
-3.1  Service Details
+## 3 Protocol Details
+
+### 3.1 Service Details
 
 This section defines the message processing for an application service (see Service 1 in the figure
 specifying entities involved in S4U protocols, section 3.1.5) using the Service for User (S4U)
 extensions<10>.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 PhaseOutOldStyleS4U: A Boolean value that requires S4USelf to use PA-S4U-X509-USER instead
 of PA-FOR-USER. This value SHOULD be set to TRUE.<11>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Before sending a KRB_TGS_REQ message with a Service for User (S4U) extension, the service
 MUST have already authenticated to the Key Distribution Center (KDC) and received a ticket-
 granting ticket (TGT).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 This section contains the following information:
 
@@ -1648,7 +1555,7 @@ This section contains the following information:
 
   S4U2proxy Triggered Events
 
-3.1.4.1  S4U2self Triggered Events
+##### 3.1.4.1 S4U2self Triggered Events
 
 A service (see Service 1 in the figure specifying entities involved in S4U protocols, section 3.1.5)
 uses a KRB_TGS_REQ message with the S4U2self extension when the service is required to make a
@@ -1656,7 +1563,7 @@ local access check for a user. This typically occurs when the user has sent some
 service through a non-Kerberos protocol. The service uses the S4U2self TGS exchange subprotocol
 extension to obtain authorization data about the user from the Key Distribution Center (KDC).
 
-3.1.4.2  S4U2proxy Triggered Events
+##### 3.1.4.2 S4U2proxy Triggered Events
 
 A service uses a KRB_TGS_REQ message with the Service for User to Proxy (S4U2proxy)
 extension when the service determines that it needs to contact another service on behalf of a user for
@@ -1671,11 +1578,12 @@ Release: March 30, 2026
 
 21 / 39
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-SFU].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Figure 3: Entities Involved in Service for User (S4U) Protocols
 
@@ -1688,13 +1596,13 @@ mechanism (a) other than using the KDC. Service 1 authenticates to Service 2 via
 protocol using the standard KRB_AP_REQ and KRB_AP_REP message exchange (c) (also known as
 an Authentication Protocol (AP) exchange).
 
-3.1.5.1  Service for User to Self
+##### 3.1.5.1 Service for User to Self
 
 The Service for User to Self (S4U2self) extension allows Service 1 to use the service's ticket-
 granting ticket (TGT) in a Kerberos KRB_TGS_REQ message to retrieve a service ticket to the
 service itself, as if the ticket was originally requested by the user.
 
-3.1.5.1.1 Service Sends S4U2self KRB_TGS_REQ
+###### 3.1.5.1.1 Service Sends S4U2self KRB_TGS_REQ
 
 In the S4U2self request, the user is identified by the user realm and the user name or alternatively,
 by using the user's certificate if the service has it, as specified in sections 3.1.5.1.1.2 and 3.1.5.1.1.2.
@@ -1714,7 +1622,7 @@ ENCTYPES [165] ([MS-KILE] section 2.2.8) and not set in PA-PAC-OPTIONS [167], th
 client SHOULD locate a DS_BEHAVIOR_WIN2012 DC ([MS-KILE] section 3.2.5.3) and go back to
 step 1.
 
-3.1.5.1.1.1  When to Use Each padata Type
+###### 3.1.5.1.1.1 When to Use Each padata Type
 
 [MS-SFU] - v20260330
 Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol
@@ -1723,7 +1631,8 @@ Release: March 30, 2026
 
 22 / 39
 
-If PhaseOutOldStyleS4U is TRUE, then Service 1 MUST populate and send only PA-S4U-X509-
+
+If PhaseOutOldStyleS4U is TRUE, then Service 1 MUST populate and send only PA-S4U-X509-
 USER.
 
 If PhaseOutOldStyleS4U is FALSE, then what padata type Service 1 sends is determined by two
@@ -1748,7 +1657,7 @@ true:
 
 The session key of the TGT being used is not a DES or RC4 key type.
 
-3.1.5.1.1.2  Sending the S4USelf KRB_TGT_REQ
+###### 3.1.5.1.1.2 Sending the S4USelf KRB_TGT_REQ
 
 Service 1 uses the name and realm of the user to locate the appropriate domain controller (DC) to
 provide the authorization information for the user. The user's realm can be found by local policy, or,
@@ -1793,7 +1702,8 @@ Release: March 30, 2026
 
 23 / 39
 
-If sending a PA-S4U-X509-USER (130) structure, the cname and crealm should contain the same
+
+If sending a PA-S4U-X509-USER (130) structure, the cname and crealm should contain the same
 values as used for userName and userRealm in a PA-FOR-USER structure. If a client certificate
 was provided, the subject-certificate field MUST contain the client's X509 certificate encoded in
 ASN.1, as specified in [RFC3280].
@@ -1805,7 +1715,7 @@ specified in [RFC6806].
 The service MUST request a forwardable ticket if it wants to use the returned service ticket as the
 input for a later S4U2proxy request.
 
-3.1.5.1.2 Service Receives S4U2self KRB_TGS_REP
+###### 3.1.5.1.2 Service Receives S4U2self KRB_TGS_REP
 
 Services can detect if the KDC supports PA-S4U-X509-USER by checking the reply padata for a
 PA-S4U-X509-USER preauth data. Furthermore, the KDC uses this reply padata to return a
@@ -1824,9 +1734,9 @@ return a service ticket with the cname that contains the name of the service tha
 ([RFC4120] section 3.3.3). In service tickets from KDCs that support S4U, the cname contains the
 name of the user as requested in the PA-FOR-USER.
 
-3.1.5.2  Service for User to Proxy
+##### 3.1.5.2 Service for User to Proxy
 
-3.1.5.2.1 Sends S4U2proxy KRB_TGS_REQ
+###### 3.1.5.2.1 Sends S4U2proxy KRB_TGS_REQ
 
 If Service 1 did not obtain a user's service ticket to Service 1 when the client connected to Service 1,
 then it can use S4U2self to obtain a user's service ticket to Service 1. If the user's service ticket is
@@ -1862,7 +1772,8 @@ Release: March 30, 2026
 
 24 / 39
 
-  kdc-options field: MUST include the new cname-in-addl-tkt options flag.
+
+  kdc-options field: MUST include the new cname-in-addl-tkt options flag.
 
   additional-tickets field: The user's service ticket to Service 1.
 
@@ -1874,7 +1785,7 @@ If a nonforwardable S4U2self-generated user's service ticket for a nonsensitive 
 SFU client SHOULD<15> locate a DS_BEHAVIOR_WIN2012 DC ([MS-KILE] section 3.2.5.3) to send
 the request.
 
-3.1.5.2.2 Receives Referral
+###### 3.1.5.2.2 Receives Referral
 
 If Service 1 receives a referral ([RFC6806] section 8) and does not have its own service ticket for
 Service 2, then Service 1 SHOULD<16> obtain a service ticket for Service 2.
@@ -1893,14 +1804,14 @@ Service 1’s referral TGT:
 
 sname and realm fields: The name and realm of Service 2.
 
-3.1.5.2.3 Receives KRB-ERR-BADOPTION
+###### 3.1.5.2.3 Receives KRB-ERR-BADOPTION
 
 If Service 1 receives a KRB-ERR-BADOPTION with STATUS_NOT_SUPPORTED or STATUS_NO_MATCH
 and a DS_BEHAVIOR_WIN2012 DC was not used, then the SFU client SHOULD<17> locate a
 DS_BEHAVIOR_WIN2012 DC ([MS-KILE] section 3.2.5.3) and retry sending the S4U2proxy
 KRB_TGS_REQ message. If a DS_BEHAVIOR_WIN2012 DC cannot be found, then the SFU client fails.
 
-3.1.5.2.4 Receives S4U2proxy KRB_TGS_REP
+###### 3.1.5.2.4 Receives S4U2proxy KRB_TGS_REP
 
 Services can detect whether the KDC supports S4U by checking the cname of the returned ticket.
 KDCs that do not support S4U ignore the S4U2self and S4U2proxy data and return a service
@@ -1911,15 +1822,15 @@ Service 1 now has a service ticket to Service 2 with the cname and crealm of the
 authorization data of the user, just as if the user had requested the service ticket. Note, however,
 that the session key for authenticating to that ticket is owned by Service 1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  KDC Details
+### 3.2 KDC Details
 
 This section defines the message processing for KDCs responding to S4U requests<18>.
 
@@ -1930,7 +1841,8 @@ Release: March 30, 2026
 
 25 / 39
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1962,19 +1874,19 @@ FORWARDABLE ticket flag ([RFC4120] section 2.6) in S4U2self service tickets for 
 the service. SFU implementations that use an Active Directory for the account database SHOULD
 use the userAccountControl attribute ([MS-ADTS] section 2.2.16) TA flag. The default is FALSE.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 If an implementation supports the SFU extensions, then the TGS-REQ processing rules in the following
 sections extend the rules in the related sections of [RFC4120] and [RFC6806].
@@ -1995,7 +1907,8 @@ Release: March 30, 2026
 
 26 / 39
 
-3.2.5.1  KDC Receives S4U2self KRB_TGS_REQ
+
+##### 3.2.5.1 KDC Receives S4U2self KRB_TGS_REQ
 
 When a KDC processes a TGS-REQ message ([RFC4120], section 3.3.2) and it is a S4U2self
 KRB_TGS_REQ message, the KDC MUST verify the client name as follows:
@@ -2017,7 +1930,7 @@ USER sent in KRB_TGS_REQ message.
 
 If any of these verifications fails, the KDC MUST return KDC_ERR_POLICY.
 
-3.2.5.1.1 KDC Replies with Referral TGT
+###### 3.2.5.1.1 KDC Replies with Referral TGT
 
 When a KDC determines that a referral TGT is required ([RFC6806] section 8), if Service 1 is not in
 the KDC's realm, the KDC replies with referral TGT where:
@@ -2034,7 +1947,7 @@ username@userRealm. This format is the syntax of the single-string representatio
 section 2.1.1) using the username and userRealm fields from the PA-FOR-USER pre-
 authentication data.
 
-3.2.5.1.2 KDC Replies with Service Ticket
+###### 3.2.5.1.2 KDC Replies with Service Ticket
 
 When a KDC processes a TGS-REQ ([RFC4120] section 3.3.2) and if the Service 1 account is in the
 KDC's realm, the KDC MUST reply with the service ticket, where:
@@ -2073,15 +1986,16 @@ Kerberos Protocol Extensions: Service for User and Constrained Delegation Protoc
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-the AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY SID in the ExtraSids field and
+
+the AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY SID in the ExtraSids field and
 SHOULD<22> add the SERVICE_ASSERTED_IDENTITY SID ([MS-DTYP] section 2.4.2.4) instead.
 
-3.2.5.2  KDC Receives S4U2proxy KRB_TGS_REQ
+##### 3.2.5.2 KDC Receives S4U2proxy KRB_TGS_REQ
 
 When a KDC processes a TGS-REQ ([RFC4120] section 3.3.2) and it is a S4U2proxy
 KRB_TGS_REQ message, the KDC will perform the steps in the following sections.
 
-3.2.5.2.1 Using ServicesAllowedToSendForwardedTicketsTo
+###### 3.2.5.2.1 Using ServicesAllowedToSendForwardedTicketsTo
 
 If the KDC is for the realm of both Service 1 and Service 2, then the KDC checks if the security
 principal name (SPN) for Service 2, identified in the sname and srealm fields of the
@@ -2096,7 +2010,7 @@ If the service ticket in the additional-tickets field is not set to forwardable<
 OPTIONS [167] ([MS-KILE] section 2.2.10) padata type does not have the resource-based constrained
 delegation bit set, then the KDC MUST return KRB-ERR-BADOPTION with STATUS_NO_MATCH.
 
-3.2.5.2.2 Verification of the PAC
+###### 3.2.5.2.2 Verification of the PAC
 
 Service 1's KDC verifies both server ([MS-PAC] section 2.8.4) and KDC ([MS-PAC] section 2.8.5)
 signatures of the PAC. Because Service 1’s KDC is ingesting a service ticket rather than a TGT, it
@@ -2104,7 +2018,7 @@ SHOULD also ensure the integrity of the service ticket by verifying the ticket s
 section 2.8.3).<24> If Service 2 is in another domain, then its KDC verifies only the KDC signature
 of the PAC. If verification fails, the KDC MUST return KRB-AP-ERR-MODIFIED.
 
-3.2.5.2.3 Using ServicesAllowedToReceiveForwardedTicketsFrom
+###### 3.2.5.2.3 Using ServicesAllowedToReceiveForwardedTicketsFrom
 
 If the delegation policy was not satisfied via ServicesAllowedToSendForwardedTicketsTo, this is the
 KDC for Service 2, and the Service 2 account's ServicesAllowedToReceiveForwardedTicketsFrom is
@@ -2122,7 +2036,7 @@ MUST return KRB-ERR-BADOPTION with STATUS_ACCOUNT_RESTRICTION ([MS-ERREF] sectio
 When a KDC determines that a referral TGT is required ([RFC6806] section 8), then if Service 2 is not
 in the KDC's realm, the KDC SHOULD<28> reply with referral TGT (section 3.2.5.1.1).
 
-3.2.5.2.4 KDC Replies with Service Ticket
+###### 3.2.5.2.4 KDC Replies with Service Ticket
 
 The KDC MUST reply with the service ticket where:
 
@@ -2145,7 +2059,8 @@ Release: March 30, 2026
 
 28 / 39
 
-
+
+
 
 
 
@@ -2171,11 +2086,11 @@ The KDC MUST also add the name of Service 1 to the S4UTransitedServices list in 
 Windows KDC constructs the impersonated client's principal name from the PAC. The cname and
 crealm in the KDC reply are set to the impersonated client's principal name, realm.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2186,13 +2101,14 @@ Release: March 30, 2026
 
 29 / 39
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-SFU].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  S4U2self Single Realm Example
+### 4.1 S4U2self Single Realm Example
 
 The following figure depicts the S4U2self KRB_TGS_REQ message being processed from the
 service to the Kerberos TGS. In this case, the user's account belongs to the same realm as the
@@ -2213,7 +2129,7 @@ returned in the service ticket contains the authorization data, as specified in 
 the service requested the forwardable option and the local policy of the TGS allows it, the TGS shall
 set the ticket-flag field to forwardable.
 
-4.2  S4U2self Multiple Realm Example
+### 4.2 S4U2self Multiple Realm Example
 
 The multiple-realm scenario requires extra KRB_TGS_REQ and KRB_TGS_REP message exchanges.
 The service retrieves a S4U2self service ticket for the user from the service's KDC. To do so, the
@@ -2233,7 +2149,8 @@ Release: March 30, 2026
 
 30 / 39
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-SFU].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2274,7 +2191,8 @@ Release: March 30, 2026
 
 31 / 39
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-SFU].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2283,7 +2201,7 @@ Release: March 30, 2026
 this step will contain the appropriate combination of authorization data placed in the PAC by TGS
 B in step 4 and the data from TGS A in step 6, as specified in [MS-PAC] section 4.1.2.1.
 
-4.3  S4U2proxy Example
+### 4.3 S4U2proxy Example
 
 The following figure depicts a service obtaining a service ticket on behalf of a client to another service,
 a proxy service. The ticket-granting service (TGS) is the TGS for both the service and the proxy
@@ -2316,9 +2234,10 @@ Release: March 30, 2026
 
 32 / 39
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The S4U2self extension allows a service to obtain a service ticket to itself on behalf of a user. This
 extension is used to obtain authorization data for the user to allow the service to make access control
@@ -2335,7 +2254,7 @@ to those that the implementer knows to have correct behavior.
 A service can confirm that the service ticket did not originate from the client by the
 S4UTransitedServices field in the S4U_DELEGATION_INFO structure (see [MS-PAC] section 2.9).
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2346,7 +2265,8 @@ Release: March 30, 2026
 
 33 / 39
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2414,7 +2334,8 @@ Release: March 30, 2026
 
 34 / 39
 
-<1> Section 1.3.3: In Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7, and
+
+<1> Section 1.3.3: In Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7, and
 Windows Server 2008 R2, Service 1 and Service 2 have to be in the same realm. The user, however,
 can be in a different realm.
 
@@ -2483,7 +2404,8 @@ Kerberos Protocol Extensions: Service for User and Constrained Delegation Protoc
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<16> Section 3.1.5.2.2: In Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7,
+
+<16> Section 3.1.5.2.2: In Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7,
 and Windows Server 2008 R2, the SFU client does not support referrals for S4U2proxy.
 
 <17> Section 3.1.5.2.3: In Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7,
@@ -2547,7 +2469,8 @@ Release: March 30, 2026
 
 36 / 39
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2591,7 +2514,8 @@ Release: March 30, 2026
 
 37 / 39
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2721,7 +2645,8 @@ Release: March 30, 2026
 
 38 / 39
 
-Synopsis 10
+
+Synopsis 10
 Syntax 17
 
 T

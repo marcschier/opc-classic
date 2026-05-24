@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 106
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -223,428 +224,171 @@ Release: September 16, 2024
 
 2 / 106
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Constants](#221-constants)
+      - [2.2.4.12 FSCTL_SVHDX_SYNC_TUNNEL_REQUEST](#22412-fsctlsvhdxsynctunnelrequest)
+      - [2.2.4.13 SVHDX_TUNNEL_INITIAL_INFO_REQUEST Structure](#22413-svhdxtunnelinitialinforequest-structure)
+      - [2.2.4.14 SVHDX_TUNNEL_INITIAL_INFO_RESPONSE Structure](#22414-svhdxtunnelinitialinforesponse-structure)
+      - [2.2.4.15 SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST Structure](#22415-svhdxsharedvirtualdisksupportrequest-structure)
+      - [2.2.4.16 SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE Structure](#22416-svhdxsharedvirtualdisksupportresponse-structure)
+      - [2.2.4.17 SVHDX_META_OPERATION_START_REQUEST Structure](#22417-svhdxmetaoperationstartrequest-structure)
+        - [2.2.4.17.1 SVHDX_META_OPERATION_CREATE_SNAPSHOT Structure](#224171-svhdxmetaoperationcreatesnapshot-structure)
+          - [2.2.4.17.1.1 SVHDX_META_OPERATION_CREATE_CDP_PARAMETER Structure](#2241711-svhdxmetaoperationcreatecdpparameter-structure)
+        - [2.2.4.17.2 SVHDX_META_OPERATION_EXTRACT Structure](#224172-svhdxmetaoperationextract-structure)
+        - [2.2.4.17.3 SVHDX_META_OPERATION_CONVERT_TO_VHDSET Structure](#224173-svhdxmetaoperationconverttovhdset-structure)
+        - [2.2.4.17.4 SVHDX_META_OPERATION_RESIZE_VIRTUAL_DISK Structure](#224174-svhdxmetaoperationresizevirtualdisk-structure)
+      - [2.2.4.18 SVHDX_META_OPERATION_REPLY Structure](#22418-svhdxmetaoperationreply-structure)
+      - [2.2.4.19 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_REQUEST Structure](#22419-svhdxtunnelvhdsetqueryinformationrequest-structure)
+      - [2.2.4.20 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_LIST_RE](#22420-svhdxtunnelvhdsetqueryinformationsnapshotlistre)
+      - [2.2.4.21 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_ENTRY_R](#22421-svhdxtunnelvhdsetqueryinformationsnapshotentryr)
+      - [2.2.4.22 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_OPTIMIZE_RESPONS](#22422-svhdxtunnelvhdsetqueryinformationoptimizerespons)
+      - [2.2.4.23 SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST Structure](#22423-svhdxmetaoperationqueryprogressrequest-structure)
+      - [2.2.4.24 SVHDX_META_OPERATION_QUERY_PROGRESS_RESPONSE Structure](#22424-svhdxmetaoperationqueryprogressresponse-structure)
+      - [2.2.4.25 SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE Structure](#22425-svhdxchangetrackinggetparametersresponse-structure)
+      - [2.2.4.26 SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST Structure](#22426-svhdxtunneldeletesnapshotrequest-structure)
+      - [2.2.4.27 SVHDX_CHANGE_TRACKING_START_REQUEST Structure](#22427-svhdxchangetrackingstartrequest-structure)
+      - [2.2.4.28 SVHDX_CHANGE_TRACKING_START_RESPONSE Structure](#22428-svhdxchangetrackingstartresponse-structure)
+      - [2.2.4.29 SVHDX_CHANGE_TRACKING_STOP_REQUEST Structure](#22429-svhdxchangetrackingstoprequest-structure)
+      - [2.2.4.30 SVHDX_CHANGE_TRACKING_STOP_RESPONSE Structure](#22430-svhdxchangetrackingstopresponse-structure)
+      - [2.2.4.31 SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE Structure](#22431-svhdxopendevicecontextresponse-structure)
+      - [2.2.4.32 SVHDX_OPEN_DEVICE_CONTEXT_V2 Structure](#22432-svhdxopendevicecontextv2-structure)
+      - [2.2.4.33 SVHDX_OPEN_DEVICE_CONTEXT_V2_RESPONSE Structure](#22433-svhdxopendevicecontextv2response-structure)
+      - [2.2.4.34 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER Structure](#22434-rsvdblockdevicetargetspecifier-structure)
+      - [2.2.4.35 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT Structure](#22435-rsvdblockdevicetargetspecifiersnapshot-structure)
+      - [2.2.4.36 SVHDX_APPLY_SNAPSHOT_PARAMS Structure](#22436-svhdxapplysnapshotparams-structure)
+      - [2.2.4.37 SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REQUEST Structure](#22437-svhdxtunnelqueryvirtualdiskchangesrequest-structure)
+      - [2.2.4.38 SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REPLY Structure](#22438-svhdxtunnelqueryvirtualdiskchangesreply-structure)
+      - [2.2.4.39 SVHDX_VIRTUAL_DISK_CHANGED_RANGE Structure](#22439-svhdxvirtualdiskchangedrange-structure)
+      - [2.2.4.40 SVHDX_TUNNEL_QUERY_SAFE_SIZE_RESPONSE STRUCTURE](#22440-svhdxtunnelquerysafesizeresponse-structure)
+    - [2.2.5 SRB Status Code](#225-srb-status-code)
+    - [2.2.6 Snapshot Types](#226-snapshot-types)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Sending Any Outgoing Message](#3141-sending-any-outgoing-message)
+      - [3.1.4.2 Application Requests Opening a Shared Virtual Disk](#3142-application-requests-opening-a-shared-virtual-disk)
+      - [3.1.4.3 Application Requests Closing a Shared Virtual Disk](#3143-application-requests-closing-a-shared-virtual-disk)
+      - [3.1.4.4 Application Requests Reading From a Shared Virtual Disk](#3144-application-requests-reading-from-a-shared-virtual-disk)
+      - [3.1.4.5 Application Requests Writing To a Shared Virtual Disk](#3145-application-requests-writing-to-a-shared-virtual-disk)
+      - [3.1.4.6 Application Requests Virtual Disk File information](#3146-application-requests-virtual-disk-file-information)
+      - [3.1.4.7 Application Requests Connection Status](#3147-application-requests-connection-status)
+      - [3.1.4.8 Application Requests Shared Virtual Disk Information](#3148-application-requests-shared-virtual-disk-information)
+      - [3.1.4.9 Application Requests Execution of SCSI Command](#3149-application-requests-execution-of-scsi-command)
+      - [3.1.4.10 Application Requests to Validate a Shared Virtual Disk](#31410-application-requests-to-validate-a-shared-virtual-disk)
+      - [3.1.4.11 Application Requests Querying Shared Virtual Disk Support](#31411-application-requests-querying-shared-virtual-disk-support)
+      - [3.1.4.12 Application Requests Creating a Virtual Machine Snapshot](#31412-application-requests-creating-a-virtual-machine-snapshot)
+      - [3.1.4.13 Application Requests Creating a CDP Snapshot](#31413-application-requests-creating-a-cdp-snapshot)
+      - [3.1.4.14 Application Requests Optimizing the Target VHD set](#31414-application-requests-optimizing-the-target-vhd-set)
+      - [3.1.4.15 Application Requests Extracting a Differencing VHD](#31415-application-requests-extracting-a-differencing-vhd)
+      - [3.1.4.16 Application Requests Converting a Virtual Disk to VHD Set](#31416-application-requests-converting-a-virtual-disk-to-vhd-set)
+      - [3.1.4.17 Application Requests Resizing a Shared Virtual Disk](#31417-application-requests-resizing-a-shared-virtual-disk)
+      - [3.1.4.18 Application Requests Querying Meta Operation Progress](#31418-application-requests-querying-meta-operation-progress)
+      - [3.1.4.19 Application Requests Querying VHD Set Information](#31419-application-requests-querying-vhd-set-information)
+      - [3.1.4.20 Application Requests Deleting a Snapshot](#31420-application-requests-deleting-a-snapshot)
+      - [3.1.4.21 Application Requests Querying Change Tracking Parameters](#31421-application-requests-querying-change-tracking-parameters)
+      - [3.1.4.22 Application Requests Starting a Change Tracking](#31422-application-requests-starting-a-change-tracking)
+      - [3.1.4.23 Application Requests Stopping Change Tracking](#31423-application-requests-stopping-change-tracking)
+      - [3.1.4.24 Application Requests Opening a Shared VHD Set using a Target Specifier](#31424-application-requests-opening-a-shared-vhd-set-using-a-target-specifier)
+      - [3.1.4.25 Application Requests to Apply Snapshot](#31425-application-requests-to-apply-snapshot)
+      - [3.1.4.26 Application Requests Querying List of Changed Ranges](#31426-application-requests-querying-list-of-changed-ranges)
+      - [3.1.4.27 Application Requests Querying Safe Size](#31427-application-requests-querying-safe-size)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an Open Response](#3151-receiving-an-open-response)
+      - [3.1.5.2 Receiving a Close Response](#3152-receiving-a-close-response)
+      - [3.1.5.3 Receiving a Read Response](#3153-receiving-a-read-response)
+      - [3.1.5.4 Receiving a Write Response](#3154-receiving-a-write-response)
+      - [3.1.5.5 Receiving a Virtual Disk File Information Response](#3155-receiving-a-virtual-disk-file-information-response)
+      - [3.1.5.6 Receiving a Connection Status Response](#3156-receiving-a-connection-status-response)
+      - [3.1.5.7 Receiving a Shared Virtual Disk Information Response](#3157-receiving-a-shared-virtual-disk-information-response)
+      - [3.1.5.8 Receiving a SCSI Command Response](#3158-receiving-a-scsi-command-response)
+      - [3.1.5.9 Receiving a Validate Disk Response](#3159-receiving-a-validate-disk-response)
+      - [3.1.5.10 Receiving a Shared Virtual Disk Support Response](#31510-receiving-a-shared-virtual-disk-support-response)
+      - [3.1.5.11 Receiving a Meta-Operation Start Response](#31511-receiving-a-meta-operation-start-response)
+      - [3.1.5.12 Receiving a Meta-Operation Progress Response](#31512-receiving-a-meta-operation-progress-response)
+      - [3.1.5.13 Receiving a Query VHD Set Information Response](#31513-receiving-a-query-vhd-set-information-response)
+      - [3.1.5.14 Receiving a Delete Snapshot Response](#31514-receiving-a-delete-snapshot-response)
+      - [3.1.5.15 Receiving a Change Tracking Parameter Response](#31515-receiving-a-change-tracking-parameter-response)
+      - [3.1.5.16 Receiving a Start Change Tracking Response](#31516-receiving-a-start-change-tracking-response)
+      - [3.1.5.17 Receiving a Stop Change Tracking Response](#31517-receiving-a-stop-change-tracking-response)
+      - [3.1.5.18 Receiving a Safe Size Response](#31518-receiving-a-safe-size-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per Open](#3212-per-open)
+      - [3.2.1.3 Per SenseError in SenseErrorDataList](#3213-per-senseerror-in-senseerrordatalist)
+      - [3.2.1.4 Per Snapshot](#3214-per-snapshot)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an Open Request](#3251-receiving-an-open-request)
+      - [3.2.5.2 Receiving a Close Request](#3252-receiving-a-close-request)
+      - [3.2.5.3 Receiving a Read Request](#3253-receiving-a-read-request)
+      - [3.2.5.4 Receiving a Write Request](#3254-receiving-a-write-request)
+      - [3.2.5.5 Receiving a Tunnel Operation Request](#3255-receiving-a-tunnel-operation-request)
+        - [3.2.5.5.1 Receiving a Virtual Disk File Information Request](#32551-receiving-a-virtual-disk-file-information-request)
+        - [3.2.5.5.2 Receiving a Connection Status Request](#32552-receiving-a-connection-status-request)
+        - [3.2.5.5.3 Receiving a Status Request for a Prior Operation](#32553-receiving-a-status-request-for-a-prior-operation)
+        - [3.2.5.5.4 Receiving a Shared Virtual Disk Information Request](#32554-receiving-a-shared-virtual-disk-information-request)
+        - [3.2.5.5.5 Receiving a SCSI Command Request](#32555-receiving-a-scsi-command-request)
+        - [3.2.5.5.6 Receiving a Validate Disk Request](#32556-receiving-a-validate-disk-request)
+        - [3.2.5.5.7 Receiving a Start Meta-Operation Request](#32557-receiving-a-start-meta-operation-request)
+          - [3.2.5.5.7.1 Receiving a Create Snapshot Request](#325571-receiving-a-create-snapshot-request)
+          - [3.2.5.5.7.2 Receiving an Optimize Request](#325572-receiving-an-optimize-request)
+          - [3.2.5.5.7.3 Receiving an ExtractVHD Request](#325573-receiving-an-extractvhd-request)
+          - [3.2.5.5.7.4 Receiving a Convert to VHD Set Request](#325574-receiving-a-convert-to-vhd-set-request)
+          - [3.2.5.5.7.5 Receiving a Resize Request](#325575-receiving-a-resize-request)
+          - [3.2.5.5.7.6 Receiving an Apply Snapshot Request](#325576-receiving-an-apply-snapshot-request)
+        - [3.2.5.5.8 Receiving a Query Meta-Operation Progress Request](#32558-receiving-a-query-meta-operation-progress-request)
+        - [3.2.5.5.9 Receiving a Query VHD Set Information Request](#32559-receiving-a-query-vhd-set-information-request)
+        - [3.2.5.5.10 Receiving a Delete Snapshot Request](#325510-receiving-a-delete-snapshot-request)
+        - [3.2.5.5.11 Receiving a Change Tracking Get Parameter Request](#325511-receiving-a-change-tracking-get-parameter-request)
+        - [3.2.5.5.12 Receiving a Change Tracking Start Request](#325512-receiving-a-change-tracking-start-request)
+        - [3.2.5.5.13 Receiving a Change Tracking Stop Request](#325513-receiving-a-change-tracking-stop-request)
+        - [3.2.5.5.14 Receiving a Query Virtual Disk changes request](#325514-receiving-a-query-virtual-disk-changes-request)
+        - [3.2.5.5.15 Receiving a Safe Size Request](#325515-receiving-a-safe-size-request)
+      - [3.2.5.6 Receiving a Query Shared Virtual Disk Support Request](#3256-receiving-a-query-shared-virtual-disk-support-request)
+      - [3.2.5.7 Receiving an Open Request with a Target Specifier](#3257-receiving-an-open-request-with-a-target-specifier)
+      - [3.2.5.8 Receiving a Query Info Request](#3258-receiving-a-query-info-request)
+      - [3.2.5.9 Receiving a Set Info Request](#3259-receiving-a-set-info-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Retrieving Virtual Disk File Information](#41-retrieving-virtual-disk-file-information)
+  - [4.2 Executing a SCSI Command](#42-executing-a-scsi-command)
+  - [4.3 Creating a Virtual Machine Snapshot](#43-creating-a-virtual-machine-snapshot)
+  - [4.4 Retrieving a VHD Set Snapshot List](#44-retrieving-a-vhd-set-snapshot-list)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-2.2.4.12
-2.2.4.13
-2.2.4.14
-2.2.4.15
-2.2.4.16
-2.2.4.17
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Constants .................................................................................................. 11
-Operation Codes ......................................................................................... 12
-Error Code ................................................................................................. 13
-Structures ................................................................................................. 13
-SVHDX_TUNNEL_CHECK_CONNECTION_REQUEST Structure ...................... 13
-SVHDX_TUNNEL_CHECK_CONNECTION_RESPONSE Structure .................... 14
-SVHDX_TUNNEL_SRB_STATUS_REQUEST Structure .................................. 14
-SVHDX_TUNNEL_SRB_STATUS_RESPONSE Structure ................................ 14
-SVHDX_TUNNEL_DISK_INFO_REQUEST Structure ..................................... 15
-SVHDX_TUNNEL_DISK_INFO_RESPONSE Structure ................................... 16
-SVHDX_TUNNEL_SCSI_REQUEST Structure .............................................. 17
-SVHDX_TUNNEL_SCSI_RESPONSE Structure ............................................ 19
-SVHDX_TUNNEL_VALIDATE_DISK_REQUEST Structure .............................. 20
-SVHDX_TUNNEL_VALIDATE_DISK_RESPONSE Structure ............................ 20
-SVHDX_TUNNEL_OPERATION_HEADER Structure ...................................... 20
-SVHDX_OPEN_DEVICE_CONTEXT Structure ............................................. 21
-SVHDX_TUNNEL_INITIAL_INFO_REQUEST Structure ................................. 22
-SVHDX_TUNNEL_INITIAL_INFO_RESPONSE Structure ............................... 22
-SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST Structure ................ 23
-SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE Structure .............. 23
-SVHDX_META_OPERATION_START_REQUEST Structure ............................ 24
-SVHDX_META_OPERATION_CREATE_SNAPSHOT Structure ................... 25
-SVHDX_META_OPERATION_CREATE_CDP_PARAMETER Structure .... 27
-SVHDX_META_OPERATION_EXTRACT Structure .................................. 27
-SVHDX_META_OPERATION_CONVERT_TO_VHDSET Structure ............... 29
-SVHDX_META_OPERATION_RESIZE_VIRTUAL_DISK Structure .............. 29
-SVHDX_META_OPERATION_REPLY Structure ............................................ 30
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_REQUEST Structure ........ 30
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_LIST_RESPONSE
-Structure ............................................................................................. 31
-
-2.2.4.17.2
-2.2.4.17.3
-2.2.4.17.4
-
-2.2.4.18
-2.2.4.19
-2.2.4.20
-
-2.2.4.17.1.1
-
-2.2.4.17.1
-
-2.2.4.21
-
-2.2.4.22
-
-2.2.4.23
-2.2.4.24
-2.2.4.25
-2.2.4.26
-
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_ENTRY_RESPON
-SE Structure ........................................................................................ 32
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_OPTIMIZE_RESPONSE
-Structure ............................................................................................. 33
-SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST Structure ........... 34
-SVHDX_META_OPERATION_QUERY_PROGRESS_RESPONSE Structure ......... 34
-SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE Structure ....... 34
-SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST Structure ......................... 35
-
-3 / 106
-
-[MS-RSVD] - v20240916
-Remote Shared Virtual Disk Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-2.2.4.27
-2.2.4.28
-2.2.4.29
-2.2.4.30
-2.2.4.31
-2.2.4.32
-2.2.4.33
-2.2.4.34
-2.2.4.35
-2.2.4.36
-2.2.4.37
-2.2.4.38
-2.2.4.39
-2.2.4.40
-
-SVHDX_CHANGE_TRACKING_START_REQUEST Structure .......................... 35
-SVHDX_CHANGE_TRACKING_START_RESPONSE Structure ........................ 37
-SVHDX_CHANGE_TRACKING_STOP_REQUEST Structure ............................ 37
-SVHDX_CHANGE_TRACKING_STOP_RESPONSE Structure .......................... 37
-SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE Structure ............................ 37
-SVHDX_OPEN_DEVICE_CONTEXT_V2 Structure ........................................ 38
-SVHDX_OPEN_DEVICE_CONTEXT_V2_RESPONSE Structure ....................... 40
-RSVD_BLOCK_DEVICE_TARGET_SPECIFIER Structure ............................... 41
-RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT Structure .............. 42
-SVHDX_APPLY_SNAPSHOT_PARAMS Structure ......................................... 43
-SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REQUEST Structure .... 43
-SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REPLY Structure ......... 44
-SVHDX_VIRTUAL_DISK_CHANGED_RANGE Structure ................................ 45
-SVHDX_TUNNEL_QUERY_SAFE_SIZE_RESPONSE STRUCTURE .................... 45
-SRB Status Code ........................................................................................ 45
-Snapshot Types .......................................................................................... 46
-
-2.2.5
-2.2.6
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 47
-Client Details ................................................................................................... 47
-Abstract Data Model .................................................................................... 47
-Global.................................................................................................. 47
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 47
-Sending Any Outgoing Message .............................................................. 47
-Application Requests Opening a Shared Virtual Disk .................................. 47
-Application Requests Closing a Shared Virtual Disk .................................... 48
-Application Requests Reading From a Shared Virtual Disk .......................... 49
-Application Requests Writing To a Shared Virtual Disk ............................... 49
-Application Requests Virtual Disk File information ..................................... 49
-Application Requests Connection Status ................................................... 50
-Application Requests Shared Virtual Disk Information ................................ 50
-Application Requests Execution of SCSI Command .................................... 50
-Application Requests to Validate a Shared Virtual Disk ............................... 51
-Application Requests Querying Shared Virtual Disk Support ........................ 52
-Application Requests Creating a Virtual Machine Snapshot ......................... 52
-Application Requests Creating a CDP Snapshot ......................................... 53
-Application Requests Optimizing the Target VHD set .................................. 54
-Application Requests Extracting a Differencing VHD ................................... 55
-Application Requests Converting a Virtual Disk to VHD Set ......................... 56
-Application Requests Resizing a Shared Virtual Disk .................................. 57
-Application Requests Querying Meta Operation Progress ............................ 58
-Application Requests Querying VHD Set Information ................................. 58
-Application Requests Deleting a Snapshot ................................................ 59
-Application Requests Querying Change Tracking Parameters ...................... 59
-Application Requests Starting a Change Tracking ...................................... 60
-Application Requests Stopping Change Tracking ........................................ 61
-Application Requests Opening a Shared VHD Set using a Target Specifier .... 61
-Application Requests to Apply Snapshot ................................................... 62
-Application Requests Querying List of Changed Ranges .............................. 63
-Application Requests Querying Safe Size .................................................. 63
-Message Processing Events and Sequencing Rules .......................................... 64
-Receiving an Open Response .................................................................. 64
-Receiving a Close Response .................................................................... 64
-Receiving a Read Response .................................................................... 64
-Receiving a Write Response .................................................................... 65
-Receiving a Virtual Disk File Information Response .................................... 65
-Receiving a Connection Status Response .................................................. 65
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-3.1.4.25
-3.1.4.26
-3.1.4.27
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3.1.5
-
-[MS-RSVD] - v20240916
-Remote Shared Virtual Disk Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 106
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-3.1.5.14
-3.1.5.15
-3.1.5.16
-3.1.5.17
-3.1.5.18
-
-Receiving a Shared Virtual Disk Information Response ............................... 65
-Receiving a SCSI Command Response ..................................................... 66
-Receiving a Validate Disk Response ......................................................... 66
-Receiving a Shared Virtual Disk Support Response .................................... 66
-Receiving a Meta-Operation Start Response ............................................. 66
-Receiving a Meta-Operation Progress Response ........................................ 66
-Receiving a Query VHD Set Information Response .................................... 66
-Receiving a Delete Snapshot Response .................................................... 66
-Receiving a Change Tracking Parameter Response .................................... 66
-Receiving a Start Change Tracking Response ............................................ 66
-Receiving a Stop Change Tracking Response ............................................ 66
-Receiving a Safe Size Response .............................................................. 67
-Timer Events .............................................................................................. 67
-Other Local Events ...................................................................................... 67
-Server Details .................................................................................................. 67
-Abstract Data Model .................................................................................... 67
-Global.................................................................................................. 67
-Per Open ............................................................................................. 67
-Per SenseError in SenseErrorDataList ...................................................... 68
-Per Snapshot ........................................................................................ 68
-Timers ...................................................................................................... 68
-Initialization ............................................................................................... 68
-Higher-Layer Triggered Events ..................................................................... 68
-Message Processing Events and Sequencing Rules .......................................... 69
-Receiving an Open Request .................................................................... 69
-Receiving a Close Request ...................................................................... 71
-Receiving a Read Request ...................................................................... 72
-Receiving a Write Request ...................................................................... 73
-Receiving a Tunnel Operation Request ..................................................... 74
-Receiving a Virtual Disk File Information Request ................................ 74
-Receiving a Connection Status Request .............................................. 75
-Receiving a Status Request for a Prior Operation ................................. 75
-Receiving a Shared Virtual Disk Information Request ........................... 76
-Receiving a SCSI Command Request ................................................. 77
-Receiving a Validate Disk Request ..................................................... 78
-Receiving a Start Meta-Operation Request .......................................... 79
-Receiving a Create Snapshot Request ........................................... 79
-Receiving an Optimize Request .................................................... 80
-Receiving an ExtractVHD Request ................................................ 81
-Receiving a Convert to VHD Set Request....................................... 81
-Receiving a Resize Request ......................................................... 82
-Receiving an Apply Snapshot Request .......................................... 82
-Receiving a Query Meta-Operation Progress Request ........................... 83
-Receiving a Query VHD Set Information Request ................................. 83
-Receiving a Delete Snapshot Request................................................. 86
-Receiving a Change Tracking Get Parameter Request ........................... 86
-Receiving a Change Tracking Start Request ........................................ 87
-Receiving a Change Tracking Stop Request ......................................... 87
-Receiving a Query Virtual Disk changes request .................................. 87
-Receiving a Safe Size Request ........................................................... 89
-Receiving a Query Shared Virtual Disk Support Request ............................. 89
-Receiving an Open Request with a Target Specifier ................................... 90
-Receiving a Query Info Request .............................................................. 90
-Receiving a Set Info Request .................................................................. 91
-Timer Events .............................................................................................. 91
-Other Local Events ...................................................................................... 91
-
-3.2.5.5.7.1
-3.2.5.5.7.2
-3.2.5.5.7.3
-3.2.5.5.7.4
-3.2.5.5.7.5
-3.2.5.5.7.6
-
-3.2.5.5.8
-3.2.5.5.9
-3.2.5.5.10
-3.2.5.5.11
-3.2.5.5.12
-3.2.5.5.13
-3.2.5.5.14
-3.2.5.5.15
-
-3.2.5.5.1
-3.2.5.5.2
-3.2.5.5.3
-3.2.5.5.4
-3.2.5.5.5
-3.2.5.5.6
-3.2.5.5.7
-
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 92
-
-5 / 106
-
-[MS-RSVD] - v20240916
-Remote Shared Virtual Disk Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4.1
-4.2
-4.3
-4.4
-
-Retrieving Virtual Disk File Information ............................................................... 92
-Executing a SCSI Command .............................................................................. 93
-Creating a Virtual Machine Snapshot .................................................................. 96
-Retrieving a VHD Set Snapshot List .................................................................... 99
-
-5  Security ............................................................................................................... 102
-Security Considerations for Implementers .......................................................... 102
-Index of Security Parameters ........................................................................... 102
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 103
-
-7  Change Tracking .................................................................................................. 105
-
-8  Index ................................................................................................................... 106
-
-[MS-RSVD] - v20240916
-Remote Shared Virtual Disk Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 106
-
-1  Introduction
+## 1 Introduction
 
 The Remote Shared Virtual Disk (RSVD) Protocol is a block-based protocol that is used to access
 virtual disks in a shared fashion across a network over Server Message Block (SMB) Protocol version 3
@@ -653,7 +397,7 @@ virtual disks in a shared fashion across a network over Server Message Block (SM
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -704,7 +448,7 @@ virtual hard disk set (VHD set): A type of virtual disk that stores snapshot det
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -716,10 +460,11 @@ Release: September 16, 2024
 
 7 / 106
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -738,7 +483,7 @@ assist you in finding the relevant information.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2022-24490] Microsoft Corporation, "Windows Hyper-V Shared Virtual Hard Disks
 Information Disclosure Vulnerability", CVE-2022-24490, April 12, 2021,
@@ -757,7 +502,7 @@ https://support.microsoft.com/en-us/kb/3025091
 
 Note Fill out guest access form, sign in, or purchase the standard to access the file.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Shared Virtual Disk Protocol enables a client application to access virtual disk files in a
 shared fashion on a remote server.
@@ -782,18 +527,19 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RSVD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on Server Message Block (SMB) Protocol version 3 (SMB3) for its transport, as
 specified in [MS-SMB2].
 
 Figure 1: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The RSVD Protocol has the following preconditions:
 
@@ -805,12 +551,12 @@ can issue Remote Shared Virtual Disk Protocol commands.
 
 The SMB client and server support accessing shared virtual disk files on a remote server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Shared Virtual Disk Protocol is applicable for all scenarios that access a shared virtual disk
 file between client and server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Shared Virtual Disk Protocol defines the following two versions.<1>
 
@@ -829,11 +575,12 @@ Release: September 16, 2024
 
 9 / 106
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol shares the standards assignments of Server Message Block Protocol versions 2 and 3, as
 specified in [MS-SMB2] section 1.9.
@@ -845,9 +592,10 @@ Release: September 16, 2024
 
 10 / 106
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The following sections specify how RSVD Protocol messages are encapsulated on the wire and
 common protocol data types.
@@ -873,9 +621,9 @@ for implementation-specific functionality.
 The RSVD Protocol uses the SMB 3.0.2 or SMB 3.1.1 dialect in SMB Protocol version 3 as its transport.
 For more information, see [MS-SMB2] section 2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Constants
+#### 2.2.1 Constants
 
 Constant name
 
@@ -898,9 +646,9 @@ RSVD_MAXIMUM_NAME_LENGTH
 0x7E
 
 Maximum length of the InitiatorHostName field in section
-2.2.4.12
+##### 2.2.4.12 FSCTL_SVHDX_SYNC_TUNNEL_REQUEST
 
-FSCTL_SVHDX_SYNC_TUNNEL_REQUEST
+
 
 Control code for SYNC TUNNEL REQUEST
 
@@ -939,7 +687,8 @@ Value of Version field in create context specified in section
 
 11 / 106
 
-2.2.2  Operation Codes
+
+2.2.2  Operation Codes
 
  The following is a list of all control codes used in shared virtual disk operations:
 
@@ -1052,7 +801,8 @@ Release: September 16, 2024
 
 12 / 106
 
-2.2.3  Error Code
+
+2.2.3  Error Code
 
 The following is a list of possible RSVD error codes that can be returned by the server.
 
@@ -1166,7 +916,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.4.2  SVHDX_TUNNEL_CHECK_CONNECTION_RESPONSE Structure
+
+2.2.4.2  SVHDX_TUNNEL_CHECK_CONNECTION_RESPONSE Structure
 
 The SVHDX_TUNNEL_CHECK_CONNECTION_RESPONSE packet is sent by the server in response to the
 operation RSVD_TUNNEL_CHECK_CONNECTION_STATUS_OPERATION. The response MUST contain
@@ -1255,7 +1006,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SrbStatus (7 bits): A 7-bit field indicating the status. This field MUST contain one of the values in
+
+SrbStatus (7 bits): A 7-bit field indicating the status. This field MUST contain one of the values in
 
 section 2.2.5.
 
@@ -1332,7 +1084,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-IsMounted (1 byte): The client MUST set this field to zero, and the server MUST ignore it on receipt.
+
+IsMounted (1 byte): The client MUST set this field to zero, and the server MUST ignore it on receipt.
 
 Is4kAligned (1 byte): The client MUST set this field to zero, and the server MUST ignore it on
 
@@ -1407,7 +1160,8 @@ Release: September 16, 2024
 
 16 / 106
 
-Value
+
+Value
 
 Meaning
 
@@ -1506,7 +1260,8 @@ Release: September 16, 2024
 
 17 / 106
 
-...
+
+...
 
 ...
 
@@ -1591,7 +1346,8 @@ Release: September 16, 2024
 
 18 / 106
 
-2.2.4.8  SVHDX_TUNNEL_SCSI_RESPONSE Structure
+
+2.2.4.8  SVHDX_TUNNEL_SCSI_RESPONSE Structure
 
 The SVHDX_TUNNEL_SCSI_RESPONSE packet is sent by the server in response to the operation
 RSVD_TUNNEL_SCSI_OPERATION.
@@ -1688,7 +1444,8 @@ Release: September 16, 2024
 
 19 / 106
 
-Reserved (1 byte): This field MUST be set to zero, and MUST be ignored on receipt.
+
+Reserved (1 byte): This field MUST be set to zero, and MUST be ignored on receipt.
 
 SrbFlags (4 bytes): Special flags to indicate options of the SCSI response. This field MUST contain
 
@@ -1781,7 +1538,8 @@ Release: September 16, 2024
 
 20 / 106
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1865,7 +1623,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 ...
 
@@ -1913,17 +1672,17 @@ InitiatorHostName (126 bytes): A 126-byte buffer containing a Unicode UTF-16 str
 
 specifies the computer name on which the initiator resides.
 
-2.2.4.13
+##### 2.2.4.13 SVHDX_TUNNEL_INITIAL_INFO_REQUEST Structure
 
-SVHDX_TUNNEL_INITIAL_INFO_REQUEST Structure
+
 
 The SVHDX_TUNNEL_INITIAL_INFO_REQUEST packet is sent by the client to get the shared virtual
 disk file information. The request MUST contain only SVHDX_TUNNEL_OPERATION_HEADER, and
 MUST NOT contain any payload.
 
-2.2.4.14
+##### 2.2.4.14 SVHDX_TUNNEL_INITIAL_INFO_RESPONSE Structure
 
-SVHDX_TUNNEL_INITIAL_INFO_RESPONSE Structure
+
 
 The SVHDX_TUNNEL_INITIAL_INFO_RESPONSE packet is sent by the server in response to an
 RSVD_TUNNEL_GET_INITIAL_INFO_OPERATION packet.
@@ -1952,7 +1711,8 @@ Release: September 16, 2024
 
 22 / 106
 
-Reserved
+
+Reserved
 
 VirtualSize
 
@@ -1974,16 +1734,16 @@ VirtualSize (8 bytes): A 64-bit unsigned integer that indicates the virtual size
 
 shared virtual disk.
 
-2.2.4.15
+##### 2.2.4.15 SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST Structure
 
-SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST Structure
+
 
 The SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST packet is sent by the client to verify
 the status of shared virtual disk support on the Open. The request MUST NOT contain any payload.
 
-2.2.4.16
+##### 2.2.4.16 SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE Structure
 
-SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE Structure
+
 
 The SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE packet is sent by the server in a response
 to an SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_REQUEST request.
@@ -2045,7 +1805,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2062,9 +1823,9 @@ The shared virtual disk file is opened as a shared virtual disk by this Open.
 
 0x00000003
 
-2.2.4.17
+##### 2.2.4.17 SVHDX_META_OPERATION_START_REQUEST Structure
 
-SVHDX_META_OPERATION_START_REQUEST Structure
+
 
 The SVHDX_META_OPERATION_START_REQUEST packet is sent by the client to start a meta-
 operation on the shared virtual disk file.
@@ -2136,7 +1897,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2182,9 +1944,9 @@ the format SVHDX_META_OPERATION_CONVERT_TO_VHDSET, as specified in section 2.2.4
 If the OperationType is SvhdxMetaOperationTypeResize, this field is provided in the format
 SVHDX_META_OPERATION _RESIZE_VIRTUAL_DISK as specified in section 2.2.4.17.4.
 
-2.2.4.17.1
+###### 2.2.4.17.1 SVHDX_META_OPERATION_CREATE_SNAPSHOT Structure
 
-SVHDX_META_OPERATION_CREATE_SNAPSHOT Structure
+
 
 The SVHDX_META_OPERATION_CREATE_SNAPSHOT structure is used to send the additional
 parameters for snapshot creation.
@@ -2223,7 +1985,8 @@ Release: September 16, 2024
 
 25 / 106
 
-SnapshotId
+
+SnapshotId
 
 ...
 
@@ -2318,7 +2081,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Stage4 (4 bytes) The fourth stage. This field MUST be any of the values identified in Stage1 or
+
+Stage4 (4 bytes) The fourth stage. This field MUST be any of the values identified in Stage1 or
 
 SvhdxSnapshotStageInvalid.
 
@@ -2341,7 +2105,7 @@ CdpParameters (variable): Parameters supplied with the continuous data protectio
 (CDP snapshot) operation. This field is provided in the format
 SVHDX_META_OPERATION_CREATE_CDP_PARAMETER as specified in section 2.2.4.17.1.1.
 
-2.2.4.17.1.1  SVHDX_META_OPERATION_CREATE_CDP_PARAMETER Structure
+###### 2.2.4.17.1.1 SVHDX_META_OPERATION_CREATE_CDP_PARAMETER Structure
 
 SVHDX_META_OPERATION_CREATE_CDP_PARAMETER is used to send additional CDP parameters.
 
@@ -2382,9 +2146,9 @@ LogFileName (Variable): A log file name containing a null-terminated Unicode UTF
 
 field MUST be an empty array.
 
-2.2.4.17.2
+###### 2.2.4.17.2 SVHDX_META_OPERATION_EXTRACT Structure
 
-SVHDX_META_OPERATION_EXTRACT Structure
+
 
 The SVHDX_META_OPERATION_EXTRACT packet is issued by a server as part of a
 SVHDX_META_OPERATION_START_REQUEST operation, when the meta-operation type indicates
@@ -2398,7 +2162,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2476,13 +2241,14 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DestinationFileName (Variable): A buffer containing a null-terminated Unicode UTF-16 string that
+
+DestinationFileName (Variable): A buffer containing a null-terminated Unicode UTF-16 string that
 
 indicates the VHD file name to extract the data differences to.
 
-2.2.4.17.3
+###### 2.2.4.17.3 SVHDX_META_OPERATION_CONVERT_TO_VHDSET Structure
 
-SVHDX_META_OPERATION_CONVERT_TO_VHDSET Structure
+
 
 The SVHDX_META_OPERATION_CONVERT_TO_VHDSET packet is issued by a server as part of a
 SVHDX_META_OPERATION_START_REQUEST operation, when the meta-operation type indicates a
@@ -2514,9 +2280,9 @@ DestinationVhdSetName (Variable): A buffer containing a null-terminated Unicode 
 
 that indicates the name for the new VHD set that is to be created.
 
-2.2.4.17.4
+###### 2.2.4.17.4 SVHDX_META_OPERATION_RESIZE_VIRTUAL_DISK Structure
 
-SVHDX_META_OPERATION_RESIZE_VIRTUAL_DISK Structure
+
 
 The SVHDX_META_OPERATION_RESIZE_VIRTUAL_DISK packet is issued by a server as part of a
 SVHDX_META_OPERATION_START_REQUEST operation, when the meta-operation type indicates a
@@ -2568,9 +2334,10 @@ Release: September 16, 2024
 
 29 / 106
 
-2.2.4.18
 
-SVHDX_META_OPERATION_REPLY Structure
+##### 2.2.4.18 SVHDX_META_OPERATION_REPLY Structure
+
+
 
 The SVHDX_META_OPERATION_REPLY packet is issued by a server in reply to an
 SVHDX_META_OPERATION_START_REQUEST operation. When the meta-operation type indicates
@@ -2642,9 +2409,9 @@ An inconsistent log file detected.
 
 0xC03A0024
 
-2.2.4.19
+##### 2.2.4.19 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_REQUEST Structure
 
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_REQUEST Structure
+
 
 The SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_REQUEST packet is sent by a client as
 part of an RSVD_TUNNEL_VHDSET_QUERY_INFORMATION request.
@@ -2673,7 +2440,8 @@ Release: September 16, 2024
 
 30 / 106
 
-...
+
+...
 
 ...
 
@@ -2734,9 +2502,9 @@ SvhdxSnapshotType values specified in section 2.2.6.
 
 SnapshotId (16 bytes): The snapshot ID relevant to the particular request.
 
-2.2.4.20
+##### 2.2.4.20 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_LIST_RE
 
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_LIST_RE
+
 
 SPONSE Structure
 
@@ -2774,7 +2542,8 @@ Release: September 16, 2024
 
 31 / 106
 
-...
+
+...
 
 VHDSetInformationType (4 bytes): The information type. The server MUST set this to
 
@@ -2794,9 +2563,9 @@ SnapshotIds (Variable): A list of IDs of all snapshots of a particular type. Thi
 GUIDs that define each snapshot ID. The number of snapshot IDs in the field is specified by the
 NumberOfSnapshots fields.
 
-2.2.4.21
+##### 2.2.4.21 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_ENTRY_R
 
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_ENTRY_R
+
 
 ESPONSE Structure
 
@@ -2846,7 +2615,8 @@ Release: September 16, 2024
 
 32 / 106
 
-...
+
+...
 
 ...
 
@@ -2884,9 +2654,9 @@ LogFileId (16 bytes): The ID of the log file associated with this snapshot. This
 
 CDP snapshots.
 
-2.2.4.22
+##### 2.2.4.22 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_OPTIMIZE_RESPONS
 
-SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_OPTIMIZE_RESPONS
+
 
 E Structure
 
@@ -2926,9 +2696,10 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.4.23
 
-SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST Structure
+##### 2.2.4.23 SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST Structure
+
+
 
 The SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST packet is sent by the client to
 query the progress of an ongoing meta-operation.
@@ -2956,9 +2727,9 @@ TransactionId (16 bytes): Indicates the transaction ID for the operation. This i
 
 used in the RSVD_TUNNEL_META_OPERATION_START request.
 
-2.2.4.24
+##### 2.2.4.24 SVHDX_META_OPERATION_QUERY_PROGRESS_RESPONSE Structure
 
-SVHDX_META_OPERATION_QUERY_PROGRESS_RESPONSE Structure
+
 
 The SVHDX_META_OPERATION_QUERY_PROGRESS_RESPONSE packet is sent by the server in
 response to a RSVD_TUNNEL_META_OPERATION_QUERY_PROGRESS request.
@@ -2990,9 +2761,9 @@ CompleteValue (8 bytes): The maximum progress value for the completed operation.
 
 CurrentProgressValue is equal to CompleteValue, the operation is complete.
 
-2.2.4.25
+##### 2.2.4.25 SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE Structure
 
-SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE Structure
+
 
 The SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE packet is sent by the server in
 response to a RSVD_TUNNEL_CHANGE_TRACKING_GET_PARAMETERS operation.
@@ -3019,7 +2790,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-LogFileSize
+
+LogFileSize
 
 ...
 
@@ -3033,9 +2805,9 @@ LogFileSize (8 bytes): The number of bytes consumed by the current log file used
 
 change tracking.
 
-2.2.4.26
+##### 2.2.4.26 SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST Structure
 
-SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST Structure
+
 
 The SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST packet is sent by a client to delete a
 snapshot from a shared virtual disk file.
@@ -3075,9 +2847,9 @@ SnapshotType (4 bytes): The type of snapshot. This MUST be one of the SvhdxSnaps
 
 values defined in section 2.2.6.
 
-2.2.4.27
+##### 2.2.4.27 SVHDX_CHANGE_TRACKING_START_REQUEST Structure
 
-SVHDX_CHANGE_TRACKING_START_REQUEST Structure
+
 
 The SVHDX_CHANGE_TRACKING_START_REQUEST packet is sent by the client to start change
 tracking on the server. The packet contains the following fields.
@@ -3102,7 +2874,8 @@ Release: September 16, 2024
 
 35 / 106
 
-...
+
+...
 
 ...
 
@@ -3165,24 +2938,25 @@ Release: September 16, 2024
 
 36 / 106
 
-2.2.4.28
 
-SVHDX_CHANGE_TRACKING_START_RESPONSE Structure
+##### 2.2.4.28 SVHDX_CHANGE_TRACKING_START_RESPONSE Structure
+
+
 
 The SVHDX_CHANGE_TRACKING_START_RESPONSE packet is sent by the server in response to
 an RSVD_TUNNEL_CHANGE_TRACKING_START operation. This response MUST NOT contain any
 payload.
 
-2.2.4.29
+##### 2.2.4.29 SVHDX_CHANGE_TRACKING_STOP_REQUEST Structure
 
-SVHDX_CHANGE_TRACKING_STOP_REQUEST Structure
+
 
 The SVHDX_CHANGE_TRACKING_STOP_REQUEST packet is sent by the client to stop change
 tracking on the server. This request MUST NOT contain any payload.
 
-2.2.4.30
+##### 2.2.4.30 SVHDX_CHANGE_TRACKING_STOP_RESPONSE Structure
 
-SVHDX_CHANGE_TRACKING_STOP_RESPONSE Structure
+
 
 The SVHDX_CHANGE_TRACKING_STOP_RESPONSE packet is sent by the server in response to an
 RSVD_TUNNEL_CHANGE_TRACKING_STOP operation.
@@ -3204,9 +2978,9 @@ ChangeTrackingStatus (4 bytes): The current status of change tracking on the ser
 
 be one of the ChangeTrackingErrorStatus values specified in section 2.2.4.18.
 
-2.2.4.31
+##### 2.2.4.31 SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE Structure
 
-SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE Structure
+
 
 The SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE packet is sent by the server in response to open the
 shared virtual disk request.
@@ -3251,7 +3025,8 @@ Release: September 16, 2024
 
 37 / 106
 
-InitiatorHostNameLength
+
+InitiatorHostNameLength
 
 InitiatorHostName (126 bytes)
 
@@ -3303,9 +3078,9 @@ InitiatorHostName (126 bytes): A 126-byte buffer containing a Unicode UTF-16 str
 
 specifies the computer name which initiated the request.
 
-2.2.4.32
+##### 2.2.4.32 SVHDX_OPEN_DEVICE_CONTEXT_V2 Structure
 
-SVHDX_OPEN_DEVICE_CONTEXT_V2 Structure
+
 
 The SVHDX_OPEN_DEVICE_CONTEXT_V2 packet is sent by the client to open the shared virtual disk.
 
@@ -3341,7 +3116,8 @@ Release: September 16, 2024
 
 38 / 106
 
-...
+
+...
 
 Flags
 
@@ -3416,7 +3192,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-InitiatorHostNameLength (2 bytes): The length, in bytes, of the InitiatorHostName. This value
+
+InitiatorHostNameLength (2 bytes): The length, in bytes, of the InitiatorHostName. This value
 
 MUST be less than or equal to RSVD_MAXIMUM_NAME_LENGTH.
 
@@ -3434,9 +3211,9 @@ PhysicalSectorSize (4 bytes): This field MUST be set to zero.
 
 VirtualSize (8 bytes): This field MUST be set to zero.
 
-2.2.4.33
+##### 2.2.4.33 SVHDX_OPEN_DEVICE_CONTEXT_V2_RESPONSE Structure
 
-SVHDX_OPEN_DEVICE_CONTEXT_V2_RESPONSE Structure
+
 
 The SVHDX_OPEN_DEVICE_CONTEXT_RESPONSE_V2 packet is sent by the server in response to open
 the shared virtual disk request.
@@ -3493,7 +3270,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ServerServiceVersion
+
+ServerServiceVersion
 
 VirtualSectorSize
 
@@ -3560,9 +3338,9 @@ PhysicalSectorSize (4 bytes): The physical sector size of the virtual disk.
 
 VirtualSize (8 bytes): The current length of the virtual disk, in bytes.
 
-2.2.4.34
+##### 2.2.4.34 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER Structure
 
-RSVD_BLOCK_DEVICE_TARGET_SPECIFIER Structure
+
 
 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER structure is used to read from a particular snapshot.
 
@@ -3573,7 +3351,8 @@ Release: September 16, 2024
 
 41 / 106
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3614,9 +3393,9 @@ TargetInformationSnapshot (20 bytes): An
 
 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT structure defined in section 2.2.4.35.
 
-2.2.4.35
+##### 2.2.4.35 RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT Structure
 
-RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT Structure
+
 
 The RSVD_BLOCK_DEVICE_TARGET_SPECIFIER_SNAPSHOT structure is used to specify the snapshot
 to open when opening the virtual disk as a block device.
@@ -3654,9 +3433,10 @@ Release: September 16, 2024
 
 42 / 106
 
-2.2.4.36
 
-SVHDX_APPLY_SNAPSHOT_PARAMS Structure
+##### 2.2.4.36 SVHDX_APPLY_SNAPSHOT_PARAMS Structure
+
+
 
 The SVHDX_APPLY_SNAPSHOT_PARAMS structure is used to specify the snapshot to apply.
 
@@ -3686,9 +3466,9 @@ section 2.2.6.
 
 SnapshotID (16 bytes): A GUID that identifies the snapshot to open.
 
-2.2.4.37
+##### 2.2.4.37 SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REQUEST Structure
 
-SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REQUEST Structure
+
 
 The SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REQUEST structure requests a list of
 changed ranges since the designated snapshot.
@@ -3733,7 +3513,8 @@ Release: September 16, 2024
 
 43 / 106
 
-...
+
+...
 
 ByteLength
 
@@ -3758,9 +3539,9 @@ ByteOffset (8 bytes): The byte offset of the region in the virtual disk to query
 
 ByteLength (8 bytes): The length, in bytes, of the region in the virtual disk to query changes for.
 
-2.2.4.38
+##### 2.2.4.38 SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REPLY Structure
 
-SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REPLY Structure
+
 
 The SVHDX_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES_REPLY structure is sent as a response to the
 virtual disk changes query.
@@ -3811,9 +3592,10 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.4.39
 
-SVHDX_VIRTUAL_DISK_CHANGED_RANGE Structure
+##### 2.2.4.39 SVHDX_VIRTUAL_DISK_CHANGED_RANGE Structure
+
+
 
 The SVHDX_VIRTUAL_DISK_CHANGED_RANGE structure contains the details of the changed range.
 
@@ -3848,9 +3630,9 @@ Reserved (8 bytes): Reserved. The server MUST set this field to zero and the cli
 
 on receipt.
 
-2.2.4.40
+##### 2.2.4.40 SVHDX_TUNNEL_QUERY_SAFE_SIZE_RESPONSE STRUCTURE
 
-SVHDX_TUNNEL_QUERY_SAFE_SIZE_RESPONSE STRUCTURE
+
 
 The SVHDX_TUNNEL_QUERY_SAFE_SIZE_RESPONSE structure contains the details of the safe virtual
 size.
@@ -3874,7 +3656,7 @@ SafeVirtualSize (8 bytes): The smallest size, in bytes, that the virtual disk ca
 
 losing user data.
 
-2.2.5  SRB Status Code
+#### 2.2.5 SRB Status Code
 
 The SCSI request block (SRB) status codes used to communicate from server to client are as
 follows.
@@ -3904,7 +3686,8 @@ Release: September 16, 2024
 
 45 / 106
 
-Value  Meaning
+
+Value  Meaning
 
 0x08
 
@@ -3922,7 +3705,7 @@ A data overrun or underrun error occurred.
 
 The request completed with any other error.
 
-2.2.6  Snapshot Types
+#### 2.2.6 Snapshot Types
 
 Following are the possible snapshot types.
 
@@ -3955,13 +3738,14 @@ Release: September 16, 2024
 
 46 / 106
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
 
-3.1.1.1  Global
+#### 3.1.1 Abstract Data Model
+
+##### 3.1.1.1 Global
 
 The client MUST implement the following:
 
@@ -3969,25 +3753,25 @@ ClientServiceVersion: The highest protocol version supported by the client.
 
 RequestIdentifier: An unsigned 64-bit value assigned by the client for an outgoing request.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST initialize ClientServiceVersion to an implementation-specific<2> administratively
 configured protocol version.
 
 RequestIdentifier: SHOULD<3> be initialized to an implementation-specific value.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Sending Any Outgoing Message
+##### 3.1.4.1 Sending Any Outgoing Message
 
 The Client MUST increment RequestIdentifier by 1, for every outgoing tunnel operation specified in
 section 2.2.2.
 
-3.1.4.2  Application Requests Opening a Shared Virtual Disk
+##### 3.1.4.2 Application Requests Opening a Shared Virtual Disk
 
 The application provides the following:
 
@@ -4030,7 +3814,8 @@ Release: September 16, 2024
 
 47 / 106
 
-If ClientServiceVersion is RSVD Protocol version 1, the client MUST construct an
+
+If ClientServiceVersion is RSVD Protocol version 1, the client MUST construct an
 SVHDX_OPEN_DEVICE_CONTEXT as specified in section 2.2.4.12, or if ClientServiceVersion is RSVD
 Protocol version 2, the client MUST construct an SVHDX_OPEN_DEVICE_CONTEXT_V2 as specified in
 section 2.2.4.32 and MUST be initialized as follows:
@@ -4105,7 +3890,7 @@ FILE_NO_INTERMEDIATE_BUFFERING bit set
 
 If there are any errors from the preceding call, return the error to the caller.
 
-3.1.4.3  Application Requests Closing a Shared Virtual Disk
+##### 3.1.4.3 Application Requests Closing a Shared Virtual Disk
 
 The application provides:
 
@@ -4121,7 +3906,8 @@ Release: September 16, 2024
 
 48 / 106
 
-3.1.4.4  Application Requests Reading From a Shared Virtual Disk
+
+##### 3.1.4.4 Application Requests Reading From a Shared Virtual Disk
 
 The application provides:
 
@@ -4146,7 +3932,7 @@ The buffer to receive the data.
 The client MUST call the interface specified in [MS-SMB2] section 3.2.4.6, supplying the application-
 provided parameters
 
-3.1.4.5  Application Requests Writing To a Shared Virtual Disk
+##### 3.1.4.5 Application Requests Writing To a Shared Virtual Disk
 
 The application provides:
 
@@ -4165,7 +3951,7 @@ The number of bytes to write.
 The client MUST call the interface specified in [MS-SMB2] section 3.2.4.7, supplying the application-
 provided parameters.
 
-3.1.4.6  Application Requests Virtual Disk File information
+##### 3.1.4.6 Application Requests Virtual Disk File information
 
 The application provides:
 
@@ -4212,7 +3998,8 @@ Release: September 16, 2024
 
 49 / 106
 
-3.1.4.7  Application Requests Connection Status
+
+##### 3.1.4.7 Application Requests Connection Status
 
 The application provides:
 
@@ -4244,7 +4031,7 @@ input parameters:
 
   SVHDX_TUNNEL_OPERATION_HEADER as payload.
 
-3.1.4.8  Application Requests Shared Virtual Disk Information
+##### 3.1.4.8 Application Requests Shared Virtual Disk Information
 
 The application provides:
 
@@ -4276,7 +4063,7 @@ input parameters:
 
   SVHDX_TUNNEL_DISK_INFO_REQUEST packet, as payload.
 
-3.1.4.9  Application Requests Execution of SCSI Command
+##### 3.1.4.9 Application Requests Execution of SCSI Command
 
 The application provides:
 
@@ -4297,7 +4084,8 @@ Release: September 16, 2024
 
 50 / 106
 
-  SrbFlags that indicate options about the SCSI request, as specified in section 2.2.4.7<4>.
+
+  SrbFlags that indicate options about the SCSI request, as specified in section 2.2.4.7<4>.
 
 
 
@@ -4379,9 +4167,9 @@ input parameters:
 
   SVHDX_TUNNEL_SCSI_REQUEST structure as payload.
 
-3.1.4.10
+##### 3.1.4.10 Application Requests to Validate a Shared Virtual Disk
 
-Application Requests to Validate a Shared Virtual Disk
+
 
 The application provides:
 
@@ -4397,7 +4185,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
+
+The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
 
 
 
@@ -4420,9 +4209,9 @@ input parameters:
 
   SVHDX_TUNNEL_OPERATION_HEADER structure as payload.
 
-3.1.4.11
+##### 3.1.4.11 Application Requests Querying Shared Virtual Disk Support
 
-Application Requests Querying Shared Virtual Disk Support
+
 
 The application provides:
 
@@ -4436,9 +4225,9 @@ input parameters:
 
   Control code: FSCTL_QUERY_SHARED_VIRTUAL_DISK_SUPPORT
 
-3.1.4.12
+##### 3.1.4.12 Application Requests Creating a Virtual Machine Snapshot
 
-Application Requests Creating a Virtual Machine Snapshot
+
 
 The application provides:
 
@@ -4480,7 +4269,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The RequestId field MUST be set to RequestIdentifier.
 
@@ -4544,9 +4334,9 @@ input parameters:
 
   SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.13
+##### 3.1.4.13 Application Requests Creating a CDP Snapshot
 
-Application Requests Creating a CDP Snapshot
+
 
 The application provides:
 
@@ -4577,7 +4367,8 @@ Release: September 16, 2024
 
 53 / 106
 
-The client MUST construct an SVHDX_META_OPERATION_START_REQUEST structure, as specified in
+
+The client MUST construct an SVHDX_META_OPERATION_START_REQUEST structure, as specified in
 section 2.2.4.17, as follows:
 
 The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
@@ -4671,9 +4462,9 @@ input parameters:
 
   SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.14
+##### 3.1.4.14 Application Requests Optimizing the Target VHD set
 
-Application Requests Optimizing the Target VHD set
+
 
 The application provides:
 
@@ -4686,7 +4477,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  TransactionId: A GUID used to uniquely identify the start operation.
+
+  TransactionId: A GUID used to uniquely identify the start operation.
 
 The client MUST construct an SVHDX_META_OPERATION_START_REQUEST structure, as specified in
 section 2.2.4.17, as follows:
@@ -4724,9 +4516,9 @@ input parameters:
 
   SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.15
+##### 3.1.4.15 Application Requests Extracting a Differencing VHD
 
-Application Requests Extracting a Differencing VHD
+
 
 The application provides:
 
@@ -4778,7 +4570,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The Data field to a SVHDX_META_OPERATION_EXTRACT structure initialized as follows:
 
@@ -4817,9 +4610,9 @@ input parameters:
 
   SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.16
+##### 3.1.4.16 Application Requests Converting a Virtual Disk to VHD Set
 
-Application Requests Converting a Virtual Disk to VHD Set
+
 
 The application provides:
 
@@ -4878,7 +4671,8 @@ Release: September 16, 2024
 
 56 / 106
 
-The client MUST call the interface specified in [MS-SMB2] section 3.2.4.20.11, supplying the following
+
+The client MUST call the interface specified in [MS-SMB2] section 3.2.4.20.11, supplying the following
 input parameters:
 
   Application-provided handle to identify the Open.
@@ -4887,9 +4681,9 @@ input parameters:
 
   SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.17
+##### 3.1.4.17 Application Requests Resizing a Shared Virtual Disk
 
-Application Requests Resizing a Shared Virtual Disk
+
 
 The application provides:
 
@@ -4971,11 +4765,12 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-3.1.4.18
+  SVHDX_META_OPERATION_START_REQUEST structure as payload.
 
-Application Requests Querying Meta Operation Progress
+##### 3.1.4.18 Application Requests Querying Meta Operation Progress
+
+
 
 The application provides:
 
@@ -5015,9 +4810,9 @@ input parameters:
 
   SVHDX_META_OPERATION_QUERY_PROGRESS_REQUEST structure as payload.
 
-3.1.4.19
+##### 3.1.4.19 Application Requests Querying VHD Set Information
 
-Application Requests Querying VHD Set Information
+
 
 The application provides:
 
@@ -5061,7 +4856,8 @@ Release: September 16, 2024
 
 58 / 106
 
-
+
+
 
 
 
@@ -5078,9 +4874,9 @@ input parameters:
 
   SVHDX_TUNNEL_VHDSET _QUERY_INFORMATION_REQUEST structure as payload.
 
-3.1.4.20
+##### 3.1.4.20 Application Requests Deleting a Snapshot
 
-Application Requests Deleting a Snapshot
+
 
 The application provides:
 
@@ -5132,9 +4928,9 @@ input parameters:
 
   SVHDX_TUNNEL_DELETE_SNAPSHOT_REQUEST structure as payload.
 
-3.1.4.21
+##### 3.1.4.21 Application Requests Querying Change Tracking Parameters
 
-Application Requests Querying Change Tracking Parameters
+
 
 The application provides:
 
@@ -5149,7 +4945,8 @@ Release: September 16, 2024
 
 59 / 106
 
-
+
+
 
 
 
@@ -5170,9 +4967,9 @@ input parameters:
 
   SVHDX_TUNNEL_OPERATION_HEADER structure as payload.
 
-3.1.4.22
+##### 3.1.4.22 Application Requests Starting a Change Tracking
 
-Application Requests Starting a Change Tracking
+
 
 The application provides:
 
@@ -5245,11 +5042,12 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  SVHDX_CHANGE_TRACKING_START_REQUEST structure as payload.
 
-3.1.4.23
+  SVHDX_CHANGE_TRACKING_START_REQUEST structure as payload.
 
-Application Requests Stopping Change Tracking
+##### 3.1.4.23 Application Requests Stopping Change Tracking
+
+
 
 The application provides:
 
@@ -5278,9 +5076,9 @@ input parameters:
 
   SVHDX_TUNNEL_OPERATION_HEADER structure as payload.
 
-3.1.4.24
+##### 3.1.4.24 Application Requests Opening a Shared VHD Set using a Target Specifier
 
-Application Requests Opening a Shared VHD Set using a Target Specifier
+
 
 This section is applicable only if ClientServiceVersion is RSVD Protocol version 2.
 
@@ -5324,7 +5122,8 @@ Release: September 16, 2024
 
 61 / 106
 
-The client MUST establish a connection to the server by calling the interface specified in [MS-SMB2]
+
+The client MUST establish a connection to the server by calling the interface specified in [MS-SMB2]
 section 3.2.4.2 and providing the following input parameters:
 
 
@@ -5356,9 +5155,9 @@ FILE_NO_INTERMEDIATE_BUFFERING bit set
 
 If there is an error from the preceding call, the client MUST return the error to the caller.
 
-3.1.4.25
+##### 3.1.4.25 Application Requests to Apply Snapshot
 
-Application Requests to Apply Snapshot
+
 
 The application provides:
 
@@ -5421,9 +5220,10 @@ Release: September 16, 2024
 
 62 / 106
 
-3.1.4.26
 
-Application Requests Querying List of Changed Ranges
+##### 3.1.4.26 Application Requests Querying List of Changed Ranges
+
+
 
 The application provides:
 
@@ -5479,9 +5279,9 @@ input parameters:
 
 The maximum output buffer size that it will accept.
 
-3.1.4.27
+##### 3.1.4.27 Application Requests Querying Safe Size
 
-Application Requests Querying Safe Size
+
 
 The application provides:
 
@@ -5508,7 +5308,8 @@ Release: September 16, 2024
 
 63 / 106
 
-The client MUST call the interface specified in [MS-SMB2] section 3.2.4.20.11, supplying the following
+
+The client MUST call the interface specified in [MS-SMB2] section 3.2.4.20.11, supplying the following
 input parameters:
 
   Application-provided handle to identify the Open.
@@ -5517,20 +5318,20 @@ input parameters:
 
   SVHDX_TUNNEL_OPERATION_HEADER structure as payload.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving an Open Response
+##### 3.1.5.1 Receiving an Open Response
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 error code to the calling application.
 
 Otherwise, the client MUST return success and the Open.ContextHandle to the calling application.
 
-3.1.5.2  Receiving a Close Response
+##### 3.1.5.2 Receiving a Close Response
 
 The client MUST return the received response to the calling application.
 
-3.1.5.3  Receiving a Read Response
+##### 3.1.5.3 Receiving a Read Response
 
 If the response returned by the SMB server indicates success, the client MUST return success and the
 data buffer that contains the data read for the response.
@@ -5583,7 +5384,8 @@ Release: September 16, 2024
 
 64 / 106
 
-3.1.5.4  Receiving a Write Response
+
+##### 3.1.5.4 Receiving a Write Response
 
 If the response returned by the SMB server indicates success, the client MUST return success to the
 calling application.
@@ -5629,7 +5431,7 @@ input parameters:
 
 The client MUST return the received sense error response to the calling application.
 
-3.1.5.5  Receiving a Virtual Disk File Information Response
+##### 3.1.5.5 Receiving a Virtual Disk File Information Response
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 error code to the calling application.
@@ -5637,11 +5439,11 @@ error code to the calling application.
 If the response indicates success, the client MUST return success and the disk file information to the
 calling application.
 
-3.1.5.6  Receiving a Connection Status Response
+##### 3.1.5.6 Receiving a Connection Status Response
 
 The client MUST return the received status code to the calling application.
 
-3.1.5.7  Receiving a Shared Virtual Disk Information Response
+##### 3.1.5.7 Receiving a Shared Virtual Disk Information Response
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 status code to the calling application.
@@ -5656,7 +5458,8 @@ Release: September 16, 2024
 
 65 / 106
 
-3.1.5.8  Receiving a SCSI Command Response
+
+##### 3.1.5.8 Receiving a SCSI Command Response
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 error code to the calling application.
@@ -5664,35 +5467,25 @@ error code to the calling application.
 If the response indicates success, the client MUST return success and response data to the calling
 application.
 
-3.1.5.9  Receiving a Validate Disk Response
+##### 3.1.5.9 Receiving a Validate Disk Response
 
 The client MUST return the received status to the calling application.
 
-3.1.5.10
+##### 3.1.5.10 Receiving a Shared Virtual Disk Support Response
 
-Receiving a Shared Virtual Disk Support Response
+
 
 The client MUST return the received status and response data to the calling application.
 
-3.1.5.11
+##### 3.1.5.11 Receiving a Meta-Operation Start Response
 
-Receiving a Meta-Operation Start Response
+
 
 The client MUST return the received status and response data to the calling application.
 
-3.1.5.12
+##### 3.1.5.12 Receiving a Meta-Operation Progress Response
 
-Receiving a Meta-Operation Progress Response
 
-If the response returned by the SMB server indicates an error, the client MUST return the received
-error code to the calling application.
-
-If the response indicates success, the client MUST return success and response data to the calling
-application.
-
-3.1.5.13
-
-Receiving a Query VHD Set Information Response
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 error code to the calling application.
@@ -5700,15 +5493,25 @@ error code to the calling application.
 If the response indicates success, the client MUST return success and response data to the calling
 application.
 
-3.1.5.14
+##### 3.1.5.13 Receiving a Query VHD Set Information Response
 
-Receiving a Delete Snapshot Response
+
+
+If the response returned by the SMB server indicates an error, the client MUST return the received
+error code to the calling application.
+
+If the response indicates success, the client MUST return success and response data to the calling
+application.
+
+##### 3.1.5.14 Receiving a Delete Snapshot Response
+
+
 
 The client MUST return the received status to the calling application.
 
-3.1.5.15
+##### 3.1.5.15 Receiving a Change Tracking Parameter Response
 
-Receiving a Change Tracking Parameter Response
+
 
 If the response returned by the SMB server indicates an error, the client MUST return the received
 error code to the calling application.
@@ -5716,15 +5519,15 @@ error code to the calling application.
 If the response indicates success, the client MUST return success and response data to the calling
 application.
 
-3.1.5.16
+##### 3.1.5.16 Receiving a Start Change Tracking Response
 
-Receiving a Start Change Tracking Response
+
 
 The client MUST return the received status to the calling application.
 
-3.1.5.17
+##### 3.1.5.17 Receiving a Stop Change Tracking Response
 
-Receiving a Stop Change Tracking Response
+
 
 The client MUST return the received status and response data to the calling application.
 
@@ -5735,25 +5538,26 @@ Release: September 16, 2024
 
 66 / 106
 
-3.1.5.18
 
-Receiving a Safe Size Response
+##### 3.1.5.18 Receiving a Safe Size Response
+
+
 
 The client MUST return the received status and response data to the calling application.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 The server MUST implement the following:
 
@@ -5765,7 +5569,7 @@ OpenTable: A table of Opens of shared virtual disk files, as specified in sectio
 
 ServerServiceVersion: The highest protocol version supported by the server.
 
-3.2.1.2  Per Open
+##### 3.2.1.2 Per Open
 
 The server MUST implement the following:
 
@@ -5808,11 +5612,12 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Open.SnapshotList: A list of snapshots, as specified in section 3.2.1.4, for the file identified by the
+
+Open.SnapshotList: A list of snapshots, as specified in section 3.2.1.4, for the file identified by the
 
 Open object.
 
-3.2.1.3  Per SenseError in SenseErrorDataList
+##### 3.2.1.3 Per SenseError in SenseErrorDataList
 
 The server MUST implement the following:
 
@@ -5828,20 +5633,20 @@ virtual disk.
 
 SenseError.SenseData: A pointer to the sense data.
 
-3.2.1.4  Per Snapshot
+##### 3.2.1.4 Per Snapshot
 
 SnapshotId: A GUID that identifies the snapshot.
 
 ChangeTracking: A Boolean value that, if set, indicates change tracking is enabled for this snapshot.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 During creation of a snapshot of type SvhdxSnapshotTypeCDP, after completion of the
 SvhdxSnapshotStageBlockIO stage, if the amount of time the client takes to issue
 SvhdxSnapshotStageUnblockIO is greater than a server-defined time-out<6>, the server MUST
 fail the snapshot creation operation.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST enumerate the shares by calling NetrShareEnum as specified in [MS-SRVS] section
 3.1.4.8. In the enumerated list, if any of the shares have shi*_type set to STYPE_CLUSTER_SOFS, as
@@ -5859,7 +5664,7 @@ client requests, as specified in [MS-SMB2] section 3.3.4.25.
 The server MUST initialize ServerServiceVersion to an implementation-specific<7>
 administratively configured protocol version.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The server MUST process a command as specified in the following table.
 
@@ -5897,7 +5702,8 @@ The server MUST process as specified in section
 
 68 / 106
 
-Command
+
+Command
 
 Control Code
 
@@ -5962,12 +5768,12 @@ STATUS_OFFLOAD_WRITE_FILE_NOT_SUPPORTED.
 The server MUST pass the request to the
 underlying object store and return the response.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For this section, if IsSVHDXSupported is FALSE, the server MUST fail the request with
 STATUS_INVALID_DEVICE_REQUEST, as specified in [MS-ERREF].
 
-3.2.5.1  Receiving an Open Request
+##### 3.2.5.1 Receiving an Open Request
 
 If Open.LocalOpen is not NULL, the server MUST look up an Open in OpenTable where
 Open.LocalOpen matches the Open provided by the SMB2 server, as specified in [MS-SMB2] section
@@ -6006,7 +5812,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If HasInitiatorId is neither FALSE (0x00) nor TRUE (0x01), the server MUST fail the request with
+
+If HasInitiatorId is neither FALSE (0x00) nor TRUE (0x01), the server MUST fail the request with
 STATUS_INVALID_PARAMETER.
 
 If the OriginatorFlags field in the request is set to SVHDX_ORIGINATOR_VHDMP, the server MUST
@@ -6081,7 +5888,8 @@ Release: September 16, 2024
 
 70 / 106
 
-
+
+
 
 The Version, HasInitiatorId, Reserved, InitiatorId, Flags, OriginatorFlags,
 OpenRequestId, InitiatorHostNameLength and InitiatorHostName fields are set to the
@@ -6119,7 +5927,7 @@ If change tracking was previously started on the server, the server MUST issue a
 request to the virtual SCSI disk in an implementation-specific manner, after a successful open but
 before any write requests are processed.
 
-3.2.5.2  Receiving a Close Request
+##### 3.2.5.2 Receiving a Close Request
 
 When the server receives a request to close a shared virtual disk file, the server MUST verify the
 following:
@@ -6151,7 +5959,8 @@ Release: September 16, 2024
 
 71 / 106
 
-3.2.5.3  Receiving a Read Request
+
+##### 3.2.5.3 Receiving a Read Request
 
 When the server receives a read request, the server MUST locate the Open in the OpenTable, where
 Open.LocalOpen matches the Open provided by the SMB2 server, as specified in [MS-SMB2] section
@@ -6229,7 +6038,8 @@ Release: September 16, 2024
 
 72 / 106
 
-3.2.5.4  Receiving a Write Request
+
+##### 3.2.5.4 Receiving a Write Request
 
 When the server receives a write request, the server MUST locate the Open in the OpenTable where
 Open.LocalOpen matches the Open provided by the SMB2 server, as specified in [MS-SMB2] section
@@ -6307,12 +6117,13 @@ Release: September 16, 2024
 
 73 / 106
 
-
+
+
 
 The server MUST return the error (STATUS_SVHDX_ERROR_STORED | SenseError.StatusKey)
 to the client.
 
-3.2.5.5  Receiving a Tunnel Operation Request
+##### 3.2.5.5 Receiving a Tunnel Operation Request
 
 When the server receives a tunnel operation request, the server MUST locate the Open in the
 OpenTable where Open.LocalOpen matches the Open provided by the SMB2 server, as specified in
@@ -6351,7 +6162,7 @@ The server MUST return SVHDX_TUNNEL_OPERATION_HEADER to the client.
 
 Processing for a specific OperationCode is as specified in subsequent sections.
 
-3.2.5.5.1 Receiving a Virtual Disk File Information Request
+###### 3.2.5.5.1 Receiving a Virtual Disk File Information Request
 
 When the server receives a request OperationCode equal to
 RSVD_TUNNEL_GET_INITIAL_INFO_OPERATION, the request handling proceeds as follows:
@@ -6388,7 +6199,8 @@ Release: September 16, 2024
 
 74 / 106
 
-The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
+
+The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
 
   OperationCode MUST be set to the OperationCode value of the request.
 
@@ -6416,7 +6228,7 @@ disk.
 
 The response MUST be sent to the client.
 
-3.2.5.5.2 Receiving a Connection Status Request
+###### 3.2.5.5.2 Receiving a Connection Status Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_CHECK_CONNECTION_STATUS_OPERATION, the request handling proceeds as
@@ -6440,7 +6252,7 @@ The RequestId field MUST be set to the value received in the request.
 
 The response MUST be sent to the client.
 
-3.2.5.5.3 Receiving a Status Request for a Prior Operation
+###### 3.2.5.5.3 Receiving a Status Request for a Prior Operation
 
 When the server receives a request with OperationCode equal to
 RSVD_TUNNEL_SRB_STATUS_OPERATION, the request handling proceeds as follows:
@@ -6464,7 +6276,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If SenseError is found, the server MUST construct the SVHDX_TUNNEL_SRB_STATUS_RESPONSE
+
+If SenseError is found, the server MUST construct the SVHDX_TUNNEL_SRB_STATUS_RESPONSE
 structure as specified in section 2.2.4.4 with the following values:
 
 The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
@@ -6511,7 +6324,7 @@ The SenseDataEx field MUST be set to SenseError.SenseData.
 
 The response MUST be sent to the client.
 
-3.2.5.5.4 Receiving a Shared Virtual Disk Information Request
+###### 3.2.5.5.4 Receiving a Shared Virtual Disk Information Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_GET_DISK_INFO_OPERATION, the request handling proceeds as follows:
@@ -6560,7 +6373,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  DiskType MUST be set to the value received from the virtual SCSI disk, as specified in section
+
+  DiskType MUST be set to the value received from the virtual SCSI disk, as specified in section
 
 2.2.4.6.
 
@@ -6597,7 +6411,7 @@ aligned to 4 kilobytes. Otherwise, the server MUST set this field to FALSE.
 
 The response MUST be sent to the client.
 
-3.2.5.5.5 Receiving a SCSI Command Request
+###### 3.2.5.5.5 Receiving a SCSI Command Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_SCSI_OPERATION, the request handling proceeds as follows:
@@ -6639,7 +6453,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If Disposition is 0 and the data returned by the virtual SCSI disk is greater than
+
+If Disposition is 0 and the data returned by the virtual SCSI disk is greater than
 DataTransferLength in the request, the server MUST fail the request with
 STATUS_INVALID_PARAMETER.
 
@@ -6729,7 +6544,7 @@ The DataBuffer MUST be set to the additional data returned by the virtual SCSI d
 
 The response MUST be sent to the client.
 
-3.2.5.5.6 Receiving a Validate Disk Request
+###### 3.2.5.5.6 Receiving a Validate Disk Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_VALIDATE_DISK_OPERATION, the request handling proceeds as follows:
@@ -6741,7 +6556,8 @@ Release: September 16, 2024
 
 78 / 106
 
-If MaxOutputResponse is less than 17 (size of SVHDX_TUNNEL_OPERATION_HEADER + size of
+
+If MaxOutputResponse is less than 17 (size of SVHDX_TUNNEL_OPERATION_HEADER + size of
 SVHDX_TUNNEL_VALIDATE_DISK_RESPONSE), the server MUST fail the request with
 STATUS_BUFFER_TOO_SMALL.
 
@@ -6765,7 +6581,7 @@ Otherwise, the server MUST set this field to FALSE.
 
 The response MUST be sent to the client.
 
-3.2.5.5.7 Receiving a Start Meta-Operation Request
+###### 3.2.5.5.7 Receiving a Start Meta-Operation Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_META_OPERATION_START, the request handling proceeds as follows:
@@ -6778,7 +6594,7 @@ STATUS_INVALID_PARAMETER.
 
 Processing for a specific OperationType is specified in the following subsections.
 
-3.2.5.5.7.1  Receiving a Create Snapshot Request
+###### 3.2.5.5.7.1 Receiving a Create Snapshot Request
 
 When the server receives a request with OperationType set to
 SvhdxMetaOperationTypeCreateSnapshot, the request processing proceeds as follows:
@@ -6813,7 +6629,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If SnapshotType is SvhdxSnapshotTypeVM and the Flags field is a value other than 0 or
 SVHDX_SNAPSHOT_DISK_FLAG_ENABLE_CHANGE_TRACKING.
@@ -6882,7 +6699,7 @@ in the change tracking.
 
 The server MUST send the response to the client.
 
-3.2.5.5.7.2  Receiving an Optimize Request
+###### 3.2.5.5.7.2 Receiving an Optimize Request
 
 When the server receives a request in which the OperationType is
 SvhdxMetaOperationTypeOptimize, the request processing proceeds as follows:
@@ -6894,13 +6711,14 @@ Release: September 16, 2024
 
 80 / 106
 
-The server MUST issue a VHD set optimize request to the virtual SCSI disk in an implementation-
+
+The server MUST issue a VHD set optimize request to the virtual SCSI disk in an implementation-
 specific manner.
 
 The server MUST set the Status field of the SVHDX_TUNNEL_OPERATION_HEADER as
 STATUS_SUCCESS, and return the header to the client.
 
-3.2.5.5.7.3  Receiving an ExtractVHD Request
+###### 3.2.5.5.7.3 Receiving an ExtractVHD Request
 
 When the server receives a request in which the OperationType is
 SvhdxMetaOperationTypeExtractSnapshots, the request processing proceeds as follows:
@@ -6953,7 +6771,7 @@ set Open.PendingDelete to TRUE.
 The server MUST set the Status field of the SVHDX_TUNNEL_OPERATION_HEADER as the error
 returned by the virtual SCSI disk, and return the header to the client.
 
-3.2.5.5.7.4  Receiving a Convert to VHD Set Request
+###### 3.2.5.5.7.4 Receiving a Convert to VHD Set Request
 
 When the server receives a request in which the OperationType is
 SvhdxMetaOperationTypeConvertToVHDSet, the request processing proceeds as follows:
@@ -6974,7 +6792,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the DestinationVhdSetName field doesn't contain the .vhds extension, the server MUST fail the
+
+If the DestinationVhdSetName field doesn't contain the .vhds extension, the server MUST fail the
 request with STATUS_INVALID_PARAMETER.
 
 The server MUST issue a convert to VHD set request to the virtual SCSI disk in an implementation-
@@ -6983,7 +6802,7 @@ specific manner.
 The server MUST set the Status field of the SVHDX_TUNNEL_OPERATION_HEADER to the error
 returned by the virtual SCSI disk, and return the header to the client.
 
-3.2.5.5.7.5  Receiving a Resize Request
+###### 3.2.5.5.7.5 Receiving a Resize Request
 
 When the server receives a request in which the OperationType is
 SvhdxMetaOperationTypeResize, the request processing proceeds as follows:
@@ -7013,7 +6832,7 @@ manner.
 The server MUST set the Status field of the SVHDX_TUNNEL_OPERATION_HEADER to the error
 returned by the virtual SCSI disk, and return the header to the client.
 
-3.2.5.5.7.6  Receiving an Apply Snapshot Request
+###### 3.2.5.5.7.6 Receiving an Apply Snapshot Request
 
 When the server receives a request in which the OperationType is
 SvhdxMetaOperationTypeApplySnapshot, the request processing proceeds as follows:
@@ -7051,9 +6870,10 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The server MUST send the response to the client.
 
-3.2.5.5.8 Receiving a Query Meta-Operation Progress Request
+The server MUST send the response to the client.
+
+###### 3.2.5.5.8 Receiving a Query Meta-Operation Progress Request
 
 When the server receives a request in which OperationCode is equal to
 RSVD_TUNNEL_META_OPERATION_QUERY_PROGRESS, the request handling proceeds as follows:
@@ -7102,7 +6922,7 @@ follows:
 
 The response MUST be sent to the client.
 
-3.2.5.5.9 Receiving a Query VHD Set Information Request
+###### 3.2.5.5.9 Receiving a Query VHD Set Information Request
 
 When the server receives a request in which OperationCode is equal to
 RSVD_TUNNEL_VHDSET_QUERY_INFORMATION, the request handling proceeds as follows:
@@ -7129,7 +6949,8 @@ Release: September 16, 2024
 
 83 / 106
 
-If VHDSetInformationType is SvhdxVHDSetInformationTypeSnapshotList and the supplied
+
+If VHDSetInformationType is SvhdxVHDSetInformationTypeSnapshotList and the supplied
 SnapshotType is not SvhdxSnapshotTypeVM, the server MUST fail the request with
 STATUS_INVALID_PARAMETER_1.
 
@@ -7221,7 +7042,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  OperationCode MUST be set to the OperationCode value of the request.
+
+  OperationCode MUST be set to the OperationCode value of the request.
 
   Status MUST be set to STATUS_SUCCESS.
 
@@ -7317,7 +7139,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
 
@@ -7327,7 +7150,7 @@ The SVHDX_TUNNEL_OPERATION_HEADER MUST be initialized as follows:
 
 The response MUST be sent to the client.
 
-3.2.5.5.10  Receiving a Delete Snapshot Request
+###### 3.2.5.5.10 Receiving a Delete Snapshot Request
 
 When the server receives a request in which OperationCode is equal to
 RSVD_TUNNEL_DELETE_SNAPSHOT, the request handling proceeds as follows:
@@ -7353,7 +7176,7 @@ The RequestId field MUST be set to the value received in the request.
 
 The response MUST be sent to the client.
 
-3.2.5.5.11  Receiving a Change Tracking Get Parameter Request
+###### 3.2.5.5.11 Receiving a Change Tracking Get Parameter Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_CHANGE_TRACKING_GET_PARAMETERS, the request handling proceeds as follows:
@@ -7396,7 +7219,8 @@ Release: September 16, 2024
 
 86 / 106
 
-The SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE structure MUST be initialized as
+
+The SVHDX_CHANGE_TRACKING_GET_PARAMETERS_RESPONSE structure MUST be initialized as
 follows:
 
   Set ChangeTrackingStatus as the status returned by the virtual SCSI disk.
@@ -7405,7 +7229,7 @@ follows:
 
 The response MUST be sent to the client.
 
-3.2.5.5.12  Receiving a Change Tracking Start Request
+###### 3.2.5.5.12 Receiving a Change Tracking Start Request
 
 When the server receives a request with OperationCode equal to
 RSVD_TUNNEL_CHANGE_TRACKING_START, the request handling proceeds as follows:
@@ -7434,7 +7258,7 @@ The RequestId field MUST be set to the value received in the request.
 
 The response MUST be sent to the client.
 
-3.2.5.5.13  Receiving a Change Tracking Stop Request
+###### 3.2.5.5.13 Receiving a Change Tracking Stop Request
 
 When the server receives a request in which OperationCode is equal to
 RSVD_TUNNEL_CHANGE_TRACKING_STOP, the request handling proceeds as follows:
@@ -7468,7 +7292,7 @@ virtual SCSI disk, indicating any error in the change tracking.
 
 The response MUST be sent to the client.
 
-3.2.5.5.14  Receiving a Query Virtual Disk changes request
+###### 3.2.5.5.14 Receiving a Query Virtual Disk changes request
 
 [MS-RSVD] - v20240916
 Remote Shared Virtual Disk Protocol
@@ -7477,7 +7301,8 @@ Release: September 16, 2024
 
 87 / 106
 
-When the server receives a request with an OperationCode equal to
+
+When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_QUERY_VIRTUAL_DISK_CHANGES, the request handling proceeds as follows:
 
 If the input buffer is less than (size of SVHDX_TUNNEL_OPERATION_HEADER + size of
@@ -7564,13 +7389,14 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The Reserved field MUST be set to zero.
 
 The server MUST send the response to the client.
 
-3.2.5.5.15  Receiving a Safe Size Request
+###### 3.2.5.5.15 Receiving a Safe Size Request
 
 When the server receives a request with an OperationCode equal to
 RSVD_TUNNEL_QUERY_SAFE_SIZE, the request handling proceeds as follows:
@@ -7606,7 +7432,7 @@ The RequestId field MUST be set to the value received in the request.
 
 The response MUST be sent to the client.
 
-3.2.5.6  Receiving a Query Shared Virtual Disk Support Request
+##### 3.2.5.6 Receiving a Query Shared Virtual Disk Support Request
 
 If MaxOutputResponse is less than 8 (size of
 SVHDX_SHARED_VIRTUAL_DISK_SUPPORT_RESPONSE), the server MUST fail the request with
@@ -7641,7 +7467,8 @@ Release: September 16, 2024
 
 89 / 106
 
-3.2.5.7  Receiving an Open Request with a Target Specifier
+
+##### 3.2.5.7 Receiving an Open Request with a Target Specifier
 
 The received buffer MUST be interpreted as the FILE_FULL_EA_INFORMATION structure specified in
 [MS-FSCC] section 2.4.16.
@@ -7697,7 +7524,7 @@ EaValue.TargetInformationSnapshot.SnapshotID.
 
 The server MUST return the status returned by the virtual SCSI disk.
 
-3.2.5.8  Receiving a Query Info Request
+##### 3.2.5.8 Receiving a Query Info Request
 
 If FileInfoClass is FileStandardInformation and OutputBufferLength is less than the size of
 FILE_STANDARD_INFORMATION, the server MUST fail the request with STATUS_BUFFER_TOO_SMALL.
@@ -7720,10 +7547,11 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SCSI disk in an implementation-specific manner. The server MUST return the file information result to
+
+SCSI disk in an implementation-specific manner. The server MUST return the file information result to
 the client.
 
-3.2.5.9  Receiving a Set Info Request
+##### 3.2.5.9 Receiving a Set Info Request
 
 If FileInfoClass is FileRenameInformation, the server MUST fail the request with
 STATUS_NOT_SUPPORTED.
@@ -7736,11 +7564,11 @@ specific manner.
 
 The server MUST return the status returned from the virtual SCSI disk.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -7751,16 +7579,17 @@ Release: September 16, 2024
 
 91 / 106
 
-<!-- Extracted images from page 92 -->
+
+<!-- Extracted images from page 92 -->
 ![Extracted image 1 from page 92]([MS-RSVD].images/page092-img01.png)
 <!-- /Extracted images from page 92 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Remote Shared Virtual Disk (RSVD) Protocol.
 
-4.1  Retrieving Virtual Disk File Information
+### 4.1 Retrieving Virtual Disk File Information
 
 The following diagram demonstrates the steps taken to open a shared virtual disk file, retrieve virtual
 disk file information, and close it.
@@ -7797,7 +7626,8 @@ Release: September 16, 2024
 
 92 / 106
 
- Flags: 0 (0x00000000)
+
+ Flags: 0 (0x00000000)
  OriginatorFlags: SVHDX_ORIGINATOR_PVHDPARSER(0x00000001)
  OpenRequestId: (0x000000001EC7871E)
  InitiatorHostNameLength: 16 (0x0010)
@@ -7828,7 +7658,7 @@ containing the virtual disk information.
 
 6.  The server sends an SMB2 CLOSE Response indicating the close was successful.
 
-4.2  Executing a SCSI Command
+### 4.2 Executing a SCSI Command
 
 The following diagram demonstrates the steps taken to open a shared virtual disk file, execute a SCSI
 command, and close it.
@@ -7840,7 +7670,8 @@ Release: September 16, 2024
 
 93 / 106
 
-<!-- Extracted images from page 94 -->
+
+<!-- Extracted images from page 94 -->
 ![Extracted image 1 from page 94]([MS-RSVD].images/page094-img01.png)
 <!-- /Extracted images from page 94 -->
 
@@ -7881,7 +7712,8 @@ Release: September 16, 2024
 
 94 / 106
 
-3.  The client sends an SMB2 IOCTL Request with SVHDX_TUNNEL_INITIAL_INFO_REQUEST to
+
+3.  The client sends an SMB2 IOCTL Request with SVHDX_TUNNEL_INITIAL_INFO_REQUEST to
 
 retrieve the virtual disk information.
 
@@ -7951,11 +7783,12 @@ Release: September 16, 2024
 
 95 / 106
 
-<!-- Extracted images from page 96 -->
+
+<!-- Extracted images from page 96 -->
 ![Extracted image 1 from page 96]([MS-RSVD].images/page096-img01.png)
 <!-- /Extracted images from page 96 -->
 
-4.3  Creating a Virtual Machine Snapshot
+### 4.3 Creating a Virtual Machine Snapshot
 
 The following diagram demonstrates the steps taken to open a VHD Set, create a virtual machine
 snapshot, and close it.
@@ -7980,7 +7813,8 @@ Release: September 16, 2024
 
 96 / 106
 
-  OpenRequestId: (0x3028E5B600000000)
+
+  OpenRequestId: (0x3028E5B600000000)
   InitiatorHostNameLength: 20 (0x0014)
   InitiatorHostName: SMBD-SUT01(0x0053004D00420044002D00530055005400300031)
   VirtualDiskPropertiesInitialized: 0 (0x00000000)
@@ -8051,7 +7885,8 @@ Release: September 16, 2024
 
 97 / 106
 
-  SnapshotType: SvhdxSnapshotTypeVM(0x00000001)
+
+  SnapshotType: SvhdxSnapshotTypeVM(0x00000001)
   Flags: SVHDX_SNAPSHOT_DISK_FLAG_ENABLE_CHANGE_TRACKING (0x00000001)
   Stage1: SvhdxSnapshotStageInitialize(0x00000001)
   Stage2: SvhdxSnapshotStageInvalid (0x00000000)
@@ -8120,11 +7955,12 @@ Release: September 16, 2024
 
 98 / 106
 
-<!-- Extracted images from page 99 -->
+
+<!-- Extracted images from page 99 -->
 ![Extracted image 1 from page 99]([MS-RSVD].images/page099-img01.png)
 <!-- /Extracted images from page 99 -->
 
-4.4  Retrieving a VHD Set Snapshot List
+### 4.4 Retrieving a VHD Set Snapshot List
 
 The following diagram demonstrates the steps taken to open a VHD Set, retrieve snapshot IDs of the
 VHD Set, and close it.
@@ -8150,7 +7986,8 @@ Release: September 16, 2024
 
 99 / 106
 
-  InitiatorHostNameLength: 20 (0x0014)
+
+  InitiatorHostNameLength: 20 (0x0014)
   InitiatorHostName: SMBD-SUT01(0x0053004D00420044002D00530055005400300031)
   VirtualDiskPropertiesInitialized: 0 (0x00000000)
   ServerServiceVersion: 0 (0x00000000)
@@ -8220,7 +8057,8 @@ Release: September 16, 2024
 
 100 / 106
 
-6.  The server sends an SMB2 IOCTL Response with
+
+6.  The server sends an SMB2 IOCTL Response with
 
 SVHDX_TUNNEL_VHDSET_QUERY_INFORMATION_SNAPSHOT_LIST_RESPONSE containing the list
 of snapshot IDs.
@@ -8250,13 +8088,14 @@ Release: September 16, 2024
 
 101 / 106
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -8267,7 +8106,8 @@ Release: September 16, 2024
 
 102 / 106
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8348,7 +8188,8 @@ Release: September 16, 2024
 
 103 / 106
 
-<4> Section 3.1.4.9: Microsoft Windows applications set unspecified bits in SrbFlags in addition to
+
+<4> Section 3.1.4.9: Microsoft Windows applications set unspecified bits in SrbFlags in addition to
 the specified bits in section 2.2.4.7. All bits set in SrbFlags are ignored for processing by Windows
 servers as specified in section 3.2.5.5.5.
 
@@ -8416,7 +8257,8 @@ Remote Shared Virtual Disk Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -8428,7 +8270,8 @@ Release: September 16, 2024
 
 105 / 106
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 9

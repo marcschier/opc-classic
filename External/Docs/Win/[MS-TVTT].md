@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: April 23, 2024
 
 2 / 28
 
-Date
+
+Date
 
 Revision
 History
@@ -517,7 +519,8 @@ Release: April 23, 2024
 
 3 / 28
 
-Date
+
+Date
 
 Revision
 History
@@ -550,68 +553,33 @@ Release: April 23, 2024
 
 4 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 VTNT_CHAR_INFO](#21-vtntcharinfo)
+    - [2.1.1 VTNT_SINGLE_CHAR](#211-vtntsinglechar)
+  - [2.2 INPUT_RECORD](#22-inputrecord)
+    - [2.2.1 Virtual Key Code Values](#221-virtual-key-code-values)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 INPUT_RECORD Structure Example](#31-inputrecord-structure-example)
+  - [3.2 VTNT_CHAR_INFO Structure Example](#32-vtntcharinfo-structure-example)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Protocols and Other Structures ...................................................... 7
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 8
-Vendor-Extensible Fields ..................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2  Structures ............................................................................................................... 9
-VTNT_CHAR_INFO .............................................................................................. 9
-VTNT_SINGLE_CHAR ................................................................................... 12
-INPUT_RECORD ............................................................................................... 13
-Virtual Key Code Values .............................................................................. 15
-
-2.1.1
-
-2.2.1
-
-2.2
-
-3  Structure Examples ............................................................................................... 22
-INPUT_RECORD Structure Example .................................................................... 22
-VTNT_CHAR_INFO Structure Example ................................................................. 22
-
-3.1
-3.2
-
-4  Security Considerations ......................................................................................... 23
-
-5  Appendix A: Product Behavior ............................................................................... 24
-
-6  Change Tracking .................................................................................................... 26
-
-7  Index ..................................................................................................................... 27
-
-[MS-TVTT] - v20240423
-Telnet: VTNT Terminal Type Format Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 28
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the structures for Telnet VTNT Terminal Type Format, and how the client and
 server negotiate the use of this format.
@@ -629,7 +597,7 @@ interpreting the data in the same way.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -684,17 +652,18 @@ Release: April 23, 2024
 
 6 / 28
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -706,7 +675,7 @@ February 1989, https://www.rfc-editor.org/info/rfc1091
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CONSOLES] Microsoft Corporation, "Consoles", http://msdn.microsoft.com/en-
 us/library/ms682055.aspx
@@ -714,7 +683,7 @@ us/library/ms682055.aspx
 [MSDN-CSB] Microsoft Corporation, "Console Screen Buffers", http://msdn.microsoft.com/en-
 us/library/ms682088.aspx
 
-1.3  Overview
+### 1.3 Overview
 
  This specification defines the structures for Telnet VTNT Terminal Type Format, and how the client
 and server negotiate the use of this format.
@@ -738,7 +707,7 @@ this format. [RFC1091] specifies how a Telnet server and client can negotiate fo
 types. A Telnet server and client have to use the string "VTNT" in the [RFC1091] IS command to
 negotiate for Telnet VTNT Terminal Type Format.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The Telnet VTNT Terminal Type Format specifies structures that are independent of any other
 structure and protocol. VTNT structure formats are transported as data in a TELNET connection. If
@@ -750,22 +719,23 @@ Telnet: VTNT Terminal Type Format Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the negotiated term type is Telnet: VTNT Terminal Type Format in a Telnet session, both the server
+
+the negotiated term type is Telnet: VTNT Terminal Type Format in a Telnet session, both the server
 and client will have to interpret the data in a TELNET connection as Telnet: VTNT Terminal Type
 Format structures.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 Telnet VTNT Terminal Type Format is used only to transport display and input information of terminal
 applications.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 Telnet VTNT Terminal Type Format does not carry any versioning information. Telnet VTNT Terminal
 Type Format does not carry any localization information. Rather, all the character fields are 2 bytes in
 size and can carry Unicode characters, thereby enabling localization.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 Telnet VTNT Terminal Type Format does not have any vendor-extensible fields.
 
@@ -776,7 +746,8 @@ Release: April 23, 2024
 
 8 / 28
 
-2  Structures
+
+## 2 Structures
 
 Telnet VTNT Terminal Type Format specifies two structures:
 
@@ -843,7 +814,7 @@ Unless otherwise specified, multibyte fields (that is, 16-bit, 32-bit, and 64-bi
 Terminal Type Format structure MUST be transmitted in little-endian byte order (least-significant byte
 first).
 
-2.1  VTNT_CHAR_INFO
+### 2.1 VTNT_CHAR_INFO
 
 VTNT_CHAR_INFO is a variable-length structure that the server uses to send characters that are to be
 repainted in the client console window.
@@ -859,7 +830,8 @@ Telnet: VTNT Terminal Type Format Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -960,7 +932,8 @@ Telnet: VTNT Terminal Type Format Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1037,12 +1010,13 @@ Telnet: VTNT Terminal Type Format Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and so on. Once all the character positions in the first row are filled, the next VTNT_SINGLE_CHAR
+
+and so on. Once all the character positions in the first row are filled, the next VTNT_SINGLE_CHAR
 structure contains the character at the first character position of the second row. This follows until
 all the character positions identified by the coordinates are filled. There MUST be no padding bytes
 before or after a VTNT_SINGLE_CHAR structure in the VTNT_CHAR_INFO structure.
 
-2.1.1  VTNT_SINGLE_CHAR
+#### 2.1.1 VTNT_SINGLE_CHAR
 
 The VTNT_SINGLE_CHAR structure contains a pair of fields that represents a character sent to the
 console window, and that character's attributes.
@@ -1139,7 +1113,8 @@ Release: April 23, 2024
 
 12 / 28
 
-Value
+
+Value
 
 Meaning
 
@@ -1185,7 +1160,7 @@ Underscore
 
 0x8000
 
-2.2  INPUT_RECORD
+### 2.2 INPUT_RECORD
 
 The INPUT_RECORD structure is used by a client to send keyboard input information to the server.
 
@@ -1242,7 +1217,8 @@ Release: April 23, 2024
 
 13 / 28
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -1327,7 +1303,8 @@ Release: April 23, 2024
 
 14 / 28
 
-Value
+
+Value
 
 Meaning
 
@@ -1367,7 +1344,7 @@ Meaning
 
  IME input on. Valid only when IME is used to input.
 
-2.2.1  Virtual Key Code Values
+#### 2.2.1 Virtual Key Code Values
 
 Name/Value
 
@@ -1450,7 +1427,8 @@ Release: April 23, 2024
 
 15 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -1575,7 +1553,8 @@ Release: April 23, 2024
 
 16 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -1700,7 +1679,8 @@ Release: April 23, 2024
 
 17 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -1825,7 +1805,8 @@ Release: April 23, 2024
 
 18 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -1950,7 +1931,8 @@ Release: April 23, 2024
 
 19 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -2075,7 +2057,8 @@ Release: April 23, 2024
 
 20 / 28
 
-Name/Value
+
+Name/Value
 
 Description
 
@@ -2148,11 +2131,12 @@ Release: April 23, 2024
 
 21 / 28
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 This section contains examples of the structures defined by the Telnet VTNT Terminal Type Format.
 
-3.1  INPUT_RECORD Structure Example
+### 3.1 INPUT_RECORD Structure Example
 
 The following is an example of a populated INPUT_RECORD structure.
 
@@ -2168,7 +2152,7 @@ The INPUT_RECORD structure tells the server that 0x0064 is the input character, 
 on when the character was entered. The value 0x01 in bKeyDown indicates that the key was
 pressed; 0x0001 in wRepeatCount indicates that the key was pressed once.
 
-3.2  VTNT_CHAR_INFO Structure Example
+### 3.2 VTNT_CHAR_INFO Structure Example
 
 The following is an example of a populated VTNT_CHAR_INFO structure. The following structure
 instructs the client to redraw a row of 80-character cells, which is located on the second row of the
@@ -2203,7 +2187,8 @@ Release: April 23, 2024
 
 22 / 28
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 There are no security considerations associated with Telnet VTNT Terminal Type Format.
 
@@ -2214,7 +2199,8 @@ Release: April 23, 2024
 
 23 / 28
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2283,7 +2269,8 @@ Telnet: VTNT Terminal Type Format Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-keys are specified in section 2.2.1. Implementations of Telnet VTNT Terminal Type Format on
+
+keys are specified in section 2.2.1. Implementations of Telnet VTNT Terminal Type Format on
 Windows can use the Windows ReadConsoleInput() API, which returns a structure compatible with the
 INPUT_RECORD structure, with all fields including wVirtualKeyCode filled in.
 
@@ -2301,7 +2288,8 @@ Release: April 23, 2024
 
 25 / 28
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2345,7 +2333,8 @@ Release: April 23, 2024
 
 26 / 28
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 8
@@ -2476,7 +2465,8 @@ Release: April 23, 2024
 
 27 / 28
 
-VK_T 15
+
+VK_T 15
 VK_TAB 15
 VK_U 15
 VK_UP 15

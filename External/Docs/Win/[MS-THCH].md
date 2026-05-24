@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 13
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -214,85 +215,42 @@ Release: June 25, 2021
 
 2 / 13
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 HTTP/1.1 Client Details](#31-http11-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-
-2.1
-2.2
-
-3.1
-
-3  Protocol Details ....................................................................................................... 8
-HTTP/1.1 Client Details ....................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 8
-Message Processing Events and Sequencing Rules ............................................ 8
-Timer Events ................................................................................................ 8
-Other Local Events ........................................................................................ 8
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................... 9
-
-5  Security ................................................................................................................. 10
-Security Considerations for Implementers ........................................................... 10
-Index of Security Parameters ............................................................................ 10
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 11
-
-7  Change Tracking .................................................................................................... 12
-
-8  Index ..................................................................................................................... 13
-
-[MS-THCH] - v20210625
-Tracing HTTP Correlation Header Protocol
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-3 / 13
-
-1  Introduction
+## 1 Introduction
 
 The Tracing HTTP Correlation Header Protocol specifies the E2EActivity HTTP header which can be
 used by an HTTP/1.1 client to communicate a unique identifier for an HTTP message to an HTTP
@@ -302,7 +260,7 @@ messages received from the client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -344,14 +302,14 @@ collection of endpoints for communicating with client applications or other serv
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -364,7 +322,8 @@ Tracing HTTP Correlation Header Protocol
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-<!-- Extracted images from page 5 -->
+
+<!-- Extracted images from page 5 -->
 ![Extracted image 1 from page 5]([MS-THCH].images/page005-img01.png)
 <!-- /Extracted images from page 5 -->
 
@@ -374,7 +333,7 @@ Release: June 25, 2021
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -393,7 +352,7 @@ http://msdn.microsoft.com/en-us/library/ms735119.aspx
 [SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
 W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
 
-1.3  Overview
+### 1.3 Overview
 
 The Tracing HTTP Correlation Header Protocol specifies the E2EActivity HTTP header.
 
@@ -408,7 +367,7 @@ E2EActivity HTTP header.
 Figure 1: Sequence diagram showing communication of the E2EActivity HTTP header
 between the HTTP client and HTTP server
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 None.
 
@@ -419,25 +378,26 @@ Release: June 25, 2021
 
 5 / 13
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 When no other mechanism exists for an HTTP server to uniquely identify an HTTP message received
 from an HTTP client, the client can use the E2EActivity HTTP header to correlate the traces
 generated by the server in response to messages received from the client.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -448,13 +408,14 @@ Release: June 25, 2021
 
 6 / 13
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 HTTP/1.1 is the only transport supported by this protocol for use of the E2EActivity HTTP header.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The E2EActivity HTTP header defined by this protocol can be used by HTTP clients when sending
 HTTP/1.1 messages. The syntax for HTTP/1.1 messages is defined in [RFC2616].
@@ -478,38 +439,39 @@ Release: June 25, 2021
 
 7 / 13
 
-3  Protocol Details
 
-3.1  HTTP/1.1 Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 HTTP/1.1 Client Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
+
+None.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 An HTTP/1.1 client can include the E2EActivity HTTP header (section 2.2) in the HTTP messages it
 sends to the HTTP server.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 When an HTTP/1.1 client includes the E2EActivity HTTP header in the HTTP messages it sends to the
 HTTP server, the response message from the server is not affected. Therefore, the client processing
 rules for response messages received from the server MUST NOT change.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -520,7 +482,8 @@ Release: June 25, 2021
 
 8 / 13
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows how an HTTP/1.1 client specifies a base64-encoded unique identifier as
 the value for the E2EActivity HTTP header in the HTTP message. In this example, the GUID value
@@ -541,13 +504,14 @@ Release: June 25, 2021
 
 9 / 13
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -558,7 +522,8 @@ Release: June 25, 2021
 
 10 / 13
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -599,7 +564,8 @@ Release: June 25, 2021
 
 11 / 13
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -611,7 +577,8 @@ Release: June 25, 2021
 
 12 / 13
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model

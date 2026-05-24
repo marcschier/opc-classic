@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 21
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 21
 
-Date
+
+Date
 
 Revision
 History
@@ -528,7 +530,8 @@ Release: April 23, 2024
 
 3 / 21
 
-Date
+
+Date
 
 Revision
 History
@@ -569,121 +572,56 @@ Release: April 23, 2024
 
 4 / 21
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Server RDP Preconnection PDU](#221-server-rdp-preconnection-pdu)
+      - [2.2.1.1 Version 1 (RDP_PRECONNECTION_PDU_V1)](#2211-version-1-rdppreconnectionpduv1)
+      - [2.2.1.2 Version 2 (RDP_PRECONNECTION_PDU_V2)](#2212-version-2-rdppreconnectionpduv2)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending the RDP_PRECONNECTION_PDU_V1](#3151-sending-the-rdppreconnectionpduv1)
+      - [3.1.5.2 Sending the RDP_PRECONNECTION_PDU_V2](#3152-sending-the-rdppreconnectionpduv2)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing the RDP_PRECONNECTION PDU V1 and V2](#3251-processing-the-rdppreconnection-pdu-v1-and-v2)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Server RDP Preconnection PDU ....................................................................... 9
-Version 1 (RDP_PRECONNECTION_PDU_V1) ............................................... 9
-Version 2 (RDP_PRECONNECTION_PDU_V2) ............................................. 10
-
-2.2.1.1
-2.2.1.2
-
-2.2.1
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 11
-Client Details ................................................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Processing Events and Sequencing Rules ....................................................... 11
-Sending the RDP_PRECONNECTION_PDU_V1 ........................................... 11
-Sending the RDP_PRECONNECTION_PDU_V2 ........................................... 11
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Server Details .................................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Processing Events and Sequencing Rules ....................................................... 12
-Processing the RDP_PRECONNECTION PDU V1 and V2 ............................... 12
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 14
-
-5  Security ................................................................................................................. 15
-Security Considerations for Implementers ........................................................... 15
-Index of Security Parameters ............................................................................ 15
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 16
-
-7  Change Tracking .................................................................................................... 19
-
-8  Index ..................................................................................................................... 20
-
-[MS-RDPEPS] - v20240423
-Remote Desktop Protocol: Session Selection Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 21
-
-1  Introduction
+## 1 Introduction
 
 This protocol extension expands on the original connectivity options that are specified in the Remote
 Desktop Protocol: Basic Connectivity and Graphics Remoting Specification [MS-RDPBCGR]. This
@@ -693,7 +631,7 @@ send the user experience of an application.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -722,14 +660,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -750,11 +688,12 @@ Release: April 23, 2024
 
 6 / 21
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Session Selection Extension details the messages sent from an RDP
 client to a server to facilitate the precise targeting of a RDP source. This extension allows the
@@ -763,22 +702,22 @@ achieved by providing the server with enough information so the latter can decid
 process will handle the connection. This information is sent before any of the PDUs described by the
 [MS-RDPBCGR] protocol are exchanged between the server and the client.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extension is a minor enhancement to the Remote Desktop Protocol: Basic Connectivity
 and Graphics Remoting Specification [MS-RDPBCGR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client must have all of the information necessary to initialize the Server Preconnection PDU (see
 section 2.2.1) with values that are appropriate to the scenario.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable when there is a need to allow multiple processes to accept connections on
 the same TCP/IP port.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are two versions of this protocol. For specifications about handling and sending the version
 information, see sections 2.2.1, 3.1.5.1, and 3.2.5.1.
@@ -800,7 +739,7 @@ The client sends the information that is expected by the server implementation i
 wszPCB fields. Because there is no negotiation for the format and the required information, these are
 established through convention based on the type of server to which the client is connecting.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -811,7 +750,8 @@ Release: April 23, 2024
 
 7 / 21
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -822,24 +762,25 @@ Release: April 23, 2024
 
 8 / 21
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses TCP/IP as its transport mechanism.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain the Remote Desktop Protocol: Session Selection Extension message
 syntax.
 
-2.2.1  Server RDP Preconnection PDU
+#### 2.2.1 Server RDP Preconnection PDU
 
 The following sections contain Remote Desktop Protocol: Session Selection Extension message syntax
 for RDP_PRECONNECTION_PDU_V1 and RDP_PRECONNECTION_PDU_V2. Section 1.7 describes when
 each version is used.
 
-2.2.1.1  Version 1 (RDP_PRECONNECTION_PDU_V1)
+##### 2.2.1.1 Version 1 (RDP_PRECONNECTION_PDU_V1)
 
 The RDP_PRECONNECTION_PDU_V1 is used by the client to let the listening process know which RDP
 source the connection is intended for.
@@ -901,12 +842,13 @@ Release: April 23, 2024
 
 9 / 21
 
-Id (4 bytes): An unsigned 32-bit integer. The Id field is used to uniquely identify the RDP source.
+
+Id (4 bytes): An unsigned 32-bit integer. The Id field is used to uniquely identify the RDP source.
 
 Although the Id can be as simple as a process ID, it is often client-specific or server-specific and
 can be obfuscated.
 
-2.2.1.2  Version 2 (RDP_PRECONNECTION_PDU_V2)
+##### 2.2.1.2 Version 2 (RDP_PRECONNECTION_PDU_V2)
 
 The RDP_PRECONNECTION_PDU_V2 extends the RDP_PRECONNECTION_PDU_V1 packet by adding a
 variable-size Unicode character string. The receiver of this PDU can use this string and the Id field of
@@ -953,39 +895,40 @@ Release: April 23, 2024
 
 10 / 21
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 This section contains client details including abstract data model, timers, initialization, higher-layer
 triggered events, and message processing events and sequencing rules.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol has a 10-second timer. It starts at the successful creation of the TCP connection between
 the client and server. The full length of the RDP_PRECONNECTION_PDU_V1 or
 RDP_PRECONNECTION_PDU_V2 MUST be sent by the client and received by the server within this
 window.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST connect by using the IP address and port on which the server is known to be
 listening.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The client MUST send either the RDP_PRECONNECTION_PDU_V1 or RDP_PRECONNECTION_PDU_V2 to
 the server before sending any of the PDUs described in the [MS-RDPBCGR] specification.
 
-3.1.5.1  Sending the RDP_PRECONNECTION_PDU_V1
+##### 3.1.5.1 Sending the RDP_PRECONNECTION_PDU_V1
 
 The client MUST initialize the cbSize field with the total size, in bytes, of the PDU. The size of
 RDP_PRECONNECTION_PDU_V1 is always 16 bytes.
@@ -996,7 +939,7 @@ The Id field SHOULD<1> be set to the RDP source ID for which the connection is i
 value of this field can be determined by the client, either by convention or by communicating with the
 server.
 
-3.1.5.2  Sending the RDP_PRECONNECTION_PDU_V2
+##### 3.1.5.2 Sending the RDP_PRECONNECTION_PDU_V2
 
 The size that is sent in the cbSize field of the RDP_PRECONNECTION_PDU_V2 packet is calculated by
 adding the size of the RDP_PRECONNECTION_PDU_V1 header, cchPCB field, and wszPCB field. The
@@ -1014,51 +957,52 @@ Release: April 23, 2024
 
 11 / 21
 
-The client MUST initialize the cchPCB field with the number of characters in the wszPCB Unicode
+
+The client MUST initialize the cchPCB field with the number of characters in the wszPCB Unicode
 array.
 
 The wszPCB field SHOULD<2> be set to a value that identifies the server-side process for which the
 connection is intended. Before the connection is established, the value can be determined either by
 convention or by communicating with the server through other mechanisms.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 This section contains server details including abstract data model, timers, initialization, higher-layer
 triggered events, and message processing events and sequencing rules.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol has a 10-second timer. It starts at the successful creation of the TCP connection between
 the client and server. The full length of RDP_PRECONNECTION_PDU_V1 or
 RDP_PRECONNECTION_PDU_V2 SHOULD be sent by the client and received by the server within this
 window.<3>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST listen on the IP address and port that the client uses to connect.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 This section includes information about the processing of RDP_PRECONNECTION_PDU_V1 and
 RDP_PRECONNECTION_PDU_V2.
 
-3.2.5.1  Processing the RDP_PRECONNECTION PDU V1 and V2
+##### 3.2.5.1 Processing the RDP_PRECONNECTION PDU V1 and V2
 
 When processing either RDP_PRECONNECTION_PDU_V1 or RDP_PRECONNECTION_PDU_V2, the
 server MUST not make assumptions about the way the PDU is delivered by TCP/IP. The server MUST
@@ -1077,7 +1021,8 @@ Remote Desktop Protocol: Session Selection Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In order to process the PDU, the server MUST first determine how long the PDU is. The server does
+
+In order to process the PDU, the server MUST first determine how long the PDU is. The server does
 this by reading the 4 bytes that correspond to the cbSize field of the PDU, as specified in section
 2.2.1.1. If the cbSize field is 16 bytes, the server MUST consider the PDU an
 RDP_PRECONNECTION_PDU_V1. If the size is greater than or equal to 18 bytes, the server MUST
@@ -1099,12 +1044,12 @@ condition, the server SHOULD disconnect the client.<8>
  Once the PDU is received the server MUST determine if the received PDU is of the type supported by
 the server. If the type is not supported by the server, the latter SHOULD<9> disconnect the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 If the 10-second timer expires, the server SHOULD disconnect the client.<10> Any resources that are
 associated with the connection are freed.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1115,7 +1060,8 @@ Release: April 23, 2024
 
 13 / 21
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following is an example of the RDP_PRECONNECTION_PDU_V1.
 
@@ -1177,15 +1123,16 @@ Release: April 23, 2024
 
 14 / 21
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 In order to avoid denial-of-service attacks, the server cannot wait indefinitely for the PDU content to
 arrive. Instead, the server will disconnect the client if the timer that is specified in sections 3.1.2 and
 3.2.2 has passed and the entire PDU was not received.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1196,7 +1143,8 @@ Release: April 23, 2024
 
 15 / 21
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1263,7 +1211,8 @@ Release: April 23, 2024
 
 16 / 21
 
-The Windows Server 2008, Windows Server 2008 R2, Windows Server 2012, Windows Server 2012
+
+The Windows Server 2008, Windows Server 2008 R2, Windows Server 2012, Windows Server 2012
 R2, Windows Server 2016, Windows Server operating system, and Windows Server 2019 virtual
 machine sends a GUID instead of a virtual machine name.
 
@@ -1331,7 +1280,8 @@ Remote Desktop Protocol: Session Selection Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-if the server receives a RDP_PRECONNECTION_PDU_V2, it disconnects the client. In Windows Server
+
+if the server receives a RDP_PRECONNECTION_PDU_V2, it disconnects the client. In Windows Server
 2008 Hyper-V, Windows Server 2008 R2 Hyper-V, Windows Server 2012 Hyper-V, Windows Server
 2012 R2 Hyper-V, Windows Server 2016 Hyper-V, Windows Server operating system Hyper-V, and
 Windows Server 2019 Hyper-V, the type of the PDU is always expected to be
@@ -1352,7 +1302,8 @@ Release: April 23, 2024
 
 18 / 21
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1396,7 +1347,8 @@ Release: April 23, 2024
 
 19 / 21
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1531,7 +1483,8 @@ Server
 
 20 / 21
 
-   overview 12
+
+   overview 12
    RDP preconnection PDU 9
    sequencing rules 12
    timer events 13

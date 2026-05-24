@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 53
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -292,7 +293,8 @@ Release: April 23, 2024
 
 2 / 53
 
-Date
+
+Date
 
 Revision
 History
@@ -439,270 +441,115 @@ Release: April 23, 2024
 
 3 / 53
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 General Message Flow](#131-general-message-flow)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Resource List Syntax](#221-resource-list-syntax)
+      - [2.2.1.1 Schema Version 1.1](#2211-schema-version-11)
+      - [2.2.1.2 Schema Version 2.0](#2212-schema-version-20)
+      - [2.2.1.3 Schema Version 2.1](#2213-schema-version-21)
+      - [2.2.1.4 Resource List Content-Type](#2214-resource-list-content-type)
+    - [2.2.2 Schema Element Definitions](#222-schema-element-definitions)
+      - [2.2.2.1 Schema Version 1.1 Element Definitions](#2221-schema-version-11-element-definitions)
+        - [2.2.2.1.1 ResourceCollection Element](#22211-resourcecollection-element)
+        - [2.2.2.1.2 Publisher Element](#22212-publisher-element)
+        - [2.2.2.1.3 Resources Element](#22213-resources-element)
+        - [2.2.2.1.4 Resource Element](#22214-resource-element)
+        - [2.2.2.1.5 Icons Element](#22215-icons-element)
+        - [2.2.2.1.6 Icon Elements](#22216-icon-elements)
+        - [2.2.2.1.7 HostingTerminalServers Element](#22217-hostingterminalservers-element)
+        - [2.2.2.1.8 HostingTerminalServer Element](#22218-hostingterminalserver-element)
+        - [2.2.2.1.9 ResourceFile Element](#22219-resourcefile-element)
+        - [2.2.2.1.10 TerminalServerRef Element](#222110-terminalserverref-element)
+        - [2.2.2.1.11 TerminalServers Element](#222111-terminalservers-element)
+        - [2.2.2.1.12 TerminalServer Element](#222112-terminalserver-element)
+        - [2.2.2.1.13 FileExtensions Element](#222113-fileextensions-element)
+        - [2.2.2.1.14 FileExtension Element](#222114-fileextension-element)
+      - [2.2.2.2 Schema Version 2.0 Element Definitions](#2222-schema-version-20-element-definitions)
+        - [2.2.2.2.1 ResourceCollection Element](#22221-resourcecollection-element)
+        - [2.2.2.2.2 FileExtensions Element](#22222-fileextensions-element)
+        - [2.2.2.2.3 FileExtension Element](#22223-fileextension-element)
+        - [2.2.2.2.4 FileAssociationIcons Element](#22224-fileassociationicons-element)
+        - [2.2.2.2.5 SubFolders Element](#22225-subfolders-element)
+        - [2.2.2.2.6 Folders Element](#22226-folders-element)
+        - [2.2.2.2.7 Folder Element](#22227-folder-element)
+      - [2.2.2.3 Schema Version 2.1 Element Definitions](#2223-schema-version-21-element-definitions)
+        - [2.2.2.3.1 Resource Element](#22231-resource-element)
+    - [2.2.3 .ASPXAUTH Cookie](#223-aspxauth-cookie)
+    - [2.2.4 Resources](#224-resources)
+    - [2.2.5 Content Negotiation](#225-content-negotiation)
+    - [2.2.6 Folders](#226-folders)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Authentication Cookie](#3111-authentication-cookie)
+      - [3.1.1.2 XML Files](#3112-xml-files)
+      - [3.1.1.3 Icon Files](#3113-icon-files)
+      - [3.1.1.4 Resource Files](#3114-resource-files)
+      - [3.1.1.5 Resources](#3115-resources)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Message Flow for First Request](#3151-message-flow-for-first-request)
+        - [3.1.5.1.1 Without Content Negotiation](#31511-without-content-negotiation)
+        - [3.1.5.1.2 With Content Negotiation](#31512-with-content-negotiation)
+      - [3.1.5.2 Message Flow for Subsequent Requests](#3152-message-flow-for-subsequent-requests)
+        - [3.1.5.2.1 Without Content Negotiation](#31521-without-content-negotiation)
+        - [3.1.5.2.2 With Content Negotiation](#31522-with-content-negotiation)
+      - [3.1.5.3 Message Flow for Icon and Resource File Requests](#3153-message-flow-for-icon-and-resource-file-requests)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Authentication Cookie](#3311-authentication-cookie)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Schema Version 1.1 Examples](#41-schema-version-11-examples)
+    - [4.1.1 Message with One Hosting Terminal Server](#411-message-with-one-hosting-terminal-server)
+    - [4.1.2 Message with Multiple Terminal Servers](#412-message-with-multiple-terminal-servers)
+  - [4.2 Schema Version 2.0 Examples](#42-schema-version-20-examples)
+    - [4.2.1 Message with One Hosting Terminal Server](#421-message-with-one-hosting-terminal-server)
+    - [4.2.2 Message with Subfolders and Display Folder](#422-message-with-subfolders-and-display-folder)
+    - [4.2.3 Message with Multiple Folders and No Display Folder](#423-message-with-multiple-folders-and-no-display-folder)
+  - [4.3 .ASPXAUTH Cookie Message Returned from the Server](#43-aspxauth-cookie-message-returned-from-the-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-General Message Flow ................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-2.2.2.1.4
-2.2.2.1.5
-2.2.2.1.6
-2.2.2.1.7
-2.2.2.1.8
-2.2.2.1.9
-2.2.2.1.10
-2.2.2.1.11
-2.2.2.1.12
-2.2.2.1.13
-2.2.2.1.14
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Resource List Syntax ................................................................................... 11
-Schema Version 1.1 .............................................................................. 11
-Schema Version 2.0 .............................................................................. 13
-Schema Version 2.1 .............................................................................. 16
-Resource List Content-Type .................................................................... 19
-Schema Element Definitions ......................................................................... 20
-Schema Version 1.1 Element Definitions .................................................. 20
-ResourceCollection Element .............................................................. 20
-Publisher Element ............................................................................ 20
-Resources Element .......................................................................... 20
-Resource Element ............................................................................ 20
-Icons Element ................................................................................. 21
-Icon Elements ................................................................................. 21
-HostingTerminalServers Element ....................................................... 21
-HostingTerminalServer Element ........................................................ 22
-ResourceFile Element ....................................................................... 22
-TerminalServerRef Element .............................................................. 22
-TerminalServers Element.................................................................. 22
-TerminalServer Element ................................................................... 22
-FileExtensions Element ..................................................................... 22
-FileExtension Element ...................................................................... 22
-Schema Version 2.0 Element Definitions .................................................. 23
-ResourceCollection Element .............................................................. 23
-FileExtensions Element ..................................................................... 23
-FileExtension Element ...................................................................... 23
-FileAssociationIcons Element ............................................................ 24
-SubFolders Element ......................................................................... 24
-Folders Element .............................................................................. 24
-Folder Element ................................................................................ 24
-Schema Version 2.1 Element Definitions .................................................. 24
-Resource Element ............................................................................ 24
-.ASPXAUTH Cookie ..................................................................................... 25
-Resources .................................................................................................. 25
-Content Negotiation .................................................................................... 26
-Folders ...................................................................................................... 26
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-2.2.2.2.6
-2.2.2.2.7
-
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2.2.2.3.1
-
-2.2.2.3
-
-2.2.2.2
-
-3  Protocol Details ..................................................................................................... 27
-Common Details .............................................................................................. 27
-
-3.1
-
-4 / 53
-
-[MS-TSWP] - v20240423
-Terminal Services Workspace Provisioning Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.2
-
-3.1.5.2.1
-3.1.5.2.2
-
-3.1.5.3
-
-Abstract Data Model .................................................................................... 27
-Authentication Cookie ............................................................................ 27
-XML Files ............................................................................................. 27
-Icon Files ............................................................................................. 27
-Resource Files ...................................................................................... 27
-Resources ............................................................................................ 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Message Flow for First Request ............................................................... 28
-Without Content Negotiation ............................................................. 28
-With Content Negotiation ................................................................. 29
-Message Flow for Subsequent Requests ................................................... 30
-Without Content Negotiation ............................................................. 30
-With Content Negotiation ................................................................. 31
-Message Flow for Icon and Resource File Requests .................................... 32
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 33
-Client Details ................................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-Server Details .................................................................................................. 33
-Abstract Data Model .................................................................................... 33
-Authentication Cookie ............................................................................ 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.3
-
-3.3.1.1
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 35
-Schema Version 1.1 Examples ........................................................................... 35
-Message with One Hosting Terminal Server .................................................... 35
-Message with Multiple Terminal Servers ........................................................ 36
-Schema Version 2.0 Examples ........................................................................... 39
-Message with One Hosting Terminal Server .................................................... 39
-Message with Subfolders and Display Folder .................................................. 41
-Message with Multiple Folders and No Display Folder ....................................... 42
-.ASPXAUTH Cookie Message Returned from the Server ......................................... 45
-
-4.2.1
-4.2.2
-4.2.3
-
-4.3
-
-4.2
-
-5  Security ................................................................................................................. 46
-Security Considerations for Implementers ........................................................... 46
-Index of Security Parameters ............................................................................ 46
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 47
-
-7  Change Tracking .................................................................................................... 49
-
-8  Index ..................................................................................................................... 50
-
-[MS-TSWP] - v20240423
-Terminal Services Workspace Provisioning Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 53
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Terminal Services Workspace Provisioning Protocol.
 
@@ -713,7 +560,7 @@ information to launch resources such as remote applications on a remote server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -774,7 +621,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-publisher: A set of resources that are contained in the same workspace.
+
+publisher: A set of resources that are contained in the same workspace.
 
 remote application: An application running on a remote server.
 
@@ -844,7 +692,8 @@ Release: April 23, 2024
 
 7 / 53
 
-XML Schema (XSD): A language that defines the elements, attributes, namespaces, and data
+
+XML Schema (XSD): A language that defines the elements, attributes, namespaces, and data
 
 types for XML documents as defined by [XMLSCHEMA1/2] and [XMLSCHEMA2/2] standards. An
 XML schema uses XML syntax for its language.
@@ -852,14 +701,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -885,7 +734,7 @@ Syntax and Routing", RFC 7230, June 2014, https://www.rfc-editor.org/info/rfc723
 [RFC7231] Fielding, R., and Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1: Semantics
 and Content", RFC7231, June 2014, https://www.rfc-editor.org/info/rfc7231
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
@@ -908,7 +757,8 @@ Release: April 23, 2024
 
 8 / 53
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-TSWP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -919,7 +769,7 @@ https://www.w3.org/TR/2004/REC-xmlschema-1-20041028/
 [XMLSCHEMA2/2] Biron, P., and Malhotra, A., Eds., "XML Schema Part 2: Datatypes Second Edition",
 W3C Recommendation, October 2004, https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/
 
-1.3  Overview
+### 1.3 Overview
 
 The Terminal Services Workspace Provisioning Protocol (TSWPP) was created to provide users with a
 unified view of the resources that have been made available to them by an administrator. This
@@ -932,7 +782,7 @@ resources that are available. In this specification, the entity that initiates t
 referred to as the client, and the entity that responds to the HTTP connection is referred to as the
 server.
 
-1.3.1  General Message Flow
+#### 1.3.1 General Message Flow
 
 The general communication pattern between a TSWPP client and TSWPP server is shown in the
 following figure.
@@ -956,7 +806,8 @@ Release: April 23, 2024
 
 9 / 53
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 TSWPP depends on HTTP (as defined in [RFC7230] and [RFC2109]) and HTTPS ([RFC2818]) to
 transfer all protocol messages, including resource information. Any version of HTTP can be used with
@@ -964,7 +815,7 @@ TSWPP.
 
 For initial authentication, TSWPP depends on the authentication scheme defined in [RFC4559].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following are prerequisites for using TSWPP:
 
@@ -985,14 +836,14 @@ Remote Desktop Protocol (RDP) configuration file [MSDN-TSCCRDP], then the Termin
 Services client is required to be present in order to launch the application, and that client will use
 the RDP protocol [MS-RDPBCGR] to connect.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 TSWPP is applicable when a client requires the constituent elements of an application that is located
 on a remote server in order to execute that application remotely on the server machine. These
 elements can include, but are not limited to, icons, remote files, and information describing the
 remotely-executing resource or application.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1013,7 +864,7 @@ specified in [RFC4559].
 version recognized by both the HTTP/1.1 client and the HTTP server, as defined in section
 2.2.5.<3><4>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -1024,7 +875,8 @@ Release: April 23, 2024
 
 10 / 53
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1051,9 +903,10 @@ Release: April 23, 2024
 
 11 / 53
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 TSWPP uses HTTP protocol messages that are carried in the HTTP message headers and message
 body, as specified in [RFC7230] and [RFC2109]. TSWPP uses HTTPS to transport these messages, as
@@ -1066,9 +919,9 @@ TSWPP can use any port as defined in [RFC2818] section 2.3 "Port Number".
 TSWPP uses the access authentication functionality of the HTTP layer. The supported HTTP access
 authentication schemes are implementation-specific, as specified in [RFC4559].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Resource List Syntax
+#### 2.2.1 Resource List Syntax
 
 This section specifies the complete XML schema, the set of attributes and object classes that govern
 the creation and update of objects, (see [XMLSCHEMA1/2] and [XMLSCHEMA2/2] for details on XML
@@ -1079,7 +932,7 @@ The targetNamespace listed here (http://schemas.microsoft.com/ts/2007/05/tswf) i
 http://www.w3.org/tr/REC-xml-names/ and http://www.ietf.org/rfc/rfc3986.txt for details on XML
 namespace URIs), and is just meant to be used as a string identifier for the TSWPP namespace.
 
-2.2.1.1  Schema Version 1.1
+##### 2.2.1.1 Schema Version 1.1
 
 The schema version for this XML schema is 1.1 and is listed in the version attribute of the
 <xs:schema> element example that follows.
@@ -1118,7 +971,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <xs:attribute name="PubDate" type="xs:dateTime" />
+
+     <xs:attribute name="PubDate" type="xs:dateTime" />
      <xs:anyAttribute />
    </xs:complexType>
    <xs:complexType name="PublisherType">
@@ -1195,7 +1049,8 @@ Release: April 23, 2024
 
 13 / 53
 
-     <xs:attribute name="Type">
+
+     <xs:attribute name="Type">
        <xs:simpleType>
          <xs:restriction base="xs:string">
            <xs:enumeration value="Desktop" />
@@ -1252,7 +1107,7 @@ Release: April 23, 2024
    </xs:complexType>
  </xs:schema>
 
-2.2.1.2  Schema Version 2.0
+##### 2.2.1.2 Schema Version 2.0
 
  The schema version for this XML schema is 2.0 and is listed in the version attribute of the
 <xs:schema> element example below.
@@ -1268,7 +1123,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <xs:schema targetNamespace="http://schemas.microsoft.com/ts/2007/05/tswf"
  elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/ts/2007/05/tswf"
 xmlns:mstns="http://schemas.microsoft.com/ts/2007/05/tswf"
@@ -1345,7 +1201,8 @@ Release: April 23, 2024
 
 15 / 53
 
-     <xs:sequence>
+
+     <xs:sequence>
        <xs:element name="Icons" minOccurs="0" maxOccurs="1">
          <xs:complexType>
            <xs:sequence>
@@ -1422,7 +1279,8 @@ Release: April 23, 2024
 
 16 / 53
 
-   </xs:complexType>
+
+   </xs:complexType>
    <xs:complexType name="FileExtensionType">
      <xs:sequence>
        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax" />
@@ -1478,7 +1336,7 @@ Release: April 23, 2024
    </xs:complexType>
  </xs:schema>
 
-2.2.1.3  Schema Version 2.1
+##### 2.2.1.3 Schema Version 2.1
 
 The schema version for this XML schema is 2.1 and is listed in the version attribute of the
 <xs:schema> element example later in this section.
@@ -1494,7 +1352,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-schema version 2.1, but documents that adhere to schema version 2.1 will not necessarily validate
+
+schema version 2.1, but documents that adhere to schema version 2.1 will not necessarily validate
 against schema version 1.1.
 
  <?xml version="1.0" encoding="utf-8"?>
@@ -1570,7 +1429,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   </xs:complexType>
+
+   </xs:complexType>
    <!-- Resource and related Types -->
    <xs:complexType name="ResourceType">
      <xs:sequence>
@@ -1647,7 +1507,8 @@ Release: April 23, 2024
 
 19 / 53
 
-     <xs:attribute name="FileType" type="xs:string" />
+
+     <xs:attribute name="FileType" type="xs:string" />
      <xs:attribute name="FileURL" type="xs:string" />
      <xs:attribute name="Index" type="xs:integer" />
      <xs:anyAttribute processContents="lax" />
@@ -1706,7 +1567,7 @@ Release: April 23, 2024
    </xs:complexType>
  </xs:schema>
 
-2.2.1.4  Resource List Content-Type
+##### 2.2.1.4 Resource List Content-Type
 
 If the client sends an HTTP Accept header ([RFC7231] section 5.3.2) requesting the "application/x-
 msts-radc+xml" and content compatible with schema version 2.0 (see section 2.2.5), the server
@@ -1720,14 +1581,15 @@ Release: April 23, 2024
 
 20 / 53
 
-2.2.2  Schema Element Definitions
 
-2.2.2.1  Schema Version 1.1 Element Definitions
+#### 2.2.2 Schema Element Definitions
+
+##### 2.2.2.1 Schema Version 1.1 Element Definitions
 
 This section specifies the elements in the XML schema (XSD) that are defined in section 2.2.1.1. The
 values of all attributes MUST be xs:string, unless specified otherwise.
 
-2.2.2.1.1 ResourceCollection Element
+###### 2.2.2.1.1 ResourceCollection Element
 
 The <ResourceCollection> element contains all the other elements defined in section 2.2.2.1. The
 server MUST only put one <Publisher> element as defined in section 2.2.2.1.2. The
@@ -1744,7 +1606,7 @@ in section 2.2.1.1 of this document. The schema version for the XML schema liste
 2.2.1.1 of this document is schema version 1.1. The schema version number can be found in the
 version attribute of the <xs:schema> element in the XML schema (section 2.2.1).
 
-2.2.2.1.2 Publisher Element
+###### 2.2.2.1.2 Publisher Element
 
 The <Publisher> element contains all the attributes for one publisher. It defines the following
 attributes:
@@ -1774,12 +1636,12 @@ The <Publisher> element contains the following keys in the schema that MUST be u
 by ID SHOULD be contained in <TerminalServerRef> elements. The link to the <TerminalServer>
 ID is in the Ref attribute as defined in section 2.2.2.1.10.
 
-2.2.2.1.3 Resources Element
+###### 2.2.2.1.3 Resources Element
 
 The <Resources>element contains all of the resources that have been published by a publisher as
 specified in section 2.2.2.1.2.
 
-2.2.2.1.4 Resource Element
+###### 2.2.2.1.4 Resource Element
 
 The <Resource> element describes one resource such as an application that can be launched
 remotely. It contains all information that a client requires to display and launch the application. This
@@ -1792,7 +1654,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 ID: A unique identifier for the resource. This identifier MUST be unique among all other resource
 identifiers within the containing <Resources> element (section 2.2.2.1.3). The unique identifier
@@ -1826,11 +1689,11 @@ is launched.
 
 server.
 
-2.2.2.1.5 Icons Element
+###### 2.2.2.1.5 Icons Element
 
 The <Icons> element contains all icons associated with one resource.
 
-2.2.2.1.6 Icon Elements
+###### 2.2.2.1.6 Icon Elements
 
 The Icon elements specify icons for a resource or application. Icon elements include <Icon16>,
 <Icon32>, <Icon48>, <Icon64>, <Icon100>, <Icon256>, and <IconRaw>. The numeric part of the
@@ -1860,7 +1723,7 @@ present if the icon is available from a web server.
 
 Index: This attribute is ignored by the client and MUST NOT be used by the server.
 
-2.2.2.1.7 HostingTerminalServers Element
+###### 2.2.2.1.7 HostingTerminalServers Element
 
 The <HostingTerminalServers> element contains elements for all the terminal servers, computers
 on which Terminal Services is running, that are hosting a resource. This element MUST contain at
@@ -1873,13 +1736,14 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.1.8 HostingTerminalServer Element
+
+###### 2.2.2.1.8 HostingTerminalServer Element
 
 The <HostingTerminalServer> element contains the name of the file required to launch a remote
 resource as defined in section 2.2.2.1.9 and an element that links to the terminal server reference,
 as defined in section 2.2.2.1.10.
 
-2.2.2.1.9 ResourceFile Element
+###### 2.2.2.1.9 ResourceFile Element
 
 The <ResourceFile> element contains the name of the file that is required in order to launch a remote
 resource on a server. This element defines the following attributes:
@@ -1894,23 +1758,23 @@ file is available from a web server.
 
   Content: This element is ignored by the client and MUST NOT be used by the server.
 
-2.2.2.1.10
+###### 2.2.2.1.10 TerminalServerRef Element
 
-TerminalServerRef Element
+
 
 The <TerminalServerRef> element is a link element that contains one attribute: Ref. This attribute is
 the unique identifier for the terminal server as defined in section 2.2.2.1.12.
 
-2.2.2.1.11
+###### 2.2.2.1.11 TerminalServers Element
 
-TerminalServers Element
+
 
 The <TerminalServers> element contains <TerminalServer> elements (section 2.2.2.1.12) for all
 terminal servers that host the remote resources defined in section 2.2.2.1.3.
 
-2.2.2.1.12
+###### 2.2.2.1.12 TerminalServer Element
 
-TerminalServer Element
+
 
 The <TerminalServer> element contains the definition for one hosting terminal server. It defines the
 following attributes:
@@ -1928,9 +1792,9 @@ that server.
 
 <TerminalServer> element. This entry MUST be in xs:dateTime format.
 
-2.2.2.1.13
+###### 2.2.2.1.13 FileExtensions Element
 
-FileExtensions Element
+
 
 The <FileExtensions> element SHOULD contain <FileExtension> elements (section 2.2.2.1.14) for all
 the file types that can be opened by the remote resource defined in section 2.2.2.1.4.<6>
@@ -1938,9 +1802,9 @@ the file types that can be opened by the remote resource defined in section 2.2.
 The <FileExtensions> element MUST be set as empty by the server if the remote resource does not
 handle any file types.
 
-2.2.2.1.14
+###### 2.2.2.1.14 FileExtension Element
 
-FileExtension Element
+
 
 The <FileExtension> element MUST contain the definition of one file type that the remote resource is
 capable of opening.
@@ -1952,19 +1816,20 @@ Release: April 23, 2024
 
 23 / 53
 
-  Name: The name of the file type, which MUST be preceded by a dot (for example, ".txt"). This
+
+  Name: The name of the file type, which MUST be preceded by a dot (for example, ".txt"). This
 
 attribute value SHOULD be unique among all <FileExtension> elements contained in the
 <Resources> element (see section 2.2.2.1.3).
 
-2.2.2.2  Schema Version 2.0 Element Definitions
+##### 2.2.2.2 Schema Version 2.0 Element Definitions
 
 This section specifies the elements in the XML schema (XSD) that are defined in section 2.2.1.2. It
 does this by listing the changes from schema version 1.1, the element definitions for which can be
 found in section 2.2.2.1. Unless specified otherwise in this section, the definition of an element in
 schema version 2.0 is the same as its definition in schema version 1.1.
 
-2.2.2.2.1 ResourceCollection Element
+###### 2.2.2.2.1 ResourceCollection Element
 
 The <ResourceCollection> element contains all of the other elements defined in sections 2.2.2.1 and
 2.2.2.2. The server MUST only put one <Publisher> element as defined in section 2.2.2.1.2. The
@@ -1991,7 +1856,7 @@ element contains resources from all folders. Folders are described in section 2.
 Runtime Protocol [MS-RDWR]. This attribute SHOULD be included in the <ResourceCollection>
 element and MUST be in the form xs:boolean.
 
-2.2.2.2.2 FileExtensions Element
+###### 2.2.2.2.2 FileExtensions Element
 
 The <FileExtensions> element SHOULD contain <FileExtension> elements (section 2.2.2.2.3) for all
 the file types that can be opened by the remote resource defined in section 2.2.2.1.4.
@@ -1999,7 +1864,7 @@ the file types that can be opened by the remote resource defined in section 2.2.
 The <FileExtensions> element MUST be set as empty by the server if the remote resource cannot
 handle any file types.
 
-2.2.2.2.3 FileExtension Element
+###### 2.2.2.2.3 FileExtension Element
 
 The <FileExtension> element contains the definition of one file type such that the remote resource is
 capable of opening documents of that type.
@@ -2013,7 +1878,7 @@ attribute value SHOULD be unique among all <FileExtension> elements contained in
 
 xs:boolean value of True.
 
-2.2.2.2.4 FileAssociationIcons Element
+###### 2.2.2.2.4 FileAssociationIcons Element
 
 [MS-TSWP] - v20240423
 Terminal Services Workspace Provisioning Protocol
@@ -2022,10 +1887,11 @@ Release: April 23, 2024
 
 24 / 53
 
-The <FileAssociationIcons> element contains all icons associated with one file type. The icon element
+
+The <FileAssociationIcons> element contains all icons associated with one file type. The icon element
 is defined in section 2.2.2.1.6.
 
-2.2.2.2.5 SubFolders Element
+###### 2.2.2.2.5 SubFolders Element
 
 The <SubFolders> element SHOULD contain <Folder> elements (section 2.2.2.2.7) for all folders
 contained in the current display folder as defined by the DisplayFolder attribute of the
@@ -2033,12 +1899,12 @@ contained in the current display folder as defined by the DisplayFolder attribut
 element MUST NOT be included. The <Folder> elements included in the <SubFolders> element
 describe any folders that are contained in the current display folder.
 
-2.2.2.2.6 Folders Element
+###### 2.2.2.2.6 Folders Element
 
 The <Folders> element SHOULD contain <Folder> elements (section 2.2.2.2.7) for all folders within
 which the remote resource exists. Folders are described in section 2.2.6.
 
-2.2.2.2.7 Folder Element
+###### 2.2.2.2.7 Folder Element
 
 The <Folder> element describes a folder (see section 2.2.6) and defines the following attribute:
 
@@ -2046,7 +1912,7 @@ The <Folder> element describes a folder (see section 2.2.6) and defines the foll
 
 <Folder> element.
 
-2.2.2.3  Schema Version 2.1 Element Definitions
+##### 2.2.2.3 Schema Version 2.1 Element Definitions
 
 This section specifies the elements in the XML schema (XSD) that are defined in section 2.2.1.3. It
 does this by listing the changes from schema version 2.0, the element definitions for which can be
@@ -2054,7 +1920,7 @@ found in section 2.2.2.2. Unless specified otherwise in this section, the defini
 schema version 2.1 is the same as its definition in schema version 2.0 (which can in turn be the same
 as its definition in schema version 1.1).
 
-2.2.2.3.1 Resource Element
+###### 2.2.2.3.1 Resource Element
 
 The <Resource> element describes one resource, such as an application that can be launched
 remotely. It contains all information that a client requires to display and launch the application. This
@@ -2092,7 +1958,8 @@ Release: April 23, 2024
 
 25 / 53
 
-  ExecutableName: This attribute specifies the executable that runs on the server if this resource
+
+  ExecutableName: This attribute specifies the executable that runs on the server if this resource
 
 is launched.
 
@@ -2115,7 +1982,7 @@ This attribute SHOULD be included in the <Resource> element and MUST be in the f
 xs:boolean. If this attribute is not present in the <Resource> element, clients MUST act as if it
 were present with a value of "true".
 
-2.2.3  .ASPXAUTH Cookie
+#### 2.2.3 .ASPXAUTH Cookie
 
 If a user's interactions with the HTML login URL have allowed the TSWPP server to establish the
 user’s identity, the remote server SHOULD generate a cookie that identifies the user and allows
@@ -2125,7 +1992,7 @@ the implementation of the TSWPP server, because only the server is required to p
 the cookie. If the server implements the cookie, then the cookie MUST be returned in an HTTP
 payload with a Content-Type of "application/x-msts-webfeed-login".
 
-2.2.4  Resources
+#### 2.2.4 Resources
 
 Resources are stored on the TSWPP server in memory and comprise the list of resources that are
 used to generate the XML files (section 3.1.1.2) that are sent to the TSWPP client. The data stored for
@@ -2163,7 +2030,8 @@ Release: April 23, 2024
 
 26 / 53
 
-used to generate the XML file (section 3.1.1.2), so that the server can quickly respond to requests for
+
+used to generate the XML file (section 3.1.1.2), so that the server can quickly respond to requests for
 the list of resources.
 
 If the XML resource list that the client requests from the server is not available, the server MUST
@@ -2195,7 +2063,7 @@ warn the user that the connection could not be made. If the server returns an HT
 error when the client is connecting in order to update workspace resources that were previously
 downloaded, the client SHOULD log a warning but leave the existing resources untouched.
 
-2.2.5  Content Negotiation
+#### 2.2.5 Content Negotiation
 
 The client SHOULD request that the server provide a copy of the XML feed that will validate against
 the highest schema version that the client is able to process.<7> The client MUST do this by
@@ -2210,7 +2078,7 @@ copy of the XML feed adhering to schema version 1.1. If the server supports cont
 does not recognize the requested schema version, it SHOULD provide a copy of the XML feed adhering
 to schema version 1.1.
 
-2.2.6  Folders
+#### 2.2.6 Folders
 
 Resources in the XML file can be organized in a hierarchical tree of folders consisting of a root folder
 that contains zero or more subfolders, and where only the root folder can contain subfolders.
@@ -2229,11 +2097,12 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2241,14 +2110,14 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Authentication Cookie
+##### 3.1.1.1 Authentication Cookie
 
 When a TSWPP client first connects to the TSWPP server, an authentication cookie is transmitted
 to the client, as specified in section 3.1. This opaque server generated cookie contains information to
 authenticate a user to the server as well as the security identifier (SID), as defined in [MS-DTYP]
 section 2.4.2, for the user that originally authenticated to the server.
 
-3.1.1.2  XML Files
+##### 3.1.1.2 XML Files
 
 XML files contain resource lists, as specified in Resource List Syntax (section 2.2.1). The TSWPP
 server generates these XML files and passes them back to the TSWPP client when the client requests
@@ -2256,20 +2125,20 @@ them, so that each user can get a unique XML file. The files that are referenced
 stored on the server so that the client can download them on subsequent connections without the
 additional overhead of retrieving the resources.
 
-3.1.1.3  Icon Files
+##### 3.1.1.3 Icon Files
 
 Icon files represent icons and are stored on the TSWPP server file system. An XML resource list
 references icon files so that a TSWPP client can download and store them on the client machine for
 use in the presentation of the operating system user interface.<9>
 
-3.1.1.4  Resource Files
+##### 3.1.1.4 Resource Files
 
 Resource files represent the resources that are stored on the TSWPP server file system. An XML
 resource list references resource files so that a TSWPP client can download and store them on the
 client machine for use in launching remote applications from the operating system user
 interface.<10>
 
-3.1.1.5  Resources
+##### 3.1.1.5 Resources
 
 Resources are stored on the TSWPP server in memory and comprise the list of resources that are
 used to generate the XML files (section 3.1.1.2) that are sent to the TSWPP client. The data stored for
@@ -2279,7 +2148,7 @@ as a unique identifier. In addition, if the server implementation makes XML file
 then the information to determine whether a user is authorized to see a particular resource is also
 stored.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -2290,23 +2159,24 @@ Release: April 23, 2024
 
 28 / 53
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-TSWP].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Message Flow for First Request
+##### 3.1.5.1 Message Flow for First Request
 
-3.1.5.1.1 Without Content Negotiation
+###### 3.1.5.1.1 Without Content Negotiation
 
 The message flow between a TSWPP client and TSWPP server on the first connection without content
 negotiation is shown in the following figure.
@@ -2325,7 +2195,8 @@ Release: April 23, 2024
 
 29 / 53
 
-Because the TSWPP client did not include the .ASPXAUTH cookie in its request, the client is not
+
+Because the TSWPP client did not include the .ASPXAUTH cookie in its request, the client is not
 authenticated and the server SHOULD send a 302 redirect code with the login URL for the client to
 authenticate. If the client receives the 302 packet from the server, the client MUST send an HTTP
 request to the login URL provided by the server.
@@ -2349,7 +2220,7 @@ MUST be carried in the HTTP message headers, as specified in [RFC7230] and [RFC2
 If the client does not request that the resource list adhere to a specific version of the XML schema,
 the server SHOULD return a version of the resource list adhering to schema version 1.1.
 
-3.1.5.1.2 With Content Negotiation
+###### 3.1.5.1.2 With Content Negotiation
 
 The message flow between a TSWPP client and TSWPP server on the first connection with content
 negotiation is shown in the following figure.
@@ -2361,7 +2232,8 @@ Release: April 23, 2024
 
 30 / 53
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-TSWP].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2377,9 +2249,9 @@ adhering to schema version 2.0, the server SHOULD return a resource list that ad
 version. Otherwise, the server MUST return a copy of the resource list adhering to schema version
 1.1.
 
-3.1.5.2  Message Flow for Subsequent Requests
+##### 3.1.5.2 Message Flow for Subsequent Requests
 
-3.1.5.2.1 Without Content Negotiation
+###### 3.1.5.2.1 Without Content Negotiation
 
 The message flow between a client and server on subsequent requests for the XML file containing the
 resource list, without content negotiation, is shown in the following figure.
@@ -2391,7 +2263,8 @@ Release: April 23, 2024
 
 31 / 53
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-TSWP].images/page032-img01.png)
 ![Extracted image 2 from page 32]([MS-TSWP].images/page032-img02.png)
 <!-- /Extracted images from page 32 -->
@@ -2410,7 +2283,7 @@ section 2.2.1.1.
 If the server provides a cookie authentication mechanism, the server SHOULD authenticate the user's
 access by using the .ASPXAUTH cookie (section 3.3.1.1) and MUST return the XML file to the client.
 
-3.1.5.2.2 With Content Negotiation
+###### 3.1.5.2.2 With Content Negotiation
 
 The message flow between a client and a server on subsequent requests for the XML file containing
 the resource list, with content negotiation, is shown in the following figure.
@@ -2425,7 +2298,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-TSWP].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2443,7 +2317,7 @@ an XML resource list conforming to XML schema (XSD) version 2.0 as specified in 
 If the server provides a cookie authentication mechanism, the server SHOULD authenticate the user's
 access by using the .ASPXAUTH cookie (section 3.3.1.1) and MUST return the XML file to the client.
 
-3.1.5.3  Message Flow for Icon and Resource File Requests
+##### 3.1.5.3 Message Flow for Icon and Resource File Requests
 
 The message flow between a client and a server for requests for icon and resource file URLs that were
 specified in the XML file containing the resource list is shown in the following diagram. Icon and
@@ -2463,7 +2337,7 @@ file.
 If the requested resource or icon does not exist, the server MUST return an HTTP "404 Not Found"
 error code [RFC7230].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -2474,13 +2348,14 @@ Release: April 23, 2024
 
 33 / 53
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2488,36 +2363,36 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The only sequence rule is that the client initiates a request for an XML file (section 3.1.1.2).
 
 The client can request the resources that are described in the XML file in separate HTTP requests
 (section 2.1), and the order of those requests is not significant.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2532,40 +2407,41 @@ Release: April 23, 2024
 
 34 / 53
 
-3.3.1.1  Authentication Cookie
+
+##### 3.3.1.1 Authentication Cookie
 
 When a TSWPP client first connects to the TSWPP server, an authentication cookie is transmitted to
 the client, as specified in section 3.1. This cookie contains information to authenticate a user to the
 server, as well as the security identifier (SID), as defined in [MS-DTYP] section 2.4.2, for the user that
 originally authenticated to the server.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The TSWPP server SHOULD be implemented so that changing a resource triggers the update of an
 XML resource list that contains that resource. How this event is triggered is implementation-specific,
 and it depends on how the server obtains data about resources that are being included in XML
 resource lists.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 When a client makes a request for an XML file, the server returns the XML file containing the
 resources. The set of resource elements contained in the XML file (section 3.1.1.2) are determined
 entirely by the identity of the user making the request. If the server is unable to provide the
 requested file to the client, the server returns an HTTP "404 Not Found" error code [RFC7230].
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2576,11 +2452,12 @@ Release: April 23, 2024
 
 35 / 53
 
-4  Protocol Examples
 
-4.1  Schema Version 1.1 Examples
+## 4 Protocol Examples
 
-4.1.1  Message with One Hosting Terminal Server
+### 4.1 Schema Version 1.1 Examples
+
+#### 4.1.1 Message with One Hosting Terminal Server
 
 The following is an example of a message adhering to schema version 1.1 that specifies only one
 <HostingTerminalServer> element.
@@ -2649,7 +2526,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <FileExtensions>
+
+         <FileExtensions>
            <FileExtension Name=".docx" />
            <FileExtension Name=".odt" />
            <FileExtension Name=".rtf" />
@@ -2687,7 +2565,7 @@ TSRemoteDesktop-TestDesktopCollection-CmsRdsh.rdp" />
    </Publisher>
  </ResourceCollection>
 
-4.1.2  Message with Multiple Terminal Servers
+#### 4.1.2 Message with Multiple Terminal Servers
 
 The following is an example of a message adhering to schema version 1.1 that specifies multiple
 <HostingTerminalServer> elements.
@@ -2722,7 +2600,8 @@ Release: April 23, 2024
 
 37 / 53
 
-     </HostingTerminalServer>
+
+     </HostingTerminalServer>
     </HostingTerminalServers>
    </Resource>
    <Resource ID="95c33f5c2e9042e18e046c7fae8248fa91a8c399" Alias="dfrgui-examplehost2-VmFarm"
@@ -2799,7 +2678,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      <ResourceFile FileExtension=".rdp" URL="/TS/images/EXAMPLEHOST1-wordpad-
+
+      <ResourceFile FileExtension=".rdp" URL="/TS/images/EXAMPLEHOST1-wordpad-
        localhost-VmFarm.rdp" />
       <TerminalServerRef Ref="EXAMPLEHOST1" />
      </HostingTerminalServer>
@@ -2876,12 +2756,13 @@ Release: April 23, 2024
 
 39 / 53
 
-  </Publisher>
+
+  </Publisher>
  </ResourceCollection>
 
-4.2  Schema Version 2.0 Examples
+### 4.2 Schema Version 2.0 Examples
 
-4.2.1  Message with One Hosting Terminal Server
+#### 4.2.1 Message with One Hosting Terminal Server
 
 The following is an example of a message adhering to schema version 2.0 that specifies only one
 <HostingTerminalServer> element.
@@ -2949,7 +2830,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             <FileAssociationIcons>
+
+             <FileAssociationIcons>
                <IconRaw FileType="Ico" FileURL="/RDWeb/Pages/rdp/fileassoc/.rle/mspaint-
 TestAppCollection-CmsRdsh.ico" />
              </FileAssociationIcons>
@@ -3025,7 +2907,8 @@ Release: April 23, 2024
 
 41 / 53
 
-             <ResourceFile FileExtension=".rdp" URL="/RDWeb/Pages/rdp/examplehost-
+
+             <ResourceFile FileExtension=".rdp" URL="/RDWeb/Pages/rdp/examplehost-
 TSRemoteDesktop-TestDesktopCollection-CmsRdsh.rdp" />
              <TerminalServerRef Ref="examplehost" />
            </HostingTerminalServer>
@@ -3039,7 +2922,7 @@ TSRemoteDesktop-TestDesktopCollection-CmsRdsh.rdp" />
    </Publisher>
  </ResourceCollection>
 
-4.2.2  Message with Subfolders and Display Folder
+#### 4.2.2 Message with Subfolders and Display Folder
 
 The following is an example of a message adhering to schema version 2.0 that specifies a
 DisplayFolder attribute and a <SubFolders> element.
@@ -3098,7 +2981,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         </HostingTerminalServers>
+
+         </HostingTerminalServers>
        </Resource>
      </Resources>
      <TerminalServers>
@@ -3110,7 +2994,7 @@ Release: April 23, 2024
    </Publisher>
  </ResourceCollection>
 
-4.2.3  Message with Multiple Folders and No Display Folder
+#### 4.2.3 Message with Multiple Folders and No Display Folder
 
 The following is an example of a message adhering to schema version 2.0 that does not specify a
 DisplayFolder attribute, but does have multiple folders containing resources and some resources that
@@ -3171,7 +3055,8 @@ Release: April 23, 2024
 
 43 / 53
 
-         <Icons>
+
+         <Icons>
            <IconRaw
              FileType="Ico"
              FileURL="/RDWeb/Pages/rdp/mspaint-Remote-CmsRdsh.ico" />
@@ -3248,7 +3133,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <FileExtensions />
+
+         <FileExtensions />
          <Folders>
            <Folder
              Name="/" />
@@ -3325,7 +3211,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-               FileExtension=".rdp"
+
+               FileExtension=".rdp"
                URL="/RDWeb/Pages/rdp/examplehost.exampledomain-Remote-Remote-CmsRdsh.rdp" />
              <TerminalServerRef
                Ref="examplehost.exampledomain" />
@@ -3342,9 +3229,9 @@ Release: April 23, 2024
    </Publisher>
  </ResourceCollection>
 
-4.3
+### 4.3 .ASPXAUTH Cookie Message Returned from the Server
 
-.ASPXAUTH Cookie Message Returned from the Server
+
 
 The following is an example of the .ASPXAUTH cookie that is returned from the server after the
 server has authorized the user for access. The contents of the cookie are then set as a cookie, in the
@@ -3369,13 +3256,14 @@ Release: April 23, 2024
 
 46 / 53
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3386,7 +3274,8 @@ Release: April 23, 2024
 
 47 / 53
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3455,7 +3344,8 @@ Terminal Services Workspace Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<8> Section 2.2.5: The Windows Server 2008 R2 TSWPP server implementation never honors client
+
+<8> Section 2.2.5: The Windows Server 2008 R2 TSWPP server implementation never honors client
 requests for a specific schema version and always returns an XML feed adhering to schema version
 1.1.
 
@@ -3472,7 +3362,8 @@ Release: April 23, 2024
 
 49 / 53
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3516,7 +3407,8 @@ Release: April 23, 2024
 
 50 / 53
 
-8  Index
+
+## 8 Index
 .
 
 .ASPXAUTH
@@ -3656,7 +3548,8 @@ Initialization
 
 51 / 53
 
-   client 33
+
+   client 33
    server 34
 Introduction 6
 
@@ -3798,7 +3691,8 @@ Release: April 23, 2024
 
 52 / 53
 
-Vendor-extensible fields 10
+
+Vendor-extensible fields 10
 Versioning 10
 
 [MS-TSWP] - v20240423

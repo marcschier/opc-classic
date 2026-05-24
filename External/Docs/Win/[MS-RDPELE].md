@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 85
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ No changes to the meaning, language, or formatting of the
 
 2 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -528,7 +530,8 @@ Release: April 23, 2024
 
 3 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -553,380 +556,156 @@ Release: April 23, 2024
 
 4 / 85
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Licensing Architecture ................................................................................. 11
-X.509 Certificate Chains .............................................................................. 13
-Licensing PDU Flows.................................................................................... 13
-New License Flow .................................................................................. 15
-Upgrade License Flow ............................................................................ 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3.1
-1.3.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.4.1
-2.2.1.4.2
-
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-Common Data Structures ............................................................................ 17
-Security Headers .................................................................................. 17
-Basic (TS_SECURITY_HEADER) ......................................................... 17
-Non-FIPS (TS_SECURITY_HEADER1) ................................................. 17
-FIPS (TS_SECURITY_HEADER2) ........................................................ 17
-Licensing Preamble (LICENSE_PREAMBLE) ............................................... 17
-Licensing Binary BLOB (LICENSE_BINARY_BLOB) ...................................... 17
-Server Certificate (SERVER_CERTIFICATE) ............................................... 17
-Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE) ....... 17
-X.509 Certificate Chain (X509 _CERTIFICATE_CHAIN) ......................... 17
-CertBlob (CERT_BLOB) ............................................................... 18
-Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE) ................. 18
-Licensing PDU (TS_LICENSING_PDU) ............................................................ 18
-Server License Request (SERVER_LICENSE_REQUEST) .............................. 21
-Product Information (PRODUCT_INFO) ............................................... 22
-Scope List (SCOPE_LIST) ................................................................. 23
-Scope (SCOPE) .......................................................................... 23
-Client New License Request (CLIENT_NEW_LICENSE_REQUEST) ................. 24
-Client License Information (CLIENT_LICENSE_INFO) ................................. 25
-Client Hardware Identification (CLIENT_HARDWARE_ID) ...................... 26
-Server Platform Challenge (SERVER_PLATFORM_CHALLENGE) .................... 27
-Client Platform Challenge Response
-(CLIENT_PLATFORM_CHALLENGE_RESPONSE) ......................................... 27
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.4
-2.2.2.5
-
-2.2.2.2
-2.2.2.3
-
-2.2.1.4.2.1
-
-2.2.2.1.2.1
-
-2.2.1.4.3
-
-2.2.2.3.1
-
-2.2.2.1
-
-2.2.2
-
-2.2.2.5.1
-
-2.2.2.6
-
-2.2.2.6.1
-
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2.2.2.9.1
-
-2.2.2.9.1.1
-
-2.2.2.9.2
-
-2.2.2.9.2.1
-
-Platform Challenge Response Data
-(PLATFORM_CHALLENGE_RESPONSE_DATA) ...................................... 28
-Server Upgrade License (SERVER_UPGRADE_LICENSE) ............................. 29
-New License Information (NEW_LICENSE_INFO) ................................. 30
-Server New License (SERVER_NEW_LICENSE) .......................................... 31
-Licensing Error Message (LICENSE_ERROR_MESSAGE) .............................. 31
-X.509 Certificate Extensions ................................................................... 31
-Licensed Product Info (LICENSED_PRODUCT_INFO) ............................. 32
-Licensed Version Info (LICENSED_VERSION_INFO) ........................ 33
-MS License Server Info .................................................................... 34
-MS License Server Info Version 1 (MS_LICENSE_SERVER_INFO_V1)  34
-
-[MS-RDPELE] - v20240423
-Remote Desktop Protocol: Licensing Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 85
-
-2.2.2.9.2.2
-
-MS License Server Info Version 2 (MS_LICENSE_SERVER_INFO_V2)  34
-
-3.2
-
-3.1
-
-3.2.1
-
-3.1.6
-3.1.7
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-3.2.1.7
-3.2.1.8
-3.2.1.9
-3.2.1.10
-3.2.1.11
-
-3  Protocol Details ..................................................................................................... 36
-Common Details .............................................................................................. 36
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 36
-Message Integrity Checking .................................................................... 36
-Sending Licensing Error Messages ........................................................... 36
-Processing Licensing Error Messages ....................................................... 37
-Client State Transition ...................................................................... 37
-Server State Transition .................................................................... 37
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-Server Details .................................................................................................. 38
-Abstract Data Model .................................................................................... 38
-Server Random ..................................................................................... 38
-Product Information .............................................................................. 38
-Server Certificate .................................................................................. 39
-Key Exchange List ................................................................................. 39
-Scope List ............................................................................................ 39
-Platform Challenge ................................................................................ 39
-License ................................................................................................ 39
-ClientUserName .................................................................................... 39
-ClientMachineName ............................................................................... 39
-Encryption Keys .................................................................................... 40
-Server Licensing States ......................................................................... 40
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Sending Server License Request PDUs ..................................................... 40
-Processing Client New License Requests ................................................... 40
-Processing Client License Information ...................................................... 41
-Sending Server Platform Challenges ........................................................ 42
-Processing Client Platform Challenge Responses ....................................... 42
-Sending Server Upgrade Licenses ........................................................... 43
-Sending Server New Licenses ................................................................. 43
-Handling Out-of-Sequence or Unrecognized Messages ............................... 43
-Handling Invalid MACs ........................................................................... 44
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-Client Details ................................................................................................... 44
-Abstract Data Model .................................................................................... 44
-Platform ID .......................................................................................... 44
-Client Random ...................................................................................... 44
-Preferred Key Exchange Algorithm ID ...................................................... 44
-Client User Name .................................................................................. 44
-Client Machine Name ............................................................................. 44
-Encrypted Premaster Secret ................................................................... 45
-License ................................................................................................ 45
-License Store........................................................................................ 45
-Client Hardware Identification ................................................................. 45
-Encryption Keys .................................................................................... 45
-Client Licensing States ........................................................................... 45
-Timers ...................................................................................................... 46
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-3.3.1.6
-3.3.1.7
-3.3.1.8
-3.3.1.9
-3.3.1.10
-3.3.1.11
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3.2
-
-3.3.1
-
-3.3
-
-[MS-RDPELE] - v20240423
-Remote Desktop Protocol: Licensing Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 85
-
-3.3.2.1
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-
-3.3.6
-3.3.7
-
-Client Packet Wait Timer ........................................................................ 46
-Initialization ............................................................................................... 46
-Higher-Layer Triggered Events ..................................................................... 46
-Message Processing Events and Sequencing Rules .......................................... 46
-Processing Server License Requests ........................................................ 46
-Sending Client New License Requests ...................................................... 47
-Sending Client License Information ......................................................... 47
-Processing Server Platform Challenges .................................................... 47
-Sending Client Platform Challenge Responses ........................................... 47
-Processing Server Upgrade Licenses ........................................................ 47
-Processing Server New Licenses .............................................................. 48
-Handling Out-of-Sequence or Unrecognized Messages ............................... 48
-Handling Invalid MACs ........................................................................... 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-
-4  Protocol Examples ................................................................................................. 49
-Server License Request (SERVER_LICENSE_REQUEST) ......................................... 49
-Client New License Request (CLIENT_NEW_LICENSE_REQUEST) ............................ 54
-Client License Information (CLIENT_LICENSE_INFO) ............................................ 55
-Server Platform Challenge (SERVER_PLATFORM_CHALLENGE) ............................... 60
-Client Platform Challenge Response (CLIENT_PLATFORM_CHALLENGE_RESPONSE) .. 61
-Server New License (SERVER_NEW_LICENSE) ..................................................... 62
-Server Upgrade License (SERVER_UPGRADE_LICENSE) ........................................ 69
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5.1
-
-5.1.1
-
-5.1.1.1
-5.1.1.2
-
-5  Security ................................................................................................................. 77
-Security Considerations for Implementers ........................................................... 77
-Client and Server Random Values and Premaster Secrets ................................ 77
-Encrypting the Premaster Secret ............................................................. 77
-Decrypting the Premaster Secret............................................................. 78
-Generating the Licensing Encryption and MAC Salt Keys .................................. 78
-Encrypting Licensing Session Data ................................................................ 78
-Decrypting Licensing Session Data ................................................................ 78
-MAC Generation ......................................................................................... 79
-Index of Security Parameters ............................................................................ 79
-
-5.1.2
-5.1.3
-5.1.4
-5.1.5
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 80
-
-7  Change Tracking .................................................................................................... 83
-
-8  Index ..................................................................................................................... 84
-
-[MS-RDPELE] - v20240423
-Remote Desktop Protocol: Licensing Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 85
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Licensing Architecture](#131-licensing-architecture)
+    - [1.3.2 X.509 Certificate Chains](#132-x509-certificate-chains)
+    - [1.3.3 Licensing PDU Flows](#133-licensing-pdu-flows)
+      - [1.3.3.1 New License Flow](#1331-new-license-flow)
+      - [1.3.3.2 Upgrade License Flow](#1332-upgrade-license-flow)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Structures](#221-common-data-structures)
+      - [2.2.1.1 Security Headers](#2211-security-headers)
+        - [2.2.1.1.1 Basic (TS_SECURITY_HEADER)](#22111-basic-tssecurityheader)
+        - [2.2.1.1.2 Non-FIPS (TS_SECURITY_HEADER1)](#22112-non-fips-tssecurityheader1)
+        - [2.2.1.1.3 FIPS (TS_SECURITY_HEADER2)](#22113-fips-tssecurityheader2)
+      - [2.2.1.2 Licensing Preamble (LICENSE_PREAMBLE)](#2212-licensing-preamble-licensepreamble)
+      - [2.2.1.3 Licensing Binary BLOB (LICENSE_BINARY_BLOB)](#2213-licensing-binary-blob-licensebinaryblob)
+      - [2.2.1.4 Server Certificate (SERVER_CERTIFICATE)](#2214-server-certificate-servercertificate)
+        - [2.2.1.4.1 Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)](#22141-server-proprietary-certificate-proprietaryservercertificate)
+        - [2.2.1.4.2 X.509 Certificate Chain (X509 _CERTIFICATE_CHAIN)](#22142-x509-certificate-chain-x509-certificatechain)
+          - [2.2.1.4.2.1 CertBlob (CERT_BLOB)](#221421-certblob-certblob)
+        - [2.2.1.4.3 Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)](#22143-proprietary-certificate-proprietaryservercertificate)
+    - [2.2.2 Licensing PDU (TS_LICENSING_PDU)](#222-licensing-pdu-tslicensingpdu)
+      - [2.2.2.1 Server License Request (SERVER_LICENSE_REQUEST)](#2221-server-license-request-serverlicenserequest)
+        - [2.2.2.1.1 Product Information (PRODUCT_INFO)](#22211-product-information-productinfo)
+        - [2.2.2.1.2 Scope List (SCOPE_LIST)](#22212-scope-list-scopelist)
+          - [2.2.2.1.2.1 Scope (SCOPE)](#222121-scope-scope)
+      - [2.2.2.2 Client New License Request (CLIENT_NEW_LICENSE_REQUEST)](#2222-client-new-license-request-clientnewlicenserequest)
+      - [2.2.2.3 Client License Information (CLIENT_LICENSE_INFO)](#2223-client-license-information-clientlicenseinfo)
+        - [2.2.2.3.1 Client Hardware Identification (CLIENT_HARDWARE_ID)](#22231-client-hardware-identification-clienthardwareid)
+      - [2.2.2.4 Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)](#2224-server-platform-challenge-serverplatformchallenge)
+      - [2.2.2.5 Client Platform Challenge Response](#2225-client-platform-challenge-response)
+        - [2.2.2.5.1 Platform Challenge Response Data](#22251-platform-challenge-response-data)
+      - [2.2.2.6 Server Upgrade License (SERVER_UPGRADE_LICENSE)](#2226-server-upgrade-license-serverupgradelicense)
+        - [2.2.2.6.1 New License Information (NEW_LICENSE_INFO)](#22261-new-license-information-newlicenseinfo)
+      - [2.2.2.7 Server New License (SERVER_NEW_LICENSE)](#2227-server-new-license-servernewlicense)
+      - [2.2.2.8 Licensing Error Message (LICENSE_ERROR_MESSAGE)](#2228-licensing-error-message-licenseerrormessage)
+      - [2.2.2.9 X.509 Certificate Extensions](#2229-x509-certificate-extensions)
+        - [2.2.2.9.1 Licensed Product Info (LICENSED_PRODUCT_INFO)](#22291-licensed-product-info-licensedproductinfo)
+          - [2.2.2.9.1.1 Licensed Version Info (LICENSED_VERSION_INFO)](#222911-licensed-version-info-licensedversioninfo)
+        - [2.2.2.9.2 MS License Server Info](#22292-ms-license-server-info)
+          - [2.2.2.9.2.1 MS License Server Info Version 1 (MS_LICENSE_SERVER_INFO_V1)](#222921-ms-license-server-info-version-1-mslicenseserverinfov1)
+          - [2.2.2.9.2.2 MS License Server Info Version 2 (MS_LICENSE_SERVER_INFO_V2)](#222922-ms-license-server-info-version-2-mslicenseserverinfov2)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Message Integrity Checking](#3151-message-integrity-checking)
+      - [3.1.5.2 Sending Licensing Error Messages](#3152-sending-licensing-error-messages)
+      - [3.1.5.3 Processing Licensing Error Messages](#3153-processing-licensing-error-messages)
+        - [3.1.5.3.1 Client State Transition](#31531-client-state-transition)
+        - [3.1.5.3.2 Server State Transition](#31532-server-state-transition)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Server Random](#3211-server-random)
+      - [3.2.1.2 Product Information](#3212-product-information)
+      - [3.2.1.3 Server Certificate](#3213-server-certificate)
+      - [3.2.1.4 Key Exchange List](#3214-key-exchange-list)
+      - [3.2.1.5 Scope List](#3215-scope-list)
+      - [3.2.1.6 Platform Challenge](#3216-platform-challenge)
+      - [3.2.1.7 License](#3217-license)
+      - [3.2.1.8 ClientUserName](#3218-clientusername)
+      - [3.2.1.9 ClientMachineName](#3219-clientmachinename)
+      - [3.2.1.10 Encryption Keys](#32110-encryption-keys)
+      - [3.2.1.11 Server Licensing States](#32111-server-licensing-states)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending Server License Request PDUs](#3251-sending-server-license-request-pdus)
+      - [3.2.5.2 Processing Client New License Requests](#3252-processing-client-new-license-requests)
+      - [3.2.5.3 Processing Client License Information](#3253-processing-client-license-information)
+      - [3.2.5.4 Sending Server Platform Challenges](#3254-sending-server-platform-challenges)
+      - [3.2.5.5 Processing Client Platform Challenge Responses](#3255-processing-client-platform-challenge-responses)
+      - [3.2.5.6 Sending Server Upgrade Licenses](#3256-sending-server-upgrade-licenses)
+      - [3.2.5.7 Sending Server New Licenses](#3257-sending-server-new-licenses)
+      - [3.2.5.8 Handling Out-of-Sequence or Unrecognized Messages](#3258-handling-out-of-sequence-or-unrecognized-messages)
+      - [3.2.5.9 Handling Invalid MACs](#3259-handling-invalid-macs)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Platform ID](#3311-platform-id)
+      - [3.3.1.2 Client Random](#3312-client-random)
+      - [3.3.1.3 Preferred Key Exchange Algorithm ID](#3313-preferred-key-exchange-algorithm-id)
+      - [3.3.1.4 Client User Name](#3314-client-user-name)
+      - [3.3.1.5 Client Machine Name](#3315-client-machine-name)
+      - [3.3.1.6 Encrypted Premaster Secret](#3316-encrypted-premaster-secret)
+      - [3.3.1.7 License](#3317-license)
+      - [3.3.1.8 License Store](#3318-license-store)
+      - [3.3.1.9 Client Hardware Identification](#3319-client-hardware-identification)
+      - [3.3.1.10 Encryption Keys](#33110-encryption-keys)
+      - [3.3.1.11 Client Licensing States](#33111-client-licensing-states)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Client Packet Wait Timer](#3321-client-packet-wait-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing Server License Requests](#3351-processing-server-license-requests)
+      - [3.3.5.2 Sending Client New License Requests](#3352-sending-client-new-license-requests)
+      - [3.3.5.3 Sending Client License Information](#3353-sending-client-license-information)
+      - [3.3.5.4 Processing Server Platform Challenges](#3354-processing-server-platform-challenges)
+      - [3.3.5.5 Sending Client Platform Challenge Responses](#3355-sending-client-platform-challenge-responses)
+      - [3.3.5.6 Processing Server Upgrade Licenses](#3356-processing-server-upgrade-licenses)
+      - [3.3.5.7 Processing Server New Licenses](#3357-processing-server-new-licenses)
+      - [3.3.5.8 Handling Out-of-Sequence or Unrecognized Messages](#3358-handling-out-of-sequence-or-unrecognized-messages)
+      - [3.3.5.9 Handling Invalid MACs](#3359-handling-invalid-macs)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Server License Request (SERVER_LICENSE_REQUEST)](#41-server-license-request-serverlicenserequest)
+  - [4.2 Client New License Request (CLIENT_NEW_LICENSE_REQUEST)](#42-client-new-license-request-clientnewlicenserequest)
+  - [4.3 Client License Information (CLIENT_LICENSE_INFO)](#43-client-license-information-clientlicenseinfo)
+  - [4.4 Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)](#44-server-platform-challenge-serverplatformchallenge)
+  - [4.5 Client Platform Challenge Response](#45-client-platform-challenge-response)
+  - [4.6 Server New License (SERVER_NEW_LICENSE)](#46-server-new-license-servernewlicense)
+  - [4.7 Server Upgrade License (SERVER_UPGRADE_LICENSE)](#47-server-upgrade-license-serverupgradelicense)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Client and Server Random Values and Premaster Secrets](#511-client-and-server-random-values-and-premaster-secrets)
+      - [5.1.1.1 Encrypting the Premaster Secret](#5111-encrypting-the-premaster-secret)
+      - [5.1.1.2 Decrypting the Premaster Secret](#5112-decrypting-the-premaster-secret)
+    - [5.1.2 Generating the Licensing Encryption and MAC Salt Keys](#512-generating-the-licensing-encryption-and-mac-salt-keys)
+    - [5.1.3 Encrypting Licensing Session Data](#513-encrypting-licensing-session-data)
+    - [5.1.4 Decrypting Licensing Session Data](#514-decrypting-licensing-session-data)
+    - [5.1.5 MAC Generation](#515-mac-generation)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: Licensing Extension expands on the licensing protocol sequence
 specified in [MS-RDPBCGR].
@@ -934,7 +713,7 @@ specified in [MS-RDPBCGR].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -996,7 +775,8 @@ Release: April 23, 2024
 
 8 / 85
 
-MD5 digest: A 128-bit message hash value generated as output by the MD5 Message-Digest
+
+MD5 digest: A 128-bit message hash value generated as output by the MD5 Message-Digest
 
 algorithm. See [RFC1321].
 
@@ -1070,7 +850,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-temporary license: A type of CAL issued by a terminal server to a client in situations in which
+
+temporary license: A type of CAL issued by a terminal server to a client in situations in which
 
 a permanent license is not available.
 
@@ -1090,14 +871,14 @@ encoding scheme with no Byte Order Mark (BOM).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1136,13 +917,14 @@ Release: April 23, 2024
 
 10 / 85
 
-[X224] ITU-T, "Information technology - Open Systems Interconnection - Protocol for Providing the
+
+[X224] ITU-T, "Information technology - Open Systems Interconnection - Protocol for Providing the
 Connection-Mode Transport Service", Recommendation X.224, November 1995,
 http://www.itu.int/rec/T-REC-X.224-199511-I/en
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-EERR] Microsoft Corporation, "ExtendedError Remote Data Structure".
 
@@ -1161,7 +943,7 @@ us/library/ms721604.aspx
 [SCHNEIER] Schneier, B., "Applied Cryptography, Second Edition", John Wiley and Sons, 1996, ISBN:
 0471117099.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Licensing Extension is designed to allow authorized remote desktop
 clients or users to connect to a terminal server (A reference to terminal server in this document
@@ -1178,7 +960,7 @@ specific RDP features reserved for licensed clients. The communication involved 
 communication between the Remote Desktop client and the personal terminal server. No license
 server is involved in any part of the communication.
 
-1.3.1  Licensing Architecture
+#### 1.3.1 Licensing Architecture
 
 The Remote Desktop Protocol: Licensing Extension involves the following components:
 
@@ -1205,7 +987,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPELE].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1246,7 +1029,8 @@ Release: April 23, 2024
 
 12 / 85
 
-The terminal server interacts with Active Directory to retrieve information on the per-user terminal
+
+The terminal server interacts with Active Directory to retrieve information on the per-user terminal
 server CAL when the terminal server is configured in per-user license mode. The license server has to
 be registered with the Microsoft clearing house before it starts issuing terminal server CALs to the
 Remote desktop clients. The License Manager is the GUI application for managing the license server.
@@ -1269,7 +1053,7 @@ exchange any licensing information.
 
 For more information about license PDU flows for personal terminal servers, see section 1.3.3.
 
-1.3.2  X.509 Certificate Chains
+#### 1.3.2 X.509 Certificate Chains
 
 A license server issues X.509 certificate chains (see [RFC3280]) to terminal servers and Remote
 Desktop clients. A certificate chain is a sequence of certificates. The chain usually starts with a leaf
@@ -1279,7 +1063,7 @@ certificate chains used in the Remote Desktop Protocol: Licensing Extension, see
 
 The certificate encoding used is ASN.1 DER, as specified in [RFC3280] section 4.1.
 
-1.3.3  Licensing PDU Flows
+#### 1.3.3 Licensing PDU Flows
 
 A target machine (terminal server or personal terminal server) initiates the licensing protocol
 data unit (PDU) exchange by sending a Server License Request (section 2.2.2.1) message on
@@ -1307,7 +1091,8 @@ Release: April 23, 2024
 
 13 / 85
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RDPELE].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1333,19 +1118,20 @@ Release: April 23, 2024
 
 14 / 85
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPELE].images/page015-img01.png)
 ![Extracted image 2 from page 15]([MS-RDPELE].images/page015-img02.png)
 <!-- /Extracted images from page 15 -->
 
-1.3.3.1  New License Flow
+##### 1.3.3.1 New License Flow
 
 When the Remote Desktop client does not have a license in its license store, the message flow is
 as shown in the following diagram.
 
 Figure 3: Remote Desktop client new license flow
 
-1.3.3.2  Upgrade License Flow
+##### 1.3.3.2 Upgrade License Flow
 
 When the Remote Desktop client has a license in its license store, the message flow is as shown in
 the following diagram.
@@ -1359,7 +1145,8 @@ Release: April 23, 2024
 
 15 / 85
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Licensing Extension extends the Remote Desktop Protocol: Basic
 Connectivity and Graphics Remoting (as specified in [MS-RDPBCGR]) by adding licensing capabilities.
@@ -1370,7 +1157,7 @@ The licensing protocol sequence is started by the server during the Remote Deskt
 Request (section 2.2.2.1) to the client at this point. Otherwise, the RDP standard connection sequence
 continues (see section 1.3.1.1).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Licensing Extension assumes that the system already has an IP address
 and is thus capable of communicating on the network. It also assumes that the initiator (or client)
@@ -1380,14 +1167,14 @@ server is actively listening for client connections on that port.
 All multiple-byte fields within a message are assumed to contain data in little-endian byte ordering,
 unless otherwise specified.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Licensing Extension applies whenever a Remote Desktop client
 attempts to connect to a terminal server in Application Server mode and exchange of licensing
 information is required. The licensing protocol details provided in this document allow a server to
 authorize a client connection by issuing and verifying CALs.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Only one version of the Remote Desktop Protocol: Licensing Extension exists and, therefore, no
 version negotiation is required with the client.
@@ -1396,11 +1183,11 @@ There is no negotiation of capabilities; however, the client advertises its capa
 of license data in the wLicenseDetailLevel field of the Platform Challenge Response
 Data (section 2.2.2.5.1) structure in the Client Platform Challenge Response (section 2.2.2.5).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1411,54 +1198,55 @@ Release: April 23, 2024
 
 16 / 85
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Licensing Extension packets are transported using TCP/IP.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain the Remote Desktop Protocol: Licensing Extension message syntax.
 
-2.2.1  Common Data Structures
+#### 2.2.1 Common Data Structures
 
-2.2.1.1  Security Headers
+##### 2.2.1.1 Security Headers
 
  Each licensing message PDU contains one of the RDP security headers specified in [MS-RDPBCGR]
 section 2.2.8.1.1.2.
 
-2.2.1.1.1 Basic (TS_SECURITY_HEADER)
+###### 2.2.1.1.1 Basic (TS_SECURITY_HEADER)
 
 For the Basic security header, see [MS-RDPBCGR] section 2.2.8.1.1.2.1.
 
-2.2.1.1.2 Non-FIPS (TS_SECURITY_HEADER1)
+###### 2.2.1.1.2 Non-FIPS (TS_SECURITY_HEADER1)
 
 For the non-FIPS security header, [MS-RDPBCGR] section 2.2.8.1.1.2.2.
 
-2.2.1.1.3 FIPS (TS_SECURITY_HEADER2)
+###### 2.2.1.1.3 FIPS (TS_SECURITY_HEADER2)
 
 For the FIPS security header, see [MS-RDPBCGR] section 2.2.8.1.1.2.3.
 
-2.2.1.2  Licensing Preamble (LICENSE_PREAMBLE)
+##### 2.2.1.2 Licensing Preamble (LICENSE_PREAMBLE)
 
 For the licensing preamble, see [MS-RDPBCGR] section 2.2.1.12.1.1.
 
-2.2.1.3  Licensing Binary BLOB (LICENSE_BINARY_BLOB)
+##### 2.2.1.3 Licensing Binary BLOB (LICENSE_BINARY_BLOB)
 
  The Licensing binary large object (BLOB) is specified in [MS-RDPBCGR] section 2.2.1.12.1.2.
 
-2.2.1.4  Server Certificate (SERVER_CERTIFICATE)
+##### 2.2.1.4 Server Certificate (SERVER_CERTIFICATE)
 
  The Server Certificate structure is specified in [MS-RDPBCGR] section 2.2.1.4.3.1. This structure
 holds either a server proprietary certificate (see [MS-RDPBCGR] section 2.2.1.4.3.1.1) or an X.509
 certificate chain (see section 2.2.1.4.2).
 
-2.2.1.4.1 Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
+###### 2.2.1.4.1 Server Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
 
 Proprietary certificates are specified in [MS-RDPBCGR] section 2.2.1.4.3.1.1.
 
-2.2.1.4.2 X.509 Certificate Chain (X509 _CERTIFICATE_CHAIN)
+###### 2.2.1.4.2 X.509 Certificate Chain (X509 _CERTIFICATE_CHAIN)
 
 The X.509 Certificate Chain packet contains a collection of X.509 certificates.
 
@@ -1469,7 +1257,8 @@ Release: April 23, 2024
 
 17 / 85
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1508,7 +1297,7 @@ Padding (variable): A byte array of the length 8 + 4*NumCertBlobs is appended at
 
 packet.
 
-2.2.1.4.2.1  CertBlob (CERT_BLOB)
+###### 2.2.1.4.2.1 CertBlob (CERT_BLOB)
 
 The CertBlob packet encapsulates an X.509 certificate (as specified in [RFC3280] section 4).
 
@@ -1535,11 +1324,11 @@ abCert (variable): A byte array of length cbCert. This field contains binary dat
 
 single X.509 certificate.
 
-2.2.1.4.3 Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
+###### 2.2.1.4.3 Proprietary Certificate (PROPRIETARYSERVERCERTIFICATE)
 
 For proprietary certificates, see [MS-RDPBCGR] section 2.2.1.4.3.1.1.
 
-2.2.2  Licensing PDU (TS_LICENSING_PDU)
+#### 2.2.2 Licensing PDU (TS_LICENSING_PDU)
 
 The Licensing PDU packet encapsulates licensing messages that are exchanged between a client
 and a terminal server.
@@ -1551,7 +1340,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1628,7 +1418,8 @@ Release: April 23, 2024
 
 19 / 85
 
-ENCRYPTION_LEVEL_CLIENT_COMPATIBLE (2) or ENCRYPTION_LEVEL_HIGH (3) and the
+
+ENCRYPTION_LEVEL_CLIENT_COMPATIBLE (2) or ENCRYPTION_LEVEL_HIGH (3) and the
 embedded flags field contains the SEC_ENCRYPT (0x0008) flag.
 
   A FIPS Security Header (see [MS-RDPBCGR] section 2.2.8.1.1.2.3) if the Encryption Level
@@ -1726,7 +1517,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1754,7 +1546,7 @@ ERROR_ALERT
 The Licensing PDU is a Licensing Error Message PDU, and the LicensingMessage contains
 a LICENSE_ERROR_MESSAGE (section 2.2.2.8) structure.
 
-2.2.2.1  Server License Request (SERVER_LICENSE_REQUEST)
+##### 2.2.2.1 Server License Request (SERVER_LICENSE_REQUEST)
 
 The Server License Request packet is sent to the client to initiate the RDP licensing handshake.
 
@@ -1808,7 +1600,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-KeyExchangeList (variable): A Licensing Binary BLOB structure (see [MS-RDPBCGR] section
+
+KeyExchangeList (variable): A Licensing Binary BLOB structure (see [MS-RDPBCGR] section
 
 2.2.1.12.1.2) of type BB_KEY_EXCHG_ALG_BLOB (0x000D). This BLOB contains the list of 32-bit
 unsigned integers specifying key exchange algorithms that the server supports. The terminal
@@ -1840,7 +1633,7 @@ ScopeList (variable): A variable-length Scope List structure that contains a lis
 the client license. This list is used by the client in conjunction with ProductInfo to search for an
 appropriate license in its license store.<4>
 
-2.2.2.1.1 Product Information (PRODUCT_INFO)
+###### 2.2.2.1.1 Product Information (PRODUCT_INFO)
 
 The Product Information packet contains the details of the product license that is required for
 connecting to the terminal server. The client uses this structure together with the scope list to
@@ -1885,7 +1678,8 @@ Release: April 23, 2024
 
 22 / 85
 
-cbCompanyName (4 bytes): An unsigned 32-bit integer that contains the number of bytes in the
+
+cbCompanyName (4 bytes): An unsigned 32-bit integer that contains the number of bytes in the
 
 pbCompanyName field, including the terminating null character. This value MUST be greater
 than zero.
@@ -1909,7 +1703,7 @@ Value  Meaning
 
 Per device or per user license
 
-2.2.2.1.2 Scope List (SCOPE_LIST)
+###### 2.2.2.1.2 Scope List (SCOPE_LIST)
 
 The Scope List packet contains a list of entities that issued a client license. The client uses the name
 of the issuers in the Scope structures of this list in conjunction with the Product Information structure
@@ -1938,7 +1732,7 @@ ScopeArray field.
 
 ScopeArray (variable): An array of Scope structures containing ScopeCount elements. <7>
 
-2.2.2.1.2.1  Scope (SCOPE)
+###### 2.2.2.1.2.1 Scope (SCOPE)
 
 The Scope packet contains the name of an entity that issued a client license.
 
@@ -1970,7 +1764,8 @@ Release: April 23, 2024
 
 23 / 85
 
-2.2.2.2  Client New License Request (CLIENT_NEW_LICENSE_REQUEST)
+
+##### 2.2.2.2 Client New License Request (CLIENT_NEW_LICENSE_REQUEST)
 
 The Client New License Request packet is sent to a server when the client cannot find a license
 matching the product information provided in the Server License Request message. This message is
@@ -2043,7 +1838,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EncryptedPreMasterSecret (variable): A Licensing Binary BLOB structure (see [MS-RDPBCGR]
+
+EncryptedPreMasterSecret (variable): A Licensing Binary BLOB structure (see [MS-RDPBCGR]
 
 section 2.2.1.12.1.2) of type BB_RANDOM_BLOB (0x0002). This BLOB contains an encrypted 48-
 byte random number. For instructions on how to encrypt this random number, see section 5.1.1.1.
@@ -2060,7 +1856,7 @@ ClientMachineName (variable): A Licensing Binary BLOB structure (see [MS-RDPBCGR
 machine name string in null-terminated ANSI character set format and is used along with the
 ClientUserName BLOB to keep track of licenses issued to clients.
 
-2.2.2.3  Client License Information (CLIENT_LICENSE_INFO)
+##### 2.2.2.3 Client License Information (CLIENT_LICENSE_INFO)
 
 The Client License Information packet is sent by a client that already has a license issued to it in
 response to the Server License Request (section 2.2.2.1) message.
@@ -2115,7 +1911,8 @@ Release: April 23, 2024
 
 25 / 85
 
-PlatformId (4 bytes): The content and format of this field are the same as the PlatformId field of
+
+PlatformId (4 bytes): The content and format of this field are the same as the PlatformId field of
 
 the Client New License Request message.
 
@@ -2144,7 +1941,7 @@ instructions on how to generate this message digest, see section 5.1.5; for a de
 the server uses the MACData field to verify the integrity of the Client Hardware Identification
 structure, see section 3.1.5.1.
 
-2.2.2.3.1 Client Hardware Identification (CLIENT_HARDWARE_ID)
+###### 2.2.2.3.1 Client Hardware Identification (CLIENT_HARDWARE_ID)
 
 The Client Hardware Identification packet is used for uniquely identifying a Remote Desktop client
 for the purpose of issuing a license. A license server uses the content of this structure as an index
@@ -2198,7 +1995,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.4  Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)
+
+##### 2.2.2.4 Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)
 
 The Server Platform Challenge packet is sent from the server to the client after receiving the Client
 New License Request (section 2.2.2.2) or certain cases of Client License Information (section 2.2.2.3).
@@ -2243,7 +2041,7 @@ unencrypted platform challenge BLOB. For instructions on how to generate this me
 see section 5.1.5; for a description of how the client uses the MACData field to verify the integrity
 of the platform challenge BLOB, see section 3.1.5.1.
 
-2.2.2.5  Client Platform Challenge Response
+##### 2.2.2.5 Client Platform Challenge Response
 
 (CLIENT_PLATFORM_CHALLENGE_RESPONSE)
 
@@ -2278,7 +2076,8 @@ Release: April 23, 2024
 
 27 / 85
 
-...
+
+...
 
 ...
 
@@ -2302,7 +2101,7 @@ on how to generate this message digest, see section 5.1.5; for a description of 
 uses the MACData field to verify the integrity of the Client Hardware Identification and the
 Platform Challenge Response Data, see section 3.1.5.1.
 
-2.2.2.5.1 Platform Challenge Response Data
+###### 2.2.2.5.1 Platform Challenge Response Data
 
 (PLATFORM_CHALLENGE_RESPONSE_DATA)
 
@@ -2366,7 +2165,8 @@ Release: April 23, 2024
 
 28 / 85
 
-Value
+
+Value
 
 0x0300
 
@@ -2415,7 +2215,7 @@ pbChallenge (variable): Contains the decrypted Client Platform Challenge data se
 
 the Server Platform Challenge message.
 
-2.2.2.6  Server Upgrade License (SERVER_UPGRADE_LICENSE)
+##### 2.2.2.6 Server Upgrade License (SERVER_UPGRADE_LICENSE)
 
 The Server Upgrade License packet is sent from the server to the client if the client presents an
 existing license and the server determines that this license SHOULD be upgraded. This message
@@ -2457,14 +2257,15 @@ Release: April 23, 2024
 
 29 / 85
 
-MACData (16 bytes): An array of 16 bytes containing an MD5 digest (Message Authentication
+
+MACData (16 bytes): An array of 16 bytes containing an MD5 digest (Message Authentication
 
 Code) generated over the unencrypted New License Information structure. For instructions on
 how to generate this message digest, see section 5.1.5; for a description of how the server uses
 the MACData field to verify the integrity of the New License Information packet, see section
 3.1.5.1.
 
-2.2.2.6.1 New License Information (NEW_LICENSE_INFO)
+###### 2.2.2.6.1 New License Information (NEW_LICENSE_INFO)
 
 The New License Information packet contains the actual client license and associated indexing
 information. The client stores the license in its license store using the indexing information, and uses
@@ -2531,7 +2332,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pbCompanyName (variable): The content and format of this field are the same as the
+
+pbCompanyName (variable): The content and format of this field are the same as the
 
 pbCompanyName field of the Product Information structure.
 
@@ -2553,13 +2355,13 @@ license information in the X.509 leaf certificate is described in section 2.2.2.
 contained in this field is opaque to the client. The client sends this information back to the server
 in the Client License Information message.
 
-2.2.2.7  Server New License (SERVER_NEW_LICENSE)
+##### 2.2.2.7 Server New License (SERVER_NEW_LICENSE)
 
 The Server New License message is sent from the server to the client when a new license is issued to
 the client. The structure and the content of this message are the same as the Server Upgrade License
 message.
 
-2.2.2.8  Licensing Error Message (LICENSE_ERROR_MESSAGE)
+##### 2.2.2.8 Licensing Error Message (LICENSE_ERROR_MESSAGE)
 
 The Licensing Error Message specified in [MS-RDPBCGR] section 2.2.1.12.1.3 can be used by both
 client and server.
@@ -2568,7 +2370,7 @@ If the client supports extended error, the terminal server includes information 
 code in the bbErrorInfo field of the Licensing Error Message. For more details, see [MS-RDPBCGR]
 section 2.2.1.12.1.3.
 
-2.2.2.9  X.509 Certificate Extensions
+##### 2.2.2.9 X.509 Certificate Extensions
 
 License information stored in the client license store contains the certificates and the associated
 certificate chain generated by a license server. Certificates that license servers issue to terminal
@@ -2611,7 +2413,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.9.1 Licensed Product Info (LICENSED_PRODUCT_INFO)
+
+###### 2.2.2.9.1 Licensed Product Info (LICENSED_PRODUCT_INFO)
 
 The certificate extension with OID "1.3.6.1.4.1.311.18.5" (szOID_PKIX_LICENSED_PRODUCT_INFO)
 contains product information specific to a license issued to a client and is encoded by the Licensed
@@ -2687,7 +2490,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RequestedProductIdByteCount  (2  bytes):  A  16-bit  unsigned  integer  that  specifies  the  size  in
+
+RequestedProductIdByteCount  (2  bytes):  A  16-bit  unsigned  integer  that  specifies  the  size  in
 
 bytes of the RequestedProductId field.
 
@@ -2718,7 +2522,7 @@ the license (determined by the license server).
 LicensedVersionInfo (8 bytes): A Licensed Version Info (section 2.2.2.9.1.1) structure that
 contains versioning information and flags indicating the license type and enforcement status.
 
-2.2.2.9.1.1  Licensed Version Info (LICENSED_VERSION_INFO)
+###### 2.2.2.9.1.1 Licensed Version Info (LICENSED_VERSION_INFO)
 
 The Licensed Version Info structure contains versioning information and flags indicating the license
 type and enforcement status.
@@ -2781,13 +2585,14 @@ Release: April 23, 2024
 
 33 / 85
 
-2.2.2.9.2 MS License Server Info
+
+###### 2.2.2.9.2 MS License Server Info
 
 The certificate extension with OID "1.3.6.1.4.1.311.18.6" (szOID_PKIX_MS_LICENSE_SERVER_INFO)
 contains information about the license server that issued a license and is encoded by the MS License
 Server Info Version 1 (section 2.2.2.9.2.1) and Version 2 (section 2.2.2.9.2.2) structures.
 
-2.2.2.9.2.1  MS License Server Info Version 1 (MS_LICENSE_SERVER_INFO_V1)
+###### 2.2.2.9.2.1 MS License Server Info Version 1 (MS_LICENSE_SERVER_INFO_V1)
 
 The MS License Server Info Version 1 structure contains information about the license server that
 issued a license.
@@ -2845,7 +2650,7 @@ LsScope (variable): A null-terminated Unicode string that specifies the scope of
 the license server is domain joined then this field contains the domain name, and if the license server
 is not domain joined then it contains the workgroup name.
 
-2.2.2.9.2.2  MS License Server Info Version 2 (MS_LICENSE_SERVER_INFO_V2)
+###### 2.2.2.9.2.2 MS License Server Info Version 2 (MS_LICENSE_SERVER_INFO_V2)
 
 The MS License Server Info Version 2 structure contains information about the license server that
 issued a license.
@@ -2874,7 +2679,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LsScopeOffset
+
+LsScopeOffset
 
 IssuerName (variable)
 
@@ -2923,11 +2729,12 @@ Release: April 23, 2024
 
 35 / 85
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2935,21 +2742,21 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Message Integrity Checking
+##### 3.1.5.1 Message Integrity Checking
 
 Both the server and client add a MAC checksum to licensing messages to allow the recipient to
 validate the integrity of the licensing data that is contained in the message.
@@ -2966,7 +2773,7 @@ fields. Next, it MUST compare the generated checksum with the received checksum.
 match, The receiver MAY send a Licensing Error Message (section 2.2.2.8) with an error code
 ERR_INVALID_MAC and a state transition code of ST_TOTAL_ABORT to the sender.
 
-3.1.5.2  Sending Licensing Error Messages
+##### 3.1.5.2 Sending Licensing Error Messages
 
 Both the client and the server can send a Licensing Error Message (section 2.2.2.8). Whenever an
 error message is sent, the message type in the Licensing Preamble (section 2.2.1.2) MUST be set to
@@ -2983,7 +2790,8 @@ Release: April 23, 2024
 
 36 / 85
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-RDPELE].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
@@ -2991,7 +2799,7 @@ A more detailed reason for the error MAY be passed by using the bbErrorInfo BLOB
 MUST be BB_ERROR_BLOB (see [MS-RDPBCGR] sections 2.2.1.12.1.2 and 2.2.1.12.1.3). This BLOB is
 empty if no detailed reason for the error is passed.
 
-3.1.5.3  Processing Licensing Error Messages
+##### 3.1.5.3 Processing Licensing Error Messages
 
 Both the server and the client can send a Licensing Error Message (section 2.2.2.8) and indicate a
 state transition with the error code. Possible state transitions include the following:
@@ -3013,11 +2821,11 @@ ST_RESET_PHASE_TO_START and ST_RESEND_LAST_MESSAGE are not shown in the Client S
 Transition diagram (section 3.1.5.3.1) and Server State Transition diagram (section 3.1.5.3.2), as
 they can cause confusion.<17>
 
-3.1.5.3.1 Client State Transition
+###### 3.1.5.3.1 Client State Transition
 
 Figure 5: Client state transition
 
-3.1.5.3.2 Server State Transition
+###### 3.1.5.3.2 Server State Transition
 
 [MS-RDPELE] - v20240423
 Remote Desktop Protocol: Licensing Extension
@@ -3026,27 +2834,28 @@ Release: April 23, 2024
 
 37 / 85
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-RDPELE].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
 Figure 6: Server state transition
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Refer to the common details abstract data model in section 3.1.1.
 
-3.2.1.1  Server Random
+##### 3.2.1.1 Server Random
 
 The Server Random is a 32-byte random number created using a cryptographically secure pseudo-
 random number generator. It is used to generate encryption keys that are used in later stages of the
@@ -3056,7 +2865,7 @@ The server random is unique for a given client connection. It is created at the 
 licensing protocol and is destroyed after the licensing protocol is completed. For information on how
 the Server Random is used, see sections 2.2.2.1 and 5.1.1.
 
-3.2.1.2  Product Information
+##### 3.2.1.2 Product Information
 
 The Product Information packet contains the operating system version, company name, and product
 ID. This information is used by the client to search for a previously issued CAL stored in the client's
@@ -3069,36 +2878,37 @@ Release: April 23, 2024
 
 38 / 85
 
-For example, the content of the Product Information structure can be as follows.
+
+For example, the content of the Product Information structure can be as follows.
 
  dwVersion = 0x00050002
  pbCompanyName = "Microsoft Corporation"
  pbProductId = "A02"
 
-3.2.1.3  Server Certificate
+##### 3.2.1.3 Server Certificate
 
 A server certificate MUST be either a proprietary certificate or an X.509 certificate. An X.509 certificate
 chain is issued to a terminal server by a license server. If a terminal server has not received an
 X.509 certificate from a license server, it generates a proprietary certificate and sends it in the
 ServerCertificate field of a Server License Request message.
 
-3.2.1.4  Key Exchange List
+##### 3.2.1.4 Key Exchange List
 
 The Key Exchange List is a list of key exchange algorithms supported by the server. See the
 KeyExchangeList field in the Server License Request message.
 
-3.2.1.5  Scope List
+##### 3.2.1.5 Scope List
 
 The Scope List describes the list of issuers for the CAL.<18>
 
-3.2.1.6  Platform Challenge
+##### 3.2.1.6 Platform Challenge
 
 The Platform Challenge is a random string generated by the server. This string is encrypted (section
 5.1.3) with the licensing encryption key using RC4 and sent in the EncryptedPlatformChallenge
 field of the Server Platform Challenge (section 2.2.2.4) message. It is created at the beginning of
 the licensing protocol and destroyed when the licensing protocol is completed.
 
-3.2.1.7  License
+##### 3.2.1.7 License
 
 The license is an X.509 certificate chain that contains a certificate issued by the license server to the
 client. The leaf X.509 certificate in the certificate chain has the following information:
@@ -3114,13 +2924,13 @@ Type: Whether the license is temporary or permanent.
 The server MUST send the license to the client in the Server New License message or the Server
 Upgrade License message.
 
-3.2.1.8  ClientUserName
+##### 3.2.1.8 ClientUserName
 
 The ClientUserName is the name of the user initiating the remote connection to the terminal
 server. The ClientUserName is sent from the client to the terminal server in the
 CLIENT_NEW_LICENSE_REQUEST message (section 2.2.2.2).
 
-3.2.1.9  ClientMachineName
+##### 3.2.1.9 ClientMachineName
 
 The ClientMachineName is the name of the device from which the remote connection is made to the
 terminal server. This information is sent from the client to the terminal server in the
@@ -3133,18 +2943,19 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.1.10
 
-Encryption Keys
+##### 3.2.1.10 Encryption Keys
+
+
 
 The server uses the 128-bit licensing encryption key (section 5.1.2) to encrypt the
 EncryptedPlatformChallenge field in the Server Platform Challenge message (section 2.2.2.4),
 and decrypt the EncryptedHWID field in the Client License Information (section 2.2.2.3) and
 Client Platform Challenge (section 2.2.2.5) messages.
 
-3.2.1.11
+##### 3.2.1.11 Server Licensing States
 
-Server Licensing States
+
 
 Server Licensing States is an enumeration of different licensing states that the server can have.
 Server licensing state transition is shown in the diagram in section 3.1.5.3.2. The following are the
@@ -3167,27 +2978,27 @@ section 3.2.5.7), or the client license is upgraded and sent to the remote clien
 section 3.2.5.6), or the remote client doesn't need any license to connect (as specified in section
 3.2.5.2), the terminal server goes into "Server Licensing Completed" state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None. The licensing protocol does not have its own timers. Events such as connection timeout are
 handled by RDPBCGR (see [MS-RDPBCGR] section 3.3.6.1).
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server licensing state MUST be initialized to "Server Licensing Begin".
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending Server License Request PDUs
+##### 3.2.5.1 Sending Server License Request PDUs
 
 The server initiates the licensing protocol by sending a Server License Request to the client. A Server
 License Request uses the message type of LICENSE_REQUEST (0x01) in the licensing preamble.
 
-3.2.5.2  Processing Client New License Requests
+##### 3.2.5.2 Processing Client New License Requests
 
 The client MUST send the Client New License Request (section 2.2.2.2) when it does not have a
 license.
@@ -3199,7 +3010,8 @@ Release: April 23, 2024
 
 40 / 85
 
-In case of a personal terminal server, no processing is done on the server side, and the server
+
+In case of a personal terminal server, no processing is done on the server side, and the server
 sends a Licensing Error Message (section 2.2.2.8) with the error code STATUS_VALID_CLIENT and
 the state transition code ST_NO_TRANSITION. The licensing protocol is complete at this point.
 
@@ -3224,7 +3036,7 @@ The ClientUserName and ClientMachineName fields are preserved for the licensing 
 session and are used to issue a CAL to the client when the client successfully responds to the Server
 Platform Challenge message.
 
-3.2.5.3  Processing Client License Information
+##### 3.2.5.3 Processing Client License Information
 
 If the client has a valid license that matches the information sent by the server in the Server License
 Request (section 2.2.2.1) message, the client MUST send the previously issued license in the Client
@@ -3269,7 +3081,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Case 1: The client presents a valid permanent license that does not require an upgrade.
+
+Case 1: The client presents a valid permanent license that does not require an upgrade.
 
 The server MUST send a Licensing Error Message with the error code STATUS_VALID_CLIENT and
 the state transition code ST_NO_TRANSITION. The licensing protocol is complete at this point.
@@ -3287,7 +3100,7 @@ Case 2: If the client presents a license that requires upgrading, that is:
 The server MUST respond back with Server Platform Challenge (section 2.2.2.4) message to the
 client.
 
-3.2.5.4  Sending Server Platform Challenges
+##### 3.2.5.4 Sending Server Platform Challenges
 
 The Server Platform Challenge message MUST be sent from the terminal server when a new license
 needs to be issued to the client or when an existing client license needs to be upgraded. The
@@ -3296,7 +3109,7 @@ message type is PLATFORM_CHALLENGE (0x02) in the licensing preamble.
 The server platform challenge is never sent when the target is a personal terminal server. This is
 because a personal terminal server never tries to get licenses issued or upgraded.
 
-3.2.5.5  Processing Client Platform Challenge Responses
+##### 3.2.5.5 Processing Client Platform Challenge Responses
 
 When a server receives the Client Platform Challenge Response (section 2.2.2.5) message, it
 decrypts the EncryptedPlatformChallengeResponse and EncryptedHWID fields in the message
@@ -3340,7 +3153,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of STATUS_VALID_CLIENT (0x00000007) and a state transition code of ST_NO_TRANSITION
+
+of STATUS_VALID_CLIENT (0x00000007) and a state transition code of ST_NO_TRANSITION
 (0x00000002), ending the licensing protocol.
 
 If the server's grace period has been exceeded, it sends a Licensing Error Message with error code
@@ -3384,7 +3198,7 @@ Case 6: A Client New License Request message was received earlier, the license s
 contacted, and it issued a new license. In this case, the terminal server sends the new license to the
 client in a Server New License (section 2.2.2.7) message.
 
-3.2.5.6  Sending Server Upgrade Licenses
+##### 3.2.5.6 Sending Server Upgrade Licenses
 
 The Server Upgrade License message MUST be sent to the client to upgrade a license in its license
 store. The message type is UPGRADE_LICENSE (0x04) in the licensing preamble.
@@ -3393,12 +3207,12 @@ The EncryptedLicenseInfo field is the license information structure after encryp
 encryption key, using RC4. The BLOB type is BB_ENCRYPTED_DATA_BLOB (0x0009). The MACData
 field is the 128-bit MD5 digest generated from the unencrypted upgraded license.
 
-3.2.5.7  Sending Server New Licenses
+##### 3.2.5.7 Sending Server New Licenses
 
 The Server New License message MUST be sent to the client when a new license is required to be
 issued. The message type is NEW_LICENSE (0x03) in the licensing preamble.
 
-3.2.5.8  Handling Out-of-Sequence or Unrecognized Messages
+##### 3.2.5.8 Handling Out-of-Sequence or Unrecognized Messages
 
 If the server receives a message that is not expected according to the Licensing PDU Flow (section
 1.3.3), or a malformed or an unrecognized message, the server MUST send a Licensing Error
@@ -3410,28 +3224,29 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Message (section 2.2.2.8) with an error code of ERR_INVALID_CLIENT and a state transition code of
+
+Message (section 2.2.2.8) with an error code of ERR_INVALID_CLIENT and a state transition code of
 ST_TOTAL_ABORT.
 
-3.2.5.9  Handling Invalid MACs
+##### 3.2.5.9 Handling Invalid MACs
 
 If the MAC generated over decrypted fields of a message does not match the MAC contained in the
 message, the server MUST send a Licensing Error Message (section 2.2.2.8) with an error code of
 ERR_INVALID_MAC and a state transition code of ST_TOTAL_ABORT.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
-3.3.1.1  Platform ID
+##### 3.3.1.1 Platform ID
 
 The PlatformId field is sent by the client in the Client New License Request message or the Client
 License Information message, depending on whether the client has already been issued a license. It is
@@ -3440,23 +3255,23 @@ populated by the client, as specified in Client New License Request (section 2.2
 field is used by the server to uniquely identify a client in conjunction with the Data1, Data2, Data3,
 and Data4 fields of the Client Hardware Identification structure.
 
-3.3.1.2  Client Random
+##### 3.3.1.2 Client Random
 
 The ClientRandom field is a 32-byte random number created by using a cryptographically secure
 pseudo-random number generator (see sections 2.2.2.2 and 5.1.1). It is created at the beginning of
 the licensing protocol and destroyed when the licensing protocol is completed.
 
-3.3.1.3  Preferred Key Exchange Algorithm ID
+##### 3.3.1.3 Preferred Key Exchange Algorithm ID
 
 The preferred key exchange algorithm ID is the key exchange algorithm selected by the client. This
 MUST be set to KEY_EXCHANGE_ALG_RSA (0x00000001), which indicates RSA with a 512-bit key (see
 Client New License Request (section 2.2.2.2)).<19>
 
-3.3.1.4  Client User Name
+##### 3.3.1.4 Client User Name
 
 See section 2.2.2.2.
 
-3.3.1.5  Client Machine Name
+##### 3.3.1.5 Client Machine Name
 
 See section 2.2.2.2.
 
@@ -3467,7 +3282,8 @@ Release: April 23, 2024
 
 44 / 85
 
-3.3.1.6  Encrypted Premaster Secret
+
+##### 3.3.1.6 Encrypted Premaster Secret
 
 The encrypted premaster secret is a licensing BLOB containing a 48-byte random number that is
 encrypted using RSA with the server's public key retrieved from the server certificate.
@@ -3475,13 +3291,13 @@ encrypted using RSA with the server's public key retrieved from the server certi
 The premaster secret (along with client and server random values) is used to generate the license
 encryption key for later stages of the licensing protocol.
 
-3.3.1.7  License
+##### 3.3.1.7 License
 
 The license is a licensing BLOB of type BB_DATA_BLOB (0x0001). The server MUST send it to the
 client in the Server New License message or the Server Upgrade License message. It is stored by the
 client in the license store.
 
-3.3.1.8  License Store
+##### 3.3.1.8 License Store
 
 This is a client-side database used for storing CALs. This database is indexed by using the product
 information and the scope list associated with the license. The product information and the scope list
@@ -3493,7 +3309,7 @@ the client has already been issued a CAL, it retrieves the binary data for the l
 store by using the product information and the scope list as the lookup key. The client then MUST
 send it as a Licensing Binary BLOB in the Client License Information message.
 
-3.3.1.9  Client Hardware Identification
+##### 3.3.1.9 Client Hardware Identification
 
 The Client Hardware Identification is an identifier that uniquely identifies the client.
 
@@ -3507,18 +3323,18 @@ consistently retrievable. Examples include hard-wired processor IDs, Ethernet ad
 nonremovable Ethernet cards, and disk subsystem serial numbers. The client SHOULD cache the Client
 Hardware Identification for later retrieval after it is generated.
 
-3.3.1.10
+##### 3.3.1.10 Encryption Keys
 
-Encryption Keys
+
 
 The client uses the 128-bit licensing encryption key (section 5.1.2) to decrypt the
 EncryptedPlatformChallenge field in the Server Platform Challenge message (section 2.2.2.4),
 and encrypt the EncryptedHWID field in the Client License Information (section 2.2.2.3) and
 Client Platform Challenge (section 2.2.2.5) messages.
 
-3.3.1.11
+##### 3.3.1.11 Client Licensing States
 
-Client Licensing States
+
 
 Client Licensing States is an enumeration of different licensing states that the remote client can
 have. Client licensing state transition is shown in the diagram in section 3.1.5.3.1.
@@ -3536,7 +3352,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-request (as specified in section 3.2.5.2), depending on the availability of the requested license on the
+
+request (as specified in section 3.2.5.2), depending on the availability of the requested license on the
 client to the terminal server.
 
 Client Licensing Aborted: When the terminal server sends Out-of-Sequence or Unrecognized
@@ -3549,25 +3366,25 @@ in section 3.3.5.6) or on receiving error code STATUS_VALID_CLIENT and the state
 ST_NO_TRANSITION from the terminal server, the client goes into the "Client Licensing Completed"
 state.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Client Packet Wait Timer
+##### 3.3.2.1 Client Packet Wait Timer
 
 The client MAY<20> implement a configurable Client Packet Wait Timer. If the client does not
 receive a response from the server for this time duration, the client MAY disconnect the RDP
 connection.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client licensing state MUST be initialized to "Client Licensing Await".
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Processing Server License Requests
+##### 3.3.5.1 Processing Server License Requests
 
 The server initiates the licensing protocol by sending a Server License Request (section 2.2.2.1)
 message to the client.
@@ -3606,7 +3423,8 @@ Release: April 23, 2024
 
 46 / 85
 
-3.3.5.2  Sending Client New License Requests
+
+##### 3.3.5.2 Sending Client New License Requests
 
 The Sending Client New License Request message is sent when the client cannot find a license type in
 its license store that matches the Product Information given by the server in the Server License
@@ -3615,14 +3433,14 @@ Request message.
 The message type is NEW_LICENSE_REQUEST (0x13) in the licensing preamble. See also Client New
 License Request (section 2.2.2.2).
 
-3.3.5.3  Sending Client License Information
+##### 3.3.5.3 Sending Client License Information
 
 The Client License Information message MUST be sent when a client has a license in its license store
 that matches the Product Information sent in the Server License Request message.
 
 The message type in the licensing preamble is LICENSE_INFO (0x12).
 
-3.3.5.4  Processing Server Platform Challenges
+##### 3.3.5.4 Processing Server Platform Challenges
 
 This message is sent from the server when a new license is required to be issued to the client or when
 the CAL presented by the client needs to be upgraded.
@@ -3635,7 +3453,7 @@ challenge data and compares it with the received MAC checksum to verify the inte
 The client MUST respond to the Server Platform Challenge with a Client Platform Challenge
 Response (section 2.2.2.5) message.
 
-3.3.5.5  Sending Client Platform Challenge Responses
+##### 3.3.5.5 Sending Client Platform Challenge Responses
 
 The client MUST send the Client Platform Challenge Response (section 2.2.2.5) message in response
 to a Server Platform Challenge (section 2.2.2.4) message. The message type in the licensing preamble
@@ -3646,7 +3464,7 @@ The client constructs a Platform Challenge Response Data (section 2.2.2.5.1) str
 Response Data is sent as the EncryptedChallengeResponse BLOB of the Client Platform Challenge
 Response message.
 
-3.3.5.6  Processing Server Upgrade Licenses
+##### 3.3.5.6 Processing Server Upgrade Licenses
 
 The client MUST receive a Server Upgrade License (section 2.2.2.6) message when the CAL sent by
 the client in the Client License Information (section 2.2.2.3) message needs to be upgraded.
@@ -3670,29 +3488,30 @@ Release: April 23, 2024
 
 47 / 85
 
-3.3.5.7  Processing Server New Licenses
+
+##### 3.3.5.7 Processing Server New Licenses
 
 The client MUST receive a new license in the Server New License message. This message is processed
 in the same way that the client processes the Server Upgrade License message (see Processing Server
 Upgrade Licenses).
 
-3.3.5.8  Handling Out-of-Sequence or Unrecognized Messages
+##### 3.3.5.8 Handling Out-of-Sequence or Unrecognized Messages
 
  If the client receives a message that is not expected according to the Licensing PDU Flow, or a
 malformed or an unrecognized message, the client MUST disconnect the RDP connection.
 
-3.3.5.9  Handling Invalid MACs
+##### 3.3.5.9 Handling Invalid MACs
 
 If the MAC generated over decrypted fields of a message does not match the MAC contained in the
 message, the client MAY send a Licensing Error Message (section 2.2.2.8) with an error code of
 ERR_INVALID_MAC and a state transition code of ST_TOTAL_ABORT. The client then MUST disconnect
 the RDP connection.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3703,14 +3522,15 @@ Release: April 23, 2024
 
 48 / 85
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 For a complete listing of RDP headers, see [MS-RDPBCGR] section 4.
 
 The sample protocol packets listed in sections 4.1 through 4.7 are provided as examples and should
 not be considered to have been generated as part of the same protocol run.
 
-4.1  Server License Request (SERVER_LICENSE_REQUEST)
+### 4.1 Server License Request (SERVER_LICENSE_REQUEST)
 
 The Server License Request message is the first message sent by the server as part of the licensing
 protocol. See sections 2.2.2.1 and 3.2.5.1.
@@ -3777,7 +3597,8 @@ Release: April 23, 2024
 
 49 / 85
 
- 00000360  2c f6 f0 65 5a c9 fe 31-53 b4 f0 0c 94 4e 0d 54   ,..eZ..1S....N.T
+
+ 00000360  2c f6 f0 65 5a c9 fe 31-53 b4 f0 0c 94 4e 0d 54   ,..eZ..1S....N.T
  00000370  8e fd 04 00 00 30 82 04-f9 30 82 03 e5 a0 03 02   .....0...0......
  00000380  01 02 02 05 01 00 00 00-02 30 09 06 05 2b 0e 03   .........0...+..
  00000390  02 1d 05 00 30 32 31 30-30 13 06 03 55 04 03 1e   ....02100...U...
@@ -3854,7 +3675,8 @@ Release: April 23, 2024
 
 50 / 85
 
- 000007B0  77 1f 77 ea ec 74 02 38-68 9e 79 14 72 83 34 74   w.w..t.8h.y.r.4t
+
+ 000007B0  77 1f 77 ea ec 74 02 38-68 9e 79 14 72 83 34 74   w.w..t.8h.y.r.4t
  000007C0  62 d2 c1 0c a4 0b f2 a9-b0 38 bb 7c d0 ae be bf   b........8.|....
  000007D0  74 47 16 a0 a2 d3 fc 1d-b9 ba 26 10 06 ef ba 1d   tG........&.....
  000007E0  43 01 4e 4e 6f 56 ca e0-ee d0 f9 4e a6 62 63 ff   C.NNoV.....N.bc.
@@ -3931,7 +3753,8 @@ Release: April 23, 2024
 
 51 / 85
 
- 12 -\
+
+ 12 -\
  08 -/ ServerCertificate::wBlobLen = 0x812 bytes
 
              02 00 00 80-02 00 00 00 f5 02 00 00 -\
@@ -4006,7 +3829,8 @@ Release: April 23, 2024
 
 52 / 85
 
- 66 00 75 00 64 00 64 00-64 00 59 00 3d 00 0d 00 -|
+
+ 66 00 75 00 64 00 64 00-64 00 59 00 3d 00 0d 00 -|
  0a 30 82 01 1e 30 09 06-05 2b 0e 03 02 0f 05 00 -|
  03 82 01 0f 00 30 82 01-0a 02 82 01 01 00 c8 90 -|
  6b f0 c6 58 81 a6 89 1c-0e f2 f6 d9 82 12 71 a5 -|
@@ -4081,7 +3905,8 @@ Release: April 23, 2024
 
 53 / 85
 
- 0x882: ScopeList
+
+ 0x882: ScopeList
  01 -\
  00 -|
  00 -|
@@ -4091,7 +3916,7 @@ Release: April 23, 2024
  6f 73 6f 66 74 2e 63 6f -|
  6d 00                   -/ ScopeList::ScopeArray
 
-4.2  Client New License Request (CLIENT_NEW_LICENSE_REQUEST)
+### 4.2 Client New License Request (CLIENT_NEW_LICENSE_REQUEST)
 
 If the client does not already have a license in its store, it sends the Client New License Request
 message as a response to the Server License Request (section 2.2.2.1) message. See sections
@@ -4154,7 +3979,8 @@ Release: April 23, 2024
 
 54 / 85
 
- 00 -/ EncryptedPreMaster::wBlobType
+
+ 00 -/ EncryptedPreMaster::wBlobType
 
  08 -\
  01 -/ EncryptedPreMaster::wBlobLen = 0x108 bytes
@@ -4200,7 +4026,7 @@ Release: April 23, 2024
 
  52 4f 44 45 4e 54 00 -> ClientMachineName::blobData
 
-4.3  Client License Information (CLIENT_LICENSE_INFO)
+### 4.3 Client License Information (CLIENT_LICENSE_INFO)
 
 If the client already has a license in its store, it sends the license in the Client License Information
 message as a response to the Server License Request (section 2.2.2.1) message. See sections
@@ -4227,7 +4053,8 @@ Release: April 23, 2024
 
 55 / 85
 
- 000000D0:  2a 31 57 b0 3a 3a ad 35-70 d4 bd 29 20 8d 82 dc  *1W.::.5p..) ...
+
+ 000000D0:  2a 31 57 b0 3a 3a ad 35-70 d4 bd 29 20 8d 82 dc  *1W.::.5p..) ...
  000000E0:  f5 7c f9 3a 2f 0d a2 5b-55 7a 95 37 af d5 d8 47  .|.:/..[Uz.7...G
  000000F0:  f9 1d a3 89 5a cf 66 b2-4d b2 83 db c2 45 c8 3b  ....Z.f.M....E.;
  00000100:  86 31 1c 2f a7 59 1a 09-89 56 ed 18 09 4c 35 1a  .1./.Y...V...L5.
@@ -4304,7 +4131,8 @@ Release: April 23, 2024
 
 56 / 85
 
- 00000520:  00 64 00 79 00 32 00 6b-00 72 00 4f 00 34 00 2f  .d.y.2.k.r.O.4./
+
+ 00000520:  00 64 00 79 00 32 00 6b-00 72 00 4f 00 34 00 2f  .d.y.2.k.r.O.4./
  00000530:  00 4d 00 43 00 44 00 4c-00 49 00 31 00 41 00 48  .M.C.D.L.I.1.A.H
  00000540:  00 5a 00 63 00 50 00 69-00 61 00 73 00 3d 00 0d  .Z.c.P.i.a.s.=..
  00000550:  00 0a 30 82 01 22 30 0d-06 09 2a 86 48 86 f7 0d  ..0.."0...*.H...
@@ -4379,7 +4207,8 @@ Release: April 23, 2024
 
 57 / 85
 
- fd -\
+
+ fd -\
  08 -/ LICENSE_PREAMBLE::wMsgSize = 0x8fd bytes
 
  0x04: PreferredKeyExchgAlg (4 bytes)
@@ -4456,7 +4285,8 @@ Release: April 23, 2024
 
 58 / 85
 
- 4a 4a 1c 7e 80 14 f7 8e-77 b8 25 ff 16 47 6f bd -|
+
+ 4a 4a 1c 7e 80 14 f7 8e-77 b8 25 ff 16 47 6f bd -|
  e2 34 3d 2e 02 b9 53 e4-33 75 ad 73 28 80 a0 4d -|
  fc 6c c0 22 53 1b 2c f8-f5 01 60 19 7e 79 19 39 -|
  8d b5 ce 39 58 dd 55 24-3b 55 7b 43 c1 7f 14 2f -|
@@ -4533,7 +4363,8 @@ Release: April 23, 2024
 
 59 / 85
 
- 37 12 02 01 01 ff 04 2c-4d 00 69 00 63 00 72 00 -|
+
+ 37 12 02 01 01 ff 04 2c-4d 00 69 00 63 00 72 00 -|
  6f 00 73 00 6f 00 66 00-74 00 20 00 43 00 6f 00 -|
  72 00 70 00 6f 00 72 00-61 00 74 00 69 00 6f 00 -|
  6e 00 00 00 30 56 06 09-2b 06 01 04 01 82 37 12 -|
@@ -4584,7 +4415,7 @@ Release: April 23, 2024
  42 a2 13 c7 54 ae b5 d5 -\
  24 66 54 f3 1b af 8d fb -/ MACData
 
-4.4  Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)
+### 4.4 Server Platform Challenge (SERVER_PLATFORM_CHALLENGE)
 
 The server sends the Platform Challenge (section 3.2.1.6) to the client to authenticate the client.
 See sections 2.2.2.4 and 3.2.5.4.
@@ -4605,7 +4436,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 26 -\
+
+ 26 -\
  00 -/ LICENSE_PREAMBLE::wMsgSize
  0x04: ConnectFlags (4 bytes)
  ff -\
@@ -4628,7 +4460,7 @@ Release: April 23, 2024
  78 94 ad 3b 81 da 88 18 -\
  56 0f 3a d1 f1 03 ef 35 -/ MACData
 
-4.5  Client Platform Challenge Response
+### 4.5 Client Platform Challenge Response
 
 (CLIENT_PLATFORM_CHALLENGE_RESPONSE)
 
@@ -4676,7 +4508,8 @@ Release: April 23, 2024
 
 61 / 85
 
- 00 -\
+
+ 00 -\
  01 -/ PLATFORM_CHALLENGE_RESPONSE_DATA::wClientType
 
  03 -\
@@ -4737,7 +4570,7 @@ Release: April 23, 2024
  38 23 62 5d 10 8b-93 c3 -\
  f1 e4 67 1f 4a b6 00 0a -/ MACData
 
-4.6  Server New License (SERVER_NEW_LICENSE)
+### 4.6 Server New License (SERVER_NEW_LICENSE)
 
 The server sends the license to the client in the Server New License message. See sections 2.2.2.7
 and 3.2.5.7 for more information.
@@ -4749,7 +4582,8 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000000:  03 03 07 08 09 00 ef 07-db a3 13 30 79 a3 cd 9e  ...........0y...
+
+ 00000000:  03 03 07 08 09 00 ef 07-db a3 13 30 79 a3 cd 9e  ...........0y...
  00000010:  48 f4 8f 06 37 1b 45 dd-60 a9 2e 29 26 bf c1 96  H...7.E.`..)&...
  00000020:  5e 07 93 9d f2 2d 3e a3-3a ff d5 6d f5 85 30 28  ^....->.:..m..0(
  00000030:  e1 46 fd 56 d1 20 41 33-94 88 0c 27 23 a0 61 38  .F.V. A3...'#.a8
@@ -4826,7 +4660,8 @@ Release: April 23, 2024
 
 63 / 85
 
- 00000450:  bd 23 fd 70 5a fd fe 74-39 c5 fa 11 ac 04 c9 94  .#.pZ..t9.......
+
+ 00000450:  bd 23 fd 70 5a fd fe 74-39 c5 fa 11 ac 04 c9 94  .#.pZ..t9.......
  00000460:  fc 12 2e 06 04 61 8e 32-f4 f8 3b d1 d8 09 b3 e4  .....a.2..;.....
  00000470:  ac 0f 3e 92 f7 75 0b 32-9b d4 8a 13 99 6a 26 77  ..>..u.2.....j&w
  00000480:  9f 34 08 a8 eb b3 3e 2a-5b 4a 44 f9 21 89 2a 09  .4....>*[JD.!.*.
@@ -4901,7 +4736,8 @@ Release: April 23, 2024
 
 64 / 85
 
- 08 -/ LICENSE_PREAMBLE::wMsgSize = 0x807 bytes
+
+ 08 -/ LICENSE_PREAMBLE::wMsgSize = 0x807 bytes
  0x04: EncryptedLicenseInfo (2 + 2 + 0x7ef = 0x7f3 bytes)
  09 -\
  00 -/ EncryptedLicenseInfo::wBlobType = BB_ENCRYPTED_DATA_BLOB
@@ -4978,7 +4814,8 @@ Release: April 23, 2024
 
 65 / 85
 
- 55 5f 7c ed 84 c1 16 d3-9e 9c 90 9d 55 bc 3e b9 -|
+
+ 55 5f 7c ed 84 c1 16 d3-9e 9c 90 9d 55 bc 3e b9 -|
  63 12 f2 26 6d d7 cc 4f-01 a2 0b d9 66 60 ad ed -|
  2e bd be 28 5f 4a 33 c8-e8 d4 a6 23 8a fd 66 f5 -|
  28 90 81 27 a9 44 93 68-57 44 5e ba 90 12 03 15 -|
@@ -5054,7 +4891,8 @@ Release: April 23, 2024
 
 66 / 85
 
- The decrypted LicenseInfo for the above data is
+
+ The decrypted LicenseInfo for the above data is
  00 -\
  00 -|
  06 -|
@@ -5131,7 +4969,8 @@ Release: April 23, 2024
 
 67 / 85
 
- c8 d7 f3 01 03 38 10 be-7c 42 67 01 a7 23 02 03 -|
+
+ c8 d7 f3 01 03 38 10 be-7c 42 67 01 a7 23 02 03 -|
  01 00 01 a3 13 30 11 30-0f 06 03 55 1d 13 04 08 -|
  30 06 01 01 ff 02 01 00-30 09 06 05 2b 0e 03 02 -|
  1d 05 00 03 82 01 01 00-70 db 21 2b 84 9a 7a c3 -|
@@ -5208,7 +5047,8 @@ Release: April 23, 2024
 
 68 / 85
 
- 35 00 2d 00 37 00 30 00-33 00 34 00 37 00 00 00 -|
+
+ 35 00 2d 00 37 00 30 00-33 00 34 00 37 00 00 00 -|
  57 00 4f 00 52 00 4b 00-47 00 52 00 4f 00 55 00 -|
  50 00 00 00 00 00 30 25-06 03 55 1d 23 01 01 ff -|
  04 1b 30 19 a1 10 a4 0e-52 00 4f 00 44 00 45 00 -|
@@ -5235,7 +5075,7 @@ Release: April 23, 2024
  ed-e8 bf d6 13 a0 f5 80 -\
  4a e5 ff 85 16 fa cb 1f -/ MACData
 
-4.7  Server Upgrade License (SERVER_UPGRADE_LICENSE)
+### 4.7 Server Upgrade License (SERVER_UPGRADE_LICENSE)
 
 The Server Upgrade License message is sent to the client to upgrade a license in its license store.
 The message type is UPGRADE_LICENSE (0x04) in the Licensing Preamble (section 2.2.1.2). See
@@ -5280,7 +5120,8 @@ Release: April 23, 2024
 
 69 / 85
 
- 000001F0  b5 81 62 0e af ec aa 13-88 fc 88 64 2f b3 18 04  ..b........d/...
+
+ 000001F0  b5 81 62 0e af ec aa 13-88 fc 88 64 2f b3 18 04  ..b........d/...
  00000200  44 c9 65 e7 e8 37 1c 43-42 c5 eb c3 0a 39 e3 df  D.e..7.CB....9..
  00000210  e3 04 5d 5a b2 3e 9c 3e-24 14 df 25 0d dd 3d 59  ..]Z.>.>$..%..=Y
  00000220  12 ef c8 ef 53 c7 4b f0-7d c1 49 bd 5c 5f c3 07  ....S.K.}.I.\_..
@@ -5357,7 +5198,8 @@ Release: April 23, 2024
 
 70 / 85
 
- 00000640  0b 72 0f d4 ed 5c 3e cc-e8 00 dc 6d 83 9d b3 99  .r...\>....m....
+
+ 00000640  0b 72 0f d4 ed 5c 3e cc-e8 00 dc 6d 83 9d b3 99  .r...\>....m....
  00000650  90 4d 2a 49 1b 2c 3c 1e-0a 2b ee 4d 16 0e 2f 7d  .M*I.,<..+.M../}
  00000660  b2 33 32 10 f4 1d 2d 4f-12 19 4c 6a 71 1c ab dd  .32...-O..Ljq...
  00000670  de 6e e1 39 32 2e 41 f4-57 c0 a4 13 b5 56 3e 6e  .n.92.A.W....V>n
@@ -5434,7 +5276,8 @@ Release: April 23, 2024
 
 71 / 85
 
- 00000A90  6c df ed f9 8a fe f5 87-81 b4 30 8a 96 17 3e 15  l.........0...>.
+
+ 00000A90  6c df ed f9 8a fe f5 87-81 b4 30 8a 96 17 3e 15  l.........0...>.
  00000AA0  29 fb 2d 67 87 4b 35 c2-51 a4 2d ba 45 f2 46 82  ).-g.K5.Q.-.E.F.
  00000AB0  44 64 15 bf f5 85 c4 d9-72 39 49 ec 91 0c 8d 97  Dd......r9I.....
  00000AC0  69 cf a5 b2 65 95 ee e8-f0 c8 4c 93 52 dd 7a 2a  i...e.....L.R.z*
@@ -5511,7 +5354,8 @@ Release: April 23, 2024
 
 72 / 85
 
- 00000EE0  c6 74 b6 6f 0e 6f 1c e4-bd 3c 66 67 10 a4 75 42  .t.o.o...<fg..uB
+
+ 00000EE0  c6 74 b6 6f 0e 6f 1c e4-bd 3c 66 67 10 a4 75 42  .t.o.o...<fg..uB
  00000EF0  58 ba 65 75 f2 d9 bd dc-cc bb db a7 ca 26 8e 7a  X.eu.........&.z
  00000F00  01 b8 98 4d 8d 36 58 55-b3 a9 a1 ee 07 2a 91 7a  ...M.6XU.....*.z
  00000F10  b7 79 1d 5a 58 2b 9c 9f-2c 8a 51 db 92 ec 5c d0  .y.ZX+..,.Q...\.
@@ -5588,7 +5432,8 @@ Release: April 23, 2024
 
 73 / 85
 
- 00001330  f6 97 ca b9 00 28 3e fa-a5 7e 5d 1b 72 70 54 8d  .....(>..~].rpT.
+
+ 00001330  f6 97 ca b9 00 28 3e fa-a5 7e 5d 1b 72 70 54 8d  .....(>..~].rpT.
  00001340  f1 32 c5 23 a0 cf 93 c8-59 44 28 48 e4 0f be 97  .2.#....YD(H....
  00001350  86 07 22 10 79 10 80 19-e2 d7 9c e1 78 eb dc 0e  ..".y.......x...
  00001360  00 f6 31 5e ae 0a d5 7a-40 cb f7 9a c3 b7 59 4c  ..1^...z@.....YL
@@ -5665,7 +5510,8 @@ Release: April 23, 2024
 
 74 / 85
 
- 00001780  fc 87 18 33 25 e8 24 48-4c 3a 11 2b 28 6a 2e 76  ...3%.$HL:.+(j.v
+
+ 00001780  fc 87 18 33 25 e8 24 48-4c 3a 11 2b 28 6a 2e 76  ...3%.$HL:.+(j.v
  00001790  c4 1d a0 ac ea 34 96 d5-69 6d a5 8c 7e 73 d2 b7  .....4..im..~s..
  000017A0  01 66 99 34 50 e9 ba ab-26 95 5f 20 90 d2 67 25  .f.4P...&._ ..g%
  000017B0  71 e0 ac 61 73 73 4c cf-81 df 62 41 9f 94 12 27  q..assL...bA...'
@@ -5742,7 +5588,8 @@ Release: April 23, 2024
 
 75 / 85
 
- 03 -> LICENSE_PREAMBLE::bVersion = 3 (RPD 5.0, 5.2, 6.0)
+
+ 03 -> LICENSE_PREAMBLE::bVersion = 3 (RPD 5.0, 5.2, 6.0)
 
  95 -\
  1b -/ LICENSE_PREAMBLE::wMsgSize = 0x1b95 bytes
@@ -5767,13 +5614,14 @@ Release: April 23, 2024
 
 76 / 85
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-RDPELE].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
-5  Security
+## 5 Security
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The Remote Desktop Protocol: Licensing Extension uses its own security layer in addition to the RDP
 security layer (see [MS-RDPBCGR] section 5). Certain fields of licensing messages (see sections
@@ -5787,7 +5635,7 @@ Client License Information message or a Client New License Request message. Both
 use the same license encryption key for the license protocol. For information on how the license
 encryption key is generated, see section 5.1.2.
 
-5.1.1  Client and Server Random Values and Premaster Secrets
+#### 5.1.1 Client and Server Random Values and Premaster Secrets
 
 The client and server both generate a 32-byte random value using a cryptographically safe random
 number generator.
@@ -5807,7 +5655,7 @@ Figure 7: Client and server random values and premaster secret flows
 
 For information on how the licensing encryption key is generated, see section 5.1.2.
 
-5.1.1.1  Encrypting the Premaster Secret
+##### 5.1.1.1 Encrypting the Premaster Secret
 
 The client uses RSA to encrypt the premaster secret with the public key of the server. The client
 obtains the public key from the terminal server certificate, which is the leaf certificate in the
@@ -5823,12 +5671,13 @@ Release: April 23, 2024
 
 77 / 85
 
-5.1.1.2  Decrypting the Premaster Secret
+
+##### 5.1.1.2 Decrypting the Premaster Secret
 
 The server decrypts the encrypted premaster secret with its private key. For decryption with RSA,
 see [MS-RDPBCGR] sections 5.3.1 and 5.3.4.
 
-5.1.2  Generating the Licensing Encryption and MAC Salt Keys
+#### 5.1.2 Generating the Licensing Encryption and MAC Salt Keys
 
 Both the client and the server use the licensing encryption key when necessary to encrypt and decrypt
 licensing message data. Both the client and the server use the method described in this section to
@@ -5867,14 +5716,14 @@ in the following procedure to represent concatenation of the keys.
  FinalHash(K) = MD5(K + ClientRandom + ServerRandom)
  LicensingEncryptionKey = FinalHash(Second128Bits(SessionKeyBlob))
 
-5.1.3  Encrypting Licensing Session Data
+#### 5.1.3 Encrypting Licensing Session Data
 
 The server and the client both encrypt the licensing data with the 128-bit license encryption key
 (obtained as described in section 5.1.2) using RC4. For more information, see [SCHNEIER].
 
  EncryptedData = RC4(LicensingEncryptionKey, LicensingData)
 
-5.1.4  Decrypting Licensing Session Data
+#### 5.1.4 Decrypting Licensing Session Data
 
 The server and the client both decrypt the licensing data with the 128-bit license encryption key
 (obtained as specified in section 5.1.2), using RC4 (for more information, see [MSDN-RC4]).
@@ -5886,9 +5735,10 @@ Remote Desktop Protocol: Licensing Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- DecryptedData = RC4(LicensingEncryptionKey, EncryptedData)
 
-5.1.5  MAC Generation
+ DecryptedData = RC4(LicensingEncryptionKey, EncryptedData)
+
+#### 5.1.5 MAC Generation
 
 Generation of a MAC checksum follows a method similar to that specified in [MS-RDPBCGR] section
 5.3.6.1. Note that SHA-1 hash is used. Also note that the "+" symbol is used in the following
@@ -5904,7 +5754,7 @@ ordered) UINT32, and the data-content field is the full set of data to be encode
 The MAC salt key is given by the first 128 bits of the licensing session key BLOB. For licensing session
 key BLOB and MAC salt key generation, see section 5.1.2.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5915,7 +5765,8 @@ Release: April 23, 2024
 
 79 / 85
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5981,7 +5832,8 @@ Release: April 23, 2024
 
 80 / 85
 
-<3> Section 2.2.2.1: The Windows Server 2008 terminal server does not send the server certificate if
+
+<3> Section 2.2.2.1: The Windows Server 2008 terminal server does not send the server certificate if
 encryption is in effect and already protecting RDP traffic (for RDP security measures, see [MS-
 RDPBCGR] sections 5.3 and 5.4 ).
 
@@ -6068,7 +5920,8 @@ Release: April 23, 2024
 
 81 / 85
 
-<11> Section 2.2.2.2: On Microsoft platforms, the least-significant byte of the PlatFormId field
+
+<11> Section 2.2.2.2: On Microsoft platforms, the least-significant byte of the PlatFormId field
 contains the minor operating system version.
 
 <12> Section 2.2.2.4: The wBlobType field is unused in EncryptedPlatformChallenge (part of
@@ -6112,7 +5965,8 @@ Release: April 23, 2024
 
 82 / 85
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6156,7 +6010,8 @@ Release: April 23, 2024
 
 83 / 85
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6298,7 +6153,8 @@ Sequencing rules
 
 84 / 85
 
-   client 46
+
+   client 46
    server 40
 Server
    abstract data model (section 3.1.1 36, section

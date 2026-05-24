@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 79
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 79
 
-Date
+
+Date
 
 Revision
 History
@@ -447,548 +449,214 @@ Release: April 23, 2024
 
 3 / 79
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.3.1.1
-
-1.3.2
-1.3.3
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 8
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Video Redirection Virtual Channel Protocol ....................................................... 9
-Interface Manipulation ........................................................................... 10
-Client Notifications Interface ........................................................................ 10
-Server Data Interface .................................................................................. 10
-Channel Setup Sequence ....................................................................... 10
-Presentation Initialization and Termination Sequence ................................ 11
-Playback State Sequence ....................................................................... 12
-Data Streaming Sequence ...................................................................... 13
-Geometry Handling Sequence ................................................................. 14
-Volume Handling Sequence .................................................................... 14
-Interface Manipulation Exchange Capabilities Interface Description ................... 15
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 16
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-1.3.3.4
-1.3.3.5
-1.3.3.6
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.4
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-Shared Message Header (SHARED_MSG_HEADER) ......................................... 17
-Interface Manipulation ................................................................................. 20
-Interface Manipulation Exchange Capabilities Interface .................................... 20
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-
-2.2.3.2
-
-2.2.4
-
-2.2.4.1
-2.2.4.2
-
-2.2.5
-
-2.2.5.1
-
-Interface Manipulation Exchange Capabilities Request
-(RIM_EXCHANGE_CAPABILITY_REQUEST) ............................................... 20
-Interface Manipulation Exchange Capabilities Response
-(RIM_EXCHANGE_CAPABILITY_RESPONSE).............................................. 20
-Client Notifications Interface ........................................................................ 21
-Playback Acknowledgment Message (PLAYBACK_ACK) ............................... 21
-Client Event Notification Message (CLIENT_EVENT_NOTIFICATION) ............ 22
-Server Data Interface .................................................................................. 22
-Channel Setup Messages........................................................................ 23
-Set Channel Parameters Message (SET_CHANNEL_PARAMS) ................. 23
-Exchange Capabilities Request Message (EXCHANGE_CAPABILITIES_REQ)
- ..................................................................................................... 23
-Exchange Capabilities Response Message (EXCHANGE_CAPABILITIES_RSP)
- ..................................................................................................... 24
-Presentation Initialization and Termination Messages ................................ 24
-New Presentation Message (NEW_PRESENTATION) .............................. 24
-Check Format Support Request Message (CHECK_FORMAT_SUPPORT_REQ)
- ..................................................................................................... 25
-Check Format Support Response Message
-(CHECK_FORMAT_SUPPORT_RSP) ..................................................... 26
-Add Stream Message (ADD_STREAM) ................................................ 26
-Set Topology Request Message (SET_TOPOLOGY_REQ) ........................ 27
-Set Topology Response Message (SET_TOPOLOGY_RSP) ...................... 27
-Remove Stream Message (REMOVE_STREAM) ..................................... 28
-
-2.2.5.1.1
-2.2.5.1.2
-
-2.2.5.1.3
-
-2.2.5.2
-
-2.2.5.2.1
-2.2.5.2.2
-
-2.2.5.2.3
-
-2.2.5.2.4
-2.2.5.2.5
-2.2.5.2.6
-2.2.5.2.7
-
-[MS-RDPEV] - v20240423
-Remote Desktop Protocol: Video Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 79
-
-2.2.5.2.8
-
-2.2.5.4
-
-2.2.5.3
-
-2.2.5.2.9
-
-2.2.5.2.10
-
-2.2.5.4.1
-2.2.5.4.2
-2.2.5.4.3
-2.2.5.4.4
-2.2.5.4.5
-
-2.2.5.3.1
-2.2.5.3.2
-2.2.5.3.3
-2.2.5.3.4
-2.2.5.3.5
-
-Shut Down Presentation Request Message
-(SHUTDOWN_PRESENTATION_REQ) .................................................. 28
-Shut Down Presentation Response Message
-(SHUTDOWN_PRESENTATION_RSP) .................................................. 29
-Set Source Video Rectangle Message (SET_SOURCE_VIDEO_RECTANGLE)29
-Playback State Messages ....................................................................... 30
-On Playback Started Message (ON_PLAYBACK_STARTED) .................... 30
-On Playback Paused Message (ON_PLAYBACK_PAUSED) ....................... 31
-On Playback Restarted Message (ON_PLAYBACK_RESTARTED) .............. 31
-On Playback Stopped Message (ON_PLAYBACK_STOPPED) ................... 32
-On Playback Rate Changed Message (ON_PLAYBACK_RATE_CHANGED) . 32
-Data Streaming Messages ...................................................................... 33
-Set Allocator Properties Message (SET_ALLOCATOR) ........................... 33
-Notify Preroll Message (NOTIFY_PREROLL) ......................................... 34
-On Sample Message (ON_SAMPLE) .................................................... 34
-On Flush Message (ON_FLUSH) ......................................................... 35
-On End of Stream Message (ON_END_OF_STREAM) ............................ 35
-Geometry Handling Messages ................................................................. 36
-Set Video Window Message (SET_VIDEO_WINDOW) ............................ 36
-Update Geometry Information Message (UPDATE_GEOMETRY_INFO) ..... 37
-Volume Handling Messages .................................................................... 38
-On Stream Volume Message (ON_STREAM_VOLUME) ........................... 38
-On Channel Volume Message (ON_CHANNEL_VOLUME) ........................ 38
-TSMM_CAPABILITIES Structure .................................................................... 39
-2.2.6
-TS_AM_MEDIA_TYPE Structure ..................................................................... 40
-2.2.7
-TS_MM_DATA_SAMPLE Structure .................................................................. 41
-2.2.8
-2.2.9
-TSMM_PLATFORM_COOKIE Constants ........................................................... 43
-2.2.10  MMREDIR_CAPABILITY_PLATFORM Constants ................................................ 43
-2.2.11  GEOMETRY_INFO Structure .......................................................................... 43
-TS_WNDFLAG Flags .................................................................................... 45
-2.2.12
-TS_RECT Structure ..................................................................................... 45
-2.2.13
-2.2.14
-TSMM_CLIENT_EVENT Constants .................................................................. 45
-2.2.15  MMREDIR_CAPABILITY_AUDIOSUPPORT Constants ......................................... 46
-
-2.2.5.6.1
-2.2.5.6.2
-
-2.2.5.5.1
-2.2.5.5.2
-
-2.2.5.6
-
-2.2.5.5
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 47
-Common Details .............................................................................................. 47
-Abstract Data Model .................................................................................... 47
-Interface Manipulation Data Model .......................................................... 47
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Processing a Shared Message Header ...................................................... 47
-Interface Manipulation ........................................................................... 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-Server Details .................................................................................................. 48
-Abstract Data Model .................................................................................... 48
-Timers ...................................................................................................... 48
-Initialization ............................................................................................... 48
-Higher-Layer Triggered Events ..................................................................... 48
-Message Processing Events and Sequencing Rules .......................................... 48
-Client Notifications Interface................................................................... 48
-Processing a Playback Acknowledgment Message ................................ 48
-Processing a Client Event Notification Message .................................... 48
-Server Data Interface ............................................................................ 49
-Server Data Interface Channel Setup Messages ................................... 49
-Sending a Set Channel Parameters Message.................................. 49
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.2.1.1
-
-3.2.5.2.1
-
-3.2.5.1
-
-3.2.5.2
-
-3.2
-
-[MS-RDPEV] - v20240423
-Remote Desktop Protocol: Video Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 79
-
-3.2.5.2.1.2
-3.2.5.2.1.3
-
-3.2.5.2.2
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-3.2.5.2.2.3
-3.2.5.2.2.4
-3.2.5.2.2.5
-3.2.5.2.2.6
-3.2.5.2.2.7
-3.2.5.2.2.8
-3.2.5.2.2.9
-3.2.5.2.2.10
-
-3.2.5.2.3
-
-3.2.5.2.3.1
-3.2.5.2.3.2
-3.2.5.2.3.3
-3.2.5.2.3.4
-3.2.5.2.3.5
-
-3.2.5.2.4
-
-3.2.5.2.4.1
-3.2.5.2.4.2
-3.2.5.2.4.3
-3.2.5.2.4.4
-3.2.5.2.4.5
-
-3.2.5.2.5
-
-3.2.5.2.5.1
-3.2.5.2.5.2
-
-3.2.5.2.6
-
-3.2.5.2.6.1
-3.2.5.2.6.2
-
-Sending an Exchange Capabilities Request Message ....................... 49
-Processing an Exchange Capabilities Response Message ................. 49
-Server Data Interface Presentation Initialization and Termination Messages
- ..................................................................................................... 49
-Sending a New Presentation Message ........................................... 49
-Sending a Check Format Support Request Message ........................ 49
-Processing a Check Format Support Response Message .................. 50
-Sending an Add Stream Message ................................................. 50
-Sending a Set Topology Request Message ..................................... 50
-Processing a Set Topology Response Message ............................... 50
-Sending a Remove Stream Message ............................................. 50
-Sending a Shut Down Presentation Request Message ..................... 50
-Processing a Shut Down Presentation Response Message ................ 51
-Sending a Set Source Video Rectangle Message ............................. 51
-Server Data Interface Playback State Messages .................................. 51
-Sending an On Playback Started Message ..................................... 51
-Sending an On Playback Paused Message...................................... 51
-Sending an On Playback Restarted Message .................................. 51
-Sending an On Playback Stopped Message .................................... 52
-Sending an On Playback Rate Changed Message ............................ 52
-Server Data Interface Data Streaming Messages ................................. 52
-Sending a Set Allocator Properties Message .................................. 52
-Sending a Notify Preroll Message ................................................. 52
-Sending an On Sample Message .................................................. 52
-Sending an On Flush Message ..................................................... 52
-Sending an On End Of Stream Message ........................................ 52
-Server Data Interface Geometry Handling Messages ............................ 53
-Sending a Set Video Window Message .......................................... 53
-Sending an Update Geometry Information Message........................ 53
-Server Data Interface Volume Handling Messages ............................... 53
-Sending an On Stream Volume Message ....................................... 53
-Sending an On Channel Volume Message ...................................... 53
-Interface Manipulation Exchange Capabilities Interface .............................. 53
-
-3.2.5.3
-
-3.2.5.3.1
-
-3.2.5.3.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-Sending an Interface Manipulation Exchange Capabilities Request Message
- ..................................................................................................... 53
-Processing an Interface Manipulation Exchange Capabilities Response
-Message ......................................................................................... 53
-Timer Events .............................................................................................. 53
-Other Local Events ...................................................................................... 54
-Client Details ................................................................................................... 54
-Abstract Data Model .................................................................................... 54
-Timers ...................................................................................................... 54
-Initialization ............................................................................................... 54
-Higher-Layer Triggered Events ..................................................................... 54
-Message Processing Events and Sequencing Rules .......................................... 54
-Interface Manipulation ........................................................................... 54
-Client Notifications Interface................................................................... 54
-Sending a Playback Acknowledgment Message .................................... 54
-Sending a Client Event Notification Message ....................................... 54
-Server Data Interface ............................................................................ 55
-Server Data Interface Channel Setup Messages ................................... 55
-Processing a Set Channel Parameters Message .............................. 55
-Processing an Exchange Capabilities Request Message ................... 55
-Sending an Exchange Capabilities Response Message ..................... 55
-Server Data Interface Presentation Initialization and Termination Messages
- ..................................................................................................... 55
-Processing a New Presentation Message ....................................... 55
-Processing a Check Format Support Request Message .................... 55
-
-3.3.5.3.1.1
-3.3.5.3.1.2
-3.3.5.3.1.3
-
-3.3.5.3.2.1
-3.3.5.3.2.2
-
-3.3.5.1
-3.3.5.2
-
-3.3.5.2.1
-3.3.5.2.2
-
-3.3.5.3
-
-3.3.5.3.1
-
-3.3.5.3.2
-
-[MS-RDPEV] - v20240423
-Remote Desktop Protocol: Video Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 79
-
-3.3.5.3.2.3
-3.3.5.3.2.4
-3.3.5.3.2.5
-3.3.5.3.2.6
-3.3.5.3.2.7
-3.3.5.3.2.8
-3.3.5.3.2.9
-3.3.5.3.2.10
-
-Sending a Check Format Support Response Message ...................... 55
-Processing an Add Stream Message.............................................. 56
-Processing a Set Topology Request Message ................................. 56
-Sending a Set Topology Response Message ................................... 56
-Processing a Remove Stream Message ......................................... 56
-Processing a Shut Down Presentation Request Message .................. 56
-Sending a Shut Down Presentation Response Message ................... 56
-Processing a Set Video Source Rectangle Message ......................... 57
-Server Data Interface Playback State Messages .................................. 57
-Processing an On Playback Started Message .................................. 57
-Processing an On Playback Paused Message .................................. 57
-Processing an On Playback Restarted Message .............................. 57
-Processing an On Playback Stopped Message ................................ 57
-Processing an On Playback Rate Changed Message ........................ 57
-Server Data Interface Data Streaming Messages ................................. 57
-Processing a Set Allocator Properties Message ............................... 57
-Processing a Notify Preroll Message .............................................. 58
-Processing an On Sample Message ............................................... 58
-Processing an On Flush Message .................................................. 58
-Processing an On End Of Stream Message ..................................... 58
-Server Data Interface Geometry Handling Messages ............................ 58
-Processing a Set Video Window Message ....................................... 58
-Processing an Update Geometry Information Message .................... 58
-Server Data Interface Volume Handling Messages ............................... 58
-Processing an On Stream Volume Message .................................... 58
-Processing an On Channel Volume Message .................................. 58
-Interface Manipulation Exchange Capabilities Interface Messages ................ 59
-
-3.3.5.3.3
-
-3.3.5.3.3.1
-3.3.5.3.3.2
-3.3.5.3.3.3
-3.3.5.3.3.4
-3.3.5.3.3.5
-
-3.3.5.3.4
-
-3.3.5.3.4.1
-3.3.5.3.4.2
-3.3.5.3.4.3
-3.3.5.3.4.4
-3.3.5.3.4.5
-
-3.3.5.3.5
-
-3.3.5.3.5.1
-3.3.5.3.5.2
-
-3.3.5.3.6
-
-3.3.5.3.6.1
-3.3.5.3.6.2
-
-Processing an Interface Manipulation Exchange Capabilities Request
-Message ......................................................................................... 59
-Sending an Interface Manipulation Exchange Capabilities Response Message
- ..................................................................................................... 59
-Timer Events .............................................................................................. 59
-Other Local Events ...................................................................................... 59
-
-3.3.5.4
-
-3.3.5.4.1
-
-3.3.5.4.2
-
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 60
-Server Data Interface Annotations ..................................................................... 60
-Channel Setup Sequence ............................................................................. 60
-Presentation Initialization and Termination Sequence ...................................... 61
-Playback State Sequence ............................................................................. 65
-Data Streaming Sequence ........................................................................... 66
-Geometry Handling Sequence ...................................................................... 68
-Volume Handling Sequence .......................................................................... 69
-Client Notifications Interface Annotation ............................................................. 70
-Interface Manipulation Exchange Capabilities Interface Annotation ......................... 71
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-4.1.6
-
-4.2
-4.3
-
-5  Security ................................................................................................................. 72
-Security Considerations for Implementers ........................................................... 72
-Index of Security Parameters ............................................................................ 72
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 73
-
-7  Change Tracking .................................................................................................... 75
-
-8  Index ..................................................................................................................... 76
-
-[MS-RDPEV] - v20240423
-Remote Desktop Protocol: Video Redirection Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 79
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Video Redirection Virtual Channel Protocol](#131-video-redirection-virtual-channel-protocol)
+      - [1.3.1.1 Interface Manipulation](#1311-interface-manipulation)
+    - [1.3.2 Client Notifications Interface](#132-client-notifications-interface)
+    - [1.3.3 Server Data Interface](#133-server-data-interface)
+      - [1.3.3.1 Channel Setup Sequence](#1331-channel-setup-sequence)
+      - [1.3.3.2 Presentation Initialization and Termination Sequence](#1332-presentation-initialization-and-termination-sequence)
+      - [1.3.3.3 Playback State Sequence](#1333-playback-state-sequence)
+      - [1.3.3.4 Data Streaming Sequence](#1334-data-streaming-sequence)
+      - [1.3.3.5 Geometry Handling Sequence](#1335-geometry-handling-sequence)
+      - [1.3.3.6 Volume Handling Sequence](#1336-volume-handling-sequence)
+    - [1.3.4 Interface Manipulation Exchange Capabilities Interface Description](#134-interface-manipulation-exchange-capabilities-interface-description)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Shared Message Header (SHARED_MSG_HEADER)](#221-shared-message-header-sharedmsgheader)
+    - [2.2.2 Interface Manipulation](#222-interface-manipulation)
+    - [2.2.3 Interface Manipulation Exchange Capabilities Interface](#223-interface-manipulation-exchange-capabilities-interface)
+      - [2.2.3.1 Interface Manipulation Exchange Capabilities Request](#2231-interface-manipulation-exchange-capabilities-request)
+      - [2.2.3.2 Interface Manipulation Exchange Capabilities Response](#2232-interface-manipulation-exchange-capabilities-response)
+    - [2.2.4 Client Notifications Interface](#224-client-notifications-interface)
+      - [2.2.4.1 Playback Acknowledgment Message (PLAYBACK_ACK)](#2241-playback-acknowledgment-message-playbackack)
+      - [2.2.4.2 Client Event Notification Message (CLIENT_EVENT_NOTIFICATION)](#2242-client-event-notification-message-clienteventnotification)
+    - [2.2.5 Server Data Interface](#225-server-data-interface)
+      - [2.2.5.1 Channel Setup Messages](#2251-channel-setup-messages)
+        - [2.2.5.1.1 Set Channel Parameters Message (SET_CHANNEL_PARAMS)](#22511-set-channel-parameters-message-setchannelparams)
+        - [2.2.5.1.2 Exchange Capabilities Request Message (EXCHANGE_CAPABILITIES_REQ)](#22512-exchange-capabilities-request-message-exchangecapabilitiesreq)
+        - [2.2.5.1.3 Exchange Capabilities Response Message (EXCHANGE_CAPABILITIES_RSP)](#22513-exchange-capabilities-response-message-exchangecapabilitiesrsp)
+      - [2.2.5.2 Presentation Initialization and Termination Messages](#2252-presentation-initialization-and-termination-messages)
+        - [2.2.5.2.1 New Presentation Message (NEW_PRESENTATION)](#22521-new-presentation-message-newpresentation)
+        - [2.2.5.2.2 Check Format Support Request Message (CHECK_FORMAT_SUPPORT_REQ)](#22522-check-format-support-request-message-checkformatsupportreq)
+        - [2.2.5.2.3 Check Format Support Response Message (CHECK_FORMAT_SUPPORT_RSP)](#22523-check-format-support-response-message-checkformatsupportrsp)
+        - [2.2.5.2.4 Add Stream Message (ADD_STREAM)](#22524-add-stream-message-addstream)
+        - [2.2.5.2.5 Set Topology Request Message (SET_TOPOLOGY_REQ)](#22525-set-topology-request-message-settopologyreq)
+        - [2.2.5.2.6 Set Topology Response Message (SET_TOPOLOGY_RSP)](#22526-set-topology-response-message-settopologyrsp)
+        - [2.2.5.2.7 Remove Stream Message (REMOVE_STREAM)](#22527-remove-stream-message-removestream)
+        - [2.2.5.2.8 Shut Down Presentation Request Message](#22528-shut-down-presentation-request-message)
+        - [2.2.5.2.9 Shut Down Presentation Response Message](#22529-shut-down-presentation-response-message)
+        - [2.2.5.2.10 Set Source Video Rectangle Message (SET_SOURCE_VIDEO_RECTANGLE)](#225210-set-source-video-rectangle-message-setsourcevideorectangle)
+      - [2.2.5.3 Playback State Messages](#2253-playback-state-messages)
+        - [2.2.5.3.1 On Playback Started Message (ON_PLAYBACK_STARTED)](#22531-on-playback-started-message-onplaybackstarted)
+        - [2.2.5.3.2 On Playback Paused Message (ON_PLAYBACK_PAUSED)](#22532-on-playback-paused-message-onplaybackpaused)
+        - [2.2.5.3.3 On Playback Restarted Message (ON_PLAYBACK_RESTARTED)](#22533-on-playback-restarted-message-onplaybackrestarted)
+        - [2.2.5.3.4 On Playback Stopped Message (ON_PLAYBACK_STOPPED)](#22534-on-playback-stopped-message-onplaybackstopped)
+        - [2.2.5.3.5 On Playback Rate Changed Message (ON_PLAYBACK_RATE_CHANGED)](#22535-on-playback-rate-changed-message-onplaybackratechanged)
+      - [2.2.5.4 Data Streaming Messages](#2254-data-streaming-messages)
+        - [2.2.5.4.1 Set Allocator Properties Message (SET_ALLOCATOR)](#22541-set-allocator-properties-message-setallocator)
+        - [2.2.5.4.2 Notify Preroll Message (NOTIFY_PREROLL)](#22542-notify-preroll-message-notifypreroll)
+        - [2.2.5.4.3 On Sample Message (ON_SAMPLE)](#22543-on-sample-message-onsample)
+        - [2.2.5.4.4 On Flush Message (ON_FLUSH)](#22544-on-flush-message-onflush)
+        - [2.2.5.4.5 On End of Stream Message (ON_END_OF_STREAM)](#22545-on-end-of-stream-message-onendofstream)
+      - [2.2.5.5 Geometry Handling Messages](#2255-geometry-handling-messages)
+        - [2.2.5.5.1 Set Video Window Message (SET_VIDEO_WINDOW)](#22551-set-video-window-message-setvideowindow)
+        - [2.2.5.5.2 Update Geometry Information Message (UPDATE_GEOMETRY_INFO)](#22552-update-geometry-information-message-updategeometryinfo)
+      - [2.2.5.6 Volume Handling Messages](#2256-volume-handling-messages)
+        - [2.2.5.6.1 On Stream Volume Message (ON_STREAM_VOLUME)](#22561-on-stream-volume-message-onstreamvolume)
+        - [2.2.5.6.2 On Channel Volume Message (ON_CHANNEL_VOLUME)](#22562-on-channel-volume-message-onchannelvolume)
+    - [2.2.6 TSMM_CAPABILITIES Structure](#226-tsmmcapabilities-structure)
+    - [2.2.7 TS_AM_MEDIA_TYPE Structure](#227-tsammediatype-structure)
+    - [2.2.8 TS_MM_DATA_SAMPLE Structure](#228-tsmmdatasample-structure)
+    - [2.2.9 TSMM_PLATFORM_COOKIE Constants](#229-tsmmplatformcookie-constants)
+    - [2.2.10 MMREDIR_CAPABILITY_PLATFORM Constants](#2210-mmredircapabilityplatform-constants)
+    - [2.2.11 GEOMETRY_INFO Structure](#2211-geometryinfo-structure)
+    - [2.2.12 TS_WNDFLAG Flags](#2212-tswndflag-flags)
+    - [2.2.13 TS_RECT Structure](#2213-tsrect-structure)
+    - [2.2.14 TSMM_CLIENT_EVENT Constants](#2214-tsmmclientevent-constants)
+    - [2.2.15 MMREDIR_CAPABILITY_AUDIOSUPPORT Constants](#2215-mmredircapabilityaudiosupport-constants)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Interface Manipulation Data Model](#3111-interface-manipulation-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Shared Message Header](#3151-processing-a-shared-message-header)
+      - [3.1.5.2 Interface Manipulation](#3152-interface-manipulation)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Client Notifications Interface](#3251-client-notifications-interface)
+        - [3.2.5.1.1 Processing a Playback Acknowledgment Message](#32511-processing-a-playback-acknowledgment-message)
+        - [3.2.5.1.2 Processing a Client Event Notification Message](#32512-processing-a-client-event-notification-message)
+      - [3.2.5.2 Server Data Interface](#3252-server-data-interface)
+        - [3.2.5.2.1 Server Data Interface Channel Setup Messages](#32521-server-data-interface-channel-setup-messages)
+          - [3.2.5.2.1.1 Sending a Set Channel Parameters Message](#325211-sending-a-set-channel-parameters-message)
+          - [3.2.5.2.1.2 Sending an Exchange Capabilities Request Message](#325212-sending-an-exchange-capabilities-request-message)
+          - [3.2.5.2.1.3 Processing an Exchange Capabilities Response Message](#325213-processing-an-exchange-capabilities-response-message)
+        - [3.2.5.2.2 Server Data Interface Presentation Initialization and Termination Messages](#32522-server-data-interface-presentation-initialization-and-termination-messages)
+          - [3.2.5.2.2.1 Sending a New Presentation Message](#325221-sending-a-new-presentation-message)
+          - [3.2.5.2.2.2 Sending a Check Format Support Request Message](#325222-sending-a-check-format-support-request-message)
+          - [3.2.5.2.2.3 Processing a Check Format Support Response Message](#325223-processing-a-check-format-support-response-message)
+          - [3.2.5.2.2.4 Sending an Add Stream Message](#325224-sending-an-add-stream-message)
+          - [3.2.5.2.2.5 Sending a Set Topology Request Message](#325225-sending-a-set-topology-request-message)
+          - [3.2.5.2.2.6 Processing a Set Topology Response Message](#325226-processing-a-set-topology-response-message)
+          - [3.2.5.2.2.7 Sending a Remove Stream Message](#325227-sending-a-remove-stream-message)
+          - [3.2.5.2.2.8 Sending a Shut Down Presentation Request Message](#325228-sending-a-shut-down-presentation-request-message)
+          - [3.2.5.2.2.9 Processing a Shut Down Presentation Response Message](#325229-processing-a-shut-down-presentation-response-message)
+          - [3.2.5.2.2.10 Sending a Set Source Video Rectangle Message](#3252210-sending-a-set-source-video-rectangle-message)
+        - [3.2.5.2.3 Server Data Interface Playback State Messages](#32523-server-data-interface-playback-state-messages)
+          - [3.2.5.2.3.1 Sending an On Playback Started Message](#325231-sending-an-on-playback-started-message)
+          - [3.2.5.2.3.2 Sending an On Playback Paused Message](#325232-sending-an-on-playback-paused-message)
+          - [3.2.5.2.3.3 Sending an On Playback Restarted Message](#325233-sending-an-on-playback-restarted-message)
+          - [3.2.5.2.3.4 Sending an On Playback Stopped Message](#325234-sending-an-on-playback-stopped-message)
+          - [3.2.5.2.3.5 Sending an On Playback Rate Changed Message](#325235-sending-an-on-playback-rate-changed-message)
+        - [3.2.5.2.4 Server Data Interface Data Streaming Messages](#32524-server-data-interface-data-streaming-messages)
+          - [3.2.5.2.4.1 Sending a Set Allocator Properties Message](#325241-sending-a-set-allocator-properties-message)
+          - [3.2.5.2.4.2 Sending a Notify Preroll Message](#325242-sending-a-notify-preroll-message)
+          - [3.2.5.2.4.3 Sending an On Sample Message](#325243-sending-an-on-sample-message)
+          - [3.2.5.2.4.4 Sending an On Flush Message](#325244-sending-an-on-flush-message)
+          - [3.2.5.2.4.5 Sending an On End Of Stream Message](#325245-sending-an-on-end-of-stream-message)
+        - [3.2.5.2.5 Server Data Interface Geometry Handling Messages](#32525-server-data-interface-geometry-handling-messages)
+          - [3.2.5.2.5.1 Sending a Set Video Window Message](#325251-sending-a-set-video-window-message)
+          - [3.2.5.2.5.2 Sending an Update Geometry Information Message](#325252-sending-an-update-geometry-information-message)
+        - [3.2.5.2.6 Server Data Interface Volume Handling Messages](#32526-server-data-interface-volume-handling-messages)
+          - [3.2.5.2.6.1 Sending an On Stream Volume Message](#325261-sending-an-on-stream-volume-message)
+          - [3.2.5.2.6.2 Sending an On Channel Volume Message](#325262-sending-an-on-channel-volume-message)
+      - [3.2.5.3 Interface Manipulation Exchange Capabilities Interface](#3253-interface-manipulation-exchange-capabilities-interface)
+        - [3.2.5.3.1 Sending an Interface Manipulation Exchange Capabilities Request Message](#32531-sending-an-interface-manipulation-exchange-capabilities-request-message)
+        - [3.2.5.3.2 Processing an Interface Manipulation Exchange Capabilities Response](#32532-processing-an-interface-manipulation-exchange-capabilities-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Interface Manipulation](#3351-interface-manipulation)
+      - [3.3.5.2 Client Notifications Interface](#3352-client-notifications-interface)
+        - [3.3.5.2.1 Sending a Playback Acknowledgment Message](#33521-sending-a-playback-acknowledgment-message)
+        - [3.3.5.2.2 Sending a Client Event Notification Message](#33522-sending-a-client-event-notification-message)
+      - [3.3.5.3 Server Data Interface](#3353-server-data-interface)
+        - [3.3.5.3.1 Server Data Interface Channel Setup Messages](#33531-server-data-interface-channel-setup-messages)
+          - [3.3.5.3.1.1 Processing a Set Channel Parameters Message](#335311-processing-a-set-channel-parameters-message)
+          - [3.3.5.3.1.2 Processing an Exchange Capabilities Request Message](#335312-processing-an-exchange-capabilities-request-message)
+          - [3.3.5.3.1.3 Sending an Exchange Capabilities Response Message](#335313-sending-an-exchange-capabilities-response-message)
+        - [3.3.5.3.2 Server Data Interface Presentation Initialization and Termination Messages](#33532-server-data-interface-presentation-initialization-and-termination-messages)
+          - [3.3.5.3.2.1 Processing a New Presentation Message](#335321-processing-a-new-presentation-message)
+          - [3.3.5.3.2.2 Processing a Check Format Support Request Message](#335322-processing-a-check-format-support-request-message)
+          - [3.3.5.3.2.3 Sending a Check Format Support Response Message](#335323-sending-a-check-format-support-response-message)
+          - [3.3.5.3.2.4 Processing an Add Stream Message](#335324-processing-an-add-stream-message)
+          - [3.3.5.3.2.5 Processing a Set Topology Request Message](#335325-processing-a-set-topology-request-message)
+          - [3.3.5.3.2.6 Sending a Set Topology Response Message](#335326-sending-a-set-topology-response-message)
+          - [3.3.5.3.2.7 Processing a Remove Stream Message](#335327-processing-a-remove-stream-message)
+          - [3.3.5.3.2.8 Processing a Shut Down Presentation Request Message](#335328-processing-a-shut-down-presentation-request-message)
+          - [3.3.5.3.2.9 Sending a Shut Down Presentation Response Message](#335329-sending-a-shut-down-presentation-response-message)
+          - [3.3.5.3.2.10 Processing a Set Video Source Rectangle Message](#3353210-processing-a-set-video-source-rectangle-message)
+        - [3.3.5.3.3 Server Data Interface Playback State Messages](#33533-server-data-interface-playback-state-messages)
+          - [3.3.5.3.3.1 Processing an On Playback Started Message](#335331-processing-an-on-playback-started-message)
+          - [3.3.5.3.3.2 Processing an On Playback Paused Message](#335332-processing-an-on-playback-paused-message)
+          - [3.3.5.3.3.3 Processing an On Playback Restarted Message](#335333-processing-an-on-playback-restarted-message)
+          - [3.3.5.3.3.4 Processing an On Playback Stopped Message](#335334-processing-an-on-playback-stopped-message)
+          - [3.3.5.3.3.5 Processing an On Playback Rate Changed Message](#335335-processing-an-on-playback-rate-changed-message)
+        - [3.3.5.3.4 Server Data Interface Data Streaming Messages](#33534-server-data-interface-data-streaming-messages)
+          - [3.3.5.3.4.1 Processing a Set Allocator Properties Message](#335341-processing-a-set-allocator-properties-message)
+          - [3.3.5.3.4.2 Processing a Notify Preroll Message](#335342-processing-a-notify-preroll-message)
+          - [3.3.5.3.4.3 Processing an On Sample Message](#335343-processing-an-on-sample-message)
+          - [3.3.5.3.4.4 Processing an On Flush Message](#335344-processing-an-on-flush-message)
+          - [3.3.5.3.4.5 Processing an On End Of Stream Message](#335345-processing-an-on-end-of-stream-message)
+        - [3.3.5.3.5 Server Data Interface Geometry Handling Messages](#33535-server-data-interface-geometry-handling-messages)
+          - [3.3.5.3.5.1 Processing a Set Video Window Message](#335351-processing-a-set-video-window-message)
+          - [3.3.5.3.5.2 Processing an Update Geometry Information Message](#335352-processing-an-update-geometry-information-message)
+        - [3.3.5.3.6 Server Data Interface Volume Handling Messages](#33536-server-data-interface-volume-handling-messages)
+          - [3.3.5.3.6.1 Processing an On Stream Volume Message](#335361-processing-an-on-stream-volume-message)
+          - [3.3.5.3.6.2 Processing an On Channel Volume Message](#335362-processing-an-on-channel-volume-message)
+      - [3.3.5.4 Interface Manipulation Exchange Capabilities Interface Messages](#3354-interface-manipulation-exchange-capabilities-interface-messages)
+        - [3.3.5.4.1 Processing an Interface Manipulation Exchange Capabilities Request](#33541-processing-an-interface-manipulation-exchange-capabilities-request)
+        - [3.3.5.4.2 Sending an Interface Manipulation Exchange Capabilities Response Message](#33542-sending-an-interface-manipulation-exchange-capabilities-response-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Server Data Interface Annotations](#41-server-data-interface-annotations)
+    - [4.1.1 Channel Setup Sequence](#411-channel-setup-sequence)
+    - [4.1.2 Presentation Initialization and Termination Sequence](#412-presentation-initialization-and-termination-sequence)
+    - [4.1.3 Playback State Sequence](#413-playback-state-sequence)
+    - [4.1.4 Data Streaming Sequence](#414-data-streaming-sequence)
+    - [4.1.5 Geometry Handling Sequence](#415-geometry-handling-sequence)
+    - [4.1.6 Volume Handling Sequence](#416-volume-handling-sequence)
+  - [4.2 Client Notifications Interface Annotation](#42-client-notifications-interface-annotation)
+  - [4.3 Interface Manipulation Exchange Capabilities Interface Annotation](#43-interface-manipulation-exchange-capabilities-interface-annotation)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is an extension of [MS-
 RDPBCGR], which runs over a dynamic virtual channel, as specified in [MS-RDPEDYC]. The Remote
@@ -1003,7 +671,7 @@ Note  The term "client" will be used to refer to "terminal client" throughout th
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1049,7 +717,7 @@ desktop.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1061,10 +729,11 @@ Release: April 23, 2024
 
 8 / 79
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1086,7 +755,7 @@ Virtual Channel Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ALLOCATOR] Microsoft Corporation, "Negotiating Allocators", http://msdn.microsoft.com/en-
 us/library/ms787432(VS.85).aspx
@@ -1103,14 +772,14 @@ http://msdn.microsoft.com/en-us/library/ms694197(VS.85).aspx
 [MSDN-MediaTypes] Microsoft Corporation, "Meta Types", http://msdn.microsoft.com/en-
 us/library/ms787271(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is used to transfer
 synchronized audio and video data from a terminal server to a terminal client.The client can play
 the audio and video data and synchronize this data by using the timing information provided by this
 protocol.
 
-1.3.1  Video Redirection Virtual Channel Protocol
+#### 1.3.1 Video Redirection Virtual Channel Protocol
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is divided into the following
 logical sequences:
@@ -1127,7 +796,8 @@ Release: April 23, 2024
 
 9 / 79
 
-Presentation initialization and termination sequence: The presentation is established. After the
+
+Presentation initialization and termination sequence: The presentation is established. After the
 format is negotiated, streams are set up for the presentation. When complete, the individual
 streams and the presentation are terminated.
 
@@ -1145,7 +815,7 @@ Volume handling sequence: Notifications for changes to the volume of an audio st
 
 the client.
 
-1.3.1.1  Interface Manipulation
+##### 1.3.1.1 Interface Manipulation
 
 In the context of the Remote Desktop Protocol Video Redirection Virtual Channel Extension,
 interfaces are groups of messages with a common identifier. This protocol includes a common
@@ -1158,7 +828,7 @@ active interfaces on the network low.
 For more information about the interface manipulation infrastructure, see [MS-RDPEXPS] section
 1.3.2.1.
 
-1.3.2  Client Notifications Interface
+#### 1.3.2 Client Notifications Interface
 
 The client notifications interface consists of messages that are sent from the client to the server.
 Currently, this interface has two messages. One of the messages is used as an acknowledgment to the
@@ -1168,9 +838,9 @@ The second message is used by the client to notify the server of important playb
 client. The events notified by this message are end-of-stream, start completion, stop completion, and
 monitor change on the client.
 
-1.3.3  Server Data Interface
+#### 1.3.3 Server Data Interface
 
-1.3.3.1  Channel Setup Sequence
+##### 1.3.3.1 Channel Setup Sequence
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension uses multiple channels
 within a single named dynamic virtual channel. There is one control channel for the presentation and
@@ -1184,13 +854,14 @@ Release: April 23, 2024
 
 10 / 79
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEV].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 1: Channel setup sequence
 
-1.3.3.2  Presentation Initialization and Termination Sequence
+##### 1.3.3.2 Presentation Initialization and Termination Sequence
 
 The presentation initialization sequence has the following goals:
 
@@ -1223,13 +894,14 @@ Release: April 23, 2024
 
 11 / 79
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPEV].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 2: Presentation initialization and termination sequence
 
-1.3.3.3  Playback State Sequence
+##### 1.3.3.3 Playback State Sequence
 
 The goal of the messages in this sequence is for the server to notify the client of the changes to the
 playback state of a presentation.
@@ -1241,13 +913,14 @@ Release: April 23, 2024
 
 12 / 79
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPEV].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 3: Playback state sequence
 
-1.3.3.4  Data Streaming Sequence
+##### 1.3.3.4 Data Streaming Sequence
 
 The goal of the messages in this sequence is to handle media data transfer for a single stream.
 
@@ -1258,14 +931,15 @@ Release: April 23, 2024
 
 13 / 79
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RDPEV].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MS-RDPEV].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
 
 Figure 4: Data streaming sequence
 
-1.3.3.5  Geometry Handling Sequence
+##### 1.3.3.5 Geometry Handling Sequence
 
 The goal of the messages in this sequence is to notify the client of the window that is being used on
 the server for displaying the video. The client is also notified of any changes to the shape (geometry)
@@ -1273,7 +947,7 @@ and position of the video window.
 
 Figure 5: Geometry handling sequence
 
-1.3.3.6  Volume Handling Sequence
+##### 1.3.3.6 Volume Handling Sequence
 
 The goal of the messages in this sequence is to notify the client of any changes to the master volume
 or channel volume for an audio stream.
@@ -1285,24 +959,25 @@ Release: April 23, 2024
 
 14 / 79
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPEV].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 6: Volume handling sequence
 
-1.3.4  Interface Manipulation Exchange Capabilities Interface Description
+#### 1.3.4 Interface Manipulation Exchange Capabilities Interface Description
 
 The Interface Manipulation Exchange Capabilities Interface consists of the Interface Manipulation
 Exchange Capabilities Request and Interface Manipulation Exchange Capabilities Response messages.
 This interface is used to exchange client and server capabilities for interface manipulation.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is embedded in dynamic
 virtual channel transport, as specified in [MS-RDPEDYC].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension operates only after the
 dynamic virtual channel transport is fully established. If the dynamic virtual channel transport is
@@ -1313,21 +988,21 @@ allow for fragmentation. Packet reassembly is based on the information provided 
 dynamic virtual channel transport. This document assumes that packet chunks have already been
 reassembled based on that information.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is designed to be run within
 the context of an RDP virtual channel established between a client and a server. This protocol
 extension is applicable when applications running on the terminal server play audio/video data that
 is required to be transferred to the client.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol supports versioning and capability negotiation at two levels. The first is supported
 through the use of interface manipulation messages, as specified in sections 2.2.2 and 2.2.3. The
 second is supported by the capability exchange messages, as specified in sections 2.2.5.1.2 and
 2.2.5.1.3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension uses HRESULTs as specified
 in [MS-ERREF] section 2.1. Vendors are free to choose their own values, as long as the C bit
@@ -1340,14 +1015,15 @@ Release: April 23, 2024
 
 15 / 79
 
-This protocol also uses Win32 error codes. These values are taken from the error number space as
+
+This protocol also uses Win32 error codes. These values are taken from the error number space as
 specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meanings. Choosing any other value runs the risk of a collision in the future.
 
 Vendors can define their own interfaces and use them through the interface manipulation
 mechanism, as specified in section 2.2.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1358,18 +1034,19 @@ Release: April 23, 2024
 
 16 / 79
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol Video Redirection Virtual Channel Extension is designed to operate over
 dynamic virtual channels, as specified in [MS-RDPEDYC]. The channel name used for this dynamic
 virtual channel is "TSMF". The usage of a channel name when opening a dynamic virtual channel is
 specified in [MS-RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Shared Message Header (SHARED_MSG_HEADER)
+#### 2.2.1 Shared Message Header (SHARED_MSG_HEADER)
 
 Every packet in this extension contains a common header.<1>
 
@@ -1443,7 +1120,8 @@ Release: April 23, 2024
 
 17 / 79
 
-Value
+
+Value
 
 Meaning
 
@@ -1551,7 +1229,8 @@ Release: April 23, 2024
 
 18 / 79
 
-Value
+
+Value
 
 ON_SAMPLE
 
@@ -1676,7 +1355,8 @@ Release: April 23, 2024
 
 19 / 79
 
-Value
+
+Value
 
 Meaning
 
@@ -1691,17 +1371,17 @@ messagePayload (variable): An array of unsigned 8-bit integers describing the pa
 message corresponding to the interface for which the packet is sent. The specific structure of the
 payload is described by the message descriptions in sections 2.2.3, 2.2.4, and 2.2.5.
 
-2.2.2  Interface Manipulation
+#### 2.2.2 Interface Manipulation
 
 This protocol utilizes the same Interface Query and Interface Release messages that are defined in
 [MS-RDPEXPS] section 2.2.2.
 
-2.2.3  Interface Manipulation Exchange Capabilities Interface
+#### 2.2.3 Interface Manipulation Exchange Capabilities Interface
 
 The Exchange Capabilities Interface is identified by the interface ID 0x00000002. This interface is
 used to exchange the client's and the server's capabilities for interface manipulation.
 
-2.2.3.1  Interface Manipulation Exchange Capabilities Request
+##### 2.2.3.1 Interface Manipulation Exchange Capabilities Request
 
 (RIM_EXCHANGE_CAPABILITY_REQUEST)
 
@@ -1743,7 +1423,7 @@ RIM_CAPABILITY_VERSION_01  0x00000001  The capability to indicate the basic supp
 manipulation.  This capability MUST be present in the
 message.
 
-2.2.3.2  Interface Manipulation Exchange Capabilities Response
+##### 2.2.3.2 Interface Manipulation Exchange Capabilities Response
 
 (RIM_EXCHANGE_CAPABILITY_RESPONSE)
 
@@ -1756,7 +1436,8 @@ Release: April 23, 2024
 
 20 / 79
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1798,12 +1479,12 @@ message.
 
 Result (4 bytes): A 32-bit unsigned integer that indicates the HRESULT of the operation.
 
-2.2.4  Client Notifications Interface
+#### 2.2.4 Client Notifications Interface
 
 The client notifications interface is identified by the interface ID 0x00000001. The client notifications
 interface is used by the client to send playback acknowledgment.
 
-2.2.4.1  Playback Acknowledgment Message (PLAYBACK_ACK)
+##### 2.2.4.1 Playback Acknowledgment Message (PLAYBACK_ACK)
 
 The PLAYBACK_ACK message is sent from the client to the server to acknowledge the media data
 that has already been played.
@@ -1840,7 +1521,8 @@ Release: April 23, 2024
 
 21 / 79
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000001. The Mask field MUST be set to STREAM_ID_PROXY. The
 FunctionId field MUST be set to PLAYBACK_ACK (0x00000100).
 
@@ -1856,7 +1538,7 @@ cbData (8 bytes): A 64-bit unsigned integer that indicates the data size of the 
 acknowledged. This field MUST be set to the cbData field of the TS_MM_DATA_SAMPLE structure
 of the sample that is being acknowledged.
 
-2.2.4.2  Client Event Notification Message (CLIENT_EVENT_NOTIFICATION)
+##### 2.2.4.2 Client Event Notification Message (CLIENT_EVENT_NOTIFICATION)
 
 The CLIENT_EVENT_NOTIFICATION message is sent from the client to the server whenever an
 important client event happens.
@@ -1902,7 +1584,7 @@ cbData (4 bytes): A 32-bit unsigned integer that indicates the number of bytes i
 
 pBlob (variable): An array of bytes that contains data relevant to whichever event ID is passed.
 
-2.2.5  Server Data Interface
+#### 2.2.5 Server Data Interface
 
 The server data interface is identified by the default interface ID 0x00000000. The default interface
 does not require Query Interface Request (QI_REQ) or Query Interface Response (QI_RSP) messages
@@ -1915,9 +1597,10 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.1  Channel Setup Messages
 
-2.2.5.1.1 Set Channel Parameters Message (SET_CHANNEL_PARAMS)
+##### 2.2.5.1 Channel Setup Messages
+
+###### 2.2.5.1.1 Set Channel Parameters Message (SET_CHANNEL_PARAMS)
 
 This message is used by the server to set channel parameters.
 
@@ -1955,7 +1638,7 @@ StreamId (4 bytes): A 32-bit unsigned integer that indicates channel identifier.
 one channel with the identifier value 0x00000000, and it MUST NOT be used for data-streaming
 sequence messages.
 
-2.2.5.1.2 Exchange Capabilities Request Message (EXCHANGE_CAPABILITIES_REQ)
+###### 2.2.5.1.2 Exchange Capabilities Request Message (EXCHANGE_CAPABILITIES_REQ)
 
 This message is used by the server to exchange its capabilities with the client.
 
@@ -1995,11 +1678,12 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pHostCapabilities (variable): An array of TSMM_CAPABILITIES structures, each containing the
+
+pHostCapabilities (variable): An array of TSMM_CAPABILITIES structures, each containing the
 
 capabilities for the server.
 
-2.2.5.1.3 Exchange Capabilities Response Message (EXCHANGE_CAPABILITIES_RSP)
+###### 2.2.5.1.3 Exchange Capabilities Response Message (EXCHANGE_CAPABILITIES_RSP)
 
 This message is used by the client as a response to the exchange capabilities request message
 (EXCHANGE_CAPABILITIES_REQ).
@@ -2042,9 +1726,9 @@ the capabilities for the client.
 
 Result (4 bytes): A 32-bit unsigned integer that indicates the result of the operation.
 
-2.2.5.2  Presentation Initialization and Termination Messages
+##### 2.2.5.2 Presentation Initialization and Termination Messages
 
-2.2.5.2.1 New Presentation Message (NEW_PRESENTATION)
+###### 2.2.5.2.1 New Presentation Message (NEW_PRESENTATION)
 
 This message is used by the server to notify the client of a new presentation.
 
@@ -2076,7 +1760,8 @@ Release: April 23, 2024
 
 24 / 79
 
-PlatformCookie
+
+PlatformCookie
 
 Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000000. The Mask field MUST be set to STREAM_ID_PROXY. The
@@ -2090,7 +1775,7 @@ PlatformCookie (4 bytes): A 32-bit unsigned integer that indicates preferred pla
 
 SHOULD be set to values defined in TSMM_PLATFORM_COOKIE.
 
-2.2.5.2.2 Check Format Support Request Message (CHECK_FORMAT_SUPPORT_REQ)
+###### 2.2.5.2.2 Check Format Support Request Message (CHECK_FORMAT_SUPPORT_REQ)
 
 This message is used by the server to check if the client supports playback of media content in a
 specific format.
@@ -2156,11 +1841,12 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pMediaType (variable): A TS_AM_MEDIA_TYPE structure that is sent as an array of bytes. This field
+
+pMediaType (variable): A TS_AM_MEDIA_TYPE structure that is sent as an array of bytes. This field
 
 indicates the media type of the stream.
 
-2.2.5.2.3 Check Format Support Response Message (CHECK_FORMAT_SUPPORT_RSP)
+###### 2.2.5.2.3 Check Format Support Response Message (CHECK_FORMAT_SUPPORT_RSP)
 
 This message is sent by the client in response to the check format support request message
 (CHECK_FORMAT_SUPPORT_REQ).
@@ -2204,7 +1890,7 @@ about these values, see section 2.2.9.
 
 Result (4 bytes): A 32-bit unsigned integer that indicates the result of the operation.
 
-2.2.5.2.4 Add Stream Message (ADD_STREAM)
+###### 2.2.5.2.4 Add Stream Message (ADD_STREAM)
 
 This message is used by the server to ask the client to add a stream to a presentation, which MUST
 be used to play media data in the format specified in the message.
@@ -2235,7 +1921,8 @@ Release: April 23, 2024
 
 26 / 79
 
-...
+
+...
 
 StreamId
 
@@ -2261,7 +1948,7 @@ pMediaType (variable): A TS_AM_MEDIA_TYPE structure sent as an array of bytes. T
 
 indicates the media type of the stream.
 
-2.2.5.2.5 Set Topology Request Message (SET_TOPOLOGY_REQ)
+###### 2.2.5.2.5 Set Topology Request Message (SET_TOPOLOGY_REQ)
 
 This message is used by the server to indicate that the presentation setup is complete.
 
@@ -2292,7 +1979,7 @@ FunctionId field MUST be set to SET_TOPOLOGY_REQ (0x00000107).
 
 PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
-2.2.5.2.6 Set Topology Response Message (SET_TOPOLOGY_RSP)
+###### 2.2.5.2.6 Set Topology Response Message (SET_TOPOLOGY_RSP)
 
 This message is sent by the client in response to a Set Topology Request message
 (SET_TOPOLOGY_REQ).
@@ -2304,7 +1991,8 @@ Release: April 23, 2024
 
 27 / 79
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2335,7 +2023,7 @@ indicates that the presentation setup was unsuccessful.
 
 Result (4 bytes): A 32-bit unsigned integer that indicates the result of the operation.
 
-2.2.5.2.7 Remove Stream Message (REMOVE_STREAM)
+###### 2.2.5.2.7 Remove Stream Message (REMOVE_STREAM)
 
 This message is sent by the server to request that the client remove a stream.
 
@@ -2370,7 +2058,7 @@ PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
 StreamId (4 bytes): A 32-bit unsigned integer that identifies the stream.
 
-2.2.5.2.8 Shut Down Presentation Request Message
+###### 2.2.5.2.8 Shut Down Presentation Request Message
 
 (SHUTDOWN_PRESENTATION_REQ)
 
@@ -2383,7 +2071,8 @@ Release: April 23, 2024
 
 28 / 79
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2410,7 +2099,7 @@ FunctionId field MUST be set to 0x00000106 to indicate SHUTDOWN_PRESENTATION_REQ
 
 PresentationId (16 bytes): A 16-byte GUID that identifies the presentation to shut down.
 
-2.2.5.2.9 Shut Down Presentation Response Message
+###### 2.2.5.2.9 Shut Down Presentation Response Message
 
 (SHUTDOWN_PRESENTATION_RSP)
 
@@ -2441,9 +2130,9 @@ field MUST be set to STREAM_ID_STUB.
 
 Results (4 bytes): A 32-bit unsigned integer that indicates the result of the operation.
 
-2.2.5.2.10
+###### 2.2.5.2.10 Set Source Video Rectangle Message (SET_SOURCE_VIDEO_RECTANGLE)
 
-Set Source Video Rectangle Message (SET_SOURCE_VIDEO_RECTANGLE)
+
 
 This message is sent by the server to request that the client render the part of the source video
 specified in normalized coordinates.
@@ -2470,7 +2159,8 @@ Release: April 23, 2024
 
 29 / 79
 
-PresentationId (16 bytes)
+
+PresentationId (16 bytes)
 
 ...
 
@@ -2506,9 +2196,9 @@ Bottom (4 bytes): A 32-bit floating point number that identifies the bottom side
 
 normalized coordinates.
 
-2.2.5.3  Playback State Messages
+##### 2.2.5.3 Playback State Messages
 
-2.2.5.3.1 On Playback Started Message (ON_PLAYBACK_STARTED)
+###### 2.2.5.3.1 On Playback Started Message (ON_PLAYBACK_STARTED)
 
 The ON_PLAYBACK_STARTED message is sent from the server to the client to start playback of a
 presentation.
@@ -2543,7 +2233,8 @@ Release: April 23, 2024
 
 30 / 79
 
-...
+
+...
 
 IsSeek
 
@@ -2562,7 +2253,7 @@ IsSeek (4 bytes): A 32-bit unsigned integer that indicates whether this start re
 the presentation was started because of a seek, then this value is set to one; otherwise it is set it
 to zero.
 
-2.2.5.3.2 On Playback Paused Message (ON_PLAYBACK_PAUSED)
+###### 2.2.5.3.2 On Playback Paused Message (ON_PLAYBACK_PAUSED)
 
 The ON_PLAYBACK_PAUSED message is sent from the server to the client to pause a presentation.
 
@@ -2593,7 +2284,7 @@ FunctionId field MUST be set to ON_PLAYBACK_PAUSED (0x0000010a).
 
 PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
-2.2.5.3.3 On Playback Restarted Message (ON_PLAYBACK_RESTARTED)
+###### 2.2.5.3.3 On Playback Restarted Message (ON_PLAYBACK_RESTARTED)
 
 The ON_PLAYBACK_RESTARTED message is sent from the server to the client to restart the playback
 of a presentation.
@@ -2622,7 +2313,8 @@ Release: April 23, 2024
 
 31 / 79
 
-...
+
+...
 
 ...
 
@@ -2634,7 +2326,7 @@ ON_PLAYBACK_RESTARTED.
 
 PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
-2.2.5.3.4 On Playback Stopped Message (ON_PLAYBACK_STOPPED)
+###### 2.2.5.3.4 On Playback Stopped Message (ON_PLAYBACK_STOPPED)
 
 The ON_PLAYBACK_ STOPPED message is sent from the server to the client to stop playback of a
 presentation
@@ -2666,7 +2358,7 @@ FunctionId field MUST be set to ON_PLAYBACK_STOPPED (0x0000010b).
 
 PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
-2.2.5.3.5 On Playback Rate Changed Message (ON_PLAYBACK_RATE_CHANGED)
+###### 2.2.5.3.5 On Playback Rate Changed Message (ON_PLAYBACK_RATE_CHANGED)
 
 The ON_PLAYBACK_RATE_CHANGED message is sent from the server to the client to change the
 playback rate of a presentation.
@@ -2699,7 +2391,8 @@ Release: April 23, 2024
 
 32 / 79
 
-NewRate
+
+NewRate
 
 Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000000. The Mask field MUST be set to STREAM_ID_PROXY. The
@@ -2711,9 +2404,9 @@ NewRate (4 bytes): A 32-bit floating-point number ([MS-DTYP], section 2.2.15) th
 
 new playback rate of the presentation.
 
-2.2.5.4  Data Streaming Messages
+##### 2.2.5.4 Data Streaming Messages
 
-2.2.5.4.1 Set Allocator Properties Message (SET_ALLOCATOR)
+###### 2.2.5.4.1 Set Allocator Properties Message (SET_ALLOCATOR)
 
 The SET_ALLOCATOR message MAY<2> be sent from the server to the client to set buffer allocation
 properties for a stream. For more information about allocators, see [MSDN-ALLOCATOR].
@@ -2772,7 +2465,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cbAlign (4 bytes): A 32-bit unsigned integer that indicates the alignment of the buffer. The buffer
+
+cbAlign (4 bytes): A 32-bit unsigned integer that indicates the alignment of the buffer. The buffer
 
 start MUST be aligned on a multiple of this value.
 
@@ -2780,7 +2474,7 @@ cbPrefix (4 bytes): A 32-bit unsigned integer that indicates that each buffer is
 
 of this many bytes.
 
-2.2.5.4.2 Notify Preroll Message (NOTIFY_PREROLL)
+###### 2.2.5.4.2 Notify Preroll Message (NOTIFY_PREROLL)
 
 The NOTIFY_PREROLL message is sent from the server to the client to indicate that a stream is
 preloading the media data before playback.
@@ -2816,7 +2510,7 @@ PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
 StreamId (4 bytes): A 32-bit unsigned integer that identifies the stream ID.
 
-2.2.5.4.3 On Sample Message (ON_SAMPLE)
+###### 2.2.5.4.3 On Sample Message (ON_SAMPLE)
 
 The ON_SAMPLE message is used by the server to send a data sample to the client.
 
@@ -2852,7 +2546,8 @@ Release: April 23, 2024
 
 34 / 79
 
-pSample (variable)
+
+pSample (variable)
 
 ...
 
@@ -2874,7 +2569,7 @@ pSample (variable):  A TS_MM_DATA_SAMPLE structure sent as an array of bytes. Th
 
 structure describe the sample content.
 
-2.2.5.4.4 On Flush Message (ON_FLUSH)
+###### 2.2.5.4.4 On Flush Message (ON_FLUSH)
 
 The ON_FLUSH message is sent from the server to the client to drop the queued sample for a
 stream.
@@ -2910,7 +2605,7 @@ PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
 StreamId (4 bytes): A 32-bit unsigned integer that identifies the stream ID.
 
-2.2.5.4.5 On End of Stream Message (ON_END_OF_STREAM)
+###### 2.2.5.4.5 On End of Stream Message (ON_END_OF_STREAM)
 
 The ON_ END_OF_STREAM message is sent from the server to the client when a stream has reached
 the end.
@@ -2922,7 +2617,8 @@ Release: April 23, 2024
 
 35 / 79
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2953,9 +2649,9 @@ PresentationId (16 bytes): A 16-byte GUID that identifies the presentation.
 
 StreamId (4 bytes): A 32-bit unsigned integer that identifies the stream ID.
 
-2.2.5.5  Geometry Handling Messages
+##### 2.2.5.5 Geometry Handling Messages
 
-2.2.5.5.1 Set Video Window Message (SET_VIDEO_WINDOW)
+###### 2.2.5.5.1 Set Video Window Message (SET_VIDEO_WINDOW)
 
 The SET_VIDEO_WINDOW message is sent from the server to the client to indicate the video window
 handle that is used by the server for video rendering.
@@ -2996,7 +2692,8 @@ Release: April 23, 2024
 
 36 / 79
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000000. The Mask field MUST be set to STREAM_ID_PROXY. The
 FunctionId field MUST be set to SET_VIDEO_WINDOW (0x00000104).
 
@@ -3010,7 +2707,7 @@ HwndParent (8 bytes): A 64-bit unsigned integer that indicates the window handle
 parent window handle of the video window. Top-level windows are the windows whose parent is
 the desktop.
 
-2.2.5.5.2 Update Geometry Information Message (UPDATE_GEOMETRY_INFO)
+###### 2.2.5.5.2 Update Geometry Information Message (UPDATE_GEOMETRY_INFO)
 
 The UPDATE_GEOMETRY_INFO message is sent from the server to the client to update the geometry
 information of the video window.
@@ -3069,7 +2766,8 @@ Release: April 23, 2024
 
 37 / 79
 
-cbVisibleRect (4 bytes): A 32-bit unsigned integer. This field MUST contain the number of bytes in
+
+cbVisibleRect (4 bytes): A 32-bit unsigned integer. This field MUST contain the number of bytes in
 
 the pVisibleRect field.
 
@@ -3078,9 +2776,9 @@ pVisibleRect (variable): An array of TS_RECT structures, each containing a recta
 represents part of the visible region. The union of these rectangles is the visible region of the
 video window. The coordinates of the rectangles are defined in client coordinates.
 
-2.2.5.6  Volume Handling Messages
+##### 2.2.5.6 Volume Handling Messages
 
-2.2.5.6.1 On Stream Volume Message (ON_STREAM_VOLUME)
+###### 2.2.5.6.1 On Stream Volume Message (ON_STREAM_VOLUME)
 
 The ON_STREAM_VOLUME message is sent from the server to the client to set the master volume for
 a presentation.
@@ -3122,7 +2820,7 @@ bMuted (4 bytes): A 32-bit unsigned integer that indicates if the speaker is set
 
 speaker is muted, this value is set to one; otherwise, it is set it to zero.
 
-2.2.5.6.2 On Channel Volume Message (ON_CHANNEL_VOLUME)
+###### 2.2.5.6.2 On Channel Volume Message (ON_CHANNEL_VOLUME)
 
 The ON_CHANNEL_VOLUME message is sent from the server to the client to set channel volume.
 
@@ -3150,7 +2848,8 @@ Release: April 23, 2024
 
 38 / 79
 
-...
+
+...
 
 ...
 
@@ -3170,7 +2869,7 @@ ChangedChannel (4 bytes): A 32-bit unsigned integer that identifies the channel 
 
 set.
 
-2.2.6  TSMM_CAPABILITIES Structure
+#### 2.2.6 TSMM_CAPABILITIES Structure
 
 This structure defines the video redirection capabilities for the client and the server.
 
@@ -3219,7 +2918,8 @@ Release: April 23, 2024
 
 39 / 79
 
-2.2.7  TS_AM_MEDIA_TYPE Structure
+
+#### 2.2.7 TS_AM_MEDIA_TYPE Structure
 
 The TS_AM_MEDIA_TYPE structure describes a media format. The fields of this structure are based
 on the AM_MEDIA_TYPE structure. For more information about the AM_MEDIA_TYPE structure, see
@@ -3291,7 +2991,8 @@ Release: April 23, 2024
 
 40 / 79
 
-SampleSize (4 bytes): A 32-bit unsigned integer. If available for a format, this value indicates the
+
+SampleSize (4 bytes): A 32-bit unsigned integer. If available for a format, this value indicates the
 
 size of individual samples, in bytes.
 
@@ -3305,7 +3006,7 @@ pbFormat field.
 
 pbFormat (variable): A format structure that is sent as an array of bytes.
 
-2.2.8  TS_MM_DATA_SAMPLE Structure
+#### 2.2.8 TS_MM_DATA_SAMPLE Structure
 
 This structure describes a media sample.
 
@@ -3365,7 +3066,8 @@ Release: April 23, 2024
 
 41 / 79
 
-SampleFlags (4 bytes): A 32-bit unsigned integer. This field is reserved and MUST be ignored on
+
+SampleFlags (4 bytes): A 32-bit unsigned integer. This field is reserved and MUST be ignored on
 
 receipt.
 
@@ -3479,7 +3181,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Bit
+
+Bit
 
  Symbolic name
 
@@ -3502,7 +3205,7 @@ pData (variable): Sample data that is sent as an array of bytes. The data is enc
 
 format.
 
-2.2.9  TSMM_PLATFORM_COOKIE Constants
+#### 2.2.9 TSMM_PLATFORM_COOKIE Constants
 
 The platform type is defined by platform cookie values.
 
@@ -3530,7 +3233,7 @@ TSMM_PLATFORM_COOKIE_DSHOW
 The DShow platform. For more information about the DShow platform,
 see [MSDN-DIRECTSHOW].
 
-2.2.10 MMREDIR_CAPABILITY_PLATFORM Constants
+#### 2.2.10 MMREDIR_CAPABILITY_PLATFORM Constants
 
 Platform capability is defined in the following table.
 
@@ -3560,7 +3263,7 @@ A platform other than MF or DShow is supported for playback.<6>
 
 0x00000004
 
-2.2.11 GEOMETRY_INFO Structure
+#### 2.2.11 GEOMETRY_INFO Structure
 
 This structure describes geometry information of the video window used to render video on the server.
 
@@ -3571,7 +3274,8 @@ Release: April 23, 2024
 
 43 / 79
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3644,7 +3348,8 @@ Release: April 23, 2024
 
 44 / 79
 
-2.2.12 TS_WNDFLAG Flags
+
+#### 2.2.12 TS_WNDFLAG Flags
 
 The following flags are used to indicate video window states.
 
@@ -3668,7 +3373,7 @@ The visible region of the video window changed.
 
 0x00001000
 
-2.2.13 TS_RECT Structure
+#### 2.2.13 TS_RECT Structure
 
 This structure describes a rectangle.
 
@@ -3699,7 +3404,7 @@ Bottom (4 bytes): A 32-bit unsigned integer. The dimension of the bottom of the 
 
 Right (4 bytes): A 32-bit unsigned integer. The dimension of the right end of the rectangle.
 
-2.2.14 TSMM_CLIENT_EVENT Constants
+#### 2.2.14 TSMM_CLIENT_EVENT Constants
 
 The following EventId notifications are sent to the server by the client.
 
@@ -3737,7 +3442,8 @@ Release: April 23, 2024
 
 45 / 79
 
-Symbolic name/value
+
+Symbolic name/value
 
 Description
 
@@ -3746,7 +3452,7 @@ Description
 client display settings change during playback or when the video
 window on the client moves to a different monitor.
 
-2.2.15 MMREDIR_CAPABILITY_AUDIOSUPPORT Constants
+#### 2.2.15 MMREDIR_CAPABILITY_AUDIOSUPPORT Constants
 
 Audio support is defined in the table that follows.
 
@@ -3773,11 +3479,12 @@ Release: April 23, 2024
 
 46 / 79
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3797,31 +3504,31 @@ stream, the server uses an identifier called StreamId. The server sends this ID 
 StreamId field of the Add Stream message. The StreamId of 0x00000000 is reserved for the
 channel used to transport messages that are not specific to a data-stream.
 
-3.1.1.1  Interface Manipulation Data Model
+##### 3.1.1.1 Interface Manipulation Data Model
 
 The common details of the abstract data model for the interface manipulation infrastructure are
 specified in [MS-RDPEXPS] section 3.1.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The dynamic virtual channel MUST be established, using the parameters specified in section 2.1,
 before protocol operation commences.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Malformed, unrecognized, and out-of-sequence packets MUST be ignored by the server and the client.
 
 There are no time-outs for receiving a reply for any request.
 
-3.1.5.1  Processing a Shared Message Header
+##### 3.1.5.1 Processing a Shared Message Header
 
 The common rules for processing the SHARED_MSG_HEADER for the interface manipulation
 infrastructure are defined in [MS-RDPEXPS] section 3.1.5.1.
@@ -3833,42 +3540,43 @@ Release: April 23, 2024
 
 47 / 79
 
-3.1.5.2  Interface Manipulation
+
+##### 3.1.5.2 Interface Manipulation
 
 The common rules for processing the interface manipulation messages are defined in [MS-RDPEXPS]
 section 3.1.5.2.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Client Notifications Interface
+##### 3.2.5.1 Client Notifications Interface
 
-3.2.5.1.1 Processing a Playback Acknowledgment Message
+###### 3.2.5.1.1 Processing a Playback Acknowledgment Message
 
 The structure and fields of the Playback Acknowledgment message are specified in section 2.2.4.1.
 
@@ -3876,7 +3584,7 @@ This message confirms the amount of data that has been played on the client. If 
 controlling the rate at which data is being sent to the client, this message SHOULD be used as the
 trigger for sending more data.
 
-3.2.5.1.2 Processing a Client Event Notification Message
+###### 3.2.5.1.2 Processing a Client Event Notification Message
 
 The structure and fields of the Client Event Notification message are specified in section 2.2.4.2.
 
@@ -3893,7 +3601,8 @@ Release: April 23, 2024
 
 48 / 79
 
-TSMM_CLIENT_EVENT_STOP_COMPLETED: If the media platform supports such notifications, the
+
+TSMM_CLIENT_EVENT_STOP_COMPLETED: If the media platform supports such notifications, the
 
 server notifies the media platform components that playback stop has been processed.
 
@@ -3905,11 +3614,11 @@ TSMM_CLIENT_EVENT_MONITORCHANGED: If the media platform supports such notificati
 
 server notifies the media platform components that renderer display settings have changed.
 
-3.2.5.2  Server Data Interface
+##### 3.2.5.2 Server Data Interface
 
-3.2.5.2.1 Server Data Interface Channel Setup Messages
+###### 3.2.5.2.1 Server Data Interface Channel Setup Messages
 
-3.2.5.2.1.1  Sending a Set Channel Parameters Message
+###### 3.2.5.2.1.1 Sending a Set Channel Parameters Message
 
 The structure and fields of the Set Channel Parameters message are specified in section 2.2.5.1.1.
 
@@ -3919,7 +3628,7 @@ message MUST be sent after the Interface Manipulation Exchange Capabilities mess
 all streams MUST use their own channels for data transfer, with their StreamId as the channel
 identifier.
 
-3.2.5.2.1.2  Sending an Exchange Capabilities Request Message
+###### 3.2.5.2.1.2 Sending an Exchange Capabilities Request Message
 
 The structure and fields of the Exchange Capabilities Request message are specified in section
 2.2.5.1.2.
@@ -3931,7 +3640,7 @@ Parameters Message. Also the server MAY<8> decide to only send this message for 
 channel and not for the channels used for data streams. The protocol version capability MUST be
 included in this message.
 
-3.2.5.2.1.3  Processing an Exchange Capabilities Response Message
+###### 3.2.5.2.1.3 Processing an Exchange Capabilities Response Message
 
 The structure and fields of the Exchange Capabilities Response message are specified in section
 2.2.5.1.3.
@@ -3941,9 +3650,9 @@ The server SHOULD <9> use the received platform capability to determine its own 
 Note  The server MUST ignore any capabilities it does not recognize, which MAY include additional
 capabilities that are added to future versions of this protocol.
 
-3.2.5.2.2 Server Data Interface Presentation Initialization and Termination Messages
+###### 3.2.5.2.2 Server Data Interface Presentation Initialization and Termination Messages
 
-3.2.5.2.2.1  Sending a New Presentation Message
+###### 3.2.5.2.2.1 Sending a New Presentation Message
 
 The structure and fields of the New Presentation message are specified in section 2.2.5.2.1.
 
@@ -3951,7 +3660,7 @@ This message MUST be sent for all distinct presentations. The PresentationId fie
 MUST be set to a unique GUID. The PlatformCookie field MUST be set to indicate the server’s
 preference of the platform to be used on the client.
 
-3.2.5.2.2.2  Sending a Check Format Support Request Message
+###### 3.2.5.2.2.2 Sending a Check Format Support Request Message
 
 [MS-RDPEV] - v20240423
 Remote Desktop Protocol: Video Redirection Virtual Channel Extension
@@ -3960,14 +3669,15 @@ Release: April 23, 2024
 
 49 / 79
 
-The structure and fields of the Check Format Support Request message are specified in section
+
+The structure and fields of the Check Format Support Request message are specified in section
 2.2.5.2.2.
 
 This message SHOULD be sent to check if the client supports rendering of the data format used for
 audio and video. This message MAY be sent any number of times to check for support of multiple
 formats.
 
-3.2.5.2.2.3  Processing a Check Format Support Response Message
+###### 3.2.5.2.2.3 Processing a Check Format Support Response Message
 
 The structure and fields of the Check Format Support Response message are specified in section
 2.2.5.2.3.
@@ -3981,7 +3691,7 @@ format support until a common platform is found or the server MUST shut down the
 When the FormatSupported field of the Check Format Support Response message is set to false,
 additional messages such as On Playback Started are not sent by the server.
 
-3.2.5.2.2.4  Sending an Add Stream Message
+###### 3.2.5.2.2.4 Sending an Add Stream Message
 
 The structure and fields of the Add Stream message are specified in section 2.2.5.2.4.
 
@@ -3990,14 +3700,14 @@ pMediaType field of the message MUST specify the format in which data for the st
 The server SHOULD verify that the client supports the format of the stream before sending an Add
 Stream message.
 
-3.2.5.2.2.5  Sending a Set Topology Request Message
+###### 3.2.5.2.2.5 Sending a Set Topology Request Message
 
 The structure and fields of the Set Topology Request message are specified in section 2.2.5.2.5.
 
 The Set Topology Request message MUST be sent when all the streams have been added. This
 message MUST be sent before any message in the playback state or data streaming sequence.
 
-3.2.5.2.2.6  Processing a Set Topology Response Message
+###### 3.2.5.2.2.6 Processing a Set Topology Response Message
 
 The structure and fields of the Set Topology Response message are specified in section 2.2.5.2.6.
 
@@ -4006,14 +3716,14 @@ presentation and is ready to play the presentation. If the response indicates th
 setup was unsuccessful, the server MAY<10> shut down the presentation by removing all the streams
 and sending a Shut Down Presentation Request message.
 
-3.2.5.2.2.7  Sending a Remove Stream Message
+###### 3.2.5.2.2.7 Sending a Remove Stream Message
 
 The structure and fields of the Remove Stream message are specified in section 2.2.5.2.7.
 
 The Remove Stream message MAY<11> be sent by the server when a presentation is complete and
 the stream no longer sends any data.
 
-3.2.5.2.2.8  Sending a Shut Down Presentation Request Message
+###### 3.2.5.2.2.8 Sending a Shut Down Presentation Request Message
 
 The structure and fields of the Shut Down Presentation Request message are specified in section
 2.2.5.2.8.
@@ -4025,11 +3735,12 @@ Release: April 23, 2024
 
 50 / 79
 
-The Shut Down Presentation Request message MUST be sent when a presentation is complete and all
+
+The Shut Down Presentation Request message MUST be sent when a presentation is complete and all
 the streams have been removed by the Remove Stream message. This MUST be the last message for
 a specific presentation identified by the GUID.
 
-3.2.5.2.2.9  Processing a Shut Down Presentation Response Message
+###### 3.2.5.2.2.9 Processing a Shut Down Presentation Response Message
 
 The structure and fields of the Shut Down Presentation Response message are specified in section
 2.2.5.2.9.
@@ -4039,7 +3750,7 @@ related to the presentation identified by the GUID. The server MUST always conti
 resources associated with the presentation identified by the GUID after it receives this message,
 regardless of the result.
 
-3.2.5.2.2.10  Sending a Set Source Video Rectangle Message
+###### 3.2.5.2.2.10 Sending a Set Source Video Rectangle Message
 
 The structure and fields of the Set Source Video Rectangle message are specified in section
 2.2.5.2.10.
@@ -4064,9 +3775,9 @@ A normalized rectangle can be used to specify a region within a video rectangle 
 resolution or even the aspect ratio of the video. For example, the upper-left quadrant is defined as
 {0.0, 0.0, 0.5, 0.5}. To display the entire video image, set the rectangle to {0, 0, 1, 1}.
 
-3.2.5.2.3 Server Data Interface Playback State Messages
+###### 3.2.5.2.3 Server Data Interface Playback State Messages
 
-3.2.5.2.3.1  Sending an On Playback Started Message
+###### 3.2.5.2.3.1 Sending an On Playback Started Message
 
 The structure and fields of the On Playback Started message are specified in section 2.2.5.3.1.
 
@@ -4075,7 +3786,7 @@ server or when a presentation is started after a seek operation. This message MA
 multiple times if the detection of playback start happens in a stream and if there are multiple streams
 in a presentation.
 
-3.2.5.2.3.2  Sending an On Playback Paused Message
+###### 3.2.5.2.3.2 Sending an On Playback Paused Message
 
 The structure and fields of the On Playback Paused message are specified in section 2.2.5.3.2.
 
@@ -4083,7 +3794,7 @@ The On Playback Paused message MUST be sent when a presentation is paused on the
 message MAY<13> be sent multiple times if the detection of playback pause happens in a stream
 and if there are multiple streams in a presentation.
 
-3.2.5.2.3.3  Sending an On Playback Restarted Message
+###### 3.2.5.2.3.3 Sending an On Playback Restarted Message
 
 The structure and fields of the On Playback Restarted message are specified in section 2.2.5.3.3.
 
@@ -4094,12 +3805,13 @@ Release: April 23, 2024
 
 51 / 79
 
-The On Playback Restarted message MUST be sent when a presentation is started on the server after
+
+The On Playback Restarted message MUST be sent when a presentation is started on the server after
 a pause operation and when the start position is the same as the pause position. This message
 MAY<14> be sent multiple times if the detection of playback start happens in a stream and if there
 are multiple streams in a presentation.
 
-3.2.5.2.3.4  Sending an On Playback Stopped Message
+###### 3.2.5.2.3.4 Sending an On Playback Stopped Message
 
 The structure and fields of the On Playback Stopped message are specified in section 2.2.5.3.4.
 
@@ -4107,7 +3819,7 @@ The On Playback Stopped message MUST be sent when a presentation is stopped on t
 message MAY be sent multiple times if the detection of playback stop happens in a stream and if there
 are multiple streams in a presentation.
 
-3.2.5.2.3.5  Sending an On Playback Rate Changed Message
+###### 3.2.5.2.3.5 Sending an On Playback Rate Changed Message
 
 The structure and fields of the On Playback Rate Changed message are specified in section 2.2.5.3.5.
 
@@ -4115,9 +3827,9 @@ The On Playback Rate Changed message MUST be sent when the rate of playback for 
 changed on the server. This message MAY<15> be sent multiple times if the detection of playback
 rate change happens in a stream and if there are multiple streams in a presentation.
 
-3.2.5.2.4 Server Data Interface Data Streaming Messages
+###### 3.2.5.2.4 Server Data Interface Data Streaming Messages
 
-3.2.5.2.4.1  Sending a Set Allocator Properties Message
+###### 3.2.5.2.4.1 Sending a Set Allocator Properties Message
 
 The structure and fields of the Set Allocator message are specified in section 2.2.5.4.1.
 
@@ -4125,28 +3837,28 @@ The Set Allocator message MAY<16> be sent for a stream if a server prefers to sp
 requirements for sample handling of a stream. For an example of the circumstances where such
 allocator properties are used, see [MSDN-ALLOCATOR].
 
-3.2.5.2.4.2  Sending a Notify Preroll Message
+###### 3.2.5.2.4.2 Sending a Notify Preroll Message
 
 The structure and fields of the Notify Preroll message are specified in section 2.2.5.4.2.
 
 The Notify Preroll message MUST be sent for a stream if a server is going to supply data to the client
 to queue before the On Playback Started message is sent.
 
-3.2.5.2.4.3  Sending an On Sample Message
+###### 3.2.5.2.4.3 Sending an On Sample Message
 
 The structure and fields of the On Sample message are specified in section 2.2.5.4.3.
 
 The On Sample message MUST be sent for a stream when the server is ready to play the stream on
 the client.
 
-3.2.5.2.4.4  Sending an On Flush Message
+###### 3.2.5.2.4.4 Sending an On Flush Message
 
 The structure and fields of the On Flush message are specified in section 2.2.5.4.4.
 
 The On Flush message MUST be sent for a stream if all the queued data for a stream is to be
 immediately discarded.
 
-3.2.5.2.4.5  Sending an On End Of Stream Message
+###### 3.2.5.2.4.5 Sending an On End Of Stream Message
 
 The structure and fields of the On End of Stream message are specified in section 2.2.5.4.5.
 
@@ -4161,16 +3873,17 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.2.5 Server Data Interface Geometry Handling Messages
 
-3.2.5.2.5.1  Sending a Set Video Window Message
+###### 3.2.5.2.5 Server Data Interface Geometry Handling Messages
+
+###### 3.2.5.2.5.1 Sending a Set Video Window Message
 
 The structure and fields of the Set Video Window message are specified in section 2.2.5.5.1.
 
 The Set Video Window message MUST be sent for a presentation that contains a video stream. This
 message MUST be sent before the On Playback Started message is sent.
 
-3.2.5.2.5.2  Sending an Update Geometry Information Message
+###### 3.2.5.2.5.2 Sending an Update Geometry Information Message
 
 The structure and fields of the Update Geometry Information message are specified in section
 2.2.5.5.2.
@@ -4180,25 +3893,25 @@ stream. This message MUST be sent after the server has sent the Set Video Window
 once. Also, this message MUST be sent for any change in the visible region and position of the video
 window on the server.
 
-3.2.5.2.6 Server Data Interface Volume Handling Messages
+###### 3.2.5.2.6 Server Data Interface Volume Handling Messages
 
-3.2.5.2.6.1  Sending an On Stream Volume Message
+###### 3.2.5.2.6.1 Sending an On Stream Volume Message
 
 The structure and fields of the On Stream Volume message are specified in section 2.2.5.6.1.
 
 The On Stream Volume message MUST be sent when the volume for a presentation is changed on
 the server. This message MUST also be sent when the volume for the presentation is muted.
 
-3.2.5.2.6.2  Sending an On Channel Volume Message
+###### 3.2.5.2.6.2 Sending an On Channel Volume Message
 
 The structure and fields of the On Channel Volume message are specified in section 2.2.5.6.2.
 
 The On Channel Volume message MUST be sent when any of the channel volumes for a presentation
 are changed on the server.
 
-3.2.5.3  Interface Manipulation Exchange Capabilities Interface
+##### 3.2.5.3 Interface Manipulation Exchange Capabilities Interface
 
-3.2.5.3.1 Sending an Interface Manipulation Exchange Capabilities Request Message
+###### 3.2.5.3.1 Sending an Interface Manipulation Exchange Capabilities Request Message
 
 The structure and fields of the Interface Manipulation Exchange Capabilities Request message are
 specified in section 2.2.3.1.
@@ -4206,7 +3919,7 @@ specified in section 2.2.3.1.
 The server MUST send this message when the video redirection virtual channel is connected. This
 message MUST be sent before the Server Data Interface Channel Setup messages (2.2.5.1).
 
-3.2.5.3.2 Processing an Interface Manipulation Exchange Capabilities Response
+###### 3.2.5.3.2 Processing an Interface Manipulation Exchange Capabilities Response
 
 Message
 
@@ -4216,7 +3929,7 @@ specified in section 2.2.3.2.
 On receiving this message, the server confirms that the client meets the minimum capabilities for
 interface manipulation.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -4227,38 +3940,39 @@ Release: April 23, 2024
 
 53 / 79
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Interface Manipulation
+##### 3.3.5.1 Interface Manipulation
 
 The details of rules for processing the interface manipulation messages on the client are defined in
 [MS-RDPEXPS] section 3.2.5.1.
 
-3.3.5.2  Client Notifications Interface
+##### 3.3.5.2 Client Notifications Interface
 
-3.3.5.2.1 Sending a Playback Acknowledgment Message
+###### 3.3.5.2.1 Sending a Playback Acknowledgment Message
 
 The structure and fields of the Playback Acknowledgment message are specified in section 2.2.4.1.
 
@@ -4266,7 +3980,7 @@ The Playback Acknowledgment message MUST be sent for every played sample on the 
 message MUST be sent on the same channel on which the corresponding sample was received to
 ensure that the server continues to send data.
 
-3.3.5.2.2 Sending a Client Event Notification Message
+###### 3.3.5.2.2 Sending a Client Event Notification Message
 
 The structure and fields of the Client Event Notification message are specified in section 2.2.4.2. A
 Client Event Notification message MUST be sent when any of the following events occur:
@@ -4294,11 +4008,12 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.3  Server Data Interface
 
-3.3.5.3.1 Server Data Interface Channel Setup Messages
+##### 3.3.5.3 Server Data Interface
 
-3.3.5.3.1.1  Processing a Set Channel Parameters Message
+###### 3.3.5.3.1 Server Data Interface Channel Setup Messages
+
+###### 3.3.5.3.1.1 Processing a Set Channel Parameters Message
 
 The structure and fields of the Set Channel Parameters message are specified in section 2.2.5.1.1.
 
@@ -4307,7 +4022,7 @@ identifier to ensure that the correct channel is used for sending the Playback A
 message for a sample. Any errors that occur in this process SHOULD be stored and used for the Set
 Topology Response Message.
 
-3.3.5.3.1.2  Processing an Exchange Capabilities Request Message
+###### 3.3.5.3.1.2 Processing an Exchange Capabilities Request Message
 
 The structure and fields of the Exchange Capabilities Request message are specified in section
 2.2.5.1.2.
@@ -4318,7 +4033,7 @@ Capabilities Response message.
 Note  The client MUST ignore any capabilities it does not recognize, which MAY include additional
 capabilities that are added to future versions of this protocol.
 
-3.3.5.3.1.3  Sending an Exchange Capabilities Response Message
+###### 3.3.5.3.1.3 Sending an Exchange Capabilities Response Message
 
 The structure and fields of the Exchange Capabilities Response message are specified in section
 2.2.5.1.3.
@@ -4327,9 +4042,9 @@ The client MUST send the Exchange Capabilities Response message when it receives
 Capabilities Request message. The client MUST NOT send any other message to the server between
 the Exchange Capabilities Request and Exchange Capabilities Response messages.
 
-3.3.5.3.2 Server Data Interface Presentation Initialization and Termination Messages
+###### 3.3.5.3.2 Server Data Interface Presentation Initialization and Termination Messages
 
-3.3.5.3.2.1  Processing a New Presentation Message
+###### 3.3.5.3.2.1 Processing a New Presentation Message
 
 The structure and fields of the New Presentation message are specified in section 2.2.5.2.1.
 
@@ -4338,7 +4053,7 @@ presentation. The platform used to set up the player SHOULD be based on the serv
 platform and the client's platform capabilities. Any errors in this process SHOULD be stored and used
 for the Set Topology Response message.
 
-3.3.5.3.2.2  Processing a Check Format Support Request Message
+###### 3.3.5.3.2.2 Processing a Check Format Support Request Message
 
 The structure and fields of the Check Format Support Request message are specified in section
 2.2.5.2.2.
@@ -4347,7 +4062,7 @@ After receiving the Check Format Support Request message, the client MUST check 
 playing the media data encoded in that format. It MUST send the Check Format Support Response
 message with the result.
 
-3.3.5.3.2.3  Sending a Check Format Support Response Message
+###### 3.3.5.3.2.3 Sending a Check Format Support Response Message
 
 The structure and fields of the Check Format Support Response message are specified in section
 2.2.5.2.3.
@@ -4359,12 +4074,13 @@ Release: April 23, 2024
 
 55 / 79
 
-The client MUST send the Check Format Support Response message in response to a Check Format
+
+The client MUST send the Check Format Support Response message in response to a Check Format
 Support Request message. The client MUST NOT send any other message to the server between the
 Check Format Support Request and Check Format Support Response messages; otherwise, the server
 behavior is not defined.
 
-3.3.5.3.2.4  Processing an Add Stream Message
+###### 3.3.5.3.2.4 Processing an Add Stream Message
 
 The structure and fields of the Add Stream message are specified in section 2.2.5.2.4.
 
@@ -4372,7 +4088,7 @@ After receiving the Add Stream Message, the client SHOULD add the stream to the 
 for the indicated presentation. Any errors in this process SHOULD be stored and used for the Set
 Topology Response message.
 
-3.3.5.3.2.5  Processing a Set Topology Request Message
+###### 3.3.5.3.2.5 Processing a Set Topology Request Message
 
 The structure and fields of the Set Topology Request message are specified in section 2.2.5.2.5.
 
@@ -4381,7 +4097,7 @@ presentation have been successfully added to the player and that they are ready 
 The client MUST send a Set Topology Response message with the result, indicating whether the player
 is ready to start playback or the presentation setup was unsuccessful.
 
-3.3.5.3.2.6  Sending a Set Topology Response Message
+###### 3.3.5.3.2.6 Sending a Set Topology Response Message
 
 The structure and fields of the Set Topology Response message are specified in section 2.2.5.2.6.
 
@@ -4391,14 +4107,14 @@ presentation setup was unsuccessful. The client MUST NOT send any other message 
 between the Set Topology Request and Set Topology Response messages; otherwise, the server
 behavior is not defined.
 
-3.3.5.3.2.7  Processing a Remove Stream Message
+###### 3.3.5.3.2.7 Processing a Remove Stream Message
 
 The structure and fields of the Remove Stream message are specified in section 2.2.5.2.7.
 
 After receiving the Remove Stream message, the client MAY remove the stream from the player that
 is used for the presentation.
 
-3.3.5.3.2.8  Processing a Shut Down Presentation Request Message
+###### 3.3.5.3.2.8 Processing a Shut Down Presentation Request Message
 
 The structure and fields of the Shut Down Presentation Request message are specified in section
 2.2.5.2.8.
@@ -4408,7 +4124,7 @@ are removed from the player and that the player is shut down. After processing t
 Presentation Request message, the client MUST ignore any further messages sent for the specific
 presentation. The client MUST send a Shut Down Presentation Response message.
 
-3.3.5.3.2.9  Sending a Shut Down Presentation Response Message
+###### 3.3.5.3.2.9 Sending a Shut Down Presentation Response Message
 
 The structure and fields of the Shut Down Presentation Response message are specified in section
 2.2.5.2.9.
@@ -4425,7 +4141,8 @@ Release: April 23, 2024
 
 56 / 79
 
-3.3.5.3.2.10  Processing a Set Video Source Rectangle Message
+
+###### 3.3.5.3.2.10 Processing a Set Video Source Rectangle Message
 
 The structure and fields of the Set Video Source Rectangle message are specified in section
 2.2.5.2.10.
@@ -4438,23 +4155,23 @@ packet.
 If this message is not sent by a server, assume the default rectangle to be {0, 0, 1, 1}, which
 corresponds to the entire video image.
 
-3.3.5.3.3 Server Data Interface Playback State Messages
+###### 3.3.5.3.3 Server Data Interface Playback State Messages
 
-3.3.5.3.3.1  Processing an On Playback Started Message
+###### 3.3.5.3.3.1 Processing an On Playback Started Message
 
 The structure and fields of the On Playback Started message are specified in section 2.2.5.3.1.
 
 After receiving the On Playback Started message, the client MUST ensure that the player used for the
 presentation is started. Any errors that occur in this process SHOULD be ignored.
 
-3.3.5.3.3.2  Processing an On Playback Paused Message
+###### 3.3.5.3.3.2 Processing an On Playback Paused Message
 
 The structure and fields of the On Playback Paused message are specified in section 2.2.5.3.2.
 
 After receiving the On Playback Paused message, the client MUST ensure that the player used for the
 presentation is paused.
 
-3.3.5.3.3.3  Processing an On Playback Restarted Message
+###### 3.3.5.3.3.3 Processing an On Playback Restarted Message
 
 The structure and fields of the On Playback Restarted message are specified in section 2.2.5.3.3.
 
@@ -4462,23 +4179,23 @@ After receiving the On Playback Restarted message, the client MUST ensure that t
 the presentation is started again and that it is ready to accept samples with time stamps starting from
 a new value. Any errors occurring during this process SHOULD be ignored.
 
-3.3.5.3.3.4  Processing an On Playback Stopped Message
+###### 3.3.5.3.3.4 Processing an On Playback Stopped Message
 
 The structure and fields of the On Playback Stopped message are specified in section 2.2.5.3.4.
 
 After receiving the On Playback Stopped message, the client MUST ensure that the player used for the
 presentation is stopped.
 
-3.3.5.3.3.5  Processing an On Playback Rate Changed Message
+###### 3.3.5.3.3.5 Processing an On Playback Rate Changed Message
 
 The structure and fields of the On Playback Rate Changed message are specified in section 2.2.5.3.5.
 
 On receiving the On Playback Rate Changed message, the client MUST change the playback rate for
 the player that is used for the current presentation.
 
-3.3.5.3.4 Server Data Interface Data Streaming Messages
+###### 3.3.5.3.4 Server Data Interface Data Streaming Messages
 
-3.3.5.3.4.1  Processing a Set Allocator Properties Message
+###### 3.3.5.3.4.1 Processing a Set Allocator Properties Message
 
 The structure and fields of the Set Allocator Properties message are specified in section 2.2.5.4.1.
 
@@ -4492,14 +4209,15 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.3.4.2  Processing a Notify Preroll Message
+
+###### 3.3.5.3.4.2 Processing a Notify Preroll Message
 
 The structure and fields of the Notify Preroll message are specified in section 2.2.5.4.2.
 
 After receiving the Notify Preroll message, the client MUST start queuing the samples while it waits for
 the On Playback Started message.
 
-3.3.5.3.4.3  Processing an On Sample Message
+###### 3.3.5.3.4.3 Processing an On Sample Message
 
 The structure and fields of the On Sample message are specified in section 2.2.5.4.3.
 
@@ -4507,30 +4225,30 @@ After receiving the On Sample message, the client MUST make the sample available
 is used for the presentation. The client SHOULD store the samples in a queue while it waits for the
 player to consume them.
 
-3.3.5.3.4.4  Processing an On Flush Message
+###### 3.3.5.3.4.4 Processing an On Flush Message
 
 The structure and fields of the On Flush message are specified in section 2.2.5.4.4.
 
 On receiving the On Flush message, the client MUST drop any samples queued for the player. It
 SHOULD also inform the player to flush its queue if the player supports a flush operation.
 
-3.3.5.3.4.5  Processing an On End Of Stream Message
+###### 3.3.5.3.4.5 Processing an On End Of Stream Message
 
 The structure and fields of the On End of Stream message are specified in section 2.2.5.4.5.
 
 After receiving the On End of Stream message, the client MUST indicate to the player of the
 presentation that no more samples are expected for this stream.
 
-3.3.5.3.5 Server Data Interface Geometry Handling Messages
+###### 3.3.5.3.5 Server Data Interface Geometry Handling Messages
 
-3.3.5.3.5.1  Processing a Set Video Window Message
+###### 3.3.5.3.5.1 Processing a Set Video Window Message
 
 The structure and fields of the Set Video Window message are specified in section 2.2.5.5.1.
 
 After receiving the Set Video Window message, the client SHOULD use the window handle for
 synchronization with the geometry of the server's video window.
 
-3.3.5.3.5.2  Processing an Update Geometry Information Message
+###### 3.3.5.3.5.2 Processing an Update Geometry Information Message
 
 The structure and fields of the Update Geometry Information message are specified in section
 2.2.5.5.2.
@@ -4538,16 +4256,16 @@ The structure and fields of the Update Geometry Information message are specifie
 After receiving the Update Geometry Information message, the client SHOULD update the geometry of
 the local window used for rendering video.
 
-3.3.5.3.6 Server Data Interface Volume Handling Messages
+###### 3.3.5.3.6 Server Data Interface Volume Handling Messages
 
-3.3.5.3.6.1  Processing an On Stream Volume Message
+###### 3.3.5.3.6.1 Processing an On Stream Volume Message
 
 The structure and fields of the On Stream Volume message are specified in section 2.2.5.6.1.
 
 On receiving the On Stream Volume message, the client SHOULD update the volume of the current
 presentation.
 
-3.3.5.3.6.2  Processing an On Channel Volume Message
+###### 3.3.5.3.6.2 Processing an On Channel Volume Message
 
 The structure and fields of the On Channel Volume message are specified in section 2.2.5.6.2.
 
@@ -4558,12 +4276,13 @@ Release: April 23, 2024
 
 58 / 79
 
-On receiving the On Channel Volume message, the client SHOULD update the channel volumes of the
+
+On receiving the On Channel Volume message, the client SHOULD update the channel volumes of the
 current presentation.
 
-3.3.5.4  Interface Manipulation Exchange Capabilities Interface Messages
+##### 3.3.5.4 Interface Manipulation Exchange Capabilities Interface Messages
 
-3.3.5.4.1 Processing an Interface Manipulation Exchange Capabilities Request
+###### 3.3.5.4.1 Processing an Interface Manipulation Exchange Capabilities Request
 
 Message
 
@@ -4573,7 +4292,7 @@ specified in section 2.2.3.1.
 On receiving an Interface Manipulation Exchange Capabilities Request message, the client MUST send
 an Interface Manipulation Exchange Capabilities Response message.
 
-3.3.5.4.2 Sending an Interface Manipulation Exchange Capabilities Response Message
+###### 3.3.5.4.2 Sending an Interface Manipulation Exchange Capabilities Response Message
 
 The structure and fields of the Interface Manipulation Exchange Capabilities Response message are
 specified in section 2.2.3.2.
@@ -4581,11 +4300,11 @@ specified in section 2.2.3.2.
 This message is sent in response to the Interface Manipulation Exchange Capabilities Request
 message.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -4596,11 +4315,12 @@ Release: April 23, 2024
 
 59 / 79
 
-4  Protocol Examples
 
-4.1  Server Data Interface Annotations
+## 4 Protocol Examples
 
-4.1.1  Channel Setup Sequence
+### 4.1 Server Data Interface Annotations
+
+#### 4.1.1 Channel Setup Sequence
 
 After a new channel is established, the server sends the Set Channel Parameters message to the
 client. The message specifies the PresentationId and the StreamId for the channel. The following
@@ -4661,7 +4381,8 @@ Release: April 23, 2024
 
 60 / 79
 
- 00 00 00 00 -> Message Id = 0x00000000
+
+ 00 00 00 00 -> Message Id = 0x00000000
  02 00 00 00 -> numClientCapabilities = 0x02
  01 00 00 00 -> CapabilityType of the first TSMM_CAPABILITIES structure = 0x01, capability
          type = version supported
@@ -4676,7 +4397,7 @@ Release: April 23, 2024
                    MMREDIR_CAPABILITY_PLATFORM_DSHOW (0x02) = 0x03
  00 00 00 00 -> Result = S_OK
 
-4.1.2  Presentation Initialization and Termination Sequence
+#### 4.1.2 Presentation Initialization and Termination Sequence
 
 The following annotation shows the New Presentation message sent from the server to the client. This
 message is sent after a channel has been set up. In this example, the PlatformCookie field is set to
@@ -4728,7 +4449,8 @@ Release: April 23, 2024
 
 61 / 79
 
- 61 75 64 73 -> MajorType (GUID) of the first TS_AM_MEDIA_TYPE structure = MEDIATYPE_Audio =
+
+ 61 75 64 73 -> MajorType (GUID) of the first TS_AM_MEDIA_TYPE structure = MEDIATYPE_Audio =
                 {73647561-0000-0010-8000-00aa00389b71}
  00 00 10 00
  80 00 00 aa
@@ -4796,7 +4518,8 @@ Release: April 23, 2024
 
 62 / 79
 
- 00000080 00 00 00 00 e0 00 00 00             ........
+
+ 00000080 00 00 00 00 e0 00 00 00             ........
 
  00 00 00 40 -> Interface Id = 0x00000000 | mask STREAM_ID_PROXY (0x40000000)
  00 00 00 00 -> Message Id = 0x00000000
@@ -4864,7 +4587,8 @@ Release: April 23, 2024
 
 63 / 79
 
- Set Topology Response
+
+ Set Topology Response
  ChannelName = TSMF,16,server to client
  00000000 00 00 00 80 00 00 00 00 01 00 00 00 00 00 00 00 ................
 
@@ -4926,7 +4650,8 @@ Release: April 23, 2024
 
 64 / 79
 
-4.1.3  Playback State Sequence
+
+#### 4.1.3 Playback State Sequence
 
 The following annotation shows the On Playback Started message sent from the server to the client.
 
@@ -4986,7 +4711,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- On Playback Stopped
+
+ On Playback Stopped
  ChannelName = TSMF,28,server to client
  00000000 00 00 00 40 00 00 00 00 0b 01 00 00 4a 70 bc de ...@........Jp..
  00000010 b9 8c 94 41 a4 14 8a 9a fb cc ea 2f       ...A......./
@@ -5018,7 +4744,7 @@ client. The NewRate field identifies the new rate at which the presentation data
  02 00 00 00 -> StreamId = 0x02
  00 00 a0 40 -> NewRate = 5.0
 
-4.1.4  Data Streaming Sequence
+#### 4.1.4 Data Streaming Sequence
 
 The following annotation shows the Set Allocator message sent from the server to the client. The
 various fields of the message indicate the buffer properties preferred by the server.
@@ -5049,7 +4775,8 @@ Release: April 23, 2024
 
 66 / 79
 
-The following annotation shows the Notify Preroll message sent from the server to the client. This
+
+The following annotation shows the Notify Preroll message sent from the server to the client. This
 message indicates that the stream is preloading the media data before playback.
 
  Notify Preroll
@@ -5119,7 +4846,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- On Flush
+
+ On Flush
  ChannelName = TSMF,32,server to client
  00000000 00 00 00 40 00 00 00 00 0e 01 00 00 99 ac f1 31 ...@...........1
  00000010 0c 83 97 43 92 28 dc ff-1a 45 1d d1 01 00 00 00 ...C.(...E......
@@ -5149,7 +4877,7 @@ StreamId field identifies the stream for which the end of data has been reached.
  1a 45 1d d1
  01 00 00 00 -> StreamId = 0x01
 
-4.1.5  Geometry Handling Sequence
+#### 4.1.5 Geometry Handling Sequence
 
 The following annotation shows the Set Video Window message sent from the server to the client. The
 fields of this message indicate the video window handle on the server and the handle of its parent
@@ -5183,7 +4911,8 @@ Release: April 23, 2024
 
 68 / 79
 
- Update Geometry Information
+
+ Update Geometry Information
  ChannelName = TSMF,112,server to client
  00000000 00 00 00 40 00 00 00 00 14 01 00 00 9f 04 86 e0 ...@........\bH.
  00000010 26 d9 ae 45 8c 0f 3e 05 6a f3 f7 d4 2c 00 00 00 ..NN.D...X..,...
@@ -5222,7 +4951,7 @@ Release: April 23, 2024
  f0 00 00 00 -> Bottom of the second TS_RECT structure = 0xf0
  a7 00 00 00 -> Right of the second TS_RECT structure = 0xa7
 
-4.1.6  Volume Handling Sequence
+#### 4.1.6 Volume Handling Sequence
 
 The following annotation shows the On Stream Volume message sent from the server to the client.
 The fields of this message indicate the new stream volume level of the presentation and if the
@@ -5251,7 +4980,8 @@ Release: April 23, 2024
 
 69 / 79
 
-The following annotation shows the On Channel Volume message sent from the server to the client.
+
+The following annotation shows the On Channel Volume message sent from the server to the client.
 The fields of this message indicate the new channel volume level of the presentation and if the volume
 for a channel is muted.
 
@@ -5271,7 +5001,7 @@ for a channel is muted.
  10 27 00 00 -> ChannelVolume = 0x2710
  01 00 00 00 -> ChangedChannel = 0x01
 
-4.2  Client Notifications Interface Annotation
+### 4.2 Client Notifications Interface Annotation
 
 The following annotation shows the Playback Acknowledgment message sent from the client to the
 server. The fields of this message indicate the duration and the size of the data being acknowledged.
@@ -5313,7 +5043,8 @@ Release: April 23, 2024
 
 70 / 79
 
-4.3  Interface Manipulation Exchange Capabilities Interface Annotation
+
+### 4.3 Interface Manipulation Exchange Capabilities Interface Annotation
 
 The following annotation shows the Interface Manipulation Exchange Capabilities Request message
 sent from the server to the client.
@@ -5346,16 +5077,17 @@ Release: April 23, 2024
 
 71 / 79
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for the Remote Desktop Protocol Video Redirection Virtual
 Channel Extension messages because all traffic is secured by the underlying RDP core protocol. For
 information about the security-related mechanisms that are implemented in the RDP core protocol,
 see [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5366,7 +5098,8 @@ Release: April 23, 2024
 
 72 / 79
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5435,7 +5168,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0x00000002 indicates the platform support capability. Additional values that are not supported in
+
+0x00000002 indicates the platform support capability. Additional values that are not supported in
 Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2, were added for the
 CapabilityType fields: 0x00000003 indicating if audio is supported, and 0x00000004 indicating if
 one-way network latency is supported. Implementations of this protocol are able to interoperate with
@@ -5500,7 +5234,8 @@ Release: April 23, 2024
 
 74 / 79
 
-<16> Section 3.2.5.2.4.1: In the Windows implementation of this protocol, the Set Allocator message
+
+<16> Section 3.2.5.2.4.1: In the Windows implementation of this protocol, the Set Allocator message
 is sent when the server is using the DShow platform. The Set Allocator message is not sent when the
 server is using the MF platform.
 
@@ -5511,7 +5246,8 @@ Release: April 23, 2024
 
 75 / 79
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5555,7 +5291,8 @@ Release: April 23, 2024
 
 76 / 79
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5699,7 +5436,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   MMREDIR_CAPABILITY_AUDIOSUPPORT Constants
+
+   MMREDIR_CAPABILITY_AUDIOSUPPORT Constants
 
 46
 
@@ -5856,7 +5594,8 @@ Remote Desktop Protocol: Video Redirection Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TS_RECT Structure message 45
+
+TS_RECT Structure message 45
 TS_WNDFLAG Flags message 45
 TS_WNDFLAG_DELETED 45
 TS_WNDFLAG_NEW 45

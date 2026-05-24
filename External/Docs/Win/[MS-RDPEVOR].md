@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -232,168 +233,73 @@ Release: April 23, 2024
 
 2 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 TSMM_VIDEO_PACKET_HEADER Structure](#2211-tsmmvideopacketheader-structure)
+      - [2.2.1.2 TSMM_PRESENTATION_REQUEST Structure](#2212-tsmmpresentationrequest-structure)
+      - [2.2.1.3 TSMM_PRESENTATION_RESPONSE Structure](#2213-tsmmpresentationresponse-structure)
+      - [2.2.1.4 TSMM_CLIENT_NOTIFICATION Structure](#2214-tsmmclientnotification-structure)
+      - [2.2.1.5 TSMM_CLIENT_NOTIFICATION_FRAMERATE_OVERRIDE Structure](#2215-tsmmclientnotificationframerateoverride-structure)
+      - [2.2.1.6 TSMM_VIDEO_DATA Structure](#2216-tsmmvideodata-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Message Validation](#3151-message-validation)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 TSMM_PRESENTATION_REQUEST Message Processing](#3251-tsmmpresentationrequest-message-processing)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Video Presentation Streaming](#3351-video-presentation-streaming)
+      - [3.3.5.2 Video Presentation Shutdown](#3352-video-presentation-shutdown)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Message 1 – TSMM_PRESENTATION_REQUEST (START)](#41-message-1-tsmmpresentationrequest-start)
+  - [4.2 Message 2 – TSMM_PRESENTATION_RESPONSE](#42-message-2-tsmmpresentationresponse)
+  - [4.3 Message 3 – TSMM_VIDEO_DATA](#43-message-3-tsmmvideodata)
+  - [4.4 Message 4 – TSMM_PRESENTATION_REQUEST (STOP)](#44-message-4-tsmmpresentationrequest-stop)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Structures ................................................................................................... 8
-TSMM_VIDEO_PACKET_HEADER Structure ................................................. 8
-TSMM_PRESENTATION_REQUEST Structure ............................................... 9
-TSMM_PRESENTATION_RESPONSE Structure ........................................... 11
-TSMM_CLIENT_NOTIFICATION Structure ................................................. 11
-TSMM_CLIENT_NOTIFICATION_FRAMERATE_OVERRIDE Structure .............. 12
-TSMM_VIDEO_DATA Structure ................................................................ 13
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-3.2
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Message Validation ................................................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Client Details ................................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-TSMM_PRESENTATION_REQUEST Message Processing ............................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Video Presentation Streaming ................................................................. 18
-Video Presentation Shutdown ................................................................. 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.3
-
-4  Protocol Examples ................................................................................................. 19
-
-[MS-RDPEVOR] - v20240423
-Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 28
-
-4.1
-4.2
-4.3
-4.4
-
-Message 1 – TSMM_PRESENTATION_REQUEST (START) ....................................... 19
-Message 2 – TSMM_PRESENTATION_RESPONSE .................................................. 20
-Message 3 – TSMM_VIDEO_DATA ...................................................................... 21
-Message 4 – TSMM_PRESENTATION_REQUEST (STOP) ......................................... 22
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 26
-
-8  Index ..................................................................................................................... 27
-
-[MS-RDPEVOR] - v20240423
-Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 28
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension is an extension of
 the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting protocol [MS-RDPBCGR],
@@ -406,7 +312,7 @@ desktop client.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -427,14 +333,14 @@ timing information that indicates when the sample is to be rendered.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -458,7 +364,8 @@ Release: April 23, 2024
 
 5 / 28
 
-[MS-RDPEA] Microsoft Corporation, "Remote Desktop Protocol: Audio Output Virtual Channel
+
+[MS-RDPEA] Microsoft Corporation, "Remote Desktop Protocol: Audio Output Virtual Channel
 Extension".
 
 [MS-RDPEDYC] Microsoft Corporation, "Remote Desktop Protocol: Dynamic Channel Virtual Channel
@@ -472,17 +379,17 @@ Protocol Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol enables a protocol server to compress screen content identified as video more efficiently
 than if it identified the same content as a static image. This content is sent to a protocol client for
 decoding and rendering.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension is embedded in
 the dynamic virtual channel transport, as specified in [MS-RDPEDYC]. This protocol is concerned with
@@ -490,7 +397,7 @@ transmitting the raw video stream from the server to the client. Knowing where t
 rendered is handled by the Remote Desktop Protocol: Geometry Tracking Virtual Channel Extension as
 specified in [MS-RDPEGT].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension operates only
 after the dynamic virtual channel transport is fully established. If the dynamic virtual channel
@@ -508,7 +415,7 @@ characteristics detection SHOULD be enabled (as specified in [MS-RDPBCGR] sectio
 This protocol is message-based. It assumes preservation of the packet as a whole and does not allow
 for fragmentation. Some messages can be lost and are described in section 2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension is designed to be
 run within the context of a Remote Desktop Protocol (RDP) virtual channel established between a
@@ -522,13 +429,14 @@ Release: April 23, 2024
 
 6 / 28
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This protocol supports versioning and capability negotiation only when the underlying virtual channel
 attempts to open. A client that supports this protocol does allow this virtual channel to be opened, and
 a client that does not support this protocol does not allow this virtual channel to be opened.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension uses HRESULTs as
 specified in [MS-ERREF] section 2.1. Vendors are free to choose their own values as long as the C bit
@@ -538,7 +446,7 @@ This protocol also uses Win32 error codes. These values are taken from the error
 specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meanings. Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -549,9 +457,10 @@ Release: April 23, 2024
 
 7 / 28
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension is designed to
 operate over dynamic virtual channels, as specified in [MS-RDPEDYC]. The channel names used for
@@ -570,16 +479,16 @@ the connection are assumed to be intact and unaltered.
 All PDUs except TSMM_VIDEO_DATA flow on the control channel, whereas TSMM_VIDEO_DATA flows
 on the data channel.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All messages in the Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension
 begin with a TSMM_VIDEO_PACKET_HEADER structure, described in section 2.2.1.1.
 
 The protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
-2.2.1.1  TSMM_VIDEO_PACKET_HEADER Structure
+##### 2.2.1.1 TSMM_VIDEO_PACKET_HEADER Structure
 
 This message is meant to be a header on all other messages sent in the Remote Desktop Protocol:
 Video Optimized Remoting Virtual Channel Extension and MUST NOT be sent alone.
@@ -632,7 +541,8 @@ Release: April 23, 2024
 
 8 / 28
 
-Value  Symbolic name
+
+Value  Symbolic name
 
 Meaning
 
@@ -650,7 +560,7 @@ TSMM_CLIENT_NOTIFICATION structure.
 Indicates that this message is interpreted as a
 TSMM_VIDEO_DATA structure.
 
-2.2.1.2  TSMM_PRESENTATION_REQUEST Structure
+##### 2.2.1.2 TSMM_PRESENTATION_REQUEST Structure
 
 The TSMM_PRESENTATION_REQUEST message is sent from the server to the client to indicate that a
 video stream is either starting or stopping.
@@ -715,7 +625,8 @@ Release: April 23, 2024
 
 9 / 28
 
-...
+
+...
 
 ...
 
@@ -793,14 +704,15 @@ Release: April 23, 2024
 
 10 / 28
 
-the Microsoft implementation of the H.264 encoder, can be found by querying the
+
+the Microsoft implementation of the H.264 encoder, can be found by querying the
 MF_MT_MPEG_SEQUENCE_HEADER attribute of the video media type after setting it as the
 encoder output. This field can also be constructed by concatenating the sequence parameter set
 (SPS) (as described in [ITU-H.264] section 7.3.2.1) and picture parameter set (PPS) (as described
 in [ITU-H.264] section 7.3.2.2) syntax structures. The total number of bytes in this field is set in
 the cbExtra field.
 
-2.2.1.3  TSMM_PRESENTATION_RESPONSE Structure
+##### 2.2.1.3 TSMM_PRESENTATION_RESPONSE Structure
 
 This message is sent from the client to the server in response to a TSMM_PRESENTATION_REQUEST
 message with the Command field set to 0x01 (Start Presentation). This message MUST be sent when
@@ -841,7 +753,7 @@ ResultFlags (2 bytes): UINT16 ([MS-DTYP] section 2.2.48). This field is reserved
 
 to 0.
 
-2.2.1.4  TSMM_CLIENT_NOTIFICATION Structure
+##### 2.2.1.4 TSMM_CLIENT_NOTIFICATION Structure
 
 This message is sent from the client to the server to notify of certain events happening on the client.
 
@@ -881,7 +793,8 @@ Release: April 23, 2024
 
 11 / 28
 
-Header (8 bytes): TSMM_VIDEO_PACKET_HEADER defined in 2.2.1.1.
+
+Header (8 bytes): TSMM_VIDEO_PACKET_HEADER defined in 2.2.1.1.
 
 A - PresentationId (1 byte): UINT8 ([MS-DTYP] section 2.2.47). This is the same number as the
 
@@ -912,7 +825,7 @@ pData (variable): Array of UINT8. The data in the field is dependent on the valu
 
 NotificationType field.
 
-2.2.1.5  TSMM_CLIENT_NOTIFICATION_FRAMERATE_OVERRIDE Structure
+##### 2.2.1.5 TSMM_CLIENT_NOTIFICATION_FRAMERATE_OVERRIDE Structure
 
 This structure is appended to a TSMM_CLIENT_NOTIFICATION in the pData field.
 
@@ -961,7 +874,8 @@ Release: April 23, 2024
 
 12 / 28
 
-DesiredFrameRate is used to calculate the minimum frame interval. The server will make sure the
+
+DesiredFrameRate is used to calculate the minimum frame interval. The server will make sure the
 interval between any two frames is not less than that interval, which guarantees that the actual
 framerate is below the requested framerate.
 
@@ -972,7 +886,7 @@ Reserved1 (4 bytes): UINT32. This is reserved for future use and SHOULD be set t
 
 Reserved2 (4 bytes): UINT32. This is reserved for future use and SHOULD be set to zero.
 
-2.2.1.6  TSMM_VIDEO_DATA Structure
+##### 2.2.1.6 TSMM_VIDEO_DATA Structure
 
 This message contains a potentially fragmented video sample. If the VideoSubtypeId of the
 TSMM_PRESENTATION_REQUEST (section 2.2.1.2) message is set to MFVideoFormat_H264
@@ -1038,7 +952,8 @@ Release: April 23, 2024
 
 13 / 28
 
-Version (1 byte): UINT8. This is the same number as the Version field in the
+
+Version (1 byte): UINT8. This is the same number as the Version field in the
 
 TSMM_PRESENTATION_REQUEST message.
 
@@ -1118,13 +1033,14 @@ Release: April 23, 2024
 
 14 / 28
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPEVOR].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
 The Remote Desktop Protocol: Video Optimized Remoting Virtual Channel Extension has three distinct
 states: initialization, streaming, and termination. Initialization is started by the protocol server, and
@@ -1137,7 +1053,7 @@ in a remote session.
 
 Figure 1: Playback initialization, streaming, and termination
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1151,7 +1067,7 @@ presentation ID. The server sends this ID to the client in the PresentationId fi
 TSMM_PRESENTATION_REQUEST message. This ID is then used in all subsequent messages for a
 presentation and is used by the client to refer all messages to the correct presentation.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -1162,17 +1078,18 @@ Release: April 23, 2024
 
 15 / 28
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Message Validation
+##### 3.1.5.1 Message Validation
 
 In all cases, the protocol endpoints MUST validate messages received from the network by validating
 the following:
@@ -1196,25 +1113,25 @@ The message content.
 If a packet is malformed, (e.g., incorrect length for the indicated packet type) communication MUST
 be terminated. If a packet is valid, but contains unexpected data, the packet MUST be ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Clients initialize in two phases. The first phase occurs when the virtual channels are opened. The client
 has the option to indicate support for the Remote Desktop Protocol: Video Optimized Remoting Virtual
@@ -1231,13 +1148,14 @@ Release: April 23, 2024
 
 16 / 28
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  TSMM_PRESENTATION_REQUEST Message Processing
+##### 3.2.5.1 TSMM_PRESENTATION_REQUEST Message Processing
 
 The processing of this message depends on the Command field of the message and the current
 presentation state.
@@ -1253,25 +1171,25 @@ client SHOULD terminate any objects relating to the presentation corresponding t
 in the message and set the current state to Uninitialized. If the presentation state is Uninitialized, the
 client SHOULD ignore this message.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 When a video presentation is started on the server, the server MUST send a
 TSMM_PRESENTATION_REQUEST message with the Command field set to
@@ -1293,33 +1211,34 @@ Release: April 23, 2024
 
 17 / 28
 
-send a TSMM_PRESENTATION_RESPONSE message. The server MUST NOT send TSMM_VIDEO_DATA
+
+send a TSMM_PRESENTATION_RESPONSE message. The server MUST NOT send TSMM_VIDEO_DATA
 messages to the client in this case.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Video Presentation Streaming
+##### 3.3.5.1 Video Presentation Streaming
 
 Throughout the video presentation, the server will send many TSMM_VIDEO_DATA messages
 representing the bulk of transmission. This packet does not have any acknowledgment of receipt sent
 from the client.
 
-3.3.5.2  Video Presentation Shutdown
+##### 3.3.5.2 Video Presentation Shutdown
 
 When a video presentation is stopping on the server, the server MUST send a
 TSMM_PRESENTATION_REQUEST message with the Command field set to
 TSMM_VIDEO_PLAYBACK_COMMAND_STOP and the presentation ID matching a
 TSMM_PRESENTATION_REQUEST to start sent earlier to the client.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1330,7 +1249,8 @@ Release: April 23, 2024
 
 18 / 28
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this section, a common scenario is outlined (see section 2 for information about how to parse the
 messages received on the wire):
@@ -1349,7 +1269,7 @@ to receive data.
 
 0x02 (STOP).
 
-4.1  Message 1 – TSMM_PRESENTATION_REQUEST (START)
+### 4.1 Message 1 – TSMM_PRESENTATION_REQUEST (START)
 
 Raw packet data:
 
@@ -1401,7 +1321,8 @@ Release: April 23, 2024
 
 19 / 28
 
-480
+
+480
 
 UINT32 SourceHeight - F4000000
 
@@ -1439,7 +1360,7 @@ Since data type is H.264 video, this buffer contains the sequence header data fo
 
 UINT32 Reserved – 00
 
-4.2  Message 2 – TSMM_PRESENTATION_RESPONSE
+### 4.2 Message 2 – TSMM_PRESENTATION_RESPONSE
 
 Raw packet data:
 
@@ -1470,11 +1391,12 @@ Release: April 23, 2024
 
 20 / 28
 
-UINT16 ResultFlags – 0000
+
+UINT16 ResultFlags – 0000
 
 0
 
-4.3  Message 3 – TSMM_VIDEO_DATA
+### 4.3 Message 3 – TSMM_VIDEO_DATA
 
 Raw packet data:
 
@@ -1540,7 +1462,8 @@ Release: April 23, 2024
 
 21 / 28
 
-0
+
+0
 
 UINT64 hnsTimestamp - C7C60600 00000000
 
@@ -1574,7 +1497,7 @@ Raw video data
 
 UINT32 Reserved – 00
 
-4.4  Message 4 – TSMM_PRESENTATION_REQUEST (STOP)
+### 4.4 Message 4 – TSMM_PRESENTATION_REQUEST (STOP)
 
 Raw packet data:
 
@@ -1609,7 +1532,8 @@ Release: April 23, 2024
 
 22 / 28
 
-2 (Stop)
+
+2 (Stop)
 
 UINT8 FrameRate – 00
 
@@ -1668,16 +1592,17 @@ Release: April 23, 2024
 
 23 / 28
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for the Remote Desktop Protocol: Video Optimized Remoting
 Virtual Channel Extension messages because all traffic is secured by the underlying RDP core protocol.
 For information about the security-related mechanisms that are implemented in the RDP core protocol,
 see [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The security considerations are the same as those in [MS-RDPBCGR]. The Virtual Channel security
 considerations that this protocol uses are covered under that protocol.
@@ -1689,7 +1614,8 @@ Release: April 23, 2024
 
 24 / 28
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1734,7 +1660,8 @@ Release: April 23, 2024
 
 25 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1778,7 +1705,8 @@ Release: April 23, 2024
 
 26 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1915,7 +1843,8 @@ Release: April 23, 2024
 
 27 / 28
 
-Server
+
+Server
    abstract data model (section 3.1.1 15, section
 
 3.3.1 17)

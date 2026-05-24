@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 25
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: June 1, 2017
 
 2 / 25
 
-Date
+
+Date
 
 Revision
 History
@@ -494,127 +496,59 @@ Release: June 1, 2017
 
 3 / 25
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 User Agent Details](#31-user-agent-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Audio and Video](#3151-audio-and-video)
+      - [3.1.5.2 Data Collaboration](#3152-data-collaboration)
+        - [3.1.5.2.1 Application Sharing and Whiteboarding](#31521-application-sharing-and-whiteboarding)
+      - [3.1.5.3 Instant Messaging](#3153-instant-messaging)
+      - [3.1.5.4 Data Collaboration Encryption](#3154-data-collaboration-encryption)
+        - [3.1.5.4.1 Application Behavior](#31541-application-behavior)
+        - [3.1.5.4.2 Negotiation Failure and Error Messages](#31542-negotiation-failure-and-error-messages)
+        - [3.1.5.4.3 Renegotiation of Data Collaboration Encryption](#31543-renegotiation-of-data-collaboration-encryption)
+      - [3.1.5.5 Audio/Video Encryption](#3155-audiovideo-encryption)
+        - [3.1.5.5.1 Encryption Algorithms](#31551-encryption-algorithms)
+        - [3.1.5.5.2 Application Behavior](#31552-application-behavior)
+        - [3.1.5.5.3 Negotiation Failure and Error Messages](#31553-negotiation-failure-and-error-messages)
+        - [3.1.5.5.4 Interaction Between Audio and Video Encryption Negotiation](#31554-interaction-between-audio-and-video-encryption-negotiation)
+        - [3.1.5.5.5 Renegotiation of Audio/Video Encryption](#31555-renegotiation-of-audiovideo-encryption)
+        - [3.1.5.5.6 Interaction Between Audio/Video and Data Encryption Negotiation](#31556-interaction-between-audiovideo-and-data-encryption-negotiation)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Peer Clients Require Encryption](#41-peer-clients-require-encryption)
+  - [4.2 Client Requires Encryption but Peer Does Not Allow It](#42-client-requires-encryption-but-peer-does-not-allow-it)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-
-2.1
-2.2
-
-3.1
-
-3.1.5.2.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.5.3
-3.1.5.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 11
-User Agent Details ........................................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Audio and Video .................................................................................... 11
-Data Collaboration ................................................................................ 11
-Application Sharing and Whiteboarding .............................................. 11
-Instant Messaging ................................................................................. 12
-Data Collaboration Encryption ................................................................. 12
-Application Behavior ........................................................................ 13
-Negotiation Failure and Error Messages .............................................. 14
-Renegotiation of Data Collaboration Encryption ................................... 14
-Audio/Video Encryption .......................................................................... 14
-Encryption Algorithms ...................................................................... 15
-Application Behavior ........................................................................ 15
-Negotiation Failure and Error Messages .............................................. 16
-Interaction Between Audio and Video Encryption Negotiation ................ 16
-Renegotiation of Audio/Video Encryption ............................................ 17
-Interaction Between Audio/Video and Data Encryption Negotiation ........ 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.1.5.5.1
-3.1.5.5.2
-3.1.5.5.3
-3.1.5.5.4
-3.1.5.5.5
-3.1.5.5.6
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-
-3.1.6
-3.1.7
-
-3.1.5.5
-
-4  Protocol Examples ................................................................................................. 18
-Peer Clients Require Encryption ......................................................................... 18
-Client Requires Encryption but Peer Does Not Allow It .......................................... 19
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 21
-Security Considerations for Implementers ........................................................... 21
-Index of Security Parameters ............................................................................ 21
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 22
-
-7  Change Tracking .................................................................................................... 23
-
-8  Index ..................................................................................................................... 24
-
-[MS-SDP] - v20170601
-Session Description Protocol (SDP) Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 25
-
-1  Introduction
+## 1 Introduction
 
 This document describes a Microsoft extension protocol, Session Description Protocol (SDP)
 Extensions. The base protocol, which is the Session Description Protocol (SDP), is specified in
@@ -634,7 +568,7 @@ it is passed in SIP/SDP signaling.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -685,7 +619,8 @@ Session Description Protocol (SDP) Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-INVITE: A Session Initiation Protocol (SIP) method that is used to invite a user or a service to
+
+INVITE: A Session Initiation Protocol (SIP) method that is used to invite a user or a service to
 
 participate in a session.
 
@@ -724,14 +659,14 @@ whiteboarding.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -759,17 +694,18 @@ Release: June 1, 2017
 
 6 / 25
 
-[RFC3611] Friedman, T., Ed., Caceres, R., Ed., and Clark, A., Ed., "RTP Control Protocol Extended
+
+[RFC3611] Friedman, T., Ed., Caceres, R., Ed., and Clark, A., Ed., "RTP Control Protocol Extended
 Reports (RTCP XR)", RFC 3611, November 2003, http://www.ietf.org/rfc/rfc3611.txt
 
 [RFC4566] Handley, M., Jacobson, V., and Perkins, C., "SDP: Session Description Protocol", RFC 4566,
 July 2006, https://www.rfc-editor.org/info/rfc4566
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Session Description Protocol (SDP), as specified in [RFC4566], describes multimedia sessions for
 a variety of purposes associated with sessions.
@@ -800,19 +736,19 @@ is exchanged by a separate mechanism that uses the T.120 stream for data collabo
 
 These extensions are described in detail in section 3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Session Description Protocol (SDP) Extensions depend on SDP, as specified in [RFC4566], and
 upon the Session Initiation Protocol (SIP), as specified in [RFC3261]. SDP Extensions defines
 additional SDP primitives needed to negotiate encryption parameters for data collaboration and
 audio/video sessions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that both clients support SDP [RFC4566] and Session Initiation Protocol
 (SIP) [RFC3261].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Session Description Protocol (SDP) Extensions allow negotiation of whether the media is
 encrypted and if so, what encryption key is used.
@@ -829,17 +765,18 @@ Release: June 1, 2017
 
 7 / 25
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The Session Description Protocol (SDP) Extensions do not have protocol versioning.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields specific to the Session Description Protocol (SDP) Extensions.
 Session Initiation Protocol (SIP) [RFC3261] and SDP [RFC4566] can be used by vendors as
 needed.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The attributes and fields defined by SDP Extensions have not been registered with IANA. SDP by itself
 is specified in [RFC4566].
@@ -851,9 +788,10 @@ Release: June 1, 2017
 
 8 / 25
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Microsoft extensions to SDP do not introduce a new transport to exchange messages. SDP messages
 are carried inside SIP messages. The content type MUST be specified as application/sdp for SIP
@@ -863,7 +801,7 @@ SIP messages can be transported over UDP, TCP, or TLS. Microsoft strongly recomm
 enhancements SHOULD be used in conjunction with Transport Layer Security (TLS) to protect the
 encryption key if the key is passed in the SIP/SDP signaling.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Session Description Protocol (SDP) Extensions do not introduce a new message format and rely on
 SIP and SDP message formats. The SIP message format is specified in [RFC3261] section 7. The SDP
@@ -919,7 +857,8 @@ Release: June 1, 2017
 
 9 / 25
 
- o=- 0 0 IN IP4 172.27.174.212
+
+ o=- 0 0 IN IP4 172.27.174.212
  s=session
  c=IN IP4 172.27.174.212
  t=0 0
@@ -938,27 +877,28 @@ Release: June 1, 2017
 
 10 / 25
 
-3  Protocol Details
 
-3.1  User Agent Details
+## 3 Protocol Details
+
+### 3.1 User Agent Details
 
 SDP is used to negotiate session description between user agents. There is no server role that is
 relevant for the Session Description Protocol (SDP) Extensions.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Not applicable.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required by Session Description Protocol (SDP) Extensions beyond those that are
 required by Session Initiation Protocol Extensions, as specified in [MS-SIP].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Not applicable.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following is a recommendation on how the higher layer exposes protocol-based events.
 
@@ -970,20 +910,20 @@ session negotiation fails, the higher layer can alternatively receive an event i
 the session negotiation failed due to incompatible encryption settings, the event can indicate the
 incompatibility.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 There are no new message processing events or sequencing rules defined by SDP Extensions beyond
 those defined by SIP/SDP.
 
-3.1.5.1  Audio and Video
+##### 3.1.5.1 Audio and Video
 
 The Session Description Protocol (SDP) for an audio/video session is standard (according to RFC)
 with one exception: negotiation of encryption of the audio/video session uses additional extensions,
 which are specified in section 3.1.5.5.
 
-3.1.5.2  Data Collaboration
+##### 3.1.5.2 Data Collaboration
 
-3.1.5.2.1 Application Sharing and Whiteboarding
+###### 3.1.5.2.1 Application Sharing and Whiteboarding
 
 An application-sharing or whiteboarding session is identified by the following media information in
 SDP.
@@ -998,14 +938,15 @@ Release: June 1, 2017
 
 11 / 25
 
-The media field extension conveys capability for application sharing or use of a whiteboard. The "tcp"
+
+The media field extension conveys capability for application sharing or use of a whiteboard. The "tcp"
 value is valid for the proto subfield.
 
 Port 1503 is the standard port used for T.120 and is implemented by the underlying Microsoft
 NetMeeting client. See section 3.1.5.4 for additional details about encryption of application sharing
 and whiteboarding.
 
-3.1.5.3  Instant Messaging
+##### 3.1.5.3 Instant Messaging
 
 The SDP signaling for an instant messaging session using the previous RTC 1.2 APIs is shown in
 the following.
@@ -1035,7 +976,7 @@ indicates the listening port of the client for direct connections if that is sup
 be ignored if the clients are connected through a server. The 1.3 client can also accept the older 1.2
 format (which has null for the SIP URI and uses x-ms-message as the media type).
 
-3.1.5.4  Data Collaboration Encryption
+##### 3.1.5.4 Data Collaboration Encryption
 
 For data collaboration sessions, the initiating and receiving parties MUST negotiate support for
 encryption by using a new SDP attribute.<2>
@@ -1057,7 +998,8 @@ Release: June 1, 2017
 
 12 / 25
 
-
+
+
 
 If encryption is supported but not required, the SDP signaling MUST carry a media-level attribute
 as shown in the following.<3>
@@ -1073,7 +1015,7 @@ following:
  m=application 1503 tcp msdata
  a=encryption:rejected
 
-3.1.5.4.1 Application Behavior
+###### 3.1.5.4.1 Application Behavior
 
 If data collaboration (DC) encryption is required at the initiating side, the application calls the
 application API (such as NetMeeting) to create a secured T.120 session. If encryption is not required,
@@ -1172,7 +1114,8 @@ Release: June 1, 2017
 
 13 / 25
 
-3.1.5.4.2 Negotiation Failure and Error Messages
+
+###### 3.1.5.4.2 Negotiation Failure and Error Messages
 
 If the initiator requires encryption and then receives a 488 error response to INVITE, it is
 recommended that the application display a new error message in the user interface (UI) that explains
@@ -1184,14 +1127,14 @@ incompatible. The following is an example of a 488 error response.
  SIP/2.0 488 Encryption Levels Incompatible
  Warning: 308 ms.com "Encryption Levels Incompatible"
 
-3.1.5.4.3 Renegotiation of Data Collaboration Encryption
+###### 3.1.5.4.3 Renegotiation of Data Collaboration Encryption
 
 It is theoretically possible to renegotiate the encryption level in a session by sending a reINVITE
 message that has a different encryption level from what was negotiated when the session was
 created. However, renegotiation of the encryption level is not supported by the Session Initiation
 Protocol Extensions, and any such reINVITE SHOULD be rejected.
 
-3.1.5.5  Audio/Video Encryption
+##### 3.1.5.5 Audio/Video Encryption
 
 For audio/video sessions, the initiating and receiving parties MUST negotiate support for encryption
 by using a new SDP attribute.
@@ -1238,7 +1181,8 @@ Release: June 1, 2017
 
 14 / 25
 
-The encryption key is not encrypted. The only transformation of the key is the base64 encoding for
+
+The encryption key is not encrypted. The only transformation of the key is the base64 encoding for
 transport in the textual session description (SDP). Clients MUST send the key in base64 encoded
 form and MUST decode the key that is received from the other endpoint before using it to decrypt
 audio/video. Protection of the encryption key is provided by the TLS transport over which SIP
@@ -1253,7 +1197,7 @@ is reused, it typically uses the same encryption key.
 
 For information about SIP, see [RFC3261].
 
-3.1.5.5.1 Encryption Algorithms
+###### 3.1.5.5.1 Encryption Algorithms
 
 The RTC API uses MD5 as the default key generation method.
 
@@ -1279,7 +1223,7 @@ Encryption of an RTP stream can involve encryption of just the RTP packets or en
 RTP and Real-Time Transport Control Protocol (RTCP) packets. The RTC API only supports
 encryption of both RTP and RTCP (as specified in [RFC3605] and [RFC3611]) packets.
 
-3.1.5.5.2 Application Behavior
+###### 3.1.5.5.2 Application Behavior
 
 The following table summarizes the application behavior based on the audio/video encryption policy at
 both the initiator and the receiver. This behavior applies to both an initial INVITE (as specified in
@@ -1334,7 +1278,8 @@ Release: June 1, 2017
 
 15 / 25
 
-Initiator setting  Receiver setting  Result
+
+Initiator setting  Receiver setting  Result
 
 Not allowed
 
@@ -1377,7 +1322,7 @@ an error message to the user stating that encryption could not be negotiated. No
 at the receiving client might not get an indication of the call because the call is automatically
 rejected.
 
-3.1.5.5.3 Negotiation Failure and Error Messages
+###### 3.1.5.5.3 Negotiation Failure and Error Messages
 
 If the caller requires encryption but receives a 488 error response from the callee, the application
 displays a new error message in the user interface (UI) explaining to the user that the encryption
@@ -1389,7 +1334,7 @@ following is an example of a 488 error response.
  SIP/2.0 488 Encryption Levels Incompatible
  Warning: 308 ms.com "Encryption Levels Incompatible"
 
-3.1.5.5.4 Interaction Between Audio and Video Encryption Negotiation
+###### 3.1.5.5.4 Interaction Between Audio and Video Encryption Negotiation
 
 Because the audio and video components of an audio/video call are represented as separate streams
 in SDP, it is technically possible for the audio and video components to request different encryption
@@ -1415,21 +1360,22 @@ Release: June 1, 2017
 
 16 / 25
 
-If different encryption settings are used and a conflict occurs, a 488 error response with an
+
+If different encryption settings are used and a conflict occurs, a 488 error response with an
 appropriate Warning header SHOULD be returned, as shown in the following example.
 
  SIP/2.0 488 Encryption Levels not compatible
 
  Warning: 308 ms.com "Encryption Levels not compatible"
 
-3.1.5.5.5 Renegotiation of Audio/Video Encryption
+###### 3.1.5.5.5 Renegotiation of Audio/Video Encryption
 
 It is theoretically possible to renegotiate the encryption level in a session by sending a reINVITE
 message that has a different encryption level from what was negotiated when the session was
 created. However, renegotiation is not supported by the Session Initiation Protocol Extensions, and
 any such reINVITE SHOULD be rejected.
 
-3.1.5.5.6 Interaction Between Audio/Video and Data Encryption Negotiation
+###### 3.1.5.5.6 Interaction Between Audio/Video and Data Encryption Negotiation
 
 Although data collaboration and audio/video encryption are negotiated separately and controlled
 through separate registry settings at the client, in a session that involves both DC and
@@ -1456,12 +1402,12 @@ For reINVITEs, failure to negotiate encryption does not result in failure of the
 any 4xx or 5xx response to a reINVITE, the client reverts to the previous session description,
 including any encryption parameters that were negotiated at that time.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No new timer events are defined by the Session Description Protocol (SDP) Extensions beyond those
 defined by SIP/SDP.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No new local events are defined by the Session Description Protocol (SDP) Extensions beyond those
 defined by SIP/SDP.
@@ -1473,13 +1419,14 @@ Release: June 1, 2017
 
 17 / 25
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-SDP].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Peer Clients Require Encryption
+### 4.1 Peer Clients Require Encryption
 
 Alice sends Bob an INVITE request for an audio call requesting encryption by including the
 a=encryption:required attribute and the SDP field k= with a suitable key.
@@ -1528,7 +1475,8 @@ Release: June 1, 2017
 
 18 / 25
 
- a=encryption:required
+
+ a=encryption:required
 
 The following is an example of SDP signaling in the 200 OK response that is received across the wire
 in response to the INVITE.
@@ -1561,7 +1509,7 @@ in response to the INVITE.
  a=rtpmap:31 H261/90000
  a=encryption:required
 
-4.2  Client Requires Encryption but Peer Does Not Allow It
+### 4.2 Client Requires Encryption but Peer Does Not Allow It
 
 Alice sends Bob an INVITE for an audio/video call requesting encryption by including an
 a=encryption:required attribute and the SDP k= field with a suitable key.
@@ -1579,7 +1527,8 @@ Release: June 1, 2017
 
 19 / 25
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-SDP].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1634,9 +1583,10 @@ Release: June 1, 2017
 
 20 / 25
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 RTC APIs use the following security algorithms:
 
@@ -1648,7 +1598,7 @@ The Session Description Protocol (SDP) Extensions do not require the preceding a
 used; other key generation and encryption algorithms can be used. However, if interoperability with
 RTC API clients is required, DES has to be used for encryption.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1663,7 +1613,8 @@ Release: June 1, 2017
 
 21 / 25
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1710,7 +1661,8 @@ Release: June 1, 2017
 
 22 / 25
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1722,7 +1674,8 @@ Release: June 1, 2017
 
 23 / 25
 
-8  Index
+
+## 8 Index
 A
 
 A/V
@@ -1861,7 +1814,8 @@ Security 21
 
 24 / 25
 
-Sequencing rules 11
+
+Sequencing rules 11
 Standards assignments 8
 Syntax - message 9
 

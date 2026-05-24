@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 35
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 35
 
-Date
+
+Date
 
 Revision
 History
@@ -515,7 +517,8 @@ Release: April 23, 2024
 
 3 / 35
 
-Date
+
+Date
 
 Revision
 History
@@ -572,161 +575,70 @@ Release: April 23, 2024
 
 4 / 35
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 RPC Binding Handles for Remote Shutdown Methods](#221-rpc-binding-handles-for-remote-shutdown-methods)
+    - [2.2.2 REG_UNICODE_STRING](#222-regunicodestring)
+  - [2.3 Shutdown Reasons](#23-shutdown-reasons)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 WinReg Server Details](#31-winreg-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 BaseInitiateSystemShutdown (Opnum 24)](#3141-baseinitiatesystemshutdown-opnum-24)
+      - [3.1.4.2 BaseAbortSystemShutdown (Opnum 25)](#3142-baseabortsystemshutdown-opnum-25)
+      - [3.1.4.3 BaseInitiateSystemShutdownEx (Opnum 30)](#3143-baseinitiatesystemshutdownex-opnum-30)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 InitShutdown Server Details](#32-initshutdown-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 BaseInitiateShutdown (Opnum 0)](#3241-baseinitiateshutdown-opnum-0)
+      - [3.2.4.2 BaseAbortShutdown (Opnum 1)](#3242-baseabortshutdown-opnum-1)
+      - [3.2.4.3 BaseInitiateShutdownEx (Opnum 2)](#3243-baseinitiateshutdownex-opnum-2)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 WindowsShutdown Server Details](#33-windowsshutdown-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 WsdrInitiateShutdown (Opnum 0)](#3341-wsdrinitiateshutdown-opnum-0)
+      - [3.3.4.2 WsdrAbortShutdown (Opnum 1)](#3342-wsdrabortshutdown-opnum-1)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: initshutdown.idl](#61-appendix-a1-initshutdownidl)
+  - [6.2 Appendix A.2: windowsshutdown.idl](#62-appendix-a2-windowsshutdownidl)
+  - [6.3 Appendix A.3: winreg.idl](#63-appendix-a3-winregidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-RPC Binding Handles for Remote Shutdown Methods ....................................... 10
-REG_UNICODE_STRING .............................................................................. 11
-Shutdown Reasons ........................................................................................... 11
-
-2.2.1
-2.2.2
-
-2.3
-
-3.2
-
-3.1
-
-3.1.5
-3.1.6
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3  Protocol Details ..................................................................................................... 14
-WinReg Server Details ...................................................................................... 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-BaseInitiateSystemShutdown (Opnum 24) ............................................... 16
-BaseAbortSystemShutdown (Opnum 25) ................................................. 17
-BaseInitiateSystemShutdownEx (Opnum 30) ............................................ 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-InitShutdown Server Details .............................................................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-BaseInitiateShutdown (Opnum 0) ........................................................... 19
-BaseAbortShutdown (Opnum 1) .............................................................. 20
-BaseInitiateShutdownEx (Opnum 2) ........................................................ 20
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-WindowsShutdown Server Details ...................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-WsdrInitiateShutdown (Opnum 0) ........................................................... 22
-WsdrAbortShutdown (Opnum 1) ............................................................. 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-
-3.3.5
-3.3.6
-
-3.2.5
-3.2.6
-
-3.3
-
-4  Protocol Examples ................................................................................................. 24
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-5 / 35
-
-[MS-RSP] - v20240423
-Remote Shutdown Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6  Appendix A: Full IDL .............................................................................................. 26
-Appendix A.1: initshutdown.idl .......................................................................... 26
-Appendix A.2: windowsshutdown.idl ................................................................... 27
-Appendix A.3: winreg.idl ................................................................................... 27
-
-6.1
-6.2
-6.3
-
-7  Appendix B: Product Behavior ............................................................................... 30
-
-8  Change Tracking .................................................................................................... 32
-
-9  Index ..................................................................................................................... 33
-
-[MS-RSP] - v20240423
-Remote Shutdown Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 35
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Shutdown Protocol. The Remote Shutdown Protocol is a remote
 procedure call (RPC)-based protocol used to shut down or terminate shutdown on a remote computer.
@@ -734,7 +646,7 @@ procedure call (RPC)-based protocol used to shut down or terminate shutdown on a
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -800,7 +712,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
+
+this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
 
 well-known endpoint: A preassigned, network-specific, stable address for a particular
@@ -810,14 +723,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -839,12 +752,12 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-SysShutdown] Microsoft Corporation, "System Shutdown", https://msdn.microsoft.com/en-
 us/library/windows/desktop/aa376882(v=vs.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Shutdown Protocol is designed for shutting down a remote computer or for terminating
 the shutdown of a remote computer during the shutdown waiting period. Following are some of the
@@ -869,7 +782,8 @@ Release: April 23, 2024
 
 8 / 35
 
-In this document, the use of the terms client and server are in the protocol client and server context.
+
+In this document, the use of the terms client and server are in the protocol client and server context.
 This means that the client will initiate an RPC call and the server will respond.
 
 This is an RPC-based protocol. The protocol operation is stateless.
@@ -878,7 +792,7 @@ This is a simple request-response protocol. For every method that the server rec
 method and returns a completion. The client simply returns the completion status to the caller. This is
 a stateless protocol; each method call is independent of any previous method calls.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Shutdown Protocol is dependent upon RPC and SMB for its transport. For the
 InitShutdown interface (section 3.2), this protocol uses RPC [MS-RPCE] over named pipes. Named
@@ -886,7 +800,7 @@ pipes, in turn, use the SMB protocol [MS-SMB].
 
 No other protocol currently depends on the Remote Shutdown Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Shutdown Protocol is an RPC interface and, as a result, has the prerequisites specified in
 [MS-RPCE] (section 1.5) as being common to RPC interfaces.
@@ -897,12 +811,12 @@ that supports the Remote Shutdown Protocol before this protocol is invoked.
 All remote shutdown methods are RPC calls from the client to the server that perform the complete
 operation in a single call. No shared state between the client and server is assumed.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is only appropriate for shutting down a remote computer or terminating shutdown during
 the shutdown waiting period.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -916,7 +830,7 @@ is specified in [C706] and [MS-RPCE] (section 1.7).
 
   Security and Authentication Methods: As specified in [MS-RPCE] section 3.2.1.4.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol cannot be extended by any party other than Microsoft.
 
@@ -924,7 +838,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 specified in [MS-ERREF]. Vendors SHOULD reuse those values with their indicated meaning. Choosing
 any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments.
 
@@ -935,9 +849,10 @@ Release: April 23, 2024
 
 9 / 35
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the following RPC protocol sequences as specified in [MS-RPCE] (sections 2.1.1.1
 for TCP/IP - NCACN_IP_TCP, 2.1.1.2 for SMB - NCACN_NP):
@@ -970,7 +885,7 @@ InitShutdown Interface: 894DE0C0-0D55-11D3-A322-00C04FA321A1
 
  WindowsShutdown Interface: D95AFE70-A6D5-4259-822E-2C84DA1DDB0D
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the NDR and NDR64 transfer
 syntaxes and provide a negotiation mechanism for determining which transfer syntax will be used
@@ -987,7 +902,7 @@ PREGISTRY_SERVER_NAME (section 2.2.1)
 
   REG_UNICODE_STRING (section 2.2.2)
 
-2.2.1  RPC Binding Handles for Remote Shutdown Methods
+#### 2.2.1 RPC Binding Handles for Remote Shutdown Methods
 
 RPC binding is the process of creating a logical connection between a client and a server. The
 information that composes the binding between client and server is represented by a structure called a
@@ -1008,12 +923,13 @@ Release: April 23, 2024
 
 10 / 35
 
-This custom binding handle is actually a wrapper around a primitive RPC binding handle (type
+
+This custom binding handle is actually a wrapper around a primitive RPC binding handle (type
 handle_t); the PREGISTRY_SERVER_NAME type is maintained only for backward. This custom binding
 handle is mapped to a primitive binding handle using bind and unbind routines, as specified in [MS-
 RPCE].
 
-2.2.2  REG_UNICODE_STRING
+#### 2.2.2 REG_UNICODE_STRING
 
 This REG_UNICODE_STRING structure represents a counted string of Unicode (UTF-16) characters.
 
@@ -1040,7 +956,7 @@ counted strings might be terminated by a 0x0000 character, by convention; if suc
 present, it SHOULD NOT count toward the Length (but MUST, of course, be included in the
 MaximumLength).
 
-2.3  Shutdown Reasons
+### 2.3 Shutdown Reasons
 
 This dwReason type is declared as follows:
 
@@ -1092,7 +1008,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Constant/value
+
+ Constant/value
 
 0x00000000
 
@@ -1214,7 +1131,8 @@ Release: April 23, 2024
 
 12 / 35
 
- Constant/value
+
+ Constant/value
 
  Description
 
@@ -1323,7 +1241,8 @@ Release: April 23, 2024
 
 13 / 35
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The remote shutdown RPC interfaces are used to shut down or, during the shutdown waiting period,
 abort shutdown on a remote computer.
@@ -1348,7 +1267,7 @@ other states required on the client side of this protocol. Calls made by the hig
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  WinReg Server Details
+### 3.1 WinReg Server Details
 
 The following section specifies data and state maintained by the WinReg RPC server. It includes
 details about receiving WinReg RPC methods on the server side of the client-server communication.
@@ -1356,7 +1275,7 @@ The provided data is to facilitate the explanation of how the protocol behaves. 
 mandate that implementations adhere to this model as long as their external behavior is consistent
 with that described in this document.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This is an RPC-based protocol. The server does not maintain client state information. The protocol
 operation is stateless.
@@ -1365,17 +1284,17 @@ This is a simple request-response protocol. For every method that the server rec
 method and returns a completion. The client simply returns the completion status to the caller. This is
 a stateless protocol; each method call is independent of any previous method calls.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The WinReg server side registers an endpoint with RPC over named pipes transport ([MS-RPCE]
 section 2.1.1.2), using the "\PIPE\Shutdown" named pipe.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0 ([MS-RPCE] section 3.1.1.5.3).
@@ -1387,7 +1306,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Remote shutdown communication between a client and a server occurs through RPC calls.
+
+Remote shutdown communication between a client and a server occurs through RPC calls.
 
 The WinReg interface includes the following methods.<3>
 
@@ -1506,7 +1426,8 @@ Release: April 23, 2024
 
 15 / 35
 
-Method
+
+Method
 
 Description
 
@@ -1601,7 +1522,7 @@ Note  Gaps in the opnum numbering sequence represent opnums of methods specified
 Exceptions MUST NOT be thrown beyond those thrown by the underlying RPC protocol [MS-RPCE],
 unless specified otherwise.
 
-3.1.4.1  BaseInitiateSystemShutdown (Opnum 24)
+##### 3.1.4.1 BaseInitiateSystemShutdown (Opnum 24)
 
 The BaseInitiateSystemShutdown method is used to initiate the shutdown of the remote
 computer.<4>
@@ -1615,7 +1536,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in, unique] PREGISTRY_SERVER_NAME ServerName,
+
+   [in, unique] PREGISTRY_SERVER_NAME ServerName,
    [in, unique] PREG_UNICODE_STRING lpMessage,
    [in] unsigned long dwTimeout,
    [in] unsigned char bForceAppsClosed,
@@ -1646,7 +1568,7 @@ On receiving this call, the server MUST perform the following validation step:
 
 MUST return ERROR_ACCESS_DENIED.
 
-3.1.4.2  BaseAbortSystemShutdown (Opnum 25)
+##### 3.1.4.2 BaseAbortSystemShutdown (Opnum 25)
 
 The BaseAbortSystemShutdown method is used to terminate the shutdown of the remote computer
 within the waiting period.<5>
@@ -1667,7 +1589,7 @@ On receiving this call, the server MUST perform the following validation step:
 
 MUST return ERROR_ACCESS_DENIED.
 
-3.1.4.3  BaseInitiateSystemShutdownEx (Opnum 30)
+##### 3.1.4.3 BaseInitiateSystemShutdownEx (Opnum 30)
 
 The BaseInitiateSystemShutdownEx method is used to initiate the shutdown of the remote
 computer with the reason for initiating the shutdown given as a parameter to the call.<6>
@@ -1687,7 +1609,8 @@ Release: April 23, 2024
 
 17 / 35
 
- );
+
+ );
 
 ServerName: The custom RPC binding handle (PREGISTRY_SERVER_NAME (section 2.2.1)).
 
@@ -1717,15 +1640,15 @@ On receiving this call, the server MUST perform the following validation step:
 
 MUST return ERROR_ACCESS_DENIED.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  InitShutdown Server Details
+### 3.2 InitShutdown Server Details
 
 The following section specifies data and state maintained by the InitShutdown RPC server. It includes
 details about receiving InitShutdown RPC methods on the server side of the client-server
@@ -1733,7 +1656,7 @@ communication. The provided data is to facilitate the explanation of how the pro
 section does not mandate that implementations adhere to this model, as long as their external
 behavior is consistent with that described in this document.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This is an RPC-based protocol. The server does not maintain client state information. The protocol
 operation is stateless.
@@ -1742,7 +1665,7 @@ This is a simple request-response protocol. For every method that the server rec
 method and returns a completion. The client simply returns the completion status to the caller. This is
 a stateless protocol; each method call is independent of any previous method calls.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages.
@@ -1754,12 +1677,13 @@ Release: April 23, 2024
 
 18 / 35
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The InitShutdown interface server side registers an endpoint with RPC over named pipes transport
 ([MS-RPCE] section 2.1.1.2), using the "\PIPE\InitShutdown" named pipe.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0 ([MS-RPCE] section 3.1.1.5.3).
@@ -1795,7 +1719,7 @@ Opnum: 2
 Note  Exceptions MUST NOT be thrown beyond those thrown by the underlying RPC protocol [MS-
 RPCE], unless specified otherwise.
 
-3.2.4.1  BaseInitiateShutdown (Opnum 0)
+##### 3.2.4.1 BaseInitiateShutdown (Opnum 0)
 
 The BaseInitiateShutdown method is used to initiate the shutdown of the remote computer.<8>
 
@@ -1834,11 +1758,12 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Verify that the caller has sufficient privileges to shut down the computer; otherwise, the server
+
+  Verify that the caller has sufficient privileges to shut down the computer; otherwise, the server
 
 MUST return ERROR_ACCESS_DENIED.
 
-3.2.4.2  BaseAbortShutdown (Opnum 1)
+##### 3.2.4.2 BaseAbortShutdown (Opnum 1)
 
 The BaseAbortShutdown method is used to terminate the shutdown of the remote computer within
 the waiting period.<10>
@@ -1859,7 +1784,7 @@ On receiving this call, the server MUST perform the following validation step:
 
 MUST return ERROR_ACCESS_DENIED.
 
-3.2.4.3  BaseInitiateShutdownEx (Opnum 2)
+##### 3.2.4.3 BaseInitiateShutdownEx (Opnum 2)
 
 The BaseInitiateShutdownEx method is used to initiate the shutdown of the remote
 computer.<11>
@@ -1906,15 +1831,16 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.3  WindowsShutdown Server Details
+### 3.3 WindowsShutdown Server Details
 
 The following section specifies data and state maintained by the WindowsShutdown RPC server. It
 includes details about receiving WindowsShutdown RPC methods on the server side of the client-
@@ -1922,7 +1848,7 @@ server communication. The provided data is to facilitate the explanation of how 
 This section does not mandate that implementations adhere to this model as long as their external
 behavior is consistent with that described in this document.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This is an RPC-based protocol. The server does not maintain client state information. The protocol
 operation is stateless.
@@ -1931,17 +1857,17 @@ This is a simple request-response protocol. For every method that the server rec
 method and returns a completion. The client simply returns the completion status to the caller. This is
 a stateless protocol; each method call is independent of any previous method calls.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The WindowsShutdown interface server side registers a dynamic endpoint with RPC over the TCP/IP
 (ncacn_ip_tcp) transport ([MS-RPCE] section 2.1.1.1).
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0 ([MS-RPCE] section 3.1.1.5.3).
@@ -1976,10 +1902,11 @@ Release: April 23, 2024
 
 21 / 35
 
-Note  Exceptions MUST NOT be thrown, except those thrown by the underlying RPC protocol [MS-
+
+Note  Exceptions MUST NOT be thrown, except those thrown by the underlying RPC protocol [MS-
 RPCE], unless specified otherwise.
 
-3.3.4.1  WsdrInitiateShutdown (Opnum 0)
+##### 3.3.4.1 WsdrInitiateShutdown (Opnum 0)
 
 The WsdrInitiateShutdown method is used to initiate the shutdown of the remote computer.<14>
 
@@ -2082,7 +2009,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwReason: Reason for initiating the shutdown (section 2.3). The dwReason SHOULD be used for log
+
+dwReason: Reason for initiating the shutdown (section 2.3). The dwReason SHOULD be used for log
 
 entries for the shutdown event.
 
@@ -2106,7 +2034,7 @@ ERROR_SHUTDOWN_USERS_LOGGED_ON.
 The shutdown SHOULD turn off the computer when "B," "C," and "D" are not set or when multiple bits
 are set.
 
-3.3.4.2  WsdrAbortShutdown (Opnum 1)
+##### 3.3.4.2 WsdrAbortShutdown (Opnum 1)
 
 The WsdrAbortShutdown method is used to terminate the shutdown of the remote computer within
 the waiting period.<15>
@@ -2131,11 +2059,11 @@ On receiving this call, the server MUST perform the following validation step:
 
 MUST return ERROR_BAD_NETPATH.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
@@ -2146,7 +2074,8 @@ Release: April 23, 2024
 
 23 / 35
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows a sample call from a client to a server, asking the server to reboot in
 30 seconds and to display a message.
@@ -2187,13 +2116,14 @@ Release: April 23, 2024
 
 24 / 35
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no special security considerations for this protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol.
 
@@ -2204,12 +2134,13 @@ Release: April 23, 2024
 
 25 / 35
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The protocol uses three Interface Definition Language (IDL) files: initshutdown.idl,
 windowsshutdown.idl, and winreg.idl.
 
-6.1  Appendix A.1: initshutdown.idl
+### 6.1 Appendix A.1: initshutdown.idl
 
 For ease of implementation, the full IDL is provided in this section.
 
@@ -2275,7 +2206,8 @@ Release: April 23, 2024
 
 26 / 35
 
-6.2  Appendix A.2: windowsshutdown.idl
+
+### 6.2 Appendix A.2: windowsshutdown.idl
 
 For ease of implementation, the full IDL is provided in this section.
 
@@ -2310,7 +2242,7 @@ The windowsshutdown.idl file appears as follows.
      );
  }
 
-6.3  Appendix A.3: winreg.idl
+### 6.3 Appendix A.3: winreg.idl
 
 For ease of implementation, the full IDL is provided in this section.
 
@@ -2347,7 +2279,8 @@ Release: April 23, 2024
 
 27 / 35
 
-     //opcode 1
+
+     //opcode 1
      void Opnum1NotImplemented();
 
      //opcode 2
@@ -2423,7 +2356,8 @@ Release: April 23, 2024
 
 28 / 35
 
-     //opcode 24
+
+     //opcode 24
      unsigned long BaseInitiateSystemShutdown(
            [in, unique] PREGISTRY_SERVER_NAME ServerName,
            [in, unique] PREG_UNICODE_STRING lpMessage,
@@ -2467,7 +2401,8 @@ Release: April 23, 2024
 
 29 / 35
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2537,7 +2472,8 @@ Remote Shutdown Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<5> Section 3.1.4.2: Supported in Windows NT, Windows 2000, Windows XP, and Windows Server
+
+<5> Section 3.1.4.2: Supported in Windows NT, Windows 2000, Windows XP, and Windows Server
 2003.
 
 <6> Section 3.1.4.3: Supported in Windows NT, Windows 2000, Windows XP, and Windows Server
@@ -2575,7 +2511,8 @@ Release: April 23, 2024
 
 31 / 35
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2619,7 +2556,8 @@ Release: April 23, 2024
 
 32 / 35
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2769,7 +2707,8 @@ Messages - transport 10
 
 33 / 35
 
-Methods
+
+Methods
    BaseAbortShutdown (Opnum 1) 20
    BaseAbortSystemShutdown (Opnum 25) 17
    BaseInitiateShutdown (Opnum 0) 19
@@ -2934,7 +2873,8 @@ WsdrAbortShutdown (Opnum 1) method 23
 
 34 / 35
 
-WsdrAbortShutdown method 23
+
+WsdrAbortShutdown method 23
 WsdrInitiateShutdown (Opnum 0) method 22
 WsdrInitiateShutdown method 22
 

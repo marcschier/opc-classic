@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 49
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: June 1, 2017
 
 2 / 49
 
-Date
+
+Date
 
 Revision
 History
@@ -482,283 +484,120 @@ Release: June 1, 2017
 
 3 / 49
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Schema](#221-schema)
+      - [2.2.1.1 Schema Additions](#2211-schema-additions)
+      - [2.2.1.2 Dynamic Objects](#2212-dynamic-objects)
+    - [2.2.2 rtApplicationUser – The User of an Application](#222-rtapplicationuser-the-user-of-an-application)
+    - [2.2.3 rtPerson – An Online Person](#223-rtperson-an-online-person)
+    - [2.2.4 rtConference – An Online Conference](#224-rtconference-an-online-conference)
+    - [2.2.5 Name Mapping](#225-name-mapping)
+    - [2.2.6 ILS Variations from the LDAP v3 Protocol](#226-ils-variations-from-the-ldap-v3-protocol)
+  - [2.3 ILS Schema Objects](#23-ils-schema-objects)
+    - [2.3.1 rtApplicationUser (Object Class)](#231-rtapplicationuser-object-class)
+    - [2.3.2 rtPerson (Object Class)](#232-rtperson-object-class)
+    - [2.3.3 rtConference (Object Class)](#233-rtconference-object-class)
+    - [2.3.4 ntSecurityDescriptor (Schema Attribute)](#234-ntsecuritydescriptor-schema-attribute)
+    - [2.3.5 schemaIDGUID (Schema Attribute)](#235-schemaidguid-schema-attribute)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Abstract Data Model](#31-abstract-data-model)
+  - [3.2 Timers](#32-timers)
+  - [3.3 Initialization](#33-initialization)
+  - [3.4 Higher-Layer Triggered Events](#34-higher-layer-triggered-events)
+  - [3.5 Message Processing Events and Sequencing Rules](#35-message-processing-events-and-sequencing-rules)
+    - [3.5.1 Time-to-Live (TTL) Attribute](#351-time-to-live-ttl-attribute)
+    - [3.5.2 LDAP Bind to ILS](#352-ldap-bind-to-ils)
+      - [3.5.2.1 Authentication Methods](#3521-authentication-methods)
+    - [3.5.3 Client Registration with ILS](#353-client-registration-with-ils)
+    - [3.5.4 Unregister from ILS](#354-unregister-from-ils)
+    - [3.5.5 Change User Information](#355-change-user-information)
+    - [3.5.6 List Conferences](#356-list-conferences)
+    - [3.5.7 List Users](#357-list-users)
+    - [3.5.8 List ILS Servers in Active Directory](#358-list-ils-servers-in-active-directory)
+    - [3.5.9 Publishing an Internet Locator Service to Active Directory](#359-publishing-an-internet-locator-service-to-active-directory)
+    - [3.5.10 Unpublish (Remove) an ILS Server from Active Directory](#3510-unpublish-remove-an-ils-server-from-active-directory)
+    - [3.5.11 Refresh Request](#3511-refresh-request)
+  - [3.6 Timer Events](#36-timer-events)
+  - [3.7 Other Local Events](#37-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 N-Client Registration with ILS](#41-n-client-registration-with-ils)
+    - [4.1.1 ILS Registration LDAP Bind](#411-ils-registration-ldap-bind)
+    - [4.1.2 ILS Registration Add Operation](#412-ils-registration-add-operation)
+    - [4.1.3 ILS Registration Modify Operation](#413-ils-registration-modify-operation)
+    - [4.1.4 ILS Registration Unbind Operation](#414-ils-registration-unbind-operation)
+    - [4.1.5 ILS Registration LDAP Sequence Diagram](#415-ils-registration-ldap-sequence-diagram)
+  - [4.2 N-Client – Stay Alive Refresh](#42-n-client-stay-alive-refresh)
+    - [4.2.1 Stay Alive Refresh Bind](#421-stay-alive-refresh-bind)
+    - [4.2.2 Stay Alive Refresh – Search](#422-stay-alive-refresh-search)
+    - [4.2.3 Stay Alive Refresh Unbind Operation](#423-stay-alive-refresh-unbind-operation)
+    - [4.2.4 Stay Alive LDAP Sequence Diagram](#424-stay-alive-ldap-sequence-diagram)
+  - [4.3 N-Client – Find Online User](#43-n-client-find-online-user)
+    - [4.3.1 LDAP Find Online User Bind Operation](#431-ldap-find-online-user-bind-operation)
+    - [4.3.2 LDAP Find Online User LDAP Search Operation](#432-ldap-find-online-user-ldap-search-operation)
+    - [4.3.3 LDAP Find Online User Unbind Operation](#433-ldap-find-online-user-unbind-operation)
+    - [4.3.4 LDAP Find Online User LDAP Sequence Diagram](#434-ldap-find-online-user-ldap-sequence-diagram)
+  - [4.4 N-Client – Unregister](#44-n-client-unregister)
+    - [4.4.1 Unregister LDAP Bind Operation](#441-unregister-ldap-bind-operation)
+    - [4.4.2 Unregister LDAP Delete Operation](#442-unregister-ldap-delete-operation)
+    - [4.4.3 Unregister – LDAP Unbind Operation](#443-unregister-ldap-unbind-operation)
+    - [4.4.4 Unregister LDAP Sequence Diagram](#444-unregister-ldap-sequence-diagram)
+  - [4.5 TAPI Client – Connect to ILS Server](#45-tapi-client-connect-to-ils-server)
+    - [4.5.1 LDAP Bind Operation](#451-ldap-bind-operation)
+    - [4.5.2 LDAP Add rtApplicationUser Operation](#452-ldap-add-rtapplicationuser-operation)
+    - [4.5.3 LDAP Modify rtApplicationUser Operation](#453-ldap-modify-rtapplicationuser-operation)
+    - [4.5.4 LDAP Add rtPerson Operation](#454-ldap-add-rtperson-operation)
+    - [4.5.5 LDAP Modify rtPerson Operation](#455-ldap-modify-rtperson-operation)
+    - [4.5.6 LDAP Unbind Operation](#456-ldap-unbind-operation)
+    - [4.5.7 ILS Registration Sequence Diagram](#457-ils-registration-sequence-diagram)
+  - [4.6 TAPI Client – Stay Alive Refresh](#46-tapi-client-stay-alive-refresh)
+    - [4.6.1 TAPI Client – Stay Alive Refresh rtApplicationUser](#461-tapi-client-stay-alive-refresh-rtapplicationuser)
+    - [4.6.2 TAPI Client – Stay Alive Refresh rtPerson](#462-tapi-client-stay-alive-refresh-rtperson)
+    - [4.6.3 ILS Stay Alive Sequence Diagram](#463-ils-stay-alive-sequence-diagram)
+  - [4.7 TAPI Client – Create Conference](#47-tapi-client-create-conference)
+    - [4.7.1 LDAP Bind Operation](#471-ldap-bind-operation)
+    - [4.7.2 LDAP Verify Access Rights](#472-ldap-verify-access-rights)
+    - [4.7.3 LDAP Create Conference](#473-ldap-create-conference)
+    - [4.7.4 LDAP Modify TTL for Conference](#474-ldap-modify-ttl-for-conference)
+    - [4.7.5 LDAP Unbind Operation](#475-ldap-unbind-operation)
+  - [4.8 TAPI Client – Find Conferences](#48-tapi-client-find-conferences)
+    - [4.8.1 LDAP Bind Operation](#481-ldap-bind-operation)
+    - [4.8.2 LDAP Search Operation](#482-ldap-search-operation)
+    - [4.8.3 LDAP Unbind Operation](#483-ldap-unbind-operation)
+    - [4.8.4 ILS Find Conferences Sequence Diagram](#484-ils-find-conferences-sequence-diagram)
+  - [4.9 TAPI Client – Find People](#49-tapi-client-find-people)
+    - [4.9.1 LDAP Bind Operation](#491-ldap-bind-operation)
+    - [4.9.2 LDAP Search Operation](#492-ldap-search-operation)
+    - [4.9.3 LDAP Unbind Operation](#493-ldap-unbind-operation)
+    - [4.9.4 ILS Find Users Sequence Diagram](#494-ils-find-users-sequence-diagram)
+  - [4.10 TAPI Client – Disconnect from ILS Server](#410-tapi-client-disconnect-from-ils-server)
+  - [4.11 Sample LDAP Search Filters for ILS](#411-sample-ldap-search-filters-for-ils)
+    - [4.11.1 LDAP Search Filters Used by the TAPI Client](#4111-ldap-search-filters-used-by-the-tapi-client)
+    - [4.11.2 LDAP Search Filters Used by the N-Client](#4112-ldap-search-filters-used-by-the-n-client)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Schema ..................................................................................................... 12
-Schema Additions ................................................................................. 12
-Dynamic Objects ................................................................................... 12
-rtApplicationUser – The User of an Application ................................................ 13
-rtPerson – An Online Person ......................................................................... 13
-rtConference – An Online Conference ............................................................ 14
-Name Mapping ........................................................................................... 15
-ILS Variations from the LDAP v3 Protocol ....................................................... 16
-ILS Schema Objects ......................................................................................... 16
-rtApplicationUser (Object Class) ................................................................... 16
-rtPerson (Object Class) ............................................................................... 16
-rtConference (Object Class) ......................................................................... 17
-ntSecurityDescriptor (Schema Attribute) ....................................................... 17
-schemaIDGUID (Schema Attribute) ............................................................... 17
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2.3
-
-3.5.2.1
-
-3.5.1
-3.5.2
-
-3.1
-3.2
-3.3
-3.4
-3.5
-
-3  Protocol Details ..................................................................................................... 19
-Abstract Data Model ......................................................................................... 19
-Timers ............................................................................................................ 19
-Initialization .................................................................................................... 19
-Higher-Layer Triggered Events ........................................................................... 19
-Message Processing Events and Sequencing Rules ................................................ 19
-Time-to-Live (TTL) Attribute ........................................................................ 20
-LDAP Bind to ILS ........................................................................................ 20
-Authentication Methods ......................................................................... 20
-Client Registration with ILS .......................................................................... 20
-3.5.3
-Unregister from ILS .................................................................................... 21
-3.5.4
-Change User Information ............................................................................. 22
-3.5.5
-List Conferences ......................................................................................... 22
-3.5.6
-List Users .................................................................................................. 22
-3.5.7
-List ILS Servers in Active Directory ............................................................... 22
-3.5.8
-3.5.9
-Publishing an Internet Locator Service to Active Directory................................ 23
-3.5.10  Unpublish (Remove) an ILS Server from Active Directory................................. 24
-Refresh Request ......................................................................................... 24
-3.5.11
-Timer Events ................................................................................................... 24
-Other Local Events ........................................................................................... 24
-
-3.6
-3.7
-
-4  Protocol Examples ................................................................................................. 25
-N-Client Registration with ILS ............................................................................ 25
-ILS Registration LDAP Bind .......................................................................... 26
-
-4.1.1
-
-4.1
-
-[MS-TAIL] - v20170601
-Telephony API Internet Locator Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 49
-
-4.2
-
-4.3
-
-4.4
-
-4.5
-
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-4.5.5
-4.5.6
-4.5.7
-
-4.6.1
-4.6.2
-4.6.3
-
-4.6
-
-4.7
-
-4.7.1
-4.7.2
-4.7.3
-4.7.4
-4.7.5
-
-4.8
-
-4.9
-
-4.8.1
-4.8.2
-4.8.3
-4.8.4
-
-4.9.1
-4.9.2
-4.9.3
-4.9.4
-
-ILS Registration Add Operation ..................................................................... 26
-ILS Registration Modify Operation ................................................................. 26
-ILS Registration Unbind Operation ................................................................ 27
-ILS Registration LDAP Sequence Diagram ...................................................... 27
-N-Client – Stay Alive Refresh ............................................................................. 27
-Stay Alive Refresh Bind ............................................................................... 28
-Stay Alive Refresh – Search ......................................................................... 28
-Stay Alive Refresh Unbind Operation ............................................................. 28
-Stay Alive LDAP Sequence Diagram .............................................................. 28
-N-Client – Find Online User ............................................................................... 29
-LDAP Find Online User Bind Operation ........................................................... 29
-LDAP Find Online User LDAP Search Operation ............................................... 29
-LDAP Find Online User Unbind Operation ....................................................... 30
-LDAP Find Online User LDAP Sequence Diagram ............................................. 30
-N-Client – Unregister ........................................................................................ 30
-Unregister LDAP Bind Operation ................................................................... 30
-Unregister LDAP Delete Operation ................................................................. 30
-Unregister – LDAP Unbind Operation ............................................................. 31
-Unregister LDAP Sequence Diagram .............................................................. 31
-TAPI Client – Connect to ILS Server ................................................................... 31
-LDAP Bind Operation ................................................................................... 31
-LDAP Add rtApplicationUser Operation ........................................................... 32
-LDAP Modify rtApplicationUser Operation ....................................................... 32
-LDAP Add rtPerson Operation ....................................................................... 32
-LDAP Modify rtPerson Operation ................................................................... 33
-LDAP Unbind Operation ............................................................................... 33
-ILS Registration Sequence Diagram .............................................................. 34
-TAPI Client – Stay Alive Refresh ......................................................................... 34
-TAPI Client – Stay Alive Refresh rtApplicationUser .......................................... 34
-TAPI Client – Stay Alive Refresh rtPerson ....................................................... 34
-ILS Stay Alive Sequence Diagram ................................................................. 35
-TAPI Client – Create Conference ........................................................................ 35
-LDAP Bind Operation ................................................................................... 35
-LDAP Verify Access Rights ............................................................................ 35
-LDAP Create Conference .............................................................................. 36
-LDAP Modify TTL for Conference ................................................................... 37
-LDAP Unbind Operation ............................................................................... 37
-TAPI Client – Find Conferences .......................................................................... 37
-LDAP Bind Operation ................................................................................... 37
-LDAP Search Operation ............................................................................... 37
-LDAP Unbind Operation ............................................................................... 38
-ILS Find Conferences Sequence Diagram ....................................................... 38
-TAPI Client – Find People .................................................................................. 38
-LDAP Bind Operation ................................................................................... 38
-LDAP Search Operation ............................................................................... 39
-LDAP Unbind Operation ............................................................................... 39
-ILS Find Users Sequence Diagram ................................................................ 39
-TAPI Client – Disconnect from ILS Server ............................................................ 39
-Sample LDAP Search Filters for ILS .................................................................... 39
-LDAP Search Filters Used by the TAPI Client ................................................... 39
-LDAP Search Filters Used by the N-Client ....................................................... 40
-
-4.10
-4.11
-
-4.11.1
-4.11.2
-
-5  Security ................................................................................................................. 41
-Security Considerations for Implementers ........................................................... 41
-Index of Security Parameters ............................................................................ 41
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 42
-
-7  Change Tracking .................................................................................................... 47
-
-5 / 49
-
-[MS-TAIL] - v20170601
-Telephony API Internet Locator Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-8  Index ..................................................................................................................... 48
-
-[MS-TAIL] - v20170601
-Telephony API Internet Locator Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 49
-
-1  Introduction
+## 1 Introduction
 
 The Internet Locator Service (ILS) Protocol is an extension to the Lightweight Directory Access
 Protocol (LDAP). This protocol uses LDAP-style requests to store and retrieve information in an
@@ -779,7 +618,7 @@ software development kit (SDK).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -828,7 +667,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Dynamic Host Configuration Protocol (DHCP): A protocol that provides a framework for
+
+Dynamic Host Configuration Protocol (DHCP): A protocol that provides a framework for
 
 passing configuration information to hosts on a TCP/IP network, as described in [RFC2131].
 
@@ -901,14 +741,15 @@ Release: June 1, 2017
 
 8 / 49
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -966,7 +807,8 @@ Release: June 1, 2017
 
 9 / 49
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [Butler] Butler, P., Cales, R., Petersen, J., et al., "Using Microsoft Commercial Internet System: The
 Internet Locator Service Chapter 10", Que Pub; Special edition, April 1997, ISBN-13: 978-
@@ -990,7 +832,7 @@ http://msdn.microsoft.com/en-us/library/ms741633.aspx
 [MSFT-SP] Microsoft Corporation, "How Service Publication and Service Principal Names Work", March
 2003, http://technet.microsoft.com/en-us/library/cc755804(WS.10).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This document describes the following:
 
@@ -1035,14 +877,15 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-address changes, which is particularly useful when people use Dynamic Host Configuration
+
+address changes, which is particularly useful when people use Dynamic Host Configuration
 Protocol (DHCP). To do so, ILS provides an LDAP interface and supports dynamic objects, as
 specified in [RFC2589].<1>
 
 For a historical overview of this protocol, see [MSDN-InternetLocSrvAPI], [MSDN-MSTelephonyOvw],
 and [MSDN-WSALookupServiceBegin].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is an early implementation of the LDAP protocol and supports syntax and operations
 that do not form part of the current LDAP RFCs.
@@ -1050,7 +893,7 @@ that do not form part of the current LDAP RFCs.
 An ILS can support anonymous or authenticated users. ILS uses the LDAP Authentication mechanisms
 Simple Authentication and Sicily Authentication as specified in [MS-ADTS] section 5.1.1.1.3.<2>
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The TAPI Internet Locator Service Protocol assumes the availability of the following resources:
 
@@ -1060,12 +903,12 @@ delivery.
 
   LDAP SASL mechanisms for authentication.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is used by clients to query ILS servers for people and conference data, which is then
 used in collaboration activities.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning in the following areas:
 
@@ -1073,11 +916,11 @@ This document covers versioning in the following areas:
 
 Protocol Versions: This protocol supports Binds using both LDAP v2 and LDAP v3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields in this protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 ILS does not use any IANA published ports.
 
@@ -1090,15 +933,16 @@ Release: June 1, 2017
 
 11 / 49
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The TAPI ILS (TAIL) Protocol is a series of data exchanges between a collaboration client and an ILS
 server. The data that is exchanged using this protocol is transported using the LDAP v3 protocol
 (with some limitations described in section 2.2.6).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This ILS protocol is used to store and retrieve data in the following ILS Dynamic Objects. The schema
 for these objects is given in section 2.3.
@@ -1117,7 +961,7 @@ Contains information about an ILS user.
 
 Contains information about an ILS conference.
 
-2.2.1  Schema
+#### 2.2.1 Schema
 
 An ILS Server requires a schema definition (see [RFC2256]) for an object class before it can store an
 instance of that object; this applies to both static and dynamic objects. ILS Servers have a default
@@ -1126,7 +970,7 @@ rtApplicationUser. The details of the attributes of rtPerson, rtConference, and 
 given later in this section. The full schema, including inherited objects, is given in ILS Schema
 Objects (section 2.3).
 
-2.2.1.1  Schema Additions
+##### 2.2.1.1 Schema Additions
 
 All dynamic entries MUST have the dynamicObject value in their objectClass attribute. This object
 class is defined section 5 of [RFC2589].
@@ -1134,7 +978,7 @@ class is defined section 5 of [RFC2589].
 Furthermore, each dynamic entry MUST have the operational attribute entryTtl as described in
 section 5 of [RFC2589].
 
-2.2.1.2  Dynamic Objects
+##### 2.2.1.2 Dynamic Objects
 
 Any object in the ILS schema with dynamicObject value as part of the objectClass attribute of the
 schema object is a dynamic object. Each dynamic object has its own time to live (TTL) operational
@@ -1156,7 +1000,8 @@ Release: June 1, 2017
 
 12 / 49
 
-2.2.2  rtApplicationUser – The User of an Application
+
+#### 2.2.2 rtApplicationUser – The User of an Application
 
 Attribute
 
@@ -1247,7 +1092,7 @@ userObject
 
 Identifies the user.
 
-2.2.3  rtPerson – An Online Person
+#### 2.2.3 rtPerson – An Online Person
 
 Attribute
 
@@ -1281,7 +1126,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Attribute
+
+Attribute
 
 Description
 
@@ -1370,7 +1216,7 @@ securityToken
 
 Contains the securityTokenID value of the user.<22>
 
-2.2.4  rtConference – An Online Conference
+#### 2.2.4 rtConference – An Online Conference
 
 Attribute
 
@@ -1407,7 +1253,8 @@ Release: June 1, 2017
 
 14 / 49
 
-Attribute
+
+Attribute
 
 Description
 
@@ -1464,7 +1311,7 @@ Not used.
 
 Contains the unique identifier of the conference. Entered by the user.
 
-2.2.5  Name Mapping
+#### 2.2.5 Name Mapping
 
 For backward compatibility with previous locator products, there have been name changes to schema
 entries. The following name mapping applies to LDAP searches and the corresponding field matched.
@@ -1521,7 +1368,8 @@ Release: June 1, 2017
 
 15 / 49
 
-2.2.6  ILS Variations from the LDAP v3 Protocol
+
+#### 2.2.6 ILS Variations from the LDAP v3 Protocol
 
 ILS communication differs from LDAP v3 in the following ways:
 
@@ -1543,11 +1391,11 @@ The ILS LDAP server does not support TAPI session control operations.
 The ILS LDAP server does not support friendly distinguished names (DNs), as specified in
 [RFC1781].
 
-2.3  ILS Schema Objects
+### 2.3 ILS Schema Objects
 
 The details below include inherited objects that were not described in section 2.2.<23>
 
-2.3.1  rtApplicationUser (Object Class)
+#### 2.3.1 rtApplicationUser (Object Class)
 
 Type
 
@@ -1580,7 +1428,7 @@ appName, applicationID, groupObject, guid, ILSA26214430, ILSA26279966, ILSA32833
 ILSA32964638, ILSA39321630, mimeType, port, protocolGUID, protocolID, protocolMimeType,
 sFlags, userObject
 
-2.3.2  rtPerson (Object Class)
+#### 2.3.2 rtPerson (Object Class)
 
 Type
 
@@ -1620,7 +1468,8 @@ Release: June 1, 2017
 
 16 / 49
 
-2.3.3  rtConference (Object Class)
+
+#### 2.3.3 rtConference (Object Class)
 
 Type
 
@@ -1653,7 +1502,7 @@ advertisingScope, announcementScope, applicationID, attendees, attendeesCount, c
 conferenceBlob, contactInformation, generalDescription, isEncrypted maxAttendeesCount, originator,
 protocolID, rating, startTime, stopTime, subtype, url
 
-2.3.4  ntSecurityDescriptor (Schema Attribute)
+#### 2.3.4 ntSecurityDescriptor (Schema Attribute)
 
 ntSecurityDescriptor is an attribute Schema Mandatory attribute.
 
@@ -1701,7 +1550,7 @@ isSearchable
 
 0
 
-2.3.5  schemaIDGUID (Schema Attribute)
+#### 2.3.5 schemaIDGUID (Schema Attribute)
 
 schemaIDGUID is an attribute Schema Mandatory attribute.
 
@@ -1732,7 +1581,8 @@ Release: June 1, 2017
 
 17 / 49
 
-Type
+
+Type
 
 Object
 
@@ -1759,14 +1609,15 @@ Release: June 1, 2017
 
 18 / 49
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Internet Locator Service (ILS) Protocol uses LDAP to connect, disconnect, and modify user
 information and list conference entries in a directory. The LDAP used by the ILS Protocol differs from
 standard LDAP v3. The specific differences are described in section 2.2.6. Note that it is possible to
 use LDAP v3 to perform equivalent actions to the nonstandard operations.
 
-3.1  Abstract Data Model
+### 3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1789,7 +1640,7 @@ users. This rendezvous mechanism allows users to find each other on a network.
 At a database level, the ILS Server stores two main types of objects: rtPerson objects representing
 the online users, and rtConference objects representing data on available online conferences.
 
-3.2  Timers
+### 3.2 Timers
 
 The ILS Server maintains an entryTTL attribute. This attribute has a value that is a TTL marker for
 dynamic objects. An LDAP search request for the attribute "sttl" (name mapped) in the form
@@ -1801,13 +1652,13 @@ An ILS client maintains a timer that mirrors the value sent to the ILS Server. T
 the TTL value of dynamic objects. If, on a refresh search, it fails to find a dynamic object, the client
 MUST register the dynamic object.
 
-3.3  Initialization
+### 3.3 Initialization
 
 The ILS Protocol imposes no initialization requirements beyond those of standard LDAP v3. Dynamic
 objects created in the ILS Server will require their TTL attribute to be initialized on creation of an
 object in the directory.
 
-3.4  Higher-Layer Triggered Events
+### 3.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1818,7 +1669,8 @@ Release: June 1, 2017
 
 19 / 49
 
-3.5  Message Processing Events and Sequencing Rules
+
+### 3.5 Message Processing Events and Sequencing Rules
 
 The general model adopted by this protocol is one of clients performing protocol operations against
 servers as per LDAP v3 [RFC2251]. In this model, a client transmits a protocol request describing the
@@ -1826,7 +1678,7 @@ operation to be performed to an ILS Server. The ILS Server is then responsible f
 necessary operation(s) in the directory. Upon completion of the operation(s), the server returns a
 response containing any results or errors to the requesting client.
 
-3.5.1  Time-to-Live (TTL) Attribute
+#### 3.5.1 Time-to-Live (TTL) Attribute
 
 The ILS server maintains an entryTTL attribute that has a value that is a time-to-live marker for
 dynamic objects. An LDAP search request for the attribute sttl (name mapped to attribute entryTTL)
@@ -1836,14 +1688,14 @@ MAY be removed from the database.
 For details of the schema requirements for dynamicObject and entryTTL, see [RFC2589] section 5,
 Schema Additions.
 
-3.5.2  LDAP Bind to ILS
+#### 3.5.2 LDAP Bind to ILS
 
 ILS supports authenticated binds as per the LDAP v3 RFC (see [RFC2251]). The only accepted SASL
 mechanism is NTLM (Sicily Authentication).
 
 Note that this also includes binds using a version number of 2 or 3.
 
-3.5.2.1  Authentication Methods
+##### 3.5.2.1 Authentication Methods
 
 ILS can be configured to support anonymous or authenticated users. ILS does not have user accounts
 in its static store. ILS does not support authenticated binds for security principals whose accounts are
@@ -1852,7 +1704,7 @@ Simple Authentication and Sicily Authentication as specified in [MS-ADTS]. On qu
 the root DSE, an ILS Server returns NTLM, as specified in [MS-NLMP], as the supported SASL
 mechanism.
 
-3.5.3  Client Registration with ILS
+#### 3.5.3 Client Registration with ILS
 
 Client registration with an ILS server is made in four distinct LDAP operations:
 
@@ -1893,7 +1745,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-This is a modified LDAP entry as per section 2.2.6.It has the effect of creating the following
+
+This is a modified LDAP entry as per section 2.2.6.It has the effect of creating the following
 dynamicObject in the directory:
 
   Cn=<the email address of the user>, ou=Dynamic, o=Intranet
@@ -1938,7 +1791,7 @@ sport: port attributes set to 1503 and 1720.
 
 The entries made when connecting to ILS are Dynamic Directory Objects as defined in [RFC2589].
 
-3.5.4  Unregister from ILS
+#### 3.5.4 Unregister from ILS
 
 Unregistration from an ILS Server by a client is made in three LDAP operations:
 
@@ -1981,7 +1834,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Upon receipt of a Delete Request, the ILS Server MUST attempt to perform the entry removal
+
+Upon receipt of a Delete Request, the ILS Server MUST attempt to perform the entry removal
 requested. The result of the Delete Request will be returned to the client in the Delete Response using
 a standard LDAP response.
 
@@ -1991,7 +1845,7 @@ an Unbind request, a protocol client can assume that the protocol session is ter
 of an Unbind Request, a protocol server can assume that the requesting client has terminated the
 session and that all outstanding requests can be discarded, and can close the connection.
 
-3.5.5  Change User Information
+#### 3.5.5 Change User Information
 
 The ILS Server does not support ModifyDN requests, since all ILS entries are dynamic. Therefore to
 modify an entry, it is necessary to delete the original entry and then add a new entry. Changing user
@@ -2025,7 +1879,7 @@ LDAP Modify
 
 LDAP Unbind
 
-3.5.6  List Conferences
+#### 3.5.6 List Conferences
 
 Clients can determine the available conferences by performing an LDAP search for the class
 rtConference. The LDAP search uses the filter (ObjectClass=rtConference) with a search DN
@@ -2033,13 +1887,13 @@ ou=Dynamic,o=intranet. Active conferences will have a UID present.
 
 (cn=rtConference,ou=Dynamic,o=Intranet)
 
-3.5.7  List Users
+#### 3.5.7 List Users
 
 Clients can determine available collaboration clients by performing an LDAP search for the class
 rtPerson. The LDAP search uses the filter (ObjectClass=rtPerson) with a search DN
 ou=Dynamic,o=intranet.
 
-3.5.8  List ILS Servers in Active Directory
+#### 3.5.8 List ILS Servers in Active Directory
 
 To determine the available ILS Servers in an Active Directory domain, it is necessary to query Active
 Directory for the Winsock Services and search for the GUID of the ILSServiceClass. If that class is
@@ -2067,9 +1921,10 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-(serviceClassID=40:79: F1:C9:A7:79:D1:11:B0:08:00:C0:4F:C3:1: EE)
 
-3.5.9  Publishing an Internet Locator Service to Active Directory
+(serviceClassID=40:79: F1:C9:A7:79:D1:11:B0:08:00:C0:4F:C3:1: EE)
+
+#### 3.5.9 Publishing an Internet Locator Service to Active Directory
 
 Service publication is the act of creating and maintaining data about one or more instances of a given
 service so that network clients can find and use the service. The presence of an active Internet
@@ -2151,7 +2006,8 @@ Release: June 1, 2017
 
 23 / 49
 
-3.5.10 Unpublish (Remove) an ILS Server from Active Directory
+
+#### 3.5.10 Unpublish (Remove) an ILS Server from Active Directory
 
 To unpublish an ILS Server in Active Directory, perform an LDAP modify ([RFC2251]) using the delete
 operation on the WinsockAddresses attribute of the ILS Server object located in WinsockServices in
@@ -2160,7 +2016,7 @@ attribute would be
 
  CN=ils.testdomain.internal, CN=WinsockServices,CN=System,DC=testdomain,DC=internal
 
-3.5.11 Refresh Request
+#### 3.5.11 Refresh Request
 
 To refresh the time-to-live attribute of any dynamic object stored in the ILS directory, an LDAP search
 operation is performed with sttl attribute as part of the LDAP filter. The full operation requires the
@@ -2197,7 +2053,7 @@ Note  A standard LDAP modify operation on the dynamicObject attribute entryTTL c
 performed to reset the time to live. The value for sttl is given in minutes; the value for entryTTL is
 given in seconds.
 
-3.6  Timer Events
+### 3.6 Timer Events
 
 As described in section 3.2, the ILS Server maintains an entryTTL attribute that has a value that is a
 TTL marker for dynamic objects in seconds. When the timer expires (counts down to zero) on a
@@ -2206,7 +2062,7 @@ applications need to perform occasional refreshes of the attribute to ensure tha
 the dynamic objects. The value of entryTTL can be reset by searching for the attribute sttl. Note that
 sttl values are in minutes, entryTTLs are in seconds.
 
-3.7  Other Local Events
+### 3.7 Other Local Events
 
 None.
 
@@ -2217,13 +2073,14 @@ Release: June 1, 2017
 
 24 / 49
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-TAIL].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  N-Client Registration with ILS
+### 4.1 N-Client Registration with ILS
 
 When a client is started for the first time, the user is prompted to enter information that others can
 use to find them in a directory.
@@ -2245,7 +2102,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  LDAP Bind
+
+1.  LDAP Bind
 
 2.  LDAP Add
 
@@ -2253,7 +2111,7 @@ Release: June 1, 2017
 
 4.  LDAP Unbind
 
-4.1.1  ILS Registration LDAP Bind
+#### 4.1.1 ILS Registration LDAP Bind
 
 The registration is initiated by making a LDAP Bind request to an ILS Server. If LDAP v2 is offered,
 then no authentication occurs. When no authentication is to be performed, then the simple
@@ -2263,7 +2121,7 @@ The default port for an ILS Server is TCP port 1002.
 
 When a successful bind has been made an LDAP Bind Response, with a resultCode == 0 is returned.
 
-4.1.2  ILS Registration Add Operation
+#### 4.1.2 ILS Registration Add Operation
 
 The LDAP Bind operation is followed by an LDAP Add operation [RFC2251]. The Add operation creates
 a dynamic entry of the named user in the directory. Using the example data in section 4.1.1, the LDAP
@@ -2293,7 +2151,7 @@ values shown. Details of all the attributes of the class rtPerson are given in s
  ilsA32964638=( 1 )
  ilsA39321630=( 2 )
 
-4.1.3  ILS Registration Modify Operation
+#### 4.1.3 ILS Registration Modify Operation
 
 After a successful Add Operation has been performed (LDAP Add Response, resultCode == 0), an
 LDAP modify operation is performed. The purpose of this modify is to update application-specific
@@ -2308,7 +2166,8 @@ Release: June 1, 2017
 
 26 / 49
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-TAIL].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2333,15 +2192,15 @@ sport: The port attribute is set to 1503 and 1720.
 The entries made when connecting to ILS are dynamic directory objects as defined in [RFC2589]. If
 the entry is successfully updated, an LDAP response of status SUCCESS is returned.
 
-4.1.4  ILS Registration Unbind Operation
+#### 4.1.4 ILS Registration Unbind Operation
 
 On completion of the three prior steps, an LDAP Unbind is the final operation.
 
-4.1.5  ILS Registration LDAP Sequence Diagram
+#### 4.1.5 ILS Registration LDAP Sequence Diagram
 
 Figure 2: ILS registration LDAP sequence
 
-4.2  N-Client – Stay Alive Refresh
+### 4.2 N-Client – Stay Alive Refresh
 
 Periodically, the client performs a refresh of the time-to-live (TTL) value for any user it has registered
 with the ILS Server. This process is performed as follows:
@@ -2353,7 +2212,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-TAIL].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -2363,7 +2223,7 @@ Release: June 1, 2017
 
 3.  LDAP Unbind
 
-4.2.1  Stay Alive Refresh Bind
+#### 4.2.1 Stay Alive Refresh Bind
 
 The TTL refresh is initiated by making a LDAP Bind request to an ILS Server. If LDAP v2 is offered,
 then no authentication happens. When no authentication is to be performed, the simple authentication
@@ -2373,7 +2233,7 @@ The default port for an ILS Server is TCP port 1002.
 
 When a successful bind has been made, an LDAP Bind Response with a resultCode == 0 is returned.
 
-4.2.2  Stay Alive Refresh – Search
+#### 4.2.2 Stay Alive Refresh – Search
 
 A search is then made for the specific rtPerson object associated with the registered user. For
 example:
@@ -2391,11 +2251,11 @@ If the rtPerson is successfully found, the TTL value has been reset.
 If the object is not found, then if the client still requires the Person to be registered, it recreates
 the entry as specified in N-Client Registration with ILS (section 4.1).
 
-4.2.3  Stay Alive Refresh Unbind Operation
+#### 4.2.3 Stay Alive Refresh Unbind Operation
 
 On completion of the two prior LDAP operations, an LDAP Unbind is the final operation.
 
-4.2.4  Stay Alive LDAP Sequence Diagram
+#### 4.2.4 Stay Alive LDAP Sequence Diagram
 
 Figure 3: LDAP Stay Alive sequence
 
@@ -2406,11 +2266,12 @@ Release: June 1, 2017
 
 28 / 49
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-TAIL].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-4.3  N-Client – Find Online User
+### 4.3 N-Client – Find Online User
 
 When one online user wants to collaborate with another online user, they can check the ILS directory
 to discover other users. The directory interface in Microsoft NetMeeting performs an LDAP search on
@@ -2427,14 +2288,14 @@ follows:
 
 3.  LDAP Unbind
 
-4.3.1  LDAP Find Online User Bind Operation
+#### 4.3.1 LDAP Find Online User Bind Operation
 
 The registration is initiated by making an LDAP Bind Request to an ILS Server. If LDAP v2 is offered,
 no authentication happens. When no authentication is to be performed, then the simple authentication
 option is chosen, and the password length is zero. When a successful Bind has been made, an LDAP
 Bind Response, with a resultCode == 0, is returned.
 
-4.3.2  LDAP Find Online User LDAP Search Operation
+#### 4.3.2 LDAP Find Online User LDAP Search Operation
 
 The search for online users is achieved by performing an LDAP search. The search is performed with
 objectClass=rtPerson, SearchScope: base Object. Three additional attributes are used in the search:
@@ -2446,7 +2307,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-TAIL].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2458,17 +2320,17 @@ cn=%. This is an ILS LDAP variation indicating a wild card search on the cn.
 
   Return entries with a sprotid=h323. (Note that sprotID maps to protocolID.)
 
-4.3.3  LDAP Find Online User Unbind Operation
+#### 4.3.3 LDAP Find Online User Unbind Operation
 
 On completion of the two prior steps, an LDAP Unbind is the final operation.
 
-4.3.4  LDAP Find Online User LDAP Sequence Diagram
+#### 4.3.4 LDAP Find Online User LDAP Sequence Diagram
 
 Figure 5: LDAP Find Online User sequence
 
-4.4  N-Client – Unregister
+### 4.4 N-Client – Unregister
 
-4.4.1  Unregister LDAP Bind Operation
+#### 4.4.1 Unregister LDAP Bind Operation
 
 UnRegister is initiated by making an LDAP Bind Request to an ILS Server. If LDAP v2 is offered, no
 authentication happens. When no authentication is to be performed, the simple authentication option
@@ -2478,7 +2340,7 @@ The default port for an ILS server is TCP port 1002.
 
 When a successful Bind has been made, an LDAP Bind Response, with a resultCode == 0 is returned.
 
-4.4.2  Unregister LDAP Delete Operation
+#### 4.4.2 Unregister LDAP Delete Operation
 
 A successful Bind is followed by an LDAP Delete operation. The Delete operation allows a client to
 request the removal of an entry from the directory. The delete operation is as follows:
@@ -2496,19 +2358,20 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-TAIL].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
-4.4.3  Unregister – LDAP Unbind Operation
+#### 4.4.3 Unregister – LDAP Unbind Operation
 
 On completion of the two prior steps, an LDAP Unbind is the final operation.
 
-4.4.4  Unregister LDAP Sequence Diagram
+#### 4.4.4 Unregister LDAP Sequence Diagram
 
 Figure 6: N-Client LDAP Unregister sequence
 
-4.5  TAPI Client – Connect to ILS Server
+### 4.5 TAPI Client – Connect to ILS Server
 
 When Dialer (the TAPI client) is started, it attempts to find the ILS Server as documented in section
 3.5.8.
@@ -2533,7 +2396,7 @@ as follows:
 
 6.  LDAP Unbind
 
-4.5.1  LDAP Bind Operation
+#### 4.5.1 LDAP Bind Operation
 
 The registration is initiated by making a LDAP Bind Request to an ILS server.
 
@@ -2546,9 +2409,10 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When a successful bind has been made, an LDAP Bind Response, with a resultCode == 0, is returned.
 
-4.5.2  LDAP Add rtApplicationUser Operation
+When a successful bind has been made, an LDAP Bind Response, with a resultCode == 0, is returned.
+
+#### 4.5.2 LDAP Add rtApplicationUser Operation
 
 An rtApplicationUser (section 2.2.2) class is created using a LDAP Add operation [RFC2251]. The
 purpose of the Add operation is to create a dynamic entry of the application user in the directory.
@@ -2573,7 +2437,7 @@ with the values shown. Details of all the attributes of the class rtApplicationU
  ILSA32964638=( 1 )
  ILSA32833566=( 1 )
 
-4.5.3  LDAP Modify rtApplicationUser Operation
+#### 4.5.3 LDAP Modify rtApplicationUser Operation
 
 After a successful Add Operation has been performed, (LDAP Add Response, resultCode == 0), an
 LDAP Modify operation is performed. The purpose of this modify is to update the TTL of this object.
@@ -2591,7 +2455,7 @@ EntryTTL: the time-to-live is set to 1800
 The entries made when connecting to ILS are dynamic directory objects as defined in [RFC2589]. If
 the entry is successfully updated, an LDAP response of status SUCCESS is returned.
 
-4.5.4  LDAP Add rtPerson Operation
+#### 4.5.4 LDAP Add rtPerson Operation
 
 LDAP Modify rtApplicationUser Operation is followed by a request to create an rtPerson class using a
 LDAP Add operation [RFC2251]. The purpose of the Add operation is to create a dynamic entry of the
@@ -2610,7 +2474,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- ObjectClass=( rtPerson )( DynamicObject )
+
+ ObjectClass=( rtPerson )( DynamicObject )
  ipAddress=( 3808471232 )
  rfc822mailbox=( egruber )
  givenName=( eric )
@@ -2630,7 +2495,7 @@ Release: June 1, 2017
  ILSA32964638=( 1 )
  ILSA32833566=( 1 )
 
-4.5.5  LDAP Modify rtPerson Operation
+#### 4.5.5 LDAP Modify rtPerson Operation
 
 After a successful Add Operation has been performed (LDAP Add Response, resultCode == 0), an
 LDAP modify operation is performed. The purpose of this modify operation is to update the TTL of this
@@ -2652,7 +2517,7 @@ The entries made when connecting to ILS are dynamic directory objects as defined
 
 If the entry is successfully updated, an LDAP response of status SUCCESS is returned.
 
-4.5.6  LDAP Unbind Operation
+#### 4.5.6 LDAP Unbind Operation
 
 On completion of the above steps, an LDAP Unbind operation is performed. There is no response from
 the ILS Server for this request.
@@ -2664,20 +2529,21 @@ Release: June 1, 2017
 
 33 / 49
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-TAIL].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
-4.5.7  ILS Registration Sequence Diagram
+#### 4.5.7 ILS Registration Sequence Diagram
 
 Figure 7: ILS registration sequence
 
-4.6  TAPI Client – Stay Alive Refresh
+### 4.6 TAPI Client – Stay Alive Refresh
 
 Dialer ensures that the rtApplicationUser and the rtPerson classes are kept alive on the ILS Server by
 sending periodic modify requests to reset the EntryTTL for these objects.
 
-4.6.1  TAPI Client – Stay Alive Refresh rtApplicationUser
+#### 4.6.1 TAPI Client – Stay Alive Refresh rtApplicationUser
 
 The rtApplicationUser class is refreshed periodically by sending the modify request.
 
@@ -2701,7 +2567,7 @@ The entries made when connecting to ILS are dynamic directory objects as defined
 
 If the entry is successfully updated an LDAP response of status SUCCESS is returned.
 
-4.6.2  TAPI Client – Stay Alive Refresh rtPerson
+#### 4.6.2 TAPI Client – Stay Alive Refresh rtPerson
 
 The rtPerson class is refreshed periodically by sending the modify request.
 
@@ -2712,7 +2578,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-TAIL].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2732,11 +2599,11 @@ The entries made when connecting to ILS are dynamic directory objects as defined
 
 If the entry is successfully updated, an LDAP response of status SUCCESS is returned.
 
-4.6.3  ILS Stay Alive Sequence Diagram
+#### 4.6.3 ILS Stay Alive Sequence Diagram
 
 Figure 8: ILS Stay Alive sequence
 
-4.7  TAPI Client – Create Conference
+### 4.7 TAPI Client – Create Conference
 
 A Dialer creates a new conference using the following steps:
 
@@ -2750,7 +2617,7 @@ A Dialer creates a new conference using the following steps:
 
 5.  LDAP Unbind Operation.
 
-4.7.1  LDAP Bind Operation
+#### 4.7.1 LDAP Bind Operation
 
 The registration is initiated by making an LDAP Bind Request to an ILS Server.
 
@@ -2758,7 +2625,7 @@ The default port for an ILS Server is TCP port 1002.
 
 When a successful bind has been made, an LDAP Bind Response, with a resultCode == 0, is returned.
 
-4.7.2  LDAP Verify Access Rights
+#### 4.7.2 LDAP Verify Access Rights
 
 Dialer verifies that the user has appropriate rights to create a conference by performing the following
 steps:
@@ -2772,7 +2639,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Modify the entryTTL for the temporary conference.
+
+  Modify the entryTTL for the temporary conference.
 
   Delete the temporary conference.
 
@@ -2811,7 +2679,7 @@ request:
 
   DelRequest: uid=19168,ou=dynamic,o=Intranet
 
-4.7.3  LDAP Create Conference
+#### 4.7.3 LDAP Create Conference
 
 The conference is created only on successful verification of access rights.
 
@@ -2845,7 +2713,8 @@ Release: June 1, 2017
 
 36 / 49
 
- m=video 51232 RTP/AVP 34
+
+ m=video 51232 RTP/AVP 34
  c=IN IP4 224.2.188"
 
 The ntSecurityDescriptor is initialized with the following rights:
@@ -2858,7 +2727,7 @@ The SID for Everyone (S-1-1-0) has read permissions on the object.
 
 The SID for the user has all permissions on the object.
 
-4.7.4  LDAP Modify TTL for Conference
+#### 4.7.4 LDAP Modify TTL for Conference
 
 After a successful Add Operation has been performed (LDAP Add Response, resultCode == 0), an
 LDAP modify operation is performed. The purpose of this modify operation is to update the TTL of this
@@ -2880,12 +2749,12 @@ The entries made when connecting to ILS are dynamic directory objects, as define
 
 If the entry is successfully updated, an LDAP response of status SUCCESS is returned.
 
-4.7.5  LDAP Unbind Operation
+#### 4.7.5 LDAP Unbind Operation
 
 On completion of the previous steps, an LDAP Unbind operation is performed. There is no response
 from the ILS Server for this request.
 
-4.8  TAPI Client – Find Conferences
+### 4.8 TAPI Client – Find Conferences
 
 A Dialer user who wants to join an online conference can check the ILS Directory to discover other
 users. The Directory interface in Dialer performs an LDAP search on the ILS Directory.
@@ -2898,13 +2767,13 @@ The process of finding an online conference is a three-step LDAP  process, as fo
 
 3.  LDAP  Unbind Operation
 
-4.8.1  LDAP Bind Operation
+#### 4.8.1 LDAP Bind Operation
 
 The registration is initiated by making an LDAP Bind Request to an ILS Server. The default port for
 an ILS Server is TCP port 1002. When a successful bind has been made an LDAP Bind Response, with
 a resultCode == 0, is returned.
 
-4.8.2  LDAP Search Operation
+#### 4.8.2 LDAP Search Operation
 
 Dialer searches for a list of conferences on the ILS Server  using the following criteria:
 
@@ -2919,7 +2788,8 @@ Release: June 1, 2017
 
 37 / 49
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-TAIL].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2941,16 +2811,16 @@ The attributes requested are:
 
 "ntSecurityDescriptor"
 
-4.8.3  LDAP Unbind Operation
+#### 4.8.3 LDAP Unbind Operation
 
 On completion of the previous steps, an LDAP Unbind operation is performed. There is no response
 from the ILS Server for this request.
 
-4.8.4  ILS Find Conferences Sequence Diagram
+#### 4.8.4 ILS Find Conferences Sequence Diagram
 
 Figure 9: ILS Find Conferences sequence
 
-4.9  TAPI Client – Find People
+### 4.9 TAPI Client – Find People
 
 To collaborate with another online user, a Dialer user can check the ILS. Directory to discover other
 users. The Directory interface in Dialer performs an LDAP search on the ILS Directory. The process of
@@ -2962,7 +2832,7 @@ finding an online user is a three-step LDAP process as follows:
 
 3.  LDAP  Unbind Operation
 
-4.9.1  LDAP Bind Operation
+#### 4.9.1 LDAP Bind Operation
 
 The registration is initiated by making a LDAP Bind Request to an ILS Server. The default port for an
 ILS Server is TCP port 1002. When a successful Bind has been made, an LDAP  Bind response with a
@@ -2975,11 +2845,12 @@ Release: June 1, 2017
 
 38 / 49
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-TAIL].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
-4.9.2  LDAP Search Operation
+#### 4.9.2 LDAP Search Operation
 
 Dialer searches for a list of users on the ILS Server using the following search criteria.
 
@@ -3001,24 +2872,24 @@ The attributes requested are:
 
 "ntSecurityDescriptor"
 
-4.9.3  LDAP Unbind Operation
+#### 4.9.3 LDAP Unbind Operation
 
 On completion of the above steps, an LDAP Unbind operation is performed. There is no response from
 the ILS Server for this request.
 
-4.9.4  ILS Find Users Sequence Diagram
+#### 4.9.4 ILS Find Users Sequence Diagram
 
 Figure 10: ILS Find Users sequence
 
-4.10  TAPI Client – Disconnect from ILS Server
+### 4.10 TAPI Client – Disconnect from ILS Server
 
 Dialer (the TAPI client) does not take any specific action to disconnect from the ILS Server. The
 rtApplicationUser (Object Class) and rtPerson objects created are deleted by the ILS Server when the
 EntryTTL expires.
 
-4.11  Sample LDAP Search Filters for ILS
+### 4.11 Sample LDAP Search Filters for ILS
 
-4.11.1 LDAP Search Filters Used by the TAPI Client
+#### 4.11.1 LDAP Search Filters Used by the TAPI Client
 
 The following search filters are used by the TAPI client when searching for a conference or person (as
 specified in [RFC2254]). All uppercase strings are user-provided values.<32>
@@ -3030,7 +2901,8 @@ Release: June 1, 2017
 
 39 / 49
 
-To search for a conference matching NAME:
+
+To search for a conference matching NAME:
 
  (uid=NAME*)
 
@@ -3038,7 +2910,7 @@ To search for a person matching NAME:
 
  (cn=NAME*)
 
-4.11.2 LDAP Search Filters Used by the N-Client
+#### 4.11.2 LDAP Search Filters Used by the N-Client
 
 To search for a person by name:
 
@@ -3075,13 +2947,14 @@ Release: June 1, 2017
 
 40 / 49
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3092,7 +2965,8 @@ Release: June 1, 2017
 
 41 / 49
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3165,7 +3039,8 @@ Release: June 1, 2017
 
 42 / 49
 
-<10> Section 2.2.2: This attribute is required by the schema, although it is only used for NetMeeting
+
+<10> Section 2.2.2: This attribute is required by the schema, although it is only used for NetMeeting
 2.0 compatibility. Originally, the attribute was used by NetMeeting 2.0 as a filter when searching a
 directory for a user. It is not required for interoperability with NetMeeting 3.0 or later.
 
@@ -3240,7 +3115,8 @@ Release: June 1, 2017
 
 43 / 49
 
-Attribute
+
+Attribute
 
 Used by NetMeeting  Used by Dialer
 
@@ -3429,7 +3305,8 @@ Release: June 1, 2017
 
 44 / 49
 
-Attribute
+
+Attribute
 
 Used by NetMeeting  Used by Dialer
 
@@ -3610,7 +3487,8 @@ Telephony API Internet Locator Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<25> Section 2.3.5: The unique GUID used is ed1af3b3-bcfa-11d0-853a-00a0c90c93e1.
+
+<25> Section 2.3.5: The unique GUID used is ed1af3b3-bcfa-11d0-853a-00a0c90c93e1.
 
 <26> Section 3.5.3: NetMeeting 3.01 only performs a simple bind using LDAP v2 and therefore never
 performs an authenticated bind.
@@ -3640,7 +3518,8 @@ Release: June 1, 2017
 
 46 / 49
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3652,7 +3531,8 @@ Release: June 1, 2017
 
 47 / 49
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 19
@@ -3789,7 +3669,8 @@ TAPI ILS protocol [TAPI ILS] 10
 
 48 / 49
 
-Telephony API Internet Locator Data Structure - TAPI
+
+Telephony API Internet Locator Data Structure - TAPI
 
 ILS 10
 Timer events 24

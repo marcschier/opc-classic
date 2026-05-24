@@ -64,7 +64,8 @@ Release: March 30, 2026
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -110,178 +111,74 @@ Release: March 30, 2026
 
 2 / 41
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WebAuthN_Channel Request Message](#221-webauthnchannel-request-message)
+      - [2.2.1.1 webAuthNPara Map](#2211-webauthnpara-map)
+      - [2.2.1.2 CTAPCBOR_CMD_MAKE_CREDENTIAL Request](#2212-ctapcborcmdmakecredential-request)
+      - [2.2.1.3 CTAPCBOR_CMD_GET_ASSERTION Request](#2213-ctapcborcmdgetassertion-request)
+    - [2.2.2 WebAuthN_Channel Response Message](#222-webauthnchannel-response-message)
+      - [2.2.2.1 CTAPCBOR_RPC_COMMAND_WEB_AUTHN Response Map](#2221-ctapcborrpccommandwebauthn-response-map)
+        - [2.2.2.1.1 CTAP MakeCredential Response](#22211-ctap-makecredential-response)
+        - [2.2.2.1.2 CTAP GetAssertion Response](#22212-ctap-getassertion-response)
+      - [2.2.2.2 CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS Response Map](#2222-ctapcborrpccommandgetcredentials-response-map)
+      - [2.2.2.3 CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST Response Map](#2223-ctapcborrpccommandgetauthenticatorlist-response-map)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client and Server Details](#31-client-and-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 CTAPCBOR_RPC_COMMAND_API_VERSION](#41-ctapcborrpccommandapiversion)
+    - [4.1.1 Request](#411-request)
+    - [4.1.2 Response](#412-response)
+  - [4.2 CTAPCBOR_RPC_COMMAND_IUVPAA](#42-ctapcborrpccommandiuvpaa)
+    - [4.2.1 Request](#421-request)
+    - [4.2.2 Response](#422-response)
+  - [4.3 CTAPCBOR_RPC_COMMAND_CANCEL_CUR_OP](#43-ctapcborrpccommandcancelcurop)
+    - [4.3.1 Request](#431-request)
+    - [4.3.2 Response](#432-response)
+  - [4.4 CTAPCBOR_RPC_COMMAND_WEB_AUTHN](#44-ctapcborrpccommandwebauthn)
+    - [4.4.1 CTAPCBOR_CMD_MAKE_CREDENTIAL](#441-ctapcborcmdmakecredential)
+      - [4.4.1.1 Request](#4411-request)
+      - [4.4.1.2 Response](#4412-response)
+    - [4.4.2 CTAPCBOR_CMD_GET_ASSERTION](#442-ctapcborcmdgetassertion)
+      - [4.4.2.1 Request](#4421-request)
+      - [4.4.2.2 Response](#4422-response)
+  - [4.5 CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS](#45-ctapcborrpccommandgetcredentials)
+    - [4.5.1 Request](#451-request)
+    - [4.5.2 Response](#452-response)
+  - [4.6 CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST](#46-ctapcborrpccommandgetauthenticatorlist)
+    - [4.6.1 Request](#461-request)
+    - [4.6.2 Response](#462-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-WebAuthN_Channel Request Message ............................................................. 8
-webAuthNPara Map ............................................................................... 11
-CTAPCBOR_CMD_MAKE_CREDENTIAL Request ......................................... 13
-CTAPCBOR_CMD_GET_ASSERTION Request ............................................. 15
-WebAuthN_Channel Response Message ......................................................... 15
-CTAPCBOR_RPC_COMMAND_WEB_AUTHN Response Map .......................... 16
-CTAP MakeCredential Response ......................................................... 18
-CTAP GetAssertion Response ............................................................ 18
-CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS Response Map ................. 19
-CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST Response Map ..... 21
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.2
-2.2.2.3
-
-2.2.2.1
-
-2.2.2
-
-3.1
-
-3  Protocol Details ..................................................................................................... 23
-Client and Server Details ................................................................................... 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4.1
-
-4.3
-
-4.2
-
-4.1.1
-4.1.2
-
-4.2.1
-4.2.2
-
-4  Protocol Examples ................................................................................................. 24
-CTAPCBOR_RPC_COMMAND_API_VERSION ......................................................... 24
-Request ..................................................................................................... 24
-Response ................................................................................................... 24
-CTAPCBOR_RPC_COMMAND_IUVPAA .................................................................. 24
-Request ..................................................................................................... 24
-Response ................................................................................................... 24
-CTAPCBOR_RPC_COMMAND_CANCEL_CUR_OP .................................................... 25
-Request ..................................................................................................... 25
-Response ................................................................................................... 25
-CTAPCBOR_RPC_COMMAND_WEB_AUTHN .......................................................... 25
-CTAPCBOR_CMD_MAKE_CREDENTIAL ........................................................... 25
-Request ............................................................................................... 25
-Response ............................................................................................. 27
-CTAPCBOR_CMD_GET_ASSERTION ............................................................... 29
-Request ............................................................................................... 29
-Response ............................................................................................. 31
-CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS ................................................. 32
-
-4.4.2.1
-4.4.2.2
-
-4.4.1.1
-4.4.1.2
-
-4.3.1
-4.3.2
-
-4.4.2
-
-4.4.1
-
-4.5
-
-4.4
-
-[MS-RDPEWA] - v20260330
-Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-3 / 41
-
-4.6
-
-4.5.1
-4.5.2
-
-4.6.1
-4.6.2
-
-Request ..................................................................................................... 32
-Response ................................................................................................... 33
-CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST ..................................... 35
-Request ..................................................................................................... 35
-Response ................................................................................................... 35
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 38
-
-7  Change Tracking .................................................................................................... 39
-
-8  Index ..................................................................................................................... 41
-
-[MS-RDPEWA] - v20260330
-Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-4 / 41
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol (RDP): WebAuthn Virtual Channel Protocol provides a way for a user to
 do WebAuthn operations over the RDP protocol. It enables a server to send webauthn request to a
@@ -291,7 +188,7 @@ platform) and reply with the response.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -318,14 +215,14 @@ routing through the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -347,7 +244,8 @@ Release: March 30, 2026
 
 5 / 41
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [W3C-WebAuthPKC2] W3C, "Web Authentication: An API for accessing Public Key Credentials Level 2",
@@ -356,7 +254,7 @@ https://www.w3.org/TR/webauthn-2/
 [W3C-WebAuthPKC3] W3C, "Web Authentication: An API for accessing Public Key Credentials Level 3",
 https://www.w3.org/TR/webauthn-3/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-WebAuthnAPIS] Microsoft Corporation, "Microsoft WebAuthn APIs",
 https://github.com/microsoft/webauthn/blob/master/webauthn.h
@@ -365,7 +263,7 @@ https://github.com/microsoft/webauthn/blob/master/webauthn.h
 https://support.microsoft.com/en-au/topic/september-29-2025-kb5065789-os-builds-26200-6725-
 and-26100-6725-preview-fa03ce47-cec5-4d1c-87d0-cac4195b4b4e
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: WebAuthn Virtual Channel provides a way for a user to do WebAuthn
 operations over the RDP protocol.
@@ -378,11 +276,11 @@ request to it. On the RDP client side, the request is decoded and processed by t
 authenticators via the Client-to-Authenticator protocol (CTAP) protocol. See [FIDO-CTAP] for more
 details about the CTAP protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol uses the [W3C-WebAuthPKC3], [W3C-WebAuthPKC2] and [FIDO-CTAP] protocols.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: WebAuthn Virtual Channel operates only after the dynamic virtual
 channel transport is fully established.
@@ -390,12 +288,12 @@ channel transport is fully established.
 This protocol is message-based. It assumes preservation of the packet as a whole and does not allow
 for fragmentation. Additionally, it assumes that no packets are lost.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is designed to be run within the context of a Remote Desktop Protocol (RDP) virtual
 channel established between a client and a server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol supports versioning and capability negotiation as part of the request. A client that
 supports this protocol does allow this virtual channel to be opened, and a client that does not support
@@ -408,13 +306,14 @@ Release: March 30, 2026
 
 6 / 41
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol also uses Win32 error codes. These values are taken from the error number space as
 specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meanings. Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -425,15 +324,16 @@ Release: March 30, 2026
 
 7 / 41
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The protocol uses a channel named WebAuthN_Channel. This channel MUST be implemented using a
 reliable protocol, such as TCP. Messages written to this channel are assumed to be complete and to
 arrive in order.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Requests and responses are encoded in Concise Binary Object Representation (CBOR) format. For
 more details about CBOR, see [IETF-8949]. CBOR encoding is used because it is used in the CTAP
@@ -449,7 +349,7 @@ on the type of request or response, will in turn contain additional maps.
 
 The next two sections describe the request and response messages and their elements.
 
-2.2.1  WebAuthN_Channel Request Message
+#### 2.2.1 WebAuthN_Channel Request Message
 
 The WebAuthN_Channel request message is a CBOR map using the following keys and values.
 
@@ -501,7 +401,8 @@ Release: March 30, 2026
 
 8 / 41
 
-Value
+
+Value
 
 9
 
@@ -584,7 +485,8 @@ Release: March 30, 2026
 
 9 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -669,7 +571,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-thirdPartyPayment (key type: text string (major type 3)): A Boolean value (major type 7), if set
+
+thirdPartyPayment (key type: text string (major type 3)): A Boolean value (major type 7), if set
 indicates that the credential is applicable for third party payment.
 
 clientDataJSON (key type: text string (major type 3)): A byte string (major type 2) containing Client
@@ -694,7 +597,7 @@ webAuthNPara (key type: text string (major type 3)): A CBOR map (major type 5) p
 
 parameters for authentication. See section 2.2.1.1 for details of the map.
 
-2.2.1.1  webAuthNPara Map
+##### 2.2.1.1 webAuthNPara Map
 
 The webAuthNPara is used in the WebAuthN_Channel request message to specify the parameters to
 use for authentication. It has the following keys and values:
@@ -749,7 +652,8 @@ Release: March 30, 2026
 
 11 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -842,7 +746,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -905,7 +810,7 @@ transportHint (key type: text string (major type 3)): A Text String (major type 
 transport RP wants system to use. This field MUST be set to one of following values specified in
 section 5.8.8 of [W3C-WebAuthPKC3].
 
-2.2.1.2  CTAPCBOR_CMD_MAKE_CREDENTIAL Request
+##### 2.2.1.2 CTAPCBOR_CMD_MAKE_CREDENTIAL Request
 
 This is the CBOR map used in the WebAuthN_Channel request (section 2.2.1) for the
 CTAPCBOR_CMD_MAKE_CREDENTIAL command. The map contains details needed for the request as
@@ -918,7 +823,8 @@ Release: March 30, 2026
 
 13 / 41
 
-The map has up to seven fields indicated by numeric keys. Nearly all of the fields are themselves
+
+The map has up to seven fields indicated by numeric keys. Nearly all of the fields are themselves
 CBOR maps. Some fields are optional.
 
 Key
@@ -1008,11 +914,12 @@ Release: March 30, 2026
 
 14 / 41
 
- }
+
+ }
 
 See [FIDO-CTAP], section 5.1, for details.
 
-2.2.1.3  CTAPCBOR_CMD_GET_ASSERTION Request
+##### 2.2.1.3 CTAPCBOR_CMD_GET_ASSERTION Request
 
 This is the CBOR map used in the WebAuthN_Channel request (section 2.2.1) for the
 CTAPCBOR_CMD_GET_ASSERTION command. The map contains details needed for the request as
@@ -1072,7 +979,7 @@ h'1C1AEF38C820EE448C7BF0EE8512BF9A813A96B73019E028E14270EB5AD74D2383EE72AC40DDAB
 
 See [FIDO-CTAP], section 5.2, for details.
 
-2.2.2  WebAuthN_Channel Response Message
+#### 2.2.2 WebAuthN_Channel Response Message
 
 The WebAuthN_Channel response message is a 32-bit value followed by bytes containing data
 depending on the RPC command:
@@ -1086,7 +993,8 @@ Release: March 30, 2026
 
 15 / 41
 
-response (byte string): Variable length string of bytes depending on the RPC command. The following
+
+response (byte string): Variable length string of bytes depending on the RPC command. The following
 
 are the forms the response takes for a given RPC command:
 
@@ -1130,7 +1038,7 @@ information.
 
 12
 
-2.2.2.1  CTAPCBOR_RPC_COMMAND_WEB_AUTHN Response Map
+##### 2.2.2.1 CTAPCBOR_RPC_COMMAND_WEB_AUTHN Response Map
 
 The WebAuthN_Channel response message is a CBOR map using the following keys and values.
 
@@ -1167,7 +1075,8 @@ Release: March 30, 2026
 
 16 / 41
 
-Value
+
+Value
 
 Meaning
 
@@ -1251,7 +1160,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-thirdPartyPayment (key type: text string (major type 3)): A Boolean value (major type 7)
+
+thirdPartyPayment (key type: text string (major type 3)): A Boolean value (major type 7)
 representing whether the credential created is applicable for third party payment.
 
 transports (key type: text string (major type 3)): An unsigned integer (major type 0)
@@ -1269,7 +1179,7 @@ indicating success or failure. A value of 0x00 indicates success. Any other valu
 map containing details of the response. See section 2.2.2.1.1 and section 2.2.2.1.2 for the
 response maps.
 
-2.2.2.1.1 CTAP MakeCredential Response
+###### 2.2.2.1.1 CTAP MakeCredential Response
 
 This is the CBOR map used in the CTAPCBOR_RPC_COMMAND_WEB_AUTHN response map for a
 response to a request to make a credential (see section 2.2.2.1).
@@ -1314,7 +1224,7 @@ A6ABBA68E0D13CE259796BCD2A03AD83C74E15331328EAB438E6A4197CB12EC6FD1E388'
    5: h'523FC0E9385A21D9A9A427B494014DDF3F9934838C05CD4C97BDF564FC3C8AC8'
  }
 
-2.2.2.1.2 CTAP GetAssertion Response
+###### 2.2.2.1.2 CTAP GetAssertion Response
 
 [MS-RDPEWA] - v20260330
 Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
@@ -1323,7 +1233,8 @@ Release: March 30, 2026
 
 18 / 41
 
-This is the CBOR map used in the CTAPCBOR_RPC_COMMAND_WEB_AUTHN response map for a
+
+This is the CBOR map used in the CTAPCBOR_RPC_COMMAND_WEB_AUTHN response map for a
 response to a request to get an assertion (see section 2.2.2.1).
 
 See [FIDO-CTAP], section 6.2, for details of the map keys, values, and data types.
@@ -1350,7 +1261,7 @@ B3A0B63D858E56ACE6B3A8702BF5113BBE7A081D352F844914F',
    }
  }
 
-2.2.2.2  CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS Response Map
+##### 2.2.2.2 CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS Response Map
 
 This is a CBOR array which contains metadata about the credentials known to the platform for the
 requested relying party
@@ -1399,7 +1310,8 @@ Authenticator Name. (String. Major Type
 
 19 / 41
 
-Key (Unsigned Integer – CBOR Major Type 0)
+
+Key (Unsigned Integer – CBOR Major Type 0)
 
 7
 
@@ -1476,7 +1388,8 @@ Release: March 30, 2026
 
 20 / 41
 
-3337352033302E3638373543392E3337352032392E3539333520392E38303935392032382E353434332031302
+
+3337352033302E3638373543392E3337352032392E3539333520392E38303935392032382E353434332031302
 E353833322032372E373730374331312E333536382032362E393937312031322E3430362032362E3536323520
 31332E352032362E353632355A4D32382E323839362032342E34394332382E303631372032332E38343537203
 2372E393337352032332E313532332032372E393337352032322E34334332372E393337352031392E30313639
@@ -1503,7 +1416,7 @@ E353030352034302E363738324C33322E323634362033392E313738364333322E313334332033392
 
  ]
 
-2.2.2.3  CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST Response Map
+##### 2.2.2.3 CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST Response Map
 
 This is a CBOR array which contains metadata about the authenticator known to the platform for user
 agents
@@ -1551,7 +1464,8 @@ IsLocked. (Boolean. CBOR Major Type 7).
 
 21 / 41
 
-     2: h'08987058CADC4B81B6E130DE50DCBE96',
+
+     2: h'08987058CADC4B81B6E130DE50DCBE96',
      3: "Windows Hello",
      4:
 h'3C7376672069643D224C617965725F312220786D6C6E733D22687474703A2F2F7777772E77332E6F72672F3
@@ -1576,9 +1490,10 @@ Release: March 30, 2026
 
 22 / 41
 
-3  Protocol Details
 
-3.1  Client and Server Details
+## 3 Protocol Details
+
+### 3.1 Client and Server Details
 
 The protocol has two main operations: MakeCredential (section 2.2.1.2) and GetAssertion (section
 2.2.1.3). The MakeCredential operation registers a credential on the authenticator for the replying
@@ -1591,31 +1506,31 @@ Once a request is received by the client, the client determines which authentica
 request. The process of determining which authenticator supports particular capabilities and whether it
 can satisfy a request are defined in the CTAP specification. See [FIDO-CTAP], sections 4 and 5.4.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1626,13 +1541,14 @@ Release: March 30, 2026
 
 23 / 41
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections provide examples of requests and responses for different commands.
 
-4.1  CTAPCBOR_RPC_COMMAND_API_VERSION
+### 4.1 CTAPCBOR_RPC_COMMAND_API_VERSION
 
-4.1.1  Request
+#### 4.1.1 Request
 
 Complete request (a CBOR map):
 
@@ -1644,7 +1560,7 @@ Textual representation of the CBOR encoding:
  {"command": 5, "flags": 0, "timeout": 0, "transactionId":
 h'00000000000000000000000000000000'}
 
-4.1.2  Response
+#### 4.1.2 Response
 
 Full response including HRESULT and API Version:
 
@@ -1653,9 +1569,9 @@ Full response including HRESULT and API Version:
 The preceding response indicates a successful call (0x00000000 as first 32 bits) and that the API
 version is 4.
 
-4.2  CTAPCBOR_RPC_COMMAND_IUVPAA
+### 4.2 CTAPCBOR_RPC_COMMAND_IUVPAA
 
-4.2.1  Request
+#### 4.2.1 Request
 
 Full request (a CBOR map):
 
@@ -1667,7 +1583,7 @@ Textual representation of the CBOR encoding:
  {"command": 6, "flags": 0, "timeout": 0, "transactionId":
 h'00000000000000000000000000000000'}
 
-4.2.2  Response
+#### 4.2.2 Response
 
 Full response including HRESULT and IUVPAA:
 
@@ -1680,9 +1596,10 @@ Release: March 30, 2026
 
 24 / 41
 
-4.3  CTAPCBOR_RPC_COMMAND_CANCEL_CUR_OP
 
-4.3.1  Request
+### 4.3 CTAPCBOR_RPC_COMMAND_CANCEL_CUR_OP
+
+#### 4.3.1 Request
 
 Full request which is a CBOR map:
 
@@ -1694,17 +1611,17 @@ Textual representation of the CBOR map:
  {"command": 7, "flags": 0, "timeout": 0, "request": h'7FDFBDDF000000000000000000000000',
 "transactionId": h'00000000000000000000000000000000'}
 
-4.3.2  Response
+#### 4.3.2 Response
 
 Full RPC response includes only HRESULT
 
  0x0000
 
-4.4  CTAPCBOR_RPC_COMMAND_WEB_AUTHN
+### 4.4 CTAPCBOR_RPC_COMMAND_WEB_AUTHN
 
-4.4.1  CTAPCBOR_CMD_MAKE_CREDENTIAL
+#### 4.4.1 CTAPCBOR_CMD_MAKE_CREDENTIAL
 
-4.4.1.1  Request
+##### 4.4.1.1 Request
 
 Full request which is a CBOR map:
 
@@ -1743,7 +1660,8 @@ Release: March 30, 2026
 
 25 / 41
 
-   timeout: 300000,
+
+   timeout: 300000,
    transactionId: h'26C98F33FCD61D4DBA5B27570F8293DF',
    request:
 h'01A701582019EEDF1F51A140B34B316293B10C2BC0E6C53860771BB1DDA4A82E5DE94A4E7C02A26269646863746
@@ -1816,7 +1734,8 @@ Release: March 30, 2026
 
 26 / 41
 
-       alg: -257,
+
+       alg: -257,
        type: "public-key"
      }
    ],
@@ -1846,7 +1765,7 @@ Release: March 30, 2026
    }
  }
 
-4.4.1.2  Response
+##### 4.4.1.2 Response
 
 Full RPC response including the HRESULT and the CBOR map:
 
@@ -1888,7 +1807,8 @@ Release: March 30, 2026
 
 27 / 41
 
-F471085E160B3CA79764231746BA6ABBA68E0D13CE259796BCD2A03AD83C74E15331328EAB438E6A4197CB12EC6FD
+
+F471085E160B3CA79764231746BA6ABBA68E0D13CE259796BCD2A03AD83C74E15331328EAB438E6A4197CB12EC6FD
 1E388055820523FC0E9385A21D9A9A427B494014DDF3F9934838C05CD4C97BDF564FC3C8AC8
 
 Textual representation of the response following the HRESULT:
@@ -1961,7 +1881,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-06072A8648CE3D020106082A8648CE3D0301070342000425F123A048283FC5796CCF887D99489FD935C24198C4B5D
+
+06072A8648CE3D020106082A8648CE3D0301070342000425F123A048283FC5796CCF887D99489FD935C24198C4B5D
 8D5B2C2BFD7DD5D15AFE45B7070776567D5B5B0B23E04560B5BEA77B483B1F6491E53A3F2BEE6A39AA38181307F30
 13060A2B0601040182C40A0D0104050403050506302206092B0601040182C40A020415312E332E362E312E342E312
 E34313438322E312E393013060B2B0601040182E51C0201010404030205203021060B2B0601040182E51C01010404
@@ -2014,9 +1935,9 @@ D83C74E15331328EAB438E6A4197CB12EC6FD1E388'
 
  }
 
-4.4.2  CTAPCBOR_CMD_GET_ASSERTION
+#### 4.4.2 CTAPCBOR_CMD_GET_ASSERTION
 
-4.4.2.1  Request
+##### 4.4.2.1 Request
 
 Full request, a CBOR map:
 
@@ -2031,7 +1952,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-BF0EE8512BF9A813A96B73019E028E14270EB5AD74D2383EE72AC40DDABF53D3222CEBEA861D464747970656A7075
+
+BF0EE8512BF9A813A96B73019E028E14270EB5AD74D2383EE72AC40DDABF53D3222CEBEA861D464747970656A7075
 626C69632D6B6579A26269645820BC365B699040F8B4819833CF2F0FB4733BD424A3B043913C8CF5527799F4373A6
 4747970656A7075626C69632D6B657904A16863726564426C6F62F505A1627570F56C776562417574684E50617261
 A863776E641A000303366A6174746163686D656E74006F726571756972655265736964656E74F46E7072656665725
@@ -2102,7 +2024,8 @@ Release: March 30, 2026
 
 30 / 41
 
- {
+
+ {
    1: "ctap.dev",
    2: h'6F43BB640674BE2C2CC33AD6F0F08E450DC035F2113D1FB38A6985E32D3CB14F',
    3: [
@@ -2125,7 +2048,7 @@ h'1C1AEF38C820EE448C7BF0EE8512BF9A813A96B73019E028E14270EB5AD74D2383EE72AC40DDAB
    }
  }
 
-4.4.2.2  Response
+##### 4.4.2.2 Response
 
 Full response including the HRESULT and the CBOR map:
 
@@ -2174,7 +2097,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-   response:
+
+   response:
 h'00A401A262696458301C1AEF38C820EE448C7BF0EE8512BF9A813A96B73019E028E14270EB5AD74D2383EE72AC4
 0DDABF53D3222CEBEA861D464747970656A7075626C69632D6B65790258923D3CA4E1D7E11F604B32D0EFE18B449B
 057CC736ECE0BF820A42555426DB88348500000006A26863726564426C6F6244313231326B686D61632D736563726
@@ -2216,9 +2140,9 @@ B3A0B63D858E56ACE6B3A8702BF5113BBE7A081D352F844914F',
    }
  }
 
-4.5  CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS
+### 4.5 CTAPCBOR_RPC_COMMAND_GET_CREDENTIALS
 
-4.5.1  Request
+#### 4.5.1 Request
 
 Full Request (a CBOR map):
 
@@ -2240,7 +2164,8 @@ Release: March 30, 2026
 
 32 / 41
 
-   flags: 0,
+
+   flags: 0,
    timeout: 0,
    transactionId: h'D68633AC1123364E9709E201FD05693C',
    filterHybridTransport: false,
@@ -2251,7 +2176,7 @@ Release: March 30, 2026
    thirdPartyPayment: false
  }
 
-4.5.2  Response
+#### 4.5.2 Response
 
 Full Response (a CBOR map):
 
@@ -2313,7 +2238,8 @@ Release: March 30, 2026
 
 33 / 41
 
-312E353037372033362E313838312032302E33374333362E313838312031392E323332332033352E323634372
+
+312E353037372033362E313838312032302E33374333362E313838312031392E323332332033352E323634372
 031382E33312033342E313235362031382E33314333322E393836352031382E33312033322E30363331203139
 2E323332332033322E303633312032302E33374333322E303633312032312E353037372033322E39383635203
 2322E34332033342E313235362032322E34335A222066696C6C3D22626C61636B222066696C6C2D6F70616369
@@ -2389,7 +2315,8 @@ Release: March 30, 2026
 
 34 / 41
 
-33531335632382E323538344333322E303034332032382E323337382033312E393436362032382E3231363220
+
+33531335632382E323538344333322E303034332032382E323337382033312E393436362032382E3231363220
 33312E383839332032382E3139344333302E323133332032372E353434382032382E383930342032362E31383
 7372032382E323839362032342E34395A4D33342E313235362032322E34334333352E323634372032322E3433
 2033362E313838312032312E353037372033362E313838312032302E33374333362E313838312031392E32333
@@ -2403,9 +2330,9 @@ Release: March 30, 2026
 
  ]
 
-4.6  CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST
+### 4.6 CTAPCBOR_RPC_COMMAND_GET_AUTHENTICATOR_LIST
 
-4.6.1  Request
+#### 4.6.1 Request
 
 Full Request (a CBOR map):
 
@@ -2424,7 +2351,7 @@ Textual representation of the CBOR encoding:
    thirdPartyPayment: false
  }
 
-4.6.2  Response
+#### 4.6.2 Response
 
 Full Response (a CBOR map):
 
@@ -2453,7 +2380,8 @@ Release: March 30, 2026
 
 35 / 41
 
-     2: h'08987058CADC4B81B6E130DE50DCBE96',
+
+     2: h'08987058CADC4B81B6E130DE50DCBE96',
      3: "Windows Hello",
      4:
 h'3C7376672069643D224C617965725F312220786D6C6E733D22687474703A2F2F7777772E77332E6F72672F3
@@ -2478,13 +2406,14 @@ Release: March 30, 2026
 
 36 / 41
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 For information, see [W3C-WebAuthPKC3], section 13.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2495,7 +2424,8 @@ Release: March 30, 2026
 
 37 / 41
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2548,7 +2478,8 @@ Release: March 30, 2026
 
 38 / 41
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2654,7 +2585,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Section
+
+Section
 
 Request
 
@@ -2792,7 +2724,8 @@ Remote Desktop Protocol: WebAuthn Virtual Channel Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Preconditions 6
+
+Preconditions 6
 Prerequisites 6
 Product behavior 38
 
@@ -2843,7 +2776,7 @@ W
 WebAuthN_Channel Request Message message 8
 WebAuthN_Channel Response Message message 15
 
-8  Index
+## 8 Index
 A
 
 Abstract data model

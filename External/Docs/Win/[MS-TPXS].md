@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 22
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -229,124 +230,55 @@ Release: April 23, 2024
 
 2 / 22
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Telemetry Request Message](#21-telemetry-request-message)
+    - [2.1.1 req](#211-req)
+      - [2.1.1.1 tlm](#2111-tlm)
+        - [2.1.1.1.1 src](#21111-src)
+          - [2.1.1.1.1.1 os](#211111-os)
+          - [2.1.1.1.1.2 hw](#211112-hw)
+          - [2.1.1.1.1.3 ctrl](#211113-ctrl)
+        - [2.1.1.1.2 reqs](#21112-reqs)
+          - [2.1.1.1.2.1 payload](#211121-payload)
+          - [2.1.1.1.2.2 req](#211122-req)
+            - [2.1.1.1.2.2.1 namespace](#2111221-namespace)
+            - [2.1.1.1.2.2.2 ctrl](#2111222-ctrl)
+            - [2.1.1.1.2.2.3 contents](#2111223-contents)
+            - [2.1.1.1.2.2.4 cmd](#2111224-cmd)
+  - [2.2 Telemetry Response Message](#22-telemetry-response-message)
+    - [2.2.1 resp](#221-resp)
+      - [2.2.1.1 tlm](#2211-tlm)
+        - [2.2.1.1.1 resps](#22111-resps)
+          - [2.2.1.1.1.1 resp](#221111-resp)
+            - [2.2.1.1.1.1.1 namespace](#2211111-namespace)
+            - [2.2.1.1.1.1.2 cmd](#2211112-cmd)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Client-to-Server Request](#31-client-to-server-request)
+  - [3.2 Server-to-Client Response](#32-server-to-client-response)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index Of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Full XML Schema](#5-appendix-a-full-xml-schema)
+  - [5.1 Telemetry Request Message - Full Schema](#51-telemetry-request-message-full-schema)
+  - [5.2 Telemetry Response Message - Full Schema](#52-telemetry-response-message-full-schema)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Structures ...................................................... 5
-Applicability Statement ....................................................................................... 5
-Versioning and Localization ................................................................................. 5
-Vendor-Extensible Fields ..................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.1.1
-
-2.1.1.1
-
-2.1.1.1.2
-
-2.1.1.1.1
-
-2.1.1.1.2.1
-2.1.1.1.2.2
-
-2.1.1.1.1.1
-2.1.1.1.1.2
-2.1.1.1.1.3
-
-2  Structures ............................................................................................................... 6
-Telemetry Request Message ................................................................................ 6
-req ............................................................................................................. 6
-tlm ........................................................................................................ 6
-src ................................................................................................... 6
-os .............................................................................................. 6
-hw ............................................................................................. 7
-ctrl ............................................................................................. 7
-reqs ................................................................................................. 8
-payload ...................................................................................... 8
-req ............................................................................................. 8
-namespace ............................................................................ 9
-ctrl ....................................................................................... 9
-contents .............................................................................. 10
-cmd .................................................................................... 10
-Telemetry Response Message ............................................................................ 11
-resp .......................................................................................................... 11
-tlm ...................................................................................................... 11
-resps ............................................................................................. 11
-resp ......................................................................................... 11
-namespace .......................................................................... 12
-cmd .................................................................................... 12
-
-2.1.1.1.2.2.1
-2.1.1.1.2.2.2
-2.1.1.1.2.2.3
-2.1.1.1.2.2.4
-
-2.2.1.1.1.1.1
-2.2.1.1.1.1.2
-
-2.2.1.1.1.1
-
-2.2.1.1.1
-
-2.2.1.1
-
-2.2.1
-
-2.2
-
-3  Structure Examples ............................................................................................... 13
-Client-to-Server Request ................................................................................... 13
-Server-to-Client Response ................................................................................. 13
-
-3.1
-3.2
-
-4  Security ................................................................................................................. 15
-Security Considerations for Implementers ........................................................... 15
-Index Of Security Fields .................................................................................... 15
-
-4.1
-4.2
-
-5  Appendix A: Full XML Schema ................................................................................ 16
-Telemetry Request Message - Full Schema .......................................................... 16
-Telemetry Response Message - Full Schema ........................................................ 18
-
-5.1
-5.2
-
-6  Appendix B: Product Behavior ............................................................................... 20
-
-7  Change Tracking .................................................................................................... 21
-
-8  Index ..................................................................................................................... 22
-
-[MS-TPXS] - v20240423
-Telemetry Protocol XML Schema
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 22
-
-1  Introduction
+## 1 Introduction
 
 The Telemetry Protocol XML Schema defines the message structure used by the Software Quality
 Metrics (SQM) Client to Service Protocol, specified in [MS-SQMCS2]. The schema is used to send
@@ -356,7 +288,7 @@ client-specific control data.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -380,14 +312,14 @@ is superseded by Transport Layer Security (TLS). TLS version 1.0 is based on SSL
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -399,7 +331,7 @@ assist you in finding the relevant information.
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-SQMCS2] Microsoft Corporation, "Software Quality Metrics (SQM) Client-to-Service Version 2
 Protocol".
@@ -411,14 +343,15 @@ Release: April 23, 2024
 
 4 / 22
 
-1.3  Overview
+
+### 1.3 Overview
 
 This XML data structure specifies a client-to-server request message and a server-to-client response
 message. The client request message contains one or more commands specifying the work the client
 is requesting of the server.  The server response message contains one response to each request
 (command) from the client.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The Telemetry Protocol XML Schema is used by the SQM Client-to-Service Protocol, as specified in
 [MS-SQMCS2], to transmit request and response messages between a client and the SQM service.
@@ -426,19 +359,19 @@ The Telemetry Protocol XML Schema is used by the SQM Client-to-Service Protocol,
 The request and response data is transmitted over Hypertext Transfer Protocol (HTTP) and
 Hypertext Transfer Protocol over Secure Sockets Layer (HTTPS) as specified in [RFC2616].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This structure is defined to support clients that are enabled to request and send telemetry data to a
 telemetry server. The structure describes the client sender and the data being sent so the server can
 evaluate each request and either accept or reject the request based on the data contained within the
 message.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification documents Version 2 of the Telemetry Protocol XML Schema. The XML schema does
 not support localization.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 There are no vendor-extensible fields. It is possible for vendors to add key-value arguments to arg
 elements (see the schemas in section 5). However, these key-value pairs are not interpreted unless
@@ -451,16 +384,17 @@ Release: April 23, 2024
 
 5 / 22
 
-2  Structures
+
+## 2 Structures
 
 The telemetry data structure describes a telemetry client request and server response.
 
-2.1  Telemetry Request Message
+### 2.1 Telemetry Request Message
 
 The telemetry request message describes the client request from the server. Each element is
 described below. The complete schema is specified in the section 5.1.
 
-2.1.1  req
+#### 2.1.1 req
 
 The req (request) element is the topmost element of a client-to-server request message. It contains
 an associated version number that is used to differentiate schema changes in the telemetry request
@@ -472,7 +406,7 @@ message format. The version number of this schema is 2.
   </xs:complexType>
  </xs:element>
 
-2.1.1.1  tlm
+##### 2.1.1.1 tlm
 
 The tlm (telemetry) element is the namespace of the requested service. The tlm element is a child
 element of req.
@@ -482,7 +416,7 @@ element of req.
   </xs:complexType>
  </xs:element>
 
-2.1.1.1.1 src
+###### 2.1.1.1.1 src
 
 The src (source) element is a child element of tlm. The src element and the child elements desc
 (description) and mach (machine) describe the client that is making the request.
@@ -506,7 +440,7 @@ The src (source) element is a child element of tlm. The src element and the chil
   </xs:complexType>
  </xs:element>
 
-2.1.1.1.1.1  os
+###### 2.1.1.1.1.1 os
 
 [MS-TPXS] - v20240423
 Telemetry Protocol XML Schema
@@ -515,7 +449,8 @@ Release: April 23, 2024
 
 6 / 22
 
-The os is a child element of the mach element. It describes the client operating system with a set of
+
+The os is a child element of the mach element. It describes the client operating system with a set of
 key-value pair descriptive attributes.
 
  <xs:element name="os" minOccurs="1" maxOccurs="1">
@@ -538,7 +473,7 @@ nm: Unique key attribute describing a dimension of the client operating system.
 
 val: Value field of the key-value pair describing a dimension of the operating system.
 
-2.1.1.1.1.2  hw
+###### 2.1.1.1.1.2 hw
 
 The hw (hardware) element is a child element of the mach element. It describes the client machine
 hardware with a set of key-value pair descriptive attributes.
@@ -563,7 +498,7 @@ nm: Unique key attribute describing a dimension of the client hardware platform.
 
 val: Value field of the key-value pair describing a dimension of the client hardware platform.
 
-2.1.1.1.1.3  ctrl
+###### 2.1.1.1.1.3 ctrl
 
 The ctrl (control) element is a child element of the mach element. It describes a set of client control
 values with a set of key-value pair descriptive attributes.
@@ -583,7 +518,8 @@ Telemetry Protocol XML Schema
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     </xs:complexType>
+
+     </xs:complexType>
     </xs:element>
    </xs:sequence>
   </xs:complexType>
@@ -596,7 +532,7 @@ nm: Unique key attribute describing a dimension of the client control values.
 
 val: Value field of the key-value pair describing a dimension of the client control values.
 
-2.1.1.1.2 reqs
+###### 2.1.1.1.2 reqs
 
 The reqs (requests) element is the client request section of the message. reqs is a child element of
 tlm.
@@ -608,7 +544,7 @@ tlm.
   </xs:complexType>
  </xs:element>
 
-2.1.1.1.2.1  payload
+###### 2.1.1.1.2.1 payload
 
 The payload element is a child element of reqs. It describes the binary data (if any).
 
@@ -632,9 +568,9 @@ nm: Unique key attribute describing a dimension of the payload.
 
 val: Value field of the key-value pair describing a dimension of the payload.
 
-2.1.1.1.2.2
+###### 2.1.1.1.2.2 req
 
-req
+
 
 The req (request) element is a child element of reqs. It describes a client request of the server. The
 attribute name is key and represents a message-wide unique key associated with the req element.
@@ -651,9 +587,10 @@ Telemetry Protocol XML Schema
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </xs:element>
 
-2.1.1.1.2.2.1  namespace
+ </xs:element>
+
+###### 2.1.1.1.2.2.1 namespace
 
 The namespace element is a child element of req and describes the specific client request
 environment in terms of a set of hierarchical namespaces. The namespace is order-defined as the
@@ -699,7 +636,7 @@ app:  An attribute that describes the client service partner group application s
 
 further differentiates the group namespace (root.svc.ptr.gp.app).
 
-2.1.1.1.2.2.2  ctrl
+###### 2.1.1.1.2.2.2 ctrl
 
 The ctrl (control) element is a child element of req and describes the control data values for the
 request with a set of name-value pairs. ctrl arguments are specific to the req element whereas the
@@ -722,7 +659,8 @@ Release: April 23, 2024
 
 9 / 22
 
-   </xs:sequence>
+
+   </xs:sequence>
   </xs:complexType>
  </xs:element>
 
@@ -733,7 +671,7 @@ nm: Unique key attribute describing a dimension of the client request control va
 
 val: Value field of the key-value pair describing a dimension of the client request control values.
 
-2.1.1.1.2.2.3  contents
+###### 2.1.1.1.2.2.3 contents
 
 The contents element is a child element of req and describes the payload content (if any).
 
@@ -759,7 +697,7 @@ unique.
 
 val: Value field of the name-value pair describing a dimension of the payload contents.
 
-2.1.1.1.2.2.4  cmd
+###### 2.1.1.1.2.2.4 cmd
 
 The cmd (command) element is a child element of the req element. It describes the client request
 work from the server. The cmd element has one attribute nm, a name value describing the
@@ -789,16 +727,17 @@ Telemetry Protocol XML Schema
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-nm: Unique key attribute describing an argument of the command.
+
+nm: Unique key attribute describing an argument of the command.
 
 val: Value field of the key-value pair describing an argument of the command.
 
-2.2  Telemetry Response Message
+### 2.2 Telemetry Response Message
 
 The telemetry response message describes the server response to a client telemetry request message.
 Each element is described in the following sections. The complete schema is specified in section 5.2.
 
-2.2.1  resp
+#### 2.2.1 resp
 
 The resp (response) element is the topmost element of a server-to-client response message. There is
 an associated version number. The version number is used to differentiate schema changes in the
@@ -810,7 +749,7 @@ telemetry response message format. The version number of this schema is 2.
   </xs:complexType>
  </xs:element>
 
-2.2.1.1  tlm
+##### 2.2.1.1 tlm
 
 The tlm (telemetry) element is a child element of the resp element. It is the namespace of the
 service.
@@ -820,7 +759,7 @@ service.
   </xs:complexType>
  </xs:element>
 
-2.2.1.1.1 resps
+###### 2.2.1.1.1 resps
 
 The resps (responses) element is a child element of the tlm element. It contains the server responses
 to the client requests.
@@ -832,9 +771,9 @@ to the client requests.
   </xs:complexType>
  </xs:element>
 
-2.2.1.1.1.1
+###### 2.2.1.1.1.1 resp
 
-resp
+
 
 The resp (response) element describes a server response to a client request. resp is a child element
 of reps.  key is an attribute and maps to the client req key in the client telemetry request message.
@@ -854,7 +793,8 @@ Telemetry Protocol XML Schema
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.1.1.1.1  namespace
+
+###### 2.2.1.1.1.1.1 namespace
 
 The namespace element is echoed back from the telemetry request message req (section 2.1.1)
 unaltered. namespace is a child element of resp. See the telemetry request message namespace
@@ -877,7 +817,7 @@ element as specified in section 2.1.1.1.2.2.1.
   </xs:complexType>
  </xs:element>
 
-2.2.1.1.1.1.2  cmd
+###### 2.2.1.1.1.1.2 cmd
 
 The cmd (command) element is a child element of the resp element and describes the server
 command response to the client. The cmd element has one attribute, an nm (name) attribute
@@ -911,9 +851,10 @@ Release: April 23, 2024
 
 12 / 22
 
-3  Structure Examples
 
-3.1  Client-to-Server Request
+## 3 Structure Examples
+
+### 3.1 Client-to-Server Request
 
 This section contains an example of an SQM client-to-server request to upload SQM data as indicated
 by the requpload command. There are two requests (key 1,2), each with a separate requpload
@@ -969,7 +910,7 @@ command.
   </tlm>
  </req>
 
-3.2  Server-to-Client Response
+### 3.2 Server-to-Client Response
 
 This section contains an example of an SQM server-to-client response. There are two responses that
 map to the requests in section 3.1.
@@ -981,7 +922,8 @@ Telemetry Protocol XML Schema
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <resp ver="2">
   <tlm>
    <resps>
@@ -1012,15 +954,16 @@ Release: April 23, 2024
 
 14 / 22
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 The Telemetry Protocol XML Schema relies on the implementor to secure the message over a network
 by using a secure transport such as SSL. Telemetry Protocol XML Schema does not have built-in
 support for security or authentication.
 
-4.2  Index Of Security Fields
+### 4.2 Index Of Security Fields
 
 None.
 
@@ -1031,9 +974,10 @@ Release: April 23, 2024
 
 15 / 22
 
-5  Appendix A: Full XML Schema
 
-5.1  Telemetry Request Message - Full Schema
+## 5 Appendix A: Full XML Schema
+
+### 5.1 Telemetry Request Message - Full Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -1105,7 +1049,8 @@ Release: April 23, 2024
 
 16 / 22
 
-        </xs:element>
+
+        </xs:element>
         <xs:element name="reqs" minOccurs="1" maxOccurs="1">
          <xs:complexType>
           <xs:sequence>
@@ -1182,7 +1127,8 @@ Release: April 23, 2024
 
 17 / 22
 
-                <xs:attribute name="nm" type="xs:string" use="required" />
+
+                <xs:attribute name="nm" type="xs:string" use="required" />
                </xs:complexType>
               </xs:element>
              </xs:sequence>
@@ -1201,7 +1147,7 @@ Release: April 23, 2024
   </xs:element>
  </xs:schema>
 
-5.2  Telemetry Response Message - Full Schema
+### 5.2 Telemetry Response Message - Full Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -1257,7 +1203,8 @@ Release: April 23, 2024
 
 18 / 22
 
-            </xs:complexType>
+
+            </xs:complexType>
            </xs:element>
           </xs:sequence>
          </xs:complexType>
@@ -1278,7 +1225,8 @@ Release: April 23, 2024
 
 19 / 22
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1322,7 +1270,8 @@ Release: April 23, 2024
 
 20 / 22
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1366,7 +1315,8 @@ Release: April 23, 2024
 
 21 / 22
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 5

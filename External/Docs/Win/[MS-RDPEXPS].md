@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 86
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 86
 
-Date
+
+Date
 
 Revision
 History
@@ -523,7 +525,8 @@ Release: April 23, 2024
 
 3 / 86
 
-Date
+
+Date
 
 Revision
 History
@@ -572,645 +575,244 @@ Release: April 23, 2024
 
 4 / 86
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.2.2
-
-1.3.2.1
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1.1
-1.3.2.1.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-XPS Basics ................................................................................................. 13
-XPS Print Virtual Channel Protocol ................................................................ 13
-Interface Manipulation ........................................................................... 13
-Interface Query ............................................................................... 13
-Interface Release ............................................................................ 13
-Printer Ticket Interface .......................................................................... 13
-Printer Ticket Interface Initialization Messages .................................... 14
-Printer Ticket Interface Capability Negotiation Messages....................... 14
-Printer Driver Interface .......................................................................... 14
-Printer Driver Interface Initialization Messages .................................... 16
-Printer Driver Interface Capability Negotiation Messages ...................... 16
-User Interface Messages .................................................................. 17
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 20
-
-1.3.2.3.1
-1.3.2.3.2
-1.3.2.3.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.2.1
-1.3.2.2.2
-
-1.3.2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 21
-Transport ........................................................................................................ 21
-Message Syntax ............................................................................................... 21
-Shared Message Header (SHARED_MSG_HEADER) ......................................... 21
-Interface Manipulation ................................................................................. 23
-Interface Query .................................................................................... 23
-Query Interface Request (QI_REQ) .................................................... 23
-Query Interface Response (QI_RSP) .................................................. 24
-Interface Release (IFACE_RELEASE) ........................................................ 24
-Printer Ticket Interface ................................................................................ 24
-Initialization Messages ........................................................................... 25
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.1
-
-2.2.3.1
-
-2.2.2.2
-
-2.2.3
-
-2.2.3.1.1
-
-2.2.3.1.2
-
-2.2.3.1.3
-2.2.3.1.4
-
-2.2.3.2
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-
-2.2.3.2.4
-
-2.2.3.2.5
-
-2.2.3.2.6
-
-2.2.3.2.7
-2.2.3.2.8
-
-Server Get Supported Versions Request
-(GET_SUPPORTED_VERSIONS_REQ) ................................................. 25
-Client Get Supported Versions Response
-(GET_SUPPORTED_VERSIONS_RSP) .................................................. 25
-Server Bind Printer Request (BIND_PRINTER_REQ) ............................. 26
-Client Bind Printer Response (BIND_PRINTER_RSP) ............................. 26
-Capability Negotiation Messages ............................................................. 27
-Server Query Device Namespace Request (QUERY_DEV_NS_REQ) ........ 27
-Client Query Device Namespace Response (QUERY_DEV_NS_RSP) ........ 27
-Server Print Ticket to Devmode Request (PRINT_TKT_TO_DEVMODE_REQ)
- ..................................................................................................... 28
-Client Print Ticket to Devmode Response (PRINT_TKT_TO_DEVMODE_RSP)
- ..................................................................................................... 29
-Server Devmode to Print Ticket Request (DEVMODE_TO_PRINT_TKT_REQ)
- ..................................................................................................... 29
-Client Devmode to Print Ticket Response (DEVMODE_TO_PRINT_TKT_RSP)
- ..................................................................................................... 30
-Server Print Caps Request (PRINT_CAPS_REQ) ................................... 31
-Client Print Caps Response (PRINT_CAPS_RSP) ................................... 31
-
-[MS-RDPEXPS] - v20240423
-Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 86
-
-2.2.3.2.9
-
-2.2.3.2.10
-
-2.2.3.2.11
-2.2.3.2.12
-
-2.2.4
-
-2.2.4.1
-
-2.2.4.1.1
-2.2.4.1.2
-
-2.2.4.2
-
-Server Print Caps From Print Ticket Request
-(PRINT_CAPS_FROM_PRINT_TKT_REQ) ............................................. 32
-Client Print Caps From Print Ticket Response
-(PRINT_CAPS_FROM_PRINT_TKT_RSP) .............................................. 32
-Server Validate Print Ticket Request (VALIDATE_PRINT_TKT_REQ) ........ 33
-Client Validate Print Ticket Response (VALIDATE_PRINT_TKT_RSP) ....... 33
-Printer Driver Interface................................................................................ 34
-Initialization Messages ........................................................................... 34
-Server Initialize Printer Request (INIT_PRINTER_REQ) ......................... 34
-Client Initialize Printer Response (INIT_PRINTER_RSP) ........................ 35
-Capability Negotiation Messages ............................................................. 35
-Server Get All Dev Caps Request (GET_ALL_DEV_CAPS_REQ) ............... 35
-Client Get All Dev Caps Response (GET_ALL_DEV_CAPS_RSP) .............. 35
-Server Convert Devmode Request (CONVERT_DEVMODE_REQ) ............ 36
-Client Convert Devmode Response (CONVERT_DEVMODE_RSP) ............ 37
-Server Get Device Capability Request (GET_DEVICE_CAP_REQ) ............ 38
-Client Get Device Capability Response (GET_DEVICE_CAP_RSP) ........... 39
-Server Document Properties Request (DOC_PROPERTIES_REQ) ............ 39
-Client Document Properties Response (DOC_PROPERTIES_RSP) ............ 40
-Server Get Device Adjustment Request
-(MXDC_GETPDEV_ADJUSTMENT_REQ) ............................................... 42
-Client Get Device Adjustment Reply (MXDC_GETPDEV_ADJUSTMENT_RSP)
- ..................................................................................................... 43
-User Interface Messages ........................................................................ 43
-Printer Properties UI ........................................................................ 43
-
-2.2.4.2.1
-2.2.4.2.2
-2.2.4.2.3
-2.2.4.2.4
-2.2.4.2.5
-2.2.4.2.6
-2.2.4.2.7
-2.2.4.2.8
-2.2.4.2.9
-
-2.2.4.2.10
-
-2.2.4.3
-
-2.2.4.3.1
-
-2.2.4.3.2
-
-2.2.4.3.2.1
-
-2.2.4.3.1.1
-
-2.2.4.3.1.2
-
-2.2.4.3.1.3
-
-2.2.4.3.1.4
-
-2.2.4.3.1.5
-
-2.2.4.3.1.6
-
-Server Async Printer Properties Request
-(ASYNC_PRINTER_PROPS_REQ) .................................................. 44
-Client Async Printer Properties Response
-(ASYNC_PRINTER_PROPS_RSP) ................................................... 44
-Client Printer Properties Callback Request
-(PRINTER_PROPS_CALLBACK_REQ) ............................................. 45
-Server Printer Properties Callback Response
-(PRINTER_PROPS_CALLBACK_RSP).............................................. 45
-Server Cancel Async Printer Properties Request
-(CANCEL_ASYNC_PRINTER_PROPS_REQ) ..................................... 46
-Client Cancel Async Printer Properties Response
-(CANCEL_ASYNC_PRINTER_PROPS_RSP) ...................................... 46
-Document Properties UI ................................................................... 47
-Server Async Document Properties Request (ASYNC_DOC_PROPS_REQ)
- ............................................................................................... 47
-Client Async Document Properties Response (ASYNC_DOC_PROPS_RSP)
- ............................................................................................... 48
-Client Document Properties Callback Request
-(DOC_PROPS_CALLBACK_REQ) ................................................... 48
-Server Document Properties Callback Response
-(DOC_PROPS_CALLBACK_RSP).................................................... 49
-Server Cancel Async Document Properties Request
-(CANCEL_ASYNC_DOC_PROPS_REQ) ........................................... 49
-Client Cancel Async Document Properties Response
-(CANCEL_ASYNC_DOC_PROPS_RSP) ............................................ 49
-Server Move Document Properties Window Request
-(MOVE_DOC_PROPERTIES_REQ) ................................................. 50
-Client Move Document Properties Window Reply
-(MOVE_DOC_PROPERTIES_RSP) .................................................. 50
-XML Document (XML_DOCUMENT) ................................................................ 51
-Device Capabilities (TSDEVICE_CAPABILITIES) .............................................. 51
-Printer Property (TSPRINTER_PROPERTY) ...................................................... 52
-
-2.2.4.3.2.2
-
-2.2.4.3.2.3
-
-2.2.4.3.2.4
-
-2.2.4.3.2.5
-
-2.2.4.3.2.6
-
-2.2.4.3.2.7
-
-2.2.4.3.2.8
-
-2.2.5
-2.2.6
-2.2.7
-
-[MS-RDPEXPS] - v20240423
-Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 86
-
-3.2
-
-3.1
-
-3.2.5.2
-
-3.2.5.1
-
-3.2.5.1.1
-
-3.1.5.2.2
-
-3.1.5.2.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.5.2.2.1
-3.1.5.2.2.2
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 54
-Common Details .............................................................................................. 54
-Abstract Data Model .................................................................................... 54
-Timers ...................................................................................................... 54
-Initialization ............................................................................................... 55
-Higher-Layer Triggered Events ..................................................................... 55
-Processing Events and Sequencing Rules ....................................................... 55
-Processing a Shared Message Header ...................................................... 55
-Interface Manipulation ........................................................................... 55
-Interface Query Message .................................................................. 55
-Sending an Interface Query Message ............................................ 55
-Receiving an Interface Query Message.......................................... 55
-Interface Release Message ............................................................... 56
-Sending an Interface Release Message ......................................... 56
-Receiving an Interface Release Message ....................................... 56
-Timer Events .............................................................................................. 56
-Other Local Events ...................................................................................... 56
-Client Details ................................................................................................... 56
-Abstract Data Model .................................................................................... 56
-Timers ...................................................................................................... 56
-Initialization ............................................................................................... 56
-Higher-Layer Triggered Events ..................................................................... 56
-Processing Events and Sequencing Rules ....................................................... 57
-Interface Manipulation ........................................................................... 57
-Interface Query Message .................................................................. 57
-Processing a Query Interface Request........................................... 57
-Sending a Query Interface Response ............................................ 57
-Printer Ticket Interface .......................................................................... 57
-Initialization Messages ..................................................................... 57
-Processing a Get Supported Versions Request ............................... 57
-Sending a Get Supported Versions Response ................................. 57
-Processing a Bind Printer Request ................................................ 57
-Sending a Bind Printer Response .................................................. 57
-Capability Negotiation Messages ........................................................ 57
-Processing a Query Device Namespace Request ............................. 58
-Sending a Query Device Namespace Response .............................. 58
-Processing a Print Ticket to Devmode Request ............................... 58
-Sending a Print Ticket to Devmode Response ................................ 58
-Processing a Devmode to Print Ticket Request ............................... 58
-Sending a Devmode to Print Ticket Response ................................ 58
-Processing a Print Caps Request .................................................. 58
-Sending a Print Caps Response .................................................... 58
-Processing a Print Caps From Print Ticket Request ......................... 58
-Sending a Print Caps From Print Ticket Response ........................... 58
-Processing a Validate Print Ticket Request..................................... 59
-Sending a Validate Print Ticket Response ...................................... 59
-Printer Driver Interface .......................................................................... 59
-Initialization Messages ..................................................................... 59
-Processing an Initialize Printer Request ......................................... 59
-Sending an Initialize Printer Response .......................................... 59
-Capability Negotiation Messages ........................................................ 59
-Processing a Get All Dev Caps Request ......................................... 59
-Sending a Get All Dev Caps Response .......................................... 59
-Processing a Convert Devmode Request ....................................... 59
-Sending a Convert Devmode Response ......................................... 60
-Processing a Get Device Capability Request ................................... 60
-Sending a Get Device Capability Response .................................... 60
-Processing a Document Properties Request ................................... 60
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-3.2.5.2.2.3
-3.2.5.2.2.4
-3.2.5.2.2.5
-3.2.5.2.2.6
-3.2.5.2.2.7
-3.2.5.2.2.8
-3.2.5.2.2.9
-3.2.5.2.2.10
-3.2.5.2.2.11
-3.2.5.2.2.12
-
-3.2.5.3.2.1
-3.2.5.3.2.2
-3.2.5.3.2.3
-3.2.5.3.2.4
-3.2.5.3.2.5
-3.2.5.3.2.6
-3.2.5.3.2.7
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-3.2.5.2.1.3
-3.2.5.2.1.4
-
-3.2.5.3.1.1
-3.2.5.3.1.2
-
-3.2.5.3.1
-
-3.2.5.3.2
-
-3.2.5.2.1
-
-3.2.5.2.2
-
-3.2.5.3
-
-[MS-RDPEXPS] - v20240423
-Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 86
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.3.5.1.1
-
-3.3.5.1.2
-
-3.2.5.3.3
-
-3.2.5.3.3.2
-
-3.2.5.3.3.1
-
-3.2.5.3.3.3
-3.2.5.3.3.4
-
-3.2.5.3.2.8
-3.2.5.3.2.9
-3.2.5.3.2.10
-
-3.2.5.3.3.1.1
-3.2.5.3.3.1.2
-3.2.5.3.3.1.3
-3.2.5.3.3.1.4
-3.2.5.3.3.1.5
-3.2.5.3.3.1.6
-
-3.2.5.3.3.2.1
-3.2.5.3.3.2.2
-3.2.5.3.3.2.3
-3.2.5.3.3.2.4
-3.2.5.3.3.2.5
-3.2.5.3.3.2.6
-
-Sending a Document Properties Response ..................................... 60
-Processing a Get Device Adjustment Request ................................ 61
-Sending a Get Device Adjustment Response .................................. 61
-User Interface Messages .................................................................. 61
-Printer Properties UI ................................................................... 61
-Processing an Async Printer Properties Request ........................ 61
-Sending an Async Printer Properties Response ......................... 61
-Sending a Printer Properties Callback Request .......................... 61
-Processing a Printer Properties Callback Response .................... 61
-Processing a Cancel Async Printer Properties Request ............... 61
-Sending a Cancel Async Printer Properties Response ................. 61
-Document Properties UI .............................................................. 61
-Processing an Async Document Properties Request ................... 61
-Sending an Async Document Properties Response .................... 62
-Sending a Document Properties Callback Request ..................... 62
-Processing a Document Properties Callback Response ............... 62
-Processing a Cancel Async Document Properties Request .......... 62
-Sending a Cancel Async Document Properties Response ............ 62
-Processing a Move Document Properties Window Request ............... 62
-Sending a Move Document Properties Window Reply ...................... 62
-Timer Events .............................................................................................. 62
-Other Local Events ...................................................................................... 62
-Server Details .................................................................................................. 63
-Abstract Data Model .................................................................................... 63
-Timers ...................................................................................................... 63
-Initialization ............................................................................................... 63
-Higher-Layer Triggered Events ..................................................................... 63
-Processing Events and Sequencing Rules ....................................................... 63
-Printer Ticket Interface .......................................................................... 63
-Initialization Messages ..................................................................... 63
-Sending a Get Supported Versions Request ................................... 63
-Processing a Get Supported Versions Response ............................. 63
-Sending a Bind Printer Request .................................................... 63
-Processing a Bind Printer Response .............................................. 63
-Capability Negotiation Messages ........................................................ 64
-Sending a Query Device Namespace Request ................................ 64
-Processing a Query Device Namespace Response ........................... 64
-Sending a Print Ticket to Devmode Request .................................. 64
-Processing a Print Ticket to Devmode Response ............................. 64
-Sending a Devmode to Print Ticket Request .................................. 64
-Processing a Devmode to Print Ticket Response ............................. 64
-Sending a Print Caps Request ...................................................... 64
-Processing a Print Caps Response ................................................ 64
-Sending a Print Caps from Print Ticket Request.............................. 64
-Processing a Print Caps from Print Ticket Response ........................ 65
-Sending a Validate Print Ticket Request ........................................ 65
-Processing a Validate Print Ticket Response .................................. 65
-Printer Driver Interface .......................................................................... 65
-Initialization Messages ..................................................................... 65
-Sending an Initialize Printer Request ............................................ 65
-Processing an Initialize Printer Response ....................................... 65
-Capability Negotiation Messages ........................................................ 65
-Sending a Get All Dev Caps Request............................................. 65
-Processing a Get All Dev Caps Response ....................................... 65
-Sending a Convert Dev Mode Request .......................................... 65
-Processing a Convert Dev Mode Response ..................................... 66
-Sending a Get Device Capability Request ...................................... 66
-Processing a Get Device Capability Response ................................. 66
-
-3.3.5.1.2.1
-3.3.5.1.2.2
-3.3.5.1.2.3
-3.3.5.1.2.4
-3.3.5.1.2.5
-3.3.5.1.2.6
-3.3.5.1.2.7
-3.3.5.1.2.8
-3.3.5.1.2.9
-3.3.5.1.2.10
-3.3.5.1.2.11
-3.3.5.1.2.12
-
-3.3.5.2.2.1
-3.3.5.2.2.2
-3.3.5.2.2.3
-3.3.5.2.2.4
-3.3.5.2.2.5
-3.3.5.2.2.6
-
-3.3.5.1.1.1
-3.3.5.1.1.2
-3.3.5.1.1.3
-3.3.5.1.1.4
-
-3.3.5.2.1.1
-3.3.5.2.1.2
-
-3.3.5.2
-
-3.3.5.2.1
-
-3.3.5.2.2
-
-[MS-RDPEXPS] - v20240423
-Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 86
-
-3.3.5.2.3
-
-3.3.5.2.3.1
-
-3.3.5.2.2.7
-3.3.5.2.2.8
-3.3.5.2.2.9
-3.3.5.2.2.10
-
-3.3.5.2.3.1.1
-3.3.5.2.3.1.2
-3.3.5.2.3.1.3
-3.3.5.2.3.1.4
-3.3.5.2.3.1.5
-3.3.5.2.3.1.6
-
-Sending a Document Properties Request ....................................... 66
-Processing a Document Properties Response ................................. 66
-Sending a Get Device Adjustment Request .................................... 66
-Processing a Get Device Adjustment Response .............................. 66
-User Interface Messages .................................................................. 67
-Printer Properties UI ................................................................... 67
-Sending an Async Printer Properties Request ........................... 67
-Processing an Async Printer Properties Response ...................... 67
-Processing a Printer Properties Callback Request ...................... 67
-Sending a Printer Properties Callback Response ........................ 67
-Sending a Cancel Async Printer Properties Request ................... 67
-Processing a Cancel Async Printer Properties Response ............. 67
-Document Properties UI .............................................................. 67
-Sending an Async Document Properties Request ...................... 67
-Processing an Async Document Properties Response ................. 68
-Processing a Document Properties Callback Request ................. 68
-Sending a Document Properties Callback Response ................... 68
-Sending a Cancel Async Document Properties Request .............. 68
-Processing a Cancel Async Document Properties Response ........ 68
-Sending a Move Document Properties Window Request .................. 68
-Processing a Move Document Properties Window Reply ................... 68
-Timer Events .............................................................................................. 68
-Other Local Events ...................................................................................... 68
-
-3.3.5.2.3.2.1
-3.3.5.2.3.2.2
-3.3.5.2.3.2.3
-3.3.5.2.3.2.4
-3.3.5.2.3.2.5
-3.3.5.2.3.2.6
-
-3.3.5.2.3.3
-3.3.5.2.3.4
-
-3.3.5.2.3.2
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 69
-
-5  Security ................................................................................................................. 80
-Security Considerations for Implementers ........................................................... 80
-Index of Security Parameters ............................................................................ 80
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 81
-
-7  Change Tracking .................................................................................................... 82
-
-8  Index ..................................................................................................................... 83
-
-[MS-RDPEXPS] - v20240423
-Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 86
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 XPS Basics](#131-xps-basics)
+    - [1.3.2 XPS Print Virtual Channel Protocol](#132-xps-print-virtual-channel-protocol)
+      - [1.3.2.1 Interface Manipulation](#1321-interface-manipulation)
+        - [1.3.2.1.1 Interface Query](#13211-interface-query)
+        - [1.3.2.1.2 Interface Release](#13212-interface-release)
+      - [1.3.2.2 Printer Ticket Interface](#1322-printer-ticket-interface)
+        - [1.3.2.2.1 Printer Ticket Interface Initialization Messages](#13221-printer-ticket-interface-initialization-messages)
+        - [1.3.2.2.2 Printer Ticket Interface Capability Negotiation Messages](#13222-printer-ticket-interface-capability-negotiation-messages)
+      - [1.3.2.3 Printer Driver Interface](#1323-printer-driver-interface)
+        - [1.3.2.3.1 Printer Driver Interface Initialization Messages](#13231-printer-driver-interface-initialization-messages)
+        - [1.3.2.3.2 Printer Driver Interface Capability Negotiation Messages](#13232-printer-driver-interface-capability-negotiation-messages)
+        - [1.3.2.3.3 User Interface Messages](#13233-user-interface-messages)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Shared Message Header (SHARED_MSG_HEADER)](#221-shared-message-header-sharedmsgheader)
+    - [2.2.2 Interface Manipulation](#222-interface-manipulation)
+      - [2.2.2.1 Interface Query](#2221-interface-query)
+        - [2.2.2.1.1 Query Interface Request (QI_REQ)](#22211-query-interface-request-qireq)
+        - [2.2.2.1.2 Query Interface Response (QI_RSP)](#22212-query-interface-response-qirsp)
+      - [2.2.2.2 Interface Release (IFACE_RELEASE)](#2222-interface-release-ifacerelease)
+    - [2.2.3 Printer Ticket Interface](#223-printer-ticket-interface)
+      - [2.2.3.1 Initialization Messages](#2231-initialization-messages)
+        - [2.2.3.1.1 Server Get Supported Versions Request (GET_SUPPORTED_VERSIONS_REQ)](#22311-server-get-supported-versions-request-getsupportedversionsreq)
+        - [2.2.3.1.2 Client Get Supported Versions Response (GET_SUPPORTED_VERSIONS_RSP)](#22312-client-get-supported-versions-response-getsupportedversionsrsp)
+        - [2.2.3.1.3 Server Bind Printer Request (BIND_PRINTER_REQ)](#22313-server-bind-printer-request-bindprinterreq)
+        - [2.2.3.1.4 Client Bind Printer Response (BIND_PRINTER_RSP)](#22314-client-bind-printer-response-bindprinterrsp)
+      - [2.2.3.2 Capability Negotiation Messages](#2232-capability-negotiation-messages)
+        - [2.2.3.2.1 Server Query Device Namespace Request (QUERY_DEV_NS_REQ)](#22321-server-query-device-namespace-request-querydevnsreq)
+        - [2.2.3.2.2 Client Query Device Namespace Response (QUERY_DEV_NS_RSP)](#22322-client-query-device-namespace-response-querydevnsrsp)
+        - [2.2.3.2.3 Server Print Ticket to Devmode Request (PRINT_TKT_TO_DEVMODE_REQ)](#22323-server-print-ticket-to-devmode-request-printtkttodevmodereq)
+        - [2.2.3.2.4 Client Print Ticket to Devmode Response (PRINT_TKT_TO_DEVMODE_RSP)](#22324-client-print-ticket-to-devmode-response-printtkttodevmodersp)
+        - [2.2.3.2.5 Server Devmode to Print Ticket Request (DEVMODE_TO_PRINT_TKT_REQ)](#22325-server-devmode-to-print-ticket-request-devmodetoprinttktreq)
+        - [2.2.3.2.6 Client Devmode to Print Ticket Response (DEVMODE_TO_PRINT_TKT_RSP)](#22326-client-devmode-to-print-ticket-response-devmodetoprinttktrsp)
+        - [2.2.3.2.7 Server Print Caps Request (PRINT_CAPS_REQ)](#22327-server-print-caps-request-printcapsreq)
+        - [2.2.3.2.8 Client Print Caps Response (PRINT_CAPS_RSP)](#22328-client-print-caps-response-printcapsrsp)
+        - [2.2.3.2.9 Server Print Caps From Print Ticket Request](#22329-server-print-caps-from-print-ticket-request)
+        - [2.2.3.2.10 Client Print Caps From Print Ticket Response](#223210-client-print-caps-from-print-ticket-response)
+        - [2.2.3.2.11 Server Validate Print Ticket Request (VALIDATE_PRINT_TKT_REQ)](#223211-server-validate-print-ticket-request-validateprinttktreq)
+        - [2.2.3.2.12 Client Validate Print Ticket Response (VALIDATE_PRINT_TKT_RSP)](#223212-client-validate-print-ticket-response-validateprinttktrsp)
+    - [2.2.4 Printer Driver Interface](#224-printer-driver-interface)
+      - [2.2.4.1 Initialization Messages](#2241-initialization-messages)
+        - [2.2.4.1.1 Server Initialize Printer Request (INIT_PRINTER_REQ)](#22411-server-initialize-printer-request-initprinterreq)
+        - [2.2.4.1.2 Client Initialize Printer Response (INIT_PRINTER_RSP)](#22412-client-initialize-printer-response-initprinterrsp)
+      - [2.2.4.2 Capability Negotiation Messages](#2242-capability-negotiation-messages)
+        - [2.2.4.2.1 Server Get All Dev Caps Request (GET_ALL_DEV_CAPS_REQ)](#22421-server-get-all-dev-caps-request-getalldevcapsreq)
+        - [2.2.4.2.2 Client Get All Dev Caps Response (GET_ALL_DEV_CAPS_RSP)](#22422-client-get-all-dev-caps-response-getalldevcapsrsp)
+        - [2.2.4.2.3 Server Convert Devmode Request (CONVERT_DEVMODE_REQ)](#22423-server-convert-devmode-request-convertdevmodereq)
+        - [2.2.4.2.4 Client Convert Devmode Response (CONVERT_DEVMODE_RSP)](#22424-client-convert-devmode-response-convertdevmodersp)
+        - [2.2.4.2.5 Server Get Device Capability Request (GET_DEVICE_CAP_REQ)](#22425-server-get-device-capability-request-getdevicecapreq)
+        - [2.2.4.2.6 Client Get Device Capability Response (GET_DEVICE_CAP_RSP)](#22426-client-get-device-capability-response-getdevicecaprsp)
+        - [2.2.4.2.7 Server Document Properties Request (DOC_PROPERTIES_REQ)](#22427-server-document-properties-request-docpropertiesreq)
+        - [2.2.4.2.8 Client Document Properties Response (DOC_PROPERTIES_RSP)](#22428-client-document-properties-response-docpropertiesrsp)
+        - [2.2.4.2.9 Server Get Device Adjustment Request](#22429-server-get-device-adjustment-request)
+        - [2.2.4.2.10 Client Get Device Adjustment Reply](#224210-client-get-device-adjustment-reply)
+      - [2.2.4.3 User Interface Messages](#2243-user-interface-messages)
+        - [2.2.4.3.1 Printer Properties UI](#22431-printer-properties-ui)
+          - [2.2.4.3.1.1 Server Async Printer Properties Request (ASYNC_PRINTER_PROPS_REQ)](#224311-server-async-printer-properties-request-asyncprinterpropsreq)
+          - [2.2.4.3.1.2 Client Async Printer Properties Response](#224312-client-async-printer-properties-response)
+          - [2.2.4.3.1.3 Client Printer Properties Callback Request](#224313-client-printer-properties-callback-request)
+          - [2.2.4.3.1.4 Server Printer Properties Callback Response](#224314-server-printer-properties-callback-response)
+          - [2.2.4.3.1.5 Server Cancel Async Printer Properties Request](#224315-server-cancel-async-printer-properties-request)
+          - [2.2.4.3.1.6 Client Cancel Async Printer Properties Response](#224316-client-cancel-async-printer-properties-response)
+        - [2.2.4.3.2 Document Properties UI](#22432-document-properties-ui)
+          - [2.2.4.3.2.1 Server Async Document Properties Request (ASYNC_DOC_PROPS_REQ)](#224321-server-async-document-properties-request-asyncdocpropsreq)
+          - [2.2.4.3.2.2 Client Async Document Properties Response (ASYNC_DOC_PROPS_RSP)](#224322-client-async-document-properties-response-asyncdocpropsrsp)
+          - [2.2.4.3.2.3 Client Document Properties Callback Request](#224323-client-document-properties-callback-request)
+          - [2.2.4.3.2.4 Server Document Properties Callback Response](#224324-server-document-properties-callback-response)
+          - [2.2.4.3.2.5 Server Cancel Async Document Properties Request](#224325-server-cancel-async-document-properties-request)
+          - [2.2.4.3.2.6 Client Cancel Async Document Properties Response](#224326-client-cancel-async-document-properties-response)
+          - [2.2.4.3.2.7 Server Move Document Properties Window Request](#224327-server-move-document-properties-window-request)
+          - [2.2.4.3.2.8 Client Move Document Properties Window Reply](#224328-client-move-document-properties-window-reply)
+    - [2.2.5 XML Document (XML_DOCUMENT)](#225-xml-document-xmldocument)
+    - [2.2.6 Device Capabilities (TSDEVICE_CAPABILITIES)](#226-device-capabilities-tsdevicecapabilities)
+    - [2.2.7 Printer Property (TSPRINTER_PROPERTY)](#227-printer-property-tsprinterproperty)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Shared Message Header](#3151-processing-a-shared-message-header)
+      - [3.1.5.2 Interface Manipulation](#3152-interface-manipulation)
+        - [3.1.5.2.1 Interface Query Message](#31521-interface-query-message)
+          - [3.1.5.2.1.1 Sending an Interface Query Message](#315211-sending-an-interface-query-message)
+          - [3.1.5.2.1.2 Receiving an Interface Query Message](#315212-receiving-an-interface-query-message)
+        - [3.1.5.2.2 Interface Release Message](#31522-interface-release-message)
+          - [3.1.5.2.2.1 Sending an Interface Release Message](#315221-sending-an-interface-release-message)
+          - [3.1.5.2.2.2 Receiving an Interface Release Message](#315222-receiving-an-interface-release-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Interface Manipulation](#3251-interface-manipulation)
+        - [3.2.5.1.1 Interface Query Message](#32511-interface-query-message)
+          - [3.2.5.1.1.1 Processing a Query Interface Request](#325111-processing-a-query-interface-request)
+          - [3.2.5.1.1.2 Sending a Query Interface Response](#325112-sending-a-query-interface-response)
+      - [3.2.5.2 Printer Ticket Interface](#3252-printer-ticket-interface)
+        - [3.2.5.2.1 Initialization Messages](#32521-initialization-messages)
+          - [3.2.5.2.1.1 Processing a Get Supported Versions Request](#325211-processing-a-get-supported-versions-request)
+          - [3.2.5.2.1.2 Sending a Get Supported Versions Response](#325212-sending-a-get-supported-versions-response)
+          - [3.2.5.2.1.3 Processing a Bind Printer Request](#325213-processing-a-bind-printer-request)
+          - [3.2.5.2.1.4 Sending a Bind Printer Response](#325214-sending-a-bind-printer-response)
+        - [3.2.5.2.2 Capability Negotiation Messages](#32522-capability-negotiation-messages)
+          - [3.2.5.2.2.1 Processing a Query Device Namespace Request](#325221-processing-a-query-device-namespace-request)
+          - [3.2.5.2.2.2 Sending a Query Device Namespace Response](#325222-sending-a-query-device-namespace-response)
+          - [3.2.5.2.2.3 Processing a Print Ticket to Devmode Request](#325223-processing-a-print-ticket-to-devmode-request)
+          - [3.2.5.2.2.4 Sending a Print Ticket to Devmode Response](#325224-sending-a-print-ticket-to-devmode-response)
+          - [3.2.5.2.2.5 Processing a Devmode to Print Ticket Request](#325225-processing-a-devmode-to-print-ticket-request)
+          - [3.2.5.2.2.6 Sending a Devmode to Print Ticket Response](#325226-sending-a-devmode-to-print-ticket-response)
+          - [3.2.5.2.2.7 Processing a Print Caps Request](#325227-processing-a-print-caps-request)
+          - [3.2.5.2.2.8 Sending a Print Caps Response](#325228-sending-a-print-caps-response)
+          - [3.2.5.2.2.9 Processing a Print Caps From Print Ticket Request](#325229-processing-a-print-caps-from-print-ticket-request)
+          - [3.2.5.2.2.10 Sending a Print Caps From Print Ticket Response](#3252210-sending-a-print-caps-from-print-ticket-response)
+          - [3.2.5.2.2.11 Processing a Validate Print Ticket Request](#3252211-processing-a-validate-print-ticket-request)
+          - [3.2.5.2.2.12 Sending a Validate Print Ticket Response](#3252212-sending-a-validate-print-ticket-response)
+      - [3.2.5.3 Printer Driver Interface](#3253-printer-driver-interface)
+        - [3.2.5.3.1 Initialization Messages](#32531-initialization-messages)
+          - [3.2.5.3.1.1 Processing an Initialize Printer Request](#325311-processing-an-initialize-printer-request)
+          - [3.2.5.3.1.2 Sending an Initialize Printer Response](#325312-sending-an-initialize-printer-response)
+        - [3.2.5.3.2 Capability Negotiation Messages](#32532-capability-negotiation-messages)
+          - [3.2.5.3.2.1 Processing a Get All Dev Caps Request](#325321-processing-a-get-all-dev-caps-request)
+          - [3.2.5.3.2.2 Sending a Get All Dev Caps Response](#325322-sending-a-get-all-dev-caps-response)
+          - [3.2.5.3.2.3 Processing a Convert Devmode Request](#325323-processing-a-convert-devmode-request)
+          - [3.2.5.3.2.4 Sending a Convert Devmode Response](#325324-sending-a-convert-devmode-response)
+          - [3.2.5.3.2.5 Processing a Get Device Capability Request](#325325-processing-a-get-device-capability-request)
+          - [3.2.5.3.2.6 Sending a Get Device Capability Response](#325326-sending-a-get-device-capability-response)
+          - [3.2.5.3.2.7 Processing a Document Properties Request](#325327-processing-a-document-properties-request)
+          - [3.2.5.3.2.8 Sending a Document Properties Response](#325328-sending-a-document-properties-response)
+          - [3.2.5.3.2.9 Processing a Get Device Adjustment Request](#325329-processing-a-get-device-adjustment-request)
+          - [3.2.5.3.2.10 Sending a Get Device Adjustment Response](#3253210-sending-a-get-device-adjustment-response)
+        - [3.2.5.3.3 User Interface Messages](#32533-user-interface-messages)
+          - [3.2.5.3.3.1 Printer Properties UI](#325331-printer-properties-ui)
+            - [3.2.5.3.3.1.1 Processing an Async Printer Properties Request](#3253311-processing-an-async-printer-properties-request)
+            - [3.2.5.3.3.1.2 Sending an Async Printer Properties Response](#3253312-sending-an-async-printer-properties-response)
+            - [3.2.5.3.3.1.3 Sending a Printer Properties Callback Request](#3253313-sending-a-printer-properties-callback-request)
+            - [3.2.5.3.3.1.4 Processing a Printer Properties Callback Response](#3253314-processing-a-printer-properties-callback-response)
+            - [3.2.5.3.3.1.5 Processing a Cancel Async Printer Properties Request](#3253315-processing-a-cancel-async-printer-properties-request)
+            - [3.2.5.3.3.1.6 Sending a Cancel Async Printer Properties Response](#3253316-sending-a-cancel-async-printer-properties-response)
+          - [3.2.5.3.3.2 Document Properties UI](#325332-document-properties-ui)
+            - [3.2.5.3.3.2.1 Processing an Async Document Properties Request](#3253321-processing-an-async-document-properties-request)
+            - [3.2.5.3.3.2.2 Sending an Async Document Properties Response](#3253322-sending-an-async-document-properties-response)
+            - [3.2.5.3.3.2.3 Sending a Document Properties Callback Request](#3253323-sending-a-document-properties-callback-request)
+            - [3.2.5.3.3.2.4 Processing a Document Properties Callback Response](#3253324-processing-a-document-properties-callback-response)
+            - [3.2.5.3.3.2.5 Processing a Cancel Async Document Properties Request](#3253325-processing-a-cancel-async-document-properties-request)
+            - [3.2.5.3.3.2.6 Sending a Cancel Async Document Properties Response](#3253326-sending-a-cancel-async-document-properties-response)
+          - [3.2.5.3.3.3 Processing a Move Document Properties Window Request](#325333-processing-a-move-document-properties-window-request)
+          - [3.2.5.3.3.4 Sending a Move Document Properties Window Reply](#325334-sending-a-move-document-properties-window-reply)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Printer Ticket Interface](#3351-printer-ticket-interface)
+        - [3.3.5.1.1 Initialization Messages](#33511-initialization-messages)
+          - [3.3.5.1.1.1 Sending a Get Supported Versions Request](#335111-sending-a-get-supported-versions-request)
+          - [3.3.5.1.1.2 Processing a Get Supported Versions Response](#335112-processing-a-get-supported-versions-response)
+          - [3.3.5.1.1.3 Sending a Bind Printer Request](#335113-sending-a-bind-printer-request)
+          - [3.3.5.1.1.4 Processing a Bind Printer Response](#335114-processing-a-bind-printer-response)
+        - [3.3.5.1.2 Capability Negotiation Messages](#33512-capability-negotiation-messages)
+          - [3.3.5.1.2.1 Sending a Query Device Namespace Request](#335121-sending-a-query-device-namespace-request)
+          - [3.3.5.1.2.2 Processing a Query Device Namespace Response](#335122-processing-a-query-device-namespace-response)
+          - [3.3.5.1.2.3 Sending a Print Ticket to Devmode Request](#335123-sending-a-print-ticket-to-devmode-request)
+          - [3.3.5.1.2.4 Processing a Print Ticket to Devmode Response](#335124-processing-a-print-ticket-to-devmode-response)
+          - [3.3.5.1.2.5 Sending a Devmode to Print Ticket Request](#335125-sending-a-devmode-to-print-ticket-request)
+          - [3.3.5.1.2.6 Processing a Devmode to Print Ticket Response](#335126-processing-a-devmode-to-print-ticket-response)
+          - [3.3.5.1.2.7 Sending a Print Caps Request](#335127-sending-a-print-caps-request)
+          - [3.3.5.1.2.8 Processing a Print Caps Response](#335128-processing-a-print-caps-response)
+          - [3.3.5.1.2.9 Sending a Print Caps from Print Ticket Request](#335129-sending-a-print-caps-from-print-ticket-request)
+          - [3.3.5.1.2.10 Processing a Print Caps from Print Ticket Response](#3351210-processing-a-print-caps-from-print-ticket-response)
+          - [3.3.5.1.2.11 Sending a Validate Print Ticket Request](#3351211-sending-a-validate-print-ticket-request)
+          - [3.3.5.1.2.12 Processing a Validate Print Ticket Response](#3351212-processing-a-validate-print-ticket-response)
+      - [3.3.5.2 Printer Driver Interface](#3352-printer-driver-interface)
+        - [3.3.5.2.1 Initialization Messages](#33521-initialization-messages)
+          - [3.3.5.2.1.1 Sending an Initialize Printer Request](#335211-sending-an-initialize-printer-request)
+          - [3.3.5.2.1.2 Processing an Initialize Printer Response](#335212-processing-an-initialize-printer-response)
+        - [3.3.5.2.2 Capability Negotiation Messages](#33522-capability-negotiation-messages)
+          - [3.3.5.2.2.1 Sending a Get All Dev Caps Request](#335221-sending-a-get-all-dev-caps-request)
+          - [3.3.5.2.2.2 Processing a Get All Dev Caps Response](#335222-processing-a-get-all-dev-caps-response)
+          - [3.3.5.2.2.3 Sending a Convert Dev Mode Request](#335223-sending-a-convert-dev-mode-request)
+          - [3.3.5.2.2.4 Processing a Convert Dev Mode Response](#335224-processing-a-convert-dev-mode-response)
+          - [3.3.5.2.2.5 Sending a Get Device Capability Request](#335225-sending-a-get-device-capability-request)
+          - [3.3.5.2.2.6 Processing a Get Device Capability Response](#335226-processing-a-get-device-capability-response)
+          - [3.3.5.2.2.7 Sending a Document Properties Request](#335227-sending-a-document-properties-request)
+          - [3.3.5.2.2.8 Processing a Document Properties Response](#335228-processing-a-document-properties-response)
+          - [3.3.5.2.2.9 Sending a Get Device Adjustment Request](#335229-sending-a-get-device-adjustment-request)
+          - [3.3.5.2.2.10 Processing a Get Device Adjustment Response](#3352210-processing-a-get-device-adjustment-response)
+        - [3.3.5.2.3 User Interface Messages](#33523-user-interface-messages)
+          - [3.3.5.2.3.1 Printer Properties UI](#335231-printer-properties-ui)
+            - [3.3.5.2.3.1.1 Sending an Async Printer Properties Request](#3352311-sending-an-async-printer-properties-request)
+            - [3.3.5.2.3.1.2 Processing an Async Printer Properties Response](#3352312-processing-an-async-printer-properties-response)
+            - [3.3.5.2.3.1.3 Processing a Printer Properties Callback Request](#3352313-processing-a-printer-properties-callback-request)
+            - [3.3.5.2.3.1.4 Sending a Printer Properties Callback Response](#3352314-sending-a-printer-properties-callback-response)
+            - [3.3.5.2.3.1.5 Sending a Cancel Async Printer Properties Request](#3352315-sending-a-cancel-async-printer-properties-request)
+            - [3.3.5.2.3.1.6 Processing a Cancel Async Printer Properties Response](#3352316-processing-a-cancel-async-printer-properties-response)
+          - [3.3.5.2.3.2 Document Properties UI](#335232-document-properties-ui)
+            - [3.3.5.2.3.2.1 Sending an Async Document Properties Request](#3352321-sending-an-async-document-properties-request)
+            - [3.3.5.2.3.2.2 Processing an Async Document Properties Response](#3352322-processing-an-async-document-properties-response)
+            - [3.3.5.2.3.2.3 Processing a Document Properties Callback Request](#3352323-processing-a-document-properties-callback-request)
+            - [3.3.5.2.3.2.4 Sending a Document Properties Callback Response](#3352324-sending-a-document-properties-callback-response)
+            - [3.3.5.2.3.2.5 Sending a Cancel Async Document Properties Request](#3352325-sending-a-cancel-async-document-properties-request)
+            - [3.3.5.2.3.2.6 Processing a Cancel Async Document Properties Response](#3352326-processing-a-cancel-async-document-properties-response)
+          - [3.3.5.2.3.3 Sending a Move Document Properties Window Request](#335233-sending-a-move-document-properties-window-request)
+          - [3.3.5.2.3.4 Processing a Move Document Properties Window Reply](#335234-processing-a-move-document-properties-window-reply)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension is an
 extension of the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting (as specified in
@@ -1223,7 +825,7 @@ installed on the terminal server, and the printer driver installed on the termin
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1281,7 +883,8 @@ Release: April 23, 2024
 
 10 / 86
 
-Unicode: A character encoding standard developed by the Unicode Consortium that represents
+
+Unicode: A character encoding standard developed by the Unicode Consortium that represents
 
 almost all of the written languages of the world. The Unicode standard [UNICODE5.0.0/2007]
 provides three forms (UTF-8, UTF-16, and UTF-32) and seven schemes (UTF-8, UTF-16, UTF-16
@@ -1300,14 +903,14 @@ information, see [MSFT-XMLPAPER].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1337,7 +940,7 @@ Virtual Channel Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-XMLPAPER] Microsoft Corporation, "XML Paper Specification", https://learn.microsoft.com/en-
 us/previous-versions/windows/hardware/design/dn641615(v=vs.85)
@@ -1349,11 +952,12 @@ Release: April 23, 2024
 
 11 / 86
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPEXPS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3  Overview
+### 1.3 Overview
 
 In a typical terminal server scenario, the physical printer device is located on the client computer,
 while applications are running on the terminal server. Clients often need to print documents using the
@@ -1391,16 +995,17 @@ Release: April 23, 2024
 
 12 / 86
 
-1.3.1  XPS Basics
+
+#### 1.3.1 XPS Basics
 
 The XML Paper Specification describes XPS documents. It provides a straight mapping between
 printer-agnostic and printer-specific data. Every XPS document includes descriptive content for each
 page of a document, the embedded images and fonts, and digital rights management information. For
 more information, see [MSFT-XMLPAPER].
 
-1.3.2  XPS Print Virtual Channel Protocol
+#### 1.3.2 XPS Print Virtual Channel Protocol
 
-1.3.2.1  Interface Manipulation
+##### 1.3.2.1 Interface Manipulation
 
 In the context of the Remote Desktop Protocol: XPS Print Virtual Channel Extension, interfaces are
 groups of messages with a common identifier. The Remote Desktop Protocol: XPS Print Virtual
@@ -1420,7 +1025,7 @@ for those InterfaceIds that originate from the same side of the connection. This
 request from server to client with InterfaceId 1 and MessageId 2 is different than a request with
 the same IDs from the client side. The same is true for replies.
 
-1.3.2.1.1 Interface Query
+###### 1.3.2.1.1 Interface Query
 
 An Interface Query is a request/reply exchange. It establishes a new interface ID that can be used as
 part of a different interface. For example, version 1.0 of the protocol supports messages AA, AB, and
@@ -1433,7 +1038,7 @@ and the interface GUID is specified. If the interface is not supported, the remo
 message. Otherwise, it returns a new interface ID, which is used in the headers of message BA and
 message BB packets to identify this new interface.
 
-1.3.2.1.2 Interface Release
+###### 1.3.2.1.2 Interface Release
 
 After a particular interface is no longer needed, an Interface Release message is sent. From this
 point forward, the interface ID being released is invalid and cannot participate in any packet
@@ -1442,7 +1047,7 @@ contains an interface ID. An Interface Release message cannot be issued until al
 outstanding requests on that interface have been satisfied. An Interface Release message can only be
 issued from the side that received the interface ID in a reply to an Interface Query request message.
 
-1.3.2.2  Printer Ticket Interface
+##### 1.3.2.2 Printer Ticket Interface
 
 The Printer Ticket Interface is a set of messages used to negotiate print tickets between the client
 and the server. The protocol does not marshal or by any means examine the contents of the print
@@ -1456,10 +1061,11 @@ Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Ext
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-example, whenever the system queries this virtual driver for a print ticket, the driver uses the Printer
+
+example, whenever the system queries this virtual driver for a print ticket, the driver uses the Printer
 Ticket Interface to query the printer driver on the client for the actual ticket.
 
-1.3.2.2.1 Printer Ticket Interface Initialization Messages
+###### 1.3.2.2.1 Printer Ticket Interface Initialization Messages
 
 There are two types of Printer Ticket Interface initialization messages:
 
@@ -1470,14 +1076,14 @@ There are two types of Printer Ticket Interface initialization messages:
 These messages are invoked by the operating system to initialize the printer driver and inspect its
 version before any other messages in the Printer Ticket Interface.
 
-1.3.2.2.2 Printer Ticket Interface Capability Negotiation Messages
+###### 1.3.2.2.2 Printer Ticket Interface Capability Negotiation Messages
 
 These messages are used to acquire capabilities from the print ticket.
 
 The first figure in section 1.3.2.3 shows a sample exchange of the Printer Ticket Interface (the
 message exchange for this interface is represented by the gray arrows in the diagram).
 
-1.3.2.3  Printer Driver Interface
+##### 1.3.2.3 Printer Driver Interface
 
 The Printer Driver Interface is supported by a virtual printer driver on the server. It behaves like a
 proxy between the virtual printer driver and the actual printer driver on the client. The set of
@@ -1495,7 +1101,8 @@ Release: April 23, 2024
 
 14 / 86
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPEXPS].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1508,19 +1115,20 @@ Release: April 23, 2024
 
 15 / 86
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-RDPEXPS].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Figure 3: Printing a document sequence
 
-1.3.2.3.1 Printer Driver Interface Initialization Messages
+###### 1.3.2.3.1 Printer Driver Interface Initialization Messages
 
 Printer Driver Interface initialization messages are expected first, before any capability negotiation
 messages. No other Printer Driver Interface initialization messages are expected after this sequence.
 The first figure in section 1.3.2.3 shows a typical initialization message exchange sequence.
 
-1.3.2.3.2 Printer Driver Interface Capability Negotiation Messages
+###### 1.3.2.3.2 Printer Driver Interface Capability Negotiation Messages
 
 Capability negotiation messages are typically used when printing or displaying printing capabilities.
 
@@ -1534,11 +1142,12 @@ Release: April 23, 2024
 
 16 / 86
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-RDPEXPS].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-1.3.2.3.3 User Interface Messages
+###### 1.3.2.3.3 User Interface Messages
 
 Every printer driver is responsible for displaying two custom user interfaces: one for document
 properties and one for printer properties. Because a custom UI is difficult to negotiate over a network,
@@ -1558,13 +1167,14 @@ Release: April 23, 2024
 
 17 / 86
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-RDPEXPS].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 Figure 5: Open and cancel document properties UI
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: XPS Print Virtual Channel Extension is embedded in dynamic virtual
 channel transport, as specified in [MS-RDPEDYC] section 1.3.3.1.
@@ -1590,13 +1200,14 @@ Release: April 23, 2024
 
 18 / 86
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-RDPEXPS].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 6: Relationships among protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: XPS Print Virtual Channel Extension, as specified in [MS-RDPEXPS]
 operates only after the dynamic virtual channel transport is fully established. If the dynamic virtual
@@ -1607,19 +1218,19 @@ for fragmentation. Packet reassembly is based on the information provided by the
 virtual channel transport. This document assumes packet chunks have already been reassembled
 based on that information.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: XPS Print Virtual Channel Extension is designed to be run within the
 context of an RDP virtual channel established between a client and a server (see section 2.1,
 Transport). This protocol extension is applicable when applications running on the terminal server
 need to redirect print jobs to a printer physically located on a client machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Versioning is supported through the use of interface manipulation messages, as specified in section
 1.3.2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Desktop Protocol: XPS Print Virtual Channel Extension uses HRESULTs as specified in
 [MS-ERREF] section 2.1. Vendors are free to choose their own values, as long as the C bit
@@ -1632,14 +1243,15 @@ Release: April 23, 2024
 
 19 / 86
 
-This protocol also uses Win32 error codes. These values are taken from the Windows error number
+
+This protocol also uses Win32 error codes. These values are taken from the Windows error number
 space as specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meanings. Choosing any other value runs the risk of a collision in the future.
 
 Vendors MAY define their own interfaces and use them through the interface manipulation
 mechanism, as specified in section 1.3.2.1.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1650,9 +1262,10 @@ Release: April 23, 2024
 
 20 / 86
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: XPS Print Virtual Channel Extension is designed to operate over
 dynamic virtual channels, as specified in [MS-RDPEDYC] section 1.3.3.1, using the names TSVCTKT
@@ -1661,12 +1274,12 @@ Interface messages). If [MS-RDPEDYC] supports version 2 as it is described in se
 channels (TSVCTKT and XPSRD) are created with a priority class of 0; otherwise, the channels have no
 priority assigned to them.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify Remote Desktop Protocol: XPS Print Virtual Channel Extension message
 syntax.
 
-2.2.1  Shared Message Header (SHARED_MSG_HEADER)
+#### 2.2.1 Shared Message Header (SHARED_MSG_HEADER)
 
 Every Remote Desktop Protocol: XPS Print Virtual Channel Extension packet contains a common
 header.
@@ -1724,7 +1337,8 @@ Release: April 23, 2024
 
 21 / 86
 
-Value
+
+Value
 
 Meaning
 
@@ -1843,7 +1457,8 @@ Release: April 23, 2024
 
 22 / 86
 
-Value
+
+Value
 
 Meaning
 
@@ -1905,14 +1520,14 @@ MessagePayload (variable): An array of unsigned 8-bit integers. The remainder of
 interpreted based on the interface for which the packet is sent. This field is optional based on the
 packet length.
 
-2.2.2  Interface Manipulation
+#### 2.2.2 Interface Manipulation
 
-2.2.2.1  Interface Query
+##### 2.2.2.1 Interface Query
 
 The Interface Query message is used to query for new interface versions based on a GUID, as
 defined in [MS-DTYP] section 2.3.4.
 
-2.2.2.1.1 Query Interface Request (QI_REQ)
+###### 2.2.2.1.1 Query Interface Request (QI_REQ)
 
 The QI_REQ request message is sent from either the client side or the server side, and is used to
 request a new interface ID.
@@ -1941,7 +1556,8 @@ Release: April 23, 2024
 
 23 / 86
 
-...
+
+...
 
 ...
 
@@ -1951,7 +1567,7 @@ field in the common header MUST be set to RIMCALL_QUERYINTERFACE (0x00000002).
 
 NewInterfaceGUID (16 bytes): A 16-byte GUID that identifies the new interface.
 
-2.2.2.1.2 Query Interface Response (QI_RSP)
+###### 2.2.2.1.2 Query Interface Response (QI_RSP)
 
 The QI_RSP message is a response to the QI_REQ request message.
 
@@ -1983,7 +1599,7 @@ valid until an IFACE_RELEASE message is sent as a response from the receiving si
 NewInterfaceId is omitted from the response, it MUST be assumed that the requested interface
 is not supported by the remote side.
 
-2.2.2.2  Interface Release (IFACE_RELEASE)
+##### 2.2.2.2 Interface Release (IFACE_RELEASE)
 
 Terminates the lifetime of the interface. This message is one-way only.
 
@@ -2008,7 +1624,7 @@ field MUST be set to RIMCALL_RELEASE (0x00000001). The MessageId field MAY be ig
 because this message does not require a reply. The InterfaceId field MUST be set to the
 InterfaceId of the interface that is being terminated. This message contains no payload.
 
-2.2.3  Printer Ticket Interface
+#### 2.2.3 Printer Ticket Interface
 
 The Printer Ticket Interface is identified by the default interface ID 0x00000000. The default interface
 does not require Query Interface Request (QI_REQ) or Query Interface Response (QI_RSP) messages
@@ -2022,16 +1638,17 @@ Release: April 23, 2024
 
 24 / 86
 
-Certain fields in this interface are payload between the client printer driver and the printing
+
+Certain fields in this interface are payload between the client printer driver and the printing
 subsystem. The content and meaning of these fields depends on internal structures for these two
 systems and is not interpreted in any way by this protocol. Special consideration has to be taken
 regarding the implementation on both sides when they are based on different operating systems. The
 implementation has to translate these operating system-specific differences between the client printer
 driver and the printing subsystem.
 
-2.2.3.1  Initialization Messages
+##### 2.2.3.1 Initialization Messages
 
-2.2.3.1.1 Server Get Supported Versions Request (GET_SUPPORTED_VERSIONS_REQ)
+###### 2.2.3.1.1 Server Get Supported Versions Request (GET_SUPPORTED_VERSIONS_REQ)
 
 This request retrieves an array of integers from the printer driver. The content of this array is not
 interpreted by this protocol and is passed only as payload.
@@ -2066,7 +1683,7 @@ header (as specified in [MS-RDPEFS] section 2.2.1.3) that is embedded in the Dev
 the DR_CORE_DEVICELIST_ANNOUNCE_REQ packet (as specified in [MS-RDPEFS] section
 2.2.2.9).
 
-2.2.3.1.2 Client Get Supported Versions Response (GET_SUPPORTED_VERSIONS_RSP)
+###### 2.2.3.1.2 Client Get Supported Versions Response (GET_SUPPORTED_VERSIONS_RSP)
 
 GET_SUPPORTED_VERSIONS_RSP is a reply message to GET_SUPPORTED_VERSIONS_REQ and flows
 from client to server.
@@ -2101,7 +1718,8 @@ Release: April 23, 2024
 
 25 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field and the MessageId field in this message header MUST contain the same values as the
 InterfaceId and MessageId fields in the corresponding GET_SUPPORTED_VERSIONS_REQ
 request message.
@@ -2117,7 +1735,7 @@ by this protocol.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.1.3 Server Bind Printer Request (BIND_PRINTER_REQ)
+###### 2.2.3.1.3 Server Bind Printer Request (BIND_PRINTER_REQ)
 
 When a redirected server printer is initialized by the server-side operating system, it calls into the
 server printer driver to establish the printer driver context. This message redirects such a call to the
@@ -2158,7 +1776,7 @@ Version (4 bytes): A 32-bit unsigned integer. This field is passed by the printi
 
 payload and is not interpreted by this protocol in any way.
 
-2.2.3.1.4 Client Bind Printer Response (BIND_PRINTER_RSP)
+###### 2.2.3.1.4 Client Bind Printer Response (BIND_PRINTER_RSP)
 
 A reply to a BIND_PRINTER_REQ (Server Bind Printer Request) message, flowing from client to server.
 
@@ -2184,7 +1802,8 @@ Release: April 23, 2024
 
 26 / 86
 
-Options
+
+Options
 
 DevModeFlags
 
@@ -2220,9 +1839,9 @@ Result (4 bytes): An HRESULT that describes the result of the call. This SHOULD 
 
 returned by the client-side driver.
 
-2.2.3.2  Capability Negotiation Messages
+##### 2.2.3.2 Capability Negotiation Messages
 
-2.2.3.2.1 Server Query Device Namespace Request (QUERY_DEV_NS_REQ)
+###### 2.2.3.2.1 Server Query Device Namespace Request (QUERY_DEV_NS_REQ)
 
 The QUERY_DEV_NS_REQ request message is a server request for a default namespace from the
 printer driver on the client.
@@ -2247,7 +1866,7 @@ Header (variable): The common message header (as specified in section 2.2.1). Th
 field MUST be set to 0x00000000. The FunctionId field MUST be set to QUERY_DEV_NS_REQ
 (0x00000102). This message contains no additional payload.
 
-2.2.3.2.2 Client Query Device Namespace Response (QUERY_DEV_NS_RSP)
+###### 2.2.3.2.2 Client Query Device Namespace Response (QUERY_DEV_NS_RSP)
 
 The QUERY_DEV_NS_RSP message returns the default namespace requested in the
 QUERY_DEV_NS_REQ request message.
@@ -2259,7 +1878,8 @@ Release: April 23, 2024
 
 27 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2306,7 +1926,7 @@ this protocol.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.2.3 Server Print Ticket to Devmode Request (PRINT_TKT_TO_DEVMODE_REQ)
+###### 2.2.3.2.3 Server Print Ticket to Devmode Request (PRINT_TKT_TO_DEVMODE_REQ)
 
 A PRINT_TKT_TO_DEVMODE_REQ request, flowing from the server to the client, is a request to
 convert an XML-based print ticket to a DEVMODE binary large object (BLOB).
@@ -2343,7 +1963,8 @@ Release: April 23, 2024
 
 28 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 
 field MUST be set to 0x00000000. The FunctionId field MUST be set to
 PRINT_TKT_TO_DEVMODE_REQ (0x00000103).
@@ -2360,7 +1981,7 @@ pDevmodeIn (variable): A DEVMODE structure sent as an array of bytes. The conten
 
 by the printing subsystem and is treated as payload in this protocol.
 
-2.2.3.2.4 Client Print Ticket to Devmode Response (PRINT_TKT_TO_DEVMODE_RSP)
+###### 2.2.3.2.4 Client Print Ticket to Devmode Response (PRINT_TKT_TO_DEVMODE_RSP)
 
 Returns the updated DEVMODE packet in reply to PRINT_TKT_TO_DEVMODE_REQ (Server Print
 Ticket to Devmode Request) from client to server.
@@ -2402,7 +2023,7 @@ printer driver, sent as an array of bytes. The content is treated as payload in 
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.2.5 Server Devmode to Print Ticket Request (DEVMODE_TO_PRINT_TKT_REQ)
+###### 2.2.3.2.5 Server Devmode to Print Ticket Request (DEVMODE_TO_PRINT_TKT_REQ)
 
 The DEVMODE_TO_PRINT_TKT_REQ server-to-client request is used to convert a DEVMODE BLOB
 into an XML-based print ticket.
@@ -2427,7 +2048,8 @@ Release: April 23, 2024
 
 29 / 86
 
-...
+
+...
 
 cbDevmodeIn
 
@@ -2457,7 +2079,7 @@ PrintTicket (variable): A print ticket in XML_DOCUMENT format, that is updated w
 from the pDevmodeIn BLOB. The content is generated by the printing subsystem and is treated
 as payload in this protocol.
 
-2.2.3.2.6 Client Devmode to Print Ticket Response (DEVMODE_TO_PRINT_TKT_RSP)
+###### 2.2.3.2.6 Client Devmode to Print Ticket Response (DEVMODE_TO_PRINT_TKT_RSP)
 
 The DEVMODE_TO_PRINT_TKT_RSP response message is a response to the
 DEVMODE_TO_PRINT_TKT_REQ request message that contains an updated print ticket.
@@ -2502,7 +2124,8 @@ Release: April 23, 2024
 
 30 / 86
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -2518,7 +2141,7 @@ is returned by the client printer driver. The content is treated as payload in t
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.2.7 Server Print Caps Request (PRINT_CAPS_REQ)
+###### 2.2.3.2.7 Server Print Caps Request (PRINT_CAPS_REQ)
 
 The PRINT_CAPS_REQ request message is used to request client printer capabilities. Each printer
 exposes certain capabilities such as duplex printing, stapling, or color support. These capabilities are
@@ -2545,7 +2168,7 @@ Header (variable): The common message header (as specified in section 2.2.1). Th
 field MUST be set to 0x00000000. The FunctionId field MUST be set to PRINT_CAPS_REQ
 (0x00000105). This message contains no payload.
 
-2.2.3.2.8 Client Print Caps Response (PRINT_CAPS_RSP)
+###### 2.2.3.2.8 Client Print Caps Response (PRINT_CAPS_RSP)
 
 The PRINT_CAPS_RSP response message returns client print capabilities in response to a
 PRINT_CAPS_REQ message.
@@ -2588,7 +2211,8 @@ Release: April 23, 2024
 
 31 / 86
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -2604,7 +2228,7 @@ format returned by the client printer driver. The content is treated as payload 
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.2.9 Server Print Caps From Print Ticket Request
+###### 2.2.3.2.9 Server Print Caps From Print Ticket Request
 
 (PRINT_CAPS_FROM_PRINT_TKT_REQ)
 
@@ -2640,9 +2264,9 @@ PrintTicket (variable): A print ticket for which printer capabilities MUST be re
 XML_DOCUMENT format; the printer capabilities are retrieved for the specified print ticket only.
 The content is generated by the printing subsystem and is treated as payload in this protocol.
 
-2.2.3.2.10
+###### 2.2.3.2.10 Client Print Caps From Print Ticket Response
 
-Client Print Caps From Print Ticket Response
+
 
 (PRINT_CAPS_FROM_PRINT_TKT_RSP)
 
@@ -2679,7 +2303,8 @@ Release: April 23, 2024
 
 32 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field and the MessageId field in this message header MUST contain the same values as the
 InterfaceId and MessageId fields in the corresponding PRINT_CAPS_FROM_PRINT_TKT_REQ
 request message.
@@ -2704,9 +2329,9 @@ printer driver. The content is treated as payload in this protocol.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.3.2.11
+###### 2.2.3.2.11 Server Validate Print Ticket Request (VALIDATE_PRINT_TKT_REQ)
 
-Server Validate Print Ticket Request (VALIDATE_PRINT_TKT_REQ)
+
 
 The VALIDATE_PRINT_TKT_REQ request message is used to validate and update a print ticket.
 
@@ -2738,9 +2363,9 @@ PrintTicket (variable): The print ticket to validate, in XML_DOCUMENT format. Th
 
 generated by the printing subsystem and is treated as payload in this protocol.
 
-2.2.3.2.12
+###### 2.2.3.2.12 Client Validate Print Ticket Response (VALIDATE_PRINT_TKT_RSP)
 
-Client Validate Print Ticket Response (VALIDATE_PRINT_TKT_RSP)
+
 
 The VALIDATE_PRINT_TKT_RSP response message is a reply to a VALIDATE_PRINT_TKT_REQ request
 message and is used to return an updated print ticket.
@@ -2771,7 +2396,8 @@ Release: April 23, 2024
 
 33 / 86
 
-...
+
+...
 
 Result
 
@@ -2800,7 +2426,7 @@ client printer driver. The content is treated as payload in this protocol.
 
 Result (4 bytes): An HRESULT describing the result of the call.
 
-2.2.4  Printer Driver Interface
+#### 2.2.4 Printer Driver Interface
 
 The Printer Driver Interface is identified by the default interface ID 0x00000000. The default
 interface does not require Query Interface Request (QI_REQ) or Query Interface Response (QI_RSP)
@@ -2815,9 +2441,9 @@ to be taken regarding the implementation on both sides when they are based on di
 systems. The implementation has to translate these operating system-specific differences between the
 client printer driver and the printing subsystem.
 
-2.2.4.1  Initialization Messages
+##### 2.2.4.1 Initialization Messages
 
-2.2.4.1.1 Server Initialize Printer Request (INIT_PRINTER_REQ)
+###### 2.2.4.1.1 Server Initialize Printer Request (INIT_PRINTER_REQ)
 
 The INIT_PRINTER_REQ message MUST be the first message, sent from the server to the client, in the
 Printer Driver Interface. This message establishes a link between a particular client-side printer and
@@ -2848,7 +2474,8 @@ Release: April 23, 2024
 
 34 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000000. The FunctionId field MUST be set to INIT_PRINTER_REQ
 (0x00000100).
 
@@ -2858,7 +2485,7 @@ Protocol: File System Virtual Channel Extension, as specified in [MS-RDPEFS]. Th
 ClientPrinterId value MUST be the same as the DeviceId field in the DEVICE_ANNOUNCE
 packet (as specified in [MS-RDPEFS] section 2.2.1.3).
 
-2.2.4.1.2 Client Initialize Printer Response (INIT_PRINTER_RSP)
+###### 2.2.4.1.2 Client Initialize Printer Response (INIT_PRINTER_RSP)
 
 The INIT_PRINTER_RSP message is a reply to an INIT_PRINTER_REQ (Server Initialize Printer
 Request).
@@ -2886,11 +2513,11 @@ InterfaceId and MessageId fields in the corresponding INIT_PRINTER_REQ request m
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.2  Capability Negotiation Messages
+##### 2.2.4.2 Capability Negotiation Messages
 
 This set of messages is used to negotiate printer and document capabilities.
 
-2.2.4.2.1 Server Get All Dev Caps Request (GET_ALL_DEV_CAPS_REQ)
+###### 2.2.4.2.1 Server Get All Dev Caps Request (GET_ALL_DEV_CAPS_REQ)
 
 The GET_ALL_DEV_CAPS_REQ request is sent from the server to the client to retrieve all printer
 capabilities from the client.
@@ -2914,7 +2541,7 @@ Header (variable): The common message header (as specified in section 2.2.1). Th
 
 field MUST be set to GET_ALL_DEV_CAPS_REQ (0x00000101). This message contains no payload.
 
-2.2.4.2.2 Client Get All Dev Caps Response (GET_ALL_DEV_CAPS_RSP)
+###### 2.2.4.2.2 Client Get All Dev Caps Response (GET_ALL_DEV_CAPS_RSP)
 
 The GET_ALL_DEV_CAPS_RSP message is a response to the paired GET_ALL_DEV_CAPS_REQ
 message.
@@ -2926,7 +2553,8 @@ Release: April 23, 2024
 
 35 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2965,7 +2593,7 @@ treated as payload in the Printer Driver Interface.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.2.3 Server Convert Devmode Request (CONVERT_DEVMODE_REQ)
+###### 2.2.4.2.3 Server Convert Devmode Request (CONVERT_DEVMODE_REQ)
 
 When the server operating system installs the virtual printer driver, it calls into it to convert an
 internal DEVMODE structure into a printer-specific DEVMODE structure. This message redirects this
@@ -3005,7 +2633,8 @@ Release: April 23, 2024
 
 36 / 86
 
-...
+
+...
 
 cbProvided
 
@@ -3037,7 +2666,7 @@ cbProvided (4 bytes): A 32-bit unsigned integer. The maximum number of bytes in 
 OutputBufferSize field of the CONVERT_DEVMODE_RSP response that corresponds to this
 request.
 
-2.2.4.2.4 Client Convert Devmode Response (CONVERT_DEVMODE_RSP)
+###### 2.2.4.2.4 Client Convert Devmode Response (CONVERT_DEVMODE_RSP)
 
 The CONVERT_DEVMODE_RSP response is a reply to a CONVERT_DEVMODE_REQ request message.
 The client-side printer driver converts the DEVMODE supplied in the request to the requested
@@ -3079,7 +2708,8 @@ Release: April 23, 2024
 
 37 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field and the MessageId field in this message header MUST contain the same values as the
 InterfaceId and MessageId fields in the corresponding CONVERT_DEVMODE_REQ request
 message.
@@ -3125,7 +2755,7 @@ ErrorCode (4 bytes): A WIN32 error code for the request.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.2.5 Server Get Device Capability Request (GET_DEVICE_CAP_REQ)
+###### 2.2.4.2.5 Server Get Device Capability Request (GET_DEVICE_CAP_REQ)
 
 This message is sent by the server side to query a particular printer capability from the client-side
 printer driver.
@@ -3164,7 +2794,8 @@ Release: April 23, 2024
 
 38 / 86
 
-Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
+
+Header (variable): The common message header (as specified in section 2.2.1). The InterfaceId
 field MUST be set to 0x00000000. The FunctionId field MUST be set to GET_DEVICE_CAP_REQ
 (0x00000104).
 
@@ -3184,7 +2815,7 @@ InputBufferSize (4 bytes): A 32-bit unsigned integer. MUST contain the maximum s
 the OutputBuffer field in the corresponding GET_DEVICE_CAP_RSP response to this request
 message.
 
-2.2.4.2.6 Client Get Device Capability Response (GET_DEVICE_CAP_RSP)
+###### 2.2.4.2.6 Client Get Device Capability Response (GET_DEVICE_CAP_RSP)
 
 This message is sent in response to the device capability request. The message contains the value for
 the given device capability obtained from the client-side printer driver.
@@ -3231,7 +2862,7 @@ printer driver and is treated as payload in the Printer Driver Interface.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.2.7 Server Document Properties Request (DOC_PROPERTIES_REQ)
+###### 2.2.4.2.7 Server Document Properties Request (DOC_PROPERTIES_REQ)
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -3240,7 +2871,8 @@ Release: April 23, 2024
 
 39 / 86
 
-When an application on a server invokes the document properties dialog box on the server side, a call
+
+When an application on a server invokes the document properties dialog box on the server side, a call
 to the printer driver results. A call for this scenario is redirected by this message.
 
 0  1  2  3  4  5  6  7  8  9
@@ -3300,7 +2932,7 @@ OutputDevModeSizeProvided (4 bytes): A 32-bit unsigned integer. This field MUST 
 maximum number of bytes in the DevmodeOut field of the corresponding DOC_PROPERTIES_RSP
 response message to this request.
 
-2.2.4.2.8 Client Document Properties Response (DOC_PROPERTIES_RSP)
+###### 2.2.4.2.8 Client Document Properties Response (DOC_PROPERTIES_RSP)
 
 This message is sent in response to the DOC_PROPERTIES_REQ (Server Document Properties
 Request). It contains the DEVMODE BLOB that was supplied by the client printer driver.
@@ -3312,7 +2944,8 @@ Release: April 23, 2024
 
 40 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3404,7 +3037,8 @@ Release: April 23, 2024
 
 41 / 86
 
-Value
+
+Value
 
 Meaning
 
@@ -3427,7 +3061,7 @@ printer driver and is treated as payload in the Printer Driver Interface.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.2.9 Server Get Device Adjustment Request
+###### 2.2.4.2.9 Server Get Device Adjustment Request
 (MXDC_GETPDEV_ADJUSTMENT_REQ)
 
 This server-to-client request is sent to retrieve device adjustment information.
@@ -3485,7 +3119,8 @@ Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Ext
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cbInBuffer (4 bytes): A 32-bit unsigned integer. This field MUST contain the number of bytes in the
+
+cbInBuffer (4 bytes): A 32-bit unsigned integer. This field MUST contain the number of bytes in the
 
 pInBuffer field.
 
@@ -3501,9 +3136,9 @@ pInProps (variable): An array of TSPRINTER_PROPERTY elements. The content is gen
 
 printing subsystem and is treated as payload in the Printer Driver Interface.
 
-2.2.4.2.10
+###### 2.2.4.2.10 Client Get Device Adjustment Reply
 
-Client Get Device Adjustment Reply
+
 
 (MXDC_GETPDEV_ADJUSTMENT_RSP)
 
@@ -3548,7 +3183,7 @@ in the Printer Driver Interface.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.3  User Interface Messages
+##### 2.2.4.3 User Interface Messages
 
 The following messages describe a set of request and reply exchanges that MAY be sent by either a
 client or a server. The primary purpose of these messages is to display a user interface (UI) on the
@@ -3557,7 +3192,7 @@ client side and to provide the ability to cancel the UI from the server.
 There are two sets of UI messages: printer properties messages and document properties messages.
 Both sets are similar in functionality but differ in the payload of properties that they establish.
 
-2.2.4.3.1 Printer Properties UI
+###### 2.2.4.3.1 Printer Properties UI
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -3566,7 +3201,8 @@ Release: April 23, 2024
 
 43 / 86
 
-2.2.4.3.1.1  Server Async Printer Properties Request (ASYNC_PRINTER_PROPS_REQ)
+
+###### 2.2.4.3.1.1 Server Async Printer Properties Request (ASYNC_PRINTER_PROPS_REQ)
 
 This request is sent from the server to the client, and causes the client to display a printer properties
 user interface.
@@ -3636,7 +3272,7 @@ Callback (4 bytes): A 32-bit unsigned integer. This value represents a unique In
 described in section 3.1.1) that MUST be used in the InterfaceId field of a
 PRINTER_PROPS_CALLBACK_REQ request message.
 
-2.2.4.3.1.2  Client Async Printer Properties Response
+###### 2.2.4.3.1.2 Client Async Printer Properties Response
 (ASYNC_PRINTER_PROPS_RSP)
 
 The client sends this message in response to the ASYNC_PRINTER_PROPS_REQ (Server Async Printer
@@ -3649,7 +3285,8 @@ Release: April 23, 2024
 
 44 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3673,7 +3310,7 @@ message.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.3.1.3  Client Printer Properties Callback Request
+###### 2.2.4.3.1.3 Client Printer Properties Callback Request
 
 (PRINTER_PROPS_CALLBACK_REQ)
 
@@ -3713,7 +3350,7 @@ at the end of the request.
 
 ErrorCode (4 bytes): A WIN32 error code for the call.
 
-2.2.4.3.1.4  Server Printer Properties Callback Response
+###### 2.2.4.3.1.4 Server Printer Properties Callback Response
 (PRINTER_PROPS_CALLBACK_RSP)
 
 An acknowledgment of the PRINTER_PROPS_CALLBACK_REQ (Client Printer Properties Callback
@@ -3726,7 +3363,8 @@ Release: April 23, 2024
 
 45 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3751,7 +3389,7 @@ PRINTER_PROPS_CALLBACK_REQ request message.
 
 Reserved (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0x00000000.
 
-2.2.4.3.1.5  Server Cancel Async Printer Properties Request
+###### 2.2.4.3.1.5 Server Cancel Async Printer Properties Request
 
 (CANCEL_ASYNC_PRINTER_PROPS_REQ)
 
@@ -3777,7 +3415,7 @@ Header (variable): The common message header (as specified in section 2.2.1). Th
 field MUST be set to 0x00000000. The FunctionId field MUST be set to
 CANCEL_ASYNC_PRINTER_PROPS_REQ (0x0000010A). This message contains no payload.
 
-2.2.4.3.1.6  Client Cancel Async Printer Properties Response
+###### 2.2.4.3.1.6 Client Cancel Async Printer Properties Response
 (CANCEL_ASYNC_PRINTER_PROPS_RSP)
 
 A reply to the CANCEL_ASYNC_PRINTER_PROPS_REQ (Server Cancel Async Printer Properties
@@ -3814,9 +3452,10 @@ Release: April 23, 2024
 
 46 / 86
 
-2.2.4.3.2 Document Properties UI
 
-2.2.4.3.2.1  Server Async Document Properties Request (ASYNC_DOC_PROPS_REQ)
+###### 2.2.4.3.2 Document Properties UI
+
+###### 2.2.4.3.2.1 Server Async Document Properties Request (ASYNC_DOC_PROPS_REQ)
 
 This request is sent from server to client and is used to start the display of a document properties UI
 on the client.
@@ -3889,11 +3528,12 @@ Release: April 23, 2024
 
 47 / 86
 
-Callback (4 bytes): A 32-bit unsigned integer. This value represents a unique interface ID to be
+
+Callback (4 bytes): A 32-bit unsigned integer. This value represents a unique interface ID to be
 
 used by a DOC_PROPS_CALLBACK_REQ request message.
 
-2.2.4.3.2.2  Client Async Document Properties Response (ASYNC_DOC_PROPS_RSP)
+###### 2.2.4.3.2.2 Client Async Document Properties Response (ASYNC_DOC_PROPS_RSP)
 
 This response is an acknowledgment of an ASYNC_DOC_PROPS_REQ (Async Document Properties
 Request) from client to server.
@@ -3922,7 +3562,7 @@ message.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.3.2.3  Client Document Properties Callback Request
+###### 2.2.4.3.2.3 Client Document Properties Callback Request
 
 (DOC_PROPS_CALLBACK_REQ)
 
@@ -3969,7 +3609,8 @@ Release: April 23, 2024
 
 48 / 86
 
-ReturnValue (4 bytes): A 32-bit unsigned integer. This value is returned by the client printer
+
+ReturnValue (4 bytes): A 32-bit unsigned integer. This value is returned by the client printer
 
 driver.
 
@@ -3983,7 +3624,7 @@ Devmode (variable): An array of 8-bit unsigned integers. The content is generate
 
 printer driver and is treated as payload in the Printer Driver Interface.
 
-2.2.4.3.2.4  Server Document Properties Callback Response
+###### 2.2.4.3.2.4 Server Document Properties Callback Response
 
 (DOC_PROPS_CALLBACK_RSP)
 
@@ -4014,7 +3655,7 @@ and MessageId fields in the corresponding DOC_PROPS_CALLBACK_REQ request message
 
 Reserved (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0x00000000.
 
-2.2.4.3.2.5  Server Cancel Async Document Properties Request
+###### 2.2.4.3.2.5 Server Cancel Async Document Properties Request
 
 (CANCEL_ASYNC_DOC_PROPS_REQ)
 
@@ -4040,7 +3681,7 @@ Header (variable): The common message header (as specified in section 2.2.1). Th
 field MUST be set to 0x00000000. The FunctionId field MUST be set to
 CANCEL_ASYNC_DOC_PROPS_REQ (0x00000109). This message contains no payload.
 
-2.2.4.3.2.6  Client Cancel Async Document Properties Response
+###### 2.2.4.3.2.6 Client Cancel Async Document Properties Response
 
 (CANCEL_ASYNC_DOC_PROPS_RSP)
 
@@ -4054,7 +3695,8 @@ Release: April 23, 2024
 
 49 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4078,7 +3720,7 @@ request message.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.4.3.2.7  Server Move Document Properties Window Request
+###### 2.2.4.3.2.7 Server Move Document Properties Window Request
 
 (MOVE_DOC_PROPERTIES_REQ)
 
@@ -4117,7 +3759,7 @@ yPos (4 bytes): A 32-bit unsigned integer. This field MUST contain the Y axis co
 
 window's target location.
 
-2.2.4.3.2.8  Client Move Document Properties Window Reply
+###### 2.2.4.3.2.8 Client Move Document Properties Window Reply
 
 (MOVE_DOC_PROPERTIES_RSP)
 
@@ -4144,7 +3786,8 @@ Release: April 23, 2024
 
 50 / 86
 
-...
+
+...
 
 Result
 
@@ -4155,7 +3798,7 @@ message.
 
 Result (4 bytes): An HRESULT that describes the result of the call.
 
-2.2.5  XML Document (XML_DOCUMENT)
+#### 2.2.5 XML Document (XML_DOCUMENT)
 
 This sub-packet represents an XML document that is being sent inside another packet (for more
 information, see [MSFT-XMLPAPER]). The XML document is a single character string. The exact size of
@@ -4188,7 +3831,7 @@ XMLDocument (variable): An array of 8-bit unsigned integers. This field contains
 
 document. The contents are treated as opaque by this protocol.
 
-2.2.6  Device Capabilities (TSDEVICE_CAPABILITIES)
+#### 2.2.6 Device Capabilities (TSDEVICE_CAPABILITIES)
 
 This structure is embedded inside other packets. It describes the resulting output when certain device
 capabilities are queried.
@@ -4223,7 +3866,8 @@ Release: April 23, 2024
 
 51 / 86
 
-ReturnValue (4 bytes): A 32-bit unsigned integer. This field MUST contain a return code from the
+
+ReturnValue (4 bytes): A 32-bit unsigned integer. This field MUST contain a return code from the
 
 call to the printer driver that queries the device capability.
 
@@ -4242,7 +3886,7 @@ numBytes2 (2 bytes): A 16-bit unsigned integer. This field MUST contain the same
 
 numBytes field.
 
-2.2.7  Printer Property (TSPRINTER_PROPERTY)
+#### 2.2.7 Printer Property (TSPRINTER_PROPERTY)
 
 This structure is embedded inside other packets. It describes the resulting output when certain printer
 capabilities are queried.
@@ -4304,7 +3948,8 @@ Release: April 23, 2024
 
 52 / 86
 
-cbPropertyValue (4 bytes): A 32-bit unsigned integer. This field contains the number of bytes in
+
+cbPropertyValue (4 bytes): A 32-bit unsigned integer. This field contains the number of bytes in
 
 the pPropertyValue field.
 
@@ -4319,11 +3964,12 @@ Release: April 23, 2024
 
 53 / 86
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4373,7 +4019,7 @@ field in the New or Existing Window message as described in [MS-RDPERP] section 
 The client maintains the window handle until Delete Window order is received ([MS-RDPERP]
 section 2.2.1.3.1.2.4). The high 32 bits are always ignored.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 A timer is started for every request. The timer expires in 60 seconds. If by that time the reply does
 not arrive, the client or server fails the request with the error STATUS_TRANSACTION_TIMED_OUT
@@ -4386,17 +4032,18 @@ Release: April 23, 2024
 
 54 / 86
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Processing a Shared Message Header
+##### 3.1.5.1 Processing a Shared Message Header
 
 When processing the SHARED_MSG_HEADER, the following rules apply to both the client and server
 side:
@@ -4442,17 +4089,17 @@ are the Common IDs and those listed under the Print Ticket Interface description
 
 MUST be treated as invalid data and the connection MUST be dropped immediately.
 
-3.1.5.2  Interface Manipulation
+##### 3.1.5.2 Interface Manipulation
 
-3.1.5.2.1 Interface Query Message
+###### 3.1.5.2.1 Interface Query Message
 
 This message is not implemented by this protocol. See sections 3.1.5.2.1.1 and 3.1.5.2.1.2 for details.
 
-3.1.5.2.1.1  Sending an Interface Query Message
+###### 3.1.5.2.1.1 Sending an Interface Query Message
 
 The server MUST NOT send a QI_REQ request message.
 
-3.1.5.2.1.2  Receiving an Interface Query Message
+###### 3.1.5.2.1.2 Receiving an Interface Query Message
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -4461,22 +4108,23 @@ Release: April 23, 2024
 
 55 / 86
 
-The Interface Query request message is symmetrical. It MAY originate from the client or from the
+
+The Interface Query request message is symmetrical. It MAY originate from the client or from the
 server side for any valid InterfaceId. Processing MUST be handled on any side of the connection. The
 receiver SHOULD return the failure version of the QI_RSP message. This is a QI_RSP message
 omitting the optional NewInterfaceId field. This version of the message MUST be interpreted by the
 originating side as if the requested interface is not supported. This message MUST be processed as
 described in 3.2.5.1.1.1.
 
-3.1.5.2.2 Interface Release Message
+###### 3.1.5.2.2 Interface Release Message
 
-3.1.5.2.2.1  Sending an Interface Release Message
+###### 3.1.5.2.2.1 Sending an Interface Release Message
 
 When a client or a server no longer needs to make function calls on a given interface and all requests
 have received their corresponding replies, either entity MAY send an Interface Release message to the
 other side, freeing the interface ID for reuse.
 
-3.1.5.2.2.2  Receiving an Interface Release Message
+###### 3.1.5.2.2.2 Receiving an Interface Release Message
 
 Upon receipt of an Interface Release message, the InterfaceId contained in the packet MUST be
 disabled. Any other packets that contain the released InterfaceId SHOULD be treated as failure
@@ -4484,29 +4132,29 @@ cases and SHOULD result in termination of the connection. After being released, 
 reused by other calls that pass interface IDs. This message is one-way only and does not require
 sending a reply. Releasing an interface MUST NOT generate an error code.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4517,32 +4165,33 @@ Release: April 23, 2024
 
 56 / 86
 
-3.2.5  Processing Events and Sequencing Rules
 
-3.2.5.1  Interface Manipulation
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1.1 Interface Query Message
+##### 3.2.5.1 Interface Manipulation
 
-3.2.5.1.1.1  Processing a Query Interface Request
+###### 3.2.5.1.1 Interface Query Message
+
+###### 3.2.5.1.1.1 Processing a Query Interface Request
 
 If such a request is received, the reply SHOULD be a failure message, as specified in section
 3.2.5.1.1.2.
 
-3.2.5.1.1.2  Sending a Query Interface Response
+###### 3.2.5.1.1.2 Sending a Query Interface Response
 
 This response is sent when a Query Interface Request is received.  If received, the response message
 SHOULD be a failure message. A failure message is a SHARED_MSG_HEADER with no FunctionId or
 payload. The InterfaceId and MessageId fields MUST match those of the request.
 
-3.2.5.2  Printer Ticket Interface
+##### 3.2.5.2 Printer Ticket Interface
 
 The Printer Ticket Interface is instantiated by the server side in response to the instantiation of the
 virtual printer driver. This protocol in essence bridges the support for print tickets from the client
 printer driver to the virtual printer driver that is installed on the server.
 
-3.2.5.2.1 Initialization Messages
+###### 3.2.5.2.1 Initialization Messages
 
-3.2.5.2.1.1  Processing a Get Supported Versions Request
+###### 3.2.5.2.1.1 Processing a Get Supported Versions Request
 
 The client MUST retrieve the ClientPrinterId field upon receipt of the
 GET_SUPPORTED_VERSIONS_REQ message. The client MUST find the appropriate printer driver
@@ -4550,28 +4199,28 @@ name by matching the ClientPrinterId to the DeviceId field in the Remote Desktop
 System Virtual Channel Extension which is described in [MS-RDPEFS] section 2.2.1.3. The client MUST
 retrieve the Version field data from the client printer driver.
 
-3.2.5.2.1.2  Sending a Get Supported Versions Response
+###### 3.2.5.2.1.2 Sending a Get Supported Versions Response
 
 The client MUST retrieve the number of versions supported and MUST populate the NumVersions
 field of the GET_SUPPORTED_VERSIONS_RSP message with that value. The Versions field MUST
 contain an array of versions supported by the driver. The return result from the driver call MUST be
 sent in the Result field of the response.
 
-3.2.5.2.1.3  Processing a Bind Printer Request
+###### 3.2.5.2.1.3 Processing a Bind Printer Request
 
 The client MUST retrieve the ClientPrinterId field from the BIND_PRINTER_REQ message, and find
 an appropriate printer driver name. It then associates the current dynamic channel connection with
 that printer. Thus, subsequent calls on the channel implicitly refer to the same printer. The Version
 field MUST be retrieved and passed to the printer driver.
 
-3.2.5.2.1.4  Sending a Bind Printer Response
+###### 3.2.5.2.1.4 Sending a Bind Printer Response
 
 The client MUST retrieve from the client printer driver the following fields: Options,
 DevModeFlags, and Namespaces. It MUST populate the fields of the BIND_PRINTER_RSP message
 with this information. These fields are opaque to the protocol and are meaningful only for the printer
 drivers. The return result of the call MUST be sent in the Result field of the response.
 
-3.2.5.2.2 Capability Negotiation Messages
+###### 3.2.5.2.2 Capability Negotiation Messages
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -4580,12 +4229,13 @@ Release: April 23, 2024
 
 57 / 86
 
-3.2.5.2.2.1  Processing a Query Device Namespace Request
+
+###### 3.2.5.2.2.1 Processing a Query Device Namespace Request
 
 Upon receipt of the QUERY_DEV_NS_REQ message, the client MUST request that the client printer
 driver retrieve all parameters for the response.
 
-3.2.5.2.2.2  Sending a Query Device Namespace Response
+###### 3.2.5.2.2.2 Sending a Query Device Namespace Response
 
 The client responds with the QUERY_DEV_NS_RSP reply message after retrieving the
 DefaultNamespace from the printer driver. If the driver returns NULL for default namespace, the
@@ -4595,47 +4245,47 @@ MUST contain the string returned by the driver. The DefaultNamespace value has m
 within the printer driver context and is not interpreted by the Printer Ticket Interface. The return
 result of the call MUST be sent in the Result field of the response.
 
-3.2.5.2.2.3  Processing a Print Ticket to Devmode Request
+###### 3.2.5.2.2.3 Processing a Print Ticket to Devmode Request
 
 Upon receipt of the PRINT_TKT_TO_DEVMODE_REQ request, the client MUST forward the data from
 PrintTicket and pDevmodeIn to the client printer driver.
 
-3.2.5.2.2.4  Sending a Print Ticket to Devmode Response
+###### 3.2.5.2.2.4 Sending a Print Ticket to Devmode Response
 
 The printer driver fills out the data for the pDevmodeOut field, which MUST be packaged in the
 PRINT_TKT_TO_DEVMODE_RSP response message. The return result of the call MUST be sent in the
 Result field of this response.
 
-3.2.5.2.2.5  Processing a Devmode to Print Ticket Request
+###### 3.2.5.2.2.5 Processing a Devmode to Print Ticket Request
 
 Upon receipt of the DEVMODE_TO_PRINT_TKT_REQ request, the client MUST pass the contents of the
 PrintTicket field and the pDevmodeIn field as input when calling the client printer driver.
 
-3.2.5.2.2.6  Sending a Devmode to Print Ticket Response
+###### 3.2.5.2.2.6 Sending a Devmode to Print Ticket Response
 
 The printer driver supplies the content of the PrintTicket field. If the field is NULL, the is_null_flag
 field MUST be set to TRUE (0x01). Otherwise, the flag is set to FALSE (0x00) and the PrintTicket field
 contains the driver output. The return result MUST be sent in the Result field of the response.
 
-3.2.5.2.2.7  Processing a Print Caps Request
+###### 3.2.5.2.2.7 Processing a Print Caps Request
 
 The client MUST retrieve capability data from the client printer driver, without specifying a print
 ticket.
 
-3.2.5.2.2.8  Sending a Print Caps Response
+###### 3.2.5.2.2.8 Sending a Print Caps Response
 
 The printer driver responds with data for the Capabilities field. If the field is NULL, the
 is_null_flag MUST be set to TRUE (0x01) and the Capabilities field MUST be omitted. Otherwise,
 the is_null_flag MUST be set to FALSE (0x00) and the Capabilities field MUST contain the driver-
 supplied data. The return result MUST be sent in the Result field of the response.
 
-3.2.5.2.2.9  Processing a Print Caps From Print Ticket Request
+###### 3.2.5.2.2.9 Processing a Print Caps From Print Ticket Request
 
 The rules for processing the PRINT_CAPS_FROM_PRINT_TKT_REQ request message MUST be the
 same as specified in section 3.2.5.2.2.7 with the following exception: the PrintTicket field MUST be
 supplied to the driver.
 
-3.2.5.2.2.10  Sending a Print Caps From Print Ticket Response
+###### 3.2.5.2.2.10 Sending a Print Caps From Print Ticket Response
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -4644,22 +4294,23 @@ Release: April 23, 2024
 
 58 / 86
 
-The rules for sending the PRINT_CAPS_FROM_PRINT_TKT_RSP response message MUST be the same
+
+The rules for sending the PRINT_CAPS_FROM_PRINT_TKT_RSP response message MUST be the same
 as specified in section 3.2.5.2.2.8.
 
-3.2.5.2.2.11  Processing a Validate Print Ticket Request
+###### 3.2.5.2.2.11 Processing a Validate Print Ticket Request
 
 The client MUST extract the contents of the PrintTicket field in the VALIDATE_PRINT_TKT_REQ
 message and MUST pass the contents to the printer driver for processing.
 
-3.2.5.2.2.12  Sending a Validate Print Ticket Response
+###### 3.2.5.2.2.12 Sending a Validate Print Ticket Response
 
 The driver updates the PrintTicket from the request, which MUST be transmitted in the PrintTicket
 field of the VALIDATE_PRINT_TKT_RSP response message. If the updated ticket value is NULL, the
 is_null_flag field MUST be set to TRUE (0x01) and the PrintTicket field MUST be empty. The return
 result MUST be sent in the Result field of the response.
 
-3.2.5.3  Printer Driver Interface
+##### 3.2.5.3 Printer Driver Interface
 
 The Printer Driver Interface is responsible for implementing a virtual printer driver on the server
 side that requests information from the original driver on the client side. These protocol messages
@@ -4667,37 +4318,37 @@ MAY be grouped into three categories: initialization, capability negotiation, an
 messages. The initialization messages SHOULD always be sent first in the protocol sequence. The
 capability and UI messages MAY be sent at any time.
 
-3.2.5.3.1 Initialization Messages
+###### 3.2.5.3.1 Initialization Messages
 
 The client SHOULD receive the following initialization messages before any other requests. If the client
 receives capability negotiation or UI request messages before initialization messages, the requests
 MUST be ignored and the dynamic channel MUST be closed.
 
-3.2.5.3.1.1  Processing an Initialize Printer Request
+###### 3.2.5.3.1.1 Processing an Initialize Printer Request
 
 When the client receives the INIT_PRINTER_REQ request message, the client initializes the interface
 by opening the client printer driver identified by the ClientPrinterId field.
 
-3.2.5.3.1.2  Sending an Initialize Printer Response
+###### 3.2.5.3.1.2 Sending an Initialize Printer Response
 
 The INIT_PRINTER_RSP response MUST be sent by the client after the client completes interface
 initialization. The Result field MUST contain an HRESULT code that identifies the success or failure of
 the initialization.
 
-3.2.5.3.2 Capability Negotiation Messages
+###### 3.2.5.3.2 Capability Negotiation Messages
 
-3.2.5.3.2.1  Processing a Get All Dev Caps Request
+###### 3.2.5.3.2.1 Processing a Get All Dev Caps Request
 
 Upon receipt of the GET_ALL_DEV_CAPS_REQ request, the client MUST begin collecting the printer-
 specific capabilities from the client printer driver.
 
-3.2.5.3.2.2  Sending a Get All Dev Caps Response
+###### 3.2.5.3.2.2 Sending a Get All Dev Caps Response
 
 The GET_ALL_DEV_CAPS_RSP response MUST be returned by the client after it collects the printer
 capabilities. The data for the OutCapArray field is retrieved by the client printer driver. The Result
 field MUST contain an HRESULT returned by the client printer driver.
 
-3.2.5.3.2.3  Processing a Convert Devmode Request
+###### 3.2.5.3.2.3 Processing a Convert Devmode Request
 
 Upon receipt of the CONVERT_DEVMODE_REQ request, the client MUST invoke the printer driver to
 acquire its current DEVMODE. The contents of the DevmodeIn are ignored, and the result is stored
@@ -4709,10 +4360,11 @@ Release: April 23, 2024
 
 59 / 86
 
-in DevmodeOut. The field cbProvided MUST be used to identify how much data to return in the
+
+in DevmodeOut. The field cbProvided MUST be used to identify how much data to return in the
 OutputBuffer field in the response.
 
-3.2.5.3.2.4  Sending a Convert Devmode Response
+###### 3.2.5.3.2.4 Sending a Convert Devmode Response
 
 The CONVERT_DEVMODE_RSP response is generated by the client after querying the client printer
 driver for its current DEVMODE. If the driver output contains more data than is specified in the
@@ -4721,21 +4373,21 @@ the output, the ReturnValue field is set to FALSE (0x00000000), and the ErrorCod
 set to ERROR_INSUFFICIENT_BUFFER (0x0000007A). The Result field MUST contain an HRESULT that
 describes the return error code from the client printer driver.
 
-3.2.5.3.2.5  Processing a Get Device Capability Request
+###### 3.2.5.3.2.5 Processing a Get Device Capability Request
 
 Upon receipt of a GET_DEVICE_CAP_REQ request, the client MUST pass the contents of the
 DevmodeIn and DeviceCap fields to the client printer driver. The value contained in the
 InputBufferSize field MUST be interpreted as the maximum allowable size of the OutputBuffer field
 that the client sends in the reply to this request.
 
-3.2.5.3.2.6  Sending a Get Device Capability Response
+###### 3.2.5.3.2.6 Sending a Get Device Capability Response
 
 The GET_DEVICE_CAP_RSP response MUST contain the output from the client printer driver. The
 OutputBuffer field MUST contain the block of data as returned by the printer driver. ReturnValue
 is returned by the client printer driver. The Result field MUST contain an HRESULT that describes the
 overall error code from the call.
 
-3.2.5.3.2.7  Processing a Document Properties Request
+###### 3.2.5.3.2.7 Processing a Document Properties Request
 
 When processing the DOC_PROPERTIES_REQ request, the client MUST query the client printer
 driver for document properties. The fMode and DevmodeIn fields MUST be used as input to the
@@ -4746,7 +4398,7 @@ server desktop. This mapped value MUST also be passed as input to the client pri
 OutputDevModeSizeProvided field MUST be interpreted as the limit on the size of the
 OutDevMode field in the reply to this request.
 
-3.2.5.3.2.8  Sending a Document Properties Response
+###### 3.2.5.3.2.8 Sending a Document Properties Response
 
 The DOC_PROPERTIES_RSP reply MUST contain the DEVMODE BLOB that was acquired from the
 client printer driver. The BLOB MUST be returned in the OutDevMode field of this response.
@@ -4775,22 +4427,23 @@ Release: April 23, 2024
 
 60 / 86
 
-3.2.5.3.2.9  Processing a Get Device Adjustment Request
+
+###### 3.2.5.3.2.9 Processing a Get Device Adjustment Request
 
 The client MUST pass the unchanged contents of the pDevmodeIn, pInBuffer, and pInProps fields
 to the client printer driver when processing the MXDC_GETPDEV_ADJUSTMENT_REQ request
 message.
 
-3.2.5.3.2.10  Sending a Get Device Adjustment Response
+###### 3.2.5.3.2.10 Sending a Get Device Adjustment Response
 
 The client fills out the data for pOutProps field in the response. Result contains the return error code
 from the client printer driver.
 
-3.2.5.3.3 User Interface Messages
+###### 3.2.5.3.3 User Interface Messages
 
-3.2.5.3.3.1  Printer Properties UI
+###### 3.2.5.3.3.1 Printer Properties UI
 
-3.2.5.3.3.1.1  Processing an Async Printer Properties Request
+###### 3.2.5.3.3.1.1 Processing an Async Printer Properties Request
 
 Upon receipt of the ASYNC_PRINTER_PROPS_REQ request, the client MUST query the client printer
 driver for printer properties. If the Flags field contains the
@@ -4802,35 +4455,35 @@ which the request MUST be executed. The client owns the responsibility to map th
 appropriate client window or to the container window that owns the entire terminal server Desktop.
 The Callback field is stored for when the call is complete.
 
-3.2.5.3.3.1.2  Sending an Async Printer Properties Response
+###### 3.2.5.3.3.1.2 Sending an Async Printer Properties Response
 
 This response is sent as soon as the client starts to query the client printer driver for its printer
 properties. If the startup was successful, the Result field contains S_OK; otherwise, it contains an
 appropriate error code.
 
-3.2.5.3.3.1.3  Sending a Printer Properties Callback Request
+###### 3.2.5.3.3.1.3 Sending a Printer Properties Callback Request
 
 When the query from the client to the client printer driver for printer properties has completed, the
 client sends this request to the server with ReturnValue containing the return code of the query, and
 ErrorCode extracted from the error code of the query.
 
-3.2.5.3.3.1.4  Processing a Printer Properties Callback Response
+###### 3.2.5.3.3.1.4 Processing a Printer Properties Callback Response
 
 This response indicates that the server has received the request; no additional processing is required.
 
-3.2.5.3.3.1.5  Processing a Cancel Async Printer Properties Request
+###### 3.2.5.3.3.1.5 Processing a Cancel Async Printer Properties Request
 
 When this request is received, the client closes any UI initiated by the ASYNC_PRINTER_PROPS_REQ
 started as specified in section 3.2.5.3.3.1.1.
 
-3.2.5.3.3.1.6  Sending a Cancel Async Printer Properties Response
+###### 3.2.5.3.3.1.6 Sending a Cancel Async Printer Properties Response
 
 This response is sent after the client has canceled the request to the ASYNC_PRINTER_PROPS_REQ.
 The Result field contains the error code for the successful cancellation request.
 
-3.2.5.3.3.2  Document Properties UI
+###### 3.2.5.3.3.2 Document Properties UI
 
-3.2.5.3.3.2.1  Processing an Async Document Properties Request
+###### 3.2.5.3.3.2.1 Processing an Async Document Properties Request
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -4839,16 +4492,17 @@ Release: April 23, 2024
 
 61 / 86
 
-This request is processed in the same way as the DOC_PROPERTIES_REQ (as specified in section
+
+This request is processed in the same way as the DOC_PROPERTIES_REQ (as specified in section
 3.2.5.3.2.7), with the exception that the Callback field is stored for when the call is complete.
 
-3.2.5.3.3.2.2  Sending an Async Document Properties Response
+###### 3.2.5.3.3.2.2 Sending an Async Document Properties Response
 
 This response is sent as soon as the client starts to query the client printer driver for its document
 properties. If the startup was successful, the Result field contains S_OK; otherwise, it contains an
 appropriate error code.
 
-3.2.5.3.3.2.3  Sending a Document Properties Callback Request
+###### 3.2.5.3.3.2.3 Sending a Document Properties Callback Request
 
 When the request to the client printer driver that was started in the ASYNC_DOC_PROPS_REQ (as
 specified in section 3.2.5.3.3.2.1) finishes, the client sends this request to the server indicating the
@@ -4860,38 +4514,38 @@ ERROR_INSUFFICIENT_BUFFER. Otherwise, ReturnValue contains the return code that 
 returns when acquiring document properties, and ErrorCode contains the error code returned by the
 driver.
 
-3.2.5.3.3.2.4  Processing a Document Properties Callback Response
+###### 3.2.5.3.3.2.4 Processing a Document Properties Callback Response
 
 The server MUST send the DOC_PROPS_CALLBACK_RSP response to indicate that the callback was
 received. No additional processing is required.
 
-3.2.5.3.3.2.5  Processing a Cancel Async Document Properties Request
+###### 3.2.5.3.3.2.5 Processing a Cancel Async Document Properties Request
 
 When the client receives this request, it MUST immediately cancel the request to the client printer
 driver started by the ASYNC_DOC_PROPS_REQ request message.
 
-3.2.5.3.3.2.6  Sending a Cancel Async Document Properties Response
+###### 3.2.5.3.3.2.6 Sending a Cancel Async Document Properties Response
 
 The client MUST send the CANCEL_ASYNC_DOC_PROPS_RSP response to indicate that the cancel
 request was received. No further processing is required.
 
-3.2.5.3.3.3  Processing a Move Document Properties Window Request
+###### 3.2.5.3.3.3 Processing a Move Document Properties Window Request
 
 When the client receives the MOVE_DOC_PROPERTIES_REQ request, it MUST reposition any user
 interface started by the ASYNC_DOC_PROPS_REQ request. The values in the xPos and yPos fields
 MUST indicate the x- and y-axis coordinates relative to the client's desktop. For example, coordinates
 (0,0) indicate the top leftmost corner of the client display area.
 
-3.2.5.3.3.4  Sending a Move Document Properties Window Reply
+###### 3.2.5.3.3.4 Sending a Move Document Properties Window Reply
 
 The client MUST send the MOVE_DOC_PROPERTIES_RSP response after successfully moving any user
 interface. Result contains the error code for the operation.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -4902,35 +4556,36 @@ Release: April 23, 2024
 
 62 / 86
 
-3.3  Server Details
 
-3.3.1  Abstract Data Model
+### 3.3 Server Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Printer Ticket Interface
+##### 3.3.5.1 Printer Ticket Interface
 
 On the server, the virtual printer driver uses the Printer Ticket Interface to request information on
 print tickets from the client printer driver. Only one initialization request for this interface MUST
 be sent by the server.
 
-3.3.5.1.1 Initialization Messages
+###### 3.3.5.1.1 Initialization Messages
 
-3.3.5.1.1.1  Sending a Get Supported Versions Request
+###### 3.3.5.1.1.1 Sending a Get Supported Versions Request
 
 The server MUST send the GET_SUPPORTED_VERSIONS_REQ request whenever a document is
 printed. The ClientPrinterId is retrieved, by using the Remote Desktop Protocol: File System Virtual
@@ -4939,19 +4594,19 @@ ClientPrinterId value MUST be the same as the DeviceId field in the DEVICE_ANNOU
 (as specified in [MS-RDPEFS] section 2.2.1.3) that is embedded in the DeviceList field of the
 DR_CORE_DEVICELIST_ANNOUNCE_REQ packet (as specified in [MS-RDPEFS] section 2.2.2.9).
 
-3.3.5.1.1.2  Processing a Get Supported Versions Response
+###### 3.3.5.1.1.2 Processing a Get Supported Versions Response
 
 If the Result field of the GET_SUPPORTED_VERSIONS_RSP reply indicates success, the virtual
 printer driver retrieves NumVersions and Versions and returns them to the printing subsystem
 on the server. If the Result field contains a failure the error MUST be propagated to the caller of the
 virtual printer driver.
 
-3.3.5.1.1.3  Sending a Bind Printer Request
+###### 3.3.5.1.1.3 Sending a Bind Printer Request
 
 The BIND_PRINTER_REQ request is sent by the server in response to a request from the printing
 subsystem that passes the Version.
 
-3.3.5.1.1.4  Processing a Bind Printer Response
+###### 3.3.5.1.1.4 Processing a Bind Printer Response
 
 On receipt of the BIND_PRINTER_RSP, the server MUST retrieve the content of the Options,
 DevModeFlags, Namespaces, and Result fields. The server MUST pass the content back to the
@@ -4964,58 +4619,59 @@ Release: April 23, 2024
 
 63 / 86
 
-3.3.5.1.2 Capability Negotiation Messages
 
-3.3.5.1.2.1  Sending a Query Device Namespace Request
+###### 3.3.5.1.2 Capability Negotiation Messages
+
+###### 3.3.5.1.2.1 Sending a Query Device Namespace Request
 
 The QUERY_DEV_NS_REQ request message is sent in response to a request from the printing
 subsystem. No further processing steps are required.
 
-3.3.5.1.2.2  Processing a Query Device Namespace Response
+###### 3.3.5.1.2.2 Processing a Query Device Namespace Response
 
 On receipt of the QUERY_DEV_NS_RSP response message, if the is_null_flag is TRUE (0x01), the
 server MUST pass NULL to the printing subsystem, indicating that the DefaultNamespace field is
 not present. Otherwise, the contents of the DefaultNamespace and Result fields are used to
 complete the subsystem request.
 
-3.3.5.1.2.3  Sending a Print Ticket to Devmode Request
+###### 3.3.5.1.2.3 Sending a Print Ticket to Devmode Request
 
 The printing subsystem MAY request that the virtual printer driver convert a print ticket into a
 DEVMODE. The printing subsystem provides a print ticket and input DEVMODE, which MUST be
 packed into the PrintTicket and pDevmodeIn fields (respectively) of the
 PRINT_TKT_TO_DEVMODE_REQ request message.
 
-3.3.5.1.2.4  Processing a Print Ticket to Devmode Response
+###### 3.3.5.1.2.4 Processing a Print Ticket to Devmode Response
 
 On receipt of the PRINT_TKT_TO_DEVMODE_RSP response message, the contents of the
 pDevmodeOut and Result fields MUST be passed to the printing subsystem.
 
-3.3.5.1.2.5  Sending a Devmode to Print Ticket Request
+###### 3.3.5.1.2.5 Sending a Devmode to Print Ticket Request
 
 The printing subsystem MAY request that the virtual printer driver convert a DEVMODE into a
 print ticket. The subsystem provides the print ticket and input DEVMODE, which MUST be packed
 into the pDevmodeIn and PrintTicket fields (respectively) of the DEVMODE_TO_PRINT_TKT_REQ
 request message.
 
-3.3.5.1.2.6  Processing a Devmode to Print Ticket Response
+###### 3.3.5.1.2.6 Processing a Devmode to Print Ticket Response
 
 On receipt of the DEVMODE_TO_PRINT_TKT_RSP response message, the server MUST pass the
 contents of the PrintTicket and Result fields to the printing subsystem. If is_null_flag is set to
 TRUE (0x01), the PrintTicket is assumed to be NULL.
 
-3.3.5.1.2.7  Sending a Print Caps Request
+###### 3.3.5.1.2.7 Sending a Print Caps Request
 
 The PRINT_CAPS_REQ request message is sent by the server in response to the printing subsystem,
 requesting all printer capabilities from the client printer driver. No special processing steps are
 required.
 
-3.3.5.1.2.8  Processing a Print Caps Response
+###### 3.3.5.1.2.8 Processing a Print Caps Response
 
 On receipt of the PRINT_CAPS_RSP response message, the contents of the Capabilities and Result
 fields MUST be passed to the printing subsystem. If is_null_flag is set to TRUE (0x01), the
 Capabilities field is assumed to be NULL.
 
-3.3.5.1.2.9  Sending a Print Caps from Print Ticket Request
+###### 3.3.5.1.2.9 Sending a Print Caps from Print Ticket Request
 
 The PRINT_CAPS_FROM_PRINT_TKT_REQ request message is sent by the server in response to the
 printing subsystem, requesting all printer capabilities from the client printer driver. The printing
@@ -5029,60 +4685,61 @@ Release: April 23, 2024
 
 64 / 86
 
-3.3.5.1.2.10  Processing a Print Caps from Print Ticket Response
+
+###### 3.3.5.1.2.10 Processing a Print Caps from Print Ticket Response
 
 The processing of the PRINT_CAPS_FROM_PRINT_TKT_RSP response message MUST be the same as
 what is specified in section 3.3.5.1.2.8.
 
-3.3.5.1.2.11  Sending a Validate Print Ticket Request
+###### 3.3.5.1.2.11 Sending a Validate Print Ticket Request
 
 The printing subsystem MAY request that the server validate a print ticket. The server MUST pass
 the print ticket supplied by the printing subsystem in the PrintTicket field of the
 VALIDATE_PRINT_TKT_REQ request message.
 
-3.3.5.1.2.12  Processing a Validate Print Ticket Response
+###### 3.3.5.1.2.12 Processing a Validate Print Ticket Response
 
 On receipt of the VALIDATE_PRINT_TKT_RSP response message, the contents of the PrintTicket and
 Result fields MUST be passed to the printing subsystem. If the is_null_flag is set to TRUE (0x01),
 the content of the PrintTicket field is assumed to be NULL.
 
-3.3.5.2  Printer Driver Interface
+##### 3.3.5.2 Printer Driver Interface
 
-3.3.5.2.1 Initialization Messages
+###### 3.3.5.2.1 Initialization Messages
 
 Printer Driver Interface initialization messages SHOULD be sent before any other messages in this
 interface. These messages ensure that the printer driver is initialized on the client side.
 
-3.3.5.2.1.1  Sending an Initialize Printer Request
+###### 3.3.5.2.1.1 Sending an Initialize Printer Request
 
 Whenever the virtual printer driver is initialized by the printing subsystem on the server, it sends
 the INIT_PRINTER_REQ request message to the client. The value for the ClientPrinterId field MUST
 be retrieved, using the Remote Desktop Protocol: File System Virtual Channel Extension, and is based
 on the client printer name that the virtual printer driver is supporting.
 
-3.3.5.2.1.2  Processing an Initialize Printer Response
+###### 3.3.5.2.1.2 Processing an Initialize Printer Response
 
 On receipt of the INIT_PRINTER_RSP response message, if the content of the Result field indicates
 success, it is assumed that the virtual printer driver has been successfully initialized.
 
-3.3.5.2.2 Capability Negotiation Messages
+###### 3.3.5.2.2 Capability Negotiation Messages
 
 The Capability Negotiation messages exchange printing capabilities between the printing subsystem
 and the client printer driver. This protocol treats these capabilities as opaque and passes them
 unexamined between these two components.
 
-3.3.5.2.2.1  Sending a Get All Dev Caps Request
+###### 3.3.5.2.2.1 Sending a Get All Dev Caps Request
 
 The GET_ALL_DEV_CAPS_REQ request message is sent from the server to the client immediately after
 the virtual printer driver is initialized. It collects all possible printing capabilities and caches them on
 the server. This cache is used to complete other capability requests from the printing subsystem.
 
-3.3.5.2.2.2  Processing a Get All Dev Caps Response
+###### 3.3.5.2.2.2 Processing a Get All Dev Caps Response
 
 On receipt of the GET_ALL_DEV_CAPS_RSP response message, the contents of the OutCapArray and
 Result fields are passed back to the printing subsystem.
 
-3.3.5.2.2.3  Sending a Convert Dev Mode Request
+###### 3.3.5.2.2.3 Sending a Convert Dev Mode Request
 
 The CONVERT_DEVMODE_REQ request message is sent from the server to the client when the
 printing subsystem requests from the printer driver a conversion from one version of a DEVMODE
@@ -5094,14 +4751,15 @@ Release: April 23, 2024
 
 65 / 86
 
-to another. The driver then performs the conversion based on the value of fMode field. The exact
+
+to another. The driver then performs the conversion based on the value of fMode field. The exact
 interface for converting the DEVMODE is between the server printing subsystem and the client print
 driver, which is specific to the printing subsystem implementation, outside of this protocol. The
 protocol treats these fields as opaque payload. The fields cbDevmodeIn and DevmodeIn MUST
 contain the DEVMODE information supplied by the printing subsystem. The cbProvided field MUST
 indicate the maximum number of bytes for the OutputBuffer field in the response.
 
-3.3.5.2.2.4  Processing a Convert Dev Mode Response
+###### 3.3.5.2.2.4 Processing a Convert Dev Mode Response
 
 The CONVERT_DEVMODE_RSP packet is processed if the Result field indicates success. The fields
 cbOutputBufferSize and OutputBuffer MUST contain the DEVMODE converted by the client
@@ -5111,7 +4769,7 @@ DEVMODE. The ErrorCode field is used to inform the printing subsystem of any err
 conversion. If the Result field contains a failure, the error MUST be propagated to the caller of the
 virtual printer driver.
 
-3.3.5.2.2.5  Sending a Get Device Capability Request
+###### 3.3.5.2.2.5 Sending a Get Device Capability Request
 
 The server MUST send the GET_DEVICE_CAP_REQ request message in response to a printing
 subsystem query to the virtual printer driver for a specific device request. The content for the
@@ -5120,14 +4778,14 @@ DevmodeIn field content is also provided by the printing subsystem to indicate a
 virtual printer driver. The InputBufferSize field indicates the maximum returned data size for the
 OutputBuffer field in the response.
 
-3.3.5.2.2.6  Processing a Get Device Capability Response
+###### 3.3.5.2.2.6 Processing a Get Device Capability Response
 
 This packet is processed if the Result field indicates success. The cbOutputBufferSize and
 OutputBuffer fields indicate the capability returned by the client printer driver and are passed to
 the printing subsystem. ReturnValue is also passed to the subsystem. If the Result field contains
 a failure, the error MUST be propagated to the caller of the virtual printer driver.
 
-3.3.5.2.2.7  Sending a Document Properties Request
+###### 3.3.5.2.2.7 Sending a Document Properties Request
 
 The server MUST send the DOC_PROPERTIES_REQ request message when the printing subsystem
 requests a DEVMODE for document properties from the virtual printer driver. The printing
@@ -5136,7 +4794,7 @@ cbDevmodeIn and DevmodeIn fields, also provided by the printing subsystem, descr
 DEVMODE. The OutputDevModeSizeProvided field describes the maximum data size expected in
 bytes in the OutDevMode field of the reply message.
 
-3.3.5.2.2.8  Processing a Document Properties Response
+###### 3.3.5.2.2.8 Processing a Document Properties Response
 
 The DOC_PROPERTIES_RSP response message is processed if the Result field indicates success. The
 content of the OutDevMode field describes the document property DEVMODE returned by the client
@@ -5144,13 +4802,13 @@ printer driver and, together with the contents of the Result and ErrorCode field
 to the printing subsystem. If the Result field contains a failure, the error MUST be propagated to
 the caller of the virtual printer driver.
 
-3.3.5.2.2.9  Sending a Get Device Adjustment Request
+###### 3.3.5.2.2.9 Sending a Get Device Adjustment Request
 
 When sending the MXDC_GETPDEV_ADJUSTMENT_REQ request message, the pDevmodeIn,
 pInBuffer, and pInProps fields MUST be passed unchanged as received from the printing
 subsystem.
 
-3.3.5.2.2.10  Processing a Get Device Adjustment Response
+###### 3.3.5.2.2.10 Processing a Get Device Adjustment Response
 
 [MS-RDPEXPS] - v20240423
 Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Extension
@@ -5159,19 +4817,20 @@ Release: April 23, 2024
 
 66 / 86
 
-On receipt of the MXDC_GETPDEV_ADJUSTMENT_RSP response message, the pOutProps and Result
+
+On receipt of the MXDC_GETPDEV_ADJUSTMENT_RSP response message, the pOutProps and Result
 fields MUST be passed to the printing subsystem.
 
-3.3.5.2.3 User Interface Messages
+###### 3.3.5.2.3 User Interface Messages
 
 There are two groups of User Interface messages: Printer Properties UI and Document Properties UI.
 It is common that the request message is always sent by the server. The UI is displayed by the client.
 Canceling a UI display is handled identically on either side. The two UI types differ in the type of
 information displayed and returned to the server.
 
-3.3.5.2.3.1  Printer Properties UI
+###### 3.3.5.2.3.1 Printer Properties UI
 
-3.3.5.2.3.1.1  Sending an Async Printer Properties Request
+###### 3.3.5.2.3.1.1 Sending an Async Printer Properties Request
 
 The server MUST send the ASYNC_PRINTER_PROPS_REQ request message whenever the printing
 subsystem requests that the virtual printer driver display its custom printer properties UI. The
@@ -5179,38 +4838,38 @@ contents of the Flags and hServerWindow fields are passed by the printing subsys
 indicates the state in which the printer driver's UI SHOULD be opened and hServerWindow
 identifies the parent window on the server in which the UI MUST be displayed.
 
-3.3.5.2.3.1.2  Processing an Async Printer Properties Response
+###### 3.3.5.2.3.1.2 Processing an Async Printer Properties Response
 
 On receiving the ASYNC_PRINTER_PROPS_RSP response message, a value indicating success in the
 Result field indicates that the UI has been successfully instantiated on the client. No additional
 processing is required by the server. The printing subsystem MUST be informed of the successful UI
 instantiation.
 
-3.3.5.2.3.1.3  Processing a Printer Properties Callback Request
+###### 3.3.5.2.3.1.3 Processing a Printer Properties Callback Request
 
 The PRINTER_PROPS_CALLBACK_REQ request message indicates that the print properties UI has been
 closed on the client. The server MUST pass the contents of the ReturnValue and ErrorCode fields to
 the printing subsystem.
 
-3.3.5.2.3.1.4  Sending a Printer Properties Callback Response
+###### 3.3.5.2.3.1.4 Sending a Printer Properties Callback Response
 
 The PRINTER_PROPS_CALLBACK_RSP response message MUST be sent immediately after the
 PRINTER_PROPS_CALLBACK_REQ message is received.
 
-3.3.5.2.3.1.5  Sending a Cancel Async Printer Properties Request
+###### 3.3.5.2.3.1.5 Sending a Cancel Async Printer Properties Request
 
 The CANCEL_ASYNC_PRINTER_PROPS_REQ request message MUST be sent by the server whenever it
 wants to stop the display of a printer properties UI. No server-specific steps are required to construct
 this message.
 
-3.3.5.2.3.1.6  Processing a Cancel Async Printer Properties Response
+###### 3.3.5.2.3.1.6 Processing a Cancel Async Printer Properties Response
 
 Receiving the CANCEL_ASYNC_PRINTER_PROPS_RSP response message means that the client UI is
 closed. No further processing is required.
 
-3.3.5.2.3.2  Document Properties UI
+###### 3.3.5.2.3.2 Document Properties UI
 
-3.3.5.2.3.2.1  Sending an Async Document Properties Request
+###### 3.3.5.2.3.2.1 Sending an Async Document Properties Request
 
 The ASYNC_DOC_PROPS_REQ request message MUST be sent by the server in response to a request
 from the printing subsystem to the virtual printer driver to display its custom document
@@ -5224,39 +4883,40 @@ Release: April 23, 2024
 
 67 / 86
 
-subsystem, describe the DEVMODE. The OutputDevModeSize field describes the maximum data size
+
+subsystem, describe the DEVMODE. The OutputDevModeSize field describes the maximum data size
 expected, in bytes, in the Devmode field of the reply message.
 
-3.3.5.2.3.2.2  Processing an Async Document Properties Response
+###### 3.3.5.2.3.2.2 Processing an Async Document Properties Response
 
 On receipt of the ASYNC_DOC_PROPS_RSP response message, a value indicating success in the
 Result field indicates that the document properties UI was successfully instantiated on the client. The
 printing subsystem MUST be informed of the document properties UI instantiation.
 
-3.3.5.2.3.2.3  Processing a Document Properties Callback Request
+###### 3.3.5.2.3.2.3 Processing a Document Properties Callback Request
 
 The DOC_PROPS_CALLBACK_REQ request message indicates that the client-side document properties
 UI has been closed by the user. The Devmode field contains the updated DEVMODE from the UI. The
 contents of the ReturnValue and ErrorCode fields MUST be passed to the printing subsystem.
 
-3.3.5.2.3.2.4  Sending a Document Properties Callback Response
+###### 3.3.5.2.3.2.4 Sending a Document Properties Callback Response
 
 The DOC_PROPS_CALLBACK_RSP response message MUST be sent immediately after the server
 receives the DOC_PROPS_CALLBACK_REQ. No server-specific steps are required to construct this
 message.
 
-3.3.5.2.3.2.5  Sending a Cancel Async Document Properties Request
+###### 3.3.5.2.3.2.5 Sending a Cancel Async Document Properties Request
 
 The CANCEL_ASYNC_DOC_PROPS_REQ request message MUST be sent by the server whenever it
 wants to stop the display of the document properties UI. No server-specific steps are required to
 construct this message.
 
-3.3.5.2.3.2.6  Processing a Cancel Async Document Properties Response
+###### 3.3.5.2.3.2.6 Processing a Cancel Async Document Properties Response
 
 The CANCEL_ASYNC_DOC_PROPS_RSP response message is sent immediately after the client UI is
 closed. No additional processing is required by the server upon receipt of this message.
 
-3.3.5.2.3.3  Sending a Move Document Properties Window Request
+###### 3.3.5.2.3.3 Sending a Move Document Properties Window Request
 
 The MOVE_DOC_PROPERTIES_REQ request message MUST be sent by the server immediately after an
 ASYNC_DOC_PROPS_RSP response is received. The MOVE_DOC_PROPERTIES_REQ request's purpose
@@ -5265,17 +4925,17 @@ client UI overlaps the server parent window. The xPos and yPos fields are (respe
 coordinate of the parent UI window that has been passed in the hServerWindow field in an
 ASYNC_DOC_PROPS_REQ message.
 
-3.3.5.2.3.4  Processing a Move Document Properties Window Reply
+###### 3.3.5.2.3.4 Processing a Move Document Properties Window Reply
 
 The MOVE_DOC_PROPERTIES_RSP reply is received immediately after the client UI has been
 repositioned. The Result field indicates the success of the operation. No additional processing is
 required.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -5286,7 +4946,8 @@ Release: April 23, 2024
 
 68 / 86
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following annotations describe several operations as used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: XPS Print Virtual Channel Extension.
@@ -5357,7 +5018,8 @@ Release: April 23, 2024
 
 69 / 86
 
- 19 00 00 00 -> TSDEVICE_CAPABILITIES: ReturnValue
+
+ 19 00 00 00 -> TSDEVICE_CAPABILITIES: ReturnValue
  00 00 00 00 -> TSDEVICE_CAPABILITIES: ErrorCode = ERROR_SUCCESS
  32 00       -> TSDEVICE_CAPABILITIES: numBytes = 0x32
              -> TSDEVICE_CAPABILITIES: Data (variable length=0x32)
@@ -5428,7 +5090,8 @@ Release: April 23, 2024
 
 70 / 86
 
- (skipped)
+
+ (skipped)
 
                       48 1f 00 00 01 00 00 00 00 00 00 00 ....H...........
  00001f60 00 00 00 00                                     ....
@@ -5498,7 +5161,8 @@ Release: April 23, 2024
 
 71 / 86
 
- 00000000 00 00 00 00 00 00 00 00 05 01 00 00 02 00 00 00 ................
+
+ 00000000 00 00 00 00 00 00 00 00 05 01 00 00 02 00 00 00 ................
  00000010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 ................
 
  00 00 00 00 -> InterfaceId = 0x00000000
@@ -5571,7 +5235,8 @@ Release: April 23, 2024
 
 72 / 86
 
- 00000020 50 00 52 00 49 00 4e 00 54 00 34 00 34 00 5c 00 P.R.I.N.T.4.4.\.
+
+ 00000020 50 00 52 00 49 00 4e 00 54 00 34 00 34 00 5c 00 P.R.I.N.T.4.4.\.
 
  (skipped)
 
@@ -5642,7 +5307,8 @@ Release: April 23, 2024
 
 73 / 86
 
- (4) Server Printer Properties Callback Response
+
+ (4) Server Printer Properties Callback Response
  ChannelName = XPSRD,12,server to client
  00000000 01 00 00 00 00 00 00 00 00 00 00 00             ............
  01 00 00 00 -> InterfaceId (id of Callback) = 0x00000001
@@ -5710,7 +5376,8 @@ Release: April 23, 2024
 
 74 / 86
 
- 00000020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 00000020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00000030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 
  (skipped)
@@ -5779,7 +5446,8 @@ Release: April 23, 2024
 
 75 / 86
 
- (3) Server Cancel Async Printer Properties Request
+
+ (3) Server Cancel Async Printer Properties Request
  ChannelName = XPSRD,12,server to client
  00000000 00 00 00 00 00 00 00 00 0a 01 00 00             ............
 
@@ -5845,7 +5513,8 @@ Release: April 23, 2024
 
 76 / 86
 
- (2) Client Document Properties Response
+
+ (2) Client Document Properties Response
  ChannelName = XPSRD,24,client to server
  00000000 00 00 00 00 00 00 00 00 48 1f 00 00 00 00 00 00 ........H.......
  00000010 00 00 00 00 00 00 00 00                         ........
@@ -5917,7 +5586,8 @@ Release: April 23, 2024
 
 77 / 86
 
- ChannelName = TSVCTKT,12,server to client
+
+ ChannelName = TSVCTKT,12,server to client
  00000000 00 00 00 00 00 00 00 00 02 01 00 00             ............
 
  00 00 00 00 -> InterfaceId = 0x00000000
@@ -5990,7 +5660,8 @@ Release: April 23, 2024
 
 78 / 86
 
- (11) Server Get Device Capability Request
+
+ (11) Server Get Device Capability Request
  ChannelName = XPSRD,22,server to client
  00000000 00 00 00 00 00 00 00 00 04 01 00 00 00 00 00 00 ................
  00000010 0b 00 00 00 00 00                               ......
@@ -6022,15 +5693,16 @@ Release: April 23, 2024
 
 79 / 86
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for the Remote Desktop Protocol: XPS Print Virtual Channel
 Extension messages because all traffic is secured by the underlying RDP core protocol. An overview of
 the implemented security-related mechanisms is as specified in [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6041,7 +5713,8 @@ Release: April 23, 2024
 
 80 / 86
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6097,7 +5770,8 @@ Release: April 23, 2024
 
 81 / 86
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6141,7 +5815,8 @@ Release: April 23, 2024
 
 82 / 86
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6316,7 +5991,8 @@ Release: April 23, 2024
 
 83 / 86
 
-GET_ALL_DEV_CAPS_RSP (section 3.2.5.3.2.2 59,
+
+GET_ALL_DEV_CAPS_RSP (section 3.2.5.3.2.2 59,
 
 M
 
@@ -6486,7 +6162,8 @@ Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Ext
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PRINT_TKT_TO_DEVMODE_RSP packet 29
+
+PRINT_TKT_TO_DEVMODE_RSP packet 29
 Printer Driver interface
    capability negotiation messages (section 1.3.2.3.2
 16, section 2.2.4.2 35, section 3.2.5.3.2 59,
@@ -6660,7 +6337,8 @@ Remote Desktop Protocol: XML Paper Specification (XPS) Print Virtual Channel Ext
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-X
+
+X
 
 XML Document (XML_DOCUMENT) message 51
 XML Paper Specification (XPS) overview 13

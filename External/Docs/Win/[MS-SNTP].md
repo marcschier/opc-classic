@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -544,7 +546,8 @@ Release: April 23, 2024
 
 3 / 54
 
-Date
+
+Date
 
 Revision
 History
@@ -585,209 +588,86 @@ Release: April 23, 2024
 
 4 / 54
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Extensions](#132-extensions)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Client Configuration for Authentication](#151-client-configuration-for-authentication)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Client NTP Request](#221-client-ntp-request)
+    - [2.2.2 Server NTP Response](#222-server-ntp-response)
+    - [2.2.3 Client ExtendedAuthenticator NTP Request](#223-client-extendedauthenticator-ntp-request)
+    - [2.2.4 Server ExtendedAuthenticator NTP Response](#224-server-extendedauthenticator-ntp-response)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Client Polling Timer](#3121-client-polling-timer)
+      - [3.1.2.2 Domain Controller Time Source Location Retry Timer](#3122-domain-controller-time-source-location-retry-timer)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Initialization Steps](#3131-initialization-steps)
+      - [3.1.3.2 Domain Time Source Selection Algorithm](#3132-domain-time-source-selection-algorithm)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Domain Join Processing](#3141-domain-join-processing)
+      - [3.1.4.2 Domain Unjoin Processing](#3142-domain-unjoin-processing)
+      - [3.1.4.3 Group Policy Update Notification](#3143-group-policy-update-notification)
+      - [3.1.4.4 Service Control Manager Update Notification](#3144-service-control-manager-update-notification)
+      - [3.1.4.5 Network Change Notification](#3145-network-change-notification)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Authentication Request Behavior](#3151-authentication-request-behavior)
+      - [3.1.5.2 Special Root Dispersion Behavior](#3152-special-root-dispersion-behavior)
+      - [3.1.5.3 Test 7 Behavior](#3153-test-7-behavior)
+      - [3.1.5.4 Spike Watch Mechanism](#3154-spike-watch-mechanism)
+      - [3.1.5.5 Crypto checksum generation](#3155-crypto-checksum-generation)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Client Polling Timer Event](#3161-client-polling-timer-event)
+      - [3.1.6.2 Domain Controller Time Source Location Retry Timer Event](#3162-domain-controller-time-source-location-retry-timer-event)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 Clock Selection](#318-clock-selection)
+    - [3.1.9 Domain Controller Time Source Initialization](#319-domain-controller-time-source-initialization)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Initializing NetLogon Service Bits](#3231-initializing-netlogon-service-bits)
+      - [3.2.3.2 Initializing Request Chaining](#3232-initializing-request-chaining)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Group Policy Update Notification](#3241-group-policy-update-notification)
+      - [3.2.4.2 Service Control Manager Update Notification](#3242-service-control-manager-update-notification)
+      - [3.2.4.3 Network Change Notification](#3243-network-change-notification)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Authentication Response Behavior](#3251-authentication-response-behavior)
+        - [3.2.5.1.1 Domain Controller Processing of the Authenticated Server NTP Response](#32511-domain-controller-processing-of-the-authenticated-server-ntp-response)
+        - [3.2.5.1.2 Read-only Domain Controller Processing of the Authenticated Server NTP](#32512-read-only-domain-controller-processing-of-the-authenticated-server-ntp)
+        - [3.2.5.1.3 Non-Domain Controller Processing of the Authenticated Server NTP](#32513-non-domain-controller-processing-of-the-authenticated-server-ntp)
+      - [3.2.5.2 LocalClockDispersion Processing](#3252-localclockdispersion-processing)
+      - [3.2.5.3 Chaining-Cache Cleaning Processing](#3253-chaining-cache-cleaning-processing)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Extensions ................................................................................................. 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Client Configuration for Authentication .......................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.6
-1.7
-1.8
-1.9
-
-1.4
-1.5
-
-1.5.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Client NTP Request ..................................................................................... 14
-Server NTP Response .................................................................................. 14
-Client ExtendedAuthenticator NTP Request .................................................... 15
-Server ExtendedAuthenticator NTP Response ................................................. 15
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-3.1
-
-3.1.3
-
-3.1.4
-
-3.1.1
-3.1.2
-
-3.1.2.1
-3.1.2.2
-
-3.1.3.1
-3.1.3.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3  Protocol Details ..................................................................................................... 17
-Client Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 21
-Client Polling Timer ............................................................................... 21
-Domain Controller Time Source Location Retry Timer ................................ 22
-Initialization ............................................................................................... 22
-Initialization Steps ................................................................................ 22
-Domain Time Source Selection Algorithm ................................................. 23
-Higher-Layer Triggered Events ..................................................................... 24
-Domain Join Processing ......................................................................... 25
-Domain Unjoin Processing ...................................................................... 25
-Group Policy Update Notification ............................................................. 25
-Service Control Manager Update Notification ............................................ 25
-Network Change Notification .................................................................. 25
-Message Processing Events and Sequencing Rules .......................................... 25
-Authentication Request Behavior ............................................................. 25
-Special Root Dispersion Behavior ............................................................ 30
-Test 7 Behavior .................................................................................... 30
-Spike Watch Mechanism ........................................................................ 30
-Crypto checksum generation .................................................................. 31
-Timer Events .............................................................................................. 32
-Client Polling Timer Event ...................................................................... 32
-Domain Controller Time Source Location Retry Timer Event ....................... 32
-Other Local Events ...................................................................................... 32
-Clock Selection ........................................................................................... 32
-Domain Controller Time Source Initialization .................................................. 33
-Server Details .................................................................................................. 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.2.1
-3.2.2
-3.2.3
-
-3.1.7
-3.1.8
-3.1.9
-
-3.1.6.1
-3.1.6.2
-
-3.1.6
-
-3.1.5
-
-3.2
-
-[MS-SNTP] - v20240423
-Network Time Protocol (NTP) Authentication Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 54
-
-3.2.3.1
-3.2.3.2
-
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.1.3
-
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-Initializing NetLogon Service Bits ............................................................ 36
-Initializing Request Chaining .................................................................. 36
-Higher-Layer Triggered Events ..................................................................... 37
-Group Policy Update Notification ............................................................. 37
-Service Control Manager Update Notification ............................................ 37
-Network Change Notification .................................................................. 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Authentication Response Behavior ........................................................... 37
-Domain Controller Processing of the Authenticated Server NTP Response 37
-Read-only Domain Controller Processing of the Authenticated Server NTP
-Response ....................................................................................... 39
-Non-Domain Controller Processing of the Authenticated Server NTP
-Response ....................................................................................... 41
-LocalClockDispersion Processing ............................................................. 41
-Chaining-Cache Cleaning Processing ........................................................ 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-
-4  Protocol Examples ................................................................................................. 42
-
-5  Security ................................................................................................................. 45
-Security Considerations for Implementers ........................................................... 45
-Index of Security Parameters ............................................................................ 45
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 46
-
-7  Change Tracking .................................................................................................... 52
-
-8  Index ..................................................................................................................... 53
-
-[MS-SNTP] - v20240423
-Network Time Protocol (NTP) Authentication Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 54
-
-1  Introduction
+## 1 Introduction
 
 The Network Time Protocol (NTP) Authentication Extensions consist of two authentication extensions
 that extend the Network Time Protocol (NTP) version 3, as specified in [RFC1305], and the Simple
@@ -805,7 +685,7 @@ extension defines an ExtendedAuthenticator field that extends the NTP version 3 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -854,7 +734,8 @@ Release: April 23, 2024
 
 7 / 54
 
-read-only domain controller (RODC): A domain controller (DC) that does not accept
+
+read-only domain controller (RODC): A domain controller (DC) that does not accept
 
 originating updates. Additionally, an RODC does not perform outbound replication. An RODC
 cannot be the primary domain controller (PDC) for its domain.
@@ -887,14 +768,14 @@ distinct from an RODC.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -925,7 +806,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-SCMR] Microsoft Corporation, "Service Control Manager Remote Protocol".
+
+[MS-SCMR] Microsoft Corporation, "Service Control Manager Remote Protocol".
 
 [MS-W32T] Microsoft Corporation, "W32Time Remote Protocol".
 
@@ -945,7 +827,7 @@ editor.org/info/rfc1321
 Recommendation for Key Derivation Using Pseudorandom Functions", October 2009,
 https://csrc.nist.gov/publications/detail/sp/800-108/final
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MD5Collision] Klima, V., "Tunnels in Hash Functions: MD5 Collisions Within a Minute", March 2006,
 http://eprint.iacr.org/2006/105.pdf
@@ -958,9 +840,9 @@ http://technet.microsoft.com/en-us/library/cc773263(WS.10).aspx#w2k3tr_times_too
 [MSWINREG] Microsoft Corporation, "Registry", http://msdn.microsoft.com/en-
 us/library/ms724871.aspx
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Background
+#### 1.3.1 Background
 
 NTP version 3 [RFC1305] is used to synchronize time between a client and a server. The client sends a
 request for time synchronization information to the server, and the server replies with the information
@@ -989,11 +871,12 @@ Release: April 23, 2024
 
 9 / 54
 
-[RFC1305] section 3 refers to the local clock in NTP. There can be implementation-specific parameters
+
+[RFC1305] section 3 refers to the local clock in NTP. There can be implementation-specific parameters
 that affect the algorithms governing the local clock. See [MSFT-WTSRE] for an informative description
 of examples of such parameters.
 
-1.3.2  Extensions
+#### 1.3.2 Extensions
 
 The NTP Authentication Extensions use the Netlogon Remote Protocol (as specified in [MS-NRPC]) in a
 domain environment for authentication between a client and server that are capable of establishing a
@@ -1043,7 +926,7 @@ specified in [RFC2030]. For simplicity, only the terms NTP and [RFC1305] are gen
 main body of this document. All references to NTP and [RFC1305] apply equally to SNTP and
 [RFC2030] unless the text clearly specifies otherwise.<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 For locating a domain controller (DC) that is a time source, these extensions rely on the Netlogon
 domain controller locator service, as specified in [MS-NRPC] section 3.5.4.3. For authenticating
@@ -1057,7 +940,8 @@ Release: April 23, 2024
 
 10 / 54
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-SNTP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1067,13 +951,13 @@ The W32Time Remote Protocol, as specified in [MS-W32T], is an RPC interface prot
 controlling and monitoring the Windows implementation of NTP. The protocol relationship between the
 W32Time Remote Protocol and this protocol is illustrated in [MS-W32T] section 1.4.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The NTP Authentication Extensions specify NTP authentication in a domain environment. The
 extensions, which rely on the Netlogon Remote Protocol (as specified in [MS-NRPC]), assume that a
 secure connection can be established between the client and a DC.
 
-1.5.1  Client Configuration for Authentication
+#### 1.5.1 Client Configuration for Authentication
 
 A client might need to be manually configured to participate in the NTP Authentication Extensions
 detailed in this specification.
@@ -1081,14 +965,14 @@ detailed in this specification.
 On a machine that is joined to a domain, the client uses these authentication extensions to
 synchronize time.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NTP Authentication Extensions are designed for authenticated time synchronization in domains
 between clients and domain controllers.
 
 Clients that are joined to a domain use the NTP Authentication Extensions to synchronize time.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The NTP Authentication Extensions incorporate implicit capability negotiation based on the NTP
 message length, as described in sections 3.1.5, 3.1.6, and 3.2.5.
@@ -1096,13 +980,13 @@ message length, as described in sections 3.1.5, 3.1.6, and 3.2.5.
 NTP version 3, as specified in [RFC1305], and SNTP version 4, as specified in [RFC2030], apply to this
 extension.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The NTP Authentication Extensions do not define any vendor-extensible fields. They do, however,
 redefine the Authenticator field of [RFC1305] from 96 to 160 bits (per [RFC2030]), as described in
 section 2.2.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The NTP Authentication Extensions do not use any additional standards assignments other than the
 ones in the base protocols.
@@ -1114,12 +998,13 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2  Messages
+
+## 2 Messages
 
 This section describes how the Authenticator and ExtendedAuthenticator fields are encapsulated
 on the wire.
 
-2.1  Transport
+### 2.1 Transport
 
 All NTP messages are transported through the User Datagram Protocol (UDP) in the NTP data format,
 as specified in [RFC1305] Appendix A.
@@ -1130,7 +1015,7 @@ the payload length in the UDP header and excludes the length of the UDP header.
 Security parameters used in the NTP Authentication Extensions are key identifiers, as described in
 sections 3.1.6 and 3.2.5.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This document defines four NTP message formats. Two of these formats (sections 2.2.1 and 2.2.2)
 conform to [RFC2030] section 4 and implement the optional Authenticator field. The other two
@@ -1191,7 +1076,8 @@ Release: April 23, 2024
 
 12 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1271,10 +1157,11 @@ Release: April 23, 2024
 
 13 / 54
 
-explained in section 1.3.2. The method to compute the crypto-checksum is specified in sections 3.1.5
+
+explained in section 1.3.2. The method to compute the crypto-checksum is specified in sections 3.1.5
 and 3.2.5.
 
-2.2.1  Client NTP Request
+#### 2.2.1 Client NTP Request
 
 The subfields of the Authenticator field of the Client NTP Request message include the following.
 
@@ -1309,7 +1196,7 @@ Crypto-Checksum (16 bytes): A 128-bit crypto-checksum that the encryption proced
 
 For more information, see section 3.2.5.<3>
 
-2.2.2  Server NTP Response
+#### 2.2.2 Server NTP Response
 
 The subfields of the Authenticator field of the Server NTP Response message include the following.
 
@@ -1349,7 +1236,8 @@ Release: April 23, 2024
 
 14 / 54
 
-2.2.3  Client ExtendedAuthenticator NTP Request
+
+#### 2.2.3 Client ExtendedAuthenticator NTP Request
 
 The subfields of the ExtendedAuthenticator field of the Client ExtendedAuthenticator NTP Request
 message include the following.
@@ -1434,7 +1322,7 @@ section 3.1.5.5.
 
 Crypto-Checksum (64 bytes): A 512-bit crypto-checksum that the encryption procedure computes.
 
-2.2.4  Server ExtendedAuthenticator NTP Response
+#### 2.2.4 Server ExtendedAuthenticator NTP Response
 
 The subfields of the ExtendedAuthenticator field of the Server ExtendedAuthenticator NTP Response
 message include the following.
@@ -1446,7 +1334,8 @@ Release: April 23, 2024
 
 15 / 54
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1535,14 +1424,15 @@ Release: April 23, 2024
 
 16 / 54
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The NTP Authentication Extensions operate between a client and a server during authenticated time
 synchronization.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1612,7 +1502,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Value
 
@@ -1709,7 +1600,8 @@ Release: April 23, 2024
 
 18 / 54
 
-This element is shared with the server role of the W32Time Remote Protocol [MS-W32T].
+
+This element is shared with the server role of the W32Time Remote Protocol [MS-W32T].
 
 This element can be set by using the Remote Registry Protocol [MS-RRP].
 
@@ -1792,7 +1684,8 @@ Release: April 23, 2024
 
 19 / 54
 
-Attribute
+
+Attribute
 
 Value
 
@@ -1884,7 +1777,8 @@ Release: April 23, 2024
 
 20 / 54
 
-Attribute  Value
+
+Attribute  Value
 
 Type
 
@@ -1944,9 +1838,9 @@ REG_DWORD
 
 This element can be set by using the Remote Registry Protocol [MS-RRP].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Client Polling Timer
+##### 3.1.2.1 Client Polling Timer
 
 The client polling timer (peer.peerpoll) defined in [RFC1305] section 3.2.3 is used to control the
 polling interval between transmitted Client NTP Request messages. The polling interval for this timer
@@ -1971,7 +1865,8 @@ Release: April 23, 2024
 
 21 / 54
 
-3.1.2.2  Domain Controller Time Source Location Retry Timer
+
+##### 3.1.2.2 Domain Controller Time Source Location Retry Timer
 
 The DC time source location retry timer is used to control the wait time before a retry attempt to
 locate a DC time source after a failure. Initially, the timer interval SHOULD be set to
@@ -1979,9 +1874,9 @@ ResolvePeerBackoffMinutes minutes. Every time a consecutive retry happens, the t
 doubled, up to ResolvePeerBackoffMaxTimes times. If consecutive retries continue to happen after
 ResolvePeerBackoffMaxTimes is reached, the time to wait is not doubled.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Initialization Steps
+##### 3.1.3.1 Initialization Steps
 
 The client initialization begins with the procedures described in [RFC1305] section 3.4.7.1,
 Initialization Procedure. It is followed by the initialization steps specified here.
@@ -2042,7 +1937,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.  The client MAY set the sys.refid element to "VMTP".<10> If the sys.refid element is set to
+
+7.  The client MAY set the sys.refid element to "VMTP".<10> If the sys.refid element is set to
 
 "VMTP", then:
 
@@ -2064,7 +1960,7 @@ or the Reliable_Timeserv_Announce_Auto flag set.
 The sys.refid element is defined in [RFC1305] section 3.2.1, "Common Variables", and the
 sys.refid value "LOCL" is defined in [RFC2030] section 4 "NTP Message Format".
 
-3.1.3.2  Domain Time Source Selection Algorithm
+##### 3.1.3.2 Domain Time Source Selection Algorithm
 
 The client MUST first obtain its current site by calling the DsrGetSiteName method described in [MS-
 NRPC] section 3.5.4.3.6.
@@ -2119,7 +2015,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DomainName: this parameter MUST be set to the domain name.
+
+DomainName: this parameter MUST be set to the domain name.
 
 SiteName: If CrossSiteSyncFlags is set to ALL, the client MUST set this parameter to the site
 obtained by using DsrGetSiteName; otherwise, this parameter MUST be set to NULL.
@@ -2175,7 +2072,7 @@ has bit A set (as described in [MS-NRPC] section 2.2.1.2.1).
 If a validated time source was obtained in one of the above steps, it is returned as the result of this
 algorithm. If no time source was obtained, none is returned.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 A higher-layer triggered event is used to immediately start the time synchronization process. This
 event is triggered by the W32TimeSync method in [MS-W32T]. For example, when an end user wants
@@ -2191,36 +2088,37 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client also responds to two higher-layer triggered events related to domain join and domain
+
+The client also responds to two higher-layer triggered events related to domain join and domain
 unjoin. These higher-layer triggered events are used to modify the configuration of the client when
 entering or leaving membership in a domain, respectively. For more information on domain
 membership, refer to [MS-AUTHSOD] section 1.1.1.3.
 
-3.1.4.1  Domain Join Processing
+##### 3.1.4.1 Domain Join Processing
 
 The client MUST set the TimeSourceType abstract data model element (section 3.1.1) to the value
 "NT5DS". The client MUST then reinitialize its configuration accordingly, as indicated in section 3.1.3.
 
-3.1.4.2  Domain Unjoin Processing
+##### 3.1.4.2 Domain Unjoin Processing
 
 The client MUST set the TimeSourceType abstract data model element (section 3.1.1) to the value
 "NTP". The client MUST then reinitialize its configuration accordingly, as indicated in section 3.1.3.
 
-3.1.4.3  Group Policy Update Notification
+##### 3.1.4.3 Group Policy Update Notification
 
 When the Policy Application Event described in [MS-GPOL] section 3.2.7.3 is raised, the configuration
 MUST re-initialize. See section 3.1.3.
 
-3.1.4.4  Service Control Manager Update Notification
+##### 3.1.4.4 Service Control Manager Update Notification
 
 When the SERVICE_CONTROL_PARAMCHANGE event described in [MS-SCMR] is triggered, the
 configuration MUST be re-initialized accordingly, as indicated in section 3.1.3.
 
-3.1.4.5  Network Change Notification
+##### 3.1.4.5 Network Change Notification
 
 When the IP address changes, the configuration MUST re-initialize. See section 3.1.3.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The MS-SNTP protocol supports modes according to [RFC1305] section 3.4.2 (Table 5 "Modes and
 Actions"), except that it does not support broadcast clients, NTP control message, or symmetric
@@ -2234,7 +2132,7 @@ header in the same way it occurs in the base Network Time Protocol (NTP), which 
 [RFC1305] section 3.4.2. The message format used is dependent on the value of the
 ExtendedAuthenticatorSupported ADM element (see section 3.1.1).
 
-3.1.5.1  Authentication Request Behavior
+##### 3.1.5.1 Authentication Request Behavior
 
 The following diagram illustrates the client logic for generating a Client NTP Request or Client
 ExtendedAuthenticator NTP Request message with authentication.
@@ -2246,7 +2144,8 @@ Release: April 23, 2024
 
 25 / 54
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-SNTP].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -2266,7 +2165,8 @@ Release: April 23, 2024
 
 26 / 54
 
-If the ExtendedAuthenticatorSupported ADM element is true, the client MUST construct a Client
+
+If the ExtendedAuthenticatorSupported ADM element is true, the client MUST construct a Client
 ExtendedAuthenticator NTP Request message. The Client ExtendedAuthenticator NTP Request
 message length is 120 bytes. The client sets the fields of the message as follows:
 
@@ -2302,7 +2202,8 @@ Release: April 23, 2024
 
 27 / 54
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-SNTP].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -2323,7 +2224,8 @@ Release: April 23, 2024
 
 28 / 54
 
-
+
+
 
 The client uses the NetrLogonComputeClientDigest method (as specified in [MS-NRPC] section
 3.5.4.8.3) to compute crypto-checksums for the first 48 bytes of the Server NTP Response
@@ -2406,7 +2308,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-SNTP].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2422,7 +2325,7 @@ state, not on exit.
 
 Figure 4: Client element updates
 
-3.1.5.2  Special Root Dispersion Behavior
+##### 3.1.5.2 Special Root Dispersion Behavior
 
 The client SHOULD set the Root Dispersion value in the request to 0xAAAAAAAA. If the response
 that is returned from the server contains a Root Dispersion value of 0xAAAAAAAA, then the server's
@@ -2432,12 +2335,12 @@ the server does not contain a Root Dispersion value of 0xAAAAAAAA, then the serv
 contains a Reference Timestamp value that is relative to the server's clock, and the client SHOULD
 process Test 6 as defined in [RFC1305] section 3.4.4.<15><16>
 
-3.1.5.3  Test 7 Behavior
+##### 3.1.5.3 Test 7 Behavior
 
 The client MUST NOT perform the portion of Test 7 that verifies that pkt.stratum <= sys.stratum as
 indicated in [RFC1305] section 3.4.4.
 
-3.1.5.4  Spike Watch Mechanism
+##### 3.1.5.4 Spike Watch Mechanism
 
 The following diagram illustrates the client logic for the evaluation and handling of spikes.
 
@@ -2448,7 +2351,8 @@ Release: April 23, 2024
 
 30 / 54
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-SNTP].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2488,7 +2392,7 @@ value of the LargePhaseOffset element.
 Upon exiting the hold state, the HoldCount is set to zero, the sample is accepted, and processing
 continues as indicated by the [Spike Resolved] transition.
 
-3.1.5.5  Crypto checksum generation
+##### 3.1.5.5 Crypto checksum generation
 
 This section describes the algorithm used to generate a crypto checksum using a Key Derivation
 Function ([SP800-108]). The algorithm accepts the following inputs:
@@ -2508,7 +2412,8 @@ Release: April 23, 2024
 
 31 / 54
 
-  Message: An array of bytes.
+
+  Message: An array of bytes.
 
 The checksum generation algorithm is defined as follows:
 
@@ -2532,14 +2437,14 @@ with hash function SHA512 (defined in [FIPS180-3]).
 
 The resulting 512-bit CryptoChecksum value is returned to the caller upon completion.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Client Polling Timer Event
+##### 3.1.6.1 Client Polling Timer Event
 
 When the client polling timer expires, the client prepares a Client NTP Request message as described
 in section 3.1.5.
 
-3.1.6.2  Domain Controller Time Source Location Retry Timer Event
+##### 3.1.6.2 Domain Controller Time Source Location Retry Timer Event
 
 When the DC time source location retry timer expires, the client MUST attempt to locate a time source
 by using the DsrGetDcName method defined in [MS-NRPC] section 3.5.4.3.3.
@@ -2550,11 +2455,11 @@ section 3.5.4.3.3.
 
 If a time source is found, the client MUST execute the steps in section 3.1.9 and cancel the timer.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional events are used.
 
-3.1.8  Clock Selection
+#### 3.1.8 Clock Selection
 
 Clock selection occurs as defined in [RFC1305] section 4.2, with the exception of the following
 scenario:
@@ -2571,7 +2476,8 @@ Release: April 23, 2024
 
 32 / 54
 
-3.1.9  Domain Controller Time Source Initialization
+
+#### 3.1.9 Domain Controller Time Source Initialization
 
 The client initializes the Trusted Domain abstract data model element by calling the
 NetrLogonGetTimeServiceParentDomain method (as specified in [MS-NRPC] section 3.5.4.8.6)
@@ -2598,9 +2504,9 @@ DC functional level of DS_BEHAVIOR_WIN2012 or greater (as specified in [MS-ADTS]
 then the ExtendedAuthenticatorSupported ADM element MUST be set to true; otherwise it MUST
 be set to false.<17>
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2656,7 +2562,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Informative Meaning
 
@@ -2747,7 +2654,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This element is exposed through the Windows registry via the following registry value. The value
+
+This element is exposed through the Windows registry via the following registry value. The value
 is expressed in seconds.
 
 Attribute
@@ -2807,12 +2715,12 @@ REG_DWORD
 
 This element can be set by using the Remote Registry Protocol [MS-RRP].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No new timers are required beyond those in the base NTP protocol, as specified in [RFC1305] section
 3.2.3.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server initialization begins with the procedures described in [RFC1305] section 3.4.7.1,
 "Initialization Procedure". It is followed by the following initialization steps:
@@ -2835,7 +2743,8 @@ Release: April 23, 2024
 
 35 / 54
 
-
+
+
 
 
 
@@ -2855,7 +2764,7 @@ Variables".
 All abstract data model elements are configured by the server either during initialization or when it is
 informed of a configuration change through Service Control Manager (section 3.2.4).
 
-3.2.3.1  Initializing NetLogon Service Bits
+##### 3.2.3.1 Initializing NetLogon Service Bits
 
 After general initialization is complete, the appropriate Netlogon Service Bits MUST be set as described
 in [MS-NRPC] section 3.5.4.8.5.<23>
@@ -2881,7 +2790,7 @@ If the Reliable_Timeserv_Announce_Auto flag in the AnnounceFlags abstract data m
 is set, then set the "Time service with clock hardware is running" bit to 1 only if there is an active
 association with a peer.
 
-3.2.3.2  Initializing Request Chaining
+##### 3.2.3.2 Initializing Request Chaining
 
 After general initialization is complete, the following request-chaining initialization MUST be
 performed.
@@ -2909,29 +2818,30 @@ Release: April 23, 2024
 
 36 / 54
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Group Policy Update Notification
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Group Policy Update Notification
 
 When the Policy Application Event described in [MS-GPOL] section 3.2.7.3 is raised, the configuration
 MUST re-initialize. See section 3.2.3.
 
-3.2.4.2  Service Control Manager Update Notification
+##### 3.2.4.2 Service Control Manager Update Notification
 
 When the SERVICE_CONTROL_PARAMCHANGE event described in [MS-SCMR] is triggered, the
 configuration MUST be re-initialized accordingly, as indicated in section 3.2.3.
 
-3.2.4.3  Network Change Notification
+##### 3.2.4.3 Network Change Notification
 
 When the IP address changes, the configuration MUST re-initialize. See section 3.2.3.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 This section documents deviations in the behavior of the NTP Authentication Extensions from the
 processing rules specified in [RFC1305]. Unless otherwise stated, all other processing events and
 sequencing rules conform to [RFC1305].
 
-3.2.5.1  Authentication Response Behavior
+##### 3.2.5.1 Authentication Response Behavior
 
 When the server receives a message from the client, the server examines the message length. If the
 message length is 68 bytes, the server processes the request as a Client NTP Request and responds
@@ -2948,7 +2858,7 @@ ignored as specified in [RFC1305] section 3.4.3. The NTP Authentication Extensio
 for the following NTP and SNTP association modes (as specified in [RFC1305] sections 3.2.1 and 3.3):
 client, server, and symmetric active.
 
-3.2.5.1.1 Domain Controller Processing of the Authenticated Server NTP Response
+###### 3.2.5.1.1 Domain Controller Processing of the Authenticated Server NTP Response
 
 If the server is a domain controller (DC), the server processes the response as follows.
 
@@ -2962,7 +2872,8 @@ Release: April 23, 2024
 
 37 / 54
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-SNTP].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -3002,7 +2913,8 @@ Release: April 23, 2024
 
 38 / 54
 
-If the NetrlogonComputeServerDigest method returns ERROR_NO_TRUST_LSA_SECRET, the
+
+If the NetrlogonComputeServerDigest method returns ERROR_NO_TRUST_LSA_SECRET, the
 server instead performs the processing for read-only domain controllers (RODCs)
 specified in section 3.2.5.1.2, and performs no further processing in this section.
 
@@ -3062,7 +2974,7 @@ set all other bits to zero.
 
 ExtendedAuthenticator NTP Response message.
 
-3.2.5.1.2 Read-only Domain Controller Processing of the Authenticated Server NTP
+###### 3.2.5.1.2 Read-only Domain Controller Processing of the Authenticated Server NTP
 
 Response
 
@@ -3079,7 +2991,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the Client ExtendedAuthenticator NTP Request (section 2.2.3). This RID is then further processed as
+
+the Client ExtendedAuthenticator NTP Request (section 2.2.3). This RID is then further processed as
 specified below.
 
 If the RID equals the RID portion of a security identifier (SID) (see [MS-DTYP] section 2.4.2) of a
@@ -3170,7 +3083,8 @@ Release: April 23, 2024
 
 40 / 54
 
-  Upon receiving the response from the server's peer:
+
+  Upon receiving the response from the server's peer:
 
 
 
@@ -3191,20 +3105,20 @@ Address field in the entry, as described in [RFC1305] section 3.4.2.
 
 described in section 3.1.5.
 
-3.2.5.1.3 Non-Domain Controller Processing of the Authenticated Server NTP
+###### 3.2.5.1.3 Non-Domain Controller Processing of the Authenticated Server NTP
 
 Response
 
 If the server is not a DC or an RODC, the server MUST ignore the client request without responding.
 
-3.2.5.2  LocalClockDispersion Processing
+##### 3.2.5.2 LocalClockDispersion Processing
 
 If the ADM element sys.refid is set to "LOCL", then the server MUST set the Root Dispersion
 (sys.rootdispersion) ADM element to the value of the LocalClockDispersion element. The
 sys.refid and sys.rootdispersion ADM elements are defined in [RFC1305] section 3.2.1, "Common
 Variables".
 
-3.2.5.3  Chaining-Cache Cleaning Processing
+##### 3.2.5.3 Chaining-Cache Cleaning Processing
 
 To clean the chaining cache, each entry in the ChainingCache ADM element is processed using the
 following logic.
@@ -3218,11 +3132,11 @@ ChainingCache.
 
 MUST be removed from ChainingCache.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are used.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 No additional events are used.
 
@@ -3233,11 +3147,12 @@ Release: April 23, 2024
 
 41 / 54
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-SNTP].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following example shows a successful authenticated time synchronization sequence using the NTP
 Authentication Extensions between a client and a server.
@@ -3296,7 +3211,8 @@ Release: April 23, 2024
 
 42 / 54
 
-Original Timestamp
+
+Original Timestamp
 
 ...
 
@@ -3372,7 +3288,8 @@ Release: April 23, 2024
 
 43 / 54
 
-Receive Timestamp
+
+Receive Timestamp
 
 ...
 
@@ -3402,9 +3319,10 @@ Release: April 23, 2024
 
 44 / 54
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The cryptographic hash utilized in the Server NTP Response message and associated processing is
 calculated using the Netlogon Remote Protocol (as specified in [MS-NRPC]) message protection
@@ -3418,7 +3336,7 @@ the client. Such an invalid response message could lead to the client being sync
 time. The client checks the time difference between the client and the server, and synchronizes time
 only if the time difference is within some reasonable range.<29>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -3441,7 +3359,8 @@ Release: April 23, 2024
 
 45 / 54
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3589,7 +3508,8 @@ Release: April 23, 2024
 
 46 / 54
 
-Windows Server releases
+
+Windows Server releases
 
 Client role
 
@@ -3673,7 +3593,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Windows 2000 Server returns a response that contains a Root Dispersion value equal to the value
+
+Windows 2000 Server returns a response that contains a Root Dispersion value equal to the value
 sent by the client when the server is unsynchronized.
 
 <7> Section 3.1.1: On Windows 2000 the NtpServer registry value was named "LocalNTP". It exists in
@@ -3780,7 +3701,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-jump to polling every 8 hours (the Poll Interval value is 14 for this phase). After every unsuccessful
+
+jump to polling every 8 hours (the Poll Interval value is 14 for this phase). After every unsuccessful
 poll attempt, the interval reverts to 45 minutes.
 
 <9> Section 3.1.3.1: Windows implementation imposes no constraints on the LargePhaseOffset,
@@ -3854,7 +3776,8 @@ Network Time Protocol (NTP) Authentication Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Value
 
@@ -3930,7 +3853,8 @@ Release: April 23, 2024
 
 50 / 54
 
-<28> Section 3.2.5.1.1: On Windows implementations of the protocol server, machine accounts do
+
+<28> Section 3.2.5.1.1: On Windows implementations of the protocol server, machine accounts do
 not keep a password history and therefore have only a current password. Only domain trust accounts
 keep the password history; therefore, a domain trust account can have an old password and a current
 password. In the absence of an old password, the current password is used (for both the 0 and the 1
@@ -3946,7 +3870,8 @@ Release: April 23, 2024
 
 51 / 54
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3990,7 +3915,8 @@ Release: April 23, 2024
 
 52 / 54
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4124,7 +4050,8 @@ Relationship to other protocols 10
 
 53 / 54
 
-S
+
+S
 
 Security
    implementer considerations 45

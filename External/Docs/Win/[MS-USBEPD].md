@@ -63,7 +63,8 @@ Release: January 26, 2026
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -94,92 +95,45 @@ Release: January 26, 2026
 
 2 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Message Header](#221-common-message-header)
+    - [2.2.2 Device Registration Message](#222-device-registration-message)
+    - [2.2.3 Platform Information Message](#223-platform-information-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Host and Device Details](#31-host-and-device-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-Common Message Header .............................................................................. 7
-Device Registration Message .......................................................................... 8
-Platform Information Message ........................................................................ 9
-
-2.2.1
-2.2.2
-2.2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 12
-Host and Device Details .................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 12
-Message Processing Events and Sequencing Rules .......................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 13
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 16
-
-8  Index ..................................................................................................................... 17
-
-[MS-USBEPD] - v20260126
-USB Protocol: Platform Detection Extensions
-Copyright © 2026 Microsoft Corporation
-Release: January 26, 2026
-
-3 / 17
-
-1  Introduction
+## 1 Introduction
 
 The USB Protocol: Platform Detection Extensions protocol extends the USB 3.2 protocol to allow USB
 1.1, 2.0, 3.0, 3.1 and 3.2 devices that support Microsoft OS Descriptors to query a USB Host’s
@@ -191,7 +145,7 @@ has to offer.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -207,14 +161,14 @@ devices to be connected and disconnected without shutting down or restarting the
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -245,11 +199,12 @@ USB Protocol: Platform Detection Extensions
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The USB Protocol Platform Detection Extensions protocol is based on the USB 3.2 Protocol [USB-IF-
 SPC32] and Microsoft OS Descriptors protocol specified in [MSLEARN-OS10Desc] and [MSLEARN-
@@ -270,7 +225,7 @@ which Host USB platform the device is connected to. Based on the result the USB 
 behavior to either expect a custom driver or to behave as a standard USB device for which the OS
 does not provide a driver.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The USB Protocol: Platform Detection Extensions protocol is an extension of the existing USB 3.2
 Protocol Specification ([USB-IF-SPC32]) and Microsoft OS Descriptors Specification. This protocol uses
@@ -279,7 +234,7 @@ by a USB device. This protocol also makes extensive use of USB channel Control T
 the USB 3.2 Specification. Therefore, basic familiarity is assumed with the USB 3.2 Protocol
 Specification and the Microsoft OS Descriptors specification.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Platform Detection extensions to the USB 3.2 protocol require that the USB device fully
 enumerate with the USB host. For more details about this process, see the USB 3.2 specification
@@ -290,7 +245,7 @@ Compatible ID of ”PLATDE”. For more details about this process, see the Micr
 specification specified in [MSLEARN-OS10Desc] and [MSLEARN-OS20Desc] Compatible ID descriptor
 subsection.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is only intended to be used by USB devices connecting to an unknown USB Host for
 which they wish to detect what is the specific operating system or platform Host.
@@ -299,7 +254,7 @@ This protocol is not intended to be a replacement for USB device functionality o
 of the Microsoft OS Descriptors protocol for which this protocol extends. Rather it intends to define a
 specific Compatible ID and its functions to allow a USB device to detect its Host’s platform.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
@@ -310,11 +265,12 @@ Release: January 26, 2026
 
 5 / 17
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -325,9 +281,10 @@ Release: January 26, 2026
 
 6 / 17
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 USB Protocol: Platform Detection Extensions protocol uses the USB 3.2 specifications' USB control
 channel exclusively for transport of the protocol-specific messages ([USB-IF-SPC32]).
@@ -351,12 +308,12 @@ header. The host MAY specify any value in wValue, and unless otherwise specified
 document, the device MUST reply with the same wValue that the host sends. Unless otherwise
 specified, wValue has no meaning.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections define the composition of USB messages used by the USB Protocol: Platform
 Detection Extensions protocol.
 
-2.2.1  Common Message Header
+#### 2.2.1 Common Message Header
 
 All USB control pipe messages use the following common header.
 
@@ -404,7 +361,8 @@ USB Protocol: Platform Detection Extensions
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-Sequence Number (2 bytes): A 16-bit unsigned integer that represents the number of times a
+
+Sequence Number (2 bytes): A 16-bit unsigned integer that represents the number of times a
 
 specific command message has been sent. The Host and Device MUST increment this number from
 an initial value of one and the Host and Device MUST overflow from 0xFFFF to 0x0001 without
@@ -418,7 +376,7 @@ In this protocol all multibyte values are sent as little-endian even on big-endi
 architectures. Implementers should take care to ensure that they decode any messages over the wire
 into the appropriate endianness for their target platform.
 
-2.2.2  Device Registration Message
+#### 2.2.2 Device Registration Message
 
 The Device Registration message is a send-receive-reply message sent by the host after enumeration.
 The host MUST send this message within 800 ms of enumeration. Otherwise, the device can assume
@@ -486,7 +444,8 @@ USB Protocol: Platform Detection Extensions
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -536,7 +495,7 @@ this send receive reply message transaction.
 
 A - EOM (0): Empty, zero bytes. Followed by EOM: End of Message.
 
-2.2.3  Platform Information Message
+#### 2.2.3 Platform Information Message
 
 The Platform Information Message is a send-receive-reply message sent by the host. The host MUST
 send this message after Device Registration messages have been ACK’d by the device.
@@ -586,7 +545,8 @@ USB Protocol: Platform Detection Extensions
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-Sequence Number (2 bytes): A 16-bit unsigned integer that represents the number of times a
+
+Sequence Number (2 bytes): A 16-bit unsigned integer that represents the number of times a
 
 specific command message has been sent. The host and device MUST increment this number from
 an initial value of one and the host and device MUST overflow from 0xFFFF to 0x0001 without
@@ -696,7 +656,8 @@ Release: January 26, 2026
 
 10 / 17
 
-an initial value of one and the host and device MUST overflow from 0xFFFF to 0x0001 without
+
+an initial value of one and the host and device MUST overflow from 0xFFFF to 0x0001 without
 passing through zero (0x0000).
 
 A - Payload (0): Empty, zero bytes. Followed by EOM: End of Message.
@@ -708,9 +669,10 @@ Release: January 26, 2026
 
 11 / 17
 
-3  Protocol Details
 
-3.1  Host and Device Details
+## 3 Protocol Details
+
+### 3.1 Host and Device Details
 
 The USB platform detection protocol re-uses the specified roles of USB Host and USB Device from the
 USB 3.2 Specification, [USB-IF-SPC32].
@@ -727,31 +689,31 @@ The Device follows the roles of the USB Device as specified in the USB 3.2 speci
 platform detection extensions, the Device replies to both USB control channel messages with send-
 receive-reply message semantics.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -762,7 +724,8 @@ Release: January 26, 2026
 
 12 / 17
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Consider the example of a Contoso USB device that would like to load a special driver that takes
 advantage of unique features only present on Windows Server 2016 operating system and later.
@@ -798,9 +761,10 @@ Release: January 26, 2026
 
 13 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers of the USB Platform Detection extensions protocol should take care to validate the size
 of the USB control transactions to ensure they meet or exceed the specified messages' size in this
@@ -810,7 +774,7 @@ Note that per the USB 3.2 specification USB Hosts or devices can add any number 
 of a control transfer message, as a result implementations MUST not fail if they receive too much
 data, only too little data.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -821,7 +785,8 @@ Release: January 26, 2026
 
 14 / 17
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -878,7 +843,8 @@ Release: January 26, 2026
 
 15 / 17
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -965,7 +931,8 @@ Release: January 26, 2026
 
 16 / 17
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 5

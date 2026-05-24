@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 85
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -522,487 +524,197 @@ Release: April 23, 2024
 
 3 / 85
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-
-1.3.1.2.1
-1.3.1.2.2
-1.3.1.2.3
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Protocol Roles ............................................................................................ 11
-The TIP Application Role ........................................................................ 12
-The Transaction Manager Role ................................................................ 12
-The TIP Superior Transaction Manager Facet ....................................... 12
-The TIP Subordinate Transaction Manager Facet .................................. 12
-The TIP Transaction Manager Communicating with an Application Facet . 12
-Common Scenarios ..................................................................................... 13
-Starting and Completing a Transaction .................................................... 13
-Pulling a Transaction ............................................................................. 14
-Pushing a Transaction ............................................................................ 15
-TIP Two-Phase Commit .......................................................................... 16
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 18
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Message Syntax ............................................................................................... 19
-ALREADYPUSHED ....................................................................................... 20
-BEGUN ...................................................................................................... 20
-IDENTIFY ................................................................................................... 20
-PULL ......................................................................................................... 20
-PUSH ........................................................................................................ 20
-PUSHED .................................................................................................... 20
-QUERY ...................................................................................................... 20
-RECONNECT ............................................................................................... 20
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3.1.1.3.1
-3.1.1.3.2
-3.1.1.3.3
-3.1.1.3.4
-3.1.1.3.5
-
-3  Protocol Details ..................................................................................................... 21
-Common Details .............................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Data Elements ...................................................................................... 21
-TIP Connection Object ........................................................................... 22
-TIP Connection Management Operations .................................................. 22
-GetTipConnection Operation ............................................................. 22
-GetTipConnectionFromAddress Operation ........................................... 23
-HasPartnerTransaction Operation ...................................................... 24
-FreeTipConnection Operation ............................................................ 24
-TerminateTipConnection Operation .................................................... 24
-TIP Command Object............................................................................. 24
-Transaction Identifier Converter Operations ............................................. 25
-Convert TIP Transaction Identifier to Transaction Identifier Operation .... 25
-Convert Transaction Identifier to TIP Transaction Identifier Operation .... 25
-Primary State Transition Table ................................................................ 25
-Secondary State Transition Table ............................................................ 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-
-3.1.1.5.1
-3.1.1.5.2
-
-3.1.1.4
-3.1.1.5
-
-3.1.1.6
-3.1.1.7
-
-3.1.2
-3.1.3
-
-[MS-TIPP] - v20240423
-Transaction Internet Protocol (TIP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 85
-
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-
-3.1.6
-3.1.7
-
-3.1.7.1
-3.1.7.2
-
-3.1.7.2.1
-3.1.7.2.2
-
-Higher-Layer Triggered Events ..................................................................... 27
-Message Processing Events and Sequencing Rules .......................................... 27
-Receiving BEGUN TIP Command ............................................................. 27
-Receiving CANTMULTIPLEX TIP Command ................................................ 27
-Receiving CANTTLS TIP Command .......................................................... 27
-Receiving IDENTIFIED TIP Command ....................................................... 27
-Receiving IDENTIFY TIP Command .......................................................... 28
-Receiving MULTIPLEX TIP Command ........................................................ 29
-Receiving MULTIPLEXING TIP Command .................................................. 29
-Receiving NEEDTLS TIP Command .......................................................... 29
-Receiving NOTBEGUN TIP Command ....................................................... 30
-Receiving TLS TIP Command .................................................................. 30
-Receiving TLSING TIP Command ............................................................. 30
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-Invalid TIP Command Event ................................................................... 30
-Transport Events .................................................................................. 30
-Received Message ........................................................................... 30
-Transport Connection Down .............................................................. 31
-TIP Superior Transaction Manager Facet Details ................................................... 31
-Abstract Data Model .................................................................................... 31
-TIP Superior Transaction Manager Facet State Transition Table ................... 32
-Timers ...................................................................................................... 33
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 34
-Push Transaction .................................................................................. 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Receiving ABORTED TIP Command .......................................................... 35
-Receiving ALREADYPUSHED TIP Command ............................................... 35
-Receiving COMMITTED TIP Command ...................................................... 36
-Receiving NOTPUSHED TIP Command ...................................................... 36
-Receiving NOTRECONNECTED TIP Command ............................................ 37
-Receiving PREPARED TIP Command ........................................................ 37
-Receiving PULL TIP Command ................................................................ 38
-Receiving PUSHED TIP Command ............................................................ 39
-Receiving QUERY TIP Command .............................................................. 40
-Receiving READONLY TIP Command ........................................................ 40
-Receiving RECONNECTED TIP Command .................................................. 41
-Receiving ERROR TIP Command .............................................................. 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 42
-Invalid TIP Command Event ................................................................... 42
-Process Error ........................................................................................ 42
-Events Signaled by the Core Transaction Manager Facet ............................ 43
-Begin Commit ................................................................................. 43
-Begin Phase One ............................................................................. 44
-Begin Rollback ................................................................................ 44
-Create Subordinate Enlistment Failure................................................ 44
-Create Subordinate Enlistment Success .............................................. 45
-Transport Events .................................................................................. 46
-Transport Connection Down .............................................................. 46
-TIP Subordinate Transaction Manager Facet Details .............................................. 46
-Abstract Data Model .................................................................................... 46
-TIP Subordinate Transaction Manager Facet State Transition Table .............. 47
-Timers ...................................................................................................... 48
-Query Timer ......................................................................................... 48
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-
-3.2.1.1
-
-3.2
-
-3.2.1
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-
-3.2.6
-3.2.7
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.2.7.3.1
-3.2.7.3.2
-3.2.7.3.3
-3.2.7.3.4
-3.2.7.3.5
-
-3.2.7.4
-
-3.2.7.4.1
-
-3.3
-
-3.3.1.1
-
-3.3.2.1
-
-3.3.1
-
-3.3.2
-
-3.3.3
-3.3.4
-
-[MS-TIPP] - v20240423
-Transaction Internet Protocol (TIP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 85
-
-3.3.5
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-3.3.5.10
-
-Pull Transaction .................................................................................... 49
-Message Processing Events and Sequencing Rules .......................................... 50
-Receiving ABORT TIP Command .............................................................. 50
-Receiving COMMIT TIP Command ............................................................ 50
-Receiving NOTPULLED TIP Command ....................................................... 51
-Receiving PREPARE TIP Command ........................................................... 51
-Receiving PULLED TIP Command ............................................................. 52
-Receiving PUSH TIP Command ................................................................ 52
-Receiving QUERIEDEXISTS TIP Command ................................................ 53
-Receiving QUERIEDNOTFOUND TIP Command .......................................... 54
-Receiving RECONNECT TIP Command ...................................................... 54
-Receiving ERROR TIP Command .............................................................. 56
-Timer Events .............................................................................................. 56
-Query Timer Expired Event ..................................................................... 56
-Other Local Events ...................................................................................... 56
-Invalid TIP Command Event ................................................................... 56
-Process Error ........................................................................................ 57
-Events Signaled by the Core Transaction Manager Facet ............................ 58
-Commit Complete ............................................................................ 58
-Create Superior Enlistment Success ................................................... 58
-Create Superior Enlistment Failure ..................................................... 59
-Phase Zero Complete ....................................................................... 59
-Phase One Complete ........................................................................ 60
-Recover In Doubt Transaction ........................................................... 61
-Rollback Complete ........................................................................... 61
-Unilaterally Aborted ......................................................................... 62
-Transport Events .................................................................................. 62
-Transport Connection Down .............................................................. 62
-TIP Transaction Manager Communicating with an Application Facet Details ............. 63
-Abstract Data Model .................................................................................... 63
-
-3.3.7.3.1
-3.3.7.3.2
-3.3.7.3.3
-3.3.7.3.4
-3.3.7.3.5
-3.3.7.3.6
-3.3.7.3.7
-3.3.7.3.8
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-
-3.3.7.4.1
-
-3.3.7.4
-
-TIP Transaction Manager Communicating with an Application Facet State
-Transition Table .................................................................................... 63
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Higher-Layer Triggered Events ..................................................................... 64
-Message Processing Events and Sequencing Rules .......................................... 64
-Receiving ABORT TIP Command .............................................................. 64
-Receiving BEGIN TIP Command .............................................................. 65
-Receiving COMMIT TIP Command ............................................................ 65
-Receiving ERROR TIP Command .............................................................. 66
-Timer Events .............................................................................................. 66
-Other Local Events ...................................................................................... 66
-Invalid TIP Command Event ................................................................... 66
-Events Signaled by the Core Transaction Manager Facet ............................ 67
-Create Transaction Failure ................................................................ 67
-Create Transaction Success .............................................................. 67
-Phase Zero Complete ....................................................................... 67
-Phase One Complete ........................................................................ 68
-Rollback Complete ........................................................................... 68
-Unilaterally Aborted ......................................................................... 69
-Transport Events .................................................................................. 69
-Transport Connection Down .............................................................. 69
-
-3.4.7.1
-3.4.7.2
-
-3.4.7.2.1
-3.4.7.2.2
-3.4.7.2.3
-3.4.7.2.4
-3.4.7.2.5
-3.4.7.2.6
-
-3.4.7.3
-
-3.4.7.3.1
-
-3.4
-
-3.4.1
-
-3.4.1.1
-
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-3.4.5.4
-
-3.4.6
-3.4.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 70
-Transaction Processing Scenario ........................................................................ 70
-Creating the TIP Connection ......................................................................... 70
-Propagating the Transaction ......................................................................... 71
-Pull Propagation .................................................................................... 71
-
-4.1.1
-4.1.2
-
-4.1.2.1
-
-[MS-TIPP] - v20240423
-Transaction Internet Protocol (TIP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 85
-
-4.1.2.2
-
-4.1.3
-
-4.1.3.1
-
-4.1.3.1.1
-4.1.3.1.2
-4.1.3.1.3
-4.1.3.1.4
-
-Push Propagation .................................................................................. 72
-Committing the Transaction ......................................................................... 73
-Two-Phase Commit ............................................................................... 73
-Read Only ...................................................................................... 73
-Phase One ...................................................................................... 73
-Recovery ........................................................................................ 74
-Phase Two ...................................................................................... 75
-Single-Phase Commit ............................................................................ 76
-Begin Scenario ................................................................................................. 76
-Creating the TIP Connection ......................................................................... 76
-Beginning the Transaction ........................................................................... 76
-Committing the Transaction ......................................................................... 76
-
-4.1.3.2
-
-4.2
-
-4.2.1
-4.2.2
-4.2.3
-
-5  Security ................................................................................................................. 77
-Security Considerations for Implementers ........................................................... 77
-Index of Security Parameters ............................................................................ 77
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 78
-
-7  Appendix B: Summary of Extensions ..................................................................... 80
-
-8  Change Tracking .................................................................................................... 82
-
-9  Index ..................................................................................................................... 83
-
-[MS-TIPP] - v20240423
-Transaction Internet Protocol (TIP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 85
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Protocol Roles](#131-protocol-roles)
+      - [1.3.1.1 The TIP Application Role](#1311-the-tip-application-role)
+      - [1.3.1.2 The Transaction Manager Role](#1312-the-transaction-manager-role)
+        - [1.3.1.2.1 The TIP Superior Transaction Manager Facet](#13121-the-tip-superior-transaction-manager-facet)
+        - [1.3.1.2.2 The TIP Subordinate Transaction Manager Facet](#13122-the-tip-subordinate-transaction-manager-facet)
+        - [1.3.1.2.3 The TIP Transaction Manager Communicating with an Application Facet](#13123-the-tip-transaction-manager-communicating-with-an-application-facet)
+    - [1.3.2 Common Scenarios](#132-common-scenarios)
+      - [1.3.2.1 Starting and Completing a Transaction](#1321-starting-and-completing-a-transaction)
+      - [1.3.2.2 Pulling a Transaction](#1322-pulling-a-transaction)
+      - [1.3.2.3 Pushing a Transaction](#1323-pushing-a-transaction)
+      - [1.3.2.4 TIP Two-Phase Commit](#1324-tip-two-phase-commit)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 ALREADYPUSHED](#221-alreadypushed)
+    - [2.2.2 BEGUN](#222-begun)
+    - [2.2.3 IDENTIFY](#223-identify)
+    - [2.2.4 PULL](#224-pull)
+    - [2.2.5 PUSH](#225-push)
+    - [2.2.6 PUSHED](#226-pushed)
+    - [2.2.7 QUERY](#227-query)
+    - [2.2.8 RECONNECT](#228-reconnect)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Data Elements](#3111-data-elements)
+      - [3.1.1.2 TIP Connection Object](#3112-tip-connection-object)
+      - [3.1.1.3 TIP Connection Management Operations](#3113-tip-connection-management-operations)
+        - [3.1.1.3.1 GetTipConnection Operation](#31131-gettipconnection-operation)
+        - [3.1.1.3.2 GetTipConnectionFromAddress Operation](#31132-gettipconnectionfromaddress-operation)
+        - [3.1.1.3.3 HasPartnerTransaction Operation](#31133-haspartnertransaction-operation)
+        - [3.1.1.3.4 FreeTipConnection Operation](#31134-freetipconnection-operation)
+        - [3.1.1.3.5 TerminateTipConnection Operation](#31135-terminatetipconnection-operation)
+      - [3.1.1.4 TIP Command Object](#3114-tip-command-object)
+      - [3.1.1.5 Transaction Identifier Converter Operations](#3115-transaction-identifier-converter-operations)
+        - [3.1.1.5.1 Convert TIP Transaction Identifier to Transaction Identifier Operation](#31151-convert-tip-transaction-identifier-to-transaction-identifier-operation)
+        - [3.1.1.5.2 Convert Transaction Identifier to TIP Transaction Identifier Operation](#31152-convert-transaction-identifier-to-tip-transaction-identifier-operation)
+      - [3.1.1.6 Primary State Transition Table](#3116-primary-state-transition-table)
+      - [3.1.1.7 Secondary State Transition Table](#3117-secondary-state-transition-table)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving BEGUN TIP Command](#3151-receiving-begun-tip-command)
+      - [3.1.5.2 Receiving CANTMULTIPLEX TIP Command](#3152-receiving-cantmultiplex-tip-command)
+      - [3.1.5.3 Receiving CANTTLS TIP Command](#3153-receiving-canttls-tip-command)
+      - [3.1.5.4 Receiving IDENTIFIED TIP Command](#3154-receiving-identified-tip-command)
+      - [3.1.5.5 Receiving IDENTIFY TIP Command](#3155-receiving-identify-tip-command)
+      - [3.1.5.6 Receiving MULTIPLEX TIP Command](#3156-receiving-multiplex-tip-command)
+      - [3.1.5.7 Receiving MULTIPLEXING TIP Command](#3157-receiving-multiplexing-tip-command)
+      - [3.1.5.8 Receiving NEEDTLS TIP Command](#3158-receiving-needtls-tip-command)
+      - [3.1.5.9 Receiving NOTBEGUN TIP Command](#3159-receiving-notbegun-tip-command)
+      - [3.1.5.10 Receiving TLS TIP Command](#31510-receiving-tls-tip-command)
+      - [3.1.5.11 Receiving TLSING TIP Command](#31511-receiving-tlsing-tip-command)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Invalid TIP Command Event](#3171-invalid-tip-command-event)
+      - [3.1.7.2 Transport Events](#3172-transport-events)
+        - [3.1.7.2.1 Received Message](#31721-received-message)
+        - [3.1.7.2.2 Transport Connection Down](#31722-transport-connection-down)
+  - [3.2 TIP Superior Transaction Manager Facet Details](#32-tip-superior-transaction-manager-facet-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 TIP Superior Transaction Manager Facet State Transition Table](#3211-tip-superior-transaction-manager-facet-state-transition-table)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Push Transaction](#3241-push-transaction)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving ABORTED TIP Command](#3251-receiving-aborted-tip-command)
+      - [3.2.5.2 Receiving ALREADYPUSHED TIP Command](#3252-receiving-alreadypushed-tip-command)
+      - [3.2.5.3 Receiving COMMITTED TIP Command](#3253-receiving-committed-tip-command)
+      - [3.2.5.4 Receiving NOTPUSHED TIP Command](#3254-receiving-notpushed-tip-command)
+      - [3.2.5.5 Receiving NOTRECONNECTED TIP Command](#3255-receiving-notreconnected-tip-command)
+      - [3.2.5.6 Receiving PREPARED TIP Command](#3256-receiving-prepared-tip-command)
+      - [3.2.5.7 Receiving PULL TIP Command](#3257-receiving-pull-tip-command)
+      - [3.2.5.8 Receiving PUSHED TIP Command](#3258-receiving-pushed-tip-command)
+      - [3.2.5.9 Receiving QUERY TIP Command](#3259-receiving-query-tip-command)
+      - [3.2.5.10 Receiving READONLY TIP Command](#32510-receiving-readonly-tip-command)
+      - [3.2.5.11 Receiving RECONNECTED TIP Command](#32511-receiving-reconnected-tip-command)
+      - [3.2.5.12 Receiving ERROR TIP Command](#32512-receiving-error-tip-command)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Invalid TIP Command Event](#3271-invalid-tip-command-event)
+      - [3.2.7.2 Process Error](#3272-process-error)
+      - [3.2.7.3 Events Signaled by the Core Transaction Manager Facet](#3273-events-signaled-by-the-core-transaction-manager-facet)
+        - [3.2.7.3.1 Begin Commit](#32731-begin-commit)
+        - [3.2.7.3.2 Begin Phase One](#32732-begin-phase-one)
+        - [3.2.7.3.3 Begin Rollback](#32733-begin-rollback)
+        - [3.2.7.3.4 Create Subordinate Enlistment Failure](#32734-create-subordinate-enlistment-failure)
+        - [3.2.7.3.5 Create Subordinate Enlistment Success](#32735-create-subordinate-enlistment-success)
+      - [3.2.7.4 Transport Events](#3274-transport-events)
+        - [3.2.7.4.1 Transport Connection Down](#32741-transport-connection-down)
+  - [3.3 TIP Subordinate Transaction Manager Facet Details](#33-tip-subordinate-transaction-manager-facet-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 TIP Subordinate Transaction Manager Facet State Transition Table](#3311-tip-subordinate-transaction-manager-facet-state-transition-table)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Query Timer](#3321-query-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Pull Transaction](#3341-pull-transaction)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving ABORT TIP Command](#3351-receiving-abort-tip-command)
+      - [3.3.5.2 Receiving COMMIT TIP Command](#3352-receiving-commit-tip-command)
+      - [3.3.5.3 Receiving NOTPULLED TIP Command](#3353-receiving-notpulled-tip-command)
+      - [3.3.5.4 Receiving PREPARE TIP Command](#3354-receiving-prepare-tip-command)
+      - [3.3.5.5 Receiving PULLED TIP Command](#3355-receiving-pulled-tip-command)
+      - [3.3.5.6 Receiving PUSH TIP Command](#3356-receiving-push-tip-command)
+      - [3.3.5.7 Receiving QUERIEDEXISTS TIP Command](#3357-receiving-queriedexists-tip-command)
+      - [3.3.5.8 Receiving QUERIEDNOTFOUND TIP Command](#3358-receiving-queriednotfound-tip-command)
+      - [3.3.5.9 Receiving RECONNECT TIP Command](#3359-receiving-reconnect-tip-command)
+      - [3.3.5.10 Receiving ERROR TIP Command](#33510-receiving-error-tip-command)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Query Timer Expired Event](#3361-query-timer-expired-event)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Invalid TIP Command Event](#3371-invalid-tip-command-event)
+      - [3.3.7.2 Process Error](#3372-process-error)
+      - [3.3.7.3 Events Signaled by the Core Transaction Manager Facet](#3373-events-signaled-by-the-core-transaction-manager-facet)
+        - [3.3.7.3.1 Commit Complete](#33731-commit-complete)
+        - [3.3.7.3.2 Create Superior Enlistment Success](#33732-create-superior-enlistment-success)
+        - [3.3.7.3.3 Create Superior Enlistment Failure](#33733-create-superior-enlistment-failure)
+        - [3.3.7.3.4 Phase Zero Complete](#33734-phase-zero-complete)
+        - [3.3.7.3.5 Phase One Complete](#33735-phase-one-complete)
+        - [3.3.7.3.6 Recover In Doubt Transaction](#33736-recover-in-doubt-transaction)
+        - [3.3.7.3.7 Rollback Complete](#33737-rollback-complete)
+        - [3.3.7.3.8 Unilaterally Aborted](#33738-unilaterally-aborted)
+      - [3.3.7.4 Transport Events](#3374-transport-events)
+        - [3.3.7.4.1 Transport Connection Down](#33741-transport-connection-down)
+  - [3.4 TIP Transaction Manager Communicating with an Application Facet Details](#34-tip-transaction-manager-communicating-with-an-application-facet-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+      - [3.4.1.1 TIP Transaction Manager Communicating with an Application Facet State](#3411-tip-transaction-manager-communicating-with-an-application-facet-state)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Receiving ABORT TIP Command](#3451-receiving-abort-tip-command)
+      - [3.4.5.2 Receiving BEGIN TIP Command](#3452-receiving-begin-tip-command)
+      - [3.4.5.3 Receiving COMMIT TIP Command](#3453-receiving-commit-tip-command)
+      - [3.4.5.4 Receiving ERROR TIP Command](#3454-receiving-error-tip-command)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+      - [3.4.7.1 Invalid TIP Command Event](#3471-invalid-tip-command-event)
+      - [3.4.7.2 Events Signaled by the Core Transaction Manager Facet](#3472-events-signaled-by-the-core-transaction-manager-facet)
+        - [3.4.7.2.1 Create Transaction Failure](#34721-create-transaction-failure)
+        - [3.4.7.2.2 Create Transaction Success](#34722-create-transaction-success)
+        - [3.4.7.2.3 Phase Zero Complete](#34723-phase-zero-complete)
+        - [3.4.7.2.4 Phase One Complete](#34724-phase-one-complete)
+        - [3.4.7.2.5 Rollback Complete](#34725-rollback-complete)
+        - [3.4.7.2.6 Unilaterally Aborted](#34726-unilaterally-aborted)
+      - [3.4.7.3 Transport Events](#3473-transport-events)
+        - [3.4.7.3.1 Transport Connection Down](#34731-transport-connection-down)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Transaction Processing Scenario](#41-transaction-processing-scenario)
+    - [4.1.1 Creating the TIP Connection](#411-creating-the-tip-connection)
+    - [4.1.2 Propagating the Transaction](#412-propagating-the-transaction)
+      - [4.1.2.1 Pull Propagation](#4121-pull-propagation)
+      - [4.1.2.2 Push Propagation](#4122-push-propagation)
+    - [4.1.3 Committing the Transaction](#413-committing-the-transaction)
+      - [4.1.3.1 Two-Phase Commit](#4131-two-phase-commit)
+        - [4.1.3.1.1 Read Only](#41311-read-only)
+        - [4.1.3.1.2 Phase One](#41312-phase-one)
+        - [4.1.3.1.3 Recovery](#41313-recovery)
+        - [4.1.3.1.4 Phase Two](#41314-phase-two)
+      - [4.1.3.2 Single-Phase Commit](#4132-single-phase-commit)
+  - [4.2 Begin Scenario](#42-begin-scenario)
+    - [4.2.1 Creating the TIP Connection](#421-creating-the-tip-connection)
+    - [4.2.2 Beginning the Transaction](#422-beginning-the-transaction)
+    - [4.2.3 Committing the Transaction](#423-committing-the-transaction)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Appendix B: Summary of Extensions](#7-appendix-b-summary-of-extensions)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies a set of extensions to the standard Transaction Internet Protocol (TIP) Version
 3.0, as specified in [RFC2371]. This specification assumes that the reader has familiarity with the
@@ -1012,7 +724,7 @@ are repeated in this specification when needed to provide clarity.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1075,7 +787,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-single-phase commit: An optimization of the Two-Phase Commit Protocol in which a transaction
+
+single-phase commit: An optimization of the Two-Phase Commit Protocol in which a transaction
 manager delegates the right to decide the outcome of a transaction to its only subordinate
 participant. This optimization can result in an In Doubt outcome.
 
@@ -1151,7 +864,8 @@ Release: April 23, 2024
 
 9 / 85
 
-two-phase commit: An agreement protocol that is used to resolve the outcome of an atomic
+
+two-phase commit: An agreement protocol that is used to resolve the outcome of an atomic
 
 transaction in response to a commit request from the root application. Phase One and Phase
 Two are the distinct phases of the Two-Phase Commit Protocol.
@@ -1159,14 +873,14 @@ Two are the distinct phases of the Two-Phase Commit Protocol.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1180,12 +894,12 @@ assist you in finding the relevant information.
 [RFC2371] Lyon, J., Evans, K., and Klein, J., "Transaction Internet Protocol Version 3.0", RFC 2371,
 July 1998, https://www.rfc-editor.org/info/rfc2371
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC2372] Lyon, J., Evans, K., and Klein, J., "Transaction Internet Protocol - Requirements and
 Supplemental Information", RFC 2372, July 1998, http://www.ietf.org/rfc/rfc2372.txt
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol represents an extension to the standard Transaction Internet Protocol (TIP), as
 specified in [RFC2371], and it is assumed to operate in an environment in which an OleTx
@@ -1222,11 +936,12 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-TIPP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-1.3.1  Protocol Roles
+#### 1.3.1 Protocol Roles
 
 This protocol comprises the following self-contained classes of functionality or protocol roles:
 
@@ -1266,7 +981,8 @@ Release: April 23, 2024
 
 11 / 85
 
-1.3.1.1  The TIP Application Role
+
+##### 1.3.1.1 The TIP Application Role
 
 The TIP application role performs the following tasks:
 
@@ -1283,9 +999,9 @@ application facet and obtains an identifier for the created transaction.
 
 communicating with an application facet and obtains the transaction outcome.
 
-1.3.1.2  The Transaction Manager Role
+##### 1.3.1.2 The Transaction Manager Role
 
-1.3.1.2.1 The TIP Superior Transaction Manager Facet
+###### 1.3.1.2.1 The TIP Superior Transaction Manager Facet
 
 The TIP superior transaction manager facet performs the following tasks:
 
@@ -1311,7 +1027,7 @@ transaction manager facet.
 Performs transaction recovery and provides transaction outcome notifications to its partner
 transaction manager's TIP subordinate transaction manager facet, after a failure.
 
-1.3.1.2.2 The TIP Subordinate Transaction Manager Facet
+###### 1.3.1.2.2 The TIP Subordinate Transaction Manager Facet
 
 The TIP subordinate transaction manager facet performs the following tasks:
 
@@ -1338,7 +1054,7 @@ superior transaction manager facet.
 Participates in recovery and accepts transaction outcome notifications from its partner transaction
 manager's TIP superior transaction manager facet, after a failure.
 
-1.3.1.2.3 The TIP Transaction Manager Communicating with an Application Facet
+###### 1.3.1.2.3 The TIP Transaction Manager Communicating with an Application Facet
 
 The TIP transaction manager communicating with an application facet performs the following
 tasks:
@@ -1354,7 +1070,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-TIPP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1362,9 +1079,9 @@ Release: April 23, 2024
 
 with the transaction outcome.
 
-1.3.2  Common Scenarios
+#### 1.3.2 Common Scenarios
 
-1.3.2.1  Starting and Completing a Transaction
+##### 1.3.2.1 Starting and Completing a Transaction
 
 In this scenario, an application (playing the TIP application role (section 1.3.1.1)) creates a
 transaction with a TIP transaction manager (that implements this protocol), performs some work
@@ -1401,11 +1118,12 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-TIPP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-1.3.2.2  Pulling a Transaction
+##### 1.3.2.2 Pulling a Transaction
 
 In this scenario, application A sends a request to application B to pull a local transaction that it
 creates with its TIP transaction manager A, and do some work as part of the pulled transaction.
@@ -1445,7 +1163,8 @@ Release: April 23, 2024
 
 14 / 85
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-TIPP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1457,7 +1176,7 @@ the TIP connection.
 
 9.  Application B does the requested work using the pulled transaction.
 
-1.3.2.3  Pushing a Transaction
+##### 1.3.2.3 Pushing a Transaction
 
 In this scenario, application A requests its transaction manager A to push a transaction to TIP
 transaction manager B, and then sends a request to application B to do some work as a part of the
@@ -1487,7 +1206,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-TIPP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1514,7 +1234,7 @@ identifier of the pushed transaction, tidB.
 
 9.  Application B does the requested work using the pushed transaction.
 
-1.3.2.4  TIP Two-Phase Commit
+##### 1.3.2.4 TIP Two-Phase Commit
 
 Distributed agreement between two transaction managers is accomplished using the Two-Phase
 Commit Protocol (see [GRAY]). The following figure illustrates this scenario (TIP protocol messages
@@ -1536,7 +1256,8 @@ Release: April 23, 2024
 
 16 / 85
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-TIPP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1564,7 +1285,7 @@ command.
 transaction manager A no longer has any responsibilities with respect to that enlistment, and it
 frees the associated resources.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is an extension of the TIP standard protocol, as specified in [RFC2371].
 
@@ -1588,7 +1309,7 @@ infrastructure defined in the TCP protocol.
 
 Figure 6: Protocol layering
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The operation of this protocol requires the following:
 
@@ -1601,7 +1322,8 @@ Release: April 23, 2024
 
 17 / 85
 
-  An OleTx TM is present and operating so that the implementation of this protocol can use its
+
+  An OleTx TM is present and operating so that the implementation of this protocol can use its
 
 transaction management services.
 
@@ -1609,14 +1331,14 @@ transaction management services.
 
 previous OleTx TM as specified in [MS-DTCO] section 3.2.1.5.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is a distributed transaction management and coordination protocol, and therefore it is
 applicable in situations in which distributed transaction management coordination is necessary.
 Because this protocol is unsecure, an implicit level of trust is required between the parties using the
 protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Transaction Internet Protocol Extensions extends the Transaction Internet Protocol (TIP). The
 TIP standard, specified in [RFC2371] includes a negotiation mechanism for several aspects of a
@@ -1634,12 +1356,12 @@ TIP multiplexing negotiation is not supported.
 
 TIP Transport Layer Security (TLS) negotiation is not supported.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There is a variable-length ASCII string in each TIP command that can be used for any purpose. It is
 specified in [RFC2371] section 11 of the TIP standard.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There is only one standard assignment: the TCP port default value of 3372, as specified in [RFC2371]
 section 7.
@@ -1651,15 +1373,16 @@ Release: April 23, 2024
 
 18 / 85
 
-2  Messages
+
+## 2 Messages
 
 Unless stated otherwise, this protocol complies with the TIP standard as specified in [RFC2371].
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol restricts the connections specified in [RFC2371] section 4 to TCP connections.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This protocol places the following syntax restrictions on [RFC2371] specification:
 
@@ -1724,44 +1447,45 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1  ALREADYPUSHED
+
+#### 2.2.1 ALREADYPUSHED
 
 The subordinate's transaction identifier parameter specified in [RFC2371] section 13 for this TIP
 command MUST adhere to the transaction identifier restrictions specified in section 2.2.
 
-2.2.2  BEGUN
+#### 2.2.2 BEGUN
 
 The transaction identifier parameter specified in [RFC2371] section 13 for this TIP command MUST
 adhere to the transaction identifier restrictions specified in section 2.2.
 
-2.2.3  IDENTIFY
+#### 2.2.3 IDENTIFY
 
 The primary transaction manager address and secondary transaction manager address parameters
 specified in [RFC2371] section 13 for this TIP command MUST adhere to the transaction manager
 address restrictions specified in section 2.2.
 
-2.2.4  PULL
+#### 2.2.4 PULL
 
 The superior's transaction identifier and subordinate's transaction identifier parameters specified in
 [RFC2371] section 13 for this TIP command MUST adhere to the transaction identifier restriction
 specified in section 2.2.
 
-2.2.5  PUSH
+#### 2.2.5 PUSH
 
 The superior's transaction identifier parameter specified in [RFC2371] section 13 for this TIP
 command MUST adhere to the transaction identifier restrictions specified in section 2.2.
 
-2.2.6  PUSHED
+#### 2.2.6 PUSHED
 
 The subordinate's transaction identifier parameter specified in [RFC2371] section 13 of this TIP
 command MUST adhere to the transaction identifier restrictions specified in section 2.2.
 
-2.2.7  QUERY
+#### 2.2.7 QUERY
 
 The superior's transaction identifier parameter specified in [RFC2371] section 13 for this TIP
 command MUST adhere to the transaction identifier restrictions specified in section 2.2.
 
-2.2.8  RECONNECT
+#### 2.2.8 RECONNECT
 
 The subordinate's transaction identifier parameter specified in [RFC2371] section 13 for this TIP
 command MUST adhere to the transaction identifier restrictions specified in section 2.2.
@@ -1773,7 +1497,8 @@ Release: April 23, 2024
 
 20 / 85
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section defines the expected behavior of the transaction manager role (section 1.3.1.2), which
 consists of three facets:
@@ -1784,11 +1509,11 @@ consists of three facets:
 
   TIP transaction manager communicating with an application facet (section 1.3.1.2.3)
 
-3.1  Common Details
+### 3.1 Common Details
 
 This section contains protocol details that are common to all TIP transaction manager facets.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1800,7 +1525,7 @@ Note  The abstract data model can be implemented in a variety of ways. This prot
 prescribe or advocate any specific implementation technique. This abstract data model is an extension
 of the abstract data models as specified in [MS-DTCO] sections 3.1, 3.4, 3.7, and 3.8.
 
-3.1.1.1  Data Elements
+##### 3.1.1.1 Data Elements
 
 A TIP transaction manager facet MUST maintain the following data elements:
 
@@ -1840,7 +1565,8 @@ Release: April 23, 2024
 
 21 / 85
 
-  Partner Transaction Identifier: This field contains the transaction identifier that the partner
+
+  Partner Transaction Identifier: This field contains the transaction identifier that the partner
 
 transaction manager uses for the transaction object referenced by the enlistment.
 
@@ -1848,7 +1574,7 @@ transaction manager uses for the transaction object referenced by the enlistment
 specified in section 2.2) used to verify and contact the partner transaction manager in case of
 connection failure.
 
-3.1.1.2  TIP Connection Object
+##### 3.1.1.2 TIP Connection Object
 
 A TIP connection object MUST contain the following data fields:
 
@@ -1894,11 +1620,11 @@ transaction.
 
 Error: The TIP connection has sent or received an ERROR TIP command.
 
-3.1.1.3  TIP Connection Management Operations
+##### 3.1.1.3 TIP Connection Management Operations
 
 The following operations on the table of TIP connection are used throughout section 3.
 
-3.1.1.3.1 GetTipConnection Operation
+###### 3.1.1.3.1 GetTipConnection Operation
 
 The GetTipConnection operation is called when a TCP message is received on the TCP connection.
 
@@ -1929,7 +1655,8 @@ Release: April 23, 2024
 
 22 / 85
 
-  Return the TIP connection.
+
+  Return the TIP connection.
 
   Otherwise:
 
@@ -1957,7 +1684,7 @@ The Partner Transaction Manager Address field is set to null.
 
   Return the TIP connection object.
 
-3.1.1.3.2 GetTipConnectionFromAddress Operation
+###### 3.1.1.3.2 GetTipConnectionFromAddress Operation
 
 The GetTipConnectionFromAddress operation is called when a TIP transaction manager facet
 initiates a TIP connection to send a TIP command (for example, PUSH):
@@ -2027,7 +1754,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The secondary transaction manager address argument SHOULD<1> be set to the value of the
 provided partner transaction manager address as specified in [RFC2371].
@@ -2048,7 +1776,7 @@ return the TIP connection object.
 
   Otherwise, terminate the processing of this event.
 
-3.1.1.3.3 HasPartnerTransaction Operation
+###### 3.1.1.3.3 HasPartnerTransaction Operation
 
 The HasPartnerTransaction operation is called when a TIP transaction manager facet has to
 determine whether a partner transaction manager has already enlisted in a specific transaction:
@@ -2070,7 +1798,7 @@ Partner Transaction Identifier
 This operation MUST return TRUE if there exists a TIP connection whose enlistment has the
 provided values; otherwise, it MUST return FALSE.
 
-3.1.1.3.4 FreeTipConnection Operation
+###### 3.1.1.3.4 FreeTipConnection Operation
 
 The FreeTipConnection operation is called when a TIP transaction manager facet no longer
 requires the TIP connection. The input parameter for this MUST be a TIP connection object. The TIP
@@ -2086,7 +1814,7 @@ enlistment object's TIP Connection field.
 If the TIP connection manager initiated the TCP connection corresponding to the TIP connection, it
 SHOULD reuse it as specified in [RFC2371] section 4.
 
-3.1.1.3.5 TerminateTipConnection Operation
+###### 3.1.1.3.5 TerminateTipConnection Operation
 
 The input parameter for the TerminateTipConnection operation MUST be a TIP connection object.
 
@@ -2103,7 +1831,7 @@ connection object.
 
   Discard the TIP connection object.
 
-3.1.1.4  TIP Command Object
+##### 3.1.1.4 TIP Command Object
 
 A TIP command object MUST contain the following data fields:
 
@@ -2116,14 +1844,15 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Parameter List: The list of parameters for this TIP command.
 
-3.1.1.5  Transaction Identifier Converter Operations
+  Parameter List: The list of parameters for this TIP command.
+
+##### 3.1.1.5 Transaction Identifier Converter Operations
 
 The following operations that convert between transaction identifier formats are used throughout
 section 3.
 
-3.1.1.5.1 Convert TIP Transaction Identifier to Transaction Identifier Operation
+###### 3.1.1.5.1 Convert TIP Transaction Identifier to Transaction Identifier Operation
 
 The Convert TIP Transaction Identifier to Transaction Identifier operation MUST be called with
 the following argument:
@@ -2143,7 +1872,7 @@ perform the following actions:
 
   Convert the TIP transaction identifier string to a GUID and return it.
 
-3.1.1.5.2 Convert Transaction Identifier to TIP Transaction Identifier Operation
+###### 3.1.1.5.2 Convert Transaction Identifier to TIP Transaction Identifier Operation
 
 The Convert Transaction Identifier to TIP Transaction Identifier operation MUST be called with
 the following argument:
@@ -2163,7 +1892,7 @@ perform the following actions:
 
 Prefix "OleTx-" to the string and return it.
 
-3.1.1.6  Primary State Transition Table
+##### 3.1.1.6 Primary State Transition Table
 
 The following table summarizes the legal state transitions that are common for all TIP transaction
 manager facets for a TIP connection whose Connection Type field is set to Primary. The table
@@ -2187,7 +1916,8 @@ Release: April 23, 2024
 
 25 / 85
 
-Current state  Event
+
+Current state  Event
 
 Next state
 
@@ -2213,7 +1943,7 @@ ERROR received
 
 Error
 
-3.1.1.7  Secondary State Transition Table
+##### 3.1.1.7 Secondary State Transition Table
 
 The following table summarizes the legal state transitions that are common for all TIP transaction
 manager facets for a TIP connection whose Connection Type field is set to Secondary. The table
@@ -2274,11 +2004,11 @@ MULITPLEX received/Error sent.
 
 Error
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The TIP implementation MUST perform the following initialization steps:
 
@@ -2298,7 +2028,8 @@ Release: April 23, 2024
 
 26 / 85
 
-  Allow Non-Default Port
+
+  Allow Non-Default Port
 
   Allow DifferentPartner Address
 
@@ -2312,11 +2043,11 @@ from an implementation-specific source.<3>
 If the value of the Allow Network Access flag and the Allow TIP flag is TRUE, the TIP
 implementation MUST listen for incoming TCP requests on an implementation-specific port.<4>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 This section describes how each received TIP command is processed. Each of these events is
 signaled with a TIP command object (section 3.1.1.4) and the receiving TIP Connection object (section
@@ -2326,7 +2057,7 @@ When a TIP transaction manager facet receives a TIP command that is a response (
 BEGUN) to a TIP request (for example, BEGIN) that it does not support, the TIP transaction manager
 facet treats the response as an invalid TIP command.
 
-3.1.5.1  Receiving BEGUN TIP Command
+##### 3.1.5.1 Receiving BEGUN TIP Command
 
 When the TIP transaction manager facet receives a BEGUN TIP command object, it MUST perform
 the following actions:
@@ -2335,7 +2066,7 @@ the following actions:
 
 event.
 
-3.1.5.2  Receiving CANTMULTIPLEX TIP Command
+##### 3.1.5.2 Receiving CANTMULTIPLEX TIP Command
 
 When the TIP transaction manager facet receives a CANTMULTIPLEX TIP command object, it
 MUST perform the following actions:
@@ -2344,7 +2075,7 @@ MUST perform the following actions:
 
 event.
 
-3.1.5.3  Receiving CANTTLS TIP Command
+##### 3.1.5.3 Receiving CANTTLS TIP Command
 
 When the TIP transaction manager facet receives a CANTTLS TIP command object, it MUST
 perform the following actions:
@@ -2353,7 +2084,7 @@ perform the following actions:
 
 event.
 
-3.1.5.4  Receiving IDENTIFIED TIP Command
+##### 3.1.5.4 Receiving IDENTIFIED TIP Command
 
 When the TIP transaction manager facet receives an IDENTIFIED TIP command object, it MUST
 contain the following parameter in its Parameter List:
@@ -2371,7 +2102,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Test whether the receiving TIP connection object (section 3.1.1.2) meets the following conditions:
 
@@ -2395,7 +2127,7 @@ event (section 3.1.7.1) and terminate the processing of this event.
 
   Set the State field of the TIP connection object to Idle.
 
-3.1.5.5  Receiving IDENTIFY TIP Command
+##### 3.1.5.5 Receiving IDENTIFY TIP Command
 
 When the TIP transaction manager facet receives an IDENTIFY TIP command object, it MUST
 contain the following parameters in its Parameter List:
@@ -2481,7 +2213,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Send an ERROR TIP command.
+
+  Send an ERROR TIP command.
 
 
 
@@ -2499,7 +2232,7 @@ argument:
 The lesser between the provided highest protocol version and the maximum supported TIP
 Protocol version of the local TIP transaction manager facets.
 
-3.1.5.6  Receiving MULTIPLEX TIP Command
+##### 3.1.5.6 Receiving MULTIPLEX TIP Command
 
 When the TIP transaction manager facet receives a MULTIPLEX TIP command object, it MUST
 contain the following parameter in its Parameter List:
@@ -2544,7 +2277,7 @@ event (section 3.1.7.1) and terminate the processing of this event.
 
   Send a CANTMULTIPLEX (as specified in [RFC2371] section 13) TIP command.
 
-3.1.5.7  Receiving MULTIPLEXING TIP Command
+##### 3.1.5.7 Receiving MULTIPLEXING TIP Command
 
 When the TIP transaction manager facet receives a MULTIPLEXING TIP command object, it
 MUST perform the following actions:
@@ -2553,7 +2286,7 @@ MUST perform the following actions:
 
 event.
 
-3.1.5.8  Receiving NEEDTLS TIP Command
+##### 3.1.5.8 Receiving NEEDTLS TIP Command
 
 When the TIP transaction manager facet receives a NEEDTLS TIP command object, it MUST
 perform the following actions:
@@ -2569,7 +2302,8 @@ Release: April 23, 2024
 
 29 / 85
 
-3.1.5.9  Receiving NOTBEGUN TIP Command
+
+##### 3.1.5.9 Receiving NOTBEGUN TIP Command
 
 When the TIP transaction manager facet receives a NOTBEGUN TIP command object, it MUST
 perform the following actions:
@@ -2578,9 +2312,9 @@ perform the following actions:
 
 event.
 
-3.1.5.10
+##### 3.1.5.10 Receiving TLS TIP Command
 
-Receiving TLS TIP Command
+
 
 When the TIP transaction manager facet receives a TLS TIP command object, it MUST perform
 the following actions:
@@ -2607,9 +2341,9 @@ event (section 3.1.7.1) and terminate the processing of this event.
 The TIP transaction manager facet SHOULD<9> send a CANTTLS TIP command to conform to the
 [RFC2371] specification.
 
-3.1.5.11
+##### 3.1.5.11 Receiving TLSING TIP Command
 
-Receiving TLSING TIP Command
+
 
 When the TIP transaction manager facet receives a TLSING TIP command object, it MUST
 perform the following actions:
@@ -2618,13 +2352,13 @@ perform the following actions:
 
 event.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Invalid TIP Command Event
+##### 3.1.7.1 Invalid TIP Command Event
 
 When a TIP command is determined to be invalid, the TIP transaction manager facet MUST
 perform the following actions:
@@ -2639,9 +2373,9 @@ command's TIP connection.
 If the TIP connection's Connection Type data field is Primary, terminate the TCP connection. This
 causes the Transport Connection Down (section 3.1.7.2.2) event to be signaled.
 
-3.1.7.2  Transport Events
+##### 3.1.7.2 Transport Events
 
-3.1.7.2.1 Received Message
+###### 3.1.7.2.1 Received Message
 
 The Received Message event is signaled when a TCP message arrives on the TIP port. When this
 event is signaled, the TIP transaction manager facet MUST perform the following actions:
@@ -2653,7 +2387,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the value of the Allow Non-Default Port flag is FALSE and the provided TCP connection did
 not originate from port 3372, terminate the connection and terminate the processing of this event.
@@ -2687,18 +2422,18 @@ connection object.
 
 The TIP command object is now ready to be processed as an incoming message event.
 
-3.1.7.2.2 Transport Connection Down
+###### 3.1.7.2.2 Transport Connection Down
 
 The Transport Connection Down event is signaled when the TIP transaction manager facet is
 notified that a TIP connection has gone down. All TIP transaction manager facets MUST define the
 behavior for this event.
 
-3.2  TIP Superior Transaction Manager Facet Details
+### 3.2 TIP Superior Transaction Manager Facet Details
 
 This section contains protocol details that relate to the TIP superior transaction manager facet
 (section 1.3.1.2.1).
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2738,7 +2473,8 @@ Release: April 23, 2024
 
 31 / 85
 
-
+
+
 
 
 
@@ -2767,7 +2503,7 @@ while in the Prepared state.
 Prepared Abort: The TIP connection is waiting for a reply to an ABORT TIP command sent
 while in the Prepared state.
 
-3.2.1.1  TIP Superior Transaction Manager Facet State Transition Table
+##### 3.2.1.1 TIP Superior Transaction Manager Facet State Transition Table
 
 The following table summarizes the state transitions that are legal to the protocol as seen by the TIP
 superior transaction manager facet (section 1.3.1.2.1). The states are the TIP connection
@@ -2863,7 +2599,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Current state
+
+Current state
 
 Event
 
@@ -3009,11 +2746,11 @@ Idle
 
 Error
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The TIP superior transaction manager facet (section 1.3.1.2.1) MUST perform all initialization as
 specified in section 3.1.3.
@@ -3025,13 +2762,14 @@ Release: April 23, 2024
 
 33 / 85
 
-The enlistment objects that are created by the TIP superior transaction manager facet MUST initialize
+
+The enlistment objects that are created by the TIP superior transaction manager facet MUST initialize
 the Name and Identifier properties as specified in [MS-DTCO] section 3.7.1. The Transaction manager
 facet of the enlistment object MUST be initialized to the TIP superior transaction manager facet.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Push Transaction
+##### 3.2.4.1 Push Transaction
 
 The Push Transaction event is triggered by the higher-layer business logic with the following
 arguments:
@@ -3114,7 +2852,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The Transaction Identifier field of the transaction object referenced by the enlistment.
 
@@ -3124,12 +2863,12 @@ The Transaction Identifier field of the transaction object referenced by the enl
 
 Transaction Identifier operation (section 3.1.1.5.2).
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 This section describes how each received TIP command is processed. Each of these events is
 signaled with a TIP command object as an input argument.
 
-3.2.5.1  Receiving ABORTED TIP Command
+##### 3.2.5.1 Receiving ABORTED TIP Command
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives an ABORTED TIP
 command, it MUST perform the following actions:
@@ -3180,7 +2919,7 @@ The Phase One outcome set to Aborted.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.2  Receiving ALREADYPUSHED TIP Command
+##### 3.2.5.2 Receiving ALREADYPUSHED TIP Command
 
 The ALREADYPUSHED TIP command MUST be received with the following argument:
 
@@ -3204,7 +2943,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The State field is set to Idle Push.
 
@@ -3223,7 +2963,7 @@ The receiving TIP connection object.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.3  Receiving COMMITTED TIP Command
+##### 3.2.5.3 Receiving COMMITTED TIP Command
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a COMMITTED TIP
 command, it MUST perform the following actions:
@@ -3272,7 +3012,7 @@ The enlistment object referenced by the receiving TIP connection object.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.4  Receiving NOTPUSHED TIP Command
+##### 3.2.5.4 Receiving NOTPUSHED TIP Command
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a NOTPUSHED TIP
 command, it MUST perform the following actions:
@@ -3301,7 +3041,8 @@ Release: April 23, 2024
 
 36 / 85
 
-
+
+
 
 The TIP superior transaction manager facet SHOULD<11> call the TIP connection manager's
 FreeTipConnection operation with the following argument, to conform to the [RFC2371]
@@ -3315,7 +3056,7 @@ The TIP connection object referenced by the provided enlistment object.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.5  Receiving NOTRECONNECTED TIP Command
+##### 3.2.5.5 Receiving NOTRECONNECTED TIP Command
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a
 NOTRECONNECTED TIP command, it MUST perform the following actions:
@@ -3353,7 +3094,7 @@ The TIP connection object referenced by the provided enlistment object.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.6  Receiving PREPARED TIP Command
+##### 3.2.5.6 Receiving PREPARED TIP Command
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a PREPARED TIP
 command, it MUST perform the following actions:
@@ -3398,7 +3139,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.7  Receiving PULL TIP Command
+
+##### 3.2.5.7 Receiving PULL TIP Command
 
 This event MUST be received with the following arguments:
 
@@ -3507,7 +3249,8 @@ Release: April 23, 2024
 
 38 / 85
 
-  Call the TIP connection manager's TerminateTipConnection operation with the provided TIP
+
+  Call the TIP connection manager's TerminateTipConnection operation with the provided TIP
 
 connection object. This action does not conform to the [RFC2371] specification.
 
@@ -3550,7 +3293,7 @@ The TIP connection object's enlistment object.
 
   Send a PULLED TIP command.
 
-3.2.5.8  Receiving PUSHED TIP Command
+##### 3.2.5.8 Receiving PUSHED TIP Command
 
 This event MUST be signaled with the following argument:
 
@@ -3609,7 +3352,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Signal the Create Subordinate Enlistment event on the core transaction manager facet with the
+
+  Signal the Create Subordinate Enlistment event on the core transaction manager facet with the
 
 following argument:
 
@@ -3617,7 +3361,7 @@ following argument:
 
 The enlistment object referenced by the receiving TIP connection.
 
-3.2.5.9  Receiving QUERY TIP Command
+##### 3.2.5.9 Receiving QUERY TIP Command
 
 This event MUST be signaled with the following argument:
 
@@ -3685,9 +3429,9 @@ If a transaction object is found, send a QUERIEDEXISTS TIP command.
 
   Otherwise, send a QUERIEDNOTFOUND TIP command.
 
-3.2.5.10
+##### 3.2.5.10 Receiving READONLY TIP Command
 
-Receiving READONLY TIP Command
+
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a READONLY TIP
 command, it MUST perform the following actions:
@@ -3710,7 +3454,8 @@ Release: April 23, 2024
 
 40 / 85
 
-  Signal the Enlistment Phase One Complete ([MS-DTCO] section 3.2.7.16) event on the core
+
+  Signal the Enlistment Phase One Complete ([MS-DTCO] section 3.2.7.16) event on the core
 
 transaction manager facet with the following arguments:
 
@@ -3724,9 +3469,9 @@ The Phase One outcome set to Read Only.
 
   Set the State field of the receiving TIP connection object to Idle.
 
-3.2.5.11
+##### 3.2.5.11 Receiving RECONNECTED TIP Command
 
-Receiving RECONNECTED TIP Command
+
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives a RECONNECTED
 TIP command object, it MUST perform the following actions:
@@ -3752,9 +3497,9 @@ Event (section 3.4.7.1) and terminate the processing of this TIP command.
 
   Send a COMMIT TIP command.
 
-3.2.5.12
+##### 3.2.5.12 Receiving ERROR TIP Command
 
-Receiving ERROR TIP Command
+
 
 When the TIP superior transaction manager facet (section 1.3.1.2.1) receives an ERROR TIP
 command object, it MUST perform the following actions:
@@ -3783,7 +3528,7 @@ Secondary:
 
   Set the State field of the receiving TIP connection object to Error.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -3794,9 +3539,10 @@ Release: April 23, 2024
 
 41 / 85
 
-3.2.7  Other Local Events
 
-3.2.7.1  Invalid TIP Command Event
+#### 3.2.7 Other Local Events
+
+##### 3.2.7.1 Invalid TIP Command Event
 
 This event overrides the event with the same name specified in section 3.1. It is used by the TIP
 superior transaction manager facet (section 1.3.1.2.1).
@@ -3833,7 +3579,7 @@ Secondary:
 
   Set the State field of the receiving TIP connection object to Error.
 
-3.2.7.2  Process Error
+##### 3.2.7.2 Process Error
 
 This event is triggered with the following argument:
 
@@ -3881,7 +3627,8 @@ Release: April 23, 2024
 
 42 / 85
 
-
+
+
 
 The Outcome set to Aborted.
 
@@ -3907,9 +3654,9 @@ following argument:
 
 The enlistment object referenced by the provided TIP connection object.
 
-3.2.7.3  Events Signaled by the Core Transaction Manager Facet
+##### 3.2.7.3 Events Signaled by the Core Transaction Manager Facet
 
-3.2.7.3.1 Begin Commit
+###### 3.2.7.3.1 Begin Commit
 
 The Begin Commit event is triggered by the core transaction manager facet with the following
 argument:
@@ -3973,7 +3720,8 @@ Release: April 23, 2024
 
 43 / 85
 
-  Set the enlistment referenced by the TIP connection to be the provided enlistment.
+
+  Set the enlistment referenced by the TIP connection to be the provided enlistment.
 
   Set the State field of the TIP connection to Idle Reconnect.
 
@@ -3983,7 +3731,7 @@ Release: April 23, 2024
 
 The enlistment object's Partner Transaction Identifier field.
 
-3.2.7.3.2 Begin Phase One
+###### 3.2.7.3.2 Begin Phase One
 
 The Begin Phase One event MUST be signaled by the core transaction manager facet with the
 following arguments:
@@ -4016,7 +3764,7 @@ to Enlisted Prepare.
 
   Send a PREPARE TIP command.
 
-3.2.7.3.3 Begin Rollback
+###### 3.2.7.3.3 Begin Rollback
 
 The Begin Rollback event MUST be signaled by the core transaction manager facet with the
 following argument:
@@ -4045,7 +3793,7 @@ to Prepared Abort.
 
   Send an ABORT TIP command.
 
-3.2.7.3.4 Create Subordinate Enlistment Failure
+###### 3.2.7.3.4 Create Subordinate Enlistment Failure
 
 [MS-TIPP] - v20240423
 Transaction Internet Protocol (TIP) Extensions
@@ -4054,7 +3802,8 @@ Release: April 23, 2024
 
 44 / 85
 
-The Create Subordinate Enlistment Failure event MUST be signaled by the core transaction
+
+The Create Subordinate Enlistment Failure event MUST be signaled by the core transaction
 manager facet with the following arguments:
 
   An enlistment object.
@@ -4112,7 +3861,7 @@ enlistment object is set to Secondary:
 
   Send a NOTPULLED TIP command.
 
-3.2.7.3.5 Create Subordinate Enlistment Success
+###### 3.2.7.3.5 Create Subordinate Enlistment Success
 
 This event MUST be signaled by the core transaction manager facet with the following argument:
 
@@ -4147,7 +3896,8 @@ Release: April 23, 2024
 
 45 / 85
 
-  Otherwise, if the Connection Type field of the TIP connection object referenced by the provided
+
+  Otherwise, if the Connection Type field of the TIP connection object referenced by the provided
 
 enlistment object is set to Secondary:
 
@@ -4161,9 +3911,9 @@ enlistment object to Primary.
 
 Enlisted.
 
-3.2.7.4  Transport Events
+##### 3.2.7.4 Transport Events
 
-3.2.7.4.1 Transport Connection Down
+###### 3.2.7.4.1 Transport Connection Down
 
 This event overrides the event with the same name in section 3.1.7.2.2.
 
@@ -4190,12 +3940,12 @@ The provided TIP connection object.
 
 The provided TIP connection object.
 
-3.3  TIP Subordinate Transaction Manager Facet Details
+### 3.3 TIP Subordinate Transaction Manager Facet Details
 
 This section contains protocol details that relate to the TIP subordinate transaction manager facet
 protocol role.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4225,7 +3975,8 @@ Release: April 23, 2024
 
 46 / 85
 
-
+
+
 
 
 
@@ -4253,7 +4004,7 @@ Prepared: The transaction associated with the TIP connection has completed Phase
 
 transaction has been unilaterally aborted.
 
-3.3.1.1  TIP Subordinate Transaction Manager Facet State Transition Table
+##### 3.3.1.1 TIP Subordinate Transaction Manager Facet State Transition Table
 
 The following table summarizes the state transitions that are legal to the protocol as seen by the TIP
 subordinate transaction manager facet (section 1.3.1.2.2). The states are the TIP connection
@@ -4347,7 +4098,8 @@ Release: April 23, 2024
 
 47 / 85
 
-Current state  Event
+
+Current state  Event
 
 Next state
 
@@ -4495,9 +4247,9 @@ Idle
 
 Idle
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Query Timer
+##### 3.3.2.1 Query Timer
 
 The query timer MUST be started whenever recovery work is performed for an In Doubt Transaction,
 as specified by the processing of the Receiving QUERIEDEXISTS TIP command and Process Error
@@ -4513,14 +4265,15 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value of the timer is set to an implementation-specific value.<13>
+
+The value of the timer is set to an implementation-specific value.<13>
 
 When the timer is initialized, the TIP subordinate transaction manager facet (section 1.3.1.2.2)
 MUST provide an enlistment object to associate with the timer.
 
 When the timer expires, the Query Timer Expired event is signaled.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The TIP subordinate transaction manager facet (section 1.3.1.2.2) MUST perform all initialization
 as specified in section 3.1.3.
@@ -4529,9 +4282,9 @@ The enlistment objects that are created by the TIP subordinate transaction manag
 initialize the Name and Identifier properties as specified in [MS-DTCO] section 3.8.1. The Transaction
 manager facet of the enlistment object is set to the TIP subordinate transaction manager facet.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Pull Transaction
+##### 3.3.4.1 Pull Transaction
 
 The Pull Transaction event MUST be signaled by the higher-layer business logic with the following
 arguments:
@@ -4595,7 +4348,8 @@ Release: April 23, 2024
 
 49 / 85
 
-  Signal the Create Superior Enlistment event ([MS-DTCO] section 3.2.7.12) on the core
+
+  Signal the Create Superior Enlistment event ([MS-DTCO] section 3.2.7.12) on the core
 
 transaction manager facet with the following argument:
 
@@ -4603,12 +4357,12 @@ transaction manager facet with the following argument:
 
 The new enlistment object.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 This section describes how each received TIP command is processed. Each of these events is
 signaled with a TIP command object as an input argument.
 
-3.3.5.1  Receiving ABORT TIP Command
+##### 3.3.5.1 Receiving ABORT TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives an ABORT TIP
 command, it MUST perform the following actions:
@@ -4646,7 +4400,7 @@ manager facet with the following argument:
 The transaction object referenced by the enlistment object referenced by the receiving
 TIP connection object.
 
-3.3.5.2  Receiving COMMIT TIP Command
+##### 3.3.5.2 Receiving COMMIT TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a COMMIT TIP
 command, it MUST perform the following actions:
@@ -4685,7 +4439,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Otherwise, if the State field of the receiving TIP connection object is set to Prepared:
+
+  Otherwise, if the State field of the receiving TIP connection object is set to Prepared:
 
   Signal the Begin Commit ([MS-DTCO] section 3.2.7.2) event on the core transaction manager
 
@@ -4704,7 +4459,7 @@ connection object.
 
   Send an ABORTED TIP command.
 
-3.3.5.3  Receiving NOTPULLED TIP Command
+##### 3.3.5.3 Receiving NOTPULLED TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a NOTPULLED
 TIP command, it MUST perform the following actions:
@@ -4739,7 +4494,7 @@ facet with the following argument:
 The transaction object referenced by the enlistment object referenced by the receiving TIP
 connection object.
 
-3.3.5.4  Receiving PREPARE TIP Command
+##### 3.3.5.4 Receiving PREPARE TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a PREPARE
 TIP command, it MUST perform the following actions:
@@ -4778,7 +4533,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Otherwise:
+
+  Otherwise:
 
 
 
@@ -4786,7 +4542,7 @@ Release: April 23, 2024
 
   Send an ABORTED TIP command.
 
-3.3.5.5  Receiving PULLED TIP Command
+##### 3.3.5.5 Receiving PULLED TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a PULLED TIP
 command, it MUST perform the following actions:
@@ -4814,7 +4570,7 @@ Event (section 3.3.7.1) and terminate the processing of this event.
 
   Notify the higher-layer business logic that the Pull request succeeded.
 
-3.3.5.6  Receiving PUSH TIP Command
+##### 3.3.5.6 Receiving PUSH TIP Command
 
 The PUSH TIP command MUST be received with the following argument:
 
@@ -4874,7 +4630,8 @@ Release: April 23, 2024
 
 52 / 85
 
-
+
+
 
 The Partner Transaction Manager Address field of the enlistment object referenced by the
 receiving TIP connection object.
@@ -4934,7 +4691,7 @@ transaction manager facet with the following argument:
 
 The enlistment object referenced by the receiving TIP connection object.
 
-3.3.5.7  Receiving QUERIEDEXISTS TIP Command
+##### 3.3.5.7 Receiving QUERIEDEXISTS TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a
 QUERIEDEXISTS TIP command, it MUST perform the following actions:
@@ -4981,7 +4738,8 @@ Release: April 23, 2024
 
 53 / 85
 
-3.3.5.8  Receiving QUERIEDNOTFOUND TIP Command
+
+##### 3.3.5.8 Receiving QUERIEDNOTFOUND TIP Command
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives a
 QUERIEDNOTFOUND TIP command, it MUST perform the following actions:
@@ -5020,7 +4778,7 @@ connection object.
 
 The provided TIP connection object.
 
-3.3.5.9  Receiving RECONNECT TIP Command
+##### 3.3.5.9 Receiving RECONNECT TIP Command
 
 The RECONNECT TIP command MUST be received with the following argument:
 
@@ -5081,7 +4839,8 @@ Release: April 23, 2024
 
 54 / 85
 
-
+
+
 
 Its Superior Enlistment field contains an enlistment object whose TIP Connection field
 contains a TIP connection object whose Partner Transaction Manager Address field is set
@@ -5175,13 +4934,14 @@ Release: April 23, 2024
 
 55 / 85
 
-  Send a RECONNECTED TIP command.
+
+  Send a RECONNECTED TIP command.
 
   Set the State field of the receiving TIP connection object to Prepared.
 
-3.3.5.10
+##### 3.3.5.10 Receiving ERROR TIP Command
 
-Receiving ERROR TIP Command
+
 
 When the TIP subordinate transaction manager facet (section 1.3.1.2.2) receives an ERROR TIP
 command, it MUST perform the following actions:
@@ -5206,9 +4966,9 @@ The receiving TIP connection object.
 
 The receiving TIP connection object.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Query Timer Expired Event
+##### 3.3.6.1 Query Timer Expired Event
 
 The Query Timer Expired event MUST be signaled with the following argument:
 
@@ -5219,12 +4979,12 @@ If the Query Timer Expired event is signaled, the TIP subordinate transaction ma
 
   Signal the Recover In Doubt Transaction event with the provided enlistment object.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A TIP subordinate transaction manager facet (section 1.3.1.2.2) MUST be prepared to process
 the local events specified in the following sections.
 
-3.3.7.1  Invalid TIP Command Event
+##### 3.3.7.1 Invalid TIP Command Event
 
 This event overrides the event with the same name in section 3.1.7.1. It is used by the TIP
 subordinate transaction manager facet (section 1.3.1.2.2).
@@ -5253,7 +5013,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The provided TIP connection object.
 
@@ -5263,7 +5024,7 @@ The provided TIP connection object.
 
 The provided TIP connection object.
 
-3.3.7.2  Process Error
+##### 3.3.7.2 Process Error
 
 The Process Error event MUST be signaled with the following argument:
 
@@ -5344,7 +5105,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Create a query timer (section 3.3.2.1) with the following arguments:
+
+  Create a query timer (section 3.3.2.1) with the following arguments:
 
 
 
@@ -5356,9 +5118,9 @@ The enlistment object referenced by the provided TIP connection object.
 
   Set the State field of the provided TIP connection object to Error.
 
-3.3.7.3  Events Signaled by the Core Transaction Manager Facet
+##### 3.3.7.3 Events Signaled by the Core Transaction Manager Facet
 
-3.3.7.3.1 Commit Complete
+###### 3.3.7.3.1 Commit Complete
 
 The Commit Complete event MUST be signaled with the following argument:
 
@@ -5371,7 +5133,7 @@ If the Commit Complete event is signaled, the TIP subordinate transaction manage
 
   Send a COMMITTED TIP command.
 
-3.3.7.3.2 Create Superior Enlistment Success
+###### 3.3.7.3.2 Create Superior Enlistment Success
 
 The Create Superior Enlistment Success event MUST be signaled with the following argument:
 
@@ -5431,7 +5193,8 @@ Release: April 23, 2024
 
 58 / 85
 
-  Set the State field of the TIP connection object referenced by the provided enlistment to Idle
+
+  Set the State field of the TIP connection object referenced by the provided enlistment to Idle
 
 Pull.
 
@@ -5448,7 +5211,7 @@ enlistment object.
 
 Enlisted.
 
-3.3.7.3.3 Create Superior Enlistment Failure
+###### 3.3.7.3.3 Create Superior Enlistment Failure
 
 The Create Superior Enlistment Failure event MUST be signaled with the following arguments:
 
@@ -5470,7 +5233,7 @@ pending, so take the following action:
 
   Send a NOTPUSHED TIP command.
 
-3.3.7.3.4 Phase Zero Complete
+###### 3.3.7.3.4 Phase Zero Complete
 
 The Phase Zero Complete event MUST be signaled with the following arguments:
 
@@ -5513,7 +5276,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The transaction object referenced by the provided enlistment object.
 
@@ -5534,7 +5298,7 @@ The transaction object referenced by the provided enlistment object.
 
   A Single-Phase value set to TRUE.
 
-3.3.7.3.5 Phase One Complete
+###### 3.3.7.3.5 Phase One Complete
 
 The Phase One Complete event MUST be signaled with the following arguments:
 
@@ -5606,7 +5370,8 @@ Release: April 23, 2024
 
 60 / 85
 
-  Set the State field of the TIP connection object referenced by the provided Enlistment to
+
+  Set the State field of the TIP connection object referenced by the provided Enlistment to
 
 Idle.
 
@@ -5622,7 +5387,7 @@ Prepared.
 
   Send a PREPARED TIP command.
 
-3.3.7.3.6 Recover In Doubt Transaction
+###### 3.3.7.3.6 Recover In Doubt Transaction
 
 The Recover In Doubt Transaction event MUST be signaled with the following argument:
 
@@ -5687,7 +5452,7 @@ connection object.
 
   Set the State of the TIP connection object to Idle Query.
 
-3.3.7.3.7 Rollback Complete
+###### 3.3.7.3.7 Rollback Complete
 
 [MS-TIPP] - v20240423
 Transaction Internet Protocol (TIP) Extensions
@@ -5696,7 +5461,8 @@ Release: April 23, 2024
 
 61 / 85
 
-The Rollback Complete event MUST be signaled with the following argument:
+
+The Rollback Complete event MUST be signaled with the following argument:
 
   An enlistment object.
 
@@ -5729,7 +5495,7 @@ either Enlisted or Prepared:
 
   Send an ABORTED TIP command.
 
-3.3.7.3.8 Unilaterally Aborted
+###### 3.3.7.3.8 Unilaterally Aborted
 
 The Unilaterally Aborted event MUST be signaled with the following argument:
 
@@ -5747,9 +5513,9 @@ Enlisted:
 
 Aborted.
 
-3.3.7.4  Transport Events
+##### 3.3.7.4 Transport Events
 
-3.3.7.4.1 Transport Connection Down
+###### 3.3.7.4.1 Transport Connection Down
 
 This event overrides the event with the same name as specified in section 3.1.7.2.2.
 
@@ -5779,12 +5545,13 @@ Release: April 23, 2024
 
 62 / 85
 
-3.4  TIP Transaction Manager Communicating with an Application Facet Details
+
+### 3.4 TIP Transaction Manager Communicating with an Application Facet Details
 
 This section contains protocol details that relate to the TIP transaction manager communicating
 with an application facet (section 1.3.1.2.3) protocol role.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5809,7 +5576,7 @@ one of the values in the extended enumeration. The following are the extension v
 
 transaction has been unilaterally aborted.
 
-3.4.1.1  TIP Transaction Manager Communicating with an Application Facet State
+##### 3.4.1.1 TIP Transaction Manager Communicating with an Application Facet State
 
 Transition Table
 
@@ -5879,7 +5646,8 @@ Release: April 23, 2024
 
 63 / 85
 
-Current state  Event
+
+Current state  Event
 
 Next state
 
@@ -5911,25 +5679,25 @@ COMMIT received/ABORTED sent.
 
 Idle
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The TIP transaction manager communicating with an application facet (section 1.3.1.2.3)
 MUST perform all initialization as specified in section 3.1.3.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 No higher-layer events apply here.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 This section describes how each received TIP command is processed. Each of these events is
 signaled with a TIP command object as an input argument.
 
-3.4.5.1  Receiving ABORT TIP Command
+##### 3.4.5.1 Receiving ABORT TIP Command
 
 When the TIP transaction manager communicating with an application facet (section
 1.3.1.2.3) receives an ABORT TIP command, it MUST perform the following actions:
@@ -5969,12 +5737,13 @@ Release: April 23, 2024
 
 64 / 85
 
-
+
+
 
 The transaction object referenced by the enlistment object referenced by the receiving
 TIP connection object.
 
-3.4.5.2  Receiving BEGIN TIP Command
+##### 3.4.5.2 Receiving BEGIN TIP Command
 
 When the TIP transaction manager communicating with an application facet (section
 1.3.1.2.3) receives a BEGIN TIP command, it MUST perform the following actions:
@@ -6035,7 +5804,7 @@ manager facet with the following argument:
 
 The enlistment object referenced by the receiving TIP connection object.
 
-3.4.5.3  Receiving COMMIT TIP Command
+##### 3.4.5.3 Receiving COMMIT TIP Command
 
 When the TIP transaction manager communicating with an application facet (section
 1.3.1.2.3) receives a COMMIT TIP command, it MUST perform the following actions:
@@ -6067,7 +5836,8 @@ Release: April 23, 2024
 
 65 / 85
 
-
+
+
 
 The transaction object referenced by the enlistment object referenced by the receiving
 TIP connection object.
@@ -6080,7 +5850,7 @@ to Idle.
 
   Send an ABORTED TIP command.
 
-3.4.5.4  Receiving ERROR TIP Command
+##### 3.4.5.4 Receiving ERROR TIP Command
 
 When the TIP transaction manager communicating with an application facet (section
 1.3.1.2.3) receives an ERROR TIP command object, it MUST perform the following actions:
@@ -6100,16 +5870,16 @@ TIP connection object.
 
   Set the State field of the receiving TIP connection object to Error.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 A TIP transaction manager communicating with an application facet (section 1.3.1.2.3) MUST
 be prepared to process the local events specified in the following sections.
 
-3.4.7.1  Invalid TIP Command Event
+##### 3.4.7.1 Invalid TIP Command Event
 
 This event overrides the event with the same name as specified in section 3.1. It is used by the TIP
 transaction manager communicating with an application facet (section 1.3.1.2.3).
@@ -6146,9 +5916,10 @@ Release: April 23, 2024
 
 66 / 85
 
-3.4.7.2  Events Signaled by the Core Transaction Manager Facet
 
-3.4.7.2.1 Create Transaction Failure
+##### 3.4.7.2 Events Signaled by the Core Transaction Manager Facet
+
+###### 3.4.7.2.1 Create Transaction Failure
 
 The Create Transaction Failure event MUST be signaled with the following arguments:
 
@@ -6161,7 +5932,7 @@ with an application facet (section 1.3.1.2.3) MUST perform the following action:
 
   Send a NOTBEGUN TIP command.
 
-3.4.7.2.2 Create Transaction Success
+###### 3.4.7.2.2 Create Transaction Success
 
 The Create Transaction Success event MUST be signaled with the following argument:
 
@@ -6188,7 +5959,7 @@ The Transaction Identifier field of the provided transaction object.
 
 The return value from the Convert Transaction Identifier to TIP Transaction Identifier event.
 
-3.4.7.2.3 Phase Zero Complete
+###### 3.4.7.2.3 Phase Zero Complete
 
 The Phase Zero Complete event MUST be signaled with the following arguments:
 
@@ -6226,7 +5997,8 @@ Release: April 23, 2024
 
 67 / 85
 
-  Signal the Begin Phase One ([MS-DTCO] section 3.2.7.4) event on the core transaction
+
+  Signal the Begin Phase One ([MS-DTCO] section 3.2.7.4) event on the core transaction
 
 manager facet with the following arguments:
 
@@ -6236,7 +6008,7 @@ The transaction object referenced by the provided enlistment object.
 
   A Single-Phase value set to TRUE.
 
-3.4.7.2.4 Phase One Complete
+###### 3.4.7.2.4 Phase One Complete
 
 The Phase One Complete event MUST be signaled with the following arguments:
 
@@ -6305,7 +6077,7 @@ Idle.
 
   Send a COMMITTED TIP command.
 
-3.4.7.2.5 Rollback Complete
+###### 3.4.7.2.5 Rollback Complete
 
 The Rollback Complete event MUST be signaled with the following argument:
 
@@ -6316,7 +6088,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  An enlistment object.
+
+  An enlistment object.
 
 If the Rollback Complete event is signaled, the TIP transaction manager communicating with an
 application facet (section 1.3.1.2.3) MUST perform the following actions:
@@ -6332,7 +6105,7 @@ to Idle.
 
   Send an ABORTED TIP command.
 
-3.4.7.2.6 Unilaterally Aborted
+###### 3.4.7.2.6 Unilaterally Aborted
 
 The Unilaterally Aborted event MUST be signaled with the following argument:
 
@@ -6350,9 +6123,9 @@ set to Begun:
 
 to Aborted.
 
-3.4.7.3  Transport Events
+##### 3.4.7.3 Transport Events
 
-3.4.7.3.1 Transport Connection Down
+###### 3.4.7.3.1 Transport Connection Down
 
 This event overrides the event with the same name as specified in section 3.1.7.2.2.
 
@@ -6395,7 +6168,8 @@ Release: April 23, 2024
 
 69 / 85
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the TIP Extensions. These protocol examples generally assume that a TCP transport
@@ -6406,9 +6180,9 @@ protocol that is being demonstrated.
 TIP roles communicate with each other by using TIP connections that are in turn layered on top of
 the TCP transport infrastructure.
 
-4.1  Transaction Processing Scenario
+### 4.1 Transaction Processing Scenario
 
-4.1.1  Creating the TIP Connection
+#### 4.1.1 Creating the TIP Connection
 
 A TIP connection can be created by any TIP role that can be a primary:
 
@@ -6510,7 +6284,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Field
+
+ Field
 
  Value
 
@@ -6560,12 +6335,12 @@ TIP Command Line terminator  0x0A
 
 LF
 
-4.1.2  Propagating the Transaction
+#### 4.1.2 Propagating the Transaction
 
 This exchange involves the TIP superior transaction manager and the TIP subordinate
 transaction manager.
 
-4.1.2.1  Pull Propagation
+##### 4.1.2.1 Pull Propagation
 
 The TIP subordinate transaction manager, which is Primary, pulls the transaction by sending a
 PULL TIP command, specifying the TIP superior transaction manager's transaction identifier as
@@ -6637,7 +6412,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the TIP superior transaction manager receives the PULL TIP command from the TIP subordinate
+
+When the TIP superior transaction manager receives the PULL TIP command from the TIP subordinate
 transaction manager, it attempts to locate the transaction in its list of transaction objects by using the
 superior's transaction identifier. If the TIP superior transaction manager can successfully locate the
 transaction object, it will respond to the TIP subordinate transaction manager with the PULLED TIP
@@ -6661,7 +6437,7 @@ TIP command line terminator  0x0A
 
 LF
 
-4.1.2.2  Push Propagation
+##### 4.1.2.2 Push Propagation
 
 The TIP superior transaction manager pushes the transaction by sending a PUSH TIP
 command, specifying its own transaction identifier as the superior's transaction identifier. For this
@@ -6756,14 +6532,15 @@ Release: April 23, 2024
 
 72 / 85
 
-4.1.3  Committing the Transaction
 
-4.1.3.1  Two-Phase Commit
+#### 4.1.3 Committing the Transaction
+
+##### 4.1.3.1 Two-Phase Commit
 
 This exchange involves the TIP superior transaction manager and the TIP subordinate
 transaction manager.
 
-4.1.3.1.1 Read Only
+###### 4.1.3.1.1 Read Only
 
 In the first phase of two-phase commit processing, the TIP superior transaction manager sends
 the PREPARE TIP command to the TIP subordinate transaction manager.
@@ -6811,7 +6588,7 @@ TIP command line terminator  0x0A
 
 LF
 
-4.1.3.1.2 Phase One
+###### 4.1.3.1.2 Phase One
 
 In the first phase of two-phase commit processing, the TIP superior transaction manager sends
 the PREPARE TIP command to the TIP subordinate transaction manager.
@@ -6848,7 +6625,8 @@ Release: April 23, 2024
 
 73 / 85
 
- Field
+
+ Field
 
  Value
 
@@ -6864,7 +6642,7 @@ TIP command line terminator  0x0A
 
 LF
 
-4.1.3.1.3 Recovery
+###### 4.1.3.1.3 Recovery
 
 While the State of the TIP connection is Prepared, it is possible that the underlying transport
 session will fail.
@@ -6977,7 +6755,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Field
+
+ Field
 
 identifier
 
@@ -7018,7 +6797,7 @@ terminator
 
 0x0A
 
-4.1.3.1.4 Phase Two
+###### 4.1.3.1.4 Phase Two
 
  Value
 description
@@ -7079,21 +6858,22 @@ Release: April 23, 2024
 
 75 / 85
 
-4.1.3.2  Single-Phase Commit
+
+##### 4.1.3.2 Single-Phase Commit
 
 The single-phase commit TIP command sequence is the same as that specified in section 4.1.3.1.3
 except that when the TIP subordinate transaction manager receives the COMMIT TIP command, it
 then performs the activities of both Phase One and Phase Two before responding with the
 COMMITTED TIP command.
 
-4.2  Begin Scenario
+### 4.2 Begin Scenario
 
-4.2.1  Creating the TIP Connection
+#### 4.2.1 Creating the TIP Connection
 
 The Primary transaction manager will establish a TIP connection to the superior transaction
 manager as in section 4.1.1.
 
-4.2.2  Beginning the Transaction
+#### 4.2.2 Beginning the Transaction
 
 The Primary transaction manager begins the transaction by sending a BEGIN TIP command.
 
@@ -7156,7 +6936,7 @@ line terminator
 
 LF
 
-4.2.3  Committing the Transaction
+#### 4.2.3 Committing the Transaction
 
 The TIP Primary transaction manager has to commit the transaction by using single-phase
 commit (see section 4.1.3.2).
@@ -7168,9 +6948,10 @@ Release: April 23, 2024
 
 76 / 85
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The transaction processing protocol that is defined by this specification is intended for use in an
 environment where all participants are trusted to collaborate in driving transactions toward a final
@@ -7205,7 +6986,7 @@ initializing the following flags specified in the Abstract Data Model (section 3
 
   Allow Different Partner Address
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7216,7 +6997,8 @@ Release: April 23, 2024
 
 77 / 85
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7285,7 +7067,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<5> Section 3.1.5.5: On Windows, the lowest supported and the highest supported TIP Protocol
+
+<5> Section 3.1.5.5: On Windows, the lowest supported and the highest supported TIP Protocol
 version is 3.
 
 <6> Section 3.1.5.5: On Windows, the lowest supported and the highest supported TIP Protocol
@@ -7335,7 +7118,8 @@ Release: April 23, 2024
 
 79 / 85
 
-7  Appendix B: Summary of Extensions
+
+## 7 Appendix B: Summary of Extensions
 
 The following table documents the conformance of this protocol to the [RFC2371] specification against
 the TIP commands specified in [RFC2371] section 13. In cases where TIP Extensions do not conform
@@ -7457,7 +7241,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TIP Commands from [RFC2371]
+
+TIP Commands from [RFC2371]
 Section 13
 
  Transaction Internet Protocol (TIP) Extensions
@@ -7541,7 +7326,8 @@ Release: April 23, 2024
 
 81 / 85
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7585,7 +7371,8 @@ Release: April 23, 2024
 
 82 / 85
 
-9  Index
+
+## 9 Index
 A
 
 ABORT TIP (section 3.3.5.1 50, section 3.4.5.1 64)
@@ -7727,7 +7514,8 @@ Transaction Internet Protocol (TIP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   BEGUN 20
+
+   BEGUN 20
    IDENTIFY 20
    overview 19
    PULL 20
@@ -7871,7 +7659,8 @@ TIP command object 24
 
 84 / 85
 
-TIP connection - creating 70
+
+TIP connection - creating 70
 TIP connection management operations 22
 TIP connection object 22
 TIP subordinate transaction manager facet

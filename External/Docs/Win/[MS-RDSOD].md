@@ -65,7 +65,8 @@ Release: March 13, 2023
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -224,186 +225,76 @@ Release: March 13, 2023
 
 2 / 54
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Capabilities](#211-system-capabilities)
+      - [2.1.1.1 Establishing a Secure Connection Between an RDP Client and an RD Session](#2111-establishing-a-secure-connection-between-an-rdp-client-and-an-rd-session)
+      - [2.1.1.2 Redirection Functionality](#2112-redirection-functionality)
+      - [2.1.1.3 Terminating a Connection Between an RDP Client and an RD Session Host](#2113-terminating-a-connection-between-an-rdp-client-and-an-rd-session-host)
+        - [2.1.1.3.1 Logoff](#21131-logoff)
+        - [2.1.1.3.2 Disconnect](#21132-disconnect)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+    - [2.2.1 Protocol Relationship Diagram](#221-protocol-relationship-diagram)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Establishing a Secure Connection Between an RDP Client and an RD Session](#251-establishing-a-secure-connection-between-an-rdp-client-and-an-rd-session)
+      - [2.5.1.1 Establish a Connection to an RD Session Host Server in an Intranet](#2511-establish-a-connection-to-an-rd-session-host-server-in-an-intranet)
+      - [2.5.1.2 Establish a Connection to a VM Host in an Intranet Environment--RDP Client](#2512-establish-a-connection-to-a-vm-host-in-an-intranet-environment-rdp-client)
+      - [2.5.1.3 Establish a Connection Using a Remote Desktop Gateway--RDP Client](#2513-establish-a-connection-using-a-remote-desktop-gateway-rdp-client)
+      - [2.5.1.4 Establish a Connection to an RD Session Host Server in an RD Session Host](#2514-establish-a-connection-to-an-rd-session-host-server-in-an-rd-session-host)
+      - [2.5.1.5 Establish a Multi Transport UDP Connection Over an Already Established RDP](#2515-establish-a-multi-transport-udp-connection-over-an-already-established-rdp)
+    - [2.5.2 Redirection Functionality Use Cases](#252-redirection-functionality-use-cases)
+      - [2.5.2.1 Access Local Drives on an RDP Client--Remote Application](#2521-access-local-drives-on-an-rdp-client-remote-application)
+      - [2.5.2.2 Redirect Clipboard Data from a Remote Application--RDP Client](#2522-redirect-clipboard-data-from-a-remote-application-rdp-client)
+      - [2.5.2.3 Use Printer on RDP Client–Remote Application](#2523-use-printer-on-rdp-clientremote-application)
+      - [2.5.2.4 Redirect Smart Card Data from an RDP Client--Remote Application](#2524-redirect-smart-card-data-from-an-rdp-client-remote-application)
+      - [2.5.2.5 Access Plug and Play Device on an RDP Client--Remote Application](#2525-access-plug-and-play-device-on-an-rdp-client-remote-application)
+      - [2.5.2.6 Present Content from RD Session Host Server on an RDP Client--Media Player](#2526-present-content-from-rd-session-host-server-on-an-rdp-client-media-player)
+      - [2.5.2.7 Access Audio Device on an RDP Client--Remote Application](#2527-access-audio-device-on-an-rdp-client-remote-application)
+      - [2.5.2.8 Use client credentials on RDP Client--Remote Application](#2528-use-client-credentials-on-rdp-client-remote-application)
+    - [2.5.3 Terminating a Connection Between an RDP Client and an RD Session Host](#253-terminating-a-connection-between-an-rdp-client-and-an-rd-session-host)
+      - [2.5.3.1 Log Off from a Remote Session--RDP Client](#2531-log-off-from-a-remote-session-rdp-client)
+      - [2.5.3.2 Disconnect From a Remote Session--RDP Client](#2532-disconnect-from-a-remote-session-rdp-client)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+    - [2.9.1 RDP Client](#291-rdp-client)
+    - [2.9.2 RD Session Host Server](#292-rd-session-host-server)
+    - [2.9.3 RD Gateway](#293-rd-gateway)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Connecting from an RDP Client to an RD Session Host](#31-example-1-connecting-from-an-rdp-client-to-an-rd-session-host)
+  - [3.2 Example 2: Connecting from an RDP Client to an RD Session Host Through a](#32-example-2-connecting-from-an-rdp-client-to-an-rd-session-host-through-a)
+  - [3.3 Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device](#33-example-3-establishing-a-dynamic-virtual-channel-for-plug-and-play-device)
+  - [3.4 Example 4: Redirecting Clipboard Data](#34-example-4-redirecting-clipboard-data)
+  - [3.5 Example 5: Disconnection Sequence](#35-example-5-disconnection-sequence)
+    - [3.5.1 RDP Client Logoff from RD Session Host](#351-rdp-client-logoff-from-rd-session-host)
+    - [3.5.2 RDP Client Disconnects from RD Session Host](#352-rdp-client-disconnects-from-rd-session-host)
+  - [3.6 Example 6: Establishing a Multitransport Connection](#36-example-6-establishing-a-multitransport-connection)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.1.1
-
-2.1.1.1
-
-2.1.1.2
-2.1.1.3
-
-2  Functional Architecture ........................................................................................... 8
-Overview .......................................................................................................... 8
-System Capabilities ....................................................................................... 9
-Establishing a Secure Connection Between an RDP Client and an RD Session
-Host Server. ......................................................................................... 10
-Redirection Functionality ........................................................................ 10
-Terminating a Connection Between an RDP Client and an RD Session Host
-Server ................................................................................................. 10
-Logoff ............................................................................................ 10
-Disconnect ...................................................................................... 11
-Protocol Summary ............................................................................................ 11
-Protocol Relationship Diagram ...................................................................... 14
-Environment .................................................................................................... 16
-Dependencies on This System ...................................................................... 16
-Dependencies on Other Systems/Components ................................................ 16
-Assumptions and Preconditions .......................................................................... 16
-Use Cases ....................................................................................................... 16
-Establishing a Secure Connection Between an RDP Client and an RD Session Host
-Server Use Cases ....................................................................................... 18
-
-2.1.1.3.1
-2.1.1.3.2
-
-2.3.1
-2.3.2
-
-2.4
-2.5
-
-2.2.1
-
-2.5.1
-
-2.2
-
-2.3
-
-Establish a Connection to an RD Session Host Server in an Intranet
-Environment--RDP Client ....................................................................... 18
-Establish a Connection to a VM Host in an Intranet Environment--RDP Client 19
-Establish a Connection Using a Remote Desktop Gateway--RDP Client ......... 20
-Establish a Connection to an RD Session Host Server in an RD Session Host
-Server Farm--RDP Client ........................................................................ 21
-Establish a Multi Transport UDP Connection Over an Already Established RDP
-Connection to a RD Session Host ............................................................ 22
-Redirection Functionality Use Cases .............................................................. 24
-Access Local Drives on an RDP Client--Remote Application ......................... 24
-Redirect Clipboard Data from a Remote Application--RDP Client .................. 25
-Use Printer on RDP Client–Remote Application .......................................... 26
-Redirect Smart Card Data from an RDP Client--Remote Application ............. 27
-Access Plug and Play Device on an RDP Client--Remote Application ............. 28
-Present Content from RD Session Host Server on an RDP Client--Media Player28
-Access Audio Device on an RDP Client--Remote Application ........................ 29
-Use client credentials on RDP Client--Remote Application ........................... 30
-
-2.5.2
-
-2.5.1.1
-
-2.5.1.2
-2.5.1.3
-2.5.1.4
-
-2.5.1.5
-
-2.5.2.1
-2.5.2.2
-2.5.2.3
-2.5.2.4
-2.5.2.5
-2.5.2.6
-2.5.2.7
-2.5.2.8
-
-2.5.3.1
-2.5.3.2
-
-2.5.3
-
-2.6
-2.7
-2.8
-2.9
-
-2.9.1
-2.9.2
-2.9.3
-
-2.10
-
-Terminating a Connection Between an RDP Client and an RD Session Host Server
-Use Cases .................................................................................................. 31
-Log Off from a Remote Session--RDP Client ............................................. 31
-Disconnect From a Remote Session--RDP Client ........................................ 32
-Versioning, Capability Negotiation, and Extensibility ............................................. 33
-Error Handling ................................................................................................. 33
-Coherency Requirements .................................................................................. 33
-Security .......................................................................................................... 33
-RDP Client ................................................................................................. 33
-RD Session Host Server ............................................................................... 33
-RD Gateway ............................................................................................... 34
-Additional Considerations .................................................................................. 34
-
-3  Examples ............................................................................................................... 35
-
-3 / 54
-
-[MS-RDSOD] - v20230313
-Remote Desktop Services Protocols Overview
-Copyright © 2023 Microsoft Corporation
-Release: March 13, 2023
-
-3.1
-3.2
-
-3.3
-
-3.4
-3.5
-
-3.6
-
-3.5.1
-3.5.2
-
-Example 1: Connecting from an RDP Client to an RD Session Host ......................... 35
-Example 2: Connecting from an RDP Client to an RD Session Host Through a Remote
-Desktop Gateway ............................................................................................. 37
-Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device Redirection
- ..................................................................................................................... 41
-Example 4: Redirecting Clipboard Data ............................................................... 44
-Example 5: Disconnection Sequence ................................................................... 46
-RDP Client Logoff from RD Session Host ........................................................ 46
-RDP Client Disconnects from RD Session Host ................................................ 47
-Example 6: Establishing a Multitransport Connection ............................................ 48
-
-4  Microsoft Implementations ................................................................................... 50
-Product Behavior .............................................................................................. 50
-
-4.1
-
-5  Change Tracking .................................................................................................... 52
-
-6  Index ..................................................................................................................... 53
-
-[MS-RDSOD] - v20230313
-Remote Desktop Services Protocols Overview
-Copyright © 2023 Microsoft Corporation
-Release: March 13, 2023
-
-4 / 54
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Services (RDS) protocols provide secure connection and communication between
 remote clients and servers. Using the Remote Desktop Services, a user of a remote client can initiate
 a user session on a server and then run programs, save files, and use network resources. This
 supports the hosting of multiple simultaneous user sessions on servers.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 In the Remote Desktop Services protocols, a client computer or system can use applications and
 resources that are not installed on the client by connecting to a user session on a server where the
@@ -432,7 +323,7 @@ transport data from remote applications running on a server to devices attached 
 example, sending audio data to the audio subsystem on the RDP client or sending print jobs to the
 print spooler on the RDP client.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -464,7 +355,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-computers and services by user-friendly names, and it also enables the discovery of other
+
+computers and services by user-friendly names, and it also enables the discovery of other
 information stored in the database.
 
 handshake: An initial negotiation between a peer and an authenticator that establishes the
@@ -489,7 +381,7 @@ terminal server: A computer on which terminal services is running.
 
 tunnel: The encapsulation of one network protocol within another.
 
-1.3  References
+### 1.3 References
 
 [MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
@@ -531,7 +423,8 @@ Release: March 13, 2023
 
 6 / 54
 
-[RFC4346] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.1",
+
+[RFC4346] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.1",
 RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 
 [RFC4347] Rescorla, E., and Modadugu, N., "Datagram Transport Layer Security", RFC 4347, April
@@ -553,7 +446,8 @@ Release: March 13, 2023
 
 7 / 54
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 The Remote Desktop Services protocols provide functionality for securely connecting remote clients
 and servers, for channeling communication between components of remote clients and servers, and
@@ -587,7 +481,7 @@ Remote Desktop Services protocols can be deployed in other enterprise network to
 virtual private networks, to allow access to user sessions on individual RD Session Host servers or RD
 Session Host servers configured in farms.
 
-2.1  Overview
+### 2.1 Overview
 
 The Remote Desktop Services protocols provide system components to implement a presentation
 remoting system while controlling the interactive input and output for the desktop or application from
@@ -609,7 +503,8 @@ Release: March 13, 2023
 
 8 / 54
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDSOD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -624,7 +519,7 @@ component that is not necessary for an RDP client to connect to an RD Session Ho
 Broker services assign users of RDP clients to user sessions on RD Session Hosts and can use an
 algorithm that balances the workload between RD Session Hosts.
 
-2.1.1  System Capabilities
+#### 2.1.1 System Capabilities
 
 The Remote Desktop Services protocols are designed to support scenarios that allow users to access
 applications and data on a remote computer over the network. When a user wants to interact with a
@@ -647,11 +542,12 @@ Release: March 13, 2023
 
 9 / 54
 
-
+
+
 
 Terminating a connection between an RDP client and an RD Session Host server.
 
-2.1.1.1  Establishing a Secure Connection Between an RDP Client and an RD Session
+##### 2.1.1.1 Establishing a Secure Connection Between an RDP Client and an RD Session
 
 Host Server.
 
@@ -659,7 +555,7 @@ The Remote Desktop Services protocols allow an RDP client to securely connect to
 server; in order to connect across a domain boundary, an RDP client uses a Virtual Private
 Network(VPN) or the protocol described in [MS-TSGU] to first connect to an RD Gateway server.
 
-2.1.1.2  Redirection Functionality
+##### 2.1.1.2 Redirection Functionality
 
 When a Remote Desktop Protocol (RDP) connection exists between an RDP client and RD Session Host
 server, data and resources are frequently redirected. This redirection allows the RD Session Host
@@ -703,7 +599,7 @@ RDP client.
 
 connecting to an RD Session Host.
 
-2.1.1.3  Terminating a Connection Between an RDP Client and an RD Session Host
+##### 2.1.1.3 Terminating a Connection Between an RDP Client and an RD Session Host
 
 Server
 
@@ -715,7 +611,7 @@ Logoff
 
   Disconnect
 
-2.1.1.3.1 Logoff
+###### 2.1.1.3.1 Logoff
 
 The user of the RDP client logs off from an RD Session Host server, causing the user session on the
 RD Session Host server to be closed.
@@ -727,7 +623,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-2.1.1.3.2 Disconnect
+
+###### 2.1.1.3.2 Disconnect
 
 An RDP client can become disconnected from an RD Session Host server because of network problems
 or because the RDP client is shut down prior to the user logging off the assigned session. When this
@@ -735,7 +632,7 @@ occurs, the user session remains on the RD Session Host server for a certain amo
 depending on the configuration of the RD Session Host server. This allows a user to reconnect to the
 existing session.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The tables in this section provide a comprehensive list of the member protocols of the Remote
 Desktop Services.
@@ -855,7 +752,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Protocol Name
+
+Protocol Name
 
 Description
 
@@ -1007,7 +905,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Protocol Name
+
+Protocol Name
 
 Description
 
@@ -1168,7 +1067,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Protocol Name
+
+Protocol Name
 
 Description
 
@@ -1241,7 +1141,7 @@ RDPEAR
 MS-
 RDPEWA
 
-2.2.1  Protocol Relationship Diagram
+#### 2.2.1 Protocol Relationship Diagram
 
 The following diagram depicts the relationships among the protocols of the Remote Desktop Services
 system.
@@ -1253,7 +1153,8 @@ Release: March 13, 2023
 
 14 / 54
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1266,17 +1167,18 @@ Release: March 13, 2023
 
 15 / 54
 
-2.3  Environment
+
+### 2.3 Environment
 
 The following sections identify the context in which the Remote Desktop Services exist. This includes
 the systems that use the interfaces provided by the Remote Desktop Services protocols, other
 systems that depend on this, and, as appropriate, how components of the system communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The Remote Desktop Services protocols depend on the following systems:
 
@@ -1295,7 +1197,7 @@ Virtual Machine Manager (SCVMM)) for assigning user sessions or virtual machines
 
 File Services for Terminal Services publication of remote desktops and remote applications.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The Remote Desktop Services protocols assume that:
 
@@ -1318,7 +1220,7 @@ Host server is configured to allow RDP traffic.
 
 The RD Session Host server is actively listening for RDP client connections on a registered port.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following table lists the use cases that span the functionality of the Remote Desktop Services
 protocols. The use cases are grouped into three groups, as shown in the first column of the table.
@@ -1354,7 +1256,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Use case group
+
+Use case group
 
 Use cases
 
@@ -1398,18 +1301,19 @@ Release: March 13, 2023
 
 17 / 54
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-RDSOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-2.5.1  Establishing a Secure Connection Between an RDP Client and an RD Session
+#### 2.5.1 Establishing a Secure Connection Between an RDP Client and an RD Session
 
 Host Server Use Cases
 
 Figure 3: Establishing connection between RDP client and RD Session Host use cases
 diagram
 
-2.5.1.1  Establish a Connection to an RD Session Host Server in an Intranet
+##### 2.5.1.1 Establish a Connection to an RD Session Host Server in an Intranet
 
 Environment--RDP Client
 
@@ -1436,7 +1340,8 @@ Release: March 13, 2023
 
 18 / 54
 
-RDP client: The RDP client establishes a connection to the RD Session Host in order to interact with a
+
+RDP client: The RDP client establishes a connection to the RD Session Host in order to interact with a
 remote desktop or remote application.
 
 RD Session Host: The RD Session Host is hosting the remote desktop or remote application to which
@@ -1480,7 +1385,7 @@ Extensions
 In Windows 7 implementations, an RDP client can connect to a virtual machine on a VM Host, rather
 than a user session on an RD Session Host server.
 
-2.5.1.2  Establish a Connection to a VM Host in an Intranet Environment--RDP Client
+##### 2.5.1.2 Establish a Connection to a VM Host in an Intranet Environment--RDP Client
 
 Goal
 
@@ -1508,7 +1413,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-VM Host: The VM Host is hosting the virtual machine running the remote desktop or remote
+
+VM Host: The VM Host is hosting the virtual machine running the remote desktop or remote
 application to which the direct actor is connecting.
 
 Stakeholders:
@@ -1542,7 +1448,7 @@ Extensions
 
 None.
 
-2.5.1.3  Establish a Connection Using a Remote Desktop Gateway--RDP Client
+##### 2.5.1.3 Establish a Connection Using a Remote Desktop Gateway--RDP Client
 
 Goal
 
@@ -1578,7 +1484,8 @@ Release: March 13, 2023
 
 20 / 54
 
-The Remote Desktop Gateway is operational and listening for a connection request on a known port.
+
+The Remote Desktop Gateway is operational and listening for a connection request on a known port.
 The Remote Desktop Gateway is capable of making remote connections to the requested RD Session
 Host server. The RD Session Host is operational and listening for an RDP connect request. If the RDP
 client is using the IPv6 protocol, then the Remote Desktop Gateway supports the IPv6 protocol.
@@ -1615,7 +1522,7 @@ Extensions
 
 None.
 
-2.5.1.4  Establish a Connection to an RD Session Host Server in an RD Session Host
+##### 2.5.1.4 Establish a Connection to an RD Session Host Server in an RD Session Host
 
 Server Farm--RDP Client
 
@@ -1652,7 +1559,8 @@ Release: March 13, 2023
 
 21 / 54
 
-Connection Broker: The Connection Broker assigns the RDP client to an RD Session Host within a
+
+Connection Broker: The Connection Broker assigns the RDP client to an RD Session Host within a
 server farm according to an algorithm to optimize load balancing.
 
 Preconditions
@@ -1694,7 +1602,7 @@ Extensions
 In Windows 7 implementations, an RDP client can connect to a virtual machine on a VM Host, rather
 than a user session on an RD Session Host.
 
-2.5.1.5  Establish a Multi Transport UDP Connection Over an Already Established RDP
+##### 2.5.1.5 Establish a Multi Transport UDP Connection Over an Already Established RDP
 
 Connection to a RD Session Host
 
@@ -1725,7 +1633,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-RD Session Host: The RD Session Host is hosting the remote desktop or remote application to which
+
+RD Session Host: The RD Session Host is hosting the remote desktop or remote application to which
 the RDP client is connecting.
 
 Stakeholders
@@ -1770,15 +1679,16 @@ Release: March 13, 2023
 
 23 / 54
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-RDSOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-2.5.2  Redirection Functionality Use Cases
+#### 2.5.2 Redirection Functionality Use Cases
 
 Figure 4: Redirection functionality use cases diagram
 
-2.5.2.1  Access Local Drives on an RDP Client--Remote Application
+##### 2.5.2.1 Access Local Drives on an RDP Client--Remote Application
 
 Goal
 
@@ -1793,7 +1703,8 @@ Release: March 13, 2023
 
 24 / 54
 
-After an RDP client establishes a connection to an RD Session Host, a remote application running on
+
+After an RDP client establishes a connection to an RD Session Host, a remote application running on
 the RD Session Host server can access local drives on the RDP client.
 
 Actors
@@ -1834,7 +1745,7 @@ Extensions
 
 None.
 
-2.5.2.2  Redirect Clipboard Data from a Remote Application--RDP Client
+##### 2.5.2.2 Redirect Clipboard Data from a Remote Application--RDP Client
 
 Goal
 
@@ -1861,7 +1772,8 @@ Release: March 13, 2023
 
 25 / 54
 
-RD Session Host: The RD Session Host is hosting the remote desktop or remote application to which
+
+RD Session Host: The RD Session Host is hosting the remote desktop or remote application to which
 the direct actor is connecting. The RD Session Host manages redirecting clipboard data from the
 remote application to the clipboard on the RDP client.
 
@@ -1895,7 +1807,7 @@ Extensions
 
 None.
 
-2.5.2.3  Use Printer on RDP Client–Remote Application
+##### 2.5.2.3 Use Printer on RDP Client–Remote Application
 
 Goal
 
@@ -1931,7 +1843,8 @@ Release: March 13, 2023
 
 26 / 54
 
-The RDP client is connected to the RD Session Host. The RDP connection supports printer redirection.
+
+The RDP client is connected to the RD Session Host. The RDP connection supports printer redirection.
 The remote desktop or remote application is running on the RD Session Host. The RD Session Host
 has permission to access the local printer on the RDP client.
 
@@ -1951,7 +1864,7 @@ Extensions
 
 None.
 
-2.5.2.4  Redirect Smart Card Data from an RDP Client--Remote Application
+##### 2.5.2.4 Redirect Smart Card Data from an RDP Client--Remote Application
 
 Goal
 
@@ -2004,9 +1917,10 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Extensions: None.
 
-2.5.2.5  Access Plug and Play Device on an RDP Client--Remote Application
+Extensions: None.
+
+##### 2.5.2.5 Access Plug and Play Device on an RDP Client--Remote Application
 
 Goal
 
@@ -2057,7 +1971,7 @@ Extensions
 
 None.
 
-2.5.2.6  Present Content from RD Session Host Server on an RDP Client--Media Player
+##### 2.5.2.6 Present Content from RD Session Host Server on an RDP Client--Media Player
 
  Goal
 
@@ -2075,7 +1989,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Actors
+
+Actors
 
 Media player: The primary actor is the media player. It is an application running on the remote
 machine that plays content on the RD Session Host server that is streamed to the RDP client for
@@ -2113,7 +2028,7 @@ Extensions
 
 None.
 
-2.5.2.7  Access Audio Device on an RDP Client--Remote Application
+##### 2.5.2.7 Access Audio Device on an RDP Client--Remote Application
 
  Goal
 
@@ -2147,7 +2062,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-Preconditions
+
+Preconditions
 
 The RDP client is connected to the RD Session Host server. The RDP connection supports audio
 redirection. The remote desktop or remote application is running on the RD Session Host server. The
@@ -2171,7 +2087,7 @@ Extensions
 
 None.
 
-2.5.2.8  Use client credentials on RDP Client--Remote Application
+##### 2.5.2.8 Use client credentials on RDP Client--Remote Application
 
 Goal
 
@@ -2219,7 +2135,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-RDSOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2239,13 +2156,13 @@ Extensions
 
 None.
 
-2.5.3  Terminating a Connection Between an RDP Client and an RD Session Host
+#### 2.5.3 Terminating a Connection Between an RDP Client and an RD Session Host
 
 Server Use Cases
 
 Figure 5: Disconnection use cases diagram
 
-2.5.3.1  Log Off from a Remote Session--RDP Client
+##### 2.5.3.1 Log Off from a Remote Session--RDP Client
 
 Goal
 
@@ -2276,7 +2193,8 @@ Release: March 13, 2023
 
 31 / 54
 
-Administrator: An administrator might need to force a user session closed using an administrative
+
+Administrator: An administrator might need to force a user session closed using an administrative
 tool.
 
 User: The user of the RDP client wants to close the assigned user session on the RD Session Host
@@ -2299,7 +2217,7 @@ Extensions
 
 An administrator might force a user session to be terminated using an administrative tool.
 
-2.5.3.2  Disconnect From a Remote Session--RDP Client
+##### 2.5.3.2 Disconnect From a Remote Session--RDP Client
 
 Goal
 
@@ -2345,7 +2263,8 @@ Release: March 13, 2023
 
 32 / 54
 
-1.  Trigger: The RDP client does not perform any action and remains idle for a certain period of time.
+
+1.  Trigger: The RDP client does not perform any action and remains idle for a certain period of time.
 
 2.  The RDP client will be able to gracefully disconnect the user session so that reconnection to the
 
@@ -2355,7 +2274,7 @@ Extensions
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 The Remote Desktop protocols provide capability-based services, as described in [MS-RDPBCGR]. The
 capabilities and requirements of a client requesting a connection are established during the Remote
@@ -2367,16 +2286,16 @@ RDP communication is consistent with negotiated expectations and can be processe
 The Remote Desktop Services protocols do not define any vendor-extensible fields beyond those
 described in the specifications of the protocols supported by the system.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The Remote Desktop Services protocols do not define any error-handling requirements beyond those
 described in the specifications of the protocols supported by the system, as listed in section 2.2.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 This system has no special coherency requirements.
 
-2.9  Security
+### 2.9 Security
 
 The Remote Desktop Services protocols include security features for creating secure end-to-end
 connections between mutually authenticated RDP clients and RD Session Host servers. The Remote
@@ -2393,12 +2312,12 @@ In multi transport connections, the client is authenticated to the server by pre
 cookie as part of the Tunnel Create Request PDU that the server provided to the client over the secure
 main RDP connection, as defined in [MS-RDPBCGR] section 2.2.2.
 
-2.9.1  RDP Client
+#### 2.9.1 RDP Client
 
 The RDP client implementation will ensure that user credentials are not locally stored in clear text
 form. Passwords are handled in an implementation-specific way.<4>
 
-2.9.2  RD Session Host Server
+#### 2.9.2 RD Session Host Server
 
 The configuration data elements of the RD Session Host server that are persisted either in database or
 registry hives require administrator privileges to be accessible. In addition, management objects that
@@ -2410,18 +2329,19 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-interact with remote sessions are protected and require administrator privileges or local system access
+
+interact with remote sessions are protected and require administrator privileges or local system access
 privileges to be accessible.
 
 Administrators interacting with RD Session Host servers use the Terminal Services Terminal Server
 Runtime Interface Protocol, described in [MS-TSTS].
 
-2.9.3  RD Gateway
+#### 2.9.3 RD Gateway
 
 The elements that configure the Remote Desktop Gateway, such as policies regarding remote access
 and device redirection, are limited to administrator access.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 There are no additional considerations.
 
@@ -2432,9 +2352,10 @@ Release: March 13, 2023
 
 34 / 54
 
-3  Examples
 
-3.1  Example 1: Connecting from an RDP Client to an RD Session Host
+## 3 Examples
+
+### 3.1 Example 1: Connecting from an RDP Client to an RD Session Host
 
 This example demonstrates the process of connecting from an RDP client to an RD Session Host as
 described in section 2.5.1.1.
@@ -2472,7 +2393,8 @@ Release: March 13, 2023
 
 35 / 54
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-RDSOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2515,7 +2437,8 @@ Release: March 13, 2023
 
 36 / 54
 
-12. The RD Session Host sends a License Error PDU-Valid Client.
+
+12. The RD Session Host sends a License Error PDU-Valid Client.
 
 13. The RD Session Host sends a Demand Active PDU.
 
@@ -2542,7 +2465,7 @@ Release: March 13, 2023
 For more details on steps 1 through 11, and 13 through 23, see [MS-RDPBCGR] section 1.3.1.1. For
 details on step 12, see [MS-RDPELE] section 1.3.3.
 
-3.2  Example 2: Connecting from an RDP Client to an RD Session Host Through a
+### 3.2 Example 2: Connecting from an RDP Client to an RD Session Host Through a
 
 Remote Desktop Gateway
 
@@ -2583,7 +2506,8 @@ Release: March 13, 2023
 
 37 / 54
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-RDSOD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2596,7 +2520,8 @@ Release: March 13, 2023
 
 38 / 54
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-RDSOD].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2624,7 +2549,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-4.  The RDP client sends a TSProxyCreateChannel Request to the RD Gateway to create a channel.
+
+4.  The RDP client sends a TSProxyCreateChannel Request to the RD Gateway to create a channel.
 
 The RD Gateway responds with a TSProxyCreateChannel Response. This sequence is described in
 [MS-TSGU] section 1.3.
@@ -2694,11 +2620,12 @@ Release: March 13, 2023
 
 40 / 54
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-RDSOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
-3.3  Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device
+### 3.3 Example 3: Establishing a Dynamic Virtual Channel for Plug and Play Device
 
 Redirection
 
@@ -2742,7 +2669,8 @@ Release: March 13, 2023
 
 41 / 54
 
-3.  The RD Session Host and RDP client exchange Create Request and Create Response PDUs to
+
+3.  The RD Session Host and RDP client exchange Create Request and Create Response PDUs to
 establish the DVC for Plug and Play redirection. For more details, see [MS-RDPEDYC] section
 2.2.2.
 
@@ -2771,7 +2699,8 @@ Release: March 13, 2023
 
 42 / 54
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-RDSOD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2798,7 +2727,8 @@ Remote Desktop Services Protocols Overview
 Copyright © 2023 Microsoft Corporation
 Release: March 13, 2023
 
-4.  The RDP client responds with a Client Device Additions message, as described in [MS-RDPEPNP]
+
+4.  The RDP client responds with a Client Device Additions message, as described in [MS-RDPEPNP]
 
 section 2.2.1.2.3 and section 2.2.1.3.1.
 
@@ -2826,7 +2756,7 @@ message. For more details on steps 7 through 10, see [MS-RDPEPNP] section 2.2.2.
 
 RDPEPNP] section 2.2.1.2.3 and section 2.2.1.3.2.
 
-3.4  Example 4: Redirecting Clipboard Data
+### 3.4 Example 4: Redirecting Clipboard Data
 
 This example demonstrates the process of redirecting clipboard data on a remote application running
 on an RD Session Host server as described in section 2.5.2.2.
@@ -2858,7 +2788,8 @@ Release: March 13, 2023
 
 44 / 54
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-RDSOD].images/page045-img01.png)
 ![Extracted image 2 from page 45]([MS-RDSOD].images/page045-img02.png)
 <!-- /Extracted images from page 45 -->
@@ -2889,7 +2820,8 @@ Release: March 13, 2023
 
 45 / 54
 
-5.  The final stage of the Initialization Sequence involves synchronizing the clipboard formats on the
+
+5.  The final stage of the Initialization Sequence involves synchronizing the clipboard formats on the
 RD Session Host clipboard and the RDP client. This is accomplished by effectively mimicking a
 copy operation on the RDP client by forcing it to send a Format List PDU to the RD Session Host.
 
@@ -2922,7 +2854,7 @@ The Lock Clipboard Data PDU can be sent at any point in time after the Format li
 the Clipboard Initialization Sequence, and the Unlock Clipboard Data PDU can be sent only after the
 Lock Clipboard Data PDU is sent.
 
-3.5  Example 5: Disconnection Sequence
+### 3.5 Example 5: Disconnection Sequence
 
 This example demonstrates the process of disconnecting an RDP client from an RD Session Host as
 described in section 2.5.3.
@@ -2937,7 +2869,7 @@ The user of the RDP client logs off from the RD Session Host.
 
 The RDP client is disconnected from an RD Session Host.
 
-3.5.1  RDP Client Logoff from RD Session Host
+#### 3.5.1 RDP Client Logoff from RD Session Host
 
 This example demonstrates the process of disconnecting an RDP client from an RD Session Host as
 described in section 2.5.3.1.
@@ -2964,7 +2896,8 @@ Release: March 13, 2023
 
 46 / 54
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-RDSOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -2992,7 +2925,7 @@ the reason code set to "user requested".
 
 session.
 
-3.5.2  RDP Client Disconnects from RD Session Host
+#### 3.5.2 RDP Client Disconnects from RD Session Host
 
 This example demonstrates the process of disconnecting an RDP client from an RD Session Host as
 described in section 2.5.3.2.
@@ -3021,7 +2954,8 @@ Release: March 13, 2023
 
 47 / 54
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-RDSOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3037,7 +2971,7 @@ off because of network problems, or for other reasons. In these cases, the user 
 established on the RD Session Host remains active for a certain amount of time, depending on
 how the RD Session Host is configured.
 
-3.6  Example 6: Establishing a Multitransport Connection
+### 3.6 Example 6: Establishing a Multitransport Connection
 
 This example demonstrates the process of establishing a multitransport connection as described in
 section 2.5.1.5.
@@ -3072,7 +3006,8 @@ Release: March 13, 2023
 
 48 / 54
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-RDSOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3115,7 +3050,8 @@ Release: March 13, 2023
 
 49 / 54
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following versions of Windows:
 
@@ -3159,7 +3095,7 @@ There are no variations in the behavior of the Remote Desktop Services protocols
 of Windows beyond those described in the specifications of the protocols supported by the system, as
 listed in section Protocol Summary.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2: UDP connection and data transfer is not supported by the Windows 2000, Windows
 2000 Server, Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7,
@@ -3182,7 +3118,8 @@ Release: March 13, 2023
 
 50 / 54
 
-<4> Section 2.9.1: In the Microsoft implementation of the Remote Desktop Services, the Windows
+
+<4> Section 2.9.1: In the Microsoft implementation of the Remote Desktop Services, the Windows
 security system is leveraged when handling user passwords.
 
 <5> Section 3.4: The Lock Clipboard Data PDU and Unlock Clipboard Data PDU are mandatory in
@@ -3198,7 +3135,8 @@ Release: March 13, 2023
 
 51 / 54
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3235,7 +3173,8 @@ Release: March 13, 2023
 
 52 / 54
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 34
@@ -3372,7 +3311,8 @@ T
 
 53 / 54
 
-Table of protocols 11
+
+Table of protocols 11
 Terminating a connection between an rdp client and
 
 an rd session host server use cases

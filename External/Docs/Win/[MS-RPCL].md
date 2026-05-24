@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 77
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: June 1, 2017
 
 2 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -525,7 +527,8 @@ Release: June 1, 2017
 
 3 / 77
 
-Date
+
+Date
 
 Revision
 History
@@ -551,461 +554,187 @@ Release: June 1, 2017
 
 4 / 77
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Protocol Overview ............................................................................................ 12
-Roles ........................................................................................................ 13
-Modes ....................................................................................................... 13
-Name Service Entries in Active Directory ....................................................... 14
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.2.4
-
-2.1
-2.2
-
-2.2.4.1
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.4.1.1
-2.2.4.1.2
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Common Data Types ........................................................................................ 19
-Constants .................................................................................................. 19
-Extensions to the Name Service Entry Name Syntax ....................................... 20
-LocToLoc RPC Interface Types ...................................................................... 20
-STRING_T ............................................................................................ 21
-NSI_UUID_P_T ..................................................................................... 21
-NSI_UUID_VECTOR_T ........................................................................... 21
-NSI_UUID_VECTOR_P_T ........................................................................ 21
-NSI_NS_HANDLE_T ............................................................................... 21
-NSI_STRING_BINDING_T....................................................................... 21
-NSI_BINDING_T ................................................................................... 22
-NSI_BINDING_VECTOR_T ...................................................................... 22
-NSI_BINDING_VECTOR_P_T ................................................................... 22
-Mailslot Structures ...................................................................................... 22
-Common Details ................................................................................... 23
-Mailslot Sender ............................................................................... 23
-RPC_SYNTAX_IDENTIFIER ................................................................ 23
-Broadcast Lookup ................................................................................. 23
-QueryPacket ................................................................................... 23
-QueryReply ..................................................................................... 24
-MAILSLOT_ENTRY_TYPE ............................................................. 24
-ReplyBuffer ............................................................................... 24
-fixed_part_of_reply .................................................................... 25
-Master Locator Discovery ....................................................................... 26
-QUERYLOCATOR .............................................................................. 26
-QUERYLOCATORREPLY ..................................................................... 26
-Active Directory Schema Specifications.......................................................... 27
-Common Details ................................................................................... 27
-Name Service Entry RDN .................................................................. 27
-Reference Attributes ........................................................................ 27
-RPC Syntax Identifier Attribute .......................................................... 28
-rpcContainer Class ................................................................................ 28
-rpcServer Class .................................................................................... 28
-rpcProfile Class ..................................................................................... 29
-rpcGroup Class ..................................................................................... 29
-rpcServerElement Class ......................................................................... 29
-rpcProfileElement Class .......................................................................... 30
-
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-2.2.5.6
-2.2.5.7
-
-2.2.4.2.2.1
-2.2.4.2.2.2
-2.2.4.2.2.3
-
-2.2.5.1.1
-2.2.5.1.2
-2.2.5.1.3
-
-2.2.4.2.1
-2.2.4.2.2
-
-2.2.4.3.1
-2.2.4.3.2
-
-2.2.4.3
-
-2.2.5.1
-
-2.2.4.2
-
-2.2.5
-
-[MS-RPCL] - v20170601
-Remote Procedure Call Location Services Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 77
-
-2.2.6
-
-2.2.6.1
-2.2.6.2
-
-LDAP Operation Details ............................................................................... 30
-LDAP Abstract Data Elements ................................................................. 30
-LDAP Operation Details .......................................................................... 30
-LDAP Query .................................................................................... 30
-LDAP Add ....................................................................................... 31
-LDAP Delete .................................................................................... 31
-LDAP Modify ................................................................................... 31
-LDAP Bind ...................................................................................... 31
-LDAP Unbind ................................................................................... 32
-Directory Service Schema Elements ................................................................... 32
-
-2.2.6.2.1
-2.2.6.2.2
-2.2.6.2.3
-2.2.6.2.4
-2.2.6.2.5
-2.2.6.2.6
-
-2.3
-
-3.2
-
-3.1
-
-3.2.1
-
-3.1.4
-
-3.1.1
-
-3.1.1.1
-
-3.1.2
-3.1.3
-
-3.1.5
-3.1.6
-
-3.1.3.1
-3.1.3.2
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-3  Protocol Details ..................................................................................................... 34
-LocToLoc Common Details ................................................................................. 34
-Abstract Data Model .................................................................................... 34
-RPC Services Container .......................................................................... 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Mode Initialization ................................................................................. 34
-Master and Nonmaster Locator Initialization ............................................. 35
-Message Processing Events and Sequencing Rules .......................................... 35
-I_nsi_lookup_begin (Opnum 0) ............................................................... 36
-I_nsi_lookup_next (Opnum 2) ................................................................ 37
-I_nsi_lookup_done (Opnum 1) ............................................................... 38
-I_nsi_ping_locator (Opnum 4) ................................................................ 39
-I_nsi_entry_object_inq_begin (Opnum 6) ................................................ 39
-I_nsi_entry_object_inq_next (Opnum 3) .................................................. 40
-I_nsi_entry_object_inq_done (Opnum 5) ................................................. 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-LocToLoc Server Locator Details ......................................................................... 41
-Nondirectory Mode ...................................................................................... 42
-Abstract Data Model .............................................................................. 42
-Timers ................................................................................................. 42
-Initialization ......................................................................................... 42
-Higher-Layer Triggered Events ............................................................... 42
-Updating a Server Entry ................................................................... 42
-Setting the Maximum Expiration Age ................................................. 43
-Message Processing Events and Sequencing Rules .................................... 43
-Broadcast Lookup Response .............................................................. 44
-Timer Events ........................................................................................ 45
-Other Local Events ................................................................................ 45
-Directory-Only Mode ................................................................................... 45
-Abstract Data Model .............................................................................. 46
-Timers ................................................................................................. 46
-Initialization ......................................................................................... 46
-Higher-Layer Triggered Events ............................................................... 46
-Updating a Server Entry ................................................................... 46
-Updating a Group Entry .................................................................... 47
-Updating a Profile Entry ................................................................... 49
-Creating a New Entry ....................................................................... 50
-Message Processing Events and Sequencing Rules .................................... 51
-Timer Events ........................................................................................ 51
-Other Local Events ................................................................................ 51
-Directory Mode ........................................................................................... 51
-Abstract Data Model .............................................................................. 51
-Timers ................................................................................................. 52
-Initialization ......................................................................................... 52
-Higher-Layer Triggered Events ............................................................... 52
-
-3.2.2.4.1
-3.2.2.4.2
-3.2.2.4.3
-3.2.2.4.4
-
-3.2.2.1
-3.2.2.2
-3.2.2.3
-3.2.2.4
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-3.2.3.4
-
-3.2.2.5
-3.2.2.6
-3.2.2.7
-
-3.2.1.4.1
-3.2.1.4.2
-
-3.2.1.6
-3.2.1.7
-
-3.2.1.5.1
-
-3.2.1.5
-
-3.2.3
-
-3.2.2
-
-[MS-RPCL] - v20170601
-Remote Procedure Call Location Services Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 77
-
-3.3
-
-3.3.1
-
-3.2.3.5
-3.2.3.6
-3.2.3.7
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-
-3.3.2.4.1
-3.3.2.4.2
-
-3.3.1.4.1
-3.3.1.4.2
-3.3.1.4.3
-
-3.2.3.4.1
-3.2.3.4.2
-3.2.3.4.3
-
-3.3.2
-
-3.3.1.5
-3.3.1.6
-3.3.1.7
-
-3.3.2.1
-3.3.2.2
-3.3.2.3
-3.3.2.4
-
-3.3.3
-
-3.3.2.5
-3.3.2.6
-3.3.2.7
-
-3.3.3.1
-3.3.3.2
-3.3.3.3
-3.3.3.4
-
-Updating a Server Entry ................................................................... 52
-Updating a Group Entry .................................................................... 52
-Updating a Profile Entry ................................................................... 52
-Message Processing Events and Sequencing Rules .................................... 52
-Timer Events ........................................................................................ 52
-Other Local Events ................................................................................ 52
-LocToLoc Client Locator Details .......................................................................... 53
-Nondirectory Mode ...................................................................................... 53
-Abstract Data Model .............................................................................. 53
-Timers ................................................................................................. 53
-Initialization ......................................................................................... 53
-Higher-Layer Triggered Events ............................................................... 53
-Binding Lookup ............................................................................... 54
-Object UUID Lookup ........................................................................ 54
-Master Locator Discovery ................................................................. 54
-Message Processing Events and Sequencing Rules .................................... 55
-Timer Events ........................................................................................ 55
-Other Local Events ................................................................................ 55
-Directory-Only Mode ................................................................................... 55
-Abstract Data Model .............................................................................. 55
-Timers ................................................................................................. 55
-Initialization ......................................................................................... 55
-Higher-Layer Triggered Events ............................................................... 56
-Query with Entry Name .................................................................... 56
-Query Without Entry Name ............................................................... 56
-Message Processing Events and Sequencing Rules .................................... 57
-Timer Events ........................................................................................ 57
-Other Local Events ................................................................................ 57
-Directory Mode ........................................................................................... 57
-Abstract Data Model .............................................................................. 57
-Timers ................................................................................................. 57
-Initialization ......................................................................................... 57
-Higher-Layer Triggered Events ............................................................... 57
-Query with Entry Name .................................................................... 57
-Query Without Entry Name ............................................................... 58
-Message Processing Events and Sequencing Rules .................................... 58
-Timer Events ........................................................................................ 58
-Other Local Events ................................................................................ 58
-LocToLoc Master Locator Details ........................................................................ 58
-Nondirectory Mode ...................................................................................... 58
-Abstract Data Model .............................................................................. 58
-Timers ................................................................................................. 59
-Initialization ......................................................................................... 59
-Higher-Layer Triggered Events ............................................................... 59
-Message Processing Events and Sequencing Rules .................................... 59
-Lookup Request .............................................................................. 59
-Broadcast Lookup ...................................................................... 60
-Master Locator Response .................................................................. 62
-Master Locator Ping Response ........................................................... 62
-Timer Events ........................................................................................ 62
-Other Local Events ................................................................................ 62
-Directory Mode ........................................................................................... 62
-Directory-Only Mode ................................................................................... 62
-
-3.4.1.5.1.1
-
-3.3.3.4.1
-3.3.3.4.2
-
-3.3.3.5
-3.3.3.6
-3.3.3.7
-
-3.4.1.1
-3.4.1.2
-3.4.1.3
-3.4.1.4
-3.4.1.5
-
-3.4.1.5.1
-
-3.4.1.5.2
-3.4.1.5.3
-
-3.4.1.6
-3.4.1.7
-
-3.4.2
-3.4.3
-
-3.4
-
-3.4.1
-
-4  Protocol Examples ................................................................................................. 63
-Nondirectory Mode Operation ............................................................................ 63
-Directory-Only Mode Operation .......................................................................... 63
-Server in Nondirectory Mode and Client in Directory Mode ..................................... 64
-
-4.1
-4.2
-4.3
-
-7 / 77
-
-[MS-RPCL] - v20170601
-Remote Procedure Call Location Services Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5  Security ................................................................................................................. 66
-Security Considerations for Implementers ........................................................... 66
-Index of Security Parameters ............................................................................ 66
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 67
-
-7  Appendix B: Product Behavior ............................................................................... 69
-
-8  Appendix C: API Mappings ..................................................................................... 71
-
-9  Change Tracking .................................................................................................... 73
-
-10  Index ..................................................................................................................... 74
-
-[MS-RPCL] - v20170601
-Remote Procedure Call Location Services Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-8 / 77
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview](#13-protocol-overview)
+    - [1.3.1 Roles](#131-roles)
+    - [1.3.2 Modes](#132-modes)
+    - [1.3.3 Name Service Entries in Active Directory](#133-name-service-entries-in-active-directory)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Constants](#221-constants)
+    - [2.2.2 Extensions to the Name Service Entry Name Syntax](#222-extensions-to-the-name-service-entry-name-syntax)
+    - [2.2.3 LocToLoc RPC Interface Types](#223-loctoloc-rpc-interface-types)
+      - [2.2.3.1 STRING_T](#2231-stringt)
+      - [2.2.3.2 NSI_UUID_P_T](#2232-nsiuuidpt)
+      - [2.2.3.3 NSI_UUID_VECTOR_T](#2233-nsiuuidvectort)
+      - [2.2.3.4 NSI_UUID_VECTOR_P_T](#2234-nsiuuidvectorpt)
+      - [2.2.3.5 NSI_NS_HANDLE_T](#2235-nsinshandlet)
+      - [2.2.3.6 NSI_STRING_BINDING_T](#2236-nsistringbindingt)
+      - [2.2.3.7 NSI_BINDING_T](#2237-nsibindingt)
+      - [2.2.3.8 NSI_BINDING_VECTOR_T](#2238-nsibindingvectort)
+      - [2.2.3.9 NSI_BINDING_VECTOR_P_T](#2239-nsibindingvectorpt)
+    - [2.2.4 Mailslot Structures](#224-mailslot-structures)
+      - [2.2.4.1 Common Details](#2241-common-details)
+        - [2.2.4.1.1 Mailslot Sender](#22411-mailslot-sender)
+        - [2.2.4.1.2 RPC_SYNTAX_IDENTIFIER](#22412-rpcsyntaxidentifier)
+      - [2.2.4.2 Broadcast Lookup](#2242-broadcast-lookup)
+        - [2.2.4.2.1 QueryPacket](#22421-querypacket)
+        - [2.2.4.2.2 QueryReply](#22422-queryreply)
+          - [2.2.4.2.2.1 MAILSLOT_ENTRY_TYPE](#224221-mailslotentrytype)
+          - [2.2.4.2.2.2 ReplyBuffer](#224222-replybuffer)
+          - [2.2.4.2.2.3 fixed_part_of_reply](#224223-fixedpartofreply)
+      - [2.2.4.3 Master Locator Discovery](#2243-master-locator-discovery)
+        - [2.2.4.3.1 QUERYLOCATOR](#22431-querylocator)
+        - [2.2.4.3.2 QUERYLOCATORREPLY](#22432-querylocatorreply)
+    - [2.2.5 Active Directory Schema Specifications](#225-active-directory-schema-specifications)
+      - [2.2.5.1 Common Details](#2251-common-details)
+        - [2.2.5.1.1 Name Service Entry RDN](#22511-name-service-entry-rdn)
+        - [2.2.5.1.2 Reference Attributes](#22512-reference-attributes)
+        - [2.2.5.1.3 RPC Syntax Identifier Attribute](#22513-rpc-syntax-identifier-attribute)
+      - [2.2.5.2 rpcContainer Class](#2252-rpccontainer-class)
+      - [2.2.5.3 rpcServer Class](#2253-rpcserver-class)
+      - [2.2.5.4 rpcProfile Class](#2254-rpcprofile-class)
+      - [2.2.5.5 rpcGroup Class](#2255-rpcgroup-class)
+      - [2.2.5.6 rpcServerElement Class](#2256-rpcserverelement-class)
+      - [2.2.5.7 rpcProfileElement Class](#2257-rpcprofileelement-class)
+    - [2.2.6 LDAP Operation Details](#226-ldap-operation-details)
+      - [2.2.6.1 LDAP Abstract Data Elements](#2261-ldap-abstract-data-elements)
+      - [2.2.6.2 LDAP Operation Details](#2262-ldap-operation-details)
+        - [2.2.6.2.1 LDAP Query](#22621-ldap-query)
+        - [2.2.6.2.2 LDAP Add](#22622-ldap-add)
+        - [2.2.6.2.3 LDAP Delete](#22623-ldap-delete)
+        - [2.2.6.2.4 LDAP Modify](#22624-ldap-modify)
+        - [2.2.6.2.5 LDAP Bind](#22625-ldap-bind)
+        - [2.2.6.2.6 LDAP Unbind](#22626-ldap-unbind)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 LocToLoc Common Details](#31-loctoloc-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 RPC Services Container](#3111-rpc-services-container)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Mode Initialization](#3131-mode-initialization)
+      - [3.1.3.2 Master and Nonmaster Locator Initialization](#3132-master-and-nonmaster-locator-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 I_nsi_lookup_begin (Opnum 0)](#3141-insilookupbegin-opnum-0)
+      - [3.1.4.2 I_nsi_lookup_next (Opnum 2)](#3142-insilookupnext-opnum-2)
+      - [3.1.4.3 I_nsi_lookup_done (Opnum 1)](#3143-insilookupdone-opnum-1)
+      - [3.1.4.4 I_nsi_ping_locator (Opnum 4)](#3144-insipinglocator-opnum-4)
+      - [3.1.4.5 I_nsi_entry_object_inq_begin (Opnum 6)](#3145-insientryobjectinqbegin-opnum-6)
+      - [3.1.4.6 I_nsi_entry_object_inq_next (Opnum 3)](#3146-insientryobjectinqnext-opnum-3)
+      - [3.1.4.7 I_nsi_entry_object_inq_done (Opnum 5)](#3147-insientryobjectinqdone-opnum-5)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 LocToLoc Server Locator Details](#32-loctoloc-server-locator-details)
+    - [3.2.1 Nondirectory Mode](#321-nondirectory-mode)
+      - [3.2.1.1 Abstract Data Model](#3211-abstract-data-model)
+      - [3.2.1.2 Timers](#3212-timers)
+      - [3.2.1.3 Initialization](#3213-initialization)
+      - [3.2.1.4 Higher-Layer Triggered Events](#3214-higher-layer-triggered-events)
+        - [3.2.1.4.1 Updating a Server Entry](#32141-updating-a-server-entry)
+        - [3.2.1.4.2 Setting the Maximum Expiration Age](#32142-setting-the-maximum-expiration-age)
+      - [3.2.1.5 Message Processing Events and Sequencing Rules](#3215-message-processing-events-and-sequencing-rules)
+        - [3.2.1.5.1 Broadcast Lookup Response](#32151-broadcast-lookup-response)
+      - [3.2.1.6 Timer Events](#3216-timer-events)
+      - [3.2.1.7 Other Local Events](#3217-other-local-events)
+    - [3.2.2 Directory-Only Mode](#322-directory-only-mode)
+      - [3.2.2.1 Abstract Data Model](#3221-abstract-data-model)
+      - [3.2.2.2 Timers](#3222-timers)
+      - [3.2.2.3 Initialization](#3223-initialization)
+      - [3.2.2.4 Higher-Layer Triggered Events](#3224-higher-layer-triggered-events)
+        - [3.2.2.4.1 Updating a Server Entry](#32241-updating-a-server-entry)
+        - [3.2.2.4.2 Updating a Group Entry](#32242-updating-a-group-entry)
+        - [3.2.2.4.3 Updating a Profile Entry](#32243-updating-a-profile-entry)
+        - [3.2.2.4.4 Creating a New Entry](#32244-creating-a-new-entry)
+      - [3.2.2.5 Message Processing Events and Sequencing Rules](#3225-message-processing-events-and-sequencing-rules)
+      - [3.2.2.6 Timer Events](#3226-timer-events)
+      - [3.2.2.7 Other Local Events](#3227-other-local-events)
+    - [3.2.3 Directory Mode](#323-directory-mode)
+      - [3.2.3.1 Abstract Data Model](#3231-abstract-data-model)
+      - [3.2.3.2 Timers](#3232-timers)
+      - [3.2.3.3 Initialization](#3233-initialization)
+      - [3.2.3.4 Higher-Layer Triggered Events](#3234-higher-layer-triggered-events)
+        - [3.2.3.4.1 Updating a Server Entry](#32341-updating-a-server-entry)
+        - [3.2.3.4.2 Updating a Group Entry](#32342-updating-a-group-entry)
+        - [3.2.3.4.3 Updating a Profile Entry](#32343-updating-a-profile-entry)
+      - [3.2.3.5 Message Processing Events and Sequencing Rules](#3235-message-processing-events-and-sequencing-rules)
+      - [3.2.3.6 Timer Events](#3236-timer-events)
+      - [3.2.3.7 Other Local Events](#3237-other-local-events)
+  - [3.3 LocToLoc Client Locator Details](#33-loctoloc-client-locator-details)
+    - [3.3.1 Nondirectory Mode](#331-nondirectory-mode)
+      - [3.3.1.1 Abstract Data Model](#3311-abstract-data-model)
+      - [3.3.1.2 Timers](#3312-timers)
+      - [3.3.1.3 Initialization](#3313-initialization)
+      - [3.3.1.4 Higher-Layer Triggered Events](#3314-higher-layer-triggered-events)
+        - [3.3.1.4.1 Binding Lookup](#33141-binding-lookup)
+        - [3.3.1.4.2 Object UUID Lookup](#33142-object-uuid-lookup)
+        - [3.3.1.4.3 Master Locator Discovery](#33143-master-locator-discovery)
+      - [3.3.1.5 Message Processing Events and Sequencing Rules](#3315-message-processing-events-and-sequencing-rules)
+      - [3.3.1.6 Timer Events](#3316-timer-events)
+      - [3.3.1.7 Other Local Events](#3317-other-local-events)
+    - [3.3.2 Directory-Only Mode](#332-directory-only-mode)
+      - [3.3.2.1 Abstract Data Model](#3321-abstract-data-model)
+      - [3.3.2.2 Timers](#3322-timers)
+      - [3.3.2.3 Initialization](#3323-initialization)
+      - [3.3.2.4 Higher-Layer Triggered Events](#3324-higher-layer-triggered-events)
+        - [3.3.2.4.1 Query with Entry Name](#33241-query-with-entry-name)
+        - [3.3.2.4.2 Query Without Entry Name](#33242-query-without-entry-name)
+      - [3.3.2.5 Message Processing Events and Sequencing Rules](#3325-message-processing-events-and-sequencing-rules)
+      - [3.3.2.6 Timer Events](#3326-timer-events)
+      - [3.3.2.7 Other Local Events](#3327-other-local-events)
+    - [3.3.3 Directory Mode](#333-directory-mode)
+      - [3.3.3.1 Abstract Data Model](#3331-abstract-data-model)
+      - [3.3.3.2 Timers](#3332-timers)
+      - [3.3.3.3 Initialization](#3333-initialization)
+      - [3.3.3.4 Higher-Layer Triggered Events](#3334-higher-layer-triggered-events)
+        - [3.3.3.4.1 Query with Entry Name](#33341-query-with-entry-name)
+        - [3.3.3.4.2 Query Without Entry Name](#33342-query-without-entry-name)
+      - [3.3.3.5 Message Processing Events and Sequencing Rules](#3335-message-processing-events-and-sequencing-rules)
+      - [3.3.3.6 Timer Events](#3336-timer-events)
+      - [3.3.3.7 Other Local Events](#3337-other-local-events)
+  - [3.4 LocToLoc Master Locator Details](#34-loctoloc-master-locator-details)
+    - [3.4.1 Nondirectory Mode](#341-nondirectory-mode)
+      - [3.4.1.1 Abstract Data Model](#3411-abstract-data-model)
+      - [3.4.1.2 Timers](#3412-timers)
+      - [3.4.1.3 Initialization](#3413-initialization)
+      - [3.4.1.4 Higher-Layer Triggered Events](#3414-higher-layer-triggered-events)
+      - [3.4.1.5 Message Processing Events and Sequencing Rules](#3415-message-processing-events-and-sequencing-rules)
+        - [3.4.1.5.1 Lookup Request](#34151-lookup-request)
+          - [3.4.1.5.1.1 Broadcast Lookup](#341511-broadcast-lookup)
+        - [3.4.1.5.2 Master Locator Response](#34152-master-locator-response)
+        - [3.4.1.5.3 Master Locator Ping Response](#34153-master-locator-ping-response)
+      - [3.4.1.6 Timer Events](#3416-timer-events)
+      - [3.4.1.7 Other Local Events](#3417-other-local-events)
+    - [3.4.2 Directory Mode](#342-directory-mode)
+    - [3.4.3 Directory-Only Mode](#343-directory-only-mode)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Nondirectory Mode Operation](#41-nondirectory-mode-operation)
+  - [4.2 Directory-Only Mode Operation](#42-directory-only-mode-operation)
+  - [4.3 Server in Nondirectory Mode and Client in Directory Mode](#43-server-in-nondirectory-mode-and-client-in-directory-mode)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Appendix C: API Mappings](#8-appendix-c-api-mappings)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
+
+## 1 Introduction
 
 The Remote Procedure Call Location Services Extensions is a legacy protocol that has been deprecated
 and is not used by Microsoft. Implementers should use the DCE-based RPC Location Services
@@ -1021,7 +750,7 @@ specification as specified in [C706].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1076,7 +805,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
+
+sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
 ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
@@ -1148,7 +878,8 @@ Release: June 1, 2017
 
 10 / 77
 
-remote procedure call (RPC) name service: A service that allows servers to export binding
+
+remote procedure call (RPC) name service: A service that allows servers to export binding
 information, and clients to find it, in an efficient manner. For more information, see [C706]
 chapter 2, "Name Service Interface".
 
@@ -1188,14 +919,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1220,7 +951,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
+
+[MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
@@ -1259,11 +991,11 @@ Security Service Application Program Interface (GSS-API) Negotiation Mechanism",
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Protocol Overview
+### 1.3 Protocol Overview
 
 This specification extends the DCE RPC Location Services specification defined in the section "Name
 Service Interface" in Part 2 of [C706]. These extensions add new capabilities to the DCE RPC Location
@@ -1287,7 +1019,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  An extension defining the implementation of the RPC Location Services specification in an Active
+
+  An extension defining the implementation of the RPC Location Services specification in an Active
 
 Directory environment. For more details, see Directory-only mode in section 1.3.2.
 
@@ -1312,7 +1045,7 @@ storing exported name service entries. For more details, see section 1.3.2.
 
 group attributes. For more details, see sections 3.2.1, 3.3.3.
 
-1.3.1  Roles
+#### 1.3.1 Roles
 
 A locator conceptually operates in the following three roles. Over the course of a given protocol
 sequence, a given locator can simultaneously occupy more than one of these roles:
@@ -1329,7 +1062,7 @@ up.
 
 locators.
 
-1.3.2  Modes
+#### 1.3.2 Modes
 
 A locator runs in exactly one of the following modes.
 
@@ -1363,7 +1096,8 @@ Release: June 1, 2017
 
 13 / 77
 
-mode runs on a computer joined to an Active Directory domain. Locators in this mode do not
+
+mode runs on a computer joined to an Active Directory domain. Locators in this mode do not
 interoperate with locators running in Nondirectory mode.
 
 In this mode, a locator is not permitted to do the following:
@@ -1376,7 +1110,7 @@ In this mode, a locator is not permitted to do the following:
 
 Functionalities are the same as for Directory mode, except as noted above.
 
-1.3.3  Name Service Entries in Active Directory
+#### 1.3.3 Name Service Entries in Active Directory
 
 In Active Directory domain environments, this specification persistently stores RPC name service
 entries in the Active Directory store. The following schema elements are used to implement persistent
@@ -1419,13 +1153,14 @@ Release: June 1, 2017
 
 14 / 77
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RPCL].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 Figure 1: Active Directory layout
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Procedure Call Location Services Extensions depend on the following protocols:
 
@@ -1444,7 +1179,8 @@ Release: June 1, 2017
 
 15 / 77
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-RPCL].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1472,7 +1208,7 @@ The following diagram illustrates the layering of the protocols.
 
 Figure 2: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Elements of these protocol extensions incorporate RPC interfaces and, as a result, inherit the
 prerequisites identified in [MS-RPCE] that are common to RPC interfaces.
@@ -1491,13 +1227,13 @@ in section 1.3.2.
 
 For more information, see section 3.1.3.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Procedure Call Location Services Extensions do not restrict the applicability of [C706];
 rather, they extend its applicability to environments where computers have no centrally accessible
 directory service.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports
 
@@ -1508,7 +1244,8 @@ Release: June 1, 2017
 
 16 / 77
 
-The client locator communicates with the master locator using the RPC over Server Message Block
+
+The client locator communicates with the master locator using the RPC over Server Message Block
 (SMB) Protocol sequence (ncacn_np). For more information, see section 2.1.
 
 The client locator uses the Remote Mailslot Protocol [MS-MAIL] to discover master locators. For more
@@ -1541,11 +1278,11 @@ Typically, this mechanism is Kerberos [RFC4120], but others are possible. If the
 is selected, then Kerberos is used. If Kerberos is used, then the name passed in for authentication is
 "LDAP/hostname-of-ldap-server". For more information on LDAP, see [MS-ADTS].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the following RPC UUID, RPC endpoint, and Mailslot destination standard
 assignments.
@@ -1607,7 +1344,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Parameter
+
+ Parameter
 
  Value
 
@@ -1622,9 +1360,10 @@ Release: June 1, 2017
 
 18 / 77
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
  Lookup forwarding: The client locators forward lookup requests to master locators over the
 LocToLoc RPC interface. The RPC interface uses the RPC over SMB protocol sequence, as specified
@@ -1672,9 +1411,9 @@ Active Directory lookup: A locator on a domain-joined machine uses LDAP to deter
 Active Directory is accessible and to read and write data from Active Directory in the computer's
 domain. For more information, see section 3.1.3.1. For more information on LDAP, see [MS-ADTS].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Constants
+#### 2.2.1 Constants
 
  Value
 
@@ -1697,13 +1436,14 @@ Release: June 1, 2017
 
 19 / 77
 
- Value
+
+ Value
 
 (0x0)
 
  Description
 
-2.2.2  Extensions to the Name Service Entry Name Syntax
+#### 2.2.2 Extensions to the Name Service Entry Name Syntax
 
 All name service entries MUST be identified by an entry name. The syntax of the entry name is
 specified by the constant RPC_C_NS_SYNTAX_DCE defined in the preceding section. This syntax
@@ -1734,7 +1474,7 @@ domainname: Specifies the name of the domain. This field MUST NOT contain the de
 
 character.
 
-2.2.3  LocToLoc RPC Interface Types
+#### 2.2.3 LocToLoc RPC Interface Types
 
 This RPC interface defines data types in addition to the RPC base types and definitions specified in
 [C706] and [MS-RPCE].
@@ -1766,11 +1506,12 @@ Release: June 1, 2017
 
 20 / 77
 
-Data type
+
+Data type
 
 NSI_BINDING_VECTOR_P_T
 
-2.2.3.1  STRING_T
+##### 2.2.3.1 STRING_T
 
 The STRING_T type defines a string of Unicode [UNICODE] characters.
 
@@ -1778,7 +1519,7 @@ This type is declared as follows:
 
  typedef [string, unique] wchar_t* STRING_T;
 
-2.2.3.2  NSI_UUID_P_T
+##### 2.2.3.2 NSI_UUID_P_T
 
 The NSI_UUID_P_T type defines a pointer to a GUID structure.
 
@@ -1786,7 +1527,7 @@ This type is declared as follows:
 
  typedef [unique] GUID* NSI_UUID_P_T;
 
-2.2.3.3  NSI_UUID_VECTOR_T
+##### 2.2.3.3 NSI_UUID_VECTOR_T
 
 The NSI_UUID_VECTOR_T type defines an array of NSI_UUID_P_T structures.
 
@@ -1799,7 +1540,7 @@ count:  MUST specify the number of NSI_UUID_P_T elements in the uuid member.
 
 uuid:  An array of NSI_UUID_P_T entries.
 
-2.2.3.4  NSI_UUID_VECTOR_P_T
+##### 2.2.3.4 NSI_UUID_VECTOR_P_T
 
 The NSI_UUID_VECTOR_P_T type defines a pointer to the NSI_UUID_VECTOR_T structure.
 
@@ -1807,7 +1548,7 @@ This type is declared as follows:
 
  typedef [unique] NSI_UUID_VECTOR_T* NSI_UUID_VECTOR_P_T;
 
-2.2.3.5  NSI_NS_HANDLE_T
+##### 2.2.3.5 NSI_NS_HANDLE_T
 
 The NSI_NS_HANDLE_T type defines an opaque pointer that is used to represent a context handle, as
 specified in [C706] and [MS-RPCE]. It is returned from the server to the client.
@@ -1823,7 +1564,8 @@ Release: June 1, 2017
 
 21 / 77
 
-2.2.3.6  NSI_STRING_BINDING_T
+
+##### 2.2.3.6 NSI_STRING_BINDING_T
 
 The NSI_STRING_BINDING_T type defines a Unicode [UNICODE] string that is used to represent
 binding information and which MAY optionally contain endpoint information.<2>
@@ -1832,7 +1574,7 @@ This type is declared as follows:
 
  typedef [string] wchar_t* NSI_STRING_BINDING_T;
 
-2.2.3.7  NSI_BINDING_T
+##### 2.2.3.7 NSI_BINDING_T
 
 The NSI_BINDING_T type defines an association of a binding with a server entry.
 
@@ -1854,7 +1596,7 @@ entry_name:  A Unicode [UNICODE] string specifying the entry name of the name se
 
 using the syntax identified by the entry_name_syntax parameter as specified in section 2.2.2.
 
-2.2.3.8  NSI_BINDING_VECTOR_T
+##### 2.2.3.8 NSI_BINDING_VECTOR_T
 
 The NSI_BINDING_VECTOR_T type is defined to hold an array of binding information entries.
 
@@ -1867,7 +1609,7 @@ count:  MUST specify the number of NSI_BINDING_T elements in the binding array.
 
 binding:  An array of binding information entries.
 
-2.2.3.9  NSI_BINDING_VECTOR_P_T
+##### 2.2.3.9 NSI_BINDING_VECTOR_P_T
 
 The NSI_BINDING_VECTOR_P_T type defines a pointer to an NSI_BINDING_VECTOR_T structure.
 
@@ -1875,7 +1617,7 @@ This type is declared as follows:
 
  typedef [unique] NSI_BINDING_VECTOR_T* NSI_BINDING_VECTOR_P_T;
 
-2.2.4  Mailslot Structures
+#### 2.2.4 Mailslot Structures
 
 This section specifies structures sent and received by using the Remote Mailslot Protocol for the
 following operations:
@@ -1887,16 +1629,17 @@ Release: June 1, 2017
 
 22 / 77
 
-  Broadcast Lookup (section 2.2.4.2)
+
+  Broadcast Lookup (section 2.2.4.2)
 
   Master Locator Discovery (section 2.2.4.3)
 
-2.2.4.1  Common Details
+##### 2.2.4.1 Common Details
 
 This section specifies the syntax for attributes common to the definitions of several objects in this
 protocol.
 
-2.2.4.1.1 Mailslot Sender
+###### 2.2.4.1.1 Mailslot Sender
 
 Mailslot requests and responses, as specified in sections 2.2.4.2.1, 2.2.4.3.1, and 2.2.4.3.2, include
 information about the sender.
@@ -1908,7 +1651,7 @@ The sender information MUST be a null-terminated string of the following form.
 ComputerName MUST be the NetBIOS name of the computer where the mailslot originated. For more
 information on NetBIOS, see [NETBEUI], [RFC1001], and [RFC1002].
 
-2.2.4.1.2 RPC_SYNTAX_IDENTIFIER
+###### 2.2.4.1.2 RPC_SYNTAX_IDENTIFIER
 
  This structure MUST contain a GUID and version information ([MS-RPCE] section 2.2.2.7). It is
 identical to the RPC_SYNTAX_IDENTIFIER structure used in the LocToLoc interface in section 3.1.4.
@@ -1949,7 +1692,7 @@ SyntaxVersion.MajorVersion (2 bytes): As specified in [MS-RPCE] section 2.2.2.7.
 
 SyntaxVersion.MinorVersion (2 bytes): As specified in [MS-RPCE] section 2.2.2.7.
 
-2.2.4.2  Broadcast Lookup
+##### 2.2.4.2 Broadcast Lookup
 
 A master locator broadcasts a request for information by using the Remote Mailslot Protocol when it
 receives a query as specified in section 3.4.1.5.1:
@@ -1966,11 +1709,12 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Server locators MUST respond to the request with the QueryReply structure specified in section
+
+  Server locators MUST respond to the request with the QueryReply structure specified in section
 
 2.2.4.2.2.
 
-2.2.4.2.1 QueryPacket
+###### 2.2.4.2.1 QueryPacket
 
 The QueryPacket structure defines the format of the messages sent by the master locator.
 
@@ -1998,7 +1742,7 @@ EntryName:  MUST specify the name service entry being looked for. This parameter
 to the RPC_C_NS_SYNTAX_DCE syntax as specified in section 2.2.2. MUST be filled with all zeros
 to indicate that no name service entry is specified.
 
-2.2.4.2.2 QueryReply
+###### 2.2.4.2.2 QueryReply
 
 The QueryReply structure defines the response of a server locator to a master locator Broadcast
 Lookup query
@@ -2020,7 +1764,7 @@ ReplyBuffer structures terminated by 4 zero-initialized bytes. The size of the b
 exceed 1000 bytes, including any zero-initialized bytes for termination between ReplyBuffer
 structures. Reply buffers are specified in section 2.2.4.2.2.2.
 
-2.2.4.2.2.1  MAILSLOT_ENTRY_TYPE
+###### 2.2.4.2.2.1 MAILSLOT_ENTRY_TYPE
 
 The MAILSLOT_ENTRY_TYPE enumeration defines the type of response being sent as a response to the
 master locator request.
@@ -2037,9 +1781,10 @@ Release: June 1, 2017
 
 24 / 77
 
-MailslotServerEntryType:  Server entry is contained in this response.
 
-2.2.4.2.2.2  ReplyBuffer
+MailslotServerEntryType:  Server entry is contained in this response.
+
+###### 2.2.4.2.2.2 ReplyBuffer
 
 The ReplyBuffer structure specifies the layout of the response in the QueryReply structure.
 
@@ -2071,9 +1816,9 @@ binding:  A null-terminated Unicode buffer that MUST contain a string binding ex
 service entry. The size (in characters) of this buffer, including the terminating null character,
 MUST be fpr.BindingLength.
 
-2.2.4.2.2.3
+###### 2.2.4.2.2.3 fixed_part_of_reply
 
-fixed_part_of_reply
+
 
 The fixed_part_of_reply structure defines the layout of the Buffer field in the QueryReply structure
 that forms the server locator's response to the master locator's query.
@@ -2108,7 +1853,8 @@ Release: June 1, 2017
 
 25 / 77
 
-Interface:  Specifies the interface being returned. The structure MUST be as specified in section
+
+Interface:  Specifies the interface being returned. The structure MUST be as specified in section
 
 2.2.4.1.2.
 
@@ -2129,7 +1875,7 @@ fixed_part_of_reply structure.
 
 unused5:  Can be set to any arbitrary value when set and MUST be ignored on receipt.
 
-2.2.4.3  Master Locator Discovery
+##### 2.2.4.3 Master Locator Discovery
 
 Client locators broadcast requests to find master locators, as specified in section 3.3.1.4.3:
 
@@ -2139,7 +1885,7 @@ These requests are sent over mailslot by using the QUERYLOCATOR structure.
 
   Master locators respond to the request over mailslot by using the QUERYLOCATORREPLY structure.
 
-2.2.4.3.1 QUERYLOCATOR
+###### 2.2.4.3.1 QUERYLOCATOR
 
 The QUERYLOCATOR structure defines the structure that is sent by using the Remote Mailslot Protocol
 when the client locator is looking for a master locator.
@@ -2180,7 +1926,7 @@ RequesterName:  The mailslot sender as specified in section 2.2.4.1.1. This para
 
 18 characters including the terminating null  character.
 
-2.2.4.3.2 QUERYLOCATORREPLY
+###### 2.2.4.3.2 QUERYLOCATORREPLY
 
 [MS-RPCL] - v20170601
 Remote Procedure Call Location Services Extensions
@@ -2189,7 +1935,8 @@ Release: June 1, 2017
 
 26 / 77
 
-The QUERYLOCATORREPLY structure represents the data that is sent back by a master locator in
+
+The QUERYLOCATORREPLY structure represents the data that is sent back by a master locator in
 response to a master locator discovery request.
 
  typedef struct {
@@ -2219,23 +1966,23 @@ SenderName:  MUST contain the mailslot sender as specified in section 2.2.4.1.1.
 
 limited to 18 characters including the terminating null character.
 
-2.2.5  Active Directory Schema Specifications
+#### 2.2.5 Active Directory Schema Specifications
 
 The following sections specify the schemas of objects relevant to this protocol. For more details, see
 [MS-ADSC], [MS-ADA1], and [MS-ADA3].
 
-2.2.5.1  Common Details
+##### 2.2.5.1 Common Details
 
 This section specifies the syntax for attributes common to the definitions of several objects.
 
-2.2.5.1.1 Name Service Entry RDN
+###### 2.2.5.1.1 Name Service Entry RDN
 
 The RDN attribute of an object specifies the identifier for the object relative to its Active Directory
 path. For a name service entry, this attribute MUST be identical to the name component of the
 object's corresponding name service entry name as specified by using RPC_C_NS_SYNTAX_DCE
 (section 2.2.2).<4>
 
-2.2.5.1.2 Reference Attributes
+###### 2.2.5.1.2 Reference Attributes
 
 The Reference Attribute specifies a reference to a name service entry in Active Directory. The
 value of the attribute MUST be a modified LDAP URL for an object in Active Directory that represents
@@ -2259,10 +2006,11 @@ Release: June 1, 2017
 
 27 / 77
 
-RestOfLDAPURL: MUST be the rest of the LDAP URL and MUST conform to the LDAP URL syntax
+
+RestOfLDAPURL: MUST be the rest of the LDAP URL and MUST conform to the LDAP URL syntax
 specified in [MS-ADTS], without the domain and URL scheme ("ldap:").
 
-2.2.5.1.3 RPC Syntax Identifier Attribute
+###### 2.2.5.1.3 RPC Syntax Identifier Attribute
 
 An RPC Syntax Identifier attribute represents an RPC_SYNTAX_IDENTIFIER structure. This attribute
 specifies either of the following properties:
@@ -2287,7 +2035,7 @@ The UUID MUST be encoded as the string representation of the interface UUID, as 
 "Universal Unique Identifier" section in Appendix A of [C706]. The numeric value of each of the Digit
 productions MUST be less than or equal to 216-1.
 
-2.2.5.2  rpcContainer Class
+##### 2.2.5.2 rpcContainer Class
 
 The rpcContainer class MUST represent the container in which all the RPC name service entries are
 created in Active Directory. More information on the "Class rpcContainer" can be found in [MS-
@@ -2302,7 +2050,7 @@ mode. If the value is 0, then all locators in the domain MUST run in directory-o
 value is treated as a nonzero value when not set. For more information on the Attribute
 nameServiceFlags, see [MS-ADA3].
 
-2.2.5.3  rpcServer Class
+##### 2.2.5.3 rpcServer Class
 
 The rpcServer class MUST represent an RPC name service server entry in Active Directory. See
 also "Class rpcServer" in [MS-ADSC]. The rpcServer class contains child elements of class
@@ -2324,7 +2072,8 @@ Release: June 1, 2017
 
 28 / 77
 
-rpcNsObjectID: MUST be the list of object UUIDs exported to the corresponding Server Entry. Each
+
+rpcNsObjectID: MUST be the list of object UUIDs exported to the corresponding Server Entry. Each
 
 object UUID MUST be stored in a string form encoded as defined in the "Universal Unique
 Identifier" section in Appendix A of [C706]. See also "Attribute rpcNsObjectID" in [MS-ADA3].
@@ -2335,7 +2084,7 @@ also "Attribute description" in [MS-ADA1].
 
 RDN:  The RDN of the entry as specified in Name Service Entry RDN (section 2.2.5.1.1).
 
-2.2.5.4  rpcProfile Class
+##### 2.2.5.4 rpcProfile Class
 
 The rpcProfile class MUST represent an RPC name service profile entry in Active Directory. See
 also "Class rpcProfile" in [MS-ADSC] section 2.238. The class contains child elements of class
@@ -2347,7 +2096,7 @@ Location Services Extensions Protocol.
 
 RDN: The RDN of the entry as specified in Name Service Entry RDN (section 2.2.5.1.1).
 
-2.2.5.5  rpcGroup Class
+##### 2.2.5.5 rpcGroup Class
 
 The rpcGroup class MUST represent an RPC name service group entry in Active Directory. See also
 "Class rpcGroup" in [MS-ADSC] section 2.237. The following attributes on this class are accessed by
@@ -2364,7 +2113,7 @@ reference is specified in Reference Attributes (section 2.2.5.1.2). For more inf
 
 RDN: The RDN of the entry MUST be as specified in Name Service Entry RDN (section 2.2.5.1.1).
 
-2.2.5.6  rpcServerElement Class
+##### 2.2.5.6 rpcServerElement Class
 
 The rpcServerElement class MUST represent a single RPC interface in a given RPC server entry in
 Active Directory. See also "Class rpcServerElement" in [MS-ADSC] section 2.241. Every instance of
@@ -2387,7 +2136,8 @@ Release: June 1, 2017
 
 29 / 77
 
-rpcNsBindings: An array of one or more string bindings for this RPC interface. See also "Attribute
+
+rpcNsBindings: An array of one or more string bindings for this RPC interface. See also "Attribute
 rpcNsBindings" in [MS-ADA3]. The string bindings can optionally contain endpoint information.
 The format is described in "String Bindings" in Part 2 of [C706].
 
@@ -2402,7 +2152,7 @@ rpcNsTransferSyntax" in [MS-ADA3].
 
 RDN: Name of the entry. RDN MUST be the same as the rpcNsInterfaceID.
 
-2.2.5.7  rpcProfileElement Class
+##### 2.2.5.7 rpcProfileElement Class
 
 The rpcProfileElement class represents a single entry in a given RPC profile in Active Directory. See
 also "Class rpcProfileElement" in [MS-ADSC] section 2.239. Every instance of this class must be the
@@ -2441,12 +2191,12 @@ RDN: The RDN of the entry that MUST be the same as the RDN of the referred entry
 
 entry MUST be as specified in Name Service Entry RDN (section 2.2.5.1.1).
 
-2.2.6  LDAP Operation Details
+#### 2.2.6 LDAP Operation Details
 
 All LDAP operations in this document are described here in terms of the abstract interfaces defined in
 [MS-ADTS] section 7.
 
-2.2.6.1  LDAP Abstract Data Elements
+##### 2.2.6.1 LDAP Abstract Data Elements
 
 ADConnection: A handle to the Active Directory server.
 
@@ -2457,9 +2207,10 @@ Release: June 1, 2017
 
 30 / 77
 
-2.2.6.2  LDAP Operation Details
 
-2.2.6.2.1 LDAP Query
+##### 2.2.6.2 LDAP Operation Details
+
+###### 2.2.6.2.1 LDAP Query
 
 To write LDAP data, the server locator MUST perform the LDAP operation specified in [MS-ADTS]
 section 7.6.1.6, Performing an LDAP Operation on an ADConnection. The TaskInputADConnection
@@ -2467,7 +2218,7 @@ value MUST be the ADCONNECTION_HANDLE object ([MS-DTYP] section 2.2.2,
 ADCONNECTION_HANDLE) stored in ADConnection. The TaskInputRequestMessage MUST contain an
 LDAP searchRequest message ([RFC2251] section 4.7) formatted per section 2.2.5.
 
-2.2.6.2.2 LDAP Add
+###### 2.2.6.2.2 LDAP Add
 
 To write LDAP data, the server locator MUST perform the LDAP operation specified in [MS-ADTS]
 section 7.6.1.6, Performing an LDAP Operation on an ADConnection. The TaskInputADConnection
@@ -2475,7 +2226,7 @@ value MUST be the ADCONNECTION_HANDLE object ([MS-DTYP] section 2.2.2,
 ADCONNECTION_HANDLE) stored in ADConnection. The TaskInputRequestMessage MUST contain an
 LDAP AddRequest message ([RFC2251] section 4.7) formatted per section 2.2.5.
 
-2.2.6.2.3 LDAP Delete
+###### 2.2.6.2.3 LDAP Delete
 
 To write LDAP data, the server locator MUST perform the LDAP operation specified in [MS-ADTS]
 section 7.6.1.6, Performing an LDAP Operation on an ADConnection. The TaskInputADConnection
@@ -2483,7 +2234,7 @@ value MUST be the ADCONNECTION_HANDLE object ([MS-DTYP] section 2.2.2,
 ADCONNECTION_HANDLE) stored in ADConnection. The TaskInputRequestMessage MUST contain an
 LDAP delRequest message ([RFC2251] section 4.7) formatted per section 2.2.5.
 
-2.2.6.2.4 LDAP Modify
+###### 2.2.6.2.4 LDAP Modify
 
 To write LDAP data, the server locator MUST perform the LDAP operation specified in [MS-ADTS]
 section 7.6.1.6, Performing an LDAP Operation on an ADConnection. The TaskInputADConnection
@@ -2491,7 +2242,7 @@ value MUST be the ADCONNECTION_HANDLE object ([MS-DTYP] section 2.2.2,
 ADCONNECTION_HANDLE) stored in ADConnection. The TaskInputRequestMessage MUST contain an
 LDAP ModifyRequest message ([RFC2251] section 4.7) formatted per section 2.2.5.
 
-2.2.6.2.5 LDAP Bind
+###### 2.2.6.2.5 LDAP Bind
 
 Whenever the server locator issues LDAP commands to the Active Directory, it must first bind to the
 Active Directory.  Binding is accomplished by this processing sequence. If any of the operations
@@ -2531,7 +2282,8 @@ Release: June 1, 2017
 
 31 / 77
 
-
+
+
 
 
 
@@ -2577,7 +2329,7 @@ TaskInputADConnection: Value of the ADConnection ADM element.
 If the TaskReturnStatus returned is not zero, the application MUST be terminated and an event
 SHOULD be logged using an implementation-specific mechanism.
 
-2.2.6.2.6 LDAP Unbind
+###### 2.2.6.2.6 LDAP Unbind
 
 After the server locator has completed issuing LDAP commands, it must unbind from the Active
 Directory. Unbinding is accomplished by this processing sequence.
@@ -2592,7 +2344,7 @@ invoking the Performing an LDAP Unbind on an ADConnection task, defined in [MS-A
 
 TaskInputADConnection: Value of the ADConnection ADM element.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol accesses the following Directory Service schema classes and attributes listed in the
 following table.
@@ -2631,7 +2383,8 @@ Release: June 1, 2017
 
 32 / 77
 
- Class
+
+ Class
 
  Attribute
 
@@ -2666,7 +2419,8 @@ Release: June 1, 2017
 
 33 / 77
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The relationship between various server, group, and profile entries is specified in "Name Service
 Attributes", [C706] section 2. This specification preserves those relationships in all respects except
@@ -2675,18 +2429,18 @@ where explicitly stated otherwise.
 The search algorithm used for lookup of bindings is defined in "Search Algorithm", [C706] section 2.
 This specification maintains that algorithm as specified in all respects.
 
-3.1  LocToLoc Common Details
+### 3.1 LocToLoc Common Details
 
 This section specifies the details that are common to different locator roles.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization helps explain how the protocol behaves. This
 document does not mandate that implementations adhere to this model as long as their external
 behavior is consistent with the behavior described in this document.
 
-3.1.1.1  RPC Services Container
+##### 3.1.1.1 RPC Services Container
 
 In Directory and Directory-only modes, locators rely on an Active Directory store (Active Directory
 Entry Cache, see section 3.2.2.1) in the domain of the computer for persistently storing and looking
@@ -2707,13 +2461,13 @@ not joined to a domain. It is assumed that this is known prior to initialization
 Domain Controller flag: A flag, if set indicates that the computer is acting as a domain controller for
 the domain. It is assumed that this is known prior to initialization of these extensions.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No common timers are required across all locator roles.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
-3.1.3.1  Mode Initialization
+##### 3.1.3.1 Mode Initialization
 
 Any implementation of the RPC Location Services Protocol Extensions MUST determine its mode using
 the following algorithm:
@@ -2729,7 +2483,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Active Directory RPC services container. Information from Active Directory MUST be queried in
+
+Active Directory RPC services container. Information from Active Directory MUST be queried in
 the context of the security principal of the computer.
 
 2.  If the attribute is not retrieved successfully, the locator MUST set its mode to nondirectory
@@ -2744,7 +2499,7 @@ MUST set its mode to directory mode.<6>
 
 its mode to Directory-only.
 
-3.1.3.2  Master and Nonmaster Locator Initialization
+##### 3.1.3.2 Master and Nonmaster Locator Initialization
 
 Any implementation of the Remote Procedure Call Location Services Extensions MUST determine its
 role using the following algorithm:
@@ -2775,7 +2530,7 @@ master locator.
 
 on the LocToLoc interface.<7>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The ILocToLoc interface is used by client locators to forward lookup requests to master locators.
 
@@ -2813,7 +2568,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Method
+
+Method
 
 Description
 
@@ -2846,7 +2602,7 @@ Invoked to enumerate the object UUIDs on a name service entry.
 
 Opnum: 6
 
-3.1.4.1  I_nsi_lookup_begin (Opnum 0)
+##### 3.1.4.1 I_nsi_lookup_begin (Opnum 0)
 
 The I_nsi_lookup_begin method is invoked by a client locator to enumerate the binding information
 for a set of RPC servers that satisfy a given set of criteria. The Microsoft Interface Definition
@@ -2895,7 +2651,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-xfersyntax: An optional transfer syntax specification. Specified to request only bindings for server
+
+xfersyntax: An optional transfer syntax specification. Specified to request only bindings for server
 entries that have advertised interfaces compatible with this parameter. The client sets xfersyntax
 to NULL to indicate that this parameter is not specified. Interface compatibility is specified in
 section 3.4.1.5.1.
@@ -2932,7 +2689,7 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.2  I_nsi_lookup_next (Opnum 2)
+##### 3.1.4.2 I_nsi_lookup_next (Opnum 2)
 
 The I_nsi_lookup_next method is invoked to continue an enumeration of binding vectors that satisfy
 the criteria specified in a call to the I_nsi_lookup_begin method. The number of bindings in the
@@ -2967,7 +2724,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-assume that the bindings are ordered. The client is responsible for freeing the memory allocated
+
+assume that the bindings are ordered. The client is responsible for freeing the memory allocated
 for the binding_vector. The memory allocated for the binding_vector does not need to be freed
 before subsequent calls to I_nsi_lookup_next.
 
@@ -3003,7 +2761,7 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.3  I_nsi_lookup_done (Opnum 1)
+##### 3.1.4.3 I_nsi_lookup_done (Opnum 1)
 
 The I_nsi_lookup_done method is invoked to free any resources associated with the context handle
 returned by a preceding call to the I_nsi_lookup_begin method. The MIDL syntax of this method is
@@ -3044,10 +2802,11 @@ Release: June 1, 2017
 
 38 / 77
 
-No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
+
+No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.4  I_nsi_ping_locator (Opnum 4)
+##### 3.1.4.4 I_nsi_ping_locator (Opnum 4)
 
 The I_nsi_ping_locator method is invoked by the client to determine if the target computer is available
 as a master locator. The MIDL syntax of the method is specified as follows.
@@ -3075,7 +2834,7 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.5  I_nsi_entry_object_inq_begin (Opnum 6)
+##### 3.1.4.5 I_nsi_entry_object_inq_begin (Opnum 6)
 
 The I_nsi_entry_object_inq_begin method is invoked to enumerate the object UUIDs on a name
 service entry. The MIDL syntax of the method is specified as follows.
@@ -3112,7 +2871,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-InqContext: On successful completion, returns a context handle for enumerating object UUID vectors
+
+InqContext: On successful completion, returns a context handle for enumerating object UUID vectors
 by using the I_nsi_entry_object_inq_next method. This context handle MUST be closed by using
 the I_nsi_entry_object_inq_done method.
 
@@ -3140,7 +2900,7 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.6  I_nsi_entry_object_inq_next (Opnum 3)
+##### 3.1.4.6 I_nsi_entry_object_inq_next (Opnum 3)
 
 The I_nsi_entry_object_inq_next method is invoked to continue an enumeration initiated by a
 previous call to the I_nsi_entry_object_inq_begin method. The MIDL syntax of the method is
@@ -3180,7 +2940,8 @@ Release: June 1, 2017
 
 40 / 77
 
-Return Values: This method does not return any values. RPC exceptions can be thrown from this
+
+Return Values: This method does not return any values. RPC exceptions can be thrown from this
 
 method.
 
@@ -3197,7 +2958,7 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.4.7  I_nsi_entry_object_inq_done (Opnum 5)
+##### 3.1.4.7 I_nsi_entry_object_inq_done (Opnum 5)
 
 The I_nsi_entry_object_inq_done method is invoked to free any resources associated with the context
 handle returned by a preceding call to the I_nsi_entry_object_inq_begin method. The MIDL syntax of
@@ -3226,15 +2987,15 @@ Exceptions Thrown
 No exceptions are thrown beyond those thrown by the underlying RPC protocol, as specified in [MS-
 RPCE].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No common timer events are applicable across all locator roles.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No other local events are applicable across all locator roles.
 
-3.2  LocToLoc Server Locator Details
+### 3.2 LocToLoc Server Locator Details
 
 A server locator receives calls to export entries and, based on its mode, optionally responds to
 broadcast lookup requests.
@@ -3246,16 +3007,17 @@ Release: June 1, 2017
 
 41 / 77
 
-For more information on Windows APIs that implement RPC name service functionality, see section
+
+For more information on Windows APIs that implement RPC name service functionality, see section
 6.
 
-3.2.1  Nondirectory Mode
+#### 3.2.1 Nondirectory Mode
 
 In this mode, a server locator stores server entry information in a local nonpersistent cache and
 uses the cached information to respond to broadcast lookup requests. Only server entries are
 supported in this mode; profile and group entries are not supported.
 
-3.2.1.1  Abstract Data Model
+##### 3.2.1.1 Abstract Data Model
 
 Entry Cache: Each server locator MUST maintain a cache of its server entries and its associated
 object UUIDs, interface information, and entry creation time. This cache is used to respond to
@@ -3274,7 +3036,7 @@ value that indicates the maximum age of a server entry in seconds. Maximum Expir
 be greater than 5 seconds, default to 300 seconds, and the upper bound is limited only by the size of
 the 32-bit numerical value.
 
-3.2.1.2  Timers
+##### 3.2.1.2 Timers
 
 Entry Cache Cleanup Timer: This timer expires every 5 minutes (300) seconds.  The period of the
 Entry Cache Cleanup Timer is not configurable.
@@ -3283,7 +3045,7 @@ For each expiration of the timer, the server first determines the current time. 
 examine all server entries in the Entry Cache and remove any server entries that were created
 Maximum Expiration Age seconds before the current time.
 
-3.2.1.3  Initialization
+##### 3.2.1.3 Initialization
 
 The Entry Cache MUST be initialized to an empty list that contains no server entries.
 
@@ -3292,14 +3054,14 @@ Maximum Expiration Age must be initialized to 300 seconds.
 The server locator initializes the mailslot used to receive broadcast lookups (section 2.1) for name
 service entries and then starts listening on the mailslot for queries.
 
-3.2.1.4  Higher-Layer Triggered Events
+##### 3.2.1.4 Higher-Layer Triggered Events
 
 A higher-level protocol or application can invoke a higher-layer triggered event to modify server
 entries. Group and profile entries MUST NOT be supported in this mode.
 
 When a server entry is modified by a higher-layer triggered event, the cached entry MUST be updated.
 
-3.2.1.4.1 Updating a Server Entry
+###### 3.2.1.4.1 Updating a Server Entry
 
 Parameters:
 
@@ -3310,7 +3072,8 @@ Release: June 1, 2017
 
 42 / 77
 
-  Bindings [in]: An array of one or more string bindings for this RPC interface. The string bindings
+
+  Bindings [in]: An array of one or more string bindings for this RPC interface. The string bindings
 can optionally contain endpoint information. The format is described in "String Bindings" in Part 2
 of [C706].
 
@@ -3352,7 +3115,7 @@ an out of memory condition.
 Entry Cache. This error is returned when Action is set to delete the server entry and the server
 entry cannot be found.
 
-3.2.1.4.2 Setting the Maximum Expiration Age
+###### 3.2.1.4.2 Setting the Maximum Expiration Age
 
 Parameters:
 
@@ -3371,7 +3134,7 @@ value.
 If Expiration Age is nonzero and greater than 5 seconds, the server MUST set Status to 0 and set the
 Maximum Expiration Age ADM element to the value of Expiration Age.
 
-3.2.1.5  Message Processing Events and Sequencing Rules
+##### 3.2.1.5 Message Processing Events and Sequencing Rules
 
 When a broadcast lookup request for server entries is received, the following actions MUST be taken:
 
@@ -3386,7 +3149,8 @@ Release: June 1, 2017
 
 43 / 77
 
-2.  The server locator MUST extract the objectUUID, interfaceid, and entry_name information from
+
+2.  The server locator MUST extract the objectUUID, interfaceid, and entry_name information from
 
 the corresponding fields specified in the QueryPacket.
 
@@ -3443,7 +3207,7 @@ interfaces.
 interfaces are matched, the server MUST respond with a QueryReply structure with an empty
 ReplyBuffer.
 
-3.2.1.5.1 Broadcast Lookup Response
+###### 3.2.1.5.1 Broadcast Lookup Response
 
 The server locator MUST compose one or more QueryReply messages in response to the
 QueryPacket as follows:
@@ -3464,7 +3228,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  The fpr field of the ReplyBuffer MUST be initialized as follows:
+
+1.  The fpr field of the ReplyBuffer MUST be initialized as follows:
 
 
 
@@ -3519,15 +3284,15 @@ remaining reply buffers.
 
 QueryPacket.WkstaName over Remote Mailslot Protocol to the address \Mailslot\RpcLoc_c.
 
-3.2.1.6  Timer Events
+##### 3.2.1.6 Timer Events
 
 No timer events are applicable in this mode.
 
-3.2.1.7  Other Local Events
+##### 3.2.1.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.2.2  Directory-Only Mode
+#### 3.2.2 Directory-Only Mode
 
 In this mode, when a name service entry is exported, a persistent entry is created in Active
 Directory. Server, profile, and group entries are supported and corresponding objects are created in
@@ -3542,20 +3307,21 @@ Release: June 1, 2017
 
 45 / 77
 
-3.2.2.1  Abstract Data Model
+
+##### 3.2.2.1 Abstract Data Model
 
 Active Directory Entry Cache: Active Directory MUST be used as the store for a persistent
 representation of the name service entries, as specified in section 3.1.1.1.
 
-3.2.2.2  Timers
+##### 3.2.2.2 Timers
 
 No timers are required in this mode.
 
-3.2.2.3  Initialization
+##### 3.2.2.3 Initialization
 
 An implementation SHOULD cache a connection to Active Directory for optimization.<11>
 
-3.2.2.4  Higher-Layer Triggered Events
+##### 3.2.2.4 Higher-Layer Triggered Events
 
 A higher-level protocol or application can make a call to modify server, group, or profile entries.
 
@@ -3564,7 +3330,7 @@ the computer's domain with the modification by using LDAP, as specified in [MS-A
 request MUST be made in the context of the security principal that originated the call into the RPC
 name service. Active Directory schema classes are specified in section 2.2.5.
 
-3.2.2.4.1 Updating a Server Entry
+###### 3.2.2.4.1 Updating a Server Entry
 
 Parameters:
 
@@ -3611,7 +3377,8 @@ Release: June 1, 2017
 
 46 / 77
 
-DsrGetDcNameEx2 method fails, the server MUST fail this method and return the status code to the
+
+DsrGetDcNameEx2 method fails, the server MUST fail this method and return the status code to the
 caller.
 
 The server uses a default timeout value for LDAP operations, and no retries are required.
@@ -3674,7 +3441,7 @@ delete the Active Directory object retrieved in step 1 above ([MS-ADTS] section 
 Operation"). If the Server Entry is not found, the server MUST return error
 RPC_S_ENTRY_NOT_FOUND.
 
-3.2.2.4.2 Updating a Group Entry
+###### 3.2.2.4.2 Updating a Group Entry
 
 Parameters:
 
@@ -3689,7 +3456,8 @@ Release: June 1, 2017
 
 47 / 77
 
-  Status [out]: Indicates to the caller if the group entry update was successful or if it failed with a
+
+  Status [out]: Indicates to the caller if the group entry update was successful or if it failed with a
 
 specific status code.
 
@@ -3765,7 +3533,8 @@ Release: June 1, 2017
 
 48 / 77
 
-1.  The server locator MUST update group members to include any represented in the
+
+1.  The server locator MUST update group members to include any represented in the
 
 rpcNsGroup attribute.
 
@@ -3777,7 +3546,7 @@ RPC_S_ENTRY_NOT_FOUND.
 Any errors encountered from lower-level protocols (e.g., LDAP) are returned to the caller. If the
 operation is successful status code to the higher-layer protocol (RPC_S_OK).
 
-3.2.2.4.3 Updating a Profile Entry
+###### 3.2.2.4.3 Updating a Profile Entry
 
 Parameters:
 
@@ -3840,7 +3609,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  If the Active Directory object exists with the entry FQDN and is of class rpcServer, and if its
+
+2.  If the Active Directory object exists with the entry FQDN and is of class rpcServer, and if its
 
 description matches the string Created Entry, the object MUST be treated as an empty name
 service entry, as specified in section 3.2.2.4.4. The Active Directory object MUST match both
@@ -3887,7 +3657,7 @@ RPC_S_ENTRY_NOT_FOUND.
 Any errors encountered while processing this event MUST be returned to the caller. If updating the
 profile entry is successful, the server returns a successful status code RPC_S_OK.
 
-3.2.2.4.4 Creating a New Entry
+###### 3.2.2.4.4 Creating a New Entry
 
 Parameters:
 
@@ -3919,7 +3689,8 @@ Release: June 1, 2017
 
 50 / 77
 
-  DomainName = NULL
+
+  DomainName = NULL
 
   DomainGuid = NULL
 
@@ -3954,20 +3725,20 @@ caller in Status.
 
 caller by returning RPC_S_OK.
 
-3.2.2.5  Message Processing Events and Sequencing Rules
+##### 3.2.2.5 Message Processing Events and Sequencing Rules
 
 All message processing events and sequencing rules are as specified in section 3.2.2.4 in the context
 of processing higher-layer events.
 
-3.2.2.6  Timer Events
+##### 3.2.2.6 Timer Events
 
 No timer events are applicable in this mode.
 
-3.2.2.7  Other Local Events
+##### 3.2.2.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.2.3  Directory Mode
+#### 3.2.3 Directory Mode
 
 In directory mode, when a name service entry is exported, a persistent entry is created in Active
 Directory.
@@ -3977,7 +3748,7 @@ Directory, as specified in section 1.3.3. In addition, in directory mode, the se
 server entry information in a nonpersistent cache and uses the cached information to respond to
 broadcast lookup requests.
 
-3.2.3.1  Abstract Data Model
+##### 3.2.3.1 Abstract Data Model
 
 The abstract data model is as specified in sections 3.2.1.1 and 3.2.2.1.
 
@@ -3988,22 +3759,23 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.3.2  Timers
+
+##### 3.2.3.2 Timers
 
 No timers are required in this mode.
 
-3.2.3.3  Initialization
+##### 3.2.3.3 Initialization
 
 The server locator initializes as specified in sections 3.2.1.3 and 3.2.2.3.
 
-3.2.3.4  Higher-Layer Triggered Events
+##### 3.2.3.4 Higher-Layer Triggered Events
 
 A higher-level protocol or application can make a call to modify server, group, or profile entries.
 
 When an entry is modified, the server locator MUST update the Active Directory store of the
 computer's domain with information, as specified in section 3.2.2.4.
 
-3.2.3.4.1 Updating a Server Entry
+###### 3.2.3.4.1 Updating a Server Entry
 
 Updating a server entry in Directory Mode has the same parameters as updating a server entry in
 Directory-Only mode (3.2.2.4.1) followed by a server operation to update the local Entry Cache.
@@ -4013,21 +3785,21 @@ the same manner as if the server were running in a non-directory mode. If the se
 out of memory or cache size limitation condition, it MUST return error RPC_S_OUT_OF_MEMORY to
 the caller.
 
-3.2.3.4.2 Updating a Group Entry
+###### 3.2.3.4.2 Updating a Group Entry
 
 Updating a group entry in Directory Mode has the same parameters as updating a group entry in
 Directory-Only Mode (3.2.2.4.2).
 
 Group entries are not supported by the Entry Cache.
 
-3.2.3.4.3 Updating a Profile Entry
+###### 3.2.3.4.3 Updating a Profile Entry
 
 Updating a profile entry in Directory Mode has the same parameters as updating a profile entry in
 Directory-Only mode (section 3.2.2.4.3).
 
 Profile entries are not supported by the Entry Cache.
 
-3.2.3.5  Message Processing Events and Sequencing Rules
+##### 3.2.3.5 Message Processing Events and Sequencing Rules
 
 When a broadcast lookup request for server entries is received, the server locator MUST respond, as
 specified in section 3.2.1.5.
@@ -4035,11 +3807,11 @@ specified in section 3.2.1.5.
 Additional message processing events and sequencing rules are specified in section 3.2.2.5, in the
 context of processing higher-layer events.
 
-3.2.3.6  Timer Events
+##### 3.2.3.6 Timer Events
 
 No timer events are applicable in this mode.
 
-3.2.3.7  Other Local Events
+##### 3.2.3.7 Other Local Events
 
 No other local events are applicable in this mode.
 
@@ -4050,20 +3822,21 @@ Release: June 1, 2017
 
 52 / 77
 
-3.3  LocToLoc Client Locator Details
+
+### 3.3 LocToLoc Client Locator Details
 
 The client locator receives lookup requests from applications and higher-layer protocols and returns
 results from the RPC name service to the caller.
 
 For details on Windows APIs that implement RPC name service functionality, see section 6.
 
-3.3.1  Nondirectory Mode
+#### 3.3.1 Nondirectory Mode
 
 In nondirectory mode, the client locator only supports the lookup of server entries; profile and group
 entries are not supported. When a request for lookup is received, the client locator MUST forward the
 request to the master locator and collect the results, if the results cannot be found in the cache.
 
-3.3.1.1  Abstract Data Model
+##### 3.3.1.1 Abstract Data Model
 
 Discovered Entries cache: The client locator SHOULD maintain a local cache of recently discovered
 server entries with its associated object UUIDs and interface information. Each server entry in the
@@ -4073,13 +3846,13 @@ necessary. This value MUST also be used to calculate whether the name service en
 Master Locator cache: The client locator MUST maintain a list of master locators that can be used to
 forward the request.
 
-3.3.1.2  Timers
+##### 3.3.1.2 Timers
 
 Master locator response timer: The client locator MUST use this timer to wait for responses to a
 master locator discovery request. This timer is started when the client locator sends a master locator
 discovery request.<12>
 
-3.3.1.3  Initialization
+##### 3.3.1.3 Initialization
 
 The Discovered Entries cache MUST be initialized as empty.
 
@@ -4089,7 +3862,7 @@ discovered as specified in [MS-ADTS].
 
 On a non-domain-joined computer, the client locator MUST initialize this list to an empty list.
 
-3.3.1.4  Higher-Layer Triggered Events
+##### 3.3.1.4 Higher-Layer Triggered Events
 
 A higher-level protocol or application can make a call to look up information from a server entry. The
 call can do the following:
@@ -4119,7 +3892,8 @@ Release: June 1, 2017
 
 53 / 77
 
-cache have expired. The client locator can optimize by first returning results from the discovered
+
+cache have expired. The client locator can optimize by first returning results from the discovered
 entries from the cache before forwarding the request to the master locator.
 
 3.  A non-domain-joined client locator MUST initiate a master locator discovery request if the master
@@ -4131,7 +3905,7 @@ request as the master locator to forward the lookup request.
 
 request to the master locator (sections 3.3.1.4.1 and 3.3.1.4.2).<13>
 
-3.3.1.4.1 Binding Lookup
+###### 3.3.1.4.1 Binding Lookup
 
 1.  The client locator MUST invoke the I_nsi_lookup_begin method with the following parameters:
 
@@ -4169,7 +3943,7 @@ criteria by invoking the I_nsi_lookup_next method with the context handle.
 
 resources associated with the context handle.
 
-3.3.1.4.2 Object UUID Lookup
+###### 3.3.1.4.2 Object UUID Lookup
 
 1.  The client locator MUST call the I_nsi_entry_object_inq_begin method with the following
 
@@ -4187,7 +3961,7 @@ the I_nsi_entry_object_inq_next method with the context handle.<16>
 
 to free resources associated with the context handle.
 
-3.3.1.4.3 Master Locator Discovery
+###### 3.3.1.4.3 Master Locator Discovery
 
 [MS-RPCL] - v20170601
 Remote Procedure Call Location Services Extensions
@@ -4196,7 +3970,8 @@ Release: June 1, 2017
 
 54 / 77
 
-A non-domain-joined client locator MUST initiate a locator discovery process. To initiate this, the
+
+A non-domain-joined client locator MUST initiate a locator discovery process. To initiate this, the
 client locator MUST take the following actions:
 
 1.  The client locator MUST wait for any ongoing broadcast request to complete.
@@ -4225,36 +4000,36 @@ responses.
 
 received QUERYLOCATORREPLY structures.
 
-3.3.1.5  Message Processing Events and Sequencing Rules
+##### 3.3.1.5 Message Processing Events and Sequencing Rules
 
 All message processing events and sequencing rules are specified in section 3.3.1.4 in the context of
 processing higher-layer events.
 
-3.3.1.6  Timer Events
+##### 3.3.1.6 Timer Events
 
 On expiration of the master locator response timer, the client locator MUST stop processing
 responses to the master locator discovery request.
 
-3.3.1.7  Other Local Events
+##### 3.3.1.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.3.2  Directory-Only Mode
+#### 3.3.2 Directory-Only Mode
 
 In directory-only mode, the client locator supports the lookup of server, group, and profile entries.
 When a request for lookup is received, a lookup for the corresponding object is made in Active
 Directory.
 
-3.3.2.1  Abstract Data Model
+##### 3.3.2.1 Abstract Data Model
 
 There is no specific abstract data model in directory-only mode. Active Directory is used as the store
 for a persistent representation of the name service entries.
 
-3.3.2.2  Timers
+##### 3.3.2.2 Timers
 
 No timers are required in this mode.
 
-3.3.2.3  Initialization
+##### 3.3.2.3 Initialization
 
 An implementation SHOULD cache a connection to Active Directory for optimization.<17>
 
@@ -4265,7 +4040,8 @@ Release: June 1, 2017
 
 55 / 77
 
-3.3.2.4  Higher-Layer Triggered Events
+
+##### 3.3.2.4 Higher-Layer Triggered Events
 
 A higher-level protocol or application can make a call to look up information from a name service
 entry. The call can do the following:
@@ -4287,7 +4063,7 @@ request in the context of the security principal who originated the call into th
 The enumerated matching objects are returned to the higher-layer protocol or application. Query
 processing is specified in the following sections.
 
-3.3.2.4.1 Query with Entry Name
+###### 3.3.2.4.1 Query with Entry Name
 
 If the entry name is specified in the lookup, the following actions MUST be taken:
 
@@ -4323,7 +4099,7 @@ referred to by the profile elements. The entry FQDN is formed by concatenating t
 (ldap:) to the LDAP URL string in the rpcNsProfileEntry attribute, as specified in section
 2.2.5.1.2.<18>
 
-3.3.2.4.2 Query Without Entry Name
+###### 3.3.2.4.2 Query Without Entry Name
 
 If an entry name is not specified in a lookup operation, the client locator MUST treat it as a lookup of
 the binding information for server entries. Additionally, the higher-layer protocol or application MAY
@@ -4347,7 +4123,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 (& (objectClass = rpcServer)) if no object UUID is specified in the request.
 
@@ -4361,20 +4138,20 @@ perform further refinement of the search results returned from Active Directory 
 information only from interfaces that match all the specified criteria. If no additional criteria are
 specified, the client locator MUST treat all returned Active Directory objects as matching.
 
-3.3.2.5  Message Processing Events and Sequencing Rules
+##### 3.3.2.5 Message Processing Events and Sequencing Rules
 
 All message processing events and sequencing rules are specified in section 3.3.2.4 in the context of
 processing higher-layer events.
 
-3.3.2.6  Timer Events
+##### 3.3.2.6 Timer Events
 
 No timer events are applicable in this mode.
 
-3.3.2.7  Other Local Events
+##### 3.3.2.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.3.3  Directory Mode
+#### 3.3.3 Directory Mode
 
 In this mode, the client locator supports the lookup of server, group, or profile entries. When a
 request for lookup is received, the client locator does a lookup in Active Directory. If the name
@@ -4382,19 +4159,19 @@ service entry is not found in Active Directory, the client locator forwards the 
 locator. Note that since this mode is only valid on a domain-joined computer, none of the non-
 domain-joined behavior (including master locator discovery) is applicable in this mode.
 
-3.3.3.1  Abstract Data Model
+##### 3.3.3.1 Abstract Data Model
 
 The abstract data model is as specified in sections 3.3.1.1 and 3.3.2.1.
 
-3.3.3.2  Timers
+##### 3.3.3.2 Timers
 
 No timers are required in this mode.
 
-3.3.3.3  Initialization
+##### 3.3.3.3 Initialization
 
 The client locator initializes as specified in section 3.3.1.3 for domain-joined computers.
 
-3.3.3.4  Higher-Layer Triggered Events
+##### 3.3.3.4 Higher-Layer Triggered Events
 
 A higher-level protocol or an application can make a call to look up information from a name service
 entry. The call can do the following:
@@ -4408,7 +4185,7 @@ Look up server, group, or profile entries, and enumerate their properties.
 Look up bindings with some optional criteria like object UUID or entry_name, as supported by
 the implementation.
 
-3.3.3.4.1 Query with Entry Name
+###### 3.3.3.4.1 Query with Entry Name
 
 [MS-RPCL] - v20170601
 Remote Procedure Call Location Services Extensions
@@ -4417,7 +4194,8 @@ Release: June 1, 2017
 
 57 / 77
 
-If the entry name is specified, the following actions MUST be taken:
+
+If the entry name is specified, the following actions MUST be taken:
 
 1.  The client locator MUST query Active Directory for the entry as specified in section 3.3.2.4.1.
 
@@ -4429,25 +4207,25 @@ caller. The client locator MUST NOT forward the request to the master locator.
 
 master locator, as specified in section 3.3.1.4, as applicable to a domain-joined computer.
 
-3.3.3.4.2 Query Without Entry Name
+###### 3.3.3.4.2 Query Without Entry Name
 
 If the entry name is not specified, the client locator MUST forward the request to the master
 locator (section 3.3.1.4) as applicable to a domain-joined computer.
 
-3.3.3.5  Message Processing Events and Sequencing Rules
+##### 3.3.3.5 Message Processing Events and Sequencing Rules
 
 All message processing events and sequencing rules are specified in sections 3.3.1.4 and 3.3.2.4 in
 the context of processing higher-layer events.
 
-3.3.3.6  Timer Events
+##### 3.3.3.6 Timer Events
 
 No timer events are applicable in this mode.
 
-3.3.3.7  Other Local Events
+##### 3.3.3.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.4  LocToLoc Master Locator Details
+### 3.4 LocToLoc Master Locator Details
 
 A master locator facilitates communication between client locators and server locators. A master
 locator MUST listen for forwarded requests from client locators on the LocToLoc RPC interface (section
@@ -4457,12 +4235,12 @@ locators. An implementation of a master locator SHOULD choose to cache the respo
 receives from server locators by implementing the Discovered Entries cache as specified in section
 3.4.1.1.
 
-3.4.1  Nondirectory Mode
+#### 3.4.1 Nondirectory Mode
 
 The master locator facilitates lookup of server entries from computers on which the server entry is
 not directly exported. Profile and group entries are not supported in this mode.
 
-3.4.1.1  Abstract Data Model
+##### 3.4.1.1 Abstract Data Model
 
 Discovered Entries cache: Each master locator MUST maintain a cache of server entries, and their
 associated object UUIDs, and interface information that has been received as a response to a
@@ -4483,12 +4261,13 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.4.1.2  Timers
+
+##### 3.4.1.2 Timers
 
 Broadcast response timer: The master locator MUST use this timer to wait for messages in response
 to a broadcast lookup request. This timer is started when a broadcast lookup request is sent.<21>
 
-3.4.1.3  Initialization
+##### 3.4.1.3 Initialization
 
 The master locator MUST initialize the Discovered Entries cache to an empty list.
 
@@ -4500,11 +4279,11 @@ The master locator MUST initialize the mailslot addresses (section 2.1) to:
 
   Respond to master locator discovery requests.
 
-3.4.1.4  Higher-Layer Triggered Events
+##### 3.4.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are applicable in this mode.
 
-3.4.1.5  Message Processing Events and Sequencing Rules
+##### 3.4.1.5 Message Processing Events and Sequencing Rules
 
 A master locator responds to the following:
 
@@ -4518,7 +4297,7 @@ Lookup requests received on the LocToLoc RPC interface.
 
 Ping Locator requests.
 
-3.4.1.5.1 Lookup Request
+###### 3.4.1.5.1 Lookup Request
 
 When a master locator receives a lookup request on the LocToLoc interface (section 3.1.4), the
 following actions MUST be taken:
@@ -4568,7 +4347,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-is found, the master locator MUST ignore the match if it has been in the cache for longer than the
+
+is found, the master locator MUST ignore the match if it has been in the cache for longer than the
 time specified in the MaxCacheAge parameter in the I_nsi_lookup_begin call. If MaxCacheAge is
 not specified in the parameter, an appropriate default value SHOULD be used.<24>
 
@@ -4641,7 +4421,7 @@ the corresponding context handle.
 
 Part 3.
 
-3.4.1.5.1.1  Broadcast Lookup
+###### 3.4.1.5.1.1 Broadcast Lookup
 
 The master locator MUST initiate a broadcast lookup to look for entries exported to server locators
 on other computers. To initiate this, the master locator MUST take the following actions:
@@ -4653,7 +4433,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  MUST wait for any ongoing broadcast lookup request to complete.
+
+1.  MUST wait for any ongoing broadcast lookup request to complete.
 
 2.  MUST initialize a QueryPacket structure as follows:
 
@@ -4733,7 +4514,8 @@ Release: June 1, 2017
 
 61 / 77
 
-3.4.1.5.2 Master Locator Response
+
+###### 3.4.1.5.2 Master Locator Response
 
 When a master locator discovery request is received, the following actions MUST be taken:
 
@@ -4758,26 +4540,26 @@ computer.
 over the Remote Mailslot Protocol with the computer name of the requestor, obtained in step 1, as
 the destination and "\Mailslot\Resp_c" as the address.
 
-3.4.1.5.3 Master Locator Ping Response
+###### 3.4.1.5.3 Master Locator Ping Response
 
 When a master locator ping call is received, the following actions MUST be taken:
 
 1.  Return NSI_S_OK in the status value
 
-3.4.1.6  Timer Events
+##### 3.4.1.6 Timer Events
 
 On expiration of the broadcast response timer, the master locator MUST stop accepting responses
 for the broadcast lookup request, as specified in section 3.4.1.5.1.1.
 
-3.4.1.7  Other Local Events
+##### 3.4.1.7 Other Local Events
 
 No other local events are applicable in this mode.
 
-3.4.2  Directory Mode
+#### 3.4.2 Directory Mode
 
 In this mode, the master locator behaves in a manner identical to the specification in section 3.4.1.
 
-3.4.3  Directory-Only Mode
+#### 3.4.3 Directory-Only Mode
 
 In this mode, a locator MUST NOT act as a master locator.
 
@@ -4788,13 +4570,14 @@ Release: June 1, 2017
 
 62 / 77
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-RPCL].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Nondirectory Mode Operation
+### 4.1 Nondirectory Mode Operation
 
 The following diagram shows an example of the protocol in which all client, server, and master
 locators are in nondirectory mode.
@@ -4823,7 +4606,7 @@ see section 3.4.1.5.
 
 7.  The client locator returns the lookup handle to the client process.
 
-4.2  Directory-Only Mode Operation
+### 4.2 Directory-Only Mode Operation
 
 The following diagram shows an example of the protocol in which both client and server are in
 directory-only mode.
@@ -4835,7 +4618,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-RPCL].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
@@ -4858,7 +4642,7 @@ see section 3.3.2.4.1.
 
 5.  The client locator returns the lookup handle to the client process.
 
-4.3  Server in Nondirectory Mode and Client in Directory Mode
+### 4.3 Server in Nondirectory Mode and Client in Directory Mode
 
 The following diagram shows an example of the protocol in which the client and master locators are
 running in directory mode, and the server locator is running in nondirectory mode.
@@ -4870,7 +4654,8 @@ Release: June 1, 2017
 
 64 / 77
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-RPCL].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -4909,9 +4694,10 @@ Release: June 1, 2017
 
 65 / 77
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Mailslots have no security on them. This MAY be disabled in directory-only mode, as specified in
 section 1.3.2.
@@ -4921,7 +4707,7 @@ Access control lists (ACLs) on the default RPC services container are specified 
 The LocToLoc interface uses the default security settings and does not register any security providers,
 as specified in [MS-RPCE] section 3.3.3.3.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -4940,7 +4726,8 @@ Release: June 1, 2017
 
 66 / 77
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the following full Interface Definition Language (IDL) is provided,
 where "ms-dtyp.idl" is the IDL, as specified in [MS-DTYP] section 5<26>.
@@ -5014,7 +4801,8 @@ Release: June 1, 2017
 
 67 / 77
 
-         [in]     handle_t        hrpcPrimaryLocatorHndl,
+
+         [in]     handle_t        hrpcPrimaryLocatorHndl,
          [in,out] NSI_NS_HANDLE_T *import_context,
          [out]    unsigned short  *status
      );
@@ -5059,7 +4847,8 @@ Release: June 1, 2017
 
 68 / 77
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5127,7 +4916,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The client locator only forwards the request to the master locator if the request cannot be satisfied
+
+The client locator only forwards the request to the master locator if the request cannot be satisfied
 locally first by looking at the unexpired name service entries in the cache.
 
 <14> Section 3.3.1.4.1: Windows initializes this value to be the same as the value specified by the
@@ -5179,7 +4969,8 @@ Release: June 1, 2017
 
 70 / 77
 
-8  Appendix C: API Mappings
+
+## 8 Appendix C: API Mappings
 
 The following table specifies mapping between APIs [C706] for RPC name service and corresponding
 APIs in Windows.
@@ -5301,7 +5092,8 @@ Release: June 1, 2017
 
 71 / 77
 
- RPC name service APIs in [C706]
+
+ RPC name service APIs in [C706]
 
  Windows APIs
 
@@ -5404,7 +5196,8 @@ Release: June 1, 2017
 
 72 / 77
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -5416,7 +5209,8 @@ Release: June 1, 2017
 
 73 / 77
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model
@@ -5559,7 +5353,8 @@ Initialization
 
 74 / 77
 
-   server locator - directory mode 52
+
+   server locator - directory mode 52
    server locator - directory-only mode 46
    server locator - nondirectory mode 42
 Introduction 9
@@ -5697,7 +5492,8 @@ Release: June 1, 2017
 
 75 / 77
 
-M
+
+M
 
 Mailslot structures
    broadcast lookup 23
@@ -5848,7 +5644,8 @@ Remote Procedure Call Location Services Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   master locator 41
+
+   master locator 41
    master locator - nondirectory mode 62
    server locator 41
    server locator - directory mode 52

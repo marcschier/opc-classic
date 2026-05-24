@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 92
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -524,7 +526,8 @@ Release: April 23, 2024
 
 3 / 92
 
-Date
+
+Date
 
 Revision
 History
@@ -575,585 +578,277 @@ Release: April 23, 2024
 
 4 / 92
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Common Structures](#221-common-structures)
+      - [2.2.1.1 REDIR_SCARDCONTEXT](#2211-redirscardcontext)
+      - [2.2.1.2 REDIR_SCARDHANDLE](#2212-redirscardhandle)
+      - [2.2.1.3 Connect_Common](#2213-connectcommon)
+      - [2.2.1.4 LocateCards_ATRMask](#2214-locatecardsatrmask)
+      - [2.2.1.5 ReaderState_Common_Call](#2215-readerstatecommoncall)
+      - [2.2.1.6 ReaderStateA](#2216-readerstatea)
+      - [2.2.1.7 ReaderStateW](#2217-readerstatew)
+      - [2.2.1.8 SCardIO_Request](#2218-scardiorequest)
+      - [2.2.1.9 ReadCache_Common](#2219-readcachecommon)
+      - [2.2.1.10 WriteCache_Common](#22110-writecachecommon)
+      - [2.2.1.11 ReaderState_Return](#22111-readerstatereturn)
+    - [2.2.2 TS Server-Generated Structures](#222-ts-server-generated-structures)
+      - [2.2.2.1 EstablishContext_Call](#2221-establishcontextcall)
+      - [2.2.2.2 Context_Call](#2222-contextcall)
+      - [2.2.2.3 ListReaderGroups_Call](#2223-listreadergroupscall)
+      - [2.2.2.4 ListReaders_Call](#2224-listreaderscall)
+      - [2.2.2.5 ContextAndStringA_Call](#2225-contextandstringacall)
+      - [2.2.2.6 ContextAndStringW_Call](#2226-contextandstringwcall)
+      - [2.2.2.7 ContextAndTwoStringA_Call](#2227-contextandtwostringacall)
+      - [2.2.2.8 ContextAndTwoStringW_Call](#2228-contextandtwostringwcall)
+      - [2.2.2.9 LocateCardsA_Call](#2229-locatecardsacall)
+      - [2.2.2.10 LocateCardsW_Call](#22210-locatecardswcall)
+      - [2.2.2.11 GetStatusChangeA_Call](#22211-getstatuschangeacall)
+      - [2.2.2.12 GetStatusChangeW_Call](#22212-getstatuschangewcall)
+      - [2.2.2.13 ConnectA_Call](#22213-connectacall)
+      - [2.2.2.14 ConnectW_Call](#22214-connectwcall)
+      - [2.2.2.15 Reconnect_Call](#22215-reconnectcall)
+      - [2.2.2.16 HCardAndDisposition_Call](#22216-hcardanddispositioncall)
+      - [2.2.2.17 State_Call](#22217-statecall)
+      - [2.2.2.18 Status_Call](#22218-statuscall)
+      - [2.2.2.19 Transmit_Call](#22219-transmitcall)
+      - [2.2.2.20 Control_Call](#22220-controlcall)
+      - [2.2.2.21 GetAttrib_Call](#22221-getattribcall)
+      - [2.2.2.22 SetAttrib_Call](#22222-setattribcall)
+      - [2.2.2.23 LocateCardsByATRA_Call](#22223-locatecardsbyatracall)
+      - [2.2.2.24 LocateCardsByATRW_Call](#22224-locatecardsbyatrwcall)
+      - [2.2.2.25 ReadCacheA_Call](#22225-readcacheacall)
+      - [2.2.2.26 ReadCacheW_Call](#22226-readcachewcall)
+      - [2.2.2.27 WriteCacheA_Call](#22227-writecacheacall)
+      - [2.2.2.28 WriteCacheW_Call](#22228-writecachewcall)
+      - [2.2.2.29 GetTransmitCount_Call](#22229-gettransmitcountcall)
+      - [2.2.2.30 ScardAccessStartedEvent_Call](#22230-scardaccessstartedeventcall)
+      - [2.2.2.31 GetReaderIcon_Call](#22231-getreadericoncall)
+      - [2.2.2.32 GetDeviceTypeId_Call](#22232-getdevicetypeidcall)
+    - [2.2.3 TS Client-Generated Structures](#223-ts-client-generated-structures)
+      - [2.2.3.1 ReadCache_Return](#2231-readcachereturn)
+      - [2.2.3.2 EstablishContext_Return](#2232-establishcontextreturn)
+      - [2.2.3.3 Long_Return](#2233-longreturn)
+      - [2.2.3.4 ListReaderGroups_Return and ListReaders_Return](#2234-listreadergroupsreturn-and-listreadersreturn)
+      - [2.2.3.5 LocateCards_Return and GetStatusChange_Return](#2235-locatecardsreturn-and-getstatuschangereturn)
+      - [2.2.3.6 Control_Return](#2236-controlreturn)
+      - [2.2.3.7 Reconnect_Return](#2237-reconnectreturn)
+      - [2.2.3.8 Connect_Return](#2238-connectreturn)
+      - [2.2.3.9 State_Return](#2239-statereturn)
+      - [2.2.3.10 Status_Return](#22310-statusreturn)
+      - [2.2.3.11 Transmit_Return](#22311-transmitreturn)
+      - [2.2.3.12 GetAttrib_Return](#22312-getattribreturn)
+      - [2.2.3.13 GetTransmitCount_Return](#22313-gettransmitcountreturn)
+      - [2.2.3.14 GetReaderIcon_Return](#22314-getreadericonreturn)
+      - [2.2.3.15 GetDeviceTypeId_Return](#22315-getdevicetypeidreturn)
+    - [2.2.4 Card/Reader State](#224-cardreader-state)
+    - [2.2.5 Protocol Identifier](#225-protocol-identifier)
+    - [2.2.6 Access Mode Flags](#226-access-mode-flags)
+    - [2.2.7 Reader State](#227-reader-state)
+    - [2.2.8 Return Code](#228-return-code)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Protocol Server Details](#31-protocol-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 SCARD_IOCTL_ESTABLISHCONTEXT (IOCTL 0x00090014)](#3141-scardioctlestablishcontext-ioctl-0x00090014)
+      - [3.1.4.2 SCARD_IOCTL_RELEASECONTEXT (IOCTL 0x00090018)](#3142-scardioctlreleasecontext-ioctl-0x00090018)
+      - [3.1.4.3 SCARD_IOCTL_ISVALIDCONTEXT (IOCTL 0x0009001C)](#3143-scardioctlisvalidcontext-ioctl-0x0009001c)
+      - [3.1.4.4 SCARD_IOCTL_ACCESSSTARTEDEVENT (IOCTL 0x000900E0)](#3144-scardioctlaccessstartedevent-ioctl-0x000900e0)
+      - [3.1.4.5 SCARD_IOCTL_LISTREADERGROUPSA (IOCTL 0x00090020)](#3145-scardioctllistreadergroupsa-ioctl-0x00090020)
+      - [3.1.4.6 SCARD_IOCTL_LISTREADERGROUPSW (IOCTL 0x00090024)](#3146-scardioctllistreadergroupsw-ioctl-0x00090024)
+      - [3.1.4.7 SCARD_IOCTL_LISTREADERSA (IOCTL 0x00090028)](#3147-scardioctllistreadersa-ioctl-0x00090028)
+      - [3.1.4.8 SCARD_IOCTL_LISTREADERSW (IOCTL 0x0009002C)](#3148-scardioctllistreadersw-ioctl-0x0009002c)
+      - [3.1.4.9 SCARD_IOCTL_INTRODUCEREADERGROUPA (IOCTL 0x00090050)](#3149-scardioctlintroducereadergroupa-ioctl-0x00090050)
+      - [3.1.4.10 SCARD_IOCTL_INTRODUCEREADERGROUPW (IOCTL 0x00090054)](#31410-scardioctlintroducereadergroupw-ioctl-0x00090054)
+      - [3.1.4.11 SCARD_IOCTL_FORGETREADERGROUPA (IOCTL 0x00090058)](#31411-scardioctlforgetreadergroupa-ioctl-0x00090058)
+      - [3.1.4.12 SCARD_IOCTL_FORGETREADERGROUPW (IOCTL 0x0009005C)](#31412-scardioctlforgetreadergroupw-ioctl-0x0009005c)
+      - [3.1.4.13 SCARD_IOCTL_INTRODUCEREADERA (IOCTL 0x00090060)](#31413-scardioctlintroducereadera-ioctl-0x00090060)
+      - [3.1.4.14 SCARD_IOCTL_INTRODUCEREADERW (IOCTL 0x00090064)](#31414-scardioctlintroducereaderw-ioctl-0x00090064)
+      - [3.1.4.15 SCARD_IOCTL_FORGETREADERA (IOCTL 0x00090068)](#31415-scardioctlforgetreadera-ioctl-0x00090068)
+      - [3.1.4.16 SCARD_IOCTL_FORGETREADERW (IOCTL 0x0009006C)](#31416-scardioctlforgetreaderw-ioctl-0x0009006c)
+      - [3.1.4.17 SCARD_IOCTL_ADDREADERTOGROUPA (IOCTL 0x00090070)](#31417-scardioctladdreadertogroupa-ioctl-0x00090070)
+      - [3.1.4.18 SCARD_IOCTL_ADDREADERTOGROUPW (IOCTL 0x00090074)](#31418-scardioctladdreadertogroupw-ioctl-0x00090074)
+      - [3.1.4.19 SCARD_IOCTL_REMOVEREADERFROMGROUPA (IOCTL 0x00090078)](#31419-scardioctlremovereaderfromgroupa-ioctl-0x00090078)
+      - [3.1.4.20 SCARD_IOCTL_REMOVEREADERFROMGROUPW (IOCTL 0x0009007C)](#31420-scardioctlremovereaderfromgroupw-ioctl-0x0009007c)
+      - [3.1.4.21 SCARD_IOCTL_LOCATECARDSA (IOCTL 0x00090098)](#31421-scardioctllocatecardsa-ioctl-0x00090098)
+      - [3.1.4.22 SCARD_IOCTL_LOCATECARDSW (IOCTL 0x0009009C)](#31422-scardioctllocatecardsw-ioctl-0x0009009c)
+      - [3.1.4.23 SCARD_IOCTL_GETSTATUSCHANGEA (IOCTL 0x000900A0)](#31423-scardioctlgetstatuschangea-ioctl-0x000900a0)
+      - [3.1.4.24 SCARD_IOCTL_GETSTATUSCHANGEW (IOCTL 0x000900A4)](#31424-scardioctlgetstatuschangew-ioctl-0x000900a4)
+      - [3.1.4.25 SCARD_IOCTL_LOCATECARDSBYATRA (IOCTL 0x000900E8)](#31425-scardioctllocatecardsbyatra-ioctl-0x000900e8)
+      - [3.1.4.26 SCARD_IOCTL_LOCATECARDSBYATRW (IOCTL 0x000900EC)](#31426-scardioctllocatecardsbyatrw-ioctl-0x000900ec)
+      - [3.1.4.27 SCARD_IOCTL_CANCEL (IOCTL 0x000900A8)](#31427-scardioctlcancel-ioctl-0x000900a8)
+      - [3.1.4.28 SCARD_IOCTL_CONNECTA (IOCTL 0x000900AC)](#31428-scardioctlconnecta-ioctl-0x000900ac)
+      - [3.1.4.29 SCARD_IOCTL_CONNECTW (IOCTL 0x000900B0)](#31429-scardioctlconnectw-ioctl-0x000900b0)
+      - [3.1.4.30 SCARD_IOCTL_DISCONNECT (IOCTL 0x000900B8)](#31430-scardioctldisconnect-ioctl-0x000900b8)
+      - [3.1.4.31 SCARD_IOCTL_BEGINTRANSACTION (IOCTL 0x000900BC)](#31431-scardioctlbegintransaction-ioctl-0x000900bc)
+      - [3.1.4.32 SCARD_IOCTL_ENDTRANSACTION (IOCTL 0x000900C0)](#31432-scardioctlendtransaction-ioctl-0x000900c0)
+      - [3.1.4.33 SCARD_IOCTL_STATUSA (IOCTL 0x000900C8)](#31433-scardioctlstatusa-ioctl-0x000900c8)
+      - [3.1.4.34 SCARD_IOCTL_STATUSW (IOCTL 0x000900CC)](#31434-scardioctlstatusw-ioctl-0x000900cc)
+      - [3.1.4.35 SCARD_IOCTL_TRANSMIT (IOCTL 0x000900D0)](#31435-scardioctltransmit-ioctl-0x000900d0)
+      - [3.1.4.36 SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4)](#31436-scardioctlreconnect-ioctl-0x000900b4)
+      - [3.1.4.37 SCARD_IOCTL_CONTROL (IOCTL 0x000900D4)](#31437-scardioctlcontrol-ioctl-0x000900d4)
+      - [3.1.4.38 SCARD_IOCTL_GETATTRIB (IOCTL 0x000900D8)](#31438-scardioctlgetattrib-ioctl-0x000900d8)
+      - [3.1.4.39 SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC)](#31439-scardioctlsetattrib-ioctl-0x000900dc)
+      - [3.1.4.40 SCARD_IOCTL_STATE (IOCTL 0x000900C4)](#31440-scardioctlstate-ioctl-0x000900c4)
+      - [3.1.4.41 SCARD_IOCTL_GETTRANSMITCOUNT (IOCTL 0x00090100)](#31441-scardioctlgettransmitcount-ioctl-0x00090100)
+      - [3.1.4.42 SCARD_IOCTL_READCACHEA (IOCTL 0x000900F0)](#31442-scardioctlreadcachea-ioctl-0x000900f0)
+      - [3.1.4.43 SCARD_IOCTL_READCACHEW (IOCTL 0x000900F4)](#31443-scardioctlreadcachew-ioctl-0x000900f4)
+      - [3.1.4.44 SCARD_IOCTL_WRITECACHEA (IOCTL 0x000900F8)](#31444-scardioctlwritecachea-ioctl-0x000900f8)
+      - [3.1.4.45 SCARD_IOCTL_WRITECACHEW (IOCTL 0x000900FC)](#31445-scardioctlwritecachew-ioctl-0x000900fc)
+      - [3.1.4.46 SCARD_IOCTL_RELEASETARTEDEVENT](#31446-scardioctlreleasetartedevent)
+      - [3.1.4.47 SCARD_IOCTL_GETREADERICON (IOCTL 0x00090104)](#31447-scardioctlgetreadericon-ioctl-0x00090104)
+      - [3.1.4.48 SCARD_IOCTL_GETDEVICETYPEID (IOCTL 0x00090108)](#31448-scardioctlgetdevicetypeid-ioctl-0x00090108)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Protocol Client Details](#32-protocol-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending Outgoing Messages](#3251-sending-outgoing-messages)
+      - [3.2.5.2 Processing Incoming Replies](#3252-processing-incoming-replies)
+      - [3.2.5.3 Messages](#3253-messages)
+        - [3.2.5.3.1 Sending EstablishContext Message](#32531-sending-establishcontext-message)
+        - [3.2.5.3.2 Processing EstablishContext Reply](#32532-processing-establishcontext-reply)
+        - [3.2.5.3.3 Sending ReleaseContext Message](#32533-sending-releasecontext-message)
+        - [3.2.5.3.4 Processing ReleaseContext Reply](#32534-processing-releasecontext-reply)
+        - [3.2.5.3.5 Sending IntroduceReader (ASCII) Message](#32535-sending-introducereader-ascii-message)
+        - [3.2.5.3.6 Processing IntroduceReader (ASCII) Reply](#32536-processing-introducereader-ascii-reply)
+        - [3.2.5.3.7 Sending IntroduceReader (Unicode) Message](#32537-sending-introducereader-unicode-message)
+        - [3.2.5.3.8 Processing IntroduceReader (Unicode) Reply](#32538-processing-introducereader-unicode-reply)
+        - [3.2.5.3.9 Sending ForgetReader (ASCII) Message](#32539-sending-forgetreader-ascii-message)
+        - [3.2.5.3.10 Processing ForgetReader (ASCII) Reply](#325310-processing-forgetreader-ascii-reply)
+        - [3.2.5.3.11 Sending ForgetReader (Unicode) Message](#325311-sending-forgetreader-unicode-message)
+        - [3.2.5.3.12 Processing ForgetReader (Unicode) Reply](#325312-processing-forgetreader-unicode-reply)
+        - [3.2.5.3.13 Sending IntroduceReaderGroup (ASCII) Message](#325313-sending-introducereadergroup-ascii-message)
+        - [3.2.5.3.14 Processing IntroduceReaderGroup (ASCII) Reply](#325314-processing-introducereadergroup-ascii-reply)
+        - [3.2.5.3.15 Sending IntroduceReaderGroup (Unicode) Message](#325315-sending-introducereadergroup-unicode-message)
+        - [3.2.5.3.16 Processing IntroduceReaderGroup (Unicode) Reply](#325316-processing-introducereadergroup-unicode-reply)
+        - [3.2.5.3.17 Sending ForgetReaderGroup (ASCII) Message 1](#325317-sending-forgetreadergroup-ascii-message-1)
+        - [3.2.5.3.18 Processing ForgetReaderGroup (ASCII) Reply](#325318-processing-forgetreadergroup-ascii-reply)
+        - [3.2.5.3.19 Sending ForgetReaderGroup (ASCII) Message 2](#325319-sending-forgetreadergroup-ascii-message-2)
+        - [3.2.5.3.20 Processing ForgetReaderGroup (Unicode) Reply](#325320-processing-forgetreadergroup-unicode-reply)
+        - [3.2.5.3.21 Sending AddReaderToGroup (ASCII) Message](#325321-sending-addreadertogroup-ascii-message)
+        - [3.2.5.3.22 Processing AddReaderToGroup (ASCII) Reply](#325322-processing-addreadertogroup-ascii-reply)
+        - [3.2.5.3.23 Sending AddReaderToGroup (Unicode) Message](#325323-sending-addreadertogroup-unicode-message)
+        - [3.2.5.3.24 Processing AddReaderToGroup (Unicode) Reply](#325324-processing-addreadertogroup-unicode-reply)
+        - [3.2.5.3.25 Sending RemoveReaderFromGroup (ASCII) Message](#325325-sending-removereaderfromgroup-ascii-message)
+        - [3.2.5.3.26 Processing RemoveReaderFromGroup (ASCII) Reply](#325326-processing-removereaderfromgroup-ascii-reply)
+        - [3.2.5.3.27 Sending RemoveReaderFromGroup (Unicode) Message](#325327-sending-removereaderfromgroup-unicode-message)
+        - [3.2.5.3.28 Processing RemoveReaderFromGroup (Unicode) Reply](#325328-processing-removereaderfromgroup-unicode-reply)
+        - [3.2.5.3.29 Sending ListReaderGroups (ASCII) Message](#325329-sending-listreadergroups-ascii-message)
+        - [3.2.5.3.30 Processing ListReaderGroups (ASCII) Reply](#325330-processing-listreadergroups-ascii-reply)
+        - [3.2.5.3.31 Sending ListReaderGroups (Unicode) Message](#325331-sending-listreadergroups-unicode-message)
+        - [3.2.5.3.32 Processing ListReaderGroups (Unicode) Reply](#325332-processing-listreadergroups-unicode-reply)
+        - [3.2.5.3.33 Sending ListReaders (ASCII) Message](#325333-sending-listreaders-ascii-message)
+        - [3.2.5.3.34 Processing ListReadersReply (ASCII) Reply](#325334-processing-listreadersreply-ascii-reply)
+        - [3.2.5.3.35 Sending ListReaders (Unicode) Message](#325335-sending-listreaders-unicode-message)
+        - [3.2.5.3.36 Processing ListReadersReply (Unicode) Reply](#325336-processing-listreadersreply-unicode-reply)
+        - [3.2.5.3.37 Sending LocateCards (ASCII) Message](#325337-sending-locatecards-ascii-message)
+        - [3.2.5.3.38 Processing LocateCards (ASCII) Reply](#325338-processing-locatecards-ascii-reply)
+        - [3.2.5.3.39 Sending LocateCards (Unicode) Message](#325339-sending-locatecards-unicode-message)
+        - [3.2.5.3.40 Processing LocateCards (Unicode) Reply](#325340-processing-locatecards-unicode-reply)
+        - [3.2.5.3.41 Sending GetStatusChange (ASCII) Message](#325341-sending-getstatuschange-ascii-message)
+        - [3.2.5.3.42 Processing GetStatusChange (ASCII) Reply](#325342-processing-getstatuschange-ascii-reply)
+        - [3.2.5.3.43 Sending GetStatusChange (Unicode) Message](#325343-sending-getstatuschange-unicode-message)
+        - [3.2.5.3.44 Processing GetStatusChange (Unicode) Reply](#325344-processing-getstatuschange-unicode-reply)
+        - [3.2.5.3.45 Sending Cancel Message](#325345-sending-cancel-message)
+        - [3.2.5.3.46 Processing Cancel Reply](#325346-processing-cancel-reply)
+        - [3.2.5.3.47 Sending Connect (ASCII) Message](#325347-sending-connect-ascii-message)
+        - [3.2.5.3.48 Processing Connect (ASCII) Reply](#325348-processing-connect-ascii-reply)
+        - [3.2.5.3.49 Sending Connect (Unicode) Message](#325349-sending-connect-unicode-message)
+        - [3.2.5.3.50 Processing Connect (Unicode) Reply](#325350-processing-connect-unicode-reply)
+        - [3.2.5.3.51 Sending Reconnect Message](#325351-sending-reconnect-message)
+        - [3.2.5.3.52 Processing Reconnect Reply](#325352-processing-reconnect-reply)
+        - [3.2.5.3.53 Sending Disconnect Message](#325353-sending-disconnect-message)
+        - [3.2.5.3.54 Processing Disconnect Reply](#325354-processing-disconnect-reply)
+        - [3.2.5.3.55 Sending Status (ASCII) Message](#325355-sending-status-ascii-message)
+        - [3.2.5.3.56 Processing Status (ASCII) Reply](#325356-processing-status-ascii-reply)
+        - [3.2.5.3.57 Sending Status (Unicode) Message](#325357-sending-status-unicode-message)
+        - [3.2.5.3.58 Processing Status (Unicode) Reply](#325358-processing-status-unicode-reply)
+        - [3.2.5.3.59 Sending State Message](#325359-sending-state-message)
+        - [3.2.5.3.60 Processing State Message Reply](#325360-processing-state-message-reply)
+        - [3.2.5.3.61 Sending BeginTransaction Message](#325361-sending-begintransaction-message)
+        - [3.2.5.3.62 Processing BeginTransaction Reply](#325362-processing-begintransaction-reply)
+        - [3.2.5.3.63 Sending EndTransaction Message](#325363-sending-endtransaction-message)
+        - [3.2.5.3.64 Processing EndTransaction Reply](#325364-processing-endtransaction-reply)
+        - [3.2.5.3.65 Sending Transmit Message](#325365-sending-transmit-message)
+        - [3.2.5.3.66 Processing Transmit Reply](#325366-processing-transmit-reply)
+        - [3.2.5.3.67 Sending Control Message](#325367-sending-control-message)
+        - [3.2.5.3.68 Processing Control Reply](#325368-processing-control-reply)
+        - [3.2.5.3.69 Sending GetReaderCapabilities Message](#325369-sending-getreadercapabilities-message)
+        - [3.2.5.3.70 Processing GetReaderCapabilities Reply](#325370-processing-getreadercapabilities-reply)
+        - [3.2.5.3.71 Sending SetReaderCapabilities Message](#325371-sending-setreadercapabilities-message)
+        - [3.2.5.3.72 Processing SetReaderCapabilities Reply](#325372-processing-setreadercapabilities-reply)
+        - [3.2.5.3.73 Sending WaitForResourceManager Message](#325373-sending-waitforresourcemanager-message)
+        - [3.2.5.3.74 Processing WaitForResourceManager Reply](#325374-processing-waitforresourcemanager-reply)
+        - [3.2.5.3.75 Sending LocateCardsByATR (ASCII) Message](#325375-sending-locatecardsbyatr-ascii-message)
+        - [3.2.5.3.76 Processing LocateCardsByATR (Unicode) Reply](#325376-processing-locatecardsbyatr-unicode-reply)
+        - [3.2.5.3.77 Processing LocateCardsByATR (ASCII) Reply](#325377-processing-locatecardsbyatr-ascii-reply)
+        - [3.2.5.3.78 Sending LocateCardsByATR (Unicode) Message](#325378-sending-locatecardsbyatr-unicode-message)
+        - [3.2.5.3.79 Sending ReadCache (ASCII) Message](#325379-sending-readcache-ascii-message)
+        - [3.2.5.3.80 Processing ReadCache (ASCII) Reply](#325380-processing-readcache-ascii-reply)
+        - [3.2.5.3.81 Sending ReadCache (Unicode) Message](#325381-sending-readcache-unicode-message)
+        - [3.2.5.3.82 Processing ReadCache (Unicode) Reply](#325382-processing-readcache-unicode-reply)
+        - [3.2.5.3.83 Sending WriteCache (ASCII) Message](#325383-sending-writecache-ascii-message)
+        - [3.2.5.3.84 Processing WriteCache (ASCII) Reply](#325384-processing-writecache-ascii-reply)
+        - [3.2.5.3.85 Sending WriteCache (Unicode) Message](#325385-sending-writecache-unicode-message)
+        - [3.2.5.3.86 Processing WriteCache (Unicode) Reply](#325386-processing-writecache-unicode-reply)
+        - [3.2.5.3.87 Sending GetTransmitCount Message](#325387-sending-gettransmitcount-message)
+        - [3.2.5.3.88 Processing GetTransmitCount Reply](#325388-processing-gettransmitcount-reply)
+        - [3.2.5.3.89 Sending GetReaderIcon Message](#325389-sending-getreadericon-message)
+        - [3.2.5.3.90 Processing GetReaderIcon Reply](#325390-processing-getreadericon-reply)
+        - [3.2.5.3.91 Sending GetDeviceTypeId Message](#325391-sending-getdevicetypeid-message)
+        - [3.2.5.3.92 Processing GetDeviceTypeId Reply](#325392-processing-getdevicetypeid-reply)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Establish Context Call](#41-establish-context-call)
+  - [4.2 Establish Context Return](#42-establish-context-return)
+  - [4.3 List Readers Call](#43-list-readers-call)
+  - [4.4 List Readers Return](#44-list-readers-return)
+  - [4.5 Get Status Change Call](#45-get-status-change-call)
+  - [4.6 Get Status Change Return](#46-get-status-change-return)
+  - [4.7 Connect Call](#47-connect-call)
+  - [4.8 Connect Return](#48-connect-return)
+  - [4.9 Begin Transaction Call](#49-begin-transaction-call)
+  - [4.10 Begin Transaction Return](#410-begin-transaction-return)
+  - [4.11 Status Call](#411-status-call)
+  - [4.12 Status Return](#412-status-return)
+  - [4.13 End Transaction Call](#413-end-transaction-call)
+  - [4.14 End Transaction Return](#414-end-transaction-return)
+  - [4.15 Disconnect Call](#415-disconnect-call)
+  - [4.16 Disconnect Return](#416-disconnect-return)
+  - [4.17 Release Context Call](#417-release-context-call)
+  - [4.18 Release Context Return](#418-release-context-return)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Common Data Types ........................................................................................ 18
-Common Structures .................................................................................... 18
-REDIR_SCARDCONTEXT......................................................................... 18
-2.2.1.1
-REDIR_SCARDHANDLE .......................................................................... 18
-2.2.1.2
-Connect_Common ................................................................................. 19
-2.2.1.3
-LocateCards_ATRMask ........................................................................... 19
-2.2.1.4
-ReaderState_Common_Call .................................................................... 19
-2.2.1.5
-ReaderStateA ....................................................................................... 20
-2.2.1.6
-ReaderStateW ...................................................................................... 20
-2.2.1.7
-SCardIO_Request ................................................................................. 20
-2.2.1.8
-2.2.1.9
-ReadCache_Common ............................................................................. 21
-2.2.1.10  WriteCache_Common ............................................................................ 21
-ReaderState_Return .............................................................................. 21
-2.2.1.11
-TS Server-Generated Structures ................................................................... 22
-EstablishContext_Call ............................................................................ 22
-2.2.2.1
-Context_Call......................................................................................... 22
-2.2.2.2
-ListReaderGroups_Call ........................................................................... 23
-2.2.2.3
-ListReaders_Call ................................................................................... 23
-2.2.2.4
-ContextAndStringA_Call ......................................................................... 24
-2.2.2.5
-ContextAndStringW_Call ........................................................................ 24
-2.2.2.6
-ContextAndTwoStringA_Call ................................................................... 25
-2.2.2.7
-ContextAndTwoStringW_Call .................................................................. 26
-2.2.2.8
-LocateCardsA_Call ................................................................................ 26
-2.2.2.9
-2.2.2.10
-LocateCardsW_Call ................................................................................ 27
-2.2.2.11  GetStatusChangeA_Call ......................................................................... 27
-2.2.2.12  GetStatusChangeW_Call ........................................................................ 28
-ConnectA_Call ...................................................................................... 28
-2.2.2.13
-ConnectW_Call ..................................................................................... 28
-2.2.2.14
-2.2.2.15
-Reconnect_Call ..................................................................................... 28
-2.2.2.16  HCardAndDisposition_Call ...................................................................... 29
-State_Call ............................................................................................ 30
-2.2.2.17
-Status_Call .......................................................................................... 30
-2.2.2.18
-Transmit_Call ....................................................................................... 31
-2.2.2.19
-2.2.2.20
-Control_Call ......................................................................................... 32
-2.2.2.21  GetAttrib_Call ....................................................................................... 32
-SetAttrib_Call ....................................................................................... 33
-2.2.2.22
-LocateCardsByATRA_Call ....................................................................... 33
-2.2.2.23
-LocateCardsByATRW_Call ...................................................................... 34
-2.2.2.24
-ReadCacheA_Call .................................................................................. 34
-2.2.2.25
-ReadCacheW_Call ................................................................................. 34
-2.2.2.26
-
-[MS-RDPESC] - v20240423
-Remote Desktop Protocol: Smart Card Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 92
-
-2.2.3
-
-2.2.2.27  WriteCacheA_Call .................................................................................. 35
-2.2.2.28  WriteCacheW_Call ................................................................................. 35
-2.2.2.29  GetTransmitCount_Call .......................................................................... 35
-2.2.2.30
-ScardAccessStartedEvent_Call ................................................................ 35
-2.2.2.31  GetReaderIcon_Call ............................................................................... 36
-2.2.2.32  GetDeviceTypeId_Call ............................................................................ 36
-TS Client-Generated Structures .................................................................... 36
-ReadCache_Return ................................................................................ 36
-2.2.3.1
-EstablishContext_Return ........................................................................ 37
-2.2.3.2
-Long_Return ........................................................................................ 37
-2.2.3.3
-ListReaderGroups_Return and ListReaders_Return .................................... 37
-2.2.3.4
-LocateCards_Return and GetStatusChange_Return ................................... 38
-2.2.3.5
-Control_Return ..................................................................................... 38
-2.2.3.6
-Reconnect_Return ................................................................................. 38
-2.2.3.7
-Connect_Return .................................................................................... 39
-2.2.3.8
-State_Return ........................................................................................ 39
-2.2.3.9
-Status_Return ...................................................................................... 39
-2.2.3.10
-2.2.3.11
-Transmit_Return ................................................................................... 40
-2.2.3.12  GetAttrib_Return .................................................................................. 41
-2.2.3.13  GetTransmitCount_Return ...................................................................... 41
-2.2.3.14  GetReaderIcon_Return .......................................................................... 41
-2.2.3.15  GetDeviceTypeId_Return ....................................................................... 42
-Card/Reader State ...................................................................................... 42
-Protocol Identifier ....................................................................................... 42
-Access Mode Flags ...................................................................................... 43
-Reader State .............................................................................................. 44
-Return Code ............................................................................................... 45
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 50
-Protocol Server Details ..................................................................................... 50
-Abstract Data Model .................................................................................... 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Message Processing Events and Sequencing Rules .......................................... 50
-SCARD_IOCTL_ESTABLISHCONTEXT (IOCTL 0x00090014) ......................... 54
-SCARD_IOCTL_RELEASECONTEXT (IOCTL 0x00090018) ............................ 54
-SCARD_IOCTL_ISVALIDCONTEXT (IOCTL 0x0009001C) ............................. 54
-SCARD_IOCTL_ACCESSSTARTEDEVENT (IOCTL 0x000900E0) .................... 54
-SCARD_IOCTL_LISTREADERGROUPSA (IOCTL 0x00090020) ...................... 55
-SCARD_IOCTL_LISTREADERGROUPSW (IOCTL 0x00090024) ..................... 55
-SCARD_IOCTL_LISTREADERSA (IOCTL 0x00090028) ................................ 55
-SCARD_IOCTL_LISTREADERSW (IOCTL 0x0009002C) ............................... 55
-SCARD_IOCTL_INTRODUCEREADERGROUPA (IOCTL 0x00090050) .............. 55
-SCARD_IOCTL_INTRODUCEREADERGROUPW (IOCTL 0x00090054) ............. 56
-SCARD_IOCTL_FORGETREADERGROUPA (IOCTL 0x00090058) ................... 56
-SCARD_IOCTL_FORGETREADERGROUPW (IOCTL 0x0009005C) .................. 56
-SCARD_IOCTL_INTRODUCEREADERA (IOCTL 0x00090060) ........................ 56
-SCARD_IOCTL_INTRODUCEREADERW (IOCTL 0x00090064) ....................... 56
-SCARD_IOCTL_FORGETREADERA (IOCTL 0x00090068) ............................. 56
-SCARD_IOCTL_FORGETREADERW (IOCTL 0x0009006C) ............................ 57
-SCARD_IOCTL_ADDREADERTOGROUPA (IOCTL 0x00090070) .................... 57
-SCARD_IOCTL_ADDREADERTOGROUPW (IOCTL 0x00090074) .................... 57
-SCARD_IOCTL_REMOVEREADERFROMGROUPA (IOCTL 0x00090078) ........... 57
-SCARD_IOCTL_REMOVEREADERFROMGROUPW (IOCTL 0x0009007C) .......... 57
-SCARD_IOCTL_LOCATECARDSA (IOCTL 0x00090098) ............................... 57
-SCARD_IOCTL_LOCATECARDSW (IOCTL 0x0009009C) .............................. 58
-SCARD_IOCTL_GETSTATUSCHANGEA (IOCTL 0x000900A0) ....................... 58
-SCARD_IOCTL_GETSTATUSCHANGEW (IOCTL 0x000900A4) ...................... 58
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-
-[MS-RDPESC] - v20240423
-Remote Desktop Protocol: Smart Card Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 92
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.4.25
-3.1.4.26
-3.1.4.27
-3.1.4.28
-3.1.4.29
-3.1.4.30
-3.1.4.31
-3.1.4.32
-3.1.4.33
-3.1.4.34
-3.1.4.35
-3.1.4.36
-3.1.4.37
-3.1.4.38
-3.1.4.39
-3.1.4.40
-3.1.4.41
-3.1.4.42
-3.1.4.43
-3.1.4.44
-3.1.4.45
-3.1.4.46
-3.1.4.47
-3.1.4.48
-
-SCARD_IOCTL_LOCATECARDSBYATRA (IOCTL 0x000900E8) ...................... 58
-SCARD_IOCTL_LOCATECARDSBYATRW (IOCTL 0x000900EC) ..................... 58
-SCARD_IOCTL_CANCEL (IOCTL 0x000900A8) ........................................... 59
-SCARD_IOCTL_CONNECTA (IOCTL 0x000900AC) ...................................... 59
-SCARD_IOCTL_CONNECTW (IOCTL 0x000900B0) ..................................... 59
-SCARD_IOCTL_DISCONNECT (IOCTL 0x000900B8) ................................... 59
-SCARD_IOCTL_BEGINTRANSACTION (IOCTL 0x000900BC) ........................ 59
-SCARD_IOCTL_ENDTRANSACTION (IOCTL 0x000900C0) ........................... 59
-SCARD_IOCTL_STATUSA (IOCTL 0x000900C8) ......................................... 60
-SCARD_IOCTL_STATUSW (IOCTL 0x000900CC) ........................................ 60
-SCARD_IOCTL_TRANSMIT (IOCTL 0x000900D0) ....................................... 60
-SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4) .................................... 60
-SCARD_IOCTL_CONTROL (IOCTL 0x000900D4) ........................................ 60
-SCARD_IOCTL_GETATTRIB (IOCTL 0x000900D8)...................................... 60
-SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC) ...................................... 61
-SCARD_IOCTL_STATE (IOCTL 0x000900C4) ............................................. 61
-SCARD_IOCTL_GETTRANSMITCOUNT (IOCTL 0x00090100)........................ 61
-SCARD_IOCTL_READCACHEA (IOCTL 0x000900F0) ................................... 61
-SCARD_IOCTL_READCACHEW (IOCTL 0x000900F4) .................................. 61
-SCARD_IOCTL_WRITECACHEA (IOCTL 0x000900F8) ................................. 62
-SCARD_IOCTL_WRITECACHEW (IOCTL 0x000900FC) ................................ 62
-SCARD_IOCTL_RELEASETARTEDEVENT.................................................... 62
-SCARD_IOCTL_GETREADERICON (IOCTL 0x00090104) ............................. 62
-SCARD_IOCTL_GETDEVICETYPEID (IOCTL 0x00090108) ........................... 62
-Timer Events .............................................................................................. 62
-Other Local Events ...................................................................................... 62
-Protocol Client Details ....................................................................................... 63
-Abstract Data Model .................................................................................... 63
-Timers ...................................................................................................... 63
-Initialization ............................................................................................... 63
-Higher-Layer Triggered Events ..................................................................... 63
-Message Processing Events and Sequencing Rules .......................................... 63
-Sending Outgoing Messages ................................................................... 63
-Processing Incoming Replies ................................................................... 63
-Messages ............................................................................................. 64
-Sending EstablishContext Message .................................................... 64
-Processing EstablishContext Reply ..................................................... 64
-Sending ReleaseContext Message ...................................................... 64
-Processing ReleaseContext Reply ....................................................... 64
-Sending IntroduceReader (ASCII) Message ......................................... 64
-Processing IntroduceReader (ASCII) Reply ......................................... 64
-Sending IntroduceReader (Unicode) Message ...................................... 64
-Processing IntroduceReader (Unicode) Reply ...................................... 64
-Sending ForgetReader (ASCII) Message ............................................. 64
-Processing ForgetReader (ASCII) Reply .............................................. 64
-Sending ForgetReader (Unicode) Message .......................................... 65
-Processing ForgetReader (Unicode) Reply ........................................... 65
-Sending IntroduceReaderGroup (ASCII) Message ................................ 65
-Processing IntroduceReaderGroup (ASCII) Reply ................................. 65
-Sending IntroduceReaderGroup (Unicode) Message ............................. 65
-Processing IntroduceReaderGroup (Unicode) Reply .............................. 65
-Sending ForgetReaderGroup (ASCII) Message 1 .................................. 65
-Processing ForgetReaderGroup (ASCII) Reply ..................................... 65
-Sending ForgetReaderGroup (ASCII) Message 2 .................................. 65
-Processing ForgetReaderGroup (Unicode) Reply .................................. 65
-Sending AddReaderToGroup (ASCII) Message ..................................... 65
-Processing AddReaderToGroup (ASCII) Reply ...................................... 66
-Sending AddReaderToGroup (Unicode) Message .................................. 66
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-3.2.5.3.5
-3.2.5.3.6
-3.2.5.3.7
-3.2.5.3.8
-3.2.5.3.9
-3.2.5.3.10
-3.2.5.3.11
-3.2.5.3.12
-3.2.5.3.13
-3.2.5.3.14
-3.2.5.3.15
-3.2.5.3.16
-3.2.5.3.17
-3.2.5.3.18
-3.2.5.3.19
-3.2.5.3.20
-3.2.5.3.21
-3.2.5.3.22
-3.2.5.3.23
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-[MS-RDPESC] - v20240423
-Remote Desktop Protocol: Smart Card Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 92
-
-3.2.5.3.24
-3.2.5.3.25
-3.2.5.3.26
-3.2.5.3.27
-3.2.5.3.28
-3.2.5.3.29
-3.2.5.3.30
-3.2.5.3.31
-3.2.5.3.32
-3.2.5.3.33
-3.2.5.3.34
-3.2.5.3.35
-3.2.5.3.36
-3.2.5.3.37
-3.2.5.3.38
-3.2.5.3.39
-3.2.5.3.40
-3.2.5.3.41
-3.2.5.3.42
-3.2.5.3.43
-3.2.5.3.44
-3.2.5.3.45
-3.2.5.3.46
-3.2.5.3.47
-3.2.5.3.48
-3.2.5.3.49
-3.2.5.3.50
-3.2.5.3.51
-3.2.5.3.52
-3.2.5.3.53
-3.2.5.3.54
-3.2.5.3.55
-3.2.5.3.56
-3.2.5.3.57
-3.2.5.3.58
-3.2.5.3.59
-3.2.5.3.60
-3.2.5.3.61
-3.2.5.3.62
-3.2.5.3.63
-3.2.5.3.64
-3.2.5.3.65
-3.2.5.3.66
-3.2.5.3.67
-3.2.5.3.68
-3.2.5.3.69
-3.2.5.3.70
-3.2.5.3.71
-3.2.5.3.72
-3.2.5.3.73
-3.2.5.3.74
-3.2.5.3.75
-3.2.5.3.76
-3.2.5.3.77
-3.2.5.3.78
-3.2.5.3.79
-3.2.5.3.80
-3.2.5.3.81
-
-Processing AddReaderToGroup (Unicode) Reply ................................... 66
-Sending RemoveReaderFromGroup (ASCII) Message ........................... 66
-Processing RemoveReaderFromGroup (ASCII) Reply ............................ 66
-Sending RemoveReaderFromGroup (Unicode) Message ........................ 66
-Processing RemoveReaderFromGroup (Unicode) Reply ......................... 66
-Sending ListReaderGroups (ASCII) Message ....................................... 66
-Processing ListReaderGroups (ASCII) Reply ........................................ 66
-Sending ListReaderGroups (Unicode) Message .................................... 66
-Processing ListReaderGroups (Unicode) Reply ..................................... 66
-Sending ListReaders (ASCII) Message ................................................ 67
-Processing ListReadersReply (ASCII) Reply ......................................... 67
-Sending ListReaders (Unicode) Message ............................................. 67
-Processing ListReadersReply (Unicode) Reply ...................................... 67
-Sending LocateCards (ASCII) Message ............................................... 67
-Processing LocateCards (ASCII) Reply ................................................ 67
-Sending LocateCards (Unicode) Message ............................................ 67
-Processing LocateCards (Unicode) Reply ............................................. 67
-Sending GetStatusChange (ASCII) Message ........................................ 67
-Processing GetStatusChange (ASCII) Reply ........................................ 67
-Sending GetStatusChange (Unicode) Message ..................................... 67
-Processing GetStatusChange (Unicode) Reply ..................................... 68
-Sending Cancel Message .................................................................. 68
-Processing Cancel Reply ................................................................... 68
-Sending Connect (ASCII) Message ..................................................... 68
-Processing Connect (ASCII) Reply ..................................................... 68
-Sending Connect (Unicode) Message .................................................. 68
-Processing Connect (Unicode) Reply .................................................. 68
-Sending Reconnect Message ............................................................. 68
-Processing Reconnect Reply .............................................................. 68
-Sending Disconnect Message ............................................................ 68
-Processing Disconnect Reply ............................................................. 68
-Sending Status (ASCII) Message ....................................................... 69
-Processing Status (ASCII) Reply ........................................................ 69
-Sending Status (Unicode) Message .................................................... 69
-Processing Status (Unicode) Reply ..................................................... 69
-Sending State Message .................................................................... 69
-Processing State Message Reply ........................................................ 69
-Sending BeginTransaction Message.................................................... 69
-Processing BeginTransaction Reply .................................................... 69
-Sending EndTransaction Message ...................................................... 69
-Processing EndTransaction Reply ....................................................... 69
-Sending Transmit Message ............................................................... 69
-Processing Transmit Reply ................................................................ 70
-Sending Control Message ................................................................. 70
-Processing Control Reply .................................................................. 70
-Sending GetReaderCapabilities Message ............................................. 70
-Processing GetReaderCapabilities Reply .............................................. 70
-Sending SetReaderCapabilities Message ............................................. 70
-Processing SetReaderCapabilities Reply .............................................. 70
-Sending WaitForResourceManager Message ........................................ 70
-Processing WaitForResourceManager Reply ......................................... 70
-Sending LocateCardsByATR (ASCII) Message ...................................... 70
-Processing LocateCardsByATR (Unicode) Reply.................................... 70
-Processing LocateCardsByATR (ASCII) Reply....................................... 70
-Sending LocateCardsByATR (Unicode) Message ................................... 71
-Sending ReadCache (ASCII) Message................................................. 71
-Processing ReadCache (ASCII) Reply ................................................. 71
-Sending ReadCache (Unicode) Message.............................................. 71
-
-[MS-RDPESC] - v20240423
-Remote Desktop Protocol: Smart Card Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 92
-
-3.2.5.3.82
-3.2.5.3.83
-3.2.5.3.84
-3.2.5.3.85
-3.2.5.3.86
-3.2.5.3.87
-3.2.5.3.88
-3.2.5.3.89
-3.2.5.3.90
-3.2.5.3.91
-3.2.5.3.92
-
-Processing ReadCache (Unicode) Reply .............................................. 71
-Sending WriteCache (ASCII) Message ................................................ 71
-Processing WriteCache (ASCII) Reply ................................................. 71
-Sending WriteCache (Unicode) Message ............................................. 71
-Processing WriteCache (Unicode) Reply .............................................. 71
-Sending GetTransmitCount Message .................................................. 71
-Processing GetTransmitCount Reply ................................................... 71
-Sending GetReaderIcon Message ....................................................... 72
-Processing GetReaderIcon Reply ....................................................... 72
-Sending GetDeviceTypeId Message .................................................... 72
-Processing GetDeviceTypeId Reply .................................................... 72
-Timer Events .............................................................................................. 72
-Other Local Events ...................................................................................... 72
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 73
-Establish Context Call ....................................................................................... 74
-4.1
-Establish Context Return ................................................................................... 74
-4.2
-List Readers Call .............................................................................................. 74
-4.3
-List Readers Return .......................................................................................... 74
-4.4
-Get Status Change Call ..................................................................................... 74
-4.5
-Get Status Change Return ................................................................................. 75
-4.6
-Connect Call .................................................................................................... 75
-4.7
-Connect Return ................................................................................................ 75
-4.8
-Begin Transaction Call ...................................................................................... 75
-4.9
-Begin Transaction Return .................................................................................. 76
-4.10
-Status Call ...................................................................................................... 76
-4.11
-Status Return .................................................................................................. 76
-4.12
-End Transaction Call ......................................................................................... 76
-4.13
-4.14
-End Transaction Return ..................................................................................... 76
-4.15  Disconnect Call ................................................................................................ 77
-4.16  Disconnect Return ............................................................................................ 77
-Release Context Call ......................................................................................... 77
-4.17
-Release Context Return .................................................................................... 77
-4.18
-
-5  Security ................................................................................................................. 78
-Security Considerations for Implementers ........................................................... 78
-Index of Security Parameters ............................................................................ 78
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 79
-
-7  Appendix B: Product Behavior ............................................................................... 86
-
-8  Change Tracking .................................................................................................... 87
-
-9  Index ..................................................................................................................... 88
-
-[MS-RDPESC] - v20240423
-Remote Desktop Protocol: Smart Card Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 92
-
-1  Introduction
+## 1 Introduction
 
 This document specifies an extension (including virtual channels) to the Remote Desktop Protocol:
 File System Virtual Channel Extension for supporting smart card reader-like devices.
@@ -1161,7 +856,7 @@ File System Virtual Channel Extension for supporting smart card reader-like devi
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1229,7 +924,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-protocol server: An endpoint that processes the call packet from a protocol client.
+
+protocol server: An endpoint that processes the call packet from a protocol client.
 
 reader group name: The friendly, human-readable name for a reader group.
 
@@ -1305,7 +1001,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
+
+this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
 
 virtual channel: A communication channel available in a TS server session between applications
@@ -1315,14 +1012,14 @@ running at the server and applications running on the TS client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1372,7 +1069,8 @@ Release: April 23, 2024
 
 12 / 92
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RDPESC].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1383,11 +1081,11 @@ http://pcscworkgroup.com/Download/Specifications/pcsc5_v2.01.01.pdf
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The following figure illustrates a baseline for terminology related to clients and servers.
 
@@ -1421,7 +1119,8 @@ Release: April 23, 2024
 
 13 / 92
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RDPESC].images/page014-img01.png)
 ![Extracted image 2 from page 14]([MS-RDPESC].images/page014-img02.png)
 <!-- /Extracted images from page 14 -->
@@ -1440,7 +1139,8 @@ Release: April 23, 2024
 
 14 / 92
 
-The input for this protocol (call packet) is a combination of an I/O control (IOCTL) and the
+
+The input for this protocol (call packet) is a combination of an I/O control (IOCTL) and the
 corresponding structure as specified in section 3.2.5.
 
 1.  The call packet structure is encoded as specified in [MS-RPCE] section 2.2.6.
@@ -1488,7 +1188,7 @@ section 2.2.6.
 The output from the Smart Card Redirection is the return packet. This data will then be processed by
 higher layers.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extension expands Remote Desktop Protocol: File System Virtual Channel Extension [MS-
 RDPEFS] functionality to provide support for Smart Cards for Windows.
@@ -1499,7 +1199,7 @@ which uses remote procedure call (RPC) as its transport.
 This protocol uses the Remote Procedure Call Protocol Extensions ([MS-RPCE] section 2) to encode
 packet structures carried within an RDP session.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 RDP Device Redirection transport (as specified in [MS-RDPEFS] section 2.2.2.7.5) must be configured
 to redirect smart card devices.
@@ -1511,12 +1211,13 @@ Release: April 23, 2024
 
 15 / 92
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This specification applies to redirecting Smart Cards for Windows API-based calls for a Terminal
 Services client, as specified in [PCSC5] section 3.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1548,7 +1249,7 @@ SCREDIR_VERSION_LONGHORN (2)
 
 SCREDIR_VERSION_XP (1)
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs as defined in [MS-ERREF] section 2.1. Vendors can define their own
 HRESULT values, provided that they set the C bit (0x20000000) for each vendor-defined value,
@@ -1565,7 +1266,7 @@ defined value, indicating it is a that customer code.
 IOCTL fields used in this specification are extensible. Vendors MUST implement the corresponding
 functions.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the following RPC UUID for the type_scard_pack interface.
 
@@ -1591,19 +1292,21 @@ Release: April 23, 2024
 
 16 / 92
 
-[MS-RDPESC] - v20240423
+
+[MS-RDPESC] - v20240423
 Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
 17 / 92
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Remote Desktop Protocol: Smart Card Virtual Channel Extension
 messages are transported, and common data types.
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be transported over established RDP Device Extensions (as specified in [MS-
 RDPEFS] section 2.1). This protocol uses the device enumerate and announcement messages, as
@@ -1612,18 +1315,18 @@ specified in [MS-RDPEFS] section 3.
 Remote Desktop Protocol: File System Virtual Channel Extension is responsible for providing a unique
 Device ID as defined in [MS-RDPEFS] section 3.1.1.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 All structures in this section MUST be encoded as specified in [MS-RPCE] section 2. Unless otherwise
 stated, the structure MUST be initialized to zero before use.
 
-2.2.1  Common Structures
+#### 2.2.1 Common Structures
 
 The structures defined in the following sections are common among both TS server-generated
 structures (for more information, see section 2.2.2) and TS client-generated structures (for more
 information, see section 2.2.3).
 
-2.2.1.1  REDIR_SCARDCONTEXT
+##### 2.2.1.1 REDIR_SCARDCONTEXT
 
 REDIR_SCARDCONTEXT represents a context to Smart Cards for Windows on the TS client.
 
@@ -1637,7 +1340,7 @@ cbContext:  The number of bytes in the pbContext field.
 pbContext:  An array of cbContext bytes that contains Smart Cards for Windows context. The data
 is implementation-specific and MUST NOT be interpreted or changed on the Protocol server.
 
-2.2.1.2  REDIR_SCARDHANDLE
+##### 2.2.1.2 REDIR_SCARDHANDLE
 
 REDIR_SCARDHANDLE represents a smart card reader handle associated with Smart Cards for
 Windows context.
@@ -1659,11 +1362,12 @@ Release: April 23, 2024
 
 18 / 92
 
-pbHandle:  An array of cbHandle bytes that corresponds to a smart card reader handle on the TS
+
+pbHandle:  An array of cbHandle bytes that corresponds to a smart card reader handle on the TS
 client. The data is implementation-specific and MUST NOT be interpreted or changed on the
 Protocol server.
 
-2.2.1.3  Connect_Common
+##### 2.2.1.3 Connect_Common
 
 The Connect_Common structure contains information common to both versions of the Connect
 function (for more information, see sections 2.2.2.13 and 2.2.2.14).
@@ -1684,7 +1388,7 @@ dwPreferredProtocols:  A bitmask of acceptable protocols for the connection, as 
 
 2.2.5.
 
-2.2.1.4  LocateCards_ATRMask
+##### 2.2.1.4 LocateCards_ATRMask
 
 The LocateCards_ATRMask structure contains the information to identify a card type.
 
@@ -1704,7 +1408,7 @@ rgbMask:  Values for the mask for the card's ATR string. Each bit that cannot va
 
 the same type MUST be set to 1. Unused bytes MUST be set to 0 and MUST be ignored.
 
-2.2.1.5  ReaderState_Common_Call
+##### 2.2.1.5 ReaderState_Common_Call
 
 The ReaderState_Common_Call structure contains the state of the reader at the time of the call as
 seen by the caller.
@@ -1727,7 +1431,8 @@ Release: April 23, 2024
 
 19 / 92
 
-dwEventState:  A bitmap that defines the state of the reader after a state change. Possible values
+
+dwEventState:  A bitmap that defines the state of the reader after a state change. Possible values
 
 are specified in section 2.2.7.
 
@@ -1737,7 +1442,7 @@ rgbAtr:  The value for the card's ATR string. If cbAtr is NOT zero, this value M
 
 accordance to [ISO/IEC-7816-3] section 8. Unused bytes MUST be set to 0 and MUST be ignored.
 
-2.2.1.6  ReaderStateA
+##### 2.2.1.6 ReaderStateA
 
 The ReaderStateA structure contains information used in calls that only require Smart Cards for
 Windows context and an ASCII string.
@@ -1753,7 +1458,7 @@ Common:  A packet that specifies the state of the reader at the time of the call
 
 about this packet, see section 2.2.1.5.
 
-2.2.1.7  ReaderStateW
+##### 2.2.1.7 ReaderStateW
 
 The ReaderStateW structure is a Unicode representation of the state of a smart card reader.
 
@@ -1768,7 +1473,7 @@ Common:  A packet that specifies the state of the reader at the time of the call
 
 about this packet, see section 2.2.1.5.
 
-2.2.1.8  SCardIO_Request
+##### 2.2.1.8 SCardIO_Request
 
 The SCardIO_Request structure represents the data to be prepended to a Transmit command (for
 more information, see section 3.1.4.35).
@@ -1792,7 +1497,8 @@ Release: April 23, 2024
 
 20 / 92
 
-2.2.1.9  ReadCache_Common
+
+##### 2.2.1.9 ReadCache_Common
 
 The ReadCache_Common structure contains information common to both the ReadCacheA_Call and
 ReadCacheW_Call structures.
@@ -1823,9 +1529,9 @@ SCARD_AUTOALLOCATE with a value of 0xFFFFFFFF, a buffer of any length can be ret
 Otherwise, the returned buffer MUST NOT exceed cbDataLen bytes. This field MUST be ignored if
 fPbDataIsNULL is set to TRUE (0x00000001).
 
-2.2.1.10
+##### 2.2.1.10 WriteCache_Common
 
-WriteCache_Common
+
 
 The WriteCache_Common structure contains information common between the WriteCacheA_Call and
 WriteCacheW_Call structures.
@@ -1850,9 +1556,9 @@ cbDataLen:  The number of bytes in the pbData field.
 
 pbData:  cbDataLen bytes of data to be stored.
 
-2.2.1.11
+##### 2.2.1.11 ReaderState_Return
 
-ReaderState_Return
+
 
 The ReaderState_Return structure specifies state information returned from Smart Cards for
 Windows.
@@ -1864,7 +1570,8 @@ Release: April 23, 2024
 
 21 / 92
 
- typedef struct _ReaderState_Return {
+
+ typedef struct _ReaderState_Return {
    unsigned long dwCurrentState;
    unsigned long dwEventState;
    [range(0,36)] unsigned long cbAtr;
@@ -1885,11 +1592,11 @@ rgbAtr:  The values for the card's ATR string. Unused bytes MUST be set to zero 
 
 ignored on receipt.
 
-2.2.2  TS Server-Generated Structures
+#### 2.2.2 TS Server-Generated Structures
 
 All structures in this section are sent from the TS server to the TS client.
 
-2.2.2.1  EstablishContext_Call
+##### 2.2.2.1 EstablishContext_Call
 
 The EstablishContext_Call structure is used to specify the scope of Smart Cards for Windows
 context to be created (for more information, see section 3.1.4.1).
@@ -1928,7 +1635,7 @@ SCARD_SCOPE_SYSTEM
 The context is the system context; any database operations MUST be
 performed within the domain of the system.
 
-2.2.2.2  Context_Call
+##### 2.2.2.2 Context_Call
 
 The Context_Call structure contains Smart Cards for Windows context.
 
@@ -1943,9 +1650,10 @@ Release: April 23, 2024
 
 22 / 92
 
-Context:  A valid context, as specified in section 2.2.1.1.
 
-2.2.2.3  ListReaderGroups_Call
+Context:  A valid context, as specified in section 2.2.1.1.
+
+##### 2.2.2.3 ListReaderGroups_Call
 
 The ListReaderGroups_Call structure contains the parameters for the List Readers Groups call (for
 more information, see sections 3.1.4.5 and 3.1.4.6).
@@ -1974,7 +1682,7 @@ fmszGroupsIsNULL is set to TRUE (0x00000001). Also, if fmszGroupsIsNULL is set t
 ListReaderGroups_Return.cBytes MUST be set to the length of the data, in bytes, and
 ListReaderGroups_Return.msz MUST be set to NULL.
 
-2.2.2.4  ListReaders_Call
+##### 2.2.2.4 ListReaders_Call
 
 The ListReaders_Call structure contains the parameters for the List Readers call (for more information,
 see sections 3.1.4.7 and 3.1.4.8).
@@ -2015,7 +1723,8 @@ Release: April 23, 2024
 
 23 / 92
 
-Value
+
+Value
 
 0x0009002C
 
@@ -2038,7 +1747,7 @@ fmszReadersIsNULL is set to TRUE (0x00000001). Also, if fmszReadersIsNULL is set
 ListReaders_Return.cBytes MUST be set to the length of the data in bytes, and
 ListReaders_Return.msz MUST be set to NULL.
 
-2.2.2.5  ContextAndStringA_Call
+##### 2.2.2.5 ContextAndStringA_Call
 
 The ContextAndStringA_Call structure contains information used in calls that only require a Smart
 Cards for Windows context and an ASCII string.
@@ -2074,7 +1783,7 @@ Reader name
 
 0x00090068
 
-2.2.2.6  ContextAndStringW_Call
+##### 2.2.2.6 ContextAndStringW_Call
 
 The ContextAndStringW_Call structure contains information used in calls that only require a Smart
 Cards for Windows context and a Unicode string.
@@ -2091,7 +1800,8 @@ Release: April 23, 2024
 
 24 / 92
 
-Context:  A valid context, as specified in section 2.2.1.1.
+
+Context:  A valid context, as specified in section 2.2.1.1.
 
 sz:  The value of this Unicode string depends on the context (based on IOCTL) in which this structure
 
@@ -2119,7 +1829,7 @@ Reader name
 
 0x0009006C
 
-2.2.2.7  ContextAndTwoStringA_Call
+##### 2.2.2.7 ContextAndTwoStringA_Call
 
 The contents of the ContextAndTwoStringA_Call structure are used in those calls that require a valid
 Smart Cards for Windows context (as specified in section 3.2.5) and two strings (friendly names).
@@ -2187,7 +1897,8 @@ Release: April 23, 2024
 
 25 / 92
 
-2.2.2.8  ContextAndTwoStringW_Call
+
+##### 2.2.2.8 ContextAndTwoStringW_Call
 
 The contents of the ContextAndTwoStringW_Call structure is used in those calls that require a valid
 Smart Cards for Windows context (as specified in section 3.2.5) and two strings (friendly names).
@@ -2248,7 +1959,7 @@ Reader group name
 
 0x0009007C
 
-2.2.2.9  LocateCardsA_Call
+##### 2.2.2.9 LocateCardsA_Call
 
 The parameters of the LocateCardsA_Call structure specify the list of smart card readers to search
 for the specified card types. For call information, see section 3.1.4.21.
@@ -2268,7 +1979,8 @@ Release: April 23, 2024
 
 26 / 92
 
-Context:  A valid context, as specified in section 2.2.1.1.
+
+Context:  A valid context, as specified in section 2.2.1.1.
 
 cBytes:  The number of bytes in the mszCards field.
 
@@ -2282,9 +1994,9 @@ rgReaderStates:  The reader state information specifying which readers are searc
 
 listed in mszCards.
 
-2.2.2.10
+##### 2.2.2.10 LocateCardsW_Call
 
-LocateCardsW_Call
+
 
 The parameters of the LocateCardsW_Call structure specify the list of smart card readers to search
 for the specified card types. For more information, see section 3.1.4.22.
@@ -2309,9 +2021,9 @@ cReaders:  The number of reader state structures.
 
 rgReaderStates:  The reader state information used to locate the cards listed in mszCards.
 
-2.2.2.11
+##### 2.2.2.11 GetStatusChangeA_Call
 
-GetStatusChangeA_Call
+
 
 The GetStatusChangeA_Call structure provides the state change in the reader as specified in section
 3.1.4.23.
@@ -2340,9 +2052,10 @@ Release: April 23, 2024
 
 27 / 92
 
-2.2.2.12
 
-GetStatusChangeW_Call
+##### 2.2.2.12 GetStatusChangeW_Call
+
+
 
 The GetStatusChangeW_Call structure provides the state change in the Reader as specified in section
 3.1.4.24.
@@ -2364,9 +2077,9 @@ cReaders:  The number of ReaderStates to track.
 
 rgReaderStates:  Smart card readers that the caller is tracking.
 
-2.2.2.13
+##### 2.2.2.13 ConnectA_Call
 
-ConnectA_Call
+
 
 ConnectA_Call opens a connection to the smart card located in the reader identified by a reader
 name.
@@ -2382,9 +2095,9 @@ Common:  Additional parameters that are required for the Connect call are specif
 
 3.1.4.28. For more information, see section 2.2.1.3.
 
-2.2.2.14
+##### 2.2.2.14 ConnectW_Call
 
-ConnectW_Call
+
 
 The ConnectW_Call structure is used to open a connection to the smart card located in the reader
 identified by a reader name.
@@ -2400,9 +2113,9 @@ Common:  Additional parameters that are required for the Connect call. For more 
 
 sections 3.1.4.29 and 2.2.1.3.
 
-2.2.2.15
+##### 2.2.2.15 Reconnect_Call
 
-Reconnect_Call
+
 
 The Reconnect_Call structure is used to reopen a connection to the smart card associated with a
 valid context. For more information, see section 3.1.4.36.
@@ -2414,7 +2127,8 @@ Release: April 23, 2024
 
 28 / 92
 
- typedef struct _Reconnect_Call {
+
+ typedef struct _Reconnect_Call {
    REDIR_SCARDHANDLE hCard;
    unsigned long dwShareMode;
    unsigned long dwPreferredProtocols;
@@ -2455,9 +2169,9 @@ Turn off and reset the smart card.
 
 0x00000002
 
-2.2.2.16
+##### 2.2.2.16 HCardAndDisposition_Call
 
-HCardAndDisposition_Call
+
 
 The HCardAndDisposition_Call structure defines the action taken on the disposition of a smart card
 associated with a valid context when a connection is terminated.
@@ -2506,15 +2220,16 @@ Release: April 23, 2024
 
 29 / 92
 
-Value
+
+Value
 
 0x00000003
 
 Meaning
 
-2.2.2.17
+##### 2.2.2.17 State_Call
 
-State_Call
+
 
 The State_Call structure defines parameters to the State call (as specified in section 3.1.4.40) for
 querying the contents of a smart card reader.
@@ -2551,9 +2266,9 @@ set to TRUE (0x00000001). If fpbAtrIsNULL is set to FALSE (0x00000000) but cbAtr
 to 0x00000000, then the call MUST succeed, State_Return.cbAtrLen MUST be set to the length of
 the data in bytes, and State_Return.rgAtr MUST be set to NULL.
 
-2.2.2.18
+##### 2.2.2.18 Status_Call
 
-Status_Call
+
 
 Status_Call obtains the status of a connection for a valid smart card reader handle.
 
@@ -2578,7 +2293,8 @@ Release: April 23, 2024
 
 30 / 92
 
-Name  Value
+
+Name  Value
 
 FALSE  0x00000000
 
@@ -2600,9 +2316,9 @@ MUST be set to NULL.
 
 cbAtrLen:  Unused. MUST be ignored upon receipt.
 
-2.2.2.19
+##### 2.2.2.19 Transmit_Call
 
-Transmit_Call
+
 
 The Transmit_Call structure is used to send data to the smart card associated with a valid context.
 
@@ -2652,9 +2368,10 @@ Release: April 23, 2024
 
 31 / 92
 
-2.2.2.20
 
-Control_Call
+##### 2.2.2.20 Control_Call
+
+
 
 Normally, communication is to the smart card via the reader. However, in some cases, the ability to
 communicate directly with the smart card reader is requested. The Control_Call structure provides
@@ -2698,9 +2415,9 @@ cbOutBufferSize:  The maximum size of the buffer to be returned. This field MUST
 
 fpvOutBufferIsNULL is set to TRUE (0x00000001).
 
-2.2.2.21
+##### 2.2.2.21 GetAttrib_Call
 
-GetAttrib_Call
+
 
 The GetAttrib_Call structure is used to read smart card reader attributes.
 
@@ -2729,7 +2446,8 @@ Release: April 23, 2024
 
 32 / 92
 
-Name  Value
+
+Name  Value
 
 FALSE  0x00000000
 
@@ -2748,9 +2466,9 @@ fpbAttrIsNULL is set to TRUE (0x00000001). Also, if fpbAttrIsNULL is set to FALS
 GetAttrib_Return.cbAttrLen MUST be set to the length of the data, in bytes, and
 GetAttrib_Return.pbAttr MUST be set to NULL.
 
-2.2.2.22
+##### 2.2.2.22 SetAttrib_Call
 
-SetAttrib_Call
+
 
 The SetAttrib_Call structure allows users to set smart card reader attributes.
 
@@ -2773,9 +2491,9 @@ pbAttr:  A buffer that contains the attribute whose identifier is supplied in th
 
 format is specific to the value being set.
 
-2.2.2.23
+##### 2.2.2.23 LocateCardsByATRA_Call
 
-LocateCardsByATRA_Call
+
 
 The LocateCardsByATRA_Call structure returns information concerning the status of the smart card
 of interest (ATR).
@@ -2803,13 +2521,14 @@ Release: April 23, 2024
 
 33 / 92
 
-rgReaderStates:  The states of the readers that the application is monitoring. The states reflect what
+
+rgReaderStates:  The states of the readers that the application is monitoring. The states reflect what
 the application determines to be the current states of the readers and that might differ from the
 actual states.
 
-2.2.2.24
+##### 2.2.2.24 LocateCardsByATRW_Call
 
-LocateCardsByATRW_Call
+
 
 The LocateCardsByATRW_Call structure returns information concerning the status of the smart card
 of interest (ATR).
@@ -2835,9 +2554,9 @@ rgReaderStates:  The states of the readers that the application is monitoring. T
 what the application believes is the current states of the readers and might differ from the actual
 states.
 
-2.2.2.25
+##### 2.2.2.25 ReadCacheA_Call
 
-ReadCacheA_Call
+
 
 The ReadCacheA_Call structure is used to obtain the card and reader information from the cache.
 
@@ -2852,9 +2571,9 @@ Common:  Additional parameters for the Read Cache call (for additional informati
 
 3.1.4.42), as specified in section 2.2.1.9.
 
-2.2.2.26
+##### 2.2.2.26 ReadCacheW_Call
 
-ReadCacheW_Call
+
 
 The ReadCacheW_Call structure is used to obtain the card and reader information from the cache.
 
@@ -2876,9 +2595,10 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.27
 
-WriteCacheA_Call
+##### 2.2.2.27 WriteCacheA_Call
+
+
 
 The WriteCacheA_Call structure is used to write the card and reader information to the cache.
 
@@ -2893,9 +2613,9 @@ Common:  Additional parameters for the Write Cache call (for more information, s
 
 3.1.4.44), as specified in section 2.2.1.10.
 
-2.2.2.28
+##### 2.2.2.28 WriteCacheW_Call
 
-WriteCacheW_Call
+
 
 The WriteCacheW_Call structure is used to write the card and reader information to the cache.
 
@@ -2908,9 +2628,9 @@ szLookupName:  An Unicode string containing the lookup name.
 
 Common:  Additional parameters for the Write Cache call (for more information, see section 2.2.1.10.
 
-2.2.2.29
+##### 2.2.2.29 GetTransmitCount_Call
 
-GetTransmitCount_Call
+
 
 The GetTransmitCount_Call structure is used to obtain the number of transmit calls sent to the card
 since the reader was introduced.
@@ -2921,9 +2641,9 @@ since the reader was introduced.
 
 hCard:  A handle, as specified in section 2.2.1.2.
 
-2.2.2.30
+##### 2.2.2.30 ScardAccessStartedEvent_Call
 
-ScardAccessStartedEvent_Call
+
 
 ScardAccessStartedEvent_Call is just an uninitialized 4-byte buffer that is sent as the IOCTL requires
 a payload. There is no corresponding serialized structure for this call.
@@ -2952,9 +2672,10 @@ Release: April 23, 2024
 
 35 / 92
 
-2.2.2.31
 
-GetReaderIcon_Call
+##### 2.2.2.31 GetReaderIcon_Call
+
+
 
 The GetReaderIcon_Call structure is used to obtain the reader icon from the smart card reader's INF
 file.
@@ -2968,9 +2689,9 @@ Context:  A valid context, as specified in section 2.2.1.1.
 
 szReaderName:  A Unicode string containing the reader name.
 
-2.2.2.32
+##### 2.2.2.32 GetDeviceTypeId_Call
 
-GetDeviceTypeId_Call
+
 
 The GetDeviceTypeId_Call structure is used to obtain the reader's device ID from the smart card
 reader's INF file.
@@ -2984,13 +2705,13 @@ Context:  A valid context, as specified in section 2.2.1.1.
 
 szReaderName:  A Unicode string containing the lookup name.
 
-2.2.3  TS Client-Generated Structures
+#### 2.2.3 TS Client-Generated Structures
 
 These structures originate from the client process and compose part of the return packet. If the
 ReturnCode field of the structure is nonzero, all other fields MUST be set to zero and MUST be
 ignored on receipt.
 
-2.2.3.1  ReadCache_Return
+##### 2.2.3.1 ReadCache_Return
 
 The ReadCache_Return structure is used to obtain the data that corresponds to the lookup item
 requested in ReadCacheA_Call as specified in section 2.2.2.25, or ReadCacheW_Call as specified in
@@ -3017,7 +2738,8 @@ Release: April 23, 2024
 
 36 / 92
 
-2.2.3.2  EstablishContext_Return
+
+##### 2.2.3.2 EstablishContext_Return
 
 The EstablishContext_Return structure is used to provide a response to an Establish Context call (for
 more information, see section 3.1.4.1.)
@@ -3033,7 +2755,7 @@ failure.
 
 Context:  A valid context, as specified in section 2.2.1.1.
 
-2.2.3.3  Long_Return
+##### 2.2.3.3 Long_Return
 
 The Long_Return structure is used for return codes for calls that return only a long value.
 
@@ -3045,7 +2767,7 @@ ReturnCode:  HRESULT or Win32 Error code. Zero indicates success; any other valu
 
 failure.
 
-2.2.3.4  ListReaderGroups_Return and ListReaders_Return
+##### 2.2.3.4 ListReaderGroups_Return and ListReaders_Return
 
 The ListReaderGroups_Return and ListReaders_Return structures are used to obtain results for those
 calls that return a multistring, in addition to a long return value. For more information, see sections
@@ -3094,7 +2816,8 @@ Release: April 23, 2024
 
 37 / 92
 
-Value
+
+Value
 
 Meaning
 
@@ -3104,7 +2827,7 @@ Unicode multistring of reader groups on the system.
 
 0x00090024
 
-2.2.3.5  LocateCards_Return and GetStatusChange_Return
+##### 2.2.3.5 LocateCards_Return and GetStatusChange_Return
 
 The LocateCards_Return and GetStatusChange_Return structures are used to obtain the results on
 those calls that return updated reader state information. (for more information, see sections 3.1.4.21,
@@ -3125,7 +2848,7 @@ cReaders:  The number of elements in the rgReaderStates field.
 
 rgReaderStates:  The current states of the readers being watched.
 
-2.2.3.6  Control_Return
+##### 2.2.3.6 Control_Return
 
 The Control_Return structure is used to obtain information from a Control_Call (for more information,
 see section 3.1.4.37).
@@ -3144,7 +2867,7 @@ cbOutBufferSize:  The number of bytes in the pvOutBuffer field.
 
 pvOutBuffer:  Contains the return data specific to the value of the Control_Call structure.
 
-2.2.3.7  Reconnect_Return
+##### 2.2.3.7 Reconnect_Return
 
 The Reconnect_Return structure is used to obtain return information from a Reconnect call (for more
 information, see section 3.1.4.36).
@@ -3161,7 +2884,8 @@ Release: April 23, 2024
 
 38 / 92
 
-ReturnCode:  HRESULT or Win32 Error code. Zero indicates success; any other value indicates
+
+ReturnCode:  HRESULT or Win32 Error code. Zero indicates success; any other value indicates
 
 failure.
 
@@ -3169,7 +2893,7 @@ dwActiveProtocol:  A flag that indicates the established active protocol. For mo
 
 acceptable values, see section 2.2.5 .
 
-2.2.3.8  Connect_Return
+##### 2.2.3.8 Connect_Return
 
 The Connect_Return structure is used to obtain return information from a Connect call (for more
 information, see sections 3.1.4.28 and 3.1.4.29).
@@ -3190,7 +2914,7 @@ dwActiveProtocol:  A value that indicates the active smart card transmission pro
 
 values are specified in section 2.2.5.
 
-2.2.3.9  State_Return
+##### 2.2.3.9 State_Return
 
 The State_Return structure defines return information about the state of the smart card reader (for
 more information, see section 3.1.4.40).
@@ -3217,9 +2941,9 @@ cbAtrLen:  The number of bytes in the rgAtr field.
 
 rgAtr:  A pointer to a buffer that receives the ATR string from the currently inserted card, if available.
 
-2.2.3.10
+##### 2.2.3.10 Status_Return
 
-Status_Return
+
 
 The Status_Return structure defines return information about the status of the smart card reader
 (for more information, see sections 3.1.4.33 and 3.1.4.34).
@@ -3234,7 +2958,8 @@ Release: April 23, 2024
 
 39 / 92
 
-   [range(0,65536)] unsigned long cBytes;
+
+   [range(0,65536)] unsigned long cBytes;
    [unique] [size_is(cBytes)] byte *mszReaderNames;
    unsigned long dwState;
    unsigned long dwProtocol;
@@ -3280,9 +3005,9 @@ available.
 
 cbAtrLen:  The number of bytes in the ATR string.
 
-2.2.3.11
+##### 2.2.3.11 Transmit_Return
 
-Transmit_Return
+
 
 The Transmit_Return structure defines return information from a smart card after a Transmit call (for
 more information, see section 3.1.4.35).
@@ -3314,9 +3039,10 @@ Release: April 23, 2024
 
 40 / 92
 
-2.2.3.12
 
-GetAttrib_Return
+##### 2.2.3.12 GetAttrib_Return
+
+
 
 The GetAttrib_Return structure defines attribute information from a smart card reader (for more
 information, see section 3.1.4.38).
@@ -3335,9 +3061,9 @@ cbAttrLen:  The number of bytes in the pbAttr field.
 
 pbAttr:  A pointer to an array that contains any values returned from the corresponding call.
 
-2.2.3.13
+##### 2.2.3.13 GetTransmitCount_Return
 
-GetTransmitCount_Return
+
 
 The GetTransmitCount_Return structure defines the number of transmit calls that were performed on
 the smart card reader (for more information, see section 3.1.4.41).
@@ -3355,9 +3081,9 @@ cTransmitCount:  The field specifies the number of successful Transmit calls (fo
 
 see section 3.1.4.35) performed on the reader since it was introduced to the system.
 
-2.2.3.14
+##### 2.2.3.14 GetReaderIcon_Return
 
-GetReaderIcon_Return
+
 
 The GetReaderIcon_Return structure is used to obtain the data that corresponds to the lookup item
 requested in the GetReaderIcon_Call as specified in section 2.2.2.31. For more information, see
@@ -3384,9 +3110,10 @@ Release: April 23, 2024
 
 41 / 92
 
-2.2.3.15
 
-GetDeviceTypeId_Return
+##### 2.2.3.15 GetDeviceTypeId_Return
+
+
 
 The GetDeviceTypeId_Return structure is used to obtain the data that corresponds to the lookup item
 requested in GetDeviceTypeId_Call as specified in section 2.2.2.32. For more information, see
@@ -3403,7 +3130,7 @@ failure.
 
 dwDeviceId:  The value of the lookup item.
 
-2.2.4  Card/Reader State
+#### 2.2.4 Card/Reader State
 
 The following represents the current state of the smart card reader according to Smart Cards for
 Windows.
@@ -3470,7 +3197,7 @@ SCARD_SPECIFICMODE
 The card has been reset and specific communication protocols have been
 established.
 
-2.2.5  Protocol Identifier
+#### 2.2.5 Protocol Identifier
 
 A Protocol Identifier.
 
@@ -3481,7 +3208,8 @@ Release: April 23, 2024
 
 42 / 92
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3555,7 +3283,7 @@ Optimal transmission parameters and card clock frequency MUST be used.
 This flag is considered the default. No actual value is defined for this flag; it
 is there for compatibility with [PCSC5] section 3.1.3.
 
-2.2.6  Access Mode Flags
+#### 2.2.6 Access Mode Flags
 
 Access mode flags provide possible values for applications to connect to the smart card.
 
@@ -3597,7 +3325,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3608,7 +3337,7 @@ SCARD_SHARE_DIRECT
 This application demands direct control of the smart card reader; therefore, it
 is not available to other applications.
 
-2.2.7  Reader State
+#### 2.2.7 Reader State
 
 The Reader State packet has a sub-structure as shown in the following table.
 
@@ -3707,7 +3436,8 @@ Release: April 23, 2024
 
 44 / 92
 
-Value
+
+Value
 
 Meaning
 
@@ -3759,7 +3489,7 @@ This implies that the card in the reader has not been turned on.
 
 0x0400
 
-2.2.8  Return Code
+#### 2.2.8 Return Code
 
 The following Smart Card Facility Codes for Windows-specific return codes MAY be returned by the
 protocol server to the protocol client and are of the data type NTSTATUS, with the sev field set to
@@ -3826,7 +3556,8 @@ Release: April 23, 2024
 
 45 / 92
 
-Value
+
+Value
 
 0x80100005
 
@@ -3959,7 +3690,8 @@ Release: April 23, 2024
 
 46 / 92
 
-Value
+
+Value
 
 0x80100018
 
@@ -4091,7 +3823,8 @@ Release: April 23, 2024
 
 47 / 92
 
-Value
+
+Value
 
 0x8010002B
 
@@ -4226,7 +3959,8 @@ Release: April 23, 2024
 
 48 / 92
 
-Value
+
+Value
 
 0x8010006E
 
@@ -4265,14 +3999,15 @@ Release: April 23, 2024
 
 49 / 92
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Remote Desktop Protocol: Smart Card Virtual Channel
 Extension, including abstract data models, interface method syntax, and message processing rules.
 
-3.1  Protocol Server Details
+### 3.1 Protocol Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4290,11 +4025,11 @@ Extension that identifies this protocol.
 
 rgSCardContextList: List of contexts opened by the protocol server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization is triggered by the Remote Desktop Protocol: File System Virtual Channel Extension when
 it enumerates all pre-logon devices. At this time, TS client initialization is performed.
@@ -4305,7 +4040,7 @@ TS server
 The dwDeviceId field MUST be set to the device Id selected by Remote Desktop Protocol: File System
 Virtual Channel Extension, and rgSCardContextList MUST be set to the empty list.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 Only messages of type DR_CONTROL_REQ and DR_CONTROL_RSP (as specified in [MS-RDPEFS]
 sections 2.2.1.4.5 and 2.2.1.5.5, respectively) are valid for this protocol. All other messages MUST be
@@ -4343,7 +4078,8 @@ Release: April 23, 2024
 
 50 / 92
 
-Functio
+
+Functio
 n
 numbe
 r
@@ -4547,7 +4283,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Functio
+
+Functio
 n
 numbe
 r
@@ -4747,7 +4484,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Functio
+
+Functio
 n
 numbe
 r
@@ -4878,7 +4616,8 @@ Release: April 23, 2024
 
 53 / 92
 
- Return value/code
+
+ Return value/code
 
  Description
 
@@ -4905,7 +4644,7 @@ data.
 
 Extension.
 
-3.1.4.1  SCARD_IOCTL_ESTABLISHCONTEXT (IOCTL 0x00090014)
+##### 3.1.4.1 SCARD_IOCTL_ESTABLISHCONTEXT (IOCTL 0x00090014)
 
 Establish Context creates a new Smart Cards for Windows context specified for use in subsequent
 communication with Smart Cards for Windows.
@@ -4917,7 +4656,7 @@ Winerror.h. No specialized error codes are associated with this method.
 If the call is successful, EstablishContext_Return.Context MUST be added to the rgSCardContextList
 list maintained by this client.
 
-3.1.4.2  SCARD_IOCTL_RELEASECONTEXT (IOCTL 0x00090018)
+##### 3.1.4.2 SCARD_IOCTL_RELEASECONTEXT (IOCTL 0x00090018)
 
 Release Context releases a previously established Smart Cards for Windows context as specified in
 section 3.1.4.1. The context MUST exist in rgSCardContextList.
@@ -4929,7 +4668,7 @@ the return codes from Winerror.h. No specialized error codes are associated with
 If the call is successful, Context_Call.Context (for more information, see section 2.2.2.2) is removed
 from rgSCardContextList.
 
-3.1.4.3  SCARD_IOCTL_ISVALIDCONTEXT (IOCTL 0x0009001C)
+##### 3.1.4.3 SCARD_IOCTL_ISVALIDCONTEXT (IOCTL 0x0009001C)
 
 Is Valid Context checks if a previously established Smart Cards for Windows context from
 SCARD_IOCTL_ESTABLISHCONTEXT is still valid. For this call to succeed, Context_Call.Context (for
@@ -4940,7 +4679,7 @@ Return Values: This method sets Long_Return.ReturnCode (for more information, se
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.4  SCARD_IOCTL_ACCESSSTARTEDEVENT (IOCTL 0x000900E0)
+##### 3.1.4.4 SCARD_IOCTL_ACCESSSTARTEDEVENT (IOCTL 0x000900E0)
 
 Access Started Event waits until Smart Cards for Windows is running.
 
@@ -4951,12 +4690,13 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: This method sets Long_Return.ReturnCode (for more information, see section 2.2.3.3)
+
+Return Values: This method sets Long_Return.ReturnCode (for more information, see section 2.2.3.3)
 to SCARD_S_SUCCESS if Smart Cards for Windows is running; otherwise, it sets one of the smart
 card-specific errors or one of the return codes from Winerror.h. No specialized error codes are
 associated with this method.
 
-3.1.4.5  SCARD_IOCTL_LISTREADERGROUPSA (IOCTL 0x00090020)
+##### 3.1.4.5 SCARD_IOCTL_LISTREADERGROUPSA (IOCTL 0x00090020)
 
 The ASCII version List Reader Groups returns the reader groups known to Smart Cards for
 Windows. ListReaderGroups_Return is constructed according to ListReaderGroups_Return and
@@ -4967,7 +4707,7 @@ section 2.2.3.4) to SCARD_S_SUCCESS on success; otherwise, it sets one of the sm
 errors or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.6  SCARD_IOCTL_LISTREADERGROUPSW (IOCTL 0x00090024)
+##### 3.1.4.6 SCARD_IOCTL_LISTREADERGROUPSW (IOCTL 0x00090024)
 
 The Unicode version List Reader Groups returns the reader groups known to Smart Cards for
 Windows. ListReaderGroups_Return is constructed according to ListReaderGroups_Return and
@@ -4978,7 +4718,7 @@ section 2.2.3.4) to SCARD_S_SUCCESS on success; otherwise, it sets one of the sm
 errors or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.7  SCARD_IOCTL_LISTREADERSA (IOCTL 0x00090028)
+##### 3.1.4.7 SCARD_IOCTL_LISTREADERSA (IOCTL 0x00090028)
 
 The ASCII version of List Readers returns the smart card readers known to Smart Cards for
 Windows. ListReaders_Return is constructed according to ListReaderGroups_Return and
@@ -4988,7 +4728,7 @@ Return Values: The method sets ListReaders_Return.ReturnCode (for more informati
 2.2.3.4) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.8  SCARD_IOCTL_LISTREADERSW (IOCTL 0x0009002C)
+##### 3.1.4.8 SCARD_IOCTL_LISTREADERSW (IOCTL 0x0009002C)
 
 The Unicode version of List Readers returns the smart card readers known to Smart Cards for
 Windows. ListReaders_Return is constructed according to ListReaderGroups_Return and
@@ -4998,7 +4738,7 @@ Return Values: The method sets ListReaders_Return.ReturnCode (for more informati
 2.2.3.4) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.9  SCARD_IOCTL_INTRODUCEREADERGROUPA (IOCTL 0x00090050)
+##### 3.1.4.9 SCARD_IOCTL_INTRODUCEREADERGROUPA (IOCTL 0x00090050)
 
 The ASCII version of Introduce Reader Group adds the reader group specified in
 ContextAndStringA_Call.sz (for more information, see section 2.2.2.5) to the list of reader groups
@@ -5015,9 +4755,10 @@ Release: April 23, 2024
 
 55 / 92
 
-3.1.4.10
 
-SCARD_IOCTL_INTRODUCEREADERGROUPW (IOCTL 0x00090054)
+##### 3.1.4.10 SCARD_IOCTL_INTRODUCEREADERGROUPW (IOCTL 0x00090054)
+
+
 
 The Unicode version of Introduce Reader Group adds the reader group specified in
 ContextAndStringW_Call.sz (for more information, see section 2.2.2.6) to the list of reader groups
@@ -5027,9 +4768,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.11
+##### 3.1.4.11 SCARD_IOCTL_FORGETREADERGROUPA (IOCTL 0x00090058)
 
-SCARD_IOCTL_FORGETREADERGROUPA (IOCTL 0x00090058)
+
 
 The ASCII version of Forget Reader Group removes the reader group specified in
 ContextAndStringA_Call.sz (for more information, see section 2.2.2.5) from the list of reader groups
@@ -5039,9 +4780,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.12
+##### 3.1.4.12 SCARD_IOCTL_FORGETREADERGROUPW (IOCTL 0x0009005C)
 
-SCARD_IOCTL_FORGETREADERGROUPW (IOCTL 0x0009005C)
+
 
 The Unicode version of Forget Reader Group removes the reader group specified in
 ContextAndStringW_Call.sz (for more information, see section 2.2.2.6) from the list of reader groups
@@ -5051,9 +4792,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.13
+##### 3.1.4.13 SCARD_IOCTL_INTRODUCEREADERA (IOCTL 0x00090060)
 
-SCARD_IOCTL_INTRODUCEREADERA (IOCTL 0x00090060)
+
 
 The ASCII version of Introduce Reader adds the device name specified in
 ContextAndTwoStringA_Call.sz2 (for more information, see section 2.2.2.7) to the smart card reader
@@ -5063,9 +4804,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.14
+##### 3.1.4.14 SCARD_IOCTL_INTRODUCEREADERW (IOCTL 0x00090064)
 
-SCARD_IOCTL_INTRODUCEREADERW (IOCTL 0x00090064)
+
 
 The Unicode version of Introduce Reader adds the device name specified in
 ContextAndTwoStringW_Call.sz2 (for more information, see section 2.2.2.8) to the smart card
@@ -5075,9 +4816,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.15
+##### 3.1.4.15 SCARD_IOCTL_FORGETREADERA (IOCTL 0x00090068)
 
-SCARD_IOCTL_FORGETREADERA (IOCTL 0x00090068)
+
 
 The ASCII version of Forget Reader removes the smart card reader specified in
 ContextAndStringA_Call.sz (for more information, see section 2.2.2.5) from the list of smart card
@@ -5090,13 +4831,14 @@ Release: April 23, 2024
 
 56 / 92
 
-Return Values: The method sets Long_Return.ReturnCode (for more information, see section 2.2.3.3)
+
+Return Values: The method sets Long_Return.ReturnCode (for more information, see section 2.2.3.3)
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.16
+##### 3.1.4.16 SCARD_IOCTL_FORGETREADERW (IOCTL 0x0009006C)
 
-SCARD_IOCTL_FORGETREADERW (IOCTL 0x0009006C)
+
 
 The Unicode version of Forget Reader removes the smart card reader specified in
 ContextAndStringW_Call.sz (for more information, see section 2.2.2.6) from the list of smart card
@@ -5106,9 +4848,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.17
+##### 3.1.4.17 SCARD_IOCTL_ADDREADERTOGROUPA (IOCTL 0x00090070)
 
-SCARD_IOCTL_ADDREADERTOGROUPA (IOCTL 0x00090070)
+
 
 The ASCII version of Add Reader to Group adds the smart card reader specified in
 ContextAndTwoStringA_Call.sz2 (for more information, see section 2.2.2.7).
@@ -5117,9 +4859,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.18
+##### 3.1.4.18 SCARD_IOCTL_ADDREADERTOGROUPW (IOCTL 0x00090074)
 
-SCARD_IOCTL_ADDREADERTOGROUPW (IOCTL 0x00090074)
+
 
 The Unicode version of Add Reader to Group adds the smart card reader specified in
 ContextAndTwoStringW_Call.sz2 (for more information, see section 2.2.2.8).
@@ -5128,9 +4870,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.19
+##### 3.1.4.19 SCARD_IOCTL_REMOVEREADERFROMGROUPA (IOCTL 0x00090078)
 
-SCARD_IOCTL_REMOVEREADERFROMGROUPA (IOCTL 0x00090078)
+
 
 The ASCII version of Remove Reader From Group removes the smart card reader specified in
 ContextAndTwoStringA_Call.sz2 (for more information, see section 2.2.2.7).
@@ -5139,9 +4881,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.20
+##### 3.1.4.20 SCARD_IOCTL_REMOVEREADERFROMGROUPW (IOCTL 0x0009007C)
 
-SCARD_IOCTL_REMOVEREADERFROMGROUPW (IOCTL 0x0009007C)
+
 
 The Unicode version of Remove Reader From Group removes the smart card reader specified in
 ContextAndTwoStringW_Call.sz2 (for more information, see section 2.2.2.8).
@@ -5150,9 +4892,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.21
+##### 3.1.4.21 SCARD_IOCTL_LOCATECARDSA (IOCTL 0x00090098)
 
-SCARD_IOCTL_LOCATECARDSA (IOCTL 0x00090098)
+
 
 The ASCII version of Locate Cards searches the readers specified in LocateCardsA_Call.mszCards (for
 more information, see section 2.2.2.9). Unknown Card Types MUST be ignored. LocateCards_Return
@@ -5166,13 +4908,14 @@ Release: April 23, 2024
 
 57 / 92
 
-Return Values: The method sets LocateCards_Return.ReturnCode (for more information, see section
+
+Return Values: The method sets LocateCards_Return.ReturnCode (for more information, see section
 2.2.3.5) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.22
+##### 3.1.4.22 SCARD_IOCTL_LOCATECARDSW (IOCTL 0x0009009C)
 
-SCARD_IOCTL_LOCATECARDSW (IOCTL 0x0009009C)
+
 
 The Unicode version of Locate Cards searches the readers specified in LocateCardsW_Call.mszCards
 (for more information, see section 2.2.2.10). Unknown Card Types MUST be ignored.
@@ -5183,9 +4926,9 @@ Return Values: The method sets LocateCards_Return.ReturnCode to SCARD_S_SUCCESS 
 otherwise it sets one of the smart card-specific errors or one of the return codes from Winerror.h. No
 specialized error codes are associated with this method.
 
-3.1.4.23
+##### 3.1.4.23 SCARD_IOCTL_GETSTATUSCHANGEA (IOCTL 0x000900A0)
 
-SCARD_IOCTL_GETSTATUSCHANGEA (IOCTL 0x000900A0)
+
 
 The ASCII version of Get Status Change monitors the smart card readers specified in
 GetStatusChangeA_Call.rgReaderStates (for more information, see section 2.2.2.11) MUST correctly
@@ -5195,9 +4938,9 @@ Return Values: The method sets GetStatusChange_Return.ReturnCode to SCARD_S_SUCC
 success; otherwise, it sets one of the smart card-specific errors or one of the return codes from
 Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.24
+##### 3.1.4.24 SCARD_IOCTL_GETSTATUSCHANGEW (IOCTL 0x000900A4)
 
-SCARD_IOCTL_GETSTATUSCHANGEW (IOCTL 0x000900A4)
+
 
 The Unicode version of Get Status Change monitors the smart card readers specified in
 GetStatusChangeW_Call.rgReaderStates (for more information, see section 2.2.2.12) MUST correctly
@@ -5207,9 +4950,9 @@ Return Values: The method sets GetStatusChange_Return.ReturnCode to SCARD_S_SUCC
 success; otherwise, it sets one of the smart card-specific errors or one of the return codes from
 Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.25
+##### 3.1.4.25 SCARD_IOCTL_LOCATECARDSBYATRA (IOCTL 0x000900E8)
 
-SCARD_IOCTL_LOCATECARDSBYATRA (IOCTL 0x000900E8)
+
 
 The ASCII version of Locate Cards By ATR searches the Readers specified in
 LocateCardsByATRA_Call.rgAtrMasks (for more information, see section 2.2.2.23). Unknown card
@@ -5220,9 +4963,9 @@ Return Values: The method sets LocateCards_Return.ReturnCode (for more informati
 2.2.3.5) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.26
+##### 3.1.4.26 SCARD_IOCTL_LOCATECARDSBYATRW (IOCTL 0x000900EC)
 
-SCARD_IOCTL_LOCATECARDSBYATRW (IOCTL 0x000900EC)
+
 
 The Unicode version of Locate Cards By ATR searches the readers specified in
 LocateCardsByATRW_Call.rgAtrMasks (LocateCardsByATRW_Call). Unknown Card Types MUST be
@@ -5240,9 +4983,10 @@ Release: April 23, 2024
 
 58 / 92
 
-3.1.4.27
 
-SCARD_IOCTL_CANCEL (IOCTL 0x000900A8)
+##### 3.1.4.27 SCARD_IOCTL_CANCEL (IOCTL 0x000900A8)
+
+
 
 The Cancel method MUST instruct Smart Cards for Windows to cancel any outstanding calls by
 using the context specified by Context_Call.Context (for more information, see section 2.2.2.2).
@@ -5251,9 +4995,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.28
+##### 3.1.4.28 SCARD_IOCTL_CONNECTA (IOCTL 0x000900AC)
 
-SCARD_IOCTL_CONNECTA (IOCTL 0x000900AC)
+
 
 The ASCII version of Connect establishes a handle to a smart card reader. On success,
 Connect_Return is initialized according to Control_Return.
@@ -5262,9 +5006,9 @@ Return Values: The method sets the Connect_Return.ReturnCode (for more informati
 2.2.3.8) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.29
+##### 3.1.4.29 SCARD_IOCTL_CONNECTW (IOCTL 0x000900B0)
 
-SCARD_IOCTL_CONNECTW (IOCTL 0x000900B0)
+
 
 The Unicode version of Connect establishes a smart card reader handle. On success,
 Connect_Return is initialized according to Control_Return and the caller is given a handle to execute
@@ -5274,9 +5018,9 @@ Return Values: The method sets the Connect_Return.ReturnCode (for more informati
 2.2.3.8) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.30
+##### 3.1.4.30 SCARD_IOCTL_DISCONNECT (IOCTL 0x000900B8)
 
-SCARD_IOCTL_DISCONNECT (IOCTL 0x000900B8)
+
 
 The disconnect method releases a smart card reader handle that was acquired in ConnectA_Call or
 ConnectW_Call,using HCardAndDisposition_Call.dwDisposition. After a successful call, The smart card
@@ -5286,9 +5030,9 @@ Return Values: The method sets Long_Return.ReturnCode to SCARD_S_SUCCESS on succ
 otherwise, it sets one of the smart card-specific errors or one of the return codes from Winerror.h. No
 specialized error codes are associated with this method.
 
-3.1.4.31
+##### 3.1.4.31 SCARD_IOCTL_BEGINTRANSACTION (IOCTL 0x000900BC)
 
-SCARD_IOCTL_BEGINTRANSACTION (IOCTL 0x000900BC)
+
 
 The Begin Transaction method locks a smart card reader for exclusive access for the specified smart
 card reader handle. If the caller is unable to receive exclusive access, this call MUST block until the
@@ -5298,9 +5042,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.32
+##### 3.1.4.32 SCARD_IOCTL_ENDTRANSACTION (IOCTL 0x000900C0)
 
-SCARD_IOCTL_ENDTRANSACTION (IOCTL 0x000900C0)
+
 
 The End Transaction method releases a smart card reader after being locked by a previously
 successful call to Begin Transaction (for more information, see section 3.1.4.31).
@@ -5316,9 +5060,10 @@ Release: April 23, 2024
 
 59 / 92
 
-3.1.4.33
 
-SCARD_IOCTL_STATUSA (IOCTL 0x000900C8)
+##### 3.1.4.33 SCARD_IOCTL_STATUSA (IOCTL 0x000900C8)
+
+
 
 The ASCII version of the Status call returns the current state of the smart card reader and any
 smart card inserted. On success, Status_Return MUST be initialized according to Status_Return.
@@ -5328,9 +5073,9 @@ Return Values: The method sets Status_Return.ReturnCode (for more information, s
 or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.34
+##### 3.1.4.34 SCARD_IOCTL_STATUSW (IOCTL 0x000900CC)
 
-SCARD_IOCTL_STATUSW (IOCTL 0x000900CC)
+
 
 The Unicode version of the Status call returns the current state of the smart card reader and any
 smart card inserted. On success, Status_Return MUST be initialized according to Status_Return.
@@ -5340,9 +5085,9 @@ Return Values: The method sets Status_Return.ReturnCode (for more information, s
 or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.35
+##### 3.1.4.35 SCARD_IOCTL_TRANSMIT (IOCTL 0x000900D0)
 
-SCARD_IOCTL_TRANSMIT (IOCTL 0x000900D0)
+
 
 The Transmit function sends a command to a smart card inserted to the smart card reader
 associated with the smart card reader handle. On success, the command has been successfully sent to
@@ -5353,9 +5098,9 @@ Return Values: The method sets Transmit_Return.ReturnCode (for more information,
 or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.36
+##### 3.1.4.36 SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4)
 
-SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4)
+
 
 The reconnect method re-establishes a smart card reader handle. On success, the handle is valid
 once again.
@@ -5364,9 +5109,9 @@ Return Values: The method sets Reconnect_Return.ReturnCode (for more information
 2.2.3.7) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.37
+##### 3.1.4.37 SCARD_IOCTL_CONTROL (IOCTL 0x000900D4)
 
-SCARD_IOCTL_CONTROL (IOCTL 0x000900D4)
+
 
 The Control function sends a command to a smart card reader associated with the smart card reader
 handle. On success, the command has been successfully sent to the smart card reader and the
@@ -5376,9 +5121,9 @@ Return Values: The method sets Control_Return.ReturnCode (for more information, 
 2.2.3.6) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.38
+##### 3.1.4.38 SCARD_IOCTL_GETATTRIB (IOCTL 0x000900D8)
 
-SCARD_IOCTL_GETATTRIB (IOCTL 0x000900D8)
+
 
 The Get Attribute function requests an attribute of the smart card reader associated with the smart
 card reader handle. On success, the attribute is copied to GetAttrib_Return.
@@ -5393,12 +5138,13 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-or one of the return codes from Winerror.h. No specialized error codes are associated with this
+
+or one of the return codes from Winerror.h. No specialized error codes are associated with this
 method.
 
-3.1.4.39
+##### 3.1.4.39 SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC)
 
-SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC)
+
 
 The Set Attribute function changes the value of an attribute of the smart card reader associated with
 the smart card reader handle.
@@ -5407,9 +5153,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.40
+##### 3.1.4.40 SCARD_IOCTL_STATE (IOCTL 0x000900C4)
 
-SCARD_IOCTL_STATE (IOCTL 0x000900C4)
+
 
 The State method returns the current state of the smart card reader and any smart card inserted.
 On success, Status_Return MUST be initialized as specified in section 2.2.3.10.
@@ -5418,9 +5164,9 @@ Return Values: The method sets State_Return.ReturnCode (for more information, se
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.41
+##### 3.1.4.41 SCARD_IOCTL_GETTRANSMITCOUNT (IOCTL 0x00090100)
 
-SCARD_IOCTL_GETTRANSMITCOUNT (IOCTL 0x00090100)
+
 
 The Get Transmit Count retrieves the number of times a successful Transmit method (for more
 information, see section 3.1.4.35) has been performed on the smart card reader. On success,
@@ -5430,9 +5176,9 @@ Return Values: The method sets State_Return.ReturnCode (for more information, se
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.42
+##### 3.1.4.42 SCARD_IOCTL_READCACHEA (IOCTL 0x000900F0)
 
-SCARD_IOCTL_READCACHEA (IOCTL 0x000900F0)
+
 
 The ASCII version of Read Cache retrieves cached data for a specific smart card. Data is cached
 according to the smart card UUID (ReadCacheA_Call.Common.CardIdentifier; for more information,
@@ -5445,9 +5191,9 @@ Return Values: The method sets ReadCache_Return.ReturnCode (for more information
 2.2.3.1) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or
 one of the return codes from Winerror.h. No specialized error codes are associated with this method.
 
-3.1.4.43
+##### 3.1.4.43 SCARD_IOCTL_READCACHEW (IOCTL 0x000900F4)
 
-SCARD_IOCTL_READCACHEW (IOCTL 0x000900F4)
+
 
 The Unicode version of Read Cache retrieves cached data for a specific smart card in a Smart
 Cards for Windows cache. Data is cached according to the smart card UUID
@@ -5468,9 +5214,10 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.44
 
-SCARD_IOCTL_WRITECACHEA (IOCTL 0x000900F8)
+##### 3.1.4.44 SCARD_IOCTL_WRITECACHEA (IOCTL 0x000900F8)
+
+
 
 The ASCII version of Write Cache stores data for a specific smart card in a Smart Cards for
 Windows cache. Data is cached according to the smart card UUID
@@ -5481,9 +5228,9 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method
 
-3.1.4.45
+##### 3.1.4.45 SCARD_IOCTL_WRITECACHEW (IOCTL 0x000900FC)
 
-SCARD_IOCTL_WRITECACHEW (IOCTL 0x000900FC)
+
 
 The Unicode version of Write Cache stores data for a specific smart card in a Smart Cards for
 Windows cache. Data is cached according to the smart card UUID
@@ -5494,15 +5241,15 @@ Return Values: The method sets Long_Return.ReturnCode (for more information, see
 to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card-specific errors or one of
 the return codes from Winerror.h. No specialized error codes are associated with this method
 
-3.1.4.46
+##### 3.1.4.46 SCARD_IOCTL_RELEASETARTEDEVENT
 
-SCARD_IOCTL_RELEASETARTEDEVENT
+
 
 The SCARD_IOCTL_RELEASETARTEDEVENT IOCTL value is not used.
 
-3.1.4.47
+##### 3.1.4.47 SCARD_IOCTL_GETREADERICON (IOCTL 0x00090104)
 
-SCARD_IOCTL_GETREADERICON (IOCTL 0x00090104)
+
 
 Get Reader Icon retrieves the icon from the INF file for a specific smart card reader name (for more
 information, see GetReaderIcon_Call.szReaderName, section 2.2.2.31). On success,
@@ -5512,9 +5259,9 @@ Return Values: This method sets GetReaderIcon_Return.ReturnCode (for more inform
 section 2.2.3.14) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card–specific
 errors or another error code. No specialized error codes are associated with this method.
 
-3.1.4.48
+##### 3.1.4.48 SCARD_IOCTL_GETDEVICETYPEID (IOCTL 0x00090108)
 
-SCARD_IOCTL_GETDEVICETYPEID (IOCTL 0x00090108)
+
 
 Get Device Type ID retrieves the device type from the INF file for a specific smart card reader name
 (GetDeviceTypeId_Call.szReaderName; for more information, see section 2.2.2.32). On success,
@@ -5525,11 +5272,11 @@ Return Values: This method sets GetDeviceTypeId_Return.ReturnCode (for more info
 section 2.2.3.15) to SCARD_S_SUCCESS on success; otherwise, it sets one of the smart card–specific
 errors or another error code. No specialized error codes are associated with this method.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 On protocol termination, the following actions are performed.
 
@@ -5540,13 +5287,14 @@ Release: April 23, 2024
 
 62 / 92
 
-For each context in rgSCardContextList, Cancel is called causing all outstanding messages to be
+
+For each context in rgSCardContextList, Cancel is called causing all outstanding messages to be
 processed. After there are no more outstanding messages, Release Context is called on each context
 and the context MUST be removed from rgSCardContextList.
 
-3.2  Protocol Client Details
+### 3.2 Protocol Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5560,24 +5308,24 @@ dwDeviceId: device ID of smart card redirection device.
 
 rgOutstandingMessages: Outstanding call packets have not received a return packet.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization occurs when the protocol server sends a device-announce message according to
 Remote Desktop Protocol: File System Virtual Channel Extension. At that time, dwDeviceId MUST
 receive the unique device ID announced. The rgOutstandingMessage field MUST be set to the
 empty list.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Sending Outgoing Messages
+##### 3.2.5.1 Sending Outgoing Messages
 
 Messages are constructed according to Remote Desktop Protocol: File System Virtual Channel
 Extension as a device I/O control message on the redirected device dwDeviceId. The call packet
@@ -5587,7 +5335,7 @@ specified in [MS-RPCE] section 2. The output buffer length SHOULD be set to 2,04
 The message is sent to the protocol server by using a transport as specified in [MS-RDPEFS] section
 2.1.
 
-3.2.5.2  Processing Incoming Replies
+##### 3.2.5.2 Processing Incoming Replies
 
 The following steps MUST be applied to each message when they are received.
 
@@ -5603,63 +5351,64 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Otherwise, the call is considered a failure and the error MUST be propagated to the higher layer.
 
-3.2.5.3  Messages
+Otherwise, the call is considered a failure and the error MUST be propagated to the higher layer.
 
-3.2.5.3.1 Sending EstablishContext Message
+##### 3.2.5.3 Messages
+
+###### 3.2.5.3.1 Sending EstablishContext Message
 
 IoControlCode MUST be set to SCARD_IOCTL_ESTABLISHCONTEXT.
 
 EstablishContext_Call MUST be initialized as specified in section 2.2.2.1.
 
-3.2.5.3.2 Processing EstablishContext Reply
+###### 3.2.5.3.2 Processing EstablishContext Reply
 
 The OutputBuffer MUST be decoded as EstablishContext_Return, as specified in [MS-RPCE] section
 2.2.6.
 
-3.2.5.3.3 Sending ReleaseContext Message
+###### 3.2.5.3.3 Sending ReleaseContext Message
 
 IoControlCode MUST be set to SCARD_IOCTL_RELEASECONTEXT.
 
 Context_Call MUST be initialized, as specified in section 2.2.2.2.
 
-3.2.5.3.4 Processing ReleaseContext Reply
+###### 3.2.5.3.4 Processing ReleaseContext Reply
 
 The response message MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.5 Sending IntroduceReader (ASCII) Message
+###### 3.2.5.3.5 Sending IntroduceReader (ASCII) Message
 
 IoControlCode MUST be set to SCARD_IOCTL_INTRODUCEREADERA.
 
 ContextAndTwoStringA_Call MUST be initialized as specified in section 2.2.2.7 for a
 SCARD_IOCTL_INTRODUCEREADERA call.
 
-3.2.5.3.6 Processing IntroduceReader (ASCII) Reply
+###### 3.2.5.3.6 Processing IntroduceReader (ASCII) Reply
 
 The OutputBuffer MUST be decoded as a Long_Return.
 
-3.2.5.3.7 Sending IntroduceReader (Unicode) Message
+###### 3.2.5.3.7 Sending IntroduceReader (Unicode) Message
 
 IoControlCode MUST be set to SCARD_IOCTL_INTRODUCEREADERW.
 
 ContextAndTwoStringW_Call MUST be initialized, as specified in section 2.2.2.8, for a
 SCARD_IOCTL_INTRODUCEREADERW call.
 
-3.2.5.3.8 Processing IntroduceReader (Unicode) Reply
+###### 3.2.5.3.8 Processing IntroduceReader (Unicode) Reply
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.9 Sending ForgetReader (ASCII) Message
+###### 3.2.5.3.9 Sending ForgetReader (ASCII) Message
 
 IoControlCode MUST be set to SCARD_IOCTL_FORGETREADERA.
 
 ContextAndStringA_Call MUST be initialized, as specified in section 2.2.2.5, for a
 SCARD_IOCTL_FORGETREADERA call.
 
-3.2.5.3.10
+###### 3.2.5.3.10 Processing ForgetReader (ASCII) Reply
 
-Processing ForgetReader (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
@@ -5670,84 +5419,85 @@ Release: April 23, 2024
 
 64 / 92
 
-3.2.5.3.11
 
-Sending ForgetReader (Unicode) Message
+###### 3.2.5.3.11 Sending ForgetReader (Unicode) Message
+
+
 
 IoControlCode MUST be set to SCARD_IOCTL_FORGETREADERW.
 
 ContextAndStringW_Call MUST be initialized, as specified in section 2.2.2.6, for a
 SCARD_IOCTL_FORGETREADERW call.
 
-3.2.5.3.12
+###### 3.2.5.3.12 Processing ForgetReader (Unicode) Reply
 
-Processing ForgetReader (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.13
+###### 3.2.5.3.13 Sending IntroduceReaderGroup (ASCII) Message
 
-Sending IntroduceReaderGroup (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_INTRODUCEREADERGROUPA.
 
 ContextAndStringA_Call MUST be initialized, as specified in section 2.2.2.5, for a
 SCARD_IOCTL_INTRODUCEREADERGROUPA call.
 
-3.2.5.3.14
+###### 3.2.5.3.14 Processing IntroduceReaderGroup (ASCII) Reply
 
-Processing IntroduceReaderGroup (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.15
+###### 3.2.5.3.15 Sending IntroduceReaderGroup (Unicode) Message
 
-Sending IntroduceReaderGroup (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_INTRODUCEREADERGROUPW.
 
 ContextAndStringW_Call MUST be initialized, as specified in section 2.2.2.6, for a
 SCARD_IOCTL_INTRODUCEREADERGROUPW call.
 
-3.2.5.3.16
+###### 3.2.5.3.16 Processing IntroduceReaderGroup (Unicode) Reply
 
-Processing IntroduceReaderGroup (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.17
+###### 3.2.5.3.17 Sending ForgetReaderGroup (ASCII) Message 1
 
-Sending ForgetReaderGroup (ASCII) Message 1
+
 
 IoControlCode MUST be set to SCARD_IOCTL_FORGETREADERGROUPA.
 
 ContextAndStringA_Call MUST be initialized, as specified in section 2.2.2.5, for a
 SCARD_IOCTL_FORGETREADERGROUPA call.
 
-3.2.5.3.18
+###### 3.2.5.3.18 Processing ForgetReaderGroup (ASCII) Reply
 
-Processing ForgetReaderGroup (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.19
+###### 3.2.5.3.19 Sending ForgetReaderGroup (ASCII) Message 2
 
-Sending ForgetReaderGroup (ASCII) Message 2
+
 
 IoControlCode MUST be set to SCARD_IOCTL_FORGETREADERGROUPW.
 
 ContextAndStringW_Call MUST be initialized, as specified in section 2.2.2.6, for a
 SCARD_IOCTL_FORGETREADERGROUPW call.
 
-3.2.5.3.20
+###### 3.2.5.3.20 Processing ForgetReaderGroup (Unicode) Reply
 
-Processing ForgetReaderGroup (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.21
+###### 3.2.5.3.21 Sending AddReaderToGroup (ASCII) Message
 
-Sending AddReaderToGroup (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_ADDREADERTOGROUPA.
 
@@ -5758,86 +5508,87 @@ Release: April 23, 2024
 
 65 / 92
 
-ContextAndTwoStringA_Call MUST be initialized, as specified in section 2.2.2.7, for a
+
+ContextAndTwoStringA_Call MUST be initialized, as specified in section 2.2.2.7, for a
 SCARD_IOCTL_ADDREADERTOGROUPA call.
 
-3.2.5.3.22
+###### 3.2.5.3.22 Processing AddReaderToGroup (ASCII) Reply
 
-Processing AddReaderToGroup (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.23
+###### 3.2.5.3.23 Sending AddReaderToGroup (Unicode) Message
 
-Sending AddReaderToGroup (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_ADDREADERTOGROUPW.
 
 ContextAndTwoStringW_Call MUST be initialized, as specified in section 2.2.2.8, for a
 SCARD_IOCTL_ADDREADERTOGROUPW call.
 
-3.2.5.3.24
+###### 3.2.5.3.24 Processing AddReaderToGroup (Unicode) Reply
 
-Processing AddReaderToGroup (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.25
+###### 3.2.5.3.25 Sending RemoveReaderFromGroup (ASCII) Message
 
-Sending RemoveReaderFromGroup (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_REMOVEREADERFROMGROUPA.
 
 ContextAndTwoStringA_Call MUST be initialized, as specified in section 2.2.2.7, for a
 SCARD_IOCTL_REMOVEREADERFROMGROUPA call.
 
-3.2.5.3.26
+###### 3.2.5.3.26 Processing RemoveReaderFromGroup (ASCII) Reply
 
-Processing RemoveReaderFromGroup (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.27
+###### 3.2.5.3.27 Sending RemoveReaderFromGroup (Unicode) Message
 
-Sending RemoveReaderFromGroup (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_REMOVEREADERFROMGROUPW.
 
 ContextAndTwoStringW_Call MUST be initialized, as specified in section 2.2.2.8, for a
 SCARD_IOCTL_REMOVEREADERFROMGROUPW call.
 
-3.2.5.3.28
+###### 3.2.5.3.28 Processing RemoveReaderFromGroup (Unicode) Reply
 
-Processing RemoveReaderFromGroup (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.29
+###### 3.2.5.3.29 Sending ListReaderGroups (ASCII) Message
 
-Sending ListReaderGroups (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LISTREADERGROUPSA.
 
 ListReaderGroups_Call MUST be initialized, as specified in section 2.2.2.3.
 
-3.2.5.3.30
+###### 3.2.5.3.30 Processing ListReaderGroups (ASCII) Reply
 
-Processing ListReaderGroups (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as ListReaderGroups_Return, as specified in [MS-RPCE] section
 2.2.6.
 
-3.2.5.3.31
+###### 3.2.5.3.31 Sending ListReaderGroups (Unicode) Message
 
-Sending ListReaderGroups (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LISTREADERGROUPSW.
 
 ListReaderGroups_Call MUST be initialized, as specified in section 2.2.2.3.
 
-3.2.5.3.32
+###### 3.2.5.3.32 Processing ListReaderGroups (Unicode) Reply
 
-Processing ListReaderGroups (Unicode) Reply
+
 
 [MS-RDPESC] - v20240423
 Remote Desktop Protocol: Smart Card Virtual Channel Extension
@@ -5846,83 +5597,84 @@ Release: April 23, 2024
 
 66 / 92
 
-The OutputBuffer MUST be decoded as ListReaderGroups_Return, as specified in [MS-RPCE] section
+
+The OutputBuffer MUST be decoded as ListReaderGroups_Return, as specified in [MS-RPCE] section
 2.2.6.
 
-3.2.5.3.33
+###### 3.2.5.3.33 Sending ListReaders (ASCII) Message
 
-Sending ListReaders (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LISTREADERSA.
 
 ListReaders_Call MUST be initialized, as specified in section 2.2.2.4, for an ASCII call.
 
-3.2.5.3.34
+###### 3.2.5.3.34 Processing ListReadersReply (ASCII) Reply
 
-Processing ListReadersReply (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as ListReaders_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.35
+###### 3.2.5.3.35 Sending ListReaders (Unicode) Message
 
-Sending ListReaders (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LISTREADERSW.
 
 ListReaders_Call MUST be initialized, as specified in section 2.2.2.4, for an Unicode call.
 
-3.2.5.3.36
+###### 3.2.5.3.36 Processing ListReadersReply (Unicode) Reply
 
-Processing ListReadersReply (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as ListReaders_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.37
+###### 3.2.5.3.37 Sending LocateCards (ASCII) Message
 
-Sending LocateCards (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LOCATECARDSA.
 
 LocateCardsA_Call MUST be initialized as specified in section 2.2.2.9.
 
-3.2.5.3.38
+###### 3.2.5.3.38 Processing LocateCards (ASCII) Reply
 
-Processing LocateCards (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as LocateCards_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.39
+###### 3.2.5.3.39 Sending LocateCards (Unicode) Message
 
-Sending LocateCards (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LOCATECARDSW.
 
 LocateCardsW_Call MUST be initialized, as specified in section 2.2.2.10.
 
-3.2.5.3.40
+###### 3.2.5.3.40 Processing LocateCards (Unicode) Reply
 
-Processing LocateCards (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as LocateCards_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.41
+###### 3.2.5.3.41 Sending GetStatusChange (ASCII) Message
 
-Sending GetStatusChange (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETSTATUSCHANGEA.
 
 GetStatusChangeA_Call MUST be initialized, as specified in section 2.2.2.11.
 
-3.2.5.3.42
+###### 3.2.5.3.42 Processing GetStatusChange (ASCII) Reply
 
-Processing GetStatusChange (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as GetStatusChange_Return, as specified in [MS-RPCE] section
 2.2.6.
 
-3.2.5.3.43
+###### 3.2.5.3.43 Sending GetStatusChange (Unicode) Message
 
-Sending GetStatusChange (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETSTATUSCHANGEW.
 
@@ -5933,83 +5685,84 @@ Release: April 23, 2024
 
 67 / 92
 
-GetStatusChangeW_Call MUST be initialized, as specified in section 2.2.2.12.
 
-3.2.5.3.44
+GetStatusChangeW_Call MUST be initialized, as specified in section 2.2.2.12.
 
-Processing GetStatusChange (Unicode) Reply
+###### 3.2.5.3.44 Processing GetStatusChange (Unicode) Reply
+
+
 
 The OutputBuffer MUST be decoded as GetStatusChange_Return, as specified in [MS-RPCE] section
 2.2.6.
 
-3.2.5.3.45
+###### 3.2.5.3.45 Sending Cancel Message
 
-Sending Cancel Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_CANCEL.
 
 Context_Call.Context MUST be initialized, as specified in section 2.2.2.2.
 
-3.2.5.3.46
+###### 3.2.5.3.46 Processing Cancel Reply
 
-Processing Cancel Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.47
+###### 3.2.5.3.47 Sending Connect (ASCII) Message
 
-Sending Connect (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_CONNECTA.
 
 ConnectA_Call MUST be initialized, as specified in section 2.2.2.13.
 
-3.2.5.3.48
+###### 3.2.5.3.48 Processing Connect (ASCII) Reply
 
-Processing Connect (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Connect_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.49
+###### 3.2.5.3.49 Sending Connect (Unicode) Message
 
-Sending Connect (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_CONNECTW.
 
 ConnectW_Call MUST be initialized, as specified in section 2.2.2.14.
 
-3.2.5.3.50
+###### 3.2.5.3.50 Processing Connect (Unicode) Reply
 
-Processing Connect (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Connect_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.51
+###### 3.2.5.3.51 Sending Reconnect Message
 
-Sending Reconnect Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_RECONNECT.
 
 Reconnect_Call MUST be initialized, as specified in section 2.2.2.15.
 
-3.2.5.3.52
+###### 3.2.5.3.52 Processing Reconnect Reply
 
-Processing Reconnect Reply
+
 
 The OutputBuffer MUST be decoded as Reconnect_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.53
+###### 3.2.5.3.53 Sending Disconnect Message
 
-Sending Disconnect Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_DISCONNECT.
 
 HCardAndDisposition_Call MUST be initialized, as specified in section 2.2.2.16, for a
 SCARD_IOCTL_DISCONNECT call.
 
-3.2.5.3.54
+###### 3.2.5.3.54 Processing Disconnect Reply
 
-Processing Disconnect Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
@@ -6020,84 +5773,85 @@ Release: April 23, 2024
 
 68 / 92
 
-3.2.5.3.55
 
-Sending Status (ASCII) Message
+###### 3.2.5.3.55 Sending Status (ASCII) Message
+
+
 
 IoControlCode MUST be set to SCARD_IOCTL_STATUSA.
 
 Status_Call MUST be initialized, as specified in section 2.2.2.18.
 
-3.2.5.3.56
+###### 3.2.5.3.56 Processing Status (ASCII) Reply
 
-Processing Status (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Status_Return, as specified in [MS-RPCE] section 2.2.6, and
 interpreted as a SCARD_IOCTL_STATUSA return.
 
-3.2.5.3.57
+###### 3.2.5.3.57 Sending Status (Unicode) Message
 
-Sending Status (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_STATUSW.
 
 Status_Call MUST be initialized, as specified in section 2.2.2.18 .
 
-3.2.5.3.58
+###### 3.2.5.3.58 Processing Status (Unicode) Reply
 
-Processing Status (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Status_Return, as specified in [MS-RPCE] section 2.2.6, and
 interpreted as a SCARD_IOCTL_STATUSW return.
 
-3.2.5.3.59
+###### 3.2.5.3.59 Sending State Message
 
-Sending State Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_STATE.
 
 State_Call MUST be initialized, as specified in section 2.2.2.17, for a SCARD_IOCTL_STATE call.
 
-3.2.5.3.60
+###### 3.2.5.3.60 Processing State Message Reply
 
-Processing State Message Reply
+
 
 The OutputBuffer MUST be decoded as State_Return, as specified in [MS-RPCE] section 2.2.6, and
 interpreted as a SCARD_IOCTL_STATE return.
 
-3.2.5.3.61
+###### 3.2.5.3.61 Sending BeginTransaction Message
 
-Sending BeginTransaction Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_BEGINTRANSACTION.
 
 HCardAndDisposition_Call MUST be initialized, as specified in section 2.2.2.16, for a
 SCARD_IOCTL_BEGINTRANSACTION call.
 
-3.2.5.3.62
+###### 3.2.5.3.62 Processing BeginTransaction Reply
 
-Processing BeginTransaction Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.63
+###### 3.2.5.3.63 Sending EndTransaction Message
 
-Sending EndTransaction Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_ENDTRANSACTION.
 
 HCardAndDisposition_Call MUST be initialized, as specified in section 2.2.2.16, for a
 SCARD_IOCTL_ENDTRANSACTION call.
 
-3.2.5.3.64
+###### 3.2.5.3.64 Processing EndTransaction Reply
 
-Processing EndTransaction Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.65
+###### 3.2.5.3.65 Sending Transmit Message
 
-Sending Transmit Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_TRANSMIT.
 
@@ -6108,88 +5862,89 @@ Release: April 23, 2024
 
 69 / 92
 
-Transmit_Call MUST be initialized as specified in section 2.2.2.19.
 
-3.2.5.3.66
+Transmit_Call MUST be initialized as specified in section 2.2.2.19.
 
-Processing Transmit Reply
+###### 3.2.5.3.66 Processing Transmit Reply
+
+
 
 The OutputBuffer MUST be decoded as Transmit_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.67
+###### 3.2.5.3.67 Sending Control Message
 
-Sending Control Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_CONTROL.
 
 Control_Call MUST be initialized as specified in section 2.2.2.20.
 
-3.2.5.3.68
+###### 3.2.5.3.68 Processing Control Reply
 
-Processing Control Reply
+
 
 The OutputBuffer MUST be decoded as Control_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.69
+###### 3.2.5.3.69 Sending GetReaderCapabilities Message
 
-Sending GetReaderCapabilities Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETATTRIB.
 
 GetAttrib_Call MUST be initialized as specified in section 2.2.2.21.
 
-3.2.5.3.70
+###### 3.2.5.3.70 Processing GetReaderCapabilities Reply
 
-Processing GetReaderCapabilities Reply
+
 
 The OutputBuffer MUST be decoded as GetAttrib_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.71
+###### 3.2.5.3.71 Sending SetReaderCapabilities Message
 
-Sending SetReaderCapabilities Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_SETATTRIB.
 
 SetAttrib_Call MUST be initialized as specified in section 2.2.2.22.
 
-3.2.5.3.72
+###### 3.2.5.3.72 Processing SetReaderCapabilities Reply
 
-Processing SetReaderCapabilities Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.73
+###### 3.2.5.3.73 Sending WaitForResourceManager Message
 
-Sending WaitForResourceManager Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_ACCESSSTARTEDEVENT.
 
 ScardAccessStartedEvent_Call MUST be initialized as specified in section 2.2.2.30. This structure
 MUST NOT be encoded and MUST be sent as is.
 
-3.2.5.3.74
+###### 3.2.5.3.74 Processing WaitForResourceManager Reply
 
-Processing WaitForResourceManager Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.75
+###### 3.2.5.3.75 Sending LocateCardsByATR (ASCII) Message
 
-Sending LocateCardsByATR (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LOCATECARDSBYATRA.
 
 LocateCardsByATRA_Call MUST be initialized as specified in section 2.2.2.23.
 
-3.2.5.3.76
+###### 3.2.5.3.76 Processing LocateCardsByATR (Unicode) Reply
 
-Processing LocateCardsByATR (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as LocateCards_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.77
+###### 3.2.5.3.77 Processing LocateCardsByATR (ASCII) Reply
 
-Processing LocateCardsByATR (ASCII) Reply
+
 
 70 / 92
 
@@ -6198,83 +5953,84 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The OutputBuffer MUST be decoded as LocateCards_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.78
+The OutputBuffer MUST be decoded as LocateCards_Return, as specified in [MS-RPCE] section 2.2.6.
 
-Sending LocateCardsByATR (Unicode) Message
+###### 3.2.5.3.78 Sending LocateCardsByATR (Unicode) Message
+
+
 
 IoControlCode MUST be set to SCARD_IOCTL_LOCATECARDSBYATRW.
 
 LocateCardsByATRW_Call MUST be initialized as specified in section 2.2.2.24.
 
-3.2.5.3.79
+###### 3.2.5.3.79 Sending ReadCache (ASCII) Message
 
-Sending ReadCache (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_READCACHEA.
 
 ReadCacheA_Call MUST be initialized as specified in section 2.2.2.25.
 
-3.2.5.3.80
+###### 3.2.5.3.80 Processing ReadCache (ASCII) Reply
 
-Processing ReadCache (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as ReadCache_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.81
+###### 3.2.5.3.81 Sending ReadCache (Unicode) Message
 
-Sending ReadCache (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_READCACHEW.
 
 ReadCacheW_Call MUST be initialized as specified in section 2.2.2.26.
 
-3.2.5.3.82
+###### 3.2.5.3.82 Processing ReadCache (Unicode) Reply
 
-Processing ReadCache (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as ReadCache_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.83
+###### 3.2.5.3.83 Sending WriteCache (ASCII) Message
 
-Sending WriteCache (ASCII) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_WRITECACHEA.
 
 WriteCacheA_Call MUST be initialized as specified in section 2.2.2.27.
 
-3.2.5.3.84
+###### 3.2.5.3.84 Processing WriteCache (ASCII) Reply
 
-Processing WriteCache (ASCII) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.85
+###### 3.2.5.3.85 Sending WriteCache (Unicode) Message
 
-Sending WriteCache (Unicode) Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_WRITECACHEW.
 
 WriteCacheW_Call MUST be initialized as specified in section 2.2.2.28.
 
-3.2.5.3.86
+###### 3.2.5.3.86 Processing WriteCache (Unicode) Reply
 
-Processing WriteCache (Unicode) Reply
+
 
 The OutputBuffer MUST be decoded as Long_Return, as specified in [MS-RPCE] section 2.2.6.
 
-3.2.5.3.87
+###### 3.2.5.3.87 Sending GetTransmitCount Message
 
-Sending GetTransmitCount Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETTRANSMITCOUNT.
 
 GetTransmitCount_Call MUST be initialized as specified in section 2.2.2.29.
 
-3.2.5.3.88
+###### 3.2.5.3.88 Processing GetTransmitCount Reply
 
-Processing GetTransmitCount Reply
+
 
 The OutputBuffer MUST be decoded as GetTransmitCount_Return, as specified in [MS-RPCE] section
 2.2.6.
@@ -6286,39 +6042,40 @@ Release: April 23, 2024
 
 71 / 92
 
-3.2.5.3.89
 
-Sending GetReaderIcon Message
+###### 3.2.5.3.89 Sending GetReaderIcon Message
+
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETREADERICON.
 
 GetReaderIcon_Call MUST be initialized as specified in section 2.2.2.31.
 
-3.2.5.3.90
+###### 3.2.5.3.90 Processing GetReaderIcon Reply
 
-Processing GetReaderIcon Reply
+
 
 The OutputBuffer MUST be decoded as GetReaderIcon_Return, as specified in section 2.2.3.14.
 
-3.2.5.3.91
+###### 3.2.5.3.91 Sending GetDeviceTypeId Message
 
-Sending GetDeviceTypeId Message
+
 
 IoControlCode MUST be set to SCARD_IOCTL_GETDEVICETYPEID.
 
 GetDeviceTypeId_Call MUST be initialized as specified in section 2.2.2.32.
 
-3.2.5.3.92
+###### 3.2.5.3.92 Processing GetDeviceTypeId Reply
 
-Processing GetDeviceTypeId Reply
+
 
 The OutputBuffer MUST be decoded as GetDeviceTypeId_Return, as specified in section 2.2.3.15.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -6329,11 +6086,12 @@ Release: April 23, 2024
 
 72 / 92
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-RDPESC].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 This example shows the messages sent to perform a simple querying of a card in the TS client
 machine. It assumes that a channel has already been set up on the between the TS client and the TS
@@ -6353,11 +6111,12 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All packets are constructed as specified in sections 3.2.5 and 3.2.5.3. The Status field refers to the
+
+All packets are constructed as specified in sections 3.2.5 and 3.2.5.3. The Status field refers to the
 IoStatus field as specified in [MS-RDPEFS] section 2.2.1.5. The CompletionId field is also specified
 in [MS-RDPEFS] section 2.2.1.5.
 
-4.1  Establish Context Call
+### 4.1 Establish Context Call
 
  IoControlCode= SCARD_IOCTL_ESTABLISHCONTEXT
  CompletionId = 0
@@ -6367,7 +6126,7 @@ in [MS-RDPEFS] section 2.2.1.5.
 
 The CompletionId field is specified in [MS-RDPEFS] section 2.2.1.4.
 
-4.2  Establish Context Return
+### 4.2 Establish Context Return
 
  CompletionId = 0
  Status = 0
@@ -6378,7 +6137,7 @@ The CompletionId field is specified in [MS-RDPEFS] section 2.2.1.4.
 
 The Status field is specified as the IoStatus field in [MS-RDPEFS] section 2.2.1.5.
 
-4.3  List Readers Call
+### 4.3 List Readers Call
 
  IoControlCode = SCARD_IOCTL_LISTREADERSW
  CompletionId = 0
@@ -6390,7 +6149,7 @@ The Status field is specified as the IoStatus field in [MS-RDPEFS] section 2.2.1
                cchReaders = 0xFFFFFFFF
  }
 
-4.4  List Readers Return
+### 4.4 List Readers Return
 
  CompletionId = 0
  Status = 0
@@ -6400,7 +6159,7 @@ The Status field is specified as the IoStatus field in [MS-RDPEFS] section 2.2.1
  msz = L"Gemplus USB Smart Card Reader 0\0\0"
  }
 
-4.5  Get Status Change Call
+### 4.5 Get Status Change Call
 
  IoControlCode = SCARD_IOCTL_GETSTATUSCHANGEW
  CompletionId = 0
@@ -6420,14 +6179,15 @@ Release: April 23, 2024
 
 74 / 92
 
- dwEventState = 0
+
+ dwEventState = 0
  cbAtr = 0
  pbAtr = {0}  }
                              }
            }
  }
 
-4.6  Get Status Change Return
+### 4.6 Get Status Change Return
 
  Status  = 0
  CompletionId = 0
@@ -6444,7 +6204,7 @@ Release: April 23, 2024
  }
  }
 
-4.7  Connect Call
+### 4.7 Connect Call
 
  IoControlCode = SCARD_IOCTL_CONNECTW
  CompletionId = 0
@@ -6457,7 +6217,7 @@ Release: April 23, 2024
  }
  }
 
-4.8  Connect Return
+### 4.8 Connect Return
 
  CompletionId = 0
  Status = 0
@@ -6470,7 +6230,7 @@ Release: April 23, 2024
  dwActiveProtocol = SCARD_PROTOCOL_T0
  }
 
-4.9  Begin Transaction Call
+### 4.9 Begin Transaction Call
 
  IoControlCode = SCARD_IOCTL_BEGINTRANSACTION
  CompletionId = 0
@@ -6488,9 +6248,10 @@ Release: April 23, 2024
 
 75 / 92
 
- }
 
-4.10  Begin Transaction Return
+ }
+
+### 4.10 Begin Transaction Return
 
  CompletionId = 0
  Status = 0
@@ -6498,7 +6259,7 @@ Release: April 23, 2024
  ReturnCode = 0
  }
 
-4.11  Status Call
+### 4.11 Status Call
 
  IoControlCode = SCARD_IOCTL_STATUSW
  CompletionId = 0
@@ -6512,7 +6273,7 @@ Release: April 23, 2024
  cbAtrLen = 36
  }
 
-4.12  Status Return
+### 4.12 Status Return
 
  CompletionId = 0
  IoStatus = 0
@@ -6526,7 +6287,7 @@ Release: April 23, 2024
  cbAtr = 9
  }
 
-4.13  End Transaction Call
+### 4.13 End Transaction Call
 
  IoControlCode = SCARD_IOCTL_ENDTRANSACTION
  CompletionId = 0
@@ -6538,7 +6299,7 @@ Release: April 23, 2024
  dwDisposition = SCARD_LEAVE_CARD
  }
 
-4.14  End Transaction Return
+### 4.14 End Transaction Return
 
  CompletionId = 0
  Status = 0
@@ -6553,7 +6314,8 @@ Release: April 23, 2024
 
 76 / 92
 
-4.15  Disconnect Call
+
+### 4.15 Disconnect Call
 
  IoControlCode = SCARD_IOCTL_DISCONNECT
  CompletionId = 0
@@ -6565,7 +6327,7 @@ Release: April 23, 2024
  dwDisposition = SCARD_RESET_CARD
  }
 
-4.16  Disconnect Return
+### 4.16 Disconnect Return
 
  CompletionId = 0
  Status = 0
@@ -6573,7 +6335,7 @@ Release: April 23, 2024
  ReturnCode = 0
  }
 
-4.17  Release Context Call
+### 4.17 Release Context Call
 
  IoControlCode = SCARD_IOCTL_RELEASECONTEXT
  CompletionId = 0
@@ -6581,7 +6343,7 @@ Release: April 23, 2024
  Context = {cbContext = 4, pbContext = {0x00,0x00,0x01,0xcd} }
  }
 
-4.18  Release Context Return
+### 4.18 Release Context Return
 
  CompletionId = 0
  Status = 0
@@ -6596,15 +6358,16 @@ Release: April 23, 2024
 
 77 / 92
 
-5  Security
+
+## 5 Security
 
 This protocol has no security aspects and relies on the underlying transport for any security.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6615,7 +6378,8 @@ Release: April 23, 2024
 
 78 / 92
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Interface Definition Language (IDL) is provided below where
 ms-dtyp.idl is the IDL as specified in [MS-DTYP] section 5 and ms-dcom.idl is the IDL as specified in
@@ -6689,7 +6453,8 @@ Release: April 23, 2024
 
 79 / 92
 
-     [string] const char *                                sz2;
+
+     [string] const char *                                sz2;
  } ContextAndTwoStringA_Call;
 
  typedef struct _ContextAndTwoStringW_Call
@@ -6764,7 +6529,8 @@ Release: April 23, 2024
 
 80 / 92
 
- typedef struct _GetStatusChangeA_Call
+
+ typedef struct _GetStatusChangeA_Call
  {
                          REDIR_SCARDCONTEXT      Context;
                          unsigned long           dwTimeOut;
@@ -6836,7 +6602,8 @@ Release: April 23, 2024
 
 81 / 92
 
- } GetStatusChangeW_Call;
+
+ } GetStatusChangeW_Call;
 
  typedef struct _Connect_Common
  {
@@ -6910,7 +6677,8 @@ Release: April 23, 2024
 
 82 / 92
 
- {
+
+ {
      REDIR_SCARDHANDLE                       hCard;
      long                                    fmszReaderNamesIsNULL;
      unsigned long                           cchReaderLen;
@@ -6986,7 +6754,8 @@ Release: April 23, 2024
 
 83 / 92
 
- typedef struct _GetAttrib_Call
+
+ typedef struct _GetAttrib_Call
  {
      REDIR_SCARDHANDLE                  hCard;
      unsigned long                      dwAttrId;
@@ -7062,7 +6831,8 @@ Release: April 23, 2024
 
 84 / 92
 
-     [string] wchar_t *             szLookupName;
+
+     [string] wchar_t *             szLookupName;
               WriteCache_Common     Common;
  } WriteCacheW_Call;
  }
@@ -7074,7 +6844,8 @@ Release: April 23, 2024
 
 85 / 92
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7138,7 +6909,8 @@ Release: April 23, 2024
 
 86 / 92
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7182,7 +6954,8 @@ Release: April 23, 2024
 
 87 / 92
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7314,7 +7087,8 @@ Release: April 23, 2024
 
 88 / 92
 
-GetStatusChange_Return 38
+
+GetStatusChange_Return 38
 GetStatusChangeA_Call structure 27
 GetStatusChangeW_Call structure 28
 GetTransmitCount_Call structure 35
@@ -7518,7 +7292,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4)
+
+   SCARD_IOCTL_RECONNECT (IOCTL 0x000900B4)
 
 Return_Code packet 45
 
@@ -7731,7 +7506,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SCARD_IOCTL_LOCATECARDSA (IOCTL
+
+SCARD_IOCTL_LOCATECARDSA (IOCTL
 
    SCARD_IOCTL_DISCONNECT (IOCTL 0x000900B8)
 
@@ -7982,7 +7758,8 @@ Remote Desktop Protocol: Smart Card Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC)
+
+   SCARD_IOCTL_SETATTRIB (IOCTL 0x000900DC)
 
 method 61
 

@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 71
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -208,175 +209,76 @@ Release: October 26, 2021
 
 2 / 71
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Transaction Trees ......................................................................................... 6
-Two-Phase Commit Protocol ........................................................................... 6
-Phase Zero .................................................................................................. 7
-Single-Phase Commit .................................................................................... 8
-Core and Optional Protocols ........................................................................... 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Transaction Trees](#111-transaction-trees)
+    - [1.1.2 Two-Phase Commit Protocol](#112-two-phase-commit-protocol)
+    - [1.1.3 Phase Zero](#113-phase-zero)
+    - [1.1.4 Single-Phase Commit](#114-single-phase-commit)
+    - [1.1.5 Core and Optional Protocols](#115-core-and-optional-protocols)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Purpose](#211-purpose)
+    - [2.1.2 Interaction with External Components](#212-interaction-with-external-components)
+    - [2.1.3 System Components](#213-system-components)
+    - [2.1.4 System Communication](#214-system-communication)
+    - [2.1.5 Member Protocol Functional Relationships](#215-member-protocol-functional-relationships)
+    - [2.1.6 System Applicability](#216-system-applicability)
+    - [2.1.7 Relevant Standards](#217-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Perform Transaction Work – Application](#251-perform-transaction-work-application)
+    - [2.5.2 Complete a Transaction – Application](#252-complete-a-transaction-application)
+    - [2.5.3 Transaction Management – Management Tool](#253-transaction-management-management-tool)
+    - [2.5.4 Recover In-doubt Transaction State – Resource Manager](#254-recover-in-doubt-transaction-state-resource-manager)
+    - [2.5.5 Transaction Recovery - Remote Transaction Manager](#255-transaction-recovery-remote-transaction-manager)
+    - [2.5.6 Supporting Use Cases](#256-supporting-use-cases)
+      - [2.5.6.1 Create a Transaction – Application](#2561-create-a-transaction-application)
+      - [2.5.6.2 Enlist in a Transaction – Resource Manager](#2562-enlist-in-a-transaction-resource-manager)
+      - [2.5.6.3 Perform Transaction Work with Pull Propagation – Application](#2563-perform-transaction-work-with-pull-propagation-application)
+      - [2.5.6.4 Perform Transaction Work with Push Propagation – External Application](#2564-perform-transaction-work-with-push-propagation-external-application)
+      - [2.5.6.5 Drive Completion of a Transaction – Root Transaction Manager](#2565-drive-completion-of-a-transaction-root-transaction-manager)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Connection Disconnected](#271-connection-disconnected)
+    - [2.7.2 Internal Failures](#272-internal-failures)
+    - [2.7.3 System Configuration Corruption or Unavailability](#273-system-configuration-corruption-or-unavailability)
+    - [2.7.4 Log Corruption or Unavailability](#274-log-corruption-or-unavailability)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Transaction Information Security](#291-transaction-information-security)
+    - [2.9.2 System Configuration Security](#292-system-configuration-security)
+    - [2.9.3 Message Security](#293-message-security)
+    - [2.9.4 Event Security](#294-event-security)
+    - [2.9.5 Connection Type and Feature Restriction](#295-connection-type-and-feature-restriction)
+    - [2.9.6 Internal Security](#296-internal-security)
+    - [2.9.7 External Security](#297-external-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Perform Transaction Work](#31-example-1-perform-transaction-work)
+  - [3.2 Example 2: Commit a Transaction](#32-example-2-commit-a-transaction)
+  - [3.3 Example 3: Abort a Transaction](#33-example-3-abort-a-transaction)
+  - [3.4 Example 4: Transaction Manager Recovers after a Connection Resource Manager](#34-example-4-transaction-manager-recovers-after-a-connection-resource-manager)
+  - [3.5 Example 5: Connection to a Resource Manager Breaks Down](#35-example-5-connection-to-a-resource-manager-breaks-down)
+  - [3.6 Example 6: Distributed Transaction Coordination with External Components](#36-example-6-distributed-transaction-coordination-with-external-components)
+    - [3.6.1 Precursory Message Exchange](#361-precursory-message-exchange)
+    - [3.6.2 Application-Driven Transactional Message Exchange](#362-application-driven-transactional-message-exchange)
+    - [3.6.3 Two-Phase Commit Transactional Message Exchange](#363-two-phase-commit-transactional-message-exchange)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1.1.1
-1.1.2
-1.1.3
-1.1.4
-1.1.5
-
-1.2
-1.3
-
-2.1
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.3.1
-2.3.2
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-2.5.6
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-2.1.6
-2.1.7
-
-2  Functional Architecture ......................................................................................... 13
-Overview ........................................................................................................ 13
-Purpose ..................................................................................................... 13
-Interaction with External Components ........................................................... 13
-System Components ................................................................................... 15
-System Communication ............................................................................... 17
-Member Protocol Functional Relationships ...................................................... 17
-System Applicability .................................................................................... 19
-Relevant Standards ..................................................................................... 20
-Protocol Summary ............................................................................................ 20
-Environment .................................................................................................... 23
-Dependencies on This System ...................................................................... 23
-Dependencies on Other Systems/Components ................................................ 23
-Assumptions and Preconditions .......................................................................... 24
-Use Cases ....................................................................................................... 24
-Perform Transaction Work – Application ........................................................ 24
-Complete a Transaction – Application ............................................................ 27
-Transaction Management – Management Tool ................................................ 28
-Recover In-doubt Transaction State – Resource Manager ................................. 29
-Transaction Recovery - Remote Transaction Manager ...................................... 31
-Supporting Use Cases ................................................................................. 32
-Create a Transaction – Application .......................................................... 32
-Enlist in a Transaction – Resource Manager .............................................. 33
-Perform Transaction Work with Pull Propagation – Application .................... 34
-Perform Transaction Work with Push Propagation – External Application ...... 35
-Drive Completion of a Transaction – Root Transaction Manager .................. 36
-Versioning, Capability Negotiation, and Extensibility ............................................. 37
-Error Handling ................................................................................................. 37
-Connection Disconnected ............................................................................. 37
-Internal Failures ......................................................................................... 38
-System Configuration Corruption or Unavailability .......................................... 38
-Log Corruption or Unavailability .................................................................... 38
-Coherency Requirements .................................................................................. 38
-Security .......................................................................................................... 39
-Transaction Information Security .................................................................. 40
-System Configuration Security ..................................................................... 40
-Message Security ........................................................................................ 40
-Event Security ............................................................................................ 40
-Connection Type and Feature Restriction ....................................................... 41
-Internal Security ........................................................................................ 41
-External Security ........................................................................................ 41
-Additional Considerations .................................................................................. 42
-
-2.9.1
-2.9.2
-2.9.3
-2.9.4
-2.9.5
-2.9.6
-2.9.7
-
-2.5.6.1
-2.5.6.2
-2.5.6.3
-2.5.6.4
-2.5.6.5
-
-2.7.1
-2.7.2
-2.7.3
-2.7.4
-
-2.6
-2.7
-
-2.8
-2.9
-
-2.10
-
-3  Examples ............................................................................................................... 43
-Example 1: Perform Transaction Work ................................................................ 43
-
-3.1
-
-3 / 71
-
-[MS-TPSOD] - v20211026
-Transaction Processing Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3.2
-3.3
-3.4
-
-3.5
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-
-Example 2: Commit a Transaction ...................................................................... 46
-Example 3: Abort a Transaction ......................................................................... 48
-Example 4: Transaction Manager Recovers after a Connection Resource Manager Failure
- ..................................................................................................................... 50
-Example 5: Connection to a Resource Manager Breaks Down ................................ 53
-Example 6: Distributed Transaction Coordination with External Components ........... 56
-Precursory Message Exchange ...................................................................... 57
-Application-Driven Transactional Message Exchange ....................................... 60
-Two-Phase Commit Transactional Message Exchange ...................................... 63
-
-4  Microsoft Implementations ................................................................................... 68
-Product Behavior .............................................................................................. 68
-
-4.1
-
-5  Change Tracking .................................................................................................... 69
-
-6  Index ..................................................................................................................... 70
-
-[MS-TPSOD] - v20211026
-Transaction Processing Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 71
-
-1  Introduction
+## 1 Introduction
 
 In a distributed computer network, it is sometimes necessary to ensure that a set of separate
 operations is either all completed, or that none of the operations is completed. In application
@@ -423,7 +325,7 @@ transaction, each participant is said to be enlisted in the transaction.
 For more information about transaction processing concepts, see [GRAY] chapter 2.1, and [MS-DTCO]
 section 1.3.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 A transaction is an atomic unit of work (UOW) that can either succeed or fail. A transaction
 cannot be partially completed. Because a transaction can be made up of many steps, each step in the
@@ -454,7 +356,8 @@ Release: October 26, 2021
 
 5 / 71
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-TPSOD].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -462,7 +365,7 @@ Release: October 26, 2021
 
   Core and Optional Protocols (section 1.1.5)
 
-1.1.1  Transaction Trees
+#### 1.1.1 Transaction Trees
 
 Multiple transaction managers and resource managers can participate in a transaction. In the
 two-phase commit protocol their individual responsibilities are defined by a transaction tree, as
@@ -477,7 +380,7 @@ transaction manager if any of its subordinate participants are transaction manag
 managers in the tree, apart from the root transaction manager, are subordinate transaction
 managers.
 
-1.1.2  Two-Phase Commit Protocol
+#### 1.1.2 Two-Phase Commit Protocol
 
 The two phases of the two-phase commit protocol as described in [GRAY] are Phase One and
 Phase Two. These phases can be described informally as "are you ready" and "go / no go,"
@@ -490,7 +393,8 @@ Release: October 26, 2021
 
 6 / 71
 
-Phase One (are you ready) begins when all the required changes to the resource state have been
+
+Phase One (are you ready) begins when all the required changes to the resource state have been
 made, and the root application asks the transaction manager to complete the transaction. Phase
 One ends when the transaction manager determines the outcome of the transaction; that is,
 whether all the changes are to be made or whether no changes are to be made.
@@ -555,7 +459,8 @@ Release: October 26, 2021
 
 7 / 71
 
-1.1.3  Phase Zero
+
+#### 1.1.3 Phase Zero
 
 The transaction processing services protocols extend the two-phase commit protocol by adding
 Phase Zero, which expands the beginning of Phase One. It begins when the root application
@@ -572,7 +477,7 @@ enlisted in the transaction and the changes are made to the durable store, yield
 significant performance gains. Further details of Phase Zero are described in [MS-DTCO] section
 1.3.1.1.
 
-1.1.4  Single-Phase Commit
+#### 1.1.4 Single-Phase Commit
 
 As an extension to the two-phase commit protocol, transaction processing services protocols use a
 mechanism that is called single-phase commit optimization, which is described in [MS-DTCO]
@@ -589,7 +494,7 @@ optimization, it rejects the initial request, and the root transaction manager r
 phase commit. Single-phase commit optimization is useful when the root transaction manager and the
 subordinate transaction manager are on separate networks.
 
-1.1.5  Core and Optional Protocols
+#### 1.1.5 Core and Optional Protocols
 
 To facilitate transaction coordination, the system supports a set of core protocols and a set of optional
 protocols, as described in the Protocol Summary (section 2.2). Core protocols are proprietary to the
@@ -601,7 +506,7 @@ as external applications, external application services, external resource manag
 transaction managers. The system allows the possibility of processing a transaction by using only a
 single core or optional protocol, or a combination of core and optional protocols.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -622,7 +527,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-application: A participant that is responsible for beginning, propagating, and completing an atomic
+
+application: A participant that is responsible for beginning, propagating, and completing an atomic
 
 transaction. An application communicates with a transaction manager in order to begin and
 complete transactions. An application communicates with a transaction manager in order to
@@ -700,7 +606,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Phase Zero: A phase in distributed transaction processing that is composed of one or more Phase
+
+Phase Zero: A phase in distributed transaction processing that is composed of one or more Phase
 Zero waves. At the beginning of a Phase Zero wave, all Phase Zero participants are notified that
 the transaction has entered Phase Zero. While the participants process the Phase Zero
 notification, they can continue to marshal the transaction to new participants. Consequently,
@@ -775,7 +682,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-coordinates the voting and notification of its subordinate participants on behalf of its superior
+
+coordinates the voting and notification of its subordinate participants on behalf of its superior
 transaction manager. When communicating with those subordinate participants, the
 subordinate transaction manager acts in the role of superior transaction manager. The
 root transaction manager is never a subordinate transaction manager. A subordinate
@@ -816,7 +724,7 @@ unit of work: A set of individual operations that MSMQ has to successfully compl
 
 the individual MSMQ operations can be considered complete.
 
-1.3  References
+### 1.3 References
 
 [GRAY] Gray, J., and Reuter, A., "Transaction Processing: Concepts and Techniques", The Morgan
 Kaufmann Series in Data Management Systems, San Francisco: Morgan Kaufmann Publishers, 1992,
@@ -846,7 +754,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-DTCM] Microsoft Corporation, "MSDTC Connection Manager: OleTx Transaction Internet Protocol".
+
+[MS-DTCM] Microsoft Corporation, "MSDTC Connection Manager: OleTx Transaction Internet Protocol".
 
 [MS-DTCO] Microsoft Corporation, "MSDTC Connection Manager: OleTx Transaction Protocol".
 
@@ -883,7 +792,8 @@ Release: October 26, 2021
 
 12 / 71
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 The transaction processing services protocols are an internal infrastructure of the Windows operating
 system and support applications and systems that require transaction coordination services. For
@@ -905,9 +815,9 @@ managers, and transaction managers that do not support the internal protocols as
 system, to participate in transactions. They are referred to as external applications, external resource
 managers, and external transaction managers.
 
-2.1  Overview
+### 2.1 Overview
 
-2.1.1  Purpose
+#### 2.1.1 Purpose
 
 The transaction processing services protocols provide distributed transaction coordination services for
 applications, application services, resource managers, external applications, external application
@@ -936,7 +846,7 @@ section 1.3.4.
 
 Enable external transaction managers to participate in coordinating a transaction.
 
-2.1.2  Interaction with External Components
+#### 2.1.2 Interaction with External Components
 
 The following diagram shows the external components that interact with the transaction processing
 services.
@@ -948,7 +858,8 @@ Release: October 26, 2021
 
 13 / 71
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-TPSOD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1009,7 +920,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-TPSOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1017,7 +929,7 @@ background, they can use transaction processing services to fulfill the required
 coordination semantics. This way, the complexity of interacting with the transaction processing
 services is minimized.
 
-2.1.3  System Components
+#### 2.1.3 System Components
 
 This section describes the externally visible view of the system and the components within the system.
 
@@ -1053,7 +965,8 @@ Release: October 26, 2021
 
 15 / 71
 
-provides functionality to enlist in transactions that are coordinated by remote transaction
+
+provides functionality to enlist in transactions that are coordinated by remote transaction
 managers.
 
 Resource manager: A participant that is responsible for coordinating the state of a resource with the
@@ -1093,7 +1006,8 @@ Release: October 26, 2021
 
 16 / 71
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-TPSOD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1109,9 +1023,9 @@ implementation-specific. The expectation is that this communication consists of 
 be done, along with all information that is necessary to enlist in the transaction, including the
 transaction identifier. Otherwise, all other communication is based on the core protocols.
 
-2.1.4  System Communication
+#### 2.1.4 System Communication
 
-2.1.5  Member Protocol Functional Relationships
+#### 2.1.5 Member Protocol Functional Relationships
 
 The following diagram represents the dependencies of the protocols that are used by the transaction
 processing services.
@@ -1123,7 +1037,8 @@ Release: October 26, 2021
 
 17 / 71
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-TPSOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1167,7 +1082,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-manager communications, and external transaction manager to transaction manager
+
+manager communications, and external transaction manager to transaction manager
 communications. This protocol represents an extension to TIP as specified in [RFC2371]. It
 provides mechanisms to associate TIP transactions and the transactions that are internal to the
 system. It also provides mechanisms for driving a single atomic outcome, coordinating the
@@ -1223,7 +1139,7 @@ RPC interfaces. Details are specified in [MS-CMPO] sections 1.3, 1.7, and 2.
 supports both multiplexing multiple logical sessions over a single CMPO session, and multiplexing
 multiple protocol messages into a single CMPO.
 
-2.1.6  System Applicability
+#### 2.1.6 System Applicability
 
 The transaction processing services protocols are applicable in scenarios where atomic transaction
 processing is required where the participants can be on the same computer or distributed in a
@@ -1237,7 +1153,8 @@ Release: October 26, 2021
 
 19 / 71
 
-2.1.7  Relevant Standards
+
+#### 2.1.7 Relevant Standards
 
 The system uses the standards that are listed in the following table for interoperability with external
 systems.
@@ -1283,7 +1200,7 @@ Allows distributed transaction processing and
 transaction propagation with systems
 implementing XA.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following tables list the core and optional protocols that facilitate transaction coordination. Core
 protocols are proprietary to the system and are used by default by applications, application services,
@@ -1364,7 +1281,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Protocol purpose
 
@@ -1480,7 +1398,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1606,7 +1525,8 @@ Release: October 26, 2021
 
 22 / 71
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1634,14 +1554,14 @@ by extending the WS-AtomicTransaction Protocol.
 [MS-
 WSRVCAT]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. The system includes the
 systems that use the interfaces that are provided by this system of protocols, other systems that
 depend on this system, and, as appropriate, the manner in which the components of the system
 communicate.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 The following systems depend on transaction processing services:
 
@@ -1657,7 +1577,7 @@ implement its transactional features. Without transaction processing services, t
 has to either implement an internal transaction processing system or has to rely on another
 transaction processing system to achieve the same functionality.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The system depends on a durable storage system to maintain the state that is used when recovering
 from failure. The storage that holds this state is referred to as a log. The log is a crucial component of
@@ -1686,7 +1606,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.4  Assumptions and Preconditions
+
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions apply to the transaction processing services protocols:
 
@@ -1722,9 +1643,9 @@ Member protocols that are supported by the system, as listed in section 2.2, can
 assumptions and preconditions when that protocol is being used. See the relevant member protocol
 specification for details.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Perform Transaction Work – Application
+#### 2.5.1 Perform Transaction Work – Application
 
 In this use case, the application performs the transaction between multiple transaction managers.
 
@@ -1737,7 +1658,8 @@ Release: October 26, 2021
 
 24 / 71
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-TPSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1756,7 +1678,8 @@ Release: October 26, 2021
 
 25 / 71
 
-Application: A primary actor that performs transaction work on a number of transaction managers.
+
+Application: A primary actor that performs transaction work on a number of transaction managers.
 
 The application creates a transaction, and therefore, only that application has the right to commit
 the transaction.
@@ -1838,11 +1761,12 @@ Release: October 26, 2021
 
 26 / 71
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-TPSOD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
-2.5.2  Complete a Transaction – Application
+#### 2.5.2 Complete a Transaction – Application
 
 In this use case, the application either commits or aborts the transaction and completes the
 transaction on all transaction participants.
@@ -1892,7 +1816,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-TPSOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1918,7 +1843,7 @@ Variation – complete a transaction – external application: All details are i
 case as described in this section except that the application here is an external application that
 makes use of optional protocols (see section 2.2).
 
-2.5.3  Transaction Management – Management Tool
+#### 2.5.3 Transaction Management – Management Tool
 
 Context of use: A transaction operation is monitored or managed by the management tool.
 
@@ -1948,7 +1873,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-TPSOD].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1989,7 +1915,7 @@ For example, it can force the transaction to abort.
 
 Postcondition: The transaction state is correctly updated.
 
-2.5.4  Recover In-doubt Transaction State – Resource Manager
+#### 2.5.4 Recover In-doubt Transaction State – Resource Manager
 
 This use case shows how the resource manager drives recovery when a connection to a resource
 manager breaks down after a participant has completed Phase One, but before completing Phase
@@ -2009,7 +1935,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Goal: To recover the state of an in-doubt transaction in the root transaction manager's log.
+
+Goal: To recover the state of an in-doubt transaction in the root transaction manager's log.
 
 Actors:
 
@@ -2090,11 +2017,12 @@ Release: October 26, 2021
 
 30 / 71
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-TPSOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
-2.5.5  Transaction Recovery - Remote Transaction Manager
+#### 2.5.5 Transaction Recovery - Remote Transaction Manager
 
 This use case shows how the transaction manager drives recovery where a connection to a
 subordinate transaction manager breaks down during the two-phase commit protocol, as
@@ -2144,7 +2072,8 @@ Release: October 26, 2021
 
 31 / 71
 
-Preconditions:
+
+Preconditions:
 
 
 
@@ -2184,9 +2113,9 @@ outcome that it received from the root transaction manager.
 
 Extensions: None.
 
-2.5.6  Supporting Use Cases
+#### 2.5.6 Supporting Use Cases
 
-2.5.6.1  Create a Transaction – Application
+##### 2.5.6.1 Create a Transaction – Application
 
 In this use case, the application triggers the root transaction manager to create a transaction.
 
@@ -2224,7 +2153,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 
 
@@ -2250,7 +2180,7 @@ Variation – create a transaction – external application: All details are ide
 that is described in this section except that the application is an external application that makes
 use of optional protocols (see section 2.2).
 
-2.5.6.2  Enlist in a Transaction – Resource Manager
+##### 2.5.6.2 Enlist in a Transaction – Resource Manager
 
 In this use case, the resource manager enlists in a transaction with a respective transaction manager.
 
@@ -2309,7 +2239,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  After successful enlistment in a transaction, the resource manager makes the requested updates
+
+4.  After successful enlistment in a transaction, the resource manager makes the requested updates
 to its resource in accordance with the semantics of the two-phase commit protocol, such as
 isolation and durability.
 
@@ -2323,7 +2254,7 @@ Variation: All details are identical to the use case as described in this sectio
 
 application is an external application that makes use of optional protocols (see section 2.2).
 
-2.5.6.3  Perform Transaction Work with Pull Propagation – Application
+##### 2.5.6.3 Perform Transaction Work with Pull Propagation – Application
 
 In this use case, the application performs transaction work with pull propagation.
 
@@ -2399,7 +2330,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 The transaction managers on each computer in the system are operational.
 
@@ -2450,7 +2382,7 @@ Variation – perform transaction work with pull propagation – external applic
 are identical to the use case as described in this section except that the application here is an
 external application that makes use of optional protocols (see section 2.2).
 
-2.5.6.4  Perform Transaction Work with Push Propagation – External Application
+##### 2.5.6.4 Perform Transaction Work with Push Propagation – External Application
 
 In this use case, the application performs transaction work with push propagation.
 
@@ -2482,7 +2414,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-External transaction manager: The external transaction manager is a supporting actor that
+
+External transaction manager: The external transaction manager is a supporting actor that
 
 receives requests to perform transactions depending on its availability.
 
@@ -2552,7 +2485,7 @@ Postcondition: Transaction work is done with push propagation.
 
 Extensions: None.
 
-2.5.6.5  Drive Completion of a Transaction – Root Transaction Manager
+##### 2.5.6.5 Drive Completion of a Transaction – Root Transaction Manager
 
 In this use case, the root transaction manager drives the completion of the transaction on all
 transaction participants.
@@ -2570,7 +2503,8 @@ Release: October 26, 2021
 
 36 / 71
 
-Root transaction manager: The root transaction manager is a supporting actor. The root transaction
+
+Root transaction manager: The root transaction manager is a supporting actor. The root transaction
 
 manager coordinates the lifetime of transactions by providing functionality for resource managers
 to enlist in these transactions and functionality to enlist in transactions that are coordinated by
@@ -2618,17 +2552,17 @@ Postcondition: The transaction has completed successfully.
 
 Extensions: None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 The system does not define any versioning and capability negotiation beyond those described in the
 specifications of the protocols that are supported by the system, as listed in section 2.2.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 This section describes the common failure scenarios and provides details about the system behavior in
 such conditions.
 
-2.7.1  Connection Disconnected
+#### 2.7.1 Connection Disconnected
 
 A common failure scenario is an unexpected connection breakdown between the system and external
 entities or between transaction managers within the system. A disconnection can be caused by the
@@ -2645,7 +2579,8 @@ Release: October 26, 2021
 
 37 / 71
 
-Generally, a protocol detects a connection breakdown by one of the following methods:
+
+Generally, a protocol detects a connection breakdown by one of the following methods:
 
   By using a timer object that generates an event if the corresponding participant has not responded
 
@@ -2659,7 +2594,7 @@ communications and updates any necessary data structures to maintain the system 
 Details about how each protocol detects a connection disconnected event and how it behaves under
 this scenario are provided in the specifications of the member protocols, as listed in section 2.2.
 
-2.7.2  Internal Failures
+#### 2.7.2 Internal Failures
 
 The system or a transaction participant can detect an unrecoverable internal state at any point during
 the lifetime of a transaction. In such a scenario, if the system or the participant experiencing the
@@ -2672,7 +2607,7 @@ participant returns to a state where it can resume its operations, it can recove
 Detailed descriptions of unilateral abort and recovery scenarios are provided in [MS-DTCO] sections
 1.3.2.1 and 1.3.4, respectively.
 
-2.7.3  System Configuration Corruption or Unavailability
+#### 2.7.3 System Configuration Corruption or Unavailability
 
 The system relies on the availability and consistency of its configuration data. Configuration consists of
 the data that determines the behavior of the system under specific conditions or for specific
@@ -2684,7 +2619,7 @@ a default value. [MS-CMOM] section 3.3.1 describes the system configuration data
 which it maps to the abstract data models in [MS-CMPO] section 3.2.1, [MS-DTCO] section 3.2.1, and
 [MC-DTCXA] section 3.1.1.
 
-2.7.4  Log Corruption or Unavailability
+#### 2.7.4 Log Corruption or Unavailability
 
 The log is where the system keeps the transaction state information. Availability and consistency of
 the log is crucial to guaranteeing atomicity in transaction processing. The system can use
@@ -2696,7 +2631,7 @@ If the log is not recoverable or if it is lost, a new log is created, which mean
 information that was in the previous log is lost. This means that the data or application state that was
 dependent on the transaction information from the lost log can become corrupt.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 Transactions are used by applications and other systems to maintain data coherency in the event of
 transient failures. To satisfy this requirement, the system guarantees atomicity through transactions.
@@ -2711,11 +2646,12 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-TPSOD].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
-2.9  Security
+### 2.9 Security
 
 This section documents the system-wide security issues that are not otherwise described in the
 specifications for the member protocols. It does not duplicate what is already in the member protocol
@@ -2747,7 +2683,8 @@ Release: October 26, 2021
 
 39 / 71
 
-2.9.1  Transaction Information Security
+
+#### 2.9.1 Transaction Information Security
 
 The transaction information asset consists of the state of the transaction, the identity, and the
 locations of the participants, and other data about the transaction, such as the transaction description.
@@ -2762,7 +2699,7 @@ it receives. Therefore, the security and integrity of the transaction informatio
 the system's ability to secure these events and messages, which is described in sections 2.9.3 and
 2.9.4.
 
-2.9.2  System Configuration Security
+#### 2.9.2 System Configuration Security
 
 The system configuration asset consists of all the configuration data that is required by the system.
 Examples are security identities and associated credentials that are used by the system, and feature
@@ -2775,7 +2712,7 @@ receives; for example, from a management tool, as specified in [MS-CMOM]. Theref
 and integrity of the system configuration is also dependent on the system's ability to secure these
 messages, which is described in section 2.9.3.
 
-2.9.3  Message Security
+#### 2.9.3 Message Security
 
 The messages asset consists of the messages that are received and sent by the system and messages
 that are received and sent within the system. The system protects the privacy and integrity of these
@@ -2801,7 +2738,7 @@ system. The system keeps a list of X.509 security certificate thumbprints in its
 authorize whether an entity can participate in transaction coordination with the system by using the
 WS-AT protocol.
 
-2.9.4  Event Security
+#### 2.9.4 Event Security
 
 The Events asset consists of the events that are raised and handled by the system. These events are
 limited to events that are received from the network system reporting a change of connection state
@@ -2813,11 +2750,12 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-and events that are received from the operating environment of the system when the system is
+
+and events that are received from the operating environment of the system when the system is
 initialized. Both of these event sources and their connection to the system are trusted by the system,
 and no additional protections are applied.
 
-2.9.5  Connection Type and Feature Restriction
+#### 2.9.5 Connection Type and Feature Restriction
 
 The system also restricts access to certain features to specified groups of security identities. This
 restriction is applied at the level of connection type. A connection type specifies a set of messages.
@@ -2845,7 +2783,7 @@ details of this configuration are described in [MS-CMOM].
 
 The system can also be configured to restrict the use of the WS-AtomicTransaction (WS-AT) protocol.
 
-2.9.6  Internal Security
+#### 2.9.6 Internal Security
 
 Transaction processing services apply the security mechanisms as described in sections 2.9.1, 2.9.2,
 2.9.3, 2.9.4, and 2.9.5 to ensure internal security.
@@ -2867,7 +2805,7 @@ administrative intervention.
 
 business logic allows.
 
-2.9.7  External Security
+#### 2.9.7 External Security
 
 Transaction processing services apply the following security measures to ensure the security of other
 entities with which they interact:
@@ -2883,7 +2821,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 Establish all communication over HTTPS connections when using WS-AT.
 
@@ -2921,7 +2860,7 @@ well-regulated progress towards a common transaction outcome.
 
 business logic allows.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -2932,9 +2871,10 @@ Release: October 26, 2021
 
 42 / 71
 
-3  Examples
 
-3.1  Example 1: Perform Transaction Work
+## 3 Examples
+
+### 3.1 Example 1: Perform Transaction Work
 
 This example demonstrates performing a transaction that involves two transaction managers as
 described in Perform Transaction Work – Application (section 2.5.1).
@@ -2970,7 +2910,8 @@ Release: October 26, 2021
 
 43 / 71
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-TPSOD].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2995,7 +2936,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-DTCO] section 4.4.1, to the resource manager to acknowledge that the resource manager is
+
+DTCO] section 4.4.1, to the resource manager to acknowledge that the resource manager is
 registered with the root transaction manager as a resource manager.
 
 3.  The remote resource manager connects to the remote transaction manager by initiating a
@@ -3070,7 +3012,8 @@ Release: October 26, 2021
 
 45 / 71
 
-14. The root transaction manager creates a subordinate branch and sends a
+
+14. The root transaction manager creates a subordinate branch and sends a
 
 PARTNERTM_BRANCH_MTAG_BRANCHED message to the remote transaction manager, as
 described in [MS-DTCO] section 4.2.3, to acknowledge that the remote transaction manager is
@@ -3111,7 +3054,7 @@ Work action that was initiated in step 11.
 21. The application completes the transaction by sending a TXUSER_BEGIN2_MTAG_COMMIT user
 message to the root transaction manager transaction, as described in [MS-DTCO] section 4.1.2.1.
 
-3.2  Example 2: Commit a Transaction
+### 3.2 Example 2: Commit a Transaction
 
 This example demonstrates how a transaction is committed, as described in the use case Complete a
 Transaction – Application (section 2.5.2). A transaction is committed if all the subordinate participants
@@ -3152,7 +3095,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-TPSOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3182,7 +3126,8 @@ Release: October 26, 2021
 
 47 / 71
 
-(TXUSER_ENLISTMENT_PREPAREREQDONE_OK), as specified in [MS-DTCO] section 4.5.1.1,
+
+(TXUSER_ENLISTMENT_PREPAREREQDONE_OK), as specified in [MS-DTCO] section 4.5.1.1,
 completing step 1.
 
 4.  The remote transaction manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQ
@@ -3240,7 +3185,7 @@ section 4.5.2.2.
 
 of the completion of the two-phase commit sequence.
 
-3.3  Example 3: Abort a Transaction
+### 3.3 Example 3: Abort a Transaction
 
 This example demonstrates how a transaction is aborted as described in use case Complete a
 Transaction – Application (section 2.5.2). A transaction is aborted if at least one of the subordinate
@@ -3253,7 +3198,8 @@ Release: October 26, 2021
 
 48 / 71
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-TPSOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3302,7 +3248,8 @@ Release: October 26, 2021
 
 49 / 71
 
-1.  The root transaction manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQ message
+
+1.  The root transaction manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQ message
 to the resource manager over the CONNTYPE_TXUSER_ENLISTMENT connection, as specified
 in [MS-DTCO] section 4.5.1.1, indicating that this is a two-phase commit.
 
@@ -3345,7 +3292,7 @@ the resource manager over the CONNTYPE_TXUSER_ENLISTMENT connection, as specifie
 
 the root transaction manager, completing step 8, as specified in [MS-DTCO] section 2.2.10.2.2.2.
 
-3.4  Example 4: Transaction Manager Recovers after a Connection Resource Manager
+### 3.4 Example 4: Transaction Manager Recovers after a Connection Resource Manager
 
 Failure
 
@@ -3382,7 +3329,8 @@ Release: October 26, 2021
 
 50 / 71
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-TPSOD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3408,7 +3356,8 @@ Release: October 26, 2021
 
 51 / 71
 
-1.  The root transaction manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQ message
+
+1.  The root transaction manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQ message
 to the resource manager over the CONNTYPE_TXUSER_ENLISTMENT connection, as specified
 in [MS-DTCO] section 4.5.1.1, indicating that this is a two-phase commit.
 
@@ -3481,7 +3430,8 @@ Release: October 26, 2021
 
 52 / 71
 
-CONNTYPE_PARTNERTM_REDELIVERCOMMIT connection, as specified in [MS-DTCO] section
+
+CONNTYPE_PARTNERTM_REDELIVERCOMMIT connection, as specified in [MS-DTCO] section
 3.7.7.1, indicating that the committed request is redelivered.
 
 15. The remote transaction manager sends a
@@ -3494,7 +3444,7 @@ remote resource manager will drive its own recovery sequence later. As specified
 section 1.3.4.2, the resource manager is responsible for initiating recovery with its transaction
 manager.
 
-3.5  Example 5: Connection to a Resource Manager Breaks Down
+### 3.5 Example 5: Connection to a Resource Manager Breaks Down
 
 This example demonstrates how the resource manager drives recovery when connection to a resource
 manager breaks, as described in use case Recover In-doubt Transaction State – resource
@@ -3540,7 +3490,8 @@ Release: October 26, 2021
 
 53 / 71
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-TPSOD].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -3564,7 +3515,8 @@ Release: October 26, 2021
 
 54 / 71
 
-3.  The resource manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQDONE message to
+
+3.  The resource manager sends a TXUSER_ENLISTMENT_MTAG_PREPAREREQDONE message to
 
 the root transaction manager, indicating that the prepare request finished successfully (OK)
 TXUSER_ENLISTMENT_PREPAREREQDONE_OK, as specified in [MS-DTCO] section 4.5.1.1,
@@ -3637,7 +3589,8 @@ Release: October 26, 2021
 
 55 / 71
 
-17. The remote resource manager sends a
+
+17. The remote resource manager sends a
 
 TXUSER_RESOURCEMANAGER_MTAG_REENLISTMENTCOMPLETE message to the remote
 transaction manager over the CONNTYPE_TXUSER_RESOURCEMANAGER connection, as
@@ -3649,7 +3602,7 @@ TXUSER_RESOURCEMANAGER_MTAG_REQUEST_COMPLETE message to the remote
 resource manager, as specified in [MS-DTCO] section 4.6.3, to confirm the completion of
 recovery.
 
-3.6  Example 6: Distributed Transaction Coordination with External Components
+### 3.6 Example 6: Distributed Transaction Coordination with External Components
 
 This example demonstrates how a transaction is completed and committed with external components
 by making use of optional protocols, as described in the following use cases:
@@ -3735,7 +3688,8 @@ Release: October 26, 2021
 
 56 / 71
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-TPSOD].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -3749,7 +3703,7 @@ Precursory Message Exchange (section 3.6.1)
 
 Two-Phase Commit Transactional Message Exchange (section 3.6.3)
 
-3.6.1  Precursory Message Exchange
+#### 3.6.1 Precursory Message Exchange
 
 The following diagram shows precursory message exchange in a distributed transaction with external
 components.
@@ -3761,7 +3715,8 @@ Release: October 26, 2021
 
 57 / 71
 
-Figure 17: Precursory message exchange in a distributed transaction with external
+
+Figure 17: Precursory message exchange in a distributed transaction with external
 components
 
 The following steps describe this sequence:
@@ -3838,7 +3793,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-specifying an LuPair which was previously configured with the external transaction manager, as
+
+specifying an LuPair which was previously configured with the external transaction manager, as
 specified in [MS-DTCLU] section 4.2.1.
 
 12. RequestComplete [C4.2]: The external transaction manager registers the connection's CMPO
@@ -3902,11 +3858,12 @@ Release: October 26, 2021
 
 59 / 71
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-TPSOD].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
-3.6.2  Application-Driven Transactional Message Exchange
+#### 3.6.2 Application-Driven Transactional Message Exchange
 
 Figure 18: Transactional message exchange before a two-phase commit in a distributed
 transaction
@@ -3924,7 +3881,8 @@ Release: October 26, 2021
 
 60 / 71
 
-2.  Begin [C6.1]: The application sends a TXUSER_BEGIN2_MTAG_BEGIN message to the root
+
+2.  Begin [C6.1]: The application sends a TXUSER_BEGIN2_MTAG_BEGIN message to the root
 
 transaction manager specifying the isolation level, timeout, transaction description, and isolation
 flag, as specified in [MS-DTCO] section 4.1.1.
@@ -3998,7 +3956,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-created transaction identifier (subTx), sends a PUSHED command to the root transaction
+
+created transaction identifier (subTx), sends a PUSHED command to the root transaction
 manager, and the state of the TIP connection changes to ENLISTED, as specified in [MS-TIPP]
 section 4.1.2.2.
 
@@ -4073,7 +4032,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-external resource manager receives the
+
+external resource manager receives the
 TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED message, the external
 resource manager continues to maintain the connection and waits for two-phase commit
 processing.
@@ -4088,7 +4048,7 @@ specified in [MS-CMOM] section 3.2.1.1.
 message to the management tool listing the transaction (guidTx) in the open state
 (XACTSACT_OPEN), as specified in [MS-CMOM] section 3.2.1.1.
 
-3.6.3  Two-Phase Commit Transactional Message Exchange
+#### 3.6.3 Two-Phase Commit Transactional Message Exchange
 
 The following diagram shows two-phase commit protocol message exchange in a distributed
 transaction.
@@ -4100,7 +4060,8 @@ Release: October 26, 2021
 
 63 / 71
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-TPSOD].images/page064-img01.png)
 <!-- /Extracted images from page 64 -->
 
@@ -4125,7 +4086,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-CONNTYPE_TXUSER_ENLISTMENT connection, indicating that this is a two-phase commit
+
+CONNTYPE_TXUSER_ENLISTMENT connection, indicating that this is a two-phase commit
 (2PC), as specified in [MS-DTCO] section 4.5.1.1.
 
 3.  Prepare [T1.4]: The root transaction manager sends a PREPARE command over the Transaction
@@ -4200,7 +4162,8 @@ Release: October 26, 2021
 
 65 / 71
 
-14. CommitReq [C7.5]: The root transaction manager sends a
+
+14. CommitReq [C7.5]: The root transaction manager sends a
 
 TXUSER_ENLISTMENT_MTAG_COMMITREQ message to the resource manager over the
 CONNTYPE_TXUSER_ENLISTMENT connection, as specified in [MS-DTCO] section 4.5.2.1.
@@ -4278,7 +4241,8 @@ Transaction Processing Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Note  The sequence of the messages in this example might not always be the same. It can vary
+
+Note  The sequence of the messages in this example might not always be the same. It can vary
 slightly.
 
 [MS-TPSOD] - v20211026
@@ -4288,7 +4252,8 @@ Release: October 26, 2021
 
 67 / 71
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs:
@@ -4329,7 +4294,7 @@ software. References to product versions include released service packs:
 
   Windows 11 operating system
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 None.
 
@@ -4340,7 +4305,8 @@ Release: October 26, 2021
 
 68 / 71
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4377,7 +4343,8 @@ Release: October 26, 2021
 
 69 / 71
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 42
@@ -4519,7 +4486,8 @@ manager 29
 
 70 / 71
 
-   transaction management – management tool 28
+
+   transaction management – management tool 28
    transaction recovery - remote transaction manager
 
 31

@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Date
+
+Date
 
 Revision
 History
@@ -339,274 +341,119 @@ Release: June 1, 2017
 
 3 / 41
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 AcquireNonce Action](#3141-acquirenonce-action)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 AcquireNonce Message](#314111-acquirenonce-message)
+          - [3.1.4.1.1.2 AcquireNonce Response Message](#314112-acquirenonce-response-message)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 AttachCertificate](#314121-attachcertificate)
+          - [3.1.4.1.2.2 HostID](#314122-hostid)
+          - [3.1.4.1.2.3 Nonce](#314123-nonce)
+          - [3.1.4.1.2.4 SupportedSignatureAlgorithms](#314124-supportedsignaturealgorithms)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+        - [3.1.4.1.4 Simple Types](#31414-simple-types)
+        - [3.1.4.1.5 Attributes](#31415-attributes)
+        - [3.1.4.1.6 Groups](#31416-groups)
+        - [3.1.4.1.7 Attribute Groups](#31417-attribute-groups)
+        - [3.1.4.1.8 Timer Events](#31418-timer-events)
+        - [3.1.4.1.9 Other Local Events](#31419-other-local-events)
+      - [3.1.4.2 Advertise Action](#3142-advertise-action)
+        - [3.1.4.2.1 Messages](#31421-messages)
+          - [3.1.4.2.1.1 Advertise Message](#314211-advertise-message)
+          - [3.1.4.2.1.2 Advertise Response Message](#314212-advertise-response-message)
+        - [3.1.4.2.2 Elements](#31422-elements)
+          - [3.1.4.2.2.1 ApplicationData](#314221-applicationdata)
+          - [3.1.4.2.2.2 ApplicationID](#314222-applicationid)
+          - [3.1.4.2.2.3 ApplicationVersion](#314223-applicationversion)
+          - [3.1.4.2.2.4 ExperienceEndpointData](#314224-experienceendpointdata)
+          - [3.1.4.2.2.5 ExperienceEndpointUri](#314225-experienceendpointuri)
+          - [3.1.4.2.2.6 ExperienceFriendlyName](#314226-experiencefriendlyname)
+          - [3.1.4.2.2.7 ExperienceIconUri](#314227-experienceiconuri)
+          - [3.1.4.2.2.8 HostCertificate](#314228-hostcertificate)
+          - [3.1.4.2.2.9 HostID](#314229-hostid)
+          - [3.1.4.2.2.10 Nonce](#3142210-nonce)
+          - [3.1.4.2.2.11 Signature](#3142211-signature)
+          - [3.1.4.2.2.12 SignatureAlgorithm](#3142212-signaturealgorithm)
+        - [3.1.4.2.3 Complex Types](#31423-complex-types)
+        - [3.1.4.2.4 Simple Types](#31424-simple-types)
+        - [3.1.4.2.5 Attributes](#31425-attributes)
+        - [3.1.4.2.6 Groups](#31426-groups)
+        - [3.1.4.2.7 Attribute Groups](#31427-attribute-groups)
+        - [3.1.4.2.8 Timer Events](#31428-timer-events)
+        - [3.1.4.2.9 Other Local Events](#31429-other-local-events)
+      - [3.1.4.3 Inhibit Action](#3143-inhibit-action)
+        - [3.1.4.3.1 Messages](#31431-messages)
+          - [3.1.4.3.1.1 Inhibit Message](#314311-inhibit-message)
+          - [3.1.4.3.1.2 Inhibit Response Message](#314312-inhibit-response-message)
+        - [3.1.4.3.2 Elements](#31432-elements)
+          - [3.1.4.3.2.1 ApplicationData](#314321-applicationdata)
+          - [3.1.4.3.2.2 ApplicationID](#314322-applicationid)
+          - [3.1.4.3.2.3 ApplicationVersion](#314323-applicationversion)
+          - [3.1.4.3.2.4 HostCertificate](#314324-hostcertificate)
+          - [3.1.4.3.2.5 HostID](#314325-hostid)
+          - [3.1.4.3.2.6 Nonce](#314326-nonce)
+          - [3.1.4.3.2.7 ReasonCode](#314327-reasoncode)
+          - [3.1.4.3.2.8 ReasonMessage](#314328-reasonmessage)
+          - [3.1.4.3.2.9 Signature](#314329-signature)
+          - [3.1.4.3.2.10 SignatureAlgorithm](#3143210-signaturealgorithm)
+        - [3.1.4.3.3 Complex Types](#31433-complex-types)
+        - [3.1.4.3.4 Simple Types](#31434-simple-types)
+        - [3.1.4.3.5 Attributes](#31435-attributes)
+        - [3.1.4.3.6 Groups](#31436-groups)
+        - [3.1.4.3.7 Attribute Groups](#31437-attribute-groups)
+        - [3.1.4.3.8 Timer Events](#31438-timer-events)
+        - [3.1.4.3.9 Other Local Events](#31439-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 AcquireNonce Message](#41-acquirenonce-message)
+  - [4.2 AcquireNonce Response Message](#42-acquirenonce-response-message)
+  - [4.3 Advertise Message](#43-advertise-message)
+  - [4.4 Advertise Response Message](#44-advertise-response-message)
+  - [4.5 Inhibit Message](#45-inhibit-message)
+  - [4.6 Inhibit Response Message](#46-inhibit-response-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: UPnP Device Description](#7-appendix-b-upnp-device-description)
+- [8 Appendix C: A Full UPnP Service Description](#8-appendix-c-a-full-upnp-service-description)
+- [9 Appendix D: Product Behavior](#9-appendix-d-product-behavior)
+- [10 Change Tracking](#10-change-tracking)
+- [11 Index](#11-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-Elements ................................................................................................... 12
-Complex Types ........................................................................................... 12
-Simple Types ............................................................................................. 12
-Attributes .................................................................................................. 13
-Groups ...................................................................................................... 13
-Attribute Groups ......................................................................................... 13
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.2
-
-3.1.4.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-3.1.4.1.2.3
-3.1.4.1.2.4
-
-3  Protocol Details ..................................................................................................... 14
-Server Details .................................................................................................. 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-AcquireNonce Action .............................................................................. 15
-Messages ....................................................................................... 15
-AcquireNonce Message ............................................................... 15
-AcquireNonce Response Message ................................................. 15
-Elements ........................................................................................ 16
-AttachCertificate ........................................................................ 16
-HostID ...................................................................................... 16
-Nonce ....................................................................................... 16
-SupportedSignatureAlgorithms .................................................... 16
-Complex Types ............................................................................... 17
-Simple Types .................................................................................. 17
-Attributes ....................................................................................... 17
-Groups ........................................................................................... 17
-Attribute Groups.............................................................................. 17
-Timer Events .................................................................................. 17
-Other Local Events .......................................................................... 17
-Advertise Action .................................................................................... 17
-Messages ....................................................................................... 17
-Advertise Message ..................................................................... 17
-Advertise Response Message ....................................................... 18
-Elements ........................................................................................ 19
-ApplicationData ......................................................................... 19
-ApplicationID ............................................................................. 19
-ApplicationVersion ..................................................................... 19
-
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-3.1.4.1.8
-3.1.4.1.9
-
-3.1.4.2.2.1
-3.1.4.2.2.2
-3.1.4.2.2.3
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-
-3.1.4.2.1
-
-3.1.4.2.2
-
-3.1.4.2
-
-[MS-RXAD] - v20170601
-Remote Experience Advertisement Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 41
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-
-3.1.4.3.1.1
-3.1.4.3.1.2
-
-ExperienceEndpointData ............................................................. 19
-3.1.4.2.2.4
-ExperienceEndpointUri ................................................................ 19
-3.1.4.2.2.5
-ExperienceFriendlyName ............................................................. 20
-3.1.4.2.2.6
-ExperienceIconUri ...................................................................... 20
-3.1.4.2.2.7
-HostCertificate ........................................................................... 20
-3.1.4.2.2.8
-3.1.4.2.2.9
-HostID ...................................................................................... 20
-3.1.4.2.2.10  Nonce ....................................................................................... 20
-Signature .................................................................................. 20
-3.1.4.2.2.11
-SignatureAlgorithm .................................................................... 21
-3.1.4.2.2.12
-Complex Types ............................................................................... 21
-Simple Types .................................................................................. 21
-Attributes ....................................................................................... 21
-Groups ........................................................................................... 21
-Attribute Groups.............................................................................. 21
-Timer Events .................................................................................. 21
-Other Local Events .......................................................................... 21
-Inhibit Action ........................................................................................ 21
-Messages ....................................................................................... 21
-Inhibit Message ......................................................................... 21
-Inhibit Response Message ........................................................... 22
-Elements ........................................................................................ 23
-ApplicationData ......................................................................... 23
-ApplicationID ............................................................................. 23
-ApplicationVersion ..................................................................... 23
-HostCertificate ........................................................................... 23
-HostID ...................................................................................... 23
-Nonce ....................................................................................... 24
-ReasonCode .............................................................................. 24
-ReasonMessage ......................................................................... 24
-Signature .................................................................................. 24
-SignatureAlgorithm .................................................................... 24
-Complex Types ............................................................................... 24
-Simple Types .................................................................................. 25
-Attributes ....................................................................................... 25
-Groups ........................................................................................... 25
-Attribute Groups.............................................................................. 25
-Timer Events .................................................................................. 25
-Other Local Events .......................................................................... 25
-Client Details ................................................................................................... 25
-
-3.1.4.3.2.1
-3.1.4.3.2.2
-3.1.4.3.2.3
-3.1.4.3.2.4
-3.1.4.3.2.5
-3.1.4.3.2.6
-3.1.4.3.2.7
-3.1.4.3.2.8
-3.1.4.3.2.9
-3.1.4.3.2.10
-
-3.1.4.3.3
-3.1.4.3.4
-3.1.4.3.5
-3.1.4.3.6
-3.1.4.3.7
-3.1.4.3.8
-3.1.4.3.9
-
-3.1.4.3.2
-
-3.2
-
-4  Protocol Examples ................................................................................................. 26
-AcquireNonce Message ..................................................................................... 26
-AcquireNonce Response Message ....................................................................... 26
-Advertise Message ........................................................................................... 26
-Advertise Response Message ............................................................................. 27
-Inhibit Message ............................................................................................... 27
-Inhibit Response Message ................................................................................. 28
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-5  Security ................................................................................................................. 29
-Security Considerations for Implementers ........................................................... 29
-Index of Security Parameters ............................................................................ 29
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 30
-
-7  Appendix B: UPnP Device Description .................................................................... 31
-
-8  Appendix C: A Full UPnP Service Description ......................................................... 34
-
-9  Appendix D: Product Behavior ............................................................................... 38
-
-10  Change Tracking .................................................................................................... 39
-
-5 / 41
-
-[MS-RXAD] - v20170601
-Remote Experience Advertisement Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-11  Index ..................................................................................................................... 40
-
-[MS-RXAD] - v20170601
-Remote Experience Advertisement Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 41
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Experience Advertisement Protocol.
 
@@ -621,7 +468,7 @@ This protocol is compliant with UPnP architecture and is implemented as an UPnP 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -680,7 +527,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-XML schema: A description of a type of XML document that is typically expressed in terms of
+
+XML schema: A description of a type of XML document that is typically expressed in terms of
 constraints on the structure and content of documents of that type, in addition to the basic
 syntax constraints that are imposed by XML itself. An XML schema provides a view of a
 document type at a relatively high level of abstraction.
@@ -688,14 +536,14 @@ document type at a relatively high level of abstraction.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -720,11 +568,11 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Experience Advertisement Protocol is used for advertising experiences available at a host
 PC to a specific UPnP device. It is used for providing data required by the UPnP device to connect to
@@ -743,7 +591,8 @@ Release: June 1, 2017
 
 8 / 41
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RXAD].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -767,13 +616,14 @@ Release: June 1, 2017
 
 9 / 41
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RXAD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Protocol message sequence diagram (Inhibit action)
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Experience Advertisement Protocol uses SOAP over HTTP as shown in the following
 layering diagram:
@@ -785,13 +635,14 @@ Release: June 1, 2017
 
 10 / 41
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RXAD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 3: Protocol layering diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Experience Advertisement Protocol requires the support of an UPnP stack [UPNPARCH1]
 on the device and the control point. Therefore, before the protocol is put into action, the device
@@ -802,23 +653,23 @@ protocol is "msremotedexperience", the version number is as specified in section
 and the service ID is "MSRX". Appendix C shows the full UPnP service description of this protocol.
 The protocol server endpoint is formed by appending "/_vti_bin/pptws.asmx".
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Experience Advertisement Protocol is used to describe the available experience to the
 device from the PC which can also include information such as how to initiate a connection and provide
 a host ID and host certificate along with other useful information.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document specifies Remote Experience Advertisement Protocol version 1. The version number is
 included where Remote Experience Advertisement Protocol service information is presented in the
 device description as specified in [UPNPARCH1] section 2.3. See section 1.5 for more details.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields other than what is specified in [UPNPARCH1].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments other than what is specified in [UPNPARCH1].
 
@@ -829,19 +680,20 @@ Release: June 1, 2017
 
 11 / 41
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Experience Advertisement Protocol does not specify a transport protocol beyond what is
 specified by [UPNPARCH1].
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -882,7 +734,7 @@ http://www.w3.org/2001/XMLSchema
 
 [XMLSCHEMA1]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 The Remote Experience Advertisement Protocol provides three actions: the AcquireNonce, Advertise,
 and Inhibit actions. The request and response messages for each Remote Experience Advertisement
@@ -891,7 +743,7 @@ Protocol action MUST be expressed in XML using the SOAP 1.1 UPnP profile as spec
 
 The details of each action can be found in section 3.1.4 of this document.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 Element  Description
 
@@ -903,11 +755,11 @@ Nonce
 
 A Nonce is generated by the UPnP device, and returned to the control point.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 None.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 None.
 
@@ -918,15 +770,16 @@ Release: June 1, 2017
 
 12 / 41
 
-2.2.6  Attributes
+
+#### 2.2.6 Attributes
 
 None.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 None.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 None.
 
@@ -937,15 +790,16 @@ Release: June 1, 2017
 
 13 / 41
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RXAD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Upon each action, the control point sends the request message to the device, and the device returns a
 response or error message to the control point [UPNPARCH1].
@@ -985,27 +839,28 @@ Release: June 1, 2017
 
 14 / 41
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  AcquireNonce Action
+##### 3.1.4.1 AcquireNonce Action
 
 A control point MUST attach an <AcquireNonce> body to a Remote Experience Advertisement Protocol
 SOAP message that contains <HostId> element in order to instruct the device to send the Nonce
 and signing information in response.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
-3.1.4.1.1.1  AcquireNonce Message
+###### 3.1.4.1.1.1 AcquireNonce Message
 
 The HTTP header MUST specify SOAPACTION as follows for an AcquireNonce message:
 
@@ -1033,7 +888,7 @@ network
 
  </ soapenv:Envelope>
 
-3.1.4.1.1.2  AcquireNonce Response Message
+###### 3.1.4.1.1.2 AcquireNonce Response Message
 
 The server MUST reply with a SOAP response message named <AcquireNonceResponse> that contains
 <Nonce>, <SupportedSignatureAlgorithms> and <AttachCertificate>.
@@ -1050,7 +905,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <soapenv:Envelope
+
+ <soapenv:Envelope
          xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
          soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
              <soapenv:Body>
@@ -1065,9 +921,9 @@ Advertised/Inhibit action</AttachCertificate>
            </soapenv:Body>
  </soapenv:Envelope>
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
-3.1.4.1.2.1  AttachCertificate
+###### 3.1.4.1.2.1 AttachCertificate
 
 The <AttachCertificate> is the element of type Boolean under an <AcquireNonceResponse> SOAP
 body that is used to determine if the control point MUST send its full certificate in <Advertise> and
@@ -1078,7 +934,7 @@ in those actions, then this value is set to FALSE.
 
  <xs:element name="AttachCertificate" type="xs:boolean"/>
 
-3.1.4.1.2.2  HostID
+###### 3.1.4.1.2.2 HostID
 
 The <HostID> is an element of type string under an <AcquireNonceResponse>, <Advertise>, and
 <Inhibit> SOAP body. It is a GUID used to identify a control point that provides remote experiences
@@ -1087,7 +943,7 @@ local user interface.
 
  <xs:element name="HostID" type="xs:string" />
 
-3.1.4.1.2.3  Nonce
+###### 3.1.4.1.2.3 Nonce
 
 The <Nonce> is an element that contains a 4-byte unsigned integer under <AcquireNonceResponse>,
 <Advertise>, and <Inhibit> messages generated by the UPnP Device. The <AcquireNonce> MUST be
@@ -1095,7 +951,7 @@ called prior to invoking an <Advertise> and <Inhibit> action.
 
  <xs:element name="Nonce" type="xs:unsignedInt"/>
 
-3.1.4.1.2.4  SupportedSignatureAlgorithms
+###### 3.1.4.1.2.4 SupportedSignatureAlgorithms
 
 The <SupportedSignatureAlgorithms> is a string element under <AcquireNonceResponse> messages
 generated by the UPnP Device. The element contains a list of algorithm descriptors that the control
@@ -1109,39 +965,40 @@ Release: June 1, 2017
 
 16 / 41
 
- <xs:element name="SupportedSignatureAlgorithms" type="xs:string"/>
 
-3.1.4.1.3 Complex Types
+ <xs:element name="SupportedSignatureAlgorithms" type="xs:string"/>
 
-None.
-
-3.1.4.1.4 Simple Types
+###### 3.1.4.1.3 Complex Types
 
 None.
 
-3.1.4.1.5 Attributes
+###### 3.1.4.1.4 Simple Types
 
 None.
 
-3.1.4.1.6 Groups
+###### 3.1.4.1.5 Attributes
 
 None.
 
-3.1.4.1.7 Attribute Groups
+###### 3.1.4.1.6 Groups
 
 None.
 
-3.1.4.1.8 Timer Events
+###### 3.1.4.1.7 Attribute Groups
+
+None.
+
+###### 3.1.4.1.8 Timer Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4.1.9 Other Local Events
+###### 3.1.4.1.9 Other Local Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4.2  Advertise Action
+##### 3.1.4.2 Advertise Action
 
 A client MUST attach an <Advertise> body to the Remote Experience Advertisement Protocol SOAP
 message that contains <Nonce>, <HostId>, <ApplicationId>, <ApplicationVersion>,
@@ -1149,9 +1006,9 @@ message that contains <Nonce>, <HostId>, <ApplicationId>, <ApplicationVersion>,
 ExperienceEndpointData>, <SignatureAlgorithm>, <Signature> and <HostCertificate> in order to
 advertise an available remote experience to a UPnP device.
 
-3.1.4.2.1 Messages
+###### 3.1.4.2.1 Messages
 
-3.1.4.2.1.1  Advertise Message
+###### 3.1.4.2.1.1 Advertise Message
 
 The HTTP header MUST specify the SOAPACTION header, as specified in [UPNPARCH1], as follows for
 the Advertise message:
@@ -1174,7 +1031,8 @@ Release: June 1, 2017
 
 17 / 41
 
- <soapenv:Envelope
+
+ <soapenv:Envelope
        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
        soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 
@@ -1234,7 +1092,7 @@ dt:dt="string">
        </soapenv:Body>
  </soapenv:Envelope>
 
-3.1.4.2.1.2  Advertise Response Message
+###### 3.1.4.2.1.2 Advertise Response Message
 
 The server MUST reply with a SOAP response message named <AdvertiseResponse>.
 
@@ -1248,7 +1106,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The following XML session shows an <AdvertiseResponse> in a SOAP message.
+
+The following XML session shows an <AdvertiseResponse> in a SOAP message.
 
 [SOAP]
 
@@ -1262,9 +1121,9 @@ com:service:msremotedexperience:1">
    </soapenv:Body>
  </soapenv:Envelope>
 
-3.1.4.2.2 Elements
+###### 3.1.4.2.2 Elements
 
-3.1.4.2.2.1  ApplicationData
+###### 3.1.4.2.2.1 ApplicationData
 
 ApplicationData is the element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains additional data specific to a remote application. This data SHOULD contain further information
@@ -1272,7 +1131,7 @@ about why the application is offline as well when it is expected to be online ag
 
  <xs:element name="ApplicationData" type="xs:string"/>
 
-3.1.4.2.2.2  ApplicationID
+###### 3.1.4.2.2.2 ApplicationID
 
 ApplicationID is a GUID element of type string under an <Advertise> and <Inhibit> SOAP body that is
 used to identify an application that will present remote experience endpoints. This ApplicationID can
@@ -1280,14 +1139,14 @@ be used to group <ExperienceEndpointFriendlyName> element in the local user inte
 
  <xs:element name="ApplicationId" type="xs:string"/>
 
-3.1.4.2.2.3  ApplicationVersion
+###### 3.1.4.2.2.3 ApplicationVersion
 
 ApplicationVersion is an element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains version information specific to a remote application.
 
  <xs:element name="ApplicationVersion" type="xs:string"/>
 
-3.1.4.2.2.4  ExperienceEndpointData
+###### 3.1.4.2.2.4 ExperienceEndpointData
 
 ExperienceEndpointData is an element of type string under an <Advertise> SOAP body that contains
 any information specific to connecting to the remote experience. For example, this MAY contain
@@ -1295,7 +1154,7 @@ credentials used by the UPnP device when connecting to the remote experience.
 
  <xs:element name="ExperienceEndpointData" type="xs:string"/>
 
-3.1.4.2.2.5  ExperienceEndpointUri
+###### 3.1.4.2.2.5 ExperienceEndpointUri
 
 ExperienceEndpointUri is an element of type string under an <Advertise> SOAP body that contains a
 given path to where the UPnP device SHOULD connect to the remote experience.
@@ -1307,16 +1166,17 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <xs:element name=" ExperienceEndpointUri" type="xs:string"/>
 
-3.1.4.2.2.6  ExperienceFriendlyName
+ <xs:element name=" ExperienceEndpointUri" type="xs:string"/>
+
+###### 3.1.4.2.2.6 ExperienceFriendlyName
 
 ExperienceFriendlyName is an element of type string under an <Advertise> SOAP body that
 represents a specific remote experience inside of the application.
 
  <xs:element name=" ExperienceFriendlyName" type="xs:string"/>
 
-3.1.4.2.2.7  ExperienceIconUri
+###### 3.1.4.2.2.7 ExperienceIconUri
 
 ExperienceIconUri is an element of type string under an <Advertise> SOAP body that gives a path to
 an image to be used in local user interface to represent the remote experience available on the control
@@ -1324,7 +1184,7 @@ point.
 
  <xs:element name="ExperienceIconUri" type="xs:string"/>
 
-3.1.4.2.2.8  HostCertificate
+###### 3.1.4.2.2.8 HostCertificate
 
 HostCertificate is an element of type string under an <Advertise> and <Inhibit> SOAP body. It is
 provided by the control point when the UPnP device returns TRUE for the <AttachCertificate>
@@ -1332,7 +1192,7 @@ parameter in <AcquireNonce>.
 
  <xs:element name="HostCertificate" type="xs:string"/>
 
-3.1.4.2.2.9  HostID
+###### 3.1.4.2.2.9 HostID
 
 HostID is an element of type string under an <AcquireNonce>, <Advertise> and <Inhibit> SOAP
 body. It is a GUID used to identify a control point that provides remote experiences on the network.
@@ -1341,7 +1201,7 @@ interface.
 
  <xs:element name="HostId" type="xs:string"/>
 
-3.1.4.2.2.10  Nonce
+###### 3.1.4.2.2.10 Nonce
 
 Nonce is an element that contains a 4-byte unsigned integer under an <AcquireNonceResponse>,
 <Advertise> and <Inhibit> messages generated by the UPnP Device. The Nonce is single use,
@@ -1349,7 +1209,7 @@ therefore <AcquireNonce> MUST be called prior to invoking an <Advertise> and <In
 
  <xs:element name="Nonce" type="xs:unsignedInt"/>
 
-3.1.4.2.2.11  Signature
+###### 3.1.4.2.2.11 Signature
 
 Signature allows the UPnP device to authenticate an <Advertise> action. To create the signature, the
 control point concatenates the action with all parameters in a UTF-8 encoded string, with the
@@ -1361,12 +1221,13 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-exception of the Signature and the HostCertificate parameters. The algorithm used MUST be the same
+
+exception of the Signature and the HostCertificate parameters. The algorithm used MUST be the same
 algorithm supplied in the SignatureAlgorithm parameter.
 
  <xs:element name="Signature" type="xs:string"/>
 
-3.1.4.2.2.12  SignatureAlgorithm
+###### 3.1.4.2.2.12 SignatureAlgorithm
 
 SignatureAlgorithm is an element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains the algorithm descriptor that the control point used to create a <Signature> selected from
@@ -1374,48 +1235,48 @@ the list of SupportedSignatureAlgorithms retrieved in <AcquireNonce>.
 
  <xs:element name="SupportedSignatureAlgorithm" type="xs:string"/>
 
-3.1.4.2.3 Complex Types
+###### 3.1.4.2.3 Complex Types
 
 None.
 
-3.1.4.2.4 Simple Types
+###### 3.1.4.2.4 Simple Types
 
 None.
 
-3.1.4.2.5 Attributes
+###### 3.1.4.2.5 Attributes
 
 None.
 
-3.1.4.2.6 Groups
+###### 3.1.4.2.6 Groups
 
 None.
 
-3.1.4.2.7 Attribute Groups
+###### 3.1.4.2.7 Attribute Groups
 
 None.
 
-3.1.4.2.8 Timer Events
+###### 3.1.4.2.8 Timer Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4.2.9 Other Local Events
+###### 3.1.4.2.9 Other Local Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4.3  Inhibit Action
+##### 3.1.4.3 Inhibit Action
 
 A control point attaches an <Inhibit> body to the Remote Experience Advertisement Protocol SOAP
 message that contains <Nonce>, <HostId>, <ApplicationId>, <ApplicationVersion>,
 <ApplicationData>, <ReasonCode>, <ReasonMessage>, <SignatureAlgorithm>, <Signature> and
 <HostCertificate> in order to inform a UPnP device that a remote experience is unavailable.
 
-3.1.4.3.1 Messages
+###### 3.1.4.3.1 Messages
 
-3.1.4.3.1.1
+###### 3.1.4.3.1.1 Inhibit Message
 
-Inhibit Message
+
 
 [MS-RXAD] - v20170601
 Remote Experience Advertisement Protocol
@@ -1424,7 +1285,8 @@ Release: June 1, 2017
 
 21 / 41
 
-The HTTP header MUST specify SOAPACTION as follows for an Inhibit message:
+
+The HTTP header MUST specify SOAPACTION as follows for an Inhibit message:
 
 SOAPACTION: "urn:schemas-microsoft-com:service:msremotedexperience:1#Inhibit"
 
@@ -1480,9 +1342,9 @@ dt:dt="string">
        </soapenv:Body>
  </soapenv:Envelope>
 
-3.1.4.3.1.2
+###### 3.1.4.3.1.2 Inhibit Response Message
 
-Inhibit Response Message
+
 
 The server MUST reply with a SOAP response message named <InhibitResponse>.
 
@@ -1498,7 +1360,8 @@ Release: June 1, 2017
 
 22 / 41
 
-[SOAP]
+
+[SOAP]
 
  <soapenv:Envelope
    xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -1510,9 +1373,9 @@ com:service:msremotedexperience:1">
    </soapenv:Body>
  </soapenv:Envelope>
 
-3.1.4.3.2 Elements
+###### 3.1.4.3.2 Elements
 
-3.1.4.3.2.1  ApplicationData
+###### 3.1.4.3.2.1 ApplicationData
 
 ApplicationData is the element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains any additional data specific to a remote application. This data could contain further
@@ -1520,7 +1383,7 @@ information about why the application is offline as well when it is expected to 
 
  <xs:element name="ApplicationData" type="xs:string"/>
 
-3.1.4.3.2.2  ApplicationID
+###### 3.1.4.3.2.2 ApplicationID
 
 ApplicationID is a GUID element of type string under an <Advertise> and <Inhibit> SOAP body that is
 used to identify an application that will present remoted experience endpoints. This ApplicationID can
@@ -1528,14 +1391,14 @@ be used to group <ExperienceEndpointFriendlyName> element in the local UI.
 
  <xs:element name="ApplicationId" type="xs:string"/>
 
-3.1.4.3.2.3  ApplicationVersion
+###### 3.1.4.3.2.3 ApplicationVersion
 
 ApplicationVersion is an element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains version information specific to a remote application.
 
  <xs:element name="ApplicationVersion" type="xs:string"/>
 
-3.1.4.3.2.4  HostCertificate
+###### 3.1.4.3.2.4 HostCertificate
 
 HostCertificate is an element of type string under an <Advertise> and <Inhibit> SOAP body. It is
 provided by the control point when the UPnP device returns TRUE for the <AttachCertificate>
@@ -1543,7 +1406,7 @@ parameter in <AcquireNonce>.
 
  <xs:element name="HostCertificate" type="xs:string"/>
 
-3.1.4.3.2.5  HostID
+###### 3.1.4.3.2.5 HostID
 
 HostID is an element of type string under an <AcquireNonce>, <Advertise> and <Inhibit> SOAP
 body. It is a GUID used to identify a control point that provides remoted experiences on the network.
@@ -1556,9 +1419,10 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- <xs:element name="HostId" type="xs:string"/>
 
-3.1.4.3.2.6  Nonce
+ <xs:element name="HostId" type="xs:string"/>
+
+###### 3.1.4.3.2.6 Nonce
 
 The Nonce element contains a 4-byte unsigned integer under <AcquireNonceResponse>, <Advertise>
 and <Inhibit> messages generated by the UPnP device. Nonce is single use, and therefore
@@ -1566,7 +1430,7 @@ and <Inhibit> messages generated by the UPnP device. Nonce is single use, and th
 
  <xs:element name="Nonce" type="xs:unsignedInt"/>
 
-3.1.4.3.2.7  ReasonCode
+###### 3.1.4.3.2.7 ReasonCode
 
 ReasonCode is an element of type 4-byte unsigned integer under an <Inhibit> SOAP body. This code
 can be used by the UPnP device to take a resultant action, (for example, reconnect or show an error
@@ -1574,14 +1438,14 @@ screen). ReasonCode is <ApplicationId> element specific.
 
  <xs:element name="ReasonCode" type="xs:unsignedInt"/>
 
-3.1.4.3.2.8  ReasonMessage
+###### 3.1.4.3.2.8 ReasonMessage
 
 ReasonMessage is an element of type string under an <Inhibit> SOAP body that contains human
 readable data as to why the Inhibit action was called. ReasonMessage is <ApplicationId> specific.
 
  <xs:element name="ReasonMessage" type="xs:string"/>
 
-3.1.4.3.2.9  Signature
+###### 3.1.4.3.2.9 Signature
 
 The Signature element allows the UPnP device to authenticate an <Advertise> action. To create the
 signature, the control point concatenates the action with all parameters in a UTF-8 encoded string,
@@ -1590,7 +1454,7 @@ supplied in the SignatureAlgorithm parameter.
 
  <xs:element name="Signature" type="xs:string"/>
 
-3.1.4.3.2.10  SignatureAlgorithm
+###### 3.1.4.3.2.10 SignatureAlgorithm
 
 SignatureAlgorithm is an element of type string under an <Advertise> and <Inhibit> SOAP body that
 contains the algorithm descriptor that the control point used to create a <Signature> selected from
@@ -1598,7 +1462,7 @@ the list of SupportedSignatureAlgorithms retrieved in <AcquireNonce>.
 
  <xs:element name="SignatureAlgorithm" type="xs:string"/>
 
-3.1.4.3.3 Complex Types
+###### 3.1.4.3.3 Complex Types
 
 None.
 
@@ -1609,31 +1473,32 @@ Release: June 1, 2017
 
 24 / 41
 
-3.1.4.3.4 Simple Types
+
+###### 3.1.4.3.4 Simple Types
 
 None.
 
-3.1.4.3.5 Attributes
+###### 3.1.4.3.5 Attributes
 
 None.
 
-3.1.4.3.6 Groups
+###### 3.1.4.3.6 Groups
 
 None.
 
-3.1.4.3.7 Attribute Groups
+###### 3.1.4.3.7 Attribute Groups
 
-3.1.4.3.8 Timer Events
+###### 3.1.4.3.8 Timer Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.1.4.3.9 Other Local Events
+###### 3.1.4.3.9 Other Local Events
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-3.2  Client Details
+### 3.2 Client Details
 
 The device returns a response or error message to the control point. The Remote Experience
 Advertisement Protocol does not specify anything beyond what is specified by [UPNPARCH1].
@@ -1645,12 +1510,13 @@ Release: June 1, 2017
 
 25 / 41
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this section a complete message exchange is shown between the server and client consisting of
 following messages.
 
-4.1  AcquireNonce Message
+### 4.1 AcquireNonce Message
 
 The control point sends a POST method in the following format to the device to invoke
 <AcquireNonce> action on control point service.
@@ -1667,7 +1533,7 @@ The control point sends a POST method in the following format to the device to i
  </ soapenv:Body>
  </ soapenv:Envelope>
 
-4.2  AcquireNonce Response Message
+### 4.2 AcquireNonce Response Message
 
 The service invokes the action and responds within 30 seconds in the form of a
 <AcquireNonceResponse>.
@@ -1687,7 +1553,7 @@ Identifier</SupportedSignatureAlgorithms>
              </soapenv:Body>
  </soapenv:Envelope>
 
-4.3  Advertise Message
+### 4.3 Advertise Message
 
 The control point gets information from the <AcquireNonceResponse> SOAP envelope and invokes the
 <Advertise> action informing the UPnP device that a remote experience is available for use along with
@@ -1712,7 +1578,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-                   </HostId>
+
+                   </HostId>
                    <ApplicationId xmlns:dt="urn:schemas-microsoft-com:datatypes"
 dt:dt="string">
                          uuid:f1c65f7a-c321-413d-9801-4194ebf29308
@@ -1756,7 +1623,7 @@ dt:dt="string">
        </soapenv:Body>
  </soapenv:Envelope>
 
-4.4  Advertise Response Message
+### 4.4 Advertise Response Message
 
 The device returns an HTTP:response for the <Advertise> action in the form of an
 <AdvertiseResponse>.
@@ -1771,7 +1638,7 @@ com:service:msremotedexperience:1">
    </soapenv:Body>
  </soapenv:Envelope>
 
-4.5  Inhibit Message
+### 4.5 Inhibit Message
 
 The following Inhibit message informs the UPnP device that a remote experience is unavailable.
 
@@ -1782,7 +1649,8 @@ Release: June 1, 2017
 
 27 / 41
 
- <soapenv:Envelope
+
+ <soapenv:Envelope
        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
        soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
        <soapenv:Body>
@@ -1824,7 +1692,7 @@ dt:dt="string">
        </soapenv:Body>
  </soapenv:Envelope>
 
-4.6  Inhibit Response Message
+### 4.6 Inhibit Response Message
 
 The response to inhibit message is as follows.
 
@@ -1845,14 +1713,15 @@ Release: June 1, 2017
 
 28 / 41
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Remote Experience Advertisement Protocol does not specify anything beyond what is specified by
 [UPNPARCH1].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1863,7 +1732,8 @@ Release: June 1, 2017
 
 29 / 41
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 There is no WSDL for this protocol. For UPnP the equivalent to WSDL is the UPnP device and service
 descriptions as detailed in Appendix B and C respectively.
@@ -1875,7 +1745,8 @@ Release: June 1, 2017
 
 30 / 41
 
-7  Appendix B: UPnP Device Description
+
+## 7 Appendix B: UPnP Device Description
 
 The following is a sample service information of the Remote Experience Advertisement Protocol that a
 device description should include as a part of the device's service list.
@@ -1949,7 +1820,8 @@ Release: June 1, 2017
 
 31 / 41
 
-         <service>
+
+         <service>
            <serviceType>urn:schemas-microsoft-com:service:NULL:1</serviceType>
            <serviceId>urn:microsoft-com:serviceId:NULL</serviceId>
            <SCPDURL>/XD/NULL.xml</SCPDURL>
@@ -2026,7 +1898,8 @@ Remote Experience Advertisement Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-           <controlURL>/UD/?2</controlURL>
+
+           <controlURL>/UD/?2</controlURL>
            <eventSubURL/>
          </service>
        </serviceList>
@@ -2042,7 +1915,8 @@ Release: June 1, 2017
 
 33 / 41
 
-8  Appendix C: A Full UPnP Service Description
+
+## 8 Appendix C: A Full UPnP Service Description
 
 The following is a sample service description of the Remote Experience Advertisement Protocol that
 the device is required to publish before the protocol takes action as a part of the prerequisite, as
@@ -2116,7 +1990,8 @@ Release: June 1, 2017
 
 34 / 41
 
-             <direction>in</direction>
+
+             <direction>in</direction>
              <relatedStateVariable>A_ARG_TYPE_AnyString</relatedStateVariable>
           </argument>
            <argument>
@@ -2193,7 +2068,8 @@ Release: June 1, 2017
 
 35 / 41
 
-             <name>ApplicationData</name>
+
+             <name>ApplicationData</name>
              <direction>in</direction>
              <relatedStateVariable>A_ARG_TYPE_AnyString</relatedStateVariable>
           </argument>
@@ -2270,7 +2146,8 @@ Release: June 1, 2017
 
 36 / 41
 
-       <stateVariable sendEvents='no'>
+
+       <stateVariable sendEvents='no'>
          <name>A_ARG_TYPE_Signature</name>
          <dataType>string</dataType>
        </stateVariable>
@@ -2292,7 +2169,8 @@ Release: June 1, 2017
 
 37 / 41
 
-9  Appendix D: Product Behavior
+
+## 9 Appendix D: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2322,7 +2200,8 @@ Release: June 1, 2017
 
 38 / 41
 
-10  Change Tracking
+
+## 10 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2334,7 +2213,8 @@ Release: June 1, 2017
 
 39 / 41
 
-11  Index
+
+## 11 Index
 A
 
 Abstract data model 14
@@ -2467,7 +2347,8 @@ Release: June 1, 2017
 
 40 / 41
 
-Timers 15
+
+Timers 15
    server 15
 Tracking changes 39
 Transport 12

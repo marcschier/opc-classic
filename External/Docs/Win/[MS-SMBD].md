@@ -64,7 +64,8 @@ Release: August 11, 2025
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -248,178 +249,77 @@ Release: August 11, 2025
 
 2 / 39
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Negotiate Request Message](#221-negotiate-request-message)
+    - [2.2.2 Negotiate Response Message](#222-negotiate-response-message)
+    - [2.2.3 Data Transfer Message](#223-data-transfer-message)
+      - [2.2.3.1 Buffer Descriptor V1 Structure](#2231-buffer-descriptor-v1-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Per RDMA Transport Connection](#3111-per-rdma-transport-connection)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Negotiation Timer](#3121-negotiation-timer)
+      - [3.1.2.2 Idle Connection Timer](#3122-idle-connection-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Connecting to the Peer](#3141-connecting-to-the-peer)
+      - [3.1.4.2 Send Message](#3142-send-message)
+      - [3.1.4.3 Register Buffer](#3143-register-buffer)
+      - [3.1.4.4 Deregister Buffer](#3144-deregister-buffer)
+      - [3.1.4.5 RDMA Write to Peer Buffer](#3145-rdma-write-to-peer-buffer)
+      - [3.1.4.6 RDMA Read from Peer Buffer](#3146-rdma-read-from-peer-buffer)
+      - [3.1.4.7 Query Connection Parameters](#3147-query-connection-parameters)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending Upper Layer Messages](#3151-sending-upper-layer-messages)
+      - [3.1.5.2 Sending a Negotiate Request Message](#3152-sending-a-negotiate-request-message)
+      - [3.1.5.3 Sending a Negotiate Response Message](#3153-sending-a-negotiate-response-message)
+      - [3.1.5.4 Sending a Data Transfer Message](#3154-sending-a-data-transfer-message)
+      - [3.1.5.5 Receiving Any Message](#3155-receiving-any-message)
+      - [3.1.5.6 Receiving a Negotiate Request Message](#3156-receiving-a-negotiate-request-message)
+      - [3.1.5.7 Receiving a Negotiate Response Message](#3157-receiving-a-negotiate-response-message)
+      - [3.1.5.8 Receiving a Data Transfer Message](#3158-receiving-a-data-transfer-message)
+      - [3.1.5.9 Managing Credits Prior to Sending](#3159-managing-credits-prior-to-sending)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Negotiation Timer](#3161-negotiation-timer)
+      - [3.1.6.2 Idle Connection Timer](#3162-idle-connection-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Connection Loss](#3171-connection-loss)
+      - [3.1.7.2 Connection Arrival](#3172-connection-arrival)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Establishing a Connection](#41-establishing-a-connection)
+  - [4.2 Peer Transmits 500 Bytes of Data](#42-peer-transmits-500-bytes-of-data)
+  - [4.3 Peer Transmits 64 KiB of Data](#43-peer-transmits-64-kib-of-data)
+  - [4.4 Peer Transmits 1 MiB of Data Via Upper Layer](#44-peer-transmits-1-mib-of-data-via-upper-layer)
+  - [4.5 Peer Receives 1 MiB of Data Via Upper Layer](#45-peer-receives-1-mib-of-data-via-upper-layer)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: RDMA Provider IRD/ORD Negotiation](#6-appendix-a-rdma-provider-irdord-negotiation)
+  - [6.1 IRD/ORD Negotiate Header](#61-irdord-negotiate-header)
+  - [6.2 IRD/ORD Negotiate Header Processing](#62-irdord-negotiate-header-processing)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Negotiate Request Message ......................................................................... 11
-Negotiate Response Message ....................................................................... 12
-Data Transfer Message ................................................................................ 13
-Buffer Descriptor V1 Structure ................................................................ 14
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-
-3.1
-
-3.1.2
-
-3.1.1
-
-3.1.1.1
-
-3.1.3
-3.1.4
-
-3.1.2.1
-3.1.2.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Per RDMA Transport Connection.............................................................. 16
-Timers ...................................................................................................... 17
-Negotiation Timer ................................................................................. 17
-Idle Connection Timer ........................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Connecting to the Peer .......................................................................... 18
-Send Message ...................................................................................... 18
-Register Buffer ..................................................................................... 19
-Deregister Buffer .................................................................................. 19
-RDMA Write to Peer Buffer ..................................................................... 19
-RDMA Read from Peer Buffer .................................................................. 20
-Query Connection Parameters ................................................................ 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Sending Upper Layer Messages ............................................................... 20
-Sending a Negotiate Request Message ..................................................... 21
-Sending a Negotiate Response Message ................................................... 22
-Sending a Data Transfer Message ........................................................... 22
-Receiving Any Message .......................................................................... 23
-Receiving a Negotiate Request Message ................................................... 23
-Receiving a Negotiate Response Message ................................................. 24
-Receiving a Data Transfer Message ......................................................... 25
-Managing Credits Prior to Sending ........................................................... 26
-Timer Events .............................................................................................. 27
-Negotiation Timer ................................................................................. 27
-Idle Connection Timer ........................................................................... 27
-Other Local Events ...................................................................................... 27
-Connection Loss .................................................................................... 27
-Connection Arrival ................................................................................. 27
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3.1.7.1
-3.1.7.2
-
-3.1.6.1
-3.1.6.2
-
-3.1.6
-
-3.1.7
-
-3.1.5
-
-4  Protocol Examples ................................................................................................. 29
-
-3 / 39
-
-[MS-SMBD] - v20250811
-SMB2 Remote Direct Memory Access (RDMA) Transport Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-Establishing a Connection .................................................................................. 29
-Peer Transmits 500 Bytes of Data ...................................................................... 30
-Peer Transmits 64 KiB of Data ........................................................................... 31
-Peer Transmits 1 MiB of Data Via Upper Layer ..................................................... 32
-Peer Receives 1 MiB of Data Via Upper Layer ....................................................... 33
-
-5  Security ................................................................................................................. 34
-Security Considerations for Implementers ........................................................... 34
-Index of Security Parameters ............................................................................ 34
-
-5.1
-5.2
-
-6  Appendix A: RDMA Provider IRD/ORD Negotiation ................................................ 35
-IRD/ORD Negotiate Header ............................................................................... 35
-IRD/ORD Negotiate Header Processing................................................................ 35
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 36
-
-8  Change Tracking .................................................................................................... 38
-
-9  Index ..................................................................................................................... 39
-
-[MS-SMBD] - v20250811
-SMB2 Remote Direct Memory Access (RDMA) Transport Protocol
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-4 / 39
-
-1  Introduction
+## 1 Introduction
 
 The SMB2 Remote Direct Memory Access (RDMA) Transport Protocol allows upper-layer packets to be
 delivered over RDMA-capable transports such as iWARP [RFC5040] and [RFC5041], Infiniband
@@ -431,7 +331,7 @@ Direct Memory Access (RDMA) Transport Protocol is the Server Message Block (SMB)
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -467,7 +367,7 @@ Verbs: For more information, see [RFC5040] section 2.1.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -481,7 +381,8 @@ Release: August 11, 2025
 
 5 / 39
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -493,7 +394,7 @@ https://www.iana.org/assignments/service-names-port-numbers/service-names-port-n
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DRAFT-RDMA-VERBS] Hilland, J., Culley, P., Pinkerton, J., and Recio, R., "RDMA Protocol Verbs
 Specification (Version 1.0)", April 2003, http://www.rdmaconsortium.org/home/draft-hilland-iwarp-
@@ -534,7 +435,7 @@ editor.org/rfc/rfc6581.txt
 Protocol (SDP) for iWARP over TCP", Section 7 Port Mapper Specification, October 2003,
 http://www.rdmaconsortium.org/home/draft-pinkerton-iwarp-sdp-v1.0.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The SMB2 RDMA Transport Protocol defines a framing for the exchange of arbitrary upper-layer data
 over RDMA-capable networks in a peer-to-peer fashion. The protocol allows for bidirectional traffic of
@@ -547,7 +448,8 @@ Release: August 11, 2025
 
 6 / 39
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-SMBD].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -571,7 +473,7 @@ The following figure depicts an initial exchange of traffic beneath a typical SM
 
 Figure 1: Data transfer
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RDMA Transports
 
@@ -587,7 +489,8 @@ Release: August 11, 2025
 
 7 / 39
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-SMBD].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -636,7 +539,8 @@ Release: August 11, 2025
 
 8 / 39
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The protocol functions only in conjunction with the availability of RDMA provider resources on the local
 machine, including RDMA Network Interface Controller (RNIC) hardware, and a local facility, as
@@ -646,7 +550,7 @@ The RDMA lower layer provides reliable in-order delivery of sent and received me
 consistency semantics for directly placed data in send/receive message completion, as required by the
 relevant standards.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The protocol is applicable for scenarios that require SMB2 for transferring files between client and
 server and for inter-process communication between client and server that are using named pipes,
@@ -657,7 +561,7 @@ similar scale.
 The protocol can have other applicability, subject to further specification by other upper- layer
 protocols.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document describes a single protocol version, as defined in the following table.
 
@@ -676,11 +580,11 @@ protocol operates under these values for the duration of the underlying connecti
 While oriented toward carrying SMB2 Protocol upper-layer traffic, other upper layers can use the
 protocol to achieve similar capabilities. Such issues are a matter for any such protocols.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The protocol does not define any standards assignments; however, when used as a transport for an
 upper layer, it uses the standards assignments of that layer, as defined by that layer. For example,
@@ -703,7 +607,8 @@ SMB2 Remote Direct Memory Access (RDMA) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-natively support IANA-style ports. These transport-dependent facilities are documented in the
+
+natively support IANA-style ports. These transport-dependent facilities are documented in the
 specifications relevant to each lower-layer RDMA standard.
 
 When transporting SMB traffic on iWARP, to permit coexistence of TCP and iWARP SMB listeners, a
@@ -728,9 +633,10 @@ Release: August 11, 2025
 
 10 / 39
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The following sections specify how messages are represented on the wire and specify the protocol
 data types.
@@ -741,7 +647,7 @@ Examples of such transports are iWARP, Infiniband and RoCE, as described in sect
 interface supporting the Verbs semantic is typically provided by the local operating system, specified
 in [DRAFT-RDMA-VERBS] and [IBARCH].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The protocol is composed of, and driven by, message exchanges between peers in the following
 categories:
@@ -769,7 +675,7 @@ specific functionality.
 When it is necessary to insert padding bytes in after any message for data alignment purposes, such
 bytes SHOULD be set to 0 when being sent and MUST be ignored when received.
 
-2.2.1  Negotiate Request Message
+#### 2.2.1 Negotiate Request Message
 
 The Negotiate Request message is the first message sent by the initiator of a new connection, used to
 begin establishing a connection with the peer.
@@ -802,7 +708,8 @@ Release: August 11, 2025
 
 11 / 39
 
-MaxReceiveSize
+
+MaxReceiveSize
 
 MaxFragmentedSize
 
@@ -833,7 +740,7 @@ MaxFragmentedSize (4 bytes): The maximum number of upper-layer bytes that the se
 
 receive as the result of a sequence of fragmented Send operations.
 
-2.2.2  Negotiate Response Message
+#### 2.2.2 Negotiate Response Message
 
 The Negotiate Response message is the second message sent on a new connection, in response to the
 Negotiate Request message, to complete the establishment of a connection.
@@ -882,7 +789,8 @@ Release: August 11, 2025
 
 12 / 39
 
-MaxVersion (2 bytes): The maximum protocol version supported by the sender. The value MUST be
+
+MaxVersion (2 bytes): The maximum protocol version supported by the sender. The value MUST be
 greater than or equal to the MinVersion field and MUST be set to one of the values listed in
 section 1.7. The sender MUST support all protocol versions that fall in the range inclusively
 specified by the MinVersion and MaxVersion fields.
@@ -919,7 +827,7 @@ MaxFragmentedSize (4 bytes): The maximum number of upper-layer bytes that the se
 
 receive as the result of a sequence of fragmented Send operations.
 
-2.2.3  Data Transfer Message
+#### 2.2.3 Data Transfer Message
 
 The Data Transfer message is sent to transfer upper-layer data, manage credits, or perform other
 functions. This request optionally contains upper-layer data to transfer as the message’s data payload.
@@ -964,7 +872,8 @@ Release: August 11, 2025
 
 13 / 39
 
-Buffer (variable)
+
+Buffer (variable)
 
 ...
 
@@ -1021,7 +930,7 @@ Buffer (variable): A buffer that contains the data payload as defined by the Dat
 
 DataLength fields.
 
-2.2.3.1  Buffer Descriptor V1 Structure
+##### 2.2.3.1 Buffer Descriptor V1 Structure
 
 The SMB_DIRECT_BUFFER_DESCRIPTOR_V1 structure represents a registered RDMA buffer and is
 used to Advertise the source and destination of RDMA Read and RDMA Write operations,
@@ -1048,7 +957,8 @@ Release: August 11, 2025
 
 14 / 39
 
-...
+
+...
 
 Token
 
@@ -1069,11 +979,12 @@ Release: August 11, 2025
 
 15 / 39
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1081,7 +992,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with what is described in this
 document.
 
-3.1.1.1  Per RDMA Transport Connection
+##### 3.1.1.1 Per RDMA Transport Connection
 
 Connection.Endpoint: The implementation-dependent representation used to access the RDMA
 
@@ -1146,7 +1057,8 @@ Release: August 11, 2025
 
 16 / 39
 
-Connection.FragmentReassemblyRemaining: A count of bytes of data remaining to be
+
+Connection.FragmentReassemblyRemaining: A count of bytes of data remaining to be
 
 reassembled into the Connection.FragmentReassemblyBuffer.
 
@@ -1167,26 +1079,26 @@ Connection.SendImmediate: A Boolean value that, if set, indicates a data packet 
 
 immediately.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Negotiation Timer
+##### 3.1.2.1 Negotiation Timer
 
 This per-connection timer regulates the amount of time to establish a connection and to deliver or
 obtain a negotiation response from the peer, before failing the request and disconnecting the
 connection.
 
-3.1.2.2  Idle Connection Timer
+##### 3.1.2.2 Idle Connection Timer
 
 This per-connection timer regulates the amount of time to allow the connection to be idle without
 receiving a message from the remote peer. When the Idle Connection Timer<2> expires, a message
 is sent to the peer with the SMB_DIRECT_RESPONSE_REQUESTED flag set. If a message is not
 received from the peer in response, the local peer can disconnect the connection.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The protocol is initiated and subsequently driven by a series of higher-layer triggered events in the
 following categories:
@@ -1220,7 +1132,8 @@ Release: August 11, 2025
 
 17 / 39
 
-3.1.4.1  Connecting to the Peer
+
+##### 3.1.4.1 Connecting to the Peer
 
 When the upper layer requests that the protocol initiate a connection to a remote peer, it passes the
 address of the remote peer to connect to, and the initiator MUST:
@@ -1266,7 +1179,7 @@ If the negotiation is successful, an implementation-defined representation of th
 returned to the upper layer as specified in section 3.1.5.4. If unsuccessful, an implementation-specific
 local error is returned.
 
-3.1.4.2  Send Message
+##### 3.1.4.2 Send Message
 
 When the upper layer requests that the protocol sends a message, it passes:
 
@@ -1294,7 +1207,8 @@ Release: August 11, 2025
 
 18 / 39
 
-3.1.4.3  Register Buffer
+
+##### 3.1.4.3 Register Buffer
 
 When the upper layer prepares a local buffer as the source or destination of a peer RDMA Read or
 RDMA Write operation, it passes:
@@ -1325,7 +1239,7 @@ where each element contains the RDMA provider-specific Offset, Token, and Length
 registered segment in sequential order, and where the entire array describes remote access to each
 memory location in the provided buffer.
 
-3.1.4.4  Deregister Buffer
+##### 3.1.4.4 Deregister Buffer
 
 When the upper layer has completed operations which require remote access to a previously
 registered local buffer as the source or destination of a peer RDMA Read or RDMA Write operation,
@@ -1344,7 +1258,7 @@ Otherwise, it MUST be ensured, in an implementation-specific manner via the RDMA
 provider, that all remote access to the specified buffers is complete and that no further remote access
 is possible.
 
-3.1.4.5  RDMA Write to Peer Buffer
+##### 3.1.4.5 RDMA Write to Peer Buffer
 
 When the upper layer modifies a remote peer buffer, it passes:
 
@@ -1374,7 +1288,8 @@ SMB2 Remote Direct Memory Access (RDMA) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-structure to use. It MUST then use the length of the provided buffer to determine how many Buffer
+
+structure to use. It MUST then use the length of the provided buffer to determine how many Buffer
 Descriptor V1 structure elements describe the targeted remote peer buffer locations. It MUST adjust
 the Offset and Length fields of the first element to indicate the trailing subsegment of the first peer
 buffer segment, and MUST adjust the Length field of the last element to indicate the leading
@@ -1386,7 +1301,7 @@ buffer, to the remote peer memory locations described by the Buffer Descriptor V
 calculated in the previous step, on the specified Connection. The result of the operation from the
 RDMA provider MUST be provided to the upper layer.
 
-3.1.4.6  RDMA Read from Peer Buffer
+##### 3.1.4.6 RDMA Read from Peer Buffer
 
 When the upper layer is required to retrieve the contents of a remote peer buffer, it passes:
 
@@ -1418,7 +1333,7 @@ Buffer Descriptor V1 structure elements calculated in the previous step, to the 
 described by the buffer, on the specified Connection. The result of the operation from the RDMA
 provider MUST be provided to the upper layer.
 
-3.1.4.7  Query Connection Parameters
+##### 3.1.4.7 Query Connection Parameters
 
 When the upper layer is required to retrieve the properties of the connection, it passes:
 
@@ -1430,9 +1345,9 @@ The Connection.MaxSendSize, Connection.MaxFragmentedSendSize,
 Connection.MaxReceiveSize, Connection.MaxReadWriteSize, and
 Connection.KeepaliveInterval for this connection MUST be returned.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Sending Upper Layer Messages
+##### 3.1.5.1 Sending Upper Layer Messages
 
 The processing specified in this section is to be used only when Connection.Role is "ESTABLISHED",
 to start or restart sending one or more new or previously deferred Data Transfer messages. The caller
@@ -1445,7 +1360,8 @@ Release: August 11, 2025
 
 20 / 39
 
-The new messages to be sent, if any, MUST be appended to the list of messages in the
+
+The new messages to be sent, if any, MUST be appended to the list of messages in the
 Connection.SendQueue. If there are no messages to be sent and Connection.SendImmediate is
 TRUE, a newly constructed Data Transfer Message MUST be added to Connection.SendQueue.
 
@@ -1499,7 +1415,7 @@ The message MUST be sent on the connection in an implementation-specific manner.
 
   Connection.SendImmediate MUST be set to FALSE.
 
-3.1.5.2  Sending a Negotiate Request Message
+##### 3.1.5.2 Sending a Negotiate Request Message
 
 After a successful connection as described in section 3.1.4.1, the first message sent on the connection
 is the Negotiation Request as defined in section 2.2.1. The caller passes the Connection to use for
@@ -1529,7 +1445,8 @@ Release: August 11, 2025
 
 21 / 39
 
-3.1.5.3  Sending a Negotiate Response Message
+
+##### 3.1.5.3 Sending a Negotiate Response Message
 
 In response to a Negotiate Request message as specified in section 3.1.5.6, the second message sent
 on the connection is the Negotiation Response message as specified in section 2.2.2. The caller passes
@@ -1567,7 +1484,7 @@ Otherwise, a successful Negotiate Response is built with fields set as follows:
 The sender MUST post the message to the RDMA provider in an implementation-specific manner, and
 the returned result MUST be returned to the caller.
 
-3.1.5.4  Sending a Data Transfer Message
+##### 3.1.5.4 Sending a Data Transfer Message
 
 After a successful negotiation as described in section 3.1.5.7, all further messages sent on the
 connection MUST be Data Transfer messages as defined in section 2.2.3. The caller passes:
@@ -1601,7 +1518,8 @@ Release: August 11, 2025
 
 22 / 39
 
-  Padding and Buffer are not present.
+
+  Padding and Buffer are not present.
 
 The empty message is sent as specified in section 3.1.5.1.
 
@@ -1649,7 +1567,7 @@ Connection via the interface specified in section 3.1.5.1. If any Send messages 
 RDMA layer will have initiated termination of the connection. The result of the operation from the
 RDMA provider MUST be returned to the caller.
 
-3.1.5.5  Receiving Any Message
+##### 3.1.5.5 Receiving Any Message
 
 If Connection.Role is "PASSIVE", the Connection and received buffer MUST be handled as specified
 in section 3.1.5.6 Receiving a Negotiate Request Message.
@@ -1662,7 +1580,7 @@ value of Connection.KeepaliveInterval and Connection.KeepaliveRequested MUST be 
 "NONE". The Connection and received buffer MUST be handled as specified in section 3.1.5.8
 Receiving a Data Transfer Message.
 
-3.1.5.6  Receiving a Negotiate Request Message
+##### 3.1.5.6 Receiving a Negotiate Request Message
 
 The first message received by the listening side of the connection is a Negotiate Request Message.
 
@@ -1679,7 +1597,8 @@ Release: August 11, 2025
 
 23 / 39
 
-If the preceding condition is not satisfied, the receiver MUST terminate the connection and stop
+
+If the preceding condition is not satisfied, the receiver MUST terminate the connection and stop
 processing the message.
 
 The receiver of the message MUST further verify:
@@ -1739,7 +1658,7 @@ Otherwise, a Negotiate Response MUST be sent as specified in section 3.1.5.3, pa
 The idle Connection Timer MUST be set to a value of Connection.KeepaliveInterval seconds, and
 Connection.Role MUST be set to "ESTABLISHED".
 
-3.1.5.7  Receiving a Negotiate Response Message
+##### 3.1.5.7 Receiving a Negotiate Response Message
 
 The first message received by the initiating side of the connection is a Negotiate Response message.
 
@@ -1760,7 +1679,8 @@ Release: August 11, 2025
 
 24 / 39
 
-
+
+
 
 
 
@@ -1821,7 +1741,7 @@ Connection.KeepaliveInterval seconds, and Connection.Role MUST be set to "ESTABL
 
 A success status MUST be returned to the caller of section 3.1.4.1.
 
-3.1.5.8  Receiving a Data Transfer Message
+##### 3.1.5.8 Receiving a Data Transfer Message
 
 All other messages received by either side of the connection are Data Transfer Messages.
 
@@ -1851,7 +1771,8 @@ Release: August 11, 2025
 
 25 / 39
 
-
+
+
 
 The sum of the received DataLength and RemainingDataLength of the message is less than or
 equal to Connection.MaxFragmentSize.
@@ -1911,7 +1832,7 @@ contents MUST be cleared.
 The Connection.FragmentReassemblyBuffer contents MUST be passed to the upper layer, and
 the Connection.FragmentReassemblyBuffer MUST be cleared.
 
-3.1.5.9  Managing Credits Prior to Sending
+##### 3.1.5.9 Managing Credits Prior to Sending
 
 After a successful negotiation, and prior to sending a message to the peer, the following credit
 management is performed for both send and receive limits on the specified Connection.
@@ -1927,7 +1848,8 @@ Release: August 11, 2025
 
 26 / 39
 
-If Connection.ReceiveCredits is zero, or if Connection.SendCredits is one and the
+
+If Connection.ReceiveCredits is zero, or if Connection.SendCredits is one and the
 Connection.SendQueue is not empty, the sender MUST allocate and post at least one receive of size
 Connection.MaxReceiveSize and MUST increment Connection.ReceiveCredits by the number
 allocated and posted. If no receives are posted, the processing MUST return a value of zero to indicate
@@ -1943,15 +1865,15 @@ successfully posted, the value of Connection.ReceiveCredits MUST be incremented 
 
 The processing MUST return the number of receive credits successfully added to the connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Negotiation Timer
+##### 3.1.6.1 Negotiation Timer
 
 When the Negotiation Timer expires, the local peer SHOULD terminate the connection. Termination of
 the connection will result in the RDMA provider signaling the Connection Loss event as specified in
 section 3.1.7.1.
 
-3.1.6.2  Idle Connection Timer
+##### 3.1.6.2 Idle Connection Timer
 
 When the Idle Connection Timer expires, the local peer SHOULD check whether
 Connection.KeepaliveRequested is set to "NONE", and if not, the local peer SHOULD terminate the
@@ -1963,19 +1885,19 @@ Transfer message with the SMB_DIRECT_RESPONSE_REQUESTED flag set SHOULD be initi
 upper layer message is currently pending to be sent, then a Data Transfer message with an empty
 Buffer can be constructed.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The protocol handles and signals the following events to its upper layer on a per-connection basis in
 the following categories:
 
-3.1.7.1  Connection Loss
+##### 3.1.7.1 Connection Loss
 
 When the underlying RDMA transport indicates loss of a connection, whether initiated locally or by the
 remote peer, the upper layer MUST be notified, passing an implementation-dependent representation
 of the Connection as the argument, and subsequently terminate the lower-layer endpoint
 represented by Connection.Endpoint, and the Connection itself.
 
-3.1.7.2  Connection Arrival
+##### 3.1.7.2 Connection Arrival
 
 When the underlying RDMA transport indicates arrival of a new remote peer connection to a listening
 endpoint, the listener MUST:
@@ -1991,7 +1913,8 @@ Release: August 11, 2025
 
 27 / 39
 
-  Start a Negotiation Timer interval of 5 seconds.
+
+  Start a Negotiation Timer interval of 5 seconds.
 
   Assign a new Connection.Endpoint and accept the connection in an implementation-defined
 
@@ -2021,12 +1944,13 @@ Release: August 11, 2025
 
 28 / 39
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe common scenarios in order to illustrate the functionality of the SMB2
 RDMA Transport Protocol.
 
-4.1  Establishing a Connection
+### 4.1 Establishing a Connection
 
 The following message exchanges show the steps taken by a system that is establishing a connection
 to a peer.
@@ -2091,7 +2015,8 @@ Release: August 11, 2025
 
 29 / 39
 
-3.  The peer sends the first data transfer, typically an upper-layer SMB2 Negotiate Request.  The
+
+3.  The peer sends the first data transfer, typically an upper-layer SMB2 Negotiate Request.  The
 
 message grants an initial credit limit of 10, and requests 10 credits to begin sending normal
 traffic.
@@ -2121,7 +2046,7 @@ The Data Transfer message fields are set to the following:
 An SMB2 RDMA Transport Version 1.0 Protocol connection has now been established, and the initial
 message is processed.
 
-4.2  Peer Transmits 500 Bytes of Data
+### 4.2 Peer Transmits 500 Bytes of Data
 
 The following message sequence shows the steps taken to transmit a small amount of data (500
 bytes).
@@ -2163,7 +2088,8 @@ Release: August 11, 2025
 
 30 / 39
 
-4.3  Peer Transmits 64 KiB of Data
+
+### 4.3 Peer Transmits 64 KiB of Data
 
 The following message sequence shows the steps taken to transmit a moderate amount of data (64
 KiB bytes).
@@ -2244,7 +2170,8 @@ Release: August 11, 2025
 
 31 / 39
 
-  RemainingDataLength: 0x000000000 (final message of fragmented sequence)
+
+  RemainingDataLength: 0x000000000 (final message of fragmented sequence)
 
   DataOffset: 0x00000018 (24)
 
@@ -2254,7 +2181,7 @@ Release: August 11, 2025
 
   Buffer: (536 final bytes of the upper-layer message)
 
-4.4  Peer Transmits 1 MiB of Data Via Upper Layer
+### 4.4 Peer Transmits 1 MiB of Data Via Upper Layer
 
 The following shows the steps taken to transmit a large amount of data (1 MiB).
 
@@ -2317,7 +2244,8 @@ Release: August 11, 2025
 
 32 / 39
 
-4.5  Peer Receives 1 MiB of Data Via Upper Layer
+
+### 4.5 Peer Receives 1 MiB of Data Via Upper Layer
 
 The following shows the steps taken to request a large amount of data (1 MiB).
 
@@ -2385,9 +2313,10 @@ Release: August 11, 2025
 
 33 / 39
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 An implementation of the SMB2 RDMA Transport Protocol atop RDMA Verbs [DRAFT-RDMA-VERBS]
 needs to conform to the security principles discussed in [RFC5042].
@@ -2396,7 +2325,7 @@ Implementers using upper layers, need to be aware of potential security issues w
 Register Buffer interface defined in section 3.1.4.3. A thorough understanding of the potential issues
 and their mitigations as described in [RFC5042] is required.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2407,7 +2336,8 @@ Release: August 11, 2025
 
 34 / 39
 
-6  Appendix A: RDMA Provider IRD/ORD Negotiation
+
+## 6 Appendix A: RDMA Provider IRD/ORD Negotiation
 
 The SMB2 RDMA Transport Protocol requires that the underlying RDMA Providers support the mutual
 dynamic establishment of Incoming RDMA Read Depth / Outgoing RDMA Read Depth (IRD/ORD)
@@ -2417,7 +2347,7 @@ RDMA lower layers, [RFC6581] and [IBARCH].
 For iWARP providers that do not support [RFC6581] negotiation, the following exchange is
 recommended.
 
-6.1  IRD/ORD Negotiate Header
+### 6.1 IRD/ORD Negotiate Header
 
 The iWARP provider sends the following as the first 8 bytes of the private data when establishing an
 RDMA connection on port 5445 with its peer on behalf of the SMB2 RDMA Transport.
@@ -2445,7 +2375,7 @@ ORD (4 bytes): The Outgoing RDMA Read Depth currently in use by the sending peer
 
 connection. This value has to be greater than zero.
 
-6.2  IRD/ORD Negotiate Header Processing
+### 6.2 IRD/ORD Negotiate Header Processing
 
 When a remote connection is established, the accepting peer has to obtain the IRD and ORD values
 from the IRD/ORD Negotiate Header at the beginning of any private data provided by the
@@ -2478,7 +2408,8 @@ Release: August 11, 2025
 
 35 / 39
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2547,7 +2478,8 @@ SMB2 Remote Direct Memory Access (RDMA) Transport Protocol
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<6> Section 3.1.5.6:  Windows Server 2012 R2 operating system and later fail the request with
+
+<6> Section 3.1.5.6:  Windows Server 2012 R2 operating system and later fail the request with
 STATUS_INSUFFICIENT_RESOURCES if the PreferredSendSize field is greater than 8136.
 
 <7> Section 3.1.5.7:  Windows Server 2012 without [MSKB-2934016] limits MaxReadWriteSize to
@@ -2578,7 +2510,8 @@ Release: August 11, 2025
 
 37 / 39
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2622,7 +2555,8 @@ Release: August 11, 2025
 
 38 / 39
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 16

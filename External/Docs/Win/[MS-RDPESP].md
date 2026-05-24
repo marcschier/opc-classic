@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -511,7 +513,8 @@ Release: April 23, 2024
 
 3 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -552,227 +555,101 @@ Release: April 23, 2024
 
 4 / 32
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Purpose of Device Redirection Extensions](#131-purpose-of-device-redirection-extensions)
+    - [1.3.2 Protocol Initialization](#132-protocol-initialization)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+    - [2.2.2 Port Redirection Messages](#222-port-redirection-messages)
+      - [2.2.2.1 Client Device List Announce Request](#2221-client-device-list-announce-request)
+      - [2.2.2.2 Server Create Request (DR_PORT_CREATE_REQ)](#2222-server-create-request-drportcreatereq)
+      - [2.2.2.3 Server Close Request (DR_PORT_CLOSE_REQ)](#2223-server-close-request-drportclosereq)
+      - [2.2.2.4 Server Read Request (DR_PORT_READ_REQ)](#2224-server-read-request-drportreadreq)
+      - [2.2.2.5 Server Write Request (DR_PORT_WRITE_REQ)](#2225-server-write-request-drportwritereq)
+      - [2.2.2.6 Server Device Control Request (DR_PORT_CONTROL_REQ)](#2226-server-device-control-request-drportcontrolreq)
+      - [2.2.2.7 Client Create Response (DR_PORT_CREATE_RSP)](#2227-client-create-response-drportcreatersp)
+      - [2.2.2.8 Client Close Response (DR_PORT_CLOSE_RSP)](#2228-client-close-response-drportclosersp)
+      - [2.2.2.9 Client Read Response (DR_PORT_READ_RSP)](#2229-client-read-response-drportreadrsp)
+      - [2.2.2.10 Client Write Response (DR_PORT_WRITE_RSP)](#22210-client-write-response-drportwritersp)
+      - [2.2.2.11 Client Device Control Response (DR_PORT_CONTROL_RSP)](#22211-client-device-control-response-drportcontrolrsp)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Port Redirection Messages](#3251-port-redirection-messages)
+        - [3.2.5.1.1 Sending a Client Device List Announce Request Message](#32511-sending-a-client-device-list-announce-request-message)
+        - [3.2.5.1.2 Processing a Server Create Request Message](#32512-processing-a-server-create-request-message)
+        - [3.2.5.1.3 Processing a Server Close Request Message](#32513-processing-a-server-close-request-message)
+        - [3.2.5.1.4 Processing a Server Read Request Message](#32514-processing-a-server-read-request-message)
+        - [3.2.5.1.5 Processing a Server Write Request Message](#32515-processing-a-server-write-request-message)
+        - [3.2.5.1.6 Processing a Server Device Control Request Message](#32516-processing-a-server-device-control-request-message)
+        - [3.2.5.1.7 Sending a Create Response Message](#32517-sending-a-create-response-message)
+        - [3.2.5.1.8 Sending a Close Response Message](#32518-sending-a-close-response-message)
+        - [3.2.5.1.9 Sending a Read Response Message](#32519-sending-a-read-response-message)
+        - [3.2.5.1.10 Sending a Write Response Message](#325110-sending-a-write-response-message)
+        - [3.2.5.1.11 Sending a Device Control Response Message](#325111-sending-a-device-control-response-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Port Redirection Messages](#3351-port-redirection-messages)
+        - [3.3.5.1.1 Processing a Client Device List Announce Request Message](#33511-processing-a-client-device-list-announce-request-message)
+        - [3.3.5.1.2 Sending a Server Create Request Message](#33512-sending-a-server-create-request-message)
+        - [3.3.5.1.3 Sending a Server Close Request Message](#33513-sending-a-server-close-request-message)
+        - [3.3.5.1.4 Sending a Server Write Request Message](#33514-sending-a-server-write-request-message)
+        - [3.3.5.1.5 Sending a Server Read Request Message](#33515-sending-a-server-read-request-message)
+        - [3.3.5.1.6 Sending a Server Device Control Request Message](#33516-sending-a-server-device-control-request-message)
+        - [3.3.5.1.7 Processing a Client Create Response Message](#33517-processing-a-client-create-response-message)
+        - [3.3.5.1.8 Processing a Client Close Response Message](#33518-processing-a-client-close-response-message)
+        - [3.3.5.1.9 Processing a Client Write Response Message](#33519-processing-a-client-write-response-message)
+        - [3.3.5.1.10 Processing a Client Read Response Message](#335110-processing-a-client-read-response-message)
+        - [3.3.5.1.11 Processing a Client Device Control Response Message](#335111-processing-a-client-device-control-response-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Port Redirection Annotations](#41-port-redirection-annotations)
+  - [4.2 Server Create Request Example](#42-server-create-request-example)
+  - [4.3 Client Create Response Example](#43-client-create-response-example)
+  - [4.4 IO Operations Examples](#44-io-operations-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Purpose of Device Redirection Extensions ........................................................ 8
-Protocol Initialization ..................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Common Data Types ................................................................................... 10
-Port Redirection Messages ........................................................................... 10
-Client Device List Announce Request ....................................................... 10
-Server Create Request (DR_PORT_CREATE_REQ) ..................................... 11
-Server Close Request (DR_PORT_CLOSE_REQ) ......................................... 11
-Server Read Request (DR_PORT_READ_REQ) ........................................... 11
-Server Write Request (DR_PORT_WRITE_REQ) ......................................... 11
-Server Device Control Request (DR_PORT_CONTROL_REQ) ........................ 11
-Client Create Response (DR_PORT_CREATE_RSP) ..................................... 13
-Client Close Response (DR_PORT_CLOSE_RSP) ........................................ 13
-Client Read Response (DR_PORT_READ_RSP) .......................................... 13
-Client Write Response (DR_PORT_WRITE_RSP) ........................................ 13
-Client Device Control Response (DR_PORT_CONTROL_RSP) ....................... 14
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-
-3.1
-
-3.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Port Redirection Messages ...................................................................... 16
-Sending a Client Device List Announce Request Message ...................... 16
-Processing a Server Create Request Message ...................................... 16
-Processing a Server Close Request Message ....................................... 16
-Processing a Server Read Request Message ........................................ 16
-Processing a Server Write Request Message........................................ 17
-Processing a Server Device Control Request Message ........................... 17
-Sending a Create Response Message ................................................. 17
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-[MS-RDPESP] - v20240423
-Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 32
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.2.5.1.8
-3.2.5.1.9
-3.2.5.1.10
-3.2.5.1.11
-
-Sending a Close Response Message ................................................... 18
-Sending a Read Response Message .................................................... 18
-Sending a Write Response Message ................................................... 18
-Sending a Device Control Response Message ...................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-Server Details .................................................................................................. 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Port Redirection Messages ...................................................................... 20
-Processing a Client Device List Announce Request Message .................. 20
-Sending a Server Create Request Message ......................................... 20
-Sending a Server Close Request Message ........................................... 20
-Sending a Server Write Request Message ........................................... 20
-Sending a Server Read Request Message ........................................... 20
-Sending a Server Device Control Request Message .............................. 20
-Processing a Client Create Response Message ..................................... 21
-Processing a Client Close Response Message ....................................... 21
-Processing a Client Write Response Message ....................................... 21
-Processing a Client Read Response Message ....................................... 21
-Processing a Client Device Control Response Message .......................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-3.3.5.1.9
-3.3.5.1.10
-3.3.5.1.11
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 22
-Port Redirection Annotations.............................................................................. 22
-Server Create Request Example ......................................................................... 23
-Client Create Response Example ........................................................................ 24
-IO Operations Examples .................................................................................... 24
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 28
-
-7  Change Tracking .................................................................................................... 30
-
-8  Index ..................................................................................................................... 31
-
-[MS-RDPESP] - v20240423
-Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 32
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: Serial and Parallel Port Virtual Channel
 Extension. This protocol is used to redirect serial and parallel ports from a terminal client to the
@@ -782,7 +659,7 @@ to the server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -818,14 +695,14 @@ terminal server: A computer on which terminal services is running.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -840,7 +717,8 @@ Release: April 23, 2024
 
 7 / 32
 
-[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
+
+[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
 
 [MS-RDPEFS] Microsoft Corporation, "Remote Desktop Protocol: File System Virtual Channel
@@ -851,7 +729,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-DeviceTypes] Microsoft Corporation, "Specifying Device Types",
 https://msdn.microsoft.com/en-us/library/ff563821.aspx
@@ -871,7 +749,7 @@ us/library/bb870477.aspx
 [MSFT-WDDK] Microsoft Corporation, "Windows Driver Kit Version 7.1.0",
 http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11800
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension specifies the
 communication used to enable the redirection of serial and parallel ports (ports for short) between a
@@ -879,19 +757,19 @@ terminal client and a terminal server. By redirecting ports from the terminal cl
 server, applications running on a server machine can access the remote devices attached to those
 ports.
 
-1.3.1  Purpose of Device Redirection Extensions
+#### 1.3.1 Purpose of Device Redirection Extensions
 
 This extension enables the redirection of serial and parallel port devices attached to the terminal
 client. With the redirection, such devices can then be accessed by the applications running on the
 server.
 
-1.3.2  Protocol Initialization
+#### 1.3.2 Protocol Initialization
 
 This extension can be considered as a subprotocol within the Remote Desktop Protocol: File System
 Virtual Channel Extension as specified in [MS-RDPEFS]. It follows the initialization of the Remote
 Desktop Protocol: File System Virtual Channel Extension to enable port redirection.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This extension can be considered as a subprotocol within Remote Desktop Protocol: File System
 Virtual Channel Extension as specified in [MS-RDPEFS]. This extension extends the Remote Desktop
@@ -904,31 +782,32 @@ Release: April 23, 2024
 
 8 / 32
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension operates only after
 the Remote Desktop Protocol: File System Virtual Channel Extension transport, as specified in [MS-
 RDPEFS], is fully established.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension is designed to be run
 within the context of a Remote Desktop Protocol virtual channel established between a client and
 server. This protocol extension is applicable when applications running on the terminal server need
 to access the ports physically located on a client machine.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This extension relies on the Remote Desktop Protocol: File System Virtual Channel Extension, as
 specified in [MS-RDPEFS], to perform basic versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values, as defined in [MS-ERREF] section 2.3. Vendors are free to
 choose their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a
 customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension contains no standards
 assignments.
@@ -940,33 +819,34 @@ Release: April 23, 2024
 
 9 / 32
 
-2  Messages
+
+## 2 Messages
 
 Because this is a subprotocol of Remote Desktop Protocol: File System Virtual Channel Extension, as
 specified in [MS-RDPEFS], this extension shares messages and common data types already specified
 in [MS-RDPEFS]. This section describes the messages and data types used by Remote Desktop
 Protocol: Serial and Parallel Port Virtual Channel Extension.
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be transported over an established Remote Desktop Protocol device extensions
 channel (as specified in [MS-RDPEFS] section 2.1).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain Remote Desktop Protocol: Serial and Parallel Port Virtual Channel
 Extension message syntax.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 Port redirection uses common data types specified in [MS-RDPEFS] section 2.
 
-2.2.2  Port Redirection Messages
+#### 2.2.2 Port Redirection Messages
 
 This protocol does not define any specific messages. It uses a subset of the messages specified in
 [MS-RDPEFS] section 2. The messages in the following sections are used by this protocol.
 
-2.2.2.1  Client Device List Announce Request
+##### 2.2.2.1 Client Device List Announce Request
 
 This message is described in [MS-RDPEFS] section 2.2.2.9. The port redirection client generates the
 elements of type DEVICE_ANNOUNCE (as specified in [MS-RDPEFS] section 2.2.1.3) for the port
@@ -1016,9 +896,10 @@ Release: April 23, 2024
 
 10 / 32
 
-Note: The Client Drive Device List Remove message is not supported by the MS-RDPESP protocol.
 
-2.2.2.2  Server Create Request (DR_PORT_CREATE_REQ)
+Note: The Client Drive Device List Remove message is not supported by the MS-RDPESP protocol.
+
+##### 2.2.2.2 Server Create Request (DR_PORT_CREATE_REQ)
 
 This message is sent by the server to open an instance of the port device. The packet for this
 message is specified in [MS-RDPEFS] section 2.2.1.4.1 (DR_CREATE_REQ). The DeviceId of the
@@ -1033,12 +914,12 @@ FileAttributes, SharedAccess, Disposition and CreateOptions) are treated as opaq
 protocol. The interpretation of these parameters is determined by the client-side driver. The various
 possible values are specified in [MS-SMB2] section 2.2.13.
 
-2.2.2.3  Server Close Request (DR_PORT_CLOSE_REQ)
+##### 2.2.2.3 Server Close Request (DR_PORT_CLOSE_REQ)
 
 This message is sent from the server to close the previously-opened device instance. The packet is
 specified in [MS-RDPEFS] section 2.2.1.4.2 (DR_CLOSE_REQ).
 
-2.2.2.4  Server Read Request (DR_PORT_READ_REQ)
+##### 2.2.2.4 Server Read Request (DR_PORT_READ_REQ)
 
 This message is sent from the server to read data from the port device instance. The packet is
 specified in [MS-RDPEFS] section 2.2.1.4.3 (DR_READ_REQ).
@@ -1049,7 +930,7 @@ Zero-length request semantics: The protocol allows the client and server to requ
 read/write operations with the Length field set to zero. The behavior of these requests and their
 interpretation is determined by the server application and the client driver.
 
-2.2.2.5  Server Write Request (DR_PORT_WRITE_REQ)
+##### 2.2.2.5 Server Write Request (DR_PORT_WRITE_REQ)
 
 This message is sent from the server to write data to the port device instance. The packet is specified
 in [MS-RDPEFS] section 2.2.1.4.4 (DR_WRITE_REQ).
@@ -1060,7 +941,7 @@ Zero-length request semantics: The protocol allows the client and server to requ
 read/write operations with the Length field set to zero. The behavior of these requests and their
 interpretation is determined by the server application and the client driver.
 
-2.2.2.6  Server Device Control Request (DR_PORT_CONTROL_REQ)
+##### 2.2.2.6 Server Device Control Request (DR_PORT_CONTROL_REQ)
 
 This message is sent by the server to request a device control operation. The packet is specified in
 [MS-RDPEFS] section 2.2.1.4.5 (DR_CONTROL_REQ).
@@ -1085,7 +966,8 @@ Release: April 23, 2024
 
 11 / 32
 
-Name
+
+Name
 
 Value
 
@@ -1224,7 +1106,8 @@ Release: April 23, 2024
 
 12 / 32
 
-Name
+
+Name
 
 Value
 
@@ -1292,26 +1175,26 @@ IOCTL_PAR_IS_PORT_FREE
 
  0x00160054
 
-2.2.2.7  Client Create Response (DR_PORT_CREATE_RSP)
+##### 2.2.2.7 Client Create Response (DR_PORT_CREATE_RSP)
 
 The client responds with this message to notify the server about the result of the server create
 request (section 2.2.2.2). This message is specified in [MS-RDPEFS] section 2.2.1.5.1
 (DR_CREATE_RSP).
 
-2.2.2.8  Client Close Response (DR_PORT_CLOSE_RSP)
+##### 2.2.2.8 Client Close Response (DR_PORT_CLOSE_RSP)
 
 The client responds with this message to notify the server about the result of the server close
 request (section 2.2.2.3). This message is specified in [MS-RDPEFS] section 2.2.1.5.2
 (DR_CLOSE_RSP).
 
-2.2.2.9  Client Read Response (DR_PORT_READ_RSP)
+##### 2.2.2.9 Client Read Response (DR_PORT_READ_RSP)
 
 The client responds with this message to notify the server about the result of server read request
 (section 2.2.2.4). This message is specified in [MS-RDPEFS] section 2.2.1.5.3 (DR_READ_RSP).
 
-2.2.2.10
+##### 2.2.2.10 Client Write Response (DR_PORT_WRITE_RSP)
 
-Client Write Response (DR_PORT_WRITE_RSP)
+
 
 The client responds with this message to notify the server about the result of the server write request
 (section 2.2.2.5). This message is specified in [MS-RDPEFS] section 2.2.1.5.4 (DR_WRITE_RSP).
@@ -1323,9 +1206,10 @@ Release: April 23, 2024
 
 13 / 32
 
-2.2.2.11
 
-Client Device Control Response (DR_PORT_CONTROL_RSP)
+##### 2.2.2.11 Client Device Control Response (DR_PORT_CONTROL_RSP)
+
+
 
 The client responds with this message to notify the server about the result of the server device control
 request (2.2.2.6). This message is specified in [MS-RDPEFS] section 2.2.1.5.5 (DR_CONTROL_RSP).
@@ -1337,14 +1221,15 @@ Release: April 23, 2024
 
 14 / 32
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify protocol details, including abstract data models and message processing
 rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -1354,38 +1239,38 @@ external behavior is consistent with that described in this document.
 The Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension follows the abstract
 data model specified in [MS-RDPEFS] section 3.1.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no common timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Remote Desktop Protocol: File System Virtual Channel Extension MUST be initialized before the
 ports can be redirected. This initialization is complete when the client sends the Client Core Capability
 Response, as specified in [MS-RDPEFS] section 2.2.2.8.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 IO requests are generated in response to IO calls that the server applications make on the redirected
 device. Otherwise, no higher-layer triggered events are used.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The common message processing events and rules that are described in [MS-RDPEFS] section 3.1.5
 apply to this protocol. For client-specific and server-specific message processing, see sections 3.2.5
 and 3.3.5.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No common timer events are used.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no common local events.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
@@ -1396,23 +1281,24 @@ Release: April 23, 2024
 
 15 / 32
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 No timers are used.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No client higher-layer triggered events are used.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Port Redirection Messages
+##### 3.2.5.1 Port Redirection Messages
 
-3.2.5.1.1 Sending a Client Device List Announce Request Message
+###### 3.2.5.1.1 Sending a Client Device List Announce Request Message
 
 After Remote Desktop Protocol: File System Virtual Channel Extension finishes initialization by sending
 a Client Core Capability Response message, as specified in [MS-RDPEFS] section 2.2.2.8, the client
@@ -1429,7 +1315,7 @@ Channel Extension send the information over to the server.
 
 The DeviceId field generated in this message is used to refer to this port in subsequent messages.
 
-3.2.5.1.2 Processing a Server Create Request Message
+###### 3.2.5.1.2 Processing a Server Create Request Message
 
 After receiving the create request, the client SHOULD open and prepare the port for IO operations.
 The opened instance of the port is maintained by the client as a FileId field of the
@@ -1437,7 +1323,7 @@ DR_DEVICE_IOREQUEST message, as specified in [MS-RDPEFS] section 2.2.1.4. This I
 refer to subsequent IO operations on the port instance. After the create request processing is
 complete, the client responds with a create response message (section 3.2.5.1.7).
 
-3.2.5.1.3 Processing a Server Close Request Message
+###### 3.2.5.1.3 Processing a Server Close Request Message
 
 The DeviceId and FileId fields of DR_DEVICE_IOREQUEST (as specified in [MS-RDPEFS] section
 2.2.1.4) identify the previously-opened instance of the port to operate on.
@@ -1446,7 +1332,7 @@ After receiving the close request, the client MUST close the previously opened p
 also cancel pending IO operations, if any, on the port. The client MUST respond with close response
 message (section 3.2.5.1.8).
 
-3.2.5.1.4 Processing a Server Read Request Message
+###### 3.2.5.1.4 Processing a Server Read Request Message
 
 The DeviceId and FileId fields of DR_DEVICE_IOREQUEST (as specified in [MS-RDPEFS] section
 2.2.1.4) identify the previously opened instance of the port to operate on.
@@ -1458,7 +1344,8 @@ Release: April 23, 2024
 
 16 / 32
 
-The Length and Offset fields of DR_READ_REQ (as specified in [MS-RDPEFS] section 2.2.1.4.3)
+
+The Length and Offset fields of DR_READ_REQ (as specified in [MS-RDPEFS] section 2.2.1.4.3)
 identify the length and offset values requested by the server for this operation.
 
 If the Offset field is not set to 0, the value MUST be ignored.
@@ -1471,7 +1358,7 @@ The semantics of read requests are determined by the client-side driver. The pro
 read results. The result of the read operations, including the data read, is passed to the server and is
 considered opaque to the protocol.
 
-3.2.5.1.5 Processing a Server Write Request Message
+###### 3.2.5.1.5 Processing a Server Write Request Message
 
 The DeviceId and FileId fields of DR_DEVICE_IOREQUEST (as specified in [MS-RDPEFS] section
 2.2.1.4) identify the previously opened instance of the port to operate on.
@@ -1483,7 +1370,7 @@ The client MUST perform the write operation on the instance of the port accordin
 operation is complete, the client MUST send response message DR_WRITE_RSP (as specified in [MS-
 RDPEFS] section 2.2.1.5.4) to let the server know about the result of the operation.
 
-3.2.5.1.6 Processing a Server Device Control Request Message
+###### 3.2.5.1.6 Processing a Server Device Control Request Message
 
 The DeviceId and FileId fields of DR_DEVICE_IOREQUEST (as specified in [MS-RDPEFS] section
 2.2.1.4) identify the previously-opened instance of the port to operate on.
@@ -1497,7 +1384,7 @@ instance of the port accordingly. After the operation is complete, the client MU
 Control Response message (section 3.2.5.1.11) to notify the server about the result of the
 operation.<2>
 
-3.2.5.1.7 Sending a Create Response Message
+###### 3.2.5.1.7 Sending a Create Response Message
 
 This message is sent in response to the server create request (section 3.2.5.1.2).
 
@@ -1532,7 +1419,8 @@ Release: April 23, 2024
 
 17 / 32
 
-
+
+
 
 The IoStatus field MUST be set to the NTSTATUS indicating the result of the operation.
 NTSTATUS codes are specified in [MS-ERREF] section 2.3.
@@ -1543,7 +1431,7 @@ port instance.
 
 The Information field MUST be set to 0.
 
-3.2.5.1.8 Sending a Close Response Message
+###### 3.2.5.1.8 Sending a Close Response Message
 
 This message is sent in response to the server close request (3.2.5.1.3).
 
@@ -1575,7 +1463,7 @@ request (section 3.2.5.1.3).
 
 The IoStatus field MUST be set to the NTSTATUS value indicating the result of the operation.
 
-3.2.5.1.9 Sending a Read Response Message
+###### 3.2.5.1.9 Sending a Read Response Message
 
 This message is sent in response to the server read request (3.2.5.1.4).
 
@@ -1612,9 +1500,9 @@ Length field with the number of bytes read. The actual data read follows the Len
 Length field MAY be less than the requested length; however, the Length field MUST NOT be greater
 than requested length. These partial read requests are supported by the server.
 
-3.2.5.1.10
+###### 3.2.5.1.10 Sending a Write Response Message
 
-Sending a Write Response Message
+
 
 This message is sent in response to the server write request (section 3.2.5.1.5).
 
@@ -1625,7 +1513,8 @@ Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client MUST fill out the various members of DR_WRITE_RSP (as specified in [MS-RDPEFS] section
+
+The client MUST fill out the various members of DR_WRITE_RSP (as specified in [MS-RDPEFS] section
 2.2.1.5.4) as follows:
 
 For the RDPDR_HEADER:
@@ -1660,9 +1549,9 @@ The Padding field is unused and MUST be ignored by the server.
 The client prepares a reply message with the result of the write operation. The client populates the
 Length field with the number of bytes written.
 
-3.2.5.1.11
+###### 3.2.5.1.11 Sending a Device Control Response Message
 
-Sending a Device Control Response Message
+
 
 This message is sent in response to the server device control request (section 3.2.5.1.6).
 
@@ -1698,11 +1587,11 @@ The client prepares a reply message with the result of the device control operat
 populates the OutputBufferLength field with the number of bytes returned by the device control
 operation. The actual data returned, if any, follows the packet.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events.
 
@@ -1713,58 +1602,59 @@ Release: April 23, 2024
 
 19 / 32
 
-3.3  Server Details
 
-3.3.1  Abstract Data Model
+### 3.3 Server Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no timers used.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 All IO requests are originated by the applications making IO calls on the redirected device. Otherwise,
 no other higher-layer triggered events are used.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Port Redirection Messages
+##### 3.3.5.1 Port Redirection Messages
 
-3.3.5.1.1 Processing a Client Device List Announce Request Message
+###### 3.3.5.1.1 Processing a Client Device List Announce Request Message
 
 After receiving the Client Device List Announce Request message (section 2.2.2.1) for each device on
 the announce list, the server MUST create a pseudo port device that emulates the client device.
 The server MUST maintain the association of the DeviceId value obtained from the client with such a
 pseudo device.
 
-3.3.5.1.2 Sending a Server Create Request Message
+###### 3.3.5.1.2 Sending a Server Create Request Message
 
 The server sends this message when any server application opens the pseudo port device. The
 server passes all the create parameters obtained from the application request over to the client for
 actual processing.
 
-3.3.5.1.3 Sending a Server Close Request Message
+###### 3.3.5.1.3 Sending a Server Close Request Message
 
 The server sends this message to the client in response to the server application requesting the close
 operation on the pseudo port device for actual processing.
 
-3.3.5.1.4 Sending a Server Write Request Message
+###### 3.3.5.1.4 Sending a Server Write Request Message
 
 The server sends this message to the client in response to the server application requesting the write
 operation on the pseudo port device for actual processing.
 
-3.3.5.1.5 Sending a Server Read Request Message
+###### 3.3.5.1.5 Sending a Server Read Request Message
 
 The server sends this message to the client in response to the server application requesting the read
 operation on the pseudo port device for actual processing.
 
-3.3.5.1.6 Sending a Server Device Control Request Message
+###### 3.3.5.1.6 Sending a Server Device Control Request Message
 
 The server sends this message to the client in response to the server application requesting the
 device control operation on the pseudo port device for actual processing.
@@ -1776,40 +1666,41 @@ Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.1.7 Processing a Client Create Response Message
+
+###### 3.3.5.1.7 Processing a Client Create Response Message
 
 After receiving the create response, the server responds to the application that initiated the create
 operation (section 3.3.5.1.1). The server MUST maintain an association between the FileId returned
 by the client and the file handle returned to the application. For any subsequent IO operations on the
 file handle, the server SHOULD send the IO to the client for completion using the same FileId field.
 
-3.3.5.1.8 Processing a Client Close Response Message
+###### 3.3.5.1.8 Processing a Client Close Response Message
 
 The server responds to the application with the result of the close response received from the client.
 
-3.3.5.1.9 Processing a Client Write Response Message
+###### 3.3.5.1.9 Processing a Client Write Response Message
 
 The server forwards the result of the write response to the application that requested the write
 operation.
 
-3.3.5.1.10
+###### 3.3.5.1.10 Processing a Client Read Response Message
 
-Processing a Client Read Response Message
+
 
 The server forwards the result of the read response to the application that initiated the read operation.
 
-3.3.5.1.11
+###### 3.3.5.1.11 Processing a Client Device Control Response Message
 
-Processing a Client Device Control Response Message
+
 
 The server forwards the result of the device control response to the application that initiated the
 operation.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no other local events.
 
@@ -1820,9 +1711,10 @@ Release: April 23, 2024
 
 21 / 32
 
-4  Protocol Examples
 
-4.1  Port Redirection Annotations
+## 4 Protocol Examples
+
+### 4.1 Port Redirection Annotations
 
 After the Remote Desktop Protocol: Serial and Parallel Port Virtual Channel Extension finishes its
 initialization, the client sends the client device list announce message to the server. Information
@@ -1888,7 +1780,8 @@ Release: April 23, 2024
 
 22 / 32
 
- 2d 00 31 00 32 00 30 00
+
+ 2d 00 31 00 32 00 30 00
  30 00 00 00             -> DriverName (28 bytes)           = "Apollo P-1200"
  41 00 70 00 6f 00 6c 00 6c 00 6f 00 20 00 50 00
  2d 00 31 00 32 00 30 00 30 00 00 00
@@ -1922,7 +1815,7 @@ Release: April 23, 2024
  4c 50 54 31 00 00 00 00 -> PreferredDosName (8 characters)  = "LPT1"
  00 00 00 00             -> DeviceDataLength                 = 0x00000000
 
-4.2  Server Create Request Example
+### 4.2 Server Create Request Example
 
 The server sends a request to create an instance of the port. The following sequence captures such a
 request.
@@ -1955,7 +1848,8 @@ Release: April 23, 2024
 
 23 / 32
 
-4.3  Client Create Response Example
+
+### 4.3 Client Create Response Example
 
 The client responds with the following response. This establishes a FileId value that is used
 subsequently for the IO operations.
@@ -1974,7 +1868,7 @@ subsequently for the IO operations.
  01 00 00 00 -> FileId                         = 0x00000001
  00          -> Information                    = 0x00
 
-4.4  IO Operations Examples
+### 4.4 IO Operations Examples
 
 The server on behalf of the application sends IO operations on the FieldId. The following message
 sequences illustrate the packets for read, write, and device control operations.
@@ -2023,7 +1917,8 @@ Release: April 23, 2024
 
 24 / 32
 
- 08 02 00 00 -> Length (520 bytes written)   = 0x00000208
+
+ 08 02 00 00 -> Length (520 bytes written)   = 0x00000208
  00 00 00 00 00 00 00 00
              -> Offset
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -2085,7 +1980,8 @@ Release: April 23, 2024
 
 25 / 32
 
- 00 00 00 00  -> NTSTATUS                       = 0x00000000
+
+ 00 00 00 00  -> NTSTATUS                       = 0x00000000
  08 02 00 00  -> Length
  00           -> Padding
 
@@ -2144,16 +2040,17 @@ Release: April 23, 2024
 
 26 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for Remote Desktop Protocol: Serial and Parallel Port Virtual
 Channel Extension messages because all static virtual channel traffic is secured by the underlying
 Remote Desktop Protocol core protocol. The implemented security-related mechanisms are specified in
 [MS-RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters in Remote Desktop Protocol: Serial and Parallel Port Virtual Channel
 Extension.
@@ -2165,7 +2062,8 @@ Release: April 23, 2024
 
 27 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2233,7 +2131,8 @@ Release: April 23, 2024
 
 28 / 32
 
-For more information on port naming conventions, see [MSDN-PORTS].
+
+For more information on port naming conventions, see [MSDN-PORTS].
 
 <2> Section 3.2.5.1.6: Windows Implementations use IOCTL constants for IoControlCode values.
 The content and values of the IOCTLs are opaque to the protocol. On the server side, the data
@@ -2278,7 +2177,8 @@ Release: April 23, 2024
 
 29 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2322,7 +2222,8 @@ Release: April 23, 2024
 
 30 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2463,7 +2364,8 @@ Release: April 23, 2024
 
 31 / 32
 
-   write request DR_PORT_WRITE_REQ 11
+
+   write request DR_PORT_WRITE_REQ 11
 Standards assignments 9
 Syntax 10
 

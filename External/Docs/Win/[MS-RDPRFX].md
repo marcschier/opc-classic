@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 172
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -295,7 +296,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -344,338 +346,109 @@ Release: April 23, 2024
 
 3 / 172
 
-Table of Contents
 
-1.3
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+    - [1.3.1 RemoteFX Codec](#131-remotefx-codec)
+      - [1.3.1.1 Message Flows](#1311-message-flows)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Capabilities Messages](#221-capabilities-messages)
+      - [2.2.1.1 TS_RFX_CLNT_CAPS_CONTAINER](#2211-tsrfxclntcapscontainer)
+        - [2.2.1.1.1 TS_RFX_CAPS](#22111-tsrfxcaps)
+          - [2.2.1.1.1.1 TS_RFX_CAPSET](#221111-tsrfxcapset)
+            - [2.2.1.1.1.1.1 TS_RFX_ICAP](#2211111-tsrfxicap)
+      - [2.2.1.2 TS_RFX_SRVR_CAPS_CONTAINER](#2212-tsrfxsrvrcapscontainer)
+      - [2.2.1.3 TS_FRAME_ACKNOWLEDGE_CAPABILITYSET](#2213-tsframeacknowledgecapabilityset)
+    - [2.2.2 Encode Messages](#222-encode-messages)
+      - [2.2.2.1 Common Data Types](#2221-common-data-types)
+        - [2.2.2.1.1 TS_RFX_BLOCKT](#22211-tsrfxblockt)
+        - [2.2.2.1.2 TS_RFX_CODEC_CHANNELT](#22212-tsrfxcodecchannelt)
+        - [2.2.2.1.3 TS_RFX_CHANNELT](#22213-tsrfxchannelt)
+        - [2.2.2.1.4 TS_RFX_CODEC_VERSIONT](#22214-tsrfxcodecversiont)
+        - [2.2.2.1.5 TS_RFX_CODEC_QUANT](#22215-tsrfxcodecquant)
+        - [2.2.2.1.6 TS_RFX_RECT](#22216-tsrfxrect)
+      - [2.2.2.2 Encode Header Messages](#2222-encode-header-messages)
+        - [2.2.2.2.1 TS_RFX_SYNC](#22221-tsrfxsync)
+        - [2.2.2.2.2 TS_RFX_CODEC_VERSIONS](#22222-tsrfxcodecversions)
+        - [2.2.2.2.3 TS_RFX_CHANNELS](#22223-tsrfxchannels)
+        - [2.2.2.2.4 TS_RFX_CONTEXT](#22224-tsrfxcontext)
+      - [2.2.2.3 Encode Data Messages](#2223-encode-data-messages)
+        - [2.2.2.3.1 TS_RFX_FRAME_BEGIN](#22231-tsrfxframebegin)
+        - [2.2.2.3.2 TS_RFX_FRAME_END](#22232-tsrfxframeend)
+        - [2.2.2.3.3 TS_RFX_REGION](#22233-tsrfxregion)
+        - [2.2.2.3.4 TS_RFX_TILESET](#22234-tsrfxtileset)
+          - [2.2.2.3.4.1 TS_RFX_TILE](#222341-tsrfxtile)
+    - [2.2.3 Control Messages](#223-control-messages)
+      - [2.2.3.1 TS_FRAME_ACKNOWLEDGE_PDU](#2231-tsframeacknowledgepdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 State Machine](#3111-state-machine)
+        - [3.1.8.3.1 and shown in Figure 17. The server then transitions to the SendFrameData state.](#31831-and-shown-in-figure-17-the-server-then-transitions-to-the-sendframedata-state)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sample Use Case](#41-sample-use-case)
+  - [4.2 Annotated RemoteFX Messages](#42-annotated-remotefx-messages)
+    - [4.2.1 Capabilities Messages](#421-capabilities-messages)
+    - [4.2.2 Encode Header Messages](#422-encode-header-messages)
+    - [4.2.3 Encode Data Messages](#423-encode-data-messages)
+    - [4.2.4 Sample Decode Data Flow Sequence](#424-sample-decode-data-flow-sequence)
+      - [4.2.4.1 Input TS_RFX_TILESET Message](#4241-input-tsrfxtileset-message)
+      - [4.2.4.2 Entropy Decoded Data](#4242-entropy-decoded-data)
+        - [4.2.4.2.1 Y Component Data](#42421-y-component-data)
+        - [4.2.4.2.2 Cb Component Data](#42422-cb-component-data)
+        - [4.2.4.2.3 Cr Component Data](#42423-cr-component-data)
+      - [4.2.4.3 Inverse Quantization/DWT](#4243-inverse-quantizationdwt)
+        - [4.2.4.3.1 Level-3 Sub-bands](#42431-level-3-sub-bands)
+          - [4.2.4.3.1.1 LL3](#424311-ll3)
+          - [4.2.4.3.1.2 HL3](#424312-hl3)
+          - [4.2.4.3.1.3 LH3](#424313-lh3)
+          - [4.2.4.3.1.4 HH3](#424314-hh3)
+          - [4.2.4.3.1.5 Inverse DWT-X (LL3 - HL3)](#424315-inverse-dwt-x-ll3-hl3)
+          - [4.2.4.3.1.6 Inverse DWT-X (LH3 – HH3)](#424316-inverse-dwt-x-lh3-hh3)
+          - [4.2.4.3.1.7 Inverse DWT-Y (L2 – H2)](#424317-inverse-dwt-y-l2-h2)
+        - [4.2.4.3.2 Level-2 Sub-bands](#42432-level-2-sub-bands)
+          - [4.2.4.3.2.1 LL2](#424321-ll2)
+          - [4.2.4.3.2.2 HL2](#424322-hl2)
+          - [4.2.4.3.2.3 LH2](#424323-lh2)
+          - [4.2.4.3.2.4 HH2](#424324-hh2)
+          - [4.2.4.3.2.5 Inverse DWT-X (LL2 – HL2)](#424325-inverse-dwt-x-ll2-hl2)
+          - [4.2.4.3.2.6 Inverse DWT-X (LH2 - HH2)](#424326-inverse-dwt-x-lh2-hh2)
+          - [4.2.4.3.2.7 Inverse DWT-Y (L1 – H1)](#424327-inverse-dwt-y-l1-h1)
+        - [4.2.4.3.3 Level-1 Sub-bands](#42433-level-1-sub-bands)
+          - [4.2.4.3.3.1 LL1](#424331-ll1)
+          - [4.2.4.3.3.2 HL1](#424332-hl1)
+          - [4.2.4.3.3.3 LH1](#424333-lh1)
+          - [4.2.4.3.3.4 HH1](#424334-hh1)
+          - [4.2.4.3.3.5 Inverse DWT-X (LL1 - HL1)](#424335-inverse-dwt-x-ll1-hl1)
+          - [4.2.4.3.3.6 Inverse DWT-X (LH1 - HH1)](#424336-inverse-dwt-x-lh1-hh1)
+          - [4.2.4.3.3.7 Inverse DWT-Y (L0 – H0)](#424337-inverse-dwt-y-l0-h0)
+        - [4.2.4.3.4 Reconstructed Y Component](#42434-reconstructed-y-component)
+        - [4.2.4.3.5 Reconstructed Cb Component](#42435-reconstructed-cb-component)
+        - [4.2.4.3.6 Reconstructed Cr Component](#42436-reconstructed-cr-component)
+      - [4.2.4.4 Inverse Color Conversion](#4244-inverse-color-conversion)
+      - [4.2.4.5 Decoded Image](#4245-decoded-image)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Protocol Overview (Synopsis) .............................................................................. 8
-RemoteFX Codec .......................................................................................... 8
-Message Flows ........................................................................................ 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1.1
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.1.1.1
-
-2.2.1.1.1.1.1
-
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-Capabilities Messages .................................................................................. 13
-TS_RFX_CLNT_CAPS_CONTAINER ........................................................... 13
-TS_RFX_CAPS ................................................................................. 14
-TS_RFX_CAPSET ........................................................................ 14
-TS_RFX_ICAP ...................................................................... 15
-TS_RFX_SRVR_CAPS_CONTAINER .......................................................... 16
-TS_FRAME_ACKNOWLEDGE_CAPABILITYSET ............................................ 16
-Encode Messages ........................................................................................ 17
-Common Data Types ............................................................................. 17
-TS_RFX_BLOCKT ............................................................................. 17
-TS_RFX_CODEC_CHANNELT ............................................................. 17
-TS_RFX_CHANNELT ......................................................................... 18
-TS_RFX_CODEC_VERSIONT .............................................................. 19
-TS_RFX_CODEC_QUANT................................................................... 19
-TS_RFX_RECT ................................................................................. 19
-Encode Header Messages ....................................................................... 20
-TS_RFX_SYNC ................................................................................. 20
-TS_RFX_CODEC_VERSIONS .............................................................. 20
-TS_RFX_CHANNELS ......................................................................... 21
-TS_RFX_CONTEXT ........................................................................... 21
-Encode Data Messages .......................................................................... 22
-TS_RFX_FRAME_BEGIN .................................................................... 22
-TS_RFX_FRAME_END ....................................................................... 23
-TS_RFX_REGION ............................................................................. 23
-TS_RFX_TILESET ............................................................................. 24
-TS_RFX_TILE ............................................................................ 26
-Control Messages ....................................................................................... 27
-TS_FRAME_ACKNOWLEDGE_PDU ............................................................ 27
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-2.2.2.1.4
-2.2.2.1.5
-2.2.2.1.6
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-2.2.2.3.4
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-
-2.2.2.3.4.1
-
-2.2.3.1
-
-2.2.2.3
-
-2.2.2.2
-
-2.2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3  Protocol Details ..................................................................................................... 29
-Common Details .............................................................................................. 29
-Abstract Data Model .................................................................................... 29
-State Machine....................................................................................... 29
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 31
-Processing Events and Sequencing Rules ....................................................... 31
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-[MS-RDPRFX] - v20240423
-Remote Desktop Protocol: RemoteFX Codec Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 172
-
-3.1.5.1
-
-3.1.6
-3.1.7
-3.1.8
-
-3.1.8.1
-
-3.1.8.1.1
-3.1.8.1.2
-3.1.8.1.3
-3.1.8.1.4
-3.1.8.1.5
-3.1.8.1.6
-3.1.8.1.7
-
-Processing the TS_RFX_CLNT_CAPS_CONTAINER Message ......................... 31
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-RemoteFX Algorithm ................................................................................... 32
-Encoding .............................................................................................. 32
-Input Tiling ..................................................................................... 33
-Differencing (Optional) ..................................................................... 33
-Color Conversion (RGB to YCbCr) ...................................................... 33
-DWT .............................................................................................. 33
-Quantization ................................................................................... 35
-Linearization ................................................................................... 35
-RLGR Entropy Encoding .................................................................... 37
-RLGR1 ...................................................................................... 37
-RLGR3 ...................................................................................... 37
-RLGR1/RLGR3 Pseudocode .......................................................... 38
-RLGR1/RLGR3 Decode........................................................... 38
-RLGR1/RLGR3 Encode ........................................................... 41
-Decoding ............................................................................................. 44
-RLGR Entropy Decoding ................................................................... 45
-Sub-Band Reconstruction ................................................................. 45
-Dequantization ................................................................................ 45
-Inverse DWT ................................................................................... 45
-Color Conversion (YCbCr to RGB) ...................................................... 45
-Reconstructed Frame ....................................................................... 46
-RemoteFX Stream ................................................................................. 46
-Encode Message Sequencing ............................................................. 46
-
-3.1.8.1.7.1
-3.1.8.1.7.2
-3.1.8.1.7.3
-
-3.1.8.1.7.3.1
-3.1.8.1.7.3.2
-
-3.1.8.2
-
-3.1.8.2.1
-3.1.8.2.2
-3.1.8.2.3
-3.1.8.2.4
-3.1.8.2.5
-3.1.8.2.6
-
-3.1.8.3
-
-3.1.8.3.1
-
-4.1
-4.2
-
-4.2.4.3
-
-4.2.4.3.1
-
-4.2.4.1
-4.2.4.2
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4.2.4.2.1
-4.2.4.2.2
-4.2.4.2.3
-
-4  Protocol Examples ................................................................................................. 48
-Sample Use Case ............................................................................................. 48
-Annotated RemoteFX Messages ......................................................................... 49
-Capabilities Messages .................................................................................. 49
-Encode Header Messages ............................................................................. 50
-Encode Data Messages ................................................................................ 51
-Sample Decode Data Flow Sequence ............................................................. 54
-Input TS_RFX_TILESET Message ............................................................. 54
-Entropy Decoded Data ........................................................................... 57
-Y Component Data .......................................................................... 58
-Cb Component Data......................................................................... 62
-Cr Component Data ......................................................................... 65
-Inverse Quantization/DWT ..................................................................... 69
-Level-3 Sub-bands .......................................................................... 69
-LL3 .......................................................................................... 70
-HL3 .......................................................................................... 70
-LH3 .......................................................................................... 70
-HH3 ......................................................................................... 71
-Inverse DWT-X (LL3 - HL3) ......................................................... 71
-Inverse DWT-X (LH3 – HH3) ....................................................... 72
-Inverse DWT-Y (L2 – H2) ............................................................ 73
-Level-2 Sub-bands .......................................................................... 74
-LL2 .......................................................................................... 74
-HL2 .......................................................................................... 74
-LH2 .......................................................................................... 75
-HH2 ......................................................................................... 76
-Inverse DWT-X (LL2 – HL2) ........................................................ 78
-Inverse DWT-X (LH2 - HH2) ........................................................ 80
-Inverse DWT-Y (L1 – H1) ............................................................ 82
-Level-1 Sub-bands .......................................................................... 86
-LL1 .......................................................................................... 86
-
-4.2.4.3.2.1
-4.2.4.3.2.2
-4.2.4.3.2.3
-4.2.4.3.2.4
-4.2.4.3.2.5
-4.2.4.3.2.6
-4.2.4.3.2.7
-
-4.2.4.3.1.1
-4.2.4.3.1.2
-4.2.4.3.1.3
-4.2.4.3.1.4
-4.2.4.3.1.5
-4.2.4.3.1.6
-4.2.4.3.1.7
-
-4.2.4.3.3.1
-
-4.2.4.3.3
-
-4.2.4.3.2
-
-[MS-RDPRFX] - v20240423
-Remote Desktop Protocol: RemoteFX Codec Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 172
-
-4.2.4.3.3.2
-4.2.4.3.3.3
-4.2.4.3.3.4
-4.2.4.3.3.5
-4.2.4.3.3.6
-4.2.4.3.3.7
-
-HL1 .......................................................................................... 86
-LH1 .......................................................................................... 90
-HH1 ......................................................................................... 94
-Inverse DWT-X (LL1 - HL1) ......................................................... 98
-Inverse DWT-X (LH1 - HH1) ....................................................... 105
-Inverse DWT-Y (L0 – H0) ........................................................... 113
-Reconstructed Y Component ............................................................ 128
-Reconstructed Cb Component .......................................................... 128
-Reconstructed Cr Component ........................................................... 143
-Inverse Color Conversion ...................................................................... 158
-Decoded Image ................................................................................... 166
-
-4.2.4.3.4
-4.2.4.3.5
-4.2.4.3.6
-
-4.2.4.4
-4.2.4.5
-
-5  Security ............................................................................................................... 168
-Security Considerations for Implementers .......................................................... 168
-Index of Security Parameters ........................................................................... 168
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 169
-
-7  Change Tracking .................................................................................................. 170
-
-8  Index ................................................................................................................... 171
-
-[MS-RDPRFX] - v20240423
-Remote Desktop Protocol: RemoteFX Codec Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 172
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: RemoteFX Codec Extension is an extension to the Remote Desktop
 Protocol: Basic Connectivity and Graphics Remoting (as specified in [MS-RDPBCGR]). The RemoteFX
@@ -685,7 +458,7 @@ efficient and effective compression.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -723,14 +496,14 @@ components.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -748,7 +521,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
+
+[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
 
 [MS-RDPEGDI] Microsoft Corporation, "Remote Desktop Protocol: Graphics Device Interface (GDI)
@@ -775,17 +549,17 @@ http://www.itu.int/rec/T-REC-X.224-199511-I/en
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Remote Desktop Protocol: RemoteFX Codec Extension reduces the bandwidth associated with
 desktop remoting by efficiently compressing images. This is achieved by using the RemoteFX codec.
 The following sections provide an overview of this codec.
 
-1.3.1  RemoteFX Codec
+#### 1.3.1 RemoteFX Codec
 
 One of the core requirements of desktop remoting is the ability to efficiently compress server-side
 screen images so that they can be transported over a network and displayed on a client screen. Any
@@ -811,13 +585,14 @@ Release: April 23, 2024
 
 8 / 172
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDPRFX].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 1: Core functional blocks of the RemoteFX codec
 
-1.3.1.1  Message Flows
+##### 1.3.1.1 Message Flows
 
 RemoteFX codec messages are transported in order over a lossless transport such as TCP/IP. The
 message syntax has been designed with this prerequisite.
@@ -840,7 +615,8 @@ Release: April 23, 2024
 
 9 / 172
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPRFX].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -877,7 +653,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The header messages are followed by the Data messages (section 2.2.2.3), which represent the
+
+The header messages are followed by the Data messages (section 2.2.2.3), which represent the
 sequence of encoded frames in the stream:
 
 1.  The TS_RFX_FRAME_BEGIN and TS_RFX_FRAME_END messages (sections 2.2.2.3.1 and 2.2.2.3.2
@@ -892,12 +669,12 @@ encoded.
 
 encoded.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extends the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting [MS-
 RDPBCGR] by adding advanced compression techniques.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following capabilities are mandatory when used with RemoteFX:
 
@@ -961,13 +738,14 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is applicable in situations in which it is necessary to optimize the bandwidth required for
 graphics remoting. The advanced compression techniques specified in this document enable the
 efficient transfer of server-side images and video.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol builds on the basic Remote Desktop Protocol [MS-RDPBCGR]. The features provided by
 this extension are negotiated during the capabilities negotiation phase of the RDP connection
@@ -978,11 +756,11 @@ RDPBCGR] section 1.7.)
 Some capabilities, which are specified as optional in [MS-RDPBCGR] section 2.2.7.2, are mandatory
 when used with RemoteFX. These capabilities are described in detail in section 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -993,22 +771,23 @@ Release: April 23, 2024
 
 12 / 172
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is an extension to the Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting Specification and all packets are tunneled within the RDP transport ([MS-RDPBCGR] section
 2.1).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All multiple-byte fields within a message MUST be marshaled in little-endian byte order, unless
 otherwise specified.
 
-2.2.1  Capabilities Messages
+#### 2.2.1 Capabilities Messages
 
-2.2.1.1  TS_RFX_CLNT_CAPS_CONTAINER
+##### 2.2.1.1 TS_RFX_CLNT_CAPS_CONTAINER
 
 The TS_RFX_CLNT_CAPS_CONTAINER structure is the top-level client capability container that wraps a
 TS_RFX_CAPS (section 2.2.1.1.1) structure and is sent from the client to the server. It is encapsulated
@@ -1070,11 +849,12 @@ Release: April 23, 2024
 
 13 / 172
 
-capsData (variable): A variable-sized field that contains a TS_RFX_CAPS (section 2.2.1.1.1)
+
+capsData (variable): A variable-sized field that contains a TS_RFX_CAPS (section 2.2.1.1.1)
 
 structure.
 
-2.2.1.1.1 TS_RFX_CAPS
+###### 2.2.1.1.1 TS_RFX_CAPS
 
 The TS_RFX_CAPS structure contains information about the decoder capabilities.
 
@@ -1119,7 +899,7 @@ capsetsData (variable): A variable-sized array of TS_RFX_CAPSET (section 2.2.1.1
 The structures in this array MUST be packed on byte boundaries. The blockType and blockLen
 fields of each TS_RFX_CAPSET structure identify the type and size of the structure.
 
-2.2.1.1.1.1  TS_RFX_CAPSET
+###### 2.2.1.1.1.1 TS_RFX_CAPSET
 
 The TS_RFX_CAPSET structure contains the capability information specific to the RemoteFX codec. It
 contains a variable number of TS_RFX_ICAP (section 2.2.1.1.1.1.1) structures that are used to
@@ -1169,7 +949,8 @@ Release: April 23, 2024
 
 14 / 172
 
-blockLen (4 bytes): A 32-bit, unsigned integer. Specifies the combined size, in bytes, of the
+
+blockLen (4 bytes): A 32-bit, unsigned integer. Specifies the combined size, in bytes, of the
 
 blockType, blockLen, codecId, capsetType, numIcaps, icapLen, and icapsData fields.
 
@@ -1190,7 +971,7 @@ icapsData (variable): A variable-length array of TS_RFX_ICAP (section 2.2.1.1.1.
 Each structure MUST be packed on byte boundaries. The size of each TS_RFX_ICAP structure
 within the array is specified in the icapLen field.
 
-2.2.1.1.1.1.1  TS_RFX_ICAP
+###### 2.2.1.1.1.1.1 TS_RFX_ICAP
 
 The TS_RFX_ICAP structure specifies the set of codec properties that the decoder supports.
 
@@ -1264,7 +1045,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1280,7 +1062,7 @@ RLGR algorithm as described in section 3.1.8.1.7.2.
 
 0x04
 
-2.2.1.2  TS_RFX_SRVR_CAPS_CONTAINER
+##### 2.2.1.2 TS_RFX_SRVR_CAPS_CONTAINER
 
 The TS_RFX_SRVR_CAPS_CONTAINER structure is the top-level server capability container, which is
 sent from the server to the client. It is encapsulated in the codecProperties field of the Bitmap
@@ -1309,7 +1091,7 @@ size of the field is given by the corresponding codecPropertiesLength field of t
 TS_BITMAPCODEC, as specified in [MS-RDPBCGR] section 2.2.7.2.10.1.1 Bitmap Codecs
 Capability Set.
 
-2.2.1.3  TS_FRAME_ACKNOWLEDGE_CAPABILITYSET
+##### 2.2.1.3 TS_FRAME_ACKNOWLEDGE_CAPABILITYSET
 
 The TS_FRAME_ACKNOWLEDGE_CAPABILITYSET structure advertises support for frame
 acknowledgment using the TS_FRAME_ACKNOWLEDGE_PDU (section 2.2.3.1) structure. This
@@ -1353,19 +1135,20 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-flight frames the client can buffer. Note that if the server chooses to have more in-flight frames
+
+flight frames the client can buffer. Note that if the server chooses to have more in-flight frames
 than this number specifies, it is possible that the client could be overloaded with frame data. The
 client MAY set this field to 0, but this behavior SHOULD be avoided because it provides very little
 information to the server other than that the client acknowledges frames.
 
-2.2.2  Encode Messages
+#### 2.2.2 Encode Messages
 
 An encoded RemoteFX stream comprises a sequence of encode messages. The sequencing and
 encapsulation of these messages are described in section 3.1.8.3.1.
 
-2.2.2.1  Common Data Types
+##### 2.2.2.1 Common Data Types
 
-2.2.2.1.1 TS_RFX_BLOCKT
+###### 2.2.2.1.1 TS_RFX_BLOCKT
 
 The TS_RFX_BLOCKT structure identifies the type of an encode message and specifies the size of the
 message.
@@ -1435,7 +1218,7 @@ blockLen (4 bytes): A 32-bit, unsigned integer. Specifies the size, in bytes, of
 
 size includes the size of the blockType and blockLen fields, as well as all trailing data.
 
-2.2.2.1.2 TS_RFX_CODEC_CHANNELT
+###### 2.2.2.1.2 TS_RFX_CODEC_CHANNELT
 
 The TS_RFX_CODEC_CHANNELT structure is an extension of the TS_RFX_BLOCKT structure. It is
 present as the first field in messages that are targeted for a specific combination of codec and
@@ -1448,7 +1231,8 @@ Release: April 23, 2024
 
 17 / 172
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1519,7 +1303,7 @@ channelId (1 byte): An 8-bit, unsigned integer. Specifies the channel ID. If the
 WBT_CONTEXT (0xCCC3), then channelId MUST be set to 0xFF. For all other values of
 blockType, channelId MUST be set to 0x00.
 
-2.2.2.1.3 TS_RFX_CHANNELT
+###### 2.2.2.1.3 TS_RFX_CHANNELT
 
 The TS_RFX_CHANNELT structure is used to specify the screen resolution of a channel.
 
@@ -1561,7 +1345,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.1.4 TS_RFX_CODEC_VERSIONT
+
+###### 2.2.2.1.4 TS_RFX_CODEC_VERSIONT
 
 The TS_RFX_CODEC_VERSIONT structure is used to specify support for a specific version of the
 RemoteFX codec.
@@ -1589,7 +1374,7 @@ version (2 bytes): A 16-bit, signed integer. This field MUST be set to 0x0100. T
 
 ignore this field.
 
-2.2.2.1.5 TS_RFX_CODEC_QUANT
+###### 2.2.2.1.5 TS_RFX_CODEC_QUANT
 
 The TS_RFX_CODEC_QUANT structure holds the scalar quantization values for the ten sub-bands in
 the 3-level DWT decomposition. Each field in this structure MUST have a value in the range of 6 to 15.
@@ -1645,7 +1430,7 @@ HL1 (4 bits): A 4-bit, unsigned integer. The HL quantization factors for the lev
 
 HH1 (4 bits): A 4-bit, unsigned integer. The HH quantization factor for the level-1 DWT sub-band.
 
-2.2.2.1.6 TS_RFX_RECT
+###### 2.2.2.1.6 TS_RFX_RECT
 
 The TS_RFX_RECT structure is used to specify a rectangle.
 
@@ -1671,7 +1456,8 @@ Release: April 23, 2024
 
 19 / 172
 
-width
+
+width
 
 height
 
@@ -1683,9 +1469,9 @@ width (2 bytes): A 16-bit, unsigned integer. The width of the rectangle.
 
 height (2 bytes): A 16-bit, unsigned integer. The height of the rectangle.
 
-2.2.2.2  Encode Header Messages
+##### 2.2.2.2 Encode Header Messages
 
-2.2.2.2.1 TS_RFX_SYNC
+###### 2.2.2.2.1 TS_RFX_SYNC
 
 The TS_RFX_SYNC message MUST be the first message in any encoded stream. The decoder MUST
 examine this message to determine whether the protocol version is supported.
@@ -1721,7 +1507,7 @@ version (2 bytes): A 16-bit, unsigned integer. Indicates the version number. Thi
 
 to WF_VERSION_1_0 (0x0100).
 
-2.2.2.2.2 TS_RFX_CODEC_VERSIONS
+###### 2.2.2.2.2 TS_RFX_CODEC_VERSIONS
 
 The TS_RFX_CODEC_VERSIONS message indicates the version of the RemoteFX codec that is being
 used.
@@ -1762,10 +1548,11 @@ Release: April 23, 2024
 
 20 / 172
 
-codecs (3 bytes): A TS_RFX_CODEC_VERSIONT (section 2.2.2.1.4) structure. The codecId field
+
+codecs (3 bytes): A TS_RFX_CODEC_VERSIONT (section 2.2.2.1.4) structure. The codecId field
 MUST be set to 0x01 and the version field MUST be set to WF_VERSION_1_0 (0x0100).
 
-2.2.2.2.3 TS_RFX_CHANNELS
+###### 2.2.2.2.3 TS_RFX_CHANNELS
 
 The TS_RFX_CHANNELS message contains the list of channels. Each active monitor on the server
 must correspond to an entry in this list. The list can have more entries than the number of active
@@ -1804,7 +1591,7 @@ Channels (variable): A variable-length array of TS_RFX_CHANNELT (section 2.2.2.1
 
 The number of elements in this array is specified in the numChannels field.
 
-2.2.2.2.4 TS_RFX_CONTEXT
+###### 2.2.2.2.4 TS_RFX_CONTEXT
 
 The TS_RFX_CONTEXT message contains information regarding the encoding properties being used.
 
@@ -1853,7 +1640,8 @@ Release: April 23, 2024
 
 21 / 172
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1931,9 +1719,9 @@ SCALAR_QUANTIZATION (0x1). The decoder SHOULD ignore this field.
 
 r (1 bit): A 1-bit field reserved for future use. This field MUST be ignored when received.
 
-2.2.2.3  Encode Data Messages
+##### 2.2.2.3 Encode Data Messages
 
-2.2.2.3.1 TS_RFX_FRAME_BEGIN
+###### 2.2.2.3.1 TS_RFX_FRAME_BEGIN
 
 The TS_RFX_FRAME_BEGIN message indicates the start of a new frame for a specific channel in the
 encoded stream.
@@ -1960,7 +1748,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-frameIdx
+
+frameIdx
 
 numRegions
 
@@ -1978,7 +1767,7 @@ numRegions (2 bytes): A 16-bit signed integer. Specifies the number of TS_RFX_RE
 2.2.2.3.3) messages following this TS_RFX_FRAME_BEGIN message. That is, the number of
 regions in the frame.
 
-2.2.2.3.2 TS_RFX_FRAME_END
+###### 2.2.2.3.2 TS_RFX_FRAME_END
 
 The TS_RFX_FRAME_END message specifies the end of a frame for a specific channel in the encoded
 stream.
@@ -2002,7 +1791,7 @@ CodecChannelT (8 bytes): A TS_RFX_CODEC_CHANNELT (section 2.2.2.1.2) structure. 
 
 blockType field MUST be set to WBT_FRAME_END (0xCCC5).
 
-2.2.2.3.3 TS_RFX_REGION
+###### 2.2.2.3.3 TS_RFX_REGION
 
 The TS_RFX_REGION message contains information about the list of change rectangles on the screen
 for a specific channel. It also specifies the number of trailing TS_RFX_TILESET (section 2.2.2.3.4)
@@ -2046,7 +1835,8 @@ Release: April 23, 2024
 
 23 / 172
 
-regionFlags (1 byte): An 8-bit, unsigned integer. Contains a collection of bit-packed property fields.
+
+regionFlags (1 byte): An 8-bit, unsigned integer. Contains a collection of bit-packed property fields.
 
 The format of this field is described by the following bitfield diagram.
 
@@ -2083,7 +1873,7 @@ numTilesets (2 bytes): A 16-bit, unsigned integer. Specifies the number of TS_RF
 (section 2.2.2.3.4) messages following this TS_RFX_REGION message. This field MUST be set to
 0x0001.
 
-2.2.2.3.4 TS_RFX_TILESET
+###### 2.2.2.3.4 TS_RFX_TILESET
 
 The TS_RFX_TILESET message contains encoding parameters and data for an arbitrary number of
 encoded tiles.
@@ -2134,7 +1924,8 @@ Release: April 23, 2024
 
 24 / 172
 
-CodecChannelT (8 bytes): A TS_RFX_CODEC_CHANNELT (section 2.2.2.1.2) structure. The
+
+CodecChannelT (8 bytes): A TS_RFX_CODEC_CHANNELT (section 2.2.2.1.2) structure. The
 
 blockType field MUST be set to WBT_EXTENSION (0xCCC7).
 
@@ -2239,7 +2030,8 @@ Release: April 23, 2024
 
 25 / 172
 
-tileSize (1 byte): An 8-bit, unsigned integer. Specifies the width and height of a tile. This field MUST
+
+tileSize (1 byte): An 8-bit, unsigned integer. Specifies the width and height of a tile. This field MUST
 
 be set to 0x40. The decoder SHOULD ignore this field.
 
@@ -2260,7 +2052,7 @@ tiles (variable): A variable-length array of TS_RFX_TILE (section 2.2.2.3.4.1) s
 number of structures present in the array is indicated in the numTiles field, while the total size, in
 bytes, of this field is specified by the tilesDataSize field.
 
-2.2.2.3.4.1  TS_RFX_TILE
+###### 2.2.2.3.4.1 TS_RFX_TILE
 
 The TS_RFX_TILE structure specifies the position of the tile on the frame and contains the encoded
 data for the three tile components of Y, Cb, and Cr.
@@ -2334,7 +2126,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-quantIdxCr (1 byte): An 8-bit, unsigned integer. Specifies an index into the TS_RFX_CODEC_QUANT
+
+quantIdxCr (1 byte): An 8-bit, unsigned integer. Specifies an index into the TS_RFX_CODEC_QUANT
 array provided in the TS_RFX_TILESET message. The specified TS_RFX_CODEC_QUANT element
 MUST be used for de-quantization of the sub-bands for the Cr-component.
 
@@ -2360,9 +2153,9 @@ CrData (variable): A variable-length array. Contains the encoded data for the Cr
 
 tile. The size, in bytes, of this field is specified by the CrLen field.
 
-2.2.3  Control Messages
+#### 2.2.3 Control Messages
 
-2.2.3.1  TS_FRAME_ACKNOWLEDGE_PDU
+##### 2.2.3.1 TS_FRAME_ACKNOWLEDGE_PDU
 
 The TS_FRAME_ACKNOWLEDGE_PDU structure is a client-to-server PDU sent to the server whenever
 the client receives a Frame Marker Command ([MS-RDPBCGR] section 2.2.9.2.3) with the
@@ -2410,7 +2203,8 @@ Release: April 23, 2024
 
 27 / 172
 
-...
+
+...
 
 ...
 
@@ -2469,11 +2263,12 @@ Release: April 23, 2024
 
 28 / 172
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2499,7 +2294,7 @@ In video mode, initialize this variable to 0 at the start of the session and the
 after every encoded frame. The current value of this variable is stored in the frameIdx field of
 the TS_RFX_FRAME_BEGIN message (section 2.2.2.3.1).
 
-3.1.1.1  State Machine
+##### 3.1.1.1 State Machine
 
 The following figure and table describe the state machine of the codec at the server end.
 
@@ -2510,7 +2305,8 @@ Release: April 23, 2024
 
 29 / 172
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-RDPRFX].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -2530,7 +2326,7 @@ terminated (section 3.1.5.1).
 SendHeaders
 
 In this state, the server sends the Header message sequence as described in section
-3.1.8.3.1 and shown in Figure 17. The server then transitions to the SendFrameData state.
+###### 3.1.8.3.1 and shown in Figure 17. The server then transitions to the SendFrameData state.
 
 SendFrameData
 
@@ -2554,7 +2350,8 @@ Release: April 23, 2024
 
 30 / 172
 
-3.1.3  Initialization
+
+3.1.3  Initialization
 
 The Bitmap Codecs Capability Set message ([MS-RDPBCGR] section 2.2.7.2.10) MUST be processed
 by the server, as specified in section 3.1.5.1, before RemoteFX encoding begins. This establishes the
@@ -2626,7 +2423,8 @@ Release: April 23, 2024
 
 31 / 172
 
-TS_RFX_CLNT_CAPS_CONTAINER has a TS_RFX_CAPS field. The TS_RFX_CAPS field contains a
+
+TS_RFX_CLNT_CAPS_CONTAINER has a TS_RFX_CAPS field. The TS_RFX_CAPS field contains a
 TS_RFX_CAPSET sub-field, which is composed of a variable number of TS_RFX_ICAP structures.
 
 The encoder parses the TS_RFX_CLNT_CAPS_CONTAINER message to get to the array of
@@ -2684,7 +2482,8 @@ Release: April 23, 2024
 
 32 / 172
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-RDPRFX].images/page033-img01.png)
 ![Extracted image 2 from page 33]([MS-RDPRFX].images/page033-img02.png)
 <!-- /Extracted images from page 33 -->
@@ -2733,7 +2532,8 @@ Release: April 23, 2024
 
 33 / 172
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-RDPRFX].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2771,7 +2571,8 @@ Release: April 23, 2024
 
 34 / 172
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-RDPRFX].images/page035-img01.png)
 ![Extracted image 2 from page 35]([MS-RDPRFX].images/page035-img02.png)
 <!-- /Extracted images from page 35 -->
@@ -2800,7 +2601,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-RDPRFX].images/page036-img01.png)
 ![Extracted image 2 from page 36]([MS-RDPRFX].images/page036-img02.png)
 <!-- /Extracted images from page 36 -->
@@ -2829,7 +2631,8 @@ Release: April 23, 2024
 
 36 / 172
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-RDPRFX].images/page037-img01.png)
 ![Extracted image 2 from page 37]([MS-RDPRFX].images/page037-img02.png)
 <!-- /Extracted images from page 37 -->
@@ -2877,7 +2680,8 @@ Release: April 23, 2024
 
 37 / 172
 
-value of the first coefficient is emitted as binary code in the exact number of bits it takes to represent
+
+value of the first coefficient is emitted as binary code in the exact number of bits it takes to represent
 the sum. Pseudocode for Golomb-Rice mode in RLGR3 encode follows.
 
  ENCODER GOLOMB-RICE MODE:
@@ -2943,7 +2747,8 @@ Release: April 23, 2024
 
 38 / 172
 
- //
+
+ //
  // From current output pointer, write next nZeroes terms with value 0;
  // check and update *termsToDecode
  //
@@ -3012,7 +2817,8 @@ Release: April 23, 2024
 
 39 / 172
 
-     // adjust kpr and kr based on vk
+
+     // adjust kpr and kr based on vk
      if (!vk)
      {
          *kr = UpdateParam(kpr, -2);
@@ -3086,7 +2892,8 @@ Release: April 23, 2024
 
 40 / 172
 
-             if (rlgrMode == RLGR1)
+
+             if (rlgrMode == RLGR1)
              {
                  if (!mag)
                  {
@@ -3157,7 +2964,8 @@ Release: April 23, 2024
 
 41 / 172
 
- //
+
+ //
  // Emit bitPattern to the output bitstream.
  // The bitPattern value represents a bit sequence that is generated by shifting
  // new bits in from the right. If we take the binary representation of bitPattern,
@@ -3231,7 +3039,8 @@ Release: April 23, 2024
 
 42 / 172
 
-     INT kr = *krp >> LSGR;
+
+     INT kr = *krp >> LSGR;
 
      // unary part of GR code
 
@@ -3307,7 +3116,8 @@ Release: April 23, 2024
 
 43 / 172
 
-             INT mag = abs(input);            // absolute value of input coefficient
+
+             INT mag = abs(input);            // absolute value of input coefficient
              INT sign = (input < 0 ? 1 : 0);  // sign of input coefficient
 
              OutputBit(1, sign);      // output the sign bit
@@ -3378,7 +3188,8 @@ Release: April 23, 2024
 
 44 / 172
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-RDPRFX].images/page045-img01.png)
 ![Extracted image 2 from page 45]([MS-RDPRFX].images/page045-img02.png)
 <!-- /Extracted images from page 45 -->
@@ -3427,7 +3238,8 @@ Release: April 23, 2024
 
 45 / 172
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-RDPRFX].images/page046-img01.png)
 ![Extracted image 2 from page 46]([MS-RDPRFX].images/page046-img02.png)
 <!-- /Extracted images from page 46 -->
@@ -3482,7 +3294,8 @@ Release: April 23, 2024
 
 46 / 172
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-RDPRFX].images/page047-img01.png)
 ![Extracted image 2 from page 47]([MS-RDPRFX].images/page047-img02.png)
 <!-- /Extracted images from page 47 -->
@@ -3519,9 +3332,10 @@ Release: April 23, 2024
 
 47 / 172
 
-4  Protocol Examples
 
-4.1  Sample Use Case
+## 4 Protocol Examples
+
+### 4.1 Sample Use Case
 
 Consider the case of a remote endpoint system with one monitor configured to use a display resolution
 of 1280 x 1024 pixels. In this scenario, there is one instance of the RemoteFX encoder running on the
@@ -3547,7 +3361,8 @@ Release: April 23, 2024
 
 48 / 172
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-RDPRFX].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3562,9 +3377,9 @@ The TS_RFX_TILE (section 2.2.2.3.4.1) structure contains the location of the til
 Conceptually, the decoder can decode each tile, blit it to the proper location in a temporary frame
 buffer, and then blit all of the updated rectangles to an output frame buffer.
 
-4.2  Annotated RemoteFX Messages
+### 4.2 Annotated RemoteFX Messages
 
-4.2.1  Capabilities Messages
+#### 4.2.1 Capabilities Messages
 
 The following is an annotated network capture of the TS_RFX_CLNT_CAPS_CONTAINER message
 (section 2.2.1.1).
@@ -3576,7 +3391,8 @@ Release: April 23, 2024
 
 49 / 172
 
- 00000000 31 00 00 00 01 00 00 00 25 00 00 00 c0 cb 08 00
+
+ 00000000 31 00 00 00 01 00 00 00 25 00 00 00 c0 cb 08 00
  00000010 00 00 01 00 c1 cb 1d 00 00 00 01 c0 cf 02 00 08
  00000020 00 00 01 40 00 00 01 01 01 00 01 40 00 00 01 01
  00000030 04
@@ -3625,7 +3441,7 @@ The following is an annotated dump of the TS_RFX_SRVR_CAPS_CONTAINER message (se
 
 The server has sent an array of bytes set to zero as described in section 2.2.1.2.
 
-4.2.2  Encode Header Messages
+#### 4.2.2 Encode Header Messages
 
 The following is an annotated network capture of the Encode Header Messages (section 2.2.2.2).
 
@@ -3639,7 +3455,8 @@ Release: April 23, 2024
 
 50 / 172
 
- 00000020  01 00 01 c2 cc 0c 00 00 00 01 00 40 00 40 00
+
+ 00000020  01 00 01 c2 cc 0c 00 00 00 01 00 40 00 40 00
 
 TS_RFX_SYNC message (section 2.2.2.2.1):
 
@@ -3684,7 +3501,7 @@ TS_RFX_CHANNELS message (section 2.2.2.2.3):
 The server has chosen to encode using RLGR3 (TS_RFX_CONTEXT) and specified one channel with
 dimensions of 64x64 (TS_RFX_CHANNELS).
 
-4.2.3  Encode Data Messages
+#### 4.2.3 Encode Data Messages
 
 The following is an annotated network capture of the Encode Data Messages (section 2.2.2.3).
 
@@ -3704,7 +3521,8 @@ Release: April 23, 2024
 
 51 / 172
 
- 00000080 88 52 ca 21 4b 28 85 2c a2 14 b2 88 52 ca 21 4b
+
+ 00000080 88 52 ca 21 4b 28 85 2c a2 14 b2 88 52 ca 21 4b
  00000090 28 85 2c a2 14 b2 88 52 ca 21 4b 28 85 2c a2 14
  000000A0 b2 88 52 ca 21 4b 28 85 2c a2 14 b0 00 20 f4 40
  000000B0 0c c1 1e 20 26 22 20 33 23 c4 23 88 86 50 f1 22
@@ -3778,7 +3596,8 @@ Release: April 23, 2024
 
 52 / 172
 
-TS_RFX_REGION message (section 2.2.2.3.3):
+
+TS_RFX_REGION message (section 2.2.2.3.3):
 
  c6 cc –> TS_RFX_REGION::CodecChannelT::blockType = WBT_REGION
  17 00 00 00 –> TS_RFX_REGION::CodecChannelT::blockLen = 23
@@ -3848,7 +3667,8 @@ Release: April 23, 2024
 
 53 / 172
 
-TS_RFX_FRAME_END message (section 2.2.2.3.2):
+
+TS_RFX_FRAME_END message (section 2.2.2.3.2):
 
  c5 cc –> TS_RFX_FRAME_END::CodecChannelT::blockType = WBT_FRAME_END
  08 00 00 00 –> TS_FRAME_END::CodecChannelT::blockLen = 14
@@ -3860,14 +3680,14 @@ messages. The frame contains a single region, which has a single tileset. This t
 of one 64x64 tile. The compressed sizes, in bytes, for the YCbCr components of this tile are (294,
 317, 328).
 
-4.2.4  Sample Decode Data Flow Sequence
+#### 4.2.4 Sample Decode Data Flow Sequence
 
 The following sections present a sequence of annotated dumps of an encoded tile as it goes through
 the steps of the decoding algorithm. The sequence starts with the
 TS_RFX_TILESET (section 2.2.2.3.4) message, which contains the encoded tile data, and ends with
 the resulting decoded 64x64 XRGB image.
 
-4.2.4.1  Input TS_RFX_TILESET Message
+##### 4.2.4.1 Input TS_RFX_TILESET Message
 
 The following is an annotated dump of a TS_RFX_TILESET (section 2.2.2.3.4) message containing a
 single encoded 64x64 tile.
@@ -3919,7 +3739,8 @@ Release: April 23, 2024
 
 54 / 172
 
- 00000270 ff 10 f2 03 0f 58 1b a5 11 f8 f1 b4 12 db 1a 48
+
+ 00000270 ff 10 f2 03 0f 58 1b a5 11 f8 f1 b4 12 db 1a 48
  00000280 56 1f e3 c7 50 e9 16 b4 bc b0 40 93 ea b5 5b 2f
  00000290 fc 50 0a 6f cc 25 e0 06 ab 5f 24 fe 8b cb 42 43
  000002A0 7e 69 02 25 c7 38 00 6e e5 80 a8 a4 30 44 15 8f
@@ -3996,7 +3817,8 @@ Release: April 23, 2024
 
 55 / 172
 
- 000006C0 57 5f e8 04 dd 39 e9 07 95 be 04 2b dd 8e 22 dc
+
+ 000006C0 57 5f e8 04 dd 39 e9 07 95 be 04 2b dd 8e 22 dc
  000006D0 14 2c 61 a3 a9 cd 4f 82 5d a0 44 df f4 96 ff f5
  000006E0 2b ff fe 01 19 d2 a2 9e 43 a5 7f f0 4c 4c 2b 3c
  000006F0 33 e2 55 ff 04 06 29 2c 0d 22 5d 7c 93 ba 18 af
@@ -4073,7 +3895,8 @@ Release: April 23, 2024
 
 56 / 172
 
- 00000B10 d9 32 41 90 36 4e ae e3 0b 16 56 8c 6e 42 5d d8
+
+ 00000B10 d9 32 41 90 36 4e ae e3 0b 16 56 8c 6e 42 5d d8
  00000B20 1e fe 1d 40 3a 50 9f 09 14 eb 6e 48 7a 91 88 7b
  00000B30 7d 8f 72 42 39 b0 1c 65 18 23 8b 60 30 00
 
@@ -4124,7 +3947,7 @@ TS_RFX_TILE message (section 2.2.2.3.4.1).
  000003dc:000007aa -> TS_RFX_TILE::CbData
  000007ab:00000b3d -> TS_RFX_TILE::CrData
 
-4.2.4.2  Entropy Decoded Data
+##### 4.2.4.2 Entropy Decoded Data
 
 The following are dumps of the Y, Cb, and Cr components of the tile after they are decoded using the
 RLGR3 (section 3.1.8.1.7.2) algorithm. The decoded data for each component has 4,096 (64x64)
@@ -4141,7 +3964,8 @@ Release: April 23, 2024
 
 57 / 172
 
- 00000800:00000BFF -> HH1 (32x32 coefficients)
+
+ 00000800:00000BFF -> HH1 (32x32 coefficients)
  00000C00:00000CFF -> HL2 (16x16 coefficients)
  00000D00:00000DFF -> LH2 (16x16 coefficients)
  00000E00:00000EFF -> HH2 (16x16 coefficients)
@@ -4150,7 +3974,7 @@ Release: April 23, 2024
  00000F80:00000FBF -> HH3 (8x8 coefficients)
  00000FC0:00000FFF -> LL3 (8x8 coefficients)
 
-4.2.4.2.1 Y Component Data
+###### 4.2.4.2.1 Y Component Data
 
 The following is a dump of the Y component data, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -4215,7 +4039,8 @@ Release: April 23, 2024
 
 58 / 172
 
- 00000340   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   -1   +0   +0   -3   +0   +1
+
+ 00000340   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   -1   +0   +0   -3   +0   +1
  00000350   +0   +0   +1   +1   +0   +0   +0   +0   +0   -4   +0   +0   +0   +0   +0   +0
  00000360   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   -1   +1
  00000370   -1   -1   +0   +0   +1   +0   +0   +0   +3   +0   +0   +0   +0   +0   +0   +0
@@ -4292,7 +4117,8 @@ Release: April 23, 2024
 
 59 / 172
 
- 00000790   -1   -1   +1   +1   +1   +0   -2   -3   +0   +0   +0   +0   +0   +0   +0   +0
+
+ 00000790   -1   -1   +1   +1   +1   +0   -2   -3   +0   +0   +0   +0   +0   +0   +0   +0
  000007A0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
  000007B0   +0   +0   -1   +4   +2   +1   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
  000007C0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
@@ -4369,7 +4195,8 @@ Release: April 23, 2024
 
 60 / 172
 
- 00000BE0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
+
+ 00000BE0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
  00000BF0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
  00000C00   +1   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0   +0
  00000C10   +1   +0   +0   +1   +0   +0   +1   +0   +0   +0   +0   +0   +0   -1   +0   +0
@@ -4443,7 +4270,8 @@ Release: April 23, 2024
 
 61 / 172
 
-4.2.4.2.2 Cb Component Data
+
+###### 4.2.4.2.2 Cb Component Data
 
 The following is a dump of the Cb component data, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -4519,7 +4347,8 @@ Release: April 23, 2024
 
 62 / 172
 
- 000003F0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
+
+ 000003F0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000400  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000410  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000420  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  -1  +2  +4  +5  +2  -1
@@ -4596,7 +4425,8 @@ Release: April 23, 2024
 
 63 / 172
 
- 00000840  +0  +0  +0  +0  +0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0
+
+ 00000840  +0  +0  +0  +0  +0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0
  00000850  +1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000860  +0  +0  +0  +0  +0  +0  +0  -1  +0  +0  +0  +0  +0  +0  +0  +0
  00000870  +0  +0  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
@@ -4673,7 +4503,8 @@ Release: April 23, 2024
 
 64 / 172
 
- 00000C90  +0  +3  +0  +0  +0  +0  -2 +10  -7  +4  +0  -1  +3 -24  -2  +0
+
+ 00000C90  +0  +3  +0  +0  +0  +0  -2 +10  -7  +4  +0  -1  +3 -24  -2  +0
  00000CA0  -1  +4  +0  +2  -1  +0  -5 +10  +2  -1  -3  +4  -1 +11  -1  +0
  00000CB0  -4  +1  +0  -1  +0  +0  -2  -6  +0  +0  +1  -2  +0 +24  +0  +0
  00000CC0  +1  +2  +1  +0  +0  +0  -1 -17  +0  +0  +0  -1 -26  +0  +0  +0
@@ -4729,7 +4560,7 @@ Release: April 23, 2024
  00000FE0 +79 +31 -21 -40 +58 -51 -33 +63  -8 +35 -31 -13 -10 -20 -44+102
  00000FF0 -11  +9  +2 +17-136  +4 -58+208 -49  +6  +4 +11 -83 -38 +84 +54
 
-4.2.4.2.3 Cr Component Data
+###### 4.2.4.2.3 Cr Component Data
 
 The following is a dump of the Cr component data, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -4747,7 +4578,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000050  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
+
+ 00000050  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000060  +0  +0  +1  +0  +0  +0  +0  +0  +2  +0  +0  +0  +0  +0  +1  +0
  00000070  +2  -1  +2  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000080  +0  +0  +1  +0  +0  +0 -13  +2  -1  +0  +0  +0  +0  +0  +0  +0
@@ -4824,7 +4656,8 @@ Release: April 23, 2024
 
 66 / 172
 
- 000004A0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
+
+ 000004A0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  000004B0  +0  +1  -2  +0  +3  -4  +0  +0  +0  +0  +0  +0  -1  -4  -1  -1
  000004C0  +0  +0  +0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0  +0  +0
  000004D0  +0  +0  +0  +0  +0  +0  +4  -3  -3  -2  -2  -4  -1  +1  +3  +0
@@ -4901,7 +4734,8 @@ Release: April 23, 2024
 
 67 / 172
 
- 000008F0  +0  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
+
+ 000008F0  +0  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000900  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
  00000910  +0  +0  -1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0  +1  -1
  00000920  +0  +0  +0  +0  +0  +1  +0  +0  +0  +0  +0  +0  +0  +0  +0  +0
@@ -4978,7 +4812,8 @@ Release: April 23, 2024
 
 68 / 172
 
- 00000D40  +0  +0  -1  +0  -1  +0  -2  +1  -1  -1  +1  +1  -1  +0  -2  +7
+
+ 00000D40  +0  +0  -1  +0  -1  +0  -2  +1  -1  -1  +1  +1  -1  +0  -2  +7
  00000D50  +0  +0  -1  -1  +3  +5  +1  -2  +2  -1  +0  +0  +1  +0  +0  +0
  00000D60  +0  -1 +11 -17 -14 -10 -14  +7  -1  +1  +0  +0  +0  +2  -3  +0
  00000D70  +0  +0  +3  +2  +0  +0  +9  -5  +0 +11  -2  -1  -1  -2  +5  -1
@@ -5023,7 +4858,7 @@ Release: April 23, 2024
  00000FE0 -38  -3  -1 +61 -68 +60  -4 -37  +1 -18  +2 +29 +29  +8 +18 -74
  00000FF0 +10  +5 -17 -22+108 -16 +33-124 +22  -7  +0  -4 +48 +26 -46 -33
 
-4.2.4.3  Inverse Quantization/DWT
+##### 4.2.4.3 Inverse Quantization/DWT
 
 The following sections present the three-level inverse DWT of the Y component data. The inverse DWT
 process follows the steps shown in the figure illustrating three-level DWT decomposition in section
@@ -5036,7 +4871,7 @@ conversion, while Microsoft RDP 8.1 uses 12.4 fixed-point integers. This is due 
 dequantization (section 3.1.8.2.3). The example data in the following sections is shown for both 11.5
 and 12.4 fixed-point integers.
 
-4.2.4.3.1 Level-3 Sub-bands
+###### 4.2.4.3.1 Level-3 Sub-bands
 
 The following are annotated dumps of the four level-3 dequantized sub-bands (LL3, LH3, HL3, and
 HH3). The LL3 sub-band first gives inverse differential encoding before being de-quantized (section
@@ -5049,7 +4884,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.2.4.3.1.1  LL3
+
+###### 4.2.4.3.1.1 LL3
 
 The following is a dump of the LL3 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5076,7 +4912,7 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  00000030     +336     -160     +160     -256    +2016    +1728    +1360     -160
  00000038     +944     +832     +624     +480     +560     +848     +240      -48
 
-4.2.4.3.1.2  HL3
+###### 4.2.4.3.1.2 HL3
 
 The following is a dump of the HL3 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5103,7 +4939,7 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  00000030     -736     +176     -144      -16      -32      +16     -288      -32
  00000038     +128      -48      +48      -80      -64      -16      -80      -32
 
-4.2.4.3.1.3  LH3
+###### 4.2.4.3.1.3 LH3
 
 The following is a dump of the LH3 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5115,7 +4951,8 @@ Release: April 23, 2024
 
 70 / 172
 
-The sample data for 11.5 fixed-point integers (RDP 7.1/8.0) is:
+
+The sample data for 11.5 fixed-point integers (RDP 7.1/8.0) is:
 
  00000000      -96       +0      +32     -320      -96      +32      -32      +32
  00000008     -160      -32      -96      +96     +224     -448     -416     +320
@@ -5137,7 +4974,7 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  00000030     +208     +336     +128     +176      +48     +112     +112      -32
  00000038      -48      -16       +0      +32     -224     -304     -112      +16
 
-4.2.4.3.1.4  HH3
+###### 4.2.4.3.1.4 HH3
 
 The following is a dump of the HH3 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5164,9 +5001,9 @@ The sample data for 12.4 fixed-point (RDP 8.1) is:
  00000030     +272      -96     +112      +80      +48      +16      -80       +0
  00000038      +16       +0       +0      +96      +16      -64      +32       +0
 
-4.2.4.3.1.5
+###### 4.2.4.3.1.5 Inverse DWT-X (LL3 - HL3)
 
-Inverse DWT-X (LL3 - HL3)
+
 
 The following is a dump of the L2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5184,7 +5021,8 @@ Release: April 23, 2024
 
 71 / 172
 
- 00000018     +208      +80     -432     -448     -464     -496     -400     -784
+
+ 00000018     +208      +80     -432     -448     -464     -496     -400     -784
  00000020     +928     +832     +736    +1288    +1328    +2696    +3424    +2784
  00000028    +3808     -352    +2272    +1400     +912     +520     +384     +384
  00000030    +1280    +1144    +1264     +744    +2144    +1856    +2464    +3576
@@ -5217,9 +5055,9 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  00000070     +816    +1060     +792     +612     +624     +656     +496     +404
  00000078     +632     +632     +888     +556     +288      -12       +8      -56
 
-4.2.4.3.1.6
+###### 4.2.4.3.1.6 Inverse DWT-X (LH3 – HH3)
 
-Inverse DWT-X (LH3 – HH3)
+
 
 The following is a dump of the H2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5255,7 +5093,8 @@ Release: April 23, 2024
 
 72 / 172
 
- 00000010      -64      -40      +48     -208      -16      +84       -8     +136
+
+ 00000010      -64      -40      +48     -208      -16      +84       -8     +136
  00000018      +24     +100     -272     -244     -152     -108     +320     -128
  00000020      +16       +0      +48      -96     +208     +252     +104     -180
  00000028     +304     -272     +176     +120     +192     +156       -8      -40
@@ -5270,9 +5109,9 @@ Release: April 23, 2024
  00000070      -64      -12      -24      -12       +0       -8      -16      +44
  00000078     -280     -248     -280     -316      -96      +16       +0       +0
 
-4.2.4.3.1.7
+###### 4.2.4.3.1.7 Inverse DWT-Y (L2 – H2)
 
-Inverse DWT-Y (L2 – H2)
+
 
 The following is a dump of the LL2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5329,7 +5168,8 @@ Release: April 23, 2024
 
 73 / 172
 
- 00000038     +972     +152       +4     -159     -162     -190     +470     -282
+
+ 00000038     +972     +152       +4     -159     -162     -190     +470     -282
  00000040     +488     +436     +320     +796     +568    +1180    +1664    +1414
  00000048    +1740      -90    +1184     +762     +436     +236      +36     +276
  00000050     +588     +518     +448     +402    +1284    +1573    +1798    +1550
@@ -5355,17 +5195,17 @@ Release: April 23, 2024
  000000f0     +752     +724     +632     +598     +564     +482     +432     +374
  000000f8     +220     +196     +428      +10      +72      +54       +4      -60
 
-4.2.4.3.2 Level-2 Sub-bands
+###### 4.2.4.3.2 Level-2 Sub-bands
 
 The following are the dumps of the four level-2 dequantized sub-bands (LL2, LH2, HL2, and HH2). LL2
 is reconstructed from level-3 sub-bands. LH2, HL2, and HH2 are generated by dequantizing the
 corresponding decoded sub-bands, as shown in sections 4.2.4.2 and 4.2.4.2.1.
 
-4.2.4.3.2.1  LL2
+###### 4.2.4.3.2.1 LL2
 
 The LL2 sub-band is the same as that shown in section 4.2.4.3.1.7.
 
-4.2.4.3.2.2  HL2
+###### 4.2.4.3.2.2 HL2
 
 The following is a dump of the HL2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5400,7 +5240,8 @@ Release: April 23, 2024
 
 74 / 172
 
- 000000A0     +192     -896      +64     -128     +128      -64     +704    -1024
+
+ 000000A0     +192     -896      +64     -128     +128      -64     +704    -1024
  000000A8     -128     +128      -64      +64       +0     -576       +0      -64
  000000B0    +1216      +64      +64      +64       +0     +128     +128     +512
  000000B8       +0       +0       +0       +0      +64     -832       +0       +0
@@ -5448,7 +5289,7 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  000000f0       +0       +0       +0       +0       +0       +0       +0       +0
  000000f8      +32       +0     -128      -32       +0       +0       +0       +0
 
-4.2.4.3.2.3  LH2
+###### 4.2.4.3.2.3 LH2
 
 The following is a dump of the HL2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5472,7 +5313,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000048     +192      -64      +64      +64       +0      +64     -320    +1280
+
+ 00000048     +192      -64      +64      +64       +0      +64     -320    +1280
  00000050       +0       +0       +0      -64     +128     +448      -64       +0
  00000058     +192     -128      +64       +0     +256      -64       +0      +64
  00000060       +0      +64     -192     +128     -576     -768    -1216     +640
@@ -5531,7 +5373,7 @@ The sample data for 12.4 fixed-point integers (RDP 8.1) is:
  000000f0       +0       +0       +0       +0       +0       +0       +0       +0
 000000f8       +0       +0     -224      +32       +0       +0       +0       +0
 
-4.2.4.3.2.4  HH2
+###### 4.2.4.3.2.4 HH2
 
 The following is a dump of the HH2 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5545,7 +5387,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000000       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000000       +0       +0       +0       +0       +0       +0       +0       +0
  00000008       +0       +0       +0       +0       +0       +0       +0       +0
  00000010       +0       +0       +0     +128       +0       +0       +0       +0
  00000018       +0       +0       +0       +0       +0       +0       +0       +0
@@ -5620,9 +5463,10 @@ Release: April 23, 2024
 
 77 / 172
 
-4.2.4.3.2.5
 
-Inverse DWT-X (LL2 – HL2)
+###### 4.2.4.3.2.5 Inverse DWT-X (LL2 – HL2)
+
+
 
 The following is a dump of the L1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5694,7 +5538,8 @@ Release: April 23, 2024
 
 78 / 172
 
- 000001C8    +1128    +1062     +996     +946     +896     +878     +604     +922
+
+ 000001C8    +1128    +1062     +996     +946     +896     +878     +604     +922
  000001D0    +1752    +1104    +1480    +1776    +1816    +1934    +1028    +1258
  000001D8     +464      +30     +108      +58       +8      -40      -88     -216
  000001E0    +1504    +1476    +1448    +1356    +1264    +1230    +1196    +1162
@@ -5769,7 +5614,8 @@ Release: April 23, 2024
 
 79 / 172
 
- 000001c8     +564     +531     +498     +473     +448     +439     +302     +461
+
+ 000001c8     +564     +531     +498     +473     +448     +439     +302     +461
  000001d0     +876     +552     +740     +888     +908     +967     +514     +629
  000001d8     +232      +15      +54      +29       +4      -20      -44     -108
  000001e0     +752     +738     +724     +678     +632     +615     +598     +581
@@ -5777,9 +5623,9 @@ Release: April 23, 2024
  000001f0     +204     +256     +180     +336     +492      +35      +90      +25
  000001f8      +88      +71      +54      +29       +4      -28      -60      -60
 
-4.2.4.3.2.6
+###### 4.2.4.3.2.6 Inverse DWT-X (LH2 - HH2)
 
-Inverse DWT-X (LH2 - HH2)
+
 
 The following is a dump of the H1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5845,7 +5691,8 @@ Release: April 23, 2024
 
 80 / 172
 
- 00000198       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000198       +0       +0       +0       +0       +0       +0       +0       +0
  000001A0      -64       +0      +64      +32       +0       +0       +0       +0
  000001A8       +0       +0       +0      -32      -64     +128     -192     -160
  000001B0     -128       +0     +128      +64       +0      +32      +64      +32
@@ -5920,7 +5767,8 @@ Release: April 23, 2024
 
 81 / 172
 
- 00000198       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000198       +0       +0       +0       +0       +0       +0       +0       +0
  000001a0      -32       +0      +32      +16       +0       +0       +0       +0
  000001a8       +0       +0       +0      -16      -32      +64      -96      -80
  000001b0      -64       +0      +64      +32       +0      +16      +32      +16
@@ -5934,9 +5782,9 @@ Release: April 23, 2024
  000001f0       +0       +0       +0     -128     -256       +0       +0       +0
  000001f8       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.2.7
+###### 4.2.4.3.2.7 Inverse DWT-Y (L1 – H1)
 
-Inverse DWT-Y (L1 – H1)
+
 
 The following is a dump of the LL1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -5996,7 +5844,8 @@ Release: April 23, 2024
 
 82 / 172
 
- 00000168    +2884    +2859    +3475    +3474    +3474    +3619    +3764    +3877
+
+ 00000168    +2884    +2859    +3475    +3474    +3474    +3619    +3764    +3877
  00000170    +3350     -400    +1738    +3676    +3566    +3577    +3460    +3439
  00000178    +3290    +2623    +1828    +1313     +670      -78     -442     -250
  00000180    +1248    +1208    +1168    +1112    +1056     +216     +912    +1912
@@ -6073,7 +5922,8 @@ Release: April 23, 2024
 
 83 / 172
 
- 00000390    +2008    +1168    +1608    +1744    +1880    +2142    +1124    +1434
+
+ 00000390    +2008    +1168    +1608    +1744    +1880    +2142    +1124    +1434
  00000398     +208     +142      +76      +42       +8      -40      -88     -216
  000003A0    +1552    +1504    +1456    +1384    +1312    +1266    +1220    +1174
  000003A8    +1128    +1054     +980     +938     +896     +810     +724     +502
@@ -6148,7 +5998,8 @@ Release: April 23, 2024
 
 84 / 172
 
- 00000180     +624     +604     +584     +556     +528     +108     +456     +956
+
+ 00000180     +624     +604     +584     +556     +528     +108     +456     +956
  00000188    +1328     +959    +1102    +1429    +1756    +2185    +1974    +2139
  00000190     +768     -171    +1706    +1839    +1844    +1871    +1898    +1813
  00000198    +1472    +1170     +996     +798     +472      -24     -136     -200
@@ -6225,7 +6076,8 @@ Release: April 23, 2024
 
 85 / 172
 
- 000003A8     +564     +527     +490     +469     +448     +405     +362     +251
+
+ 000003A8     +564     +527     +490     +469     +448     +405     +362     +251
  000003B0     +268     +308     +156     +636     +668     +161     +102      +35
  000003B8      +96      +71      +46      +25       +4      -24      -52      -84
  000003C0     +768     +746     +724     +678     +632     +615     +598     +581
@@ -6239,17 +6091,17 @@ Release: April 23, 2024
  00000400       +0      +64       +0       +0       +0       +0       +0       +0
  00000408       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.3 Level-1 Sub-bands
+###### 4.2.4.3.3 Level-1 Sub-bands
 
 The following are the dumps of the four level-1 dequantized sub-bands (LL1, LH1, HL1, and HH1). LL1
 is reconstructed from level-2 sub-bands. LH1, HL1, and HH1 are generated by dequantizing the
 corresponding decoded sub-bands, as shown in sections 4.2.4.2 and 4.2.4.2.1.
 
-4.2.4.3.3.1  LL1
+###### 4.2.4.3.3.1 LL1
 
 The LL1 sub-band is the same as that shown in section 4.2.4.3.2.7.
 
-4.2.4.3.3.2  HL1
+###### 4.2.4.3.3.2 HL1
 
 The following is a dump of the HL1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -6297,7 +6149,8 @@ Release: April 23, 2024
 
 86 / 172
 
- 00000108       +0       +0       +0       +0       +0     +256     +128       +0
+
+ 00000108       +0       +0       +0       +0       +0     +256     +128       +0
  00000110     +256     -640     -512     +128       +0       +0       +0       +0
  00000118       +0       +0     +128     +384     -128     +640       +0     -128
  00000120       +0       +0       +0       +0       +0     -256     -256     -384
@@ -6374,7 +6227,8 @@ Release: April 23, 2024
 
 87 / 172
 
- 00000330       +0       +0       +0     +128       +0       +0       +0       +0
+
+ 00000330       +0       +0       +0     +128       +0       +0       +0       +0
  00000338       +0     -256       +0       +0       +0       +0       +0       +0
  00000340       +0       +0       +0       +0       +0       +0       +0       +0
  00000348       +0       +0     -128       +0       +0     -384       +0     +128
@@ -6449,7 +6303,8 @@ Release: April 23, 2024
 
 88 / 172
 
- 00000130     +448       +0     -256       +0       +0       +0       +0       +0
+
+ 00000130     +448       +0     -256       +0       +0       +0       +0       +0
  00000138       +0       +0       +0      -64       +0      -64     +128      -64
  00000140       +0       +0       +0       +0       +0     -192      +64     +320
  00000148       +0       +0       +0       +0       +0       +0      -64       +0
@@ -6526,7 +6381,8 @@ Release: April 23, 2024
 
 89 / 172
 
- 00000358       +0     -256       +0       +0       +0       +0       +0       +0
+
+ 00000358       +0     -256       +0       +0       +0       +0       +0       +0
  00000360       +0       +0       +0       +0       +0       +0       +0       +0
  00000368       +0       +0       +0       +0       +0       +0      -64      +64
  00000370      -64      -64       +0       +0      +64       +0       +0       +0
@@ -6548,7 +6404,7 @@ Release: April 23, 2024
  000003F0       +0       +0       +0      -64       +0       +0       +0       +0
  000003F8       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.3.3  LH1
+###### 4.2.4.3.3.3 LH1
 
 The following is a dump of the LH1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -6599,7 +6455,8 @@ Release: April 23, 2024
 
 90 / 172
 
- 00000120       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000120       +0       +0       +0       +0       +0       +0       +0       +0
  00000128       +0       +0       +0     +128       +0       +0       +0       +0
  00000130     +128       +0       +0       +0       +0       +0       +0       +0
  00000138       +0       +0       +0       +0       +0       +0    -1024       +0
@@ -6676,7 +6533,8 @@ Release: April 23, 2024
 
 91 / 172
 
- 00000348       +0       +0       +0       +0       +0       +0       +0     +128
+
+ 00000348       +0       +0       +0       +0       +0       +0       +0     +128
  00000350     -128     +128       +0       +0       +0       +0       +0       +0
  00000358       +0       +0       +0       +0       +0       +0       +0       +0
  00000360       +0     +128       +0       +0       +0       +0       +0       +0
@@ -6750,7 +6608,8 @@ Release: April 23, 2024
 
 92 / 172
 
- 00000130      +64       +0       +0       +0       +0       +0       +0       +0
+
+ 00000130      +64       +0       +0       +0       +0       +0       +0       +0
  00000138       +0       +0       +0       +0       +0       +0     -512       +0
  00000140       +0       +0       +0       +0       +0       +0       +0       +0
  00000148       +0       +0       +0      +64     -128     -128     +128      -64
@@ -6827,7 +6686,8 @@ Release: April 23, 2024
 
 93 / 172
 
- 00000358       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000358       +0       +0       +0       +0       +0       +0       +0       +0
  00000360       +0      +64       +0       +0       +0       +0       +0       +0
  00000368       +0       +0       +0       +0       +0       +0      -64      -64
  00000370       +0      -64      +64      +64       +0      +64       +0      -64
@@ -6851,7 +6711,7 @@ Release: April 23, 2024
  00000400       +0       +0       +0       +0       +0       +0       +0       +0
  00000408       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.3.4  HH1
+###### 4.2.4.3.3.4 HH1
 
 The following is a dump of the HL1 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -6901,7 +6761,8 @@ Release: April 23, 2024
 
 94 / 172
 
- 00000118       +0       +0       +0     -256       +0       +0     +256     -256
+
+ 00000118       +0       +0       +0     -256       +0       +0     +256     -256
  00000120       +0       +0       +0       +0       +0     -256       +0       +0
  00000128       +0       +0       +0       +0       +0       +0       +0       +0
  00000130       +0       +0       +0       +0       +0       +0       +0       +0
@@ -6978,7 +6839,8 @@ Release: April 23, 2024
 
 95 / 172
 
- 00000340       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000340       +0       +0       +0       +0       +0       +0       +0       +0
  00000348       +0       +0       +0       +0       +0       +0       +0       +0
  00000350       +0       +0       +0       +0       +0       +0       +0       +0
  00000358       +0       +0       +0       +0       +0       +0       +0       +0
@@ -7053,7 +6915,8 @@ Release: April 23, 2024
 
 96 / 172
 
- 00000140       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000140       +0       +0       +0       +0       +0       +0       +0       +0
  00000148       +0       +0       +0       +0       +0       +0       +0       +0
  00000150       +0       +0       +0       +0       +0       +0       +0       +0
  00000158       +0       +0       +0       +0       +0       +0       +0       +0
@@ -7130,7 +6993,8 @@ Release: April 23, 2024
 
 97 / 172
 
- 00000368       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000368       +0       +0       +0       +0       +0       +0       +0       +0
  00000370     -128       +0       +0       +0       +0       +0       +0       +0
  00000378       +0       +0       +0       +0       +0       +0       +0       +0
  00000380       +0       +0       +0       +0       +0       +0       +0       +0
@@ -7150,9 +7014,9 @@ Release: April 23, 2024
  000003F0       +0       +0       +0       +0       +0       +0       +0       +0
  000003F8       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.3.5
+###### 4.2.4.3.3.5 Inverse DWT-X (LL1 - HL1)
 
-Inverse DWT-X (LL1 - HL1)
+
 
 The following is a dump of the L0 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -7206,7 +7070,8 @@ Release: April 23, 2024
 
 98 / 172
 
- 00000138     -528     -552     -576     -600     -624     -624     -624     -624
+
+ 00000138     -528     -552     -576     -600     -624     -624     -624     -624
  00000140     +708     +637     +566     +559     +552     +513     +474     +499
  00000148     +524     +561     +599     +572     +546     +131     -283       +6
  00000150     +296     +665    +1034    +1627    +1708    +1669    +1630    +1623
@@ -7283,7 +7148,8 @@ Release: April 23, 2024
 
 99 / 172
 
- 00000360      -24     +485      -31    +2781    +4058    +4018    +3979    +3907
+
+ 00000360      -24     +485      -31    +2781    +4058    +4018    +3979    +3907
  00000368    +3836    +3818    +3801    +3784    +3767    +3561    +3356    +3407
  00000370    +3458    +3642    +3826    +3594    +3363    +2939    +2003    +1163
  00000378     +324     +482     -384     -354     -324     -324     -324     -324
@@ -7360,7 +7226,8 @@ Release: April 23, 2024
 
 100 / 172
 
- 00000588     -540     -758      +47     -364     +250     +383     +517     +170
+
+ 00000588     -540     -758      +47     -364     +250     +383     +517     +170
  00000590     +336     +439     +543     +678     +814    +1229    +1645    +1644
  00000598    +1644    +1697    +1239     +748     +770     +399    +3613    +3978
  000005A0    +3832    +3847    +3862    +3845    +3828    +3803    +3778    +3753
@@ -7437,7 +7304,8 @@ Release: April 23, 2024
 
 101 / 172
 
- 000007B0     +176     +159     +142     +125     +108      +83      +58      +33
+
+ 000007B0     +176     +159     +142     +125     +108      +83      +58      +33
  000007B8       +8      -24      -56      -88     -120     -120     -120     -120
  000007C0    +1536    +1514    +1492    +1470    +1448    +1402    +1356    +1310
  000007C8    +1264    +1247    +1230    +1213    +1196    +1179    +1162    +1145
@@ -7512,7 +7380,8 @@ Release: April 23, 2024
 
 102 / 172
 
- 000001B0     -146      -93      -40      +29     -158     -145     -132     -231
+
+ 000001B0     -146      -93      -40      +29     -158     -145     -132     -231
  000001B8     +182    +1254    +1302     -218     -458     -506     -298     -298
  000001C0     +438     +427     +417     +406     +396     +401     +407     +412
  000001C8     +418     +360     +302     +276     +507       -9     +243     +367
@@ -7589,7 +7458,8 @@ Release: April 23, 2024
 
 103 / 172
 
- 000003D8    +2044    +2067    +1834    +1409     +472     +249     +282     +251
+
+ 000003D8    +2044    +2067    +1834    +1409     +472     +249     +282     +251
  000003E0     +220     +137    +1335    +1925    +2259    +2152    +2046    +1988
  000003E8    +1930    +1949    +1968    +1987    +2006    +1891    +1776    +1661
  000003F0    +1547    +1429    +1311    +1194    +1076     +912     +749     +633
@@ -7666,7 +7536,8 @@ Release: April 23, 2024
 
 104 / 172
 
- 00000600     +832     +995     -377    -1717    -1010    -1246     -971     -375
+
+ 00000600     +832     +995     -377    -1717    -1010    -1246     -971     -375
  00000608     +220      +62     +416     +754     +836     +746     +656     +502
  00000610     +348      -91     -274     -537     -544     -567     -334     -165
  00000618     -252     +201     +398     +451     +248    +1805    +1826    +1799
@@ -7731,9 +7602,9 @@ Release: April 23, 2024
  000007F0      +88      +79      +71      +62      +54      +41      +29      +16
  000007F8       +4      -12      -28      -44      -60      -60      -60      -60
 
-4.2.4.3.3.6
+###### 4.2.4.3.3.6 Inverse DWT-X (LH1 - HH1)
 
-Inverse DWT-X (LH1 - HH1)
+
 
 [MS-RDPRFX] - v20240423
 Remote Desktop Protocol: RemoteFX Codec Extension
@@ -7742,7 +7613,8 @@ Release: April 23, 2024
 
 105 / 172
 
-The following is a dump of the H0 sub-band, as shown in the figure illustrating three-level DWT
+
+The following is a dump of the H0 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
 
 The sample data for 11.5 fixed-point integers (RDP 7.1/8.0) is:
@@ -7818,7 +7690,8 @@ Release: April 23, 2024
 
 106 / 172
 
- 000001F8     +512    -1088     -640     -384     -128      -64       +0       +0
+
+ 000001F8     +512    -1088     -640     -384     -128      -64       +0       +0
  00000200       +0       +0       +0       +0       +0       +0       +0       +0
  00000208       +0       +0       +0       +0       +0      +64     +128      +64
  00000210       +0       +0       +0       +0       +0       +0       +0       +0
@@ -7895,7 +7768,8 @@ Release: April 23, 2024
 
 107 / 172
 
- 00000420     +128     -960       +0       +0       +0     -512    -1024     -128
+
+ 00000420     +128     -960       +0       +0       +0     -512    -1024     -128
  00000428     +768     +768     +768     +640     +512     +448     +384     +384
  00000430     +384     +448     +512     +192     -128     -192     -256     -128
  00000438       +0       +0       +0       +0       +0       +0       +0       +0
@@ -7972,7 +7846,8 @@ Release: April 23, 2024
 
 108 / 172
 
- 00000648     +128      +64       +0       +0       +0       +0       +0       +0
+
+ 00000648     +128      +64       +0       +0       +0       +0       +0       +0
  00000650       +0       +0       +0      -64     -128     +192     +512     +128
  00000658     -256     -192     -128      -64       +0     +384     -256      -64
  00000660     +128       +0     -128      -64       +0       +0       +0       +0
@@ -8047,7 +7922,8 @@ Release: April 23, 2024
 
 109 / 172
 
- 00000048       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000048       +0       +0       +0       +0       +0       +0       +0       +0
  00000050       +0       +0       +0       +0       +0       +0       +0       +0
  00000058       +0       +0       +0       +0       +0       +0       +0       +0
  00000060       +0       +0       +0       +0       +0       +0       +0       +0
@@ -8124,7 +8000,8 @@ Release: April 23, 2024
 
 110 / 172
 
- 00000270       +0       +0       +0       +0       +0       +0       +0       +0
+
+ 00000270       +0       +0       +0       +0       +0       +0       +0       +0
  00000278       +0       +0       +0     -256     -512     -256       +0       +0
  00000280       +0       +0       +0       +0       +0       +0       +0       +0
  00000288       +0       +0       +0       +0       +0       +0       +0       +0
@@ -8201,7 +8078,8 @@ Release: April 23, 2024
 
 111 / 172
 
- 00000498      +64      -32     -128     -480     -320      +64      -64       +0
+
+ 00000498      +64      -32     -128     -480     -320      +64      -64       +0
  000004A0      +64      +32       +0       +0       +0     +256     +512     +224
  000004A8      -64     -256     -448     -512     -576     -512     -448     -288
  000004B0     -128     +128     +384     +288     +192     +128      +64     -192
@@ -8278,7 +8156,8 @@ Release: April 23, 2024
 
 112 / 172
 
- 000006C0       +0      +32      +64      +32       +0       +0       +0       +0
+
+ 000006C0       +0      +32      +64      +32       +0       +0       +0       +0
  000006C8       +0       +0       +0       +0       +0       +0       +0       +0
  000006D0       +0       +0       +0       +0       +0       +0       +0       +0
  000006D8       +0       +0       +0      -32      -64      -64      -64       +0
@@ -8319,9 +8198,9 @@ Release: April 23, 2024
  000007F0       +0       +0       +0       +0       +0       +0       +0       +0
  000007F8       +0       +0       +0       +0       +0       +0       +0       +0
 
-4.2.4.3.3.7
+###### 4.2.4.3.3.7 Inverse DWT-Y (L0 – H0)
 
-Inverse DWT-Y (L0 – H0)
+
 
 The following is a dump of the LL0 sub-band, as shown in the figure illustrating three-level DWT
 decomposition in section 3.1.8.1.4.
@@ -8354,7 +8233,8 @@ Release: April 23, 2024
 
 113 / 172
 
- 00000090      +28      +18       +8       -2      -12      -38      -64      -90
+
+ 00000090      +28      +18       +8       -2      -12      -38      -64      -90
  00000098     -116     -105      -95     -148     -201     -198     -195     -192
  000000A0     -190     -204     -218     -232     -247     -269     -291     -313
  000000A8     -336     -357     -379     -400     -422     -447     -473     -498
@@ -8431,7 +8311,8 @@ Release: April 23, 2024
 
 114 / 172
 
- 000002B8     -402     -478     -554     -566     -578     -610     -642     -642
+
+ 000002B8     -402     -478     -554     -566     -578     -610     -642     -642
  000002C0     +774     +730     +687     +675     +664     +620     +577     +581
  000002C8     +586     +597     +610     +590     +571     -147      -96     +209
  000002D0     +516     +794    +1073    +1575    +1822    +1976    +1875    +1869
@@ -8508,7 +8389,8 @@ Release: April 23, 2024
 
 115 / 172
 
- 000004E0    +3863    +2843      +33     +133      -21    +2099    +3197    +3061
+
+ 000004E0    +3863    +2843      +33     +133      -21    +2099    +3197    +3061
  000004E8    +2927    +2944    +2961    +2882    +2804    +2607    +2410    +2309
  000004F0    +2209    +2139    +2071    +1842    +1614    +1328    +1044     +663
  000004F8     +283      +10     -263     -488     -201     -201     -457     -457
@@ -8585,7 +8467,8 @@ Release: April 23, 2024
 
 116 / 172
 
- 00000708    +1320    +1037    +1267    +1208    +1150     +715     +281     +486
+
+ 00000708    +1320    +1037    +1267    +1208    +1150     +715     +281     +486
  00000710    +1204    +1564     +901    +1325    +1750    +1830    +1911    +1383
  00000718     +344     +459     +574     +817     +548     +351     +666     +757
  00000720     +336     +340     +856    +4028    +4128    +4076    +4024    +4004
@@ -8662,7 +8545,8 @@ Release: April 23, 2024
 
 117 / 172
 
- 00000930      +36     -117     -269     +218    +1218    +2025    +2833    +1048
+
+ 00000930      +36     -117     -269     +218    +1218    +2025    +2833    +1048
  00000938     -224     -140      -56     -100     -144     -208     -272     -272
  00000940    +1626    +1607    +1589    +1458    +1585     +692    -1479    -1107
  00000948     -736     -451     -168     +115     +400     +805    +1468    +1937
@@ -8739,7 +8623,8 @@ Release: April 23, 2024
 
 118 / 172
 
- 00000B58    +1123    +1252    +1127     +794     +717    +1161    +3654    +3843
+
+ 00000B58    +1123    +1252    +1127     +794     +717    +1161    +3654    +3843
  00000B60    +3776    +3788    +3802    +3782    +3764    +3616    +3726    +3690
  00000B68    +3656    +3595    +3536    +3476    +3417    +3341    +3265    +3078
  00000B70    +2891    +2687    +2484    +2617    +1982      -28       +8      +14
@@ -8816,7 +8701,8 @@ Release: April 23, 2024
 
 119 / 172
 
- 00000D80    +1624    +1618    +1612    +1606    +1601    +1551    +1501    +1451
+
+ 00000D80    +1624    +1618    +1612    +1606    +1601    +1551    +1501    +1451
  00000D88    +1402    +1361    +1320    +1279    +1239    +1214    +1189    +1164
  00000D90    +1140    +1103    +1067    +1031     +995    +1014    +1034     +926
  00000D98     +818     +885     +953    +1021    +1089    +1024    +1472    +2048
@@ -8893,7 +8779,8 @@ Release: April 23, 2024
 
 120 / 172
 
- 00000FA8     +408     +351     +294     +301     +308     +275     +242     +209
+
+ 00000FA8     +408     +351     +294     +301     +308     +275     +242     +209
  00000FB0     +176     +159     +142     +125     +108      +83      +58      +33
  00000FB8       +8      -24      -56      -88     -120     -120     -120     -120
  00000FC0    +1536    +1514    +1492    +1470    +1448    +1402    +1356    +1310
@@ -8968,7 +8855,8 @@ Release: April 23, 2024
 
 121 / 172
 
- 000001A8      -96     -108     -120     -132     -145     -159     -173     -187
+
+ 000001A8      -96     -108     -120     -132     -145     -159     -173     -187
  000001B0     -202     -199     -197     -227     -257     -278     -300     -178
  000001B8     -312     -311     -310     -325     -340     -340     -340     -340
  000001C0     +302     +338     +247     +228     +209     +385     +177     +193
@@ -9045,7 +8933,8 @@ Release: April 23, 2024
 
 122 / 172
 
- 000003D0     +554     +698     +842     +970    +1099    +1234    +1369    +1392
+
+ 000003D0     +554     +698     +842     +970    +1099    +1234    +1369    +1392
  000003D8    +1416    +1444    +1473    +1589    +1450    +1529    +1481    +1424
  000003E0    +1368    +1448    +1273     -182     +154     +102     +435     +880
  000003E8     +813     +735     +658     +572     +487     +422     +357     +299
@@ -9122,7 +9011,8 @@ Release: April 23, 2024
 
 123 / 172
 
- 000005F8     +387     +194       +0     -201     -146     -154     -162     -162
+
+ 000005F8     +387     +194       +0     -201     -146     -154     -162     -162
  00000600     +624     +614     +604     +594     +584     +570     +556     +542
  00000608     +528     +350     +172     +330     +488     +642    +1052    +1158
  00000610    +1520    +1159    +1055    +1094    +1134    +1345    +1557    +1864
@@ -9199,7 +9089,8 @@ Release: April 23, 2024
 
 124 / 172
 
- 00000820     +336     +313     +291     +204     +118    +1179    +1985    +1958
+
+ 00000820     +336     +313     +291     +204     +118    +1179    +1985    +1958
  00000828    +1932    +1889    +1846    +1995    +1888    +1597    +1562    +1479
  00000830    +1396    +1193     +991     +820     +650     +535     +421      +34
  00000838      -96      -88      -80      -72      -64      -96     -128     -128
@@ -9276,7 +9167,8 @@ Release: April 23, 2024
 
 125 / 172
 
- 00000A48     -309     -141      +25     +128     +359     +352     +474     +563
+
+ 00000A48     -309     -141      +25     +128     +359     +352     +474     +563
  00000A50     +781     +922    +1064    +1118    +1172    +1223    +1275    +1327
  00000A58    +1379    +1369    +1359     +781     +331     +311     +163    +2103
  00000A60    +1996    +2006    +2017    +1995    +1974    +1961    +1949    +1936
@@ -9353,7 +9245,8 @@ Release: April 23, 2024
 
 126 / 172
 
- 00000C70    +1233    +1145    +1057     +641      -30      +68      +39      +18
+
+ 00000C70    +1233    +1145    +1057     +641      -30      +68      +39      +18
  00000C78       -2      -18      -34      -50      -66      -66      -66      -66
  00000C80     +900     +873     +334     +996     +889     +832     +776     +863
  00000C88     +695     +658     +622     +634     +646     +780     +658     +728
@@ -9430,7 +9323,8 @@ Release: April 23, 2024
 
 127 / 172
 
- 00000E98     +448     +426     +405     +383     +362     +322     +283     +291
+
+ 00000E98     +448     +426     +405     +383     +362     +322     +283     +291
  00000EA0     +300     +320     +340     +264     +188     +188     +444     +732
  00000EA8     +508     +318     +129     +147     +166     +148     +131     +113
  00000EB0      +96      +83      +71      +58      +46      +35      +25      +14
@@ -9476,11 +9370,11 @@ Release: April 23, 2024
  00000FF0      +88      +79      +71      +62      +54      +41      +29      +16
  00000FF8       +4      -12      -28      -44      -60      -60      -60      -60
 
-4.2.4.3.4 Reconstructed Y Component
+###### 4.2.4.3.4 Reconstructed Y Component
 
 The reconstructed Y component is the same as the LL0 band shown in section 4.2.4.3.3.7.
 
-4.2.4.3.5 Reconstructed Cb Component
+###### 4.2.4.3.5 Reconstructed Cb Component
 
 The following is a dump of the reconstructed Cb component.
 
@@ -9502,7 +9396,8 @@ Release: April 23, 2024
 
 128 / 172
 
- 00000040    +1710    +1697    +1684    +1704    +1723    +1726    +1730    +1733
+
+ 00000040    +1710    +1697    +1684    +1704    +1723    +1726    +1730    +1733
  00000048    +1737    +1738    +1740    +1741    +1743    +1758    +1774    +1757
  00000050    +1741    +1762    +1783    +1788    +1793    +1774    +1755    +1784
  00000058    +1813    +1817    +1821    +1825    +1829    +1857    +1885    +1881
@@ -9579,7 +9474,8 @@ Release: April 23, 2024
 
 129 / 172
 
- 00000268    +1873    +2132    +1880    +1884    +1888    +1921    +1955    +1941
+
+ 00000268    +1873    +2132    +1880    +1884    +1888    +1921    +1955    +1941
  00000270    +1927    +1925    +1925    +1955    +1987    +2005    +2025    +2043
  00000278    +2063    +1995    +1927    +2099    +2015    +2095    +2175    +2175
  00000280    +1456    +1509    +1562    +1551    +1540    +1601    +1662    +1627
@@ -9656,7 +9552,8 @@ Release: April 23, 2024
 
 130 / 172
 
- 00000490    -1892    -1822    -1752    -1618    -1485    -1431    -1377    -1259
+
+ 00000490    -1892    -1822    -1752    -1618    -1485    -1431    -1377    -1259
  00000498    -1142    -1104    -1066    -1188    -1823    -1313     -803     -869
  000004A0     -936    -1203    +2115    +1976    +1838     +916    -2055    -1569
  000004A8    -1596    -1579    -1563    -1706    -1850    -1881    -1913    -1944
@@ -9733,7 +9630,8 @@ Release: April 23, 2024
 
 131 / 172
 
- 000006B8    -1924    -2160    +1700    +2168    +2124    +2028    +1932    +1932
+
+ 000006B8    -1924    -2160    +1700    +2168    +2124    +2028    +1932    +1932
  000006C0    +1318    +1327    +1337    +1346    +1357    +1405    +1452    +1420
  000006C8    +1389    +1381    +1629    +1748    +1356    +1495    +1635    +1631
  000006D0    +1627    +1551    +1732    +1689    +1647    +1728    +1809    +1730
@@ -9810,7 +9708,8 @@ Release: April 23, 2024
 
 132 / 172
 
- 000008E0    +1576     -200     -183     +905    +1994    +1956    +1919    +1881
+
+ 000008E0    +1576     -200     -183     +905    +1994    +1956    +1919    +1881
  000008E8    +1844    +2004    +1909    +2005    +2102    +2042    +2239    +2195
  000008F0    +2152    +2043    +1935    +2370    +2038    +2697    +1821     +368
  000008F8    +2244    +2121    +1998    +2051    +2104    +2104    +2104    +2104
@@ -9887,7 +9786,8 @@ Release: April 23, 2024
 
 133 / 172
 
- 00000B08    +1972    +2129    +1774    +1931    +1576    +1565    +1554    +1639
+
+ 00000B08    +1972    +2129    +1774    +1931    +1576    +1565    +1554    +1639
  00000B10    +1724    +1679    +1635    +1590    +1546    +1453    +1361    +1300
  00000B18    +1240    +1060    +1392    +1788    +1672    +2092     -560     -620
  00000B20     -680     -700     -721     -741     -762     -870     -979    -1087
@@ -9964,7 +9864,8 @@ Release: April 23, 2024
 
 134 / 172
 
- 00000D30    -3044    -3091    -2114    +2319    +2144    +2121    +2098    +2139
+
+ 00000D30    -3044    -3091    -2114    +2319    +2144    +2121    +2098    +2139
  00000D38    +2180    +2196    +2212    +2228    +2244    +2244    +2244    +2244
  00000D40    +1230    +1255    +1281    +1306    +1333    +1303    +1272    +1338
  00000D48    +1405    +1436    +1468    +1500    +1533    +1535    +1537    +1539
@@ -10041,7 +9942,8 @@ Release: April 23, 2024
 
 135 / 172
 
- 00000F58    +1688    +1718    +1750    +1780    +1812    +1802    +1794    +1784
+
+ 00000F58    +1688    +1718    +1750    +1780    +1812    +1802    +1794    +1784
  00000F60    +1776    +1798    +1820    +1858    +1896    +1750    +1860    +2338
  00000F68    +1792    +2134    +1966    +1956    +1948    +1978    +2010    +2040
  00000F70    +2072    +2086    +2102    +2116    +2132    +2138    +2146    +2152
@@ -10115,7 +10017,8 @@ Release: April 23, 2024
 
 136 / 172
 
- 00000150    +1000    +1030     +291     -327     -945    -1023    -1100    -1042
+
+ 00000150    +1000    +1030     +291     -327     -945    -1023    -1100    -1042
  00000158     -983    -1024    -1065    -1026     -987     -875     -763      +20
  00000160     +804    +1187     +929    +1000     +943     +949     +956     +954
  00000168     +953     +950     +947     +959     +972     +972     +972     +971
@@ -10192,7 +10095,8 @@ Release: April 23, 2024
 
 137 / 172
 
- 00000378     -106     -834     -538     -618     -826     -794    +1029     +965
+
+ 00000378     -106     -834     -538     -618     -826     -794    +1029     +965
  00000380     +744     +748     +753     +757     +762     +762     +763     +763
  00000388     +764     +815     +867     +951     -245    -1127     -985     -971
  00000390     -958     -954     -951     -947     -944     -902     -861     -819
@@ -10269,7 +10173,8 @@ Release: April 23, 2024
 
 138 / 172
 
- 000005A0     -276    +1069     +878     +991     +337     -541     -396     -363
+
+ 000005A0     -276    +1069     +878     +991     +337     -541     -396     -363
  000005A8     -330     -331     -332     -365     -399     -402     -405     -472
  000005B0     -540     -678     -817     -892     -967     -949     -932     -899
  000005B8     -866     -808    -1006     +188    +1126    +1126    +1126    +1126
@@ -10346,7 +10251,8 @@ Release: April 23, 2024
 
 139 / 172
 
- 000007C8     +960     +963     +967     +938     +910     +851     +792     +629
+
+ 000007C8     +960     +963     +967     +938     +910     +851     +792     +629
  000007D0     +467     +453     +440     +362     +284     +218     +151     +108
  000007D8      +66      +22      -21      -49      +51     +400    +1005     +939
  000007E0     +872     +713    +1065     +458      -21      -95     -170     -196
@@ -10423,7 +10329,8 @@ Release: April 23, 2024
 
 140 / 172
 
- 000009F0     -900    -1009    -1118    -1171    -1225    -1325      -17    +1154
+
+ 000009F0     -900    -1009    -1118    -1171    -1225    -1325      -17    +1154
  000009F8    +1046    +1058    +1071    +1075    +1080    +1080    +1080    +1080
  00000A00     +632     +619     +606     +625     +644    +1103    +1050    +1029
  00000A08    +1008     +973     +938     +903     +868     +845     +822     +671
@@ -10500,7 +10407,8 @@ Release: April 23, 2024
 
 141 / 172
 
- 00000C18     +956     +890     +825     +791    +1014     -935     -837     -802
+
+ 00000C18     +956     +890     +825     +791    +1014     -935     -837     -802
  00000C20     -768     -797     -827     -856     -886     -931     -977    -1022
  00000C28    -1068    -1148    -1229    -1309    -1390    -1458    -1527    -1531
  00000C30    -1536    -1516    -1497    -1413    +1230    +1017    +1061    +1072
@@ -10577,7 +10485,8 @@ Release: April 23, 2024
 
 142 / 172
 
- 00000E40     +616     +633     +650     +667     +684     +695     +706     +717
+
+ 00000E40     +616     +633     +650     +667     +684     +695     +706     +717
  00000E48     +728     +734     +741     +747     +754     +760     +767     +773
  00000E50     +780     +789     +798     +807     +816     +820     +824     +828
  00000E58     +832     +822     +814     +852     +892    +1050     +954     +649
@@ -10634,7 +10543,7 @@ Release: April 23, 2024
  00000FF0    +1036    +1043    +1051    +1058    +1066    +1069    +1073    +1076
  00000FF8    +1080    +1084    +1088    +1092    +1096    +1096    +1096    +1096
 
-4.2.4.3.6 Reconstructed Cr Component
+###### 4.2.4.3.6 Reconstructed Cr Component
 
 The following is a dump of the reconstructed Cb component.
 
@@ -10651,7 +10560,8 @@ Release: April 23, 2024
 
 143 / 172
 
- 00000018    -2176    -2092    -2008    -2052    -2096    -2132    -2168    -2076
+
+ 00000018    -2176    -2092    -2008    -2052    -2096    -2132    -2168    -2076
  00000020    -1984    -2088    -2192    -2168    -2144    -2136    -2128    -2120
  00000028    -2112    -2126    -2140    -2154    -2168    -2150    -2132    -2114
  00000030    -2096    -2096    -2096    -2096    -2096    -2096    -2096    -2096
@@ -10728,7 +10638,8 @@ Release: April 23, 2024
 
 144 / 172
 
- 00000240    -2096    -2166    -2238    -2228    -2220    -2087    -2210    -2173
+
+ 00000240    -2096    -2166    -2238    -2228    -2220    -2087    -2210    -2173
  00000248    -2137    -2189    -2243    -2152    -2318    -2031    +3375    +2861
  00000250    +2605    +2305    +2007    +1851    +1697    +1756    +1815    +1810
  00000258    +1806    +1756    +1707    +1754    +1801    +1911    +2023    +2149
@@ -10805,7 +10716,8 @@ Release: April 23, 2024
 
 145 / 172
 
- 00000468     -239     -265     -293     -320     -348     -377     -407     -484
+
+ 00000468     -239     -265     -293     -320     -348     -377     -407     -484
  00000470     -562     -626     -691     -675     -661     -625     -590     -682
  00000478     -776     -804     -832     -540     -248     -664    -1848    -2616
  00000480    -2096    -2104    -2113    -2121    -2130    -2086    -2043    -2095
@@ -10882,7 +10794,8 @@ Release: April 23, 2024
 
 146 / 172
 
- 00000690    -2306    -2193    -2080    -2159    -2239    -2298    -2357    -2320
+
+ 00000690    -2306    -2193    -2080    -2159    -2239    -2298    -2357    -2320
  00000698    -2284    -2432    -2580    -1544       +4      -16      -36     -280
  000006A0    -2572    -2302    -2544     -994      +43      +64      +86      +44
  000006A8       +2       -4      -10      -16      -22      -28      -34     -104
@@ -10959,7 +10872,8 @@ Release: April 23, 2024
 
 147 / 172
 
- 000008B8    -2386    -2362    -2338    -2346    -2354    -2354    -2354    -2354
+
+ 000008B8    -2386    -2362    -2338    -2346    -2354    -2354    -2354    -2354
  000008C0    -1972    -2006    -2040    -2043    -2046    -2194    -1831    -1835
  000008C8    -2097    -2336    -2576    -2735    -2895    -2564    -2234    -1839
  000008D0    -1445    -1279    -1114     -916     -719     -623     -528     -528
@@ -11036,7 +10950,8 @@ Release: April 23, 2024
 
 148 / 172
 
- 00000AE0      +75      +92     +110      +95      +82     +105     +129     +152
+
+ 00000AE0      +75      +92     +110      +95      +82     +105     +129     +152
  00000AE8     +177     +222     +268     +313     +359     +354     +350     +441
  00000AF0     +533     +472     +411     +414     +674    -1689    -2518    -2339
  00000AF8    -2416    -2401    -2386    -2387    -2388    -2388    -2388    -2388
@@ -11113,7 +11028,8 @@ Release: April 23, 2024
 
 149 / 172
 
- 00000D08    -2120    -2133    -2147    -2160    -2174    -2203    -2233    -2262
+
+ 00000D08    -2120    -2133    -2147    -2160    -2174    -2203    -2233    -2262
  00000D10    -2292    -2280    -2269    -2257    -2246    -2226    -2207    -2283
  00000D18    -2360    -2343    -2327    -2406     +586      -38     +363     +443
  00000D20     +524     +516     +508     +468     +428     +660     +380     +676
@@ -11190,7 +11106,8 @@ Release: April 23, 2024
 
 150 / 172
 
- 00000F30    -2408    -2403    -2398    -2393    -2388    -2399    -2410    -2421
+
+ 00000F30    -2408    -2403    -2398    -2393    -2388    -2399    -2410    -2421
  00000F38    -2432    -2432    -2432    -2432    -2432    -2432    -2432    -2432
  00000F40    -2080    -2108    -2136    -2164    -2192    -2212    -2232    -2252
  00000F48    -2272    -2270    -2268    -2266    -2264    -2262    -2260    -2258
@@ -11265,7 +11182,8 @@ Release: April 23, 2024
 
 151 / 172
 
- 00000130    -1078    -1073    -1069    -1064    -1060    -1059    -1059    -1058
+
+ 00000130    -1078    -1073    -1069    -1064    -1060    -1059    -1059    -1058
  00000138    -1058    -1054    -1050    -1046    -1042    -1042    -1042    -1042
  00000140    -1056    -1042    -1029    -1056    -1083    -1033    -1112    -1095
  00000148    -1078    -1053    -1028    -1052    -1075    -1059    -1044    -1316
@@ -11342,7 +11260,8 @@ Release: April 23, 2024
 
 152 / 172
 
- 00000358     +559     +522     +485     +488     +491     +500     +509     +582
+
+ 00000358     +559     +522     +485     +488     +491     +500     +509     +582
  00000360     +656     +652     +777     -106    -1245    -1094    -1200     -433
  00000368     -307     -321     -335     -301     -268     -677    -1086    -1135
  00000370    -1185    -1170    -1155    -1165    -1174    -1157    -1141    -1348
@@ -11419,7 +11338,8 @@ Release: April 23, 2024
 
 153 / 172
 
- 00000580    -1032    -1040    -1049    -1058    -1067    -1115    -1164    -1117
+
+ 00000580    -1032    -1040    -1049    -1058    -1067    -1115    -1164    -1117
  00000588    -1070    -1345    +1451    +1239    +1027     +879     +732     +520
  00000590     +309     +613     +406     +294     +183     +189     +196     +138
  00000598      +81     +103     +126     +133     +140      +57      -26      +35
@@ -11496,7 +11416,8 @@ Release: April 23, 2024
 
 154 / 172
 
- 000007A8      +27      +14       +1      -12      -25      -58      -91      -92
+
+ 000007A8      +27      +14       +1      -12      -25      -58      -91      -92
  000007B0      -93     -126     -159     -224     -289     -318     -347     -328
  000007B8      -53    -1049    -1021    -1105    -1189    -1189    -1189    -1189
  000007C0    -1017    -1023    -1031    -1038    -1045    -1046    -1048     -825
@@ -11573,7 +11494,8 @@ Release: April 23, 2024
 
 155 / 172
 
- 000009D0     -924     -784     -645     -601     -557     -537     -518     -514
+
+ 000009D0     -924     -784     -645     -601     -557     -537     -518     -514
  000009D8     -510     -538     -567     -251    -1344    -1197    -1179     -776
  000009E0       +9       -3      -15      +12      +40      +17       -6      +18
  000009E8      +43      +62      +81      +68      +55      +68      +81     +118
@@ -11650,7 +11572,8 @@ Release: April 23, 2024
 
 156 / 172
 
- 00000BF8    -1196    -1197    -1199    -1200    -1202    -1202    -1202    -1202
+
+ 00000BF8    -1196    -1197    -1199    -1200    -1202    -1202    -1202    -1202
  00000C00     -992    -1033     -818     -443     -580     -617     -654     -707
  00000C08     -760    -1018    -1021     -943     -866     -908     -951     -961
  00000C10     -972     -950     -928    -1034    -1140    -1186    -1232    -1278
@@ -11727,7 +11650,8 @@ Release: April 23, 2024
 
 157 / 172
 
- 00000E20      +96     +116     +136     +140     +144     +200     +256     +376
+
+ 00000E20      +96     +116     +136     +140     +144     +200     +256     +376
  00000E28     +240     +269     +299     +184     +326     +383      -71     -605
  00000E30    -1396    -1273    -1151    -1172    -1194    -1199    -1205    -1210
  00000E38    -1216    -1216    -1216    -1216    -1216    -1216    -1216    -1216
@@ -11788,7 +11712,7 @@ Release: April 23, 2024
  00000FF0    -1204    -1201    -1199    -1196    -1194    -1199    -1205    -1210
  00000FF8    -1216    -1216    -1216    -1216    -1216    -1216    -1216    -1216
 
-4.2.4.4  Inverse Color Conversion
+##### 4.2.4.4 Inverse Color Conversion
 
 The following is a dump of the decoded 64 x 64 XRGB image obtained by using the Color Conversion
 transform matrix (section 3.1.8.2.5) on the reconstructed Y, Cb, and Cr component data. The Y, Cb,
@@ -11801,7 +11725,8 @@ Remote Desktop Protocol: RemoteFX Codec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7.1 and Microsoft RDP 8.0 and 12.4 fixed-point format for Microsoft RDP 8.1. The 11.5 fixed-point
+
+7.1 and Microsoft RDP 8.0 and 12.4 fixed-point format for Microsoft RDP 8.1. The 11.5 fixed-point
 format is used in this inverse color conversion example and is converted to floating-point
 representation before using the transform matrix given in section 3.1.8.2.5. Alternatively, the
 transform matrix can be appropriately modified to handle fixed-point data.
@@ -11877,7 +11802,8 @@ Release: April 23, 2024
 
 159 / 172
 
- 000001F8 000f89dd 000f88dd 000f88dd 000f86dd 000f85dc 000f85dc 000f85dc 000f85dc
+
+ 000001F8 000f89dd 000f88dd 000f88dd 000f86dd 000f85dc 000f85dc 000f85dc 000f85dc
  00000200 005fc1e7 0057bee8 004fbbe9 004ebae6 004ebae3 0051b6ee 002eaee8 002eade6
  00000208 002fabe5 002face7 002eade9 002eace7 002daae5 0015b2ff 00ec4310 00f15016
  00000210 00f75d1c 00f87123 00f9862a 00f6882d 00f48b31 00f48532 00f47f33 00f78535
@@ -11954,7 +11880,8 @@ Release: April 23, 2024
 
 160 / 172
 
- 00000420 00f8dea0 00fdd899 00b6bdab 00119ff1 001ea4e9 001a9fff 0089d465 00b0e245
+
+ 00000420 00f8dea0 00fdd899 00b6bdab 00119ff1 001ea4e9 001a9fff 0089d465 00b0e245
  00000428 00b0e04e 00acdc4e 00a7d94e 00a1d649 009ad345 0097ce3d 0094c935 008dc534
  00000430 0086c133 007bbc32 006fb731 006db330 006cae2e 007eba3f 0070a531 007bb54f
  00000438 00579a20 005c9f2b 00519425 0080b965 00609a1d 000390e3 00118ef2 001c89f2
@@ -12031,7 +11958,8 @@ Release: April 23, 2024
 
 161 / 172
 
- 00000648 0034c8ff 00df6746 00ff632a 00ff701b 00e18b53 00a4a185 0063c1cd 0026c0ff
+
+ 00000648 0034c8ff 00df6746 00ff632a 00ff701b 00e18b53 00a4a185 0063c1cd 0026c0ff
  00000650 002ab8ff 0025b5f1 0027b7f9 0026b5f6 0023b3f2 0024b5fa 0025b7ff 00189ddf
  00000658 0043bbf4 009edae8 00f9f9dc 00f3fbe6 00ffffea 00fdffe6 00fafce2 00ffffff
  00000660 001ea8ef 001ca8f1 001ba8f2 005bc4f1 00ffffe7 00fbf9e1 00fbfce3 00f8fbe0
@@ -12108,7 +12036,8 @@ Release: April 23, 2024
 
 162 / 172
 
- 00000870 00cbe367 00b9e153 00a6dd4d 0075c57f 0043adb0 00229bf3 000a9cff 000998f6
+
+ 00000870 00cbe367 00b9e153 00a6dd4d 0075c57f 0043adb0 00229bf3 000a9cff 000998f6
  00000878 00109cef 00189aee 00149ded 00159bf0 001599f2 001397f0 001195ee 001195ee
  00000880 005ad1f6 0057cff5 0054cef4 0054cdf6 0053cbf8 004dd3f4 002c9add 00045ec1
  00000888 000572c9 000683d2 000794dc 0008a2e2 0008b1e8 0028bfef 0048cef6 006bd8f8
@@ -12185,7 +12114,8 @@ Release: April 23, 2024
 
 163 / 172
 
- 00000A98 0089e8fd 008ee5fb 0092e2fa 0033bcfc 0032b9f7 0031bafd 0057c5f7 00f4ffde
+
+ 00000A98 0089e8fd 008ee5fb 0092e2fa 0033bcfc 0032b9f7 0031bafd 0057c5f7 00f4ffde
  00000AA0 00fdffe7 00ffffe7 00ffffe7 00ffffe6 00fdfce6 00fdfddd 00fdfdd5 00fdfdcd
  00000AA8 00fefdc5 00fdfaba 00fcf8af 00fef99f 00fffb8e 00fafe77 00f4fb7d 00f9f8d2
  00000AB0 00fdffee 00fefedf 00fffcd0 00fefacd 00fdf9ca 00a6d3ce 000399eb 001ea1ec
@@ -12262,7 +12192,8 @@ Release: April 23, 2024
 
 164 / 172
 
- 00000CC0 0058cff2 0059ddfd 0055d5f9 005ddeff 004dcef3 004dcbf3 004cc8f3 0056d2fc
+
+ 00000CC0 0058cff2 0059ddfd 0055d5f9 005ddeff 004dcef3 004dcbf3 004cc8f3 0056d2fc
  00000CC8 0059d3fd 0050cefb 0047cafa 0048c9f9 0049c7f9 0051cbf6 0045c9f9 004bc8fd
  00000CD0 003fc5f9 0041c4fa 0043c2fb 003bbdf3 003ac0f4 003ec7fc 003ac6fc 0025a1e3
  00000CD8 001f8dd9 0037b9f7 0026bbfa 002abbf4 00ced857 00f9fa5b 00d9db49 00edec58
@@ -12339,7 +12270,8 @@ Release: April 23, 2024
 
 165 / 172
 
- 00000EE8 0074c7e4 0080c9dd 0019adfb 001cacf9 001fabf8 001fa9f9 001ea7fb 001ca7f9
+
+ 00000EE8 0074c7e4 0080c9dd 0019adfb 001cacf9 001fabf8 001fa9f9 001ea7fb 001ca7f9
  00000EF0 001aa7f6 001aa5f8 001aa4fb 001aa3fa 001aa2f8 0019a1f8 0018a0f8 0017a0f8
  00000EF8 00169ff8 00159ef7 00149df7 00139cf6 00129bf6 00119bf5 00119af5 00119af5
  00000F00 0055d0f9 0053d0fa 0051d0fa 004fcffa 004dcffa 004bcefa 0049cdf9 0046ccf9
@@ -12375,7 +12307,7 @@ Release: April 23, 2024
  00000FF0 001ca5f8 001ca4f8 001ba3f9 001ba3f9 001ba2f9 0019a1f9 0018a0f8 0017a0f8
  00000FF8 00169ff8 00159ef7 00149df7 00139cf6 00129bf5 00129bf5 00129bf5 00129bf5
 
-4.2.4.5  Decoded Image
+##### 4.2.4.5 Decoded Image
 
 The following is the decoded image that is represented by the XRGB data given in section 4.2.4.4.
 
@@ -12386,7 +12318,8 @@ Release: April 23, 2024
 
 166 / 172
 
-<!-- Extracted images from page 167 -->
+
+<!-- Extracted images from page 167 -->
 ![Extracted image 1 from page 167]([MS-RDPRFX].images/page167-img01.png)
 <!-- /Extracted images from page 167 -->
 
@@ -12399,13 +12332,14 @@ Release: April 23, 2024
 
 167 / 172
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -12416,7 +12350,8 @@ Release: April 23, 2024
 
 168 / 172
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12483,7 +12418,8 @@ Release: April 23, 2024
 
 169 / 172
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12527,7 +12463,8 @@ Release: April 23, 2024
 
 170 / 172
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 29
@@ -12660,7 +12597,8 @@ TS_RFX_SRVR_CAPS_CONTAINER packet 16
 
 171 / 172
 
-TS_RFX_SYNC packet 20
+
+TS_RFX_SYNC packet 20
 TS_RFX_TILE packet 26
 TS_RFX_TILESET packet 24
 

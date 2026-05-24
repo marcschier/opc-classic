@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -136,175 +137,76 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 HTTP Headers](#222-http-headers)
+      - [2.2.2.1 Content-Type](#2221-content-type)
+      - [2.2.2.2 Cache-Control](#2222-cache-control)
+    - [2.2.3 URI Parameters](#223-uri-parameters)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Data Structures](#229-data-structures)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 GetPackage Details](#31-getpackage-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Publishing Action](#3151-publishing-action)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 SetReport Details](#32-setreport-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Set Report Action](#3251-set-report-action)
+        - [3.2.5.1.1 POST](#32511-post)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 GetPackage Sequence](#41-getpackage-sequence)
+  - [4.2 SetReport Sequence](#42-setreport-sequence)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+  - [6.1 GetPackage Schema](#61-getpackage-schema)
+  - [6.2 SetReport Schema](#62-setreport-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Common Data Types .......................................................................................... 8
-Namespaces ................................................................................................ 8
-HTTP Headers .............................................................................................. 8
-Content-Type ......................................................................................... 8
-Cache-Control ........................................................................................ 8
-URI Parameters ............................................................................................ 9
-Complex Types ............................................................................................. 9
-Simple Types ............................................................................................... 9
-Attributes .................................................................................................... 9
-Groups ........................................................................................................ 9
-Attribute Groups ........................................................................................... 9
-Data Structures ............................................................................................ 9
-
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 10
-GetPackage Details........................................................................................... 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Publishing Action................................................................................... 11
-GET ............................................................................................... 11
-Request Body ............................................................................ 11
-Response Body .......................................................................... 11
-Processing Details ...................................................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-SetReport Details ............................................................................................. 13
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Set Report Action .................................................................................. 14
-POST ............................................................................................. 14
-Request Body ............................................................................ 14
-Response Body .......................................................................... 17
-Processing Details ...................................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1.1
-
-3.2.5.1
-
-3.2
-
-[MS-VAPR] - v20240423
-Virtual Application Publishing and Reporting (App-V) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 26
-
-4  Protocol Examples ................................................................................................. 18
-GetPackage Sequence ...................................................................................... 18
-SetReport Sequence ......................................................................................... 18
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Full XML Schema ................................................................................ 21
-GetPackage Schema ......................................................................................... 21
-SetReport Schema ........................................................................................... 22
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 23
-
-8  Change Tracking .................................................................................................... 24
-
-9  Index ..................................................................................................................... 25
-
-[MS-VAPR] - v20240423
-Virtual Application Publishing and Reporting (App-V) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Virtual Application Publishing and Reporting Protocol enables a protocol client to discover virtual
 application packages available to a user or machine. It also allows the protocol client to collect and
@@ -314,7 +216,7 @@ protocol server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -377,7 +279,8 @@ Virtual Application Publishing and Reporting (App-V) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SMB share: A share that is accessed via the SMB access protocols.
+
+SMB share: A share that is accessed via the SMB access protocols.
 
 Transmission Control Protocol (TCP): A protocol used with the Internet Protocol (IP) to send
 data in the form of message units between computers over the Internet. TCP handles keeping
@@ -391,14 +294,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -415,7 +318,7 @@ assist you in finding the relevant information.
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [AppVCGOptPkg] Microsoft Corporation, "How to Use Optional Packages in Connection Groups",
 https://learn.microsoft.com/en-us/microsoft-desktop-optimization-pack/appv-v5/how-to-use-optional-
@@ -428,7 +331,7 @@ us/microsoft-desktop-optimization-pack/appv-v5/managing-connection-groups
 https://learn.microsoft.com/en-us/microsoft-desktop-optimization-pack/appv-v5/about-app-v-50-
 dynamic-configuration
 
-1.3  Overview
+### 1.3 Overview
 
 The Virtual Application Publishing and Reporting Protocol is used to identify the virtual applications
 that a user is entitled to so that these applications can be downloaded and installed on the user's
@@ -441,34 +344,35 @@ Release: April 23, 2024
 
 6 / 26
 
-information across multiple users can be aggregated to infer broad virtual application usage patterns
+
+information across multiple users can be aggregated to infer broad virtual application usage patterns
 across an organization.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on HTTP as specified in [RFC2616]. HTTP version 1.1 is used with this protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol does not provide a mechanism for a client to discover the Uniform Resource Identifier
 (URI) of the server. Thus, it is a prerequisite that the client obtain the publishing URI and the
 reporting URI before this protocol can be used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Virtual Application Publishing and Reporting Protocol is capable of identifying virtual applications
 published to a user and the machine. It is also capable of transferring virtual application usage reports
 to a server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -479,9 +383,10 @@ Release: April 23, 2024
 
 7 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Virtual Application Publishing and Reporting Protocol uses HTTP 1.1 , as specified in [RFC2616],
 as the transport layer.
@@ -491,13 +396,13 @@ A Transmission Control Protocol (TCP) port has not been reserved for this protoc
 The protocol uses the access authentication functionality of the HTTP layer as specified in [RFC2616]
 section 11.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 No namespaces are used in this protocol.
 
-2.2.2  HTTP Headers
+#### 2.2.2 HTTP Headers
 
 The Virtual Application Publishing and Reporting Protocol uses existing headers as specified in
 [RFC2616].
@@ -515,7 +420,7 @@ Content-Type
 
 Cache-Control
 
-2.2.2.1  Content-Type
+##### 2.2.2.1 Content-Type
 
 Description
 
@@ -530,7 +435,7 @@ The syntax of the Content-Type header is defined as follows.
 
  Content-Type  = "Content-Type: " "text/xml" CRLF
 
-2.2.2.2  Cache-Control
+##### 2.2.2.2 Cache-Control
 
 The Cache-Control header is defined only for use in a response message sent to a client in response to
 a GET request and its behavior is specified in [RFC2616]. The protocol server MUST set the value of
@@ -543,7 +448,8 @@ Release: April 23, 2024
 
 8 / 26
 
-2.2.3  URI Parameters
+
+#### 2.2.3 URI Parameters
 
 The following table summarizes the set of common URI parameters defined by this specification for
 the GetPackage request.
@@ -587,27 +493,27 @@ OSVersionValueMinor = %x00-FFFFFFFF
 
 OSBitness = "x86" / "x64"
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 None.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 None.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 None.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 None.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 None.
 
-2.2.9  Data Structures
+#### 2.2.9 Data Structures
 
 None.
 
@@ -618,30 +524,31 @@ Release: April 23, 2024
 
 9 / 26
 
-3  Protocol Details
 
-3.1  GetPackage Details
+## 3 Protocol Details
+
+### 3.1 GetPackage Details
 
 The purpose of the GetPackages request is for the protocol client to get the list of packages from the
 server. The GetPackages request maps to an HTTP GET request in which the query string parameters
 passed to the protocol server specify the protocol client's version and the version of the operating
 system on which the protocol client is running.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.2  Timers
-
-None.
-
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The protocol server MUST parse the ClientVersion query string parameters into a DWORD64 as
 described in [MS-DTYP] section 2.2.12 . It must do so by converting each dot-separated part into a
@@ -682,7 +589,8 @@ Release: April 23, 2024
 
 10 / 26
 
-Status code  Reason phrase  Description
+
+Status code  Reason phrase  Description
 
 200
 
@@ -690,20 +598,20 @@ OK
 
 Returned when the request is completed.
 
-3.1.5.1  Publishing Action
+##### 3.1.5.1 Publishing Action
 
 The resource identifier is configured on the protocol client in an implementation-specific manner.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 The URL specified by the protocol client in the HTTP request line of the GET request identifies a virtual
 application publishing server endpoint that returns the list of virtual applications to the protocol client.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 None.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The response body is an XML document that lists the virtual applications for the client along with the
 locations of the virtual applications. The XML response has the following schema.
@@ -755,7 +663,8 @@ Release: April 23, 2024
 
 11 / 26
 
-           <xs:complexType>
+
+           <xs:complexType>
              <xs:sequence>
                <xs:element name="Group">
                  <xs:complexType>
@@ -823,7 +732,8 @@ Release: April 23, 2024
 
 12 / 26
 
-Package.UserConfiguration.Path: A Server-relative URL to the dynamic user configuration file
+
+Package.UserConfiguration.Path: A Server-relative URL to the dynamic user configuration file
 described in [AppVDCF]. The protocol client issues an HTTP GET request to this URL (after appending
 this value to the base server URL) to retrieve the user configuration file.
 
@@ -871,14 +781,14 @@ optional package (as described in [AppVCGOptPkg])
 Publishing.Groups.Group.Package.VersionOptional: Specifies whether the connection group
 (described in [AppVCG]) requires a specific version of the package or any version.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 Virtual Application Publishing and Reporting Servers are expected to use the ClientVersion and
 ClientOS query string parameters along with the user information obtained from the HTTP
 authentication functionality to identify virtual applications for that user and the user's operating
 system and return that information to the protocol client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -889,11 +799,12 @@ Release: April 23, 2024
 
 13 / 26
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  SetReport Details
+### 3.2 SetReport Details
 
 The SetReport request enables the protocol client to send a report of the virtual application usage to
 the protocol server. The SetReport request maps to an HTTP POST request in which the body of the
@@ -901,23 +812,23 @@ POST request is an XML payload that describes virtual application usage since th
 SetReport request. The XML payload is UTF-16 encoded and does not contain any processing
 instruction.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
  The protocol client submits virtual application usage information to the server for recording and
 reporting. If the server successfully accepts and records this information, it SHOULD return an HTTP
@@ -939,11 +850,11 @@ OK
 
 Returned when the XML reporting payload is successfully recorded.
 
-3.2.5.1  Set Report Action
+##### 3.2.5.1 Set Report Action
 
 The resource identifier is configured on the protocol client separately.
 
-3.2.5.1.1 POST
+###### 3.2.5.1.1 POST
 
 [MS-VAPR] - v20240423
 Virtual Application Publishing and Reporting (App-V) Protocol
@@ -952,11 +863,12 @@ Release: April 23, 2024
 
 14 / 26
 
-The URL specified by the protocol client in the HTTP request line of the POST request identifies a
+
+The URL specified by the protocol client in the HTTP request line of the POST request identifies a
 virtual application reporting server endpoint that accepts the virtual application usage information
 being submitted.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 The request body has an XML document that describes the virtual applications installed in the protocol
 client and the usage statistics for each of the applications. The XML schema of the document is as
@@ -1025,7 +937,8 @@ Virtual Application Publishing and Reporting (App-V) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CLIENT_DATA.Host: The FQDN of the protocol client.
+
+CLIENT_DATA.Host: The FQDN of the protocol client.
 
 CLIENT_DATA.Ver: The version number of the virtual application software running on the protocol
 client. This MUST be four numbers separated by dots where each of the numbers is a value between 0
@@ -1091,7 +1004,8 @@ Virtual Application Publishing and Reporting (App-V) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CLIENT_DATA.APP_RECORDS.APP_RECORD.Ver: The optional user-friendly version of the
+
+CLIENT_DATA.APP_RECORDS.APP_RECORD.Ver: The optional user-friendly version of the
 package. The Augmented Backus-Naur Form (ABNF) syntax as specified in [RFC4234] for this value is
 as follows.
 
@@ -1130,21 +1044,21 @@ CLIENT_DATA.APP_RECORDS.APP_RECORD.Shutdown: The UTC time when the virtual
 application was shut down.<5> This attribute need not be included when not reporting a process
 shutdown.
 
-3.2.5.1.1.2  Response Body
+###### 3.2.5.1.1.2 Response Body
 
 None
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 Virtual Application Reporting and Publishing servers are expected to accept the virtual application
 usage information from the client and store it in a form that can be accessed later to understand
 virtual application usage patterns.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1155,13 +1069,14 @@ Release: April 23, 2024
 
 17 / 26
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-VAPR].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  GetPackage Sequence
+### 4.1 GetPackage Sequence
 
 The following sequence occurs between a client and a server during a GetPackage request.
 
@@ -1179,7 +1094,7 @@ HTTP headers as specified in [RFC2616] section 11.
 
 Figure 1: GetPackage message sequence
 
-4.2  SetReport Sequence
+### 4.2 SetReport Sequence
 
 The following sequence occurs between a client and a server during a SetReport request.
 
@@ -1202,7 +1117,8 @@ Release: April 23, 2024
 
 18 / 26
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-VAPR].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1215,16 +1131,17 @@ Release: April 23, 2024
 
 19 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The protocol is vulnerable to information disclosure if an unauthorized client queries for packages
 available to a user. An unauthorized client can also upload incorrect usage statistics to the SetReport
 protocol server. To eliminate this attack, the protocol uses the access authentication functionality of
 the HTTP layer as specified in [RFC2616] section 11.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 [MS-VAPR] - v20240423
 Virtual Application Publishing and Reporting (App-V) Protocol
@@ -1233,9 +1150,10 @@ Release: April 23, 2024
 
 20 / 26
 
-6  Appendix A: Full XML Schema
 
-6.1  GetPackage Schema
+## 6 Appendix A: Full XML Schema
+
+### 6.1 GetPackage Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -1308,14 +1226,15 @@ Virtual Application Publishing and Reporting (App-V) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         </xs:element>
+
+         </xs:element>
        </xs:sequence>
        <xs:attribute name="Protocol" type="xs:decimal" use="required" />
      </xs:complexType>
    </xs:element>
  </xs:schema>
 
-6.2  SetReport Schema
+### 6.2 SetReport Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -1377,7 +1296,8 @@ Release: April 23, 2024
 
 22 / 26
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1426,7 +1346,8 @@ Release: April 23, 2024
 
 23 / 26
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1470,7 +1391,8 @@ Release: April 23, 2024
 
 24 / 26
 
-9  Index
+
+## 9 Index
 A
 
 Applicability 7
@@ -1606,7 +1528,8 @@ Timer events
 
 25 / 26
 
-   GetPackage 13
+
+   GetPackage 13
    SetReport 17
 Tracking changes 24
 Transport 8

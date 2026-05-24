@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 49
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -189,279 +190,120 @@ Release: June 1, 2017
 
 2 / 49
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Request Messages](#222-request-messages)
+      - [2.2.2.1 Request Message Header](#2221-request-message-header)
+      - [2.2.2.2 req Element](#2222-req-element)
+      - [2.2.2.3 tlm Element](#2223-tlm-element)
+      - [2.2.2.4 src Element](#2224-src-element)
+      - [2.2.2.5 desc Element](#2225-desc-element)
+      - [2.2.2.6 mach Element](#2226-mach-element)
+      - [2.2.2.7 os Element](#2227-os-element)
+      - [2.2.2.8 hw Element](#2228-hw-element)
+      - [2.2.2.9 ctrl Element](#2229-ctrl-element)
+      - [2.2.2.10 reqs Element](#22210-reqs-element)
+      - [2.2.2.11 payload Element](#22211-payload-element)
+      - [2.2.2.12 req inner Element](#22212-req-inner-element)
+      - [2.2.2.13 namespace Element](#22213-namespace-element)
+        - [2.2.2.13.1 svc Attribute](#222131-svc-attribute)
+        - [2.2.2.13.2 ptr Attribute](#222132-ptr-attribute)
+        - [2.2.2.13.3 gp Attribute](#222133-gp-attribute)
+        - [2.2.2.13.4 app Attribute](#222134-app-attribute)
+      - [2.2.2.14 ctrl inner Element](#22214-ctrl-inner-element)
+      - [2.2.2.15 contents Element](#22215-contents-element)
+      - [2.2.2.16 cmd Element](#22216-cmd-element)
+        - [2.2.2.16.1 requpload Command](#222161-requpload-command)
+        - [2.2.2.16.2 dataupload Command](#222162-dataupload-command)
+        - [2.2.2.16.3 qryrsrc Command](#222163-qryrsrc-command)
+    - [2.2.3 Response Messages](#223-response-messages)
+      - [2.2.3.1 resp Element](#2231-resp-element)
+      - [2.2.3.2 tlm Element](#2232-tlm-element)
+      - [2.2.3.3 resps Element](#2233-resps-element)
+      - [2.2.3.4 resp inner Element](#2234-resp-inner-element)
+      - [2.2.3.5 namespace Element](#2235-namespace-element)
+      - [2.2.3.6 cmd Element](#2236-cmd-element)
+        - [2.2.3.6.1 receipt Command](#22361-receipt-command)
+        - [2.2.3.6.2 approved Command](#22362-approved-command)
+        - [2.2.3.6.3 rsrc Command](#22363-rsrc-command)
+        - [2.2.3.6.4 error Command](#22364-error-command)
+        - [2.2.3.6.5 throttle Command](#22365-throttle-command)
+        - [2.2.3.6.6 none Command](#22366-none-command)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Message Construction](#3151-message-construction)
+      - [3.1.5.2 Request to Upload Data Message](#3152-request-to-upload-data-message)
+        - [3.1.5.2.1 Approved Response Command](#31521-approved-response-command)
+        - [3.1.5.2.2 Throttle Response Command](#31522-throttle-response-command)
+        - [3.1.5.2.3 Error Response Command](#31523-error-response-command)
+      - [3.1.5.3 Data Upload Message](#3153-data-upload-message)
+        - [3.1.5.3.1 Data Upload – SQM Session Data Construction](#31531-data-upload-sqm-session-data-construction)
+        - [3.1.5.3.2 Data Upload – XML Message Construction](#31532-data-upload-xml-message-construction)
+        - [3.1.5.3.3 Data Upload – Send](#31533-data-upload-send)
+        - [3.1.5.3.4 Data Upload – Receipt Response](#31534-data-upload-receipt-response)
+        - [3.1.5.3.5 Data Upload – Error Response](#31535-data-upload-error-response)
+      - [3.1.5.4 Query Resource Message](#3154-query-resource-message)
+        - [3.1.5.4.1 Resource Response Command](#31541-resource-response-command)
+        - [3.1.5.4.2 None Response Command](#31542-none-response-command)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing Client Request Upload Request](#3251-processing-client-request-upload-request)
+      - [3.2.5.2 Processing Client Data Upload Request](#3252-processing-client-data-upload-request)
+      - [3.2.5.3 Processing Client Query Resource Request](#3253-processing-client-query-resource-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Proxy Details](#33-proxy-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of a qryrsrc Request and rsrc Response](#41-example-of-a-qryrsrc-request-and-rsrc-response)
+  - [4.2 Example of a requpload Message and Approved Message Response](#42-example-of-a-requpload-message-and-approved-message-response)
+  - [4.3 Example of an Upload Message and a Receipt Response](#43-example-of-an-upload-message-and-a-receipt-response)
+    - [4.3.1 Example of an Error Response Message](#431-example-of-an-error-response-message)
+    - [4.3.2 Example of a Throttle Response Message](#432-example-of-a-throttle-response-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.13.1
-2.2.2.13.2
-2.2.2.13.3
-2.2.2.13.4
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Namespaces .............................................................................................. 11
-Request Messages ...................................................................................... 11
-Request Message Header ....................................................................... 11
-req Element ......................................................................................... 12
-tlm Element ......................................................................................... 12
-src Element .......................................................................................... 12
-desc Element ........................................................................................ 12
-mach Element ...................................................................................... 12
-os Element ........................................................................................... 12
-hw Element .......................................................................................... 14
-ctrl Element ......................................................................................... 16
-reqs Element ........................................................................................ 17
-payload Element ................................................................................... 17
-req inner Element ................................................................................. 18
-namespace Element .............................................................................. 18
-svc Attribute ................................................................................... 18
-ptr Attribute ................................................................................... 18
-gp Attribute .................................................................................... 18
-app Attribute .................................................................................. 18
-ctrl inner Element ................................................................................. 18
-contents Element .................................................................................. 19
-cmd Element ........................................................................................ 19
-requpload Command ........................................................................ 19
-dataupload Command ...................................................................... 19
-qryrsrc Command ............................................................................ 20
-Response Messages .................................................................................... 20
-resp Element ........................................................................................ 21
-tlm Element ......................................................................................... 21
-resps Element ...................................................................................... 21
-resp inner Element ................................................................................ 21
-namespace Element .............................................................................. 21
-cmd Element ........................................................................................ 21
-receipt Command ............................................................................ 21
-approved Command ......................................................................... 22
-rsrc Command ................................................................................ 22
-error Command ............................................................................... 22
-throttle Command ........................................................................... 23
-none Command ............................................................................... 23
-Directory Service Schema Elements ................................................................... 23
-
-2.2.3.6.1
-2.2.3.6.2
-2.2.3.6.3
-2.2.3.6.4
-2.2.3.6.5
-2.2.3.6.6
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2.2.2.16.1
-2.2.2.16.2
-2.2.2.16.3
-
-2.2.2.14
-2.2.2.15
-2.2.2.16
-
-2.2.3
-
-2.3
-
-[MS-SQMCS2] - v20170601
-Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-3 / 49
-
-3.1
-
-3.1.5.4
-
-3.1.5.3
-
-3.1.5.1
-3.1.5.2
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.3.1
-3.1.5.3.2
-3.1.5.3.3
-3.1.5.3.4
-3.1.5.3.5
-
-3  Protocol Details ..................................................................................................... 24
-Client Details ................................................................................................... 24
-Abstract Data Model .................................................................................... 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Message Construction ............................................................................ 24
-Request to Upload Data Message ............................................................ 24
-Approved Response Command .......................................................... 25
-Throttle Response Command ............................................................ 25
-Error Response Command ................................................................ 26
-Data Upload Message ............................................................................ 26
-Data Upload – SQM Session Data Construction .................................... 27
-Data Upload – XML Message Construction ........................................... 28
-Data Upload – Send ......................................................................... 30
-Data Upload – Receipt Response ....................................................... 30
-Data Upload – Error Response ........................................................... 30
-Query Resource Message ....................................................................... 30
-Resource Response Command........................................................... 31
-None Response Command ................................................................ 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Server Details .................................................................................................. 31
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Processing Client Request Upload Request ............................................... 33
-Processing Client Data Upload Request .................................................... 33
-Processing Client Query Resource Request ............................................... 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-Proxy Details ................................................................................................... 33
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2
-
-3.3
-
-4.1
-4.2
-4.3
-
-4  Protocol Examples ................................................................................................. 36
-Example of a qryrsrc Request and rsrc Response ................................................. 36
-Example of a requpload Message and Approved Message Response ........................ 37
-Example of an Upload Message and a Receipt Response ........................................ 38
-Example of an Error Response Message ......................................................... 40
-Example of a Throttle Response Message ....................................................... 40
-
-4.3.1
-4.3.2
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Index of Security Parameters ............................................................................ 42
-
-5.1
-5.2
-
-6  Appendix A: Full XML Schema ................................................................................ 43
-
-7  Appendix B: Product Behavior ............................................................................... 44
-
-8  Change Tracking .................................................................................................... 47
-
-[MS-SQMCS2] - v20170601
-Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 49
-
-9  Index ..................................................................................................................... 48
-
-[MS-SQMCS2] - v20170601
-Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 49
-
-1  Introduction
+## 1 Introduction
 
 This specification describes the Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol,
 which is used to send software instrumentation metrics to the SQM service and for the client to
@@ -473,7 +315,7 @@ used by the protocol as specified in [MS-TPXS].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -513,7 +355,7 @@ is superseded by Transport Layer Security (TLS). TLS version 1.0 is based on SSL
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -527,7 +369,8 @@ Release: June 1, 2017
 
 6 / 49
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -546,7 +389,7 @@ Protocol".
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CAB] Microsoft Corporation, "Microsoft Cabinet Format", March 1997,
 http://msdn.microsoft.com/en-us/library/bb417343.aspx
@@ -594,10 +437,11 @@ Release: June 1, 2017
 
 7 / 49
 
-[MSFT-DWFF] Microsoft Corporation, "Deploy Windows Feedback Forwarder",
+
+[MSFT-DWFF] Microsoft Corporation, "Deploy Windows Feedback Forwarder",
 http://technet.microsoft.com/en-us/library/jj129704.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol defines how a SQM-enabled
 client sends instrumentation data to the SQM service. The protocol specifies the data transfer method,
@@ -627,24 +471,24 @@ The SQM Client-to-Service Version 2 Protocol provides the following communicatio
 
   Downloading A-SQM data created at the SQM service.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Hypertext Transfer Protocol (HTTP) and Hypertext Transfer
 Protocol over Secure Sockets Layer (HTTPS) for transport, as specified in [RFC2616]. It extends
 Version 1 of the SQM Client-to-Service Protocol, as specified in [MS-SQMCS] and uses the schema
 defined in the Telemetry Protocol XML Schema as specified in [MS-TPXS].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 To use the SQM service, a client is required be SQM-enabled and registered as an SQM partner with
 the SQM service.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to SQM-enabled clients that are required to collect telemetry data by using
 the SQM service.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The SQM Client-to-Service Version 2 Protocol does not perform version or capability negotiation. The
 protocol uses HTTP/HTTPS as the transport. The client communicates with a SQM service that
@@ -657,13 +501,14 @@ Release: June 1, 2017
 
 8 / 49
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None. Any vendor extensions (such as adding a key value argument to arg elements) are not
 interpreted unless they are used by the vendor or identified by specific contract between the client
 and the service. See [MS-TPXS] section 1.7.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -674,19 +519,20 @@ Release: June 1, 2017
 
 9 / 49
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-SQMCS2].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol is implemented on top of HTTP/HTTPS<1>. The proxy MAY impose additional
 requirements as part of the transfer. There is no authentication between the SQM client and SQM
 service, or between the SQM proxy and the SQM service.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This protocol is an extension of the Software Quality Metrics Client-to-Service Protocol as specified in
 [MS-SQMCS]. The Software Quality Metrics Client-to-Service Version 2 Protocol adds a set of client-to-
@@ -708,21 +554,22 @@ Release: June 1, 2017
 
 10 / 49
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-SQMCS2].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 2: SQM request upload data message with SQM session data payload in the HTTP
 POST body
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
-2.2.2  Request Messages
+#### 2.2.2 Request Messages
 
 A request message is an XML document as specified in [MS-TPXS] section 2.1. The variable elements
 and attributes are specified in the following sections.
 
-2.2.2.1  Request Message Header
+##### 2.2.2.1 Request Message Header
 
 Every SQM request message MUST begin with a 4-byte message header.
 
@@ -752,29 +599,30 @@ Release: June 1, 2017
 
 11 / 49
 
-2.2.2.2  req Element
+
+##### 2.2.2.2 req Element
 
 The Telemetry request (req) element is required. The schema is specified in [MS-TPXS] section 2.1.1.
 
-2.2.2.3  tlm Element
+##### 2.2.2.3 tlm Element
 
 The telemetry (tlm) element is required. The schema is specified in [MS-TPXS] section 2.1.1.1.
 
-2.2.2.4  src Element
+##### 2.2.2.4 src Element
 
 The client source (src) element is required. The schema is specified in [MS-TPXS] section 2.1.1.1.1.
 
-2.2.2.5  desc Element
+##### 2.2.2.5 desc Element
 
 The client description (desc) element is required. It is a child of the src element specified in [MS-
 TPXS] section 2.1.1.1.1.
 
-2.2.2.6  mach Element
+##### 2.2.2.6 mach Element
 
 The client machine (mach) element is required. It is a child of the src element specified in [MS-TPXS]
 section 2.1.1.1.1.
 
-2.2.2.7  os Element
+##### 2.2.2.7 os Element
 
 The operating system (os) element schema is specified in [MS-TPXS] section 2.1.1.1.1.1. The os
 element is the parent element of a set of child arg elements describing the operating system. The os
@@ -819,7 +667,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  nm attribute: sku<4>
+
+  nm attribute: sku<4>
 
   val attribute: A 32-bit decimal number specifying the operating system stock keeping unit (SKU)
 
@@ -892,7 +741,8 @@ Release: June 1, 2017
 
 13 / 49
 
-The following os arg name-value pairs are optional.
+
+The following os arg name-value pairs are optional.
 
 os arg element:
 
@@ -917,7 +767,7 @@ portable.
 Additional arg elements MAY be specified and are dependent upon the client and server
 implementation. Unrecognized arg key-value pairs are ignored by the server.
 
-2.2.2.8  hw Element
+##### 2.2.2.8 hw Element
 
 The hardware (hw) element schema is specified in [MS-TPXS] section 2.1.1.1.1.2. The hw element is
 the parent element of a set of child arg elements that describe the hardware platform. The hw
@@ -962,7 +812,8 @@ Release: June 1, 2017
 
 14 / 49
 
-  nm attribute: proccnt<18>
+
+  nm attribute: proccnt<18>
 
   val attribute: The number of processors in a processor group or in the system.
 
@@ -1033,14 +884,15 @@ Release: June 1, 2017
 
 15 / 49
 
-  nm attribute: wsdsksc
+
+  nm attribute: wsdsksc
 
   val attribute: Windows System Assessment Tool (WinSAT) Disk Score.
 
 Additional arg elements MAY be specified and are dependent upon the client and server
 implementation. Unrecognized arg key-value pairs are ignored by the server.
 
-2.2.2.9  ctrl Element
+##### 2.2.2.9 ctrl Element
 
 The control (ctrl) element schema is specified in [MS-TPXS] section 2.1.1.1.1.3. The ctrl element is
 the parent element of a set of child arg elements describing a set of client control values. The ctrl
@@ -1107,7 +959,8 @@ Release: June 1, 2017
 
 16 / 49
 
-ctrl arg element:
+
+ctrl arg element:
 
   nm attribute: oemgeoman
 
@@ -1134,16 +987,16 @@ ctrl arg element:
 Additional arg elements MAY be specified and are dependent upon the client and server
 implementation. Unrecognized arg key-value pairs are ignored by the server.
 
-2.2.2.10
+##### 2.2.2.10 reqs Element
 
-reqs Element
+
 
 The requests (reqs) element schema is specified in [MS-TPXS] section 2.1.1.1.2. The reqs element is
 the parent element to the specific SQM client-to-server requests. The reqs element is required.
 
-2.2.2.11
+##### 2.2.2.11 payload Element
 
-payload Element
+
 
 The payload element specifies any SQM session data payload in the POST body following the XML
 message (see Figure 2). A payload element without child arg elements MAY be included when there is
@@ -1179,7 +1032,8 @@ Release: June 1, 2017
 
 17 / 49
 
-  nm attribute: precompsize
+
+  nm attribute: precompsize
 
   val attribute: A 64-bit decimal number specifying the length of the binary data before
 
@@ -1188,18 +1042,18 @@ compression.
 Additional arg elements MAY be specified and are dependent upon the client and server
 implementation. Unrecognized arg key-value pairs are ignored by the server.
 
-2.2.2.12
+##### 2.2.2.12 req inner Element
 
-req inner Element
+
 
 The request (req) element specifies the request from the client to the server. The req element
 schema is specified in [MS-TPXS] section 2.1.1.1.2.2. The req element is required and MUST specify
 an attribute name-value pair. The attribute name MUST be specified as key with a messagewide
 unique value.
 
-2.2.2.13
+##### 2.2.2.13 namespace Element
 
-namespace Element
+
 
 The namespace element specifies the request namespace from the client to the server. The
 namespace element schema is specified in [MS-TPXS] section 2.2.1.1.1.1.1. The namespace
@@ -1214,39 +1068,39 @@ The following ctrl arg name-value pair is optional.
 
   val attribute: The lower 128 bits of a 256-bit SHA-2 hash of the user's Microsoft account.
 
-2.2.2.13.1
+###### 2.2.2.13.1 svc Attribute
 
-svc Attribute
+
 
 Service (svc) is a required attribute of the namespace element as specified in [MS-TPXS] section
 2.1.1.1.2.2.1. The svc attribute MUST specify the string value sqm.
 
-2.2.2.13.2
+###### 2.2.2.13.2 ptr Attribute
 
-ptr Attribute
+
 
 Partner (ptr) is a required attribute of the namespace element as specified in [MS-TPXS] section
 2.1.1.1.2.2.1. The ptr attribute MUST specify a predefined SQM partner name. The SQM partner name
 MUST be defined at the SQM server service. The SQM partner name is an abstract entity within the
 SQM service that logically groups instrumentation information.
 
-2.2.2.13.3
+###### 2.2.2.13.3 gp Attribute
 
-gp Attribute
+
 
 Group (gp) is a required attribute of the namespace element as specified in [MS-TPXS] section
 2.1.1.1.2.2.1. The gp attribute is SQM client-defined.
 
-2.2.2.13.4
+###### 2.2.2.13.4 app Attribute
 
-app Attribute
+
 
 Application (app) is a required attribute of the namespace element as specified in [MS-TPXS] section
 2.1.1.1.2.2.1. The app attribute is SQM client-defined.
 
-2.2.2.14
+##### 2.2.2.14 ctrl inner Element
 
-ctrl inner Element
+
 
 The control (ctrl) element schema is specified in [MS-TPXS] section 2.1.1.1.2.2.2. The ctrl element is
 the parent element of a set of child arg elements describing a set of client request control values. The
@@ -1259,7 +1113,8 @@ Release: June 1, 2017
 
 18 / 49
 
-ctrl arg element: This argument is optional for requpload and dataupload requests.
+
+ctrl arg element: This argument is optional for requpload and dataupload requests.
 
   nm attribute: sid
 
@@ -1286,9 +1141,9 @@ ctrl arg element: This argument is required for a dataupload request.
 
   val attribute: The SQM session end time in 64-bit decimal FILETIME format.
 
-2.2.2.15
+##### 2.2.2.15 contents Element
 
-contents Element
+
 
 The contents element schema is specified in [MS-TPXS] section 2.1.1.1.2.2.3. The contents element
 is the parent element of a set of child arg elements describing the SQM session data. The contents
@@ -1303,9 +1158,9 @@ contents arg element:
 
 Unrecognized arg name-value pairs are ignored by the server.
 
-2.2.2.16
+##### 2.2.2.16 cmd Element
 
-cmd Element
+
 
 The command (cmd) element schema is specified in [MS-TPXS] section 2.1.1.1.2.2.4. The cmd
 element is the parent of a set of child arg elements with key-value attribute pairs specifying the
@@ -1315,18 +1170,18 @@ value. The command verb specifies the action the SQM client is requesting from t
 There are three defined commands: request to upload SQM session data (requpload), SQM session
 data upload (dataupload), and query A-SQM resource (qryrsrc).
 
-2.2.2.16.1
+###### 2.2.2.16.1 requpload Command
 
-requpload Command
+
 
 The request to upload data (requpload) command specifies that the client is requesting permission to
 upload SQM session data as described in the req element section 2.2.2.12, section 2.2.2.13, and
 section 2.2.2.14. The SQM server is required to approve or deny the request. There are no child arg
 elements.
 
-2.2.2.16.2
+###### 2.2.2.16.2 dataupload Command
 
-dataupload Command
+
 
 [MS-SQMCS2] - v20170601
 Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
@@ -1335,7 +1190,8 @@ Release: June 1, 2017
 
 19 / 49
 
-The data upload (dataupload) command specifies that the client is uploading SQM session data. The
+
+The data upload (dataupload) command specifies that the client is uploading SQM session data. The
 SQM session data is appended to the XML message in the HTTP POST or PUT body either compressed,
 (as shown in Figure 6), or uncompressed, (as shown in Figure 7). Each SQM session in the binary data
 payload MUST be referenced by a separate request element (see section 2.2.2.12). The dataupload
@@ -1376,9 +1232,9 @@ section 2.2.3.6.2.
 
 Unrecognized arg name-value pairs are ignored by the server.
 
-2.2.2.16.3
+###### 2.2.2.16.3 qryrsrc Command
 
-qryrsrc Command
+
 
 The query resource (qryrsrc) command specifies that the client is requesting A-SQM version and path
 information. The A-SQM manifest is specific to the namespace specified in section 2.2.2.13. The
@@ -1392,7 +1248,7 @@ cmd arg element:
 
 Unrecognized arg name-value pairs are ignored by the server.
 
-2.2.3  Response Messages
+#### 2.2.3 Response Messages
 
 A SQM response message is an XML document as specified in [MS-TPXS] section 2.2. The elements
 and attributes are specified in the following sections. A SQM response message is returned to the SQM
@@ -1407,22 +1263,23 @@ Release: June 1, 2017
 
 20 / 49
 
-2.2.3.1  resp Element
+
+##### 2.2.3.1 resp Element
 
 The telemetry response (resp) element is required. The schema is specified in [MS-TPXS] section
 2.2.1.
 
-2.2.3.2  tlm Element
+##### 2.2.3.2 tlm Element
 
 The telemetry (tlm) element is required. The schema is specified in [MS-TPXS] section 2.2.1.1.
 
-2.2.3.3  resps Element
+##### 2.2.3.3 resps Element
 
 The responses (resps) element schema is specified in [MS-TPXS] section 2.2.1.1.1. The resps
 element is the parent element to the specific SQM server to client response. The resps element is
 required.
 
-2.2.3.4  resp inner Element
+##### 2.2.3.4 resp inner Element
 
 The responses (resp) element specifies the request from the server to the client. The resp element
 schema is specified in [MS-TPXS] section 2.2.1.1.1.1. The resp element is required. There is one resp
@@ -1430,7 +1287,7 @@ element for each req element (section 2.2.2.12). The resp element MUST specify a
 value pair. The attribute name MUST be specified as key. The attribute value MUST match the key
 value in the corresponding req element (see section 2.2.2.12).
 
-2.2.3.5  namespace Element
+##### 2.2.3.5 namespace Element
 
 The namespace element specifies the request namespace from the client to the server. The
 namespace element schema is specified in [MS-TPXS] section 2.2.1.1.1.1.1. The namespace
@@ -1439,7 +1296,7 @@ element and all attributes (svc, ptr, gp, app) are required.
 The namespace element MUST be the identical namespace as defined in the corresponding req
 element child namespace element (see section 2.2.2.13).
 
-2.2.3.6  cmd Element
+##### 2.2.3.6 cmd Element
 
 The command (cmd) element schema is specified in [MS-TPXS] section 2.2.1.1.1.1.2. The cmd
 element is the parent of a set of child arg elements with key-value attribute pairs specifying the
@@ -1450,7 +1307,7 @@ The response cmd element is the server response to the client request cmd (see s
 One or more cmd elements are required. The response commands are specified in the following
 sections.
 
-2.2.3.6.1 receipt Command
+###### 2.2.3.6.1 receipt Command
 
 The receipt command specifies that the server is acknowledging a successful data upload command
 (see section 2.2.2.16.2). This command is valid only for client data upload request commands as
@@ -1471,7 +1328,8 @@ Release: June 1, 2017
 
 21 / 49
 
-2.2.3.6.2 approved Command
+
+###### 2.2.3.6.2 approved Command
 
 The approved command specifies that the server approves the SQM client request for the upload
 command (see section 2.2.2.16.1). This command is valid for client request for upload commands as
@@ -1491,7 +1349,7 @@ cmd arg element:
 
   val attribute: A 64-bit decimal FILETIME value specifying the expiration time of the token.
 
-2.2.3.6.3 rsrc Command
+###### 2.2.3.6.3 rsrc Command
 
 The rsrc command specifies the A-SQM resource version and path for the SQM client query resource
 command (see section 2.2.2.16.3). This command is valid only for client query resource commands as
@@ -1514,7 +1372,7 @@ cmd arg element:
 appended to the SQM host path designated by the SQM client in order to form an HTTP(S) GET
 URL.
 
-2.2.3.6.4 error Command
+###### 2.2.3.6.4 error Command
 
 The error command specifies that the server failed to process the SQM client request. This command
 is valid for all client request commands as specified in section 2.2.2.16. The error command MUST
@@ -1545,7 +1403,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-cmd arg element:
+
+cmd arg element:
 
   nm attribute: message
 
@@ -1553,7 +1412,7 @@ Release: June 1, 2017
 
 implementation-specific.
 
-2.2.3.6.5 throttle Command
+###### 2.2.3.6.5 throttle Command
 
 The throttle command specifies that the server rejects the request to upload data and requires the
 SQM client to halt requests for the period of days specified in the argument. This command is valid
@@ -1607,14 +1466,14 @@ namespace element. Filter these requests based on the path: root.svc.ptr.gp.app.
 Throttle requests for the period at the level of the complete namespace element including any
 arguments. Filter these requests based on the path: root.svc.ptr.gp.app * all arguments.
 
-2.2.3.6.6 none Command
+###### 2.2.3.6.6 none Command
 
 The none command specifies that the server acknowledges the request message and that there is no
 information to send to the client or any action requested from the client. This command is valid only
 for client query resource request commands as specified in section 2.2.2.16.3. There are no command
 arg elements.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -1625,33 +1484,34 @@ Release: June 1, 2017
 
 23 / 49
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 The client role in the SQM Client-to-Service Version 2 Protocol is an extension of the client role
 described in [MS-SQMCS] section 3.1. The SQM Client-to-Service Version 2 Protocol extends the base
 protocol by adding an XML message describing the service request and the client response.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Message Construction
+##### 3.1.5.1 Message Construction
 
 The client constructs an XML message as specified in section 2.2.2.<36> The SQM response XML
 message is returned in the HTTP response stream.
@@ -1661,7 +1521,7 @@ message. A malformed request message will have an empty response stream. Any oth
 code specifies an HTTP error, and the SQM client does not attempt to process a response XML
 message.
 
-3.1.5.2  Request to Upload Data Message
+##### 3.1.5.2 Request to Upload Data Message
 
 The SQM client creates a request to upload (requpload) message to request permission from the
 SQM server, as shown in Figure 3, for the SQM client to send SQM session binary data.
@@ -1673,7 +1533,8 @@ Release: June 1, 2017
 
 24 / 49
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-SQMCS2].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1691,7 +1552,7 @@ The SQM client sends the request upload message to the SQM server or SQM proxy b
 POST. The SQM client processes the response message for each request as specified in section 2.2.3
 and this process is detailed in the following sections.
 
-3.1.5.2.1 Approved Response Command
+###### 3.1.5.2.1 Approved Response Command
 
 This command specifies that the SQM server has approved the SQM client to upload data as specified
 in the request upload message. The SQM client sends the data upload before the expiration time
@@ -1699,7 +1560,7 @@ specified in the response message approved command tm argument as specified in s
 The approved command token argument MUST be included in the data upload message as specified
 in section 2.2.2.16.1.
 
-3.1.5.2.2 Throttle Response Command
+###### 3.1.5.2.2 Throttle Response Command
 
 This command specifies that the SQM server rejects the SQM client request to upload data as specified
 in section 2.2.3.6.5. The SQM client does not send the data upload associated with the request upload
@@ -1729,7 +1590,8 @@ Release: June 1, 2017
 
 25 / 49
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-SQMCS2].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1762,7 +1624,7 @@ equals the throttle response message namespace gp attribute value, the app attri
 throttle response message namespace app attribute value, and all namespace arguments (if any)
 equal the throttle response message namespace arguments (see section 2.2.3.5).
 
-3.1.5.2.3 Error Response Command
+###### 3.1.5.2.3 Error Response Command
 
 The Error Response command specifies that the SQM server cannot process the message. The error
 command MAY contain an error code and error message that the SQM client MAY log for reference.
@@ -1770,7 +1632,7 @@ The SQM client captures the retry value as specified in section 2.2.3.6.4 The SQ
 operation after a random time period between 8 and 24 hours if the retry value is TRUE. The SQM
 client does not retry the request if the retry value is FALSE.
 
-3.1.5.3  Data Upload Message
+##### 3.1.5.3 Data Upload Message
 
 The SQM client creates a data upload (dataupload) message to request that the SQM server accept
 the uploaded SQM session data as shown in Figure 4.
@@ -1784,7 +1646,8 @@ Release: June 1, 2017
 
 26 / 49
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-SQMCS2].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1802,7 +1665,7 @@ is malformed or expired.
 The SQM client sends the data upload message to the SQM server or SQM proxy by using HTTP(S)
 PUT or POST.
 
-3.1.5.3.1 Data Upload – SQM Session Data Construction
+###### 3.1.5.3.1 Data Upload – SQM Session Data Construction
 
 The SQM client produces a SQM session binary data package as specified in [MS-SQMCS] section
 2.2.3. The SQM client MUST NOT compress the session binary data as specified in [MS-SQMCS]
@@ -1823,7 +1686,8 @@ Release: June 1, 2017
 
 27 / 49
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-SQMCS2].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1832,7 +1696,7 @@ method as illustrated in Figure 6. The compression method MUST be supported by t
 
 Figure 6: Concatenated SQM sessions compressed
 
-3.1.5.3.2 Data Upload – XML Message Construction
+###### 3.1.5.3.2 Data Upload – XML Message Construction
 
 The SQM client creates a SQM XML message as specified in section 2.2.2 by using the command
 dataupload as specified in section 2.2.2.16.2. The dataupload request MUST map to the SQM
@@ -1887,7 +1751,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-SQMCS2].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1927,13 +1792,14 @@ Release: June 1, 2017
 
 29 / 49
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-SQMCS2].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
 Figure 8: SQM session data upload (compressed)
 
-3.1.5.3.3 Data Upload – Send
+###### 3.1.5.3.3 Data Upload – Send
 
 The SQM client creates a message header specifying the XML document length as specified in section
 2.2.2.1. The message header, XML message, and SQM session binary data BLOB (compressed or
@@ -1943,20 +1809,20 @@ The SQM client sends the entire message stream to the SQM server by using HTTP(S
 The SQM client processes the data upload response message as specified in section 2.2.3 and shown
 in the following section.
 
-3.1.5.3.4 Data Upload – Receipt Response
+###### 3.1.5.3.4 Data Upload – Receipt Response
 
 The SQM client receives a receipt response for each dataupload accepted by the SQM server as
 specified in section 2.2.3.6.1. The receipt specifies that the SQM server received and accepted the
 data upload without error. The SQM client MAY log the receipt information.
 
-3.1.5.3.5 Data Upload – Error Response
+###### 3.1.5.3.5 Data Upload – Error Response
 
 The SQM server failed to process the dataupload message. The error command MAY contain an error
 code and error message that the SQM client MAY log for reference. The SQM client captures the retry
 value as specified in 2.2.3.6.4. The SQM client MAY retry the operation if the retry value is TRUE. The
 SQM client does not retry the request if the retry value is FALSE.
 
-3.1.5.4  Query Resource Message
+##### 3.1.5.4 Query Resource Message
 
 The SQM client creates a query resource (qryrsrc) message to request from the SQM server the
 current version and path of the specified named resource as shown in Figure 9.
@@ -1968,7 +1834,8 @@ Release: June 1, 2017
 
 30 / 49
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-SQMCS2].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -1978,7 +1845,7 @@ The SQM client creates a SQM XML message as specified in section 2.2.2 by using 
 command as specified in section 2.2.2.16.3. The SQM client processes the response message for the
 request as specified in section 2.2.3 and detailed in the following sections.
 
-3.1.5.4.1 Resource Response Command
+###### 3.1.5.4.1 Resource Response Command
 
 The client receives a resource response as specified in section 2.2.3.6.3. The SQM client compares the
 version (ver) number in the rsrc command against the current client version number. If the version
@@ -1993,20 +1860,20 @@ where %PATH% is replaced with the value specified in the path argument.
 The client downloads the resource file by using HTTP(S) GET. The resource is described in [MS-
 SQMCS] section 2.2.6.
 
-3.1.5.4.2 None Response Command
+###### 3.1.5.4.2 None Response Command
 
 The SQM client receives a none response as specified in section 2.2.3.6.6. The response indicates that
 no resource is available. The SQM client takes no action.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 This section describes the server role in the SQM Client-to-Service Version 2 Protocol.
 
@@ -2017,29 +1884,30 @@ Release: June 1, 2017
 
 31 / 49
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-SQMCS2].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
 Figure 10: Server role in the SQM Client-to-Service Version 2 Protocol
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The SQM client request message is processed during the client-initiated HTTP connection. The server
 MUST capture the HTTP POST body. The POST body contains the message and, if it is a data upload,
@@ -2064,7 +1932,8 @@ Release: June 1, 2017
 
 32 / 49
 
-4.  The server decompresses any compressed data as specified in section 2.2.2.11.
+
+4.  The server decompresses any compressed data as specified in section 2.2.2.11.
 
 5.  The server processes each client request in the XML message as specified in section 2.2.2.12.  The
 
@@ -2076,7 +1945,7 @@ request (req) contains the specific client request metadata and command.
 
 2.2.3.4.
 
-3.2.5.1  Processing Client Request Upload Request
+##### 3.2.5.1 Processing Client Request Upload Request
 
 The server validates the requpload command as specified in section 2.2.2.16.1.<38> The server
 creates a valid response command and returns the command to the client.
@@ -2092,7 +1961,7 @@ accept the data but needs the client to resend the request or continue sending r
 Typically this is the response if the server cannot accept requested data (for example, a partial service
 outage).
 
-3.2.5.2  Processing Client Data Upload Request
+##### 3.2.5.2 Processing Client Data Upload Request
 
 The server validates the dataupload command as specified in section 2.2.2.16.2. The server creates
 a valid response command as specified in section 2.2.3.6.1 and section 2.2.3.6.4.
@@ -2105,20 +1974,20 @@ The server processes the SQM session data by performing the following:
 Client Message and [MS-SQMCS] section 3.2.5.3, Processing SQM Section Data – Option 2 –
 Uncompressed.
 
-3.2.5.3  Processing Client Query Resource Request
+##### 3.2.5.3 Processing Client Query Resource Request
 
 The server validates the qryrsrc command as specified in section 2.2.2.16.3. The server creates a
 response command as specified in section 2.2.3.6.3 and section 2.2.3.6.6.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Proxy Details
+### 3.3 Proxy Details
 
 This section specifies the proxy role in the SQM Client-to-Service Version 2 Protocol.
 
@@ -2129,7 +1998,8 @@ Release: June 1, 2017
 
 33 / 49
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-SQMCS2].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2141,7 +2011,7 @@ modification.
 
 Figure 11: Client upload through a proxy
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The SQM protocol relay transmits protocol messages on behalf of a client in environments where the
 client cannot access the SQM service directly (primarily where the client is protected by the firewall).
@@ -2156,11 +2026,11 @@ message is forwarded directly, without modification. The ability to forward mess
 match the XML model is necessary so that the relay can transmit valid SQM protocol messages such
 as A-SQM and SQM protocol headers
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The proxy can be enabled by installing the Windows Feedback Forwarder<39>. The installer for
 Windows Feedback Forwarder installs the SQM service binaries and configures the settings on the SQM
@@ -2174,7 +2044,8 @@ Release: June 1, 2017
 
 34 / 49
 
-that the Windows Feedback Forwarder service can connect to the SQM service through a firewall. For
+
+that the Windows Feedback Forwarder service can connect to the SQM service through a firewall. For
 more information about Windows Feedback Forwarder, see [MSFT-DWFF].
 
 The Windows Feedback Forwarder service will not relay any messages unless a client is configured to
@@ -2208,11 +2079,11 @@ http://<WindowsFeedbackForwarderServer_FQDN>:<WindowsFeedbackForwarderPortNumber
 
 Example: http://MyServer.MyDomain.com:53533
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The relay receives a SQM messages by using a listening port configured as part of the setup for
 Windows Feedback Forwarder. The post is sent by using HTTP. If the POST contains a payload that
@@ -2227,11 +2098,11 @@ message is sent to the SQM service without augmenting the payload. In this scena
 uses the same behavior, transmitting first using HTTP over the configured port and then using HTTPS
 over port 443.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2242,11 +2113,12 @@ Release: June 1, 2017
 
 35 / 49
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 To view the full XML schema, see [MS-TPXS] section 5.
 
-4.1  Example of a qryrsrc Request and rsrc Response
+### 4.1 Example of a qryrsrc Request and rsrc Response
 
 The following is an example of a qryrsrc request as specified in section 2.2.2.16.3
 
@@ -2314,7 +2186,8 @@ Release: June 1, 2017
 
 36 / 49
 
- <?xml version="1.0" encoding="UTF-8"?>
+
+ <?xml version="1.0" encoding="UTF-8"?>
  <resp ver="2">
   <tlm>
    <resps>
@@ -2330,7 +2203,7 @@ val="telemetry.manifests/sqm/windows/winsqm8.default.manifest/sqm10145.bin" />
   </tlm>
  </resp>
 
-4.2  Example of a requpload Message and Approved Message Response
+### 4.2 Example of a requpload Message and Approved Message Response
 
 The following is an example of a requpload message as specified in section 2.2.2.16.1.
 
@@ -2388,7 +2261,8 @@ Release: June 1, 2017
 
 37 / 49
 
-           </ctrl>
+
+           </ctrl>
          </mach>
        </desc>
      </src>
@@ -2439,7 +2313,7 @@ The following is an example of an approved message as specified in section 2.2.3
   </tlm>
  </resp>
 
-4.3  Example of an Upload Message and a Receipt Response
+### 4.3 Example of an Upload Message and a Receipt Response
 
 The following is an example of an upload message as specified in section 2.2.2.16.2.
 
@@ -2460,7 +2334,8 @@ Release: June 1, 2017
 
 38 / 49
 
-             <arg nm="verbld" val="8061" />
+
+             <arg nm="verbld" val="8061" />
              <arg nm="versp" val="0" />
              <arg nm="arch" val="0" />
              <arg nm="lcid" val="1033" />
@@ -2537,7 +2412,8 @@ Release: June 1, 2017
 
 39 / 49
 
-           <arg nm="token" val="3.737e6827d6765e60d6900768b36f8c84.01cc5ed08779ac68" />
+
+           <arg nm="token" val="3.737e6827d6765e60d6900768b36f8c84.01cc5ed08779ac68" />
            <arg nm="size" val="1332" />
            <arg nm="offset" val="1320" />
          </cmd>
@@ -2571,7 +2447,7 @@ The following is an example of a receipt message as specified in section 2.2.3.6
   </tlm>
  </resp>
 
-4.3.1  Example of an Error Response Message
+#### 4.3.1 Example of an Error Response Message
 
 The following is an example of an error response message as specified in section 2.2.3.6.4.
 
@@ -2590,7 +2466,7 @@ The following is an example of an error response message as specified in section
   </tlm>
  </resp>
 
-4.3.2  Example of a Throttle Response Message
+#### 4.3.2 Example of a Throttle Response Message
 
 The following is an example of a throttle response message as specified in section 2.2.3.6.5.
 
@@ -2606,7 +2482,8 @@ Release: June 1, 2017
 
 40 / 49
 
-    <resp key="1">
+
+    <resp key="1">
      <namespace svc="sqm" ptr="windows" gp="winsqm8" app="6">
       <arg nm="caid" val="{69C9AF7A-BB96-E569-EF27-56BBB86AF9BC}" />
      </namespace>
@@ -2626,14 +2503,15 @@ Release: June 1, 2017
 
 41 / 49
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 It is recommended that implementers use Hypertext Transfer Protocol over Secure Sockets Layer
 (HTTPS) as the transport for all client/server or proxy/server communication over the Internet.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2644,7 +2522,8 @@ Release: June 1, 2017
 
 42 / 49
 
-6  Appendix A: Full XML Schema
+
+## 6 Appendix A: Full XML Schema
 
 The XML schema is specified in [MS-TPXS] section 5.
 
@@ -2655,7 +2534,8 @@ Release: June 1, 2017
 
 43 / 49
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2720,7 +2600,8 @@ Release: June 1, 2017
 
 44 / 49
 
-<12> Section 2.2.2.7:  Windows SQM clients use the IsOS function described in [MSDN-IsOS] for this
+
+<12> Section 2.2.2.7:  Windows SQM clients use the IsOS function described in [MSDN-IsOS] for this
 value.
 
 <13> Section 2.2.2.7:  Windows SQM clients get the version number from the registry key
@@ -2789,7 +2670,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 2 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<30> Section 2.2.2.9:  In Windows, this value is stored in the following registry path:
+
+<30> Section 2.2.2.9:  In Windows, this value is stored in the following registry path:
 HKLM\Software\Policies\Microsoft\SQMClient\CorporateSQMURL.
 
 <31> Section 2.2.2.9:  In Windows, this value is stored in the following registry path:
@@ -2829,7 +2711,8 @@ Release: June 1, 2017
 
 46 / 49
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2841,7 +2724,8 @@ Release: June 1, 2017
 
 47 / 49
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2976,7 +2860,8 @@ Release: June 1, 2017
 
 48 / 49
 
-Versioning 8
+
+Versioning 8
 
 X
 

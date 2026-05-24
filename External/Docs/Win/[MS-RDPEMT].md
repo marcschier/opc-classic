@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 24
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -241,182 +242,77 @@ Release: April 23, 2024
 
 2 / 24
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Messages and Intersection with Other Protocols](#131-messages-and-intersection-with-other-protocols)
+    - [1.3.2 RDP Channels and Multitransport Connections](#132-rdp-channels-and-multitransport-connections)
+    - [1.3.3 Connection Termination](#133-connection-termination)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 Tunnel PDU Header (RDP_TUNNEL_HEADER)](#2211-tunnel-pdu-header-rdptunnelheader)
+        - [2.2.1.1.1 Tunnel PDU Subheader (RDP_TUNNEL_SUBHEADER)](#22111-tunnel-pdu-subheader-rdptunnelsubheader)
+    - [2.2.2 Multitransport PDUs](#222-multitransport-pdus)
+      - [2.2.2.1 Tunnel Create Request PDU (RDP_TUNNEL_CREATEREQUEST)](#2221-tunnel-create-request-pdu-rdptunnelcreaterequest)
+      - [2.2.2.2 Tunnel Create Response PDU (RDP_TUNNEL_CREATERESPONSE)](#2222-tunnel-create-response-pdu-rdptunnelcreateresponse)
+      - [2.2.2.3 Tunnel Data PDU (RDP_TUNNEL_DATA)](#2223-tunnel-data-pdu-rdptunneldata)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing the Action Field of the Tunnel PDU Header](#3151-processing-the-action-field-of-the-tunnel-pdu-header)
+      - [3.1.5.2 Processing the PayloadLength Field of the Tunnel PDU Header](#3152-processing-the-payloadlength-field-of-the-tunnel-pdu-header)
+      - [3.1.5.3 Processing the HeaderLength Field of the Tunnel PDU Header](#3153-processing-the-headerlength-field-of-the-tunnel-pdu-header)
+      - [3.1.5.4 Processing Tunnel Data PDUs](#3154-processing-tunnel-data-pdus)
+      - [3.1.5.5 Sequencing of PDUs on the Multitransport Connection](#3155-sequencing-of-pdus-on-the-multitransport-connection)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing the RDP_TUNNEL_CREATEREQUEST PDU](#3251-processing-the-rdptunnelcreaterequest-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Processing the RDP_TUNNEL_CREATERESPONSE PDU](#3351-processing-the-rdptunnelcreateresponse-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Tunnel Create Request PDU](#41-tunnel-create-request-pdu)
+  - [4.2 Tunnel Create Response PDU](#42-tunnel-create-response-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Messages and Intersection with Other Protocols ............................................... 6
-RDP Channels and Multitransport Connections .................................................. 8
-Connection Termination ................................................................................. 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Common Data Types ................................................................................... 11
-Tunnel PDU Header (RDP_TUNNEL_HEADER) ............................................ 11
-Tunnel PDU Subheader (RDP_TUNNEL_SUBHEADER) ........................... 12
-Multitransport PDUs .................................................................................... 13
-Tunnel Create Request PDU (RDP_TUNNEL_CREATEREQUEST) ................... 13
-Tunnel Create Response PDU (RDP_TUNNEL_CREATERESPONSE) ............... 13
-Tunnel Data PDU (RDP_TUNNEL_DATA) ................................................... 14
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.1.1.1
-
-2.2.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Processing the Action Field of the Tunnel PDU Header ................................ 15
-Processing the PayloadLength Field of the Tunnel PDU Header .................... 15
-Processing the HeaderLength Field of the Tunnel PDU Header ..................... 16
-Processing Tunnel Data PDUs ................................................................. 16
-Sequencing of PDUs on the Multitransport Connection ............................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Processing the RDP_TUNNEL_CREATEREQUEST PDU ................................. 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Client Details ................................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.3
-
-3.2
-
-[MS-RDPEMT] - v20240423
-Remote Desktop Protocol: Multitransport Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 24
-
-3.3.5.1
-
-3.3.5
-
-3.3.6
-3.3.7
-
-Message Processing Events and Sequencing Rules .......................................... 18
-Processing the RDP_TUNNEL_CREATERESPONSE PDU ................................ 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-4  Protocol Examples ................................................................................................. 19
-Tunnel Create Request PDU ............................................................................... 19
-Tunnel Create Response PDU ............................................................................. 19
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 21
-
-7  Change Tracking .................................................................................................... 22
-
-8  Index ..................................................................................................................... 23
-
-[MS-RDPEMT] - v20240423
-Remote Desktop Protocol: Multitransport Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 24
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: Multitransport Extension to Remote Desktop
 Protocol: Basic Connectivity and Graphics Remoting, as specified in [MS-RDPBCGR] section 1, 2, 3, 4,
@@ -426,7 +322,7 @@ Protocol (RDP) client and server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -457,14 +353,14 @@ routing through the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -481,7 +377,8 @@ Release: April 23, 2024
 
 5 / 24
 
-[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
+
+[MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
 
 [MS-RDPEDYC] Microsoft Corporation, "Remote Desktop Protocol: Dynamic Channel Virtual Channel
@@ -504,11 +401,11 @@ RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 [RFC5246] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.2",
 RFC 5246, August 2008, https://www.rfc-editor.org/info/rfc5246
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Multitransport Extension enables multiple side-band channels (also
 referred to as "multitransport connections") between an RDP client and server over different
@@ -544,11 +441,12 @@ Release: April 23, 2024
 
 6 / 24
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-RDPEMT].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
-1.3.1  Messages and Intersection with Other Protocols
+#### 1.3.1 Messages and Intersection with Other Protocols
 
 Bootstrapping, creating, securing and finalizing a multitransport connection uses messages from a
 number of protocols. The following sequence diagram presents an overview of these messages and
@@ -589,14 +487,15 @@ Remote Desktop Protocol: Multitransport Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-transport is created, and the multitransport connections are not used to send or receive dynamic
+
+transport is created, and the multitransport connections are not used to send or receive dynamic
 virtual channel data until Soft-Sync negotiation is completed.
 
 All data is transferred over the multitransport connection in message mode. The Tunnel PDU Header
 (section 2.2.1.1) includes the size of the message that the multitransport protocol data unit (PDU)
 contains; the client assembles the entire message before delivering it to the upper layers.
 
-1.3.2  RDP Channels and Multitransport Connections
+#### 1.3.2 RDP Channels and Multitransport Connections
 
 The main RDP connection is encapsulated in the Transmission Control Protocol (TCP) ([MS-
 RDPBCGR] section 2.1). The I/O channel ([MS-RDPBCGR] section 3.2.1.3 and 3.3.1.3) and the
@@ -618,13 +517,14 @@ Release: April 23, 2024
 
 8 / 24
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDPEMT].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 Figure 2: RDP channels and transport
 
-1.3.3  Connection Termination
+#### 1.3.3 Connection Termination
 
 There is no explicit connection-termination protocol over a multitransport connection. The client and
 server terminate the multitransport connection and disconnect the underlying transports when the
@@ -637,7 +537,8 @@ Release: April 23, 2024
 
 9 / 24
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Multitransport Extension operates over the RDP-UDP protocol, as
 defined in [MS-RDPEUDP] section 1, 2, and 3. Protocol traffic (section 2.2) is secured by using
@@ -649,7 +550,7 @@ RDPUDP_SOURCE_PAYLOAD_HEADER as defined in [MS-RDPEUDP].
 A multitransport connection is initiated by an RDP server sending the Initiate Multitransport Request
 PDU ([MS-RDPBCGR] section 2.2.1.15.1) to an RDP client over the main RDP connection.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The multitransport connection must be initiated over the main RDP connection using the Initiate
 Multitransport Request PDU ([MS-RDPBCGR] section 2.2.1.15.1). The underlying RDP-UDP ([MS-
@@ -660,24 +561,24 @@ in [MS-RDPEDYC]) and the client MUST advertise support for the "DRDYNVC" static 
 Client Network Data block ([MS-RDPBCGR] section 2.2.1.3.4) sent in the MCS Connect Initial PDU with
 GCC Conference Create Request ([MS-RDPBCGR] section 2.2.1.3).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Multitransport Extension is applicable in scenarios where multiple side-
 band channels over different underlying transport protocols are required between an RDP client and
 server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Support for multitransport in the Remote Desktop Protocol: Multitransport Extension is advertised by
 the client using the Client Multitransport Channel Data ([MS-RDPBCGR] section 2.2.1.3.8), while the
 server advertises support in the Server Multitransport Channel Data ([MS-RDPBCGR] section
 2.2.1.4.6).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -688,9 +589,10 @@ Release: April 23, 2024
 
 10 / 24
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Multitransport Extension operates over the RDP-UDP protocol, as
 defined in [MS-RDPEUDP], sections 1, 2 and 3.
@@ -698,7 +600,7 @@ defined in [MS-RDPEUDP], sections 1, 2 and 3.
 Multitransport connections are bootstrapped using the Initiate Multitransport Request PDU ([MS-
 RDPBCGR] section 2.2.15.1), which is sent from server to client over the main RDP connection.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections define the Remote Desktop Protocol: Multitransport Extension messages that
 are exchanged between an RDP client and server.
@@ -708,9 +610,9 @@ otherwise specified.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  Tunnel PDU Header (RDP_TUNNEL_HEADER)
+##### 2.2.1.1 Tunnel PDU Header (RDP_TUNNEL_HEADER)
 
 The RDP_TUNNEL_HEADER structure is a common header included in every multitransport PDU
 specified in section 2.2.2.
@@ -773,7 +675,8 @@ Release: April 23, 2024
 
 11 / 24
 
-PayloadLength (2 bytes):  A 16-bit unsigned integer that specifies the length, in bytes, of the
+
+PayloadLength (2 bytes):  A 16-bit unsigned integer that specifies the length, in bytes, of the
 
 payload following the header. This length MUST NOT include the length of the
 RDP_TUNNEL_HEADER structure.
@@ -787,7 +690,7 @@ SubHeaders (variable):  An optional, variable-length array of RDP_TUNNEL_SUBHEAD
 (section 2.2.1.1.1). This field MUST be present if the value specified in the HeaderLength field is
 larger than 4 bytes.
 
-2.2.1.1.1 Tunnel PDU Subheader (RDP_TUNNEL_SUBHEADER)
+###### 2.2.1.1.1 Tunnel PDU Subheader (RDP_TUNNEL_SUBHEADER)
 
 The RDP_TUNNEL_SUBHEADER structure defines a variable-length generic subheader that is
 embedded within the RDP_TUNNEL_HEADER structure (section 2.2.1.1).
@@ -868,9 +771,10 @@ Release: April 23, 2024
 
 12 / 24
 
-2.2.2  Multitransport PDUs
 
-2.2.2.1  Tunnel Create Request PDU (RDP_TUNNEL_CREATEREQUEST)
+#### 2.2.2 Multitransport PDUs
+
+##### 2.2.2.1 Tunnel Create Request PDU (RDP_TUNNEL_CREATEREQUEST)
 
 The RDP_TUNNEL_CREATEREQUEST PDU is sent by the client to request the creation of a
 multitransport tunnel.
@@ -918,7 +822,7 @@ SecurityCookie (16 bytes):  A 16-byte element array of 8-bit unsigned integers t
 security cookie included in the Initiate Multitransport Request PDU that was sent over the main
 RDP connection.
 
-2.2.2.2  Tunnel Create Response PDU (RDP_TUNNEL_CREATERESPONSE)
+##### 2.2.2.2 Tunnel Create Response PDU (RDP_TUNNEL_CREATERESPONSE)
 
 The RDP_TUNNEL_CREATERESPONSE PDU is sent by the server to confirm the creation of a
 multitransport tunnel.
@@ -947,7 +851,8 @@ Release: April 23, 2024
 
 13 / 24
 
-TunnelHeader (variable):  An RDP_TUNNEL_HEADER structure (section 2.2.1.1). The Action field
+
+TunnelHeader (variable):  An RDP_TUNNEL_HEADER structure (section 2.2.1.1). The Action field
 
 MUST be set to RDPTUNNEL_ACTION_CREATERESPONSE (0x1).
 
@@ -955,7 +860,7 @@ HrResponse (4 bytes):  An HRESULT code ([MS-ERREF] section 2.1) that indicates w
 
 server accepted the request to create a multitransport connection.<2>
 
-2.2.2.3  Tunnel Data PDU (RDP_TUNNEL_DATA)
+##### 2.2.2.3 Tunnel Data PDU (RDP_TUNNEL_DATA)
 
 The RDP_TUNNEL_DATA PDU is used by the client and server to transport higher-layer data between
 RDP end-points.
@@ -994,32 +899,33 @@ Release: April 23, 2024
 
 14 / 24
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 All the PDUs that are sent over the multitransport connection contain an RDP_TUNNEL_HEADER
 structure (section 2.2.1.1) encapsulated in a mandatory TunnelHeader field.
 
-3.1.5.1  Processing the Action Field of the Tunnel PDU Header
+##### 3.1.5.1 Processing the Action Field of the Tunnel PDU Header
 
 The basic processing of a Tunnel PDU Header (section 2.2.1.1) begins with the reading of the Action
 field, which determines the type of PDU that MUST be processed. During the connection
@@ -1038,7 +944,7 @@ After the multitransport connection is established, all data transfer from the u
 implemented using an action code of RDPTUNNEL_ACTION_DATA (0x2), which indicates to the
 receiving endpoint that the PDU contains opaque data from upper layers.
 
-3.1.5.2  Processing the PayloadLength Field of the Tunnel PDU Header
+##### 3.1.5.2 Processing the PayloadLength Field of the Tunnel PDU Header
 
 The multitransport connection operates in message mode. The PayloadLength field of the
 RDP_TUNNEL_HEADER structure (section 2.2.1.1) indicates the total number of bytes in the PDU,
@@ -1054,7 +960,8 @@ Release: April 23, 2024
 
 15 / 24
 
-3.1.5.3  Processing the HeaderLength Field of the Tunnel PDU Header
+
+##### 3.1.5.3 Processing the HeaderLength Field of the Tunnel PDU Header
 
 For the Tunnel Create Request PDU (section 2.2.2.1) and Tunnel Create Response PDU (section
 2.2.2.2), the HeaderLength field MUST be 0x04.
@@ -1076,7 +983,7 @@ the subheader. This field is followed by a one byte SubHeaderType field, which i
 identifier of the high-level subheader. The data for the subheader itself follows the SubHeaderType
 field.
 
-3.1.5.4  Processing Tunnel Data PDUs
+##### 3.1.5.4 Processing Tunnel Data PDUs
 
 Tunnel Data PDUs (section 2.2.2.3) are transmitted with the Action field of the embedded
 RDP_TUNNEL_HEADER structure (section 2.2.1.1) set to RDPTUNNEL_ACTION_DATA (0x3).
@@ -1085,7 +992,7 @@ The offset, in bytes, to the start of the data payload is stored in the HeaderLe
 embedded RDP_TUNNEL_HEADER structure, as described in section 3.1.5.3. The total length, in bytes,
 of the data payload is stored in the PayloadLength field as described in section 3.1.5.2.
 
-3.1.5.5  Sequencing of PDUs on the Multitransport Connection
+##### 3.1.5.5 Sequencing of PDUs on the Multitransport Connection
 
 The Remote Desktop Protocol: Multitransport Extension MUST begin with the
 RDP_TUNNEL_CREATEREQUEST PDU (section 2.2.2.1), which is sent from the client to the server. The
@@ -1094,17 +1001,17 @@ RDP_TUNNEL_CREATERESPONSE_PDU (section 2.2.2.2) with a successful HRESULT code. 
 MUST NOT send any data until it has received the RDP_TUNNEL_CREATEREQUEST PDU, processed it,
 and sent an RDP_TUNNEL_CREATERESPONSE PDU with a successful HRESULT code to the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Connection Store: In order to match incoming multitransport connections to existing main RDP
 connections, the server maintains a store of outstanding multitransport requests. The store contains
@@ -1118,28 +1025,29 @@ Remote Desktop Protocol: Multitransport Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the multitransport request. When an incoming multitransport request is encountered, the server
+
+the multitransport request. When an incoming multitransport request is encountered, the server
 matches the RequestID field and SecurityCookie field presented by the multitransport connection
 as part of the Tunnel Create Request PDU (section 2.2.2.1) to an outstanding request ID and cookie
 in the store. If a match is found, the server hands off the incoming multitransport connection to the
 main RDP connection that requested it, enabling multiple connections between server and client for
 the same RDP session.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Processing the RDP_TUNNEL_CREATEREQUEST PDU
+##### 3.2.5.1 Processing the RDP_TUNNEL_CREATEREQUEST PDU
 
 The RDP_TUNNEL_CREATEREQUEST PDU (section 2.2.2.1) is used by the server for two purposes. The
 first purpose is to correlate incoming requests to the existing main RDP connection on the server that
@@ -1160,11 +1068,11 @@ successful HRESULT code.
 If a match is not found, the server can either close the connection to the client or send an
 RDP_TUNNEL_CREATERESPONSE PDU with an unsuccessful HRESULT code.<3>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1175,27 +1083,28 @@ Release: April 23, 2024
 
 17 / 24
 
-3.3  Client Details
 
-3.3.1  Abstract Data Model
+### 3.3 Client Details
 
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.3 Initialization
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.5.1  Processing the RDP_TUNNEL_CREATERESPONSE PDU
+None.
+
+#### 3.3.5 Message Processing Events and Sequencing Rules
+
+##### 3.3.5.1 Processing the RDP_TUNNEL_CREATERESPONSE PDU
 
 The RDP_TUNNEL_CREATERESPONSE PDU (section 2.2.2.2) is sent from the RDP server to the RDP
 client in response to the RDP_TUNNEL_CREATEREQUEST PDU (section 2.2.2.1). The PDU contains an
@@ -1207,11 +1116,11 @@ HRESULT code, the server has accepted the connection and successfully associated
 RDP session. The client can then start sending data to the server and MUST be ready to receive and
 process data from the server.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1222,9 +1131,10 @@ Release: April 23, 2024
 
 18 / 24
 
-4  Protocol Examples
 
-4.1  Tunnel Create Request PDU
+## 4 Protocol Examples
+
+### 4.1 Tunnel Create Request PDU
 
 The following is an annotated dump of the Tunnel Create Request PDU (section 2.2.2.1).
 
@@ -1242,7 +1152,7 @@ The following is an annotated dump of the Tunnel Create Request PDU (section 2.2
  00 00 00 00 -> RDP_TUNNEL_CREATEREQUEST::Reserved
  e2 f0 d1 08 56 7f b4 3a dc f4 b3 dc 16 92 1e 3a -> RDP_TUNNEL_CREATEREQUEST::SecurityCookie
 
-4.2  Tunnel Create Response PDU
+### 4.2 Tunnel Create Response PDU
 
 The following is an annotated dump of the Tunnel Create Response PDU (section 2.2.2.2).
 
@@ -1264,9 +1174,10 @@ Release: April 23, 2024
 
 19 / 24
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The RDP multitransport connections use SSL and DTLS, respectively, for reliable and unreliable UDP
 transport connections for data encryption and server certificate validation.
@@ -1275,7 +1186,7 @@ The client is authenticated to the server by presenting a security cookie as par
 Request PDU (section 2.2.2), which the server provided to the client over the secure main RDP
 connection, as defined in [MS-RDPBCGR].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1286,7 +1197,8 @@ Release: April 23, 2024
 
 20 / 24
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1339,7 +1251,8 @@ Release: April 23, 2024
 
 21 / 24
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1383,7 +1296,8 @@ Release: April 23, 2024
 
 22 / 24
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1525,7 +1439,8 @@ Timers
 
 23 / 24
 
-   client (section 3.1.2 15, section 3.3.2 18)
+
+   client (section 3.1.2 15, section 3.3.2 18)
    server (section 3.1.2 15, section 3.2.2 17)
 Tracking changes 22
 Transport 11

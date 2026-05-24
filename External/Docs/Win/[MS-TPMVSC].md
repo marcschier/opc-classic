@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -231,185 +232,78 @@ Release: April 23, 2024
 
 2 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 TPMVSCMGR_ERROR](#2211-tpmvscmgrerror)
+      - [2.2.1.2 TPMVSCMGR_STATUS](#2212-tpmvscmgrstatus)
+      - [2.2.1.3 SmartCardPinCharacterPolicyOption](#2213-smartcardpincharacterpolicyoption)
+      - [2.2.1.4 TPMVSC_ATTESTATION_TYPE](#2214-tpmvscattestationtype)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 PinPolicySerialization](#2221-pinpolicyserialization)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 ITpmVirtualSmartCardManager Server Details](#31-itpmvirtualsmartcardmanager-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 CreateVirtualSmartCard (Opnum 3)](#3141-createvirtualsmartcard-opnum-3)
+      - [3.1.4.2 DestroyVirtualSmartCard (Opnum 4)](#3142-destroyvirtualsmartcard-opnum-4)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 ITpmVirtualSmartCardManagerStatusCallback Server Details](#32-itpmvirtualsmartcardmanagerstatuscallback-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 ReportProgress (Opnum 3)](#3241-reportprogress-opnum-3)
+      - [3.2.4.2 ReportError (Opnum 4)](#3242-reporterror-opnum-4)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 ITpmVirtualSmartCardManager2 Server Details](#33-itpmvirtualsmartcardmanager2-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 CreateVirtualSmartCardWithPinPolicy (Opnum 5)](#3341-createvirtualsmartcardwithpinpolicy-opnum-5)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 ITpmVirtualSmartCardManager3 Server Details](#34-itpmvirtualsmartcardmanager3-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 CreateVirtualSmartCardWithAttestation (Opnum 6)](#3441-createvirtualsmartcardwithattestation-opnum-6)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Create a VSC without Status Callback](#41-create-a-vsc-without-status-callback)
+  - [4.2 Create a VSC with Status Callback](#42-create-a-vsc-with-status-callback)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-Enumerations ............................................................................................. 10
-TPMVSCMGR_ERROR ............................................................................. 11
-TPMVSCMGR_STATUS ........................................................................... 12
-SmartCardPinCharacterPolicyOption ........................................................ 13
-TPMVSC_ATTESTATION_TYPE ................................................................. 13
-Structures ................................................................................................. 13
-PinPolicySerialization ............................................................................. 14
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.2.2.1
-
-2.2.2
-
-3.2
-
-3.1
-
-3.1.5
-3.1.6
-
-3.1.4.1
-3.1.4.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 15
-ITpmVirtualSmartCardManager Server Details ..................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-CreateVirtualSmartCard (Opnum 3)......................................................... 16
-DestroyVirtualSmartCard (Opnum 4) ....................................................... 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-ITpmVirtualSmartCardManagerStatusCallback Server Details ................................. 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 19
-ReportProgress (Opnum 3) ..................................................................... 19
-ReportError (Opnum 4) .......................................................................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-ITpmVirtualSmartCardManager2 Server Details ................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-CreateVirtualSmartCardWithPinPolicy (Opnum 5) ...................................... 20
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-ITpmVirtualSmartCardManager3 Server Details ................................................... 22
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.4.1
-3.4.2
-3.4.3
-
-3.2.4.1
-3.2.4.2
-
-3.3.5
-3.3.6
-
-3.2.5
-3.2.6
-
-3.3.4.1
-
-3.4
-
-3.3
-
-[MS-TPMVSC] - v20240423
-Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 37
-
-3.4.4.1
-
-3.4.4
-
-3.4.5
-3.4.6
-
-Message Processing Events and Sequencing Rules .......................................... 23
-CreateVirtualSmartCardWithAttestation (Opnum 6) ................................... 23
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-
-4  Protocol Examples ................................................................................................. 26
-Create a VSC without Status Callback ................................................................. 26
-Create a VSC with Status Callback ..................................................................... 26
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 29
-
-7  Appendix B: Product Behavior ............................................................................... 33
-
-8  Change Tracking .................................................................................................... 34
-
-9  Index ..................................................................................................................... 35
-
-[MS-TPMVSC] - v20240423
-Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-1  Introduction
+## 1 Introduction
 
 The DCOM Interfaces for Trusted Platform Module (TPM) Virtual Smart Card Management Protocol is
 used to manage virtual smart cards (VSCs) on a remote machine, such as those based on trusted
@@ -419,7 +313,7 @@ of VSCs and to monitor the status of these operations.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -436,14 +330,14 @@ use the cryptographic capabilities of specific hardware such as a TPM.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -472,7 +366,8 @@ Release: April 23, 2024
 
 5 / 37
 
-[PCSC3] PC/SC Workgroup, "Interoperability Specification for ICCs and Personal Computer Systems -
+
+[PCSC3] PC/SC Workgroup, "Interoperability Specification for ICCs and Personal Computer Systems -
 Part 3: Requirements for PC-Connected Interface Devices", June 2007,
 http://pcscworkgroup.com/Download/Specifications/pcsc3_v2.01.09.pdf
 
@@ -487,11 +382,11 @@ Security Service Application Program Interface (GSS-API) Negotiation Mechanism",
 Recommendation for the Triple Data Encryption Algorithm (TDEA) Block Cipher", January 2012,
 https://csrc.nist.gov/publications/detail/sp/800-67/rev-1/archive/2012-01-23
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The DCOM Interfaces for the Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 provides a Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM] interface used
@@ -536,14 +431,15 @@ Release: April 23, 2024
 
 6 / 37
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-TPMVSC].images/page007-img01.png)
 ![Extracted image 2 from page 7]([MS-TPMVSC].images/page007-img02.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1: Typical protocol scenario
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DCOM Interfaces for the TPM Virtual Smart Card Management Protocol relies on the Distributed
 Component Object Model (DCOM) Remote Protocol, as specified in [MS-DCOM], which uses RPC [MS-
@@ -556,9 +452,10 @@ Release: April 23, 2024
 
 7 / 37
 
-Figure 2: Protocol Relationships
 
-1.5  Prerequisites/Preconditions
+Figure 2: Protocol Relationships
+
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented over DCOM and RPC. Therefore, it has the prerequisites specified in [MS-
 DCOM] and [MS-RPCE] as being common to protocols that depend on DCOM and RPC respectively.
@@ -571,12 +468,12 @@ credentials of an administrative user on the target, and both requestor and targ
 support security packages that implement support for impersonation as well as packet privacy and
 integrity.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to scenarios where it is desirable to remotely manage VSC devices on a
 computer with a smart card implementation compliant with [PCSC3].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -605,13 +502,13 @@ ITpmVirtualSmartCardManagerStatusCallback interface by providing a NULL callback
 Even if a callback parameter is provided by the requestor, the target can choose to not use the
 ITpmVirtualSmartCardManagerStatusCallback interface.
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value,
 indicating the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -632,7 +529,8 @@ Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter
+
+Parameter
 
 Value
 
@@ -665,9 +563,10 @@ Release: April 23, 2024
 
 9 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses RPC dynamic endpoints as defined in Part 4 of [C706].
 
@@ -684,7 +583,7 @@ the appropriate UUID as specified in section 1.9.
 
 The RPC version number for all interfaces MUST be 0.0.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the NDR and NDR64 transfer
 syntaxes and provide a negotiation mechanism for determining which transfer syntax will be used, as
@@ -725,7 +624,7 @@ LPWSTR
 
 [MS-DTYP] section 2.2.36
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
 The following table summarizes the enumerations defined in this specification.
 
@@ -754,7 +653,8 @@ Release: April 23, 2024
 
 10 / 37
 
-Enumeration name
+
+Enumeration name
 
 Section
 
@@ -770,7 +670,7 @@ TPMVSC_ATTESTATION_TYPE
 
 See section 2.2.1.4.
 
-2.2.1.1  TPMVSCMGR_ERROR
+##### 2.2.1.1 TPMVSCMGR_ERROR
 
  typedef  [v1_enum] enum {
      TPMVSCMGR_ERROR_IMPERSONATION,
@@ -838,7 +738,8 @@ Release: April 23, 2024
 
 11 / 37
 
-TPMVSCMGR_ERROR_VGIDSSIMULATOR_WRITE_PROPERTY: An error occurred during
+
+TPMVSCMGR_ERROR_VGIDSSIMULATOR_WRITE_PROPERTY: An error occurred during
 
 configuration of the VSC simulator.
 
@@ -866,7 +767,7 @@ TPMVSCMGR_ERROR_CARD_CREATE: An error occurred during creation of the VSC.
 
 TPMVSCMGR_ERROR_CARD_DESTROY: An error occurred during deletion of the VSC.
 
-2.2.1.2  TPMVSCMGR_STATUS
+##### 2.2.1.2 TPMVSCMGR_STATUS
 
  typedef  [v1_enum] enum {
      TPMVSCMGR_STATUS_VTPMSMARTCARD_INITIALIZING,
@@ -912,7 +813,8 @@ Release: April 23, 2024
 
 12 / 37
 
-TPMVSCMGR_STATUS_GENERATE_AUTHENTICATING: Authenticating to the VSC.
+
+TPMVSCMGR_STATUS_GENERATE_AUTHENTICATING: Authenticating to the VSC.
 
 TPMVSCMGR_STATUS_GENERATE_RUNNING: Generating the file system on the VSC.
 
@@ -920,7 +822,7 @@ TPMVSCMGR_STATUS_CARD_CREATED: The VSC is created.
 
 TPMVSCMGR_STATUS_CARD_DESTROYED: The VSC is deleted.
 
-2.2.1.3  SmartCardPinCharacterPolicyOption
+##### 2.2.1.3 SmartCardPinCharacterPolicyOption
 
 This enumeration is used in fields of the PinPolicySerialization structure specified in section
 2.2.2.1.<1>
@@ -938,7 +840,7 @@ RequireAtLeastOne: The value is 1. At least one item belonging to this character
 
 Disallow: The value is 2. This character class is not allowed.
 
-2.2.1.4  TPMVSC_ATTESTATION_TYPE
+##### 2.2.1.4 TPMVSC_ATTESTATION_TYPE
 
  enum TPMVSC_ATTESTATION_TYPE
  {
@@ -957,7 +859,7 @@ TPMVSC_ATTESTATION_AIK_AND_CERTIFICATE: The VSC supports attestation with an AIK
 is unique to this VSC, and the AIK will have a certificate issued by a certification authority
 (CA).
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 The following table summarizes the structures that are defined in this specification:
 
@@ -976,7 +878,8 @@ Release: April 23, 2024
 
 13 / 37
 
-2.2.2.1  PinPolicySerialization
+
+##### 2.2.2.1 PinPolicySerialization
 
 This structure is used to serialize a PIN policy for use by the ITpmVirtualSmartCardManager2 interface
 as specified in section 3.3.4.1.<2>
@@ -1051,7 +954,8 @@ Release: April 23, 2024
 
 14 / 37
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 Implementations of this protocol MUST implement support for ITpmVirtualSmartCardManager and
 ITpmVirtualSmartCardManagerStatusCallback. They SHOULD<3> implement support for
@@ -1073,19 +977,19 @@ underlying DCOM transport, using the same causality ID as the triggering
 ITpmVirtualSmartCardManager, ITpmVirtualSmartCardManager2, or ITpmVirtualSmartCardManager3
 call as specified in [MS-DCOM] section 3.2.4.2.
 
-3.1  ITpmVirtualSmartCardManager Server Details
+### 3.1 ITpmVirtualSmartCardManager Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This protocol maintains no state. However, as specified in section 1.5, it assumes that the server has
 access to a smart card implementation compliant with [PCSC3] and associated facilities for creating
 VSCs. Those components are able to maintain implementation-specific state.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST register itself with the DCOM infrastructure and bind to a dynamic endpoint obtained
 from the RPC runtime.
@@ -1104,7 +1008,7 @@ The server MUST confirm the presence of an underlying smart card infrastructure 
 [PCSC3]. If no such infrastructure is present, the server MUST stop initialization and exit with an
 error.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following methods:
 
@@ -1115,7 +1019,8 @@ Release: April 23, 2024
 
 15 / 37
 
-Method
+
+Method
 
 Description
 
@@ -1125,7 +1030,7 @@ Opnum: 3
 
 DestroyVirtualSmartCard  Opnum: 4
 
-3.1.4.1  CreateVirtualSmartCard (Opnum 3)
+##### 3.1.4.1 CreateVirtualSmartCard (Opnum 3)
 
 This method is invoked by the requestor to create a VSC on the target.
 
@@ -1189,7 +1094,8 @@ Release: April 23, 2024
 
 16 / 37
 
-pStatusCallback: A reference to an instance of the ITpmVirtualSmartCardManagerStatusCallback
+
+pStatusCallback: A reference to an instance of the ITpmVirtualSmartCardManagerStatusCallback
 
 DCOM interface on the requestor. The server uses this interface to provide feedback on progress
 and errors. This parameter is optional and MUST be set to NULL if absent.
@@ -1234,7 +1140,7 @@ the requested operation. If the status callback returns an error code, the serve
 creation and return a non-zero error to the client, with the severity bit in the error code set to 1. In
 this case, the server SHOULD also roll back all changes made in respect to the requested operation.
 
-3.1.4.2  DestroyVirtualSmartCard (Opnum 4)
+##### 3.1.4.2 DestroyVirtualSmartCard (Opnum 4)
 
 This method is invoked by the requestor to destroy a previously-created VSC on the target.
 
@@ -1261,7 +1167,8 @@ Release: April 23, 2024
 
 17 / 37
 
-Return Values: The server MUST return 0 if it successfully locates and destroys the indicated VSC,
+
+Return Values: The server MUST return 0 if it successfully locates and destroys the indicated VSC,
 
 and a nonzero value otherwise.
 
@@ -1284,17 +1191,17 @@ the server MUST return a non-zero error code to the client, with the severity bi
 to 1. If the operation cannot be aborted, the server MUST ignore the error from the status callback
 interface and complete the requested operation.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  ITpmVirtualSmartCardManagerStatusCallback Server Details
+### 3.2 ITpmVirtualSmartCardManagerStatusCallback Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1307,11 +1214,11 @@ TPMVSC management requests: The set of calls that are currently in progress from
 remote ITpmVirtualSmartCardManager interfaces. This state is shared with the
 ITpmVirtualSmartCardManager client implementation.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server is initialized by the ITpmVirtualSmartCardManager interface client as part of the process of
 making a request on that interface.
@@ -1326,7 +1233,8 @@ Release: April 23, 2024
 
 18 / 37
 
-The server MUST indicate to the RPC runtime that it is to negotiate security contexts by using the
+
+The server MUST indicate to the RPC runtime that it is to negotiate security contexts by using the
 SPNEGO protocol [RFC4178]. The server SHOULD request the RPC runtime to reject any
 unauthenticated connections.
 
@@ -1340,7 +1248,7 @@ The server SHOULD establish a connection with the higher-layer protocol or appli
 corresponding request on the ITpmVirtualSmartCardManager interface, in order to convey progress
 and error information as specified in section 3.2.4.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This interface includes the following methods:
 
@@ -1354,7 +1262,7 @@ ReportError
 
 Opnum: 4
 
-3.2.4.1  ReportProgress (Opnum 3)
+##### 3.2.4.1 ReportProgress (Opnum 3)
 
 This method is called by the target to indicate the progress of a TPMVSC management request on
 the target. The association to a specific ITpmVirtualSmartCardManager method invocation is made by
@@ -1376,7 +1284,7 @@ Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlyin
 The server SHOULD report the status code to the higher-layer protocol or application that called the
 associated ITpmVirtualSmartCardManager method.
 
-3.2.4.2  ReportError (Opnum 4)
+##### 3.2.4.2 ReportError (Opnum 4)
 
 This method is called by the target to indicate that an error was encountered during the execution of a
 TPMVSC management request on the target. The association to a specific
@@ -1393,7 +1301,8 @@ Release: April 23, 2024
 
 19 / 37
 
-Error: A TPMVSCMGR_ERROR, defined in section 2.2.1.1.
+
+Error: A TPMVSCMGR_ERROR, defined in section 2.2.1.1.
 
 Return Values: The server MUST return 0 unless it has been instructed to abort the TPMVSC
 
@@ -1406,36 +1315,36 @@ Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlyin
 The server SHOULD report the error code to the higher-layer protocol or application that called the
 associated ITpmVirtualSmartCardManager method.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 If a higher-layer protocol or application on the requestor indicates that a particular TPMVSC
 management request has been aborted, the server MUST return a non-zero error code for any
 future ITpmVirtualSmartCardManagerStatusCallback methods that are invoked in association with the
 aborted request.
 
-3.3  ITpmVirtualSmartCardManager2 Server Details
+### 3.3 ITpmVirtualSmartCardManager2 Server Details
 
 This interface is derived from the ITpmVirtualSmartCardManager interface and behaves identically to
 that interface except for the addition of the CreateVirtualSmartCardWithPinPolicy method.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The ITpmVirtualSmartCardManager2 interface has the same abstract data model, described in section
 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is described in section 3.1.3.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 In addition to the methods specified in section 3.1.4, this interface includes the following method:
 
@@ -1445,7 +1354,7 @@ Description
 
 CreateVirtualSmartCardWithPinPolicy  Opnum: 5
 
-3.3.4.1  CreateVirtualSmartCardWithPinPolicy (Opnum 5)
+##### 3.3.4.1 CreateVirtualSmartCardWithPinPolicy (Opnum 5)
 
 This method is invoked by the requestor to create a VSC with the specified PIN policy on the target.
 
@@ -1458,7 +1367,8 @@ Release: April 23, 2024
 
 20 / 37
 
-         [in, string] const wchar_t* pszFriendlyName,
+
+         [in, string] const wchar_t* pszFriendlyName,
          [in] unsigned char bAdminAlgId,
          [in, size_is(cbAdminKey)] const unsigned char* pbAdminKey,
          [in] unsigned long cbAdminKey,
@@ -1536,7 +1446,8 @@ Release: April 23, 2024
 
 21 / 37
 
-pfNeedReboot:  A Boolean value that indicates whether or not a reboot is required on the server
+
+pfNeedReboot:  A Boolean value that indicates whether or not a reboot is required on the server
 
 before the newly-created VSC is made available to applications.
 
@@ -1590,15 +1501,15 @@ After validating these conditions, the server MUST proceed to create the VSC and
 progress through the callback interface as specified in section 3.1.4.1. The server MUST also initialize
 the appropriate data structures for the VSC in accordance with the PIN policy specified by the caller.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  ITpmVirtualSmartCardManager3 Server Details
+### 3.4 ITpmVirtualSmartCardManager3 Server Details
 
 This interface<4> is derived from the ITpmVirtualSmartCardManager2 interface and behaves
 identically to it except for the addition of the CreateVirtualSmartCardWithAttestation
@@ -1611,20 +1522,21 @@ Release: April 23, 2024
 
 22 / 37
 
-3.4.1  Abstract Data Model
+
+#### 3.4.1 Abstract Data Model
 
 The ITpmVirtualSmartCardManager3 interface has the same Abstract Data Model as described in
 section 3.1.1.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 Initialization is described in section 3.1.3.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 In addition to the methods specified in section 3.1.4, this interface includes the following method:
 
@@ -1634,7 +1546,7 @@ Description
 
 CreateVirtualSmartCardWithAttestation  Opnum: 6
 
-3.4.4.1  CreateVirtualSmartCardWithAttestation (Opnum 6)
+##### 3.4.4.1 CreateVirtualSmartCardWithAttestation (Opnum 6)
 
 This method is invoked by the requestor to create a VSC with attestation.
 
@@ -1678,7 +1590,8 @@ Release: April 23, 2024
 
 23 / 37
 
-absent. If present, it MUST be computed by encrypting eight zero bytes using the TDEA [SP800-
+
+absent. If present, it MUST be computed by encrypting eight zero bytes using the TDEA [SP800-
 67] block cipher and taking the first three bytes.
 
 cbAdminKcv: A 32-bit unsigned integer value. It MUST be set to 0 if the pbAdmin parameter is NULL,
@@ -1761,7 +1674,8 @@ Release: April 23, 2024
 
 24 / 37
 
-
+
+
 
 
 
@@ -1780,11 +1694,11 @@ After validating these conditions, the server MUST proceed to create the VSC and
 progress through the callback interface as specified in section 3.1.4.1. The server MUST also initialize
 the appropriate data structures for the VSC in accordance with the PIN policy specified by the caller.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
@@ -1795,13 +1709,14 @@ Release: April 23, 2024
 
 25 / 37
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-TPMVSC].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Create a VSC without Status Callback
+### 4.1 Create a VSC without Status Callback
 
 Since the status callback interface is optional when creating a VSC, the requestor cannot provide a
 callback interface to the target. In this case, the requestor is only notified through the return value
@@ -1812,7 +1727,7 @@ VSC without a requestor-provided callback interface.
 
 Figure 3: Create a VSC without status callback
 
-4.2  Create a VSC with Status Callback
+### 4.2 Create a VSC with Status Callback
 
 When creating a VSC on the target, the requestor can provide a callback interface to receive progress
 and error notifications from the target while the requested operation is being executed on the target.
@@ -1827,7 +1742,8 @@ Release: April 23, 2024
 
 26 / 37
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-TPMVSC].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1844,9 +1760,10 @@ Release: April 23, 2024
 
 27 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol uses DCOM as its underlying transport. Therefore, all security considerations that apply
 to DCOM interfaces, as specified in [MS-DCOM] section 5, are also applicable to this protocol.
@@ -1880,7 +1797,7 @@ the integrity of the process for issuing AIK certificates (or for determining th
 given platform, if certificates are not used). In addition, it is important to ensure the security of the
 PKI that issues the AIK certificates and to follow good certificate management practices.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -1901,7 +1818,8 @@ Release: April 23, 2024
 
 28 / 37
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  import "oaidl.idl";
  import "ocidl.idl";
@@ -1977,7 +1895,8 @@ Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     TPMVSCMGR_ERROR_VREADER_DESTROY, // Failed to destroy the Virtual Smart Card Reader.
+
+     TPMVSCMGR_ERROR_VREADER_DESTROY, // Failed to destroy the Virtual Smart Card Reader.
 
      TPMVSCMGR_ERROR_GENERATE_LOCATE_READER, // Failed to connect to the TPM Smart Card.
      TPMVSCMGR_ERROR_GENERATE_FILESYSTEM, // Failed to generate the filesystem on the TPM
@@ -2054,7 +1973,8 @@ Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- [
+
+ [
      object,
      uuid(FDF8A2B9-02DE-47F4-BC26-AA85AB5E5267),
      pointer_default(unique)
@@ -2130,7 +2050,8 @@ Release: April 23, 2024
 
 31 / 37
 
-         interface ITpmVirtualSmartCardManager3;
+
+         interface ITpmVirtualSmartCardManager3;
      }
 
      [
@@ -2151,7 +2072,8 @@ Release: April 23, 2024
 
 32 / 37
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2206,7 +2128,8 @@ Release: April 23, 2024
 
 33 / 37
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2250,7 +2173,8 @@ Release: April 23, 2024
 
 34 / 37
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2402,7 +2326,8 @@ Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   CreateVirtualSmartCardWithAttestation (Opnum 6)
+
+   CreateVirtualSmartCardWithAttestation (Opnum 6)
 
 23
 
@@ -2566,7 +2491,8 @@ Trusted Platform Module (TPM) Virtual Smart Card Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Vendor extensible fields 8
+
+Vendor extensible fields 8
 Versioning 8
 
 [MS-TPMVSC] - v20240423

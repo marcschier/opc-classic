@@ -63,7 +63,8 @@ Release: October 21, 2024
 
 1 / 94
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: October 21, 2024
 
 2 / 94
 
-Date
+
+Date
 
 Revision
 History
@@ -548,7 +550,8 @@ Significantly changed the technical content.
 
 3 / 94
 
-Date
+
+Date
 
 Revision
 History
@@ -587,227 +590,105 @@ Release: October 21, 2024
 
 4 / 94
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server](#211-server)
+    - [2.1.2 Client](#212-client)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 RPC_HKEY](#221-rpchkey)
+    - [2.2.2 PREGISTRY_SERVER_NAME](#222-pregistryservername)
+    - [2.2.3 REGSAM](#223-regsam)
+    - [2.2.4 RRP_UNICODE_STRING](#224-rrpunicodestring)
+    - [2.2.5 RVALENT](#225-rvalent)
+    - [2.2.6 Common Error Codes](#226-common-error-codes)
+    - [2.2.7 RPC_SECURITY_ATTRIBUTES](#227-rpcsecurityattributes)
+    - [2.2.8 RPC_SECURITY_DESCRIPTOR](#228-rpcsecuritydescriptor)
+    - [2.2.9 SECURITY_INFORMATION](#229-securityinformation)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Naming](#3111-naming)
+        - [3.1.1.1.1 Fully Qualified Name](#31111-fully-qualified-name)
+        - [3.1.1.1.2 Relative Name](#31112-relative-name)
+        - [3.1.1.1.3 Object Name](#31113-object-name)
+      - [3.1.1.2 Key Types](#3112-key-types)
+      - [3.1.1.3 Key Properties](#3113-key-properties)
+      - [3.1.1.4 32-Bit and 64-Bit Key Namespaces](#3114-32-bit-and-64-bit-key-namespaces)
+      - [3.1.1.5 Values](#3115-values)
+      - [3.1.1.6 Key Class](#3116-key-class)
+      - [3.1.1.7 Predefined Keys](#3117-predefined-keys)
+      - [3.1.1.8 Current User Root Key](#3118-current-user-root-key)
+      - [3.1.1.9 Handles](#3119-handles)
+      - [3.1.1.10 Security Descriptor](#31110-security-descriptor)
+      - [3.1.1.11 Symbolic Links](#31111-symbolic-links)
+      - [3.1.1.12 System Shutdown](#31112-system-shutdown)
+      - [3.1.1.13 Identity Token](#31113-identity-token)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 OpenClassesRoot (Opnum 0)](#3151-openclassesroot-opnum-0)
+      - [3.1.5.2 OpenCurrentUser (Opnum 1)](#3152-opencurrentuser-opnum-1)
+      - [3.1.5.3 OpenLocalMachine (Opnum 2)](#3153-openlocalmachine-opnum-2)
+      - [3.1.5.4 OpenPerformanceData (Opnum 3)](#3154-openperformancedata-opnum-3)
+      - [3.1.5.5 OpenUsers (Opnum 4)](#3155-openusers-opnum-4)
+      - [3.1.5.6 BaseRegCloseKey (Opnum 5)](#3156-baseregclosekey-opnum-5)
+      - [3.1.5.7 BaseRegCreateKey (Opnum 6)](#3157-baseregcreatekey-opnum-6)
+      - [3.1.5.8 BaseRegDeleteKey (Opnum 7)](#3158-baseregdeletekey-opnum-7)
+      - [3.1.5.9 BaseRegDeleteValue (Opnum 8)](#3159-baseregdeletevalue-opnum-8)
+      - [3.1.5.10 BaseRegEnumKey (Opnum 9)](#31510-baseregenumkey-opnum-9)
+      - [3.1.5.11 BaseRegEnumValue (Opnum 10)](#31511-baseregenumvalue-opnum-10)
+      - [3.1.5.12 BaseRegFlushKey (Opnum 11)](#31512-baseregflushkey-opnum-11)
+      - [3.1.5.13 BaseRegGetKeySecurity (Opnum 12)](#31513-basereggetkeysecurity-opnum-12)
+      - [3.1.5.14 BaseRegLoadKey (Opnum 13)](#31514-baseregloadkey-opnum-13)
+      - [3.1.5.15 BaseRegOpenKey (Opnum 15)](#31515-baseregopenkey-opnum-15)
+      - [3.1.5.16 BaseRegQueryInfoKey (Opnum 16)](#31516-baseregqueryinfokey-opnum-16)
+      - [3.1.5.17 BaseRegQueryValue (Opnum 17)](#31517-baseregqueryvalue-opnum-17)
+      - [3.1.5.18 BaseRegReplaceKey (Opnum 18)](#31518-baseregreplacekey-opnum-18)
+      - [3.1.5.19 BaseRegRestoreKey (Opnum 19)](#31519-baseregrestorekey-opnum-19)
+      - [3.1.5.20 BaseRegSaveKey (Opnum 20)](#31520-baseregsavekey-opnum-20)
+      - [3.1.5.21 BaseRegSetKeySecurity (Opnum 21)](#31521-baseregsetkeysecurity-opnum-21)
+      - [3.1.5.22 BaseRegSetValue (Opnum 22)](#31522-baseregsetvalue-opnum-22)
+      - [3.1.5.23 BaseRegUnLoadKey (Opnum 23)](#31523-baseregunloadkey-opnum-23)
+      - [3.1.5.24 BaseRegGetVersion (Opnum 26)](#31524-basereggetversion-opnum-26)
+      - [3.1.5.25 OpenCurrentConfig (Opnum 27)](#31525-opencurrentconfig-opnum-27)
+      - [3.1.5.26 BaseRegQueryMultipleValues (Opnum 29)](#31526-baseregquerymultiplevalues-opnum-29)
+      - [3.1.5.27 BaseRegSaveKeyEx (Opnum 31)](#31527-baseregsavekeyex-opnum-31)
+      - [3.1.5.28 OpenPerformanceText (Opnum 32)](#31528-openperformancetext-opnum-32)
+      - [3.1.5.29 OpenPerformanceNlsText (Opnum 33)](#31529-openperformancenlstext-opnum-33)
+      - [3.1.5.30 BaseRegQueryMultipleValues2 (Opnum 34)](#31530-baseregquerymultiplevalues2-opnum-34)
+      - [3.1.5.31 BaseRegDeleteKeyEx (Opnum 35)](#31531-baseregdeletekeyex-opnum-35)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Reading a Registry Key and Value](#41-reading-a-registry-key-and-value)
+  - [4.2 Writing a Registry Key and Value](#42-writing-a-registry-key-and-value)
+  - [4.3 Detailed Example](#43-detailed-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-
-2.2
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Server ....................................................................................................... 12
-Client ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-RPC_HKEY ................................................................................................. 12
-PREGISTRY_SERVER_NAME ......................................................................... 12
-REGSAM .................................................................................................... 13
-RRP_UNICODE_STRING ............................................................................... 13
-RVALENT ................................................................................................... 14
-Common Error Codes .................................................................................. 15
-RPC_SECURITY_ATTRIBUTES ....................................................................... 15
-RPC_SECURITY_DESCRIPTOR ...................................................................... 16
-SECURITY_INFORMATION ............................................................................ 16
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.1.1.1
-3.1.1.1.2
-3.1.1.1.3
-
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-3.1.1.8
-3.1.1.9
-3.1.1.10
-3.1.1.11
-3.1.1.12
-3.1.1.13
-
-3  Protocol Details ..................................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Naming ................................................................................................ 17
-Fully Qualified Name ........................................................................ 18
-Relative Name ................................................................................ 18
-Object Name ................................................................................... 19
-Key Types ............................................................................................ 19
-Key Properties ...................................................................................... 19
-32-Bit and 64-Bit Key Namespaces ......................................................... 20
-Values ................................................................................................. 21
-Key Class ............................................................................................. 22
-Predefined Keys .................................................................................... 22
-Current User Root Key ........................................................................... 23
-Handles ............................................................................................... 23
-Security Descriptor ................................................................................ 23
-Symbolic Links...................................................................................... 24
-System Shutdown ................................................................................. 24
-Identity Token ...................................................................................... 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 25
-OpenClassesRoot (Opnum 0) .................................................................. 28
-OpenCurrentUser (Opnum 1) .................................................................. 29
-OpenLocalMachine (Opnum 2) ................................................................ 30
-OpenPerformanceData (Opnum 3) .......................................................... 32
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-[MS-RRP] - v20241021
-Windows Remote Registry Protocol
-Copyright © 2024 Microsoft Corporation
-Release: October 21, 2024
-
-5 / 94
-
-OpenUsers (Opnum 4) ........................................................................... 33
-3.1.5.5
-BaseRegCloseKey (Opnum 5) ................................................................. 34
-3.1.5.6
-BaseRegCreateKey (Opnum 6)................................................................ 35
-3.1.5.7
-BaseRegDeleteKey (Opnum 7) ................................................................ 39
-3.1.5.8
-BaseRegDeleteValue (Opnum 8) ............................................................. 40
-3.1.5.9
-BaseRegEnumKey (Opnum 9) ................................................................. 41
-3.1.5.10
-BaseRegEnumValue (Opnum 10) ............................................................ 43
-3.1.5.11
-BaseRegFlushKey (Opnum 11) ................................................................ 45
-3.1.5.12
-BaseRegGetKeySecurity (Opnum 12) ....................................................... 46
-3.1.5.13
-BaseRegLoadKey (Opnum 13) ................................................................ 47
-3.1.5.14
-BaseRegOpenKey (Opnum 15) ................................................................ 48
-3.1.5.15
-BaseRegQueryInfoKey (Opnum 16) ......................................................... 51
-3.1.5.16
-BaseRegQueryValue (Opnum 17) ............................................................ 53
-3.1.5.17
-BaseRegReplaceKey (Opnum 18) ............................................................ 55
-3.1.5.18
-BaseRegRestoreKey (Opnum 19) ............................................................ 57
-3.1.5.19
-BaseRegSaveKey (Opnum 20) ................................................................ 59
-3.1.5.20
-BaseRegSetKeySecurity (Opnum 21) ....................................................... 60
-3.1.5.21
-BaseRegSetValue (Opnum 22) ................................................................ 61
-3.1.5.22
-BaseRegUnLoadKey (Opnum 23)............................................................. 62
-3.1.5.23
-3.1.5.24
-BaseRegGetVersion (Opnum 26) ............................................................. 64
-3.1.5.25  OpenCurrentConfig (Opnum 27) ............................................................. 64
-BaseRegQueryMultipleValues (Opnum 29) ................................................ 65
-3.1.5.26
-3.1.5.27
-BaseRegSaveKeyEx (Opnum 31) ............................................................. 67
-3.1.5.28  OpenPerformanceText (Opnum 32) ......................................................... 69
-3.1.5.29  OpenPerformanceNlsText (Opnum 33) ..................................................... 69
-BaseRegQueryMultipleValues2 (Opnum 34) .............................................. 70
-3.1.5.30
-BaseRegDeleteKeyEx (Opnum 35) ........................................................... 72
-3.1.5.31
-Timer Events .............................................................................................. 73
-Other Local Events ...................................................................................... 73
-Client Details ................................................................................................... 74
-
-3.1.6
-3.1.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 75
-Reading a Registry Key and Value ...................................................................... 75
-Writing a Registry Key and Value ....................................................................... 75
-Detailed Example ............................................................................................. 75
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 77
-Security Considerations for Implementers ........................................................... 77
-Index of Security Parameters ............................................................................ 77
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 78
-
-7  Appendix B: Product Behavior ............................................................................... 83
-
-8  Change Tracking .................................................................................................... 91
-
-9  Index ..................................................................................................................... 92
-
-[MS-RRP] - v20241021
-Windows Remote Registry Protocol
-Copyright © 2024 Microsoft Corporation
-Release: October 21, 2024
-
-6 / 94
-
-1  Introduction
+## 1 Introduction
 
 The Windows Remote Registry Protocol is a remote procedure call (RPC)–based client/server
 protocol that is used for remotely managing a hierarchical Data Store such as the Windows
@@ -816,7 +697,7 @@ registry. For more information, see [MSWINREG].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -879,7 +760,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Server Message Block (SMB): A protocol that is used to request file and print services from
+
+Server Message Block (SMB): A protocol that is used to request file and print services from
 server systems over a network. The SMB protocol extends the CIFS protocol with additional
 security, file, and disk management support. For more information, see [CIFS] and [MS-SMB].
 
@@ -916,14 +798,14 @@ Windows registry: The Windows implementation of the registry.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -949,7 +831,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
+
+[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
 [MS-SMB] Microsoft Corporation, "Server Message Block (SMB) Protocol".
 
@@ -959,7 +842,7 @@ Release: October 21, 2024
 [WININTERNALS] Russinovich, M., and Solomon, D., "Microsoft Windows Internals, Fourth Edition",
 Microsoft Press, 2005, ISBN: 0735619174.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-CVE-2024-43532] Microsoft Corporation, "Remote Registry Service Elevation of Privilege
 Vulnerability", CVE-2024-43532 Oct 8, 2024, https://msrc.microsoft.com/update-
@@ -971,7 +854,7 @@ us/library/ms724871.aspx
 [SPNNAMES] Microsoft Corporation, "Name Formats for Unique SPNs", http://msdn.microsoft.com/en-
 us/library/ms677601.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Windows Remote Registry Protocol is a client/server protocol that is used for remotely managing a
 hierarchical Data Store with lightly typed elements. The layout and specifics of such a store is
@@ -991,7 +874,7 @@ attempts to change the state of the key based on the request and responds to the
 result of the operation. When the client is finished operating on the server keys, it terminates the
 protocol by sending a request to close the RPC context handle.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Windows Remote Registry Protocol is dependent upon remote procedure call (RPC) [MS-RPCE]
 and Server Message Block (SMB) for its transport. This protocol uses RPC over named pipes as
@@ -1005,23 +888,24 @@ Release: October 21, 2024
 
 9 / 94
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RRP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 1: Protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the client and server be able to communicate by means of an RPC
 connection, as specified in section 2.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate for managing a hierarchical Data Store, such as the Windows registry,
 on a remote computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document provides versioning information in the following areas:
 
@@ -1032,11 +916,11 @@ Security and authentication methods: The RPC server in this protocol requires
 RPC_C_AUTHN_GSS_NEGOTIATE or RPC_C_AUTHN_WINNT authorization. See section 2.1.2 for
 more details.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 [MS-RRP] - v20241021
 Windows Remote Registry Protocol
@@ -1045,7 +929,8 @@ Release: October 21, 2024
 
 10 / 94
 
-Parameter
+
+Parameter
 
 Value
 
@@ -1068,13 +953,14 @@ Release: October 21, 2024
 
 11 / 94
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Windows Remote Registry Protocol MUST use RPC as the transport protocol.
 
-2.1.1  Server
+#### 2.1.1 Server
 
 The server interface SHOULD<1> be identified by a UUID, by using the RPC well-known endpoint
 \PIPE\winreg. The server SHOULD<2> specify RPC over SMB as the RPC protocol sequence to the
@@ -1083,7 +969,7 @@ sequences are allowed. The server MUST specify the "Simple and Protected GSS-API
 Mechanism" (0x9) or "NTLM" (0xA) as the RPC Authentication Service, as specified in [MS-RPCE]
 section 3.2.1.5.1, or both.
 
-2.1.2  Client
+#### 2.1.2 Client
 
 The client SHOULD<3> use RPC over SMB, ncacn_np (as specified in [MS-RPCE] section 2.1.1.2) as
 the RPC protocol sequence to communicate with the server. The client MUST specify either "Simple
@@ -1098,7 +984,7 @@ level of RPC_C_AUTHN_LEVEL_PKT_PRIVACY to connect to the server; and, if the ser
 support this authentication level, it falls back to RPC_C_AUTHN_LEVEL_CONNECT. Authentication
 levels are as specified in [MS-RPCE] section 2.2.1.1.8.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC data types that are specified in [MS-RPCE], the sections that follow use the
 definitions of BYTE, DWORD, LPDWORD (see DWORD), error_status_t, FILETIME, PFILETIME
@@ -1108,7 +994,7 @@ DTYP].
 The additional data types in the following sections are defined in the Microsoft Interface Definition
 Language (MIDL) specification.
 
-2.2.1  RPC_HKEY
+#### 2.2.1 RPC_HKEY
 
 The RPC_HKEY data type defines an RPC context handle, as specified in [MS-RPCE], to a registry
 key that is opened on the server, as specified in section 3.1.1.
@@ -1118,7 +1004,7 @@ This type is declared as follows:
 typedef [context_handle] HANDLE    RPC_HKEY;
 typedef                  RPC_HKEY  *PRPC_HKEY;
 
-2.2.2  PREGISTRY_SERVER_NAME
+#### 2.2.2 PREGISTRY_SERVER_NAME
 
 The PREGISTRY_SERVER_NAME data type defines a pointer to an array of WCHAR elements.
 
@@ -1129,11 +1015,12 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-This type is declared as follows:
+
+This type is declared as follows:
 
  typedef [handle] PWCHAR PREGISTRY_SERVER_NAME;
 
-2.2.3  REGSAM
+#### 2.2.3 REGSAM
 
 The REGSAM data type defines a bit field that specifies the user rights for a key object.
 
@@ -1199,7 +1086,7 @@ For some Windows Remote Registry Protocol methods, the bits set in the REGSAM fi
 when checking access rights to modify registry data. These cases are detailed in the processing rules
 for each method.
 
-2.2.4  RRP_UNICODE_STRING
+#### 2.2.4 RRP_UNICODE_STRING
 
 The RRP_UNICODE_STRING structure is the same as the RPC_UNICODE_STRING defined in [MS-
 DTYP] with the exception that the RRP_UNICODE_STRING value MUST be NULL-terminated.
@@ -1215,7 +1102,8 @@ Release: October 21, 2024
 
 13 / 94
 
-2.2.5  RVALENT
+
+#### 2.2.5 RVALENT
 
 The RVALENT structure is used to store the values and data that are associated with a key, as
 specified in section 3.1.5.26. The format of the RVALENT structure is as follows.
@@ -1316,7 +1204,8 @@ Release: October 21, 2024
 
 14 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -1333,7 +1222,7 @@ REG_SZ
 A null-terminated string. This string is either a Unicode or an system code
 page string, depending on the functions used to manipulate the string.
 
-2.2.6  Common Error Codes
+#### 2.2.6 Common Error Codes
 
 Unless otherwise specified, the methods of the Windows Remote Registry Protocol MUST return 0 to
 indicate success and a nonzero implementation-specific value to indicate failure in the error_status_t
@@ -1370,7 +1259,7 @@ An illegal operation was attempted on a registry key that is pending delete.
 
 0x000003FA (Decimal: 1018)
 
-2.2.7  RPC_SECURITY_ATTRIBUTES
+#### 2.2.7 RPC_SECURITY_ATTRIBUTES
 
 The RPC_SECURITY_ATTRIBUTES structure represents security attributes that can be set through the
 Remote Procedure Call Protocol Extensions, as specified in [MS-CMRP] section 2.2.3.2.
@@ -1397,7 +1286,8 @@ Release: October 21, 2024
 
 15 / 94
 
-2.2.8  RPC_SECURITY_DESCRIPTOR
+
+#### 2.2.8 RPC_SECURITY_DESCRIPTOR
 
 The RPC_SECURITY_DESCRIPTOR structure represents the RPC security descriptors.
 
@@ -1417,7 +1307,7 @@ cbInSecurityDescriptor:  The size in bytes of the security descriptor.
 
 cbOutSecurityDescriptor:  The size in bytes of the security descriptor.
 
-2.2.9  SECURITY_INFORMATION
+#### 2.2.9 SECURITY_INFORMATION
 
 The SECURITY_INFORMATION bit flags indicate what components to include in a security descriptor
 string used by clients and servers to specify access types.
@@ -1468,15 +1358,16 @@ Release: October 21, 2024
 
 16 / 94
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 The Windows Remote Registry Protocol server handles client requests for any of the messages that
 are specified in section 2 and operates on the registry on the server. For each of those messages, the
 behavior of the server is specified in section 3.1.4.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1519,7 +1410,7 @@ configure a timer to initiate this periodic flushing of data to the backing stor
 as exempt from automatically being flushed to the backing store; keys exempt from automatic
 flushing are identified using the KEYNOPERIODICFLUSH property (see section 3.1.1.3).
 
-3.1.1.1  Naming
+##### 3.1.1.1 Naming
 
 Each key MUST have a Base Name that consists of one or more Unicode characters. The Base Name of
 a key MUST NOT include the "\" character.
@@ -1534,14 +1425,15 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-multiple parent-child key relationships is a subkey of its ancestor keys. A key MUST have at most one
+
+multiple parent-child key relationships is a subkey of its ancestor keys. A key MUST have at most one
 parent key and MUST NOT be an ancestor of itself.
 
 Each subkey also MUST have an index that is associated with it. Indices MUST be zero-based. If a key
 has N subkeys that are associated with it, the subkeys have indices ranging from 0 to (N–1).
 However, the ordering of the subkeys and its associated indices is implementation-specific.
 
-3.1.1.1.1 Fully Qualified Name
+###### 3.1.1.1.1 Fully Qualified Name
 
 To uniquely identify a given key within the entire key namespace, its fully qualified name (FQN) is
 used. The FQN MUST consist of the Base Name of the key and the name of all of its parent keys all the
@@ -1568,7 +1460,7 @@ HKEY_CLASSES_ROOT root keys, the same FQN will represent different keys (see 3.1
 None of the methods in the remote registry protocol accept a key FQN as a parameter. All key name
 parameters use the Relative Name (section 3.1.1.1.2).
 
-3.1.1.1.2 Relative Name
+###### 3.1.1.1.2 Relative Name
 
 To uniquely identify a subkey within the set of all subkeys of a given parent key, a relative name (RN)
 is used. The RN of a key consists of the Base Name of each subkey in the path between the parent
@@ -1598,11 +1490,12 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Methods in this protocol that specify subkey names as a Unicode string parameter, with the exception
+
+Methods in this protocol that specify subkey names as a Unicode string parameter, with the exception
 of BaseRegCreateKey, will return a failure code as described in section 3.1.5 if the RN refers to a key
 that does not exist in the key namespace.
 
-3.1.1.1.3 Object Name
+###### 3.1.1.1.3 Object Name
 
 For kernel-mode code to uniquely identify a given key within the entire key namespace, its Object
 Name is used. In kernel mode, the root for all registry keys is the \Registry object. The global
@@ -1618,7 +1511,7 @@ HKEY_USERS
 
 \Registry\User
 
-3.1.1.2  Key Types
+##### 3.1.1.2 Key Types
 
 Keys can also be of different types. The type of a key is represented by a DWORD property named
 KEYTYPE. The Data Store MUST maintain the KEYTYPE property for all keys in the registry hierarchy
@@ -1641,7 +1534,7 @@ registry server loses context due to a computer restart, reboot, or shut down pr
 
 (REG_OPTION_CREATE_LINK) This key is a symbolic link to another key.
 
-3.1.1.3  Key Properties
+##### 3.1.1.3 Key Properties
 
 Keys have properties, and the server MUST support tracking the following properties for each key in
 the registry hierarchy. The server initializes the key properties to the defaults specified in the following
@@ -1675,7 +1568,8 @@ Release: October 21, 2024
 
 19 / 94
 
-3.1.1.4  32-Bit and 64-Bit Key Namespaces
+
+##### 3.1.1.4 32-Bit and 64-Bit Key Namespaces
 
 A remote registry server on a 64-bit system MUST also have separate sets of 32-bit and 64-bit keys.
 
@@ -1757,7 +1651,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the server does not support a 64-bit key namespace, any request made with KEY_WOW64_64KEY
+
+If the server does not support a 64-bit key namespace, any request made with KEY_WOW64_64KEY
 set MUST fail and return ERROR_ACCESS_DENIED. Similarly, any request made with both
 KEY_WOW64_64KEY and KEY_WOW64_32KEY set on a server that does not support a 64-bit key
 namespace MUST fail and return ERROR_ACCESS_DENIED.
@@ -1771,7 +1666,7 @@ handle to the key is closed with the BaseRegCloseKey method.
 Remote registry servers that set the value of the lpdwVersion parameter of the BaseRegGetVersion
 method to any value less than 6 MUST NOT support a 64-bit key namespace.
 
-3.1.1.5  Values
+##### 3.1.1.5 Values
 
 Registry values consist of a name and data pair. Zero or more values are associated with each registry
 key. The name of each value is a Unicode string and is unique within the set of values associated with
@@ -1838,13 +1733,14 @@ Release: October 21, 2024
 
 21 / 94
 
-3.1.1.6  Key Class
+
+##### 3.1.1.6 Key Class
 
 Keys also contain optional data (called class) associated with them. Class is defined as a Unicode
 string for all methods that retrieve or set the class from a Remote Registry server. The default class of
 registry keys is NULL.
 
-3.1.1.7  Predefined Keys
+##### 3.1.1.7 Predefined Keys
 
 With the 32-bit and 64-bit key namespaces, the Data Store can have multiple trees. The Data Store
 MUST implement a set of standard trees that have a predefined, and therefore, well-known root key
@@ -1927,13 +1823,14 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-remote client can request that the server add data to the registry hierarchy from a file (see section
+
+remote client can request that the server add data to the registry hierarchy from a file (see section
 3.1.5.19).
 
 If a server chooses to use a different backing store (for example, a relational database), it MUST
 provide a mapping from the logical file (that is exposed to the client) to the true backing store.
 
-3.1.1.8  Current User Root Key
+##### 3.1.1.8 Current User Root Key
 
 The server MUST support dynamically mapping a subkey of the HKEY_USERS predefined key as the
 HKEY_CURRENT_USER root key for each client request to operate on the HKEY_CURRENT_USER
@@ -1954,7 +1851,7 @@ Note  In other registry documentation and registry utilities outside of this spe
 context, the current user root key is defined as a predefined key with the name
 "HKEY_CURRENT_USER".
 
-3.1.1.9  Handles
+##### 3.1.1.9 Handles
 
 Handles (HKEY) are used by the client and the server to refer to individual keys within the registry
 hierarchy in the HANDLETABLE. The handle value uniquely refers to a single key within the registry
@@ -1976,9 +1873,9 @@ values referred to by the HANDLE element are updated. When the HANDLE is closed,
 checks the value of UPDATECOPY. If UPDATECOPY is set to TRUE, the server copies the updates to the
 key or values across namespaces.
 
-3.1.1.10
+##### 3.1.1.10 Security Descriptor
 
-Security Descriptor
+
 
 Each registry key MUST have the following element.
 
@@ -1996,7 +1893,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-OpenPerformanceText, and OpenPerformanceNlsText. The Security Descriptor is read by the
+
+OpenPerformanceText, and OpenPerformanceNlsText. The Security Descriptor is read by the
 client by using the BaseRegGetKeySecurity method, and the Security Descriptor is updated by
 the client by using the BaseRegSetKeySecurity method. The server MUST create new Security
 Descriptors in self-relative format [MS-DTYP] (section 2.4.6).
@@ -2006,9 +1904,9 @@ of the methods described in section 3.1.5. The server MUST implement service rou
 the Security Descriptor for a given registry key to the security context of the client request and
 validate access. This implementation is outside the bounds of the registry protocol specification.
 
-3.1.1.11
+##### 3.1.1.11 Symbolic Links
 
-Symbolic Links
+
 
 The server MUST support creating and maintaining symbolic links between keys in the registry
 hierarchy. Each symbolic link has a source key and a target key. The source key of a symbolic link
@@ -2035,9 +1933,9 @@ Registry keys that are the source of a symbolic link MUST NOT have subkeys.
 If the client attempts to delete the source key of a symbolic link using the BaseRegDeleteKey or
 BaseRegDeleteKeyEx method, the server will return the failure code 2 (ERROR_FILE_NOT_FOUND).
 
-3.1.1.12
+##### 3.1.1.12 System Shutdown
 
-System Shutdown
+
 
 The server MUST support the following ADM element.
 
@@ -2048,14 +1946,14 @@ FALSE when the server is initialized. The server MUST invoke the Server Shutdown
 Local Events (section 3.1.7) when a system shutdown begins, which sets this ADM element to
 TRUE.
 
-3.1.1.13
+##### 3.1.1.13 Identity Token
 
-Identity Token
+
 
 Token: An identity token of the type "Token/AuthorizationContext" as specified by [MS-DTYP] section
 2.5.2.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The registry server MUST periodically flush in-memory data to the backing store as described in
 section 3.1.1. The server MUST initialize FLUSH_TIMER for triggering storage from the data store to
@@ -2068,11 +1966,12 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Registry servers initialize the FLUSH timeout value to 5 seconds. When the FLUSH_TIMER expires, the
+
+Registry servers initialize the FLUSH timeout value to 5 seconds. When the FLUSH_TIMER expires, the
 FLUSH_TIMER_EVENT is executed. The FLUSH_TIMER_EVENT does not modify the contents of the
 HANDLETABLE.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Windows Remote Registry Protocol server MUST be initialized by registering the RPC interface and
 listening on the RPC well-known endpoint, as specified in section 2.1. The server MUST then wait
@@ -2085,11 +1984,11 @@ The server MUST set the value of the SHUTDOWNINPROGRESS element to FALSE.
 
 The server SHOULD initialize HANDLETABLE without any (quantity zero) handles.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The Windows Remote Registry Protocol is invoked explicitly by an application.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 All Windows Remote Registry Protocol operations begin with the client opening one of the well-known
 predefined keys on the server. After this key is opened, an RPC context handle MUST be associated
@@ -2143,7 +2042,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Methods in RPC Opnum Order
+
+Methods in RPC Opnum Order
 
 Method
 
@@ -2255,7 +2155,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2369,7 +2270,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2425,7 +2327,7 @@ be deleted, regardless of what kind of application is running.
 
 Opnum: 35
 
-3.1.5.1  OpenClassesRoot (Opnum 0)
+##### 3.1.5.1 OpenClassesRoot (Opnum 0)
 
 The OpenClassesRoot method is called by the client. In response, the server opens the
 HKEY_CLASSES_ROOT  predefined key.
@@ -2459,7 +2361,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2519,7 +2422,7 @@ new valid context handle. The server MUST store the context handle value in the 
 context handle in the phKey parameter. If the caller does not have access, the server MUST return
 ERROR_ACCESS_DENIED (0x00000005).
 
-3.1.5.2  OpenCurrentUser (Opnum 1)
+##### 3.1.5.2 OpenCurrentUser (Opnum 1)
 
 The OpenCurrentUser method is called by the client. In response, the server opens a handle to the
 HKEY_CURRENT_USER key. The server MUST determine which subkey of HKEY_USERS is the correct
@@ -2535,7 +2438,8 @@ Release: October 21, 2024
 
 29 / 94
 
-   [in] REGSAM samDesired,
+
+   [in] REGSAM samDesired,
    [out] PRPC_HKEY phKey
  );
 
@@ -2599,7 +2503,7 @@ The server MUST validate the value of the samDesired parameter set by the client
 samDesired includes flags set which are not listed in section 2.2.3, the server MUST return
 ERROR_INVALID_PARAMETER.
 
-3.1.5.3  OpenLocalMachine (Opnum 2)
+##### 3.1.5.3 OpenLocalMachine (Opnum 2)
 
 The OpenLocalMachine method is called by the client. In response, the server opens a handle to the
 HKEY_LOCAL_MACHINE predefined key.
@@ -2613,7 +2517,8 @@ Release: October 21, 2024
 
 30 / 94
 
-   [in, unique] PREGISTRY_SERVER_NAME ServerName,
+
+   [in, unique] PREGISTRY_SERVER_NAME ServerName,
    [in] REGSAM samDesired,
    [out] PRPC_HKEY phKey
  );
@@ -2692,10 +2597,11 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-in certain locations of the registry hierarchy. These restrictions are detailed within the Server
+
+in certain locations of the registry hierarchy. These restrictions are detailed within the Server
 Operations section of the BaseRegCreateKey method.
 
-3.1.5.4  OpenPerformanceData (Opnum 3)
+##### 3.1.5.4 OpenPerformanceData (Opnum 3)
 
 The OpenPerformanceData method is called by the client. In response, the server opens a handle to
 the HKEY_PERFORMANCE_DATA predefined key. The HKEY_PERFORMANCE_DATA  predefined
@@ -2765,7 +2671,8 @@ Release: October 21, 2024
 
 32 / 94
 
-3.1.5.5  OpenUsers (Opnum 4)
+
+##### 3.1.5.5 OpenUsers (Opnum 4)
 
 The OpenUsers method is called by the client. In response, the server opens a handle to the
 HKEY_USERS predefined key.
@@ -2844,7 +2751,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-3.1.5.6  BaseRegCloseKey (Opnum 5)
+
+##### 3.1.5.6 BaseRegCloseKey (Opnum 5)
 
 The BaseRegCloseKey method is called by the client. In response, the server destroys (closes) the
 handle to the specified registry key.
@@ -2927,7 +2835,8 @@ Release: October 21, 2024
 
 34 / 94
 
-request. The server MUST also set the value of the hKey parameter to NULL. The server MUST also
+
+request. The server MUST also set the value of the hKey parameter to NULL. The server MUST also
 remove the entry for hKey in the HANDLETABLE.
 
 The implementation of the handle close operation is server-specific. However, functionally, after a
@@ -2946,7 +2855,7 @@ very high contention rates or if the client is corrupted. The operation SHOULD b
 The server returns WAIT_TIMEOUT if the server load is high and it is unable to acquire locks on the
 registry database.
 
-3.1.5.7  BaseRegCreateKey (Opnum 6)
+##### 3.1.5.7 BaseRegCreateKey (Opnum 6)
 
 The BaseRegCreateKey method is called by the client. In response, the server creates the specified
 registry key and returns a handle to the newly created key. If the key already exists in the registry, a
@@ -2999,7 +2908,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3094,7 +3004,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the value of the lpSubKey parameter is NULL, the server MUST fail the method and return
+
+If the value of the lpSubKey parameter is NULL, the server MUST fail the method and return
 ERROR_INVALID_PARAMETER.
 
 If this method fails, and the server returns a failure error code, the lpdwDisposition parameter is
@@ -3160,7 +3071,8 @@ Release: October 21, 2024
 
 37 / 94
 
-If the key indicated by lpSubKey does not exist within the set of children keys for the key indicated by
+
+If the key indicated by lpSubKey does not exist within the set of children keys for the key indicated by
 hKey, the server MUST create a new key in the registry Data Store with a name equal to the name
 indicated by lpSubKey. If the client has set dwOptions to a value of 0x00000002, the server MUST
 create the new key with a KEYTYPE of symbolic link.
@@ -3245,7 +3157,8 @@ Release: October 21, 2024
 
 38 / 94
 
-Privileges Held
+
+Privileges Held
 
 Only Restore
 
@@ -3293,7 +3206,7 @@ the key indicated by hKey and return the new handle in the phkResult parameter. 
 operation, the server MUST return an open handle to the new key in the phkResult parameter in the
 event of success.
 
-3.1.5.8  BaseRegDeleteKey (Opnum 7)
+##### 3.1.5.8 BaseRegDeleteKey (Opnum 7)
 
 The BaseRegDeleteKey method is called by the client. In response, the server deletes the specified
 subkey.
@@ -3319,7 +3232,8 @@ Release: October 21, 2024
 
 39 / 94
 
-Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
+
+Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
 nonzero error code, as specified in [MS-ERREF] section 2.2. The most common error codes are
 listed in the following table.
 
@@ -3383,7 +3297,7 @@ If both the hKey and lpSubKey parameters are valid and the key indicated by lpSu
 any subkeys, the server MUST return ERROR_SUCCESS and delete the key indicated by lpSubKey, its
 security descriptor, and any values.
 
-3.1.5.9  BaseRegDeleteValue (Opnum 8)
+##### 3.1.5.9 BaseRegDeleteValue (Opnum 8)
 
 The BaseRegDeleteValue method is called by the client. In response, the server removes a named
 value from the specified registry key.
@@ -3399,7 +3313,8 @@ Release: October 21, 2024
 
 40 / 94
 
- );
+
+ );
 
 hKey: A handle to a key that MUST have been opened previously by using one of the open methods
 that are specified in section 3.1.5: OpenClassesRoot, OpenCurrentUser, OpenLocalMachine,
@@ -3461,9 +3376,9 @@ section 2.2) to indicate an error.
 
 If the caller does not have access, the server MUST return ERROR_ACCESS_DENIED.
 
-3.1.5.10
+##### 3.1.5.10 BaseRegEnumKey (Opnum 9)
 
-BaseRegEnumKey (Opnum 9)
+
 
 The BaseRegEnumKey method is called by the client in order to enumerate a subkey. In response, the
 server returns a requested subkey.
@@ -3480,7 +3395,8 @@ Release: October 21, 2024
 
 41 / 94
 
-   [out] PRRP_UNICODE_STRING lpNameOut,
+
+   [out] PRRP_UNICODE_STRING lpNameOut,
    [in, unique] PRRP_UNICODE_STRING lpClassIn,
    [out] PRPC_UNICODE_STRING* lplpClassOut,
    [in, out, unique] PFILETIME lpftLastWriteTime
@@ -3571,7 +3487,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the dwIndex parameter is beyond the range of subkeys, the server MUST return
+
+If the dwIndex parameter is beyond the range of subkeys, the server MUST return
 ERROR_NO_MORE_ITEMS to indicate that enumeration is complete.
 
 If the lplpClassOut parameter does not contain enough space for the class name, the server MUST
@@ -3604,9 +3521,9 @@ ERREF]) to indicate an error.
 
 If the caller does not have access, the server MUST return ERROR_ACCESS_DENIED.
 
-3.1.5.11
+##### 3.1.5.11 BaseRegEnumValue (Opnum 10)
 
-BaseRegEnumValue (Opnum 10)
+
 
 The BaseRegEnumValue method is called by the client. In response, the server enumerates the value
 at the specified index for the specified registry key.
@@ -3642,7 +3559,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-length for the output name parameter and to allocate space accordingly. The content is ignored,
+
+length for the output name parameter and to allocate space accordingly. The content is ignored,
 and only the maximum length is significant.
 
 lpValueNameOut: A pointer to an RPC_UNICODE_STRING structure that receives the retrieved value
@@ -3734,7 +3652,8 @@ Release: October 21, 2024
 
 44 / 94
 
-Only the maximum length field of the lpValueNameIn is used to determine the buffer length to be
+
+Only the maximum length field of the lpValueNameIn is used to determine the buffer length to be
 allocated by the service. Specify a string with a zero length but maximum length set to the largest
 buffer size needed to hold the value names.
 
@@ -3762,9 +3681,9 @@ The call SHOULD be repeated with a larger output buffer.
 If the input index is beyond the number of values for a key, the server MUST return
 ERROR_NO_MORE_ITEMS. This signals the end of enumeration to the caller.
 
-3.1.5.12
+##### 3.1.5.12 BaseRegFlushKey (Opnum 11)
 
-BaseRegFlushKey (Opnum 11)
+
 
 The BaseRegFlushKey method is called by the client. In response, the server writes all of the subkeys
 and values of the key indicated by the hKey parameter to the backing store for registry data.
@@ -3808,7 +3727,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-The caller MUST have KEY_QUERY_VALUE access rights to invoke this method. For more information,
+
+The caller MUST have KEY_QUERY_VALUE access rights to invoke this method. For more information,
 see section 2.2.4.
 
 The server MUST return 0 to indicate success, or an appropriate error code (as specified in [MS-
@@ -3816,9 +3736,9 @@ ERREF]) to indicate an error.
 
 If the caller does not have access, the server MUST return ERROR_ACCESS_DENIED.
 
-3.1.5.13
+##### 3.1.5.13 BaseRegGetKeySecurity (Opnum 12)
 
-BaseRegGetKeySecurity (Opnum 12)
+
 
 The BaseRegGetKeySecurity method is called by the client. In response, the server returns a copy of
 the security descriptor that protects the specified open registry key.
@@ -3891,7 +3811,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If hKey refers to a key that is one of the predefined performance handles
+
+If hKey refers to a key that is one of the predefined performance handles
 (HKEY_PERFORMANCE_DATA, HKEY_PERFORMANCE_TEXT or HKEY_PERFORMANCE_NLSTEXT) and
 the client has set bit 0x8 (SACL_SECURITY_INFORMATION) in the SecurityInformation parameter, the
 server MUST fail the method and return ERROR_PRIVILEGE_NOT_HELD.
@@ -3918,9 +3839,9 @@ indicated by the cbInSecurityDescriptor field of the RPC_SECURITY_DESCRIPTOR str
 to by the pRpcSecurityDescriptorOut parameter. The remaining fields of the
 RPC_SECURITY_DESCRIPTOR structure MUST be NULL.
 
-3.1.5.14
+##### 3.1.5.14 BaseRegLoadKey (Opnum 13)
 
-BaseRegLoadKey (Opnum 13)
+
 
 The BaseRegLoadKey method is called by the client. In response, the server loads key, subkey, and
 value data from a file and inserts the data into the registry hierarchy.
@@ -3964,7 +3885,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
+
+Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
 nonzero error code, as specified in [MS-ERREF] section 2.2. The most common error codes are
 listed in the following table.
 
@@ -4031,9 +3953,9 @@ ERROR_WRITE_PROTECT.
 The server MUST return 0 to indicate success or an appropriate error code (as specified in [MS-
 ERREF]) to indicate an error.
 
-3.1.5.15
+##### 3.1.5.15 BaseRegOpenKey (Opnum 15)
 
-BaseRegOpenKey (Opnum 15)
+
 
 The BaseRegOpenKey method is called by the client. In response, the server opens a specified key for
 access and returns a handle to it.
@@ -4045,7 +3967,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
- error_status_t BaseRegOpenKey(
+
+ error_status_t BaseRegOpenKey(
    [in] RPC_HKEY hKey,
    [in] PRRP_UNICODE_STRING lpSubKey,
    [in] DWORD dwOptions,
@@ -4119,7 +4042,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the server is a 64-bit registry server and supports both the 32-bit and 64-bit key namespaces, as
+
+If the server is a 64-bit registry server and supports both the 32-bit and 64-bit key namespaces, as
 defined in section 3.1.1.4, the server MUST first check if both the KEY_WOW64_64KEY and
 KEY_WOW64_32KEY bits are set in the samDesired parameter. If both KEY_WOW64_64KEY and
 KEY_WOW64_32KEY are set, the server SHOULD<20> fail the method and return
@@ -4190,7 +4114,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Privileges Held
+
+Privileges Held
 
 Only Backup
 
@@ -4254,9 +4179,9 @@ ERROR_ACCESS_DENIED.
 The server MUST return 0 to indicate success or an appropriate error code (as specified in [MS-ERREF]
 section 2.2 or error codes specified in section 2.2.6) to indicate an error.
 
-3.1.5.16
+##### 3.1.5.16 BaseRegQueryInfoKey (Opnum 16)
 
-BaseRegQueryInfoKey (Opnum 16)
+
 
 The BaseRegQueryInfoKey method is called by the client. In response, the server returns relevant
 information on the key that corresponds to the specified key handle.
@@ -4281,7 +4206,8 @@ Release: October 21, 2024
 
 51 / 94
 
- );
+
+ );
 
 hKey: A handle to a key that MUST have been opened previously by using one of the open methods
 that are specified in section 3.1.5: OpenClassesRoot, OpenCurrentUser, OpenLocalMachine,
@@ -4365,7 +4291,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4424,9 +4351,9 @@ lpcbMaxValueLen, or lpftLastWriteTime is NULL the server MUST return ERROR_INVAL
 
 If the caller does not have access, the server MUST return ERROR_ACCESS_DENIED.
 
-3.1.5.17
+##### 3.1.5.17 BaseRegQueryValue (Opnum 17)
 
-BaseRegQueryValue (Opnum 17)
+
 
 The BaseRegQueryValue method is called by the client. In response, the server returns the data that
 is associated with the named value of a specified registry open key. If a value name is not specified,
@@ -4438,7 +4365,8 @@ Release: October 21, 2024
 
 53 / 94
 
-the server returns the data that is associated with the default value of the specified registry open
+
+the server returns the data that is associated with the default value of the specified registry open
 key.
 
  error_status_t BaseRegQueryValue(
@@ -4520,7 +4448,8 @@ Release: October 21, 2024
 
 54 / 94
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4584,9 +4513,9 @@ see section 2.2.4.
 
 If the caller does not have access, the server MUST return ERROR_ACCESS_DENIED.
 
-3.1.5.18
+##### 3.1.5.18 BaseRegReplaceKey (Opnum 18)
 
-BaseRegReplaceKey (Opnum 18)
+
 
 The BaseRegReplaceKey method is called by the client. In response, the server MUST read the
 registry information from the specified file and replace the specified key with the content of the file.
@@ -4598,7 +4527,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-When the system is started again, the key and subkeys have the same values as those in the specified
+
+When the system is started again, the key and subkeys have the same values as those in the specified
 file.
 
  error_status_t BaseRegReplaceKey(
@@ -4677,7 +4607,8 @@ Release: October 21, 2024
 
 56 / 94
 
-In response to this request from the client, for a successful operation, the server MUST replace the file
+
+In response to this request from the client, for a successful operation, the server MUST replace the file
 that backs up the specified registry key and all its subkeys with another file.
 
 The key that is specified by lpSubKey in the request MUST be a subkey of the key that is identified by
@@ -4710,9 +4641,9 @@ ERREF]) to indicate an error.
 If any of the parameters lpNewFile, lpOldFile, or lpSubKey are NULL or reference a buffer that is NULL,
 the server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.5.19
+##### 3.1.5.19 BaseRegRestoreKey (Opnum 19)
 
-BaseRegRestoreKey (Opnum 19)
+
 
 The BaseRegRestoreKey method is called by the client. In response, the server reads the registry
 information in a specified file and copies it over the specified key. The registry information takes the
@@ -4750,7 +4681,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -4843,12 +4775,13 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the parameter lpFile references a registry file that does not exist, the server MUST return
+
+If the parameter lpFile references a registry file that does not exist, the server MUST return
 ERROR_FILE_NOT_FOUND.
 
-3.1.5.20
+##### 3.1.5.20 BaseRegSaveKey (Opnum 20)
 
-BaseRegSaveKey (Opnum 20)
+
 
 The BaseRegSaveKey method is called by the client. In response, the server saves the specified key,
 subkeys, and values to a new file.
@@ -4921,7 +4854,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-  HKEY_USERS
+
+  HKEY_USERS
 
   HKEY_LOCAL_MACHINE
 
@@ -4941,9 +4875,9 @@ ERROR_INVALID_PARAMETER.
 If the parameter pSecurityAttributes is not a security descriptor as specified in [MS-DTYP] section
 2.4.6, the function MUST return ERROR_INVALID_PARAMETER.
 
-3.1.5.21
+##### 3.1.5.21 BaseRegSetKeySecurity (Opnum 21)
 
-BaseRegSetKeySecurity (Opnum 21)
+
 
 The BaseRegSetKeySecurity method is called by the client. In response, the server sets the security
 descriptor that protects the specified open registry key.
@@ -5000,7 +4934,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-The server MUST first validate that the hKey parameter is currently an open handle which MUST have
+
+The server MUST first validate that the hKey parameter is currently an open handle which MUST have
 been opened previously using one of the methods specified in section 3.1.5. If the hKey parameter is
 not an already opened handle, the server MUST return ERROR_INVALID_PARAMETER.
 
@@ -5014,9 +4949,9 @@ specified in the hKey parameter of the request.
 The server MUST return 0 to indicate success or an appropriate error code (as specified in [MS-
 ERREF]) to indicate an error.
 
-3.1.5.22
+##### 3.1.5.22 BaseRegSetValue (Opnum 22)
 
-BaseRegSetValue (Opnum 22)
+
 
 The BaseRegSetValue method is called by the client. In response, the server sets the data for the
 specified value of a registry key.
@@ -5084,7 +5019,8 @@ Release: October 21, 2024
 
 61 / 94
 
-If the registry server can no longer service registry requests because server shutdown has been
+
+If the registry server can no longer service registry requests because server shutdown has been
 initiated (SHUTDOWNINPROGRESS is set to TRUE), the server MUST return
 ERROR_WRITE_PROTECT.
 
@@ -5131,9 +5067,9 @@ If the parameter lpValueName is NULL, the server MUST return ERROR_INVALID_PARAM
 If the parameter lpValueName is greater than zero and the buffer is NULL, the server MUST return
 ERROR_INVALID_PARAMETER.
 
-3.1.5.23
+##### 3.1.5.23 BaseRegUnLoadKey (Opnum 23)
 
-BaseRegUnLoadKey (Opnum 23)
+
 
 The BaseRegUnLoadKey method is called by the client. In response, the server removes the specified
 discrete body of keys, subkeys, and values that is rooted at the top of the registry hierarchy.
@@ -5154,7 +5090,8 @@ Release: October 21, 2024
 
 62 / 94
 
-   [in] RPC_HKEY hKey,
+
+   [in] RPC_HKEY hKey,
    [in] PRRP_UNICODE_STRING lpSubKey
  );
 
@@ -5239,12 +5176,13 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-If the lpSubKey parameter is greater than zero and the buffer is NULL, the server MUST return
+
+If the lpSubKey parameter is greater than zero and the buffer is NULL, the server MUST return
 ERROR_INVALID_PARAMETER.
 
-3.1.5.24
+##### 3.1.5.24 BaseRegGetVersion (Opnum 26)
 
-BaseRegGetVersion (Opnum 26)
+
 
 The BaseRegGetVersion method is called by the client. In response, the server returns the version of
 the remote registry server. The BaseRegGetVersion method is used by the client and the server to
@@ -5304,9 +5242,9 @@ in section 3.1.1.4.
 The server MUST return 0 to indicate success or an appropriate error code (as specified in [MS-ERREF]
 section 2.2) to indicate an error.
 
-3.1.5.25
+##### 3.1.5.25 OpenCurrentConfig (Opnum 27)
 
-OpenCurrentConfig (Opnum 27)
+
 
 The OpenCurrentConfig method is called by the client. In response, the server attempts to open a
 handle to the HKEY_CURRENT_CONFIG predefined key.
@@ -5318,7 +5256,8 @@ Release: October 21, 2024
 
 64 / 94
 
- error_status_t OpenCurrentConfig(
+
+ error_status_t OpenCurrentConfig(
    [in, unique] PREGISTRY_SERVER_NAME ServerName,
    [in] REGSAM samDesired,
    [out] PRPC_HKEY phKey
@@ -5376,9 +5315,9 @@ The server validates the value of the samDesired parameter set by the client. If
 samDesired includes flags set which are not listed in section 2.2.3, the server MUST return
 ERROR_INVALID_PARAMETER.
 
-3.1.5.26
+##### 3.1.5.26 BaseRegQueryMultipleValues (Opnum 29)
 
-BaseRegQueryMultipleValues (Opnum 29)
+
 
 The BaseRegQueryMultipleValues method is called by the client. In response, the server returns the
 type and data for a client-specified list of value names that are associated with the specified registry
@@ -5398,7 +5337,8 @@ Release: October 21, 2024
 
 65 / 94
 
-   [in] DWORD num_vals,
+
+   [in] DWORD num_vals,
    [in, out, unique, size_is(*ldwTotsize), length_is(*ldwTotsize)]
      char* lpvalueBuf,
    [in, out, ref] LPDWORD ldwTotsize
@@ -5481,7 +5421,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-The server MUST return the size in bytes of the data that is returned in the lpvalueBuf parameter in
+
+The server MUST return the size in bytes of the data that is returned in the lpvalueBuf parameter in
 the ldwTotsize parameter.
 
 The caller MUST have KEY_QUERY_VALUE access rights to invoke this method. For more information,
@@ -5501,9 +5442,9 @@ the server MUST return ERROR_INVALID_PARAMETER.
 For each of the RVALENT structures returned by calling parameter val_listIn: if the return value is
 greater than zero and the buffer is NULL, the server MUST return ERROR_INVALID_PARAMETER.
 
-3.1.5.27
+##### 3.1.5.27 BaseRegSaveKeyEx (Opnum 31)
 
-BaseRegSaveKeyEx (Opnum 31)
+
 
 The BaseRegSaveKeyEx method is called by the client. In response, the server saves the specified
 key, subkeys, and values to a new file. The BaseRegSaveKeyEx method accepts flags that determine
@@ -5556,7 +5497,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5640,9 +5582,10 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-3.1.5.28
 
-OpenPerformanceText (Opnum 32)
+##### 3.1.5.28 OpenPerformanceText (Opnum 32)
+
+
 
 The OpenPerformanceText method is called by the client. In response, the server opens a handle to
 the HKEY_PERFORMANCE_TEXT predefined key. The HKEY_PERFORMANCE_TEXT predefined key
@@ -5683,9 +5626,9 @@ The server MUST create a new valid context handle. The server MUST store the con
 in the handle table (HANDLETABLE) along with a mapping to the HKEY_PERFORMANCE_TEXT  key.
 The server MUST always return 0, even in case of errors.
 
-3.1.5.29
+##### 3.1.5.29 OpenPerformanceNlsText (Opnum 33)
 
-OpenPerformanceNlsText (Opnum 33)
+
 
 The OpenPerformanceNlsText method is called by the client. In response, the server opens a handle to
 the HKEY_PERFORMANCE_NLSTEXT predefined key. The HKEY_PERFORMANCE_NLSTEXT
@@ -5712,7 +5655,8 @@ Release: October 21, 2024
 
 69 / 94
 
-phKey: A pointer to a variable that receives a handle to the root key
+
+phKey: A pointer to a variable that receives a handle to the root key
 
 HKEY_PERFORMANCE_NLSTEXT, as specified in section 3.1.1.7.
 
@@ -5730,9 +5674,9 @@ Server Operations
 
 The server MUST always return 0, even in case of errors.
 
-3.1.5.30
+##### 3.1.5.30 BaseRegQueryMultipleValues2 (Opnum 34)
 
-BaseRegQueryMultipleValues2 (Opnum 34)
+
 
 The BaseRegQueryMultipleValues2 method is called by the client. In response, the server returns the
 type and data for a client-specified list of value names that are associated with the specified registry
@@ -5785,7 +5729,8 @@ Release: October 21, 2024
 
 70 / 94
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5866,9 +5811,10 @@ Release: October 21, 2024
 
 71 / 94
 
-3.1.5.31
 
-BaseRegDeleteKeyEx (Opnum 35)
+##### 3.1.5.31 BaseRegDeleteKeyEx (Opnum 35)
+
+
 
 The BaseRegDeleteKeyEx method is called by the client. In response, the server deletes the specified
 registry key.
@@ -5951,7 +5897,8 @@ Release: October 21, 2024
 
 72 / 94
 
-KEY_WOW64_32KEY are set, the server MUST fail the method and return
+
+KEY_WOW64_32KEY are set, the server MUST fail the method and return
 ERROR_INVALID_PARAMETER.
 
 The server MUST then check to see if the key specified by the hKey parameter is a key that can only
@@ -5982,7 +5929,7 @@ initialized in the Data Store before the deletion happens. The delete function w
 other handles are open to the key. The data inside the hive is revoked at delete key time and is not
 deferred until the last handle close operation.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The FLUSH_TIMER_EVENT occurs when the FLUSH_TIMER expires. When the FLUSH_TIMER expires,
 all registry keys and value data for keys with the KEYISMODIFIED property set to TRUE are written to
@@ -5992,7 +5939,7 @@ Keys with a KEYTYPE set to 0x00000001 (volatile), as well as keys that have the
 KEYNOPERIODICFLUSH property set to TRUE, MUST NOT be written to the backing store for registry
 data when the FLUSH_TIMER_EVENT occurs.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The remote registry server supports access to the registry key namespace (KEYS32 and KEYS64) on
 the local server by using the same interface as used in remote access, except for the remote server
@@ -6018,7 +5965,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-
+
+
 
 
 
@@ -6056,7 +6004,7 @@ KEYS64 to the backing store for each key that does not have the KEYNOPERIODICFLU
 
 When system shutdown occurs, keys that have the KEYNOPERIODICFLUSH property set are discarded.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client side of this protocol is a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
@@ -6070,12 +6018,13 @@ Release: October 21, 2024
 
 74 / 94
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section describes a sequence of several operations as used in common scenarios to illustrate the
 function of the Windows Remote Registry Protocol.
 
-4.1  Reading a Registry Key and Value
+### 4.1 Reading a Registry Key and Value
 
 The operations in reading a registry key and value are as follows:
 
@@ -6098,7 +6047,7 @@ BaseRegQueryValue method. The client uses the value for client-specific operatio
 
 BaseRegCloseKey method.
 
-4.2  Writing a Registry Key and Value
+### 4.2 Writing a Registry Key and Value
 
 The operations in writing a registry key and value are as follows:
 
@@ -6129,7 +6078,7 @@ handles by using the BaseRegCloseKey method.
 If there are multiple writes to the same registry key or value, the last one wins. No ordering
 relationships can be specified.
 
-4.3  Detailed Example
+### 4.3 Detailed Example
 
 This section provides a more detailed example of reading a registry key and value.
 
@@ -6153,7 +6102,8 @@ Release: October 21, 2024
 
 75 / 94
 
-  When the server receives this request from the client, the server opens the handle to the root key
+
+  When the server receives this request from the client, the server opens the handle to the root key
 HKEY_LOCAL_MACHINE with read access, and returns 0 (ERROR_SUCCESS) and the pointer to
 the opened handle in the phKey parameter of the response.
 
@@ -6192,14 +6142,15 @@ Release: October 21, 2024
 
 76 / 94
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Registry settings can affect remote access to the registry itself. See section 3.1.5 for information on
 registry settings that control remote access.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -6228,7 +6179,8 @@ Release: October 21, 2024
 
 77 / 94
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  import "ms-dtyp.idl";
 
@@ -6304,7 +6256,8 @@ Release: October 21, 2024
 
 78 / 94
 
-         [ in ] REGSAM  samDesired,
+
+         [ in ] REGSAM  samDesired,
          [ out ] PRPC_HKEY phKey
          );
 
@@ -6381,7 +6334,8 @@ Release: October 21, 2024
 
 79 / 94
 
-     error_status_t
+
+     error_status_t
      BaseRegGetKeySecurity(
          [ in ] RPC_HKEY hKey,
          [ in ] SECURITY_INFORMATION SecurityInformation,
@@ -6456,7 +6410,8 @@ Release: October 21, 2024
 
 80 / 94
 
-     error_status_t
+
+     error_status_t
      BaseRegSaveKey(
          [ in ] RPC_HKEY hKey,
          [ in ] PRRP_UNICODE_STRING lpFile,
@@ -6532,7 +6487,8 @@ Release: October 21, 2024
 
 81 / 94
 
-         [ in ] DWORD    Flags
+
+         [ in ] DWORD    Flags
          );
 
      error_status_t
@@ -6580,7 +6536,8 @@ Release: October 21, 2024
 
 82 / 94
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6647,7 +6604,8 @@ Release: October 21, 2024
 
 83 / 94
 
-<2> Section 2.1.1: Windows Remote Registry Protocol server specifies "ncacn_np" as the RPC
+
+<2> Section 2.1.1: Windows Remote Registry Protocol server specifies "ncacn_np" as the RPC
 protocol to the RPC implementation [MS-RPCE].
 
 <3> Section 2.1.2: Windows Remote Registry Protocol clients use one of the following RPC protocol
@@ -6732,7 +6690,8 @@ Release: October 21, 2024
 
 84 / 94
 
-
+
+
 
 If the value does not exist or is not one of those listed above, the remote registry client will use
 the DEFAULT policy.
@@ -6805,7 +6764,8 @@ Release: October 21, 2024
 
 85 / 94
 
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy
 
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 
@@ -6876,7 +6836,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Language Pack
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Language Pack
 
 HKEY_CURRENT_USER\SOFTWARE\Classes except for the following subtrees:
 
@@ -6947,7 +6908,8 @@ Release: October 21, 2024
 
 87 / 94
 
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MTFInputType
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MTFInputType
 
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MTFKeyboardMappings
 
@@ -7017,7 +6979,8 @@ Windows Remote Registry Protocol
 Copyright © 2024 Microsoft Corporation
 Release: October 21, 2024
 
-<12> Section 3.1.5: In Windows, remote access is controlled by two keys, winreg and AllowedPaths.
+
+<12> Section 3.1.5: In Windows, remote access is controlled by two keys, winreg and AllowedPaths.
 The winreg key specifies groups and users with remote access while the AllowedPaths key allows some
 users, groups, services, and machines to bypass the winreg key restrictions for the specified paths.
 The keys have the following locations under HKEY_LOCAL_MACHINE.
@@ -7082,7 +7045,8 @@ Release: October 21, 2024
 
 89 / 94
 
-<17> Section 3.1.5.7: The 64-bit editions of Windows XP, Windows Server 2003, Windows Vista, and
+
+<17> Section 3.1.5.7: The 64-bit editions of Windows XP, Windows Server 2003, Windows Vista, and
 Windows Server 2008 do not return ERROR_INVALID_PARAMETER when both the KEY_WOW64_64KEY
 and KEY_WOW64_32KEY are set in the samDesired parameter. These releases of Windows assume
 that the client is requesting access to a key in the 64-bit key namespace.
@@ -7143,7 +7107,8 @@ Release: October 21, 2024
 
 90 / 94
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7186,7 +7151,8 @@ Release: October 21, 2024
 
 91 / 94
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 17
@@ -7320,7 +7286,8 @@ Methods
 
 92 / 94
 
-   BaseRegDeleteKey (Opnum 7) 39
+
+   BaseRegDeleteKey (Opnum 7) 39
    BaseRegDeleteKeyEx (Opnum 35) 72
    BaseRegDeleteValue (Opnum 8) 40
    BaseRegEnumKey (Opnum 9) 41
@@ -7463,7 +7430,8 @@ Server
 
 93 / 94
 
-   sequencing rules 25
+
+   sequencing rules 25
    timer events 73
    timers 24
 Standards assignments 10

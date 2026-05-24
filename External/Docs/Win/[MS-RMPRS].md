@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 110
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: April 23, 2024
 
 2 / 110
 
-Date
+
+Date
 
 Revision
 History
@@ -510,501 +512,199 @@ Release: April 23, 2024
 
 3 / 110
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-ServerSoap (FindServiceLocations) Overview ................................................. 12
-SubEnrollServiceSoap Overview ................................................................... 12
-ServerSoap (GetLicensorCertificate) Overview ................................................ 13
-GroupExpansionWebServiceSoap Overview .................................................... 13
-Binary Group Expansion Overview ................................................................ 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-
-2.1.1.2
-
-2.1.1.1
-
-2.2.4.1
-2.2.4.2
-
-2.1.1.2.1
-2.1.1.2.2
-
-2.1.1.1.1
-2.1.1.1.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-HTTP Transport for Binary Group Expansion ................................................... 16
-Client Details ........................................................................................ 17
-Sending Request ............................................................................. 17
-Receiving Reply ............................................................................... 17
-Server Details ....................................................................................... 17
-Receiving Request ........................................................................... 17
-Sending Reply ................................................................................. 18
-Common Message Syntax ................................................................................. 18
-Namespaces .............................................................................................. 18
-Messages ................................................................................................... 19
-Elements ................................................................................................... 19
-Complex Types ........................................................................................... 19
-ArrayOfString Complex Type .................................................................. 19
-VersionData Complex Type..................................................................... 19
-Simple Types ............................................................................................. 20
-Attributes .................................................................................................. 20
-Groups ...................................................................................................... 20
-Attribute Groups ......................................................................................... 20
-Common Data Structures ............................................................................ 20
-Common Fault Codes............................................................................. 20
-Binary Group Expansion Interface ...................................................................... 21
-Serialized Octet Stream ............................................................................... 21
-SerializationHeaderRecord ...................................................................... 22
-IsPrincipalMemberOfRequest .................................................................. 23
-ArgumentsArray .............................................................................. 24
-IsPrincipalMemberOfResponse ................................................................ 25
-ReturnArray .................................................................................... 26
-ReturnArgumentsArray ..................................................................... 27
-MessageEnd ......................................................................................... 27
-Common Enumerations ............................................................................... 28
-RecordTypeEnumeration ........................................................................ 28
-BinaryTypeEnumeration ......................................................................... 29
-PrimitiveTypeEnumeration...................................................................... 29
-MessageFlags ....................................................................................... 30
-Common Structures .................................................................................... 30
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2.3.1.3.1
-2.3.1.3.2
-
-2.3.1.1
-2.3.1.2
-
-2.3.1.2.1
-
-2.3.1.3
-
-2.3.1.4
-
-2.2.9.1
-
-2.3.3
-
-2.3.1
-
-2.3.2
-
-2.3
-
-[MS-RMPRS] - v20240423
-Rights Management Services (RMS): Server-to-Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 110
-
-2.3.4
-
-2.3.5
-
-2.3.3.1
-2.3.3.2
-2.3.3.3
-2.3.3.4
-
-2.3.4.1
-2.3.4.2
-2.3.4.3
-
-2.3.5.1
-2.3.5.2
-2.3.5.3
-2.3.5.4
-2.3.5.5
-2.3.5.6
-2.3.5.7
-
-2.3.6
-
-2.3.6.1
-2.3.6.2
-2.3.6.3
-2.3.6.4
-2.3.6.5
-2.3.6.6
-2.3.6.7
-2.3.6.8
-2.3.6.9
-2.3.6.10
-
-Single .................................................................................................. 31
-ValueWithCode ..................................................................................... 31
-StringValueWithCode ............................................................................. 31
-LengthPrefixedString ............................................................................. 31
-Common Records ....................................................................................... 34
-BinaryLibrary ........................................................................................ 34
-ArraySingleString .................................................................................. 35
-ArraySingleObject ................................................................................. 35
-Member Reference Records .......................................................................... 36
-MemberPrimitiveTyped .......................................................................... 36
-MemberPrimitiveUnTyped....................................................................... 36
-MemberReference ................................................................................. 37
-ObjectNull ............................................................................................ 37
-ObjectNullMultiple ................................................................................. 37
-ObjectNullMultiple256 ............................................................................ 38
-BinaryObjectString ................................................................................ 38
-Class Records ............................................................................................. 38
-LogicalCallContext ................................................................................. 38
-Principal ............................................................................................... 39
-ExplicitParseEnum ................................................................................. 44
-ListDictionary ....................................................................................... 45
-HashTable ............................................................................................ 47
-StringCollection .................................................................................... 49
-DictionaryNode ..................................................................................... 50
-ArrayList .............................................................................................. 52
-RemotingException ............................................................................... 53
-ClassWithId .......................................................................................... 56
-
-3.1
-
-3.2
-
-3.1.4.1
-
-3.2.4.1
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 58
-Common Details .............................................................................................. 58
-Abstract Data Model .................................................................................... 58
-Timers ...................................................................................................... 58
-Initialization ............................................................................................... 58
-Message Processing Events and Sequencing Rules .......................................... 58
-Common SOAP Headers ......................................................................... 58
-Timer Events .............................................................................................. 59
-Other Local Events ...................................................................................... 59
-ServerSoap (FindServiceLocations) Server Details ................................................ 59
-Abstract Data Model .................................................................................... 59
-Timers ...................................................................................................... 59
-Initialization ............................................................................................... 59
-Message Processing Events and Sequencing Rules .......................................... 59
-FindServiceLocations ............................................................................. 60
-Messages ....................................................................................... 61
-FindServiceLocationsSoapIn Request ............................................ 61
-FindServiceLocationsSoapOut Response ........................................ 61
-Elements ........................................................................................ 62
-FindServiceLocations .................................................................. 62
-FindServiceLocationsResponse ..................................................... 62
-Complex Types ............................................................................... 62
-ArrayOfServiceLocationRequest Complex Type .............................. 63
-ServiceLocationRequest Complex Type ......................................... 63
-ArrayOfServiceLocationResponse Complex Type ............................ 63
-ServiceLocationResponse Complex Type ....................................... 64
-Simple Types .................................................................................. 64
-ServiceType Simple Type ............................................................ 64
-Timer Events .............................................................................................. 65
-Other Local Events ...................................................................................... 65
-
-3.2.4.1.3.1
-3.2.4.1.3.2
-3.2.4.1.3.3
-3.2.4.1.3.4
-
-3.2.4.1.1.1
-3.2.4.1.1.2
-
-3.2.4.1.2.1
-3.2.4.1.2.2
-
-3.2.4.1.4.1
-
-3.2.5
-3.2.6
-
-3.2.4.1.4
-
-3.2.4.1.3
-
-3.2.4.1.2
-
-3.2.4.1.1
-
-[MS-RMPRS] - v20240423
-Rights Management Services (RMS): Server-to-Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 110
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-
-3.3.4.1.1
-
-3.3.4.1.2
-
-3.3.4.1.3
-
-3.3.4.1.1.1
-3.3.4.1.1.2
-
-3.4.4.1.1.1
-3.4.4.1.1.2
-
-3.3.4.1.2.1
-3.3.4.1.2.2
-
-3.3.4.1.3.1
-3.3.4.1.3.2
-3.3.4.1.3.3
-3.3.4.1.3.4
-
-SubEnrollServiceSoap Server Details .................................................................. 65
-Abstract Data Model .................................................................................... 65
-Timers ...................................................................................................... 66
-Initialization ............................................................................................... 66
-Message Processing Events and Sequencing Rules .......................................... 66
-SubEnroll ............................................................................................. 66
-Messages ....................................................................................... 67
-SubEnrollSoapIn Request ............................................................ 68
-SubEnrollSoapOut Response ........................................................ 68
-Elements ........................................................................................ 68
-SubEnroll .................................................................................. 68
-SubEnrollResponse ..................................................................... 69
-Complex Types ............................................................................... 69
-SubEnrollParameters ComplexType .............................................. 69
-EnrolleeCertificatePublicKey Complex Type .................................... 70
-EnrolleeServerInformation Complex Type ..................................... 70
-SubEnrollResponse Complex Type ................................................ 71
-Timer Events .............................................................................................. 71
-Other Local Events ...................................................................................... 71
-ServerSoap (GetLicensorCertificate) Server Details .............................................. 71
-Abstract Data Model .................................................................................... 71
-Timers ...................................................................................................... 71
-Initialization ............................................................................................... 72
-Message Processing Events and Sequencing Rules .......................................... 72
-GetLicensorCertificate ............................................................................ 72
-Messages ....................................................................................... 73
-GetLicensorCertificateSoapIn Request .......................................... 73
-GetLicensorCertificateSoapOut Response ...................................... 73
-Elements ........................................................................................ 73
-GetLicensorCertificate ................................................................. 74
-GetLicensorCertificateResponse ................................................... 74
-Complex Types ............................................................................... 74
-LicensorCertChain Complex Type ................................................. 74
-ArrayOfXmlNode Complex Type ................................................... 75
-Timer Events .............................................................................................. 75
-Other Local Events ...................................................................................... 75
-GroupExpansionWebServiceSoap Server Details ................................................... 75
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 76
-Initialization ............................................................................................... 76
-Message Processing Events and Sequencing Rules .......................................... 76
-IsPrincipalMemberOf ............................................................................. 76
-Messages ....................................................................................... 77
-IsPrincipalMemberOfSoapIn Request ............................................ 77
-IsPrincipalMemberOfSoapOut Response ........................................ 78
-Elements ........................................................................................ 78
-IsPrincipalMemberOf .................................................................. 78
-IsPrincipalMemberOfResponse ..................................................... 79
-Timer Events .............................................................................................. 79
-Other Local Events ...................................................................................... 79
-Binary Group Expansion Server Details ............................................................... 79
-Abstract Data Model .................................................................................... 80
-Timers ...................................................................................................... 80
-Initialization ............................................................................................... 80
-Message Processing Events and Sequencing Rules .......................................... 80
-IsPrincipalMemberOf ............................................................................. 80
-Timer Events .............................................................................................. 80
-Other Local Events ...................................................................................... 80
-
-3.5.4.1.1.1
-3.5.4.1.1.2
-
-3.4.4.1.3.1
-3.4.4.1.3.2
-
-3.5.4.1.2.1
-3.5.4.1.2.2
-
-3.4.4.1.2.1
-3.4.4.1.2.2
-
-3.4
-
-3.3.5
-3.3.6
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.4.1
-
-3.4.4.1.1
-
-3.4.4.1.2
-
-3.4.4.1.3
-
-3.4.5
-3.4.6
-
-3.5
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.4.1
-
-3.5.4.1.1
-
-3.5.4.1.2
-
-3.5.5
-3.5.6
-
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-
-3.6.5
-3.6.6
-
-3.6.4.1
-
-[MS-RMPRS] - v20240423
-Rights Management Services (RMS): Server-to-Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 110
-
-4  Protocol Examples ................................................................................................. 81
-Accessing Protected Information as a Member of an Authorized Group .................... 81
-Provisioning an Extranet User ............................................................................ 82
-Binary Group Expansion .................................................................................... 83
-
-4.1
-4.2
-4.3
-
-5.1
-
-5  Security ................................................................................................................. 92
-Security Considerations for Implementers ........................................................... 92
-ServerSoap (FindServiceLocations) Security Considerations ............................. 92
-SubEnrollServiceSoap Security Considerations ............................................... 92
-ServerSoap (GetLicensorCertificate) Security Considerations ............................ 92
-Group Expansion Security Considerations ...................................................... 92
-Index of Security Parameters ............................................................................ 93
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 94
-ServerSoap (FindServiceLocations) WSDL ........................................................... 94
-SubEnrollServiceSoap WSDL .............................................................................. 96
-ServerSoap (GetLicensorCertificate) WSDL .......................................................... 98
-GroupExpansionWebServiceSoap WSDL ............................................................. 100
-
-6.1
-6.2
-6.3
-6.4
-
-7  Appendix B: Product Behavior ............................................................................. 103
-
-8  Change Tracking .................................................................................................. 106
-
-9  Index ................................................................................................................... 107
-
-[MS-RMPRS] - v20240423
-Rights Management Services (RMS): Server-to-Server Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 110
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 ServerSoap (FindServiceLocations) Overview](#131-serversoap-findservicelocations-overview)
+    - [1.3.2 SubEnrollServiceSoap Overview](#132-subenrollservicesoap-overview)
+    - [1.3.3 ServerSoap (GetLicensorCertificate) Overview](#133-serversoap-getlicensorcertificate-overview)
+    - [1.3.4 GroupExpansionWebServiceSoap Overview](#134-groupexpansionwebservicesoap-overview)
+    - [1.3.5 Binary Group Expansion Overview](#135-binary-group-expansion-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 HTTP Transport for Binary Group Expansion](#211-http-transport-for-binary-group-expansion)
+      - [2.1.1.1 Client Details](#2111-client-details)
+        - [2.1.1.1.1 Sending Request](#21111-sending-request)
+        - [2.1.1.1.2 Receiving Reply](#21112-receiving-reply)
+      - [2.1.1.2 Server Details](#2112-server-details)
+        - [2.1.1.2.1 Receiving Request](#21121-receiving-request)
+        - [2.1.1.2.2 Sending Reply](#21122-sending-reply)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 ArrayOfString Complex Type](#2241-arrayofstring-complex-type)
+      - [2.2.4.2 VersionData Complex Type](#2242-versiondata-complex-type)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Common Data Structures](#229-common-data-structures)
+      - [2.2.9.1 Common Fault Codes](#2291-common-fault-codes)
+  - [2.3 Binary Group Expansion Interface](#23-binary-group-expansion-interface)
+    - [2.3.1 Serialized Octet Stream](#231-serialized-octet-stream)
+      - [2.3.1.1 SerializationHeaderRecord](#2311-serializationheaderrecord)
+      - [2.3.1.2 IsPrincipalMemberOfRequest](#2312-isprincipalmemberofrequest)
+        - [2.3.1.2.1 ArgumentsArray](#23121-argumentsarray)
+      - [2.3.1.3 IsPrincipalMemberOfResponse](#2313-isprincipalmemberofresponse)
+        - [2.3.1.3.1 ReturnArray](#23131-returnarray)
+        - [2.3.1.3.2 ReturnArgumentsArray](#23132-returnargumentsarray)
+      - [2.3.1.4 MessageEnd](#2314-messageend)
+    - [2.3.2 Common Enumerations](#232-common-enumerations)
+      - [2.3.2.1 RecordTypeEnumeration](#2321-recordtypeenumeration)
+      - [2.3.2.2 BinaryTypeEnumeration](#2322-binarytypeenumeration)
+      - [2.3.2.3 PrimitiveTypeEnumeration](#2323-primitivetypeenumeration)
+      - [2.3.2.4 MessageFlags](#2324-messageflags)
+    - [2.3.3 Common Structures](#233-common-structures)
+      - [2.3.3.1 Single](#2331-single)
+      - [2.3.3.2 ValueWithCode](#2332-valuewithcode)
+      - [2.3.3.3 StringValueWithCode](#2333-stringvaluewithcode)
+      - [2.3.3.4 LengthPrefixedString](#2334-lengthprefixedstring)
+    - [2.3.4 Common Records](#234-common-records)
+      - [2.3.4.1 BinaryLibrary](#2341-binarylibrary)
+      - [2.3.4.2 ArraySingleString](#2342-arraysinglestring)
+      - [2.3.4.3 ArraySingleObject](#2343-arraysingleobject)
+    - [2.3.5 Member Reference Records](#235-member-reference-records)
+      - [2.3.5.1 MemberPrimitiveTyped](#2351-memberprimitivetyped)
+      - [2.3.5.2 MemberPrimitiveUnTyped](#2352-memberprimitiveuntyped)
+      - [2.3.5.3 MemberReference](#2353-memberreference)
+      - [2.3.5.4 ObjectNull](#2354-objectnull)
+      - [2.3.5.5 ObjectNullMultiple](#2355-objectnullmultiple)
+      - [2.3.5.6 ObjectNullMultiple256](#2356-objectnullmultiple256)
+      - [2.3.5.7 BinaryObjectString](#2357-binaryobjectstring)
+    - [2.3.6 Class Records](#236-class-records)
+      - [2.3.6.1 LogicalCallContext](#2361-logicalcallcontext)
+      - [2.3.6.2 Principal](#2362-principal)
+      - [2.3.6.3 ExplicitParseEnum](#2363-explicitparseenum)
+      - [2.3.6.4 ListDictionary](#2364-listdictionary)
+      - [2.3.6.5 HashTable](#2365-hashtable)
+      - [2.3.6.6 StringCollection](#2366-stringcollection)
+      - [2.3.6.7 DictionaryNode](#2367-dictionarynode)
+      - [2.3.6.8 ArrayList](#2368-arraylist)
+      - [2.3.6.9 RemotingException](#2369-remotingexception)
+      - [2.3.6.10 ClassWithId](#23610-classwithid)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Common SOAP Headers](#3141-common-soap-headers)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 ServerSoap (FindServiceLocations) Server Details](#32-serversoap-findservicelocations-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 FindServiceLocations](#3241-findservicelocations)
+        - [3.2.4.1.1 Messages](#32411-messages)
+          - [3.2.4.1.1.1 FindServiceLocationsSoapIn Request](#324111-findservicelocationssoapin-request)
+          - [3.2.4.1.1.2 FindServiceLocationsSoapOut Response](#324112-findservicelocationssoapout-response)
+        - [3.2.4.1.2 Elements](#32412-elements)
+          - [3.2.4.1.2.1 FindServiceLocations](#324121-findservicelocations)
+          - [3.2.4.1.2.2 FindServiceLocationsResponse](#324122-findservicelocationsresponse)
+        - [3.2.4.1.3 Complex Types](#32413-complex-types)
+          - [3.2.4.1.3.1 ArrayOfServiceLocationRequest Complex Type](#324131-arrayofservicelocationrequest-complex-type)
+          - [3.2.4.1.3.2 ServiceLocationRequest Complex Type](#324132-servicelocationrequest-complex-type)
+          - [3.2.4.1.3.3 ArrayOfServiceLocationResponse Complex Type](#324133-arrayofservicelocationresponse-complex-type)
+          - [3.2.4.1.3.4 ServiceLocationResponse Complex Type](#324134-servicelocationresponse-complex-type)
+        - [3.2.4.1.4 Simple Types](#32414-simple-types)
+          - [3.2.4.1.4.1 ServiceType Simple Type](#324141-servicetype-simple-type)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 SubEnrollServiceSoap Server Details](#33-subenrollservicesoap-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 SubEnroll](#3341-subenroll)
+        - [3.3.4.1.1 Messages](#33411-messages)
+          - [3.3.4.1.1.1 SubEnrollSoapIn Request](#334111-subenrollsoapin-request)
+          - [3.3.4.1.1.2 SubEnrollSoapOut Response](#334112-subenrollsoapout-response)
+        - [3.3.4.1.2 Elements](#33412-elements)
+          - [3.3.4.1.2.1 SubEnroll](#334121-subenroll)
+          - [3.3.4.1.2.2 SubEnrollResponse](#334122-subenrollresponse)
+        - [3.3.4.1.3 Complex Types](#33413-complex-types)
+          - [3.3.4.1.3.1 SubEnrollParameters ComplexType](#334131-subenrollparameters-complextype)
+          - [3.3.4.1.3.2 EnrolleeCertificatePublicKey Complex Type](#334132-enrolleecertificatepublickey-complex-type)
+          - [3.3.4.1.3.3 EnrolleeServerInformation Complex Type](#334133-enrolleeserverinformation-complex-type)
+          - [3.3.4.1.3.4 SubEnrollResponse Complex Type](#334134-subenrollresponse-complex-type)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 ServerSoap (GetLicensorCertificate) Server Details](#34-serversoap-getlicensorcertificate-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 GetLicensorCertificate](#3441-getlicensorcertificate)
+        - [3.4.4.1.1 Messages](#34411-messages)
+          - [3.4.4.1.1.1 GetLicensorCertificateSoapIn Request](#344111-getlicensorcertificatesoapin-request)
+          - [3.4.4.1.1.2 GetLicensorCertificateSoapOut Response](#344112-getlicensorcertificatesoapout-response)
+        - [3.4.4.1.2 Elements](#34412-elements)
+          - [3.4.4.1.2.1 GetLicensorCertificate](#344121-getlicensorcertificate)
+          - [3.4.4.1.2.2 GetLicensorCertificateResponse](#344122-getlicensorcertificateresponse)
+        - [3.4.4.1.3 Complex Types](#34413-complex-types)
+          - [3.4.4.1.3.1 LicensorCertChain Complex Type](#344131-licensorcertchain-complex-type)
+          - [3.4.4.1.3.2 ArrayOfXmlNode Complex Type](#344132-arrayofxmlnode-complex-type)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 GroupExpansionWebServiceSoap Server Details](#35-groupexpansionwebservicesoap-server-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 IsPrincipalMemberOf](#3541-isprincipalmemberof)
+        - [3.5.4.1.1 Messages](#35411-messages)
+          - [3.5.4.1.1.1 IsPrincipalMemberOfSoapIn Request](#354111-isprincipalmemberofsoapin-request)
+          - [3.5.4.1.1.2 IsPrincipalMemberOfSoapOut Response](#354112-isprincipalmemberofsoapout-response)
+        - [3.5.4.1.2 Elements](#35412-elements)
+          - [3.5.4.1.2.1 IsPrincipalMemberOf](#354121-isprincipalmemberof)
+          - [3.5.4.1.2.2 IsPrincipalMemberOfResponse](#354122-isprincipalmemberofresponse)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+  - [3.6 Binary Group Expansion Server Details](#36-binary-group-expansion-server-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Message Processing Events and Sequencing Rules](#364-message-processing-events-and-sequencing-rules)
+      - [3.6.4.1 IsPrincipalMemberOf](#3641-isprincipalmemberof)
+    - [3.6.5 Timer Events](#365-timer-events)
+    - [3.6.6 Other Local Events](#366-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Accessing Protected Information as a Member of an Authorized Group](#41-accessing-protected-information-as-a-member-of-an-authorized-group)
+  - [4.2 Provisioning an Extranet User](#42-provisioning-an-extranet-user)
+  - [4.3 Binary Group Expansion](#43-binary-group-expansion)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 ServerSoap (FindServiceLocations) Security Considerations](#511-serversoap-findservicelocations-security-considerations)
+    - [5.1.2 SubEnrollServiceSoap Security Considerations](#512-subenrollservicesoap-security-considerations)
+    - [5.1.3 ServerSoap (GetLicensorCertificate) Security Considerations](#513-serversoap-getlicensorcertificate-security-considerations)
+    - [5.1.4 Group Expansion Security Considerations](#514-group-expansion-security-considerations)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 ServerSoap (FindServiceLocations) WSDL](#61-serversoap-findservicelocations-wsdl)
+  - [6.2 SubEnrollServiceSoap WSDL](#62-subenrollservicesoap-wsdl)
+  - [6.3 ServerSoap (GetLicensorCertificate) WSDL](#63-serversoap-getlicensorcertificate-wsdl)
+  - [6.4 GroupExpansionWebServiceSoap WSDL](#64-groupexpansionwebservicesoap-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Rights Management Services (RMS): Server-Server Protocol. The RMS:
 Server-Server Protocol is used to communicate information between RMS servers and consists of four
@@ -1040,7 +740,7 @@ GroupExpansionWebServiceSoap) all use a SOAP-based protocol over HTTP.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1077,7 +777,8 @@ Release: April 23, 2024
 
 8 / 110
 
-creating a unit of trust for its members. Each domain has an identifier that is shared among its
+
+creating a unit of trust for its members. Each domain has an identifier that is shared among its
 members. For more information, see [MS-AUTHSOD] section 1.1.1.5 and [MS-ADTS].
 
 endpoint: A network-specific address of a remote procedure call (RPC) server process for remote
@@ -1152,7 +853,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-use license (UL): An XrML 1.2 license that authorizes a user to access a given protected
+
+use license (UL): An XrML 1.2 license that authorizes a user to access a given protected
 
 content file and describes the usage policies that apply. Also known as an "End-User License
 (EUL)".
@@ -1160,14 +862,14 @@ content file and describes the usage policies that apply. Also known as an "End-
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1218,7 +920,8 @@ Release: April 23, 2024
 
 10 / 110
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RMPRS].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1237,7 +940,7 @@ http://contentguard.com/contact-us
 
 Note Contact the owner of the XrML specification for more information.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [KERBKEY] Microsoft Corporation, "KERB_CRYPTO_KEY", http://msdn.microsoft.com/en-
 us/library/aa378058.aspx
@@ -1245,7 +948,7 @@ us/library/aa378058.aspx
 [RFC8017] Moriarty, K., Ed., Kaliski, B., Jonsson, J., and Rusch, A., "PKCS #1: RSA Cryptography
 Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8017
 
-1.3  Overview
+### 1.3 Overview
 
 Rights Management Services (RMS) is a client/server technology that provides support for information
 protection through content encryption and fine-grained policy definition and enforcement. The Rights
@@ -1259,7 +962,8 @@ Release: April 23, 2024
 
 11 / 110
 
-Figure 1: Roles in the RMS system
+
+Figure 1: Roles in the RMS system
 
 For the creation and consumption of protected information (or content), the RMS system involves
 three active roles: the creator, the consumer, and the server. The creator and consumer are both
@@ -1290,7 +994,7 @@ In these complicated deployments, RMS servers need to communicate with one anoth
 This communication uses the Rights Management Services (RMS): Server-to-Server Protocol defined
 by this specification.
 
-1.3.1  ServerSoap (FindServiceLocations) Overview
+#### 1.3.1 ServerSoap (FindServiceLocations) Overview
 
 RMS servers use the ServerSoap (FindServiceLocations) port type of the RMS: Server-Server Protocol
 to find the URLs for specific services that are provided by other RMS servers. This communication can
@@ -1315,7 +1019,7 @@ return them to the client.
 The ServerSoap (FindServiceLocations) port type uses a SOAP-based protocol over HTTP. It exposes
 one request/response operation: FindServiceLocations.
 
-1.3.2  SubEnrollServiceSoap Overview
+#### 1.3.2 SubEnrollServiceSoap Overview
 
 RMS servers use the SubEnrollServiceSoap port type of the RMS: Server-to-Server Protocol to
 bootstrap subordinate RMS servers.
@@ -1327,7 +1031,8 @@ Release: April 23, 2024
 
 12 / 110
 
-As shown in Figure 1, an RMS server can be deployed as a subordinate to another RMS server. A root
+
+As shown in Figure 1, an RMS server can be deployed as a subordinate to another RMS server. A root
 RMS server grants a subordinate RMS server the right to perform only licensing tasks by issuing a
 subordinate server licensor certificate (SLC) from its own. For a subordinate RMS server, this
 process replaces the standard RMS server bootstrapping process defined in [MS-RMPR] section 3.1.3.
@@ -1335,7 +1040,7 @@ process replaces the standard RMS server bootstrapping process defined in [MS-RM
 The SubEnrollServiceSoap port type uses a SOAP-based protocol over HTTP. It exposes one
 request/response operation: SubEnroll.
 
-1.3.3  ServerSoap (GetLicensorCertificate) Overview
+#### 1.3.3 ServerSoap (GetLicensorCertificate) Overview
 
 RMS servers use the Get Licensor Certificate port type of the RMS: Server-to-Server Protocol to
 establish trust from a root server to a subordinate server.
@@ -1348,7 +1053,7 @@ retrieve the SLC of the main server that contains the appropriate public key.
 The Get Licensor Certificate port type uses a SOAP-based protocol over HTTP. It exposes one
 request/response operation: GetLicensorCertificate.
 
-1.3.4  GroupExpansionWebServiceSoap Overview
+#### 1.3.4 GroupExpansionWebServiceSoap Overview
 
 RMS servers use the Group Expansion over SOAP port type of the RMS: Server-Server Protocol to
 determine group membership of authorized users across complex network directories.
@@ -1364,13 +1069,13 @@ type or the Binary Group Expansion interface.
 The Group Expansion over SOAP port type exposes one request/response operation:
 IsPrincipalMemberOf.
 
-1.3.5  Binary Group Expansion Overview
+#### 1.3.5 Binary Group Expansion Overview
 
 The Binary Group Expansion interface performs the same function as the Group Expansion over SOAP
 port type, as defined in section 1.3.4, only it does so using a binary-over-HTTP protocol. It exposes
 one request/response method: IsPrincipalMemberOf.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The ServerSoap (FindServiceLocations), SubEnrollServiceSoap, ServerSoap (GetLicensorCertificate),
 and GroupExpansionWebServiceSoap port types all use a SOAP-based protocol that uses HTTP 1.1 as
@@ -1387,13 +1092,14 @@ Release: April 23, 2024
 
 13 / 110
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-RMPRS].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
 Figure 2: Transport stack for the RMS: Server-Server Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that the server either knows or can discover the appropriate service locations for the
 services it either provides or references in order to respond to Service Location requests.
@@ -1406,12 +1112,12 @@ query it, or the server is able to verify group membership in some other way (fo
 cached directory information) in order to respond to Group Expansion requests from either the Binary
 Group Expansion Interface interface or the GroupExpansionWebServiceSoap port type. interfaces.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The RMS: Server-to-Server Protocol is used for communication between RMS servers when multiple
 server deployments are used together.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1436,7 +1142,8 @@ Release: April 23, 2024
 
 14 / 110
 
-  Localization: There are no localization-dependent behaviors for the RMS: Server-to-Server
+
+  Localization: There are no localization-dependent behaviors for the RMS: Server-to-Server
 
 Protocol.
 
@@ -1449,12 +1156,12 @@ VersionData structure contains a MinimumVersion and MaximumVersion that the serv
 of understanding. The Binary Group Expansion versioning structure must be adhered to for Binary
 Group Expansion requests.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not contain any vendor-extensible fields. All XML schema are considered
 nonextensible in the RMS: Server-Server Protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The RMS: Server-Server Protocol has not been assigned any standards by any recognized standards
 organization.
@@ -1466,9 +1173,10 @@ Release: April 23, 2024
 
 15 / 110
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RMS: Server-Server Protocol is composed of four port types and one binary-over-HTTP interface:
 
@@ -1543,7 +1251,7 @@ exposed at the following URL:
 
 [baseURL]/DrmRemote/DirectoryServices/DirectoryServices.rem
 
-2.1.1  HTTP Transport for Binary Group Expansion
+#### 2.1.1 HTTP Transport for Binary Group Expansion
 
 The Binary Group Expansion interface uses the HTTP transport ( [RFC1945] and [RFC2616]) to
 transmit method invocation and return information. The message request of a remote method
@@ -1555,7 +1263,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-invocation MUST be sent as part of an HTTP request and the reply from the server MUST be sent as
+
+invocation MUST be sent as part of an HTTP request and the reply from the server MUST be sent as
 part of the HTTP response.
 
 If instructed by a higher-level protocol in an implementation-specific way, implementations of this
@@ -1568,9 +1277,9 @@ form of user name/password or a client-side certificate. Implementations of this
 process the credentials or authentication information. Such processing typically happens entirely
 inside implementations of lower protocol layers.
 
-2.1.1.1  Client Details
+##### 2.1.1.1 Client Details
 
-2.1.1.1.1 Sending Request
+###### 2.1.1.1.1 Sending Request
 
 A remote method invocation request MUST be mapped to an HTTP request and MUST have the
 following HTTP headers:
@@ -1610,7 +1319,7 @@ The message body MAY be sent using chunked transfer coding as specified in [RFC2
 3.6.1. If the message body is not chunked, the Content-Length entity header MUST contain the
 length of the message body in decimal number of octets.
 
-2.1.1.1.2 Receiving Reply
+###### 2.1.1.1.2 Receiving Reply
 
 The implementation MUST wait for a response. If a response is not received before an
 implementation-defined time-out, the implementation SHOULD cancel the request and report an error
@@ -1625,9 +1334,9 @@ An implementation MAY handle other status codes in an implementation-specific wa
 with [RFC2616]. If an error occurs in processing of the other status codes, the response MUST NOT be
 processed any further.
 
-2.1.1.2  Server Details
+##### 2.1.1.2 Server Details
 
-2.1.1.2.1 Receiving Request
+###### 2.1.1.2.1 Receiving Request
 
 [MS-RMPRS] - v20240423
 Rights Management Services (RMS): Server-to-Server Protocol
@@ -1636,7 +1345,8 @@ Release: April 23, 2024
 
 17 / 110
 
-A Remote Method invocation request is mapped to an HTTP request. An implementation MUST accept
+
+A Remote Method invocation request is mapped to an HTTP request. An implementation MUST accept
 request messages that are sent using either HTTP/1.0 or HTTP/1.1. If the HTTP method is neither
 POST nor M-POST, or if the Content-Type is not "application/octet-stream", then an implementation
 MUST send back a transport fault as specified in the following list.
@@ -1655,7 +1365,7 @@ The Reason-Phrase SHOULD be "Bad Request".
 
 The Body of the response MUST be empty.
 
-2.1.1.2.2 Sending Reply
+###### 2.1.1.2.2 Sending Reply
 
 A remote method reply is mapped to an HTTP response and MUST have the following HTTP header
 fields:
@@ -1678,7 +1388,7 @@ OK
 
 Serialized message content.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description Language as
@@ -1686,7 +1396,7 @@ defined in [WSDL].
 
 This protocol uses curly-braced GUID strings, as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1744,7 +1454,8 @@ Release: April 23, 2024
 
 18 / 110
 
-Prefix
+
+Prefix
 
  XML namespace
 
@@ -1758,15 +1469,15 @@ http://microsoft.com/DRM/SubEnrollmentService
 
 http://microsoft.com/DRM/GroupExpansionWebService
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 None.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 None.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification. XML Schema complex type definitions that are specific to a particular operation are
@@ -1782,7 +1493,7 @@ VersionData
 
 Represents the capability version of the requestor and the responder.
 
-2.2.4.1  ArrayOfString Complex Type
+##### 2.2.4.1 ArrayOfString Complex Type
 
 The ArrayOfString complex type is used in the SubEnrollServiceSoap (section 3.3) and
 GroupExpansionWebServiceSoap (section 3.5) port types.
@@ -1803,7 +1514,7 @@ representing a node in an SLC certificate chain.
 In the GroupExpansionWebServiceSoap port type, the string element contains the email address
 contact for a group for which membership is to be checked.
 
-2.2.4.2  VersionData Complex Type
+##### 2.2.4.2 VersionData Complex Type
 
 The VersionData complex type is used to represent the capability version of the requestor and the
 responder.
@@ -1815,7 +1526,8 @@ Release: April 23, 2024
 
 19 / 110
 
-All four port types in the RMS: Server-Server Protocol (that is, ServerSoap (FindServiceLocations),
+
+All four port types in the RMS: Server-Server Protocol (that is, ServerSoap (FindServiceLocations),
 SubEnrollServiceSoap, ServerSoap (GetLicensorCertificate), and GroupExpansionWebServiceSoap) use
 the same SOAP header for both requests and responses. The SOAP header for requests and responses
 to these port types MUST contain the VersionDataelement.
@@ -1846,25 +1558,25 @@ represented by a literal string conforming to the format "a.b.c.d". Subversion v
 major component of the version, value "b" is the next most major, value "c" is the next most
 major, and "d" is the minor subversion value.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 None.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 None.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 None.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 None.
 
-2.2.9  Common Data Structures
+#### 2.2.9 Common Data Structures
 
-2.2.9.1  Common Fault Codes
+##### 2.2.9.1 Common Fault Codes
 
 For port types, the RMS: Server-Server Protocol allows a server to notify a requestor of application-
 level faults by generating SOAP faults (as specified in [SOAP1.1] section 4.4). In the SOAP fault, the
@@ -1881,7 +1593,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Exception
+
+ Exception
 
 ArgumentException
 
@@ -1931,7 +1644,7 @@ Microsoft.DigitalRightsManagement.Utilities.UnspecifiedErrorException  The excep
 
 returned to the client.
 
-2.3  Binary Group Expansion Interface
+### 2.3 Binary Group Expansion Interface
 
 An RMS server uses the Binary Group Expansion interface to verify group membership of a specific
 user with another RMS server. Each message in this interface consists of a serialized octet stream.
@@ -1945,7 +1658,7 @@ make a new IsPrincipalMemberOf request to another server before it can respond t
 requestor. To prevent infinite loops or unacceptably long response times, the request specifies a
 number of servers that have been involved in servicing this group expansion request so far.
 
-2.3.1  Serialized Octet Stream
+#### 2.3.1 Serialized Octet Stream
 
 The Serialized Octet Stream contains a series of records. The first record MUST be a
 SerializationHeaderRecord. For requests, the second record is an IsPrincipalMemberOfRequest. For
@@ -1975,7 +1688,8 @@ Release: April 23, 2024
 
 21 / 110
 
-...
+
+...
 
 ...
 
@@ -2036,7 +1750,7 @@ BinaryObjectString, MemberReference, ObjectNull
 
 MessageEnd (1 byte): A MessageEnd record, as specified in section 2.3.1.4.
 
-2.3.1.1  SerializationHeaderRecord
+##### 2.3.1.1 SerializationHeaderRecord
 
 The SerializationHeaderRecord record MUST be the first record in a binary serialization. This record
 has the major and minor version of the format and the IDs of the top object and the headers.
@@ -2067,7 +1781,8 @@ Release: April 23, 2024
 
 22 / 110
 
-...
+
+...
 
 ...
 
@@ -2106,7 +1821,7 @@ MinorVersion (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that identifie
 
 version of the protocol. The value of this field MUST be 0x00000000.
 
-2.3.1.2  IsPrincipalMemberOfRequest
+##### 2.3.1.2 IsPrincipalMemberOfRequest
 
 The IsPrincipalMemberOfRequest record contains information that is required to extend a Group
 Expansion request.
@@ -2151,7 +1866,8 @@ Release: April 23, 2024
 
 23 / 110
 
-RecordTypeEnum (1 byte): A RecordTypeEnumeration value (section 2.3.2.1) that identifies the
+
+RecordTypeEnum (1 byte): A RecordTypeEnumeration value (section 2.3.2.1) that identifies the
 
 record type. The value MUST be 0x15 for an IsPrincipalMemberOfRequest.
 
@@ -2197,7 +1913,7 @@ TargetGroups (variable): An ArraySingleString record that contains one or more e
 
 representing the groups for which membership is to be checked.
 
-2.3.1.2.1 ArgumentsArray
+###### 2.3.1.2.1 ArgumentsArray
 
 The ArgumentsArray record contains arguments for the IsPrincipalMemberOf operation.
 
@@ -2235,7 +1951,8 @@ Release: April 23, 2024
 
 24 / 110
 
-...
+
+...
 
 TargetGroups
 
@@ -2278,7 +1995,7 @@ incremented as defined in section 2.3.
 
 ObjectNull (1 byte): An ObjectNull record.
 
-2.3.1.3  IsPrincipalMemberOfResponse
+##### 2.3.1.3 IsPrincipalMemberOfResponse
 
 The IsPrincipalMemberOfResponse record contains the information returned in a Binary Group
 Expansion response.
@@ -2324,7 +2041,8 @@ Release: April 23, 2024
 
 25 / 110
 
-...
+
+...
 
 ...
 
@@ -2371,7 +2089,7 @@ contains return arguments for the IsPrincipalMemberOf call.
 
 LogicalCallContext (62 bytes): A LogicalCallContext record, as specified in section 2.3.6.1.
 
-2.3.1.3.1 ReturnArray
+###### 2.3.1.3.1 ReturnArray
 
 The ReturnArray record contains a pair of MemberReferences identifying the output arguments,
 exception details, or call context by ObjectId.
@@ -2410,7 +2128,8 @@ Release: April 23, 2024
 
 26 / 110
 
-...
+
+...
 
 RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the record type. The
 
@@ -2435,7 +2154,7 @@ LogicalCallContext (5 bytes): A MemberReference value that identifies a LogicalC
 later in the serialization stream by ObjectId. This LogicalCallContext MUST be present in the
 serialization stream.
 
-2.3.1.3.2 ReturnArgumentsArray
+###### 2.3.1.3.2 ReturnArgumentsArray
 
 The ReturnArgumentsArray record contains return arguments for the IsPrincipalMemberOf operation.
 
@@ -2486,7 +2205,7 @@ Principal (5 bytes): A MemberReference value that identifies a Principal record 
 
 serialization stream by Object Id.
 
-2.3.1.4  MessageEnd
+##### 2.3.1.4 MessageEnd
 
 The MessageEnd record marks the end of the serialization stream.
 
@@ -2497,7 +2216,8 @@ Release: April 23, 2024
 
 27 / 110
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2514,9 +2234,9 @@ RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the recor
 
 value MUST be 0x0b.
 
-2.3.2  Common Enumerations
+#### 2.3.2 Common Enumerations
 
-2.3.2.1  RecordTypeEnumeration
+##### 2.3.2.1 RecordTypeEnumeration
 
 The RecordTypeEnumeration identifies the type of the record. Each record (except for
 MemberPrimitiveUnTyped) starts with a record type enumeration. The size of the enumeration is one
@@ -2575,7 +2295,8 @@ Release: April 23, 2024
 
 28 / 110
 
-ArraySingleObject:  Identifies an ArraySingleObject record.
+
+ArraySingleObject:  Identifies an ArraySingleObject record.
 
 ArraySingleString:  Identifies an ArraySingleString record.
 
@@ -2583,7 +2304,7 @@ IsPrincipalMemberOfRequest:  Identifies a IsPrincipalMemberOfRequest record.
 
 IsPrincipalMemberOfResponse:  Identifies a IsPrincipalMemberOfResponse record.
 
-2.3.2.2  BinaryTypeEnumeration
+##### 2.3.2.2 BinaryTypeEnumeration
 
 The BinaryTypeEnumeration identifies the type of a class member or an array item. The size of the
 enumeration is one BYTE.
@@ -2613,7 +2334,7 @@ ObjectArray:  The type is a single-dimensional array of System.Object with a low
 
 StringArray:  The type is a single-dimensional array of string with a lower bound of 0.
 
-2.3.2.3  PrimitiveTypeEnumeration
+##### 2.3.2.3 PrimitiveTypeEnumeration
 
 The PrimitiveTypeEnumeration identifies a primitive type value. The size of the enumeration is one
 BYTE.
@@ -2643,11 +2364,12 @@ Release: April 23, 2024
 
 29 / 110
 
-Null:  Identifies a null object.
+
+Null:  Identifies a null object.
 
 String:  Identifies a LengthPrefixedString value.
 
-2.3.2.4  MessageFlags
+##### 2.3.2.4 MessageFlags
 
 The MessageFlags enumeration is used by the IsPrincipalMemberOfRequest or
 IsPrincipalMemberOfResponse records to provide information about the structure of the record. The
@@ -2690,7 +2412,7 @@ IsPrincipalMemberOfResponse record.
 
 ExceptionInArray:  An exception is contained in the ReturnArray record.
 
-2.3.3  Common Structures
+#### 2.3.3 Common Structures
 
 The Binary Group Expansion Interface makes use of the following primitive types as specified in [MS-
 DTYP].
@@ -2715,7 +2437,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.3.1  Single
+
+##### 2.3.3.1 Single
 
 The Single structure represents a 32-bit, single-precision, floating-point value. Primitive types include
 the Single datatype.
@@ -2735,7 +2458,7 @@ Value
 
 Value (4 bytes): A 32-bit, single-precision, floating-point value, as specified in [IEEE754].
 
-2.3.3.2  ValueWithCode
+##### 2.3.3.2 ValueWithCode
 
 The ValueWithCode structure is used to associate a primitive value with an enum that identifies the
 primitive type of the primitive value. This structure is used when the primitive type is not String.
@@ -2767,7 +2490,7 @@ PrimitiveTypeEnumeration value INT32, the Value field MUST contain a valid INT32
 ([MS-DTYP] section 2.2.22). The length of the field is determined by the primitive type of the
 value. This field MUST NOT be present if the value of PrimitiveTypeEnum is Null (0x11).
 
-2.3.3.3  StringValueWithCode
+##### 2.3.3.3 StringValueWithCode
 
 The StringValueWithCode structure is a ValueWithCode where PrimitiveTypeEnumeration is String
 (0x12). The StringValue field is serialized as a LengthPrefixedString.
@@ -2795,7 +2518,7 @@ the data. The value MUST be 0x12 (String).
 
 BinaryObjectString (variable): A LengthPrefixedString that contains the string value.
 
-2.3.3.4  LengthPrefixedString
+##### 2.3.3.4 LengthPrefixedString
 
 The LengthPrefixedString record represents a string value. The string is prefixed by the length of the
 UTF-8 encoded string in bytes. The length is encoded in a variable-length field with a minimum of 1
@@ -2807,7 +2530,8 @@ Release: April 23, 2024
 
 31 / 110
 
-byte and a maximum of 5 bytes. The length is encoded as a variable-length field to minimize the wire
+
+byte and a maximum of 5 bytes. The length is encoded as a variable-length field to minimize the wire
 size.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2929,7 +2653,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length_8-14 (7 bits): Length values range from 16384 to 2097151 (21 bits).
+
+Length_8-14 (7 bits): Length values range from 16384 to 2097151 (21 bits).
 
 B - Reserved_15 (1 bit): The value MUST be 1.
 
@@ -3042,9 +2767,10 @@ Release: April 23, 2024
 
 33 / 110
 
-2.3.4  Common Records
 
-2.3.4.1  BinaryLibrary
+#### 2.3.4 Common Records
+
+##### 2.3.4.1 BinaryLibrary
 
 The BinaryLibrary record associates a 32-bit integer ID with a Library name. <4> This allows other
 records to reference the library name by using the ID. This approach reduces the wire size when there
@@ -3146,7 +2872,8 @@ Release: April 23, 2024
 
 34 / 110
 
-Value
+
+Value
 
 Meaning
 
@@ -3158,7 +2885,7 @@ Principal
 
 ExplicitParseEnum
 
-2.3.4.2  ArraySingleString
+##### 2.3.4.2 ArraySingleString
 
 The ArraySingleString record contains a single-dimensional array whose items are String values.
 
@@ -3203,7 +2930,7 @@ Values (variable): A sequence of data values contained in the array.  Each data 
 
 valid BinaryObjectString record.
 
-2.3.4.3  ArraySingleObject
+##### 2.3.4.3 ArraySingleObject
 
 The ArraySingleObject record contains a single-dimensional array in which each member record MAY
 contain any data value.
@@ -3240,7 +2967,8 @@ Release: April 23, 2024
 
 35 / 110
 
-RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the record type. The
+
+RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the record type. The
 
 value MUST be 0x10.
 
@@ -3256,9 +2984,9 @@ Values (variable): A sequence of data values contained in the array. Each data v
 
 of the record types defined in sections 2.3.4, 2.3.5, and 2.3.6.
 
-2.3.5  Member Reference Records
+#### 2.3.5 Member Reference Records
 
-2.3.5.1  MemberPrimitiveTyped
+##### 2.3.5.1 MemberPrimitiveTyped
 
 The MemberPrimitiveTyped record contains a primitive type value other than a string.
 
@@ -3294,7 +3022,7 @@ Value (variable): The value whose type is inferred from the PrimitiveTypeEnumera
 
 specified in the table in section 2.3.2.3.
 
-2.3.5.2  MemberPrimitiveUnTyped
+##### 2.3.5.2 MemberPrimitiveUnTyped
 
 The MemberPrimitiveUnTyped record is the most compact record to represent a primitive type value.
 This type of record does not have a RecordTypeEnumeration to indicate the record type. The record
@@ -3327,7 +3055,8 @@ Release: April 23, 2024
 
 36 / 110
 
-2.3.5.3  MemberReference
+
+##### 2.3.5.3 MemberReference
 
 The MemberReference record contains a reference to another record that contains the actual value.
 The record is used to serialize values of class members and array items.
@@ -3368,7 +3097,7 @@ value as its ObjectId. Unlike other ID references, there is no restriction on wh
 that defines the ID appears in the serialization stream. A referenced record MAY appear after
 the referencing record.<8>
 
-2.3.5.4  ObjectNull
+##### 2.3.5.4 ObjectNull
 
 The ObjectNull record contains a null object.
 
@@ -3389,7 +3118,7 @@ RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the recor
 
 value MUST be 0x0a.
 
-2.3.5.5  ObjectNullMultiple
+##### 2.3.5.5 ObjectNullMultiple
 
 The ObjectNullMultiple record provides a more compact form for multiple consecutive null records than
 using individual ObjectNull records.
@@ -3426,7 +3155,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.5.6  ObjectNullMultiple256
+
+##### 2.3.5.6 ObjectNullMultiple256
 
 The ObjectNullMultiple256 record provides a compact form for multiple, consecutive null records when
 the count of null records is less than 256.
@@ -3454,7 +3184,7 @@ NullCount (1 byte): A BYTE value ([MS-DTYP] section 2.2.6) that is the count of 
 
 consecutive null objects. The value MUST be in the range of 0 to 255, inclusive.
 
-2.3.5.7  BinaryObjectString
+##### 2.3.5.7 BinaryObjectString
 
 The BinaryObjectString record identifies an object as a string object, and contains information about
 it.
@@ -3490,9 +3220,9 @@ instance in the serialization stream. The value MUST be a positive integer.
 
 Value (variable): A LengthPrefixedString value.
 
-2.3.6  Class Records
+#### 2.3.6 Class Records
 
-2.3.6.1  LogicalCallContext
+##### 2.3.6.1 LogicalCallContext
 
 The LogicalCallContext record is referenced by and serialized for the ReturnArray record.
 
@@ -3526,7 +3256,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -3551,7 +3282,7 @@ MemberCount (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that specifies 
 
 members in this type. Its value MUST be 0x00000000.
 
-2.3.6.2  Principal
+##### 2.3.6.2 Principal
 
 The Principal record contains information about a user that was discovered while checking group
 membership.
@@ -3612,7 +3343,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -3696,7 +3428,8 @@ Release: April 23, 2024
 
 40 / 110
 
-AdditionalInfo1TypeName (46 bytes)
+
+AdditionalInfo1TypeName (46 bytes)
 
 ...
 
@@ -3766,7 +3499,8 @@ Release: April 23, 2024
 
 41 / 110
 
-RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the record type. Its
+
+RecordTypeEnum (1 byte): A RecordTypeEnumeration value that identifies the record type. Its
 
 value MUST be 0x05.
 
@@ -3851,7 +3585,8 @@ Release: April 23, 2024
 
 42 / 110
 
-BinaryTypeEnum6 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
+
+BinaryTypeEnum6 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
 
 sixth member value. The value MUST be 0x01 (String).
 
@@ -3933,11 +3668,12 @@ Release: April 23, 2024
 
 43 / 110
 
-LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a BinaryLibrary
+
+LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a BinaryLibrary
 record by its library ID. A BinaryLibrary record with the LibraryId MUST appear earlier in the
 serialization stream.
 
-2.3.6.3  ExplicitParseEnum
+##### 2.3.6.3 ExplicitParseEnum
 
 The ExplicitParseEnum record is used to provide a value for the eighth serialized member value of a
 Principal record.
@@ -4022,11 +3758,12 @@ Release: April 23, 2024
 
 44 / 110
 
-LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a BinaryLibrary
+
+LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a BinaryLibrary
 record by its library ID. A BinaryLibrary record with the LibraryId MUST appear earlier in the
 serialization stream.
 
-2.3.6.4  ListDictionary
+##### 2.3.6.4 ListDictionary
 
 The ListDictionary record describes a linked list of key-value pairs.
 
@@ -4112,7 +3849,8 @@ AdditionalInfo2
 
 45 / 110
 
-...
+
+...
 
 ...
 
@@ -4194,7 +3932,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AdditionalInfo3 (1 byte): A PrimitiveTypeEnumeration value that specifies the primitive type of the
+
+AdditionalInfo3 (1 byte): A PrimitiveTypeEnumeration value that specifies the primitive type of the
 
 third member value. The value MUST be 0x08 (Int32).
 
@@ -4206,7 +3945,7 @@ LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a
 record by its library ID. A BinaryLibrary record with the LibraryId MUST appear earlier in the
 serialization stream.
 
-2.3.6.5  HashTable
+##### 2.3.6.5 HashTable
 
 The HashTable defines an associative structure (hash table) consisting of two arrays: one containing
 keys, the other containing values. These arrays are ArraySingleObject records in the serialized octet
@@ -4280,7 +4019,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -4369,7 +4109,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MemberName5 (9 bytes): A LengthPrefixedString containing the fifth member name. The value
+
+MemberName5 (9 bytes): A LengthPrefixedString containing the fifth member name. The value
 
 MUST be "HashSize".
 
@@ -4429,7 +4170,7 @@ AdditionalInfo5 (1 byte): A PrimitiveTypeEnumeration value that specifies the pr
 
 fifth member value. The value MUST be 0x08 (Int32).
 
-2.3.6.6  StringCollection
+##### 2.3.6.6 StringCollection
 
 The StringCollection record defines a class containing an ArrayList of strings.
 
@@ -4461,7 +4202,8 @@ Release: April 23, 2024
 
 49 / 110
 
-...
+
+...
 
 ...
 
@@ -4517,7 +4259,7 @@ LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a
 record by its library ID. A BinaryLibrary record with the LibraryId MUST appear earlier in the
 serialization stream.
 
-2.3.6.7  DictionaryNode
+##### 2.3.6.7 DictionaryNode
 
 The DictionaryNode record defines a node in a ListDictionary.
 
@@ -4549,7 +4291,8 @@ Release: April 23, 2024
 
 50 / 110
 
-...
+
+...
 
 ...
 
@@ -4632,7 +4375,8 @@ Release: April 23, 2024
 
 51 / 110
 
-BinaryTypeEnum2 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
+
+BinaryTypeEnum2 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
 
 second member value. The value MUST be 0x02 (Object).
 
@@ -4655,7 +4399,7 @@ LibraryId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references a
 record by its library ID. A BinaryLibrary record with the LibraryId MUST appear earlier in the
 serialization stream.
 
-2.3.6.8  ArrayList
+##### 2.3.6.8 ArrayList
 
 The ArrayList record defines an array of objects.
 
@@ -4725,7 +4469,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ObjectId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that uniquely identifies the object in
+
+ObjectId (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that uniquely identifies the object in
 the serialization stream. An implementation MAY use any algorithm to generate the unique IDs. If
 the ObjectId is referenced by a MemberReference record elsewhere in the serialization stream,
 the ObjectId MUST be positive. If the ObjectId is not referenced by any MemberReference in the
@@ -4771,7 +4516,7 @@ AdditionalInfo3 (1 byte): A PrimitiveTypeEnumeration value that specifies the pr
 
 third member value. The value MUST be 0x08 (Int32).
 
-2.3.6.9  RemotingException
+##### 2.3.6.9 RemotingException
 
 The RemotingException record is used to serialize an exception when the server encounters an error
 processing the request.
@@ -4816,7 +4561,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -4891,7 +4637,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BinaryTypeEnum5
+
+BinaryTypeEnum5
 
 BinaryTypeEnum6
 
@@ -4980,7 +4727,8 @@ Release: April 23, 2024
 
 55 / 110
 
-BinaryTypeEnum1 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
+
+BinaryTypeEnum1 (1 byte): A BinaryTypeEnumeration value that specifies the binary type of the
 
 first member value. The value MUST be 0x01 (String).
 
@@ -5032,9 +4780,9 @@ AdditionalInfo9 (1 byte): A PrimitiveTypeEnumeration value that specifies the pr
 
 ninth member value. The value MUST be 0x08 (Int32).
 
-2.3.6.10
+##### 2.3.6.10 ClassWithId
 
-ClassWithId
+
 
 The ClassWithId record is the most compact class record. It has no metadata. It refers to metadata
 defined in other class records.
@@ -5075,7 +4823,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MetadataID (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references one of the other
+
+MetadataID (4 bytes): An INT32 value ([MS-DTYP] section 2.2.22) that references one of the other
 class records by its ObjectId. A class record with the value of this field in its ObjectId field MUST
 appear earlier in the serialization stream.
 
@@ -5086,7 +4835,8 @@ Release: April 23, 2024
 
 57 / 110
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Rights Management Services (RMS): Server-to-Server Protocol operates between two RMS
 servers. The initiator or requestor is the client for the protocol, and the responder is the server for the
@@ -5097,27 +4847,27 @@ are required on the client side of this protocol. Calls made by the higher-layer
 are passed directly to the transport, and the results returned by the transport are passed directly back
 to the higher-layer protocol or application.
 
-3.1  Common Details
+### 3.1 Common Details
 
 This section describes protocol details that are common between multiple port types.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.4.1  Common SOAP Headers
+##### 3.1.4.1 Common SOAP Headers
 
 All four port types in the RMS: Server-Server Protocol (that is, ServerSoap (FindServiceLocations),
 SubEnrollServiceSoap, ServerSoap (GetLicensorCertificate), and GroupExpansionWebServiceSoap) use
@@ -5150,20 +4900,21 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST specify the highest capability version it can support as the MaximumVersion parameter. If the
+
+MUST specify the highest capability version it can support as the MaximumVersion parameter. If the
 responder's maximum capability version is lower than the requestor's maximum capability version, the
 requestor SHOULD<9> resend its request and alter its request to conform to the capability version
 range specified by the responder.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  ServerSoap (FindServiceLocations) Server Details
+### 3.2 ServerSoap (FindServiceLocations) Server Details
 
 A requesting RMS server uses the ServerSoap (FindServiceLocations) port type for
 FindServiceLocations to discover the URLs of services offered by a responding RMS server. These URLs
@@ -5172,7 +4923,7 @@ to make another request of the responding RMS server.
 
 The ServerSoap (FindServiceLocations) port type provides one operation: FindServiceLocations.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5184,15 +4935,15 @@ structure that stores the conceptual data MAY be used in the implementation.
 In order to properly implement the ServerSoap (FindServiceLocations) port type, the responder MUST
 be able to provide the URLs it uses.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 An RMS server uses the ServerSoap (FindServiceLocations) port type to retrieve URLs for services that
 are either offered by or known to the responding server.
@@ -5214,11 +4965,12 @@ Release: April 23, 2024
 
 59 / 110
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-RMPRS].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
-3.2.4.1  FindServiceLocations
+##### 3.2.4.1 FindServiceLocations
 
 The FindServiceLocations operation provides a mechanism for a requestor to retrieve a URL for a
 specified service that is either offered by or known to the responding server.
@@ -5276,7 +5028,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Service Type
+
+ Service Type
 
  Description
 
@@ -5305,7 +5058,7 @@ but the service type MUST still be included. For an unsuccessful request, the se
 fault code. This operation throws only Common Fault Codes for the RMS: Server-Server Protocol as
 specified in section 2.2.9.1.
 
-3.2.4.1.1 Messages
+###### 3.2.4.1.1 Messages
 
 The following table summarizes the XML Schema message definitions that are specific to this
 operation.
@@ -5320,7 +5073,7 @@ Requests a URL for a specific type of service (or services).
 
 FindServiceLocationsSoapOut response  Returns a URL for each service that has been requested.
 
-3.2.4.1.1.1  FindServiceLocationsSoapIn Request
+###### 3.2.4.1.1.1 FindServiceLocationsSoapIn Request
 
 The FindServiceLocationsSoapIn request submits a type of service for which a URL is being requested.
 Multiple service locations MAY be requested at one time.<14>
@@ -5333,7 +5086,7 @@ parameters: An element that contains the body of the SOAP request. A valid
 
 FindServiceLocationsSoapIn request MUST follow the schema specified in section 3.2.4.1.2.1.
 
-3.2.4.1.1.2  FindServiceLocationsSoapOut Response
+###### 3.2.4.1.1.2 FindServiceLocationsSoapOut Response
 
 The FindServiceLocationsSoapOut response returns a URL for each service that has been requested
 when a URL is available.
@@ -5353,11 +5106,12 @@ Release: April 23, 2024
 
 61 / 110
 
-parameters: An element that contains the body of the SOAP response. A valid
+
+parameters: An element that contains the body of the SOAP response. A valid
 
 FindServiceLocationsSoapOut response MUST follow the schema defined in section 3.2.4.1.2.2.
 
-3.2.4.1.2 Elements
+###### 3.2.4.1.2 Elements
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification.
@@ -5372,7 +5126,7 @@ Contains the body of the SOAP request.
 
 FindServiceLocationsResponse  Contains the body of the SOAP response.
 
-3.2.4.1.2.1  FindServiceLocations
+###### 3.2.4.1.2.1 FindServiceLocations
 
 The FindServiceLocationsRequest element contains the body of the SOAP request.
 
@@ -5393,7 +5147,7 @@ valid request, the array MUST contain at least one request for a service locatio
 contain more than one request for a service location. The array MUST follow the schema in section
 3.2.4.1.3.1.
 
-3.2.4.1.2.2  FindServiceLocationsResponse
+###### 3.2.4.1.2.2 FindServiceLocationsResponse
 
 The FindServiceLocationsResponse element contains the body of the SOAP response.
 
@@ -5414,7 +5168,7 @@ once. This array MUST contain the same number of elements as the array in the re
 element of the array MUST contain a service location response, even if no URL was found. The
 array MUST follow the schema in section 3.2.4.1.3.3.
 
-3.2.4.1.3 Complex Types
+###### 3.2.4.1.3 Complex Types
 
 [MS-RMPRS] - v20240423
 Rights Management Services (RMS): Server-to-Server Protocol
@@ -5423,7 +5177,8 @@ Release: April 23, 2024
 
 62 / 110
 
-The following table summarizes the XML Schema complex type definitions that are specific to this
+
+The following table summarizes the XML Schema complex type definitions that are specific to this
 operation.
 
 Complex Type
@@ -5444,7 +5199,7 @@ ServiceLocationResponse
 
 Contains a URL of a server and the type of service the server offers.
 
-3.2.4.1.3.1  ArrayOfServiceLocationRequest Complex Type
+###### 3.2.4.1.3.1 ArrayOfServiceLocationRequest Complex Type
 
 The ArrayOfServiceLocationRequest complex type contains an array of ServiceLocationRequest
 complex types.
@@ -5461,7 +5216,7 @@ ServiceLocationRequest: A single request for a service location that MUST reques
 
 The request MUST follow the schema in section 3.2.4.1.3.2.
 
-3.2.4.1.3.2  ServiceLocationRequest Complex Type
+###### 3.2.4.1.3.2 ServiceLocationRequest Complex Type
 
 The ServiceLocationRequest complex type contains an enumeration of the requested service type.
 
@@ -5478,7 +5233,7 @@ Type: Contains the requested service type. MUST be specified as one string. MUST
 
 enumeration of all known service types, as specified in section 3.2.4.1.4.1.
 
-3.2.4.1.3.3  ArrayOfServiceLocationResponse Complex Type
+###### 3.2.4.1.3.3 ArrayOfServiceLocationResponse Complex Type
 
 The ArrayOfServiceLocationResponse contains an array of ServiceLocationResponse complex types.
 
@@ -5497,7 +5252,8 @@ Release: April 23, 2024
 
 63 / 110
 
- </s:complexType>
+
+ </s:complexType>
 
 ServiceLocationResponse: An individual response structure that contains the URL corresponding to
 
@@ -5505,7 +5261,7 @@ a requested service type. Each service location response MUST contain a service 
 matches the requested service type. The response includes the URL if found. The individual
 response structure MUST follow the schema in section 3.2.4.1.3.4.
 
-3.2.4.1.3.4  ServiceLocationResponse Complex Type
+###### 3.2.4.1.3.4 ServiceLocationResponse Complex Type
 
 The ServiceLocationResponse complex type contains a URL of a server and the type of service the
 server offers.
@@ -5529,7 +5285,7 @@ Type: A string that identifies the service type from the ServiceType enumeration
 
 3.2.4.1.4.1.
 
-3.2.4.1.4 Simple Types
+###### 3.2.4.1.4 Simple Types
 
 The following table summarizes the XML Schema simple type definitions that are specific to this
 operation.
@@ -5540,7 +5296,7 @@ ServiceType
 
 Enumerates licensing service types.
 
-3.2.4.1.4.1  ServiceType Simple Type
+###### 3.2.4.1.4.1 ServiceType Simple Type
 
 The ServiceType simple type enumerates licensing service types.
 
@@ -5566,7 +5322,8 @@ Release: April 23, 2024
 
 64 / 110
 
- </s:simpleType>
+
+ </s:simpleType>
 
  Value
 
@@ -5621,15 +5378,15 @@ CertificationInternalService
 
 Identifies the internal URL for the certification service (certification.asmx).<18>
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.3  SubEnrollServiceSoap Server Details
+### 3.3 SubEnrollServiceSoap Server Details
 
 The SubEnrollServiceSoap port type provides a mechanism for a requesting RMS server to be
 bootstrapped as a subordinate of a responding RMS server. Following a successful bootstrapping
@@ -5638,7 +5395,7 @@ Licensing and certification are defined in [MS-RMPR] sections 3.4.4.1 and 3.3.4.
 
 The SubEnrollServiceSoap port type provides one operation: SubEnroll.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5654,7 +5411,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-RMPRS].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -5664,11 +5422,11 @@ Specification ([MS-RMPR] section 2.2.9).
 
 Server key pair: An asymmetric key pair used for encryption and signing on the server.<19>
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The requesting RMS server MUST generate its asymmetric key pair before calling the Sub-Enrollment
 port type on a responding server.
@@ -5676,7 +5434,7 @@ port type on a responding server.
 The responding RMS server MUST be bootstrapped in order for the Sub-Enrollment port type to
 function. RMS server bootstrapping is defined in [MS-RMPR] section 3.1.3.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 An RMS server uses the SubEnrollServiceSoap port type to generate and sign the server licensor
 certificate (SLC) so that it can be bootstrapped as a subordinate RMS server. Each RMS server MUST
@@ -5691,7 +5449,7 @@ SubEnroll
 
 Allows a server to request an SLC. An SLC is required for issuing licenses.
 
-3.3.4.1  SubEnroll
+##### 3.3.4.1 SubEnroll
 
 During the SubEnroll operation, the requestor submits its public key and its metadata. The response
 contains signed SLC that grants the requestor the right to issue licenses.
@@ -5705,7 +5463,8 @@ Release: April 23, 2024
 
 66 / 110
 
-A subordinate RMS server generates its own asymmetric key pair. It then uses the SubEnroll operation
+
+A subordinate RMS server generates its own asymmetric key pair. It then uses the SubEnroll operation
 to request that its public key be contained within an SLC chain that it can use to issue licenses to
 protected content.
 
@@ -5765,7 +5524,7 @@ response MUST return the SLC chain that was generated for the requestor. For an 
 request, the server MUST return a fault code. This operation throws only Common Fault Codes for the
 RMS: Server-Server Protocol.
 
-3.3.4.1.1 Messages
+###### 3.3.4.1.1 Messages
 
 The following table summarizes the XML Schema message definitions that are specific to this
 operation.
@@ -5785,7 +5544,8 @@ Release: April 23, 2024
 
 67 / 110
 
-Message
+
+Message
 
 Description
 
@@ -5796,7 +5556,7 @@ response
 
 Returns a signed SLC chain.
 
-3.3.4.1.1.1  SubEnrollSoapIn Request
+###### 3.3.4.1.1.1 SubEnrollSoapIn Request
 
 The SubEnrollSoapIn request submits a public key and the attributes of the RMS server that is making
 the request.
@@ -5809,7 +5569,7 @@ parameters: An element that contains the body of the SOAP request. The body MUST
 
 one SubEnroll (section 3.3.4.1.2.1) element.
 
-3.3.4.1.1.2  SubEnrollSoapOut Response
+###### 3.3.4.1.1.2 SubEnrollSoapOut Response
 
 The SubEnrollSoapOut response returns a signed SLC chain.
 
@@ -5821,7 +5581,7 @@ parameters: An element that contains the body of the SOAP response including the
 
 MUST follow the schema defined in section 3.3.4.1.2.2.
 
-3.3.4.1.2 Elements
+###### 3.3.4.1.2 Elements
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification.
@@ -5836,7 +5596,7 @@ Contains the body of the SOAP request.
 
 SubEnrollResponse  Contains the body of the SOAP response, and includes the SLC chain.
 
-3.3.4.1.2.1  SubEnroll
+###### 3.3.4.1.2.1 SubEnroll
 
 The SubEnroll element contains the body of the SOAP request.
 
@@ -5856,7 +5616,8 @@ Release: April 23, 2024
 
 68 / 110
 
-   </s:complexType>
+
+   </s:complexType>
  </s:element>
 
 oInput: An object that contains the parameters of the enrollment request. The parameters MUST
@@ -5864,7 +5625,7 @@ oInput: An object that contains the parameters of the enrollment request. The pa
 include a public key and attributes of the requestor. The object MUST follow the schema in section
 3.3.4.1.3.1.
 
-3.3.4.1.2.2  SubEnrollResponse
+###### 3.3.4.1.2.2 SubEnrollResponse
 
 The SubEnrollResponse element contains the body of the SOAP response, and includes the SLC chain.
 
@@ -5883,7 +5644,7 @@ SubEnrollResult: A structure that contains the resulting SLC chain. MUST follow 
 
 section 3.3.4.1.3.4.
 
-3.3.4.1.3 Complex Types
+###### 3.3.4.1.3 Complex Types
 
 The following table summarizes the XML Schema complex type definitions that are specific to this
 operation.
@@ -5906,7 +5667,7 @@ SubEnrollResponse
 
 Contains an SLC chain.
 
-3.3.4.1.3.1  SubEnrollParameters ComplexType
+###### 3.3.4.1.3.1 SubEnrollParameters ComplexType
 
 The SubEnrollParameters complex type contains an enrolling server's public key and metadata.
 
@@ -5930,7 +5691,8 @@ Release: April 23, 2024
 
 69 / 110
 
-CertificatePublicKey: A structure that contains the requestor's public key and GUID. It MUST follow
+
+CertificatePublicKey: A structure that contains the requestor's public key and GUID. It MUST follow
 
 the EnrolleeCertificatePublicKey schema in section 3.3.4.1.3.2 below.
 
@@ -5938,7 +5700,7 @@ EnrolleeInformation: A structure that contains attributes of the requestor. It M
 
 EnrolleeServerInformation schema in section 3.3.4.1.3.3.
 
-3.3.4.1.3.2  EnrolleeCertificatePublicKey Complex Type
+###### 3.3.4.1.3.2 EnrolleeCertificatePublicKey Complex Type
 
 The EnrolleeCertificatePublicKey complex type contains an enrolling server's public key, as well as a
 GUID identifying the server.
@@ -5964,7 +5726,7 @@ Guid: Contains a GUID that identifies the requesting server among all other serv
 
 system.
 
-3.3.4.1.3.3  EnrolleeServerInformation Complex Type
+###### 3.3.4.1.3.3 EnrolleeServerInformation Complex Type
 
 The EnrolleeServerInformation complex type contains metadata about an enrolling server.
 
@@ -6002,9 +5764,10 @@ Release: April 23, 2024
 
 70 / 110
 
-URL: A string that contains the URL of the requesting server.
 
-3.3.4.1.3.4  SubEnrollResponse Complex Type
+URL: A string that contains the URL of the requesting server.
+
+###### 3.3.4.1.3.4 SubEnrollResponse Complex Type
 
 The SubEnrollResponse complex type contains an SLC chain.
 
@@ -6021,15 +5784,15 @@ LicensorCertificateChain: An array of strings, with each element containing one 
 
 resulting SLC chain. It MUST follow the schema in section 2.2.4.1.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  ServerSoap (GetLicensorCertificate) Server Details
+### 3.4 ServerSoap (GetLicensorCertificate) Server Details
 
 The ServerSoap port type for GetLicensorCertificate is used to obtain licensor certificates.
 
@@ -6042,7 +5805,7 @@ A subordinate RMS server uses the ServerSoap (GetLicensorCertificate) port type 
 RMS server's SLC chain. The ServerSoap (GetLicensorCertificate) port type provides one operation:
 GetLicensorCertificate.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6054,7 +5817,7 @@ structure that stores the conceptual data MAY be used in the implementation.
 SLC chain: An XrML 1.2 [XRML] certificate chain that signs the RMS server's public key into the
 appropriate certificate hierarchy. The SLC format is specified in [MS-RMPR] section 2.2.9.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
@@ -6065,17 +5828,18 @@ Release: April 23, 2024
 
 71 / 110
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-RMPRS].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The responding RMS server MUST be bootstrapped in order for the ServerSoap
 (GetLicensorCertificate) port type to function. RMS server bootstrapping is defined in [MS-RMPR]
 section 3.1.3.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification:
 
@@ -6085,7 +5849,7 @@ Description
 
 GetLicensorCertificate  Provides a mechanism for a requestor to acquire the SLC chain of the responder.
 
-3.4.4.1  GetLicensorCertificate
+##### 3.4.4.1 GetLicensorCertificate
 
 The GetLicensorCertificate operation provides a mechanism for a requestor to acquire the SLC chain of
 the responder. The format of the SLC chain is defined in [MS-RMPR] section 2.2.9.
@@ -6116,12 +5880,13 @@ Release: April 23, 2024
 
 72 / 110
 
-A successful GetLicensorCertificate response MUST follow the schema specified in section 3.4.4.1.1.2.
+
+A successful GetLicensorCertificate response MUST follow the schema specified in section 3.4.4.1.1.2.
 A successful response MUST return the responder's SLC chain. For an unsuccessful request, the server
 MUST return a fault code. This operation throws only Common Fault Codes for the RMS: Server-Server
 Protocol.
 
-3.4.4.1.1 Messages
+###### 3.4.4.1.1 Messages
 
 The following table summarizes the XML Schema message definitions that are specific to this
 operation.
@@ -6136,7 +5901,7 @@ Requests an SLC chain. Contains no inputs.
 
 GetLicensorCertificateSoapOut response  Returns the requestor's SLC chain.
 
-3.4.4.1.1.1  GetLicensorCertificateSoapIn Request
+###### 3.4.4.1.1.1 GetLicensorCertificateSoapIn Request
 
 The GetLicensorCertificateSoapIn request submits no inputs.
 
@@ -6148,7 +5913,7 @@ parameters: An element that contains the body of the SOAP request. The body MUST
 
 one GetLicensorCertificate (section 3.4.4.1.2.1) element.
 
-3.4.4.1.1.2  GetLicensorCertificateSoapOut Response
+###### 3.4.4.1.1.2 GetLicensorCertificateSoapOut Response
 
 The GetLicensorCertificateSoapOut response returns the requestor's SLC chain.
 
@@ -6162,7 +5927,7 @@ parameters: An element that contains the body of the SOAP response including the
 
 chain. It MUST follow the schema defined in section 3.4.4.1.2.2.
 
-3.4.4.1.2 Elements
+###### 3.4.4.1.2 Elements
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification.
@@ -6185,7 +5950,8 @@ Release: April 23, 2024
 
 73 / 110
 
-3.4.4.1.2.1  GetLicensorCertificate
+
+###### 3.4.4.1.2.1 GetLicensorCertificate
 
 The GetLicensorCertificate element is an empty element. It is included in the
 GetLicensorCertificateSoapIn request (section 3.4.4.1.1.1) as an empty message part.
@@ -6194,7 +5960,7 @@ GetLicensorCertificateSoapIn request (section 3.4.4.1.1.1) as an empty message p
    <s:complexType />
  </s:element>
 
-3.4.4.1.2.2  GetLicensorCertificateResponse
+###### 3.4.4.1.2.2 GetLicensorCertificateResponse
 
 The GetLicensorCertificateResponse element contains the body of the SOAP response, including the
 responder's SLC chain.
@@ -6214,7 +5980,7 @@ GetLicensorCertificateResult: A structure containing the responder's SLC chain. 
 
 schema in section 3.4.4.1.3.1.
 
-3.4.4.1.3 Complex Types
+###### 3.4.4.1.3 Complex Types
 
 The following table summarizes the XML Schema complex type definitions that are specific to this
 operation.
@@ -6229,7 +5995,7 @@ ArrayOfXmlNode
 
 Contains an SLC certificate chain.
 
-3.4.4.1.3.1  LicensorCertChain Complex Type
+###### 3.4.4.1.3.1 LicensorCertChain Complex Type
 
 The LicensorCertChain complex type contains the responder's SLC chain.
 
@@ -6253,7 +6019,8 @@ Release: April 23, 2024
 
 74 / 110
 
-3.4.4.1.3.2  ArrayOfXmlNode Complex Type
+
+###### 3.4.4.1.3.2 ArrayOfXmlNode Complex Type
 
 The ArrayOfXmlNode complex type contains an SLC certificate chain.
 
@@ -6272,15 +6039,15 @@ The ArrayOfXmlNode complex type contains an SLC certificate chain.
 
 Certificate: XML that contains the SLC certificate chain.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
-3.5  GroupExpansionWebServiceSoap Server Details
+### 3.5 GroupExpansionWebServiceSoap Server Details
 
 An RMS server can be requested to issue a Use License (UL) for content that has been published with
 a policy that specifies a group in a forest that the RMS server cannot contact. In this case, the RMS
@@ -6295,7 +6062,7 @@ supports only the GroupExpansionWebServiceSoap interface.
 
 The GroupExpansionWebServiceSoap port type provides one operation: IsPrincipalMemberOf.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6318,19 +6085,20 @@ Release: April 23, 2024
 
 75 / 110
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-RMPRS].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 An RMS server uses the GroupExpansionWebServiceSoap port type to verify group membership of a
 specific user with another RMS server.
@@ -6345,7 +6113,7 @@ IsPrincipalMemberOf  Provides a mechanism for verifying whether a specific user 
 
 specific groups.
 
-3.5.4.1  IsPrincipalMemberOf
+##### 3.5.4.1 IsPrincipalMemberOf
 
 The IsPrincipalMemberOf operation provides a mechanism for verifying whether a specific user is
 currently a member of specific groups that the requestor cannot expand by contacting the directory
@@ -6373,7 +6141,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <wsdl:operation name="IsPrincipalMemberOf">
+
+ <wsdl:operation name="IsPrincipalMemberOf">
 
 The SOAP operation is defined as follows.
 
@@ -6413,7 +6182,7 @@ status MUST be false if the principal cannot be found or if none of the groups c
 unsuccessful request, the server MUST return a fault code. This operation throws only Common Fault
 Codes for the RMS: Server-to-Server Protocol as specified in section 2.2.9.1.
 
-3.5.4.1.1 Messages
+###### 3.5.4.1.1 Messages
 
 The following table summarizes the XML Schema message definitions that are specific to this
 operation.
@@ -6434,9 +6203,9 @@ response
 
 Returns a Boolean value that either confirms or denies group membership.
 
-3.5.4.1.1.1
+###### 3.5.4.1.1.1 IsPrincipalMemberOfSoapIn Request
 
-IsPrincipalMemberOfSoapIn Request
+
 
 [MS-RMPRS] - v20240423
 Rights Management Services (RMS): Server-to-Server Protocol
@@ -6445,7 +6214,8 @@ Release: April 23, 2024
 
 77 / 110
 
-The IsPrincipalMemberOfSoapIn request submits information about the user, one or more groups to be
+
+The IsPrincipalMemberOfSoapIn request submits information about the user, one or more groups to be
 checked, and a count of the number of servers that have been involved in servicing this group
 expansion request so far.
 
@@ -6457,9 +6227,9 @@ parameters: An element that contains the body of the SOAP request. The body MUST
 
 one IsPrincipalMemberOf (section 3.5.4.1.2.1) element.
 
-3.5.4.1.1.2
+###### 3.5.4.1.1.2 IsPrincipalMemberOfSoapOut Response
 
-IsPrincipalMemberOfSoapOut Response
+
 
 The IsPrincipalMemberOfSoapOut response returns a Boolean value that either confirms or denies
 group membership.
@@ -6475,7 +6245,7 @@ parameters: An element that contains the body of the SOAP response containing th
 membership status. It MUST contain an SLC chain and it MUST follow the schema defined in
 section 3.5.4.1.2.2.
 
-3.5.4.1.2 Elements
+###### 3.5.4.1.2 Elements
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification.
@@ -6492,9 +6262,9 @@ IsPrincipalMemberOfResponse  Contains the body of the SOAP response containing t
 
 status.
 
-3.5.4.1.2.1
+###### 3.5.4.1.2.1 IsPrincipalMemberOf
 
-IsPrincipalMemberOf
+
 
 The IsPrincipalMemberOf element contains the body of the SOAP request.
 
@@ -6521,7 +6291,8 @@ Release: April 23, 2024
 
 78 / 110
 
-       <s:element minOccurs="1" maxOccurs="1"
+
+       <s:element minOccurs="1" maxOccurs="1"
          name="crossForestCallsSoFar"
          type="s:int"
        />
@@ -6546,9 +6317,9 @@ crossForestCallsSoFar: An integer that represents the number of servers that hav
 servicing this group expansion request so far. Used to enforce an upper limit on how many servers
 can be involved in servicing a given request.
 
-3.5.4.1.2.2
+###### 3.5.4.1.2.2 IsPrincipalMemberOfResponse
 
-IsPrincipalMemberOfResponse
+
 
 The IsPrincipalMemberOfResponse element contains the body of the SOAP response containing the
 group membership status.
@@ -6566,15 +6337,15 @@ group membership status.
 
 IsPrincipalMemberOfResult: A Boolean value that either confirms or denies group membership.
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 None.
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 None.
 
-3.6  Binary Group Expansion Server Details
+### 3.6 Binary Group Expansion Server Details
 
 See section 3.6 for Group Expansion server details. The Binary Group Expansion syntax is defined in
 section 2.3.
@@ -6588,24 +6359,25 @@ Release: April 23, 2024
 
 79 / 110
 
-3.6.1  Abstract Data Model
+
+#### 3.6.1 Abstract Data Model
 
 See section 3.5.1 for the Group Expansion abstract data model.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 None.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 None.
 
-3.6.4  Message Processing Events and Sequencing Rules
+#### 3.6.4 Message Processing Events and Sequencing Rules
 
 The Binary Group Expansion interface (section 2.3) provides a way of performing group expansion,
 and is an alternative to the GroupExpansionWebServiceSoap port type 3.5.
 
-3.6.4.1  IsPrincipalMemberOf
+##### 3.6.4.1 IsPrincipalMemberOf
 
 Processing details for the IsPrincipalMemberOf method in the Binary Group Expansion interface are the
 same as those specified for the SOAP operation in section 3.5.4.1, with the following exceptions:
@@ -6622,11 +6394,11 @@ the definition specified in section 2.3.1.3.
 
   SOAP fault codes are not thrown in the binary interface.
 
-3.6.5  Timer Events
+#### 3.6.5 Timer Events
 
 None.
 
-3.6.6  Other Local Events
+#### 3.6.6 Other Local Events
 
 None.
 
@@ -6637,13 +6409,14 @@ Release: April 23, 2024
 
 80 / 110
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-RMPRS].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Accessing Protected Information as a Member of an Authorized Group
+### 4.1 Accessing Protected Information as a Member of an Authorized Group
 
 An end user requires an authorization token (use license (UL)) issued by an RMS server to access
 protected content. One of the conditions evaluated by the server when generating such an
@@ -6688,7 +6461,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-RMPRS].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -6705,7 +6479,7 @@ occurs.
 The client receiving the UL from the server then uses the UL to decrypt and consume the
 protected content.
 
-4.2  Provisioning an Extranet User
+### 4.2 Provisioning an Extranet User
 
 To consume protected content, a user's client machine needs to contact an RMS server to be
 provisioned with specific certificates on the machine being used. These certificates can easily be
@@ -6742,7 +6516,8 @@ Release: April 23, 2024
 
 82 / 110
 
-The client makes a request to the FindServiceLocationsForUser Web service, providing the type of
+
+The client makes a request to the FindServiceLocationsForUser Web service, providing the type of
 service whose URL is being requested and providing authentication of the user's identity.
 
 3.  Server 1 makes a FindServerLocations request on behalf of the user.
@@ -6760,7 +6535,7 @@ Server 1 will then return the results of the request to server 2 to the client.
 
 The client will then contact server 2 directly and request the required provisioning certificates.
 
-4.3  Binary Group Expansion
+### 4.3 Binary Group Expansion
 
 This sample illustrates the messages used in the Binary Group Expansion Interface. In this example, a
 client uses the IsPrincipalMemberOf operation to determine whether the user
@@ -6812,7 +6587,8 @@ Release: April 23, 2024
 
 83 / 110
 
-     MajorVersion: 1
+
+     MajorVersion: 1
      MinorVersion: 0
  IsPrincipalMemberOfRequest:
      RecordTypeEnum: MethodCall (0x15)
@@ -6886,7 +6662,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IsPrincipalMemberOfResponse record to return to the client. The network capture of this stream is as
+
+IsPrincipalMemberOfResponse record to return to the client. The network capture of this stream is as
 follows.
 
  0000 00 01 00 00 00 FF FF FF FF 01 00 00 00 00 00 00 .....ÿÿÿÿ.......
@@ -6963,7 +6740,8 @@ Release: April 23, 2024
 
 85 / 110
 
- 0420 69 6F 6E 73 2E 53 70 65 63 69 61 6C 69 7A 65 64 ions.Specialized
+
+ 0420 69 6F 6E 73 2E 53 70 65 63 69 61 6C 69 7A 65 64 ions.Specialized
  0430 2E 4C 69 73 74 44 69 63 74 69 6F 6E 61 72 79 04 .ListDictionary.
  0440 00 00 00 04 68 65 61 64 07 76 65 72 73 69 6F 6E ....head.version
  0450 05 63 6F 75 6E 74 08 63 6F 6D 70 61 72 65 72 04 .count.comparer.
@@ -7037,7 +6815,8 @@ Release: April 23, 2024
 
 86 / 110
 
-     Reserved0: -1
+
+     Reserved0: -1
      MajorVersion: 1
      MinorVersion: 0
  IsPrincipalMemberOfResponse:
@@ -7114,7 +6893,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     BinaryTypeEnum9: Primitive (0x00)
+
+     BinaryTypeEnum9: Primitive (0x00)
      BinaryTypeEnum10: Primitive (0x00)
      AdditionalInfo1TypeName: System.Collections.Specialized.ListDictionary
      AdditionalInfo1LibraryId: 6
@@ -7191,7 +6971,8 @@ Release: April 23, 2024
 
 88 / 110
 
-     MemberName1: head
+
+     MemberName1: head
      MemberName2: version
      MemberName3: count
      MemberName4: comparer
@@ -7268,7 +7049,8 @@ Release: April 23, 2024
 
 89 / 110
 
-             MemberReference:
+
+             MemberReference:
                  RecordTypeEnum: MemberReference (0x09)
                  IdRef: 13
          MemberValue7:
@@ -7345,7 +7127,8 @@ Release: April 23, 2024
 
 90 / 110
 
-     AdditionalInfo2: Int32 (0x08)
+
+     AdditionalInfo2: Int32 (0x08)
      AdditionalInfo3: Int32 (0x08)
      SerializedMemberValues:
          MemberValue1:
@@ -7410,11 +7193,12 @@ Release: April 23, 2024
 
 91 / 110
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.1.1  ServerSoap (FindServiceLocations) Security Considerations
+### 5.1 Security Considerations for Implementers
+
+#### 5.1.1 ServerSoap (FindServiceLocations) Security Considerations
 
 The ServerSoap (FindServiceLocations) port type does not communicate any sensitive information.
 However, it is recommended that communication be performed over HTTPS instead of HTTP to
@@ -7427,7 +7211,7 @@ Because the ServerSoap (FindServiceLocations) port type generally does not requi
 processing for the responding server, it is not a severe target for denial-of-service attacks. However,
 the impact of such attacks can be further reduced by requiring authentication.
 
-5.1.2  SubEnrollServiceSoap Security Considerations
+#### 5.1.2 SubEnrollServiceSoap Security Considerations
 
 The SubEnrollServiceSoap port type does not communicate any sensitive information. However, it is
 strongly recommended that access to the SubEnrollServiceSoap port type be restricted by requiring
@@ -7447,7 +7231,7 @@ man-in-the-middle attacks that might allow an attacker to use an untrustworthy s
 chains to legitimate sub-enrolled servers. Although this attack will not result in any information
 disclosure, it can result in confusion and create an administrative burden to correct the situation.
 
-5.1.3  ServerSoap (GetLicensorCertificate) Security Considerations
+#### 5.1.3 ServerSoap (GetLicensorCertificate) Security Considerations
 
 The ServerSoap (GetLicensorCertificate) port type does not communicate any sensitive information.
 However, it is strongly recommended that communication be done over HTTPS instead of HTTP to
@@ -7459,7 +7243,7 @@ Because the ServerSoap (GetLicensorCertificate) port type generally does not req
 processing for the responding server, it is not a severe target for denial of service attacks. However,
 the impact of such attacks can be further reduced by requiring authentication.
 
-5.1.4  Group Expansion Security Considerations
+#### 5.1.4 Group Expansion Security Considerations
 
 GroupExpansionWebServiceSoap port type and the Binary Group Expansion interface could be used to
 communicate sensitive information. If group membership information is intended to be private for a
@@ -7472,7 +7256,8 @@ Release: April 23, 2024
 
 92 / 110
 
-attack on these interfaces could also result in an unauthorized user gaining access to content by
+
+attack on these interfaces could also result in an unauthorized user gaining access to content by
 spoofing a positive response to a group expansion request.
 
 Group expansion is also a resource-intensive operation for the directory server(s) being queried, so
@@ -7482,7 +7267,7 @@ Because of this potential exposure, it is very strongly recommended that communi
 over HTTPS instead of HTTP, and that authentication is required, and restrictive access control lists be
 used to limit access to these interfaces.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7493,11 +7278,12 @@ Release: April 23, 2024
 
 93 / 110
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This section contains the full WSDL for each of the port types in the RMS: Server-Server Protocol.
 
-6.1  ServerSoap (FindServiceLocations) WSDL
+### 6.1 ServerSoap (FindServiceLocations) WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -7568,7 +7354,8 @@ Release: April 23, 2024
 
 94 / 110
 
-         <s:complexType>
+
+         <s:complexType>
            <s:sequence>
              <s:element minOccurs="0" maxOccurs="1"
               name="FindServiceLocationsResult"
@@ -7645,7 +7432,8 @@ Release: April 23, 2024
 
 95 / 110
 
-       </wsdl:input>
+
+       </wsdl:input>
        <wsdl:output>
          <soap12:body use="literal" />
          <soap12:header message="tns:FindServiceLocationsVersionData"
@@ -7665,7 +7453,7 @@ Release: April 23, 2024
    </wsdl:service>
  </wsdl:definitions>
 
-6.2  SubEnrollServiceSoap WSDL
+### 6.2 SubEnrollServiceSoap WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:s1="http://microsoft.com/wsdl/types/"
@@ -7720,7 +7508,8 @@ Release: April 23, 2024
 
 96 / 110
 
-           <s:element minOccurs="0" maxOccurs="1" name="Version"
+
+           <s:element minOccurs="0" maxOccurs="1" name="Version"
             type="s:string" />
            <s:element minOccurs="0" maxOccurs="1" name="Name"
             type="s:string" />
@@ -7797,7 +7586,8 @@ Release: April 23, 2024
 
 97 / 110
 
-     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+
+     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
       style="document" />
      <wsdl:operation name="SubEnroll">
        <soap:operation
@@ -7828,7 +7618,7 @@ Release: April 23, 2024
    </wsdl:service>
  </wsdl:definitions>
 
-6.3  ServerSoap (GetLicensorCertificate) WSDL
+### 6.3 ServerSoap (GetLicensorCertificate) WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -7872,7 +7662,8 @@ Release: April 23, 2024
 
 98 / 110
 
-           <s:element minOccurs="0" maxOccurs="unbounded"
+
+           <s:element minOccurs="0" maxOccurs="unbounded"
             name="Certificate" nillable="true">
              <s:complexType mixed="true">
                <s:sequence>
@@ -7949,7 +7740,8 @@ Release: April 23, 2024
 
 99 / 110
 
-         <soap12:body use="literal" />
+
+         <soap12:body use="literal" />
          <soap12:header message="tns:GetLicensorCertificateVersionData"
           part="VersionData" use="literal" />
        </wsdl:output>
@@ -7967,7 +7759,7 @@ Release: April 23, 2024
    </wsdl:service>
  </wsdl:definitions>
 
-6.4  GroupExpansionWebServiceSoap WSDL
+### 6.4 GroupExpansionWebServiceSoap WSDL
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
@@ -8024,7 +7816,8 @@ Release: April 23, 2024
 
 100 / 110
 
-           <s:element minOccurs="0" maxOccurs="1"
+
+           <s:element minOccurs="0" maxOccurs="1"
               name="MaximumVersion" type="s:string" />
          </s:sequence>
          <s:anyAttribute />
@@ -8101,7 +7894,8 @@ Release: April 23, 2024
 
 101 / 110
 
-     </wsdl:port>
+
+     </wsdl:port>
    </wsdl:service>
  </wsdl:definitions>
 
@@ -8112,7 +7906,8 @@ Release: April 23, 2024
 
 102 / 110
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8180,7 +7975,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<5> Section 2.3.4.1: The LibraryName field will be set to "Plugin.DirectoryServices,
+
+<5> Section 2.3.4.1: The LibraryName field will be set to "Plugin.DirectoryServices,
 Version=1.0.3246.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" in all Microsoft RMS
 version 1.0 implementations.
 
@@ -8249,7 +8045,8 @@ Release: April 23, 2024
 
 104 / 110
 
-<20> Section 3.3.4.1: RMS expects a 1024-bit RSA PKCS#1-encoded public key. For more
+
+<20> Section 3.3.4.1: RMS expects a 1024-bit RSA PKCS#1-encoded public key. For more
 information on PKCS#1, see [RFC8017].
 
 <21> Section 3.3.4.1.3.2: On Windows, RMS expects a 1024-bit RSA PKCS#1-encoded public key.
@@ -8269,7 +8066,8 @@ Release: April 23, 2024
 
 105 / 110
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8319,7 +8117,8 @@ Release: April 23, 2024
 
 106 / 110
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -8498,7 +8297,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   ServerSoap (GetLicensorCertificate) WSDL 98
+
+   ServerSoap (GetLicensorCertificate) WSDL 98
    SubEnrollServiceSoap 96
    SubEnrollServiceSoap WSDL 96
 
@@ -8672,7 +8472,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Protocol Details
+
+Protocol Details
    overview 58
 Provisioning extranet user example 82
 
@@ -8863,7 +8664,8 @@ Rights Management Services (RMS): Server-to-Server Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   server (section 3.2.2 59, section 3.3.2 66, section
+
+   server (section 3.2.2 59, section 3.3.2 66, section
 3.4.2 71, section 3.5.2 76, section 3.6.2 80)
    ServerSoap (FindServiceLocations) (section 3.1.2
 

@@ -63,7 +63,8 @@ Release: April 13, 2026
 
 1 / 19
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -291,7 +292,8 @@ Release: April 13, 2026
 
 2 / 19
 
-Date
+
+Date
 
 Revision
 History
@@ -478,103 +480,49 @@ Release: April 13, 2026
 
 3 / 19
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Client and Server Hello Messages](#221-client-and-server-hello-messages)
+    - [2.2.2 Alert Messages](#222-alert-messages)
+    - [2.2.3 Extended Hello Messages](#223-extended-hello-messages)
+    - [2.2.4 Certificate Messages](#224-certificate-messages)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 GSS_WrapEx() Call](#3151-gsswrapex-call)
+      - [3.1.5.2 GSS_UnwrapEx() Call](#3152-gssunwrapex-call)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Client and Server Hello Messages ................................................................... 9
-Alert Messages ............................................................................................. 9
-Extended Hello Messages ............................................................................... 9
-Certificate Messages ..................................................................................... 9
-Directory Service Schema Elements ..................................................................... 9
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 10
-Common Details .............................................................................................. 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Processing Events and Sequencing Rules ....................................................... 10
-GSS_WrapEx() Call ............................................................................... 10
-GSS_UnwrapEx() Call ............................................................................ 11
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 11
-
-3.1.5.1
-3.1.5.2
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 12
-
-5  Security ................................................................................................................. 13
-Security Considerations for Implementers ........................................................... 13
-Index of Security Parameters ............................................................................ 13
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 14
-
-7  Change Tracking .................................................................................................... 18
-
-8  Index ..................................................................................................................... 19
-
-[MS-TLSP] - v20260413
-Transport Layer Security (TLS) Profile
-Copyright © 2026 Microsoft Corporation
-Release: April 13, 2026
-
-4 / 19
-
-1  Introduction
+## 1 Introduction
 
 The Transport Layer Security (TLS) Profile specifies a restricted subset of TLS and related standards.
 Support for TLS/SSL protocols is specified in [RFC8446], [RFC5246], [RFC4346], [RFC2246], and
@@ -586,7 +534,7 @@ Cipher suites are specified in [RFC5487], [RFC5289], [RFC4492], and [RFC3268].<1
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -618,14 +566,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -638,7 +586,8 @@ Release: April 13, 2026
 
 5 / 19
 
-[IETFDRAFT-TLS-ECDHE-MLKEM-04] Kris Kwiatkowski, Panos Kampanakis, Bas Westerbaan, Douglas
+
+[IETFDRAFT-TLS-ECDHE-MLKEM-04] Kris Kwiatkowski, Panos Kampanakis, Bas Westerbaan, Douglas
 Stebila, "Post-quantum hybrid ECDHE-MLKEM Key Agreement for TLSv1.3", draft-ietf-tls-ecdhe-
 mlkem-04, February 2026, https://datatracker.ietf.org/doc/draft-ietf-tls-ecdhe-mlkem/
 
@@ -704,11 +653,12 @@ Release: April 13, 2026
 
 6 / 19
 
-[RFC8472] Popov, A., Ed.,  Nystroem, M., Balfanz, D.,, "Transport Layer Security (TLS) Extension for
+
+[RFC8472] Popov, A., Ed.,  Nystroem, M., Balfanz, D.,, "Transport Layer Security (TLS) Extension for
 Token Binding Protocol Negotiation", RFC 8472, October 2018, https://www.rfc-
 editor.org/info/rfc8472
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [KB4019276] Microsoft Corporation, "Update for Windows Server 2008",
 https://www.catalog.update.microsoft.com/Search.aspx?q=%20KB4019276
@@ -749,12 +699,12 @@ Document Framework", RFC 5890, August 2010, http://rfc-editor.org/rfc/rfc5890.tx
 [SSL3] Netscape, "SSL 3.0 Specification", November 1996, https://tools.ietf.org/html/draft-ietf-tls-ssl-
 version3-00
 
-1.3  Overview
+### 1.3 Overview
 
 The TLS/SSL authentication mechanism (as specified in [RFC8446] and [RFC5246]) is used to
 authenticate a server to a client with the option for mutual authentication.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document is a companion to the TLS/SSL authentication standards [RFC8446] and [RFC5246].
 
@@ -770,24 +720,25 @@ Transport Layer Security (TLS) Profile
 Copyright © 2026 Microsoft Corporation
 Release: April 13, 2026
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 TLS/SSL authentication has the same assumptions as specified in [RFC8446] and in [RFC5246].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 TLS/SSL authentication is used in environments where the client and server support specifications
 [RFC8446] and [RFC5246].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation is handled as specified in [RFC8446] and [RFC5246].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 TLS/SSL authentication contains vendor-extensible fields as specified in [RFC8446] and [RFC5246].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -812,42 +763,43 @@ Release: April 13, 2026
 
 8 / 19
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 TLS/SSL messages SHOULD be transported as specified in [RFC8446] and [RFC5246].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The TLS/SSL message syntax SHOULD<2> be as specified in [RFC8446], [RFC5246], [RFC5077], and
 [RFC7301].
 
-2.2.1  Client and Server Hello Messages
+#### 2.2.1 Client and Server Hello Messages
 
 Cipher suites and capabilities MAY<3> be negotiated as specified in [RFC5487] and SHOULD<4><5>
 be negotiated as specified in [RFC8446], [RFC7627], [RFC5246], [RFC2246], [RFC4492], and
 [RFC3268].<6>
 
-2.2.2  Alert Messages
+#### 2.2.2 Alert Messages
 
 The TLS/SSL alert message behavior and formatting SHOULD<7><8> be as specified in [RFC8446]
 section 6,  [RFC5246] section 7.2, [RFC2246] section 7.2, [RFC4366] section 4, and [RFC3546]
 section 4.
 
-2.2.3  Extended Hello Messages
+#### 2.2.3 Extended Hello Messages
 
 The TLS extended hello message behavior and formatting SHOULD<9> be as specified in [RFC8446]
 section 4.1, [RFC5246] section 7.4.1.4, [RFC4366] sections 2.3 and 3.1, [RFC3546] section 2.3,
 [RFC4681] section 2,<10> [RFC5077],<11> [RFC7301],<12> and in [RFC8472].<13>
 
-2.2.4  Certificate Messages
+#### 2.2.4 Certificate Messages
 
 The TLS/SSL certificate message behavior and formatting is specified in [RFC8446] section 4.4,
 [RFC5246] sections 7.4.2 and 7.4.6, [RFC2246] sections 7.4.2 and 7.4.6, and [RFC4492] sections 5.3
 and 5.6.<14><15>
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -858,34 +810,35 @@ Release: April 13, 2026
 
 9 / 19
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 The abstract data model follows what is specified in [RFC8446] and [RFC5246].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers except those specified in [RFC8446] and [RFC5246].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no protocol-specific initialization except what is specified in [RFC8446] and [RFC5246].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events in common to all parts of this protocol.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Message processing events and sequencing rules SHOULD<16> be as specified in [RFC8446],
 [RFC5246], [RFC5077], and [RFC7301].<17> If a client receives an extension type in ServerHello that
 it did not request in the associated ClientHello, it MAY<18> abort the handshake. There can be more
 than one extension of the same type.
 
-3.1.5.1  GSS_WrapEx() Call
+##### 3.1.5.1 GSS_WrapEx() Call
 
 This call is an extension to GSS_Wrap ([RFC2743] section 2.3.3) that passes multiple buffers.
 
@@ -936,7 +889,8 @@ Release: April 13, 2026
 
 10 / 19
 
-
+
+
 
 
 
@@ -952,7 +906,7 @@ This call is identical to GSS_Wrap, except that it supports multiple input buffe
 GSS_WrapEx() is such that only the first input buffer will be processed, and the rest ignored.  Thus,
 Schannel's binding of GSS_WrapEx() functions just as GSS_Wrap does.
 
-3.1.5.2  GSS_UnwrapEx() Call
+##### 3.1.5.2 GSS_UnwrapEx() Call
 
 This call is an extension to GSS_Unwrap ([RFC2743] section 2.3.4) that passes multiple buffers.
 
@@ -1008,11 +962,11 @@ This call is identical to GSS_Unwrap, except that it supports multiple input buf
 of GSS_UnwrapEx() is such that only the first input buffer will be processed and the rest ignored. Thus
 Schannel's binding of GSS_UnwrapEx() functions just as GSS_Unwrap does.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no timer events except those specified in [RFC8446] and [RFC5246].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no local events except those specified in [RFC8446] and [RFC5246].
 
@@ -1023,7 +977,8 @@ Release: April 13, 2026
 
 11 / 19
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Protocol examples can be found in [RFC8446] section 2, [RFC5246] section 7.3, [RFC4366] section 3,
 [RFC4681] section 4, [RFC4492] section 5, and in [RFC7748] section 6.
@@ -1035,13 +990,14 @@ Release: April 13, 2026
 
 12 / 19
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations are specified in each standard.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security Parameter
 
@@ -1056,7 +1012,8 @@ Release: April 13, 2026
 
 13 / 19
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1130,7 +1087,8 @@ Release: April 13, 2026
 
 14 / 19
 
-Features
+
+Features
 
 Protocols
 
@@ -1294,7 +1252,8 @@ Release: April 13, 2026
 
 15 / 19
 
-[RFC7301] is not supported by Windows XP through Windows 8 clients and Windows Server 2003
+
+[RFC7301] is not supported by Windows XP through Windows 8 clients and Windows Server 2003
 through Windows Server 2012.
 
 <3> Section 2.2.1: DHE_PSK or RSA_PSK Key Exchange Algorithms defined in [RFC5487] are not
@@ -1366,7 +1325,8 @@ Transport Layer Security (TLS) Profile
 Copyright © 2026 Microsoft Corporation
 Release: April 13, 2026
 
-  Windows does not ignore a HelloRequest received, even in the middle of a handshake.
+
+  Windows does not ignore a HelloRequest received, even in the middle of a handshake.
 
   Windows Server 2003 does not support fragmentation of incoming messages across frames as is
 
@@ -1385,7 +1345,8 @@ Release: April 13, 2026
 
 17 / 19
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1438,7 +1399,8 @@ Release: April 13, 2026
 
 18 / 19
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 10

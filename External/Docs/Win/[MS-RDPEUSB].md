@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 71
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -290,7 +291,8 @@ Release: April 23, 2024
 
 2 / 71
 
-Date
+
+Date
 
 Revision
 History
@@ -339,455 +341,182 @@ Release: April 23, 2024
 
 3 / 71
 
-Table of Contents
 
-1.3
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Protocol Overview (Synopsis) ............................................................................ 10
-USB Devices Virtual Channel Protocol ............................................................ 11
-Channel Setup Sequence ....................................................................... 11
-New Device Sequence ........................................................................... 12
-I/O Sequence ....................................................................................... 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites and Preconditions .......................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendors-Extensible Fields .................................................................................. 13
-Standards Assignments ..................................................................................... 13
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Shared Message Header (SHARED_MSG_HEADER) ......................................... 14
-Interface Manipulation ................................................................................. 16
-Interface Manipulation Exchange Capabilities Interface .................................... 16
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-
-2.2.3.2
-
-2.2.4
-
-2.2.4.1
-2.2.4.2
-
-2.2.5
-
-2.2.6
-
-2.2.5.1
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-2.2.6.4
-2.2.6.5
-2.2.6.6
-2.2.6.7
-2.2.6.8
-2.2.6.9
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-
-2.2.7
-
-2.2.8
-2.2.9
-
-Interface Manipulation Exchange Capabilities Request
-(RIM_EXCHANGE_CAPABILITY_REQUEST) ............................................... 16
-Interface Manipulation Exchange Capabilities Response
-(RIM_EXCHANGE_CAPABILITY_RESPONSE).............................................. 17
-Device Sink Interface .................................................................................. 17
-Add Virtual Channel Message (ADD_VIRTUAL_CHANNEL) ........................... 17
-Add Device Message (ADD_DEVICE) ........................................................ 18
-Channel Notification Interface ...................................................................... 19
-Channel Created Message (CHANNEL_CREATED) ...................................... 19
-USB Device Interface .................................................................................. 20
-Cancel Request Message (CANCEL_REQUEST) .......................................... 20
-Register Request Callback Message (REGISTER_REQUEST_CALLBACK) ........ 21
-IO Control Message (IO_CONTROL) ......................................................... 21
-Internal IO Control Message (INTERNAL_IO_CONTROL) ............................. 22
-Query Device Text Message (QUERY_DEVICE_TEXT) ................................. 23
-Query Device Text Response Message (QUERY_DEVICE_TEXT_RSP) ............ 23
-Transfer In Request (TRANSFER_IN_REQUEST) ........................................ 24
-Transfer Out Request (TRANSFER_OUT_REQUEST) ................................... 24
-Retract Device (RETRACT_DEVICE) ......................................................... 25
-Request Completion Interface ...................................................................... 25
-IO Control Completion (IOCONTROL_COMPLETION) .................................. 26
-URB Completion (URB_COMPLETION) ...................................................... 26
-URB Completion No Data (URB_COMPLETION_NO_DATA) .......................... 27
-USB_RETRACT_REASON Constants ............................................................... 28
-TS_URB Structures ..................................................................................... 28
-Common Structures .............................................................................. 28
-TS_URB_HEADER ............................................................................ 28
-TS_USBD_INTERFACE_INFORMATION ................................................ 29
-TS_USBD_PIPE_INFORMATION ......................................................... 30
-TS_URB_SELECT_CONFIGURATION ......................................................... 30
-TS_URB_SELECT_INTERFACE ................................................................. 31
-TS_URB_PIPE_REQUEST ........................................................................ 31
-
-2.2.9.1
-
-2.2.9.1.1
-2.2.9.1.2
-2.2.9.1.3
-
-2.2.9.2
-2.2.9.3
-2.2.9.4
-
-[MS-RDPEUSB] - v20240423
-Remote Desktop Protocol: USB Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 71
-
-2.2.10
-
-2.2.10.1
-
-2.2.10.1.1
-2.2.10.1.2
-2.2.10.1.3
-
-2.2.9.5
-2.2.9.6
-2.2.9.7
-2.2.9.8
-2.2.9.9
-2.2.9.10
-2.2.9.11
-2.2.9.12
-2.2.9.13
-2.2.9.14
-2.2.9.15
-2.2.9.16
-
-TS_URB_GET_CURRENT_FRAME_NUMBER ............................................... 32
-TS_URB_CONTROL_TRANSFER ............................................................... 32
-TS_URB_BULK_OR_INTERRUPT_TRANSFER .............................................. 33
-TS_URB_ISOCH_TRANSFER ................................................................... 33
-TS_URB_CONTROL_DESCRIPTOR_REQUEST ............................................. 34
-TS_URB_CONTROL_FEATURE_REQUEST .................................................. 35
-TS_URB_CONTROL_GET_STATUS_REQUEST ............................................ 35
-TS_URB_CONTROL_VENDOR_OR_CLASS_REQUEST .................................. 36
-TS_URB_CONTROL_GET_CONFIGURATION_REQUEST ............................... 37
-TS_URB_CONTROL_GET_INTERFACE_REQUEST ........................................ 37
-TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST ........................................ 37
-TS_URB_CONTROL_TRANSFER_EX .......................................................... 38
-TS_URB_RESULT Structures ......................................................................... 39
-Common Structures .............................................................................. 39
-TS_URB_RESULT_HEADER................................................................ 39
-TS_USBD_INTERFACE_INFORMATION_RESULT ................................... 39
-TS_USBD_PIPE_INFORMATION_RESULT ............................................. 40
-TS_URB_SELECT_CONFIGURATION_RESULT ............................................ 41
-TS_URB_SELECT_INTERFACE_RESULT .................................................... 42
-TS_URB_GET_CURRENT_FRAME_NUMBER_RESULT ................................... 42
-TS_URB_ISOCH_TRANSFER_RESULT ....................................................... 43
-2.2.11  USB_DEVICE_CAPABILITIES ........................................................................ 43
-2.2.12  USB IO Control Code ................................................................................... 45
-IOCTL_INTERNAL_USB_RESET_PORT ...................................................... 45
-IOCTL_INTERNAL_USB_GET_PORT_STATUS ............................................. 45
-IOCTL_INTERNAL_USB_GET_HUB_COUNT ............................................... 45
-IOCTL_INTERNAL_USB_CYCLE_PORT ...................................................... 45
-IOCTL_INTERNAL_USB_GET_HUB_NAME ................................................. 46
-IOCTL_INTERNAL_USB_GET_BUS_INFO .................................................. 46
-IOCTL_INTERNAL_USB_GET_CONTROLLER_NAME .................................... 46
-2.2.13  USB Internal IO Control Code ....................................................................... 46
-IOCTL_TSUSBGD_IOCTL_USBDI_QUERY_BUS_TIME ................................. 46
-
-2.2.12.1
-2.2.12.2
-2.2.12.3
-2.2.12.4
-2.2.12.5
-2.2.12.6
-2.2.12.7
-
-2.2.10.2
-2.2.10.3
-2.2.10.4
-2.2.10.5
-
-2.2.13.1
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 48
-Common Details .............................................................................................. 48
-Abstract Data Model .................................................................................... 49
-Interface Manipulation Data Model .......................................................... 49
-Timers ...................................................................................................... 49
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-Processing Events and Sequencing Rules ....................................................... 49
-Processing a Shared Message Header ...................................................... 50
-Interface Manipulation ........................................................................... 50
-Timer Events .............................................................................................. 50
-Other Local Events ...................................................................................... 50
-Server Details .................................................................................................. 50
-Abstract Data Model .................................................................................... 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 50
-Processing Events and Sequencing Rules ....................................................... 50
-Device Sink Interface ............................................................................ 50
-Processing an Add Virtual Channel Message ........................................ 50
-Processing a Add Device Message ...................................................... 50
-Channel Notification Interface ................................................................. 51
-Sending a Channel Created Message .................................................. 51
-Processing a Channel Created Message .............................................. 51
-USB Device Interface ............................................................................. 51
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.3
-
-3.2.5.1
-
-3.2.5.2
-
-3.2
-
-[MS-RDPEUSB] - v20240423
-Remote Desktop Protocol: USB Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 71
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-3.2.5.3.5
-3.2.5.3.6
-3.2.5.3.7
-3.2.5.3.8
-3.2.5.3.9
-
-3.2.5.4
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-
-3.2.5.5
-
-Sending a Cancel Request Message ................................................... 51
-Sending a Register Request Callback Message ..................................... 51
-Sending a IO Control Message .......................................................... 51
-Sending an Internal IO Control Message ............................................. 52
-Sending a Query Device Text Message ............................................... 52
-Processing a Query Device Text Response Message ............................. 52
-Sending a Transfer In Request Message ............................................. 52
-Sending a Transfer Out Request Message ........................................... 52
-Sending a Retract Device Message..................................................... 52
-Request Completion Interface ................................................................. 52
-IO Control Completion Message ......................................................... 52
-URB Completion Message ................................................................. 53
-URB Completion No Data Message ..................................................... 53
-Interface Manipulation Exchange Capabilities Interface .............................. 54
-
-3.3.5.1
-
-3.3.5.2
-
-3.3.5.3
-
-3.2.5.5.1
-
-3.2.5.5.2
-
-3.3.5.1.1
-3.3.5.1.2
-
-Sending an Interface Manipulation Exchange Capabilities Request Message
- ..................................................................................................... 54
-Processing an Interface Manipulation Exchange Capabilities Response
-Message ......................................................................................... 54
-Timer Events .............................................................................................. 54
-Other Local Events ...................................................................................... 54
-Client Details ................................................................................................... 54
-Abstract Data Model .................................................................................... 54
-Timers ...................................................................................................... 54
-Initialization ............................................................................................... 54
-Higher-Layer Triggered Events ..................................................................... 54
-Processing Events and Sequencing Rules ....................................................... 55
-Device Sink Interface ............................................................................ 55
-Sending a Add Virtual Channel Message ............................................. 55
-Sending a Add Device Message ......................................................... 55
-Channel Notification Interface ................................................................. 55
-Sending a Channel Created Message .................................................. 55
-Processing a Channel Created Message .............................................. 55
-USB Device Interface ............................................................................. 55
-Processing a Cancel Request Message ................................................ 55
-Processing a Register Request Callback Message ................................. 55
-Processing an IO Control Message ..................................................... 56
-Processing an Internal IO Control Message ......................................... 56
-Processing a Query Device Text Message ............................................ 56
-Processing a Transfer In Request Message .......................................... 56
-Processing a Transfer Out Request Message ........................................ 57
-Processing a Retract Device Message ................................................. 57
-Processing an OS Descriptor request .................................................. 57
-Request Completion Interface ................................................................. 58
-IO Control Completion Message ......................................................... 58
-URB Completion Message ................................................................. 59
-URB Completion No Data Message ..................................................... 59
-Interface Manipulation Exchange Capabilities Interface Messages ................ 59
-
-3.3.5.3.1
-3.3.5.3.2
-3.3.5.3.3
-3.3.5.3.4
-3.3.5.3.5
-3.3.5.3.6
-3.3.5.3.7
-3.3.5.3.8
-3.3.5.3.9
-
-3.3.5.4.1
-3.3.5.4.2
-3.3.5.4.3
-
-3.3.5.2.1
-3.3.5.2.2
-
-3.3.5.4
-
-Processing an Interface Manipulation Exchange Capabilities Request
-Message ......................................................................................... 59
-Sending an Interface Manipulation Exchange Capabilities Response Message
- ..................................................................................................... 59
-Timer Events .............................................................................................. 60
-Other Local Events ...................................................................................... 60
-
-3.3.5.5
-
-3.3.5.5.1
-
-3.3.5.5.2
-
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 61
-Server Data Interface Annotations ..................................................................... 61
-Channel Created Message ............................................................................ 61
-Internal IO Control Message ......................................................................... 61
-
-4.1.1
-4.1.2
-
-[MS-RDPEUSB] - v20240423
-Remote Desktop Protocol: USB Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 71
-
-4.1.3
-4.1.4
-4.1.5
-
-IO Control Completion Message .................................................................... 62
-Transfer In Request Message ....................................................................... 62
-URB Completion Message ............................................................................ 62
-
-5  Security ................................................................................................................. 64
-Security Considerations for Implementers ........................................................... 64
-Index of Security Parameters ............................................................................ 64
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 65
-
-7  Change Tracking .................................................................................................... 67
-
-8  Index ..................................................................................................................... 68
-
-[MS-RDPEUSB] - v20240423
-Remote Desktop Protocol: USB Devices Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 71
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+    - [1.3.1 USB Devices Virtual Channel Protocol](#131-usb-devices-virtual-channel-protocol)
+      - [1.3.1.1 Channel Setup Sequence](#1311-channel-setup-sequence)
+      - [1.3.1.2 New Device Sequence](#1312-new-device-sequence)
+      - [1.3.1.3 I/O Sequence](#1313-io-sequence)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites and Preconditions](#15-prerequisites-and-preconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendors-Extensible Fields](#18-vendors-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Shared Message Header (SHARED_MSG_HEADER)](#221-shared-message-header-sharedmsgheader)
+    - [2.2.2 Interface Manipulation](#222-interface-manipulation)
+    - [2.2.3 Interface Manipulation Exchange Capabilities Interface](#223-interface-manipulation-exchange-capabilities-interface)
+      - [2.2.3.1 Interface Manipulation Exchange Capabilities Request](#2231-interface-manipulation-exchange-capabilities-request)
+      - [2.2.3.2 Interface Manipulation Exchange Capabilities Response](#2232-interface-manipulation-exchange-capabilities-response)
+    - [2.2.4 Device Sink Interface](#224-device-sink-interface)
+      - [2.2.4.1 Add Virtual Channel Message (ADD_VIRTUAL_CHANNEL)](#2241-add-virtual-channel-message-addvirtualchannel)
+      - [2.2.4.2 Add Device Message (ADD_DEVICE)](#2242-add-device-message-adddevice)
+    - [2.2.5 Channel Notification Interface](#225-channel-notification-interface)
+      - [2.2.5.1 Channel Created Message (CHANNEL_CREATED)](#2251-channel-created-message-channelcreated)
+    - [2.2.6 USB Device Interface](#226-usb-device-interface)
+      - [2.2.6.1 Cancel Request Message (CANCEL_REQUEST)](#2261-cancel-request-message-cancelrequest)
+      - [2.2.6.2 Register Request Callback Message (REGISTER_REQUEST_CALLBACK)](#2262-register-request-callback-message-registerrequestcallback)
+      - [2.2.6.3 IO Control Message (IO_CONTROL)](#2263-io-control-message-iocontrol)
+      - [2.2.6.4 Internal IO Control Message (INTERNAL_IO_CONTROL)](#2264-internal-io-control-message-internaliocontrol)
+      - [2.2.6.5 Query Device Text Message (QUERY_DEVICE_TEXT)](#2265-query-device-text-message-querydevicetext)
+      - [2.2.6.6 Query Device Text Response Message (QUERY_DEVICE_TEXT_RSP)](#2266-query-device-text-response-message-querydevicetextrsp)
+      - [2.2.6.7 Transfer In Request (TRANSFER_IN_REQUEST)](#2267-transfer-in-request-transferinrequest)
+      - [2.2.6.8 Transfer Out Request (TRANSFER_OUT_REQUEST)](#2268-transfer-out-request-transferoutrequest)
+      - [2.2.6.9 Retract Device (RETRACT_DEVICE)](#2269-retract-device-retractdevice)
+    - [2.2.7 Request Completion Interface](#227-request-completion-interface)
+      - [2.2.7.1 IO Control Completion (IOCONTROL_COMPLETION)](#2271-io-control-completion-iocontrolcompletion)
+      - [2.2.7.2 URB Completion (URB_COMPLETION)](#2272-urb-completion-urbcompletion)
+      - [2.2.7.3 URB Completion No Data (URB_COMPLETION_NO_DATA)](#2273-urb-completion-no-data-urbcompletionnodata)
+    - [2.2.8 USB_RETRACT_REASON Constants](#228-usbretractreason-constants)
+    - [2.2.9 TS_URB Structures](#229-tsurb-structures)
+      - [2.2.9.1 Common Structures](#2291-common-structures)
+        - [2.2.9.1.1 TS_URB_HEADER](#22911-tsurbheader)
+        - [2.2.9.1.2 TS_USBD_INTERFACE_INFORMATION](#22912-tsusbdinterfaceinformation)
+        - [2.2.9.1.3 TS_USBD_PIPE_INFORMATION](#22913-tsusbdpipeinformation)
+      - [2.2.9.2 TS_URB_SELECT_CONFIGURATION](#2292-tsurbselectconfiguration)
+      - [2.2.9.3 TS_URB_SELECT_INTERFACE](#2293-tsurbselectinterface)
+      - [2.2.9.4 TS_URB_PIPE_REQUEST](#2294-tsurbpiperequest)
+      - [2.2.9.5 TS_URB_GET_CURRENT_FRAME_NUMBER](#2295-tsurbgetcurrentframenumber)
+      - [2.2.9.6 TS_URB_CONTROL_TRANSFER](#2296-tsurbcontroltransfer)
+      - [2.2.9.7 TS_URB_BULK_OR_INTERRUPT_TRANSFER](#2297-tsurbbulkorinterrupttransfer)
+      - [2.2.9.8 TS_URB_ISOCH_TRANSFER](#2298-tsurbisochtransfer)
+      - [2.2.9.9 TS_URB_CONTROL_DESCRIPTOR_REQUEST](#2299-tsurbcontroldescriptorrequest)
+      - [2.2.9.10 TS_URB_CONTROL_FEATURE_REQUEST](#22910-tsurbcontrolfeaturerequest)
+      - [2.2.9.11 TS_URB_CONTROL_GET_STATUS_REQUEST](#22911-tsurbcontrolgetstatusrequest)
+      - [2.2.9.12 TS_URB_CONTROL_VENDOR_OR_CLASS_REQUEST](#22912-tsurbcontrolvendororclassrequest)
+      - [2.2.9.13 TS_URB_CONTROL_GET_CONFIGURATION_REQUEST](#22913-tsurbcontrolgetconfigurationrequest)
+      - [2.2.9.14 TS_URB_CONTROL_GET_INTERFACE_REQUEST](#22914-tsurbcontrolgetinterfacerequest)
+      - [2.2.9.15 TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST](#22915-tsurbosfeaturedescriptorrequest)
+      - [2.2.9.16 TS_URB_CONTROL_TRANSFER_EX](#22916-tsurbcontroltransferex)
+    - [2.2.10 TS_URB_RESULT Structures](#2210-tsurbresult-structures)
+      - [2.2.10.1 Common Structures](#22101-common-structures)
+        - [2.2.10.1.1 TS_URB_RESULT_HEADER](#221011-tsurbresultheader)
+        - [2.2.10.1.2 TS_USBD_INTERFACE_INFORMATION_RESULT](#221012-tsusbdinterfaceinformationresult)
+        - [2.2.10.1.3 TS_USBD_PIPE_INFORMATION_RESULT](#221013-tsusbdpipeinformationresult)
+      - [2.2.10.2 TS_URB_SELECT_CONFIGURATION_RESULT](#22102-tsurbselectconfigurationresult)
+      - [2.2.10.3 TS_URB_SELECT_INTERFACE_RESULT](#22103-tsurbselectinterfaceresult)
+      - [2.2.10.4 TS_URB_GET_CURRENT_FRAME_NUMBER_RESULT](#22104-tsurbgetcurrentframenumberresult)
+      - [2.2.10.5 TS_URB_ISOCH_TRANSFER_RESULT](#22105-tsurbisochtransferresult)
+    - [2.2.11 USB_DEVICE_CAPABILITIES](#2211-usbdevicecapabilities)
+    - [2.2.12 USB IO Control Code](#2212-usb-io-control-code)
+      - [2.2.12.1 IOCTL_INTERNAL_USB_RESET_PORT](#22121-ioctlinternalusbresetport)
+      - [2.2.12.2 IOCTL_INTERNAL_USB_GET_PORT_STATUS](#22122-ioctlinternalusbgetportstatus)
+      - [2.2.12.3 IOCTL_INTERNAL_USB_GET_HUB_COUNT](#22123-ioctlinternalusbgethubcount)
+      - [2.2.12.4 IOCTL_INTERNAL_USB_CYCLE_PORT](#22124-ioctlinternalusbcycleport)
+      - [2.2.12.5 IOCTL_INTERNAL_USB_GET_HUB_NAME](#22125-ioctlinternalusbgethubname)
+      - [2.2.12.6 IOCTL_INTERNAL_USB_GET_BUS_INFO](#22126-ioctlinternalusbgetbusinfo)
+      - [2.2.12.7 IOCTL_INTERNAL_USB_GET_CONTROLLER_NAME](#22127-ioctlinternalusbgetcontrollername)
+    - [2.2.13 USB Internal IO Control Code](#2213-usb-internal-io-control-code)
+      - [2.2.13.1 IOCTL_TSUSBGD_IOCTL_USBDI_QUERY_BUS_TIME](#22131-ioctltsusbgdioctlusbdiquerybustime)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Interface Manipulation Data Model](#3111-interface-manipulation-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Shared Message Header](#3151-processing-a-shared-message-header)
+      - [3.1.5.2 Interface Manipulation](#3152-interface-manipulation)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Device Sink Interface](#3251-device-sink-interface)
+        - [3.2.5.1.1 Processing an Add Virtual Channel Message](#32511-processing-an-add-virtual-channel-message)
+        - [3.2.5.1.2 Processing a Add Device Message](#32512-processing-a-add-device-message)
+      - [3.2.5.2 Channel Notification Interface](#3252-channel-notification-interface)
+        - [3.2.5.2.1 Sending a Channel Created Message](#32521-sending-a-channel-created-message)
+        - [3.2.5.2.2 Processing a Channel Created Message](#32522-processing-a-channel-created-message)
+      - [3.2.5.3 USB Device Interface](#3253-usb-device-interface)
+        - [3.2.5.3.1 Sending a Cancel Request Message](#32531-sending-a-cancel-request-message)
+        - [3.2.5.3.2 Sending a Register Request Callback Message](#32532-sending-a-register-request-callback-message)
+        - [3.2.5.3.3 Sending a IO Control Message](#32533-sending-a-io-control-message)
+        - [3.2.5.3.4 Sending an Internal IO Control Message](#32534-sending-an-internal-io-control-message)
+        - [3.2.5.3.5 Sending a Query Device Text Message](#32535-sending-a-query-device-text-message)
+        - [3.2.5.3.6 Processing a Query Device Text Response Message](#32536-processing-a-query-device-text-response-message)
+        - [3.2.5.3.7 Sending a Transfer In Request Message](#32537-sending-a-transfer-in-request-message)
+        - [3.2.5.3.8 Sending a Transfer Out Request Message](#32538-sending-a-transfer-out-request-message)
+        - [3.2.5.3.9 Sending a Retract Device Message](#32539-sending-a-retract-device-message)
+      - [3.2.5.4 Request Completion Interface](#3254-request-completion-interface)
+        - [3.2.5.4.1 IO Control Completion Message](#32541-io-control-completion-message)
+        - [3.2.5.4.2 URB Completion Message](#32542-urb-completion-message)
+        - [3.2.5.4.3 URB Completion No Data Message](#32543-urb-completion-no-data-message)
+      - [3.2.5.5 Interface Manipulation Exchange Capabilities Interface](#3255-interface-manipulation-exchange-capabilities-interface)
+        - [3.2.5.5.1 Sending an Interface Manipulation Exchange Capabilities Request Message](#32551-sending-an-interface-manipulation-exchange-capabilities-request-message)
+        - [3.2.5.5.2 Processing an Interface Manipulation Exchange Capabilities Response](#32552-processing-an-interface-manipulation-exchange-capabilities-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Device Sink Interface](#3351-device-sink-interface)
+        - [3.3.5.1.1 Sending a Add Virtual Channel Message](#33511-sending-a-add-virtual-channel-message)
+        - [3.3.5.1.2 Sending a Add Device Message](#33512-sending-a-add-device-message)
+      - [3.3.5.2 Channel Notification Interface](#3352-channel-notification-interface)
+        - [3.3.5.2.1 Sending a Channel Created Message](#33521-sending-a-channel-created-message)
+        - [3.3.5.2.2 Processing a Channel Created Message](#33522-processing-a-channel-created-message)
+      - [3.3.5.3 USB Device Interface](#3353-usb-device-interface)
+        - [3.3.5.3.1 Processing a Cancel Request Message](#33531-processing-a-cancel-request-message)
+        - [3.3.5.3.2 Processing a Register Request Callback Message](#33532-processing-a-register-request-callback-message)
+        - [3.3.5.3.3 Processing an IO Control Message](#33533-processing-an-io-control-message)
+        - [3.3.5.3.4 Processing an Internal IO Control Message](#33534-processing-an-internal-io-control-message)
+        - [3.3.5.3.5 Processing a Query Device Text Message](#33535-processing-a-query-device-text-message)
+        - [3.3.5.3.6 Processing a Transfer In Request Message](#33536-processing-a-transfer-in-request-message)
+        - [3.3.5.3.7 Processing a Transfer Out Request Message](#33537-processing-a-transfer-out-request-message)
+        - [3.3.5.3.8 Processing a Retract Device Message](#33538-processing-a-retract-device-message)
+        - [3.3.5.3.9 Processing an OS Descriptor request](#33539-processing-an-os-descriptor-request)
+      - [3.3.5.4 Request Completion Interface](#3354-request-completion-interface)
+        - [3.3.5.4.1 IO Control Completion Message](#33541-io-control-completion-message)
+        - [3.3.5.4.2 URB Completion Message](#33542-urb-completion-message)
+        - [3.3.5.4.3 URB Completion No Data Message](#33543-urb-completion-no-data-message)
+      - [3.3.5.5 Interface Manipulation Exchange Capabilities Interface Messages](#3355-interface-manipulation-exchange-capabilities-interface-messages)
+        - [3.3.5.5.1 Processing an Interface Manipulation Exchange Capabilities Request](#33551-processing-an-interface-manipulation-exchange-capabilities-request)
+        - [3.3.5.5.2 Sending an Interface Manipulation Exchange Capabilities Response Message](#33552-sending-an-interface-manipulation-exchange-capabilities-response-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Server Data Interface Annotations](#41-server-data-interface-annotations)
+    - [4.1.1 Channel Created Message](#411-channel-created-message)
+    - [4.1.2 Internal IO Control Message](#412-internal-io-control-message)
+    - [4.1.3 IO Control Completion Message](#413-io-control-completion-message)
+    - [4.1.4 Transfer In Request Message](#414-transfer-in-request-message)
+    - [4.1.5 URB Completion Message](#415-urb-completion-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension is used to redirect USB devices
 from a terminal client to a terminal server. This allows the server access to devices that are physically
@@ -796,7 +525,7 @@ connected to the client as if the device were local to the server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -858,7 +587,8 @@ Release: April 23, 2024
 
 8 / 71
 
-remote device: A device that is attached to a remote (or client) machine, in contrast to a device
+
+remote device: A device that is attached to a remote (or client) machine, in contrast to a device
 
 physically attached to a machine.
 
@@ -881,14 +611,14 @@ Chapter 3.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -912,7 +642,7 @@ Virtual Channel Extension".
 
 Note Search for 2.0 and Technology USB 2.0
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
@@ -927,11 +657,12 @@ Release: April 23, 2024
 
 9 / 71
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RDPEUSB].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension enables redirection of client
 USB devices to the server. The client indicates which USB devices to make available to the server
@@ -979,7 +710,8 @@ Release: April 23, 2024
 
 10 / 71
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RDPEUSB].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -995,7 +727,7 @@ When the device is unplugged from the client, it closes the channel to the serve
 sent for that particular device. This destroys the driver stacks and stops any further I/O between the
 client and the server.
 
-1.3.1  USB Devices Virtual Channel Protocol
+#### 1.3.1 USB Devices Virtual Channel Protocol
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension is divided into the following
 logical sequences:
@@ -1011,7 +743,7 @@ I/O sequence: The server sends USB packets to the client and the client forwards
 to the physical device and sends back the results after the physical device reassembles the
 packets.
 
-1.3.1.1  Channel Setup Sequence
+##### 1.3.1.1 Channel Setup Sequence
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension uses multiple channels within a
 single named dynamic virtual channel. There is one control channel and one channel for each of the
@@ -1027,12 +759,13 @@ Release: April 23, 2024
 
 11 / 71
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPEUSB].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MS-RDPEUSB].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
 
-1.3.1.2  New Device Sequence
+##### 1.3.1.2 New Device Sequence
 
 The client uses the new device sequence to notify the server about a new device. It first notifies the
 server to create a new instance of the USB Redirection virtual channel. Once the new virtual channel is
@@ -1041,7 +774,7 @@ recognized based on the HardwareIds field of Add device message (section 2.2.4.2
 
 Figure 3: New device sequence
 
-1.3.1.3  I/O Sequence
+##### 1.3.1.3 I/O Sequence
 
 The server uses the I/O sequence to send I/O requests to the client.  The server can send multiple I/O
 requests to the client without first waiting for the previously sent requests to be completed first.
@@ -1055,12 +788,13 @@ Release: April 23, 2024
 
 12 / 71
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension is embedded in a dynamic
 virtual channel transport, as specified in [MS-RDPEDYC].
 
-1.5  Prerequisites and Preconditions
+### 1.5 Prerequisites and Preconditions
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension operates only after the dynamic
 virtual channel transport is fully established. If the dynamic virtual channel transport is terminated,
@@ -1068,7 +802,7 @@ the Remote Desktop Protocol: USB Devices Virtual Channel Extension is also termi
 is terminated by closing the underlying virtual channel. For details about closing the dynamic virtual
 channel, refer to [MS-RDPEDYC] section 3.2.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension is designed to run within the
 context of a Remote Desktop Protocol (RDP) virtual channel established between a client and server.
@@ -1097,7 +831,7 @@ than these basic calls. If there is any other I/O, the device cannot be redirect
 hence the device will be treated as any other device attached to the client and this protocol will
 not be involved in any means.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol supports versioning and capability negotiation at two levels. The first is supported
 through the use of interface manipulation messages, as specified in sections 2.2.2 and 2.2.3. The
@@ -1106,12 +840,12 @@ second is supported by the capability exchange messages, as specified in section
 The USB2.0 specification also includes versioning in the Device descriptor as described in section 9.6.1
 of [USB-SPC2.0].
 
-1.8  Vendors-Extensible Fields
+### 1.8 Vendors-Extensible Fields
 
 This protocol uses HRESULTs, as specified in [MS-ERREF] section 2.1. Vendors are free to choose
 their own values, as long as the C bit (0x20000000) is set, indicating that it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1122,18 +856,19 @@ Release: April 23, 2024
 
 13 / 71
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: USB Devices Virtual Channel Extension is designed to operate over
 dynamic virtual channels, as specified in [MS-RDPEDYC]. The dynamic virtual channel name is the
 ANSI-encoded null-terminated string "URBDRC". The usage of a channel name when opening a
 dynamic virtual channel is specified in [MS-RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Shared Message Header (SHARED_MSG_HEADER)
+#### 2.2.1 Shared Message Header (SHARED_MSG_HEADER)
 
 Every packet in this extension contains a common header.<1>
 
@@ -1205,7 +940,8 @@ Release: April 23, 2024
 
 14 / 71
 
-MessageId (4 bytes): A 32-bit unsigned integer. A unique ID for the request or response pair.
+
+MessageId (4 bytes): A 32-bit unsigned integer. A unique ID for the request or response pair.
 
 Requests and responses are matched based on this ID coupled with the InterfaceId.
 
@@ -1316,7 +1052,8 @@ Release: April 23, 2024
 
 15 / 71
 
-Value
+
+Value
 
 0x00000105
 
@@ -1368,17 +1105,17 @@ messagePayload (variable): An array of unsigned 8-bit integers. The remainder of
 interpreted based on the interface for which the packet is sent. This field is optional based on the
 packet length.
 
-2.2.2  Interface Manipulation
+#### 2.2.2 Interface Manipulation
 
 This protocol utilizes the same Interface Query and Interface Release messages that are defined in
 [MS-RDPEXPS] section 2.2.2.
 
-2.2.3  Interface Manipulation Exchange Capabilities Interface
+#### 2.2.3 Interface Manipulation Exchange Capabilities Interface
 
 The Exchange Capabilities Interface is identified by the interface ID 0x00000000. This interface is
 used to exchange the client's and the server's capabilities for interface manipulation.
 
-2.2.3.1  Interface Manipulation Exchange Capabilities Request
+##### 2.2.3.1 Interface Manipulation Exchange Capabilities Request
 
 (RIM_EXCHANGE_CAPABILITY_REQUEST)
 
@@ -1408,7 +1145,8 @@ Release: April 23, 2024
 
 16 / 71
 
-Header (variable): The SHARED_MSG_HEADER (as specified in section 2.2.1). The InterfaceId field
+
+Header (variable): The SHARED_MSG_HEADER (as specified in section 2.2.1). The InterfaceId field
 
 MUST be set to 0x00000000. The Mask field MUST be set to STREAM_ID_NONE. The FunctionId
 field MUST be set to RIM_EXCHANGE_CAPABILITY_REQUEST (0x00000100).
@@ -1427,7 +1165,7 @@ This capability MUST be present in the message.
 
 0x00000001
 
-2.2.3.2  Interface Manipulation Exchange Capabilities Response
+##### 2.2.3.2 Interface Manipulation Exchange Capabilities Response
 
 (RIM_EXCHANGE_CAPABILITY_RESPONSE)
 
@@ -1474,12 +1212,12 @@ This capability MUST be present in the message.
 
 Result (4 bytes): A 32-bit unsigned integer that indicates the HRESULT of the operation.
 
-2.2.4  Device Sink Interface
+#### 2.2.4 Device Sink Interface
 
 The device sink interface is identified by the default interface ID 0x00000001. The device sink
 interface is used by the client to communicate with the server about new USB devices.
 
-2.2.4.1  Add Virtual Channel Message (ADD_VIRTUAL_CHANNEL)
+##### 2.2.4.1 Add Virtual Channel Message (ADD_VIRTUAL_CHANNEL)
 
 The ADD_VIRTUAL_CHANNEL message is sent from the client to the server to create a new instance of
 dynamic virtual channel.
@@ -1491,7 +1229,8 @@ Release: April 23, 2024
 
 17 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1510,7 +1249,7 @@ Header (variable): The SHARED_MSG_HEADER (as specified in section 2.2.1). The In
 MUST be set to 0x00000001. The Mask field MUST be set to STREAM_ID_PROXY. The FunctionId
 field MUST be set to ADD_VIRTUAL_CHANNEL (0x00000100).
 
-2.2.4.2  Add Device Message (ADD_DEVICE)
+##### 2.2.4.2 Add Device Message (ADD_DEVICE)
 
 The ADD_DEVICE message is sent from the client to the server in order to create a redirected USB
 device on the server.
@@ -1565,7 +1304,8 @@ Release: April 23, 2024
 
 18 / 71
 
-UsbDeviceCapabilities (28 bytes)
+
+UsbDeviceCapabilities (28 bytes)
 
 ...
 
@@ -1617,13 +1357,13 @@ same container ID. The value of the container ID MUST be unique and MUST not be 
 
 UsbDeviceCapabilities (28 bytes): A 28-byte structure as specified in section 2.2.11.
 
-2.2.5  Channel Notification Interface
+#### 2.2.5 Channel Notification Interface
 
 The channel notification interface is used by both the client and the server to communicate with the
 other side. For server-to-client notifications, the default interface ID is 0x00000003; for client-to-
 server notifications, the default interface ID is 0x00000002.
 
-2.2.5.1  Channel Created Message (CHANNEL_CREATED)
+##### 2.2.5.1 Channel Created Message (CHANNEL_CREATED)
 
 The CHANNEL_CREATED message is sent from both the client and the server to inform the other side
 of the RDP USB device redirection version supported.
@@ -1635,7 +1375,8 @@ Release: April 23, 2024
 
 19 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1673,11 +1414,11 @@ Capabilities (4 bytes): A 32-bit unsigned integer. The capabilities of RDP USB r
 
 This value MUST be set to zero.
 
-2.2.6  USB Device Interface
+#### 2.2.6 USB Device Interface
 
 The USB device interface is used by the server to send IO-related requests to the client.
 
-2.2.6.1  Cancel Request Message (CANCEL_REQUEST)
+##### 2.2.6.1 Cancel Request Message (CANCEL_REQUEST)
 
 The CANCEL_REQUEST message is sent from the server to the client to cancel an outstanding IO
 request.
@@ -1716,7 +1457,8 @@ Release: April 23, 2024
 
 20 / 71
 
-2.2.6.2  Register Request Callback Message (REGISTER_REQUEST_CALLBACK)
+
+##### 2.2.6.2 Register Request Callback Message (REGISTER_REQUEST_CALLBACK)
 
 The REGISTER_REQUEST_CALLBACK message is sent from the server to the client in order to provide
 a Request Completion Interface to the client.
@@ -1752,7 +1494,7 @@ RequestCompletion field is not present.
 RequestCompletion (4 bytes): A 32-bit unsigned integer. A unique InterfaceID to be used by all
 Request Completion messages defined in the Request Completion Interface (section 2.2.7).
 
-2.2.6.3  IO Control Message (IO_CONTROL)
+##### 2.2.6.3 IO Control Message (IO_CONTROL)
 
 The IO_CONTROL message is sent from the server to the client in order to submit an IO control
 request to the USB device.
@@ -1794,7 +1536,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Mask field MUST be set to STREAM_ID_PROXY. The FunctionId field MUST be set to
+
+Mask field MUST be set to STREAM_ID_PROXY. The FunctionId field MUST be set to
 IO_CONTROL (0x00000102).
 
 IoControlCode (4 bytes): A 32-bit unsigned integer. An IO control code as specified in section
@@ -1813,7 +1556,7 @@ can return to the server.
 
 RequestId (4 bytes): A 32-bit unsigned integer. This ID uniquely identifies the I/O control request.
 
-2.2.6.4  Internal IO Control Message (INTERNAL_IO_CONTROL)
+##### 2.2.6.4 Internal IO Control Message (INTERNAL_IO_CONTROL)
 
 The INTERNAL_IO_CONTROL message is sent from the server to the client in order to submit an
 internal IO control request to the USB device.
@@ -1871,11 +1614,12 @@ Release: April 23, 2024
 
 22 / 71
 
-RequestId (4 bytes): A 32-bit unsigned integer. This value represents an ID that uniquely identifies
+
+RequestId (4 bytes): A 32-bit unsigned integer. This value represents an ID that uniquely identifies
 
 this internal IO control request.
 
-2.2.6.5  Query Device Text Message (QUERY_DEVICE_TEXT)
+##### 2.2.6.5 Query Device Text Message (QUERY_DEVICE_TEXT)
 
 The QUERY_DEVICE_TEXT message is sent from the server to the client in order to query the USB
 device's text when the server receives a query device test request (IRP_MN_QUERY_DEVICE_TEXT)
@@ -1913,7 +1657,7 @@ LocaleId (4 bytes): A 32-bit unsigned integer. This value represents the locale 
 
 as described in [MSFT-W2KDDK], Volume 1, Part 1, Chapter 2.
 
-2.2.6.6  Query Device Text Response Message (QUERY_DEVICE_TEXT_RSP)
+##### 2.2.6.6 Query Device Text Response Message (QUERY_DEVICE_TEXT_RSP)
 
 The QUERY_DEVICE_TEXT_RSP message is sent from the client in response to a QUERY_DEVICE_TEXT
 message sent by the server.
@@ -1952,7 +1696,8 @@ Release: April 23, 2024
 
 23 / 71
 
-MessageId fields in the corresponding QUERY_DEVICE_TEXT. The Mask field MUST be set to
+
+MessageId fields in the corresponding QUERY_DEVICE_TEXT. The Mask field MUST be set to
 STREAM_ID_STUB.
 
 cchDeviceDescription (4 bytes): A 32-bit unsigned integer. This field MUST contain the number of
@@ -1965,7 +1710,7 @@ terminated Unicode string that contains the requested device text.
 
 HResult (4 bytes): A 32-bit unsigned integer that indicates the HRESULT of the operation.
 
-2.2.6.7  Transfer In Request (TRANSFER_IN_REQUEST)
+##### 2.2.6.7 Transfer In Request (TRANSFER_IN_REQUEST)
 
 The TRANSFER_IN_REQUEST message is sent from the server to the client in order to request data
 from the USB device.
@@ -2006,7 +1751,7 @@ OutputBufferSize (4 bytes): A 32-bit unsigned integer. This value represents the
 
 of bytes of data that is requested from the USB device.
 
-2.2.6.8  Transfer Out Request (TRANSFER_OUT_REQUEST)
+##### 2.2.6.8 Transfer Out Request (TRANSFER_OUT_REQUEST)
 
 The TRANSFER_OUT_REQUEST message is sent from the server to the client in order to submit data
 to the USB device.
@@ -2033,7 +1778,8 @@ Release: April 23, 2024
 
 24 / 71
 
-CbTsUrb
+
+CbTsUrb
 
 TsUrb (variable)
 
@@ -2058,7 +1804,7 @@ OutputBufferSize (4 bytes): A 32-bit unsigned integer. The size in bytes of the 
 
 OutputBuffer (variable): An array of bytes. The raw data to be sent to the device.
 
-2.2.6.9  Retract Device (RETRACT_DEVICE)
+##### 2.2.6.9 Retract Device (RETRACT_DEVICE)
 
 The RETRACT_DEVICE message is sent from the server to the client in order to stop redirecting the
 USB device.
@@ -2089,7 +1835,7 @@ Reason (4 bytes): A 32-bit unsigned integer. The reason code, as specified in se
 
 redirecting the USB device.
 
-2.2.7  Request Completion Interface
+#### 2.2.7 Request Completion Interface
 
 The Request Completion Interface is used by the client to send the final result for a request previously
 sent from the server.
@@ -2101,7 +1847,8 @@ Release: April 23, 2024
 
 25 / 71
 
-2.2.7.1  IO Control Completion (IOCONTROL_COMPLETION)
+
+##### 2.2.7.1 IO Control Completion (IOCONTROL_COMPLETION)
 
 The IOCONTROL_COMPLETION request is sent from the client to the server as the final result of an IO
 Control request or internal IO Control request.
@@ -2161,7 +1908,7 @@ value of the Information field MUST be ignored.
 
 OutputBuffer (variable): A data buffer that results from processing the request.
 
-2.2.7.2  URB Completion (URB_COMPLETION)
+##### 2.2.7.2 URB Completion (URB_COMPLETION)
 
 The URB_COMPLETION request is sent from the client to the server as the final result of a
 TRANSFER_IN_REQUEST that contains output data.
@@ -2173,7 +1920,8 @@ Release: April 23, 2024
 
 26 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2226,7 +1974,7 @@ field.
 
 OutputBuffer (variable): A data buffer that results from processing the request.
 
-2.2.7.3  URB Completion No Data (URB_COMPLETION_NO_DATA)
+##### 2.2.7.3 URB Completion No Data (URB_COMPLETION_NO_DATA)
 
 The URB_COMPLETION_NO_DATA request is sent from the client to the server as the final result of a
 TRANSFER_IN_REQUEST that contains no output data or a TRANSFER_OUT_REQUEST.
@@ -2253,7 +2001,8 @@ Release: April 23, 2024
 
 27 / 71
 
-RequestId
+
+RequestId
 
 CbTsUrbResult
 
@@ -2286,7 +2035,7 @@ OutputBufferSize (4 bytes): A 32-bit unsigned integer. The size, in bytes, of da
 of the RequestId that corresponds to a TRANSFER_OUT_REQUEST. This field MUST be zero if the
 RequestId corresponds to a TRANSFER_IN_REQUEST.
 
-2.2.8  USB_RETRACT_REASON Constants
+#### 2.2.8 USB_RETRACT_REASON Constants
 
 The reason why the server requests the client to stop redirecting a USB device.
 
@@ -2301,18 +2050,18 @@ UsbRetractReason_BlockedByPolicy
 The USB device is to be stopped from being redirected because the device
 is blocked by the server's policy.
 
-2.2.9  TS_URB Structures
+#### 2.2.9 TS_URB Structures
 
 The TRANSFER_IN_REQUEST or TRANSFER_OUT_REQUEST is sent in response to a URB request
 received from the system.
 
 For information on URB definitions, see [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.
 
-2.2.9.1  Common Structures
+##### 2.2.9.1 Common Structures
 
 This section specifies common structures that are used by more than one TS_URB structure.
 
-2.2.9.1.1 TS_URB_HEADER
+###### 2.2.9.1.1 TS_URB_HEADER
 
 Every TS_URB structure begins with a common header called TS_URB_HEADER.
 
@@ -2323,7 +2072,8 @@ Release: April 23, 2024
 
 28 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2361,7 +2111,7 @@ NoAckIsochWriteJitterBufferSizeInMs field in USB_DEVICE_CAPABILITIES is nonzero 
 Function is set to URB_FUNCTION_ISOCH_TRANSFER. If the RequestId field is set to
 TRANSFER_IN_REQUEST, this field MUST be set to zero.
 
-2.2.9.1.2 TS_USBD_INTERFACE_INFORMATION
+###### 2.2.9.1.2 TS_USBD_INTERFACE_INFORMATION
 
 The TS_USBD_INTERFACE_INFORMATION is based on the USBD_INTERFACE_INFORMATION structure
 as described in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.
@@ -2420,7 +2170,8 @@ Release: April 23, 2024
 
 29 / 71
 
-NumberOfPipes (4 bytes): A 32-bit unsigned integer. This value is from the NumberOfPipes field
+
+NumberOfPipes (4 bytes): A 32-bit unsigned integer. This value is from the NumberOfPipes field
 
 in USBD_INTERFACE_INFORMATION.
 
@@ -2429,7 +2180,7 @@ TS_USBD_PIPE_INFORMATION (variable): An array of TS_USBD_PIPE_INFORMATION struct
 as specified in section 2.2.9.1.3. The number of array elements is determined by the
 NumberOfPipes field.
 
-2.2.9.1.3 TS_USBD_PIPE_INFORMATION
+###### 2.2.9.1.3 TS_USBD_PIPE_INFORMATION
 
 The TS_USBD_PIPE_INFORMATION is based on the USBD_PIPE_INFORMATION structure as described
 in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.<2>
@@ -2469,7 +2220,7 @@ PipeFlags (4 bytes): A 32-bit unsigned integer. This value is from the PipeFlags
 
 USBD_PIPE_INFORMATION.
 
-2.2.9.2  TS_URB_SELECT_CONFIGURATION
+##### 2.2.9.2 TS_URB_SELECT_CONFIGURATION
 
 This packet represents the URB structure URB_SELECT_CONFIGURATION, as specified in  [MSFT-
 W2KDDK] Volume 2, Part 4, chapter 3. The packet is sent using TRANSFER_IN_REQUEST.
@@ -2508,7 +2259,8 @@ Release: April 23, 2024
 
 30 / 71
 
-USB_CONFIGURATION_DESCRIPTOR (variable)
+
+USB_CONFIGURATION_DESCRIPTOR (variable)
 
 ...
 
@@ -2534,7 +2286,7 @@ USB_CONFIGURATION_DESCRIPTOR (variable): All data for the configuration with a
 
 USB_CONFIGURATION_DESCRIPTOR as specified in [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3.
 
-2.2.9.3  TS_URB_SELECT_INTERFACE
+##### 2.2.9.3 TS_URB_SELECT_INTERFACE
 
 This packet represents the URB structure URB_SELECT_INTERFACE, as specified in [MSFT-W2KDDK]
 Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST message with
@@ -2571,7 +2323,7 @@ TS_USBD_INTERFACE_INFORMATION (variable): A TS_USBD_INTERFACE_INFORMATION
 
 structure as specified in section 2.2.9.1.2.
 
-2.2.9.4  TS_URB_PIPE_REQUEST
+##### 2.2.9.4 TS_URB_PIPE_REQUEST
 
 This packet represents the URB structure URB_PIPE_REQUEST, as specified in [MSFT-W2KDDK]
 Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST message with
@@ -2584,7 +2336,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2608,7 +2361,7 @@ PipeHandle (4 bytes): A 32-bit unsigned integer. This is either the Configuratio
 in TS_URB_SELECT_INTERFACE request or the ConfigurationHandle field returned by the client
 with TS_URB_SELECT_CONFIGURATION_RESULT.
 
-2.2.9.5  TS_URB_GET_CURRENT_FRAME_NUMBER
+##### 2.2.9.5 TS_URB_GET_CURRENT_FRAME_NUMBER
 
 This packet represents the URB structure URB_GET_CURRENT_FRAME_NUMBER, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST.
@@ -2631,7 +2384,7 @@ TS_URB_HEADER
 
 TS_URB_HEADER (8 bytes): A TS_URB_HEADER as specified in section 2.2.9.1.1.
 
-2.2.9.6  TS_URB_CONTROL_TRANSFER
+##### 2.2.9.6 TS_URB_CONTROL_TRANSFER
 
 This packet represents the URB structure URB_CONTROL_TRANSFER, as specified in [MSFT-W2KDDK]
 Volume 2, Part 4, Chapter 3. If the TransferFlags field in URB_CONTROL_TRANSFER contains the
@@ -2669,7 +2422,8 @@ Release: April 23, 2024
 
 32 / 71
 
-...
+
+...
 
 TS_URB_HEADER (8 bytes): A TS_URB_HEADER as specified in section 2.2.9.1.1.
 
@@ -2685,7 +2439,7 @@ SetupPacket (8 bytes): An 8-byte array. This value is from the SetupPacket field
 
 URB_CONTROL_TRANSFER.
 
-2.2.9.7  TS_URB_BULK_OR_INTERRUPT_TRANSFER
+##### 2.2.9.7 TS_URB_BULK_OR_INTERRUPT_TRANSFER
 
 The packet represents the URB structure URB_BULK_OR_INTERRUPT_TRANSFER, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. If the TransferFlags field in
@@ -2725,7 +2479,7 @@ TransferFlags (4 bytes): A 32-bit unsigned integer. This value is from the Trans
 
 URB_BULK_OR_INTERRUPT_TRANSFER.
 
-2.2.9.8  TS_URB_ISOCH_TRANSFER
+##### 2.2.9.8 TS_URB_ISOCH_TRANSFER
 
 This packet represents the URB structure URB_ISOCH_TRANSFER, as specified in [MSFT-W2KDDK]
 Volume 2, Part 4, Chapter 3. If the TransferFlags field in URB_ISOCH_TRANSFER contains the
@@ -2742,7 +2496,8 @@ Release: April 23, 2024
 
 33 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2797,7 +2552,7 @@ IsoPacket (variable): An array of USBD_ISO_PACKET_DESCRIPTOR structures. This va
 
 the IsoPacket field in URB_ISOCH_TRANSFER.
 
-2.2.9.9  TS_URB_CONTROL_DESCRIPTOR_REQUEST
+##### 2.2.9.9 TS_URB_CONTROL_DESCRIPTOR_REQUEST
 
 This packet represents the URB structure URB_CONTROL_DESCRIPTOR_REQUEST, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. If the URB Function in
@@ -2817,7 +2572,8 @@ Release: April 23, 2024
 
 34 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2852,9 +2608,9 @@ LanguageId (2 bytes): A 16-bit unsigned integer. This value is from the Language
 
 URB_CONTROL_DESCRIPTOR_REQUEST.
 
-2.2.9.10
+##### 2.2.9.10 TS_URB_CONTROL_FEATURE_REQUEST
 
-TS_URB_CONTROL_FEATURE_REQUEST
+
 
 This packet represents the URB structure URB_CONTROL_FEATURE_REQUEST, as specified in [MSFT-
 W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST
@@ -2889,9 +2645,9 @@ Index (2 bytes): A 16-bit unsigned integer. This value is from the Index field i
 
 URB_CONTROL_FEATURE_REQUEST.
 
-2.2.9.11
+##### 2.2.9.11 TS_URB_CONTROL_GET_STATUS_REQUEST
 
-TS_URB_CONTROL_GET_STATUS_REQUEST
+
 
 This packet represents the URB structure URB_CONTROL_GET_STATUS_REQUEST, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST
@@ -2918,7 +2674,8 @@ Release: April 23, 2024
 
 35 / 71
 
-...
+
+...
 
 Index
 
@@ -2934,9 +2691,9 @@ Padding (2 bytes): A 16-bit unsigned integer for padding. This field can be set 
 
 MUST be ignored upon receipt.
 
-2.2.9.12
+##### 2.2.9.12 TS_URB_CONTROL_VENDOR_OR_CLASS_REQUEST
 
-TS_URB_CONTROL_VENDOR_OR_CLASS_REQUEST
+
 
 This packet represents the URB structure URB_CONTROL_VENDOR_OR_CLASS_REQUEST, as specified
 in [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. If the TransferFlags field in
@@ -3004,13 +2761,14 @@ Release: April 23, 2024
 
 36 / 71
 
-Padding (2 bytes): A 16-bit unsigned integer for padding. This field can be set to any value and
+
+Padding (2 bytes): A 16-bit unsigned integer for padding. This field can be set to any value and
 
 MUST be ignored upon receipt.
 
-2.2.9.13
+##### 2.2.9.13 TS_URB_CONTROL_GET_CONFIGURATION_REQUEST
 
-TS_URB_CONTROL_GET_CONFIGURATION_REQUEST
+
 
 This packet represents the URB structure URB_CONTROL_GET_CONFIGURATION_REQUEST, as
 specified in [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the
@@ -3034,9 +2792,9 @@ TS_URB_HEADER
 
 TS_URB_HEADER (8 bytes): A TS_URB_HEADER as specified in section 2.2.9.1.1.
 
-2.2.9.14
+##### 2.2.9.14 TS_URB_CONTROL_GET_INTERFACE_REQUEST
 
-TS_URB_CONTROL_GET_INTERFACE_REQUEST
+
 
 This packet represents the URB structure URB_CONTROL_GET_INTERFACE_REQUEST, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST
@@ -3072,9 +2830,9 @@ Padding (2 bytes): A 16-bit unsigned integer for padding. This field can be set 
 
 MUST be ignored upon receipt.
 
-2.2.9.15
+##### 2.2.9.15 TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST
 
-TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST
+
 
 This packet represents the URB structure URB_OS_FEATURE_DESCRIPTOR_REQUEST, as specified in
 [MSFT-W2KDDK] Volume 2, Part 4, Chapter 3. The packet is sent using the TRANSFER_IN_REQUEST
@@ -3101,7 +2859,8 @@ Release: April 23, 2024
 
 37 / 71
 
-...
+
+...
 
 Recipient
 
@@ -3146,9 +2905,9 @@ Padding2 (3 bytes): A 24-bit unsigned integer for padding. This field can be set
 
 MUST be ignored upon receipt.
 
-2.2.9.16
+##### 2.2.9.16 TS_URB_CONTROL_TRANSFER_EX
 
-TS_URB_CONTROL_TRANSFER_EX
+
 
 This packet represents the URB structure URB_CONTROL_TRANSFER_EX, as specified in [MSFT-
 W2KDDK] Volume 2, Part 4, Chapter 3. URB_CONTROL_TRANSFER_EX is same as
@@ -3190,7 +2949,8 @@ Release: April 23, 2024
 
 38 / 71
 
-SetupPacket
+
+SetupPacket
 
 ...
 
@@ -3214,7 +2974,7 @@ SetupPacket (8 bytes): An array of 8-bytes. This value is from the SetupPacket f
 
 URB_CONTROL_TRANSFER_EX.
 
-2.2.10 TS_URB_RESULT Structures
+#### 2.2.10 TS_URB_RESULT Structures
 
 The TS_URB_RESULT structures sent in response to the TRANSFER_IN_REQUEST and
 TRANSFER_OUT_REQUEST messages, are sent via the URB_COMPLETION or
@@ -3224,13 +2984,13 @@ described in this section.
 All the fields in TS_URB_RESULT are the output fields defined in URB. For information on URB
 definitions, see [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.
 
-2.2.10.1
+##### 2.2.10.1 Common Structures
 
-Common Structures
 
-2.2.10.1.1
 
-TS_URB_RESULT_HEADER
+###### 2.2.10.1.1 TS_URB_RESULT_HEADER
+
+
 
 Every TS_URB_RESULT structure begins with a common header called TS_URB_RESULT_HEADER.
 
@@ -3260,9 +3020,9 @@ MUST be ignored upon receipt.
 UsbdStatus (4 bytes): A 32-bit unsigned integer. This value represents the Status field of the
 URB_STATUS structure as specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.
 
-2.2.10.1.2
+###### 2.2.10.1.2 TS_USBD_INTERFACE_INFORMATION_RESULT
 
-TS_USBD_INTERFACE_INFORMATION_RESULT
+
 
 The TS_USBD_INTERFACE_INFORMATION_RESULT structure is based on the
 USBD_INTERFACE_INFORMATION structure as described in [MSFT-W2KDDK], Volume 2, Part 4,
@@ -3275,7 +3035,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3349,9 +3110,9 @@ Pipes (variable): An array of TS_USBD_PIPE_INFORMATION_RESULT structures. The nu
 
 array elements is determined by the NumberOfPipes field.
 
-2.2.10.1.3
+###### 2.2.10.1.3 TS_USBD_PIPE_INFORMATION_RESULT
 
-TS_USBD_PIPE_INFORMATION_RESULT
+
 
 The TS_USBD_PIPE_INFORMATION_RESULT is based on the USBD_PIPE_INFORMATION structure as
 described in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 3.
@@ -3380,7 +3141,8 @@ Release: April 23, 2024
 
 40 / 71
 
-PipeType
+
+PipeType
 
 PipeHandle
 
@@ -3416,9 +3178,9 @@ PipeFlags (4 bytes): A 32-bit unsigned integer. This value represents the PipeFl
 
 USBD_PIPE_INFORMATION.
 
-2.2.10.2
+##### 2.2.10.2 TS_URB_SELECT_CONFIGURATION_RESULT
 
-TS_URB_SELECT_CONFIGURATION_RESULT
+
 
 This packet represents the result of the TRANSFER_IN_REQUEST with
 TS_URB_SELECT_CONFIGURATION. The TS_URB_SELECT_CONFIGURATION_RESULT is sent via the
@@ -3458,7 +3220,8 @@ Release: April 23, 2024
 
 41 / 71
 
-ConfigurationHandle (4 bytes): A 32-bit unsigned integer. An opaque handle that identifies the
+
+ConfigurationHandle (4 bytes): A 32-bit unsigned integer. An opaque handle that identifies the
 
 configuration described by the TS_URB_SELECT_CONFIGURATION operation.
 
@@ -3471,9 +3234,9 @@ Interface (variable): An array of TS_USBD_INTERFACE_INFORMATION_RESULT structure
 specified in section 2.2.10.1.2. The number of elements is determined by the NumInterfaces
 field.
 
-2.2.10.3
+##### 2.2.10.3 TS_URB_SELECT_INTERFACE_RESULT
 
-TS_URB_SELECT_INTERFACE_RESULT
+
 
 This packet represents the result of the TRANSFER_IN_REQUEST with TS_URB_SELECT_INTERFACE.
 The TS_URB_SELECT_CONFIGURATION_RESULT structure is sent via the
@@ -3506,9 +3269,9 @@ Interface (variable): A TS_USBD_INTERFACE_INFORMATION_RESULT structure as specif
 
 section 2.2.10.1.2.
 
-2.2.10.4
+##### 2.2.10.4 TS_URB_GET_CURRENT_FRAME_NUMBER_RESULT
 
-TS_URB_GET_CURRENT_FRAME_NUMBER_RESULT
+
 
 This packet represents the result of the TRANSFER_IN_REQUEST with
 TS_URB_GET_CURRENT_FRAME_NUMBER. The TS_URB_GET_CURRENT_FRAME_NUMBER_RESULT
@@ -3546,9 +3309,10 @@ Release: April 23, 2024
 
 42 / 71
 
-2.2.10.5
 
-TS_URB_ISOCH_TRANSFER_RESULT
+##### 2.2.10.5 TS_URB_ISOCH_TRANSFER_RESULT
+
+
 
 This packet represents the result of TRANSFER_IN_REQUEST or TRANSFER_OUT_REQUEST with
 TS_URB_ISOCH_TRANSFER. The TS_URB_ISOCH_TRANSFER_RESULT structure is sent via the
@@ -3610,7 +3374,7 @@ TS_URB_ISOCH_TRANSFER_RESULT structure, the client MUST copy the data from the d
 stream into the OutputDataBuffer field if and only if the corresponding IsoPacket indicates no
 error.
 
-2.2.11 USB_DEVICE_CAPABILITIES
+#### 2.2.11 USB_DEVICE_CAPABILITIES
 
 The USB_DEVICE_CAPABILITIES structure defines the capabilities of a USB device.
 
@@ -3621,7 +3385,8 @@ Release: April 23, 2024
 
 43 / 71
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3702,19 +3467,20 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-outstanding isochronous data the client expects from the server. If this value is nonzero, it MUST
+
+outstanding isochronous data the client expects from the server. If this value is nonzero, it MUST
 be greater than or equal to 10 and less than or equal to 512.
 
-2.2.12 USB IO Control Code
+#### 2.2.12 USB IO Control Code
 
 The IO_CONTROL messages are sent for each I/O request that the device driver sends to the USB
 device. Each I/O request contains a value called the I/O control code. This I/O control code specifies
 what operation is requested in the I/O request. This section describes the I/O control codes that the
 server supports.
 
-2.2.12.1
+##### 2.2.12.1 IOCTL_INTERNAL_USB_RESET_PORT
 
-IOCTL_INTERNAL_USB_RESET_PORT
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3725,9 +3491,9 @@ OutputBufferSize field set to zero.
 In response to the IO_CONTROL message, an IOCONTROL_COMPLETION message is sent with the
 final result of the operation and the OutputBufferSize field set to zero.
 
-2.2.12.2
+##### 2.2.12.2 IOCTL_INTERNAL_USB_GET_PORT_STATUS
 
-IOCTL_INTERNAL_USB_GET_PORT_STATUS
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3740,9 +3506,9 @@ final result of the operation. If the operation is successful, the client MUST s
 field to 0x4 and set the OutputBuffer field to the USB port status. If the operation is not successful,
 the client MUST set the OutputBufferSize field to zero.
 
-2.2.12.3
+##### 2.2.12.3 IOCTL_INTERNAL_USB_GET_HUB_COUNT
 
-IOCTL_INTERNAL_USB_GET_HUB_COUNT
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3755,9 +3521,9 @@ final result of the operation. If the operation is successful, the client MUST s
 field to 0x4 and set the OutputBuffer field to the hub count. If the operation is not successful, the
 client MUST set the OutputBufferSize field to zero.
 
-2.2.12.4
+##### 2.2.12.4 IOCTL_INTERNAL_USB_CYCLE_PORT
 
-IOCTL_INTERNAL_USB_CYCLE_PORT
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3775,9 +3541,10 @@ Release: April 23, 2024
 
 45 / 71
 
-2.2.12.5
 
-IOCTL_INTERNAL_USB_GET_HUB_NAME
+##### 2.2.12.5 IOCTL_INTERNAL_USB_GET_HUB_NAME
+
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3791,9 +3558,9 @@ final result of the operation. If the operation is successful, the client MUST s
 field to length of the hub name and set the OutputBuffer field to the hub name. If the operation is
 not successful, the client MUST set the OutputBufferSize field to zero.
 
-2.2.12.6
+##### 2.2.12.6 IOCTL_INTERNAL_USB_GET_BUS_INFO
 
-IOCTL_INTERNAL_USB_GET_BUS_INFO
+
 
 This USB IOCTL is specified in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3807,9 +3574,9 @@ final result of the operation. If the operation is successful, the client MUST s
 field to size of USB_BUS_NOTIFICATION and set the OutputBuffer field to USB_BUS_NOTIFICATION.
 If the operation is not successful, the client MUST set the OutputBufferSize field to zero.
 
-2.2.12.7
+##### 2.2.12.7 IOCTL_INTERNAL_USB_GET_CONTROLLER_NAME
 
-IOCTL_INTERNAL_USB_GET_CONTROLLER_NAME
+
 
 This USB IOCTL is described in [MSFT-W2KDDK], Volume 2, Part 4, Chapter 1.
 
@@ -3823,11 +3590,11 @@ final result of the operation. If the operation is successful, the client MUST s
 field to size of controller name and set the OutputBuffer field to the controller name. If the operation
 is not successful, the client MUST set the OutputBufferSize field to zero.
 
-2.2.13 USB Internal IO Control Code
+#### 2.2.13 USB Internal IO Control Code
 
-2.2.13.1
+##### 2.2.13.1 IOCTL_TSUSBGD_IOCTL_USBDI_QUERY_BUS_TIME
 
-IOCTL_TSUSBGD_IOCTL_USBDI_QUERY_BUS_TIME
+
 
 The IOCTL_TSUSBGD_IOCTL_USBDI_QUERY_BUS_TIME value is defined as 0x00224000. The
 INTERNAL_IO_CONTROL message with IOCTL code
@@ -3846,7 +3613,8 @@ Release: April 23, 2024
 
 46 / 71
 
-In response to the INTERNAL_IO_CONTROL message, an IOCONTROL_COMPLETION message is sent
+
+In response to the INTERNAL_IO_CONTROL message, an IOCONTROL_COMPLETION message is sent
 with the final result of the operation. If the operation is successful, the client MUST set the
 OutputBufferSize field to 0x4 and set the OutputBuffer field to a 32-bit unsigned integer that
 represents the current frame number. Each frame represents a 1 ms interval. If the operation is not
@@ -3859,13 +3627,14 @@ Release: April 23, 2024
 
 47 / 71
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-RDPEUSB].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
 The following state diagram illustrates the state transitions that both the client and the server go
 through.
@@ -3898,7 +3667,8 @@ Release: April 23, 2024
 
 48 / 71
 
-3.1.1  Abstract Data Model
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3929,29 +3699,29 @@ TS_URB_CONTROL_TRANSFER_EX. The value is send by the client in
 TS_USBD_PIPE_INFORMATION_RESULT structure in response to TS_URB_SELECT_INTERFACE
 request.
 
-3.1.1.1  Interface Manipulation Data Model
+##### 3.1.1.1 Interface Manipulation Data Model
 
 The common details of the abstract data model for the interface manipulation infrastructure are
 specified in [MS-RDPEXPS] sections 3.1.1. The interface manipulation applies to the following fields:
 InterfaceId, MessageId, and FunctionId.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 A timer is started for every Query Device Text Message request. The timer expires in 30 seconds; if by
 that time the reply has not arrived the client or server fails the request with the error
 STATUS_TRANSACTION_TIMED_OUT and disconnects the virtual channel over which the request was
 issued.<3>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The dynamic virtual channel MUST be established, using the parameters specified in section 2.1,
 before protocol operation commences.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Malformed packets are packets that do not adhere to the rules described in sections 2 and 3 with the
 exception of sections 3.2.5 and 3.3.5. Out-of-sequence packets are packets that do not adhere to the
@@ -3965,49 +3735,50 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.1  Processing a Shared Message Header
+
+##### 3.1.5.1 Processing a Shared Message Header
 
 The common rules for processing the SHARED_MSG_HEADER for the interface manipulation
 infrastructure are defined in [MS-RDPEXPS] section 3.1.5.1.
 
-3.1.5.2  Interface Manipulation
+##### 3.1.5.2 Interface Manipulation
 
 The common rules for processing the interface manipulation messages are defined in [MS-RDPEXPS]
 section 3.1.5.2. Any interface, including the default one, MUST be released with an Interface Release
 message if the side that has received it or owned it as default is finished sending messages over that
 interface.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Device Sink Interface
+##### 3.2.5.1 Device Sink Interface
 
-3.2.5.1.1 Processing an Add Virtual Channel Message
+###### 3.2.5.1.1 Processing an Add Virtual Channel Message
 
 The structure and fields of the ADD_VIRTUAL_CHANNEL message are specified in section 2.2.4.1.
 
@@ -4017,7 +3788,7 @@ virtual channel for USB redirection.
 If the server receives an invalid ADD_VIRTUAL_CHANNEL message, the server shall terminate the
 dynamic virtual channel.
 
-3.2.5.1.2 Processing a Add Device Message
+###### 3.2.5.1.2 Processing a Add Device Message
 
 50 / 71
 
@@ -4026,7 +3797,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The structure and fields of the ADD_DEVICE message are specified in section 2.2.4.2.
+
+The structure and fields of the ADD_DEVICE message are specified in section 2.2.4.2.
 
 After receiving the ADD_DEVICE message, the server MUST create a remote device instance on the
 server to represent the client-side physical device. The ADD_DEVICE message contains a unique USB
@@ -4037,16 +3809,16 @@ In the case of the server receiving a duplicate interface ID, the server MUST ig
 message. The original device with the same interface ID MUST not be affected by this ADD_DEVICE
 message and continue to function with no interruption.
 
-3.2.5.2  Channel Notification Interface
+##### 3.2.5.2 Channel Notification Interface
 
-3.2.5.2.1 Sending a Channel Created Message
+###### 3.2.5.2.1 Sending a Channel Created Message
 
 The structure and fields of the CHANNEL_CREATED message are specified in section 2.2.5.1.
 
 The server sends the CHANNEL_CREATED message to the client to report the version of USB
 redirection it supports.
 
-3.2.5.2.2 Processing a Channel Created Message
+###### 3.2.5.2.2 Processing a Channel Created Message
 
 The structure and fields of the CHANNEL_CREATED message are specified in section 2.2.5.1.
 
@@ -4055,9 +3827,9 @@ version. If the server does not support the client's USB redirection version, it
 virtual channel. If the server supports the client's USB redirection version, it MUST begin processing
 the Device Sink interface messages.
 
-3.2.5.3  USB Device Interface
+##### 3.2.5.3 USB Device Interface
 
-3.2.5.3.1 Sending a Cancel Request Message
+###### 3.2.5.3.1 Sending a Cancel Request Message
 
 The structure and fields of the CANCEL_REQUEST message are specified in section 2.2.6.1.
 
@@ -4065,7 +3837,7 @@ The server sends the CANCEL_REQUEST message to request the client to stop proces
 specified by the RequestId. The request with the given RequestId could already have been
 completed by the client via the Request Completion Interface.
 
-3.2.5.3.2 Sending a Register Request Callback Message
+###### 3.2.5.3.2 Sending a Register Request Callback Message
 
 The structure and fields of the REGISTER_REQUEST_CALLBACK message are specified in section
 2.2.6.2.
@@ -4080,7 +3852,7 @@ The server sends REGISTERS_REQUEST_CALLBACK message without the RequestCompletio
 order to stop the client from sending any messages on the Request Completion Interface (section
 2.2.7).
 
-3.2.5.3.3 Sending a IO Control Message
+###### 3.2.5.3.3 Sending a IO Control Message
 
 The structure and fields of the IO_CONTROL message are specified in section 2.2.6.3.
 
@@ -4091,24 +3863,25 @@ Release: April 23, 2024
 
 51 / 71
 
-The server sends the IO_CONTROL message to the client in order to forward an IO control request to
+
+The server sends the IO_CONTROL message to the client in order to forward an IO control request to
 the physical device on the client-side.
 
-3.2.5.3.4 Sending an Internal IO Control Message
+###### 3.2.5.3.4 Sending an Internal IO Control Message
 
 The structure and fields of the INTERNAL_IO_CONTROL message are specified in section 2.2.6.4.
 
 The server sends the INTERNAL_IO_CONTROL message to the client in order to forward an Internal IO
 control request to the physical device on the client-side.
 
-3.2.5.3.5 Sending a Query Device Text Message
+###### 3.2.5.3.5 Sending a Query Device Text Message
 
 The structure and fields of the QUERY_DEVICE_TEXT message are specified in section 2.2.6.5.
 
 The server sends the QUERY_DEVICE_TEXT message to the client when it receives a request to query
 the USB's device text from the system.
 
-3.2.5.3.6 Processing a Query Device Text Response Message
+###### 3.2.5.3.6 Processing a Query Device Text Response Message
 
 The structure and fields of the QUERY_DEVICE_TEXT RSP message are specified in section 2.2.6.6.
 
@@ -4116,7 +3889,7 @@ After receiving the QUERY_DEVICE_TEXT_RSP message, the server MUST return the de
 contained in the DeviceDescription field of the QUERY_DEVICE_TEXT_RSP message to the actual
 application on behalf of which the QUERY_DEVICE_TEXT operation request was sent.
 
-3.2.5.3.7 Sending a Transfer In Request Message
+###### 3.2.5.3.7 Sending a Transfer In Request Message
 
 The structure and fields of the TRANSFER_IN_REQUEST message are specified in section 2.2.6.7.
 
@@ -4124,7 +3897,7 @@ The server sends the TRANSFER_IN_REQUEST message to the client in order to forwa
 the physical device on the client-side and the URB requests data from the device. The request is
 stored in the list of pending URB requests until it is completed.
 
-3.2.5.3.8 Sending a Transfer Out Request Message
+###### 3.2.5.3.8 Sending a Transfer Out Request Message
 
 The structure and fields of the TRANSFER_OUT_REQUEST message are specified in section 2.2.6.8.
 
@@ -4132,16 +3905,16 @@ The server sends the TRANSFER_OUT_REQUEST Message to the client in order to forw
 the physical device on the client-side and the URB requests to write data to the device. The request is
 stored in the list of pending URB requests until it is completed.
 
-3.2.5.3.9 Sending a Retract Device Message
+###### 3.2.5.3.9 Sending a Retract Device Message
 
 The structure and fields of the Retract Device message are specified in section 2.2.6.9.
 
 The server sends the Retract Device message to the client when the server fails to start the device
 due to group policy.
 
-3.2.5.4  Request Completion Interface
+##### 3.2.5.4 Request Completion Interface
 
-3.2.5.4.1 IO Control Completion Message
+###### 3.2.5.4.1 IO Control Completion Message
 
 The structure and fields of the IOCONTROL_COMPLETION message are specified in section 2.2.7.1.
 
@@ -4157,7 +3930,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message. With this information, the server completes the original request. The server MUST redirect
+
+message. With this information, the server completes the original request. The server MUST redirect
 the result contained in the IOCONTROL_COMPLETION to the actual application that made the IO
 Control or Internal IO Control operation request.
 
@@ -4173,7 +3947,7 @@ If the OutputBufferSize field in the IOCONTROL_COMPLETION message is greater tha
 OutputBufferSize field in the corresponding IO_CONTROL or INTERNAL_IO_CONTROL message, the
 server SHOULD terminate the dynamic virtual channel.
 
-3.2.5.4.2 URB Completion Message
+###### 3.2.5.4.2 URB Completion Message
 
 The structure and fields of the URB_COMPLETION message are specified in section 2.2.7.2.
 
@@ -4197,7 +3971,7 @@ If the OutputBufferSize field in the URB_COMPLETION message is greater than the
 OutputBufferSize field in the corresponding TRANSFER_IN_REQUEST message, the server SHOULD
 terminate the dynamic virtual channel.
 
-3.2.5.4.3 URB Completion No Data Message
+###### 3.2.5.4.3 URB Completion No Data Message
 
 The structure and fields of the URB_COMPLETION_NO_DATA message are specified in section 2.2.7.3.
 
@@ -4222,7 +3996,8 @@ Release: April 23, 2024
 
 53 / 71
 
-If the server receives an URB_COMPLETION_NO_DATA message with an invalid RequestId, the
+
+If the server receives an URB_COMPLETION_NO_DATA message with an invalid RequestId, the
 server SHOULD terminate the dynamic virtual channel.
 
 If the OutputBufferSize field in the URB_COMPLETION_NO_DATA message is not zero and the
@@ -4233,9 +4008,9 @@ If the OutputBufferSize field in the URB_COMPLETION_NO_DATA message is greater t
 OutputBufferSize field in the corresponding TRANSFER_OUT_REQUEST message, the server SHOULD
 terminate the dynamic virtual channel.
 
-3.2.5.5  Interface Manipulation Exchange Capabilities Interface
+##### 3.2.5.5 Interface Manipulation Exchange Capabilities Interface
 
-3.2.5.5.1 Sending an Interface Manipulation Exchange Capabilities Request Message
+###### 3.2.5.5.1 Sending an Interface Manipulation Exchange Capabilities Request Message
 
 The structure and fields of the RIM_EXCHANGE_CAPABILITY_REQUEST message are specified in
 section 2.2.3.1.
@@ -4243,7 +4018,7 @@ section 2.2.3.1.
 The server MUST send this message when the USB redirection virtual channel is connected. This
 message MUST be sent before the Channel created message (section 2.2.5.1).
 
-3.2.5.5.2 Processing an Interface Manipulation Exchange Capabilities Response
+###### 3.2.5.5.2 Processing an Interface Manipulation Exchange Capabilities Response
 
 Message
 
@@ -4253,29 +4028,29 @@ section 2.2.3.2.
 On receiving this message, the server confirms that the client meets the minimum capabilities for
 interface manipulation.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The abstract data model is as specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is as specified in section 3.1.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
@@ -4286,11 +4061,12 @@ Release: April 23, 2024
 
 54 / 71
 
-3.3.5  Processing Events and Sequencing Rules
 
-3.3.5.1  Device Sink Interface
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1.1 Sending a Add Virtual Channel Message
+##### 3.3.5.1 Device Sink Interface
+
+###### 3.3.5.1.1 Sending a Add Virtual Channel Message
 
 The structure and fields of the ADD_VIRTUAL_CHANNEL message are specified in section 2.2.4.1.
 
@@ -4299,23 +4075,23 @@ instance of dynamic virtual channel for USB redirection. The client sends this m
 device to be redirected. This isolates messages for each USB device in its own instance of a dynamic
 virtual channel.
 
-3.3.5.1.2 Sending a Add Device Message
+###### 3.3.5.1.2 Sending a Add Device Message
 
 The structure and fields of the ADD_DEVICE message are specified in section 2.2.4.2.
 
 The client sends this ADD_DEVICE message to the server to redirect a USB device. The message
 contains a unique InterfaceId that is used for I/O requests.
 
-3.3.5.2  Channel Notification Interface
+##### 3.3.5.2 Channel Notification Interface
 
-3.3.5.2.1 Sending a Channel Created Message
+###### 3.3.5.2.1 Sending a Channel Created Message
 
 The structure and fields of the CHANNEL_CREATED message are specified in section 2.2.5.1.
 
 The client sends the CHANNEL_CREATED message to the server to report the version of the USB
 redirection it supports.
 
-3.3.5.2.2 Processing a Channel Created Message
+###### 3.3.5.2.2 Processing a Channel Created Message
 
 The structure and fields of the CHANNEL_CREATED message are specified in section 2.2.5.1.
 
@@ -4324,9 +4100,9 @@ version. If the client does not support the server's USB redirection version, th
 dynamic virtual channel. If the client supports the server's USB redirection version, it MUST begin
 sending Device Sink interface messages.
 
-3.3.5.3  USB Device Interface
+##### 3.3.5.3 USB Device Interface
 
-3.3.5.3.1 Processing a Cancel Request Message
+###### 3.3.5.3.1 Processing a Cancel Request Message
 
 The structure and fields of the CANCEL_REQUEST message are specified in section 2.2.6.1.
 
@@ -4335,7 +4111,7 @@ request identified by the RequestId field in the CANCEL_REQUEST message. If the 
 has not been completed it MUST be canceled. If the request has been completed, the client MUST
 ignore this CANCEL_REQUEST message.
 
-3.3.5.3.2 Processing a Register Request Callback Message
+###### 3.3.5.3.2 Processing a Register Request Callback Message
 
 The structure and fields of the REGISTER_REQUEST_CALLBACK message are specified in section
 2.2.6.2.
@@ -4350,14 +4126,15 @@ Release: April 23, 2024
 
 55 / 71
 
-requests received via the IO_CONTROL, INTERNAL_IO_CONTROL, TRANSFER_IN_REQUEST, or
+
+requests received via the IO_CONTROL, INTERNAL_IO_CONTROL, TRANSFER_IN_REQUEST, or
 TRANSFER_OUT_REQUEST message.
 
 If the server sends REGISTERS_REQUEST_CALLBACK message without the RequestCompletion field,
 the client MUST stop immediately sending any messages on the Request Completion Interface (section
 2.2.7).
 
-3.3.5.3.3 Processing an IO Control Message
+###### 3.3.5.3.3 Processing an IO Control Message
 
 The structure and fields of the IO_CONTROL message are specified in section 2.2.6.3.
 
@@ -4374,7 +4151,7 @@ of data the client can send to the server when sending the final result of this 
 device returns more data than the OutputBufferSize field specifies, the client MUST terminate the
 dynamic virtual channel.
 
-3.3.5.3.4 Processing an Internal IO Control Message
+###### 3.3.5.3.4 Processing an Internal IO Control Message
 
 The structure and fields of the INTERNAL_IO_CONTROL message are specified in section 2.2.6.4.
 
@@ -4389,7 +4166,7 @@ amount of data the client can send to the server when sending the final result o
 physical device returns more data than the OutputBufferSize field specifies, the client MUST
 terminate the dynamic virtual channel.
 
-3.3.5.3.5 Processing a Query Device Text Message
+###### 3.3.5.3.5 Processing a Query Device Text Message
 
 The structure and fields of the QUERY_DEVICE_TEXT message are specified in section 2.2.6.5.
 
@@ -4398,7 +4175,7 @@ device. When the physical device completes the request, the client sends the res
 the server via QUERY_DEVICE_TEXT_RSP message and the RequestId field in the message MUST
 match the RequestId in the QUERY_DEVICE_TEXT message.
 
-3.3.5.3.6 Processing a Transfer In Request Message
+###### 3.3.5.3.6 Processing a Transfer In Request Message
 
 The structure and fields of the TRANSFER_IN_REQUEST message are specified in section 2.2.6.7.
 
@@ -4415,7 +4192,8 @@ Release: April 23, 2024
 
 56 / 71
 
-If TRANSFER_IN_REQUEST results in data to be returned to the server, the client MUST use the
+
+If TRANSFER_IN_REQUEST results in data to be returned to the server, the client MUST use the
 URB_COMPLETION message to send the result. If TRANSFER_IN_REQUEST results in no data to be
 returned to the server, the client MUST use the URB_COMPLETION_NO_DATA message to send the
 result and the OutputBufferSize field MUST be zero.
@@ -4425,7 +4203,7 @@ amount of data the client can send to the server when sending the final result o
 URB_COMPLETION. If the physical device returns more data than the OutputBufferSize field
 specifies, the client MUST terminate the dynamic virtual channel.
 
-3.3.5.3.7 Processing a Transfer Out Request Message
+###### 3.3.5.3.7 Processing a Transfer Out Request Message
 
 The structure and fields of the TRANSFER_OUT_REQUEST message are specified in section 2.2.6.8.
 
@@ -4440,14 +4218,14 @@ URB_COMPLETION_NO_DATA message to the server to report the final result of the
 TRANSFER_OUT_REQUEST, the OutputBufferSize value MUST NOT be greater than the
 OutputBufferSize value in TRANSFER_OUT_REQUEST message.
 
-3.3.5.3.8 Processing a Retract Device Message
+###### 3.3.5.3.8 Processing a Retract Device Message
 
 The structure and fields of the RETRACT_DEVICE message are specified in section 2.2.6.9.
 
 After receiving the RETRACT_DEVICE message, the client SHOULD terminate the dynamic channel and
 stop redirecting the physical USB device.
 
-3.3.5.3.9 Processing an OS Descriptor request
+###### 3.3.5.3.9 Processing an OS Descriptor request
 
 Special processing on the client is needed when processing
 TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST. The following describes how to get the OS-specific
@@ -4494,7 +4272,8 @@ Release: April 23, 2024
 
 57 / 71
 
-
+
+
 
 The low byte contains the descriptor's string index, which indicates where the descriptor is
 stored in firmware. To retrieve an OS string descriptor, set this byte to 0xEE.
@@ -4557,9 +4336,9 @@ as Request field in TS_URB_CONTROL_VENDOR_OR_CLASS_REQUEST section 2.2.9.12.
 Because independent hardware vendors can store string descriptors at any index, there is no
 guarantee that a string descriptor stored at 0xEE is an OS string descriptor.<5>
 
-3.3.5.4  Request Completion Interface
+##### 3.3.5.4 Request Completion Interface
 
-3.3.5.4.1 IO Control Completion Message
+###### 3.3.5.4.1 IO Control Completion Message
 
 The structure and fields of the IOCONTROL_COMPLETION message are specified in section 2.2.7.1.
 
@@ -4575,14 +4354,15 @@ Release: April 23, 2024
 
 58 / 71
 
-The client MUST send one and only one IOCONTROL_COMPLETION message with matching
+
+The client MUST send one and only one IOCONTROL_COMPLETION message with matching
 RequestId for each IO_CONTROL or Internal IO Control message it receives from the server.
 
 If the physical device returns more data than the OutputBufferSize field specifies in the
 IO_CONTROL or INTERNAL_IO_CONTROL message, the client SHOULD terminate the dynamic virtual
 channel.
 
-3.3.5.4.2 URB Completion Message
+###### 3.3.5.4.2 URB Completion Message
 
 The structure and fields of the URB_COMPLETION message are specified in section 2.2.7.2.
 
@@ -4598,7 +4378,7 @@ TRANSFER_IN_REQUEST message it receives from the server.
 If the physical device returns more data than the OutputBufferSize field specifies in the
 TRANSFER_IN_REQUEST message, the client SHOULD terminate the dynamic virtual channel.
 
-3.3.5.4.3 URB Completion No Data Message
+###### 3.3.5.4.3 URB Completion No Data Message
 
 The structure and fields of the URB_COMPLETION_NO_DATA message are specified in section 2.2.7.3.
 
@@ -4616,9 +4396,9 @@ the server.
 The client MUST send one and only one URB_COMPLETION_NO_DATA message for each
 TRANSFER_OUT_REQUEST message it receives from the server.
 
-3.3.5.5  Interface Manipulation Exchange Capabilities Interface Messages
+##### 3.3.5.5 Interface Manipulation Exchange Capabilities Interface Messages
 
-3.3.5.5.1 Processing an Interface Manipulation Exchange Capabilities Request
+###### 3.3.5.5.1 Processing an Interface Manipulation Exchange Capabilities Request
 
 Message
 
@@ -4628,7 +4408,7 @@ section 2.2.3.1.
 On receiving a RIM_EXCHANGE_CAPABILITY_REQUEST message, the client MUST send an
 RIM_EXCHANGE_CAPABILITY_RESPONSE message.
 
-3.3.5.5.2 Sending an Interface Manipulation Exchange Capabilities Response Message
+###### 3.3.5.5.2 Sending an Interface Manipulation Exchange Capabilities Response Message
 
 The structure and fields of the RIM_EXCHANGE_CAPABILITY_RESPONSE message are specified in
 section 2.2.3.2.
@@ -4642,11 +4422,12 @@ Release: April 23, 2024
 
 59 / 71
 
-3.3.6  Timer Events
+
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -4657,11 +4438,12 @@ Release: April 23, 2024
 
 60 / 71
 
-4  Protocol Examples
 
-4.1  Server Data Interface Annotations
+## 4 Protocol Examples
 
-4.1.1  Channel Created Message
+### 4.1 Server Data Interface Annotations
+
+#### 4.1.1 Channel Created Message
 
 After a new channel is established, both the server and the client send the CHANNEL_CREATED
 message to each other. The message specifies the MajorVersion, MinorVersion, and Capability of
@@ -4692,7 +4474,7 @@ MajorVersion of 0x00000001, MinorVersion of 0x00000000, and Capability of 0x0000
  00 00 00 00 -> Minor Version = 0x00000000
  00 00 00 00 -> Capability = 0x00000000
 
-4.1.2  Internal IO Control Message
+#### 4.1.2 Internal IO Control Message
 
 The server sends the INTERNAL_IO_CONTROL message to the client in response to the request from
 the system specified in section 2.2.13. The INTERNAL_IO_CONTROL message described in this section
@@ -4719,7 +4501,8 @@ Release: April 23, 2024
 
 61 / 71
 
-4.1.3  IO Control Completion Message
+
+#### 4.1.3 IO Control Completion Message
 
 In response to the INTERNAL_IO_CONTROL message described in section 4.1.2, the client sends the
 IOCONTROL_COMPLETION message (section 2.2.7.1) to the server containing the result returned from
@@ -4739,7 +4522,7 @@ the physical device.
  04 00 00 00 -> Output Buffer Size = 0x00000004
  53 4b 5f 1a -> Output Buffer Data = 0x1a5f4b53 (Current Frame)
 
-4.1.4  Transfer In Request Message
+#### 4.1.4 Transfer In Request Message
 
 The server sends the TRANSFER_IN_REQUEST message to the client in response to the request from
 the system specified in section 2.2.9. The TRANSFER_IN_REQUEST described in this section is for URB
@@ -4763,7 +4546,7 @@ device.
  03 00 00 00 -> TS_URB TransferFlag = 0x00000003
  32 00 00 00 -> Output Buffer Size = 0x00000032
 
-4.1.5  URB Completion Message
+#### 4.1.5 URB Completion Message
 
 In response to the TRANSFER_IN_REQUEST message described in section 4.1.3, the client sends the
 URB_COMPLETION message to the server containing the result returned from the physical device.
@@ -4784,7 +4567,8 @@ Release: April 23, 2024
 
 62 / 71
 
- 00 00 00 40 -> RequestCompletion Interface Id = 0x00000000 | mask STREAM_ID_PROXY
+
+ 00 00 00 40 -> RequestCompletion Interface Id = 0x00000000 | mask STREAM_ID_PROXY
 (0x40000000)
  00 00 00 00 -> Message Id = 0x00000000
  01 01 00 00 -> URB_COMPLETION = 0x00000101
@@ -4816,16 +4600,17 @@ Release: April 23, 2024
 
 63 / 71
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for the Remote Desktop Protocol: USB Devices Virtual Channel
 Extension messages because all traffic is secured by the underlying RDP core protocol. For information
 about the security-related mechanisms that are implemented in the RDP core protocol, see [MS-
 RDPBCGR] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4836,7 +4621,8 @@ Release: April 23, 2024
 
 64 / 71
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4905,7 +4691,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Extract the version number from Signature and verify that the descriptor has the correct length
+
+2.  Extract the version number from Signature and verify that the descriptor has the correct length
 
 for that version.
 
@@ -4916,7 +4703,8 @@ Release: April 23, 2024
 
 66 / 71
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4960,7 +4748,8 @@ Release: April 23, 2024
 
 67 / 71
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5118,7 +4907,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-I
+
+I
 
 I/O sequence - overview 12
 Implementer - security considerations 64
@@ -5290,7 +5080,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-QUERY_DEVICE_TEXT packet 23
+
+QUERY_DEVICE_TEXT packet 23
 QUERY_DEVICE_TEXT_RSP packet 23
 
 R
@@ -5470,7 +5261,8 @@ Remote Desktop Protocol: USB Devices Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      QUERT_DEVICE_TEXT_RSP message - sending
+
+      QUERT_DEVICE_TEXT_RSP message - sending
 
 TS_URB_OS_FEATURE_DESCRIPTOR_REQUEST
 

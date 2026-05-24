@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -300,7 +301,8 @@ Release: June 1, 2017
 
 2 / 28
 
-Date
+
+Date
 
 Revision
 History
@@ -443,139 +445,62 @@ Release: June 1, 2017
 
 3 / 28
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Confidentiality](#211-confidentiality)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 RTP Packets](#221-rtp-packets)
+    - [2.2.2 RTCP Compound Packets](#222-rtcp-compound-packets)
+    - [2.2.3 RTCP Probe Packet](#223-rtcp-probe-packet)
+    - [2.2.4 RTCP Packet Pair](#224-rtcp-packet-pair)
+    - [2.2.5 RTCP Sender Report (SR)](#225-rtcp-sender-report-sr)
+    - [2.2.6 RTCP SDES](#226-rtcp-sdes)
+    - [2.2.7 RTCP Profile-Specific Extension](#227-rtcp-profile-specific-extension)
+      - [2.2.7.1 RTCP Profile-Specific Extension for Estimated Bandwidth](#2271-rtcp-profile-specific-extension-for-estimated-bandwidth)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 RTP Details](#31-rtp-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 RTCP Details](#32-rtcp-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 SSRC Change Throttling](#41-ssrc-change-throttling)
+  - [4.2 Bandwidth Estimation](#42-bandwidth-estimation)
+  - [4.3 Key Derivation](#43-key-derivation)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-
-2.2
-
-2.1.1
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Confidentiality ............................................................................................ 12
-Message Syntax ............................................................................................... 12
-RTP Packets ............................................................................................... 12
-RTCP Compound Packets ............................................................................. 13
-RTCP Probe Packet ...................................................................................... 13
-RTCP Packet Pair ........................................................................................ 13
-RTCP Sender Report (SR) ............................................................................ 13
-RTCP SDES ................................................................................................ 14
-RTCP Profile-Specific Extension..................................................................... 14
-RTCP Profile-Specific Extension for Estimated Bandwidth ........................... 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.7.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 16
-RTP Details ...................................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-RTCP Details .................................................................................................... 17
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 20
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 21
-SSRC Change Throttling .................................................................................... 21
-Bandwidth Estimation ....................................................................................... 21
-Key Derivation ................................................................................................. 22
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 26
-
-[MS-RTPME] - v20170601
-Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 28
-
-8  Index ..................................................................................................................... 27
-
-[MS-RTPME] - v20170601
-Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 28
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Real-Time Transport Protocol (RTP/RTCP) Microsoft Extensions (RTPME), a
 set of extensions to the base Real-Time Transport Protocol (RTP) specified in [RFC3550]. RTP is a set
@@ -585,7 +510,7 @@ video, across multimedia endpoints.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -646,7 +571,8 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Dual Tone Multiple Frequency (DTMF): The signaling system used in telephony systems, in
+
+Dual Tone Multiple Frequency (DTMF): The signaling system used in telephony systems, in
 which each digit is associated with two specific frequencies. Most commonly associated with
 telephone touch-tone keypads.
 
@@ -724,7 +650,8 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-RTP packet to be defined. Typically one packet of the underlying protocol contains a single RTP
+
+RTP packet to be defined. Typically one packet of the underlying protocol contains a single RTP
 packet, but several RTP packets can be contained if permitted by the encapsulation method. See
 [RFC3550] section 3.
 
@@ -798,17 +725,18 @@ Release: June 1, 2017
 
 8 / 28
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -829,7 +757,7 @@ Control", STD 65, RFC 3551, July 2003, http://www.ietf.org/rfc/rfc3551.txt
 [RFC4733] Schulzrinne, H., and Taylor, T., "RTP Payload for DTMF Digits, Telephony Tones and
 Telephony Signals", RFC 4733, December 2006, http://www.ietf.org/rfc/rfc4733.txt
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [H323] ITU-T, "Packet-based multimedia communications systems", Recommendation H.323, June
 2006, http://www.itu.int/rec/T-REC-H.323-200606-S/en
@@ -849,7 +777,7 @@ Data Extensions".
 
 [MS-SIP] Microsoft Corporation, "Session Initiation Protocol Extensions".
 
-1.3  Overview
+### 1.3 Overview
 
 The Real-Time Transport Protocol (RTP) [RFC3550] provides end-to-end delivery services for data with
 real-time characteristics. The Audio/Video (AV) profile, specified in the companion document
@@ -862,7 +790,8 @@ Release: June 1, 2017
 
 9 / 28
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RTPME].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -883,7 +812,7 @@ Packet Pair" to estimate the bandwidth. When the receiver reaches a statistical 
 estimation is then communicated back through a Real-Time Transport Control Protocol (RTCP)
 profile extension.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RTPME sessions are usually initiated through an application layer control protocol such as Session
 Initiation Protocol (SIP) [MS-SIP] or H.323 [H323]. RTP transport parameters (protocol, IP, port) for
@@ -904,14 +833,14 @@ represented in this figure because they are parallel to RTP.
 
 Figure 1: Hierarchy of the RTP protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 In order to establish an RTPME protocol session, the whole negotiation for transport (protocol,
 address, and port), payload (codec, payload type mapping, sampling rate, bit rate, and video
 resolution), and encryption (protocol, algorithm, and key) parameters takes place by non-RTP
 means (such as SIP, H.323, or SDP).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is intended only to be a streaming protocol, carrying just the payload and the minimum
 of metadata needed for real-time rendering. Even RTCP is (intentionally) limited in negotiation and
@@ -924,7 +853,8 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-establishment, and session control is supposed to be done by non-RTP means, that is, through some
+
+establishment, and session control is supposed to be done by non-RTP means, that is, through some
 other protocol (usually SIP, H.323, or SDP).
 
 This protocol is a best effort protocol and, when run over unreliable transport, does not provide
@@ -937,7 +867,7 @@ long delays, jitter, and high packet loss will all negatively affect the end-use
 that the choice of protocol (connectionless or connection-oriented) and connection path (direct or
 through an intermediate host) affects the users' experience.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has the following versioning and capability negotiation constraints:
 
@@ -955,7 +885,7 @@ RTP packet. Only version 2 of the RTP protocol is specified in this document.
 
 higher-level application layer protocol such as SIP, H.323, and SDP.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The standard method for selecting codecs in the RTPME protocol is through payload types. [RFC3551]
 provides a default mapping for audio and video codecs that includes a range from hexadecimal 0x60
@@ -966,7 +896,7 @@ assigned numbers within this dynamic payload type range, some codecs are typical
 specific payload types. Some examples of dynamic payload type conventions can be found in section
 2.2.1 of this document.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -977,16 +907,17 @@ Release: June 1, 2017
 
 11 / 28
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 RTPME MUST be supported over UDP using IPv4 only. When running over connectionless protocols
 such as UDP, each RTP packet MUST be transported in exactly one datagram. The total size of a
 single RTP packet (including all transport, network, and link-layer headers) MUST NOT exceed 1,500
 bytes.
 
-2.1.1  Confidentiality
+#### 2.1.1 Confidentiality
 
 RTPME uses the default Data Encryption Standard (DES) algorithm in CBC mode as specified in
 [RFC3550] section 9.1. Other encryption algorithms specified in [RFC3550] are not supported by
@@ -999,11 +930,11 @@ Padding for DES CBC mode MUST NOT change the value of the P bit in RTP header.
 
 RTPME MUST NOT support partial RTCP encryption which segregates compound RTCP packets.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The section specifies syntax of the messages before encryption is applied to them.
 
-2.2.1  RTP Packets
+#### 2.2.1 RTP Packets
 
 The syntax of the RTP header is as specified in [RFC3550]. The fields of the fixed RTP header have
 their usual meaning (specified in [RFC3550] and [RFC3551]) with the following additional notes.
@@ -1070,7 +1001,8 @@ Release: June 1, 2017
 
 12 / 28
 
- Payload type
+
+ Payload type
 
  Codec
 
@@ -1159,7 +1091,7 @@ CSRC list: The CSRC list identifies the contributing sources (CSRC) for the payl
 
 this packet, as defined by [RFC3550] section 5.1.
 
-2.2.2  RTCP Compound Packets
+#### 2.2.2 RTCP Compound Packets
 
 Real-time Transport Control Protocol (RTCP) compound packets are a concatenation of simple RTCP
 packets, as specified in [RFC3550]. However, RTCP Source Description (SDES), RTCP Goodbye (BYE)
@@ -1170,17 +1102,17 @@ concatenation of two or more). Accordingly, this extension modifies the RTCP val
 RTCP compound packets MAY carry one or more of the RTCP profile-specific
 extensions (section 2.2.7).
 
-2.2.3  RTCP Probe Packet
+#### 2.2.3 RTCP Probe Packet
 
 The RTCP probe packet MUST be a simple (noncompound) SR packet with zero report blocks. This
 packet is used as the first packet of an RTCP packet pair for bandwidth estimation purposes.
 
-2.2.4  RTCP Packet Pair
+#### 2.2.4 RTCP Packet Pair
 
 The RTCP packet pair is formed by an RTCP probe packet and an RTCP compound packet, which are
 sent back to back for bandwidth estimation purposes.
 
-2.2.5  RTCP Sender Report (SR)
+#### 2.2.5 RTCP Sender Report (SR)
 
 The syntax of the RTCP Sender Report is as specified in [RFC3550] section 6.4.1, with the following
 additional note.
@@ -1192,11 +1124,12 @@ Release: June 1, 2017
 
 13 / 28
 
-Sender's packet count: The packet and octet counts SHOULD NOT include packet duplicates
+
+Sender's packet count: The packet and octet counts SHOULD NOT include packet duplicates
 intentionally sent (for example, the retransmission of DTMF end packets specified in [RFC4733]
 section 2.5.1.4).
 
-2.2.6  RTCP SDES
+#### 2.2.6 RTCP SDES
 
 The RTCP SDES packets are as specified in [RFC3550] section 6.5, with the following exceptions:
 
@@ -1207,7 +1140,7 @@ The RTCP SDES packets are as specified in [RFC3550] section 6.5, with the follow
 The SDES PRIV is encoded the same way as SDES NAME; that is, the structure defined in
 [RFC3550] section 6.5.8 MUST NOT be used.
 
-2.2.7  RTCP Profile-Specific Extension
+#### 2.2.7 RTCP Profile-Specific Extension
 
 The profile-specific extension is appended to the SR or RR reports and is used to carry additional
 information not contained in the SR or RR reports. It is a block of data that immediately follows the SR
@@ -1242,7 +1175,7 @@ Length (2 bytes): The extension length in bytes, including this header.
 
 ExtensionInfo (variable): This field depends on the extension type.
 
-2.2.7.1  RTCP Profile-Specific Extension for Estimated Bandwidth
+##### 2.2.7.1 RTCP Profile-Specific Extension for Estimated Bandwidth
 
 The format of this extension is as follows:
 
@@ -1278,7 +1211,8 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SSRC (4 bytes): The SSRC for which the bandwidth estimated is being reported.
+
+SSRC (4 bytes): The SSRC for which the bandwidth estimated is being reported.
 
 Bandwidth (4 bytes): A 32-bit signed integer. This is the estimated bandwidth in bits per second. A
 
@@ -1292,9 +1226,10 @@ Release: June 1, 2017
 
 15 / 28
 
-3  Protocol Details
 
-3.1  RTP Details
+## 3 Protocol Details
+
+### 3.1 RTP Details
 
 The Synchronization Source (SSRC) throttling mechanism is used in unicast communication
 modes. SSRC throttling works by means of two states – "Active mode" and "Inactive mode". An RTP
@@ -1311,7 +1246,7 @@ it will prevent any other SSRC from being accepted by the RTP session.
 The timeout algorithm in [RFC3550] section 6.3.5 MUST be used to determine when a participant
 times out.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1322,7 +1257,7 @@ SSRC throttling extension variable (per session):
 
 LastGoodSSRC: Stores the SSRC to be accepted as valid (that is, the current SSRC for the stream).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The RTPME protocol has the following RTP-related timer, in addition to those specified in [RFC3550]
 and [RFC3551].
@@ -1331,7 +1266,7 @@ Participant timeout timer: This timer (or the timeout algorithm in [RFC3550] sec
 be used to time out inactive participants. This timer MUST be set to 50 seconds. There MUST be
 one participant timeout timer per participant.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 LastGoodSSRC must be initialized to zero when the RTP session is created.
 
@@ -1358,12 +1293,13 @@ Release: June 1, 2017
 
 16 / 28
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 RTPME has no additional RTP-related higher-layer triggered events beyond those specified in
 [RFC3550] and [RFC3551].
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 RTPME processes RTP-related packets as specified in [RFC3550] and [RFC3551], with the following
 additional notes:
@@ -1385,7 +1321,7 @@ The following actions SHOULD be executed on receipt of every RTP packet.
       LastGoodSSRC = SSRC
  ENDIF
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 RTPME has the following RTP-related timer event processing rules, in addition to those specified in
 [RFC3550] and [RFC3551]:
@@ -1394,12 +1330,12 @@ Participant timeout timer expires: The receiver MUST delete the respective parti
 
 reset the LastGoodSSRC to zero.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 RTPME has no additional local RTP-related events, beyond those specified in [RFC3550] and
 [RFC3551].
 
-3.2  RTCP Details
+### 3.2 RTCP Details
 
 RTCP packets SHOULD be sent on every RTP session. Failure to do so can result in loss of
 functionality on the remote end because channel statistics such as loss rate and jitter will not be
@@ -1425,7 +1361,8 @@ Release: June 1, 2017
 
 17 / 28
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-RTPME].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1437,7 +1374,7 @@ the profile extension; failure to do so can result in reduced functionality on t
 features that need a bandwidth estimate. RTCP packet pairs MUST be correctly received and parsed
 but MAY not be used by the bandwidth calculation algorithm.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1456,7 +1393,7 @@ send rate.
 
 ReceivingRTCPPacketPairs: Indicates whether or not RTCP packet pairs have been received.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 RTPME has the following RTCP-related timers, in addition to those specified in [RFC3550] and
 [RFC3551]:
@@ -1471,7 +1408,7 @@ RTCP Bye timer: This timer MUST be set to 2 seconds; it is started when an RTCP 
 
 There MUST be one timer per participant.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 RTPME has the following RTCP-related initialization requirements, in addition to those specified in
 [RFC3550] and [RFC3551].
@@ -1487,11 +1424,12 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-ReceivingRTCPPacketPairs: Initialized to "false" when the protocol starts.
+
+ReceivingRTCPPacketPairs: Initialized to "false" when the protocol starts.
 
 Encryption initialization is the same as specified in section 3.1.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 RTPME has the following RTCP-related higher-layer triggered events, in addition to those specified in
 [RFC3550] and [RFC3551].
@@ -1500,7 +1438,7 @@ Application wishes to leave the RTP session: RTCP BYE packet MAY be sent immedia
 the BYE packet is sent immediately, the algorithm described in [RFC3550] section 6.3.7 is not
 used.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
  RTPME processes RTCP-related packets as specified in [RFC3550] and [RFC3551], with the following
 additional notes.
@@ -1541,7 +1479,7 @@ RTCP APP Packet: This packet is ignored.
 RTCP BYE: The SSRC from which this packet was sent is designated as having sent an RTCP BYE and
 its RTCP bye timer is started.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 RTPME has the following RTCP-related timer event processing rules, in addition to those specified in
 [RFC3550] and [RFC3551].
@@ -1560,7 +1498,8 @@ Real-Time Transport Protocol (RTP/RTCP): Microsoft Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-and a bandwidth measurement (by RTCP packet pairs or any other method) was done in the last
+
+and a bandwidth measurement (by RTCP packet pairs or any other method) was done in the last
 30 seconds, a bandwidth estimation profile extension SHOULD be attached to each report. If the
 bandwidth estimate has not converged, the profile extension SHOULD send 0xfffffffd as bandwidth
 (see section 2.2.7.1). The sender MAY stop sending RTCP probe packets (that is, begin sending
@@ -1572,7 +1511,7 @@ RTCP Bye timer expires: The information associated with the SSRC that started th
 deleted. If any packet from the same SSRC arrives after the timer has expired, this SSRC will be
 treated as a new participant.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1583,18 +1522,19 @@ Release: June 1, 2017
 
 20 / 28
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RTPME].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 In the following examples, only the fields relevant to the extension exemplified are shown.
 Synchronization Source (SSRC) are shown as 1, 2, 3, and 1000, and sequence numbers are shown
 starting from 1 for illustrative purposes. Real SSRCs are random, and sequence numbers start at a
 random value, as specified in section 2.1.1.
 
-4.1  SSRC Change Throttling
+### 4.1 SSRC Change Throttling
 
 The next diagram represents a flow of messages from the sender to the receiver.
 
@@ -1604,7 +1544,7 @@ At the first SSRC change (from SSRC=1 to SSRC=2), RTP packets with SSRC=2 are dr
 an RTPC BYE is received for SSRC=1, SSRC=2 becomes the new LastGoodSSRC. Packets with
 SSRC=2 are rendered.
 
-4.2  Bandwidth Estimation
+### 4.2 Bandwidth Estimation
 
 The next diagram represents an exchange of messages between two hosts.
 
@@ -1615,7 +1555,8 @@ Release: June 1, 2017
 
 21 / 28
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-RTPME].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1628,7 +1569,7 @@ After Host2 receives a second RTCP packet pair, Host2 calculates the bandwidth a
 Host2's statistical method produces a result, Host2 sends that result back to Host1 on the next
 bandwidth report.
 
-4.3  Key Derivation
+### 4.3 Key Derivation
 
 Input from SDP [MS-SDP]:
 
@@ -1641,7 +1582,8 @@ Release: June 1, 2017
 
 22 / 28
 
-The Unicode string after base64 decoding:
+
+The Unicode string after base64 decoding:
 
  \xbf4\xb2\xc0\xd3\xc8&(=\u203a\xf3$\xc4*\x15\xbfY\u20194\tOt\xa8\x1f\xdd\x
  c0\x12\xaf\xd9W\xbe\x1a\xd7]\xb9\xc2}nQ\xe3\u0178\xd8\u017e\xd2\x13
@@ -1668,14 +1610,15 @@ Release: June 1, 2017
 
 23 / 28
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no additional security considerations for RTPME beyond those specified in [RFC3550] and
 [RFC3551].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no additional security considerations for RTPME beyond those specified in [RFC3550] and
 [RFC3551].
@@ -1687,7 +1630,8 @@ Release: June 1, 2017
 
 24 / 28
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1715,7 +1659,8 @@ Release: June 1, 2017
 
 25 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1727,7 +1672,8 @@ Release: June 1, 2017
 
 26 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1859,7 +1805,8 @@ Release: June 1, 2017
 
 27 / 28
 
-   timer events 19
+
+   timer events 19
    timers 18
 RTCP Compound Packets message 13
 RTCP Packet Pair message 13

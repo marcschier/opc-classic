@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 65
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -285,7 +286,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -316,271 +318,113 @@ Release: November 19, 2024
 
 3 / 65
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Manifest Request](#221-manifest-request)
+    - [2.2.2 Manifest Response](#222-manifest-response)
+      - [2.2.2.1 SmoothStreamingMedia](#2221-smoothstreamingmedia)
+      - [2.2.2.2 ProtectionElement](#2222-protectionelement)
+      - [2.2.2.3 StreamElement](#2223-streamelement)
+      - [2.2.2.4 UrlPattern](#2224-urlpattern)
+      - [2.2.2.5 TrackElement](#2225-trackelement)
+        - [2.2.2.5.1 CustomAttributesElement](#22251-customattributeselement)
+      - [2.2.2.6 StreamFragmentElement](#2226-streamfragmentelement)
+        - [2.2.2.6.1 TrackFragmentElement](#22261-trackfragmentelement)
+    - [2.2.3 Fragment Request](#223-fragment-request)
+    - [2.2.4 Fragment Response](#224-fragment-response)
+      - [2.2.4.1 MoofBox](#2241-moofbox)
+      - [2.2.4.2 MfhdBox](#2242-mfhdbox)
+      - [2.2.4.3 TrafBox](#2243-trafbox)
+      - [2.2.4.4 TfxdBox](#2244-tfxdbox)
+      - [2.2.4.5 TfrfBox](#2245-tfrfbox)
+      - [2.2.4.6 TfhdBox](#2246-tfhdbox)
+      - [2.2.4.7 TrunBox](#2247-trunbox)
+      - [2.2.4.8 MdatBox](#2248-mdatbox)
+      - [2.2.4.9 Fragment Response Common Fields](#2249-fragment-response-common-fields)
+    - [2.2.5 Sparse Stream Pointer](#225-sparse-stream-pointer)
+    - [2.2.6 Fragment Not Yet Available](#226-fragment-not-yet-available)
+    - [2.2.7 Live Ingest](#227-live-ingest)
+      - [2.2.7.1 FileType](#2271-filetype)
+      - [2.2.7.2 StreamManifestBox](#2272-streammanifestbox)
+        - [2.2.7.2.1 StreamSMIL](#22721-streamsmil)
+      - [2.2.7.3 LiveServerManifestBox](#2273-liveservermanifestbox)
+        - [2.2.7.3.1 LiveSMIL](#22731-livesmil)
+      - [2.2.7.4 MoovBox](#2274-moovbox)
+      - [2.2.7.5 Fragment](#2275-fragment)
+        - [2.2.7.5.1 Track Fragment Extended Header](#22751-track-fragment-extended-header)
+    - [2.2.8 Server-to-Server Ingest](#228-server-to-server-ingest)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Presentation Description](#3111-presentation-description)
+        - [3.1.1.1.1 Protection System Metadata Description](#31111-protection-system-metadata-description)
+        - [3.1.1.1.2 Stream Description](#31112-stream-description)
+          - [3.1.1.1.2.1 Track Description](#311121-track-description)
+            - [3.1.1.1.2.1.1 Custom Attribute Description](#3111211-custom-attribute-description)
+        - [3.1.1.1.3 Fragment Reference Description](#31113-fragment-reference-description)
+          - [3.1.1.1.3.1 Track-Specific Fragment Reference Description](#311131-track-specific-fragment-reference-description)
+      - [3.1.1.2 Fragment Description](#3112-fragment-description)
+        - [3.1.1.2.1 Sample Description](#31121-sample-description)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Open Presentation](#3141-open-presentation)
+      - [3.1.4.2 Get Fragment](#3142-get-fragment)
+      - [3.1.4.3 Close Presentation](#3143-close-presentation)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Manifest Request and Manifest Response](#3151-manifest-request-and-manifest-response)
+      - [3.1.5.2 Fragment Request and Fragment Response](#3152-fragment-request-and-fragment-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Live Encoder Details](#33-live-encoder-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Start Stream](#3341-start-stream)
+      - [3.3.4.2 Stop Stream](#3342-stop-stream)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Manifest Response](#41-manifest-response)
+  - [4.2 Fragment Request](#42-fragment-request)
+  - [4.3 Live Ingest Request](#43-live-ingest-request)
+  - [4.4 Stream Manifest](#44-stream-manifest)
+  - [4.5 Live Server Manifest](#45-live-server-manifest)
+  - [4.6 Server Ingest Request](#46-server-ingest-request)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.6
-
-2.2.2.5.1
-
-2.2.2.6.1
-
-2.2.1
-2.2.2
-
-2.2.3
-2.2.4
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Manifest Request ........................................................................................ 14
-Manifest Response ...................................................................................... 15
-SmoothStreamingMedia ......................................................................... 16
-ProtectionElement ................................................................................. 17
-StreamElement ..................................................................................... 18
-UrlPattern ............................................................................................ 20
-TrackElement ....................................................................................... 20
-CustomAttributesElement ................................................................. 23
-StreamFragmentElement ....................................................................... 24
-TrackFragmentElement .................................................................... 25
-Fragment Request ...................................................................................... 26
-Fragment Response .................................................................................... 27
-MoofBox .............................................................................................. 27
-MfhdBox .............................................................................................. 28
-TrafBox................................................................................................ 28
-TfxdBox ............................................................................................... 29
-TfrfBox ................................................................................................ 30
-TfhdBox ............................................................................................... 31
-TrunBox ............................................................................................... 32
-MdatBox .............................................................................................. 34
-Fragment Response Common Fields ........................................................ 34
-Sparse Stream Pointer ................................................................................ 36
-Fragment Not Yet Available .......................................................................... 36
-Live Ingest................................................................................................. 36
-FileType ............................................................................................... 37
-StreamManifestBox ............................................................................... 37
-StreamSMIL .................................................................................... 38
-LiveServerManifestBox........................................................................... 39
-LiveSMIL ........................................................................................ 39
-MoovBox .............................................................................................. 41
-Fragment ............................................................................................. 41
-Track Fragment Extended Header ...................................................... 41
-Server-to-Server Ingest .............................................................................. 41
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-
-2.2.5
-2.2.6
-2.2.7
-
-2.2.7.4
-2.2.7.5
-
-2.2.7.1
-2.2.7.2
-
-2.2.7.2.1
-
-2.2.7.3.1
-
-2.2.7.5.1
-
-2.2.7.3
-
-2.2.8
-
-3.1
-
-3  Protocol Details ..................................................................................................... 43
-Client Details ................................................................................................... 43
-Abstract Data Model .................................................................................... 43
-Presentation Description ........................................................................ 43
-Protection System Metadata Description ............................................. 44
-
-3.1.1.1.1
-
-3.1.1.1
-
-3.1.1
-
-[MS-SSTR] - v20241119
-Smooth Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 65
-
-3.1.1.1.2
-
-3.1.1.1.3
-
-3.1.1.2
-
-3.1.1.2.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.5.1
-3.1.5.2
-
-3.1.5
-
-3.1.1.1.3.1
-
-3.1.1.1.2.1
-
-3.1.1.1.2.1.1
-
-Stream Description .......................................................................... 44
-Track Description ....................................................................... 45
-Custom Attribute Description ................................................. 45
-Fragment Reference Description ........................................................ 45
-Track-Specific Fragment Reference Description .............................. 46
-Fragment Description ............................................................................ 46
-Sample Description .......................................................................... 46
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 47
-Open Presentation ................................................................................. 47
-Get Fragment ....................................................................................... 47
-Close Presentation ................................................................................ 48
-Processing Events and Sequencing Rules ....................................................... 48
-Manifest Request and Manifest Response ................................................. 49
-Fragment Request and Fragment Response .............................................. 51
-Timer Events .............................................................................................. 52
-Other Local Events ...................................................................................... 52
-Server Details .................................................................................................. 52
-Abstract Data Model .................................................................................... 52
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Higher-Layer Triggered Events ..................................................................... 53
-Processing Events and Sequencing Rules ....................................................... 53
-Timer Events .............................................................................................. 54
-Other Local Events ...................................................................................... 54
-Live Encoder Details ......................................................................................... 54
-Abstract Data Model .................................................................................... 54
-Timers ...................................................................................................... 55
-Initialization ............................................................................................... 55
-Higher-Layer Triggered Events ..................................................................... 55
-Start Stream ........................................................................................ 55
-Stop Stream ......................................................................................... 56
-Processing Events and Sequencing Rules ....................................................... 56
-Timer Events .............................................................................................. 56
-Other Local Events ...................................................................................... 56
-
-3.2
-
-3.3
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-3.3.6
-3.3.7
-
-3.3.4.1
-3.3.4.2
-
-4  Protocol Examples ................................................................................................. 57
-Manifest Response ........................................................................................... 57
-Fragment Request ............................................................................................ 57
-Live Ingest Request .......................................................................................... 58
-Stream Manifest............................................................................................... 58
-Live Server Manifest ......................................................................................... 58
-Server Ingest Request ...................................................................................... 59
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-
-5  Security ................................................................................................................. 60
-Security Considerations for Implementers ........................................................... 60
-Index of Security Parameters ............................................................................ 60
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 61
-
-7  Change Tracking .................................................................................................... 62
-
-8  Index ..................................................................................................................... 63
-
-[MS-SSTR] - v20241119
-Smooth Streaming Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-5 / 65
-
-1  Introduction
+## 1 Introduction
 
 The Smooth Streaming Protocol describes the wire format that is used to deliver (via HTTP) live and
 on-demand digital media, such as audio and video, in the following manners: from an encoder to a
@@ -593,7 +437,7 @@ change for the client computer or device.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -654,7 +498,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-sample: The smallest fundamental unit (such as a frame) in which media is stored and processed.
+
+sample: The smallest fundamental unit (such as a frame) in which media is stored and processed.
 
 sparse stream: A stream that contains one or more sparse tracks.
 
@@ -673,14 +518,14 @@ track: A time-ordered collection of samples of a particular type (such as audio 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -721,11 +566,12 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-[XML] World Wide Web Consortium, "Extensible Markup Language (XML) 1.0 (Fourth Edition)", W3C
+
+[XML] World Wide Web Consortium, "Extensible Markup Language (XML) 1.0 (Fourth Edition)", W3C
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ISO/IEC-14496-15] International Organization for Standardization, "Information technology -- Coding
 of audio-visual objects -- Part 15: Advanced Video Coding (AVC) file format", ISO 14496-15,
@@ -756,7 +602,7 @@ Note There is a charge to download the specification.
 [WFEX] Microsoft Corporation, "Multiple channel audio data and WAVE files", March 2007,
 https://learn.microsoft.com/en-us/previous-versions/windows/hardware/design/dn653308(v=vs.85)
 
-1.3  Overview
+### 1.3 Overview
 
 The Smooth Streaming Transport Protocol provides a means of delivering media from encoders to
 servers (in the case of live streaming) and from servers to clients in a way that can be cached by
@@ -773,7 +619,8 @@ Release: November 19, 2024
 
 8 / 65
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-SSTR].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -796,13 +643,14 @@ Release: November 19, 2024
 
 9 / 65
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-SSTR].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 2: Typical communication pattern of requests for the same fragment
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Smooth Streaming Transport Protocol uses HTTP [RFC2616] as its underlying transport.
 
@@ -810,7 +658,7 @@ The Smooth Streaming Transport Protocol fulfills a similar function to establish
 protocols, such as Real Time Streaming Protocol (RTSP) [RFC2326]. However, it provides significantly
 greater scalability in Internet scenarios due to effective use of HTTP cache proxies.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes HTTP [RFC2616] connectivity from the client to the server.
 
@@ -818,7 +666,7 @@ It is also assumed that the client is integrated with a higher-layer implementat
 media formats that are used and can otherwise play the media that is transmitted by the
 server.<1><2>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is most appropriate for delivering media over the Internet or in environments where
 HTTP cache proxies can be used to maximize scalability. It can be used on any network where HTTP
@@ -831,7 +679,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -843,7 +692,7 @@ MajorVersion and MinorVersion fields that are specified in section 2.2.2.1.
 Transport Protocol is performed at the underlying transport layer (HTTP) and does not restrict
 which of the HTTP supported mechanisms can be used.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The following fields in this protocol can be extended by vendors:
 
@@ -890,7 +739,7 @@ transport layer (HTTP), as specified in [RFC2616] section 5.
 
 transport layer (HTTP), as specified in [RFC2616] section 5.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -901,9 +750,10 @@ Release: November 19, 2024
 
 11 / 65
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Manifest Request and Fragment Request messages MUST be represented as HTTP request
 messages, as specified by the Request rule of [RFC2616], subject to the following constraints:
@@ -967,7 +817,7 @@ The RequestURI MUST adhere to the syntax of the LiveIngestRequest field, specifi
 
 The HTTP-Version SHOULD be HTTP/1.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Smooth Streaming Transport Protocol defines five types of messages:
 
@@ -993,7 +843,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- TRUE = "true"
+
+ TRUE = "true"
 
 FALSE: A case-insensitive string value for false, for use in XML attributes.
 
@@ -1041,7 +892,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- URL-SAFE-CHAR = <URL-safe character as defined in [RFC2616]>
+
+ URL-SAFE-CHAR = <URL-safe character as defined in [RFC2616]>
 
 URL-ENCODED-CHAR: A character that is encoded to safely appear in a URI, as specified in
 [RFC2396].
@@ -1077,7 +929,7 @@ that are part of a URI [RFC2396].
  IDENTIFIER = ALPHA / UNDERSCORE *(URL-SAFE-CHAR / URL-ENCODED-CHAR)
  UNDERSCORE = "_"
 
-2.2.1  Manifest Request
+#### 2.2.1 Manifest Request
 
 The ManifestRequest field and related fields contain data that is required to request a manifest
 from the server.
@@ -1091,7 +943,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-FileExtension (variable): The extension of the manifest file. It MUST be set to "isml" for live
+
+FileExtension (variable): The extension of the manifest file. It MUST be set to "isml" for live
 
 streaming.
 
@@ -1110,7 +963,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  VendorExtensionFileExtension = ALPHA *( ALPHA / DIGIT )
  FileExtension = "ism" / "isml" [HLSExtension / VendorExtensionFileExtension]
 
-2.2.2  Manifest Response
+#### 2.2.2 Manifest Response
 
 The ManifestResponse field and related fields contain metadata that is required by the client to
 construct subsequent FragmentRequest messages and play back the received data.
@@ -1167,7 +1020,8 @@ Release: November 19, 2024
 
 15 / 65
 
-2.2.2.1  SmoothStreamingMedia
+
+##### 2.2.2.1 SmoothStreamingMedia
 
 The SmoothStreamingMedia field and related fields encapsulate metadata that is required to play
 
@@ -1247,7 +1101,8 @@ Release: November 19, 2024
 
 16 / 65
 
- TimeScaleAttributeName = "TimeScale"
+
+ TimeScaleAttributeName = "TimeScale"
  TimeScale = STRING-UINT64
  DurationAttribute = S DurationAttributeName S Eq S
                      (DQ Duration DQ) / (SQ Duration SQ) *1S
@@ -1267,7 +1122,7 @@ Release: November 19, 2024
  DVRWindowLength= STRING-UINT64
  SmoothStreamingMediaContent = [ ProtectionElement *1S] 1*StreamElement
 
-2.2.2.2  ProtectionElement
+##### 2.2.2.2 ProtectionElement
 
 The ProtectionElement field and related fields encapsulate metadata that is required to play back
 
@@ -1320,7 +1175,8 @@ Release: November 19, 2024
 
 17 / 65
 
-2.2.2.3  StreamElement
+
+##### 2.2.2.3 StreamElement
 
 The StreamElement field and related fields encapsulate metadata that is required to play a specific
 stream in the presentation.
@@ -1407,7 +1263,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-ParentStream (variable): Specifies the non-sparse stream that is used to transmit timing
+
+ParentStream (variable): Specifies the non-sparse stream that is used to transmit timing
 
 information for this stream. If the ParentStream field is present, it indicates that the stream that
 is described by the containing StreamElement field is a sparse stream. If present, the value of
@@ -1483,7 +1340,8 @@ Release: November 19, 2024
 
 19 / 65
 
- StreamMaxHeightAttribute = S StreamMaxHeightAttributeName S Eq S
+
+ StreamMaxHeightAttribute = S StreamMaxHeightAttributeName S Eq S
                             (DQ StreamMaxHeight DQ) / (SQ StreamMaxHeight SQ) *1S
  StreamMaxHeightAttributeName = "MaxHeight"
  StreamMaxHeight = STRING-UINT32
@@ -1505,7 +1363,7 @@ Release: November 19, 2024
  ManifestOutput = TRUE / FALSE
  StreamContent = 1*(TrackElement *1S) *(StreamFragment *1S)
 
-2.2.2.4  UrlPattern
+##### 2.2.2.4 UrlPattern
 
 The UrlPattern field and related fields define a pattern that can be used by the client to make
 
@@ -1537,7 +1395,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  TrackName = URISAFE-IDENTIFIER-NONNUMERIC
  StartTimeSubstitution = "{start time}" / "{start_time}"
 
-2.2.2.5  TrackElement
+##### 2.2.2.5 TrackElement
 
 The TrackElement field and related fields encapsulate metadata that is required to play a specific
 track in the stream.
@@ -1553,7 +1411,8 @@ Release: November 19, 2024
 
 20 / 65
 
-TrackAttributes (variable): The collection of XML attributes for TrackElement. Attributes can
+
+TrackAttributes (variable): The collection of XML attributes for TrackElement. Attributes can
 appear in any order. However, the following fields are required and MUST be present in
 TrackAttributes: IndexAttribute and BitrateAttribute. If the track is contained in a stream
 whose Type is video, the following additional fields are also required and MUST be present in
@@ -1643,7 +1502,8 @@ Release: November 19, 2024
 
 21 / 65
 
-  A vendor extension value containing a registered with MPEG4-RA, as specified in [ISO/IEC-
+
+  A vendor extension value containing a registered with MPEG4-RA, as specified in [ISO/IEC-
 
 14496-12].
 
@@ -1726,7 +1586,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-                   (DQ Bitrate DQ) / (SQ Bitrate SQ) S
+
+                   (DQ Bitrate DQ) / (SQ Bitrate SQ) S
  BitrateAttributeName = "Bitrate"
  Index = STRING-UINT32
  MaxWidthAttribute = S MaxWidthAttributeName S Eq S
@@ -1772,7 +1633,7 @@ Release: November 19, 2024
  NALUnitLengthField = STRING-UINT16
  TrackContent = *1CustomAttributes
 
-2.2.2.5.1 CustomAttributesElement
+###### 2.2.2.5.1 CustomAttributesElement
 
 The CustomAttributesElement field and related fields are used to specify metadata that
 disambiguates tracks in a stream.
@@ -1799,7 +1660,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- AttributeAttributes = (AttributeNameAttribute S AttributeValueAttribute)
+
+ AttributeAttributes = (AttributeNameAttribute S AttributeValueAttribute)
                        / (AttributeValueAttribute S AttributeNameAttribute)
  AttributeNameAttribute = S AttributeNameAttributeName S Eq S
                           (DQ CustomAttributeName DQ) / (SQ CustomAttributeName SQ) *1S
@@ -1810,7 +1672,7 @@ Release: November 19, 2024
  AttributeValueAttributeName = "Value"
  CustomAttributeValue = IDENTIFIER
 
-2.2.2.6  StreamFragmentElement
+##### 2.2.2.6 StreamFragmentElement
 
 The StreamFragmentElement field and related fields are used to specify metadata for one set of
 related fragments in a stream. The order of repeated StreamFragmentElement fields in a
@@ -1866,7 +1728,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-preceding StreamFragmentElement's FragmentDuration field. If no preceding
+
+preceding StreamFragmentElement's FragmentDuration field. If no preceding
 StreamFragmentElement exists, the implicit value of the FragmentTime field is 0.
 
 FragmentRepeat (variable): The repeat count of the fragment, specified as the number of
@@ -1921,7 +1784,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  TrackFragmentContent = VendorExtensionTrackData
  VendorExtensionTrackData = XML-CHARDATA
 
-2.2.2.6.1 TrackFragmentElement
+###### 2.2.2.6.1 TrackFragmentElement
 
 The TrackFragmentElement field and related fields are used to specify metadata pertaining to a
 fragment for a specific track, rather than all versions of a fragment for a stream.
@@ -1939,7 +1802,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-TrackFragmentIndex (variable): An ordinal that MUST match the value of the Index field for the
+
+TrackFragmentIndex (variable): An ordinal that MUST match the value of the Index field for the
 
 track to which this TrackFragment field pertains.
 
@@ -1967,7 +1831,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  TrackFragmentContent = ManifestOutputSample
  ManifestOutputSample = BASE64-STRING
 
-2.2.3  Fragment Request
+#### 2.2.3 Fragment Request
 
 The FragmentRequest field and related fields contain data that is required to request a fragment
 from the server.
@@ -2013,7 +1877,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- BitratePredicate = STRING-UINT32
+
+ BitratePredicate = STRING-UINT32
  CustomAttributesPredicate = CustomAttributesKey "=" CustomAttributesValue
  CustomAttributesKey = URISAFE-IDENTIFIER-NONNUMERIC
  CustomAttributesValue = URISAFE-IDENTIFIER
@@ -2031,7 +1896,7 @@ Release: November 19, 2024
  Time = STRING-UINT64
  HLSPredicate = ", " "format=m3u8-aapl"
 
-2.2.4  Fragment Response
+#### 2.2.4 Fragment Response
 
 The FragmentResponse field and/or related fields encapsulate media and metadata that are specific
 to the requested fragment.
@@ -2061,7 +1926,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
 
 The SampleData field, in the preceding ABNF syntax, is specified in section 2.2.4.8.
 
-2.2.4.1  MoofBox
+##### 2.2.4.1 MoofBox
 
 The MoofBox field and related fields encapsulate metadata that is specific to the requested fragment.
 The syntax of MoofBox is a strict subset of the syntax of the Movie Fragment Box that is specified in
@@ -2083,7 +1948,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-MoofBoxLongLength (8 bytes): The length of the MoofBox field, in bytes, including the
+
+MoofBoxLongLength (8 bytes): The length of the MoofBox field, in bytes, including the
 
 MoofBoxLongLength field.
 
@@ -2096,7 +1962,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  MoofBoxLongLength = BoxLongLength
  MoofBoxChildren = 2*( MfhdBox / TrafBox / VendorExtensionUUIDBox )
 
-2.2.4.2  MfhdBox
+##### 2.2.4.2 MfhdBox
 
 The MfhdBox field and related fields specify the fragment's position in the sequence for the track. The
 syntax of the MfhdBox field is a strict subset of the syntax of the Movie Fragment Header Box that is
@@ -2130,7 +1996,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  SequenceNumber = UNSIGNED-INT32
  MfhdBoxChildren = *( VendorExtensionUUIDBox )
 
-2.2.4.3  TrafBox
+##### 2.2.4.3 TrafBox
 
 The TrafBox field and related fields encapsulate metadata that is specific to the requested fragment
 and track. The syntax of the TrafBox field is a strict subset of the syntax of the Track Fragment Box
@@ -2153,7 +2019,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-TrafBoxLongLength (8 bytes): The length of the TrafBox field, in bytes, including the
+
+TrafBoxLongLength (8 bytes): The length of the TrafBox field, in bytes, including the
 
 TrafBoxLongLength field.
 
@@ -2167,7 +2034,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  TrafBoxChildren = 2*( TfhdBox / TrunBox
                         / VendorExtensionUUIDBox )
 
-2.2.4.4  TfxdBox
+##### 2.2.4.4 TfxdBox
 
 The TfxdBox field and related fields encapsulate the absolute timestamp and duration of a fragment
 in a live presentation. This field SHOULD be ignored if it appears in an on-demand presentation.
@@ -2228,14 +2095,15 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-                       FragmentDuration64
+
+                       FragmentDuration64
  FragmentAbsoluteTime32 = UNSIGNED-INT32
  FragmentDuration32 = UNSIGNED-INT32
  FragmentAbsoluteTime64 = UNSIGNED-INT64
  FragmentDuration64 = UNSIGNED-INT64
  TfxdBoxChildren = *( VendorExtensionUUIDBox )
 
-2.2.4.5  TfrfBox
+##### 2.2.4.5 TfrfBox
 
 The TfrfBox field and related fields encapsulate the absolute timestamp and duration for one or more
 subsequent fragments of the same track in a live presentation. This field SHOULD be ignored if it
@@ -2307,7 +2175,8 @@ Release: November 19, 2024
 
 30 / 65
 
- TfrfBox = TfrfBoxLength TfrfBoxType [TfrfBoxLongLength] TfrfBoxUUID TfrfBoxFields
+
+ TfrfBox = TfrfBoxLength TfrfBoxType [TfrfBoxLongLength] TfrfBoxUUID TfrfBoxFields
            TfrfBoxChildren
  TfrfBoxType = %d117 %d117 %d105 %d100
  TfrfBoxLength = BoxLength
@@ -2331,7 +2200,7 @@ Release: November 19, 2024
  FragmentDuration64 = UNSIGNED-INT64
  TfrfBoxChildren = *( VendorExtensionUUIDBox )
 
-2.2.4.6  TfhdBox
+##### 2.2.4.6 TfhdBox
 
 The TfhdBox field and related fields encapsulate defaults for per-sample metadata in the fragment.
 The syntax of the TfhdBox field is a strict subset of the syntax of the Track Fragment Header Box that
@@ -2380,7 +2249,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-                 [ BaseDataOffset ]
+
+                 [ BaseDataOffset ]
                  [ SampleDescriptionIndex ]
                  [ DefaultSampleDuration ]
                  [ DefaultSampleSize ]
@@ -2400,7 +2270,7 @@ Release: November 19, 2024
  DefaultSampleFlags = SampleFlags
  TfhdBoxChildren = *( VendorExtensionUUIDBox )
 
-2.2.4.7  TrunBox
+##### 2.2.4.7 TrunBox
 
 The TrunBox field and related fields encapsulate per-sample metadata for the requested fragment.
 The syntax of TrunBox is a strict subset of the syntax of the Track Fragment Run Box that is defined
@@ -2453,7 +2323,8 @@ Release: November 19, 2024
 
 32 / 65
 
-FirstSampleFlags (4 bytes): The value of the SampleFlags field for the first sample. This field
+
+FirstSampleFlags (4 bytes): The value of the SampleFlags field for the first sample. This field
 MUST be present if and only if the FirstSampleFlagsPresent field takes the value %b1.
 
 SampleSize (4 bytes): The size of each sample, in bytes. This field MUST be present if and only if
@@ -2530,12 +2401,13 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- SampleSize = UNSIGNED-INT32
+
+ SampleSize = UNSIGNED-INT32
  TrunBoxSampleFlags = SampleFlags
  SampleCompositionTimeOffset = UNSIGNED-INT32
  TrunBoxChildren = *( VendorExtensionUUIDBox )
 
-2.2.4.8  MdatBox
+##### 2.2.4.8 MdatBox
 
 The MdatBox field and related fields encapsulate media data for the requested fragment. The syntax
 of the MdatBox field is a strict subset of the syntax of the Media Data Container Box that is defined in
@@ -2566,7 +2438,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  MdatBoxFields = *( SampleData )
  SampleData = *BYTE
 
-2.2.4.9  Fragment Response Common Fields
+##### 2.2.4.9 Fragment Response Common Fields
 
 This section defines the common fields that are used in the Fragment Response message for the
 following fields: MoofBox, MfhdBox, TrafBox, TfxdBox, TfxfBox, TfhdBox, and TrunBox.
@@ -2598,7 +2470,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-RedundantCodingUnknown (2 bits): Unknown whether this sample uses redundant coding.
+
+RedundantCodingUnknown (2 bits): Unknown whether this sample uses redundant coding.
 
 RedundantCoding (2 bits): This sample uses redundant coding.
 
@@ -2673,10 +2546,11 @@ Release: November 19, 2024
 
 35 / 65
 
-RESERVED-BYTE = 8RESERVED-BIT
+
+RESERVED-BYTE = 8RESERVED-BIT
 RESERVED-BIT = %b0-0 ; RESERVED-BIT defined as a bit 0, but not used
 
-2.2.5  Sparse Stream Pointer
+#### 2.2.5 Sparse Stream Pointer
 
 The SparseStreamPointer field and related fields contain data that is required to locate the latest
 fragment of a sparse stream. This message is used in conjunction with a Fragment Response
@@ -2711,12 +2585,12 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  SparseStreamFragment = SparseStreamName "=" SparseStreamTimeStamp
  SparseStreamTimeStamp = STRING-UINT64
 
-2.2.6  Fragment Not Yet Available
+#### 2.2.6 Fragment Not Yet Available
 
 The Fragment Not Yet Available message is an HTTP response that has an empty message body field
 and the HTTP status code 412 Precondition Failed, as specified in [RFC2616].
 
-2.2.7  Live Ingest
+#### 2.2.7 Live Ingest
 
 The LiveIngest field and related fields contain data that is required to request the start of a live
 broadcast.
@@ -2739,7 +2613,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-StreamID (variable): A unique identifier that is used to collate fragments in the case of encoder
+
+StreamID (variable): A unique identifier that is used to collate fragments in the case of encoder
 failover. It allows separate encoder nodes to POST to separate URLs, but multiple active
 connection URLs that have the same StreamID identifier can be used for redundancy. In that
 case, the server will filter out duplicated or out-of-order fragments. This identifier is commonly
@@ -2765,7 +2640,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
 
  LiveIngestMessage = FileType [StreamManifest] LiveServerManifest MoovBox *1Fragment
 
-2.2.7.1  FileType
+##### 2.2.7.1 FileType
 
 FileType (variable): Specifies the subtype and intended use of the MPEG-4 ([MPEG4-RA]) file, and
 
@@ -2786,7 +2661,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  MinorVersion = STRING-UINT32
  CompatibleBrands = "piff" "iso2" 0*(STRING-UINT32)
 
-2.2.7.2  StreamManifestBox
+##### 2.2.7.2 StreamManifestBox
 
 The StreamManifestBox field and related fields contain metadata that is required to inform the client
 of all comprising streams in a broadcast. If StreamManifestBox is present in a POST request, the
@@ -2806,7 +2681,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- StreamManifestBox = SMBoxType SMBoxLength SMBoxUUID SMVersion SMFlagsStreamManifest
+
+ StreamManifestBox = SMBoxType SMBoxLength SMBoxUUID SMVersion SMFlagsStreamManifest
  SMBoxType = %d117 %d117 %d105 %d100
  SMBoxLength = BoxLength
  SMBoxUUID = %x3C %x2F %xE5 %x1B %xEF %xEE %x40 %xA3
@@ -2857,7 +2733,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
 
  StreamManifest = prolog StreamSMIL Misc
 
-2.2.7.2.1 StreamSMIL
+###### 2.2.7.2.1 StreamSMIL
 
 The StreamSMIL field and related fields encapsulate the data that is required for the client to identify
 
@@ -2887,7 +2763,8 @@ Release: November 19, 2024
 
 38 / 65
 
-2.2.7.3  LiveServerManifestBox
+
+##### 2.2.7.3 LiveServerManifestBox
 
 The LiveServerManifestBox field and related fields comprise the data that is provided to the server
 by the encoder. The data enables the server to interpret the incoming live stream and assign
@@ -2952,7 +2829,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
 
  LiveServerManifest = prolog LiveSMIL Misc
 
-2.2.7.3.1 LiveSMIL
+###### 2.2.7.3.1 LiveSMIL
 
 The LiveSMIL field and related fields comprise the data that is required for the client to identify all
 the streams in a presentation.
@@ -2970,7 +2847,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-SMILLiveMeta (variable): The metadata of the presentation. The following attributes are supported:
+
+SMILLiveMeta (variable): The metadata of the presentation. The following attributes are supported:
 
 name: Specifies the semantic meaning of metadata. This attribute MUST be present.
 
@@ -3074,7 +2952,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The syntax of the fields that are defined in this section, specified in ABNF [RFC5234], is as follows.
+
+The syntax of the fields that are defined in this section, specified in ABNF [RFC5234], is as follows.
 
  SMIL = "<" SMILMediaElementName SMILMediaNamespace ">" *1S
          SMILLiveHead S SMILLiveBody *1S
@@ -3094,18 +2973,18 @@ Release: November 19, 2024
  SMILParam = "<param" S "name" Eq DQ IDENTIFIER DQ S "value" Eq DQ IDENTIFIER DQ *1S
              "valuetype" Eq DQ "data" DQ S "/>"
 
-2.2.7.4  MoovBox
+##### 2.2.7.4 MoovBox
 
 The MoovBox field is as described in [ISO/IEC-14496-12].
 
-2.2.7.5  Fragment
+##### 2.2.7.5 Fragment
 
 The fragment consists of the MoofBox (section 2.2.4.1) field and the MdatBox (section 2.2.4.8) field.
 
 To handle live streams, the server requires a TrackFragmentExtendedHeader field inside the
 TrafBox (section 2.2.4.3) field.
 
-2.2.7.5.1 Track Fragment Extended Header
+###### 2.2.7.5.1 Track Fragment Extended Header
 
 The TrackFragmentExtendedHeader field and related fields specify the fragment's duration and
 absolute starting offset in timescale increments for the track. These fields MUST be present for every
@@ -3130,7 +3009,7 @@ The syntax of the fields that are defined in this section, specified in ABNF [RF
  FragDuration = STRING-UINT32 / STRING-UINT64
  TFEHFlags = 24*24RESERVED-BIT
 
-2.2.8  Server-to-Server Ingest
+#### 2.2.8 Server-to-Server Ingest
 
 The ServerIngest field and related fields contain data that is required when a server is requesting a
 broadcast and its related streams from another server.
@@ -3142,7 +3021,8 @@ Release: November 19, 2024
 
 41 / 65
 
-ServerIngestRequest (variable): The URI [RFC2396] to which the ServerIngest request is sent.
+
+ServerIngestRequest (variable): The URI [RFC2396] to which the ServerIngest request is sent.
 
 EventID (variable): An optional identifier that enables the reuse of URLs, as specified in section
 
@@ -3166,15 +3046,16 @@ Release: November 19, 2024
 
 42 / 65
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-SSTR].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3211,7 +3092,7 @@ initialized. This data element is maintained as state by the client.
 
 carry the Sparse Stream Pointer message, specified in section 2.2.5.
 
-3.1.1.1  Presentation Description
+##### 3.1.1.1 Presentation Description
 
 The Presentation Description data element encapsulates all metadata for the presentation.
 
@@ -3231,7 +3112,8 @@ Release: November 19, 2024
 
 43 / 65
 
-  Duration
+
+  Duration
 
 
 
@@ -3246,7 +3128,7 @@ Stream Collection: A collection of Stream Description data elements, as specifie
 Protection Description: A collection of Protection System Metadata Description data elements, as
 specified in section 3.1.1.1.1.
 
-3.1.1.1.1 Protection System Metadata Description
+###### 3.1.1.1.1 Protection System Metadata Description
 
 The Protection System Metadata Description data element encapsulates metadata that is specific to a
 single Content Protection System.
@@ -3259,7 +3141,7 @@ Protection System. Protection Header Description comprises the following fields,
 
   ProtectionHeaderContent
 
-3.1.1.1.2 Stream Description
+###### 3.1.1.1.2 Stream Description
 
 The Stream Description data element encapsulates all metadata that is specific to a single stream.
 
@@ -3302,14 +3184,15 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Parent Stream: A reference to the Stream Description data element for this stream's Parent Stream.
+
+Parent Stream: A reference to the Stream Description data element for this stream's Parent Stream.
 This data element SHOULD NOT be set unless the stream is a sparse stream.
 
 Last Downloaded Fragment: A 64-bit, unsigned integer that holds a reference to the Last Known
 Fragment for a sparse stream. This data element SHOULD NOT be set unless the stream is a sparse
 stream.
 
-3.1.1.1.2.1  Track Description
+###### 3.1.1.1.2.1 Track Description
 
 The Track Description data element encapsulates all metadata that is specific to a single track.
 
@@ -3341,7 +3224,7 @@ Index
 Custom Attributes Collection: A collection of Custom Attribute Description data elements, as specified
 in section 3.1.1.1.2.1.1.
 
-3.1.1.1.2.1.1  Custom Attribute Description
+###### 3.1.1.1.2.1.1 Custom Attribute Description
 
 The Custom Attribute Description data element encapsulates a key/value pair that disambiguates
 tracks.
@@ -3353,7 +3236,7 @@ section 2.2.2.5.1:
 
   CustomAttributeValue
 
-3.1.1.1.3 Fragment Reference Description
+###### 3.1.1.1.3 Fragment Reference Description
 
 The Fragment Reference Description data element encapsulates metadata that is needed to identify a
 fragment in the stream and to create a corresponding Fragment Request message.
@@ -3372,14 +3255,15 @@ Release: November 19, 2024
 
 45 / 65
 
-  FragmentDuration
+
+  FragmentDuration
 
   FragmentTime
 
 Track-Specific Fragment Reference Collection: A collection of Track-Specific Fragment Reference
 Description data elements, as specified in section 3.1.1.1.3.1.
 
-3.1.1.1.3.1  Track-Specific Fragment Reference Description
+###### 3.1.1.1.3.1 Track-Specific Fragment Reference Description
 
 The Fragment Reference Description data element encapsulates metadata that is needed to identify a
 fragment in the stream and to create a corresponding Fragment Request message.
@@ -3392,7 +3276,7 @@ specified in section 2.2.2.6:
 
   ManifestOutputSample
 
-3.1.1.2  Fragment Description
+##### 3.1.1.2 Fragment Description
 
 The Fragment Description data element encapsulates metadata and sample data for a single
 fragment.
@@ -3414,7 +3298,7 @@ Metadata contains the following fields:
 
 Sample Collection: A collection of Sample Description data elements, as specified in section 3.1.1.2.1.
 
-3.1.1.2.1 Sample Description
+###### 3.1.1.2.1 Sample Description
 
 The Sample Description data element encapsulates the metadata and data for a single sample.
 
@@ -3438,11 +3322,12 @@ Release: November 19, 2024
 
 46 / 65
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization of the client is triggered by an Open Presentation event, specified in section 3.1.4.1. At
 Initialization, the Presentation Available flag is set to false.
@@ -3451,7 +3336,7 @@ The Sparse Stream Pointer Header is initialized from configuration above the Smo
 Transport Protocol layer. The configured value on the client MUST match the configured value on the
 server for interoperability. <3>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The client is initiated by a higher-layer implementation that decodes samples for playback to the end
 user and uses the state of playback and end-user interaction to initiate Fragment Requests by the
@@ -3463,7 +3348,7 @@ client. The following events trigger specific behavior on the client:
 
   Close Presentation, specified in section 3.1.4.3
 
-3.1.4.1  Open Presentation
+##### 3.1.4.1 Open Presentation
 
 The Open Presentation event is used at the start of a viewing session. This event has no effect if the
 value of the Presentation Available flag is TRUE.
@@ -3490,7 +3375,7 @@ Description data element, the client MUST perform the following operations:
 
   Return the Presentation Description data element to the higher-layer implementation.
 
-3.1.4.2  Get Fragment
+##### 3.1.4.2 Get Fragment
 
 The Get Fragment event is used during the course of the viewing session. This event has no effect
 when the value of the Presentation Available flag is false.
@@ -3511,7 +3396,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  Request Track: A Track Description data element for the fragment to Request.
+
+  Request Track: A Track Description data element for the fragment to Request.
 
   Request Fragment: A Fragment Reference Description data element for the fragment to Request.
 
@@ -3560,7 +3446,7 @@ implementation.
 
 No state change is effected when the Get Fragment event is triggered.
 
-3.1.4.3  Close Presentation
+##### 3.1.4.3 Close Presentation
 
 The Close Presentation event is used at the end of a viewing session. This event has no effect if the
 value of the Presentation Available flag is false.
@@ -3568,7 +3454,7 @@ value of the Presentation Available flag is false.
 When the Close Presentation event is triggered, the client sets the Presentation Available flag to false
 and enters the Final state.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The following event processing and sequencing rules apply:
 
@@ -3598,7 +3484,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3.1.5.1  Manifest Request and Manifest Response
+
+##### 3.1.5.1 Manifest Request and Manifest Response
 
 When a Manifest Request is sent to the server, the client MUST wait for a Manifest Response message
 to arrive. If the underlying transport returns an error, the client MUST enter the Final state.
@@ -3691,7 +3578,8 @@ Release: November 19, 2024
 
 49 / 65
 
-
+
+
 
 
 
@@ -3783,7 +3671,8 @@ Release: November 19, 2024
 
 50 / 65
 
-
+
+
 
 
 
@@ -3801,7 +3690,7 @@ If the underlying transport returns a Response that does not adhere to the synta
 Response message, the client MUST enter the Final state without yielding a Presentation Description
 data element.
 
-3.1.5.2  Fragment Request and Fragment Response
+##### 3.1.5.2 Fragment Request and Fragment Response
 
 When a Fragment Request is sent to the server, the client MUST wait for a Fragment Response
 message to arrive. If the underlying transport returns an error, the client MUST enter the Final state.
@@ -3871,7 +3760,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 If the value of the SampleSize field of the current Sample Description data element is not
 set, the value is set to the value of the DefaultSampleSize field in the Fragment Description
@@ -3920,19 +3810,19 @@ the SparseStreamTimeStamp field.
 If the Sparse Stream Notifications collection is not empty, the client yields this collection to the higher
 layer in addition to the Fragment Description.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The server does not maintain state and treats all arriving messages independently.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3947,13 +3837,14 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The server uses the same conceptual model as the client, specified in section 3.1.1.
 
-3.2.2  Timers
+The server uses the same conceptual model as the client, specified in section 3.1.1.
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 There is no initialization required for the Smooth Streaming Transport Protocol layer. Successful
 initialization of the underlying transport (HTTP) is a prerequisite for successful operation of the server.
@@ -3962,11 +3853,11 @@ The Sparse Stream Pointer Header is initialized from configuration above the Smo
 Transport Protocol layer. The configured value on the client MUST match the configured value on the
 server for interoperability. <4>
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The following event processing and sequencing rules apply:
 
@@ -4027,7 +3918,8 @@ Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 From each item in the Child Streams Collection, generate a SparseStreamFragment
 field, specified in section 2.2.5, by setting the SparseStreamName field to the Name
@@ -4071,17 +3963,17 @@ omitted.
 The remainder of the SparseStreamPointer field is generated from the
 SparseStreamSet fields.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Live Encoder Details
+### 3.3 Live Encoder Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that a live encoding
 implementation maintains in order to participate in this protocol. The described organization is
@@ -4098,7 +3990,8 @@ Release: November 19, 2024
 
 54 / 65
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-SSTR].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -4122,11 +4015,11 @@ Movie: This is the media file in fragmented-MPEG-4 format, as specified in [ISO/
 
 Fragment: This is the media fragment, as specified in section 2.2.7.5.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 An HTTP POST request from an encoder with an empty body (zero content length) using the URL as
 specified in the LiveIngestRequest field (2.2.7).
@@ -4134,7 +4027,7 @@ specified in the LiveIngestRequest field (2.2.7).
 The server does not send back a response until the entire POST is received. This allows for error
 detection before all the data is ready, which is necessary in long live streams.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The LiveIngest point (section 2.2.7) is driven by a higher-layer implementation that ingests streams
 for broadcast to the end user. The following events trigger specific behavior on the LiveIngest point:
@@ -4145,7 +4038,7 @@ for broadcast to the end user. The following events trigger specific behavior on
 
 End Ingest, specified by section 3.3.4.2.
 
-3.3.4.1  Start Stream
+##### 3.3.4.1 Start Stream
 
 After a 200 HTTP response is received from the server following initialization, the encoder SHOULD
 initiate a new, long-running HTTP POST request. The payload of the request MUST be the fragment
@@ -4164,7 +4057,8 @@ Release: November 19, 2024
 
 55 / 65
 
-3.3.4.2  Stop Stream
+
+##### 3.3.4.2 Stop Stream
 
 A started stream can be stopped only by an End-Of-Stream (EOS) signal from the encoder, a manual
 shutdown command, or an internal error. To properly signify the end of a live broadcast, the encoder
@@ -4174,15 +4068,15 @@ entries in the Tfra box and no MfroBox following, as specified by [ISO/IEC-14496
 The long-running POST request SHOULD be properly terminated by closing the HTTP connection as
 specified in the HTTP protocol [RFC2616].
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
 None.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -4193,9 +4087,10 @@ Release: November 19, 2024
 
 56 / 65
 
-4  Protocol Examples
 
-4.1  Manifest Response
+## 4 Protocol Examples
+
+### 4.1 Manifest Response
 
 The following is an example of a Manifest Response (section 2.2.2) message.
 
@@ -4242,7 +4137,7 @@ The following is an example of a Manifest Response (section 2.2.2) message.
     </StreamIndex>
  </SmoothStreamingMedia>
 
-4.2  Fragment Request
+### 4.2 Fragment Request
 
 The following is an example of a Fragment Request (section 2.2.3) message. It follows the Manifest
 Response (section 4.1) message example, in compliance with the sequencing rules that are specified
@@ -4257,13 +4152,14 @@ Release: November 19, 2024
 
 57 / 65
 
-4.3  Live Ingest Request
+
+### 4.3 Live Ingest Request
 
 The following is an example of a LiveIngestRequest as specified in section 2.2.7.
 
  http://Server/mybroadcast.isml/streams(720p)
 
-4.4  Stream Manifest
+### 4.4 Stream Manifest
 
 The following is an example of a StreamManifest as specified in section 2.2.7.2.1.
 
@@ -4278,7 +4174,7 @@ The following is an example of a StreamManifest as specified in section 2.2.7.2.
     </body>
  </smil>
 
-4.5  Live Server Manifest
+### 4.5 Live Server Manifest
 
 The following is an example of a LiveServerManifest as specified in section 2.2.7.3.
 
@@ -4328,11 +4224,12 @@ Release: November 19, 2024
 
 58 / 65
 
-       </switch>
+
+       </switch>
     </body>
  </smil>
 
-4.6  Server Ingest Request
+### 4.6 Server Ingest Request
 
 The following is an example of a ServerIngestRequest field as specified in section 2.2.8.
 
@@ -4347,15 +4244,16 @@ Release: November 19, 2024
 
 59 / 65
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 If the content that is transported by using this protocol has high commercial value, a Content
 Protection System can be used to prevent unauthorized use of the content. The ProtectionElement
 field can be used to carry metadata that is related to the use of a Content Protection System.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter  Section
 
@@ -4370,7 +4268,8 @@ Release: November 19, 2024
 
 60 / 65
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4426,7 +4325,8 @@ Release: November 19, 2024
 
 61 / 65
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4471,7 +4371,8 @@ Release: November 19, 2024
 
 62 / 65
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 54
@@ -4603,7 +4504,8 @@ Messages
 
 63 / 65
 
-   FragmentResponse 27
+
+   FragmentResponse 27
    Live Ingest 36
    LiveIngest 36
    Manifest Request 14
@@ -4740,7 +4642,8 @@ Versioning 11
 
 64 / 65
 
-[MS-SSTR] - v20241119
+
+[MS-SSTR] - v20241119
 Smooth Streaming Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024

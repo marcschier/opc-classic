@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -184,215 +185,92 @@ Release: April 23, 2024
 
 2 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 MessageId Enumeration](#2211-messageid-enumeration)
+      - [2.2.1.2 StatusCodeEnum Enumeration](#2212-statuscodeenum-enumeration)
+      - [2.2.1.3 TypeId Enumeration](#2213-typeid-enumeration)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 Bssid Structure](#2221-bssid-structure)
+      - [2.2.2.2 CommonHeader Structure](#2222-commonheader-structure)
+      - [2.2.2.3 DisplayName Structure](#2223-displayname-structure)
+      - [2.2.2.4 EncryptedBringUpSuccessResponse Structure](#2224-encryptedbringupsuccessresponse-structure)
+      - [2.2.2.5 ErrorString Structure](#2225-errorstring-structure)
+      - [2.2.2.6 HMAC Structure](#2226-hmac-structure)
+      - [2.2.2.7 InitializationVector Structure](#2227-initializationvector-structure)
+      - [2.2.2.8 MessageType Structure](#2228-messagetype-structure)
+      - [2.2.2.9 Passphrase Structure](#2229-passphrase-structure)
+      - [2.2.2.10 Ssid Structure](#22210-ssid-structure)
+      - [2.2.2.11 StatusCode Structure](#22211-statuscode-structure)
+      - [2.2.2.12 Timestamp Structure](#22212-timestamp-structure)
+    - [2.2.3 Messages](#223-messages)
+      - [2.2.3.1 BringUpStartRequest Message](#2231-bringupstartrequest-message)
+      - [2.2.3.2 BringUpSuccessResponse Message](#2232-bringupsuccessresponse-message)
+      - [2.2.3.3 BringUpSuccessResponseUnpaired Message](#2233-bringupsuccessresponseunpaired-message)
+      - [2.2.3.4 BringUpFailureResponse Message](#2234-bringupfailureresponse-message)
+      - [2.2.3.5 ProtocolErrorResponse Message](#2235-protocolerrorresponse-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Cancellation](#3141-cancellation)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 BringUpSuccessResponse](#3151-bringupsuccessresponse)
+      - [3.1.5.2 BringUpSuccessResponseUnpaired](#3152-bringupsuccessresponseunpaired)
+      - [3.1.5.3 BringUpFailureResponse](#3153-bringupfailureresponse)
+      - [3.1.5.4 Failure Messages](#3154-failure-messages)
+      - [3.1.5.5 Other Messages](#3155-other-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Disconnect Event of Transport Channel](#3171-disconnect-event-of-transport-channel)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Shutdown](#3241-shutdown)
+      - [3.2.4.2 Tethering Started or Failed to Start](#3242-tethering-started-or-failed-to-start)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 BringUpStartRequest](#3251-bringupstartrequest)
+      - [3.2.5.2 Failure Messages](#3252-failure-messages)
+      - [3.2.5.3 Other Messages](#3253-other-messages)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Disconnect Event of Transport Channel](#3271-disconnect-event-of-transport-channel)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Successful Startup](#41-successful-startup)
+    - [4.1.1 BringUpStartRequest Example (Successful)](#411-bringupstartrequest-example-successful)
+    - [4.1.2 BringUpSuccessResponse Example (Successful)](#412-bringupsuccessresponse-example-successful)
+  - [4.2 Unsuccessful Startup](#42-unsuccessful-startup)
+    - [4.2.1 BringUpStartRequest Example (Unsuccessful)](#421-bringupstartrequest-example-unsuccessful)
+    - [4.2.2 BringUpFailureResponse Example (Unsuccessful)](#422-bringupfailureresponse-example-unsuccessful)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Enumerations ............................................................................................... 9
-MessageId Enumeration ........................................................................... 9
-StatusCodeEnum Enumeration .................................................................. 9
-TypeId Enumeration .............................................................................. 10
-Structures ................................................................................................. 11
-Bssid Structure ..................................................................................... 11
-CommonHeader Structure ...................................................................... 11
-DisplayName Structure .......................................................................... 12
-EncryptedBringUpSuccessResponse Structure ........................................... 12
-ErrorString Structure ............................................................................. 13
-HMAC Structure .................................................................................... 13
-InitializationVector Structure .................................................................. 14
-MessageType Structure .......................................................................... 14
-Passphrase Structure ............................................................................. 14
-Ssid Structure ...................................................................................... 15
-StatusCode Structure ............................................................................ 15
-Timestamp Structure ............................................................................. 15
-Messages ................................................................................................... 16
-BringUpStartRequest Message ................................................................ 16
-BringUpSuccessResponse Message .......................................................... 17
-BringUpSuccessResponseUnpaired Message ............................................. 18
-BringUpFailureResponse Message ............................................................ 19
-ProtocolErrorResponse Message .............................................................. 20
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.3
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Cancellation ......................................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-BringUpSuccessResponse ....................................................................... 22
-BringUpSuccessResponseUnpaired .......................................................... 22
-BringUpFailureResponse ........................................................................ 22
-Failure Messages ................................................................................... 22
-Other Messages .................................................................................... 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3.1.6
-3.1.7
-
-3.1.5
-
-[MS-TCC] - v20240423
-Tethering Control Channel Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 32
-
-3.2
-
-3.1.7.1
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-Disconnect Event of Transport Channel .................................................... 23
-Server Details .................................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Shutdown ............................................................................................ 24
-Tethering Started or Failed to Start ......................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 25
-BringUpStartRequest ............................................................................. 25
-Failure Messages ................................................................................... 25
-Other Messages .................................................................................... 25
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-Disconnect Event of Transport Channel .................................................... 26
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-3.2.7.1
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 27
-Successful Startup ........................................................................................... 27
-BringUpStartRequest Example (Successful) .................................................... 27
-BringUpSuccessResponse Example (Successful) ............................................. 27
-Unsuccessful Startup ........................................................................................ 27
-BringUpStartRequest Example (Unsuccessful) ................................................ 27
-BringUpFailureResponse Example (Unsuccessful) ............................................ 27
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 31
-
-8  Index ..................................................................................................................... 32
-
-[MS-TCC] - v20240423
-Tethering Control Channel Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 32
-
-1  Introduction
+## 1 Introduction
 
 The Tethering Control Channel Protocol (TCC) facilitates the sharing of a server’s network connection
 with one or more clients over Bluetooth transport. This Protocol allows a client to send control
@@ -406,7 +284,7 @@ denoting the reason that the connection failed.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -462,7 +340,8 @@ Release: April 23, 2024
 
 5 / 32
 
-passphrase: One or more words entered as a security setting to enable device or identity
+
+passphrase: One or more words entered as a security setting to enable device or identity
 
 authentication.
 
@@ -504,14 +383,14 @@ specified length of a Value field (16-bit), and the data in the Value field (var
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -535,7 +414,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-TCC].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -552,13 +432,13 @@ BCP 106, RFC 4086, June 2005, https://www.rfc-editor.org/info/rfc4086
 
 [WF-Security] Wi-Fi Alliance, "Security", https://www.wi-fi.org/discover-wi-fi/security
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [NIST-SP800-90C] NIST, "Recommendation for Random Bit Generator (RBG) Constructions- Second
 Draft", SP800-90C, April 2016, https://csrc.nist.gov/CSRC/media/Publications/sp/800-
 90c/draft/documents/sp800_90c_second_draft.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 The Tethering Control Channel Protocol facilitates the sharing of a server's Internet connection with
 one or more clients that are using Wi-Fi over Bluetooth transport. To initiate the connection, a client
@@ -585,11 +465,12 @@ Release: April 23, 2024
 
 7 / 32
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 None.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Tethering Control Channel Protocol depends on a secure and authenticated communication
 channel between the client and server. If the client and server do not have a Bluetooth pairing
@@ -598,24 +479,24 @@ server to be used in establishing the communication channel. The keys MUST be co
 the recommendations for random number generation as described in [NIST-SP800-90C] and specified
 in [RFC4086].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is only applicable when the client initiates the tethering request. The client is required
 to support connecting to Wi-Fi networks and the server is required to support Internet connection
 sharing.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol covers versioning issues in the following areas:
 
 Protocol Versions: The Tethering Control Channel protocol supports future enhancements as defined
 in sections 3.1.5.5 and 3.2.5.3. See also Messages (section 2.2.3).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -626,9 +507,10 @@ Release: April 23, 2024
 
 8 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 To use the Tethering Control Channel Protocol, a byte stream connection MUST be established by
 using radio frequency communications (RFCOMM) [BT-RFCOMM] between the client and server.
@@ -641,14 +523,14 @@ is authenticated, the client MUST have either a Bluetooth pairing relationship w
 the BringUpStartRequest message (section 2.2.3.1) an HMAC structure (section 2.2.2.6) and a
 Timestamp structure (section 2.2.2.12) SHOULD<1> be included.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The protocol uses a common type-length-value (TLV) encoding schema for all messages. All strings
 are in Unicode UTF-8 format unless otherwise specified.
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
-2.2.1.1  MessageId Enumeration
+##### 2.2.1.1 MessageId Enumeration
 
 The MessageId enumeration indicates the type of message being sent within the header of each
 message. For details about the message header, see section 2.2.2.2. The following values
@@ -690,7 +572,7 @@ Indicates the BringUpSuccessResponseUnpaired message
 
 (section 2.2.3.3).
 
-2.2.1.2  StatusCodeEnum Enumeration
+##### 2.2.1.2 StatusCodeEnum Enumeration
 
 The StatusCodeEnum enumeration specifies possible outcomes for the attempt to start tethering on
 the server. The following values SHOULD<3> be supported.
@@ -702,7 +584,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Field/Value
+
+Field/Value
 
 Description
 
@@ -779,7 +662,7 @@ of the server’s allowable skew.
 The operation failed because there was an error on the server while
 authenticating or encrypting a protocol message.
 
-2.2.1.3  TypeId Enumeration
+##### 2.2.1.3 TypeId Enumeration
 
 The TypeId enumeration identifies the type of structure contained within the message payload. The
 structure is encoded by using the CommonHeader (section 2.2.2.2). The following values
@@ -824,7 +707,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Field/Value
+
+Field/Value
 
 Description
 
@@ -867,12 +751,12 @@ EncryptedBringUpSuccessResponse
 The message contains an EncryptedBringUpSuccessResponse structure
 (section 2.2.2.4).
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 The following sections define the structures that are used to encode the message payload. Each
 structure is formatted with a TLV encoding schema by using a common header.
 
-2.2.2.1  Bssid Structure
+##### 2.2.2.1 Bssid Structure
 
 The Bssid structure specifies the basic service set identifier (BSSID) of the Wi-Fi network used by
 the server in the Internet connection, as specified in [IEEE802.11-2012].
@@ -903,7 +787,7 @@ where the value of the Id field is set to 3 (Bssid), as specified in TypeId enum
 
 Value (6 bytes): The Value field contains the value of the BSSID.
 
-2.2.2.2  CommonHeader Structure
+##### 2.2.2.2 CommonHeader Structure
 
 The CommonHeader structure is used by all structures to identify the type and length of the
 structure encoded in the message payload.
@@ -915,7 +799,8 @@ Release: April 23, 2024
 
 11 / 32
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -938,7 +823,7 @@ Length (2 bytes): The Length field specifies the number of bytes that follow the
 which correspond to the length of the encoded structure. Note that the structure is encoded in
 network byte order.
 
-2.2.2.3  DisplayName Structure
+##### 2.2.2.3 DisplayName Structure
 
 The DisplayName structure specifies the display name for the server.
 
@@ -971,7 +856,7 @@ Value (variable): The Value field contains the display name string. Because the 
 Length field within the CommonHeader structure is 2 bytes, the length of the display name
 string is limited to a maximum of 65,535 bytes.
 
-2.2.2.4  EncryptedBringUpSuccessResponse Structure
+##### 2.2.2.4 EncryptedBringUpSuccessResponse Structure
 
 The EncryptedBringUpSuccessResponse structure is used to contain an encrypted
 BringUpSuccessResponse message (section 2.2.3.2).
@@ -1012,12 +897,13 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-already known by both the server and the client. A randomly generated initialization vector is
+
+already known by both the server and the client. A randomly generated initialization vector is
 used. This initialization vector is communicated to the client through the InitializationVector
 structure. Because the length of the Length field within the CommonHeader structure is 2
 bytes, the length of the encrypted message is limited to a maximum of 65,535 bytes.
 
-2.2.2.5  ErrorString Structure
+##### 2.2.2.5 ErrorString Structure
 
 The ErrorString structure specifies the error message corresponding to the result of the tethering
 attempt to the server.
@@ -1050,7 +936,7 @@ Value (variable): The Value field contains the error message string. Because the
 Length field within the CommonHeader structure is 2 bytes, the length of the error message
 string is limited to a maximum of 65,535 bytes.
 
-2.2.2.6  HMAC Structure
+##### 2.2.2.6 HMAC Structure
 
 The HMAC structure is used to contain a SHA-256 HMAC.
 
@@ -1091,7 +977,8 @@ Release: April 23, 2024
 
 13 / 32
 
-2.2.2.7  InitializationVector Structure
+
+##### 2.2.2.7 InitializationVector Structure
 
 The InitializationVector structure is used to contain the initialization vector used to encrypt the
 EncryptedBringUpSuccessResponse structure (section 2.2.2.4) in the
@@ -1126,7 +1013,7 @@ enumeration (section 2.2.1.3), and the value of the Length field set to 16 bytes
 
 Value (16 bytes): The Value field contains the 16 bytes making up the initialization vector.
 
-2.2.2.8  MessageType Structure
+##### 2.2.2.8 MessageType Structure
 
 The MessageType structure identifies the type of structure contained within the message payload.
 
@@ -1154,7 +1041,7 @@ Value (1 byte): The Value field identifies the type of structure contained withi
 
 payload, as defined in MessageId enumeration (section 2.2.1.1).
 
-2.2.2.9  Passphrase Structure
+##### 2.2.2.9 Passphrase Structure
 
 The Passphrase structure specifies the Wi-Fi Protected Access 2 (WPA2) passphrase, as defined in
 [WF-Security], that is used in the tethering connection. The passphrase contains 8 to 64 characters.
@@ -1183,7 +1070,8 @@ Release: April 23, 2024
 
 14 / 32
 
-...
+
+...
 
 header (3 bytes): The header field contains the CommonHeader structure (section 2.2.2.2),
 where the value of the Id field is set to 4 (Passphrase), as specified in TypeId enumeration
@@ -1193,9 +1081,9 @@ Value (variable): The Value field specifies the WPA2 passphrase encoded as ASCII
 the passphrase is 64 characters, all the characters MUST be hexadecimal characters. If the length
 is 8 to 63 characters, all the characters MUST be ASCII characters in the range of 32 to 126.
 
-2.2.2.10
+##### 2.2.2.10 Ssid Structure
 
-Ssid Structure
+
 
 The Ssid structure specifies the Wi-Fi service set identifier (SSID) for the tethering connection.
 The Wi-Fi SSID is a byte BLOB of 0 to 32 bytes as defined in [IEEE802.11-2012].
@@ -1226,9 +1114,9 @@ where the value of the Id field is set to 2 (Ssid), as specified in TypeId enume
 
 Value (variable): The Value field specifies the SSID.
 
-2.2.2.11
+##### 2.2.2.11 StatusCode Structure
 
-StatusCode Structure
+
 
 The StatusCode structure specifies the status code representing the outcome of the attempt by the
 client to enable tethering on the server.
@@ -1255,9 +1143,9 @@ where the value of the Id field is set to 1 (StatusCode), as specified in TypeId
 Value (1 byte): The Value field specifies the status code representing the outcome of the attempt to
 start tethering on the server, as defined in StatusCodeEnum enumeration (section 2.2.1.2).
 
-2.2.2.12
+##### 2.2.2.12 Timestamp Structure
 
-Timestamp Structure
+
 
 The Timestamp structure is used to contain the current system time of the client.
 
@@ -1268,7 +1156,8 @@ Release: April 23, 2024
 
 15 / 32
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1295,7 +1184,7 @@ Value (8 bytes): The Value field is a 64-bit value representing the number of 10
 
 intervals since January 1, 1601 (UTC).
 
-2.2.3  Messages
+#### 2.2.3 Messages
 
 The messages described in the following sections each contain the CommonHeader structure
 (section 2.2.2.2) that specifies the message type and length, and zero or more other structures as
@@ -1311,7 +1200,7 @@ Messages MAY contain structures that are not defined in this protocol. However, 
 this protocol MUST ignore all message structures that are not specified in this specification [MS-TCC]
 to enable compatibility with future protocol versions.
 
-2.2.3.1  BringUpStartRequest Message
+##### 2.2.3.1 BringUpStartRequest Message
 
 The BringUpStartRequest message is sent from the client to the server to request to share the
 server's Internet connection. The payload is optional if the client and server have a pairing
@@ -1353,7 +1242,8 @@ Timestamp (optional)
 
 16 / 32
 
-...
+
+...
 
 header (3 bytes): The header field contains the CommonHeader structure (section 2.2.2.2),
 where the value of the Id field is set to 1 (BringUpStartRequest), as specified in MessageId
@@ -1369,7 +1259,7 @@ bit key (K1) already known by both the server and the client.
 Timestamp (11 bytes): (optional) The Timestamp field contains the Timestamp structure (section
 2.2.2.12), which consists of the header (3 bytes), and the current client system time (8 bytes).
 
-2.2.3.2  BringUpSuccessResponse Message
+##### 2.2.3.2 BringUpSuccessResponse Message
 
 The BringUpSuccessResponse message is sent by the server to the client in response to a
 BringUpStartRequest message (section 2.2.3.1) when the request for tethering is successful.
@@ -1429,7 +1319,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bssid (9 bytes): (optional) The bssid field contains the Bssid structure (section 2.2.2.1), which
+
+bssid (9 bytes): (optional) The bssid field contains the Bssid structure (section 2.2.2.1), which
 
 consists of the header (3 bytes) and the BSSID value (6 bytes) of the Wi-Fi network used by the
 server in the Internet connection, as specified in [IEEE802.11-2012].
@@ -1446,7 +1337,7 @@ displayName (variable): The displayName field has a variable length and specifie
 
 name for the server, as defined in the DisplayName structure (section 2.2.2.3).
 
-2.2.3.3  BringUpSuccessResponseUnpaired Message
+##### 2.2.3.3 BringUpSuccessResponseUnpaired Message
 
 The BringUpSuccessResponseUnpaired message is sent by the server to the client in response to a
 BringUpStartRequest message (section 2.2.3.1) when the request for tethering is successful, but
@@ -1506,7 +1397,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HMAC (35 bytes): The HMAC field contains the HMAC structure (section 2.2.2.6), which consists of
+
+HMAC (35 bytes): The HMAC field contains the HMAC structure (section 2.2.2.6), which consists of
 the header (3 bytes), and 32 bytes containing a SHA-256 hash of the 16-byte initialization vector
 contained in the Initialization Vector field, the EncryptedBringUpSuccessResponse
 contained in the Encrypted Response field, and the 8-byte timestamp contained in the
@@ -1527,7 +1419,7 @@ PKCS#7 padding used to encrypt the message. The encryption key is a 256-bit key 
 known by both the server and the client. A randomly generated initialization vector is used, and is
 included in the message as the Initialization Vector field.
 
-2.2.3.4  BringUpFailureResponse Message
+##### 2.2.3.4 BringUpFailureResponse Message
 
 The BringUpFailureResponse message is sent by the server to the client in response to a
 BringUpStartRequest message (section 2.2.3.1) when the request for tethering fails. If the reason
@@ -1582,7 +1474,8 @@ Release: April 23, 2024
 
 19 / 32
 
-2.2.3.5  ProtocolErrorResponse Message
+
+##### 2.2.3.5 ProtocolErrorResponse Message
 
 The ProtocolErrorResponse message is sent in response to the receipt of a message from the client
 that is not specified as expected according to the structures defined in this specification [MS-TCC].
@@ -1627,13 +1520,14 @@ Release: April 23, 2024
 
 20 / 32
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-TCC].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
 In the Tethering Control Channel Protocol, the client role performs one primary operation and that is
 to send a BringUpStartRequest message (section 2.2.3.1) to the server and to wait for the server’s
@@ -1644,17 +1538,17 @@ completed the operation, and terminates the connection.
 
 Figure 2: Client message processing
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 MessageTimer:  Specifies the time-out interval for the request operation. The interval is set to one
 
 minute.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Tethering Control Channel Protocol is initialized after the transport protocol has created a
 communication channel with the server. After the communication channel is initialized, the client
@@ -1664,7 +1558,7 @@ client SHOULD<6> include the HMAC and Timestamp fields regardless of pairing rel
 Providing the HMAC and Timestamp field regardless of pairing state provides resiliency when the
 server has broken the pairing relationship without the client’s knowledge.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 [MS-TCC] - v20240423
 Tethering Control Channel Protocol
@@ -1673,12 +1567,13 @@ Release: April 23, 2024
 
 21 / 32
 
-3.1.4.1  Cancellation
+
+##### 3.1.4.1 Cancellation
 
 The higher layer can terminate the client’s connection while the client is waiting for a response from
 the server.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Messages in the Tethering Control Channel Protocol are identified by the values specified in the
 CommonHeader structure (section 2.2.2.2) contained in each message. A message is only processed
@@ -1687,29 +1582,29 @@ field specified within the CommonHeader.
 
 When the client receives a message, the MessageTimer (see section 3.1.2) is started or restarted.
 
-3.1.5.1  BringUpSuccessResponse
+##### 3.1.5.1 BringUpSuccessResponse
 
 When the client receives a BringUpSuccessResponse message (section 2.2.3.2), the client sends
 the contents of the message to the higher layer and terminates the connection.
 
-3.1.5.2  BringUpSuccessResponseUnpaired
+##### 3.1.5.2 BringUpSuccessResponseUnpaired
 
 When a client receives a BringUpSuccessResponseUnpaired message (section 2.2.3.3), the client
 first validates that the HMAC is correct. After verifying the HMAC is correct, the encrypted payload is
 decrypted and reprocessed as a BringUpSuccessResponse.<7>
 
-3.1.5.3  BringUpFailureResponse
+##### 3.1.5.3 BringUpFailureResponse
 
 When the client receives a BringUpFailureResponse message (section 2.2.3.4), the client sends the
 contents of the message to the higher layer and terminates the connection.
 
-3.1.5.4  Failure Messages
+##### 3.1.5.4 Failure Messages
 
 When the client receives a BringUpStartRequest message (section 2.2.3.1) or
 ProtocolErrorResponse message (section 2.2.3.5), the client indicates to the higher layer that a
 protocol failure event has occurred and terminates the connection.
 
-3.1.5.5  Other Messages
+##### 3.1.5.5 Other Messages
 
 When the client receives a message with an unrecognized message type, that is, a MessageId value
 that is not within the expected range defined in section 2.2.1.1, the client sends a
@@ -1720,12 +1615,12 @@ When the client receives a message that cannot be parsed according to the messag
 in section 2.2, the client indicates to the higher layer that a protocol error has occurred and
 terminates the connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 After the MessageTimer (section 3.1.2) expires, the client sends the time-out to the higher layer
 then disconnects and terminates the connection.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 [MS-TCC] - v20240423
 Tethering Control Channel Protocol
@@ -1734,16 +1629,17 @@ Release: April 23, 2024
 
 22 / 32
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-TCC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-3.1.7.1  Disconnect Event of Transport Channel
+##### 3.1.7.1 Disconnect Event of Transport Channel
 
 If the transport channel becomes disconnected, the client indicates to the higher layer that a transport
 failure has occurred and terminates the connection.
 
-3.2  Server Details
+### 3.2 Server Details
 
 In the Tethering Control Channel Protocol, initialization occurs when a client makes a connection to
 the server and the server creates an instance of the server role for each connection with a client. The
@@ -1754,7 +1650,7 @@ Figure 3: Server message processing
 
 Note When the server is in the STARTING state, the server MUST NOT process messages.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1775,7 +1671,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  SSID: A Wi-Fi SSID which is a byte blob of 0 to 32 bytes as defined in [IEEE802.11-2012].
+
+  SSID: A Wi-Fi SSID which is a byte blob of 0 to 32 bytes as defined in [IEEE802.11-2012].
 
   BSSID: A Wi-Fi BSSID as specified in [IEEE802.11-2012].
 
@@ -1793,25 +1690,25 @@ Failure Description: A data set that contains the following items:
 
   ErrorString: A Unicode string. Note that the string can be empty.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 ServerTimer:  Specifies the time-out interval for the response to the client. The interval is set to one
 
 minute.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server is initialized when the transport protocol indicates that a client has connected. The initial
 state for the server is set to IDLE.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Shutdown
+##### 3.2.4.1 Shutdown
 
 The higher-layer can shut down the server at any time. The server disconnects the transport protocol
 at shutdown.
 
-3.2.4.2  Tethering Started or Failed to Start
+##### 3.2.4.2 Tethering Started or Failed to Start
 
 When the server indicates to the higher layer that tethering has to be started, the higher layer
 responds either by confirming that tethering has been started, or that tethering failed to start.
@@ -1836,7 +1733,8 @@ Release: April 23, 2024
 
 24 / 32
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Messages in the Tethering Control Channel Protocol are identified by the values specified in the
 CommonHeader structure (section 2.2.2.2) contained in each message. A message is only processed
@@ -1845,7 +1743,7 @@ field specified within the CommonHeader.
 
 When the server receives a message, the ServerTimer (see section 3.2.2) is started or restarted.
 
-3.2.5.1  BringUpStartRequest
+##### 3.2.5.1 BringUpStartRequest
 
 When the server is in the IDLE state and receives a BringUpStartRequest message (section
 2.2.3.1), the server MUST check that the client is trusted.
@@ -1864,13 +1762,13 @@ tethering has to be started.
 
 When the server is in the STARTING state, it MUST NOT process messages.
 
-3.2.5.2  Failure Messages
+##### 3.2.5.2 Failure Messages
 
 When the server receives a BringupFailureResponse, BringUpSuccessResponse or
 ProtocolErrorResponse message (section 2.2.3), the server indicates to the higher layer that a
 protocol failure event has occurred and terminates the connection.
 
-3.2.5.3  Other Messages
+##### 3.2.5.3 Other Messages
 
 When the server receives a message with an unrecognized message type, that is, a MessageId value
 that is not within the expected range defined in section 2.2.1.1, the server sends a
@@ -1881,12 +1779,12 @@ When the server receives a message that cannot be parsed according to the messag
 in section 2.2, the server indicates to the higher layer that a protocol error has occurred and
 terminates the connection.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 After the ServerTimer (section 3.2.2) expires, the server disconnects from the client and terminates
 the connection.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 [MS-TCC] - v20240423
 Tethering Control Channel Protocol
@@ -1895,7 +1793,8 @@ Release: April 23, 2024
 
 25 / 32
 
-3.2.7.1  Disconnect Event of Transport Channel
+
+##### 3.2.7.1 Disconnect Event of Transport Channel
 
 If the transport channel becomes disconnected, the server indicates to the higher layer that a
 transport failure has occurred and terminates the connection.
@@ -1907,19 +1806,20 @@ Release: April 23, 2024
 
 26 / 32
 
-4  Protocol Examples
 
-4.1  Successful Startup
+## 4 Protocol Examples
+
+### 4.1 Successful Startup
 
 In the following example, the server successfully completes the client request and sends a
 BringUpSuccessResponse message (section 2.2.3.2). For more information, see the figure in
 section 1.3.
 
-4.1.1  BringUpStartRequest Example (Successful)
+#### 4.1.1 BringUpStartRequest Example (Successful)
 
  Message Header: 0x01 0x00 0x00 (Type == BringUpStartRequest, Length == 0)
 
-4.1.2  BringUpSuccessResponse Example (Successful)
+#### 4.1.2 BringUpSuccessResponse Example (Successful)
 
  Message Header: 0x02 00 31 (Type == BringUpSuccessResponse, Length == 49)
  Common Header: 0x02 00 0B (Type == SSID, Length == 11)
@@ -1931,17 +1831,17 @@ section 1.3.
  Common Header: 0x05 00 0B (Type == DisplayName, Length == 11)
  DisplayName payload: 0x42 0x6F 0x62 0x27 0x73 0x20 0x70 0x68 0x6F 0x6E 0x65 ("Bob’s phone")
 
-4.2  Unsuccessful Startup
+### 4.2 Unsuccessful Startup
 
 In the following example, the server does not successfully complete the client request and sends a
 BringUpFailureResponse message (section 2.2.3.4). For more information, see the figure in section
 1.3.
 
-4.2.1  BringUpStartRequest Example (Unsuccessful)
+#### 4.2.1 BringUpStartRequest Example (Unsuccessful)
 
  Message Header: 0x01 0x00 0x00 (Type == BringUpStartRequest, Length == 0)
 
-4.2.2  BringUpFailureResponse Example (Unsuccessful)
+#### 4.2.2 BringUpFailureResponse Example (Unsuccessful)
 
  Message Header: 0x03 00 (Type == BringUpFailureResponse, Length == 4)
  Common Header: 0x01 00 01 (Type == StatusCode, Length == 1)
@@ -1954,14 +1854,15 @@ Release: April 23, 2024
 
 27 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Tethering Control Channel Protocol requires an authenticated and encrypted communication
 channel.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1972,7 +1873,8 @@ Release: April 23, 2024
 
 28 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2040,7 +1942,8 @@ Tethering Control Channel Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<8> Section 3.2.4.2: The BringUpSuccessResponseUnpaired message is not available in Windows
+
+<8> Section 3.2.4.2: The BringUpSuccessResponseUnpaired message is not available in Windows
 10 v1703 and earlier.
 
 [MS-TCC] - v20240423
@@ -2050,7 +1953,8 @@ Release: April 23, 2024
 
 30 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2094,7 +1998,8 @@ Release: April 23, 2024
 
 31 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model

@@ -64,7 +64,8 @@ Release: June 25, 2021
 
 1 / 15
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -172,114 +173,53 @@ Release: June 25, 2021
 
 2 / 15
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 RDP_TELEMETRY_PDU](#221-rdptelemetrypdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing RDP_TELEMETRY_PDU](#3151-processing-rdptelemetrypdu)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending RDP_TELEMETRY_PDU](#3251-sending-rdptelemetrypdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 4
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 5
-Vendor-Extensible Fields ..................................................................................... 5
-Standards Assignments ....................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 6
-Transport .......................................................................................................... 6
-Message Syntax ................................................................................................. 6
-RDP_TELEMETRY_PDU ................................................................................... 6
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ....................................................................................................... 8
-Server Details .................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 8
-Processing Events and Sequencing Rules ......................................................... 8
-Processing RDP_TELEMETRY_PDU ............................................................. 8
-Timer Events ................................................................................................ 8
-Other Local Events ........................................................................................ 8
-Client Details ..................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 9
-Processing Events and Sequencing Rules ......................................................... 9
-Sending RDP_TELEMETRY_PDU ................................................................. 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 10
-
-5  Security ................................................................................................................. 11
-Security Considerations for Implementers ........................................................... 11
-Index of Security Parameters ............................................................................ 11
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 12
-
-7  Change Tracking .................................................................................................... 13
-
-8  Index ..................................................................................................................... 14
-
-[MS-RDPET] - v20210625
-Remote Desktop Protocol: Telemetry Virtual Channel Extension
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-3 / 15
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Remote Desktop Protocol: Telemetry Virtual Channel Extension to the
 Remote Desktop Protocol: Basic Connectivity and Graphics Remoting, as specified in [MS-RDPBCGR].
@@ -289,7 +229,7 @@ thus providing a way to collate statistics about the quality of the RDP experien
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -304,14 +244,14 @@ terminal server: A computer on which terminal services is running.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -328,7 +268,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -339,18 +279,19 @@ Release: June 25, 2021
 
 4 / 15
 
-1.3  Overview
+
+### 1.3 Overview
 
 The Remote Desktop Protocol: Telemetry Virtual Channel Extension consists of a single client-to-
 server PDU (section 2.2.1) sent over an RDP dynamic virtual channel (section 2.1) every time a
 connection is established.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Telemetry Virtual Channel Extension is embedded in a dynamic virtual
 channel transport, as specified in [MS-RDPEDYC] sections 1 to 3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Telemetry Virtual Channel Extension operates only after the dynamic
 virtual channel transport is fully established. If the dynamic virtual channel transport is terminated,
@@ -358,20 +299,20 @@ the Remote Desktop Protocol: Telemetry Virtual Channel Extension is also termina
 terminated by closing the underlying virtual channel. For details about closing the dynamic virtual
 channel, see [MS-RDPEDYC] section 3.1.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Telemetry Virtual Channel Extension is applicable in scenarios where a
 mechanism to transmit telemetry data to a terminal server is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -382,9 +323,10 @@ Release: June 25, 2021
 
 5 / 15
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Telemetry Virtual Channel Extension is designed to operate over a
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel
@@ -392,7 +334,7 @@ name is the null-terminated ANSI character string "Microsoft::Windows::RDS::Tele
 usage of channel names in the context of opening a dynamic virtual channel is specified in [MS-
 RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Telemetry Virtual Channel Extension
 message syntax.
@@ -400,7 +342,7 @@ message syntax.
 All multiple-byte fields within a message MUST be marshaled in little-endian byte order, unless
 otherwise specified.
 
-2.2.1  RDP_TELEMETRY_PDU
+#### 2.2.1 RDP_TELEMETRY_PDU
 
 The RDP_TELEMETRY_PDU message is a client-to-server PDU that is used to transmit metrics with
 respect to the time it took the client to complete a fully functional connection to the server.
@@ -466,7 +408,8 @@ Remote Desktop Protocol: Telemetry Virtual Channel Extension
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-FirstGraphicsReceivedMillis (4 bytes): A 32-bit unsigned integer that specifies the difference in
+
+FirstGraphicsReceivedMillis (4 bytes): A 32-bit unsigned integer that specifies the difference in
 
 milliseconds, between the time when the connection was initiated, and the time when the first
 Desktop Protocol: Graphics Pipeline Extension graphics message ([MS-RDPEGFX] section 2.2) was
@@ -479,29 +422,30 @@ Release: June 25, 2021
 
 7 / 15
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.5.1  Processing RDP_TELEMETRY_PDU
+None.
+
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Processing RDP_TELEMETRY_PDU
 
 The structure and fields of the RDP_TELEMETRY_PDU message are specified in section 2.2.1.
 Processing of this message is optional. Upon receiving this message, the server SHOULD log an event
@@ -509,25 +453,25 @@ with the connection information contained in the PromptForCredentialsMillis,
 PromptForCredentialsDoneMillis, GraphicsChannelOpenedMillis and
 FirstGraphicsReceivedMillis fields.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
+
+None.
+
+#### 3.2.3 Initialization
 
 None.
 
@@ -538,23 +482,24 @@ Release: June 25, 2021
 
 8 / 15
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Sending RDP_TELEMETRY_PDU
+##### 3.2.5.1 Sending RDP_TELEMETRY_PDU
 
 The structure and fields of the RDP_TELEMETRY_PDU message are specified in section 2.2.1. The
 message fields MUST be populated in accordance with this description. Transmission of the
 RDP_TELEMETRY_PDU message to the server is optional.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -565,7 +510,8 @@ Release: June 25, 2021
 
 9 / 15
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -576,13 +522,14 @@ Release: June 25, 2021
 
 10 / 15
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -593,7 +540,8 @@ Release: June 25, 2021
 
 11 / 15
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -634,7 +582,8 @@ Release: June 25, 2021
 
 12 / 15
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -671,7 +620,8 @@ Release: June 25, 2021
 
 13 / 15
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -800,7 +750,8 @@ Release: June 25, 2021
 
 14 / 15
 
-Vendor-extensible fields 5
+
+Vendor-extensible fields 5
 Versioning 5
 
 [MS-RDPET] - v20210625

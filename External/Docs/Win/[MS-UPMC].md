@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -280,7 +281,8 @@ UPnP Device and Service Templates: Media Property and Compatibility Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -362,189 +364,84 @@ Release: April 23, 2024
 
 3 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 MMPE](#21-mmpe)
+    - [2.1.1 Artist Properties](#211-artist-properties)
+      - [2.1.1.1 artistAlbumArtist](#2111-artistalbumartist)
+      - [2.1.1.2 artistPerformer](#2112-artistperformer)
+      - [2.1.1.3 artistConductor](#2113-artistconductor)
+    - [2.1.2 Author Properties](#212-author-properties)
+      - [2.1.2.1 authorComposer](#2121-authorcomposer)
+      - [2.1.2.2 authorOriginalLyricist](#2122-authororiginallyricist)
+      - [2.1.2.3 authorWriter](#2123-authorwriter)
+    - [2.1.3 Ratings Properties](#213-ratings-properties)
+      - [2.1.3.1 userRating](#2131-userrating)
+      - [2.1.3.2 userEffectiveRating](#2132-usereffectiverating)
+      - [2.1.3.3 userRatingInStars](#2133-userratinginstars)
+      - [2.1.3.4 userEffectiveRatingInStars](#2134-usereffectiveratinginstars)
+    - [2.1.4 serviceProvider](#214-serviceprovider)
+    - [2.1.5 sourceURL](#215-sourceurl)
+    - [2.1.6 year](#216-year)
+    - [2.1.7 folderPath](#217-folderpath)
+    - [2.1.8 fileIdentifier](#218-fileidentifier)
+  - [2.2 MCEF](#22-mcef)
+    - [2.2.1 Compatibility Flag Values and Behaviors](#221-compatibility-flag-values-and-behaviors)
+      - [2.2.1.1 WMC_COMPAT_EXCLUDE_HTTP](#2211-wmccompatexcludehttp)
+      - [2.2.1.2 WMC_COMPAT_EXCLUDE_RTSP](#2212-wmccompatexcludertsp)
+      - [2.2.1.3 WMC_COMPAT_EXCLUDE_DLNA](#2213-wmccompatexcludedlna)
+      - [2.2.1.4 WMC_COMPAT_EXCLUDE_DLNA_1_5](#2214-wmccompatexcludedlna15)
+      - [2.2.1.5 WMC_COMPAT_EXCLUDE_PCMPARAMS](#2215-wmccompatexcludepcmparams)
+      - [2.2.1.6 WMC_COMPAT_EXCLUDE_WMDRMND](#2216-wmccompatexcludewmdrmnd)
+      - [2.2.1.7 WMC_COMPAT_INCLUDE_RTSP_FOR_VIDEO](#2217-wmccompatincludertspforvideo)
+      - [2.2.1.8 WMC_COMPAT_EXCLUDE_WMALOSSLESS_NONTRANSCODED](#2218-wmccompatexcludewmalosslessnontranscoded)
+      - [2.2.1.9 WMC_COMPAT_EXCLUDE_SEARCH](#2219-wmccompatexcludesearch)
+      - [2.2.1.10 WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE](#22110-wmccompatdonotlimitresponsesize)
+      - [2.2.1.11 WMC_COMPAT_EXCLUDE_VIDEO_TRANSCODING](#22111-wmccompatexcludevideotranscoding)
+      - [2.2.1.12 WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT](#22112-wmccompatplaylistfakechildcount)
+      - [2.2.1.13 WMC_COMPAT_EXCLUDE_NONPCM_AUDIO_TRANSCODING](#22113-wmccompatexcludenonpcmaudiotranscoding)
+      - [2.2.1.14 WMC_COMPAT_EXCLUDE_TRANSCODING_TO_MPEG2](#22114-wmccompatexcludetranscodingtompeg2)
+      - [2.2.1.15 WMC_COMPAT_EXCLUDE_RES_FILTERING](#22115-wmccompatexcluderesfiltering)
+  - [2.3 MPME](#23-mpme)
+    - [2.3.1 Magic Packets](#231-magic-packets)
+      - [2.3.1.1 microsoft:magicPacketWakeSupported](#2311-microsoftmagicpacketwakesupported)
+      - [2.3.1.2 microsoft:magicPacketSendSupported](#2312-microsoftmagicpacketsendsupported)
+  - [2.4 Microsoft ProtocolInfo Extensions](#24-microsoft-protocolinfo-extensions)
+    - [2.4.1 PlayToApp Extension](#241-playtoapp-extension)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 MMPE Examples](#31-mmpe-examples)
+    - [3.1.1 Artist Properties Tags](#311-artist-properties-tags)
+    - [3.1.2 Author Properties Tags](#312-author-properties-tags)
+    - [3.1.3 Ratings Properties Tags](#313-ratings-properties-tags)
+    - [3.1.4 serviceProvider Property Tag](#314-serviceprovider-property-tag)
+    - [3.1.5 year Property Tag](#315-year-property-tag)
+    - [3.1.6 folderPath Property Tag](#316-folderpath-property-tag)
+    - [3.1.7 fileIdentifier Property Tag](#317-fileidentifier-property-tag)
+  - [3.2 MCEF Examples](#32-mcef-examples)
+    - [3.2.1 X_DeviceCaps Example](#321-xdevicecaps-example)
+  - [3.3 MPME Examples](#33-mpme-examples)
+    - [3.3.1 magicPacketWakeSupported](#331-magicpacketwakesupported)
+    - [3.3.2 magicPacketSendSupported](#332-magicpacketsendsupported)
+  - [3.4 Microsoft ProtocolInfo Extensions Examples](#34-microsoft-protocolinfo-extensions-examples)
+    - [3.4.1 PlayToApp Extension](#341-playtoapp-extension)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 8
-Versioning and Localization ................................................................................. 9
-Vendor-Extensible Fields ..................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.2
-
-2.1
-
-2.1.3
-
-2.1.2
-
-2.1.1
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-
-2.1.4
-2.1.5
-2.1.6
-2.1.7
-2.1.8
-
-2.1.3.1
-2.1.3.2
-2.1.3.3
-2.1.3.4
-
-2  Structures ............................................................................................................. 10
-MMPE ............................................................................................................. 10
-Artist Properties ......................................................................................... 10
-artistAlbumArtist ................................................................................... 10
-artistPerformer ..................................................................................... 10
-artistConductor ..................................................................................... 11
-Author Properties........................................................................................ 11
-authorComposer ................................................................................... 11
-authorOriginalLyricist ............................................................................ 11
-authorWriter......................................................................................... 11
-Ratings Properties....................................................................................... 12
-userRating ........................................................................................... 12
-userEffectiveRating ............................................................................... 12
-userRatingInStars ................................................................................. 12
-userEffectiveRatingInStars ..................................................................... 13
-serviceProvider ........................................................................................... 13
-sourceURL ................................................................................................. 13
-year .......................................................................................................... 13
-folderPath .................................................................................................. 14
-fileIdentifier ............................................................................................... 14
-MCEF .............................................................................................................. 14
-Compatibility Flag Values and Behaviors ........................................................ 14
-WMC_COMPAT_EXCLUDE_HTTP .............................................................. 15
-2.2.1.1
-WMC_COMPAT_EXCLUDE_RTSP .............................................................. 15
-2.2.1.2
-WMC_COMPAT_EXCLUDE_DLNA ............................................................. 16
-2.2.1.3
-WMC_COMPAT_EXCLUDE_DLNA_1_5 ...................................................... 17
-2.2.1.4
-WMC_COMPAT_EXCLUDE_PCMPARAMS .................................................... 17
-2.2.1.5
-WMC_COMPAT_EXCLUDE_WMDRMND ..................................................... 17
-2.2.1.6
-WMC_COMPAT_INCLUDE_RTSP_FOR_VIDEO ............................................ 18
-2.2.1.7
-WMC_COMPAT_EXCLUDE_WMALOSSLESS_NONTRANSCODED .................... 18
-2.2.1.8
-2.2.1.9
-WMC_COMPAT_EXCLUDE_SEARCH .......................................................... 18
-2.2.1.10  WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE ..................................... 18
-2.2.1.11  WMC_COMPAT_EXCLUDE_VIDEO_TRANSCODING ..................................... 18
-2.2.1.12  WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT ........................................... 18
-2.2.1.13  WMC_COMPAT_EXCLUDE_NONPCM_AUDIO_TRANSCODING ....................... 19
-2.2.1.14  WMC_COMPAT_EXCLUDE_TRANSCODING_TO_MPEG2 ............................... 19
-2.2.1.15  WMC_COMPAT_EXCLUDE_RES_FILTERING ............................................... 19
-MPME ............................................................................................................. 19
-Magic Packets ............................................................................................ 19
-microsoft:magicPacketWakeSupported .................................................... 19
-microsoft:magicPacketSendSupported ..................................................... 20
-Microsoft ProtocolInfo Extensions ....................................................................... 20
-PlayToApp Extension ................................................................................... 20
-
-2.3.1.1
-2.3.1.2
-
-2.4.1
-
-2.3.1
-
-2.2.1
-
-2.4
-
-2.3
-
-[MS-UPMC] - v20240423
-UPnP Device and Service Templates: Media Property and Compatibility Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 30
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Structure Examples ............................................................................................... 21
-MMPE Examples ............................................................................................... 21
-Artist Properties Tags .................................................................................. 21
-Author Properties Tags ................................................................................ 21
-Ratings Properties Tags ............................................................................... 21
-serviceProvider Property Tag ........................................................................ 21
-year Property Tag ....................................................................................... 22
-folderPath Property Tag ............................................................................... 22
-fileIdentifier Property Tag ............................................................................ 22
-MCEF Examples ............................................................................................... 22
-X_DeviceCaps Example ............................................................................... 22
-MPME Examples ............................................................................................... 23
-magicPacketWakeSupported ........................................................................ 23
-magicPacketSendSupported ......................................................................... 23
-Microsoft ProtocolInfo Extensions Examples ......................................................... 23
-PlayToApp Extension ................................................................................... 23
-
-3.3.1
-3.3.2
-
-3.2.1
-
-3.4.1
-
-3.3
-
-3.4
-
-3.2
-
-4  Security Considerations ......................................................................................... 24
-
-5  Appendix A: Product Behavior ............................................................................... 25
-
-6  Change Tracking .................................................................................................... 26
-
-7  Index ..................................................................................................................... 27
-
-[MS-UPMC] - v20240423
-UPnP Device and Service Templates: Media Property and Compatibility Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 30
-
-1  Introduction
+## 1 Introduction
 
 This document defines the Microsoft Media Property Extensions (MMPE), the Microsoft
 Compatibility Extension Flags (MCEF), the Microsoft Power Management Extensions
@@ -555,7 +452,7 @@ by the Digital Living Network Alliance (DLNA) [DLNA].
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -619,7 +516,8 @@ Release: April 23, 2024
 
 6 / 30
 
-Real-Time Streaming Protocol (RTSP): A protocol used for transferring real-time multimedia
+
+Real-Time Streaming Protocol (RTSP): A protocol used for transferring real-time multimedia
 
 data (for example, audio and video) between a server and a client, as specified in [RFC2326]. It
 is a streaming protocol; this means that RTSP attempts to facilitate scenarios in which the
@@ -647,14 +545,14 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -688,7 +586,8 @@ Release: April 23, 2024
 
 7 / 30
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-DLNHND] Microsoft Corporation, "Digital Living Network Alliance (DLNA) Networked Device
 Interoperability Guidelines: Microsoft Extensions".
@@ -702,7 +601,7 @@ http://www.upnp.org/standardizeddcps/documents/ContentDirectory1.0.pdf
 [UPNPCNMGR] UPnP Forum, "ConnectionManager:1 Service Template Versions 1.01", June 2002,
 http://www.upnp.org/standardizeddcps/documents/ConnectionManager1.0.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 Microsoft Compatibility Extension Flags (MCEF) are used to request specific device behavior(s) to
 enhance interoperability among UPnP Devices. For example, device manufacturers can develop a
@@ -729,7 +628,7 @@ The Microsoft ProtocolInfo Extensions are extensions to the ProtocolInfo, define
 For example, a Digital Media Renderer (DMR) can use the PlayToApp extension (section 2.4.1) to
 indicate that it supports a nonstandard URI scheme.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 MMPE are extensions to the XML syntax called DIDL-Lite, which are defined in the UPnP
 ContentDirectory service specification. For more information, see [UPNPCDS1] Appendix A.
@@ -740,7 +639,7 @@ section 2.1.
 MMPE, MCEF, and MPME can be used in implementations of the Digital Living Network Alliance (DLNA)
 Home Networked Device Interoperability Guidelines: Microsoft Extensions [MS-DLNHND].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The MMPE and MCEF are only applicable to implementations of the Microsoft Extensions to the
 Digital Living Network Alliance (DLNA) Home Networked Device Interoperability Guidelines [MS-
@@ -753,7 +652,8 @@ Release: April 23, 2024
 
 8 / 30
 
-The MPME is only applicable to implementations of the Microsoft Extensions to the Digital Living
+
+The MPME is only applicable to implementations of the Microsoft Extensions to the Digital Living
 Network Alliance (DLNA) Home Networked Device Interoperability Guidelines.
 
 Implementations of the MMPE and/or MCEF and/or MPME are not required in order to interoperate with
@@ -764,14 +664,14 @@ Initiation Protocol without breaking interoperability.
 Implementers are recommended to consider whether or not the MMPE and/or MCEF and/or MPME are
 applicable to their scenarios in order to provide a richer multimedia experience.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The MMPE, MCEF, and MPME do not support versioning.
 
 The MMPE, MCEF, and MPME do not explicitly address localization. However, these Microsoft
 Extensions use the UTF-8 character set, as specified in [DLNA] section 7.2.5.9 and [RFC3629].
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -782,11 +682,12 @@ Release: April 23, 2024
 
 9 / 30
 
-2  Structures
+
+## 2 Structures
 
 This protocol references commonly used data types, as defined in [MS-DTYP].
 
-2.1  MMPE
+### 2.1 MMPE
 
 Each MMPE is a property that describes a media item, where all but one of the properties can be
 included in a DIDL-Lite XML document. In the case of the property that is not included, the name of
@@ -812,14 +713,14 @@ mechanism defined in [XML10] section 2.4.
 
 The syntax of each tag is specified using ABNF [RFC5234].
 
-2.1.1  Artist Properties
+#### 2.1.1 Artist Properties
 
 A group of XML properties that supports various artist roles, which is included in the multimedia
 content, such as album artist, performer (also known as a contributing artist), and conductor. Support
 for the artist properties enables devices to provide results for queries such as "browse by performer,
 and then find albums by the selected performer".
 
-2.1.1.1  artistAlbumArtist
+##### 2.1.1.1 artistAlbumArtist
 
 This property specifies the name of an artist that is listed on the album when the media item is part of
 an album (i.e., a music album). For some albums, the name of the album artist can differ from the
@@ -835,7 +736,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.1.2  artistPerformer
+##### 2.1.1.2 artistPerformer
 
 This property specifies the name of a performing artist that is associated with the media item.
 
@@ -854,9 +755,10 @@ Release: April 23, 2024
 
 10 / 30
 
-MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.1.3  artistConductor
+MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
+
+##### 2.1.1.3 artistConductor
 
 This property specifies the name of a conductor (typically, a musical conductor) that is associated with
 the media item.
@@ -871,14 +773,14 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.2  Author Properties
+#### 2.1.2 Author Properties
 
 A group of properties that supports various roles that one or more authors can have in multimedia
 content: Composer, Original Lyricist, or Writer. Support for the Author attributes enables devices to
 provide results for queries such as "browse by composer, and then find genres for the selected
 composer".
 
-2.1.2.1  authorComposer
+##### 2.1.2.1 authorComposer
 
 Specifies the name of a composer (typically, a musical composer) that is associated with the media
 item.
@@ -893,7 +795,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.2.2  authorOriginalLyricist
+##### 2.1.2.2 authorOriginalLyricist
 
 This property specifies the name of a person who created the original lyrics of the media item.
 
@@ -907,7 +809,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.2.3  authorWriter
+##### 2.1.2.3 authorWriter
 
 This property specifies the name of a person who is considered the writer of the media item.
 
@@ -920,7 +822,8 @@ Release: April 23, 2024
 
 11 / 30
 
-The syntax of the property is defined as follows:
+
+The syntax of the property is defined as follows:
 
 PropertyName = "microsoft:authorWriter"; UTF-8
 
@@ -928,7 +831,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.3  Ratings Properties
+#### 2.1.3 Ratings Properties
 
 The Ratings properties support metadata that is supplied from both the user and from the metadata
 provider. These properties allow devices to provide "prioritized" or "scoped" results to end users based
@@ -952,7 +855,7 @@ inclusive.
 
 At most, one instance of each property is allowed.
 
-2.1.3.1  userRating
+##### 2.1.3.1 userRating
 
 The syntax of the property is defined as follows:
 
@@ -962,7 +865,7 @@ PropertyValue = 1*2DIGIT; unsigned integer ranges from 0 to 99
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.3.2  userEffectiveRating
+##### 2.1.3.2 userEffectiveRating
 
 The syntax of the property is defined as follows:
 
@@ -972,7 +875,7 @@ PropertyValue = 1*2DIGIT; unsigned integer ranges from 0 to 99
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.3.3  userRatingInStars
+##### 2.1.3.3 userRatingInStars
 
 The syntax of the property is defined as follows:
 
@@ -989,7 +892,8 @@ Release: April 23, 2024
 
 12 / 30
 
-2.1.3.4  userEffectiveRatingInStars
+
+##### 2.1.3.4 userEffectiveRatingInStars
 
 The syntax of the property is defined as follows:
 
@@ -999,7 +903,7 @@ PropertyValue = "0" / "1" / "2" / "3" / "4" / "5"; unsigned integer ranges from 
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.4  serviceProvider
+#### 2.1.4 serviceProvider
 
 The serviceProvider property represents the name of the distributor of the media item. The
 serviceProvider property allows devices to return results categorized by the entity that provided the
@@ -1015,7 +919,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.5  sourceURL
+#### 2.1.5 sourceURL
 
 The sourceURL property supports the grouping of results by file system path, which enables a device
 to group media files by parent folder. For example, the device can return results that enumerate all of
@@ -1034,7 +938,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.6  year
+#### 2.1.6 year
 
 The year property enables the organization of multimedia content based solely on year, whereas the
 commonly-used "dc:date" UPnP property provides the whole date. For example, use of the year
@@ -1055,7 +959,8 @@ Release: April 23, 2024
 
 13 / 30
 
-2.1.7  folderPath
+
+#### 2.1.7 folderPath
 
 The folderPath property represents a folder path to the media item, relative to a root folder.
 
@@ -1069,7 +974,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.1.8  fileIdentifier
+#### 2.1.8 fileIdentifier
 
 The fileIdentifier property is obtained from the media file. The property is assigned by the creator of
 the media file.<1>
@@ -1088,7 +993,7 @@ PropertyValue = ALPHA; UTF-8
 
 MMPE = "<" PropertyName ">" PropertyValue "</" PropertyName ">";
 
-2.2  MCEF
+### 2.2 MCEF
 
 MCEFs are used to define specific behavior(s) for a particular device in order to enhance
 interoperability. The flags can be provided by a DMP, or Digital Media Renderer (DMR) via its
@@ -1107,7 +1012,7 @@ Note  The Microsoft-defined microsoft:X_DeviceCaps attribute does not change in 
 manner regarding how DDDs are made available to other devices in the network as, described by
 [UPNPARCH1].
 
-2.2.1  Compatibility Flag Values and Behaviors
+#### 2.2.1 Compatibility Flag Values and Behaviors
 
 Any flag value that is not documented in this section is considered reserved and SHOULD not be used.
 
@@ -1118,7 +1023,8 @@ Release: April 23, 2024
 
 14 / 30
 
-2.2.1.1  WMC_COMPAT_EXCLUDE_HTTP
+
+##### 2.2.1.1 WMC_COMPAT_EXCLUDE_HTTP
 
 This flag causes a DMS to exclude res and upnp:albumArtURI elements in the DIDL-Lite response of
 the Browse or Search UPnP actions that implement the HTTP protocol in their URLs, as specified in
@@ -1147,7 +1053,7 @@ more information regarding the syntax of the ProtocolInfo string, see [UPNPCNMGR
 
 Note  This flag MUST NOT be used in combination with WMC_COMPAT_EXCLUDE_RTSP.
 
-2.2.1.2  WMC_COMPAT_EXCLUDE_RTSP
+##### 2.2.1.2 WMC_COMPAT_EXCLUDE_RTSP
 
 This flag causes a DMS to exclude res elements in the DIDL-Lite response of the Browse or Search
 UPnP actions that implement the RTSP protocol in their URLs, as specified by [UPnP]. Elements in the
@@ -1184,7 +1090,8 @@ Release: April 23, 2024
 
 15 / 30
 
-2.2.1.3  WMC_COMPAT_EXCLUDE_DLNA
+
+##### 2.2.1.3 WMC_COMPAT_EXCLUDE_DLNA
 
 This flag causes a DMS to exclude all DLNA-defined attributes and parameters in the DIDL-Lite
 responses given by the Browse or Search UPnP actions, as specified by [UPnP].
@@ -1249,10 +1156,11 @@ Release: April 23, 2024
 
 16 / 30
 
-Note  The XML tags can be escaped, as described in section 3.1 of this document, when this
+
+Note  The XML tags can be escaped, as described in section 3.1 of this document, when this
 compatibility flag is used.
 
-2.2.1.4  WMC_COMPAT_EXCLUDE_DLNA_1_5
+##### 2.2.1.4 WMC_COMPAT_EXCLUDE_DLNA_1_5
 
 This flag causes a DMS to map the DLNA Profile ID "MP3X" to "MP3", and to map the DLNA Profile IDs
 "WMVSPLL_BASE" and "WMVSPML_BASE" to "WMVMED_BASE". In addition, this flag causes the DLNA
@@ -1276,7 +1184,7 @@ M0M5N30uMC40.mp3</res>
 Note  The XML tags can be escaped, as described in section 3.1 of this document, when this
 compatibility flag is used.
 
-2.2.1.5  WMC_COMPAT_EXCLUDE_PCMPARAMS
+##### 2.2.1.5 WMC_COMPAT_EXCLUDE_PCMPARAMS
 
 This flag causes a DMS to exclude sample rate and channels information from the protocolInfo
 attribute in the res element for audio/L16 and audio/L8 MIME types.
@@ -1294,7 +1202,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-
 0/">http://127.0.0.1:10243/WMPNSSv4/2815481477/ezI0OTI3N0I5LUU2MUQtNDdEMi05MTI3LTJBNjFDOTFGM0
 M5N30uMC40?formatID=20</res>
 
-2.2.1.6  WMC_COMPAT_EXCLUDE_WMDRMND
+##### 2.2.1.6 WMC_COMPAT_EXCLUDE_WMDRMND
 
 This flag causes a DMS to not generate res tags where the URL requires the use of WMDRM-ND.
 
@@ -1310,7 +1218,8 @@ Release: April 23, 2024
 
 17 / 30
 
-2.2.1.7  WMC_COMPAT_INCLUDE_RTSP_FOR_VIDEO
+
+##### 2.2.1.7 WMC_COMPAT_INCLUDE_RTSP_FOR_VIDEO
 
 This flag causes a DMS to include res tags with RTSP-based URLs for video even if
 WMC_COMPAT_EXCLUDE_RTSP and/or WMC_COMPAT_EXCLUDE_DLNA_1_5 are set.
@@ -1320,7 +1229,7 @@ Value: %x40
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.8  WMC_COMPAT_EXCLUDE_WMALOSSLESS_NONTRANSCODED
+##### 2.2.1.8 WMC_COMPAT_EXCLUDE_WMALOSSLESS_NONTRANSCODED
 
 This flag causes a DMS to not generate res tags with URLs for non-transcoded WMA Lossless content.
 This flag MUST be ignored if used in combination with WMC_COMPAT_EXCLUDE_RES_FILTERING.
@@ -1330,7 +1239,7 @@ Value: %x80
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.9  WMC_COMPAT_EXCLUDE_SEARCH
+##### 2.2.1.9 WMC_COMPAT_EXCLUDE_SEARCH
 
 This flag causes the ContentDirectory:Search UPnP action to not be supported for this DMS. In order
 to accomplish this action, ContentDirectory:GetSearchCapabilities MUST NOT provide any search
@@ -1341,9 +1250,9 @@ Value: %x100
 This flag affects the response of UPnP Actions: ContentDirectory:Search and
 ContentDirectory:GetSearchCapabilities.
 
-2.2.1.10
+##### 2.2.1.10 WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE
 
-WMC_COMPAT_DO_NOT_LIMIT_RESPONSE_SIZE
+
 
 This flag causes the DIDL-Lite responses to not be limited to 200 kB in size for these UPnP actions.
 
@@ -1352,9 +1261,9 @@ Value: %x400
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.11
+##### 2.2.1.11 WMC_COMPAT_EXCLUDE_VIDEO_TRANSCODING
 
-WMC_COMPAT_EXCLUDE_VIDEO_TRANSCODING
+
 
 This flag causes a DMS to not offer res tags with URLs that correspond to transcoded versions of
 video items. This flag MUST be ignored if used in combination with
@@ -1365,9 +1274,9 @@ Value: %x800
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.12
+##### 2.2.1.12 WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT
 
-WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT
+
 
 This flag causes a value of "1" to be returned for the child count of playlists containers. This flag is
 used to counteract the reduction in performance caused by calculating the "real" child count for
@@ -1382,12 +1291,13 @@ UPnP Device and Service Templates: Media Property and Compatibility Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This flag affects the response of UPnP Actions: ContentDirectory:Browse and
+
+This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.13
+##### 2.2.1.13 WMC_COMPAT_EXCLUDE_NONPCM_AUDIO_TRANSCODING
 
-WMC_COMPAT_EXCLUDE_NONPCM_AUDIO_TRANSCODING
+
 
 This flag causes res tags with URLs that correspond to transcoded versions of audio items to not be
 offered, unless the res tag is for an audio item transcoded into LPCM. This flag MUST be ignored if
@@ -1398,9 +1308,9 @@ Value: %x2000
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.14
+##### 2.2.1.14 WMC_COMPAT_EXCLUDE_TRANSCODING_TO_MPEG2
 
-WMC_COMPAT_EXCLUDE_TRANSCODING_TO_MPEG2
+
 
 This flag causes res tags with URLs that correspond to transcoded versions of video items into the
 MPEG-2 format to not be offered. This flag MUST be ignored if used in combination with
@@ -1411,9 +1321,9 @@ Value: %x4000
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.2.1.15
+##### 2.2.1.15 WMC_COMPAT_EXCLUDE_RES_FILTERING
 
-WMC_COMPAT_EXCLUDE_RES_FILTERING
+
 
 All DIDL-Lite responses from a DMS MUST contain all applicable transcoding res elements associated
 to the requested media.
@@ -1423,18 +1333,18 @@ Value: %x8000
 This flag affects the response of UPnP Actions: ContentDirectory:Browse and
 ContentDirectory:Search.
 
-2.3  MPME
+### 2.3 MPME
 
 MPMEs are used to signal support for specific behaviors for a particular device in order to enhance
 power management. The MPME XML tags can be provided by a DMR or a DMS in its DDD, as
 described in [UPNPARCH1] section 2.1. This section defines the MPME XML tags.
 
-2.3.1  Magic Packets
+#### 2.3.1 Magic Packets
 
 This section defines MPME XML tags for indicating support for magic packets. For more information
 about magic packets, see [MS-DLNHND] section 2.2.5.
 
-2.3.1.1  microsoft:magicPacketWakeSupported
+##### 2.3.1.1 microsoft:magicPacketWakeSupported
 
 This is an XML tag that a UPnP device provides in its DDD to announce that it can be awakened by
 the use of a magic packet.<2>
@@ -1452,12 +1362,13 @@ Release: April 23, 2024
 
 19 / 30
 
-flag = "1" / "0"; true or false, respectively.
+
+flag = "1" / "0"; true or false, respectively.
 
  <microsoft:magicPacketWakeSupported xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-
 0">flag</microsoft:magicPacketWakeSupported>
 
-2.3.1.2  microsoft:magicPacketSendSupported
+##### 2.3.1.2 microsoft:magicPacketSendSupported
 
 This is an XML tag that a UPnP device provides in its DDD to announce whether the device is able to
 wake a sleeping UPnP device.<3> The following syntax shows how the element is used to announce
@@ -1468,12 +1379,12 @@ flag = "1" / "0"; true or false respectively.
  <microsoft:magicPacketSendSupported xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-
 0">flag</microsoft:magicPacketSendSupported>
 
-2.4  Microsoft ProtocolInfo Extensions
+### 2.4 Microsoft ProtocolInfo Extensions
 
 The Microsoft ProtocolInfo Extensions extend the syntax of the ProtocolInfo syntax element, as
 described in [UPNPCNMGR] section 2.5.2.
 
-2.4.1  PlayToApp Extension
+#### 2.4.1 PlayToApp Extension
 
 The PlayToApp ProtocolInfo extension can be used by DMR devices to specify support for additional
 URI schemes beyond those defined in [UPNPCNMGR] sections 5.1.1 through 5.1.4.<4>
@@ -1502,16 +1413,17 @@ Release: April 23, 2024
 
 20 / 30
 
-3  Structure Examples
 
-3.1  MMPE Examples
+## 3 Structure Examples
+
+### 3.1 MMPE Examples
 
 In order to preserve backwards compatibility, XML tags inside the descriptor <desc> tag can be
 escaped. For more information, refer to [MS-DLNHND] section 3.4.5.1. For example,
 "<microsoft:artistAlbumArtist>" can appear as "&lt;microsoft:artistAlbumArtist&gt;" in the XML
 response.
 
-3.1.1  Artist Properties Tags
+#### 3.1.1 Artist Properties Tags
 
 The following is an example of the usage of the Artist properties in an XML response:
 
@@ -1522,7 +1434,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
      <microsoft:artistConductor>Conductor</microsoft:artistConductor>
  </desc>
 
-3.1.2  Author Properties Tags
+#### 3.1.2 Author Properties Tags
 
 The following is an example of the usage of the Author properties in an XML response:
 
@@ -1533,7 +1445,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
      <microsoft:authorWriter>Writer</microsoft:authorWriter>
  </desc>
 
-3.1.3  Ratings Properties Tags
+#### 3.1.3 Ratings Properties Tags
 
 The following is an example of the usage of the Ratings properties in an XML response:
 
@@ -1545,7 +1457,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
      <microsoft:userEffectiveRatingInStars>3</microsoft:userEffectiveRatingInStars>
  </desc>
 
-3.1.4  serviceProvider Property Tag
+#### 3.1.4 serviceProvider Property Tag
 
 The following is an example of the usage of the serviceProvider property in an XML response:
 
@@ -1561,7 +1473,8 @@ Release: April 23, 2024
 
 21 / 30
 
-3.1.5  year Property Tag
+
+#### 3.1.5 year Property Tag
 
 The following is an example of the usage of the year property in an XML response:
 
@@ -1570,7 +1483,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
      <microsoft:year>2004</microsoft:year>
  </desc>
 
-3.1.6  folderPath Property Tag
+#### 3.1.6 folderPath Property Tag
 
 The following is an example of the usage of the folderPath property in an XML response: <5>
 
@@ -1579,7 +1492,7 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
     <microsoft:folderPath>Audio\Songs</microsoft:folderPath>
  </desc>
 
-3.1.7  fileIdentifier Property Tag
+#### 3.1.7 fileIdentifier Property Tag
 
 The following is an example of the usage of the fileIdentifier property (section 2.1.8) in an XML
 response:
@@ -1591,9 +1504,9 @@ xmlns:microsoft="urn:schemas-microsoft-com:WMPNSS-1-0/">
 0019B92A3933};XAP_id={88120000-0600-11DB-89CA-0019B92A3933}</microsoft:fileIdentifier>
  </desc>
 
-3.2  MCEF Examples
+### 3.2 MCEF Examples
 
-3.2.1  X_DeviceCaps Example
+#### 3.2.1 X_DeviceCaps Example
 
 Device compatibility flags are specified in a DDD by using the following format:
 
@@ -1624,15 +1537,16 @@ Release: April 23, 2024
 
 22 / 30
 
-  WMC_COMPAT_EXCLUDE_DLNA_1_5
+
+  WMC_COMPAT_EXCLUDE_DLNA_1_5
 
   WMC_COMPAT_EXCLUDE_PCMPARAMS
 
   WMC_COMPAT_INCLUDE_RTSP_FOR_VIDEO
 
-3.3  MPME Examples
+### 3.3 MPME Examples
 
-3.3.1  magicPacketWakeSupported
+#### 3.3.1 magicPacketWakeSupported
 
 The following example shows a DDD that announces that the UPnP device supports
 microsoft:magicPacketWakeSupported (section 2.3.1.1). <6>
@@ -1648,7 +1562,7 @@ microsoft:magicPacketWakeSupported (section 2.3.1.1). <6>
        </microsoft:magicPacketWakeSupported>
  </device>
 
-3.3.2  magicPacketSendSupported
+#### 3.3.2 magicPacketSendSupported
 
 The following example shows a DDD that announces that the UPnP device supports
 microsoft:magicPacketSendSupported (section 2.3.1.2). <7>
@@ -1664,9 +1578,9 @@ microsoft:magicPacketSendSupported (section 2.3.1.2). <7>
        </microsoft:magicPacketSendSupported>
  </device>
 
-3.4  Microsoft ProtocolInfo Extensions Examples
+### 3.4 Microsoft ProtocolInfo Extensions Examples
 
-3.4.1  PlayToApp Extension
+#### 3.4.1 PlayToApp Extension
 
 The following example shows a ProtocolInfo string (section 2.4.1) that a DMR device can include in its
 SinkProtocolInfo state variable ([UPNPCNMGR] section 2.2.2) to declare that it supports playing media
@@ -1681,7 +1595,8 @@ Release: April 23, 2024
 
 23 / 30
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 The MMPE and MCEF do not introduce any new security considerations beyond those that already
 apply to XML-based formats. Therefore, the same security considerations that pertain to the UPnP
@@ -1694,7 +1609,8 @@ Release: April 23, 2024
 
 24 / 30
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1761,7 +1677,8 @@ Release: April 23, 2024
 
 25 / 30
 
-<7> Section 3.3.2: The microsoft:magicPacketSendSupported XML tag is not supported in Windows
+
+<7> Section 3.3.2: The microsoft:magicPacketSendSupported XML tag is not supported in Windows
 Vista.
 
 [MS-UPMC] - v20240423
@@ -1771,7 +1688,8 @@ Release: April 23, 2024
 
 26 / 30
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1815,7 +1733,8 @@ Release: April 23, 2024
 
 27 / 30
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 8
@@ -1963,7 +1882,8 @@ UPnP Device and Service Templates: Media Property and Compatibility Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT 18
+
+   WMC_COMPAT_PLAYLIST_FAKECHILDCOUNT 18
 folderPath properties 14
 folderPath property tag example 22
 
@@ -2102,7 +2022,8 @@ Release: April 23, 2024
 
 29 / 30
 
-userEffectiveRating properties 12
+
+userEffectiveRating properties 12
 userEffectiveRatingInStars properties 13
 userRating properties 12
 userRatingInStars properties 12

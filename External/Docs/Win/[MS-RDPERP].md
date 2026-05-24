@@ -64,7 +64,8 @@ Release: August 11, 2025
 
 1 / 120
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: August 11, 2025
 
 2 / 120
 
-Date
+
+Date
 
 Revision
 History
@@ -547,7 +549,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Date
+
+Date
 
 Revision
 History
@@ -604,757 +607,288 @@ Release: August 11, 2025
 
 4 / 120
 
-Table of Contents
 
-1.3
-
-1.3.2
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 11
-Glossary ......................................................................................................... 11
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Relationship to the Remote Desktop Protocol: Basic Connectivity and Graphics
-Remoting Specification ................................................................................ 14
-Message Flows ........................................................................................... 14
-RAIL Session Connection ........................................................................ 14
-RAIL Session Disconnection and Reconnection .......................................... 15
-RAIL Server/Client Synchronization ......................................................... 15
-RAIL Virtual Channel Messages ............................................................... 16
-RAIL Local Move/Resize ......................................................................... 16
-Enhanced RemoteApp ................................................................................. 17
-Window Resize Margins ............................................................................... 18
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-1.3.4
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.3.1
-
-2.2.1.1.1
-2.2.1.1.2
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Message Syntax ............................................................................................... 20
-Updates to the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
-Specification .............................................................................................. 20
-Capability Sets ..................................................................................... 20
-Remote Programs Capability Set ....................................................... 20
-Window List Capability Set ................................................................ 22
-Common Structures .............................................................................. 23
-Unicode String (UNICODE_STRING) ................................................... 23
-Rectangle (TS_RECTANGLE_16) ........................................................ 23
-Icon Info (TS_ICON_INFO) ............................................................... 23
-Cached Icon Info (TS_CACHED_ICON_INFO) ...................................... 24
-Windowing Alternate Secondary Drawing Orders ....................................... 25
-Window Information ........................................................................ 25
-Common Header (TS_WINDOW_ORDER_HEADER) ......................... 25
-Orders ...................................................................................... 25
-New or Existing Window ........................................................ 25
-Window Icon ........................................................................ 33
-Cached Icon......................................................................... 34
-Deleted Window ................................................................... 34
-Notification Icon Information............................................................. 35
-Common Header (TS_NOTIFYICON_ORDER_HEADER) .................... 35
-Orders ...................................................................................... 35
-New or Existing Notification Icons ........................................... 36
-Deleted Notification Icons ...................................................... 38
-Notification Icon Balloon Tooltip (TS_NOTIFY_ICON_INFOTIP).... 38
-Desktop Information ........................................................................ 39
-Common Header (TS_DESKTOP_ORDER_HEADER)......................... 39
-Orders ...................................................................................... 40
-Actively Monitored Desktop .................................................... 40
-Non-Monitored Desktop ......................................................... 41
-
-2.2.1.3.1.2.1
-2.2.1.3.1.2.2
-2.2.1.3.1.2.3
-2.2.1.3.1.2.4
-
-2.2.1.3.2.2.1
-2.2.1.3.2.2.2
-2.2.1.3.2.2.3
-
-2.2.1.3.3.2.1
-2.2.1.3.3.2.2
-
-2.2.1.3.2.1
-2.2.1.3.2.2
-
-2.2.1.3.3.1
-2.2.1.3.3.2
-
-2.2.1.3.1.1
-2.2.1.3.1.2
-
-2.2.1.3.2
-
-2.2.1.3.3
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-5 / 120
-
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-
-2.2.2.3
-
-2.2.2.3.1
-2.2.2.3.2
-
-2.2.2.4
-
-Static Virtual Channel Protocol ..................................................................... 41
-Common Header (TS_RAIL_PDU_HEADER) .............................................. 41
-Initialization Messages ........................................................................... 43
-Handshake PDU (TS_RAIL_ORDER_HANDSHAKE) ................................ 43
-Client Information PDU (TS_RAIL_ORDER_CLIENTSTATUS) .................. 43
-HandshakeEx PDU (TS_RAIL_ORDER_HANDSHAKE_EX) ....................... 45
-Program Launching Messages ................................................................. 46
-Client Execute PDU (TS_RAIL_ORDER_EXEC) ...................................... 46
-Server Execute Result PDU (TS_RAIL_ORDER_EXEC_RESULT) .............. 48
-Local Client System Parameters Update Messages ..................................... 49
-Client System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM) ... 49
-High Contrast System Information Structure (TS_HIGHCONTRAST) ....... 54
-Filter Keys System Information Structure (TS_FILTERKEYS) ................. 55
-Toggle Keys System Information Structure (TS_TOGGLEKEYS) ............. 56
-Sticky Keys System Information Structure (TS_STICKYKEYS) ............... 57
-Accent Color System Information Structure (TS_ACCENTCOLOR) .......... 58
-Server System Parameters Update Messages ........................................... 60
-Server System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM) . 60
-Local Client Event Messages ................................................................... 61
-Client Activate PDU (TS_RAIL_ORDER_ACTIVATE) ............................... 61
-Client System Menu PDU (TS_RAIL_ORDER_SYSMENU) ....................... 62
-Client System Command PDU (TS_RAIL_ORDER_SYSCOMMAND) .......... 62
-Client Notify Event PDU (TS_RAIL_ORDER_NOTIFY_EVENT).................. 63
-Client Get Application ID PDU (TS_RAIL_ORDER_GET_APPID_REQ) ....... 64
-Window Move Messages ......................................................................... 65
-Server Min Max Info PDU (TS_RAIL_ORDER_MINMAXINFO) .................. 65
-Server Move/Size Start PDU (TS_RAIL_ORDER_LOCALMOVESIZE)......... 66
-Server Move/Size End PDU (TS_RAIL_ORDER_LOCALMOVESIZE) .......... 68
-Client Window Move PDU (TS_RAIL_ORDER_WINDOWMOVE) ................ 69
-Client Window Snap PDU (TS_RAIL_ORDER_SNAP_ARRANGE) .............. 70
-Server Application ID Response .............................................................. 71
-
-2.2.2.4.1
-2.2.2.4.2
-2.2.2.4.3
-2.2.2.4.4
-2.2.2.4.5
-2.2.2.4.6
-
-2.2.2.5
-
-2.2.2.5.1
-
-2.2.2.6
-
-2.2.2.6.1
-2.2.2.6.2
-2.2.2.6.3
-2.2.2.6.4
-2.2.2.6.5
-
-2.2.2.7
-
-2.2.2.7.1
-2.2.2.7.2
-2.2.2.7.3
-2.2.2.7.4
-2.2.2.7.5
-
-2.2.2.8
-
-2.2.2.8.1
-
-2.2.2.8.2
-
-Server Get Application ID Response PDU
-(TS_RAIL_ORDER_GET_APPID_RESP) ................................................ 71
-Server Get Application ID Extended Response PDU
-(TS_RAIL_ORDER_GET_APPID_RESP_EX) .......................................... 71
-Language Bar Messages ......................................................................... 72
-Language Bar Information PDU (TS_RAIL_ORDER_LANGBARINFO) ........ 72
-Language Sync Messages ....................................................................... 74
-Language Profile Information PDU (TS_RAIL_ORDER_LANGUAGEIMEINFO)
- ..................................................................................................... 74
-2.2.2.10.1.1  Globally Unique Identifier (GUID) ................................................. 76
-
-2.2.2.9
-
-2.2.2.9.1
-
-2.2.2.10
-
-2.2.2.10.1
-
-2.2.2.10.2
-
-2.2.2.11
-
-2.2.2.13
-
-2.2.2.11.1
-
-Compartment Status Information PDU
-(TS_RAIL_ORDER_COMPARTMENTINFO_BODY) .................................. 76
-Z-Order Sync Messages ......................................................................... 78
-Server Z-Order Sync Information PDU (TS_RAIL_ORDER_ZORDER_SYNC)78
-2.2.2.12  Window Cloak State Sync Messages ........................................................ 79
-2.2.2.12.1  Window Cloak State Change PDU (TS_RAIL_ORDER_CLOAK) ................ 79
-Power Display Request Messages ............................................................ 80
-Power Display Request PDU (TS_RAIL_ORDER_POWER_DISPLAY_REQUEST)
- ..................................................................................................... 80
-Server Taskbar State Messages .............................................................. 80
-Taskbar Tab Info PDU (TS_RAIL_ORDER_TASKBARINFO) ..................... 80
-Accessibility Messages ........................................................................... 82
-Text Scale Information PDU (TS_RAIL_ORDER_TEXTSCALEINFO) .......... 82
-Caret Blink Information PDU (TS_RAIL_ORDER_CARETBLINKINFO) ....... 82
-
-2.2.2.15.1
-2.2.2.15.2
-
-2.2.2.13.1
-
-2.2.2.14.1
-
-2.2.2.14
-
-2.2.2.15
-
-3  Protocol Details ..................................................................................................... 83
-Common Details .............................................................................................. 83
-
-3.1
-
-6 / 120
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-3.1.6
-3.1.7
-
-3.2
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-
-3.2.5.2
-
-3.2.5.2.1
-
-Abstract Data Model .................................................................................... 83
-Server State Machine ............................................................................ 83
-Icon Cache Support ............................................................................... 85
-Timers ...................................................................................................... 85
-Initialization ............................................................................................... 85
-Higher-Layer Triggered Events ..................................................................... 85
-Message Processing Events and Sequencing Rules .......................................... 85
-Constructing Handshake PDU ................................................................. 85
-Processing Handshake PDU .................................................................... 85
-Timer Events .............................................................................................. 86
-Other Local Events ...................................................................................... 86
-Client Details ................................................................................................... 86
-Abstract Data Model .................................................................................... 86
-Windowing Support Level ....................................................................... 86
-Marker Window ID ................................................................................ 86
-Timers ...................................................................................................... 86
-Initialization ............................................................................................... 86
-Higher-Layer Triggered Events ..................................................................... 86
-Message Processing Events and Sequencing Rules .......................................... 86
-Updates to RDP Core Protocol ................................................................. 87
-Constructing Client MCS Connect Initial PDU ....................................... 87
-Processing Server MCS Connect Response PDU ................................... 87
-Constructing Client Info PDU ............................................................. 87
-Constructing Confirm Active PDU ....................................................... 87
-Processing Demand Active PDU ......................................................... 87
-Processing Window Information Orders .............................................. 88
-Processing Notification Icon Orders .................................................... 89
-Processing Desktop Information Orders .............................................. 89
-Static Virtual Channel Protocol ................................................................ 90
-Initialization Messages ..................................................................... 90
-Sending Client Information PDU ................................................... 90
-Processing HandshakeEx PDU ...................................................... 90
-Program Launching Messages ........................................................... 90
-Sending Execute PDU ................................................................. 90
-Processing Execute Result PDU .................................................... 90
-Local Client System Parameters Update Messages ............................... 90
-Sending System Parameters Update PDU ...................................... 90
-Server System Parameters Update Messages ...................................... 90
-Processing Server System Parameters Update PDU ........................ 90
-Local Client Event Messages ............................................................. 90
-Sending Activate PDU ................................................................. 91
-Sending System Menu PDU ......................................................... 91
-Sending System Command PDU .................................................. 91
-Sending Notify Event PDU ........................................................... 91
-Language Bar Information PDUs ........................................................ 91
-Sending Language Bar Information PDU ....................................... 91
-Processing Language Bar Information PDU .................................... 92
-Window Move Messages ................................................................... 92
-Processing Min Max Info PDU....................................................... 92
-Processing Move/Size Start PDU .................................................. 92
-Sending Window Move PDU ......................................................... 92
-Processing Move/Size End PDU .................................................... 92
-Sending Window Snap PDU ......................................................... 93
-Application ID Messages ................................................................... 93
-Sending Client Get Application ID PDU .......................................... 93
-Processing Server Get Application ID Response PDU ....................... 93
-Processing Server Get Application ID Extended Response PDU ......... 93
-Z-Order Sync Messages .................................................................... 93
-
-3.2.5.2.7.1
-3.2.5.2.7.2
-3.2.5.2.7.3
-3.2.5.2.7.4
-3.2.5.2.7.5
-
-3.2.5.2.5.1
-3.2.5.2.5.2
-3.2.5.2.5.3
-3.2.5.2.5.4
-
-3.2.5.2.8.1
-3.2.5.2.8.2
-3.2.5.2.8.3
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-
-3.2.5.2.6.1
-3.2.5.2.6.2
-
-3.2.5.2.3.1
-
-3.2.5.2.4.1
-
-3.2.5.2.2
-
-3.2.5.2.3
-
-3.2.5.2.4
-
-3.2.5.2.5
-
-3.2.5.2.8
-
-3.2.5.2.9
-
-3.2.5.2.6
-
-3.2.5.2.7
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-7 / 120
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.3.5.2
-
-3.2.5.2.13
-
-3.2.5.2.12
-
-3.2.5.2.11
-
-3.2.5.2.12.1
-
-3.2.5.2.11.1
-
-3.2.5.2.9.1
-3.2.5.2.9.2
-
-3.2.5.2.13.1
-3.2.5.2.13.2
-
-3.2.5.2.10.1
-3.2.5.2.10.2
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-
-Sending Z-Order Sync Support Flag ............................................. 93
-Processing Z-Order Sync Information PDU .................................... 93
-3.2.5.2.10  Window Cloak State Sync Messages ................................................... 94
-Sending Window Cloak State Change PDU ..................................... 94
-Processing Window Cloak State Change PDU ................................. 94
-Power Display Request Messages....................................................... 94
-Processing Power Display Request PDU ......................................... 94
-Server Taskbar State Messages ......................................................... 94
-Processing Taskbar Tab Info PDU ................................................. 94
-Accessibility Messages...................................................................... 94
-Sending Text Scale Information PDU ............................................ 94
-Sending Caret Blink Information PDU ........................................... 94
-Timer Events .............................................................................................. 95
-Other Local Events ...................................................................................... 95
-Server Details .................................................................................................. 95
-Abstract Data Model .................................................................................... 95
-Client Local Move/Size Ability Store ......................................................... 95
-Windowing Support Level ....................................................................... 95
-Marker Window ..................................................................................... 95
-Timers ...................................................................................................... 95
-Initialization ............................................................................................... 96
-Higher-Layer Triggered Events ..................................................................... 96
-Message Processing Events and Sequencing Rules .......................................... 96
-Updates to RDP Core Protocol ................................................................. 96
-Processing Client MCS Connect Initial PDU .......................................... 96
-Constructing Server MCS Connect Response PDU ................................ 96
-Processing Client Info PDU ................................................................ 96
-Constructing Demand Active PDU ...................................................... 96
-Processing Confirm Active PDU .......................................................... 96
-Constructing Window Information Orders ........................................... 97
-Constructing Notification Icon Orders ................................................. 98
-Constructing Desktop Information Orders ........................................... 98
-Static Virtual Channel Protocol ................................................................ 99
-Initialization Messages ..................................................................... 99
-Processing Client Information PDU ............................................... 99
-Sending HandshakeEx PDU ......................................................... 99
-Program Launching Messages .......................................................... 100
-Processing Execute PDU ............................................................. 100
-Sending Execute Result PDU ...................................................... 100
-Local Client System Parameters Update Messages .............................. 100
-Processing System Parameters Update PDU ................................. 100
-Server System Parameters Update Messages ..................................... 100
-Sending Server System Parameters Update PDU ........................... 100
-Local Client Event Messages ............................................................ 100
-Processing Activate PDU ............................................................ 100
-Processing System Menu PDU ..................................................... 100
-Processing System Command PDU .............................................. 100
-Processing Notify Event PDU ...................................................... 100
-Processing Language Bar Information PDU ................................... 101
-Window Move Messages .................................................................. 101
-Sending Min Max Info PDU ......................................................... 101
-Sending Move/Size Start PDU ..................................................... 101
-Processing Window Move PDU .................................................... 101
-Sending Move/Size End PDU....................................................... 101
-Processing Window Snap PDU ..................................................... 101
-Application ID Messages .................................................................. 102
-Processing the Get Application ID PDU ......................................... 102
-Sending the Get Application ID Response PDU .............................. 102
-
-3.3.5.2.6.1
-3.3.5.2.6.2
-3.3.5.2.6.3
-3.3.5.2.6.4
-3.3.5.2.6.5
-
-3.3.5.2.5.1
-3.3.5.2.5.2
-3.3.5.2.5.3
-3.3.5.2.5.4
-3.3.5.2.5.5
-
-3.3.5.2.7.1
-3.3.5.2.7.2
-
-3.3.5.2.1.1
-3.3.5.2.1.2
-
-3.3.5.2.2.1
-3.3.5.2.2.2
-
-3.3.5.2.3.1
-
-3.3.5.2.4.1
-
-3.3.5.2.7
-
-3.3.5.2.6
-
-3.3.5.2.1
-
-3.3.5.2.2
-
-3.3.5.2.3
-
-3.3.5.2.4
-
-3.3.5.2.5
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-8 / 120
-
-3.3.5.2.9
-
-3.3.5.2.8
-
-3.3.5.2.9.1
-3.3.5.2.9.2
-
-3.3.5.2.8.1
-3.3.5.2.8.2
-
-Z-Order Sync Messages ................................................................... 102
-Processing Z-Order Sync Support Flag ......................................... 102
-Sending Z-Order Sync Information PDU ....................................... 102
-Window Cloak State Sync Messages .................................................. 102
-Processing Window Cloak State Change PDU ................................ 102
-Sending Window Cloak State Change PDU .................................... 102
-Power Display Request Messages...................................................... 102
-Sending Power Display Request PDU ........................................... 103
-Server Taskbar State Messages ........................................................ 103
-Sending Taskbar Tab Info PDU ................................................... 103
-Accessibility Messages..................................................................... 103
-Processing Text Scale Information PDU ........................................ 103
-Processing Caret Blink Information PDU ....................................... 103
-Timer Events ............................................................................................. 103
-Other Local Events ..................................................................................... 103
-Sending Language Bar Information PDU.................................................. 103
-Sending Language Profile Information PDU .............................................. 103
-Sending Compartment Status Information PDU ........................................ 104
-
-3.3.5.2.10
-
-3.3.5.2.10.1
-
-3.3.5.2.11
-
-3.3.5.2.11.1
-
-3.3.5.2.12
-
-3.3.5.2.12.1
-3.3.5.2.12.2
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-
-3.3.6
-3.3.7
-
-4.4
-
-4.3
-
-4.2
-
-4.1
-
-4.1.1
-
-4.2.1
-4.2.2
-
-4.3.1
-4.3.2
-
-4.1.1.1
-4.1.1.2
-4.1.1.3
-4.1.1.4
-4.1.1.5
-4.1.1.6
-
-4  Protocol Examples ............................................................................................... 105
-Updates to the RDP Core Protocol ..................................................................... 105
-Windowing Alternate Secondary Drawing Orders ........................................... 105
-New or Existing Windows ...................................................................... 105
-Deleted Window ................................................................................... 105
-New or Existing Notification Icons .......................................................... 106
-Deleted Notification Icons ..................................................................... 107
-Actively Monitored Desktop ................................................................... 107
-Non-Monitored Desktop ........................................................................ 107
-Initialization Messages ..................................................................................... 107
-TS_RAIL_ORDER_HANDSHAKE .................................................................... 107
-TS_RAIL_ORDER_CLIENTSTATUS ................................................................ 108
-Launching Messages ........................................................................................ 108
-TS_RAIL_ORDER_EXEC .............................................................................. 108
-TS_RAIL_ORDER_EXEC_RESULT .................................................................. 109
-Local Client System Parameters Update Messages ............................................... 109
-TS_RAIL_ORDER_SYSPARAM ...................................................................... 109
-Local Client Event Messages ............................................................................. 109
-TS_RAIL_ORDER_ACTIVATE ........................................................................ 109
-TS_RAIL_ORDER_SYSMENU ........................................................................ 109
-TS_RAIL_ORDER_SYSCOMMAND ................................................................. 110
-TS_RAIL_ORDER_NOTIFY_EVENT ................................................................ 110
-TS_RAIL_ORDER_LANGBARINFO ................................................................. 110
-TS_RAIL_ORDER_GET_APPID_REQ .............................................................. 110
-TS_RAIL_ORDER_GET_APPID_RESP ............................................................. 111
-Window Move Messages ................................................................................... 111
-TS_RAIL_ORDER_WINDOWMOVE ................................................................ 111
-TS_RAIL_ORDER_LOCALMOVESIZE .............................................................. 111
-TS_RAIL_ORDER_MINMAXINFO ................................................................... 112
-Z-Order Sync Messages ................................................................................... 112
-TS_RAIL_ORDER_ZORDER_SYNC ................................................................ 112
-Power Display Request Messages ...................................................................... 112
-TS_RAIL_ORDER_POWER_DISPLAY_REQUEST .............................................. 112
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-4.5.5
-4.5.6
-4.5.7
-
-4.6.1
-4.6.2
-4.6.3
-
-4.7.1
-
-4.8.1
-
-4.4.1
-
-4.7
-
-4.6
-
-4.8
-
-4.5
-
-5  Security ............................................................................................................... 113
-Security Considerations for Implementers .......................................................... 113
-Index of Security Parameters ........................................................................... 113
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 114
-
-7  Change Tracking .................................................................................................. 117
-
-9 / 120
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-8  Index ................................................................................................................... 118
-
-[MS-RDPERP] - v20250811
-Remote Desktop Protocol: Remote Programs Virtual Channel Extension
-Copyright © 2025 Microsoft Corporation
-Release: August 11, 2025
-
-10 / 120
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Relationship to the Remote Desktop Protocol: Basic Connectivity and Graphics](#131-relationship-to-the-remote-desktop-protocol-basic-connectivity-and-graphics)
+    - [1.3.2 Message Flows](#132-message-flows)
+      - [1.3.2.1 RAIL Session Connection](#1321-rail-session-connection)
+      - [1.3.2.2 RAIL Session Disconnection and Reconnection](#1322-rail-session-disconnection-and-reconnection)
+      - [1.3.2.3 RAIL Server/Client Synchronization](#1323-rail-serverclient-synchronization)
+      - [1.3.2.4 RAIL Virtual Channel Messages](#1324-rail-virtual-channel-messages)
+      - [1.3.2.5 RAIL Local Move/Resize](#1325-rail-local-moveresize)
+    - [1.3.3 Enhanced RemoteApp](#133-enhanced-remoteapp)
+    - [1.3.4 Window Resize Margins](#134-window-resize-margins)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Updates to the Remote Desktop Protocol: Basic Connectivity and Graphics](#221-updates-to-the-remote-desktop-protocol-basic-connectivity-and-graphics)
+      - [2.2.1.1 Capability Sets](#2211-capability-sets)
+        - [2.2.1.1.1 Remote Programs Capability Set](#22111-remote-programs-capability-set)
+        - [2.2.1.1.2 Window List Capability Set](#22112-window-list-capability-set)
+      - [2.2.1.2 Common Structures](#2212-common-structures)
+        - [2.2.1.2.1 Unicode String (UNICODE_STRING)](#22121-unicode-string-unicodestring)
+        - [2.2.1.2.2 Rectangle (TS_RECTANGLE_16)](#22122-rectangle-tsrectangle16)
+        - [2.2.1.2.3 Icon Info (TS_ICON_INFO)](#22123-icon-info-tsiconinfo)
+        - [2.2.1.2.4 Cached Icon Info (TS_CACHED_ICON_INFO)](#22124-cached-icon-info-tscachediconinfo)
+      - [2.2.1.3 Windowing Alternate Secondary Drawing Orders](#2213-windowing-alternate-secondary-drawing-orders)
+        - [2.2.1.3.1 Window Information](#22131-window-information)
+          - [2.2.1.3.1.1 Common Header (TS_WINDOW_ORDER_HEADER)](#221311-common-header-tswindoworderheader)
+          - [2.2.1.3.1.2 Orders](#221312-orders)
+            - [2.2.1.3.1.2.1 New or Existing Window](#2213121-new-or-existing-window)
+            - [2.2.1.3.1.2.2 Window Icon](#2213122-window-icon)
+            - [2.2.1.3.1.2.3 Cached Icon](#2213123-cached-icon)
+            - [2.2.1.3.1.2.4 Deleted Window](#2213124-deleted-window)
+        - [2.2.1.3.2 Notification Icon Information](#22132-notification-icon-information)
+          - [2.2.1.3.2.1 Common Header (TS_NOTIFYICON_ORDER_HEADER)](#221321-common-header-tsnotifyiconorderheader)
+          - [2.2.1.3.2.2 Orders](#221322-orders)
+            - [2.2.1.3.2.2.1 New or Existing Notification Icons](#2213221-new-or-existing-notification-icons)
+            - [2.2.1.3.2.2.2 Deleted Notification Icons](#2213222-deleted-notification-icons)
+            - [2.2.1.3.2.2.3 Notification Icon Balloon Tooltip (TS_NOTIFY_ICON_INFOTIP)](#2213223-notification-icon-balloon-tooltip-tsnotifyiconinfotip)
+        - [2.2.1.3.3 Desktop Information](#22133-desktop-information)
+          - [2.2.1.3.3.1 Common Header (TS_DESKTOP_ORDER_HEADER)](#221331-common-header-tsdesktoporderheader)
+          - [2.2.1.3.3.2 Orders](#221332-orders)
+            - [2.2.1.3.3.2.1 Actively Monitored Desktop](#2213321-actively-monitored-desktop)
+            - [2.2.1.3.3.2.2 Non-Monitored Desktop](#2213322-non-monitored-desktop)
+    - [2.2.2 Static Virtual Channel Protocol](#222-static-virtual-channel-protocol)
+      - [2.2.2.1 Common Header (TS_RAIL_PDU_HEADER)](#2221-common-header-tsrailpduheader)
+      - [2.2.2.2 Initialization Messages](#2222-initialization-messages)
+        - [2.2.2.2.1 Handshake PDU (TS_RAIL_ORDER_HANDSHAKE)](#22221-handshake-pdu-tsrailorderhandshake)
+        - [2.2.2.2.2 Client Information PDU (TS_RAIL_ORDER_CLIENTSTATUS)](#22222-client-information-pdu-tsrailorderclientstatus)
+        - [2.2.2.2.3 HandshakeEx PDU (TS_RAIL_ORDER_HANDSHAKE_EX)](#22223-handshakeex-pdu-tsrailorderhandshakeex)
+      - [2.2.2.3 Program Launching Messages](#2223-program-launching-messages)
+        - [2.2.2.3.1 Client Execute PDU (TS_RAIL_ORDER_EXEC)](#22231-client-execute-pdu-tsrailorderexec)
+        - [2.2.2.3.2 Server Execute Result PDU (TS_RAIL_ORDER_EXEC_RESULT)](#22232-server-execute-result-pdu-tsrailorderexecresult)
+      - [2.2.2.4 Local Client System Parameters Update Messages](#2224-local-client-system-parameters-update-messages)
+        - [2.2.2.4.1 Client System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)](#22241-client-system-parameters-update-pdu-tsrailordersysparam)
+        - [2.2.2.4.2 High Contrast System Information Structure (TS_HIGHCONTRAST)](#22242-high-contrast-system-information-structure-tshighcontrast)
+        - [2.2.2.4.3 Filter Keys System Information Structure (TS_FILTERKEYS)](#22243-filter-keys-system-information-structure-tsfilterkeys)
+        - [2.2.2.4.4 Toggle Keys System Information Structure (TS_TOGGLEKEYS)](#22244-toggle-keys-system-information-structure-tstogglekeys)
+        - [2.2.2.4.5 Sticky Keys System Information Structure (TS_STICKYKEYS)](#22245-sticky-keys-system-information-structure-tsstickykeys)
+        - [2.2.2.4.6 Accent Color System Information Structure (TS_ACCENTCOLOR)](#22246-accent-color-system-information-structure-tsaccentcolor)
+      - [2.2.2.5 Server System Parameters Update Messages](#2225-server-system-parameters-update-messages)
+        - [2.2.2.5.1 Server System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)](#22251-server-system-parameters-update-pdu-tsrailordersysparam)
+      - [2.2.2.6 Local Client Event Messages](#2226-local-client-event-messages)
+        - [2.2.2.6.1 Client Activate PDU (TS_RAIL_ORDER_ACTIVATE)](#22261-client-activate-pdu-tsrailorderactivate)
+        - [2.2.2.6.2 Client System Menu PDU (TS_RAIL_ORDER_SYSMENU)](#22262-client-system-menu-pdu-tsrailordersysmenu)
+        - [2.2.2.6.3 Client System Command PDU (TS_RAIL_ORDER_SYSCOMMAND)](#22263-client-system-command-pdu-tsrailordersyscommand)
+        - [2.2.2.6.4 Client Notify Event PDU (TS_RAIL_ORDER_NOTIFY_EVENT)](#22264-client-notify-event-pdu-tsrailordernotifyevent)
+        - [2.2.2.6.5 Client Get Application ID PDU (TS_RAIL_ORDER_GET_APPID_REQ)](#22265-client-get-application-id-pdu-tsrailordergetappidreq)
+      - [2.2.2.7 Window Move Messages](#2227-window-move-messages)
+        - [2.2.2.7.1 Server Min Max Info PDU (TS_RAIL_ORDER_MINMAXINFO)](#22271-server-min-max-info-pdu-tsrailorderminmaxinfo)
+        - [2.2.2.7.2 Server Move/Size Start PDU (TS_RAIL_ORDER_LOCALMOVESIZE)](#22272-server-movesize-start-pdu-tsrailorderlocalmovesize)
+        - [2.2.2.7.3 Server Move/Size End PDU (TS_RAIL_ORDER_LOCALMOVESIZE)](#22273-server-movesize-end-pdu-tsrailorderlocalmovesize)
+        - [2.2.2.7.4 Client Window Move PDU (TS_RAIL_ORDER_WINDOWMOVE)](#22274-client-window-move-pdu-tsrailorderwindowmove)
+        - [2.2.2.7.5 Client Window Snap PDU (TS_RAIL_ORDER_SNAP_ARRANGE)](#22275-client-window-snap-pdu-tsrailordersnaparrange)
+      - [2.2.2.8 Server Application ID Response](#2228-server-application-id-response)
+        - [2.2.2.8.1 Server Get Application ID Response PDU](#22281-server-get-application-id-response-pdu)
+        - [2.2.2.8.2 Server Get Application ID Extended Response PDU](#22282-server-get-application-id-extended-response-pdu)
+      - [2.2.2.9 Language Bar Messages](#2229-language-bar-messages)
+        - [2.2.2.9.1 Language Bar Information PDU (TS_RAIL_ORDER_LANGBARINFO)](#22291-language-bar-information-pdu-tsrailorderlangbarinfo)
+      - [2.2.2.10 Language Sync Messages](#22210-language-sync-messages)
+        - [2.2.2.10.1 Language Profile Information PDU](#222101-language-profile-information-pdu)
+          - [2.2.2.10.1.1 Globally Unique Identifier (GUID)](#2221011-globally-unique-identifier-guid)
+        - [2.2.2.10.2 Compartment Status Information PDU](#222102-compartment-status-information-pdu)
+      - [2.2.2.11 Z-Order Sync Messages](#22211-z-order-sync-messages)
+        - [2.2.2.11.1 Server Z-Order Sync Information PDU](#222111-server-z-order-sync-information-pdu)
+      - [2.2.2.12 Window Cloak State Sync Messages](#22212-window-cloak-state-sync-messages)
+        - [2.2.2.12.1 Window Cloak State Change PDU (TS_RAIL_ORDER_CLOAK)](#222121-window-cloak-state-change-pdu-tsrailordercloak)
+      - [2.2.2.13 Power Display Request Messages](#22213-power-display-request-messages)
+        - [2.2.2.13.1 Power Display Request PDU](#222131-power-display-request-pdu)
+      - [2.2.2.14 Server Taskbar State Messages](#22214-server-taskbar-state-messages)
+        - [2.2.2.14.1 Taskbar Tab Info PDU (TS_RAIL_ORDER_TASKBARINFO)](#222141-taskbar-tab-info-pdu-tsrailordertaskbarinfo)
+      - [2.2.2.15 Accessibility Messages](#22215-accessibility-messages)
+        - [2.2.2.15.1 Text Scale Information PDU (TS_RAIL_ORDER_TEXTSCALEINFO)](#222151-text-scale-information-pdu-tsrailordertextscaleinfo)
+        - [2.2.2.15.2 Caret Blink Information PDU (TS_RAIL_ORDER_CARETBLINKINFO)](#222152-caret-blink-information-pdu-tsrailordercaretblinkinfo)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Server State Machine](#3111-server-state-machine)
+      - [3.1.1.2 Icon Cache Support](#3112-icon-cache-support)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Constructing Handshake PDU](#3151-constructing-handshake-pdu)
+      - [3.1.5.2 Processing Handshake PDU](#3152-processing-handshake-pdu)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Windowing Support Level](#3211-windowing-support-level)
+      - [3.2.1.2 Marker Window ID](#3212-marker-window-id)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Updates to RDP Core Protocol](#3251-updates-to-rdp-core-protocol)
+        - [3.2.5.1.1 Constructing Client MCS Connect Initial PDU](#32511-constructing-client-mcs-connect-initial-pdu)
+        - [3.2.5.1.2 Processing Server MCS Connect Response PDU](#32512-processing-server-mcs-connect-response-pdu)
+        - [3.2.5.1.3 Constructing Client Info PDU](#32513-constructing-client-info-pdu)
+        - [3.2.5.1.4 Constructing Confirm Active PDU](#32514-constructing-confirm-active-pdu)
+        - [3.2.5.1.5 Processing Demand Active PDU](#32515-processing-demand-active-pdu)
+        - [3.2.5.1.6 Processing Window Information Orders](#32516-processing-window-information-orders)
+        - [3.2.5.1.7 Processing Notification Icon Orders](#32517-processing-notification-icon-orders)
+        - [3.2.5.1.8 Processing Desktop Information Orders](#32518-processing-desktop-information-orders)
+      - [3.2.5.2 Static Virtual Channel Protocol](#3252-static-virtual-channel-protocol)
+        - [3.2.5.2.1 Initialization Messages](#32521-initialization-messages)
+          - [3.2.5.2.1.1 Sending Client Information PDU](#325211-sending-client-information-pdu)
+          - [3.2.5.2.1.2 Processing HandshakeEx PDU](#325212-processing-handshakeex-pdu)
+        - [3.2.5.2.2 Program Launching Messages](#32522-program-launching-messages)
+          - [3.2.5.2.2.1 Sending Execute PDU](#325221-sending-execute-pdu)
+          - [3.2.5.2.2.2 Processing Execute Result PDU](#325222-processing-execute-result-pdu)
+        - [3.2.5.2.3 Local Client System Parameters Update Messages](#32523-local-client-system-parameters-update-messages)
+          - [3.2.5.2.3.1 Sending System Parameters Update PDU](#325231-sending-system-parameters-update-pdu)
+        - [3.2.5.2.4 Server System Parameters Update Messages](#32524-server-system-parameters-update-messages)
+          - [3.2.5.2.4.1 Processing Server System Parameters Update PDU](#325241-processing-server-system-parameters-update-pdu)
+        - [3.2.5.2.5 Local Client Event Messages](#32525-local-client-event-messages)
+          - [3.2.5.2.5.1 Sending Activate PDU](#325251-sending-activate-pdu)
+          - [3.2.5.2.5.2 Sending System Menu PDU](#325252-sending-system-menu-pdu)
+          - [3.2.5.2.5.3 Sending System Command PDU](#325253-sending-system-command-pdu)
+          - [3.2.5.2.5.4 Sending Notify Event PDU](#325254-sending-notify-event-pdu)
+        - [3.2.5.2.6 Language Bar Information PDUs](#32526-language-bar-information-pdus)
+          - [3.2.5.2.6.1 Sending Language Bar Information PDU](#325261-sending-language-bar-information-pdu)
+          - [3.2.5.2.6.2 Processing Language Bar Information PDU](#325262-processing-language-bar-information-pdu)
+        - [3.2.5.2.7 Window Move Messages](#32527-window-move-messages)
+          - [3.2.5.2.7.1 Processing Min Max Info PDU](#325271-processing-min-max-info-pdu)
+          - [3.2.5.2.7.2 Processing Move/Size Start PDU](#325272-processing-movesize-start-pdu)
+          - [3.2.5.2.7.3 Sending Window Move PDU](#325273-sending-window-move-pdu)
+          - [3.2.5.2.7.4 Processing Move/Size End PDU](#325274-processing-movesize-end-pdu)
+          - [3.2.5.2.7.5 Sending Window Snap PDU](#325275-sending-window-snap-pdu)
+        - [3.2.5.2.8 Application ID Messages](#32528-application-id-messages)
+          - [3.2.5.2.8.1 Sending Client Get Application ID PDU](#325281-sending-client-get-application-id-pdu)
+          - [3.2.5.2.8.2 Processing Server Get Application ID Response PDU](#325282-processing-server-get-application-id-response-pdu)
+          - [3.2.5.2.8.3 Processing Server Get Application ID Extended Response PDU](#325283-processing-server-get-application-id-extended-response-pdu)
+        - [3.2.5.2.9 Z-Order Sync Messages](#32529-z-order-sync-messages)
+          - [3.2.5.2.9.1 Sending Z-Order Sync Support Flag](#325291-sending-z-order-sync-support-flag)
+          - [3.2.5.2.9.2 Processing Z-Order Sync Information PDU](#325292-processing-z-order-sync-information-pdu)
+        - [3.2.5.2.10 Window Cloak State Sync Messages](#325210-window-cloak-state-sync-messages)
+          - [3.2.5.2.10.1 Sending Window Cloak State Change PDU](#3252101-sending-window-cloak-state-change-pdu)
+          - [3.2.5.2.10.2 Processing Window Cloak State Change PDU](#3252102-processing-window-cloak-state-change-pdu)
+        - [3.2.5.2.11 Power Display Request Messages](#325211-power-display-request-messages)
+          - [3.2.5.2.11.1 Processing Power Display Request PDU](#3252111-processing-power-display-request-pdu)
+        - [3.2.5.2.12 Server Taskbar State Messages](#325212-server-taskbar-state-messages)
+          - [3.2.5.2.12.1 Processing Taskbar Tab Info PDU](#3252121-processing-taskbar-tab-info-pdu)
+        - [3.2.5.2.13 Accessibility Messages](#325213-accessibility-messages)
+          - [3.2.5.2.13.1 Sending Text Scale Information PDU](#3252131-sending-text-scale-information-pdu)
+          - [3.2.5.2.13.2 Sending Caret Blink Information PDU](#3252132-sending-caret-blink-information-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Client Local Move/Size Ability Store](#3311-client-local-movesize-ability-store)
+      - [3.3.1.2 Windowing Support Level](#3312-windowing-support-level)
+      - [3.3.1.3 Marker Window](#3313-marker-window)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Updates to RDP Core Protocol](#3351-updates-to-rdp-core-protocol)
+        - [3.3.5.1.1 Processing Client MCS Connect Initial PDU](#33511-processing-client-mcs-connect-initial-pdu)
+        - [3.3.5.1.2 Constructing Server MCS Connect Response PDU](#33512-constructing-server-mcs-connect-response-pdu)
+        - [3.3.5.1.3 Processing Client Info PDU](#33513-processing-client-info-pdu)
+        - [3.3.5.1.4 Constructing Demand Active PDU](#33514-constructing-demand-active-pdu)
+        - [3.3.5.1.5 Processing Confirm Active PDU](#33515-processing-confirm-active-pdu)
+        - [3.3.5.1.6 Constructing Window Information Orders](#33516-constructing-window-information-orders)
+        - [3.3.5.1.7 Constructing Notification Icon Orders](#33517-constructing-notification-icon-orders)
+        - [3.3.5.1.8 Constructing Desktop Information Orders](#33518-constructing-desktop-information-orders)
+      - [3.3.5.2 Static Virtual Channel Protocol](#3352-static-virtual-channel-protocol)
+        - [3.3.5.2.1 Initialization Messages](#33521-initialization-messages)
+          - [3.3.5.2.1.1 Processing Client Information PDU](#335211-processing-client-information-pdu)
+          - [3.3.5.2.1.2 Sending HandshakeEx PDU](#335212-sending-handshakeex-pdu)
+        - [3.3.5.2.2 Program Launching Messages](#33522-program-launching-messages)
+          - [3.3.5.2.2.1 Processing Execute PDU](#335221-processing-execute-pdu)
+          - [3.3.5.2.2.2 Sending Execute Result PDU](#335222-sending-execute-result-pdu)
+        - [3.3.5.2.3 Local Client System Parameters Update Messages](#33523-local-client-system-parameters-update-messages)
+          - [3.3.5.2.3.1 Processing System Parameters Update PDU](#335231-processing-system-parameters-update-pdu)
+        - [3.3.5.2.4 Server System Parameters Update Messages](#33524-server-system-parameters-update-messages)
+          - [3.3.5.2.4.1 Sending Server System Parameters Update PDU](#335241-sending-server-system-parameters-update-pdu)
+        - [3.3.5.2.5 Local Client Event Messages](#33525-local-client-event-messages)
+          - [3.3.5.2.5.1 Processing Activate PDU](#335251-processing-activate-pdu)
+          - [3.3.5.2.5.2 Processing System Menu PDU](#335252-processing-system-menu-pdu)
+          - [3.3.5.2.5.3 Processing System Command PDU](#335253-processing-system-command-pdu)
+          - [3.3.5.2.5.4 Processing Notify Event PDU](#335254-processing-notify-event-pdu)
+          - [3.3.5.2.5.5 Processing Language Bar Information PDU](#335255-processing-language-bar-information-pdu)
+        - [3.3.5.2.6 Window Move Messages](#33526-window-move-messages)
+          - [3.3.5.2.6.1 Sending Min Max Info PDU](#335261-sending-min-max-info-pdu)
+          - [3.3.5.2.6.2 Sending Move/Size Start PDU](#335262-sending-movesize-start-pdu)
+          - [3.3.5.2.6.3 Processing Window Move PDU](#335263-processing-window-move-pdu)
+          - [3.3.5.2.6.4 Sending Move/Size End PDU](#335264-sending-movesize-end-pdu)
+          - [3.3.5.2.6.5 Processing Window Snap PDU](#335265-processing-window-snap-pdu)
+        - [3.3.5.2.7 Application ID Messages](#33527-application-id-messages)
+          - [3.3.5.2.7.1 Processing the Get Application ID PDU](#335271-processing-the-get-application-id-pdu)
+          - [3.3.5.2.7.2 Sending the Get Application ID Response PDU](#335272-sending-the-get-application-id-response-pdu)
+        - [3.3.5.2.8 Z-Order Sync Messages](#33528-z-order-sync-messages)
+          - [3.3.5.2.8.1 Processing Z-Order Sync Support Flag](#335281-processing-z-order-sync-support-flag)
+          - [3.3.5.2.8.2 Sending Z-Order Sync Information PDU](#335282-sending-z-order-sync-information-pdu)
+        - [3.3.5.2.9 Window Cloak State Sync Messages](#33529-window-cloak-state-sync-messages)
+          - [3.3.5.2.9.1 Processing Window Cloak State Change PDU](#335291-processing-window-cloak-state-change-pdu)
+          - [3.3.5.2.9.2 Sending Window Cloak State Change PDU](#335292-sending-window-cloak-state-change-pdu)
+        - [3.3.5.2.10 Power Display Request Messages](#335210-power-display-request-messages)
+          - [3.3.5.2.10.1 Sending Power Display Request PDU](#3352101-sending-power-display-request-pdu)
+        - [3.3.5.2.11 Server Taskbar State Messages](#335211-server-taskbar-state-messages)
+          - [3.3.5.2.11.1 Sending Taskbar Tab Info PDU](#3352111-sending-taskbar-tab-info-pdu)
+        - [3.3.5.2.12 Accessibility Messages](#335212-accessibility-messages)
+          - [3.3.5.2.12.1 Processing Text Scale Information PDU](#3352121-processing-text-scale-information-pdu)
+          - [3.3.5.2.12.2 Processing Caret Blink Information PDU](#3352122-processing-caret-blink-information-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Sending Language Bar Information PDU](#3371-sending-language-bar-information-pdu)
+      - [3.3.7.2 Sending Language Profile Information PDU](#3372-sending-language-profile-information-pdu)
+      - [3.3.7.3 Sending Compartment Status Information PDU](#3373-sending-compartment-status-information-pdu)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Updates to the RDP Core Protocol](#41-updates-to-the-rdp-core-protocol)
+    - [4.1.1 Windowing Alternate Secondary Drawing Orders](#411-windowing-alternate-secondary-drawing-orders)
+      - [4.1.1.1 New or Existing Windows](#4111-new-or-existing-windows)
+      - [4.1.1.2 Deleted Window](#4112-deleted-window)
+      - [4.1.1.3 New or Existing Notification Icons](#4113-new-or-existing-notification-icons)
+      - [4.1.1.4 Deleted Notification Icons](#4114-deleted-notification-icons)
+      - [4.1.1.5 Actively Monitored Desktop](#4115-actively-monitored-desktop)
+      - [4.1.1.6 Non-Monitored Desktop](#4116-non-monitored-desktop)
+  - [4.2 Initialization Messages](#42-initialization-messages)
+    - [4.2.1 TS_RAIL_ORDER_HANDSHAKE](#421-tsrailorderhandshake)
+    - [4.2.2 TS_RAIL_ORDER_CLIENTSTATUS](#422-tsrailorderclientstatus)
+  - [4.3 Launching Messages](#43-launching-messages)
+    - [4.3.1 TS_RAIL_ORDER_EXEC](#431-tsrailorderexec)
+    - [4.3.2 TS_RAIL_ORDER_EXEC_RESULT](#432-tsrailorderexecresult)
+  - [4.4 Local Client System Parameters Update Messages](#44-local-client-system-parameters-update-messages)
+    - [4.4.1 TS_RAIL_ORDER_SYSPARAM](#441-tsrailordersysparam)
+  - [4.5 Local Client Event Messages](#45-local-client-event-messages)
+    - [4.5.1 TS_RAIL_ORDER_ACTIVATE](#451-tsrailorderactivate)
+    - [4.5.2 TS_RAIL_ORDER_SYSMENU](#452-tsrailordersysmenu)
+    - [4.5.3 TS_RAIL_ORDER_SYSCOMMAND](#453-tsrailordersyscommand)
+    - [4.5.4 TS_RAIL_ORDER_NOTIFY_EVENT](#454-tsrailordernotifyevent)
+    - [4.5.5 TS_RAIL_ORDER_LANGBARINFO](#455-tsrailorderlangbarinfo)
+    - [4.5.6 TS_RAIL_ORDER_GET_APPID_REQ](#456-tsrailordergetappidreq)
+    - [4.5.7 TS_RAIL_ORDER_GET_APPID_RESP](#457-tsrailordergetappidresp)
+  - [4.6 Window Move Messages](#46-window-move-messages)
+    - [4.6.1 TS_RAIL_ORDER_WINDOWMOVE](#461-tsrailorderwindowmove)
+    - [4.6.2 TS_RAIL_ORDER_LOCALMOVESIZE](#462-tsrailorderlocalmovesize)
+    - [4.6.3 TS_RAIL_ORDER_MINMAXINFO](#463-tsrailorderminmaxinfo)
+  - [4.7 Z-Order Sync Messages](#47-z-order-sync-messages)
+    - [4.7.1 TS_RAIL_ORDER_ZORDER_SYNC](#471-tsrailorderzordersync)
+  - [4.8 Power Display Request Messages](#48-power-display-request-messages)
+    - [4.8.1 TS_RAIL_ORDER_POWER_DISPLAY_REQUEST](#481-tsrailorderpowerdisplayrequest)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Ultimate N, and Windows 8.](#7-ultimate-n-and-windows-8)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 Remote Programs, also known as remote applications integrated locally (RAIL), is a Remote
 Desktop Protocol (RDP) feature (as specified in the Remote Desktop Protocol: Basic Connectivity and
@@ -1365,7 +899,7 @@ extends the core RDP protocol to deliver this seamless windows experience.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1426,7 +960,8 @@ Release: August 11, 2025
 
 11 / 120
 
-remote applications integrated locally (RAIL): A software component that enables remoting of
+
+remote applications integrated locally (RAIL): A software component that enables remoting of
 
 individual windows and notification icons.
 
@@ -1483,7 +1018,7 @@ z-order: The rendering order of an object on a z axis.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1497,7 +1032,8 @@ Release: August 11, 2025
 
 12 / 120
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1527,7 +1063,7 @@ us/previous-versions/windows/it-pro/windows-vista/cc766503(v=ws.10)
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CREATEWINEX] Microsoft Corporation, "CreateWindowEx function",
 http://msdn.microsoft.com/en-us/library/ms632680.aspx
@@ -1550,7 +1086,7 @@ us/library/ms632599.aspx
 [MSDN-WINSTYLE] Microsoft Corporation, "Window Styles", http://msdn.microsoft.com/en-
 us/library/ms632600.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Remote Programs, also known as remote applications integrated locally (RAIL), is an RDP
 feature (as specified in the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting
@@ -1563,7 +1099,8 @@ Release: August 11, 2025
 
 13 / 120
 
-server) as a local user application (running on the RAIL client machine). RAIL extends the core RDP
+
+server) as a local user application (running on the RAIL client machine). RAIL extends the core RDP
 protocol to deliver this seamless experience. Support for RAIL is optional in RDP, and it is negotiated
 as part of the capability negotiation process.
 
@@ -1606,7 +1143,7 @@ as RAIL Virtual Channel messages.
 
 marker window.
 
-1.3.1  Relationship to the Remote Desktop Protocol: Basic Connectivity and Graphics
+#### 1.3.1 Relationship to the Remote Desktop Protocol: Basic Connectivity and Graphics
 
 Remoting Specification
 
@@ -1622,9 +1159,9 @@ channel, that is created by the Remote Desktop Protocol: Basic Connectivity and 
 Remoting during connection establishment (as specified in [MS-RDPBCGR] sections 1.3.3 and
 2.2.1).
 
-1.3.2  Message Flows
+#### 1.3.2 Message Flows
 
-1.3.2.1  RAIL Session Connection
+##### 1.3.2.1 RAIL Session Connection
 
 RAIL connection establishment follows the Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting connection establishment sequence (as specified in [MS-RDPBCGR] section 1.3.1.1). RAIL-
@@ -1637,7 +1174,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPERP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1690,13 +1228,13 @@ respond with a Handshake PDU.
 
 Figure 1: Handshake PDU
 
-1.3.2.2  RAIL Session Disconnection and Reconnection
+##### 1.3.2.2 RAIL Session Disconnection and Reconnection
 
 RAIL Session Disconnection and RAIL Session Reconnection follow the corresponding Remote Desktop
 Protocol: Basic Connectivity and Graphics Remoting sequences, as specified in [MS-RDPBCGR] section
 1.3.1.4 (Disconnection Sequences) and [MS-RDPBCGR] section 1.3.1.5 (Automatic Reconnection).
 
-1.3.2.3  RAIL Server/Client Synchronization
+##### 1.3.2.3 RAIL Server/Client Synchronization
 
 A RAIL server synchronizes with the RAIL client over the RDP channel upon connection establishment
 or when a desktop switch occurs.
@@ -1708,7 +1246,8 @@ Release: August 11, 2025
 
 15 / 120
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-RDPERP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1730,7 +1269,7 @@ Desktop Information Order with the WINDOW_ORDER_FIELD_DESKTOP_NONE (0x00000001) 
 in the Hdr field (section 2.2.1.3.3.2.2). Upon receipt of this order, the client clears out all previously
 received information from the server.
 
-1.3.2.4  RAIL Virtual Channel Messages
+##### 1.3.2.4 RAIL Virtual Channel Messages
 
 Client/server or server/client messages can flow over the RAIL anytime after the virtual channel
 handshake sequence (section 2.2.2.2.1). The client sends the Client Information PDU and the Client
@@ -1751,7 +1290,7 @@ server. If the client includes the TS_RAIL_CLIENTSTATUS_POWER_DISPLAY_REQUEST_SU
 (0x00000080) flag in the Client Information PDU, then the server sends display-required power
 requests to the client using the Power Display Request PDU (section 2.2.2.13.1).
 
-1.3.2.5  RAIL Local Move/Resize
+##### 1.3.2.5 RAIL Local Move/Resize
 
 Local move/resize features are RAIL options designed to optimize bandwidth in certain situations
 where RAIL windows are moved or resized by the user. A RAIL client indicates to the RAIL server
@@ -1763,7 +1302,8 @@ Release: August 11, 2025
 
 16 / 120
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-RDPERP].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1801,7 +1341,7 @@ PDU (section 2.2.2.7.4) to the server to inform the server of the window's new p
 PDU (section 2.2.2.7.3) with the final window position and size. The client can adjust its local RAIL
 window if necessary using this information.
 
-1.3.3  Enhanced RemoteApp
+#### 1.3.3 Enhanced RemoteApp
 
 Enhanced RemoteApp is a graphics presentation mode supported by RDP 8.1 that leverages the
 Remote Desktop Protocol: Graphics Pipeline Extension ([MS-RDPEGFX] section 1.3) to remote only the
@@ -1817,11 +1357,12 @@ Release: August 11, 2025
 
 17 / 120
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-RDPERP].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-1.3.4  Window Resize Margins
+#### 1.3.4 Window Resize Margins
 
 Window resize margins are supported by RDP 10.2. The dimensions of these margins are defined by
 the server and are to be used by the client to create a transparent hit-testable region around the
@@ -1833,12 +1374,12 @@ boundaries of the window sent in the Window Information Order (section 2.2.1.3.1
 
 Figure 4: Window Resize Margins
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RAIL extends the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting Specification
 [MS-RDPBCGR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Programs Extensions for Remote Desktop Protocol has the assumption to operate in a
 fully operational RDP connection. A fully operational RDP connection is a connection that has passed
@@ -1849,7 +1390,7 @@ visible for all data that flows over the RAIL virtual channel (sections 1.3.1 an
 this condition is met, the CHANNEL_FLAG_SHOW_PROTOCOL (0x00000010) flag has to be set in the
 flags field of the Channel PDU Header.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Remote Programs Virtual Channel Extension applies only to RDP 6.0
 and later.
@@ -1861,7 +1402,8 @@ Release: August 11, 2025
 
 18 / 120
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Versioning: RAIL is supported in RDP 6.0 and later clients only. The RDP version is negotiated as a
 part of the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting (as specified in [MS-
@@ -1869,13 +1411,13 @@ RDPBCGR] section 1.7). Capability: RAIL-specific capabilities for Remote Program
 are negotiated via the Demand Active and Confirm Active PDUs of the server and client, respectively
 (as specified in [MS-RDPBCGR] section 2.2.1.13).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendors SHOULD reuse
 those values with their indicated meaning. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Remote Desktop Protocol: Remote Programs Virtual Channel Extension does not use any assigned
 standards.
@@ -1887,7 +1429,8 @@ Release: August 11, 2025
 
 19 / 120
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Remote Desktop Protocol: Remote Programs Virtual Channel
 Extension messages are transported and Remote Desktop Protocol: Remote Programs Virtual Channel
@@ -1895,7 +1438,7 @@ Extension message syntax.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The Remote Desktop Protocol: Remote Programs Virtual Channel Extension messages are passed
 between the client and server, embedded within an RDP connection, as described in section 1.3.1 for
@@ -1905,9 +1448,9 @@ The protocol uses the TCP connection created by the Remote Desktop Protocol: Bas
 Graphics Remoting (as specified in [MS-RDPBCGR] section 2.1) and does not establish any transport
 connections.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Updates to the Remote Desktop Protocol: Basic Connectivity and Graphics
+#### 2.2.1 Updates to the Remote Desktop Protocol: Basic Connectivity and Graphics
 
 Remoting Specification
 
@@ -1922,13 +1465,13 @@ related information on the server. The following sections outline the capability
 that make up the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting extensions for
 RAIL.
 
-2.2.1.1  Capability Sets
+##### 2.2.1.1 Capability Sets
 
 A RAIL server and client indicate support for RAIL by exchanging two capability sets during the
 capabilities negotiation phase of RDP connection establishment. These sets are outlined in the
 following sections.
 
-2.2.1.1.1 Remote Programs Capability Set
+###### 2.2.1.1.1 Remote Programs Capability Set
 
 The Remote Programs Capability Set is sent by the server in the Demand Active PDU and by the client
 in the Confirm Active PDU, as specified in [MS-RDPBCGR] section 2.2.1.13. It indicates that the client
@@ -1962,7 +1505,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-LengthCapability (2 bytes): An unsigned 16-bit integer. The combined length of the
+
+LengthCapability (2 bytes): An unsigned 16-bit integer. The combined length of the
 
 CapabilitySetType, LengthCapability, and RailSupportLevel fields, in bytes.
 
@@ -2076,7 +1620,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-2.2.1.1.2 Window List Capability Set
+
+###### 2.2.1.1.2 Window List Capability Set
 
 The Window List Capability Set is sent by the server in the Demand Active PDU and by the client in the
 Confirm Active PDU, as specified in [MS-RDPBCGR] section 2.2.1.13. It indicates that the client and
@@ -2166,13 +1711,14 @@ Release: August 11, 2025
 
 22 / 120
 
-The server maintains an icon cache and refers to it to avoid sending duplicate icon information
+
+The server maintains an icon cache and refers to it to avoid sending duplicate icon information
 (see section 2.2.1.3.1.2.3). The client also maintains an icon cache and refers to it when the
 server sends across a Cached Icon Window Information Order.
 
-2.2.1.2  Common Structures
+##### 2.2.1.2 Common Structures
 
-2.2.1.2.1 Unicode String (UNICODE_STRING)
+###### 2.2.1.2.1 Unicode String (UNICODE_STRING)
 
 The UNICODE_STRING packet is used to pack a variable-length Unicode string.
 
@@ -2201,7 +1747,7 @@ String (variable): Optional and of variable length. A non-null-terminated Unicod
 
 The number of characters in the string is equal to the value of CbString divided by 2.
 
-2.2.1.2.2 Rectangle (TS_RECTANGLE_16)
+###### 2.2.1.2.2 Rectangle (TS_RECTANGLE_16)
 
 The TS_RECTANGLE_16 structure describes a rectangle by using its top-left and bottom-right
 coordinates. The units depend on the context in which this structure is used.
@@ -2235,7 +1781,7 @@ Bottom (2 bytes): An unsigned 16-bit integer. The y-coordinate of the rectangle'
 
 corner.
 
-2.2.1.2.3 Icon Info (TS_ICON_INFO)
+###### 2.2.1.2.3 Icon Info (TS_ICON_INFO)
 
 The TS_ICON_INFO packet describes an icon.
 
@@ -2267,7 +1813,8 @@ Release: August 11, 2025
 
 23 / 120
 
-CbColorTable (optional)
+
+CbColorTable (optional)
 
 CbBitsMask
 
@@ -2329,7 +1876,7 @@ BitsColor (variable): The image data for the icon's color image. The length, in 
 
 equal to the value of CbBitsColor. This field is optional.
 
-2.2.1.2.4 Cached Icon Info (TS_CACHED_ICON_INFO)
+###### 2.2.1.2.4 Cached Icon Info (TS_CACHED_ICON_INFO)
 
 The TS_CACHED_ICON_INFO packet describes a cached icon.
 
@@ -2340,7 +1887,8 @@ Release: August 11, 2025
 
 24 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2364,13 +1912,13 @@ CacheId (1 byte): An unsigned 8-bit integer. The index of the icon cache contain
 This value MUST have been previously specified by the server in the Icon Info structure of a
 Window Information Order or Icon structure of a New or Existing Notification Icon.
 
-2.2.1.3  Windowing Alternate Secondary Drawing Orders
+##### 2.2.1.3 Windowing Alternate Secondary Drawing Orders
 
-2.2.1.3.1 Window Information
+###### 2.2.1.3.1 Window Information
 
 Window Information Orders specify the state of windows on the server.
 
-2.2.1.3.1.1  Common Header (TS_WINDOW_ORDER_HEADER)
+###### 2.2.1.3.1.1 Common Header (TS_WINDOW_ORDER_HEADER)
 
 The TS_WINDOW_ORDER_HEADER packet contains information common to every Windowing
 Alternate Secondary Drawing Order describing a window.
@@ -2412,9 +1960,9 @@ WindowId (4 bytes): An unsigned 32-bit integer. The ID of the window being descr
 
 drawing order. It is generated by the server and is unique for every window in the session.
 
-2.2.1.3.1.2  Orders
+###### 2.2.1.3.1.2 Orders
 
-2.2.1.3.1.2.1  New or Existing Window
+###### 2.2.1.3.1.2.1 New or Existing Window
 
 A Window Information Order is generated by the server whenever a new window is created on the
 server or when a property on a new or existing window is updated. The window metrics sent in this
@@ -2428,7 +1976,8 @@ Release: August 11, 2025
 
 25 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2515,7 +2064,8 @@ Release: August 11, 2025
 
 26 / 120
 
-...
+
+...
 
 NumWindowRects (optional)
 
@@ -2627,7 +2177,8 @@ Release: August 11, 2025
 
 27 / 120
 
-Value
+
+Value
 
 0x08000000
 
@@ -2754,7 +2305,8 @@ Release: August 11, 2025
 
 28 / 120
 
-ExtendedStyle (4 bytes): An unsigned 32-bit integer. Extended window style information. For more
+
+ExtendedStyle (4 bytes): An unsigned 32-bit integer. Extended window style information. For more
 
 information about extended window styles, see [MSDN-CREATEWINEX].
 
@@ -2836,7 +2388,8 @@ Release: August 11, 2025
 
 29 / 120
 
-This field is present only if the WINDOW_ORDER_FIELD_RESIZE_MARGIN_X flag is set in the
+
+This field is present only if the WINDOW_ORDER_FIELD_RESIZE_MARGIN_X flag is set in the
 FieldsPresentFlags field of TS_WINDOW_ORDER_HEADER.
 
 Resize margins SHOULD be used to extend the window geometry (defined by the
@@ -2910,7 +2463,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-has the WINDOW_ORDER_FIELD_ROOTPARENT flag is set in the FieldsPresentFlags field of the
+
+has the WINDOW_ORDER_FIELD_ROOTPARENT flag is set in the FieldsPresentFlags field of the
 TS_WINDOW_ORDER_HEADER packet (section 2.2.1.3.1.1).
 
 WindowOffsetX (4 bytes): A 32-bit signed integer. The X (horizontal) offset from the top-left corner
@@ -2985,7 +2539,8 @@ Release: August 11, 2025
 
 31 / 120
 
-This field is present only if the WINDOW_ORDER_FIELD_VISOFFSET flag is set in the
+
+This field is present only if the WINDOW_ORDER_FIELD_VISOFFSET flag is set in the
 FieldsPresentFlags field of TS_WINDOW_ORDER_HEADER.
 
 NumVisibilityRects (2 bytes): An unsigned 16-bit integer. A count of rectangles describing the
@@ -3059,7 +2614,8 @@ Release: August 11, 2025
 
 32 / 120
 
-Value  Meaning
+
+Value  Meaning
 
 0x01
 
@@ -3076,7 +2632,7 @@ Anchor to the bottom edge.
 This field is present only if the WINDOW_ORDER_FIELD_APPBAR_EDGE flag is set in the
 FieldsPresentFlags field of TS_WINDOW_ORDER_HEADER.
 
-2.2.1.3.1.2.2 Window Icon
+###### 2.2.1.3.1.2.2 Window Icon
 
 The Window Icon packet is a Window Information Order generated by the server when a new or
 existing window sets or updates its associated icon.
@@ -3163,7 +2719,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-2.2.1.3.1.2.3  Cached Icon
+
+###### 2.2.1.3.1.2.3 Cached Icon
 
 The Cached Icon Window Information Order is generated by the server when a new or existing
 window sets or updates the icon in its title bar or in the Alt-Tab dialog box. If the icon information was
@@ -3243,7 +2800,7 @@ CachedIcon (3 bytes): Three bytes. TS_CACHED_ICON_INFO (section 2.2.1.2.4) struc
 
 Describes a cached icon on the client.
 
-2.2.1.3.1.2.4  Deleted Window
+###### 2.2.1.3.1.2.4 Deleted Window
 
 The Deleted Window Information Order is generated by the server whenever an existing window is
 destroyed on the server.
@@ -3268,7 +2825,8 @@ Release: August 11, 2025
 
 34 / 120
 
-...
+
+...
 
 ...
 
@@ -3294,11 +2852,11 @@ WINDOW_ORDER_STATE_DELETED
 Indicates that the window is deleted. If this flag is set, the order MUST
 NOT contain any other information.
 
-2.2.1.3.2 Notification Icon Information
+###### 2.2.1.3.2 Notification Icon Information
 
 Notification Icon Information orders specify the state of the notification icon on the server.
 
-2.2.1.3.2.1  Common Header (TS_NOTIFYICON_ORDER_HEADER)
+###### 2.2.1.3.2.1 Common Header (TS_NOTIFYICON_ORDER_HEADER)
 
 The TS_NOTIFYICON_ORDER_HEADER packet contains information common to every Windowing
 Alternate Secondary Drawing Order specifying a notification icon.
@@ -3349,7 +2907,7 @@ NotifyIconId (4 bytes): An unsigned 32-bit integer. The ID of the notification i
 drawing order. The ID is generated by the application that owns the notification icon and SHOULD
 be unique for every notification icon owned by the application.
 
-2.2.1.3.2.2  Orders
+###### 2.2.1.3.2.2 Orders
 
 35 / 120
 
@@ -3358,7 +2916,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-2.2.1.3.2.2.1  New or Existing Notification Icons
+
+###### 2.2.1.3.2.2.1 New or Existing Notification Icons
 
 The Notification Icon Information Order packet is generated by the server whenever a new
 notification icon is created on the server or when an existing notification icon is updated.
@@ -3451,7 +3010,8 @@ Release: August 11, 2025
 
 36 / 120
 
-Value
+
+Value
 
 0x00000002
 
@@ -3542,7 +3102,8 @@ Release: August 11, 2025
 
 37 / 120
 
-CachedIcon (3 bytes): Three bytes. A TS_CACHED_ICON_INFO structure. Specifies the notification
+
+CachedIcon (3 bytes): Three bytes. A TS_CACHED_ICON_INFO structure. Specifies the notification
 
 icon as a cached icon on the client.
 
@@ -3551,7 +3112,7 @@ FieldsPresentFlags field of TS_NOTIFYICON_ORDER_HEADER. Only one of Icon and
 CachedIcon fields SHOULD be present in the Notification Icon Order. If the
 WINDOW_ORDER_STATE_NEW flag is set, only one of these fields MUST be present.
 
-2.2.1.3.2.2.2  Deleted Notification Icons
+###### 2.2.1.3.2.2.2 Deleted Notification Icons
 
 The server generates a Notification Icon Information (section 2.2.1.3.2) order packet whenever an
 existing notification icon is deleted on the server.
@@ -3597,7 +3158,7 @@ WINDOW_ORDER_STATE_DELETED
 Indicates that the window is deleted. This flag MUST be set, and the
 order MUST NOT contain any other information.
 
-2.2.1.3.2.2.3  Notification Icon Balloon Tooltip (TS_NOTIFY_ICON_INFOTIP)
+###### 2.2.1.3.2.2.3 Notification Icon Balloon Tooltip (TS_NOTIFY_ICON_INFOTIP)
 
 The TS_NOTIFY_ICON_INFOTIP structure specifies the balloon tooltip of a notification icon.
 
@@ -3629,7 +3190,8 @@ Release: August 11, 2025
 
 38 / 120
 
-...
+
+...
 
 Timeout (4 bytes): An unsigned 32-bit integer. The timeout in milliseconds for the notification icon’s
 
@@ -3688,11 +3250,11 @@ Title (variable): Variable length. A UNICODE_STRING specifying the title of the 
 
 maximum length of the tooltip title string is 126 bytes.
 
-2.2.1.3.3 Desktop Information
+###### 2.2.1.3.3 Desktop Information
 
 Desktop Information Orders specify the state of the desktop on the server.
 
-2.2.1.3.3.1  Common Header (TS_DESKTOP_ORDER_HEADER)
+###### 2.2.1.3.3.1 Common Header (TS_DESKTOP_ORDER_HEADER)
 
 The TS_DESKTOP_ORDER_HEADER packet contains information common to every order specifying the
 desktop.
@@ -3729,13 +3291,14 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-FieldsPresentFlags (4 bytes): An unsigned 32-bit integer. The flags indicating which fields are
+
+FieldsPresentFlags (4 bytes): An unsigned 32-bit integer. The flags indicating which fields are
 
 present in the packet. See Actively Monitored Desktop for values and use.
 
-2.2.1.3.3.2  Orders
+###### 2.2.1.3.3.2 Orders
 
-2.2.1.3.3.2.1  Actively Monitored Desktop
+###### 2.2.1.3.3.2.1 Actively Monitored Desktop
 
 The Actively Monitored Desktop packet contains information about the actively monitored desktop.
 
@@ -3833,7 +3396,8 @@ Release: August 11, 2025
 
 40 / 120
 
-ActiveWindowId (4 bytes): Optional. An unsigned 32-bit integer. The ID of the currently active
+
+ActiveWindowId (4 bytes): Optional. An unsigned 32-bit integer. The ID of the currently active
 
 window on the server. This field is present if and only if the
 WINDOW_ORDER_FIELD_DESKTOP_ACTIVEWND flag is set in the FieldsPresentFlags field of the
@@ -3852,7 +3416,7 @@ This field is present if and only if the NumWindowIds field is greater than 0 an
 WINDOW_ORDER_FIELD_DESKTOP_ZORDER flag is set in the FieldsPresentFlags field of the
 TS_DESKTOP_ORDER_HEADER packet (section 2.2.1.3.3.1).
 
-2.2.1.3.3.2.2  Non-Monitored Desktop
+###### 2.2.1.3.3.2.2 Non-Monitored Desktop
 
 The Non-Monitored Desktop packet is generated by the server when it is not actively monitoring the
 current desktop on the server.
@@ -3893,13 +3457,13 @@ WINDOW_ORDER_FIELD_DESKTOP_NONE
 Indicates that the server will not be sending information for the
 server's current input desktop. This flag MUST be set.
 
-2.2.2  Static Virtual Channel Protocol
+#### 2.2.2 Static Virtual Channel Protocol
 
 The RAIL Static Virtual Channel (named "RAIL") is responsible for communicating non–RDP specific
 data between the RAIL client and server. The following sections outline the messages that are
 transmitted over the virtual channel.
 
-2.2.2.1  Common Header (TS_RAIL_PDU_HEADER)
+##### 2.2.2.1 Common Header (TS_RAIL_PDU_HEADER)
 
 The TS_RAIL_PDU_HEADER packet contains information common to every RAIL Virtual Channel
 PDU.
@@ -3911,7 +3475,8 @@ Release: August 11, 2025
 
 41 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4046,7 +3611,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -4121,11 +3687,11 @@ Indicates a Caret Blink Information PDU (section
 
 orderLength (2 bytes): An unsigned 16-bit integer. The length of the Virtual Channel PDU, in bytes.
 
-2.2.2.2  Initialization Messages
+##### 2.2.2.2 Initialization Messages
 
 Initialization messages are exchanged between client and server at the start of a RAIL session.
 
-2.2.2.2.1 Handshake PDU (TS_RAIL_ORDER_HANDSHAKE)
+###### 2.2.2.2.1 Handshake PDU (TS_RAIL_ORDER_HANDSHAKE)
 
 The Handshake PDU is exchanged between the server and the client to establish that both endpoints
 are ready to begin RAIL mode. The server sends the Handshake PDU and the client responds with the
@@ -4152,7 +3718,7 @@ set to 0x0005 (TS_RAIL_ORDER_HANDSHAKE).
 
 buildNumber (4 bytes): An unsigned 32-bit integer. The build or version of the sending party.
 
-2.2.2.2.2 Client Information PDU (TS_RAIL_ORDER_CLIENTSTATUS)
+###### 2.2.2.2.2 Client Information PDU (TS_RAIL_ORDER_CLIENTSTATUS)
 
 43 / 120
 
@@ -4161,7 +3727,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-The Client Information PDU is sent from client to server and contains information about RAIL client
+
+The Client Information PDU is sent from client to server and contains information about RAIL client
 state and features supported by the client.
 
 0  1  2  3  4  5  6  7  8  9
@@ -4278,7 +3845,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -4286,7 +3854,7 @@ icons. Clients MUST still process icon
 PDUs as older server implementations
 may not support this flag.
 
-2.2.2.2.3 HandshakeEx PDU (TS_RAIL_ORDER_HANDSHAKE_EX)
+###### 2.2.2.2.3 HandshakeEx PDU (TS_RAIL_ORDER_HANDSHAKE_EX)
 
 The HandshakeEx PDU (instead of the Handshake PDU) is sent from the server to the client if both
 the client and the server specified support for it by including the
@@ -4376,7 +3944,8 @@ Text Scale Information PDU (section
 
 45 / 120
 
-Flag
+
+Flag
 
 Meaning
 
@@ -4409,9 +3978,9 @@ parameter flags are supported in the
 Client System Parameters Update
 PDU (section 2.2.2.4.1).<12>
 
-2.2.2.3  Program Launching Messages
+##### 2.2.2.3 Program Launching Messages
 
-2.2.2.3.1 Client Execute PDU (TS_RAIL_ORDER_EXEC)
+###### 2.2.2.3.1 Client Execute PDU (TS_RAIL_ORDER_EXEC)
 
 The Client Execute PDU is sent from a client to a server to request that a remote application launch
 on the server.
@@ -4464,7 +4033,8 @@ Release: August 11, 2025
 
 46 / 120
 
-1
+
+1
 
 2
 
@@ -4590,7 +4160,8 @@ Release: August 11, 2025
 
 47 / 120
 
-2.2.2.3.2 Server Execute Result PDU (TS_RAIL_ORDER_EXEC_RESULT)
+
+###### 2.2.2.3.2 Server Execute Result PDU (TS_RAIL_ORDER_EXEC_RESULT)
 
 The Server Execute Result PDU is sent from server to client in response to a Client Execute PDU
 request, and contains the result of the server's attempt to launch the requested executable.
@@ -4700,7 +4271,8 @@ Release: August 11, 2025
 
 48 / 120
 
-Padding (2 bytes): An unsigned 16-bit integer. Not used.
+
+Padding (2 bytes): An unsigned 16-bit integer. Not used.
 
 ExeOrFileLength (2 bytes): An unsigned 16-bit integer. Specifies the length of the ExeOrFile field
 
@@ -4710,9 +4282,9 @@ ExeOrFile (variable): The executable or file that was attempted to be launched. 
 from the ExeOrFile field of the Client Execute PDU. The server sets this field to enable the client
 to match the Client Execute PDU with the Server Execute Result PDU.
 
-2.2.2.4  Local Client System Parameters Update Messages
+##### 2.2.2.4 Local Client System Parameters Update Messages
 
-2.2.2.4.1 Client System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)
+###### 2.2.2.4.1 Client System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)
 
 The Client System Parameters Update PDU is sent from the client to the server to synchronize system
 parameters on the server with those on the client.
@@ -4804,7 +4376,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -4922,7 +4495,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -5029,7 +4603,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 RAIL_SPI_SYSTEM_USES_LIGHT_THEME
 
@@ -5143,7 +4718,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 0xF000
 
@@ -5281,7 +4857,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -5365,7 +4942,7 @@ Size of Body field: 4 bytes.
 
 1 (TRUE): Applications use light mode by default.
 
-2.2.2.4.2 High Contrast System Information Structure (TS_HIGHCONTRAST)
+###### 2.2.2.4.2 High Contrast System Information Structure (TS_HIGHCONTRAST)
 
 The TS_HIGHCONTRAST packet defines parameters for the high-contrast accessibility feature.
 
@@ -5395,7 +4972,8 @@ Release: August 11, 2025
 
 54 / 120
 
-Flags (4 bytes): An unsigned 32-bit integer that is read by the server and used to set the High
+
+Flags (4 bytes): An unsigned 32-bit integer that is read by the server and used to set the High
 
 Contrast parameters.<18>
 
@@ -5444,7 +5022,7 @@ ColorScheme (variable): UNICODE_STRING. Variable length. The Windows-specific na
 
 High Contrast Color Scheme, specified as a null-terminated UNICODE_STRING.<19>
 
-2.2.2.4.3 Filter Keys System Information Structure (TS_FILTERKEYS)
+###### 2.2.2.4.3 Filter Keys System Information Structure (TS_FILTERKEYS)
 
 The TS_FILTERKEYS packet defines parameters for the Filter Keys accessibility feature.
 
@@ -5503,7 +5081,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Flag
+
+Flag
 
 Meaning
 
@@ -5550,7 +5129,7 @@ BounceTime (4 bytes): An unsigned 32-bit integer. The length of time, in millise
 
 elapse after releasing a key before a subsequent press of the same key is accepted.
 
-2.2.2.4.4 Toggle Keys System Information Structure (TS_TOGGLEKEYS)
+###### 2.2.2.4.4 Toggle Keys System Information Structure (TS_TOGGLEKEYS)
 
 The TS_TOGGLEKEYS packet defines parameters for the Toggle Keys accessibility feature.
 
@@ -5615,7 +5194,8 @@ Release: August 11, 2025
 
 56 / 120
 
-2.2.2.4.5 Sticky Keys System Information Structure (TS_STICKYKEYS)
+
+###### 2.2.2.4.5 Sticky Keys System Information Structure (TS_STICKYKEYS)
 
 The TS_STICKYKEYS packet defines parameters for the Sticky Keys accessibility feature.
 
@@ -5744,7 +5324,8 @@ Release: August 11, 2025
 
 57 / 120
 
-Flag
+
+Flag
 
 Meaning
 
@@ -5808,7 +5389,7 @@ The left WINDOWS key is latched.
 
 The right WINDOWS key is latched.
 
-2.2.2.4.6 Accent Color System Information Structure (TS_ACCENTCOLOR)
+###### 2.2.2.4.6 Accent Color System Information Structure (TS_ACCENTCOLOR)
 
 The TS_ACCENTCOLOR structure defines parameters for the accent color accessibility feature.
 
@@ -5844,7 +5425,8 @@ Release: August 11, 2025
 
 58 / 120
 
-ColorizationGlassAttribute
+
+ColorizationGlassAttribute
 
 ColorPrevalence
 
@@ -5939,7 +5521,8 @@ Release: August 11, 2025
 
 59 / 120
 
-Flag
+
+Flag
 
 Meaning
 
@@ -6002,9 +5585,9 @@ AccentPalette (variable): An unsigned, 32-bit integer. The Windows-specific name
 
 value under HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent.
 
-2.2.2.5  Server System Parameters Update Messages
+##### 2.2.2.5 Server System Parameters Update Messages
 
-2.2.2.5.1 Server System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)
+###### 2.2.2.5.1 Server System Parameters Update PDU (TS_RAIL_ORDER_SYSPARAM)
 
 The Server System Parameters Update PDU is sent from the server to client to synchronize system
 parameters on the client with those on the server.
@@ -6031,7 +5614,8 @@ Release: August 11, 2025
 
 60 / 120
 
-Body
+
+Body
 
 Header (4 bytes): A TS_RAIL_PDU_HEADER structure. The orderType field of header MUST be set
 
@@ -6087,12 +5671,12 @@ Size of Body field: 1 byte.
 mode. Nonzero (TRUE): Lock the desktop when switching out of screen
 saver mode.
 
-2.2.2.6  Local Client Event Messages
+##### 2.2.2.6 Local Client Event Messages
 
 These messages are generated by the client whenever a window or notification icon event occurs on
 the client side that is not communicated via the RDP channel.
 
-2.2.2.6.1 Client Activate PDU (TS_RAIL_ORDER_ACTIVATE)
+###### 2.2.2.6.1 Client Activate PDU (TS_RAIL_ORDER_ACTIVATE)
 
 The Client Activate PDU is sent from client to server when a local RAIL window on the client is
 activated or deactivated.
@@ -6125,7 +5709,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-WindowId (4 bytes): An unsigned 32-bit integer. The ID of the associated window on the server
+
+WindowId (4 bytes): An unsigned 32-bit integer. The ID of the associated window on the server
 
 that is to be activated or deactivated.
 
@@ -6133,7 +5718,7 @@ Enabled (1 byte): An unsigned 8-bit integer. Indicates whether the window is to 
 
 = nonzero) or deactivated (value = 0).
 
-2.2.2.6.2 Client System Menu PDU (TS_RAIL_ORDER_SYSMENU)
+###### 2.2.2.6.2 Client System Menu PDU (TS_RAIL_ORDER_SYSMENU)
 
 The Client System Menu PDU packet is sent from the client to the server when a local RAIL window
 on the client receives a command to display its System menu. This command is forwarded to the
@@ -6174,7 +5759,7 @@ Top (2 bytes): A 16-bit signed integer. The y-coordinate of the top-left corner 
 
 menu SHOULD be displayed. Specified in screen coordinates.
 
-2.2.2.6.3 Client System Command PDU (TS_RAIL_ORDER_SYSCOMMAND)
+###### 2.2.2.6.3 Client System Command PDU (TS_RAIL_ORDER_SYSCOMMAND)
 
 The Client System Command PDU packet is sent from the client to the server when a local RAIL
 window on the client receives a command to perform an action on the window, such as minimize or
@@ -6216,7 +5801,8 @@ Release: August 11, 2025
 
 62 / 120
 
-Value
+
+Value
 
 Meaning
 
@@ -6268,7 +5854,7 @@ Perform the default action of the window's system menu.
 
 0xF160
 
-2.2.2.6.4 Client Notify Event PDU (TS_RAIL_ORDER_NOTIFY_EVENT)
+###### 2.2.2.6.4 Client Notify Event PDU (TS_RAIL_ORDER_NOTIFY_EVENT)
 
 The Client Notify Event PDU packet is sent from a client to a server when a local RAIL Notification
 Icon on the client receives a keyboard or mouse message from the user. This notification is forwarded
@@ -6316,7 +5902,8 @@ Release: August 11, 2025
 
 63 / 120
 
-Value
+
+Value
 
 Meaning
 
@@ -6420,7 +6007,7 @@ User dismissed the balloon by clicking the mouse. This message is sent only for
 notification icons that follow Windows 2000 behavior (see Version field in
 section 2.2.1.3.2.2.1).
 
-2.2.2.6.5 Client Get Application ID PDU (TS_RAIL_ORDER_GET_APPID_REQ)
+###### 2.2.2.6.5 Client Get Application ID PDU (TS_RAIL_ORDER_GET_APPID_REQ)
 
 The Client Get Application ID PDU is sent from a client to a server. This PDU requests information from
 the server about the Application ID that the window SHOULD<21> have on the client.
@@ -6434,7 +6021,8 @@ Release: August 11, 2025
 
 64 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6457,9 +6045,9 @@ WindowId (4 bytes): An unsigned 32-bit integer specifying the ID of the associat
 
 server that requires needs an Application ID.
 
-2.2.2.7  Window Move Messages
+##### 2.2.2.7 Window Move Messages
 
-2.2.2.7.1 Server Min Max Info PDU (TS_RAIL_ORDER_MINMAXINFO)
+###### 2.2.2.7.1 Server Min Max Info PDU (TS_RAIL_ORDER_MINMAXINFO)
 
 The Server Min Max Info PDU is sent from a server to a client when a window move or resize on the
 server is being initiated. This PDU contains information about the minimum and maximum extents to
@@ -6527,7 +6115,8 @@ Release: August 11, 2025
 
 65 / 120
 
-MinTrackHeight (2 bytes): A signed 16-bit integer. The minimum height to which the window can
+
+MinTrackHeight (2 bytes): A signed 16-bit integer. The minimum height to which the window can
 
 be resized.
 
@@ -6539,7 +6128,7 @@ MaxTrackHeight (2 bytes): A signed 16-bit integer. The maximum height to which t
 
 be resized.
 
-2.2.2.7.2 Server Move/Size Start PDU (TS_RAIL_ORDER_LOCALMOVESIZE)
+###### 2.2.2.7.2 Server Move/Size Start PDU (TS_RAIL_ORDER_LOCALMOVESIZE)
 
 The Server Move/Size Start PDU packet is sent by the server when a window on the server is
 beginning a move or resize. The client uses this information to initiate a local move or resize of the
@@ -6631,7 +6220,8 @@ Release: August 11, 2025
 
 66 / 120
 
-Value
+
+Value
 
 Meaning
 
@@ -6751,7 +6341,8 @@ Release: August 11, 2025
 
 67 / 120
 
-Value
+
+Value
 
 Meaning
 
@@ -6822,7 +6413,7 @@ The y-coordinate of the last mouse button-down.
 
 0x000B
 
-2.2.2.7.3 Server Move/Size End PDU (TS_RAIL_ORDER_LOCALMOVESIZE)
+###### 2.2.2.7.3 Server Move/Size End PDU (TS_RAIL_ORDER_LOCALMOVESIZE)
 
 The Server Move/Size End PDU is sent by the server when a window on the server is completing a
 move or resize. The client uses this information to end a local move/resize of the corresponding local
@@ -6862,7 +6453,8 @@ Release: August 11, 2025
 
 68 / 120
 
-WindowId (4 bytes): An unsigned 32-bit integer. The ID of the window on the server that is being
+
+WindowId (4 bytes): An unsigned 32-bit integer. The ID of the window on the server that is being
 
 moved or resized.
 
@@ -6950,7 +6542,7 @@ TopLeftY (2 bytes): A signed 16-bit integer. The y-coordinate of the moved or re
 
 left corner.
 
-2.2.2.7.4 Client Window Move PDU (TS_RAIL_ORDER_WINDOWMOVE)
+###### 2.2.2.7.4 Client Window Move PDU (TS_RAIL_ORDER_WINDOWMOVE)
 
 The Client Window Move PDU packet is sent from the client to the server when a local window is
 ending a move or resize. The client communicates the locally moved or resized window's position to
@@ -6965,7 +6557,8 @@ Release: August 11, 2025
 
 69 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7012,7 +6605,7 @@ Bottom (2 bytes): A signed 16-bit integer. The y-coordinate of the bottom-right 
 
 window's new position.
 
-2.2.2.7.5 Client Window Snap PDU (TS_RAIL_ORDER_SNAP_ARRANGE)
+###### 2.2.2.7.5 Client Window Snap PDU (TS_RAIL_ORDER_SNAP_ARRANGE)
 
 The Client Window Snap PDU packet is sent from the client to the server when a local window is
 repositioned by the local window manager due to the use of a window arrangement feature, such as
@@ -7058,7 +6651,8 @@ Release: August 11, 2025
 
 70 / 120
 
-WindowId (4 bytes): An unsigned 32-bit integer. The ID of the window on the server corresponding
+
+WindowId (4 bytes): An unsigned 32-bit integer. The ID of the window on the server corresponding
 
 to the local window that was snapped.
 
@@ -7078,9 +6672,9 @@ Bottom (2 bytes): A signed 16-bit integer. The y-coordinate of the bottom-right 
 
 window's new position.
 
-2.2.2.8  Server Application ID Response
+##### 2.2.2.8 Server Application ID Response
 
-2.2.2.8.1 Server Get Application ID Response PDU
+###### 2.2.2.8.1 Server Get Application ID Response PDU
 
 (TS_RAIL_ORDER_GET_APPID_RESP)
 
@@ -7124,7 +6718,7 @@ ApplicationId (520 bytes): A null-terminated string of Unicode characters specif
 Application ID that the Client SHOULD associate with its window, if it supports using the
 Application ID for identifying and grouping windows.
 
-2.2.2.8.2 Server Get Application ID Extended Response PDU
+###### 2.2.2.8.2 Server Get Application ID Extended Response PDU
 (TS_RAIL_ORDER_GET_APPID_RESP_EX)
 
 The Server Get Application ID Extended Response PDU is sent from a server to a client as a
@@ -7140,7 +6734,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7195,9 +6790,9 @@ ProcessImageName (520 bytes): A null-terminated string of Unicode characters spe
 image name of the process associated with the window on the server whose Application ID is
 being sent to the client.
 
-2.2.2.9  Language Bar Messages
+##### 2.2.2.9 Language Bar Messages
 
-2.2.2.9.1 Language Bar Information PDU (TS_RAIL_ORDER_LANGBARINFO)
+###### 2.2.2.9.1 Language Bar Information PDU (TS_RAIL_ORDER_LANGBARINFO)
 
 The Language Bar Information PDU is used to set the language bar status. It is sent from a client to a
 server or a server to a client, but only when both support the Language Bar docking capability
@@ -7211,7 +6806,8 @@ Release: August 11, 2025
 
 72 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7330,13 +6926,14 @@ Release: August 11, 2025
 
 73 / 120
 
-2.2.2.10
 
-Language Sync Messages
+##### 2.2.2.10 Language Sync Messages
 
-2.2.2.10.1
 
-Language Profile Information PDU
+
+###### 2.2.2.10.1 Language Profile Information PDU
+
+
 
 (TS_RAIL_ORDER_LANGUAGEIMEINFO)
 
@@ -7421,7 +7018,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-LanguageProfileCLSID (16 bytes): A globally unique identifier (section 2.2.2.10.1.1) that uniquely
+
+LanguageProfileCLSID (16 bytes): A globally unique identifier (section 2.2.2.10.1.1) that uniquely
 identifies the text service of the client. This field MUST be set to GUID_NULL if the ProfileType
 field is set to TF_PROFILETYPE_KEYBOARDLAYOUT (0x0002).
 
@@ -7539,7 +7137,8 @@ Release: August 11, 2025
 
 75 / 120
 
-Value
+
+Value
 
 GUID_GUID_PROFILE_MSIME_JPN
 
@@ -7564,7 +7163,7 @@ known as the "HKL" (for example, 0x00010409 identifies a "United States-Dvorak" 
 layout, while 0x00020418 is a "Romanian (Programmers)" keyboard layout). For a list of input
 locale identifiers, see [MSFT-DIL].
 
-2.2.2.10.1.1  Globally Unique Identifier (GUID)
+###### 2.2.2.10.1.1 Globally Unique Identifier (GUID)
 
 The GUID structure contains 128 bits that represent a globally unique identifier that can be used to
 provide a distinctive reference number, as defined in [MS-DTYP] section 2.3.4.
@@ -7624,9 +7223,9 @@ codecGUID10 (1 byte): An 8-bit, unsigned integer. The tenth GUID component.
 
 codecGUID11 (1 byte): An 8-bit, unsigned integer. The eleventh GUID component.
 
-2.2.2.10.2
+###### 2.2.2.10.2 Compartment Status Information PDU
 
-Compartment Status Information PDU
+
 (TS_RAIL_ORDER_COMPARTMENTINFO_BODY)
 
 The Compartment Status Information PDU is used to send the current input method editor (IME)
@@ -7639,7 +7238,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-client and server both support this capability (TS_RAIL_LEVEL_LANGUAGE_IME_SYNC_SUPPORTED).
+
+client and server both support this capability (TS_RAIL_LEVEL_LANGUAGE_IME_SYNC_SUPPORTED).
 This PDU is used to send the current compartment values of the client or server and is sent only if the
 current language profile type is TF_PROFILETYPE_INPUTPROCESSOR (0x0001).
 
@@ -7745,7 +7345,8 @@ Release: August 11, 2025
 
 77 / 120
 
-Value
+
+Value
 
 0x00000100
 
@@ -7836,13 +7437,13 @@ Indicates that the KANA input mode is activated.
 
 0x00000001
 
-2.2.2.11
+##### 2.2.2.11 Z-Order Sync Messages
 
-Z-Order Sync Messages
 
-2.2.2.11.1
 
-Server Z-Order Sync Information PDU
+###### 2.2.2.11.1 Server Z-Order Sync Information PDU
+
+
 
 (TS_RAIL_ORDER_ZORDER_SYNC)
 
@@ -7856,7 +7457,8 @@ Release: August 11, 2025
 
 78 / 120
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7880,11 +7482,11 @@ WindowIdMarker (4 bytes): An unsigned 32-bit integer. Indicates the ID of the ma
 (section 3.3.1.3), which is used to manage the activation of RAIL windows as specified in section
 3.2.5.2.9.2.
 
-2.2.2.12
+##### 2.2.2.12 Window Cloak State Sync Messages
 
-Window Cloak State Sync Messages
 
-2.2.2.12.1  Window Cloak State Change PDU (TS_RAIL_ORDER_CLOAK)
+
+###### 2.2.2.12.1 Window Cloak State Change PDU (TS_RAIL_ORDER_CLOAK)
 
 Windows are either in a cloaked or uncloaked state. Changes in the cloak state of a RAIL window on
 the client, or a remoted window on the server, are communicated by Window Cloak State Change
@@ -7942,19 +7544,20 @@ Release: August 11, 2025
 
 79 / 120
 
-Value  Meaning
+
+Value  Meaning
 
 0x01
 
 The window SHOULD be cloaked.
 
-2.2.2.13
+##### 2.2.2.13 Power Display Request Messages
 
-Power Display Request Messages
 
-2.2.2.13.1
 
-Power Display Request PDU
+###### 2.2.2.13.1 Power Display Request PDU
+
+
 
 (TS_RAIL_ORDER_POWER_DISPLAY_REQUEST)
 
@@ -8000,13 +7603,13 @@ The display-required power request state is active, which means the
 display of the device should remain in the powered-on state even if there
 is no user input for an extended period.
 
-2.2.2.14
+##### 2.2.2.14 Server Taskbar State Messages
 
-Server Taskbar State Messages
 
-2.2.2.14.1
 
-Taskbar Tab Info PDU (TS_RAIL_ORDER_TASKBARINFO)
+###### 2.2.2.14.1 Taskbar Tab Info PDU (TS_RAIL_ORDER_TASKBARINFO)
+
+
 
 The Taskbar Tab Info PDU is sent from the server to the client when a remote tabbed application
 adds, removes, or changes the state of a taskbar tab. It is sent only when the client advertises
@@ -8035,7 +7638,8 @@ Release: August 11, 2025
 
 80 / 120
 
-WindowIdTab
+
+WindowIdTab
 
 Body
 
@@ -8143,13 +7747,14 @@ Release: August 11, 2025
 
 81 / 120
 
-2.2.2.15
 
-Accessibility Messages
+##### 2.2.2.15 Accessibility Messages
 
-2.2.2.15.1
 
-Text Scale Information PDU (TS_RAIL_ORDER_TEXTSCALEINFO)
+
+###### 2.2.2.15.1 Text Scale Information PDU (TS_RAIL_ORDER_TEXTSCALEINFO)
+
+
 
 The Text Scale Information PDU is sent from the client to the server during the connection
 establishment phase and when the client system’s text scale factor is changed. The client
@@ -8181,9 +7786,9 @@ TextScaleFactor (4 bytes): A 32-bit integer. Indicates the text scale factor ran
 
 225, inclusive.
 
-2.2.2.15.2
+###### 2.2.2.15.2 Caret Blink Information PDU (TS_RAIL_ORDER_CARETBLINKINFO)
 
-Caret Blink Information PDU (TS_RAIL_ORDER_CARETBLINKINFO)
+
 
 The Caret Blink Information PDU is sent from the client to the server during the connection
 establishment phase and when the client system’s caret blink rate is changed. The client
@@ -8223,17 +7828,18 @@ Release: August 11, 2025
 
 82 / 120
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-RDPERP].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
-3.1.1.1  Server State Machine
+##### 3.1.1.1 Server State Machine
 
 Figure 5: Server State Machine Diagram
 
@@ -8253,7 +7859,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-State
+
+State
 
 Description
 
@@ -8345,7 +7952,8 @@ Release: August 11, 2025
 
 84 / 120
 
-3.1.1.2  Icon Cache Support
+
+##### 3.1.1.2 Icon Cache Support
 
 If the implementation supports icon caching, then the following state is negotiated between the client
 and server as part of the Window List Capability Set order (section 2.2.1.1.2), and thereafter
@@ -8359,12 +7967,12 @@ Once an icon cache capability is established, individual entries in the cache ar
 Icon Info packet (section 2.2.1.2.4), containing a pair of index values designating the specific icon
 cache and the entry within that cache.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 A handshake timer MAY<28> be used by the client and/or server to wait for the Handshake PDU from
 the sending party.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The static virtual channel between the client and the server MUST be established before protocol
 operations can commence (see section 1.3.2.1 for an overview).
@@ -8375,22 +7983,22 @@ to establish that both endpoints are ready to begin RAIL mode.
 The Client Information PDU (as specified in section 2.2.2.2.2) is sent from a client to a server and
 contains information about RAIL client state and features supported by the client.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
  The following sections describe construction and processing of common messages.
 
-3.1.5.1  Constructing Handshake PDU
+##### 3.1.5.1 Constructing Handshake PDU
 
 The Handshake PDU is constructed during initialization of the remote applications integrated
 locally (RAIL) virtual channel. The buildNumber field SHOULD be initialized to the build or version of
 the sending party. This PDU (or alternatively the HandshakeEx PDU (section 2.2.2.2.3) if the sending
 party is the server) MUST be sent before any other PDU on the virtual channel.
 
-3.1.5.2  Processing Handshake PDU
+##### 3.1.5.2 Processing Handshake PDU
 
 The receiving party SHOULD check the buildNumber field to verify compatibility of the receiver with
 the sender.<29>
@@ -8406,18 +8014,19 @@ Release: August 11, 2025
 
 85 / 120
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 Upon the expiration of the handshake timer (as specified in section 3.1.2), the receiving party
 SHOULD drop the connection.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional events are used.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -8429,7 +8038,7 @@ Note: It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with what is described in this
 document.
 
-3.2.1.1  Windowing Support Level
+##### 3.2.1.1 Windowing Support Level
 
 The windowing support level determines whether the server is capable of supporting Windowing
 Alternate Secondary Drawing Orders and the following flags:
@@ -8437,24 +8046,24 @@ WINDOW_ORDER_FIELD_CLIENTAREASIZE, WINDOW_ORDER_FIELD_RPCONTENT, and
 WINDOW_ORDER_FIELD_ROOTPARENT. This is communicated to the client by the WndSupportLevel
 field, as part of the Window List Capability Set (section 2.2.1.1.2).
 
-3.2.1.2  Marker Window ID
+##### 3.2.1.2 Marker Window ID
 
 An ID that uniquely identifies the marker window (section 3.3.1.3) created by the server. The ID of
 this window is sent to the client in the Z-Order Sync Information PDU (section 2.2.2.11.1).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are used.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following sections describe construction and processing of client messages.
 
@@ -8465,9 +8074,10 @@ Release: August 11, 2025
 
 86 / 120
 
-3.2.5.1  Updates to RDP Core Protocol
 
-3.2.5.1.1 Constructing Client MCS Connect Initial PDU
+##### 3.2.5.1 Updates to RDP Core Protocol
+
+###### 3.2.5.1.1 Constructing Client MCS Connect Initial PDU
 
 The Client MCS Connect Initial PDU is constructed by the client during the connection establishment
 phase, as specified in [MS-RDPBCGR] section 3.2.5.3.3.
@@ -8477,12 +8087,12 @@ specified in [MS-RDPBCGR] section 2.2.1.3) MUST be present and MUST contain a CH
 structure in channelDefArray for the RAIL virtual channel. This informs the server that the client wants
 to use a static virtual channel for communicating RAIL virtual channel messages.<30>
 
-3.2.5.1.2 Processing Server MCS Connect Response PDU
+###### 3.2.5.1.2 Processing Server MCS Connect Response PDU
 
 This PDU is sent by the server in response to the Client MCS Connect Initial PDU. It is processed by
 the client, as specified in [MS-RDPBCGR] section 3.2.5.3.4.
 
-3.2.5.1.3 Constructing Client Info PDU
+###### 3.2.5.1.3 Constructing Client Info PDU
 
 The Client Info PDU (as specified in [MS-RDPBCGR] section 2.2.1.11) is constructed by the client
 during the connection establishment phase (as specified in [MS-RDPBCGR] section 3.2.5.3.11).
@@ -8496,7 +8106,7 @@ INFO_HIDEF_RAIL_SUPPORTED (0x02000000) flag set. This flag requests that the ser
 RAIL session in Enhanced RemoteApp mode. Setting this flag does not guarantee that Enhanced
 RemoteApp will be enabled since the server may not support this mode.
 
-3.2.5.1.4 Constructing Confirm Active PDU
+###### 3.2.5.1.4 Constructing Confirm Active PDU
 
 The Confirm Active PDU is constructed by the client in response to the Demand Active PDU, as
 specified in [MS-RDPBCGR] section 3.2.5.3.13.2.
@@ -8511,7 +8121,7 @@ as the minimum of the corresponding values supported by the client, and those re
 in the Demand Active PDU. The values MUST not exceed those reported by the server in the Demand
 Active PDU.
 
-3.2.5.1.5 Processing Demand Active PDU
+###### 3.2.5.1.5 Processing Demand Active PDU
 
 The Demand Active PDU is processed by the client during the connection establishment phase, as
 specified in [MS-RDPBCGR] section 3.2.5.3.13.1.
@@ -8531,11 +8141,12 @@ Release: August 11, 2025
 
 87 / 120
 
-The client SHOULD use the NumIconCaches and NumIconCacheEntries of the Window List Capability
+
+The client SHOULD use the NumIconCaches and NumIconCacheEntries of the Window List Capability
 Set to determine the values of NumIconCaches and NumIconCacheEntries reported by it in the
 Confirm Active PDU, as specified in section 3.2.5.1.4.
 
-3.2.5.1.6 Processing Window Information Orders
+###### 3.2.5.1.6 Processing Window Information Orders
 
 Window Information Orders (section 2.2.1.3.1) inform the client of the following types of window
 events on the server:
@@ -8599,7 +8210,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-previously sent in a Window Move/Snap PDU. This applies even if margins were not sent in the
+
+previously sent in a Window Move/Snap PDU. This applies even if margins were not sent in the
 Window Information Order.<31>
 
 Upon receipt of a Window Information Order for the edge of an application desktop toolbar window,
@@ -8607,7 +8219,7 @@ the client SHOULD locate the local RAIL window that corresponds to the WindowId 
 Hdr field and update the edge to which the window is anchored. If no such window can be found, the
 client SHOULD ignore the order.
 
-3.2.5.1.7 Processing Notification Icon Orders
+###### 3.2.5.1.7 Processing Notification Icon Orders
 
 Notification Icon Information Orders (section 2.2.1.3.2) inform the client of the following types of
 notification icon events on the server:
@@ -8635,7 +8247,7 @@ client SHOULD locate the local RAIL notify icon that corresponds to the WindowId
 reported in the Hdr field and destroy it. If no such icon can be found, the client SHOULD ignore the
 Order.
 
-3.2.5.1.8 Processing Desktop Information Orders
+###### 3.2.5.1.8 Processing Desktop Information Orders
 
 Desktop Information Orders inform the client of events on the server that are not confined to a single
 window or notification icon. Processing of these orders is indicated as follows:
@@ -8668,19 +8280,20 @@ Release: August 11, 2025
 
 89 / 120
 
-  Upon receipt of a Desktop Information Order with the ActiveWindowId field present, the client
+
+  Upon receipt of a Desktop Information Order with the ActiveWindowId field present, the client
 
 SHOULD activate the corresponding local RAIL window.
 
-3.2.5.2  Static Virtual Channel Protocol
+##### 3.2.5.2 Static Virtual Channel Protocol
 
-3.2.5.2.1 Initialization Messages
+###### 3.2.5.2.1 Initialization Messages
 
-3.2.5.2.1.1  Sending Client Information PDU
+###### 3.2.5.2.1.1 Sending Client Information PDU
 
 The client information PDU is initialized as specified in section 2.2.2.2.2.
 
-3.2.5.2.1.2  Processing HandshakeEx PDU
+###### 3.2.5.2.1.2 Processing HandshakeEx PDU
 
 The client SHOULD check the buildNumber field to verify compatibility of the receiver with the
 sender.<32>
@@ -8695,36 +8308,36 @@ scenario, the client SHOULD NOT expect to receive Enhanced RemoteApp messages.
 The client MUST NOT process any other virtual channel PDUs unless either the HandshakeEx PDU
 (section 2.2.2.2.3) or the Handshake PDU (section 2.2.2.2.1) has been received.
 
-3.2.5.2.2 Program Launching Messages
+###### 3.2.5.2.2 Program Launching Messages
 
-3.2.5.2.2.1  Sending Execute PDU
+###### 3.2.5.2.2.1 Sending Execute PDU
 
 As specified in section 2.2.2.3.1, the client SHOULD store the execute request to match execute
 requests with Execute Result PDUs from the server. For Server Execute Result PDU, see section
 2.2.2.3.2.
 
-3.2.5.2.2.2  Processing Execute Result PDU
+###### 3.2.5.2.2.2 Processing Execute Result PDU
 
 The client SHOULD match the Execute Result PDU with a previously sent Execute PDU and report the
 results to the user.
 
-3.2.5.2.3 Local Client System Parameters Update Messages
+###### 3.2.5.2.3 Local Client System Parameters Update Messages
 
-3.2.5.2.3.1  Sending System Parameters Update PDU
+###### 3.2.5.2.3.1 Sending System Parameters Update PDU
 
 Initialized as specified in section 2.2.2.4.1, this PDU SHOULD be sent at the start of every remote
 applications integrated locally (RAIL) connection or reconnection and when a system parameter
 on the client changes its value.
 
-3.2.5.2.4 Server System Parameters Update Messages
+###### 3.2.5.2.4 Server System Parameters Update Messages
 
-3.2.5.2.4.1  Processing Server System Parameters Update PDU
+###### 3.2.5.2.4.1 Processing Server System Parameters Update PDU
 
 On receipt of this PDU, the client SHOULD update its system parameters to those reported by the
 server. This helps to maintain consistency between local client and remote server settings, which is an
 important aspect of the seamless experience.
 
-3.2.5.2.5 Local Client Event Messages
+###### 3.2.5.2.5 Local Client Event Messages
 
 [MS-RDPERP] - v20250811
 Remote Desktop Protocol: Remote Programs Virtual Channel Extension
@@ -8733,11 +8346,12 @@ Release: August 11, 2025
 
 90 / 120
 
-Local Client Event Messages are Virtual Channel PDUs sent from the client to the server specifying
+
+Local Client Event Messages are Virtual Channel PDUs sent from the client to the server specifying
 user interactions with RAIL windows and notifications that cannot be captured and sent over the
 regular RDP channel.
 
-3.2.5.2.5.1  Sending Activate PDU
+###### 3.2.5.2.5.1 Sending Activate PDU
 
 The Activate PDU is sent by the client when a RAIL window is activated by a means other than
 clicking it, such as by pressing ALT+TAB.
@@ -8750,7 +8364,7 @@ associated with the local RAIL window being activated. The RAIL client SHOULD cr
 association during processing of the Window Information Order for new windows, as specified in
 section 2.2.1.3.1.2.1.
 
-3.2.5.2.5.2  Sending System Menu PDU
+###### 3.2.5.2.5.2 Sending System Menu PDU
 
 The System Menu PDU is sent by the client when a RAIL window receives a command to display its
 system menu by a means other than clicking it, such as by right-clicking the taskbar icon for the
@@ -8763,7 +8377,7 @@ The WindowId field SHOULD be initialized to the ID of an existing window on the 
 associated with the local RAIL window. The RAIL client SHOULD create this association during
 processing of the Window Information Order for new windows, as specified in section 2.2.1.3.1.2.1.
 
-3.2.5.2.5.3  Sending System Command PDU
+###### 3.2.5.2.5.3 Sending System Command PDU
 
 The System Command PDU is sent by the client when a RAIL window receives a system command
 by a means other than clicking it (for example, by pressing the Windows logo key+M to minimize the
@@ -8777,7 +8391,7 @@ The WindowId field SHOULD be initialized to the ID of an existing window on the 
 associated with the local RAIL window. The RAIL client SHOULD create this association during
 processing of the Window Information Order for new windows, as specified in section 2.2.1.3.1.2.1.
 
-3.2.5.2.5.4  Sending Notify Event PDU
+###### 3.2.5.2.5.4 Sending Notify Event PDU
 
 The Notify Event PDU is sent by the client when a remote applications integrated locally (RAIL)
 notification icon receives any user interaction via the keyboard or mouse. The PDU is initialized as
@@ -8788,9 +8402,9 @@ notification icon (respectively) on the server and associated with the local RAI
 The RAIL client SHOULD create this association during processing of the Notification Icon Information
 Order for new notification icons, as specified in section 2.2.1.3.2.2.1.
 
-3.2.5.2.6 Language Bar Information PDUs
+###### 3.2.5.2.6 Language Bar Information PDUs
 
-3.2.5.2.6.1  Sending Language Bar Information PDU
+###### 3.2.5.2.6.1 Sending Language Bar Information PDU
 
 [MS-RDPERP] - v20250811
 Remote Desktop Protocol: Remote Programs Virtual Channel Extension
@@ -8799,24 +8413,25 @@ Release: August 11, 2025
 
 91 / 120
 
-After initialization (as specified in section 2.2.2.9.1), this PDU SHOULD be sent from a client to a
+
+After initialization (as specified in section 2.2.2.9.1), this PDU SHOULD be sent from a client to a
 server just after sending the RAIL handshake (see section 2.2.2.2.1). This enables the server
 synchronize its language bar state with the client's.
 
 This PDU MUST NOT be sent if the server does not support the Docked Language Bar RAIL capability
 (TS_RAIL_LEVEL_DOCKED_LANGBAR_SUPPORTED).
 
-3.2.5.2.6.2  Processing Language Bar Information PDU
+###### 3.2.5.2.6.2 Processing Language Bar Information PDU
 
 Upon receipt of this PDU, the client SHOULD update the status of its language using the Language Bar
 Information PDU.
 
-3.2.5.2.7 Window Move Messages
+###### 3.2.5.2.7 Window Move Messages
 
 Window Move Messages are generated by the server and client to enable the local move/size feature
 of RAIL.
 
-3.2.5.2.7.1  Processing Min Max Info PDU
+###### 3.2.5.2.7.1 Processing Min Max Info PDU
 
 On receipt of the Min Max Info PDU, if the client supports local move/size, it SHOULD locate the local
 RAIL window that corresponds to the WindowId field and apply the specified window extents
@@ -8827,7 +8442,7 @@ If no such RAIL window can be found, the client SHOULD ignore this PDU.
 
 If the client does not support local move/size, it SHOULD ignore this PDU.
 
-3.2.5.2.7.2  Processing Move/Size Start PDU
+###### 3.2.5.2.7.2 Processing Move/Size Start PDU
 
 On receipt of the Move/Size Start PDU, if the client supports local move/size features, it SHOULD
 locate the local RAIL window that corresponds to the WindowId field and initiate a move/size of the
@@ -8839,7 +8454,7 @@ If no RAIL window can be found corresponding to WindowId, the client SHOULD igno
 
 If the client does not support local move/size, it SHOULD ignore this PDU.
 
-3.2.5.2.7.3  Sending Window Move PDU
+###### 3.2.5.2.7.3 Sending Window Move PDU
 
 If the client supports local move/size, it SHOULD send the Window Move PDU upon receiving a
 notification from the local window manager that a local move/size of a RAIL window has ended. The
@@ -8854,7 +8469,7 @@ If the client suppressed forwarding of keyboard/mouse events to the server durin
 Move/Size Start PDU, it MUST resume the forwarding of these events to the server to allow the server
 to detect a move/size end of the remote window.
 
-3.2.5.2.7.4  Processing Move/Size End PDU
+###### 3.2.5.2.7.4 Processing Move/Size End PDU
 
 Upon receipt of the Move/Size End PDU, if the client supports local move/size features, it SHOULD
 locate the local RAIL window that corresponds to the WindowId field and move it to the
@@ -8866,14 +8481,15 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-coordinates specified by the TopLeftX and TopLeftY fields. This ensures synchronization between the
+
+coordinates specified by the TopLeftX and TopLeftY fields. This ensures synchronization between the
 final positions of the corresponding moved/resized windows on the server and client.
 
 If no RAIL window can be found corresponding to WindowId, the client SHOULD ignore this PDU.
 
 If the client does not support local move/size, it SHOULD ignore this PDU.
 
-3.2.5.2.7.5  Sending Window Snap PDU
+###### 3.2.5.2.7.5 Sending Window Snap PDU
 
 If the server advertises support for window snapping in the HandshakeEx PDU (section 2.2.2.2.3)
 structure (using the TS_RAIL_ORDER_HANDSHAKE_EX_FLAGS_SNAP_ARRANGE_SUPPORTED flag, as
@@ -8889,34 +8505,34 @@ instead.
 If the client sends the Window Snap PDU in response to a local RAIL window being snapped, it
 SHOULD NOT send a Window Move PDU for the same event.
 
-3.2.5.2.8 Application ID Messages
+###### 3.2.5.2.8 Application ID Messages
 
-3.2.5.2.8.1  Sending Client Get Application ID PDU
+###### 3.2.5.2.8.1 Sending Client Get Application ID PDU
 
 After being initialized as specified in section 2.2.2.6.5, this PDU MAY be sent from a client to a server
 after receiving a Window Information Order containing the WINDOW_ORDER_STATE_NEW
 (0x10000000) flag.
 
-3.2.5.2.8.2  Processing Server Get Application ID Response PDU
+###### 3.2.5.2.8.2 Processing Server Get Application ID Response PDU
 
 Upon receipt of this PDU, the client SHOULD<33> update the Application ID string of the Window
 matching the Windows ID received from the server.
 
-3.2.5.2.8.3  Processing Server Get Application ID Extended Response PDU
+###### 3.2.5.2.8.3 Processing Server Get Application ID Extended Response PDU
 
 Upon receipt of this PDU, the client SHOULD<34> update the Application ID string of the Window
 matching the Windows ID received from the server. The client SHOULD also cache the ID and the
 image name of the process that hosts the corresponding window on the server.
 
-3.2.5.2.9 Z-Order Sync Messages
+###### 3.2.5.2.9 Z-Order Sync Messages
 
-3.2.5.2.9.1  Sending Z-Order Sync Support Flag
+###### 3.2.5.2.9.1 Sending Z-Order Sync Support Flag
 
 The client advertises support for Z-order sync by including the
 TS_RAIL_CLIENTSTATUS_ZORDER_SYNC (0x00000004) flag in the Client Information PDU (section
 2.2.2.2.2).
 
-3.2.5.2.9.2  Processing Z-Order Sync Information PDU
+###### 3.2.5.2.9.2 Processing Z-Order Sync Information PDU
 
 When the client receives the Z-Order Sync Information PDU, the ID of the marker window MUST be
 stored in the Marker Window ID (section 3.2.1.2) store.
@@ -8932,15 +8548,16 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Furthermore, if the server instructs the client to activate a RAIL window (referred to as "Window
+
+Furthermore, if the server instructs the client to activate a RAIL window (referred to as "Window
 B"), the client SHOULD check the position of Window B with respect to the marker window in the
 WindowIds field of the Actively Monitored Desktop (section 2.2.1.3.3.2.1). Window B SHOULD only
 be activated if it appears before the marker window in the WindowIds field of the Actively Monitored
 Desktop Order.
 
-3.2.5.2.10  Window Cloak State Sync Messages
+###### 3.2.5.2.10 Window Cloak State Sync Messages
 
-3.2.5.2.10.1  Sending Window Cloak State Change PDU
+###### 3.2.5.2.10.1 Sending Window Cloak State Change PDU
 
 The Window Cloak State Change PDU (section 2.2.2.12.1) SHOULD be sent by the client when a RAIL
 window is cloaked or uncloaked on the client (for example, in the case of a virtual desktop feature,
@@ -8953,7 +8570,7 @@ the ID of an existing window on the server that is associated with the local RAI
 client SHOULD create this association during processing of the Window Information Order for new
 windows, as specified in section 2.2.1.3.1.2.1.
 
-3.2.5.2.10.2  Processing Window Cloak State Change PDU
+###### 3.2.5.2.10.2 Processing Window Cloak State Change PDU
 
 On receipt of this PDU the client SHOULD cloak or uncloak the RAIL window with the ID specified by
 the WindowId field. The action of cloaking or uncloaking is specified by the Cloaked field. The client
@@ -8962,36 +8579,36 @@ PDU.
 
 If no RAIL window can be found corresponding to WindowId, the client SHOULD ignore this PDU.
 
-3.2.5.2.11
+###### 3.2.5.2.11 Power Display Request Messages
 
-Power Display Request Messages
 
-3.2.5.2.11.1  Processing Power Display Request PDU
+
+###### 3.2.5.2.11.1 Processing Power Display Request PDU
 
 On receipt of this PDU, the client SHOULD update its display-required power request status. If the
 Active field is set to 0x00000001, then the display on the client device SHOULD remain in the
 powered-on state even if there is no user input for an extended period.
 
-3.2.5.2.12
+###### 3.2.5.2.12 Server Taskbar State Messages
 
-Server Taskbar State Messages
 
-3.2.5.2.12.1  Processing Taskbar Tab Info PDU
+
+###### 3.2.5.2.12.1 Processing Taskbar Tab Info PDU
 
 On receipt of this PDU, the client SHOULD update the local window manager to reflect the new tab
 group state of the tabbed application. If the local window manager does not expose the necessary
 features to make use of window tabs, the client MAY ignore this PDU.
 
-3.2.5.2.13  Accessibility Messages
+###### 3.2.5.2.13 Accessibility Messages
 
-3.2.5.2.13.1  Sending Text Scale Information PDU
+###### 3.2.5.2.13.1 Sending Text Scale Information PDU
 
 If the server advertises support for the Text Scale Information PDU in the HandshakeEx PDU (section
 2.2.2.2.3) structure (using the TS_RAIL_ORDER_HANDSHAKE_EX_FLAGS_TEXT_SCALE_SUPPORTED
 flag), the client SHOULD send the Text Scale Information PDU (section 2.2.2.15.1) during the
 connection establishment phase and when the text scale factor of the client system is changed.
 
-3.2.5.2.13.2  Sending Caret Blink Information PDU
+###### 3.2.5.2.13.2 Sending Caret Blink Information PDU
 
 [MS-RDPERP] - v20250811
 Remote Desktop Protocol: Remote Programs Virtual Channel Extension
@@ -9000,22 +8617,23 @@ Release: August 11, 2025
 
 94 / 120
 
-If the server advertises support for Caret Blink Information in the HandshakeEx PDU (section
+
+If the server advertises support for Caret Blink Information in the HandshakeEx PDU (section
 2.2.2.2.3) structure (using the TS_RAIL_ORDER_HANDSHAKE_EX_FLAGS_CARET_BLINK_SUPPORTED
 flag), the client SHOULD send the Caret Blink Information PDU (section 2.2.2.15.2) during the
 connection establishment phase and when the caret blink rate of the client system is changed.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -9027,14 +8645,14 @@ Note: It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with what is described in this
 document.
 
-3.3.1.1  Client Local Move/Size Ability Store
+##### 3.3.1.1 Client Local Move/Size Ability Store
 
 The Client Local Move/Size Ability store determines whether the client has the ability to support Local
 Move/Size in RAIL. This is communicated to the server by the
 TS_RAIL_CLIENTSTATUS_ALLOWLOCALMOVESIZE flag as part of Client Information PDU (see section
 2.2.2.2.2).
 
-3.3.1.2  Windowing Support Level
+##### 3.3.1.2 Windowing Support Level
 
 The windowing support level determines whether the client is capable of supporting Windowing
 Alternate Secondary Drawing Orders and the following flags:
@@ -9042,13 +8660,13 @@ WINDOW_ORDER_FIELD_CLIENTAREASIZE, WINDOW_ORDER_FIELD_RPCONTENT, and
 WINDOW_ORDER_FIELD_ROOTPARENT. This is communicated to the server by the
 WndSupportLevel field, as part of the Window List Capability Set (section 2.2.1.1.2).
 
-3.3.1.3  Marker Window
+##### 3.3.1.3 Marker Window
 
 The marker window is a server-side window that is not remoted to the client and is used to manage
 the activation of RAIL windows. This window is destroyed if the client does not advertise support for
 Z-order sync in the Client Information PDU (section 2.2.2.2.2).
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are used.
 
@@ -9059,29 +8677,30 @@ Release: August 11, 2025
 
 95 / 120
 
-3.3.3  Initialization
+
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Updates to RDP Core Protocol
+##### 3.3.5.1 Updates to RDP Core Protocol
 
-3.3.5.1.1 Processing Client MCS Connect Initial PDU
+###### 3.3.5.1.1 Processing Client MCS Connect Initial PDU
 
 The Client MCS Connect Initial PDU is processed by the server during the connection establishment
 phase, as specified in [MS-RDPBCGR].
 
-3.3.5.1.2 Constructing Server MCS Connect Response PDU
+###### 3.3.5.1.2 Constructing Server MCS Connect Response PDU
 
 This PDU is sent by the server in response to the Client MCS Connect Initial PDU, as specified in [MS-
 RDPBCGR].
 
-3.3.5.1.3 Processing Client Info PDU
+###### 3.3.5.1.3 Processing Client Info PDU
 
 The Client Info PDU is processed by the server during the connection establishment phase, as
 specified in [MS-RDPBCGR].
@@ -9099,7 +8718,7 @@ the TS_RAIL_ORDER_HANDSHAKEEX_FLAGS_HIDEF (0x00000001) flag set (section 3.3.5.2
 the INFO_HIDEF_RAIL_SUPPORTED flag is not set, the server MUST NOT enable Enhanced
 RemoteApp.
 
-3.3.5.1.4 Constructing Demand Active PDU
+###### 3.3.5.1.4 Constructing Demand Active PDU
 
 The Demand Active PDU is constructed by the server during the connection establishment phase, as
 specified in [MS-RDPBCGR] section 3.3.5.3.13.1.
@@ -9113,7 +8732,7 @@ Capability Set (section 2.2.1.1.1) and the Window List Capability Set (section 2
 The server MUST specify the number of icon caches supported by using the NumIconCaches and
 NumIconCacheEntries of the Window List Capability Set.
 
-3.3.5.1.5 Processing Confirm Active PDU
+###### 3.3.5.1.5 Processing Confirm Active PDU
 
 [MS-RDPERP] - v20250811
 Remote Desktop Protocol: Remote Programs Virtual Channel Extension
@@ -9122,7 +8741,8 @@ Release: August 11, 2025
 
 96 / 120
 
-The Confirm Active PDU is processed by the server, as specified in [MS-RDPBCGR] section
+
+The Confirm Active PDU is processed by the server, as specified in [MS-RDPBCGR] section
 3.3.5.3.13.2.
 
 If the client has requested support for remote applications integrated locally (RAIL) in the Client
@@ -9140,7 +8760,7 @@ Capability Set do not exceed the corresponding entries set by the server in the 
 <35> The server MUST also update its icon cache limits to those reported in NumIconCaches and
 NumIconCacheEntries.
 
-3.3.5.1.6 Constructing Window Information Orders
+###### 3.3.5.1.6 Constructing Window Information Orders
 
 The server generates Window Information Orders to inform the client of the following types of window
 events on the server:
@@ -9166,7 +8786,8 @@ Release: August 11, 2025
 
 97 / 120
 
-<!-- Extracted images from page 98 -->
+
+<!-- Extracted images from page 98 -->
 ![Extracted image 1 from page 98]([MS-RDPERP].images/page098-img01.png)
 <!-- /Extracted images from page 98 -->
 
@@ -9176,7 +8797,7 @@ Window icon orders SHOULD NOT be sent to the client if the
 TS_RAIL_CLIENTSTATUS_SUPPRESS_ICON_ORDERS flag was specified in the Client Information PDU
 (section 2.2.2.2.2). Notification icon orders are not affected by this flag.
 
-3.3.5.1.7 Constructing Notification Icon Orders
+###### 3.3.5.1.7 Constructing Notification Icon Orders
 
 The server generates Notification Icon Information Orders to inform the client of the following types
 of notification icon events on the server.
@@ -9189,7 +8810,7 @@ of notification icon events on the server.
 
 The Notification Icon Orders are constructed as specified in section 2.2.1.3.2.
 
-3.3.5.1.8 Constructing Desktop Information Orders
+###### 3.3.5.1.8 Constructing Desktop Information Orders
 
 Desktop Information Orders are generated by the server to inform the client of events on the server
 that are not confined to a single window or notification icon. These events include the following:
@@ -9209,7 +8830,8 @@ Release: August 11, 2025
 
 98 / 120
 
-WINDOW_ORDER_FIELD_DESKTOP_HOOKED (0x00000002) flags set in the Hdr field to
+
+WINDOW_ORDER_FIELD_DESKTOP_HOOKED (0x00000002) flags set in the Hdr field to
 indicate that the synchronization has begun.
 
 2.  After all orders specifying windows, icons, and the desktop are sent, the server generates a
@@ -9240,11 +8862,11 @@ present.
 The active window on the server changes. This is indicated by generating a Desktop Information
 Order with the ActiveWindowId field present.
 
-3.3.5.2  Static Virtual Channel Protocol
+##### 3.3.5.2 Static Virtual Channel Protocol
 
-3.3.5.2.1 Initialization Messages
+###### 3.3.5.2.1 Initialization Messages
 
-3.3.5.2.1.1  Processing Client Information PDU
+###### 3.3.5.2.1.1 Processing Client Information PDU
 
 If the Flags field of the PDU contains the TS_RAIL_CLIENTSTATUS_ALLOWLOCALMOVESIZE
 (0x00000001) flag, the client supports Local Move/Size. If the server also supports Local Move/Size, it
@@ -9262,7 +8884,7 @@ supports setting the display-required power request. On receiving this flag, the
 monitor the state of its display-required power request and send it to the client using the Power
 Display Request PDU (section 2.2.2.13.1).
 
-3.3.5.2.1.2  Sending HandshakeEx PDU
+###### 3.3.5.2.1.2 Sending HandshakeEx PDU
 
 The HandshakeEx PDU MUST be constructed as specified in section 2.2.2.2.3.
 
@@ -9281,44 +8903,45 @@ Release: August 11, 2025
 
 99 / 120
 
-3.3.5.2.2 Program Launching Messages
 
-3.3.5.2.2.1  Processing Execute PDU
+###### 3.3.5.2.2 Program Launching Messages
+
+###### 3.3.5.2.2.1 Processing Execute PDU
 
 Upon receipt of this PDU, the server MUST start the application specified in the PDU on the server. The
 PDU is processed as specified in 2.2.2.3.2.
 
-3.3.5.2.2.2  Sending Execute Result PDU
+###### 3.3.5.2.2.2 Sending Execute Result PDU
 
 This PDU is sent in response to an Execute PDU from the client and is initialized as specified in section
 2.2.2.3.2.
 
-3.3.5.2.3 Local Client System Parameters Update Messages
+###### 3.3.5.2.3 Local Client System Parameters Update Messages
 
-3.3.5.2.3.1  Processing System Parameters Update PDU
+###### 3.3.5.2.3.1 Processing System Parameters Update PDU
 
 Upon receipt of this PDU, the server SHOULD set its system parameters to those reported by the
 client. This helps applications running remotely to behave consistently with local user settings, which
 is an important aspect of the seamless experience.
 
-3.3.5.2.4 Server System Parameters Update Messages
+###### 3.3.5.2.4 Server System Parameters Update Messages
 
-3.3.5.2.4.1  Sending Server System Parameters Update PDU
+###### 3.3.5.2.4.1 Sending Server System Parameters Update PDU
 
 This PDU is initialized as specified in section 2.2.2.5.1. This PDU SHOULD be sent at the start of every
 remote applications integrated locally (RAIL) connection/reconnection, and when a system
 parameter on the server changes its value.
 
-3.3.5.2.5 Local Client Event Messages
+###### 3.3.5.2.5 Local Client Event Messages
 
-3.3.5.2.5.1  Processing Activate PDU
+###### 3.3.5.2.5.1 Processing Activate PDU
 
 Upon receipt of this PDU, the server SHOULD activate or deactivate the remote window whose ID is
 specified by WindowId and whose activation state is specified by the Enabled field.
 
 If no such window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.5.2  Processing System Menu PDU
+###### 3.3.5.2.5.2 Processing System Menu PDU
 
 On receipt of this PDU, the server SHOULD post a command to the remote window whose ID is
 specified by WindowId to display its system menu at the coordinates specified by the Left and Top
@@ -9326,14 +8949,14 @@ fields.
 
 If no such window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.5.3  Processing System Command PDU
+###### 3.3.5.2.5.3 Processing System Command PDU
 
 Upon receipt of this PDU, the server SHOULD post the system command specified by the Command
 field to the remote window whose ID is specified by WindowId.
 
 If no such window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.5.4  Processing Notify Event PDU
+###### 3.3.5.2.5.4 Processing Notify Event PDU
 
 Upon receipt of this PDU, the server SHOULD post the message specified by the Message field to the
 remote notification icon specified by the WindowId and NotifyIconId fields.
@@ -9345,20 +8968,21 @@ Release: August 11, 2025
 
 100 / 120
 
-If no such notify icon exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.5.5  Processing Language Bar Information PDU
+If no such notify icon exists, the server SHOULD ignore the PDU.
+
+###### 3.3.5.2.5.5 Processing Language Bar Information PDU
 
 Upon receipt of this PDU, the server MUST first send the status of its language bar to the client using
 the Language Bar Information PDU. The server MUST then adjust the server-side language bar to
 match the client's language bar status by making it either float or be docked.
 
-3.3.5.2.6 Window Move Messages
+###### 3.3.5.2.6 Window Move Messages
 
 The Window Move messages are generated by the server and client to enable the Local Move/Size
 feature of RAIL.
 
-3.3.5.2.6.1  Sending Min Max Info PDU
+###### 3.3.5.2.6.1 Sending Min Max Info PDU
 
 This PDU is sent by the server when a user attempts to move or resize a local RAIL window and
 when the corresponding keyboard input or mouse input forwarded to the server causes the
@@ -9367,7 +8991,7 @@ corresponding remote window to begin to move or resize. It is initialized as spe
 
 This PDU SHOULD be sent if the client and server both support local move/size features.
 
-3.3.5.2.6.2  Sending Move/Size Start PDU
+###### 3.3.5.2.6.2 Sending Move/Size Start PDU
 
 This PDU is sent by the server when a user attempts to move or resize a local RAIL window (for
 example, by dragging the window title with the mouse or resizing the window borders with the
@@ -9378,7 +9002,7 @@ corresponding remote window to begin the move or resize. It is initialized as sp
 This PDU SHOULD be sent if the client and server both support local move/size features. It SHOULD
 be sent immediately after the Min Max Info PDU (see section 2.2.2.7.1).
 
-3.3.5.2.6.3  Processing Window Move PDU
+###### 3.3.5.2.6.3 Processing Window Move PDU
 
 On receipt of the Client Window Move PDU section 2.2.2.7.4, the server SHOULD move the remote
 window specified by the WindowId field to the coordinates specified by the Left, Top, Right, and
@@ -9386,7 +9010,7 @@ Bottom fields.
 
 If no such Window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.6.4  Sending Move/Size End PDU
+###### 3.3.5.2.6.4 Sending Move/Size End PDU
 
 This PDU is sent by the server when a user completes a move or resize of a local RAIL window (for
 example, by releasing the mouse button), and the corresponding keyboard input or mouse input
@@ -9395,7 +9019,7 @@ initialized as specified in section 2.2.2.7.3.
 
 This PDU SHOULD be sent if the client and server both support local move/size features.
 
-3.3.5.2.6.5  Processing Window Snap PDU
+###### 3.3.5.2.6.5 Processing Window Snap PDU
 
 On receipt of the Client Window Snap PDU (section 2.2.2.7.5), the server SHOULD move the
 remote window specified by the WindowId field to the coordinates specified by the Left, Top, Right,
@@ -9410,26 +9034,27 @@ Release: August 11, 2025
 
 101 / 120
 
-In all other respects, this PDU is equivalent to the Window Move PDU (section 2.2.2.7.4) and
+
+In all other respects, this PDU is equivalent to the Window Move PDU (section 2.2.2.7.4) and
 SHOULD be handled the same way.
 
-3.3.5.2.7 Application ID Messages
+###### 3.3.5.2.7 Application ID Messages
 
-3.3.5.2.7.1  Processing the Get Application ID PDU
+###### 3.3.5.2.7.1 Processing the Get Application ID PDU
 
 Upon receipt of the Get Application ID PDU, the server MAY<36> retrieve the Application ID of the
 window whose window ID is specified in the PDU.
 
 If no such window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.7.2  Sending the Get Application ID Response PDU
+###### 3.3.5.2.7.2 Sending the Get Application ID Response PDU
 
 The Get Application ID Response PDU is sent in response to a Get Application ID PDU from the client
 and is initialized as specified in section 2.2.2.8.1.
 
-3.3.5.2.8 Z-Order Sync Messages
+###### 3.3.5.2.8 Z-Order Sync Messages
 
-3.3.5.2.8.1  Processing Z-Order Sync Support Flag
+###### 3.3.5.2.8.1 Processing Z-Order Sync Support Flag
 
 On processing the TS_RAIL_CLIENTSTATUS_ZORDER_SYNC (0x00000004) flag in the Client
 Information PDU (section 2.2.2.2.2), the server SHOULD create the marker window (section 3.3.1.3)
@@ -9437,14 +9062,14 @@ and send the ID of this window to the client in the Z-Order Sync Information PDU
 If the client does not advertise support for Z-order sync, then the server MUST destroy the marker
 window, if it exists.
 
-3.3.5.2.8.2  Sending Z-Order Sync Information PDU
+###### 3.3.5.2.8.2 Sending Z-Order Sync Information PDU
 
 The server SHOULD send the ID of the marker window to the client in the Z-Order Sync Information
 PDU (section 2.2.2.11.1).
 
-3.3.5.2.9 Window Cloak State Sync Messages
+###### 3.3.5.2.9 Window Cloak State Sync Messages
 
-3.3.5.2.9.1  Processing Window Cloak State Change PDU
+###### 3.3.5.2.9.1 Processing Window Cloak State Change PDU
 
 Upon receipt of the Windows Cloak State Change PDU (section 2.2.2.12.1), the server SHOULD cloak
 or uncloak the remote window whose ID is specified by WindowId as specified by the Cloaked field.
@@ -9454,7 +9079,7 @@ processing this PDU.
 
 If no such window exists, the server SHOULD ignore the PDU.
 
-3.3.5.2.9.2  Sending Window Cloak State Change PDU
+###### 3.3.5.2.9.2 Sending Window Cloak State Change PDU
 
 The Window Cloak State Change PDU (section 2.2.2.12.1) SHOULD be sent by the server when a
 remoted window is cloaked or uncloaked (unless the cloak or uncloak occurred as a result of
@@ -9465,9 +9090,9 @@ If the client does not support processing the Window Cloak State Change PDU, the
 send a Deleted Window Information Order (section 2.2.1.3.1.2.4) when a window is cloaked, and a
 Window Information Order (section 2.2.1.3.1.2.1) when a window is uncloaked.
 
-3.3.5.2.10
+###### 3.3.5.2.10 Power Display Request Messages
 
-Power Display Request Messages
+
 
 [MS-RDPERP] - v20250811
 Remote Desktop Protocol: Remote Programs Virtual Channel Extension
@@ -9476,16 +9101,17 @@ Release: August 11, 2025
 
 102 / 120
 
-3.3.5.2.10.1  Sending Power Display Request PDU
+
+###### 3.3.5.2.10.1 Sending Power Display Request PDU
 
 If the state of its display-required power request changes in the remote session, then the server
 SHOULD send the new state to the client in the Power Display Request PDU (section 2.2.2.13.1).
 
-3.3.5.2.11
+###### 3.3.5.2.11 Server Taskbar State Messages
 
-Server Taskbar State Messages
 
-3.3.5.2.11.1  Sending Taskbar Tab Info PDU
+
+###### 3.3.5.2.11.1 Sending Taskbar Tab Info PDU
 
 The server SHOULD send the Taskbar Tab Info PDU (section 2.2.2.14.1) whenever it determines that
 the state of a tabbed application’s taskbar tab group has changed. However, the server SHOULD
@@ -9497,33 +9123,33 @@ its tabbed applications to the client by sending RAIL_TASKBAR_MSG_TAB_REGISTER,
 RAIL_TASKBAR_MSG_TAB_ORDER, and RAIL_TASKBAR_MSG_TAB_PROPERTIES messages for each
 window in each tabbed application in the session.
 
-3.3.5.2.12  Accessibility Messages
+###### 3.3.5.2.12 Accessibility Messages
 
-3.3.5.2.12.1  Processing Text Scale Information PDU
+###### 3.3.5.2.12.1 Processing Text Scale Information PDU
 
 On receipt of the Text Scale Information PDU (section 2.2.2.15.1), the server SHOULD use this
 information to change the system text scale setting. If no such feature is available, the server
 SHOULD NOT advertise support for this PDU.
 
-3.3.5.2.12.2  Processing Caret Blink Information PDU
+###### 3.3.5.2.12.2 Processing Caret Blink Information PDU
 
 On receipt of the Caret Blink Information PDU (section 2.2.2.15.2), the server SHOULD use this
 information to change the caret blink rate. If no such feature is available, the server SHOULD NOT
 advertise support for this PDU.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 No timer events are used.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
-3.3.7.1  Sending Language Bar Information PDU
+##### 3.3.7.1 Sending Language Bar Information PDU
 
 Upon receiving a notification from the server-side language bar indicating that its status was updated,
 the server MUST then send the updated status of its language bar to the client using the Language Bar
 Information PDU. This enables the client to stay in sync with the server.
 
-3.3.7.2  Sending Language Profile Information PDU
+##### 3.3.7.2 Sending Language Profile Information PDU
 
 Upon receiving a notification from the client-side text services framework that the current active
 language profile has changed, the client MUST then send the new active language profile information
@@ -9541,7 +9167,8 @@ Release: August 11, 2025
 
 103 / 120
 
-3.3.7.3  Sending Compartment Status Information PDU
+
+##### 3.3.7.3 Sending Compartment Status Information PDU
 
 Upon receiving a notification from the text services framework that the current input method editor
 (IME) compartments has changed, the client MUST then send the new compartment information to
@@ -9561,16 +9188,17 @@ Release: August 11, 2025
 
 104 / 120
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: Remote Programs Virtual Channel Extension.
 
-4.1  Updates to the RDP Core Protocol
+### 4.1 Updates to the RDP Core Protocol
 
-4.1.1  Windowing Alternate Secondary Drawing Orders
+#### 4.1.1 Windowing Alternate Secondary Drawing Orders
 
-4.1.1.1  New or Existing Windows
+##### 4.1.1.1 New or Existing Windows
 
 The following is a network capture of a Window Information Order, sent when a new window is created
 on the server or when a property on a new or existing window is updated (as specified in
@@ -9617,7 +9245,7 @@ on the server or when a property on a new or existing window is updated (as spec
  01 00 -> NumVisibilityRects (1)
  00 00 00 00 e6 05 42 03 -> VisibilityRects (0,0,1510,834)
 
-4.1.1.2  Deleted Window
+##### 4.1.1.2 Deleted Window
 
 The following is a network capture of a Window Information Order, sent when an existing window is
 destroyed on the server (as specified in 2.2.1.3.1.2.4).
@@ -9631,7 +9259,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- 2e -> TS_WINDOW_ORDER_HEADER::Header
+
+ 2e -> TS_WINDOW_ORDER_HEADER::Header
  0b 00 -> TS_WINDOW_ORDER_HEADER::OrderSize
  00 00 00 21 -> TS_WINDOW_ORDER_HEADER::FieldsPresentFlags
         (WINDOW_ORDER_TYPE_WINDOW | WINDOW_ORDER_STATE_DELETED )
@@ -9643,7 +9272,7 @@ Release: August 11, 2025
 
 (4 Bytes)
 
-4.1.1.3  New or Existing Notification Icons
+##### 4.1.1.3 New or Existing Notification Icons
 
 The following is a network capture of a Notification Icon Information Order, sent when a new
 notification icon is created on the server (as specified in 2.2.1.3.2.2.1).
@@ -9704,11 +9333,12 @@ Release: August 11, 2025
 
 106 / 120
 
-Note  The icon data is significantly large and accounts for the remainder of the order. For the sake of
+
+Note  The icon data is significantly large and accounts for the remainder of the order. For the sake of
 brevity, the icon information in the remaining bytes of the orderSize field has been truncated in this
 example.
 
-4.1.1.4  Deleted Notification Icons
+##### 4.1.1.4 Deleted Notification Icons
 
 The following is a network capture of a Notification Icon Information Order, sent when an existing
 notification icon is deleted on the server (as specified in 2.2.1.3.2.2.2).
@@ -9723,7 +9353,7 @@ notification icon is deleted on the server (as specified in 2.2.1.3.2.2.2).
  f4 01 03 00 -> TS_NOTIFYICON_ORDER_HEADER::WindowId
  00 00 00 00 -> TS_NOTIFYICON_ORDER_HEADER::NotifyIconId
 
-4.1.1.5  Actively Monitored Desktop
+##### 4.1.1.5 Actively Monitored Desktop
 
 The following is a network capture of an Actively Monitored Desktop packet (as specified in
 2.2.1.3.3.2.1).
@@ -9740,7 +9370,7 @@ The following is a network capture of an Actively Monitored Desktop packet (as s
  66 00 02 00
  a0 00 01 00 -> WindowIds
 
-4.1.1.6  Non-Monitored Desktop
+##### 4.1.1.6 Non-Monitored Desktop
 
 The following is a network capture of a Non-Monitored Desktop packet (as specified in
 2.2.1.3.3.2.2).
@@ -9752,9 +9382,9 @@ The following is a network capture of a Non-Monitored Desktop packet (as specifi
  01 00 00 04 -> TS_DESKTOP_ORDER_HEADER::FieldsPresentFlags
                 (WINDOW_ORDER_TYPE_DESKTOP | WINDOW_ORDER_FIELD_DESKTOP_NONE)
 
-4.2  Initialization Messages
+### 4.2 Initialization Messages
 
-4.2.1  TS_RAIL_ORDER_HANDSHAKE
+#### 4.2.1 TS_RAIL_ORDER_HANDSHAKE
 
 The following are network captures of the Handshake PDU (TS_RAIL_ORDER_HANDSHAKE, as
 specified in 2.2.2.2.1).
@@ -9766,7 +9396,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Server to Client
+
+Server to Client
 
  00000000 05 00 08 00 71 17 00 00                         ....q...
 
@@ -9782,7 +9413,7 @@ Client to Server
  08 00 -> TS_RAIL_PDU_HEADER::orderLength   = 8                           (2 Bytes)
  71 17 00 00 -> buildNumber                                             (4 Bytes)
 
-4.2.2  TS_RAIL_ORDER_CLIENTSTATUS
+#### 4.2.2 TS_RAIL_ORDER_CLIENTSTATUS
 
 The following is a network capture of the Client Caps PDU (TS_RAIL_ORDER_CLIENTSTATUS, as
 specified in 2.2.2.2.2).
@@ -9793,9 +9424,9 @@ specified in 2.2.2.2.2).
  08 00 -> TS_RAIL_PDU_HEADER::orderLength   = 8                   (2 Bytes)
  01 00 00 00 ->Flags                                          (4 Bytes)
 
-4.3  Launching Messages
+### 4.3 Launching Messages
 
-4.3.1  TS_RAIL_ORDER_EXEC
+#### 4.3.1 TS_RAIL_ORDER_EXEC
 
 The following is a network capture of the Client Execute PDU (TS_RAIL_ORDER_EXEC, as specified in
 2.2.2.3.1).
@@ -9828,7 +9459,8 @@ Release: August 11, 2025
 
 108 / 120
 
-4.3.2  TS_RAIL_ORDER_EXEC_RESULT
+
+#### 4.3.2 TS_RAIL_ORDER_EXEC_RESULT
 
 The following is a network capture of the Server Execute Result PDU
 (TS_RAIL_ORDER_EXEC_RESULT, as specified in 2.2.2.3.2).
@@ -9847,9 +9479,9 @@ The following is a network capture of the Server Execute Result PDU
  7c 00 7c 00 57 00 72 00 6f 00 6e 00 67 00 41 00
  70 00 70 00 : ExeOrFile : ||WrongApp                           (20 Bytes)
 
-4.4  Local Client System Parameters Update Messages
+### 4.4 Local Client System Parameters Update Messages
 
-4.4.1  TS_RAIL_ORDER_SYSPARAM
+#### 4.4.1 TS_RAIL_ORDER_SYSPARAM
 
 The following are network captures of the Client System Parameters Update PDU
 (TS_RAIL_ORDER_SYSPARAM, as specified in 2.2.2.4.1).
@@ -9864,9 +9496,9 @@ The following are network captures of the Client System Parameters Update PDU
  02 00 00 00 -> TS_HIGHCONTRAST::ColorSchemeLength: 2               (4 Bytes)
  00 00 -> TS_HIGHCONTRAST::ColorScheme: 0                           (2 Bytes)
 
-4.5  Local Client Event Messages
+### 4.5 Local Client Event Messages
 
-4.5.1  TS_RAIL_ORDER_ACTIVATE
+#### 4.5.1 TS_RAIL_ORDER_ACTIVATE
 
 The following is a network capture of the Client Activate PDU (TS_RAIL_ORDER_ACTIVATE, as
 specified in 2.2.2.6.1).
@@ -9878,7 +9510,7 @@ specified in 2.2.2.6.1).
  4e 01 01 00 -> WindowId:: 0x1014e   (4 Bytes)
  01 -> Enabled     (1 Byte)
 
-4.5.2  TS_RAIL_ORDER_SYSMENU
+#### 4.5.2 TS_RAIL_ORDER_SYSMENU
 
 The following is a network capture of the Client System Menu PDU (TS_RAIL_ORDER_SYSMENU, as
 specified in 2.2.2.6.2).
@@ -9890,7 +9522,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
- 00000000 0c 00 0c 00 22 01 09 00 a4 ff 4a 02             ....".....J.
+
+ 00000000 0c 00 0c 00 22 01 09 00 a4 ff 4a 02             ....".....J.
 
  0c 00 -> TS_RAIL_PDU_HEADER::orderType = TS_RAIL_ORDER_SYSMENU(12) (2 Bytes)
  0c 00 -> TS_RAIL_PDU_HEADER::orderLength   = 12                    (2 Bytes)
@@ -9898,7 +9531,7 @@ Release: August 11, 2025
  a4 ff -> Left     (2 Bytes)
  4a 02 -> Top     (2 Bytes)
 
-4.5.3  TS_RAIL_ORDER_SYSCOMMAND
+#### 4.5.3 TS_RAIL_ORDER_SYSCOMMAND
 
 The following is a network capture of the Client System Command PDU
 (TS_RAIL_ORDER_SYSCOMMAND, as specified in 2.2.2.6.3).
@@ -9910,7 +9543,7 @@ The following is a network capture of the Client System Command PDU
  52 00 02 00 -> WindowId:: 0x20052     (4 Bytes)
  20 f0 -> Command     (2 Bytes)
 
-4.5.4  TS_RAIL_ORDER_NOTIFY_EVENT
+#### 4.5.4 TS_RAIL_ORDER_NOTIFY_EVENT
 
 The following is a network capture of the Client Notify Event PDU (TS_RAIL_ORDER_NOTIFY_EVENT,
 as specified in 2.2.2.6.4).
@@ -9923,7 +9556,7 @@ as specified in 2.2.2.6.4).
  02 00 00 00 -> NotifyIconId               (4 Bytes)
  04 02 00 00 -> Message                      (4 Bytes)
 
-4.5.5  TS_RAIL_ORDER_LANGBARINFO
+#### 4.5.5 TS_RAIL_ORDER_LANGBARINFO
 
 The following is a network capture of the Language Bar Information PDU
 (TS_RAIL_ORDER_LANGBARINFO, as specified in 2.2.2.9.1).
@@ -9932,7 +9565,7 @@ The following is a network capture of the Language Bar Information PDU
  08 00 -> TS_RAIL_PDU_HEADER::orderLength   = 8                              (2 Bytes)
  01 00 00 00 -> LanguageBarStatus:: 0x00000001                           (4 Bytes)
 
-4.5.6  TS_RAIL_ORDER_GET_APPID_REQ
+#### 4.5.6 TS_RAIL_ORDER_GET_APPID_REQ
 
 The following is a network capture of the Client Get Application ID PDU
 (TS_RAIL_ORDER_GET_APPID_REQ, as specified in section 2.2.2.6.5).
@@ -9949,7 +9582,8 @@ Release: August 11, 2025
 
 110 / 120
 
-4.5.7  TS_RAIL_ORDER_GET_APPID_RESP
+
+#### 4.5.7 TS_RAIL_ORDER_GET_APPID_RESP
 
 The following is a network capture of the Server Get Application ID Response PDU
 (TS_RAIL_ORDER_GET_APPID_RESP, as specified in section 2.2.2.8.1).
@@ -9968,9 +9602,9 @@ The following is a network capture of the Server Get Application ID Response PDU
  6f 00 77 00 73 00 2e 00 6e 00 6f 00 74 00 65 00 70 00 61 00 64 00 00 ... -> ApplicationId::
 microsoft.windows.notepad      (512 Bytes)
 
-4.6  Window Move Messages
+### 4.6 Window Move Messages
 
-4.6.1  TS_RAIL_ORDER_WINDOWMOVE
+#### 4.6.1 TS_RAIL_ORDER_WINDOWMOVE
 
 The following is a network capture of the Client Window Move PDU (TS_RAIL_ORDER_WINDOWMOVE,
 as specified in 2.2.2.7.4).
@@ -9985,7 +9619,7 @@ as specified in 2.2.2.7.4).
  db 05 -> Right(2 Bytes)
  88 01 -> Bottom(2 Bytes)
 
-4.6.2  TS_RAIL_ORDER_LOCALMOVESIZE
+#### 4.6.2 TS_RAIL_ORDER_LOCALMOVESIZE
 
 The following is a network capture of the Server Move/Size Start PDU
 (TS_RAIL_ORDER_LOCALMOVESIZE, as specified in 2.2.2.7.2).
@@ -10007,7 +9641,8 @@ Release: August 11, 2025
 
 111 / 120
 
-4.6.3  TS_RAIL_ORDER_MINMAXINFO
+
+#### 4.6.3 TS_RAIL_ORDER_MINMAXINFO
 
 The following is a network capture of the Server Min Max Info PDU (TS_RAIL_ORDER_MINMAXINFO,
 as specified in 2.2.2.7.1).
@@ -10027,9 +9662,9 @@ as specified in 2.2.2.7.1).
  4c 06 -> MaxTrackWidth   (2 Bytes)
  bc 04 -> MaxTrackHeight   (2 Bytes)
 
-4.7  Z-Order Sync Messages
+### 4.7 Z-Order Sync Messages
 
-4.7.1  TS_RAIL_ORDER_ZORDER_SYNC
+#### 4.7.1 TS_RAIL_ORDER_ZORDER_SYNC
 
 The following is a network capture of the Server Z-Order Sync Information PDU
 (TS_RAIL_ORDER_ZORDER_SYNC, as specified in section 2.2.2.11.1).
@@ -10038,9 +9673,9 @@ The following is a network capture of the Server Z-Order Sync Information PDU
  08 00 -> TS_RAIL_PDU_HEADER::orderLength   = 8                          (2 Bytes)
  10 05 40 00 -> WindowIdMarker                                           (4 Bytes)
 
-4.8  Power Display Request Messages
+### 4.8 Power Display Request Messages
 
-4.8.1  TS_RAIL_ORDER_POWER_DISPLAY_REQUEST
+#### 4.8.1 TS_RAIL_ORDER_POWER_DISPLAY_REQUEST
 
 The following is a network capture of the Server Power Display Request PDU
 (TS_RAIL_ORDER_POWER_DISPLAY_REQUEST, as specified in section 2.2.2.13.1).
@@ -10056,19 +9691,20 @@ Release: August 11, 2025
 
 112 / 120
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Protocol: Remote Programs Virtual Channel Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for Remote Desktop Protocol: Remote Programs Virtual Channel
 Extension messages because all traffic is secured by the underlying Remote Desktop Protocol core
 protocol. For an overview of the implemented security-related mechanisms, see [MS-RDPBCGR]
 section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters in the Remote Desktop Protocol: Remote Programs Virtual Channel
 Extension.
@@ -10080,7 +9716,8 @@ Release: August 11, 2025
 
 113 / 120
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -10128,7 +9765,7 @@ product does not follow the prescription.
 <1> Section 2.2.1.1.1: Microsoft implementations set TS_RAIL_LEVEL_SUPPORTED to 1 in the
 following versions of Windows: Windows Server 2008, Windows Server 2008 R2 operating system,
 Windows Server 2012, Windows 7 Enterprise, Windows 7 Enterprise N, Windows 7 Ultimate, Windows
-7 Ultimate N, and Windows 8.
+## 7 Ultimate N, and Windows 8.
 
 Microsoft implementations set TS_RAIL_LEVEL_DOCKED_LANGBAR_SUPPORTED to 1 in the following
 versions of Windows: Windows Server 2008 R2, Windows Server 2012, Windows 7 Enterprise,
@@ -10148,7 +9785,8 @@ Release: August 11, 2025
 
 114 / 120
 
-<3> Section 2.2.1.3.1.2.1: Windows does not set this flag in any server implementation.
+
+<3> Section 2.2.1.3.1.2.1: Windows does not set this flag in any server implementation.
 
 <4> Section 2.2.1.3.1.2.1: Windows does not set this flag in any server implementation.
 
@@ -10215,7 +9853,8 @@ Release: August 11, 2025
 
 115 / 120
 
-<23> Section 2.2.2.8.2: Only Windows Vista and Windows Server 2008 do not use the Application ID
+
+<23> Section 2.2.2.8.2: Only Windows Vista and Windows Server 2008 do not use the Application ID
 string to identify and group windows.
 
 <24> Section 2.2.2.9.1: This option is not available on Windows Vista and Windows Server 2008.
@@ -10263,7 +9902,8 @@ Release: August 11, 2025
 
 116 / 120
 
-7  Change Tracking
+
+7  Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -10321,7 +9961,8 @@ Release: August 11, 2025
 
 117 / 120
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -10481,7 +10122,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Initialization
+
+Initialization
    client (section 3.1.3 85, section 3.2.3 86)
    server (section 3.1.3 85, section 3.3.3 96)
 Initialization messages (section 2.2.2.2 43, section
@@ -10640,7 +10282,8 @@ Remote Desktop Protocol: Remote Programs Virtual Channel Extension
 Copyright © 2025 Microsoft Corporation
 Release: August 11, 2025
 
-Server system parameters update messages (section
+
+Server system parameters update messages (section
 
 U
 

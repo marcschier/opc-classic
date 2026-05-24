@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -516,7 +518,8 @@ Telnet: NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -573,176 +576,71 @@ Release: April 23, 2024
 
 4 / 36
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Telnet Authentication Option Command SEND](#221-telnet-authentication-option-command-send)
+    - [2.2.2 Telnet Authentication Option Command IS or REPLY](#222-telnet-authentication-option-command-is-or-reply)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 through 3.1.7 to gain a complete understanding of the client role.](#311-through-317-to-gain-a-complete-understanding-of-the-client-role)
+    - [3.1.5 specifies how AUTH_STATE is used in the context of the Telnet: NTLM Authentication](#315-specifies-how-authstate-is-used-in-the-context-of-the-telnet-ntlm-authentication)
+      - [3.1.5.1 Receiving Any Message](#3151-receiving-any-message)
+        - [3.1.5.1.1 Verifying Value of AuthenticationType Field](#31511-verifying-value-of-authenticationtype-field)
+        - [3.1.5.1.2 Internal State](#31512-internal-state)
+      - [3.1.5.2 Receiving a SEND Command](#3152-receiving-a-send-command)
+      - [3.1.5.3 Receiving a REPLY Command](#3153-receiving-a-reply-command)
+        - [3.1.5.3.1 Receiving the NTLM_CHALLENGE REPLY Command](#31531-receiving-the-ntlmchallenge-reply-command)
+          - [3.1.5.3.1.1 NTLM Software Returns Success](#315311-ntlm-software-returns-success)
+          - [3.1.5.3.1.2 NTLM Software Returns Failure](#315312-ntlm-software-returns-failure)
+        - [3.1.5.3.2 Receiving the NTLM_ACCEPT REPLY Command](#31532-receiving-the-ntlmaccept-reply-command)
+        - [3.1.5.3.3 Receiving the NTLM_REJECT REPLY Command](#31533-receiving-the-ntlmreject-reply-command)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 through 3.2.7 to gain a complete understanding of the server role.](#321-through-327-to-gain-a-complete-understanding-of-the-server-role)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving Any Message](#3251-receiving-any-message)
+        - [3.2.5.1.1 Verifying Value of AuthenticationType Field](#32511-verifying-value-of-authenticationtype-field)
+        - [3.2.5.1.2 Internal State](#32512-internal-state)
+      - [3.2.5.2 Receiving an IAC WILL AUTHENTICATION Command](#3252-receiving-an-iac-will-authentication-command)
+      - [3.2.5.3 Receiving an IS Command](#3253-receiving-an-is-command)
+        - [3.2.5.3.1 Receiving the NTLM_NEGOTIATE IS Command](#32531-receiving-the-ntlmnegotiate-is-command)
+          - [3.2.5.3.1.1 NTLM Software Returns Success](#325311-ntlm-software-returns-success)
+          - [3.2.5.3.1.2 NTLM Software Returns Failure](#325312-ntlm-software-returns-failure)
+        - [3.2.5.3.2 Receiving the NTLM_AUTHENTICATE IS Command](#32532-receiving-the-ntlmauthenticate-is-command)
+          - [3.2.5.3.2.1 NTLM Software Returns Success](#325321-ntlm-software-returns-success)
+          - [3.2.5.3.2.2 NTLM Software Returns Failure](#325322-ntlm-software-returns-failure)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Telnet Client Successfully Authenticating to a Telnet Server](#41-telnet-client-successfully-authenticating-to-a-telnet-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Telnet Authentication Option Command SEND ................................................ 13
-Telnet Authentication Option Command IS or REPLY ....................................... 14
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.5.1
-
-3.1.5.3.1
-
-3.1.5.2
-3.1.5.3
-
-3.1.5.3.2
-3.1.5.3.3
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.3.1.1
-3.1.5.3.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 16
-Client Details ................................................................................................... 16
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Receiving Any Message .......................................................................... 18
-Verifying Value of AuthenticationType Field ......................................... 18
-Internal State ................................................................................. 18
-Receiving a SEND Command .................................................................. 18
-Receiving a REPLY Command .................................................................. 19
-Receiving the NTLM_CHALLENGE REPLY Command .............................. 19
-NTLM Software Returns Success .................................................. 19
-NTLM Software Returns Failure .................................................... 19
-Receiving the NTLM_ACCEPT REPLY Command .................................... 19
-Receiving the NTLM_REJECT REPLY Command .................................... 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Server Details .................................................................................................. 20
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Receiving Any Message .......................................................................... 22
-Verifying Value of AuthenticationType Field ......................................... 22
-Internal State ................................................................................. 23
-Receiving an IAC WILL AUTHENTICATION Command ................................. 23
-Receiving an IS Command ..................................................................... 23
-Receiving the NTLM_NEGOTIATE IS Command .................................... 23
-NTLM Software Returns Success .................................................. 23
-NTLM Software Returns Failure .................................................... 24
-Receiving the NTLM_AUTHENTICATE IS Command............................... 24
-NTLM Software Returns Success .................................................. 24
-NTLM Software Returns Failure .................................................... 24
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.3.2.1
-3.2.5.3.2.2
-
-3.2.5.3.1.1
-3.2.5.3.1.2
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.5.2
-3.2.5.3
-
-3.1.6
-3.1.7
-
-3.2.5.3.2
-
-3.2.5.3.1
-
-3.2.5.1
-
-3.2
-
-[MS-TNAP] - v20240423
-Telnet: NT LAN Manager (NTLM) Authentication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 36
-
-3.2.6
-3.2.7
-
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-
-4  Protocol Examples ................................................................................................. 26
-Telnet Client Successfully Authenticating to a Telnet Server .................................. 26
-
-4.1
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 32
-
-7  Change Tracking .................................................................................................... 34
-
-8  Index ..................................................................................................................... 35
-
-[MS-TNAP] - v20240423
-Telnet: NT LAN Manager (NTLM) Authentication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 36
-
-1  Introduction
+## 1 Introduction
 
 Telnet is an application layer protocol, as specified in [RFC854], and is supplemented by various other
 RFCs (Requests for Comments). The Telnet Authentication Option (as specified in [RFC2941]),
@@ -755,7 +653,7 @@ Telnet: NT LAN Manager (NTLM) Authentication Protocol to authenticate itself to 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -815,7 +713,8 @@ Telnet: NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-REPLY command: A Telnet Authentication Option (as specified in [RFC2941]) message used to
+
+REPLY command: A Telnet Authentication Option (as specified in [RFC2941]) message used to
 
 send replies to the IS command. The structure of this command, as specified in [RFC2941]
 section 2, is: IAC SB AUTHENTICATION REPLY authentication-type-pair <auth data> IAC SE.
@@ -827,14 +726,14 @@ section 2, is: IAC SB AUTHENTICATION SEND authentication-type-pair-list IAC SE.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -859,14 +758,14 @@ https://www.rfc-editor.org/info/rfc854
 [RFC855] Postel, J., and Reynolds, J., "Telnet Option Specifications", STD 8, RFC 855, May 1983,
 https://www.rfc-editor.org/info/rfc855
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-TVTT] Microsoft Corporation, "Telnet: VTNT Terminal Type Format Data Structure".
 
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
 
-1.3  Overview
+### 1.3 Overview
 
 The Telnet: NT LAN Manager (NTLM) Authentication Protocol specifies how a Telnet client and Telnet
 server can use the NT LAN Manager (NTLM) Authentication Protocol (as specified in [MS-NLMP]) so
@@ -881,7 +780,8 @@ Release: April 23, 2024
 
 8 / 36
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-TNAP].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -936,12 +836,13 @@ Telnet: NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Implementers of the Telnet: NTLM Authentication Protocol are required to possess a working
+
+Implementers of the Telnet: NTLM Authentication Protocol are required to possess a working
 knowledge of the Telnet Protocol (as specified in [RFC854]), the Telnet Option (as specified in
 [RFC855]), the Telnet Authentication Option (as specified in [RFC2941]), and the NTLM Authentication
 Protocol (as specified in [MS-NLMP]).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Telnet: NTLM Authentication Protocol is an extension to the Telnet Authentication Option (as
 specified in [RFC2941]) and is an embedded protocol. Unlike standalone application protocols, such as
@@ -963,19 +864,19 @@ authentication option is NTLM, then, only after Telnet: NTLM Authentication Prot
 client, can any communication using Telnet VTNT Terminal Type Format happen between the Telnet
 server and client.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Because the Telnet: NTLM Authentication Protocol depends on NTLM to authenticate the client to the
 server, both server and client are required to have access to an implementation of the NTLM
 Authentication Protocol (as specified in [MS-NLMP]) capable of supporting connection-oriented
 NTLM.<1>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Telnet: NTLM Authentication Protocol is required to be used only when implementing a Telnet
 client that needs to authenticate to a Telnet server by using NTLM authentication.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -989,7 +890,7 @@ version is required to be configured on both the client and the server prior to 
 Authentication Protocol version mismatches are handled by the NTLM Authentication Protocol
 implementation, and not by the Telnet: NTLM Authentication Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Telnet: NTLM Authentication Protocol does not have any vendor-extensible fields.
 
@@ -1000,7 +901,8 @@ Release: April 23, 2024
 
 10 / 36
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 The Telnet: NTLM Authentication Protocol does not use any standards assignments.
 
@@ -1011,25 +913,26 @@ Release: April 23, 2024
 
 11 / 36
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-TNAP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-2  Messages
+## 2 Messages
 
 The following sections specify how Telnet: NTLM Authentication Protocol messages are transported
 and give details of message syntax.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The Telnet: NTLM Authentication Protocol does not establish transport connections. Instead, Telnet:
 NTLM Authentication Protocol messages are encapsulated in Telnet: NTLM Authentication Protocol
 commands. How Telnet: NTLM Authentication Protocol messages must be encapsulated in Telnet:
 NTLM Authentication Protocol commands is specified in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The three commands in which Telnet: NTLM Authentication Protocol messages can be embedded are
 SEND, IS, and REPLY. The structure of each of these commands is as follows:
@@ -1061,7 +964,8 @@ Release: April 23, 2024
 
 12 / 36
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-TNAP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1072,7 +976,7 @@ The message syntax of a Telnet: NTLM Authentication Protocol message depends on 
 Authentication Option command (as specified in [RFC2941]) in which it is to be embedded, whether a
 SEND (section 2.2.1), IS (section 2.2.2), or REPLY (section 2.2.2) command.
 
-2.2.1  Telnet Authentication Option Command SEND
+#### 2.2.1 Telnet Authentication Option Command SEND
 
 When the Telnet Authentication Option command (as specified in [RFC2941]) is SEND, the Telnet:
 NTLM Authentication Protocol specifies how an implementation must fill the authentication-type-
@@ -1134,7 +1038,8 @@ Release: April 23, 2024
 
 13 / 36
 
-Modifiers
+
+Modifiers
 
 Symbolic value
 
@@ -1156,7 +1061,7 @@ INI_CRED_FWD_OFF
 
 0
 
-2.2.2  Telnet Authentication Option Command IS or REPLY
+#### 2.2.2 Telnet Authentication Option Command IS or REPLY
 
 When the Telnet Authentication Option command (as specified in [RFC2941]) is REPLY or IS, the
 Telnet: NTLM Authentication Protocol messages are embedded in the authentication-type-pair and
@@ -1245,7 +1150,8 @@ Release: April 23, 2024
 
 14 / 36
 
-Name
+
+Name
 
 Value
 
@@ -1300,17 +1206,18 @@ Release: April 23, 2024
 
 15 / 36
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-TNAP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections provide a detailed specification of Telnet: NTLM Authentication Protocol
 message computation. Sections 3.1.5 and 3.2.5 specify how the client and server must compute
 messages and respond to messages, respectively.
 
-3.1  Client Details
+### 3.1 Client Details
 
 The following state diagram illustrates the activities of the client during Telnet: NTLM Authentication
 Protocol processing. The start state is the start of Telnet: NTLM Authentication Protocol message
@@ -1324,7 +1231,8 @@ Release: April 23, 2024
 
 16 / 36
 
-Figure 4: Client activity during Telnet: NTLM Authentication Protocol processing
+
+Figure 4: Client activity during Telnet: NTLM Authentication Protocol processing
 
 1.  send_not_received (start state): This state indicates that the client has not received the SEND
 
@@ -1348,7 +1256,7 @@ section 3.1.5.
 This state diagram is included for explanatory purposes only. Implementations are not required to use
 the same state names as used in the diagram. Section 3.1.5 specifies each transaction in the state
 diagram in detail. The state machine diagram can be used in conjunction with the content in sections
-3.1.1 through 3.1.7 to gain a complete understanding of the client role.
+#### 3.1.1 through 3.1.7 to gain a complete understanding of the client role.
 
 3.1.1  Abstract Data Model
 
@@ -1381,7 +1289,7 @@ client can be are as follows:
 send_not_received indicates the start state, and authentication_complete indicates the end
 
 state. Negotiate_data_sent and authenticate_data_sent are intermediate states. Section
-3.1.5 specifies how AUTH_STATE is used in the context of the Telnet: NTLM Authentication
+#### 3.1.5 specifies how AUTH_STATE is used in the context of the Telnet: NTLM Authentication
 Protocol.
 
 3.1.2  Timers
@@ -1400,7 +1308,8 @@ Release: April 23, 2024
 
 17 / 36
 
-The client implementation MUST set AUTH_STATE, which it uses to track its internal state to
+
+The client implementation MUST set AUTH_STATE, which it uses to track its internal state to
 send_not_received.
 
 3.1.4  Higher-Layer Triggered Events
@@ -1414,23 +1323,23 @@ Telnet server and a Telnet client. The client response to an incoming message de
 Command Type (as specified in [RFC2941]) and the NTLM_CommandCode field (as specified in
 section 2.2.2) of the incoming message.
 
-3.1.5.1  Receiving Any Message
+##### 3.1.5.1 Receiving Any Message
 
-3.1.5.1.1 Verifying Value of AuthenticationType Field
+###### 3.1.5.1.1 Verifying Value of AuthenticationType Field
 
 Unless specifically noted in a subsequent section in this document, the client implementation MUST
 verify that the AuthenticationType field has the value 0x0F, which corresponds to NTLM
 authentication. Messages with the AuthenticationType field set to a value other than 0x0F MUST
 NOT be processed by this protocol.
 
-3.1.5.1.2 Internal State
+###### 3.1.5.1.2 Internal State
 
 The expected value of AUTH_STATE for each message is specified in subsequent sections of this
 document. An incoming message for which the current AUTH_STATE does not match the expected
 state is an out-of-sequence message. The subsequent sections in this document specify how the client
 responds to out-of-sequence messages.
 
-3.1.5.2  Receiving a SEND Command
+##### 3.1.5.2 Receiving a SEND Command
 
 Expected AUTH_STATE: send_not_received
 
@@ -1463,12 +1372,13 @@ Release: April 23, 2024
 
 18 / 36
 
-3.1.5.3  Receiving a REPLY Command
+
+##### 3.1.5.3 Receiving a REPLY Command
 
 On receiving a REPLY command, the client MUST process the message based on the value of the
 NTLM_CommandCode in the REPLY command received from the server.
 
-3.1.5.3.1 Receiving the NTLM_CHALLENGE REPLY Command
+###### 3.1.5.3.1 Receiving the NTLM_CHALLENGE REPLY Command
 
 Expected AUTH_STATE: negotiate_data_sent
 
@@ -1492,7 +1402,7 @@ Neither the mechanism for returning the NTLM_AUTHENTICATE_MESSAGE nor the mechan
 returning a failure error code is defined by the Telnet: NTLM Authentication Protocol. These
 mechanisms are defined by the implementation of the NTLM protocol in use on the client.
 
-3.1.5.3.1.1  NTLM Software Returns Success
+###### 3.1.5.3.1.1 NTLM Software Returns Success
 
 The client MUST send an IS command to the server, and MUST set AUTH_STATE to
 authenticate_data_sent. The client MUST set the fields of the IS command message as follows:
@@ -1514,12 +1424,12 @@ How to get the NTLM AUTHENTICATE_MESSAGE is specified in [MS-NLMP].
 If the AUTH_STATE is not equal to negotiate_data_sent, the client SHOULD treat this as an error
 condition, and then take an appropriate action most suitable for the implementation.<4>
 
-3.1.5.3.1.2  NTLM Software Returns Failure
+###### 3.1.5.3.1.2 NTLM Software Returns Failure
 
 This indicates an error situation, and the Telnet: NTLM Authentication Protocol does not specify or
 recommend any action. An implementation can take any appropriate action.<5>
 
-3.1.5.3.2 Receiving the NTLM_ACCEPT REPLY Command
+###### 3.1.5.3.2 Receiving the NTLM_ACCEPT REPLY Command
 
 Expected AUTH_STATE: authenticate_data_sent
 
@@ -1530,7 +1440,8 @@ Release: April 23, 2024
 
 19 / 36
 
-A REPLY command with NTLM_CommandCode set to NTLM_ACCEPT indicates that the server has
+
+A REPLY command with NTLM_CommandCode set to NTLM_ACCEPT indicates that the server has
 successfully authenticated the client. This command marks the end of the Telnet: NTLM Authentication
 Protocol.
 
@@ -1542,7 +1453,7 @@ If the client's AUTH_STATE is not equal to authenticate_data_sent when it receiv
 the client SHOULD treat this as an error condition, and then take an appropriate action suitable for the
 implementation.<6>
 
-3.1.5.3.3 Receiving the NTLM_REJECT REPLY Command
+###### 3.1.5.3.3 Receiving the NTLM_REJECT REPLY Command
 
 Expected AUTH_STATE: authenticate_data_sent
 
@@ -1557,15 +1468,15 @@ authentication_complete, and MUST proceed with negotiation for other options, as
 If the AUTH_STATE is not equal to authenticate_data_sent, the client SHOULD treat this as an error
 condition, and then take an appropriate action most suitable for the implementation.<8>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The client does not use any timer events.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The client does not use any local events.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The following state diagram illustrates the activities of the server during Telnet: NTLM Authentication
 Protocol processing. The start state is the start of Telnet: NTLM Authentication Protocol message
@@ -1579,7 +1490,8 @@ Release: April 23, 2024
 
 20 / 36
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-TNAP].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1615,8 +1527,9 @@ Telnet: NT LAN Manager (NTLM) Authentication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-diagram in detail. The state machine diagram can be used in conjunction with content in sections
-3.2.1 through 3.2.7 to gain a complete understanding of the server role.
+
+diagram in detail. The state machine diagram can be used in conjunction with content in sections
+#### 3.2.1 through 3.2.7 to gain a complete understanding of the server role.
 
 3.2.1  Abstract Data Model
 
@@ -1647,11 +1560,11 @@ the end state. send_command_sent and challenge_data_sent are intermediate states
 Section 3.2.5 specifies how AUTH_STATE is used in the context of the Telnet: NTLM Authentication
 Protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The server does not use any timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Telnet: NTLM Authentication Protocol is not a protocol by itself; rather, it is part of the Telnet
 Protocol (as specified in [RFC854]). Therefore, no separate initialization is required.
@@ -1659,20 +1572,20 @@ Protocol (as specified in [RFC854]). Therefore, no separate initialization is re
 The server implementation MUST set AUTH_STATE (which it uses to track its internal state) to
 will_authenticate_not_received.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The server does not use any higher-layer triggered events.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The Telnet: NTLM Authentication Protocol is driven by a series of message exchanges between a
 Telnet server and a Telnet client. The server response to an incoming message depends on the
 Command Type (as specified in [RFC2941]) and the NTLM_CommandCode field (as specified in
 section 2.2.2) of the incoming message.
 
-3.2.5.1  Receiving Any Message
+##### 3.2.5.1 Receiving Any Message
 
-3.2.5.1.1 Verifying Value of AuthenticationType Field
+###### 3.2.5.1.1 Verifying Value of AuthenticationType Field
 
 [MS-TNAP] - v20240423
 Telnet: NT LAN Manager (NTLM) Authentication Protocol
@@ -1681,19 +1594,20 @@ Release: April 23, 2024
 
 22 / 36
 
-Unless specifically noted in a subsequent section in this document, the server implementation MUST
+
+Unless specifically noted in a subsequent section in this document, the server implementation MUST
 verify that the AuthenticationType field has the value 0x0F, which corresponds to NTLM
 authentication. Messages with the AuthenticationType field set to a value other than 0x0F MUST
 NOT be processed by this protocol.
 
-3.2.5.1.2 Internal State
+###### 3.2.5.1.2 Internal State
 
 The expected value of AUTH_STATE for each message is specified in subsequent sections in this
 document. An incoming message for which the current AUTH_STATE does not match the expected
 state is an out-of-sequence message. The subsequent sections in this document specify how the
 server responds to out-of-sequence messages.
 
-3.2.5.2  Receiving an IAC WILL AUTHENTICATION Command
+##### 3.2.5.2 Receiving an IAC WILL AUTHENTICATION Command
 
 Expected AUTH_STATE: will_authenticate_not_received
 
@@ -1710,12 +1624,12 @@ response that a server makes in the context of the Telnet: NTLM Authentication P
 about how to handle an out-of-sequence IAC WILL AUTHENTICATION command are specified in
 [RFC855] and [RFC2941].
 
-3.2.5.3  Receiving an IS Command
+##### 3.2.5.3 Receiving an IS Command
 
 On receiving an IS command, the server MUST process the message based on the value of the
 NTLM_CommandCode in the IS command received from the client.
 
-3.2.5.3.1 Receiving the NTLM_NEGOTIATE IS Command
+###### 3.2.5.3.1 Receiving the NTLM_NEGOTIATE IS Command
 
 Expected AUTH_STATE: send_command_sent
 
@@ -1736,7 +1650,7 @@ the local NTLM software.
 returning a failure error code is defined by the Telnet: NTLM Authentication Protocol. These
 mechanisms are defined by the implementation of the NTLM protocol in use on the client.
 
-3.2.5.3.1.1  NTLM Software Returns Success
+###### 3.2.5.3.1.1 NTLM Software Returns Success
 
 [MS-TNAP] - v20240423
 Telnet: NT LAN Manager (NTLM) Authentication Protocol
@@ -1745,7 +1659,8 @@ Release: April 23, 2024
 
 23 / 36
 
-The server MUST send a REPLY command to the client, and MUST set AUTH_STATE to
+
+The server MUST send a REPLY command to the client, and MUST set AUTH_STATE to
 challenge_data_sent. The server MUST set the fields of the REPLY command as follows:
 
 1.  AuthenticationType set to 0x0F (NTLM).
@@ -1761,7 +1676,7 @@ challenge_data_sent. The server MUST set the fields of the REPLY command as foll
 6.  NTLM_Data set to NTLM CHALLENGE_MESSAGE passed from the local NTLM software.
 Details about how to get the NTLM CHALLENGE_MESSAGE are specified in [MS-NLMP].
 
-3.2.5.3.1.2  NTLM Software Returns Failure
+###### 3.2.5.3.1.2 NTLM Software Returns Failure
 
 The server MUST send a REPLY command, and MUST set its AUTH_STATE to
 authentication_complete. The server MUST set the fields of the REPLY command as follows:
@@ -1772,7 +1687,7 @@ authentication_complete. The server MUST set the fields of the REPLY command as 
 
 3.  NTLM_CommandCode set to NTLM_REJECT.
 
-3.2.5.3.2 Receiving the NTLM_AUTHENTICATE IS Command
+###### 3.2.5.3.2 Receiving the NTLM_AUTHENTICATE IS Command
 
 Expected AUTH_STATE: challenge_data_sent
 
@@ -1788,7 +1703,7 @@ returning or detecting a failure error code are defined by the Telnet: NTLM Auth
 These mechanisms are defined by the implementation of the NTLM protocol in use on the server. The
 server implementation can use any NTLM software.
 
-3.2.5.3.2.1  NTLM Software Returns Success
+###### 3.2.5.3.2.1 NTLM Software Returns Success
 
 The server MUST set the fields of the REPLY command as follows:
 
@@ -1798,7 +1713,7 @@ The server MUST set the fields of the REPLY command as follows:
 
 3.  NTLM_CommandCode set to NTLM_ACCEPT.
 
-3.2.5.3.2.2  NTLM Software Returns Failure
+###### 3.2.5.3.2.2 NTLM Software Returns Failure
 
 The server MUST set the fields of the REPLY command as follows:
 
@@ -1813,13 +1728,14 @@ Release: April 23, 2024
 
 24 / 36
 
-3.  NTLM_CommandCode set to NTLM_REJECT.
 
-3.2.6  Timer Events
+3.  NTLM_CommandCode set to NTLM_REJECT.
+
+#### 3.2.6 Timer Events
 
 The server does not use any timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The server does not use any local events.
 
@@ -1830,16 +1746,17 @@ Release: April 23, 2024
 
 25 / 36
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-TNAP].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following section describes operations used in a common scenario to illustrate the function of the
 Telnet: NTLM Authentication Protocol.
 
-4.1  Telnet Client Successfully Authenticating to a Telnet Server
+### 4.1 Telnet Client Successfully Authenticating to a Telnet Server
 
 This section illustrates the Telnet: NTLM Authentication Protocol with an example scenario in which a
 Telnet client successfully authenticates to a Telnet server.
@@ -1862,7 +1779,8 @@ Release: April 23, 2024
 
 26 / 36
 
- + Ethernet: Etype = Internet IP (IPv4)
+
+ + Ethernet: Etype = Internet IP (IPv4)
  + Ipv4: Next Protocol = TCP, Packet ID = 52505, Total IP Length = 60
  + Tcp: Flags=...PA..., SrcPort=Telnet(23), DstPort=1827, Len=8,
    Seq=4209081200 - 4209081208, Ack=3503001584, Win=65532 (scale factor
@@ -1933,7 +1851,8 @@ Release: April 23, 2024
 
 27 / 36
 
-      EndCommand: IAC SE (END OF SUBNEGOTIATION PARAMETERS)
+
+      EndCommand: IAC SE (END OF SUBNEGOTIATION PARAMETERS)
 
 The server passes the NTLM NEGOTIATE_MESSAGE that it received from the client to the local NTLM
 software. The server then sends a REPLY command with the NTLM CHALLENGE_MESSAGE got from
@@ -2001,7 +1920,8 @@ Release: April 23, 2024
 
 28 / 36
 
-NTLM_Data = NTLM AUTHENTICATE_MESSAGE
+
+NTLM_Data = NTLM AUTHENTICATE_MESSAGE
 
 The following is a Sample Frame.
 
@@ -2072,7 +1992,8 @@ Release: April 23, 2024
 
 29 / 36
 
-      EndCommand: IAC SE (END OF SUBNEGOTIATION PARAMETERS)
+
+      EndCommand: IAC SE (END OF SUBNEGOTIATION PARAMETERS)
 
 The actual value of NTLM_CommandCode depends on the return value given by the local NTLM
 software after it processes the NTLM AUTHENTICATE_MESSAGE. In this example, it is assumed that
@@ -2085,17 +2006,18 @@ Release: April 23, 2024
 
 30 / 36
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Telnet: NTLM
 Authentication Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 It is recommended that implementers familiarize themselves with the security considerations of using
 NTLM authentication (see [MS-NLMP] section 5).
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -2112,7 +2034,8 @@ Release: April 23, 2024
 
 31 / 36
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2180,7 +2103,8 @@ Release: April 23, 2024
 
 32 / 36
 
-type. The Microsoft Windows Telnet client and Telnet server implementations set the
+
+type. The Microsoft Windows Telnet client and Telnet server implementations set the
 NTLM_BufferType field to 0x00000002.
 
 <3> Section 3.1.5.2: When a Microsoft Windows Telnet client encounters this error condition, it sends
@@ -2214,7 +2138,8 @@ Release: April 23, 2024
 
 33 / 36
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2258,7 +2183,8 @@ Release: April 23, 2024
 
 34 / 36
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2393,7 +2319,8 @@ Release: April 23, 2024
 
 35 / 36
 
-References 8
+
+References 8
    informative 8
    normative 8
 Relationship to other protocols 10

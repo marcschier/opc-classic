@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -228,168 +229,73 @@ Release: April 23, 2024
 
 2 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Common Data Structures](#229-common-data-structures)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 RDWebServiceSoap Server Details](#31-rdwebservicesoap-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 GetRDPFiles](#3141-getrdpfiles)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 RDWebService_GetRDPFiles_InputMessage Message](#314111-rdwebservicegetrdpfilesinputmessage-message)
+          - [3.1.4.1.1.2 RDWebService_GetRDPFiles_OutputMessage Message](#314112-rdwebservicegetrdpfilesoutputmessage-message)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 GetRDPFiles](#314121-getrdpfiles)
+          - [3.1.4.1.2.2 GetRDPFilesResponse](#314122-getrdpfilesresponse)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+          - [3.1.4.1.3.1 ArrayOfReconnectContent](#314131-arrayofreconnectcontent)
+          - [3.1.4.1.3.2 ReconnectContent](#314132-reconnectcontent)
+          - [3.1.4.1.3.3 ReconnectContents](#314133-reconnectcontents)
+        - [3.1.4.1.4 Simple Types](#31414-simple-types)
+          - [3.1.4.1.4.1 ReconnectContentType](#314141-reconnectcontenttype)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 RDWebServiceSoap Client Details](#32-rdwebservicesoap-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 An HTTP post request for data from the web service](#41-an-http-post-request-for-data-from-the-web-service)
+  - [4.2 A sample of the resources returned](#42-a-sample-of-the-resources-returned)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Message Syntax ................................................................................... 9
-Namespaces ................................................................................................ 9
-Messages ..................................................................................................... 9
-Elements ..................................................................................................... 9
-Complex Types ............................................................................................. 9
-Simple Types ............................................................................................... 9
-Attributes .................................................................................................... 9
-Groups ...................................................................................................... 10
-Attribute Groups ......................................................................................... 10
-Common Data Structures ............................................................................ 10
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.2
-
-3.1.4.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3  Protocol Details ..................................................................................................... 11
-RDWebServiceSoap Server Details ..................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-GetRDPFiles ......................................................................................... 11
-Messages ....................................................................................... 11
-RDWebService_GetRDPFiles_InputMessage Message ...................... 12
-RDWebService_GetRDPFiles_OutputMessage Message .................... 12
-Elements ........................................................................................ 12
-GetRDPFiles .............................................................................. 13
-GetRDPFilesResponse ................................................................. 13
-Complex Types ............................................................................... 13
-ArrayOfReconnectContent ........................................................... 13
-ReconnectContent ...................................................................... 14
-ReconnectContents .................................................................... 14
-Simple Types .................................................................................. 14
-ReconnectContentType ............................................................... 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-RDWebServiceSoap Client Details....................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-3.1.4.1.3.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.1.4.1.4.1
-
-3.1.5
-3.1.6
-
-3.1.4.1.4
-
-3.1.4.1.3
-
-3.2
-
-[MS-RDWR] - v20240423
-Remote Desktop Workspace Runtime Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 30
-
-4  Protocol Examples ................................................................................................. 17
-An HTTP post request for data from the web service ............................................. 17
-A sample of the resources returned .................................................................... 17
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 25
-
-7  Appendix B: Product Behavior ............................................................................... 27
-
-8  Change Tracking .................................................................................................... 28
-
-9  Index ..................................................................................................................... 29
-
-[MS-RDWR] - v20240423
-Remote Desktop Workspace Runtime Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 30
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Workspace Runtime Protocol is a Web service-based protocol used to remotely
 retrieve the contents of the Remote Desktop Protocol (RDP) file that is associated to a user’s remote
@@ -398,7 +304,7 @@ desktop or application-sharing session on a remote computer.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -461,7 +367,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WSDL operation: A single action or function of a web service. The execution of a WSDL operation
+
+WSDL operation: A single action or function of a web service. The execution of a WSDL operation
 typically requires the exchange of messages between the service requestor and the service
 provider.
 
@@ -475,14 +382,14 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -525,14 +432,15 @@ Release: April 23, 2024
 
 6 / 30
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-RDWR].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RDPBCGR] Microsoft Corporation, "Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting".
@@ -540,7 +448,7 @@ Remoting".
 [MSDN-TSCCRDP] Microsoft Corporation, "Terminal Services Client Configuration through the .rdp
 File", http://msdn.microsoft.com/en-us/library/aa915001.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Workspace Runtime Protocol retrieves Remote Desktop Protocol (RDP) files,
 as described in [MSDN-TSCCRDP], that are required to reestablish connections to a user’s session(s)
@@ -551,7 +459,7 @@ returned. In order to reconnect the sessions, the presence of the Terminal Servi
 to launch the application, and the Terminal Services client will use the RDP protocol [MS-RDPBCGR] to
 connect.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Workspace Runtime Protocol uses SOAP over Hypertext Transfer Protocol
 over Secure Sockets Layer (HTTPS), as specified in [RFC2818].
@@ -560,7 +468,7 @@ The following diagram illustrates the layering of the protocol stack.
 
 Figure 1: Protocol Stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following are prerequisites for the operation of the Remote Desktop Workspace Runtime Protocol:
 
@@ -577,7 +485,8 @@ Release: April 23, 2024
 
 7 / 30
 
-
+
+
 
 The client machine has the necessary applications to launch any of the Remote Desktop
 Protocol (RDP) configuration files [MSDN-TSCCRDP] returned by the protocol. For example, the
@@ -594,23 +503,23 @@ The Remote Desktop Workspace Runtime Protocol uses the authentication model base
 TSWP]. For example, the re-use of the authentication cookie negotiated prior to this protocol
 starting, as described in [MS-TSWP] section 3.1.1.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of the Remote Desktop Workspace Runtime Protocol is appropriate when the client requires
 the resource files required to reconnect to the user’s remotely connected sessions. These resources
 represent the remote applications and or desktops that are associated to the user, in the form of RDP
 file contents.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Desktop Workspace Runtime Protocol defines a version field to facilitate the process of
 identifying the protocol version.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Remote Desktop Workspace Runtime Protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 XML namespaces used by SOAP-based protocols are listed in section 2.2.1.
 
@@ -621,22 +530,23 @@ Release: April 23, 2024
 
 8 / 30
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Workspace Runtime Protocol uses SOAP over HTTPS for communication. The
 Remote Desktop Workspace Runtime Protocol is used as the transport to provide access to the user’s
 RDP file contents that are associated with their active remote application sessions and/or remote
 desktop sessions.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema, as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description Language,
 as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -677,23 +587,23 @@ http://schemas.xmlsoap.org/wsdl/
 
 [WSDL]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
@@ -704,15 +614,16 @@ Release: April 23, 2024
 
 9 / 30
 
-2.2.7  Groups
+
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
-2.2.9  Common Data Structures
+#### 2.2.9 Common Data Structures
 
 This specification does not define any common XML schema data structures.
 
@@ -723,9 +634,10 @@ Release: April 23, 2024
 
 10 / 30
 
-3  Protocol Details
 
-3.1  RDWebServiceSoap Server Details
+## 3 Protocol Details
+
+### 3.1 RDWebServiceSoap Server Details
 
 The following sections describe the behavior of the Remote Desktop Workspace Runtime Protocol. This
 protocol follows a client-server model, whereby a client sends a SOAP message that contains a
@@ -734,20 +646,20 @@ contains the response.
 
 The following sections describe the behavior of the Remote Desktop Workspace Runtime Protocol.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When this protocol initializes, it MUST begin listening for SOAP requests using the standard SOAP
 protocol and ports.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This specification includes the following WSDL operations.
 
@@ -757,7 +669,7 @@ GetRDPFiles
 
 Retrieves an array of resources.
 
-3.1.4.1  GetRDPFiles
+##### 3.1.4.1 GetRDPFiles
 
 A server processes a GetRDPFiles request using the Remote Desktop Workspace Runtime Protocol
 upon receiving a SOAP message that contains the specified Uniform Resource Identifier (URI) as
@@ -776,7 +688,7 @@ name="RDWebService_GetRDPFiles_OutputMessage"
 message="tns:RDWebService_GetRDPFiles_OutputMessage"/>
  </wsdl:operation>
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -788,7 +700,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Message
+
+Message
 
 Description
 
@@ -803,7 +716,7 @@ contain anything if no resources are available to connect to or
 MUST contain resource-specific XML in the SOAP body for
 resources to connect to.
 
-3.1.4.1.1.1  RDWebService_GetRDPFiles_InputMessage Message
+###### 3.1.4.1.1.1 RDWebService_GetRDPFiles_InputMessage Message
 
 A WSDL message containing the request for GetRDPFiles WSDL operation.
 
@@ -819,7 +732,7 @@ The SOAP body contains GetRDPFiles element.
 
 The GetRDPFilesSoapIn message contains a GetRDPFiles element, as specified in section 3.1.4.1.2.1.
 
-3.1.4.1.1.2  RDWebService_GetRDPFiles_OutputMessage Message
+###### 3.1.4.1.1.2 RDWebService_GetRDPFiles_OutputMessage Message
 
 A WSDL message containing the response for GetRDPFiles WSDL operation.
 
@@ -836,7 +749,7 @@ The SOAP body contains GetRDPFilesResponse element.
 The GetRDPFilesSoapOut message contains a GetRDPFileResponse element in response to a
 GetRDPFilesSoapIn message. The GetRDPFileResponse element is specified in section 3.1.4.1.2.2.
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 The following table summarizes the XML schema element definitions that are specific to this
 operation.
@@ -857,7 +770,8 @@ Release: April 23, 2024
 
 12 / 30
 
-Element
+
+Element
 
 Description
 
@@ -865,7 +779,7 @@ GetRDPFilesResponse  Contains the response to a GetRDPFiles request. The overall
 
 protocol configuration.
 
-3.1.4.1.2.1  GetRDPFiles
+###### 3.1.4.1.2.1 GetRDPFiles
 
 The GetRDPFiles element forms the body of the request. This element contains no child elements and
 conveys no information.
@@ -874,7 +788,7 @@ conveys no information.
    <xsd:complexType/>
  </xsd:element>
 
-3.1.4.1.2.2  GetRDPFilesResponse
+###### 3.1.4.1.2.2 GetRDPFilesResponse
 
 The GetRDPFilesResponse contains the response to a GetRDPFiles request.
 
@@ -895,7 +809,7 @@ complex data type ReconnectContents.
 
 The GetRDPFileResponse MUST contain at least one GetRDPFilesResult.
 
-3.1.4.1.3 Complex Types
+###### 3.1.4.1.3 Complex Types
 
 The following table summarizes the XML schema complex type definitions that are specific to this
 operation.
@@ -915,7 +829,7 @@ ReconnectContents
 The container that defines the version and array of contents received by the web
 server.
 
-3.1.4.1.3.1  ArrayOfReconnectContent
+###### 3.1.4.1.3.1 ArrayOfReconnectContent
 
 ArrayOfReconnectContent is a complex type that specifies the collection of ReconnectContent types, as
 specified in section 3.1.4.1.3.2.
@@ -931,7 +845,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   <xsd:sequence>
+
+   <xsd:sequence>
      <xsd:element minOccurs="0" maxOccurs="unbounded" name="ReconnectContent" nillable="true"
 type="tns:ReconnectContent"/>
    </xsd:sequence>
@@ -939,7 +854,7 @@ type="tns:ReconnectContent"/>
 
 ReconnectContent: A collection of ReconnectContent types.
 
-3.1.4.1.3.2  ReconnectContent
+###### 3.1.4.1.3.2 ReconnectContent
 
 ReconnectContent has a string element that contains the RDP file stream, and a simple type called
 ReconnectContentType that is used to specify the type of RDP file stream. ReconnectContentType is
@@ -960,7 +875,7 @@ rct: ReconnectContentType is specified in section 3.1.4.1.4.1.
 
 rdpStream: A file stream that consists of RDP files as described in [MSDN-TSCCRDP].
 
-3.1.4.1.3.3  ReconnectContents
+###### 3.1.4.1.3.3 ReconnectContents
 
 The ReconnectContents type has a version string element and either zero or one type of
 ArrayOfReconnectContent type. The ArrayOfReconnectContent type is specified in section 3.1.4.1.3.1.
@@ -981,7 +896,7 @@ Workspace Runtime protocol. Define a value in this operation when it is implemen
 
 wkspRC: An element of type ArrayOfReconnectContent.
 
-3.1.4.1.4 Simple Types
+###### 3.1.4.1.4 Simple Types
 
 The following table shows the Simple types inlcuded in the operation.
 
@@ -998,13 +913,14 @@ Release: April 23, 2024
 
 14 / 30
 
-SimpleType
+
+SimpleType
 
 Description
 
 application, or virtual machine-based.
 
-3.1.4.1.4.1  ReconnectContentType
+###### 3.1.4.1.4.1 ReconnectContentType
 
 The valid values for this enumeration are "REMOTEDESKTOP", "VMREMOTEDESKTOP", or
 "REMOTEAPPLICATION".
@@ -1035,30 +951,30 @@ Specifies a session type of virtual machine.
 
 REMOTEAPPLICATION  Specifies a session type of remote application.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  RDWebServiceSoap Client Details
+### 3.2 RDWebServiceSoap Client Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
@@ -1069,15 +985,16 @@ Release: April 23, 2024
 
 15 / 30
 
-3.2.4  Message Processing Events and Sequencing Rules
+
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -1088,9 +1005,10 @@ Release: April 23, 2024
 
 16 / 30
 
-4  Protocol Examples
 
-4.1  An HTTP post request for data from the web service
+## 4 Protocol Examples
+
+### 4.1 An HTTP post request for data from the web service
 
 The following is a request and response operation for RDP files resources.
 
@@ -1135,7 +1053,7 @@ xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
    </soap:Body>
  </soap:Envelope>
 
-4.2  A sample of the resources returned
+### 4.2 A sample of the resources returned
 
 The request in section 4.1 is made and the return is an xml payload consisting of three resources (RDP
 file streams) that are associated to the user’s remote desktop session, remote application session, or
@@ -1158,7 +1076,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bpp:i:32 prompt for credentials on client:i:1 server port:i:3389 allow font smoothing:i:1
+
+bpp:i:32 prompt for credentials on client:i:1 server port:i:3389 allow font smoothing:i:1
 promptcredentialonce:i:1 authentication level:i:0 gatewayusagemethod:i:2
 gatewayprofileusagemethod:i:0 gatewaycredentialssource:i:0 full address:s:RDVB9-
 101180.rdvteam.stbtest.microsoft.com workspace id:s:RDVB9-
@@ -1236,7 +1155,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AvAlBR8GgZ6/snLurFl8bX0w0c5om/bQ51E0t6wPgjlitP41zokkWc9xubTgBb81
+
+AvAlBR8GgZ6/snLurFl8bX0w0c5om/bQ51E0t6wPgjlitP41zokkWc9xubTgBb81
 jp0+J1SgszJoD1qfRsteafy/MImLVNVfoSHn35GOs9wmZQIDAQABo4IF1DCCBdAw
 IwYDVR0fBBwwGjAYoBOgEYYPZmlsZTovL3Rlc3QuY3JsgQEAMAwGA1UdEwQFMAMC
 AQAwCwYDVR0PBAQDAgQwMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBMGA1UdJQQMMAoG
@@ -1313,7 +1233,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Level,RedirectDrives,RedirectPrinters,RedirectCOMPorts,RedirectSmartCards,RedirectClipboard,D
+
+Level,RedirectDrives,RedirectPrinters,RedirectCOMPorts,RedirectSmartCards,RedirectClipboard,D
 evicesToRedirect,DrivesToRedirect,LoadBalanceInfo
  signature:s:AQABAAEAAAAZEgAAMIISFQYJKoZIhvcNAQcCoIISBjCCEgICAQExCzAJBgUrDgMC
 GgUAMAsGCSqGSIb3DQEHAaCCEI8wggffMIIGx6ADAgECAhBfZzkIP2oDi06PGDo+
@@ -1391,7 +1312,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Tt7P1OdJeLSiVir+6CUodaAFs+tfgDToSjsduT9wFRm8i83EXTu7xFwhGJZKgGsU
+
+Tt7P1OdJeLSiVir+6CUodaAFs+tfgDToSjsduT9wFRm8i83EXTu7xFwhGJZKgGsU
 vl6waYIsJZs+QZx/p1WtUNGMI3jyEvl6qGeloYpjmseTy0V86grxFyKZIAuIxeul
 EvAm6b1qD/btM0YMFZ8RNk7in8OjlBfZyO0f5kMvgBASipOvxGMcpnOmBsxKVpb8
 ZBI+K7EWdkjq+W9ViatqO/6Qj9rVu5I5aWAPUoyxy3IF1E3yRs4pvPmNZzxpEh1/
@@ -1469,7 +1391,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AgAAACQAAFJTQTIACAAAAQABAPMKx61yTu3Bb/jRK6ss6csI/tGxeXhWJ3bH+hq1
+
+AgAAACQAAFJTQTIACAAAAQABAPMKx61yTu3Bb/jRK6ss6csI/tGxeXhWJ3bH+hq1
 Nn+x4ydjrt+/1jUfrxoG6lzDgEqQijzqMrRmr6/n9eAr6fMgAXPkFJqhatHlb+XN
 JD6Up4scndmZ+ZWNp+BGqtau8kD4O4pbwoZ5PisPPGPw7El0Hwp60fMiLA8HhK+u
 N8U+u4Ha6pmCQ7odpk60wrUN+ekYG2eNO3EW9w8j2a26nC2wmNMXib9ulZhGM+Gr
@@ -1547,7 +1470,8 @@ Release: April 23, 2024
 
 22 / 30
 
-NsZMKnwx/Zghl/Yb9mge+jEbqUmxCfGrNTw7gIyXc3lS2CCVQLPcjTa5RjoaUobj
+
+NsZMKnwx/Zghl/Yb9mge+jEbqUmxCfGrNTw7gIyXc3lS2CCVQLPcjTa5RjoaUobj
 bAzFh6uMUZaTUXKVU48wHwYDVR0jBBgwFoAUKMnouHlh+66LZcePcoKz8gNBGe4w
 DQYJKoZIhvcNAQEFBQADggEBAIIBdFJe+7TwikFEdvyJMkBeGigESQU3qIR8KBjC
 +EjuCWa2kEnh2H8MdEK1YAucHPJyFCwIo3RRb72HTeAb9/K0GlLuLiHEG6QJPO8U
@@ -1575,15 +1499,16 @@ Release: April 23, 2024
 
 23 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no known additional security considerations for the Remote Desktop Workspace Runtime
 Protocol, but server implementers are encouraged to use transport mechanisms that support
 encryption and integrity verification of the messages.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1594,7 +1519,8 @@ Release: April 23, 2024
 
 24 / 30
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
  <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -1669,7 +1595,8 @@ Remote Desktop Workspace Runtime Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <soap:operation soapAction="http://schemas.microsoft.com/ts/2010/09/rdweb/GetRDPFiles"
+
+       <soap:operation soapAction="http://schemas.microsoft.com/ts/2010/09/rdweb/GetRDPFiles"
 style="document"/>
        <wsdl:input name="RDWebService_GetRDPFiles_InputMessage">
          <soap:body use="literal"/>
@@ -1707,7 +1634,8 @@ Release: April 23, 2024
 
 26 / 30
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1749,7 +1677,8 @@ Release: April 23, 2024
 
 27 / 30
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1793,7 +1722,8 @@ Release: April 23, 2024
 
 28 / 30
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1925,7 +1855,8 @@ Server
 
 29 / 30
 
-   timer events 15
+
+   timer events 15
    timers 11
 Simple types 9
 Standards assignments 8

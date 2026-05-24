@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 91
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -298,7 +299,8 @@ Release: April 23, 2024
 
 2 / 91
 
-Date
+
+Date
 
 Revision
 History
@@ -493,210 +495,95 @@ Release: April 23, 2024
 
 3 / 91
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Applicability Statement ....................................................................................... 8
-Standards Assignments ....................................................................................... 8
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Applicability Statement](#14-applicability-statement)
+  - [1.5 Standards Assignments](#15-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Supported Codepage in Windows](#221-supported-codepage-in-windows)
+    - [2.2.2 Supported Codepage Data Files](#222-supported-codepage-data-files)
+      - [2.2.2.1 Codepage Data File Format](#2221-codepage-data-file-format)
+        - [2.2.2.1.1 WCTABLE](#22211-wctable)
+        - [2.2.2.1.2 MBTABLE](#22212-mbtable)
+        - [2.2.2.1.3 DBCSRANGE](#22213-dbcsrange)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Mapping Between UTF-16 Strings and Legacy Codepages](#3151-mapping-between-utf-16-strings-and-legacy-codepages)
+        - [3.1.5.1.1 Mapping Between UTF-16 Strings and Legacy Codepages Using CodePage](#31511-mapping-between-utf-16-strings-and-legacy-codepages-using-codepage)
+          - [3.1.5.1.1.1 Pseudocode for Accessing a Record in the Codepage Data File](#315111-pseudocode-for-accessing-a-record-in-the-codepage-data-file)
+          - [3.1.5.1.1.2 Pseudocode for Mapping a UTF-16 String to a Codepage String](#315112-pseudocode-for-mapping-a-utf-16-string-to-a-codepage-string)
+          - [3.1.5.1.1.3 Pseudocode for Mapping a Codepage String to a UTF-16 String](#315113-pseudocode-for-mapping-a-codepage-string-to-a-utf-16-string)
+        - [3.1.5.1.2 Mapping Between UTF-16 Strings and ISO 2022-Based Codepages](#31512-mapping-between-utf-16-strings-and-iso-2022-based-codepages)
+        - [3.1.5.1.3 Mapping between UTF-16 Strings and GB 18030 Codepage](#31513-mapping-between-utf-16-strings-and-gb-18030-codepage)
+        - [3.1.5.1.4 Mapping Between UTF-16 Strings and ISCII Codepage](#31514-mapping-between-utf-16-strings-and-iscii-codepage)
+        - [3.1.5.1.5 Mapping Between UTF-16 Strings and UTF-7](#31515-mapping-between-utf-16-strings-and-utf-7)
+        - [3.1.5.1.6 Mapping Between UTF-16 Strings and UTF-8](#31516-mapping-between-utf-16-strings-and-utf-8)
+      - [3.1.5.2 Comparing UTF-16 Strings by Using Sort Keys](#3152-comparing-utf-16-strings-by-using-sort-keys)
+        - [3.1.5.2.1 Pseudocode for Comparing UTF-16 Strings](#31521-pseudocode-for-comparing-utf-16-strings)
+        - [3.1.5.2.2 CompareSortKey](#31522-comparesortkey)
+        - [3.1.5.2.3 Accessing the Windows Sorting Weight Table](#31523-accessing-the-windows-sorting-weight-table)
+          - [3.1.5.2.3.1 Windows Sorting Weight Table](#315231-windows-sorting-weight-table)
+        - [3.1.5.2.4 GetWindowsSortKey Pseudocode](#31524-getwindowssortkey-pseudocode)
+        - [3.1.5.2.5 TestHungarianCharacterSequences](#31525-testhungariancharactersequences)
+        - [3.1.5.2.6 GetContractionType](#31526-getcontractiontype)
+        - [3.1.5.2.7 CorrectUnicodeWeight](#31527-correctunicodeweight)
+        - [3.1.5.2.8 MakeUnicodeWeight](#31528-makeunicodeweight)
+        - [3.1.5.2.9 GetCharacterWeights](#31529-getcharacterweights)
+        - [3.1.5.2.10 GetExpansionWeights](#315210-getexpansionweights)
+        - [3.1.5.2.11 GetExpandedCharacters](#315211-getexpandedcharacters)
+        - [3.1.5.2.12 SortkeyContractionHandler](#315212-sortkeycontractionhandler)
+        - [3.1.5.2.13 Check3ByteWeightLocale](#315213-check3byteweightlocale)
+        - [3.1.5.2.14 SpecialCaseHandler](#315214-specialcasehandler)
+        - [3.1.5.2.15 GetPositionSpecialWeight](#315215-getpositionspecialweight)
+        - [3.1.5.2.16 MapOldHangulSortKey](#315216-mapoldhangulsortkey)
+        - [3.1.5.2.17 GetJamoComposition](#315217-getjamocomposition)
+        - [3.1.5.2.18 GetJamoStateData](#315218-getjamostatedata)
+        - [3.1.5.2.19 FindNewJamoState](#315219-findnewjamostate)
+        - [3.1.5.2.20 UpdateJamoSortInfo](#315220-updatejamosortinfo)
+        - [3.1.5.2.21 IsJamo](#315221-isjamo)
+        - [3.1.5.2.22 IsCombiningJamo](#315222-iscombiningjamo)
+        - [3.1.5.2.23 IsJamoLeading](#315223-isjamoleading)
+        - [3.1.5.2.24 IsJamoVowel](#315224-isjamovowel)
+        - [3.1.5.2.25 IsJamoTrailing](#315225-isjamotrailing)
+        - [3.1.5.2.26 InitKoreanScriptMap](#315226-initkoreanscriptmap)
+      - [3.1.5.3 Mapping UTF-16 Strings to Upper Case](#3153-mapping-utf-16-strings-to-upper-case)
+        - [3.1.5.3.1 ToUpperCase](#31531-touppercase)
+        - [3.1.5.3.2 UpperCaseMapping](#31532-uppercasemapping)
+      - [3.1.5.4 Unicode International Domain Names](#3154-unicode-international-domain-names)
+        - [3.1.5.4.1 IdnToAscii](#31541-idntoascii)
+        - [3.1.5.4.2 IdnToUnicode](#31542-idntounicode)
+        - [3.1.5.4.3 IdnToNameprepUnicode](#31543-idntonameprepunicode)
+        - [3.1.5.4.4 PunycodeEncode](#31544-punycodeencode)
+        - [3.1.5.4.5 PunycodeDecode](#31545-punycodedecode)
+        - [3.1.5.4.6 IDNA2008+UTS46 NormalizeForIdna](#31546-idna2008uts46-normalizeforidna)
+        - [3.1.5.4.7 IDNA2003 NormalizeForIdna](#31547-idna2003-normalizeforidna)
+      - [3.1.5.5 Comparing UTF-16 Strings Ordinally](#3155-comparing-utf-16-strings-ordinally)
+        - [3.1.5.5.1 CompareStringOrdinal Algorithm](#31551-comparestringordinal-algorithm)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3
-1.4
-1.5
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Supported Codepage in Windows .................................................................... 9
-Supported Codepage Data Files .................................................................... 16
-Codepage Data File Format .................................................................... 16
-WCTABLE ....................................................................................... 17
-MBTABLE ........................................................................................ 18
-DBCSRANGE ................................................................................... 18
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-
-2.2.2.1
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-3.1.5.1.6
-
-3  Protocol Details ..................................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Mapping Between UTF-16 Strings and Legacy Codepages ........................... 20
-Mapping Between UTF-16 Strings and Legacy Codepages Using CodePage
-Data File ........................................................................................ 20
-Pseudocode for Accessing a Record in the Codepage Data File ......... 20
-Pseudocode for Mapping a UTF-16 String to a Codepage String ....... 21
-Pseudocode for Mapping a Codepage String to a UTF-16 String ....... 23
-Mapping Between UTF-16 Strings and ISO 2022-Based Codepages ........ 26
-Mapping between UTF-16 Strings and GB 18030 Codepage................... 26
-Mapping Between UTF-16 Strings and ISCII Codepage ......................... 26
-Mapping Between UTF-16 Strings and UTF-7 ....................................... 26
-Mapping Between UTF-16 Strings and UTF-8 ....................................... 26
-Comparing UTF-16 Strings by Using Sort Keys .......................................... 27
-Pseudocode for Comparing UTF-16 Strings ......................................... 27
-CompareSortKey ............................................................................. 27
-Accessing the Windows Sorting Weight Table ...................................... 28
-Windows Sorting Weight Table .................................................... 29
-GetWindowsSortKey Pseudocode ....................................................... 29
-3.1.5.2.4
-TestHungarianCharacterSequences .................................................... 40
-3.1.5.2.5
-GetContractionType ......................................................................... 41
-3.1.5.2.6
-CorrectUnicodeWeight ...................................................................... 42
-3.1.5.2.7
-MakeUnicodeWeight ......................................................................... 42
-3.1.5.2.8
-3.1.5.2.9
-GetCharacterWeights ....................................................................... 43
-3.1.5.2.10  GetExpansionWeights ...................................................................... 43
-3.1.5.2.11  GetExpandedCharacters ................................................................... 44
-SortkeyContractionHandler ............................................................... 45
-3.1.5.2.12
-Check3ByteWeightLocale .................................................................. 49
-3.1.5.2.13
-3.1.5.2.14
-SpecialCaseHandler ......................................................................... 49
-3.1.5.2.15  GetPositionSpecialWeight ................................................................. 53
-3.1.5.2.16  MapOldHangulSortKey ..................................................................... 53
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-
-3.1.5.2.3.1
-
-3.1.5.2
-
-[MS-UCODEREF] - v20240423
-Windows Protocols Unicode Reference
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 91
-
-3.1.5.3
-
-3.1.5.4
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.2.17  GetJamoComposition ....................................................................... 53
-3.1.5.2.18  GetJamoStateData........................................................................... 55
-FindNewJamoState .......................................................................... 55
-3.1.5.2.19
-3.1.5.2.20  UpdateJamoSortInfo ........................................................................ 56
-IsJamo ........................................................................................... 56
-3.1.5.2.21
-IsCombiningJamo ............................................................................ 56
-3.1.5.2.22
-IsJamoLeading ................................................................................ 57
-3.1.5.2.23
-IsJamoVowel................................................................................... 57
-3.1.5.2.24
-IsJamoTrailing ................................................................................ 57
-3.1.5.2.25
-InitKoreanScriptMap ........................................................................ 58
-3.1.5.2.26
-Mapping UTF-16 Strings to Upper Case .................................................... 59
-ToUpperCase .................................................................................. 59
-UpperCaseMapping .......................................................................... 59
-Unicode International Domain Names ...................................................... 59
-IdnToAscii ...................................................................................... 59
-IdnToUnicode .................................................................................. 62
-IdnToNameprepUnicode ................................................................... 62
-PunycodeEncode ............................................................................. 63
-PunycodeDecode ............................................................................. 64
-IDNA2008+UTS46 NormalizeForIdna ................................................. 65
-IDNA2003 NormalizeForIdna ............................................................. 66
-Comparing UTF-16 Strings Ordinally ........................................................ 67
-CompareStringOrdinal Algorithm ....................................................... 67
-Timer Events .............................................................................................. 67
-Other Local Events ...................................................................................... 67
-
-3.1.5.4.1
-3.1.5.4.2
-3.1.5.4.3
-3.1.5.4.4
-3.1.5.4.5
-3.1.5.4.6
-3.1.5.4.7
-
-3.1.5.5.1
-
-3.1.5.5
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 68
-
-5  Security ................................................................................................................. 69
-Security Considerations for Implementers ........................................................... 69
-Index of Security Parameters ............................................................................ 69
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 70
-
-7  Change Tracking .................................................................................................... 88
-
-8  Index ..................................................................................................................... 89
-
-[MS-UCODEREF] - v20240423
-Windows Protocols Unicode Reference
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 91
-
-1  Introduction
+## 1 Introduction
 
 This document is a companion reference to the protocol specifications. It describes how Unicode
 strings are compared in Windows protocols and how Windows supports Unicode conversion to earlier
@@ -711,7 +598,7 @@ and provides the comparison result based on the language and region for a specif
 earlier codepages that are used in older versions of Windows and the applications that are written
 for these earlier codepages.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -770,17 +657,18 @@ Release: April 23, 2024
 
 6 / 91
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -835,13 +723,14 @@ Release: April 23, 2024
 
 7 / 91
 
-[UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+[UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This document describes the following protocols when dealing with Unicode strings on the Windows
 platform:
@@ -857,7 +746,7 @@ The mapping of UTF-16 strings to earlier codepages: This scenario is used to con
 Unicode strings and strings in the earlier codepage, which are used by older versions of Windows
 and applications written for these earlier codepages.
 
-1.4  Applicability Statement
+### 1.4 Applicability Statement
 
 This reference document is applicable as follows:
 
@@ -872,7 +761,7 @@ those Windows behaviors that are not used by other protocols.
 To provide the capability to map between UTF-16 strings and earlier codepages in the same
 manner as Windows.
 
-1.5  Standards Assignments
+### 1.5 Standards Assignments
 
 The following standards assignments are used by the Windows Protocols Unicode Reference.
 
@@ -893,16 +782,17 @@ Release: April 23, 2024
 
 8 / 91
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Windows Protocols Unicode Reference messages are transported
 and Windows Protocols Unicode Reference message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Supported Codepage in Windows
+#### 2.2.1 Supported Codepage in Windows
 
 Windows assigns an integer, called code page ID, to every supported codepage.
 
@@ -985,7 +875,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1146,7 +1037,8 @@ Release: April 23, 2024
 
 10 / 91
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1314,7 +1206,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1473,7 +1366,8 @@ Release: April 23, 2024
 
 12 / 91
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1635,7 +1529,8 @@ section 3.1.5.1.1.
 
 13 / 91
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1798,7 +1693,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -1964,7 +1860,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Codepage
+
+Codepage
 ID
 
 Codepage descriptions
@@ -2055,7 +1952,7 @@ section 3.1.5.1.5.
 Extended codepage; for processing rules, see
 section 3.1.5.1.6.
 
-2.2.2  Supported Codepage Data Files
+#### 2.2.2 Supported Codepage Data Files
 
 The mapping of UTF-16 strings to codepages relies on codepage data files to provide conversion
 data. These codepage data files map Unicode characters to characters in a single-byte character
@@ -2068,7 +1965,7 @@ contains the data for codepage 950, and bestfit1252.txt contains the data for co
 
 The pseudocode assumes all these codepage files are available.
 
-2.2.2.1  Codepage Data File Format
+##### 2.2.2.1 Codepage Data File Format
 
 The Readme.txt (as specified in [UNICODE-README]) provides details about the codepages files and
 the file format. This section specifies information about the pseudocode of mapping UTF-16 strings to
@@ -2081,7 +1978,8 @@ Release: April 23, 2024
 
 16 / 91
 
-Each file has sections of keyword tags and records. Any text after ";" is ignored as blank lines. Fields
+
+Each file has sections of keyword tags and records. Any text after ";" is ignored as blank lines. Fields
 are delimited by one or more space or tab characters. Each section begins with one of the following
 tags:
 
@@ -2097,7 +1995,7 @@ tags:
 
   DBCSTABLE (section 2.2.2.1.3) (DBCS codepages only)
 
-2.2.2.1.1 WCTABLE
+###### 2.2.2.1.1 WCTABLE
 
 The WCTABLE tag marks the start of the mapping from Unicode UTF-16 to MultiByte bytes. It has one
 field.
@@ -2148,7 +2046,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 0x0000 0x0000; Null
+
+ 0x0000 0x0000; Null
  0x0001 0x0001; Start Of Heading
  ...
  0x0061 0x0061; a
@@ -2162,7 +2061,7 @@ Release: April 23, 2024
  0xff43 0x8283; Fullwidth c
  ...
 
-2.2.2.1.2 MBTABLE
+###### 2.2.2.1.2 MBTABLE
 
 The MBTABLE tag marks the start of the mapping from single-byte bytes to Unicode UTF-16. It has
 one field.
@@ -2205,7 +2104,7 @@ The following example shows mapping records for codepage 932.
  0xab 0xff6b; Halfwidth Katakana Small O
  0xac 0xff6c; Halfwidth Katakana Small Ya
 
-2.2.2.1.3 DBCSRANGE
+###### 2.2.2.1.3 DBCSRANGE
 
 [MS-UCODEREF] - v20240423
 Windows Protocols Unicode Reference
@@ -2214,7 +2113,8 @@ Release: April 23, 2024
 
 18 / 91
 
-The DBCSRANGE tag marks the start of the mapping from double-byte bytes to Unicode UTF-16. It
+
+The DBCSRANGE tag marks the start of the mapping from double-byte bytes to Unicode UTF-16. It
 has one field.
 
 Field 1: The number of records of lead byte ranges.
@@ -2268,14 +2168,15 @@ Release: April 23, 2024
 
 19 / 91
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Windows Protocols Unicode Reference, including abstract
 data models and message processing rules.
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2285,30 +2186,30 @@ document.
 
 No abstract data model is needed.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Mapping Between UTF-16 Strings and Legacy Codepages
+##### 3.1.5.1 Mapping Between UTF-16 Strings and Legacy Codepages
 
-3.1.5.1.1 Mapping Between UTF-16 Strings and Legacy Codepages Using CodePage
+###### 3.1.5.1.1 Mapping Between UTF-16 Strings and Legacy Codepages Using CodePage
 
 Data File
 
 This process maps between a Unicode string that is encoded in UTF-16 and a string in a specified
 codepage by using a codepage data file specified in 2.2.2.1.
 
-3.1.5.1.1.1  Pseudocode for Accessing a Record in the Codepage Data File
+###### 3.1.5.1.1.1 Pseudocode for Accessing a Record in the Codepage Data File
 
 This section contains the pseudocode that is used to read information from the codepage file. The
 following example is taken from codepage data file 950.txt.
@@ -2327,7 +2228,8 @@ Release: April 23, 2024
 
 20 / 91
 
-SELECT RECORD assigns a line from the data file to be referenced by the assigned variable name. For
+
+SELECT RECORD assigns a line from the data file to be referenced by the assigned variable name. For
 example, the following code selects a record from the WideCharMapping section, and the record is
 accessible by using the MappingData name.
 
@@ -2362,7 +2264,7 @@ In this example, the value of MultiByteResult is the hexadecimal value 0xa440.
  0x4e03 0xa443
  0x4e07 0xc94
 
-3.1.5.1.1.2  Pseudocode for Mapping a UTF-16 String to a Codepage String
+###### 3.1.5.1.1.2 Pseudocode for Mapping a UTF-16 String to a Codepage String
 
  COMMENT  This algorithm maps a Unicode string encoded in UTF-16 to a
  string in the specified ANSI codepage. The supported ANSI codepages
@@ -2391,7 +2293,8 @@ Release: April 23, 2024
 
 21 / 91
 
-    decided by counting from the beginning of the string to a NULL
+
+    decided by counting from the beginning of the string to a NULL
     character (Unicode value U+0000), including the null character.
 
  4) MultiByteString: A string encoded in ANSI codepage. Every
@@ -2465,7 +2368,8 @@ Release: April 23, 2024
 
 22 / 91
 
-     SET lpDefaultChar to CharacterInfo.Field3
+
+     SET lpDefaultChar to CharacterInfo.Field3
  ENDIF
 
  OPEN SECTION WideCharMapping where section name is WCTABLE from file
@@ -2514,7 +2418,7 @@ Release: April 23, 2024
 
  RETURN ResultMultiByteLength as a 32-bit unsigned integer
 
-3.1.5.1.1.3  Pseudocode for Mapping a Codepage String to a UTF-16 String
+###### 3.1.5.1.1.3 Pseudocode for Mapping a Codepage String to a UTF-16 String
 
  COMMENT  This algorithm maps a Unicode string encoded in the specified codepage to UTF-16.
 
@@ -2538,7 +2442,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-    the byte for terminating null character. When MultiByteStringLength is 0,
+
+    the byte for terminating null character. When MultiByteStringLength is 0,
     the length is decided by counting from the beginning of the string to a
     null character (0x00), including the null character.
 
@@ -2614,7 +2519,8 @@ Release: April 23, 2024
 
 24 / 91
 
-      SET MultiByteChar = MultiByteString[MultiByteIndex]
+
+      SET MultiByteChar = MultiByteString[MultiByteIndex]
       IF CodePageType is 1 THEN
           COMMENT SBCS codepage
           COMMENT Select a record which contains the mapping data
@@ -2691,7 +2597,8 @@ Release: April 23, 2024
 
 25 / 91
 
-                          SELECT MappingData FROM DBCSTABLE
+
+                          SELECT MappingData FROM DBCSTABLE
                               Where field 1 matches TrailgByteChar
                           IF MappingData is not null THEN
                               COMMENT Valid trailing byte
@@ -2726,32 +2633,32 @@ Release: April 23, 2024
 
  RETURN ResultMultiByteLength as a 32-bit unsigned integer
 
-3.1.5.1.2 Mapping Between UTF-16 Strings and ISO 2022-Based Codepages
+###### 3.1.5.1.2 Mapping Between UTF-16 Strings and ISO 2022-Based Codepages
 
 [ECMA-035] defines the standard that is fully identical with International Standard ISO/IEC
 2022:1994. EUC (Extended Unix Code) is based on ISO-2022 standard.
 
 For more information, see [ECMA-035].
 
-3.1.5.1.3 Mapping between UTF-16 Strings and GB 18030 Codepage
+###### 3.1.5.1.3 Mapping between UTF-16 Strings and GB 18030 Codepage
 
 Windows implements GB-18030 based on [GB18030].
 
 For more information, please see [GB18030].
 
-3.1.5.1.4 Mapping Between UTF-16 Strings and ISCII Codepage
+###### 3.1.5.1.4 Mapping Between UTF-16 Strings and ISCII Codepage
 
 Windows implements ISCII-based codepage based on [ISCII].
 
 For more information, see [ISCII].
 
-3.1.5.1.5 Mapping Between UTF-16 Strings and UTF-7
+###### 3.1.5.1.5 Mapping Between UTF-16 Strings and UTF-7
 
 Windows implements UTF-7 codepage based on [RFC2152].
 
 For more information, see [RFC2152].
 
-3.1.5.1.6 Mapping Between UTF-16 Strings and UTF-8
+###### 3.1.5.1.6 Mapping Between UTF-16 Strings and UTF-8
 
 [MS-UCODEREF] - v20240423
 Windows Protocols Unicode Reference
@@ -2760,16 +2667,17 @@ Release: April 23, 2024
 
 26 / 91
 
-Windows implements UTF-8 codepage based on [UNICODE5.0.0/CH3].
+
+Windows implements UTF-8 codepage based on [UNICODE5.0.0/CH3].
 
 For more information, see [UNICODE5.0.0/CH3].
 
-3.1.5.2  Comparing UTF-16 Strings by Using Sort Keys
+##### 3.1.5.2 Comparing UTF-16 Strings by Using Sort Keys
 
 To compare strings, a sort key is required for each string. A binary comparison of the sort keys can
 then be used to arrange the strings in any order.
 
-3.1.5.2.1 Pseudocode for Comparing UTF-16 Strings
+###### 3.1.5.2.1 Pseudocode for Comparing UTF-16 Strings
 
 This algorithm compares two UTF-16 strings by using linguistically appropriate rules.
 
@@ -2799,7 +2707,7 @@ This algorithm compares two UTF-16 strings by using linguistically appropriate r
       StringA is sorted after StringB
  ENDIF
 
-3.1.5.2.2 CompareSortKey
+###### 3.1.5.2.2 CompareSortKey
 
 This algorithm generates sort keys for two strings and uses the sort keys to provide a linguistically
 appropriate string comparison.
@@ -2832,7 +2740,8 @@ Release: April 23, 2024
 
 27 / 91
 
-      IF SortKeyA[index] is greater than SortKeyB[index] THEN
+
+      IF SortKeyA[index] is greater than SortKeyB[index] THEN
            SET Result to "SortKeyA is greater than SortKeyB"
            RETURN
       ENDIF
@@ -2852,7 +2761,7 @@ Release: April 23, 2024
 
 Any sorting mechanism can be used to arrange these strings by comparing their sort keys.
 
-3.1.5.2.3 Accessing the Windows Sorting Weight Table
+###### 3.1.5.2.3 Accessing the Windows Sorting Weight Table
 
 Windows gets its sorting data from a data table (see section 3.1.5.2.3.1). Code points are labeled by
 using UTF-16 values. The file is arranged in sections of tab-delimited field records. Optional
@@ -2893,7 +2802,8 @@ Release: April 23, 2024
 
 28 / 91
 
-To select the record for characters 0x0043 and 0x0068 with LCID 0x0405, the following notation is
+
+To select the record for characters 0x0043 and 0x0068 with LCID 0x0405, the following notation is
 used.<2>
 
  SET Character1 to 0x0043
@@ -2909,14 +2819,14 @@ used.<2>
  SET CharacterWeight.DiacriticWeight to ContractionRow.Field5
  SET CharacterWeight.CaseWeight to ContractionRow.Field6
 
-3.1.5.2.3.1  Windows Sorting Weight Table
+###### 3.1.5.2.3.1 Windows Sorting Weight Table
 
 This section contains a link to detailed character weight specifications that permit consistent sorting
 and comparison of Unicode strings. The data is not used by itself but is used as one of the inputs to
 the comparison algorithm. The layout and format of data in this file is also specified in [MSDN-
 SWT].<3>
 
-3.1.5.2.4 GetWindowsSortKey Pseudocode
+###### 3.1.5.2.4 GetWindowsSortKey Pseudocode
 
 This algorithm specifies the generation of sort keys for a specific UTF-16 string.<4>
 
@@ -2965,7 +2875,8 @@ Release: April 23, 2024
 
 29 / 91
 
- //  Script Member Values.
+
+ //  Script Member Values.
  //
  SET constant UNSORTABLE       to 0
  SET constant NONSPACE_MARK    to 1
@@ -3042,7 +2953,8 @@ Release: April 23, 2024
 
 30 / 91
 
- //    bit 3,4 => upper/lower case
+
+ //    bit 3,4 => upper/lower case
  //    bit 5   => kana
  //    bit 6,7 => contraction
  //
@@ -3118,7 +3030,8 @@ Release: April 23, 2024
 
 31 / 91
 
- //  Some Significant Values for Korean Jamo.
+
+ //  Some Significant Values for Korean Jamo.
  //  The L, V & T syllables in the 0x1100 Unicode range
  //  can be composed to characters in the 0xac00 range.
  //  See The Unicode Standard for details.
@@ -3195,7 +3108,8 @@ Release: April 23, 2024
 
 32 / 91
 
-      VowelIndex : 8 bit integer
+
+      VowelIndex : 8 bit integer
 
       // index to the prior modern Hangul syllable (T)
       TrailingIndex : 8 bit integer
@@ -3271,7 +3185,8 @@ Release: April 23, 2024
 
 33 / 91
 
- IF Windows version is Windows Vista, Windows Server 2008, Windows 7, or
+
+ IF Windows version is Windows Vista, Windows Server 2008, Windows 7, or
  Windows Server 2008 R2 THEN
      COMMENT For Windows Vista, Windows Server 2008, Windows 7, and
      COMMENT Windows Server 2008 R2, the algorithm
@@ -3346,7 +3261,8 @@ Release: April 23, 2024
 
 34 / 91
 
-         SET HasHungarianSpecialCharacterSequence to CALL
+
+         SET HasHungarianSpecialCharacterSequence to CALL
              TestHungarianCharacterSequences
                   WITH (SortLocale, SourceString, SourceIndex)
 
@@ -3422,7 +3338,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                IF ContractionFound is true THEN
+
+                IF ContractionFound is true THEN
                     COMMENT Break out of the case statement
                     BREAK
                 ENDIF
@@ -3498,7 +3415,8 @@ Release: April 23, 2024
 
 36 / 91
 
-                   ELSE
+
+                   ELSE
                        SET IsScriptMemberPUA3ByteWeight to false
                    ENDIF
 
@@ -3574,7 +3492,8 @@ Release: April 23, 2024
 
 37 / 91
 
- //  Store Diacritic Weights in the destination buffer.
+
+ //  Store Diacritic Weights in the destination buffer.
  //
  IF (NORM_IGNORENONSPACE bit is not turned on in Flags) THEN
      IF (IsReverseDW is TRUE) THEN
@@ -3651,7 +3570,8 @@ Release: April 23, 2024
 
 38 / 91
 
-     ENDFOR
+
+     ENDFOR
 
      FOR each CaseWeight in CaseWeights
         //
@@ -3728,7 +3648,8 @@ Release: April 23, 2024
 
 39 / 91
 
- //
+
+ //
  //  Store the Special Weights in the destination buffer.
  //
  //    - Copy special weights to destination buffer.
@@ -3751,7 +3672,7 @@ Release: April 23, 2024
 
  RETURN SortKey
 
-3.1.5.2.5 TestHungarianCharacterSequences
+###### 3.1.5.2.5 TestHungarianCharacterSequences
 
 This algorithm checks if the specified UTF-16 string has a Hungarian special-character sequence for
 the specified locale in the specific string index.
@@ -3800,7 +3721,8 @@ Release: April 23, 2024
 
 40 / 91
 
- IF SourceIndex + 1 is greater than or equal to
+
+ IF SourceIndex + 1 is greater than or equal to
                        Length(SourceString) THEN
      SET Result to false
      RETURN
@@ -3821,7 +3743,7 @@ Release: April 23, 2024
 
  RETURN
 
-3.1.5.2.6 GetContractionType
+###### 3.1.5.2.6 GetContractionType
 
 This algorithm specifies the checking of the type of contraction based on the character weight.
 Contraction is defined by [UNICODE-COLLATION] section 3.2.
@@ -3872,7 +3794,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-            character contraction"
+
+            character contraction"
             CONTRACTION_2_MASK : SET Result = "2-character contraction or 3-
             character contraction"
             OTHERS : SET Result = "No contraction"
@@ -3881,7 +3804,7 @@ Release: April 23, 2024
 
  RETURN
 
-3.1.5.2.7 CorrectUnicodeWeight
+###### 3.1.5.2.7 CorrectUnicodeWeight
 
 This algorithm specifies the processing of the corrected Unicode weight for the specific character
 weight, and whether the locale is a Korean locale.
@@ -3908,7 +3831,7 @@ weight, and whether the locale is a Korean locale.
 
  RETURN UnicodeWeight
 
-3.1.5.2.8 MakeUnicodeWeight
+###### 3.1.5.2.8 MakeUnicodeWeight
 
 This algorithm specifies the generation of the Unicode weight based on the script member, the primary
 weight, and whether the locale is a Korean locale.
@@ -3944,12 +3867,13 @@ Release: April 23, 2024
 
 42 / 91
 
- ENDIF
+
+ ENDIF
 
  SET UnicodeWeight.PrimaryWeight to PrimaryWeight
  RETURN UnicodeWeight
 
-3.1.5.2.9 GetCharacterWeights
+###### 3.1.5.2.9 GetCharacterWeights
 
 This algorithm specifies the retrieval of the character weight based on the specified locale and the
 specified UTF-16 code point.
@@ -4016,7 +3940,8 @@ Release: April 23, 2024
 
 43 / 91
 
-3.1.5.2.10  GetExpansionWeights
+
+###### 3.1.5.2.10 GetExpansionWeights
 
 This algorithm specifies the generation of a character weight for the specified character that has the
 expansion behavior, as defined in [UNICODE-COLLATION] section 3.2.
@@ -4071,7 +3996,7 @@ expansion behavior, as defined in [UNICODE-COLLATION] section 3.2.
 
  RETURN Result
 
-3.1.5.2.11  GetExpandedCharacters
+###### 3.1.5.2.11 GetExpandedCharacters
 
 This algorithm specifies the generation of the array of expanded characters, if the specified character
 can be expanded.
@@ -4090,7 +4015,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- COMMENT                               for the expansion or null if no
+
+ COMMENT                               for the expansion or null if no
  COMMENT                               expansion found
  COMMENT
  COMMENT NOTE: Look for default table characters first, some entries
@@ -4118,9 +4044,9 @@ Release: April 23, 2024
 
  RETURN Result
 
-3.1.5.2.12
+###### 3.1.5.2.12 SortkeyContractionHandler
 
-SortkeyContractionHandler
+
 
 This algorithm checks if the next few characters in the specified string and index have an 8-character,
 7-character, 6-character, 5-character, 4-character, 3-character, or 2-character contraction sequence.
@@ -4166,7 +4092,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      IN SourceString: Unicode String,
+
+      IN SourceString: Unicode String,
       IN SourceIndex: 32-bit integer,
       IN HasHungarianSpecialCharacterSequence: boolean
       IN ContractionType: integer number from 2 to 8
@@ -4242,7 +4169,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           IF ContractionRow is null THEN
+
+           IF ContractionRow is null THEN
                SET Result to null
            RETURN false
            ENDIF
@@ -4319,7 +4247,8 @@ Release: April 23, 2024
 
 47 / 91
 
-        COMMENT Found a contraction, get its weights
+
+        COMMENT Found a contraction, get its weights
         SET Result.ScriptMember to ContractionRow.Field6
         SET Result.PrimaryWeight to ContractionRow.Field7
 
@@ -4394,7 +4323,8 @@ Release: April 23, 2024
 
 48 / 91
 
-    CorrectUnicodeWeight(Result, IsKoreanLocale)
+
+    CorrectUnicodeWeight(Result, IsKoreanLocale)
  APPEND UnicodeWeight to UnicodeWeights
  APPEND Result.DiacriticWeight to DiacriticWeights as a BYTE
  APPEND Result.CaseWeight to CaseWeights as a BYTE
@@ -4404,9 +4334,9 @@ Release: April 23, 2024
 
  RETURN true
 
-3.1.5.2.13
+###### 3.1.5.2.13 Check3ByteWeightLocale
 
-Check3ByteWeightLocale
+
 
 This algorithm checks if the specified locale is a CJK (Chinese/Japanese/Korean) sorting locale that
 uses third byte in Unicode weight.
@@ -4437,9 +4367,9 @@ uses third byte in Unicode weight.
 
  RETURN Result
 
-3.1.5.2.14
+###### 3.1.5.2.14 SpecialCaseHandler
 
-SpecialCaseHandler
+
 
 This algorithm specifies the special processing that is required based on a different script member
 type.
@@ -4467,7 +4397,8 @@ Release: April 23, 2024
 
 49 / 91
 
- COMMENT             IsKoreanLocale  - True if this locale needs
+
+ COMMENT             IsKoreanLocale  - True if this locale needs
  COMMENT                               Korean special casing of the
  COMMENT                               ScriptMember value
  COMMENT  On Exit:   SourceIndex     - Index of last character
@@ -4544,7 +4475,8 @@ Release: April 23, 2024
 
 50 / 91
 
-     SYMBOL_2 :
+
+     SYMBOL_2 :
      SYMBOL_3 :
      SYMBOL_4 :
      SYMBOL_5 :
@@ -4621,7 +4553,8 @@ Release: April 23, 2024
 
 51 / 91
 
-                 // Repeat is already done, which is:
+
+                 // Repeat is already done, which is:
                  // UW = previous UW (set above)
                  // W5 = ignored
                  // W7 = previous CW & ISOLATE_WIDTH (done above)
@@ -4698,7 +4631,8 @@ Release: April 23, 2024
 
 52 / 91
 
-            // 0x1101 4 84 83 2 ;   Choseong Ssangkiyeok
+
+            // 0x1101 4 84 83 2 ;   Choseong Ssangkiyeok
             // Field 2 has a value of 4 to trigger the code case for JAMO_SPECIAL.
             // Field 3 (84) is the real primary weight for this Jamo.
             // Field 4 (83) is the real script member for this Jamo.
@@ -4734,7 +4668,7 @@ Release: April 23, 2024
          RETURN
  ENDCASE
 
-3.1.5.2.15  GetPositionSpecialWeight
+###### 3.1.5.2.15 GetPositionSpecialWeight
 
 This algorithm specifies the retrieval of special weight based on the source index.
 
@@ -4760,7 +4694,7 @@ This algorithm specifies the retrieval of special weight based on the source ind
  SET Weight to (SourceIndex << 2) | 0x8003
  RETURN Weight
 
-3.1.5.2.16  MapOldHangulSortKey
+###### 3.1.5.2.16 MapOldHangulSortKey
 
 [MS-UCODEREF] - v20240423
 Windows Protocols Unicode Reference
@@ -4769,10 +4703,11 @@ Release: April 23, 2024
 
 53 / 91
 
-This algorithm specifies the generation of Unicode weight based on the strings at the specified index
+
+This algorithm specifies the generation of Unicode weight based on the strings at the specified index
 that have a special Old Hangul sequence.<5>
 
-3.1.5.2.17  GetJamoComposition
+###### 3.1.5.2.17 GetJamoComposition
 
 This algorithm specifies the strings at the specified index that form a valid Old Hangul character that is
 composed of a Jamo character sequence.<6>
@@ -4845,7 +4780,8 @@ Release: April 23, 2024
 
 54 / 91
 
-     // Push the current Jamo (SourceString[CurrentIndex])
+
+     // Push the current Jamo (SourceString[CurrentIndex])
      // into the state machine to check if it is a valid
      // old Hangul composition. During the check also
      // update the sortkey result in:
@@ -4875,14 +4811,14 @@ Release: April 23, 2024
  SET NewJamoClass to "Invalid Jamo Sequence"
  RETURN NewJamoClass
 
-3.1.5.2.18  GetJamoStateData
+###### 3.1.5.2.18 GetJamoStateData
 
 This algorithm specifies the retrieval of state machine information to check if the specified Jamo
 sequence forms a valid Old Hangul character.<7>
 
-3.1.5.2.19
+###### 3.1.5.2.19 FindNewJamoState
 
-FindNewJamoState
+
 
 This algorithm specifies retrieval of a new state from the state machine for Jamo processing.<8>
 
@@ -4919,7 +4855,8 @@ Release: April 23, 2024
 
 55 / 91
 
-           // Found a record, get its info and return it
+
+           // Found a record, get its info and return it
            // Now gather the information from that record.
            SET JamoStateData.OldHangulFlag   to JamoRecord.Field2
            SET JamoStateData.LeadingIndex    to JamoRecord.Field3
@@ -4938,14 +4875,14 @@ Release: April 23, 2024
  SET JamoStateData to null
  RETURN JamoStateData
 
-3.1.5.2.20  UpdateJamoSortInfo
+###### 3.1.5.2.20 UpdateJamoSortInfo
 
 This algorithm specifies the update of Jamo sorting information based on the current state of the state
 machine for Jamo processing.<9>
 
-3.1.5.2.21
+###### 3.1.5.2.21 IsJamo
 
-IsJamo
+
 
 This algorithm specifies the check for a valid Jamo character.<10>
 
@@ -4970,9 +4907,9 @@ This algorithm specifies the check for a valid Jamo character.<10>
 
  RETURN Result
 
-3.1.5.2.22
+###### 3.1.5.2.22 IsCombiningJamo
 
-IsCombiningJamo
+
 
 This algorithm specifies the check for a valid Jamo character.<11>
 
@@ -4993,7 +4930,8 @@ Release: April 23, 2024
 
 56 / 91
 
-                         OUT Result: boolean)
+
+                         OUT Result: boolean)
 
  IF ((SourceCharacter is greater than or equal to NLS_CHAR_FIRST_JAMO)
       and
@@ -5017,15 +4955,15 @@ Release: April 23, 2024
 
  RETURN Result
 
-3.1.5.2.23
+###### 3.1.5.2.23 IsJamoLeading
 
-IsJamoLeading
+
 
 This algorithm checks if the specified Jamo character is a leading Jamo.<12>
 
-3.1.5.2.24
+###### 3.1.5.2.24 IsJamoVowel
 
-IsJamoVowel
+
 
 This algorithm checks whether the specified Jamo character is a vowel Jamo.<13>
 
@@ -5053,9 +4991,9 @@ This algorithm checks whether the specified Jamo character is a vowel Jamo.<13>
 
  RETURN Result
 
-3.1.5.2.25
+###### 3.1.5.2.25 IsJamoTrailing
 
-IsJamoTrailing
+
 
 This algorithm checks if the specified Jamo character is a trailing Jamo.<14>
 
@@ -5069,7 +5007,8 @@ Release: April 23, 2024
 
 57 / 91
 
- COMMENT  On Entry:  SourceCharacter - Unicode Character to test
+
+ COMMENT  On Entry:  SourceCharacter - Unicode Character to test
  COMMENT
  COMMENT  On Exit:   Result          - true if this is a trailing Jamo
  COMMENT
@@ -5091,9 +5030,9 @@ Release: April 23, 2024
 
  RETURN Result
 
-3.1.5.2.26
+###### 3.1.5.2.26 InitKoreanScriptMap
 
-InitKoreanScriptMap
+
 
 This algorithm specifies the initialization of a data structure that is required for the special processing
 of Korean script members.
@@ -5145,17 +5084,18 @@ Release: April 23, 2024
 
 58 / 91
 
-           SET KoreanScriptMap[counter] to NewScript
+
+           SET KoreanScriptMap[counter] to NewScript
            INCREMENT NewScript
       ENDIF
  ENDFOR
 
-3.1.5.3  Mapping UTF-16 Strings to Upper Case
+##### 3.1.5.3 Mapping UTF-16 Strings to Upper Case
 
 To map a UTF-16 string to upper case, each UTF-16 code point is looked for in an upper casing table
 [MSDN-UCMT/Win8].  If an entry is found, the input code point is changed to the output code point.
 
-3.1.5.3.1 ToUpperCase
+###### 3.1.5.3.1 ToUpperCase
 
 This algorithm converts a UTF-16 string to its upper case form.
 
@@ -5178,7 +5118,7 @@ This algorithm converts a UTF-16 string to its upper case form.
 
  RETURN
 
-3.1.5.3.2 UpperCaseMapping
+###### 3.1.5.3.2 UpperCaseMapping
 
 This algorithm converts a UTF-16 code point to its upper case form using the UpperCaseTable in
 [MSDN-UCMT/Win8].
@@ -5207,13 +5147,14 @@ Release: April 23, 2024
 
 59 / 91
 
-3.1.5.4  Unicode International Domain Names
+
+##### 3.1.5.4 Unicode International Domain Names
 
 International Domain Name support is provided by IdnToNameprepUnicode, IdnToAscii, and
 IdnToUnicode. The algorithms follow either the IDNA2003 or IDNA2008+UTS46 standards
 depending on the specific implementation environment.<15>
 
-3.1.5.4.1 IdnToAscii
+###### 3.1.5.4.1 IdnToAscii
 
  COMMENT IdnToAscii
  COMMENT  On Entry:  SourceString – Unicode String to get Punycode
@@ -5283,7 +5224,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     SET OutputString TO encodedString
+
+     SET OutputString TO encodedString
 
      COMMENT Will need an @ if there is a domain part too
      IF (domainString IS NOT EMPTY) THEN
@@ -5359,7 +5301,8 @@ Release: April 23, 2024
 
 61 / 91
 
-             COMMENT leading and trailing – are illegal in domain labels
+
+             COMMENT leading and trailing – are illegal in domain labels
              IF (label BEGINS WITH "-" OR
                  label END WITH "-") THEN
                  RETURN ERROR
@@ -5383,7 +5326,7 @@ Release: April 23, 2024
 
  RETURN OutputString
 
-3.1.5.4.2 IdnToUnicode
+###### 3.1.5.4.2 IdnToUnicode
 
  COMMENT IdnToUnicode
  COMMENT  On Entry:  SourceString – Idn String to get Unicode
@@ -5419,7 +5362,7 @@ Release: April 23, 2024
  ENDIF
  return UnicodeString
 
-3.1.5.4.3 IdnToNameprepUnicode
+###### 3.1.5.4.3 IdnToNameprepUnicode
 
 This function merely returns the output of what IdnToUnicode(IdnToAscii(InputString)) would return.
 
@@ -5430,7 +5373,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- COMMENT IdnToNameprepUnicode
+
+ COMMENT IdnToNameprepUnicode
  COMMENT  On Entry:  SourceString – Unicode String to get nameprep form of
  COMMENT             Flags        - Bit flags to control behavior
  COMMENT                            of IDN validation
@@ -5453,7 +5397,7 @@ Release: April 23, 2024
 
  return NameprepString
 
-3.1.5.4.4 PunycodeEncode
+###### 3.1.5.4.4 PunycodeEncode
 
 PunycodeEncode encodes an input ASCII/Unicode string. If the input contains non-ASCII parts, then
 punycoded strings are output, prefixed with the xn-- or xl-- labels.
@@ -5501,7 +5445,8 @@ Release: April 23, 2024
 
 63 / 91
 
- IF (domainString IS NOT "") THEN
+
+ IF (domainString IS NOT "") THEN
      IF emailLocalString IS NOT "") THEN
          APPEND "@" TO PunycodeString
      ENDIF
@@ -5536,7 +5481,7 @@ Release: April 23, 2024
 
  return PunycodeString
 
-3.1.5.4.5 PunycodeDecode
+###### 3.1.5.4.5 PunycodeDecode
 
 PunycodeDecode decodes an input all-ASCII string. If the input contains the xn-- or xl-- prefix the
 decoding algorithm is applied.
@@ -5574,7 +5519,8 @@ Release: April 23, 2024
 
 64 / 91
 
- IF (emailLocalString IS NOT "") THEN
+
+ IF (emailLocalString IS NOT "") THEN
      IF (emailLocalString BEGINS WITH "xl—") THEN
          TRIM "xl--" FROM BEGINNING OF emailLocalString
 
@@ -5624,7 +5570,7 @@ Release: April 23, 2024
 
  return UnicodeString
 
-3.1.5.4.6 IDNA2008+UTS46 NormalizeForIdna
+###### 3.1.5.4.6 IDNA2008+UTS46 NormalizeForIdna
 
 NormalizeForIdna prepares the input string for encoding, using the mapping/normalization rules
 provided by IDNA2008+UTS46 (IDNA2008 with [TR46] applied).<16>
@@ -5647,7 +5593,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- PROCEDURE NormalizeForIdna2008 (IN SourceString : Unicode String,
+
+ PROCEDURE NormalizeForIdna2008 (IN SourceString : Unicode String,
                                  IN Flags: 32 bit integer,
                                  OUT OutputString : Unicode String)
  COMMENT Mapping is done per the tables published by Unicode by following
@@ -5688,7 +5635,7 @@ Release: April 23, 2024
  ENDFOREACH
  RETURN OutputString
 
-3.1.5.4.7 IDNA2003 NormalizeForIdna
+###### 3.1.5.4.7 IDNA2003 NormalizeForIdna
 
 NormalizeForIdna prepares the input string for encoding, using the mapping/normalization rules
 provided by IDNA2003.<17>
@@ -5719,15 +5666,16 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- RETURN OutputString
 
-3.1.5.5  Comparing UTF-16 Strings Ordinally
+ RETURN OutputString
+
+##### 3.1.5.5 Comparing UTF-16 Strings Ordinally
 
 To do a case-sensitive ordinal comparison of strings, a binary comparison of the UTF-16 code points
 of the strings is done. To do a case-insensitive ordinal string comparison, ToUpperCase (section
 3.1.5.3.1) is done on each string before doing the ordinal comparison.
 
-3.1.5.5.1 CompareStringOrdinal Algorithm
+###### 3.1.5.5.1 CompareStringOrdinal Algorithm
 
 This algorithm compares two UTF-16 strings by doing an ordinal (binary) comparison. Optionally, the
 caller can request that the comparison be done on the uppercase form of the string.
@@ -5780,7 +5728,7 @@ ELSE
 ENDIF
 RETURN
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -5791,7 +5739,8 @@ Release: April 23, 2024
 
 67 / 91
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -5802,7 +5751,8 @@ Release: April 23, 2024
 
 68 / 91
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -5813,16 +5763,17 @@ Release: April 23, 2024
 
 69 / 91
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Windows Protocols
 Unicode Reference.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
  None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5833,7 +5784,8 @@ Release: April 23, 2024
 
 70 / 91
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include released service packs.
@@ -5902,7 +5854,8 @@ Windows Protocols Unicode Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Version
+
+Version
 
 File Name
 
@@ -5992,7 +5945,8 @@ Release: April 23, 2024
 
 72 / 91
 
-SET global KoreanScriptMap to InitKoreanScriptMap
+
+SET global KoreanScriptMap to InitKoreanScriptMap
 
 //
 //  Script Member Values.
@@ -6069,7 +6023,8 @@ Release: April 23, 2024
 
 73 / 91
 
-//  Case Weight (CW) - 8 bits:
+
+//  Case Weight (CW) - 8 bits:
 //    bit 0   => width
 //    bit 1,2 => small kana, sei-on
 //    bit 3,4 => upper/lower case
@@ -6145,7 +6100,8 @@ Release: April 23, 2024
 
 74 / 91
 
-SET constant MAP_INVALID_WEIGHT to 0xff
+
+SET constant MAP_INVALID_WEIGHT to 0xff
 
 //
 //  Some Significant Values for Korean Jamo.
@@ -6222,7 +6178,8 @@ Release: April 23, 2024
 
 75 / 91
 
-     LeadingIndex : 8 bit integer
+
+     LeadingIndex : 8 bit integer
 
      // index to the prior modern Hangul syllable (V)
      VowelIndex : 8 bit integer
@@ -6299,7 +6256,8 @@ Release: April 23, 2024
 
 76 / 91
 
-   SET Is3ByteWeightLocale to CALL Check3ByteWeightLocale(SortLocale)
+
+   SET Is3ByteWeightLocale to CALL Check3ByteWeightLocale(SortLocale)
 ENDIF
 
 IF Windows version is Windows Vista, Windows Server 2008, Windows 7, or
@@ -6374,7 +6332,8 @@ Release: April 23, 2024
 
 77 / 91
 
-        //  contraction characters and Hungarian special
+
+        //  contraction characters and Hungarian special
         //  character sequence characters.
         //
 
@@ -6453,7 +6412,8 @@ Release: April 23, 2024
 
 78 / 91
 
-                    WITH (SortLocale, SourceString, SourceIndex,
+
+                    WITH (SortLocale, SourceString, SourceIndex,
                           HasHungarianSpecialCharacterSequence, 6,
                           UnicodeWeights, DiacriticWieghts, CaseWeights)
                ENDIF
@@ -6528,7 +6488,8 @@ Release: April 23, 2024
 
 79 / 91
 
-                  IF (ScriptMember is equal to or greater than PUA3BYTESTART)
+
+                  IF (ScriptMember is equal to or greater than PUA3BYTESTART)
                      AND
                      (ScriptMember is less than or equal to PUA3BYTEEND) THEN
                       SET IsScriptMemberPUA3BYTEWeight to true
@@ -6607,7 +6568,8 @@ Release: April 23, 2024
 
 80 / 91
 
-//
+
+//
 //  Copy Separator to destination buffer.
 //
 APPEND SORTKEY_SEPARATOR to SortKey as a BYTE
@@ -6684,7 +6646,8 @@ Release: April 23, 2024
 
 81 / 91
 
-        in the "last in first out" order
+
+        in the "last in first out" order
         IF CaseWeight <= MIN_CW THEN
            REMOVE CaseWeight from CaseWeights
         ELSE
@@ -6761,7 +6724,8 @@ Release: April 23, 2024
 
 82 / 91
 
-ENDIF
+
+ENDIF
 
 //
 //  Copy Separator to destination buffer.
@@ -6835,7 +6799,8 @@ Release: April 23, 2024
 
 83 / 91
 
-     // Old Hangul Vowel Jamo composition.
+
+     // Old Hangul Vowel Jamo composition.
      SET JamoClass to CALL GetJamoComposition WITH (SourceString,
                  SourceIndex, "Vowel Jamo Class", JamoSortInfo)
  ENDIF
@@ -6912,7 +6877,8 @@ Release: April 23, 2024
 
 84 / 91
 
-     RETURN CharactersRead
+
+     RETURN CharactersRead
  ENDIF
 
  // Otherwise it isn't a valid old Hangul composition
@@ -6986,7 +6952,8 @@ Release: April 23, 2024
 
 85 / 91
 
- RETURN JamoStateData
+
+ RETURN JamoStateData
 
 <8> Section 3.1.5.2.19: The FindNewJamoState algorithm is only used in Windows NT, Windows
 2000, Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7, and
@@ -7059,7 +7026,8 @@ Release: April 23, 2024
 
 86 / 91
 
-       SET JamoSortInfo.TrailingWeight to JamoStateData.ExtraWeight
+
+       SET JamoSortInfo.TrailingWeight to JamoStateData.ExtraWeight
     ENDIF
  ENDCASE
 
@@ -7128,7 +7096,8 @@ Release: April 23, 2024
 
 87 / 91
 
- PROCEDURE IsJamoTrailing(IN SourceCharacter : Unicode Character,
+
+ PROCEDURE IsJamoTrailing(IN SourceCharacter : Unicode Character,
                           OUT Result: boolean)
 
  IF SourceCharacter is greater than
@@ -7160,7 +7129,8 @@ Release: April 23, 2024
 
 88 / 91
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7221,7 +7191,8 @@ Release: April 23, 2024
 
 89 / 91
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model - client 20
@@ -7357,7 +7328,8 @@ UTF-16 string
 
 90 / 91
 
-   converting with ToUpperCase 59
+
+   converting with ToUpperCase 59
    CorrectUnicodeWeight 42
    FindNewJamoState 55
    GetCharacterWeights 43

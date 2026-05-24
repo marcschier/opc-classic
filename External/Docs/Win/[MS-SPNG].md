@@ -64,7 +64,8 @@ Release: April 27, 2026
 
 1 / 33
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: April 27, 2026
 
 2 / 33
 
-Date
+
+Date
 
 Revision
 History
@@ -539,7 +541,8 @@ Release: April 27, 2026
 
 3 / 33
 
-Date
+
+Date
 
 Revision
 History
@@ -631,182 +634,79 @@ Release: April 27, 2026
 
 4 / 33
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Security Background](#131-security-background)
+    - [1.3.2 SPNEGO Synopsis](#132-spnego-synopsis)
+    - [1.3.3 Client Initiated SPNG Message Flow](#133-client-initiated-spng-message-flow)
+    - [1.3.4 Server Initiated SPNG Message Flow](#134-server-initiated-spng-message-flow)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+    - [1.9.1 Use of Constants Assigned Elsewhere](#191-use-of-constants-assigned-elsewhere)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NegTokenInit2](#221-negtokeninit2)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Trigger Events](#314-higher-layer-trigger-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 mechListMIC Processing](#3151-mechlistmic-processing)
+      - [3.1.5.2 mechTypes Identification of Kerberos](#3152-mechtypes-identification-of-kerberos)
+      - [3.1.5.3 mechTypes Identification of IAKerb](#3153-mechtypes-identification-of-iakerb)
+      - [3.1.5.4 mechTypes Identification of Negotiate Late Fallback](#3154-mechtypes-identification-of-negotiate-late-fallback)
+      - [3.1.5.5 reqFlags Processing](#3155-reqflags-processing)
+      - [3.1.5.6 InitFragmentToken()](#3156-initfragmenttoken)
+      - [3.1.5.7 FragmentToken()](#3157-fragmenttoken)
+      - [3.1.5.8 Send Fragmented Messages](#3158-send-fragmented-messages)
+      - [3.1.5.9 InitAssembleToken()](#3159-initassembletoken)
+      - [3.1.5.10 AssembleToken()](#31510-assembletoken)
+      - [3.1.5.11 Receive Fragmented Messages](#31511-receive-fragmented-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server (Acceptor) Role Details](#32-server-acceptor-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 NTLM RC4 Key State for MechListMIC and First Signed Message](#3251-ntlm-rc4-key-state-for-mechlistmic-and-first-signed-message)
+      - [3.2.5.2 NegTokenInit2 Variation for Server-Initiation](#3252-negtokeninit2-variation-for-server-initiation)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client (Initiator) Role Details](#33-client-initiator-role-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 NTLM RC4 Key State for MechListMIC and First Signed Message](#3351-ntlm-rc4-key-state-for-mechlistmic-and-first-signed-message)
+      - [3.3.5.2 NegTokenInit2 Variation for Server-Initiation](#3352-negtokeninit2-variation-for-server-initiation)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Security Background ..................................................................................... 9
-SPNEGO Synopsis ....................................................................................... 10
-Client Initiated SPNG Message Flow .............................................................. 11
-Server Initiated SPNG Message Flow ............................................................. 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-Use of Constants Assigned Elsewhere ............................................................ 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.9.1
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-NegTokenInit2 ........................................................................................... 14
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Trigger Events ......................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-mechListMIC Processing ......................................................................... 17
-mechTypes Identification of Kerberos ...................................................... 17
-mechTypes Identification of IAKerb ......................................................... 18
-mechTypes Identification of Negotiate Late Fallback .................................. 18
-reqFlags Processing ............................................................................... 18
-InitFragmentToken() ............................................................................. 18
-FragmentToken() .................................................................................. 18
-Send Fragmented Messages ................................................................... 19
-InitAssembleToken() ............................................................................. 19
-AssembleToken() .................................................................................. 19
-Receive Fragmented Messages ............................................................... 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Server (Acceptor) Role Details ........................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-NTLM RC4 Key State for MechListMIC and First Signed Message ................. 21
-NegTokenInit2 Variation for Server-Initiation ............................................ 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Client (Initiator) Role Details ............................................................................. 22
-Abstract Data Model .................................................................................... 22
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.3.1
-
-3.3
-
-3.2
-
-[MS-SPNG] - v20260427
-Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
-Copyright © 2026 Microsoft Corporation
-Release: April 27, 2026
-
-5 / 33
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-
-3.3.6
-3.3.7
-
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Message Processing Events and Sequencing Rules .......................................... 22
-NTLM RC4 Key State for MechListMIC and First Signed Message ................. 22
-NegTokenInit2 Variation for Server-Initiation ............................................ 22
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-4  Protocol Examples ................................................................................................. 24
-
-5  Security ................................................................................................................. 26
-Security Considerations for Implementers ........................................................... 26
-Index of Security Parameters ............................................................................ 26
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 27
-
-7  Change Tracking .................................................................................................... 30
-
-8  Index ..................................................................................................................... 31
-
-[MS-SPNG] - v20260427
-Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
-Copyright © 2026 Microsoft Corporation
-Release: April 27, 2026
-
-6 / 33
-
-1  Introduction
+## 1 Introduction
 
 The Simple and Protected Generic Security Service Application Program Interface (GSS-API)
 Negotiation Mechanism (SPNEGO) Extension is an extension to [RFC4178] that provides a negotiation
@@ -819,7 +719,7 @@ the security protocols to the application protocol that uses SPNEGO. SPNEGO was 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -881,7 +781,8 @@ Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-security token: An opaque message or data packet produced by a Generic Security Services
+
+security token: An opaque message or data packet produced by a Generic Security Services
 (GSS)-style authentication package and carried by the application protocol. The application
 has no visibility into the contents of the token.
 
@@ -896,14 +797,14 @@ that service. SPNEGO is specified in [RFC4178].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -948,7 +849,8 @@ Release: April 27, 2026
 
 8 / 33
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [HTTPAUTH] Jaganathan, K., Zhu, L., and Brezak, J., "Kerberos based HTTP Authentication in
 Windows", July 2005, http://tools.ietf.org/html/draft-jaganathan-kerberos-http-01
@@ -981,7 +883,7 @@ Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 [UUKA-GSSAPI] Swift, M., Brezak, J., and Moore, P., "User to User Kerberos Authentication using
 GSS-API", October 2001, https://tools.ietf.org/html/draft-swift-win2k-krb-user2user-03
 
-1.3  Overview
+### 1.3 Overview
 
 Simple and Protected Generic Security Service Application Program Interface Negotiation Mechanism
 (SPNEGO): Extension processes certain SPNEGO message fields differently from the standard
@@ -989,7 +891,7 @@ specification, including the NegTokenInit and universal receiver fields.
 
 The following sections give an overview of SPNEGO extension, its processing, and message flows.
 
-1.3.1  Security Background
+#### 1.3.1 Security Background
 
 The SPNEGO Extension is a security protocol. As such, the normative references in this specification
 use common security-related terms. Every effort has been made to use these terms, such as principal,
@@ -1013,7 +915,8 @@ Release: April 27, 2026
 
 9 / 33
 
-1.3.2  SPNEGO Synopsis
+
+#### 1.3.2 SPNEGO Synopsis
 
 SPNEGO is a security protocol that uses a GSS-API authentication mechanism. GSS–API is a literal
 set of functions that include both an API and a methodology for approaching authentication. As
@@ -1078,12 +981,13 @@ Release: April 27, 2026
 
 10 / 33
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-SPNG].images/page011-img01.png)
 ![Extracted image 2 from page 11]([MS-SPNG].images/page011-img02.png)
 <!-- /Extracted images from page 11 -->
 
-1.3.3  Client Initiated SPNG Message Flow
+#### 1.3.3 Client Initiated SPNG Message Flow
 
 SPNG message flow is composed of the following exchange:
 
@@ -1097,7 +1001,7 @@ authentication methods and an optimistic mechanism token ([RFC4178] section 3.1)
 
 negotiation.
 
-1.3.4  Server Initiated SPNG Message Flow
+#### 1.3.4 Server Initiated SPNG Message Flow
 
 Server-initiated SPNG is composed of a three-way exchange:
 
@@ -1118,11 +1022,12 @@ Release: April 27, 2026
 
 11 / 33
 
-3.  The server sends a negTokenResp message to the client. The message specifies the state of the
+
+3.  The server sends a negTokenResp message to the client. The message specifies the state of the
 
 negotiation.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 SPNEGO requires at least one other GSS–compatible authentication protocol to be present for it to
 work. It does not depend on a specific protocol.<1>
@@ -1142,7 +1047,7 @@ SPNEGO is finished. All further access to security context state and per-message
 signatures or encryption, is done by directly using the "real" security protocol whose authentication
 tokens were communicated via SPNEGO.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Because SPNEGO relies on other security protocols that perform authentication, those protocols
 have to be available to SPNEGO for it to operate. The set of protocols is implementation-dependent
@@ -1151,26 +1056,26 @@ upon the installation.<3>
 Applications typically establish a connection before they invoke SPNEGO, although establishing a
 connection before invoking SPNEGO is not required by the SPNEGO protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 As a GSS protocol, SPNEGO can be used almost anywhere that an application protocol uses GSS to
 perform authentication. The protocol has to be connection-oriented because it is not designed to
 tolerate packet loss; datagram-only protocols cannot support negotiation of this form.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 SPNEGO does not contain any versioning capacity. The same is true for capabilities: any capability
 negotiation must be performed by the actual authentication protocols that SPNEGO is carrying.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
-1.9.1  Use of Constants Assigned Elsewhere
+#### 1.9.1 Use of Constants Assigned Elsewhere
 
 SPNEGO has been assigned the following object identifier (OID):
 
@@ -1185,7 +1090,8 @@ Release: April 27, 2026
 
 12 / 33
 
-See section 1.4 and section 3.1.5.2 for other OID usages.
+
+See section 1.4 and section 3.1.5.2 for other OID usages.
 
 [MS-SPNG] - v20260427
 Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
@@ -1194,15 +1100,16 @@ Release: April 27, 2026
 
 13 / 33
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 SPNEGO is transported only when encapsulated in an application protocol. As such, it can travel
 over whatever transports the application protocol uses. By itself, SPNEGO never causes network
 traffic.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The messages that SPNEGO uses are specified in [RFC4178], in terms of ASN.1, as specified in
 [X680]. There are only two messages in SPNEGO, negTokenInit and negTokenResp.
@@ -1219,7 +1126,7 @@ completion.
 The SPNEGO Extension extends the NegTokenInit message with the NegTokenInit2 message
 section 2.2.1.
 
-2.2.1  NegTokenInit2
+#### 2.2.1 NegTokenInit2
 
 The NegTokenInit2 message extends NegTokenInit with a negotiation hints (negHints) field. The
 NegTokenInit2 message SHOULD<4> be structured as follows.
@@ -1261,7 +1168,8 @@ Release: April 27, 2026
 
 14 / 33
 
-mechListMIC: The message integrity code (MIC) token ([RFC4178] section 4.2.1).
+
+mechListMIC: The message integrity code (MIC) token ([RFC4178] section 4.2.1).
 
 Note  In the preceding ASN.1 description, the NegTokenInit2 message occupies the same context-
 specific ([X690] section 8.1.2.2) message ID as does NegTokenInit in SPNEGO.
@@ -1273,14 +1181,15 @@ Release: April 27, 2026
 
 15 / 33
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 The following are common variations, as specified in [RFC4178], for both client and server processing
 in the SPNEGO Extension.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1350,7 +1259,8 @@ Release: April 27, 2026
 
 16 / 33
 
-  MaxOutputTokenSize: The maximum size, in bytes, of output_token that can be returned to the
+
+  MaxOutputTokenSize: The maximum size, in bytes, of output_token that can be returned to the
 
 caller, as specified in [RFC2478] Section 2.2. This value MUST be at least 5 bytes to contain the
 entire ASN.1 header, so that the recipient can reconstruct the length of the completed message.
@@ -1380,23 +1290,23 @@ The following temporary variable is used to reset the NLMP RC4 handle:
 
   OriginalHandle
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Trigger Events
+#### 3.1.4 Higher-Layer Trigger Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following fields are processed differently than as specified in [RFC4178].
 
-3.1.5.1  mechListMIC Processing
+##### 3.1.5.1 mechListMIC Processing
 
 [RFC2478] inadequately specifies the processing of the mechanism list message integrity code (MIC),
 or mechListMIC field. [RFC4178] clarifies the processing of the mechListMIC field.<8>
@@ -1405,7 +1315,7 @@ When Negotiate Late Fallback is supported by both parties, mechListMIC consumes 
 exchanged mechTypes and supportedMechs per the order of over-the-wire transmission with
 delimiters.<9>
 
-3.1.5.2  mechTypes Identification of Kerberos
+##### 3.1.5.2 mechTypes Identification of Kerberos
 
 An implementation SHOULD<10> use the standard Kerberos OID (1.2.840.113554.1.2.2), as
 described in [RFC4120], for identification of the Kerberos mechType and the OID described in
@@ -1418,17 +1328,18 @@ Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-3.1.5.3  mechTypes Identification of IAKerb
+
+##### 3.1.5.3 mechTypes Identification of IAKerb
 
 An implementation MUST use the standard IAKerb OID (1.3.6.1.5.2.5), as described in [IETFDRAFT-
 KITTEN-IAKERB-03], for identification of the IAKerb mechType.
 
-3.1.5.4  mechTypes Identification of Negotiate Late Fallback
+##### 3.1.5.4 mechTypes Identification of Negotiate Late Fallback
 
 An implementation MUST use the Negotiate Late Fallback OID (1.3.6.1.4.1.311.2.2.40) for
 identification of the Negotiate Late Fallback mechType.
 
-3.1.5.5  reqFlags Processing
+##### 3.1.5.5 reqFlags Processing
 
 [RFC2478], the predecessor to [RFC4178], includes the reqFlags field in the protocol. This field is
 intended for the client to indicate the requested behavior according to the GSS abstract variables,
@@ -1438,7 +1349,7 @@ the message; therefore, it can be tampered with while in transit.
 As specified in [RFC4178], use of this field is explicitly discouraged due to the lack of integrity
 protection, and the acceptor (server) MUST ignore the reqFlags, if present.
 
-3.1.5.6  InitFragmentToken()
+##### 3.1.5.6 InitFragmentToken()
 
  InitFragmentToken (Token, MaxOutputTokenSize, OutputToken)
  -- Input:
@@ -1457,7 +1368,7 @@ output_token remain.
  Set OutputToken to first MaxOutputTokenSize bytes of RemainingOutputToken
  Delete first MaxOutputTokenSize bytes of RemainingOutputToken
 
-3.1.5.7  FragmentToken()
+##### 3.1.5.7 FragmentToken()
 
  FragmentToken(OutputToken)
  -- Internal Temporary variables that do not pass over the wire are defined below:
@@ -1484,9 +1395,10 @@ Release: April 27, 2026
 
 18 / 33
 
- EndIf
 
-3.1.5.8  Send Fragmented Messages
+ EndIf
+
+##### 3.1.5.8 Send Fragmented Messages
 
 The first fragment includes the ASN.1 header for the message, so that the recipient can reconstruct
 the length of the completed message. This requires that MaxOutputTokenSize be at least 5 bytes.
@@ -1509,7 +1421,7 @@ If the server does not support fragmentation, the application service receives a
 GSS_Accept_sec_context call, and the negotiation fails. Whether the client application receives the
 error depends on the application service behavior.
 
-3.1.5.9  InitAssembleToken()
+##### 3.1.5.9 InitAssembleToken()
 
  InitAssembleToken (Input_Token)
  -- Input:
@@ -1524,9 +1436,9 @@ remain.
  Initialize ReceivedInputToken to InputToken.
  Set FragmentInputToken to TRUE.
 
-3.1.5.10
+##### 3.1.5.10 AssembleToken()
 
-AssembleToken()
+
 
  AssembleToken(Input_Token, OutputToken)
  -- Input:
@@ -1553,12 +1465,13 @@ Release: April 27, 2026
 
 19 / 33
 
-    Set FragmentInputToken to FALSE.
+
+    Set FragmentInputToken to FALSE.
  EndIf
 
-3.1.5.11
+##### 3.1.5.11 Receive Fragmented Messages
 
-Receive Fragmented Messages
+
 
 The length of the first packet specified in the ASN.1 header is used to determine the number of bytes
 necessary to assemble the complete message. the SPNEGO Extension calls InitAssembleToken
@@ -1575,33 +1488,33 @@ OutputToken.
 If the context is terminated before reassembly of the message is complete (for example, because the
 network connection to the other entity is interrupted), the entire message MUST be discarded.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server (Acceptor) Role Details
+### 3.2 Server (Acceptor) Role Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The abstract data model for the server is specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The server SHOULD ignore the negHints field in the negTokenInit2 message.
 
@@ -1616,7 +1529,8 @@ Release: April 27, 2026
 
 20 / 33
 
-The SPNG server SHOULD invoke Send Fragmented Messages (section 3.1.5.8) when a
+
+The SPNG server SHOULD invoke Send Fragmented Messages (section 3.1.5.8) when a
 GSS_Accept_sec_context() ([RFC2743] section 2.2.2) with the FragmentToFit parameter set to
 TRUE (section 3.1.1) is received, and either:
 
@@ -1635,7 +1549,7 @@ The packet contains a valid ASN.1 header but an incomplete body, or
 
   FragmentOutputToken is set to TRUE.
 
-3.2.5.1  NTLM RC4 Key State for MechListMIC and First Signed Message
+##### 3.2.5.1 NTLM RC4 Key State for MechListMIC and First Signed Message
 
 When NTLM is negotiated, the SPNG server MUST set OriginalHandle to ServerHandle before
 generating the mechListMIC, then set ServerHandle to OriginalHandle after generating the
@@ -1647,7 +1561,7 @@ application, the SPNEGO Extension server MUST set OriginalHandle to ClientHandle
 validating the mechListMIC and then set ClientHandle to OriginalHandle after validating the
 mechListMIC.
 
-3.2.5.2  NegTokenInit2 Variation for Server-Initiation
+##### 3.2.5.2 NegTokenInit2 Variation for Server-Initiation
 
 Standard GSS has a strict notion of client (initiator) and server (acceptor). If the client has not sent a
 negTokenInit ([RFC4178] section 4.2.1) message, no context establishment token is expected from
@@ -1668,11 +1582,11 @@ The hintAddress field MUST be omitted and not transmitted. The NegTokenInit2 tok
 passed to the client within the application protocol. When encoding the name, the configured locale
 on the computer SHOULD be used for the resulting character set.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1683,25 +1597,26 @@ Release: April 27, 2026
 
 21 / 33
 
-3.3  Client (Initiator) Role Details
 
-3.3.1  Abstract Data Model
+### 3.3 Client (Initiator) Role Details
+
+#### 3.3.1 Abstract Data Model
 
 The abstract data model for the client is specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client MUST request Mutual Authentication services, as specified in section 3.1.1.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The SPNEGO Extension client SHOULD invoke Send Fragmented Messages (section 3.1.5.8) when a
 GSS_Accept_sec_context() ([RFC2743] section 2.2.2) with the FragmentToFit parameter set to
@@ -1726,7 +1641,7 @@ To support non-compliant implementations of [RFC4178] that send a supportedMech 
 subsequent NegTokenResp message, the SPNEGO Extension client SHOULD<11> accept the
 message without returning an error, but MUST ignore the new supportedMech field.
 
-3.3.5.1  NTLM RC4 Key State for MechListMIC and First Signed Message
+##### 3.3.5.1 NTLM RC4 Key State for MechListMIC and First Signed Message
 
 When NTLM is negotiated, the SPNEGO Extension client MUST set OriginalHandle to ClientHandle
 before generating the mechListMIC and then set ClientHandle to OriginalHandle after generating
@@ -1738,7 +1653,7 @@ application, the SPNEGO Extension server MUST set OriginalHandle to ServerHandle
 validating the mechListMIC and then set ServerHandle to OriginalHandle after validating the
 mechListMIC.
 
-3.3.5.2  NegTokenInit2 Variation for Server-Initiation
+##### 3.3.5.2 NegTokenInit2 Variation for Server-Initiation
 
 Standard GSS has a strict notion of client (initiator) and server (acceptor). If the client is not waiting
 for a response from the server from a sent negTokenInit ([RFC4178] section 4.2.1) and the client
@@ -1750,14 +1665,15 @@ Release: April 27, 2026
 
 22 / 33
 
-receives a NegTokenInit2 (section 2.2.1) message from a server, the client SHOULD process
+
+receives a NegTokenInit2 (section 2.2.1) message from a server, the client SHOULD process
 messages for the received token.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1768,7 +1684,8 @@ Release: April 27, 2026
 
 23 / 33
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following is an annotated hex dump of an ASN.1 encoded NegTokenInit2 (section 2.2.1)
 message.
@@ -1835,7 +1752,8 @@ Release: April 27, 2026
 
 24 / 33
 
- 00000090  00 00 00 00 00 00 00 5c 33 53 0d ea f9 0d 4d b2  .......\3S....M.
+
+ 00000090  00 00 00 00 00 00 00 5c 33 53 0d ea f9 0d 4d b2  .......\3S....M.
  000000a0  ec 4a e3 78 6e c3 08 4e 45 47 4f 45 58 54 53 03  .J.xn..NEGOEXTS.
  000000b0  00 00 00 01 00 00 00 40 00 00 00 8e 00 00 00 cf  .......@........
  000000c0  fa 11 76 5e 12 59 9a 34 7d 76 68 52 bf ce 70 5c  ..v^.Y.4}vhR..p\
@@ -1862,14 +1780,15 @@ Release: April 27, 2026
 
 25 / 33
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 It is important for implementers of the SPNEGO Extension to be aware of the correct use of the hint
 data that the server sends, as specified in section 3.2.5.2.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1884,7 +1803,8 @@ Release: April 27, 2026
 
 26 / 33
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1953,7 +1873,8 @@ Release: April 27, 2026
 
 27 / 33
 
-  Kerberos Network Authentication Service (V5) protocol [RFC4120] [MS-KILE].
+
+  Kerberos Network Authentication Service (V5) protocol [RFC4120] [MS-KILE].
 
   User-to-User Kerberos Authentication [UUKA-GSSAPI].
 
@@ -2025,7 +1946,8 @@ Release: April 27, 2026
 
 28 / 33
 
-<10> Section 3.1.5.2: Except in Windows 2000, Windows offers and accepts both standard and
+
+<10> Section 3.1.5.2: Except in Windows 2000, Windows offers and accepts both standard and
 truncated OIDs as identifiers for the Kerberos authentication mechanism.
 
 Windows 2000 incorrectly encoded the OID for the Kerberos protocol in the supportedMech field.
@@ -2048,7 +1970,8 @@ Release: April 27, 2026
 
 29 / 33
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2116,7 +2039,8 @@ Release: April 27, 2026
 
 30 / 33
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2257,7 +2181,8 @@ Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-      NTLM RC4 key state for MechListMIC and first
+
+      NTLM RC4 key state for MechListMIC and first
 
 signed message 21
 
@@ -2409,7 +2334,8 @@ Simple and Protected GSS-API Negotiation Mechanism (SPNEGO) Extension
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-Transport 14
+
+Transport 14
 Triggered events - higher-layer
    client (section 3.1.4 17, section 3.3.4 22)
    server (section 3.1.4 17, section 3.2.4 20)

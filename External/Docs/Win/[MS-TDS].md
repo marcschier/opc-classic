@@ -63,7 +63,8 @@ Release: March 30, 2026
 
 1 / 232
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -310,7 +311,8 @@ Release: March 30, 2026
 
 2 / 232
 
-Date
+
+Date
 
 Revision
 History
@@ -552,7 +554,8 @@ technical content.
 
 3 / 232
 
-Date
+
+Date
 
 Revision
 History
@@ -629,512 +632,195 @@ Release: March 30, 2026
 
 4 / 232
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Message Syntax ............................................................................................... 19
-Client Messages .......................................................................................... 19
-Pre-Login ............................................................................................. 20
-Login ................................................................................................... 20
-Federated Authentication Token .............................................................. 20
-SQL Batch ............................................................................................ 20
-Bulk Load ............................................................................................. 20
-Remote Procedure Call........................................................................... 21
-Attention ............................................................................................. 21
-Transaction Manager Request ................................................................. 21
-Server Messages ........................................................................................ 21
-Pre-Login Response ............................................................................... 22
-Login Response..................................................................................... 22
-Federated Authentication Information ...................................................... 22
-Row Data ............................................................................................. 22
-Return Status ....................................................................................... 22
-Return Parameters ................................................................................ 23
-Response Completion ............................................................................ 23
-Error and Info ....................................................................................... 23
-Attention Acknowledgment ..................................................................... 23
-Packets ..................................................................................................... 23
-Packet Header ...................................................................................... 24
-Type .............................................................................................. 24
-Status ............................................................................................ 25
-Length ........................................................................................... 26
-SPID .............................................................................................. 26
-PacketID ........................................................................................ 26
-Window .......................................................................................... 26
-Packet Data .......................................................................................... 26
-Packet Data Token and Tokenless Data Streams ............................................. 27
-Tokenless Stream ................................................................................. 28
-Token Stream ....................................................................................... 28
-Token Definition .............................................................................. 28
-Zero Length Token(xx01xxxx) ..................................................... 28
-Fixed Length Token(xx11xxxx) .................................................... 28
-Variable Length Tokens(xx10xxxx)............................................... 29
-Variable Count Tokens(xx00xxxx) ................................................ 29
-Done and Attention Tokens .................................................................... 29
-Grammar Definition for Token Description ..................................................... 30
-General Rules ....................................................................................... 30
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-2.2.3.1.5
-2.2.3.1.6
-
-2.2.4.2.1.1
-2.2.4.2.1.2
-2.2.4.2.1.3
-2.2.4.2.1.4
-
-2.2.4.1
-2.2.4.2
-
-2.2.4.2.1
-
-2.2.4.3
-
-2.2.5.1
-
-2.2.3.2
-
-2.2.3.1
-
-2.2.5
-
-2.2.4
-
-2.2.3
-
-[MS-TDS] - v20260330
-Tabular Data Stream Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-5 / 232
-
-2.2.5.1.1
-2.2.5.1.2
-
-2.2.5.2
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-
-2.2.5.3
-
-2.2.5.3.1
-2.2.5.3.2
-2.2.5.3.3
-
-2.2.5.4
-
-2.2.5.4.1
-2.2.5.4.2
-2.2.5.4.3
-2.2.5.4.4
-
-2.2.5.5
-
-2.2.5.5.1
-
-2.2.5.5.1.1
-2.2.5.5.1.2
-2.2.5.5.1.3
-2.2.5.5.1.4
-2.2.5.5.1.5
-2.2.5.5.1.6
-2.2.5.5.1.7
-2.2.5.5.1.8
-
-2.2.5.5.2
-2.2.5.5.3
-2.2.5.5.4
-2.2.5.5.5
-
-2.2.5.5.5.1
-2.2.5.5.5.2
-2.2.5.5.5.3
-
-2.2.5.5.6
-2.2.5.5.7
-
-2.2.5.5.7.1
-2.2.5.5.7.2
-2.2.5.5.7.3
-
-2.2.5.5.7.4
-2.2.5.5.7.5
-2.2.5.5.7.6
-
-2.2.5.5.7.3.1
-
-Least Significant Bit Order ................................................................ 32
-Collation Rule Definition ................................................................... 32
-Data Stream Types ............................................................................... 33
-Unknown Length Data Streams ......................................................... 33
-Variable-Length Data Streams .......................................................... 33
-Data Type Dependent Data Streams .................................................. 34
-Packet Data Stream Headers - ALL_HEADERS Rule Definition ..................... 35
-Query Notifications Header ............................................................... 36
-Transaction Descriptor Header .......................................................... 37
-Trace Activity Header ....................................................................... 37
-Data Type Definitions ............................................................................ 37
-Zero-Length Data Types ................................................................... 37
-Fixed-Length Data Types .................................................................. 38
-Variable-Length Data Types .............................................................. 38
-Partially Length-Prefixed Data Types .................................................. 41
-Data Type Details ................................................................................. 42
-System Data Type Values ................................................................. 42
-Integers ................................................................................... 42
-Time Stamps ............................................................................. 42
-Character and Binary Strings ....................................................... 42
-Fixed-Point Numbers .................................................................. 42
-Floating-Point Numbers .............................................................. 43
-Decimals and Numerics .............................................................. 43
-GUIDs ...................................................................................... 43
-Dates and Times ........................................................................ 43
-Common Language Runtime (CLR) Instances ...................................... 44
-XML Values ..................................................................................... 44
-sql_variant Values ........................................................................... 45
-Table Valued Parameter (TVP) Values ................................................ 46
-Metadata .................................................................................. 46
-Optional Metadata Tokens ........................................................... 48
-TDS Type Restrictions ................................................................ 50
-JSON Values ................................................................................... 51
-Vector Values .................................................................................. 51
-Layout Format ........................................................................... 51
-Layout Version .......................................................................... 52
-Number of Dimensions ............................................................... 52
-Implementation Note ............................................................ 52
-Dimension Type ......................................................................... 52
-Reserved .................................................................................. 52
-Stream of Values ....................................................................... 52
-Type Info Rule Definition ........................................................................ 52
-Encryption Key Rule Definition ................................................................ 53
-Data Packet Stream Tokens.................................................................... 54
-Packet Header Message Type Stream Definition .............................................. 55
-Bulk Load BCP ...................................................................................... 55
-Bulk Load Update Text/Write Text ........................................................... 56
-Federated Authentication Token .............................................................. 56
-LOGIN7 ............................................................................................... 57
-PRELOGIN ............................................................................................ 72
-RPC Request......................................................................................... 76
-SQLBatch ............................................................................................. 80
-SSPI Message ....................................................................................... 81
-Transaction Manager Request ................................................................. 82
-Packet Data Token Stream Definition ............................................................ 85
-ALTMETADATA ...................................................................................... 85
-ALTROW .............................................................................................. 88
-COLINFO .............................................................................................. 89
-
-2.2.6
-
-2.2.5.6
-2.2.5.7
-2.2.5.8
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-2.2.6.4
-2.2.6.5
-2.2.6.6
-2.2.6.7
-2.2.6.8
-2.2.6.9
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-
-2.2.7
-
-[MS-TDS] - v20260330
-Tabular Data Stream Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-6 / 232
-
-COLMETADATA ..................................................................................... 90
-2.2.7.4
-DATACLASSIFICATION ........................................................................... 93
-2.2.7.5
-DONE .................................................................................................. 95
-2.2.7.6
-DONEINPROC ....................................................................................... 97
-2.2.7.7
-DONEPROC .......................................................................................... 98
-2.2.7.8
-ENVCHANGE ......................................................................................... 99
-2.2.7.9
-ERROR ................................................................................................ 104
-2.2.7.10
-FEATUREEXTACK ................................................................................. 106
-2.2.7.11
-FEDAUTHINFO ..................................................................................... 112
-2.2.7.12
-INFO .................................................................................................. 113
-2.2.7.13
-2.2.7.14
-LOGINACK .......................................................................................... 114
-2.2.7.15  NBCROW............................................................................................. 115
-2.2.7.16  OFFSET ............................................................................................... 117
-2.2.7.17  ORDER ............................................................................................... 118
-RETURNSTATUS ................................................................................... 118
-2.2.7.18
-RETURNVALUE ..................................................................................... 119
-2.2.7.19
-ROW .................................................................................................. 122
-2.2.7.20
-SESSIONSTATE ................................................................................... 122
-2.2.7.21
-SSPI ................................................................................................... 124
-2.2.7.22
-TABNAME ............................................................................................ 125
-2.2.7.23
-TVP_ROW ........................................................................................... 126
-2.2.7.24
-
-3.2
-
-3.1
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ................................................................................................... 127
-Common Details ............................................................................................. 127
-Abstract Data Model ................................................................................... 127
-Timers ..................................................................................................... 127
-Initialization .............................................................................................. 127
-Higher-Layer Triggered Events .................................................................... 127
-Message Processing Events and Sequencing Rules ......................................... 127
-Timer Events ............................................................................................. 134
-Other Local Events ..................................................................................... 134
-Client Details .................................................................................................. 135
-Abstract Data Model ................................................................................... 136
-Timers ..................................................................................................... 137
-Initialization .............................................................................................. 137
-Higher-Layer Triggered Events .................................................................... 138
-Message Processing Events and Sequencing Rules ......................................... 139
-Sent Initial TLS Negotiation Packet State ................................................ 139
-Sent Initial PRELOGIN Packet State ........................................................ 139
-Sent TLS/SSL Negotiation Packet State ................................................... 140
-Sent LOGIN7 Record with Complete Authentication Token State ................ 141
-Sent LOGIN7 Record with SPNEGO Packet State ...................................... 142
-Sent LOGIN7 Record with Federated Authentication Information Request State
- ......................................................................................................... 142
-Logged In State ................................................................................... 142
-Sent Client Request State ..................................................................... 143
-Sent Attention State ............................................................................. 143
-Routing Completed State ...................................................................... 143
-Final State .......................................................................................... 143
-Timer Events ............................................................................................. 144
-Other Local Events ..................................................................................... 144
-Server Details ................................................................................................. 144
-Abstract Data Model ................................................................................... 146
-Timers ..................................................................................................... 147
-Initialization .............................................................................................. 147
-Higher-Layer Triggered Events .................................................................... 147
-Message Processing Events and Sequencing Rules ......................................... 147
-Initial State ......................................................................................... 148
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.2.6
-3.2.7
-
-3.3.5.1
-
-3.3
-
-[MS-TDS] - v20260330
-Tabular Data Stream Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-7 / 232
-
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-3.3.5.8
-3.3.5.9
-3.3.5.10
-3.3.5.11
-
-TLS/SSL Negotiation State .................................................................... 148
-TLS Negotiation State ........................................................................... 148
-PRELOGIN Ready State ......................................................................... 149
-Login Ready State ................................................................................ 149
-SPNEGO Negotiation State .................................................................... 151
-Federated Authentication Ready State .................................................... 151
-Logged In State ................................................................................... 152
-Client Request Execution State .............................................................. 152
-Routing Completed State ...................................................................... 152
-Final State .......................................................................................... 153
-Timer Events ............................................................................................. 153
-Other Local Events ..................................................................................... 153
-
-3.3.6
-3.3.7
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-4.11
-4.12
-4.13
-4.14
-4.15
-4.16
-4.17
-4.18
-4.19
-
-4  Protocol Examples ............................................................................................... 154
-Pre-Login Request ........................................................................................... 154
-Login Request ................................................................................................. 155
-Login Request with Federated Authentication ...................................................... 157
-Login Response ............................................................................................... 164
-Login Response with Federated Authentication Feature Extension Acknowledgement168
-SQL Batch Client Request ................................................................................. 174
-SQL Batch Server Response ............................................................................. 175
-RPC Client Request .......................................................................................... 176
-RPC Server Response ...................................................................................... 178
-Attention Request ........................................................................................... 179
-SSPI Message ................................................................................................. 179
-Bulk Load ....................................................................................................... 180
-Transaction Manager Request ........................................................................... 181
-TVP Insert Statement ...................................................................................... 182
-SparseColumn Select Statement ....................................................................... 185
-FeatureExt with SESSIONRECOVERY Feature Data .............................................. 190
-FeatureExtAck with SESSIONRECOVERY Feature Data ......................................... 195
-Table Response with SESSIONSTATE Token Data ................................................ 201
-Token Stream Communication .......................................................................... 203
-4.19.1
-Sending a SQL Batch .................................................................................. 203
-4.19.2  Out-of-Band Attention Signal ...................................................................... 203
-FeatureExt with AZURESQLSUPPORT Feature Data .............................................. 204
-FeatureExtAck with AZURESQLSUPPORT Feature Data ......................................... 207
-
-4.20
-4.21
-
-5  Security ............................................................................................................... 217
-Security Considerations for Implementers .......................................................... 217
-Index of Security Parameters ........................................................................... 217
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 219
-
-7  Change Tracking .................................................................................................. 227
-
-8  Index ................................................................................................................... 228
-
-[MS-TDS] - v20260330
-Tabular Data Stream Protocol
-Copyright © 2026 Microsoft Corporation
-Release: March 30, 2026
-
-8 / 232
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Client Messages](#221-client-messages)
+      - [2.2.1.1 Pre-Login](#2211-pre-login)
+      - [2.2.1.2 Login](#2212-login)
+      - [2.2.1.3 Federated Authentication Token](#2213-federated-authentication-token)
+      - [2.2.1.4 SQL Batch](#2214-sql-batch)
+      - [2.2.1.5 Bulk Load](#2215-bulk-load)
+      - [2.2.1.6 Remote Procedure Call](#2216-remote-procedure-call)
+      - [2.2.1.7 Attention](#2217-attention)
+      - [2.2.1.8 Transaction Manager Request](#2218-transaction-manager-request)
+    - [2.2.2 Server Messages](#222-server-messages)
+      - [2.2.2.1 Pre-Login Response](#2221-pre-login-response)
+      - [2.2.2.2 Login Response](#2222-login-response)
+      - [2.2.2.3 Federated Authentication Information](#2223-federated-authentication-information)
+      - [2.2.2.4 Row Data](#2224-row-data)
+      - [2.2.2.5 Return Status](#2225-return-status)
+      - [2.2.2.6 Return Parameters](#2226-return-parameters)
+      - [2.2.2.7 Response Completion](#2227-response-completion)
+      - [2.2.2.8 Error and Info](#2228-error-and-info)
+      - [2.2.2.9 Attention Acknowledgment](#2229-attention-acknowledgment)
+    - [2.2.3 Packets](#223-packets)
+      - [2.2.3.1 Packet Header](#2231-packet-header)
+        - [2.2.3.1.1 Type](#22311-type)
+        - [2.2.3.1.2 Status](#22312-status)
+        - [2.2.3.1.3 Length](#22313-length)
+        - [2.2.3.1.4 SPID](#22314-spid)
+        - [2.2.3.1.5 PacketID](#22315-packetid)
+        - [2.2.3.1.6 Window](#22316-window)
+      - [2.2.3.2 Packet Data](#2232-packet-data)
+    - [2.2.4 Packet Data Token and Tokenless Data Streams](#224-packet-data-token-and-tokenless-data-streams)
+      - [2.2.4.1 Tokenless Stream](#2241-tokenless-stream)
+      - [2.2.4.2 Token Stream](#2242-token-stream)
+        - [2.2.4.2.1 Token Definition](#22421-token-definition)
+          - [2.2.4.2.1.1 Zero Length Token(xx01xxxx)](#224211-zero-length-tokenxx01xxxx)
+          - [2.2.4.2.1.2 Fixed Length Token(xx11xxxx)](#224212-fixed-length-tokenxx11xxxx)
+          - [2.2.4.2.1.3 Variable Length Tokens(xx10xxxx)](#224213-variable-length-tokensxx10xxxx)
+          - [2.2.4.2.1.4 Variable Count Tokens(xx00xxxx)](#224214-variable-count-tokensxx00xxxx)
+      - [2.2.4.3 Done and Attention Tokens](#2243-done-and-attention-tokens)
+    - [2.2.5 Grammar Definition for Token Description](#225-grammar-definition-for-token-description)
+      - [2.2.5.1 General Rules](#2251-general-rules)
+        - [2.2.5.1.1 Least Significant Bit Order](#22511-least-significant-bit-order)
+        - [2.2.5.1.2 Collation Rule Definition](#22512-collation-rule-definition)
+      - [2.2.5.2 Data Stream Types](#2252-data-stream-types)
+        - [2.2.5.2.1 Unknown Length Data Streams](#22521-unknown-length-data-streams)
+        - [2.2.5.2.2 Variable-Length Data Streams](#22522-variable-length-data-streams)
+        - [2.2.5.2.3 Data Type Dependent Data Streams](#22523-data-type-dependent-data-streams)
+      - [2.2.5.3 Packet Data Stream Headers - ALL_HEADERS Rule Definition](#2253-packet-data-stream-headers-allheaders-rule-definition)
+        - [2.2.5.3.1 Query Notifications Header](#22531-query-notifications-header)
+        - [2.2.5.3.2 Transaction Descriptor Header](#22532-transaction-descriptor-header)
+        - [2.2.5.3.3 Trace Activity Header](#22533-trace-activity-header)
+      - [2.2.5.4 Data Type Definitions](#2254-data-type-definitions)
+        - [2.2.5.4.1 Zero-Length Data Types](#22541-zero-length-data-types)
+        - [2.2.5.4.2 Fixed-Length Data Types](#22542-fixed-length-data-types)
+        - [2.2.5.4.3 Variable-Length Data Types](#22543-variable-length-data-types)
+        - [2.2.5.4.4 Partially Length-Prefixed Data Types](#22544-partially-length-prefixed-data-types)
+      - [2.2.5.5 Data Type Details](#2255-data-type-details)
+        - [2.2.5.5.1 System Data Type Values](#22551-system-data-type-values)
+          - [2.2.5.5.1.1 Integers](#225511-integers)
+          - [2.2.5.5.1.2 Time Stamps](#225512-time-stamps)
+          - [2.2.5.5.1.3 Character and Binary Strings](#225513-character-and-binary-strings)
+          - [2.2.5.5.1.4 Fixed-Point Numbers](#225514-fixed-point-numbers)
+          - [2.2.5.5.1.5 Floating-Point Numbers](#225515-floating-point-numbers)
+          - [2.2.5.5.1.6 Decimals and Numerics](#225516-decimals-and-numerics)
+          - [2.2.5.5.1.7 GUIDs](#225517-guids)
+          - [2.2.5.5.1.8 Dates and Times](#225518-dates-and-times)
+        - [2.2.5.5.2 Common Language Runtime (CLR) Instances](#22552-common-language-runtime-clr-instances)
+        - [2.2.5.5.3 XML Values](#22553-xml-values)
+        - [2.2.5.5.4 sql_variant Values](#22554-sqlvariant-values)
+        - [2.2.5.5.5 Table Valued Parameter (TVP) Values](#22555-table-valued-parameter-tvp-values)
+          - [2.2.5.5.5.1 Metadata](#225551-metadata)
+          - [2.2.5.5.5.2 Optional Metadata Tokens](#225552-optional-metadata-tokens)
+          - [2.2.5.5.5.3 TDS Type Restrictions](#225553-tds-type-restrictions)
+        - [2.2.5.5.6 JSON Values](#22556-json-values)
+        - [2.2.5.5.7 Vector Values](#22557-vector-values)
+          - [2.2.5.5.7.1 Layout Format](#225571-layout-format)
+          - [2.2.5.5.7.2 Layout Version](#225572-layout-version)
+          - [2.2.5.5.7.3 Number of Dimensions](#225573-number-of-dimensions)
+            - [2.2.5.5.7.3.1 Implementation Note](#2255731-implementation-note)
+          - [2.2.5.5.7.4 Dimension Type](#225574-dimension-type)
+          - [2.2.5.5.7.5 Reserved](#225575-reserved)
+          - [2.2.5.5.7.6 Stream of Values](#225576-stream-of-values)
+      - [2.2.5.6 Type Info Rule Definition](#2256-type-info-rule-definition)
+      - [2.2.5.7 Encryption Key Rule Definition](#2257-encryption-key-rule-definition)
+      - [2.2.5.8 Data Packet Stream Tokens](#2258-data-packet-stream-tokens)
+    - [2.2.6 Packet Header Message Type Stream Definition](#226-packet-header-message-type-stream-definition)
+      - [2.2.6.1 Bulk Load BCP](#2261-bulk-load-bcp)
+      - [2.2.6.2 Bulk Load Update Text/Write Text](#2262-bulk-load-update-textwrite-text)
+      - [2.2.6.3 Federated Authentication Token](#2263-federated-authentication-token)
+      - [2.2.6.4 LOGIN7](#2264-login7)
+      - [2.2.6.5 PRELOGIN](#2265-prelogin)
+      - [2.2.6.6 RPC Request](#2266-rpc-request)
+      - [2.2.6.7 SQLBatch](#2267-sqlbatch)
+      - [2.2.6.8 SSPI Message](#2268-sspi-message)
+      - [2.2.6.9 Transaction Manager Request](#2269-transaction-manager-request)
+    - [2.2.7 Packet Data Token Stream Definition](#227-packet-data-token-stream-definition)
+      - [2.2.7.1 ALTMETADATA](#2271-altmetadata)
+      - [2.2.7.2 ALTROW](#2272-altrow)
+      - [2.2.7.3 COLINFO](#2273-colinfo)
+      - [2.2.7.4 COLMETADATA](#2274-colmetadata)
+      - [2.2.7.5 DATACLASSIFICATION](#2275-dataclassification)
+      - [2.2.7.6 DONE](#2276-done)
+      - [2.2.7.7 DONEINPROC](#2277-doneinproc)
+      - [2.2.7.8 DONEPROC](#2278-doneproc)
+      - [2.2.7.9 ENVCHANGE](#2279-envchange)
+      - [2.2.7.10 ERROR](#22710-error)
+      - [2.2.7.11 FEATUREEXTACK](#22711-featureextack)
+      - [2.2.7.12 FEDAUTHINFO](#22712-fedauthinfo)
+      - [2.2.7.13 INFO](#22713-info)
+      - [2.2.7.14 LOGINACK](#22714-loginack)
+      - [2.2.7.15 NBCROW](#22715-nbcrow)
+      - [2.2.7.16 OFFSET](#22716-offset)
+      - [2.2.7.17 ORDER](#22717-order)
+      - [2.2.7.18 RETURNSTATUS](#22718-returnstatus)
+      - [2.2.7.19 RETURNVALUE](#22719-returnvalue)
+      - [2.2.7.20 ROW](#22720-row)
+      - [2.2.7.21 SESSIONSTATE](#22721-sessionstate)
+      - [2.2.7.22 SSPI](#22722-sspi)
+      - [2.2.7.23 TABNAME](#22723-tabname)
+      - [2.2.7.24 TVP_ROW](#22724-tvprow)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.3.4 for a TDS server.](#334-for-a-tds-server)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Initial State](#3351-initial-state)
+      - [3.3.5.2 TLS/SSL Negotiation State](#3352-tlsssl-negotiation-state)
+      - [3.3.5.3 TLS Negotiation State](#3353-tls-negotiation-state)
+      - [3.3.5.4 PRELOGIN Ready State](#3354-prelogin-ready-state)
+      - [3.3.5.5 Login Ready State](#3355-login-ready-state)
+      - [3.3.5.6 SPNEGO Negotiation State](#3356-spnego-negotiation-state)
+      - [3.3.5.7 Federated Authentication Ready State](#3357-federated-authentication-ready-state)
+      - [3.3.5.8 Logged In State](#3358-logged-in-state)
+      - [3.3.5.9 Client Request Execution State](#3359-client-request-execution-state)
+      - [3.3.5.10 Routing Completed State](#33510-routing-completed-state)
+      - [3.3.5.11 Final State](#33511-final-state)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Pre-Login Request](#41-pre-login-request)
+  - [4.2 Login Request](#42-login-request)
+  - [4.3 Login Request with Federated Authentication](#43-login-request-with-federated-authentication)
+  - [4.4 Login Response](#44-login-response)
+  - [4.5 Login Response with Federated Authentication Feature Extension](#45-login-response-with-federated-authentication-feature-extension)
+  - [4.6 SQL Batch Client Request](#46-sql-batch-client-request)
+  - [4.7 SQL Batch Server Response](#47-sql-batch-server-response)
+  - [4.8 RPC Client Request](#48-rpc-client-request)
+  - [4.9 RPC Server Response](#49-rpc-server-response)
+  - [4.10 Attention Request](#410-attention-request)
+  - [4.11 SSPI Message](#411-sspi-message)
+  - [4.12 Bulk Load](#412-bulk-load)
+  - [4.13 Transaction Manager Request](#413-transaction-manager-request)
+  - [4.14 TVP Insert Statement](#414-tvp-insert-statement)
+  - [4.15 SparseColumn Select Statement](#415-sparsecolumn-select-statement)
+  - [4.16 FeatureExt with SESSIONRECOVERY Feature Data](#416-featureext-with-sessionrecovery-feature-data)
+  - [4.17 FeatureExtAck with SESSIONRECOVERY Feature Data](#417-featureextack-with-sessionrecovery-feature-data)
+  - [4.18 Table Response with SESSIONSTATE Token Data](#418-table-response-with-sessionstate-token-data)
+  - [4.19 Token Stream Communication](#419-token-stream-communication)
+    - [4.19.1 Sending a SQL Batch](#4191-sending-a-sql-batch)
+    - [4.19.2 Out-of-Band Attention Signal](#4192-out-of-band-attention-signal)
+  - [4.20 FeatureExt with AZURESQLSUPPORT Feature Data](#420-featureext-with-azuresqlsupport-feature-data)
+  - [4.21 FeatureExtAck with AZURESQLSUPPORT Feature Data](#421-featureextack-with-azuresqlsupport-feature-data)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Tabular Data Stream (TDS) protocol versions 7 and 8 is an application layer request/response
 protocol that facilitates interaction with a database server and provides for the following:
@@ -1157,7 +843,7 @@ The return of data.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1211,7 +897,8 @@ Release: March 30, 2026
 
 9 / 232
 
-trust domain, while generating a security token for the user, when there is a trust relationship
+
+trust domain, while generating a security token for the user, when there is a trust relationship
 between the two domains.
 
 Global Transactions: A feature that allows users to execute transactions across multiple
@@ -1285,7 +972,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-SQL batch: A set of SQL statements.
+
+SQL batch: A set of SQL statements.
 
 SQL Server Native Client (SNAC): SNAC contains the SQL Server ODBC driver and the SQL
 
@@ -1333,14 +1021,14 @@ and drivers that are provided by third parties.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1356,7 +1044,8 @@ Release: March 30, 2026
 
 11 / 232
 
-[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
+
+[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
 http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 
 [IETF-AuthEncr] McGrew, D., Foley, J., and Paterson, K., "Authenticated Encryption with AES-CBC and
@@ -1406,7 +1095,7 @@ Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 [VIA2002] Cameron, D., and Regnier, G., "The Virtual Interface Architecture", Intel Press, 2002,
 ISBN:0971288704.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MC-SMP] Microsoft Corporation, "Session Multiplex Protocol".
 
@@ -1421,7 +1110,8 @@ Release: March 30, 2026
 
 12 / 232
 
-[MSDN-Autocommit] Microsoft Corporation, "Autocommit Transactions",
+
+[MSDN-Autocommit] Microsoft Corporation, "Autocommit Transactions",
 https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms187878(v=sql.105)
 
 [MSDN-BEGIN] Microsoft Corporation, "BEGIN TRANSACTION (Transact SQL)",
@@ -1487,7 +1177,8 @@ Release: March 30, 2026
 
 13 / 232
 
-[MSDN-TDSENDPT] Microsoft Corporation, "Network Protocols and TDS Endpoints",
+
+[MSDN-TDSENDPT] Microsoft Corporation, "Network Protocols and TDS Endpoints",
 https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms191220(v=sql.105)
 
 [MSDN-UPDATETEXT] Microsoft Corporation, "UPDATETEXT (Transact-SQL)",
@@ -1510,7 +1201,7 @@ Security Service Application Program Interface (GSS-API) Negotiation Mechanism",
 [SSPI] Microsoft Corporation, "SSPI", https://learn.microsoft.com/en-
 us/windows/desktop/SecAuthN/sspi
 
-1.3  Overview
+### 1.3 Overview
 
 The Tabular Data Stream (TDS) protocol versions 7 and 8, hereinafter referred to as "TDS", is an
 application-level protocol used for the transfer of requests and responses between clients and
@@ -1551,7 +1242,8 @@ Release: March 30, 2026
 
 14 / 232
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-TDS].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1589,11 +1281,12 @@ Release: March 30, 2026
 
 15 / 232
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-TDS].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Tabular Data Stream (TDS) protocol depends upon a network transport connection being
 established prior to a TDS conversation occurring (the choice of transport protocol is not important to
@@ -1613,7 +1306,7 @@ This relationship is illustrated in the following figure.
 
 Figure 2: Protocol relationship
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol can be used after the client has discovered the server and established a network
 transport connection for use with TDS.
@@ -1638,12 +1331,13 @@ Release: March 30, 2026
 
 16 / 232
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The TDS protocol is appropriate for use to facilitate request/response communications between an
 application and a database server in all scenarios where network or local connectivity is available.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol includes versioning issues in the following areas.
 
@@ -1711,15 +1405,16 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Note that the cipher suite for TLS/SSL [RFC2246] [RFC5246] [RFC8446] [RFC6101], the
+
+Note that the cipher suite for TLS/SSL [RFC2246] [RFC5246] [RFC8446] [RFC6101], the
 authentication mechanism for SSPI [SSPI], and federated authentication are negotiated outside the
 influence of TDS.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The TDS 7.x and TDS 8.0 protocols use the following assignment.
 
@@ -1756,7 +1451,8 @@ Release: March 30, 2026
 
 18 / 232
 
-2  Messages
+
+## 2 Messages
 
 The formal syntax of all messages is provided in Augmented Backus-Naur Form (ABNF) [RFC4234],
 with the addition of the following:
@@ -1773,7 +1469,7 @@ underscore ("_") – a valid character within an identifier.
 
 "%b0" – a valid value.
 
-2.1  Transport
+### 2.1 Transport
 
 The TDS protocol does not prescribe a specific underlying transport protocol to use on the Internet or
 on other networks. TDS only presumes a reliable transport that guarantees in-sequence delivery of
@@ -1816,14 +1512,14 @@ TLS [RFC8446], in case TLS encryption is established in TDS 8.0.
 
 (MARS) feature [MSDN-MARS] is requested.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Character data, such as SQL statements, within a TDS message is in Unicode, unless the character
 data represents the data value of an ASCII data type, such as a non-Unicode data column. A character
 count within TDS is a count of characters, rather than of bytes, except when that character count is
 explicitly specified as a byte count.
 
-2.2.1  Client Messages
+#### 2.2.1 Client Messages
 
 Messages sent from the client to the server are as follows:
 
@@ -1838,7 +1534,8 @@ Release: March 30, 2026
 
 19 / 232
 
-
+
+
 
 
 
@@ -1861,12 +1558,12 @@ Transaction Manager Request
 These messages are briefly described in the sections that follow. Detailed descriptions of message
 contents are in section 2.2.6.
 
-2.2.1.1  Pre-Login
+##### 2.2.1.1 Pre-Login
 
 Before a login occurs, a Pre-Login handshake occurs between client and server, setting up contexts
 such as encryption and MARS-enabled. For more details, see section 2.2.6.5.
 
-2.2.1.2  Login
+##### 2.2.1.2 Login
 
 When the client makes the determination to establish a TDS protocol connection with the server side,
 the client sends a Login message data stream to the server. The client can have more than one
@@ -1878,7 +1575,7 @@ authentication handshakes (such as when SSPI [SSPI] or federated authentication 
 server notifies the client that it has either accepted or rejected the connection request. For more
 details, see section 3.3.5.1.
 
-2.2.1.3  Federated Authentication Token
+##### 2.2.1.3 Federated Authentication Token
 
 When the client indicates in the Login record that federated authentication<4> is to be used but
 that the intended client library needs additional information from the server to generate a federated
@@ -1892,7 +1589,7 @@ After the server receives the Federated Authentication Token message from the cl
 notifies the client that it has either accepted or rejected the connection request. For more details, see
 section 3.3.5.
 
-2.2.1.4  SQL Batch
+##### 2.2.1.4 SQL Batch
 
 To send a SQL statement or a batch of SQL statements, the SQL batch, represented by a Unicode
 string, is copied into the data section of a TDS packet and is then sent to the database server that
@@ -1905,7 +1602,8 @@ Release: March 30, 2026
 
 20 / 232
 
-2.2.1.5  Bulk Load
+
+##### 2.2.1.5 Bulk Load
 
 In a bulk insert/bulk load operation, a SQL statement consists of a Unicode string that is followed
 by binary data. The client sends the INSERT BULK SQL statement and then sends a COLMETADATA
@@ -1917,14 +1615,14 @@ rather than being sent to the server. For more details, see section 2.2.6.1.
 A bulk load operation is also used for inserting data with a previously issued UPDATETEXT BULK or
 WRITETEXT BULK SQL statement. For more details, see section 2.2.6.2.
 
-2.2.1.6  Remote Procedure Call
+##### 2.2.1.6 Remote Procedure Call
 
 To execute a remote procedure call (RPC) on the server, the client sends an RPC message data
 stream to the server. This is a binary stream that contains the RPC name or numeric identifier,
 options, and parameters. RPCs MUST be in a separate TDS message and not intermixed with SQL
 statements. There can be several RPCs in one message. For more details, see section 2.2.6.6.
 
-2.2.1.7  Attention
+##### 2.2.1.7 Attention
 
 The client can interrupt and cancel the current request by sending an Attention message. This is also
 known as out-of-band data, but any TDS packet that is being sent MUST be finished before sending
@@ -1945,11 +1643,11 @@ send an attention acknowledgment, but instead returns a table response with a si
 (section 2.2.7.6) that has a status of DONE_ERROR to indicate that the incoming request was ignored.
 For more details about the packet header status code, see section 2.2.3.1.2.
 
-2.2.1.8  Transaction Manager Request
+##### 2.2.1.8 Transaction Manager Request
 
 The client can request that the connection enlist in a transaction as described in [MSDN-DTC].
 
-2.2.2  Server Messages
+#### 2.2.2 Server Messages
 
 Messages sent from the server to the client are the following:
 
@@ -1976,7 +1674,8 @@ Release: March 30, 2026
 
 21 / 232
 
-  Return Parameters
+
+  Return Parameters
 
   Response Completion
 
@@ -1989,13 +1688,13 @@ Error and Info
 These messages are briefly described in the sections that follow. Detailed descriptions of message
 contents are in section 2.2.6 and section 2.2.7.
 
-2.2.2.1  Pre-Login Response
+##### 2.2.2.1 Pre-Login Response
 
 The Pre-Login Response message is a tokenless packet data stream. The data stream consists of the
 response to the information requested by the client's Pre-Login message. For more details, see section
 2.2.6.5.
 
-2.2.2.2  Login Response
+##### 2.2.2.2 Login Response
 
 The Login Response message is a token stream that consists of information about the server's
 characteristics, optional information and error messages, and finally, a completion message.
@@ -2014,7 +1713,7 @@ section 2.2.7.9.
 A done packet MUST be present as the final part of the login response, and a DONE token data stream
 is the last thing sent in response to a server login request. For more details, see section 2.2.7.6.
 
-2.2.2.3  Federated Authentication Information
+##### 2.2.2.3 Federated Authentication Information
 
 After the server receives a Login message that states that the client intends to use a federated
 authentication token from a specific client library that needs additional information from the server
@@ -2024,14 +1723,14 @@ Information Token that provides the information necessary for the client to gene
 authentication token. If the server determines that no information is required for this particular client
 library, the server does not send the information token. For more details, see section 2.2.7.12.
 
-2.2.2.4  Row Data
+##### 2.2.2.4 Row Data
 
 If the server request results in data being returned, the data precedes any other data streams
 returned from the server except warnings. Row data MUST be preceded by a description of the column
 names and data types. For more information about how the column names and data types are
 described, see section 2.2.7.4.
 
-2.2.2.5  Return Status
+##### 2.2.2.5 Return Status
 
 When a stored procedure is executed by the server, the server MUST return a status value. This is a
 4-byte integer and is sent via the RETURNSTATUS token. A stored procedure execution is requested
@@ -2043,10 +1742,11 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-through either an RPC Batch or a SQL Batch (section 2.2.1.4) message. For more details about
+
+through either an RPC Batch or a SQL Batch (section 2.2.1.4) message. For more details about
 RETURNSTATUS, see section 2.2.7.18.
 
-2.2.2.6  Return Parameters
+##### 2.2.2.6 Return Parameters
 
 The response format for execution of a stored procedure is identical regardless of whether the
 request was sent as SQL Batch (section 2.2.1.4) or RPC Batch. It is always a tabular result-type
@@ -2061,7 +1761,7 @@ corresponding return value, sent via the RETURNVALUE token. The RETURNVALUE toke
 is also used for sending back the value returned by a user-defined function (UDF), if it is called as an
 RPC. For more details about the RETURNVALUE token, see section 2.2.7.19.
 
-2.2.2.7  Response Completion
+##### 2.2.2.7 Response Completion
 
 The client reads results in logical units and can tell when all results have been received by examining
 the DONE token data stream.
@@ -2076,20 +1776,20 @@ DONEINPROC token data stream for each SQL statement and a DONEPROC token data st
 each completed stored procedure. For more details about DONEINPROC and DONEPROC tokens, see
 section 2.2.7.7 and 2.2.7.8, respectively.
 
-2.2.2.8  Error and Info
+##### 2.2.2.8 Error and Info
 
 Besides returning descriptions of Row data and the data itself, TDS provides a token data stream
 type for the server to send error and informational messages to the client. These are the ERROR token
 data stream and the INFO token data stream. For more details, see sections 2.2.7.10 and 2.2.7.13,
 respectively.
 
-2.2.2.9  Attention Acknowledgment
+##### 2.2.2.9 Attention Acknowledgment
 
 After a client has sent an interrupt signal to the server, the client MUST read returning data until the
 interrupt has been acknowledged. Attention messages are acknowledged in the DONE token data
 stream. For more details, see section 2.2.7.6.
 
-2.2.3  Packets
+#### 2.2.3 Packets
 
 A packet is the unit written or read at one time. A message can consist of one or more packets. A
 packet always includes a packet header and is usually followed by packet data that contains the
@@ -2108,7 +1808,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-acknowledgment of changes in the negotiated packet size is transmitted back to the client via
+
+acknowledgment of changes in the negotiated packet size is transmitted back to the client via
 ENVCHANGE (section 2.2.7.9) token stream. The negotiated packet size is the maximum value that
 can be specified in the Length packet header field described in section 2.2.3.1.3.
 
@@ -2119,7 +1820,7 @@ actual number of bytes smaller than the negotiated packet size. If any of the pr
 sent with a length less than the negotiated packet size, the server SHOULD disconnect the client when
 the next network payload arrives.
 
-2.2.3.1  Packet Header
+##### 2.2.3.1 Packet Header
 
 To implement messages on top of existing, arbitrary transport layers, a packet header is included as
 part of the packet. The packet header precedes all data within the packet. It is always 8 bytes in
@@ -2128,7 +1829,7 @@ length. Most importantly, the packet header states the Type (section 2.2.3.1.1) 
 
 The following sections provide a detailed description of each item within the packet header.
 
-2.2.3.1.1 Type
+###### 2.2.3.1.1 Type
 
 Type defines the type of message. Type is a 1-byte unsigned char. The following table describes the
 types that are available.
@@ -2226,7 +1927,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-The following table highlights which messages, as described previously in sections 2.2.1 and 2.2.2,
+
+The following table highlights which messages, as described previously in sections 2.2.1 and 2.2.2,
 correspond to which packet header type.
 
 Message type
@@ -2345,7 +2047,7 @@ Server
 
 4
 
-2.2.3.1.2 Status
+###### 2.2.3.1.2 Status
 
 Status is a bit field used to indicate the message state. Status is a 1-byte unsigned char. The
 following Status bit flags are defined.
@@ -2382,7 +2084,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Value
+
+Value
 
  Description
 
@@ -2408,7 +2111,7 @@ Otherwise identical to RESETCONNECTION.
 
 All other bits are not used and MUST be ignored.
 
-2.2.3.1.3 Length
+###### 2.2.3.1.3 Length
 
 Length is the size of the packet including the 8 bytes in the packet header. It is the number of bytes
 from the start of this header to the start of the next packet header. Length is a 2-byte, unsigned
@@ -2422,7 +2125,7 @@ Starting with TDS 7.3, Length MUST be the negotiated packet size when sending a 
 to server, unless it is the last packet of a request (that is, the EOM bit in Status is ON) or the client
 has not logged in.
 
-2.2.3.1.4 SPID
+###### 2.2.3.1.4 SPID
 
 SPID is the process ID on the server, corresponding to the current connection. This information is
 sent by the server to the client and is useful for identifying which thread on the server sent the TDS
@@ -2430,18 +2133,18 @@ packet. It is provided for debugging purposes. The client MAY send the SPID valu
 the client does not, then a value of 0x0000 SHOULD be sent to the server. This is a 2-byte value and
 is represented in network byte order (big-endian).
 
-2.2.3.1.5 PacketID
+###### 2.2.3.1.5 PacketID
 
 PacketID is used for numbering message packets that contain data in addition to the packet header.
 PacketID is a 1-byte, unsigned char. Each time packet data is sent, the value of PacketID is
 incremented by 1, modulo 256.<7> This allows the receiver to track the sequence of TDS packets for
 a given message. This value is ignored.
 
-2.2.3.1.6 Window
+###### 2.2.3.1.6 Window
 
 This 1 byte is not used. This byte SHOULD be set to 0x00 and SHOULD be ignored by the receiver.
 
-2.2.3.2  Packet Data
+##### 2.2.3.2 Packet Data
 
 Packet data for a given message follows the packet header (see Type in section 2.2.3.1.1 for
 messages that contain packet data). As stated in section 2.2.3, a message can span more than one
@@ -2454,7 +2157,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-more than one packet only occurs if the data to be sent exceeds the maximum packet data size, which
+
+more than one packet only occurs if the data to be sent exceeds the maximum packet data size, which
 is computed as (negotiated packet size - 8 bytes), where the 8 bytes represents the size of the packet
 header.
 
@@ -2463,7 +2167,7 @@ If a stream spans more than one packet, then the EOM bit of the packet header St
 packet to signal that the stream ends. In addition, the PacketID field of subsequent packets MUST be
 incremented as defined in section 2.2.3.1.5.
 
-2.2.4  Packet Data Token and Tokenless Data Streams
+#### 2.2.4 Packet Data Token and Tokenless Data Streams
 
 The messages contained in packet data that pass between the client and the server can be one of two
 types: a "token stream" or a "tokenless stream". A token stream consists of one or more "tokens"
@@ -2598,21 +2302,22 @@ Release: March 30, 2026
 
 27 / 232
 
-2.2.4.1  Tokenless Stream
+
+##### 2.2.4.1 Tokenless Stream
 
 As shown in section 2.2.4, some messages do not use tokens to describe the data portion of the data
 stream. In these cases, all the information required to describe the packet data is contained in the
 packet header. This is referred to as a tokenless stream and is essentially just a collection of packets
 and data.
 
-2.2.4.2  Token Stream
+##### 2.2.4.2 Token Stream
 
 More complex messages (for example, column metadata, row data, and data type data) are
 constructed by using tokens. As described in section 2.2.4, a token stream consists of a single byte
 identifier, followed by token-specific data. The definitions of the different token streams can be found
 in section 2.2.7.
 
-2.2.4.2.1 Token Definition
+###### 2.2.4.2.1 Token Definition
 
 There are four classes of token definitions:
 
@@ -2629,7 +2334,7 @@ Fixed Length Token(xx11xxxx)
 The following sections specify the bit pattern of each token class, various extensions to this bit pattern
 for a given token class, and a description of its function(s).
 
-2.2.4.2.1.1  Zero Length Token(xx01xxxx)
+###### 2.2.4.2.1.1 Zero Length Token(xx01xxxx)
 
 This class of token is not followed by a length specification. There is no data associated with the token.
 A zero length token always has the following bit sequence:
@@ -2650,7 +2355,7 @@ A zero length token always has the following bit sequence:
 
 A value of “0 or 1” denotes a bit position that can contain the bit value “0” or “1”.
 
-2.2.4.2.1.2  Fixed Length Token(xx11xxxx)
+###### 2.2.4.2.1.2 Fixed Length Token(xx11xxxx)
 
 This class of token is followed by 1, 2, 4, or 8 bytes of data. No length specification follows this token
 because the length of its associated data is encoded in the token itself. The different fixed data-length
@@ -2683,12 +2388,13 @@ Release: March 30, 2026
 
 28 / 232
 
-Fixed-length tokens are used by the following data types: bigint, int, smallint, tinyint, float, real,
+
+Fixed-length tokens are used by the following data types: bigint, int, smallint, tinyint, float, real,
 money, smallmoney, datetime, smalldatetime, and bit. The type definition is always represented in
 COLMETADATA (section 2.2.7.4) and ALTMETADATA (section 2.2.7.1) data streams as a single byte
 Type. Additional details are specified in section 2.2.5.4.2.
 
-2.2.4.2.1.3  Variable Length Tokens(xx10xxxx)
+###### 2.2.4.2.1.3 Variable Length Tokens(xx10xxxx)
 
 Except as noted later in this section, this class of token definition is followed by a length specification.
 The length, in bytes, of this length is included in the token itself as a Length value (see section
@@ -2715,7 +2421,7 @@ Other nullable data types have a length of 0 if they are null.
 Note  The DATACLASSIFICATION variable length token does not start with a length specification (see
 section 2.2.7.5).
 
-2.2.4.2.1.4  Variable Count Tokens(xx00xxxx)
+###### 2.2.4.2.1.4 Variable Count Tokens(xx00xxxx)
 
 This class of token definition is followed by a count of the number of fields that follow the token. Each
 field length is dependent on the token type. The total length of the token can be determined only by
@@ -2752,7 +2458,7 @@ can contain the bit value “0” or “1”.
 There are two variable count tokens. COLMETADATA (section 2.2.7.4) and ALTMETADATA (section
 2.2.7.1) both use a 2-byte count.
 
-2.2.4.3  Done and Attention Tokens
+##### 2.2.4.3 Done and Attention Tokens
 
 The DONE token (section 2.2.7.6) marks the end of the response for each executed SQL statement.
 Based on the SQL statement and the context in which it is executed, the server MAY generate a
@@ -2771,13 +2477,14 @@ Release: March 30, 2026
 
 29 / 232
 
-2.2.5  Grammar Definition for Token Description
+
+#### 2.2.5 Grammar Definition for Token Description
 
 The Tabular Data Stream consists of a variety of messages. Each message consists of a set of bytes
 transmitted in a predefined order. This predefined order or grammar can be specified by using
 Augmented Backus-Naur Form (ABNF) [RFC4234]. Details can be found in the following subsections.
 
-2.2.5.1  General Rules
+##### 2.2.5.1 General Rules
 
 Data structure encodings in TDS are defined in terms of the following fundamental definitions.
 
@@ -2827,7 +2534,8 @@ Release: March 30, 2026
 
 30 / 232
 
-ULONGLONG: An unsigned 8-byte (64-bit) value. The range is 0 to (2^64)-1.
+
+ULONGLONG: An unsigned 8-byte (64-bit) value. The range is 0 to (2^64)-1.
 
  ULONGLONG = 8BYTE
 
@@ -2879,7 +2587,8 @@ Release: March 30, 2026
 
 31 / 232
 
-CHARBIN_NULL: A 2-byte (16-bit) or 4-byte (32-bit) value representing a T-SQL NULL value for a
+
+CHARBIN_NULL: A 2-byte (16-bit) or 4-byte (32-bit) value representing a T-SQL NULL value for a
 character or binary data type. Please refer to TYPE_VARBYTE (see section 2.2.5.2.3) for additional
 details.
 
@@ -2908,7 +2617,7 @@ Notes
 FRESERVEDBIT and FRESERVEDBYTE are often used to pad unused parts of a byte or bytes. The
 value of these reserved bits SHOULD be ignored. These elements are generally set to 0.
 
-2.2.5.1.1 Least Significant Bit Order
+###### 2.2.5.1.1 Least Significant Bit Order
 
 Certain tokens possess rules that comprise an array of independent bits. These are "flag" rules in
 which each bit is a flag indicating that a specific feature or option is enabled/requested. Normally, the
@@ -2927,7 +2636,7 @@ byte ordering. For example, the following rule definition:
 
 has the following order on the wire: F7F6F5F4F3F2F1F0 F15F14F13F12F11F10F9F8.
 
-2.2.5.1.2 Collation Rule Definition
+###### 2.2.5.1.2 Collation Rule Definition
 
 The collation rule is used to specify collation information for character data or metadata describing
 character data.<9> This is specified as part of the LOGIN7 (section 2.2.6.4) message or part of a
@@ -2941,7 +2650,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- LCID             =   20BIT
+
+ LCID             =   20BIT
 
  fIgnoreCase      =   BIT
  fIgnoreAccent    =   BIT
@@ -2970,9 +2680,9 @@ Notes
 
   A COLLATION<10> value of 0x00 00 00 00 00 specifies a request for the use of raw collation.
 
-2.2.5.2  Data Stream Types
+##### 2.2.5.2 Data Stream Types
 
-2.2.5.2.1 Unknown Length Data Streams
+###### 2.2.5.2.1 Unknown Length Data Streams
 
 Unknown length data streams can be used by tokenless data streams. It is a stream of bytes. The
 number of bytes within the data stream is defined in the packet header as specified in section 2.2.3.1.
@@ -2980,7 +2690,7 @@ number of bytes within the data stream is defined in the packet header as specif
  BYTESTREAM       =   *BYTE
  UNICODESTREAM    =   *(2BYTE)
 
-2.2.5.2.2 Variable-Length Data Streams
+###### 2.2.5.2.2 Variable-Length Data Streams
 
 Variable-length data streams consist of a stream of characters or a stream of bytes. The two types are
 similar, in that they both have a length rule and a data rule.
@@ -3005,7 +2715,8 @@ Release: March 30, 2026
 
 33 / 232
 
-Similar to the variable-length character stream, variable-length byte streams are defined by a length
+
+Similar to the variable-length character stream, variable-length byte streams are defined by a length
 field followed by the data itself. There are three types of variable-length byte streams, each
 dependent on the size of the length field (for example, a BYTE, USHORT, or LONG). If the value of the
 length field is zero, then no data follows the length field.
@@ -3014,7 +2725,7 @@ length field is zero, then no data follows the length field.
  US_VARBYTE       =   USHORTLEN *BYTE
  L_VARBYTE        =   LONGLEN *BYTE
 
-2.2.5.2.3 Data Type Dependent Data Streams
+###### 2.2.5.2.3 Data Type Dependent Data Streams
 
 Some messages contain variable data types. The actual type of a given variable data type is
 dependent on the type of the data being sent within the message as defined in the TYPE_INFO rule
@@ -3071,7 +2782,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-                / ([TYPE_VARLEN] *BYTE)
+
+                / ([TYPE_VARLEN] *BYTE)
 
 Partially Length-prefixed Bytes
 
@@ -3115,7 +2827,7 @@ by any number of PLP_CHUNKs containing the data. The length of the data specifie
 ULONGLONGLEN is used as a hint for the receiver. The receiver SHOULD validate that the length
 value specified by ULONGLONGLEN matches the actual data length.
 
-2.2.5.3  Packet Data Stream Headers - ALL_HEADERS Rule Definition
+##### 2.2.5.3 Packet Data Stream Headers - ALL_HEADERS Rule Definition
 
 Message streams can be preceded by a variable number of headers as specified by the ALL_HEADERS
 rule. The ALL_HEADERS rule, Query Notifications (section 2.2.5.3.1), and Transaction Descriptor
@@ -3157,7 +2869,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Header
+
+Header
 
 Value
 
@@ -3205,7 +2918,7 @@ Header
 
 A structure containing a single header.
 
-2.2.5.3.1 Query Notifications Header
+###### 2.2.5.3.1 Query Notifications Header
 
 This packet data stream header allows the client to specify that a notification is to be supplied on the
 results of the request. The contents of the header specify the information necessary for delivery of the
@@ -3239,7 +2952,8 @@ Release: March 30, 2026
 
 36 / 232
 
-2.2.5.3.2 Transaction Descriptor Header
+
+###### 2.2.5.3.2 Transaction Descriptor Header
 
 This packet data stream contains information regarding transaction descriptor and number of
 outstanding requests as they apply to Multiple Active Result Sets (MARS) [MSDN-MARS].
@@ -3266,7 +2980,7 @@ Stream Definition:
  HeaderData       =   TransactionDescriptor
                       OutstandingRequestCount
 
-2.2.5.3.3 Trace Activity Header
+###### 2.2.5.3.3 Trace Activity Header
 
 This packet data stream contains a client trace activity ID intended to be used by the server for
 debugging purposes, to allow correlating the server's processing of the request with the client request.
@@ -3288,13 +3002,13 @@ Stream Definition:
 
  HeaderData        =   ActivityId
 
-2.2.5.4  Data Type Definitions
+##### 2.2.5.4 Data Type Definitions
 
 The subsections within this section describe the different sets of data types and how they are
 categorized. Specifically, data values are interpreted and represented in association with their data
 type. Details about each data type categorization are described in the following sections.
 
-2.2.5.4.1 Zero-Length Data Types
+###### 2.2.5.4.1 Zero-Length Data Types
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -3303,13 +3017,14 @@ Release: March 30, 2026
 
 37 / 232
 
-The zero-length data types include the following type.
+
+The zero-length data types include the following type.
 
  NULLTYPE         =   0x1F  ; Null
 
 There is no data associated with NULLTYPE.<13> For more details, see section 2.2.4.2.1.1.
 
-2.2.5.4.2 Fixed-Length Data Types
+###### 2.2.5.4.2 Fixed-Length Data Types
 
 The fixed-length data types include the following types.
 
@@ -3358,7 +3073,7 @@ MONEYTYPE/DATETIMETYPE/FLT8TYPE/INT8TYPE. The value represents the number of byt
 be followed. The SQL data types of the corresponding fixed-length data types are in the comment part
 of each data type.
 
-2.2.5.4.3 Variable-Length Data Types
+###### 2.2.5.4.3 Variable-Length Data Types
 
 The data type token values defined in this section have a length value associated with the data type
 because the data values corresponding to these data types are represented by a variable number of
@@ -3371,7 +3086,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- GUIDTYPE            =   %x24  ; UniqueIdentifier
+
+ GUIDTYPE            =   %x24  ; UniqueIdentifier
  INTNTYPE            =   %x26  ; (see below)
  BITNTYPE            =   %x68  ; (see below)
  DECIMALNTYPE        =   %x6A  ; Decimal
@@ -3448,7 +3164,8 @@ Release: March 30, 2026
 
 39 / 232
 
-                                        ; specified within a BYTE
+
+                                        ; specified within a BYTE
 
 For DECIMALNTYPE and NUMERICNTYPE, the only valid lengths are 0x05, 0x09, 0x0D, and 0x11 for
 non-NULL instances.
@@ -3557,7 +3274,8 @@ Release: March 30, 2026
 
 40 / 232
 
-                      NCHARTYPE
+
+                      NCHARTYPE
                       /
                       VECTORTYPE ; the length value associated with
                                  ; these data types is specified
@@ -3612,7 +3330,7 @@ specification is supported.
 
 Other nullable data types have a length of 0 when they are null.
 
-2.2.5.4.4 Partially Length-Prefixed Data Types
+###### 2.2.5.4.4 Partially Length-Prefixed Data Types
 
 The data value corresponding to the set of data types defined in this section follows the rule defined in
 the partially length-prefixed stream definition (section 2.2.5.2.3).
@@ -3624,7 +3342,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- PARTLENTYPE      =   XMLTYPE
+
+ PARTLENTYPE      =   XMLTYPE
                       /
                       BIGVARCHARTYPE
                       /
@@ -3649,19 +3368,19 @@ range is 0 to 4000.
 which has a max size of 0xFFFF, defined by PARTLENTYPE. This class of types was introduced in
 TDS 7.2.
 
-2.2.5.5  Data Type Details
+##### 2.2.5.5 Data Type Details
 
 The subsections within this section specify the formats in which values of system data types are
 serialized in TDS.
 
-2.2.5.5.1 System Data Type Values
+###### 2.2.5.5.1 System Data Type Values
 
 The subsections within this section specify the formats in which values of various common system
 data types are serialized in TDS.
 
-2.2.5.5.1.1
+###### 2.2.5.5.1.1 Integers
 
-Integers
+
 
 All integer types are represented in reverse byte order (little-endian) unless otherwise specified.
 Each integer takes a whole number of bytes as follows:
@@ -3676,17 +3395,17 @@ int: 4 bytes
 
 bigint: 8 bytes
 
-2.2.5.5.1.2  Time Stamps
+###### 2.2.5.5.1.2 Time Stamps
 
 timestamp/rowversion is represented as an 8-byte binary sequence with no particular
 interpretation.
 
-2.2.5.5.1.3  Character and Binary Strings
+###### 2.2.5.5.1.3 Character and Binary Strings
 
 See Variable-Length Data Types (section 2.2.5.4.3) and Partially Length-Prefixed Data
 Types (section 2.2.5.4.4).
 
-2.2.5.5.1.4  Fixed-Point Numbers
+###### 2.2.5.5.1.4 Fixed-Point Numbers
 
 [MS-TDS] - v20260330
 Tabular Data Stream Protocol
@@ -3695,7 +3414,8 @@ Release: March 30, 2026
 
 42 / 232
 
-smallmoney is represented as a 4-byte signed integer. The TDS value is the smallmoney value
+
+smallmoney is represented as a 4-byte signed integer. The TDS value is the smallmoney value
 multiplied by 104.
 
 money is represented as an 8-byte signed integer. The TDS value is the money value multiplied by
@@ -3705,12 +3425,12 @@ money is represented as an 8-byte signed integer. The TDS value is the money val
 
   One 4-byte integer that represents the less significant half.
 
-2.2.5.5.1.5  Floating-Point Numbers
+###### 2.2.5.5.1.5 Floating-Point Numbers
 
 float(n) follows the 32-bit [IEEE754] binary specification when n <= 24 and the 64-bit [IEEE754]
 binary specification when 25 <= n <= 53.
 
-2.2.5.5.1.6  Decimals and Numerics
+###### 2.2.5.5.1.6 Decimals and Numerics
 
 Decimal or Numeric is defined as decimal(p, s) or numeric(p, s), where p is the precision and s is
 the scale. The value is represented in the following sequence:
@@ -3736,11 +3456,11 @@ maximum size of this integer is determined based on p as follows:
 The actual size of this integer could be less than the maximum size, depending on the value. In all
 cases, the integer part MUST be 4, 8, 12, or 16 bytes.
 
-2.2.5.5.1.7  GUIDs
+###### 2.2.5.5.1.7 GUIDs
 
 uniqueidentifier is represented as a 16-byte binary sequence with no specific interpretation.
 
-2.2.5.5.1.8  Dates and Times
+###### 2.2.5.5.1.8 Dates and Times
 
 smalldatetime is represented in the following sequence:
 
@@ -3765,7 +3485,8 @@ Release: March 30, 2026
 
 43 / 232
 
-date is represented as one 3-byte unsigned integer that represents the number of days since January
+
+date is represented as one 3-byte unsigned integer that represents the number of days since January
 1, year 1.
 
 time(n) is represented as one unsigned integer that represents the number of 10-n second increments
@@ -3783,7 +3504,7 @@ datetimeoffset(n) is represented as a concatenation of datetime2(n) followed by 
 integer that represents the time zone offset as the number of minutes from UTC. The time zone offset
 MUST be between -840 and 840.
 
-2.2.5.5.2 Common Language Runtime (CLR) Instances
+###### 2.2.5.5.2 Common Language Runtime (CLR) Instances
 
 The following data type definition stream is used for UDT_INFO in TYPE_INFO. This data type was
 introduced in TDS 7.2.
@@ -3820,7 +3541,7 @@ Note  UserType in the COLMETADATA stream is either 0x0000 or 0x00000000 for UDTs
 the TDS version that is used. The actual data value format associated with a UDT data type definition
 stream is specified in [MS-SSCLRT].
 
-2.2.5.5.3 XML Values
+###### 2.2.5.5.3 XML Values
 
 This section defines the XML data type definition stream, which was introduced in TDS 7.2.
 
@@ -3834,7 +3555,8 @@ Release: March 30, 2026
 
 44 / 232
 
- OWNING_SCHEMA         =   B_VARCHAR
+
+ OWNING_SCHEMA         =   B_VARCHAR
  XML_SCHEMA_COLLECTION =   US_VARCHAR
 
  XML_INFO              =   SCHEMA_PRESENT
@@ -3855,7 +3577,7 @@ bound.
 Note  The actual data value format that is associated with an XML data type definition stream uses
 the binary XML structure format, as specified in [MS-BINXML].<14>
 
-2.2.5.5.4 sql_variant Values
+###### 2.2.5.5.4 sql_variant Values
 
 The SSVARIANTTYPE is a special data type that acts as a place holder for other data types. When a
 SSVARIANTTYPE is filled with a data value, it takes on properties of the base data type that represents
@@ -3925,11 +3647,12 @@ by a 2-byte max length
 
 45 / 232
 
-Note  Data types cannot be NULL when inside a sql_variant. If the value is NULL, the sql_variant itself
+
+Note  Data types cannot be NULL when inside a sql_variant. If the value is NULL, the sql_variant itself
 has to be NULL, but it is not allowed to specify a non-null sql_variant instance and have a NULL value
 wrapped inside it. A raw collation SHOULD NOT be specified within a sql_variant.<15>
 
-2.2.5.5.5 Table Valued Parameter (TVP) Values
+###### 2.2.5.5.5 Table Valued Parameter (TVP) Values
 
 Table Valued Parameters (or User Defined Table Type, as this type is known on the server)
 encapsulate an entire table of data with 1 to 1024 columns and an arbitrary number of rows. At the
@@ -3940,7 +3663,7 @@ TVPs MUST be sent only by a TDS client that reports itself as a TDS major versio
 client reporting itself as older than TDS 7.3 attempts to send a TVP, the server MUST reject the
 request with a TDS protocol error.
 
-2.2.5.5.5.1  Metadata
+###### 2.2.5.5.5.1 Metadata
 
  TVPTYPE        =   %xF3
  TVP_TYPE_INFO  =   TVPTYPE
@@ -4009,7 +3732,8 @@ Release: March 30, 2026
 
 46 / 232
 
-                                    ; 1 = ReadWrite - %x04
+
+                                    ; 1 = ReadWrite - %x04
                                     ; 2 = Unknown   - %x08
  fIdentity            =   BIT       ; Column is identity column - %x10
  fComputed            =   BIT       ; Column is computed - %x20
@@ -4091,7 +3815,8 @@ Release: March 30, 2026
 
 47 / 232
 
-TVP Flags Usage Chart
+
+TVP Flags Usage Chart
 
 Flag
 
@@ -4133,7 +3858,7 @@ usReserved
 
 Ignored
 
-2.2.5.5.5.2  Optional Metadata Tokens
+###### 2.2.5.5.5.2 Optional Metadata Tokens
 
 TVP_ORDER_UNIQUE definition
 
@@ -4178,7 +3903,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-When a TVP is sent to the server, each ColNum ordinal inside a TVP_ORDER_UNIQUE token MUST
+
+When a TVP is sent to the server, each ColNum ordinal inside a TVP_ORDER_UNIQUE token MUST
 refer to a client generated column. Ordinals that refer to columns with fDefault set are rejected by the
 server.
 
@@ -4293,7 +4019,8 @@ Release: March 30, 2026
 
 49 / 232
 
- 03 00 ; Count  - Number of ColNums to follow.
+
+ 03 00 ; Count  - Number of ColNums to follow.
  01 00 ; ColNum - TVP column ordinal 1 is sent first in TVP_COLMETADATA.
  03 00 ; ColNum - TVP column ordinal 3 is sent second in TVP_COLMETADATA.
  02 00 ; ColNum - TVP column ordinal 2 is sent third in TVP_COLMETADATA.
@@ -4323,7 +4050,7 @@ the fDefault flag set in TVP_COLMETADATA are skipped to avoid sending redundant 
 Column data is ordered in same order as the order of items defined in TVP_COLMETADATA unless a
 TVP_COLUMN_ORDERING token has been sent to indicate a change in the ordering of the row values.
 
-2.2.5.5.5.3  TDS Type Restrictions
+###### 2.2.5.5.5.3 TDS Type Restrictions
 
 Within a TVP, the following legacy TDS types are not supported:
 
@@ -4384,7 +4111,8 @@ Release: March 30, 2026
 
 50 / 232
 
-TDS type  Replacement type
+
+TDS type  Replacement type
 
 Decimal
 
@@ -4416,12 +4144,12 @@ TVP type is not allowed in a TVP (no nesting of TVP in a TVP).
 
 TDS types are not to be confused with data types for a database server that supports SQL.
 
-2.2.5.5.6 JSON Values
+###### 2.2.5.5.6 JSON Values
 
 JSON values are sent as Partially Length-Prefixed Data types (section 2.2.5.4.4). The character
 encoding of the data follows the character encoding specification described in [RFC8259].
 
-2.2.5.5.7 Vector Values
+###### 2.2.5.5.7 Vector Values
 
 The TDS vector payload is a binary token with an 8-byte header followed by a stream of bytes. The
 total length of the binary stream is calculated as:
@@ -4479,7 +4207,7 @@ T
 
 0x00
 
-2.2.5.5.7.1  Layout Format
+###### 2.2.5.5.7.1 Layout Format
 
 The Layout Format MUST be the value 0xA9. It identifies the format of the byte layout. Future
 versions of the vector Feature Extension MAY include different layouts, for example, to support sparse
@@ -4494,7 +4222,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-2.2.5.5.7.2  Layout Version
+
+###### 2.2.5.5.7.2 Layout Version
 
 The Layout Version MUST be 0x01. Future versions of the byte layout assign new Version values.
 There is no explicit relationship between the byte Layout Version and the Feature Extension version.
@@ -4507,14 +4236,14 @@ Dimension Type. For example, the single-precision float Dimension Type is define
 Layout Version of that vector MUST be set to 0x01. This ensures backwards compatibility with readers
 that only support Layout Version 0x01.
 
-2.2.5.5.7.3  Number of Dimensions
+###### 2.2.5.5.7.3 Number of Dimensions
 
 The Number of Dimensions specifies how many elements the vector comprises. For example, with
 Layout Version 0x01, a vector(6) is a single-precision float vector with 6 elements. This multi-byte
 integer is represented as little-endian, with the least significant byte appearing at the earlier offset
 within the header.
 
-2.2.5.5.7.3.1  Implementation Note
+###### 2.2.5.5.7.3.1 Implementation Note
 
 The server implementation restricts vectors to a total of 8000 bytes. Subtracting the 8-byte header
 leaves 7992 bytes for data. Assuming that the only data type currently defined is a 32-bit single
@@ -4522,7 +4251,7 @@ precision float, the server supports a maximum vector Number of Dimensions of 19
 
 (1998 * 4) + 8 == 8000
 
-2.2.5.5.7.4  Dimension Type
+###### 2.2.5.5.7.4 Dimension Type
 
 The supported Dimension Types are:
 
@@ -4545,18 +4274,18 @@ Float values follows the
 specification when n <=
 24.
 
-2.2.5.5.7.5  Reserved
+###### 2.2.5.5.7.5 Reserved
 
 All Reserved bytes MUST be set to 0x00. Both server and clients SHOULD ignore these bytes when
 reading the header.
 
-2.2.5.5.7.6  Stream of Values
+###### 2.2.5.5.7.6 Stream of Values
 
 The remainder of the binary stream contains the vector values themselves.  Each value consumes the
 number of bytes implied by the Dimension Type.  All values are represented as little-endian, with the
 least significant byte appearing at the earlier offset within that value’s chunk of bytes.
 
-2.2.5.6  Type Info Rule Definition
+##### 2.2.5.6 Type Info Rule Definition
 
 The TYPE_INFO rule applies to several messages used to describe column information. For columns of
 fixed data length, the type is all that is required to determine the data length. For columns of a
@@ -4568,7 +4297,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-variable-length type, TYPE_VARLEN defines the length of the data contained within the column, with
+
+variable-length type, TYPE_VARLEN defines the length of the data contained within the column, with
 the following exceptions introduced in TDS 7.3:
 
 DATE MUST NOT have a TYPE_VARLEN. The value is either 3 bytes or 0 bytes (null).
@@ -4613,7 +4343,7 @@ USHORTMAXLEN does not occur if PARTLENTYPE is XMLTYPE, UDTTYPE, or JSONTYPE.
                       [XML_INFO]
                       [UDT_INFO])
 
-2.2.5.7  Encryption Key Rule Definition
+##### 2.2.5.7 Encryption Key Rule Definition
 
 The EK_INFO rule applies to messages that have encrypted values and describes the encryption key
 information. The encryption key information includes the various encryption key values that are
@@ -4637,7 +4367,8 @@ Release: March 30, 2026
 
 53 / 232
 
- EncryptionKeyValue    =   EncryptedKey
+
+ EncryptionKeyValue    =   EncryptedKey
                            KeyStoreName
                            KeyPath
                            AsymmetricAlgo
@@ -4702,7 +4433,7 @@ CekMDVersion
 
 The metadata version for the column encryption key.
 
-2.2.5.8  Data Packet Stream Tokens
+##### 2.2.5.8 Data Packet Stream Tokens
 
 The tokens defined as follows are used as part of the token-based data stream. Details about how
 each token is used inside the data stream are in section 2.2.6.
@@ -4726,7 +4457,8 @@ Release: March 30, 2026
 
 54 / 232
 
- FEDAUTHINFO_TOKEN        =   %xEE    ; (introduced in TDS 7.4)
+
+ FEDAUTHINFO_TOKEN        =   %xEE    ; (introduced in TDS 7.4)
  INFO_TOKEN               =   %xAB
  LOGINACK_TOKEN           =   %xAD
  NBCROW_TOKEN             =   %xD2    ; (introduced in TDS 7.3)
@@ -4740,9 +4472,9 @@ Release: March 30, 2026
  TABNAME_TOKEN            =   %xA4
  TVP_ROW_TOKEN            =   %x01
 
-2.2.6  Packet Header Message Type Stream Definition
+#### 2.2.6 Packet Header Message Type Stream Definition
 
-2.2.6.1  Bulk Load BCP
+##### 2.2.6.1 Bulk Load BCP
 
 Stream Name:
 
@@ -4794,10 +4526,11 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-INSERT BULK operations do not support type specifications of DECIMALTYPE and NUMERICTYPE. To
+
+INSERT BULK operations do not support type specifications of DECIMALTYPE and NUMERICTYPE. To
 insert these data types, use DECIMALNTYPE and NUMERICNTYPE.
 
-2.2.6.2  Bulk Load Update Text/Write Text
+##### 2.2.6.2 Bulk Load Update Text/Write Text
 
 Stream Name:
 
@@ -4842,7 +4575,7 @@ BulkData
 
 Contains the BulkData length and BulkData data within the L_VARBYTE.
 
-2.2.6.3  Federated Authentication Token
+##### 2.2.6.3 Federated Authentication Token
 
 Stream Name:
 
@@ -4861,7 +4594,8 @@ Release: March 30, 2026
 
 56 / 232
 
-
+
+
 
 
 
@@ -4918,7 +4652,7 @@ server by the client. If the server provided a nonce in the pre-login exchange, 
 echo the nonce back to the server in this field. If the server did not provide a nonce to the client
 in the pre-login exchange, this field MUST NOT be included in the stream.
 
-2.2.6.4  LOGIN7
+##### 2.2.6.4 LOGIN7
 
 Stream Name:
 
@@ -4937,7 +4671,8 @@ Release: March 30, 2026
 
 57 / 232
 
-
+
+
 
 
 
@@ -5020,7 +4755,8 @@ Release: March 30, 2026
 
 58 / 232
 
- fUnknownCollationHandling =  BIT            ; (introduced in TDS 7.3)
+
+ fUnknownCollationHandling =  BIT            ; (introduced in TDS 7.3)
  fExtension                =  BIT            ; (introduced in TDS 7.4)
 
  OptionFlags3              =  (FRESERVEDBIT / fChangePassword)
@@ -5097,7 +4833,8 @@ Release: March 30, 2026
 
 59 / 232
 
-                              cbSSPILong
+
+                              cbSSPILong
 
 Note  The ClientLCID value is no longer used to set language parameters and is ignored.
 
@@ -5173,7 +4910,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
 Description
 
@@ -5306,7 +5044,8 @@ Release: March 30, 2026
 
 61 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -5434,7 +5173,8 @@ Release: March 30, 2026
 
 62 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -5545,7 +5285,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
 Description
 
@@ -5650,7 +5391,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -5728,7 +5470,8 @@ received and the server supports this feature, the server MUST:
 
 65 / 232
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -5817,7 +5560,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -5899,7 +5643,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -5990,7 +5735,8 @@ Release: March 30, 2026
 
 68 / 232
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -6085,7 +5831,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -6179,7 +5926,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureData Description
 
@@ -6269,7 +6017,8 @@ Release: March 30, 2026
 
 71 / 232
 
-The value at ibUserName—if specified—is semantically enclosed in brackets ([]) and MUST conform to
+
+The value at ibUserName—if specified—is semantically enclosed in brackets ([]) and MUST conform to
 the rules for valid delimited object identifiers. Login MUST fail otherwise.
 
 The value at ibDatabase—if specified—is semantically enclosed in brackets ([]) and MUST conform to
@@ -6282,7 +6031,7 @@ submitted password, for every byte in the password buffer starting with the posi
 ibPassword or ibChangePassword, the server SHOULD first do a bit-XOR with 0xA5 (10100101) and
 then swap the four high bits with the four low bits.
 
-2.2.6.5  PRELOGIN
+##### 2.2.6.5 PRELOGIN
 
 Stream Name:
 
@@ -6340,7 +6089,8 @@ Release: March 30, 2026
 
 72 / 232
 
- B_FEDAUTHREQUIRED =   BYTE              ; authentication library requirement of the sender
+
+ B_FEDAUTHREQUIRED =   BYTE              ; authentication library requirement of the sender
                                          ; when using Integrated Authentication identity
                                          ; introduced in TDS 7.4
  NONCE             =   32BYTE            ; nonce to be encrypted by using session key from
@@ -6415,7 +6165,8 @@ Release: March 30, 2026
 
 73 / 232
 
-PL_OPTION_TOKEN
+
+PL_OPTION_TOKEN
 
 Value  Description
 
@@ -6511,7 +6262,8 @@ Release: March 30, 2026
 
 74 / 232
 
-During the Pre-Login handshake, the client and the server negotiate the wire encryption to be used.
+
+During the Pre-Login handshake, the client and the server negotiate the wire encryption to be used.
 The encryption option values are as follows.
 
 Setting
@@ -6677,7 +6429,8 @@ Release: March 30, 2026
 
 75 / 232
 
-Assuming that the client is capable of encryption, the server requires the client to behave in the
+
+Assuming that the client is capable of encryption, the server requires the client to behave in the
 following manner.
 
 Client
@@ -6765,7 +6518,7 @@ requires federated authentication as the authentication mechanism. However, this
 only for capability negotiation when choosing between SSPI and federated authentication and does not
 necessarily bind the actual authentication mechanism that is used.
 
-2.2.6.6  RPC Request
+##### 2.2.6.6 RPC Request
 
 Stream Name:
 
@@ -6776,7 +6529,8 @@ Release: March 30, 2026
 
 76 / 232
 
- RPCRequest
+
+ RPCRequest
 
 Stream Function:
 
@@ -6853,7 +6607,8 @@ Release: March 30, 2026
 
 77 / 232
 
-                      [AlgoName]
+
+                      [AlgoName]
                       EncryptionType
                       DatabaseId
                       CekId
@@ -6944,7 +6699,8 @@ Release: March 30, 2026
 
 78 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -7066,7 +6822,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
 Description
 
@@ -7117,7 +6874,7 @@ batch. The tabular data set returned is very similar to what happens if the RPC 
 exist—never execute the RPC, just return an error message, followed by DONEPROC, and then
 execute the next RPC.
 
-2.2.6.7  SQLBatch
+##### 2.2.6.7 SQLBatch
 
 Stream Name:
 
@@ -7148,7 +6905,8 @@ Release: March 30, 2026
 
 80 / 232
 
- SQLBatch         =   ALL_HEADERS
+
+ SQLBatch         =   ALL_HEADERS
                       *EnclavePackage ;    (described in section 2.2.6.6)
                       SQLText
 
@@ -7157,7 +6915,7 @@ SQLText.
 
  Select author_id from Authors
 
-2.2.6.8  SSPI Message
+##### 2.2.6.8 SSPI Message
 
 Stream Name:
 
@@ -7218,7 +6976,8 @@ Release: March 30, 2026
 
 81 / 232
 
-2.2.6.9  Transaction Manager Request
+
+##### 2.2.6.9 Transaction Manager Request
 
 Stream Name:
 
@@ -7304,7 +7063,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -7383,7 +7143,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -7460,7 +7221,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -7506,13 +7268,13 @@ Serializable.
 
 Snapshot.
 
-2.2.7  Packet Data Token Stream Definition
+#### 2.2.7 Packet Data Token Stream Definition
 
 This section describes the various tokens supported in a token-based packet data stream, as described
 in section 2.2.4.2. The corresponding message types that use token-based packet data streams are
 identified in the table in section 2.2.4.
 
-2.2.7.1  ALTMETADATA
+##### 2.2.7.1 ALTMETADATA
 
 Token Stream Name:
 
@@ -7538,7 +7300,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-All ALTMETADATA data streams are grouped.
+
+All ALTMETADATA data streams are grouped.
 
 A preceding COLMETADATA (section 2.2.7.4) MUST exist before an ALTMETADATA token. There might
 be COLINFO and TABNAME streams between COLMETADATA and ALTMETADATA.
@@ -7611,7 +7374,8 @@ Release: March 30, 2026
 
 86 / 232
 
-                      1*ComputeData
+
+                      1*ComputeData
 
 Token Stream Parameter Details:
 
@@ -7714,7 +7478,8 @@ Release: March 30, 2026
 
 87 / 232
 
-2.2.7.2  ALTROW
+
+##### 2.2.7.2 ALTROW
 
 Token Stream Name:
 
@@ -7785,7 +7550,8 @@ Release: March 30, 2026
 
 88 / 232
 
-2.2.7.3  COLINFO
+
+##### 2.2.7.3 COLINFO
 
 Token Stream Name:
 
@@ -7869,7 +7635,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
  Description
 
@@ -7880,7 +7647,7 @@ ColName
 
 The base column name. This only occurs if DIFFERENT_NAME is set in Status.
 
-2.2.7.4  COLMETADATA
+##### 2.2.7.4 COLMETADATA
 
 Token Stream Name:
 
@@ -7945,7 +7712,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-                     (FRESERVEDBIT / fKey)
+
+                     (FRESERVEDBIT / fKey)
                      (FRESERVEDBIT / fNullableUnknown)
 
  NumParts        =   BYTE         ; (introduced in TDS 7.2)
@@ -8023,7 +7791,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
 Description
 
@@ -8139,7 +7908,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
 Description
 
@@ -8192,7 +7962,7 @@ This notifies client that no metadata follows the COLMETADATA token. When fNoMet
 is set to 1, client notifies server that it has already cached the metadata from a previous
 RPC Request (section 2.2.6.6), and server sends no metadata.<46>
 
-2.2.7.5  DATACLASSIFICATION
+##### 2.2.7.5 DATACLASSIFICATION
 
 Token Stream Name:
 
@@ -8227,7 +7997,8 @@ Release: March 30, 2026
 
 93 / 232
 
- SensitivityLabelCount            =   USHORT
+
+ SensitivityLabelCount            =   USHORT
  SensitivityLabelName             =   B_VARCHAR
  SensitivityLabelId               =   B_VARCHAR
  InformationTypeCount             =   USHORT
@@ -8310,7 +8081,8 @@ Release: March 30, 2026
 
 94 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -8391,7 +8163,7 @@ which DATACLASSIFICATION_VERSION is set to 2.
 The server responds with a DATACLASSIFICATION feature extension
 acknowledgement in which DATACLASSIFICATION_VERSION is set to 2.
 
-2.2.7.6  DONE
+##### 2.2.7.6 DONE
 
 Token Stream Name:
 
@@ -8410,7 +8182,8 @@ Release: March 30, 2026
 
 95 / 232
 
-
+
+
 
 
 
@@ -8507,7 +8280,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-2.2.7.7  DONEINPROC
+
+##### 2.2.7.7 DONEINPROC
 
 Token Stream Name:
 
@@ -8590,7 +8364,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -8605,7 +8380,7 @@ DoneRowCount  The count of rows that were affected by the SQL statement. The val
 
 valid if the value of Status includes DONE_COUNT.
 
-2.2.7.8  DONEPROC
+##### 2.2.7.8 DONEPROC
 
 Token Stream Name:
 
@@ -8667,7 +8442,8 @@ Release: March 30, 2026
 
 98 / 232
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -8719,7 +8495,7 @@ DoneRowCount  The count of rows that were affected by the command. The value of 
 
 the value of Status includes DONE_COUNT.
 
-2.2.7.9  ENVCHANGE
+##### 2.2.7.9 ENVCHANGE
 
 Token Stream Name:
 
@@ -8760,7 +8536,8 @@ Release: March 30, 2026
 
 99 / 232
 
-
+
+
 
 
 
@@ -8856,7 +8633,8 @@ Release: March 30, 2026
 
 100 / 232
 
-Parameter  Description
+
+Parameter  Description
 
 
 
@@ -8999,7 +8777,8 @@ Release: March 30, 2026
 
 101 / 232
 
-Type
+
+Type
 
 Old Value
 
@@ -9139,7 +8918,8 @@ AlternateServer
 
 102 / 232
 
-Type
+
+Type
 
 Old Value
 
@@ -9240,9 +9020,10 @@ Release: March 30, 2026
 
 103 / 232
 
-2.2.7.10
 
-ERROR
+##### 2.2.7.10 ERROR
+
+
 
 Token Stream Name:
 
@@ -9327,7 +9108,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter
+
+Parameter
 
  Description
 
@@ -9437,7 +9219,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- Class
+
+ Class
 level
 
  Description
@@ -9471,9 +9254,9 @@ hardware issue.
 If an error is produced within a result set, the ERROR token is sent before the DONE token for the
 SQL statement, and such DONE token is sent with the error bit set.
 
-2.2.7.11
+##### 2.2.7.11 FEATUREEXTACK
 
-FEATUREEXTACK
+
 
 Token Stream Name:
 
@@ -9516,7 +9299,8 @@ Release: March 30, 2026
 
 106 / 232
 
- FEATUREEXTACK    =   TokenType
+
+ FEATUREEXTACK    =   TokenType
                       1*FeatureAckOpt
 
 Token Stream Parameter Details
@@ -9609,7 +9393,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureExtData Description
 
@@ -9697,7 +9482,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureExtData Description
 
@@ -9795,7 +9581,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureExtData Description
 
@@ -9893,7 +9680,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-FeatureId
+
+FeatureId
 
 FeatureExtData Description
 
@@ -9966,9 +9754,9 @@ Flag must always be 1.
 This option signals the end of the FeatureExtAck feature and MUST be the
 feature's last option.
 
-2.2.7.12
+##### 2.2.7.12 FEDAUTHINFO
 
-FEDAUTHINFO
+
 
 Token Stream Name:
 
@@ -9979,7 +9767,8 @@ Release: March 30, 2026
 
 111 / 232
 
- FEDAUTHINFO
+
+ FEDAUTHINFO
 
 Token Stream Function:
 
@@ -10060,7 +9849,8 @@ Release: March 30, 2026
 
 112 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -10091,9 +9881,9 @@ Authentication Token.
 A Unicode string that represents the Service Principal Name (SPN) to use for acquiring a
 Federated Authentication Token. SPN is a string that represents the resource in a directory.
 
-2.2.7.13
+##### 2.2.7.13 INFO
 
-INFO
+
 
 Token Stream Name:
 
@@ -10142,7 +9932,8 @@ Release: March 30, 2026
 
 113 / 232
 
-                      LineNumber
+
+                      LineNumber
 
 Token Stream Parameter Details
 
@@ -10186,9 +9977,9 @@ The line number in the SQL batch or stored procedure that caused the error. Line
 at 1; therefore, if the line number is not applicable to the message as determined by the upper
 layer, the value of LineNumber is 0.
 
-2.2.7.14
+##### 2.2.7.14 LOGINACK
 
-LOGINACK
+
 
 Token Stream Name:
 
@@ -10229,7 +10020,8 @@ Release: March 30, 2026
 
 114 / 232
 
- ProgVersion      =   MajorVer
+
+ ProgVersion      =   MajorVer
                       MinorVer
                       BuildNumHi
                       BuildNumLow
@@ -10289,9 +10081,9 @@ The high byte of the build number (0-255).
 
 BuildNumLow  The low byte of the build number (0-255).
 
-2.2.7.15
+##### 2.2.7.15 NBCROW
 
-NBCROW
+
 
 Token Stream Name:
 
@@ -10314,7 +10106,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-in the row. The null bitmap is always rounded up to the nearest multiple of 8 bits, so there might be 1
+
+in the row. The null bitmap is always rounded up to the nearest multiple of 8 bits, so there might be 1
 to 7 leftover reserved bits at the end of the null bitmap in the last byte of the null bitmap. NBCROW is
 only used by TDS result set streams from server to client. NBCROW MUST NOT be used in
 BulkLoadBCP streams. NBCROW MUST NOT be used in TVP row streams.
@@ -10378,7 +10171,8 @@ Release: March 30, 2026
 
 116 / 232
 
-Parameter   Description
+
+Parameter   Description
 
 TokenType
 
@@ -10397,9 +10191,9 @@ Data
 The actual data for the column. The TYPE_INFO information describing the data type of this data is
 given in the preceding COLMETADATA_TOKEN.
 
-2.2.7.16
+##### 2.2.7.16 OFFSET
 
-OFFSET
+
 
 Token Stream Name:
 
@@ -10457,9 +10251,10 @@ Release: March 30, 2026
 
 117 / 232
 
-2.2.7.17
 
-ORDER
+##### 2.2.7.17 ORDER
+
+
 
 Token Stream Name:
 
@@ -10511,9 +10306,9 @@ ColNum
 
 The column number in the result set.
 
-2.2.7.18
+##### 2.2.7.18 RETURNSTATUS
 
-RETURNSTATUS
+
 
 Token Stream Name:
 
@@ -10537,7 +10332,8 @@ Release: March 30, 2026
 
 118 / 232
 
-
+
+
 
 This token MUST be returned to the client when an RPC is executed by the server.
 
@@ -10565,9 +10361,9 @@ Value
 
 The return status value determined by the remote procedure. Return status MUST NOT be NULL.
 
-2.2.7.19
+##### 2.2.7.19 RETURNVALUE
 
-RETURNVALUE
+
 
 Token Stream Name:
 
@@ -10615,7 +10411,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
- fNullable        =   BIT
+
+ fNullable        =   BIT
  fCaseSen         =   BIT
  usUpdateable     =   2BIT            ; 0 = ReadOnly
                                       ; 1 = Read/Write
@@ -10689,7 +10486,8 @@ Release: March 30, 2026
 
 120 / 232
 
-Parameter
+
+Parameter
 
 Description
 
@@ -10803,9 +10601,10 @@ Release: March 30, 2026
 
 121 / 232
 
-2.2.7.20
 
-ROW
+##### 2.2.7.20 ROW
+
+
 
 Token Stream Name:
 
@@ -10868,9 +10667,9 @@ Data
 The actual data for the column. The TYPE_INFO information describing the data type of this data is
 given in the preceding COLMETADATA_TOKEN, ALTMETADATA_TOKEN or OFFSET_TOKEN.
 
-2.2.7.21
+##### 2.2.7.21 SESSIONSTATE
 
-SESSIONSTATE
+
 
 Token Stream Name:
 
@@ -10881,7 +10680,8 @@ Release: March 30, 2026
 
 122 / 232
 
- SESSIONSTATE
+
+ SESSIONSTATE
 
 Token Stream Function:
 
@@ -10961,7 +10761,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Parameter  Description
+
+Parameter  Description
 
 any StateId reaches %xFFFFFFFF, both client and server MUST consider that the
 SESSIONRECOVERY feature is permanently disabled on the connection. The server SHOULD send a
@@ -10999,9 +10800,9 @@ StateValue
 
 The value of the session state. This can be any arbitrary data as long as the server understands it.
 
-2.2.7.22
+##### 2.2.7.22 SSPI
 
-SSPI
+
 
 Token Stream Name:
 
@@ -11036,7 +10837,8 @@ Release: March 30, 2026
 
 124 / 232
 
- Parameter
+
+ Parameter
 
  Description
 
@@ -11048,9 +10850,9 @@ SSPIBuffer
 
 The length of the SSPIBuffer and the SSPI buffer using B_VARBYTE format.
 
-2.2.7.23
+##### 2.2.7.23 TABNAME
 
-TABNAME
+
 
 Token Stream Name:
 
@@ -11115,9 +10917,10 @@ Release: March 30, 2026
 
 125 / 232
 
-2.2.7.24
 
-TVP_ROW
+##### 2.2.7.24 TVP_ROW
+
+
 
 Token Stream Name:
 
@@ -11173,12 +10976,13 @@ Release: March 30, 2026
 
 126 / 232
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section describes the important elements of the client software and the server software necessary
 to support the TDS protocol.
 
-3.1  Common Details
+### 3.1 Common Details
 
 As described in section 1.3, TDS is an application-level protocol that is used for the transfer of
 requests and responses between clients and database server systems. The protocol defines a limited
@@ -11190,23 +10994,23 @@ next request. Other than this Post-Login state, the other states defined by the 
 pre-authentication (Pre-Login), (ii) authentication (Login), and (iii) when the client sends an attention
 message (Attention). These are expanded upon in subsequent sections.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 See sections 3.2.1 and 3.3.1 for the abstract data model of the client and server, respectively.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 See section 3.2.2 for a description of the client timer used and section 3.3.2 for a description of the
 server timer used.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 For information about higher-layer triggered events, see section 3.2.4 for a TDS client and section
-3.3.4 for a TDS server.
+#### 3.3.4 for a TDS server.
 
 3.1.5  Message Processing Events and Sequencing Rules
 
@@ -11221,7 +11025,8 @@ Release: March 30, 2026
 
 127 / 232
 
-<!-- Extracted images from page 128 -->
+
+<!-- Extracted images from page 128 -->
 ![Extracted image 1 from page 128]([MS-TDS].images/page128-img01.png)
 <!-- /Extracted images from page 128 -->
 
@@ -11234,7 +11039,8 @@ Release: March 30, 2026
 
 128 / 232
 
-<!-- Extracted images from page 129 -->
+
+<!-- Extracted images from page 129 -->
 ![Extracted image 1 from page 129]([MS-TDS].images/page129-img01.png)
 <!-- /Extracted images from page 129 -->
 
@@ -11247,7 +11053,8 @@ Release: March 30, 2026
 
 129 / 232
 
-<!-- Extracted images from page 130 -->
+
+<!-- Extracted images from page 130 -->
 ![Extracted image 1 from page 130]([MS-TDS].images/page130-img01.png)
 <!-- /Extracted images from page 130 -->
 
@@ -11262,7 +11069,8 @@ Release: March 30, 2026
 
 130 / 232
 
-<!-- Extracted images from page 131 -->
+
+<!-- Extracted images from page 131 -->
 ![Extracted image 1 from page 131]([MS-TDS].images/page131-img01.png)
 <!-- /Extracted images from page 131 -->
 
@@ -11277,7 +11085,8 @@ Release: March 30, 2026
 
 131 / 232
 
-<!-- Extracted images from page 132 -->
+
+<!-- Extracted images from page 132 -->
 ![Extracted image 1 from page 132]([MS-TDS].images/page132-img01.png)
 <!-- /Extracted images from page 132 -->
 
@@ -11290,7 +11099,8 @@ Release: March 30, 2026
 
 132 / 232
 
-<!-- Extracted images from page 133 -->
+
+<!-- Extracted images from page 133 -->
 ![Extracted image 1 from page 133]([MS-TDS].images/page133-img01.png)
 <!-- /Extracted images from page 133 -->
 
@@ -11303,7 +11113,8 @@ Release: March 30, 2026
 
 133 / 232
 
-<!-- Extracted images from page 134 -->
+
+<!-- Extracted images from page 134 -->
 ![Extracted image 1 from page 134]([MS-TDS].images/page134-img01.png)
 <!-- /Extracted images from page 134 -->
 
@@ -11327,7 +11138,8 @@ Release: March 30, 2026
 
 134 / 232
 
-<!-- Extracted images from page 135 -->
+
+<!-- Extracted images from page 135 -->
 ![Extracted image 1 from page 135]([MS-TDS].images/page135-img01.png)
 <!-- /Extracted images from page 135 -->
 
@@ -11344,7 +11156,8 @@ Release: March 30, 2026
 
 135 / 232
 
-<!-- Extracted images from page 136 -->
+
+<!-- Extracted images from page 136 -->
 ![Extracted image 1 from page 136]([MS-TDS].images/page136-img01.png)
 <!-- /Extracted images from page 136 -->
 
@@ -11364,7 +11177,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-A TDS client SHOULD maintain the following states:
+
+A TDS client SHOULD maintain the following states:
 
   Sent Initial TLS Negotiation Packet State (applies to only TDS 8.0)
 
@@ -11435,7 +11249,8 @@ Release: March 30, 2026
 
 137 / 232
 
-3.2.4  Higher-Layer Triggered Events
+
+3.2.4  Higher-Layer Triggered Events
 
 A TDS client MUST support the following events from the upper layer:
 
@@ -11520,7 +11335,8 @@ Release: March 30, 2026
 
 138 / 232
 
-  Send an Attention message to the server. This indicates to the server that the client intends to
+
+  Send an Attention message to the server. This indicates to the server that the client intends to
 
 abort the executing request. If MARS is enabled, the Attention message MUST be passed through
 to the SMP layer.
@@ -11597,7 +11413,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-  Standard authentication.
+
+  Standard authentication.
 
 
 
@@ -11683,7 +11500,8 @@ Release: March 30, 2026
 
 140 / 232
 
-
+
+
 
 
 
@@ -11763,7 +11581,8 @@ Release: March 30, 2026
 
 141 / 232
 
-If the response received from the server contains a structurally valid Login response indicating a
+
+If the response received from the server contains a structurally valid Login response indicating a
 successful login and also contains a routing response (a Routing or Enhanced Routing ENVCHANGE
 token) after the LOGINACK token, the TDS client MUST enter the "Routing Completed" state.
 
@@ -11826,7 +11645,8 @@ Release: March 30, 2026
 
 142 / 232
 
-3.2.5.8  Sent Client Request State
+
+3.2.5.8  Sent Client Request State
 
 If the response received from the server contains a structurally valid response, the TDS client MUST
 indicate the result of the request to the upper layer and enter the "Logged In" state.
@@ -11901,7 +11721,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-3.2.6  Timer Events
+
+3.2.6  Timer Events
 
 If a TDS client implements the Connection Timer and the timer times out, then the TDS client MUST
 close the underlying connection, indicate the error to the upper layer, and enter the "Final State"
@@ -11933,7 +11754,8 @@ Release: March 30, 2026
 
 144 / 232
 
-<!-- Extracted images from page 145 -->
+
+<!-- Extracted images from page 145 -->
 ![Extracted image 1 from page 145]([MS-TDS].images/page145-img01.png)
 <!-- /Extracted images from page 145 -->
 
@@ -11946,7 +11768,8 @@ Release: March 30, 2026
 
 145 / 232
 
-<!-- Extracted images from page 146 -->
+
+<!-- Extracted images from page 146 -->
 ![Extracted image 1 from page 146]([MS-TDS].images/page146-img01.png)
 <!-- /Extracted images from page 146 -->
 
@@ -11966,7 +11789,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-The server SHOULD maintain the following states:
+
+The server SHOULD maintain the following states:
 
 
 
@@ -12026,7 +11850,7 @@ A higher layer can choose to terminate a TDS connection at any time. In the curr
 implementation, the upper layer can kill a connection. When this happens, the server MUST terminate
 the connection and recycle all resources for this connection. No response is sent to the client.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The processing of messages received from a TDS client depends on the message type and the current
 state of the TDS server. The rest of this section describes the processing and actions to take on them.
@@ -12044,7 +11868,8 @@ Release: March 30, 2026
 
 147 / 232
 
-3.3.5.1  Initial State
+
+##### 3.3.5.1 Initial State
 
 The "Initial State" state is a prerequisite for application-layer communication, and a lower-layer
 channel that can provide reliable communication MUST be established. The TDS server enters the
@@ -12090,7 +11915,7 @@ If NONCEOPT is specified in both the client PRELOGIN message and the server PREL
 the TDS server MUST maintain a state variable that includes the values of both the NONCE it sent to
 the client and the NONCE the client sent to it during the PRELOGIN exchange.
 
-3.3.5.2  TLS/SSL Negotiation State
+##### 3.3.5.2 TLS/SSL Negotiation State
 
 Applies to only TDS 7.x
 
@@ -12103,7 +11928,7 @@ payload. The TDS server MUST exchange a TLS/SSL negotiation packet with the clie
 state until the TLS/SSL negotiation is successfully completed. In this case, the TDS server enters the
 "Login Ready" state.
 
-3.3.5.3  TLS Negotiation State
+##### 3.3.5.3 TLS Negotiation State
 
 Applies to only TDS 8.0
 
@@ -12117,12 +11942,13 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-the upper layer, and enters the "Final State" state. A TLS negotiation packet is a standard TLS packet.
+
+the upper layer, and enters the "Final State" state. A TLS negotiation packet is a standard TLS packet.
 The TDS server MUST exchange the TLS negotiation packet with the client and reenter this state until
 the TLS negotiation is successfully completed. In this case, the TDS server enters the “PRELOGIN
 Ready” state.
 
-3.3.5.4  PRELOGIN Ready State
+##### 3.3.5.4 PRELOGIN Ready State
 
 Applies to only TDS 8.0
 
@@ -12146,7 +11972,7 @@ If NONCEOPT is specified in both the client PRELOGIN message and the server PREL
 the TDS server MUST maintain a state variable that includes the values of both the NONCE it sent to
 the client and the NONCE the client sent to it during the PRELOGIN exchange.
 
-3.3.5.5  Login Ready State
+##### 3.3.5.5 Login Ready State
 
 If the TDS server receives a valid LOGIN7 message with the FEDAUTH FeatureId from the client, the
 server MUST validate that one of the following is true:
@@ -12190,7 +12016,8 @@ Release: March 30, 2026
 
 149 / 232
 
-
+
+
 
 
 
@@ -12273,7 +12100,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-server MUST enter the "Logged in" state or enter the "Routing Completed" state if the server decides
+
+server MUST enter the "Logged in" state or enter the "Routing Completed" state if the server decides
 to route.
 
 If the TDS server receives a LOGIN7 packet with SSPI Negotiation packet, the TDS server MUST enter
@@ -12288,7 +12116,7 @@ If the packet received is not a structurally valid LOGIN7 packet, the TDS server
 response to the client. The TDS server MUST close the underlying transport connection, indicate an
 error to the upper layer, and enter the "Final State" state.
 
-3.3.5.6  SPNEGO Negotiation State
+##### 3.3.5.6 SPNEGO Negotiation State
 
 This state is used to negotiate the security scheme between the client and server. The TDS server
 processes the packet received according to the following rules.
@@ -12326,7 +12154,7 @@ If the packet received is not a structurally valid SPNEGO [RFC4178] negotiation 
 server sends no response to the client. The TDS server MUST close the underlying transport
 connection, indicate an error to the upper layer, and enter the "Final State" state.
 
-3.3.5.7  Federated Authentication Ready State
+##### 3.3.5.7 Federated Authentication Ready State
 
 This state is used to process the federated authentication token that is obtained from the client.
 The TDS server processes the packet that is received according to the following rules:
@@ -12350,7 +12178,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-layer approves the token, the TDS server MUST send a LoginACK message that includes a
+
+layer approves the token, the TDS server MUST send a LoginACK message that includes a
 FEATUREEXTACK token that contains FEDAUTH FeatureId and immediately enter the "Logged
 In" state or enter the "Routing Completed" state if the server decides to route. If the upper
 layer rejects the token, then a "Login Failed" ERROR token MUST be sent back to the client,
@@ -12367,7 +12196,7 @@ If the packet that is received is not a structurally valid Federated Authenticat
 the TDS server SHOULD send no response to the client. The TDS server MUST close the underlying
 transport connection, indicate an error to the upper layer, and enter the "Final State" state.
 
-3.3.5.8  Logged In State
+##### 3.3.5.8 Logged In State
 
 If a TDS of type 1, 3, 7, or 14 (see section 2.2.3.1.1) arrives, then the TDS server begins processing
 by raising an event to the upper layer containing the data of the client request and entering the
@@ -12375,7 +12204,7 @@ by raising an event to the upper layer containing the data of the client request
 State" state. The TDS server MUST continue to listen for messages from the client while awaiting
 notification of client request completion from the upper layer.
 
-3.3.5.9  Client Request Execution State
+##### 3.3.5.9 Client Request Execution State
 
 The TDS server MUST continue to listen for messages from the client while awaiting notification of
 client request for completion from the upper layer. The TDS server MUST also do one of the following:
@@ -12417,9 +12246,9 @@ to the SMP layer.
 If any other message type arrives, the server MUST close the connection and enter the "Final
 State" state.
 
-3.3.5.10
+##### 3.3.5.10 Routing Completed State
 
-Routing Completed State
+
 
 The TDS server SHOULD wait for connection closure initiated by the client and enter the "Final State"
 state. If any request is received from the client in this state, the server SHOULD close the connection
@@ -12432,19 +12261,20 @@ Release: March 30, 2026
 
 152 / 232
 
-3.3.5.11
 
-Final State
+##### 3.3.5.11 Final State
+
+
 
 The "Final State" state is achieved when the application layer has finished the communication, and the
 lower-layer connection is disconnected. All resources for this connection are recycled by the TDS
 server.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 When there is a failure in under-layers, the server SHOULD terminate the TDS session without
 sending any response to the client. The under-layer failure could be triggered by network failure. It
@@ -12458,13 +12288,14 @@ Release: March 30, 2026
 
 153 / 232
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the TDS protocol. For each example, the binary TDS message is provided followed by the
 decomposition displayed in XML.
 
-4.1  Pre-Login Request
+### 4.1 Pre-Login Request
 
 Pre-Login request sent from the client to the server:
 
@@ -12531,7 +12362,8 @@ Release: March 30, 2026
 
 154 / 232
 
-       <PL_OPTION_TOKEN>
+
+       <PL_OPTION_TOKEN>
           <BYTE>03 </BYTE>
        </PL_OPTION_TOKEN>
        <PL_OFFSET>
@@ -12558,7 +12390,7 @@ Release: March 30, 2026
      </PRELOGIN>
    </PacketData>
 
-4.2  Login Request
+### 4.2 Login Request
 
 LOGIN7 stream sent from the client to the server:
 
@@ -12605,7 +12437,8 @@ Release: March 30, 2026
 
 155 / 232
 
-         <DWORD>88 00 00 00 </DWORD>
+
+         <DWORD>88 00 00 00 </DWORD>
        </Length>
        <TDSVersion>
          <DWORD>02 00 09 72 </DWORD>
@@ -12682,7 +12515,8 @@ Release: March 30, 2026
 
 156 / 232
 
-         <cbUnused>
+
+         <cbUnused>
            <USHORT>00 00 </USHORT>
          </cbUnused>
          <ibCltIntName>
@@ -12735,7 +12569,7 @@ Release: March 30, 2026
      </LOGIN7>
    </PacketData>
 
-4.3  Login Request with Federated Authentication
+### 4.3 Login Request with Federated Authentication
 
 LOGIN7 stream sent from client to server, including the Feature Extension block that contains the
 federated authentication feature:
@@ -12756,7 +12590,8 @@ Release: March 30, 2026
 
 157 / 232
 
- 55 00 4F 00 53 00 51 00 4C 00 43 00 4D 00 44 00
+
+ 55 00 4F 00 53 00 51 00 4C 00 43 00 4D 00 44 00
  63 00 6C 00 6F 00 75 00 64 00 2E 00 64 00 65 00
  76 00 2E 00 6D 00 73 00 63 00 64 00 73 00 2E 00
  63 00 6F 00 6D 00 2C 00 31 00 34 00 33 00 35 00
@@ -12833,7 +12668,8 @@ Release: March 30, 2026
 
 158 / 232
 
- 42 00 4A 00 65 00 38 00 6F 00 31 00 4B 00 69 00
+
+ 42 00 4A 00 65 00 38 00 6F 00 31 00 4B 00 69 00
  50 00 55 00 70 00 55 00 4B 00 6A 00 48 00 74 00
  54 00 6D 00 75 00 34 00 36 00 4F 00 43 00 4F 00
  38 00 4A 00 49 00 62 00 48 00 47 00 6C 00 70 00
@@ -12910,7 +12746,8 @@ Release: March 30, 2026
 
 159 / 232
 
-       <BYTE>01 </BYTE>
+
+       <BYTE>01 </BYTE>
      </PacketID>
      <Window>
        <BYTE>00 </BYTE>
@@ -12987,7 +12824,8 @@ Release: March 30, 2026
 
 160 / 232
 
-         <ibServerName>
+
+         <ibServerName>
            <USHORT>88 00 </USHORT>
          </ibServerName>
          <cchServerName>
@@ -13064,7 +12902,8 @@ Release: March 30, 2026
 
 161 / 232
 
-           <FeatureDataLen>
+
+           <FeatureDataLen>
              <DWORD>3E 07 00 00 </DWORD>
            </FeatureDataLen>
            <FeatureData>
@@ -13141,7 +12980,8 @@ Release: March 30, 2026
 
 162 / 232
 
- 4C 00 71 00 49 00 35 00 71 00 38 00 58 00 54 00
+
+ 4C 00 71 00 49 00 35 00 71 00 38 00 58 00 54 00
  58 00 35 00 72 00 58 00 57 00 65 00 79 00 4B 00
  75 00 62 00 76 00 49 00 2F 00 59 00 2F 00 6D 00
  64 00 42 00 6A 00 64 00 4E 00 36 00 37 00 51 00
@@ -13218,7 +13058,8 @@ Release: March 30, 2026
 
 163 / 232
 
- D0 8B F2 15 85 F3 83 20 7C 22 F8 17 9A 95 8F </BYTES>
+
+ D0 8B F2 15 85 F3 83 20 7C 22 F8 17 9A 95 8F </BYTES>
                </Signature>
              </SignedData>
            </FeatureData>
@@ -13230,7 +13071,7 @@ Release: March 30, 2026
      </LOGIN7>
    </PacketData>
 
-4.4  Login Response
+### 4.4 Login Response
 
 Login response from the server to the client:
 
@@ -13292,7 +13133,8 @@ Release: March 30, 2026
 
 164 / 232
 
-           <BYTE>E3 </BYTE>
+
+           <BYTE>E3 </BYTE>
          </TokenType>
          <Length>
            <USHORT>1B 00 </USHORT>
@@ -13369,7 +13211,8 @@ Release: March 30, 2026
 
 165 / 232
 
-             <BYTES ascii="">
+
+             <BYTES ascii="">
              </BYTES>
            </B_VARCHAR>
          </ProcName>
@@ -13446,7 +13289,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-       <ENVCHANGE>
+
+       <ENVCHANGE>
          <TokenType>
            <BYTE>E3 </BYTE>
          </TokenType>
@@ -13523,7 +13367,8 @@ Release: March 30, 2026
 
 167 / 232
 
-               <BYTE>00 </BYTE>
+
+               <BYTE>00 </BYTE>
              </BYTELEN>
              <BYTES ascii="">
              </BYTES>
@@ -13577,7 +13422,7 @@ Release: March 30, 2026
      </TableResponse>
    </PacketData>
 
-4.5  Login Response with Federated Authentication Feature Extension
+### 4.5 Login Response with Federated Authentication Feature Extension
 
 Acknowledgement
 
@@ -13598,7 +13443,8 @@ Release: March 30, 2026
 
 168 / 232
 
- 00 20 00 74 00 6F 00 20 00 27 00 6D 00 61 00 73
+
+ 00 20 00 74 00 6F 00 20 00 27 00 6D 00 61 00 73
  00 74 00 65 00 72 00 27 00 2E 00 05 63 00 6C 00
  6F 00 75 00 64 00 00 01 00 00 00 E3 08 00 07 05
  09 04 D0 00 34 00 E3 17 00 02 0A 75 00 73 00 5F
@@ -13675,7 +13521,8 @@ Release: March 30, 2026
 
 169 / 232
 
-                 <BYTE>06 </BYTE>
+
+                 <BYTE>06 </BYTE>
                </BYTELEN>
                <BYTES ascii="m.a.s.t.e.r.">6D 00 61 00 73 00 74 00 65 00 72 00 </BYTES>
              </B_VARCHAR>
@@ -13752,7 +13599,8 @@ Release: March 30, 2026
 
 170 / 232
 
-           </Type>
+
+           </Type>
            <NewValue>
              <B_VARBYTE>
                <BYTELEN>
@@ -13829,7 +13677,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-               <USHORTLEN>
+
+               <USHORTLEN>
                  <USHORT>27 00 </USHORT>
                </USHORTLEN>
                <BYTES ascii="C.h.a.n.g.e.d. .l.a.n.g.u.a.g.e. .s.e.t.t.i.n.g.
@@ -13906,7 +13755,8 @@ Release: March 30, 2026
 
 172 / 232
 
-           <Type>
+
+           <Type>
              <BYTE>04 </BYTE>
            </Type>
            <NewValue>
@@ -13981,7 +13831,8 @@ Release: March 30, 2026
 
 173 / 232
 
-4.6  SQL Batch Client Request
+
+### 4.6 SQL Batch Client Request
 
 Client request sent from the client to the server:
 
@@ -14056,7 +13907,8 @@ Release: March 30, 2026
 
 174 / 232
 
-4.7  SQL Batch Server Response
+
+### 4.7 SQL Batch Server Response
 
 Server response sent from the server to the client:
 
@@ -14133,7 +13985,8 @@ Release: March 30, 2026
 
 175 / 232
 
-           </ColName>
+
+           </ColName>
          </ColumnData>
        </COLMETADATA>
        <ROW>
@@ -14166,7 +14019,7 @@ Release: March 30, 2026
      </TableResponse>
    </PacketData>
 
-4.8  RPC Client Request
+### 4.8 RPC Client Request
 
 RPC request sent from the client to the server:
 
@@ -14207,7 +14060,8 @@ Release: March 30, 2026
 
 176 / 232
 
-         <TotalLength>
+
+         <TotalLength>
            <DWORD>16 00 00 00 </DWORD>
          </TotalLength>
          <Header>
@@ -14284,7 +14138,8 @@ Release: March 30, 2026
 
 177 / 232
 
-                   <BYTE>02 </BYTE>
+
+                   <BYTE>02 </BYTE>
                  </BYTELEN>
                </TYPE_VARLEN>
              </TYPE_INFO>
@@ -14305,7 +14160,7 @@ Release: March 30, 2026
      </RPCRequest>
    </PacketData>
 
-4.9  RPC Server Response
+### 4.9 RPC Server Response
 
 RPC response sent from the server to the client:
 
@@ -14358,7 +14213,8 @@ Release: March 30, 2026
 
 178 / 232
 
-       </DONEINPROC>
+
+       </DONEINPROC>
        <RETURNSTATUS>
          <TokenType>
            <BYTE>79 </BYTE>
@@ -14384,7 +14240,7 @@ Release: March 30, 2026
      </TableResponse>
    </PacketData>
 
-4.10  Attention Request
+### 4.10 Attention Request
 
  Attention request sent from client to server:
 
@@ -14413,7 +14269,7 @@ Release: March 30, 2026
    </Window>
  </PacketHeader>
 
-4.11  SSPI Message
+### 4.11 SSPI Message
 
 SSPI message carrying SSPI payload sent from client to server:
 
@@ -14429,7 +14285,8 @@ Release: March 30, 2026
 
 179 / 232
 
- 00 00 00 15 C2 88 E2 06 00 71 17 00 00 0F 30 81
+
+ 00 00 00 15 C2 88 E2 06 00 71 17 00 00 0F 30 81
  C1 7D 59 5F E9 3E 1A 7C 98 05 01 72 5C 4F
 
  <PacketHeader>
@@ -14463,7 +14320,7 @@ Release: March 30, 2026
    </SSPI>
  </PacketData>
 
-4.12  Bulk Load
+### 4.12 Bulk Load
 
 BULKLOADBCP request sent from client to server:
 
@@ -14501,7 +14358,8 @@ Release: March 30, 2026
 
 180 / 232
 
- <PacketData>
+
+ <PacketData>
    <BulkLoadBCP>
      <COLMETADATA>
        <TokenType>
@@ -14557,7 +14415,7 @@ Release: March 30, 2026
    </BulkLoadBCP>
  </PacketData>
 
-4.13  Transaction Manager Request
+### 4.13 Transaction Manager Request
 
 Transaction Manager Request sent from client to server:
 
@@ -14575,7 +14433,8 @@ Release: March 30, 2026
 
 181 / 232
 
-     <BYTE>0E </BYTE>
+
+     <BYTE>0E </BYTE>
    </Type>
    <Status>
      <BYTE>01 </BYTE>
@@ -14630,7 +14489,7 @@ Release: March 30, 2026
    </TransMgrReq>
  </PacketData>
 
-4.14  TVP Insert Statement
+### 4.14 TVP Insert Statement
 
 TVP insert statement sent from client to server:
 
@@ -14649,7 +14508,8 @@ Release: March 30, 2026
 
 182 / 232
 
- <tds version="katmai">
+
+ <tds version="katmai">
    <PacketHeader>
      <Type>
        <BYTE>03 </BYTE>
@@ -14723,7 +14583,8 @@ Release: March 30, 2026
 
 183 / 232
 
-         </fReuseMetaData>
+
+         </fReuseMetaData>
        </OptionFlags>
        <ParameterData>
          <ParamMetaData>
@@ -14800,7 +14661,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-                 <BYTELEN>
+
+                 <BYTELEN>
                    <BYTE>01 </BYTE>
                  </BYTELEN>
                </TYPE_VARLEN>
@@ -14851,7 +14713,7 @@ Release: March 30, 2026
    </PacketData>
  </tds>
 
-4.15  SparseColumn Select Statement
+### 4.15 SparseColumn Select Statement
 
 SparseColumn select statement sent from client to server:
 
@@ -14874,7 +14736,8 @@ Release: March 30, 2026
 
 185 / 232
 
- 61 00 72 00 73 00 65 00 50 00 72 00 6F 00 70 00 32
+
+ 61 00 72 00 73 00 65 00 50 00 72 00 6F 00 70 00 32
  00 3E 00 00 00 00 00 D1 04 02 00 00 00 FE FF FF FF
  FF FF FF FF 3E 00 00 00 3C 00 73 00 70 00 61 00 72
  00 73 00 65 00 50 00 72 00 6F 00 70 00 31 00 3E 00
@@ -14949,7 +14812,8 @@ Release: March 30, 2026
 
 186 / 232
 
-           </TYPE_INFO>
+
+           </TYPE_INFO>
            <ColName>
              <B_VARCHAR>
                <BYTELEN>
@@ -15026,7 +14890,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-           </TYPE_VARLEN>
+
+           </TYPE_VARLEN>
            <BYTES>02 00 00 00 </BYTES>
          </TYPE_VARBYTE>
          <TYPE_VARBYTE>
@@ -15103,7 +14968,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-               <BYTE>04 </BYTE>
+
+               <BYTE>04 </BYTE>
              </BYTELEN>
            </TYPE_VARLEN>
            <BYTES>06 00 00 00 </BYTES>
@@ -15180,7 +15046,8 @@ Release: March 30, 2026
 
 189 / 232
 
-       </NBCROW>
+
+       </NBCROW>
        <DONE>
          <TokenType>
            <BYTE>FD </BYTE>
@@ -15199,7 +15066,7 @@ Release: March 30, 2026
    </PacketData>
  </tds>
 
-4.16  FeatureExt with SESSIONRECOVERY Feature Data
+### 4.16 FeatureExt with SESSIONRECOVERY Feature Data
 
 A login message that contains FeatureExt data for the SESSIONRECOVERY feature:
 
@@ -15253,7 +15120,8 @@ Release: March 30, 2026
 
 190 / 232
 
-     <LOGIN7>
+
+     <LOGIN7>
        <Length>
          <DWORD>05 01 00 00 </DWORD>
        </Length>
@@ -15330,7 +15198,8 @@ Release: March 30, 2026
 
 191 / 232
 
-           <USHORT>80 00 </USHORT>
+
+           <USHORT>80 00 </USHORT>
          </ibExtension>
          <cbExtension>
            <USHORT>04 00 </USHORT>
@@ -15407,7 +15276,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-                   <BYTES ascii="m.a.s.t.e.r.">6D 00 61 00 73 00 74 00 65 00 72 00 </BYTES>
+
+                   <BYTES ascii="m.a.s.t.e.r.">6D 00 61 00 73 00 74 00 65 00 72 00 </BYTES>
                  </B_VARCHAR>
                </RecoveryDatabase>
                <RecoveryCollation>
@@ -15484,7 +15354,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-                     <BYTES>00 </BYTES>
+
+                     <BYTES>00 </BYTES>
                    </StateValue>
                  </SessionStateData>
                  <SessionStateData>
@@ -15561,7 +15432,8 @@ Release: March 30, 2026
 
 194 / 232
 
-                     <BYTE>04 </BYTE>
+
+                     <BYTE>04 </BYTE>
                    </StateLen>
                    <StateValue>
                      <BYTES>28 23 00 00 </BYTES>
@@ -15581,7 +15453,7 @@ Release: March 30, 2026
    </PacketData>
  </tds>
 
-4.17  FeatureExtAck with SESSIONRECOVERY Feature Data
+### 4.17 FeatureExtAck with SESSIONRECOVERY Feature Data
 
 A login response message that contains FeatureExtAck data for the SESSIONRECOVERY feature:
 
@@ -15634,7 +15506,8 @@ Release: March 30, 2026
 
 195 / 232
 
-       <BYTE>00 </BYTE>
+
+       <BYTE>00 </BYTE>
      </SPID>
      <PacketID>
        <BYTE>01 </BYTE>
@@ -15711,7 +15584,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-             <BYTELEN>
+
+             <BYTELEN>
                <BYTE>00 </BYTE>
              </BYTELEN>
              <BYTES ascii="">
@@ -15788,7 +15662,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-           </NewValue>
+
+           </NewValue>
            <OldValue>
              <B_VARCHAR>
                <BYTELEN>
@@ -15865,7 +15740,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-           <BYTE>01 </BYTE>
+
+           <BYTE>01 </BYTE>
          </Interface>
          <TDSVersion>
            <DWORD>74 00 00 04 </DWORD>
@@ -15942,7 +15818,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-               </StateValue>
+
+               </StateValue>
              </SessionStateData>
              <SessionStateData>
                <StateId>
@@ -16019,7 +15896,8 @@ Release: March 30, 2026
 
 200 / 232
 
-               <StateId>
+
+               <StateId>
                  <BYTE>09 </BYTE>
                </StateId>
                <StateLen>
@@ -16055,7 +15933,7 @@ Release: March 30, 2026
    </PacketData>
  </tds>
 
-4.18  Table Response with SESSIONSTATE Token Data
+### 4.18 Table Response with SESSIONSTATE Token Data
 
 A response message that contains SESSIONSTATE token data:
 
@@ -16093,7 +15971,8 @@ Release: March 30, 2026
 
 201 / 232
 
-     </Window>
+
+     </Window>
    </PacketHeader>
    <PacketData>
      <TableResponse>
@@ -16163,13 +16042,14 @@ Release: March 30, 2026
 
 202 / 232
 
-4.19  Token Stream Communication
+
+### 4.19 Token Stream Communication
 
 The following two examples highlight token stream communication. The packaging of these token
 streams into packets is not shown in this section. Actual TDS network data samples are available in
 section 4.
 
-4.19.1 Sending a SQL Batch
+#### 4.19.1 Sending a SQL Batch
 
 In this example, a SQL statement is sent to the server and the results are sent to the client. The SQL
 statement is as follows:
@@ -16196,7 +16076,7 @@ statement is as follows:
             ROW           data stream
             DONE          data stream (with DONE_COUNT bit set)
 
-4.19.2 Out-of-Band Attention Signal
+#### 4.19.2 Out-of-Band Attention Signal
 
 In this example, a SQL statement is sent to the server, yet before all the data has been returned an
 interrupt or "Attention Signal" is sent to the server. The client reads and discards any data received
@@ -16226,7 +16106,8 @@ Release: March 30, 2026
 
 203 / 232
 
-4.20  FeatureExt with AZURESQLSUPPORT Feature Data
+
+### 4.20 FeatureExt with AZURESQLSUPPORT Feature Data
 
 A login message that contains FeatureExt data for the AZURESQLSUPPORT feature:
 
@@ -16303,7 +16184,8 @@ Release: March 30, 2026
 
 204 / 232
 
-         <DWORD>00 00 00 06 </DWORD>
+
+         <DWORD>00 00 00 06 </DWORD>
        </ClientProgVer>
        <ClientPID>
          <DWORD>96 1D 00 00 </DWORD>
@@ -16380,7 +16262,8 @@ Release: March 30, 2026
 
 205 / 232
 
-         <ibLanguage>
+
+         <ibLanguage>
            <USHORT>9C 01 </USHORT>
          </ibLanguage>
          <cchLanguage>
@@ -16457,7 +16340,8 @@ Release: March 30, 2026
 
 206 / 232
 
-           </FeatureDataLen>
+
+           </FeatureDataLen>
            <FeatureId>
              <BYTE>04 </BYTE>
            </FeatureId>
@@ -16493,7 +16377,7 @@ Release: March 30, 2026
    </PacketData>
  </tds>
 
-4.21  FeatureExtAck with AZURESQLSUPPORT Feature Data
+### 4.21 FeatureExtAck with AZURESQLSUPPORT Feature Data
 
 A login response message that contains FeatureExtAck data for the AZURESQLSUPPORT feature:
 
@@ -16531,7 +16415,8 @@ Release: March 30, 2026
 
 207 / 232
 
- 00 6E 00 67 00 20 00 74 00 6F 00 20 00 75 00 73
+
+ 00 6E 00 67 00 20 00 74 00 6F 00 20 00 75 00 73
  00 5F 00 65 00 6E 00 67 00 6C 00 69 00 73 00 68
  00 2E 00 07 74 00 65 00 73 00 74 00 73 00 76 00
  72 00 00 01 00 00 00 AD 36 00 01 74 00 00 04 16
@@ -16608,7 +16493,8 @@ Release: March 30, 2026
 
 208 / 232
 
-         <DoneRowCount>
+
+         <DoneRowCount>
            <LONGLONG>00 00 00 00 00 00 00 00 </LONGLONG>
          </DoneRowCount>
        </DONEINPROC>
@@ -16685,7 +16571,8 @@ Release: March 30, 2026
 
 209 / 232
 
-         </CurCmd>
+
+         </CurCmd>
          <DoneRowCount>
            <LONGLONG>01 00 00 00 00 00 00 00 </LONGLONG>
          </DoneRowCount>
@@ -16762,7 +16649,8 @@ Release: March 30, 2026
 
 210 / 232
 
-           <USHORT>C1 00 </USHORT>
+
+           <USHORT>C1 00 </USHORT>
          </CurCmd>
          <DoneRowCount>
            <LONGLONG>00 00 00 00 00 00 00 00 </LONGLONG>
@@ -16839,7 +16727,8 @@ Release: March 30, 2026
 
 211 / 232
 
-         </Length>
+
+         </Length>
          <Number>
            <LONG>45 16 00 00
          </Number>
@@ -16916,7 +16805,8 @@ Release: March 30, 2026
 
 212 / 232
 
-               </BYTELEN>
+
+               </BYTELEN>
              </B_VARBYTE>
            </OldValue>
        </ENVCHANGE>
@@ -16993,7 +16883,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-               <BYTE>07 </BYTE>
+
+               <BYTE>07 </BYTE>
              </BYTELEN>
              <BYTES ascii="t.e.s.t.s.v.r.">74 00 65 00 73 00 74 00 73
            00 76 00 72 00 </BYTES>
@@ -17070,7 +16961,8 @@ Release: March 30, 2026
 
 214 / 232
 
-           <B_VARCHAR>
+
+           <B_VARCHAR>
              <BYTELEN>
                <BYTE>04 </BYTE>
              <BYTES ascii="4.0.9.6.">34 00 30 00 39 00 36 00 </BYTES>
@@ -17147,7 +17039,8 @@ Release: March 30, 2026
 
 215 / 232
 
-           <TERMINATOR>
+
+           <TERMINATOR>
              <BYTE>FF </BYTE>
            </TERMINATOR>
          </FeatureAckOpt>
@@ -17177,9 +17070,10 @@ Release: March 30, 2026
 
 216 / 232
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 As previously described in this specification, the TDS protocol provides facilities for authentication and
 channel encryption negotiation. If SSPI authentication is requested by the client application, the exact
@@ -17194,7 +17088,7 @@ The TDS protocol also includes a mechanism to provide information about the sens
 set through data classification. Clients can utilize this information to further control access or
 annotate the sensitive data within an application.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The following table lists the sections in this document in which the available Tabular Data Stream
 (TDS) security parameters are mentioned.
@@ -17271,7 +17165,8 @@ Release: March 30, 2026
 
 217 / 232
 
-Security parameter
+
+Security parameter
 
 Section
 
@@ -17331,7 +17226,8 @@ Release: March 30, 2026
 
 218 / 232
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -17399,7 +17295,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-TDS version
+
+TDS version
 
 SQL Server version
 
@@ -17512,7 +17409,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<4> Section 2.2.1.3: Federated authentication is not supported by SQL Server.
+
+<4> Section 2.2.1.3: Federated authentication is not supported by SQL Server.
 
 <5> Section 2.2.3.1.1:  Only legacy clients that support SQL Server versions that were released prior
 to SQL Server 7.0 can use Pre-TDS7 Login.
@@ -17585,7 +17483,8 @@ Release: March 30, 2026
 
 221 / 232
 
-SQL Server version  Version sent from client to server
+
+SQL Server version  Version sent from client to server
 
 SQL Server 2000 SP1  0x01000071
 
@@ -17667,7 +17566,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<30> Section 2.2.6.4:  The UTF8_SUPPORT feature extension is not supported by SQL Server 7.0,
+
+<30> Section 2.2.6.4:  The UTF8_SUPPORT feature extension is not supported by SQL Server 7.0,
 SQL Server 2000, SQL Server 2005, SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, SQL
 Server 2014, SQL Server 2016, and SQL Server 2017.
 
@@ -17735,7 +17635,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-<46> Section 2.2.7.4: The NoMetaData parameter is supported only by SQL Server 7.0, SQL Server
+
+<46> Section 2.2.7.4: The NoMetaData parameter is supported only by SQL Server 7.0, SQL Server
 2000, SQL Server 2005, SQL Server 2008, SQL Server 2008 R2, SQL Server 2012, and SQL Server
 2014.
 
@@ -17803,7 +17704,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-Framework 4.0, .NET Framework 4.5, .NET Framework 4.6, .NET Framework 4.7, and .NET Framework
+
+Framework 4.0, .NET Framework 4.5, .NET Framework 4.6, .NET Framework 4.7, and .NET Framework
 4.7.1.
 
 <59> Section 2.2.7.11: Enclave computations with cached column encryption keys are not supported
@@ -17887,7 +17789,8 @@ Release: March 30, 2026
 
 225 / 232
 
-SQL Server
+
+SQL Server
 
 Client to server  Server to client
 
@@ -17942,7 +17845,8 @@ Release: March 30, 2026
 
 226 / 232
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -18013,7 +17917,8 @@ Release: March 30, 2026
 
 227 / 232
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -18169,7 +18074,8 @@ Tabular Data Stream Protocol
 Copyright © 2026 Microsoft Corporation
 Release: March 30, 2026
 
-F
+
+F
 
 FeatureExt with AZURESQLSUPPORT Feature Data
 
@@ -18329,7 +18235,8 @@ Other local events
 
 229 / 232
 
-   client 144
+
+   client 144
    server 153
 Overview (synopsis) 14
 
@@ -18479,7 +18386,8 @@ section 3.3.4 147)
 
 230 / 232
 
-      overview 21
+
+      overview 21
       pre-login response 22
       response completion 23
       return parameters 23
@@ -18622,7 +18530,8 @@ Token data stream definition
 
 231 / 232
 
-Z
+
+Z
 
 Zero-length token 28
 

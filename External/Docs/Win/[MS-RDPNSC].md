@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -276,7 +277,8 @@ Release: April 23, 2024
 
 2 / 31
 
-Date
+
+Date
 
 Revision
 History
@@ -342,129 +344,59 @@ Release: April 23, 2024
 
 3 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NSCodec Capability Set (TS_NSCODEC_CAPABILITYSET)](#221-nscodec-capability-set-tsnscodeccapabilityset)
+    - [2.2.2 NSCodec Compressed Bitmap Stream (NSCODEC_BITMAP_STREAM)](#222-nscodec-compressed-bitmap-stream-nscodecbitmapstream)
+      - [2.2.2.1 NSCodec RLE Segments (NSCODEC_RLE_SEGMENTS)](#2221-nscodec-rle-segments-nscodecrlesegments)
+      - [2.2.2.2 NSCodec RLE Segment](#2222-nscodec-rle-segment)
+        - [2.2.2.2.1 NSCodec RLE Run Segment (NSCODEC_RLE_RUN_SEGMENT)](#22221-nscodec-rle-run-segment-nscodecrlerunsegment)
+        - [2.2.2.2.2 NSCodec RLE Literal Segment (NSCODEC_RLE_LITERAL_SEGMENT)](#22222-nscodec-rle-literal-segment-nscodecrleliteralsegment)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Lossy Bitmap Compression Ability](#3111-lossy-bitmap-compression-ability)
+      - [3.1.1.2 Chroma Subsampling Ability](#3112-chroma-subsampling-ability)
+      - [3.1.1.3 Maximum Supported Color Loss Level](#3113-maximum-supported-color-loss-level)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 NSCodec Capability Set](#3151-nscodec-capability-set)
+      - [3.1.5.2 NSCodec Compressed Bitmap Stream](#3152-nscodec-compressed-bitmap-stream)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 NSCodec Bitmap Compression](#318-nscodec-bitmap-compression)
+      - [3.1.8.1 NSCodec Run-Length Encoding](#3181-nscodec-run-length-encoding)
+        - [3.1.8.1.1 Encoding Run-Length Sequences](#31811-encoding-run-length-sequences)
+      - [3.1.8.2 Padding the Red, Green, and Blue Color Planes](#3182-padding-the-red-green-and-blue-color-planes)
+      - [3.1.8.3 Compressing a Bitmap](#3183-compressing-a-bitmap)
+      - [3.1.8.4 Decompressing a Bitmap](#3184-decompressing-a-bitmap)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Protocol Overview (Synopsis) .............................................................................. 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-NSCodec Capability Set (TS_NSCODEC_CAPABILITYSET) ................................... 9
-NSCodec Compressed Bitmap Stream (NSCODEC_BITMAP_STREAM) .................. 9
-NSCodec RLE Segments (NSCODEC_RLE_SEGMENTS) ............................... 13
-NSCodec RLE Segment .......................................................................... 13
-NSCodec RLE Run Segment (NSCODEC_RLE_RUN_SEGMENT) .............. 13
-NSCodec RLE Literal Segment (NSCODEC_RLE_LITERAL_SEGMENT) ...... 14
-
-2.2.2.2.1
-2.2.2.2.2
-
-2.2.2.1
-2.2.2.2
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-3  Protocol Details ..................................................................................................... 15
-Common Details .............................................................................................. 15
-Abstract Data Model .................................................................................... 16
-Lossy Bitmap Compression Ability ........................................................... 16
-Chroma Subsampling Ability ................................................................... 16
-Maximum Supported Color Loss Level ...................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Processing Events and Sequencing Rules ....................................................... 17
-NSCodec Capability Set ......................................................................... 17
-NSCodec Compressed Bitmap Stream ...................................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-NSCodec Bitmap Compression ...................................................................... 17
-NSCodec Run-Length Encoding ............................................................... 18
-Encoding Run-Length Sequences ....................................................... 18
-Padding the Red, Green, and Blue Color Planes ......................................... 20
-Compressing a Bitmap ........................................................................... 21
-Decompressing a Bitmap ....................................................................... 22
-
-3.1.8.2
-3.1.8.3
-3.1.8.4
-
-3.1.6
-3.1.7
-3.1.8
-
-3.1.5.1
-3.1.5.2
-
-3.1.8.1.1
-
-3.1.8.1
-
-4  Protocol Examples ................................................................................................. 25
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 28
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MS-RDPNSC] - v20240423
-Remote Desktop Protocol: NSCodec Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: NSCodec Extension is an extension to the Remote Desktop Protocol:
 Basic Connectivity and Graphics Remoting (as specified in [MS-RDPBCGR]). The aim of this extension
@@ -474,7 +406,7 @@ effective compression.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -514,14 +446,14 @@ represented by a count and a single instance of the value.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -534,7 +466,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPNSC].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -549,11 +482,11 @@ Acceleration Extensions".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Remote Desktop Protocol: NSCodec Codec Extension reduces the bandwidth associated with
 desktop remoting by efficiently compressing 24 bits per pixel (bpp) and 32 bpp images. This is
@@ -576,7 +509,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Confirm Active PDU are transmitted during the Capabilities Exchange Phase of the RDP Connection
+
+Confirm Active PDU are transmitted during the Capabilities Exchange Phase of the RDP Connection
 Sequence ([MS-RDPBCGR] section 1.3.1.1).
 
 When the RDP Connection Sequence has run to completion, bitmap images of the user's session are
@@ -590,12 +524,12 @@ encapsulated in Cache Bitmap – Revision 3 ([MS-RDPEGDI] section 2.2.2.2.1.2.8)
 Orders, which are ultimately transported in a server-to-client Fast-Path Orders Update ([MS-RDPEGDI]
 section 2.2.2.2). Bitmap caching is discussed in [MS-RDPEGDI] section 3.1.1.1.1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extends the Remote Desktop Protocol: Basic Connectivity and Graphics Remoting (as
 specified in [MS-RDPBCGR]) by adding advanced compression techniques.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All multiple-byte fields within a message are assumed to contain data in little-endian byte order
 unless otherwise specified.
@@ -637,7 +571,7 @@ The client MUST support the Cache Bitmap - Revision 3 ([MS-RDPEGDI] section 2.2.
 Secondary Drawing Order. Support for this caching order MUST be advertised in the Surface
 Commands Capability Set ([MS-RDPBCGR] section 2.2.7.2.9).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable in situations in which it is necessary to optimize the bandwidth required for
 graphics remoting. The advanced compression techniques specified in this document enable the
@@ -650,18 +584,19 @@ Release: April 23, 2024
 
 7 / 31
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This protocol builds on the basic Remote Desktop Protocol. The features provided by this extension are
 negotiated during the Capabilities Exchange Phase of the RDP connection sequence ([MS-RDPBCGR]
 section 1.3.1.1). In effect, this extension merely expands the set of capabilities used by the base RDP.
 (RDP versioning and capability negotiation is described in [MS-RDPBCGR] section 1.7.)
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -672,16 +607,17 @@ Release: April 23, 2024
 
 8 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol is an extension to the Remote Desktop Protocol: Basic Connectivity and Graphics
 Remoting, and all packets are tunneled within the RDP transport ([MS-RDPBCGR] section 2.1).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  NSCodec Capability Set (TS_NSCODEC_CAPABILITYSET)
+#### 2.2.1 NSCodec Capability Set (TS_NSCODEC_CAPABILITYSET)
 
 The TS_NSCODEC_CAPABILITYSET structure advertises properties of the NSCodec Bitmap Codec.
 This capability set is encapsulated in the codecProperties field of the Bitmap Codec ([MS-RDPBCGR]
@@ -747,7 +683,7 @@ colorLossLevel (1 byte): An 8-bit unsigned integer that indicates the maximum su
 
 Loss Level ([MS-RDPEGDI] section 3.1.9.1.4). This value MUST be between 1 and 7 (inclusive).
 
-2.2.2  NSCodec Compressed Bitmap Stream (NSCODEC_BITMAP_STREAM)
+#### 2.2.2 NSCodec Compressed Bitmap Stream (NSCODEC_BITMAP_STREAM)
 
 The NSCODEC_BITMAP_STREAM structure contains a stream of bitmap data compressed using
 NSCodec bitmap compression techniques (section 3.1.8). The bitmap data is represented using the
@@ -760,7 +696,8 @@ Release: April 23, 2024
 
 9 / 31
 
-NSCodec compressed bitmap data is sent encapsulated in a Set Surface Bits Surface Command ([MS-
+
+NSCodec compressed bitmap data is sent encapsulated in a Set Surface Bits Surface Command ([MS-
 RDPBCGR] section 2.2.9.2.1) when sending a bitmap image that MUST NOT be cached, or in the
 Cache Bitmap - Revision 3 ([MS-RDPEGDI] section 2.2.2.2.1.2.8) Secondary Drawing Order when
 sending a bitmap image that MUST be cached (bitmap caching is discussed in [MS-RDPEGDI] section
@@ -839,7 +776,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ChromaSubsamplingLevel (1 byte): An 8-bit, unsigned integer that indicates whether chroma
+
+ChromaSubsamplingLevel (1 byte): An 8-bit, unsigned integer that indicates whether chroma
 
 subsampling is being used ([MS-RDPEGDI] section 3.1.9.1.3).
 
@@ -909,7 +847,8 @@ Release: April 23, 2024
 
 11 / 31
 
-If chroma subsampling is being used, the expected raw size of the orange chroma plane is
+
+If chroma subsampling is being used, the expected raw size of the orange chroma plane is
 calculated as follows.
 
  ChromaPlaneWidth = ROUND_UP_TO_NEAREST_MULTIPLE_OF_8(ImageWidth) / 2
@@ -976,13 +915,14 @@ Release: April 23, 2024
 
 12 / 31
 
- AlphaPlaneHeight = ImageHeight
+
+ AlphaPlaneHeight = ImageHeight
  AlphaPlaneByteCount = ImageWidth * ImageHeight
 
 If the alpha channel has been RLE compressed, this field contains an NSCodec RLE Segments
 (section 2.2.2.1) structure. Otherwise, it contains the raw bytes of the color plane.
 
-2.2.2.1  NSCodec RLE Segments (NSCODEC_RLE_SEGMENTS)
+##### 2.2.2.1 NSCodec RLE Segments (NSCODEC_RLE_SEGMENTS)
 
 The NSCODEC_RLE_SEGMENTS structure contains the run-length encoded contents of a color plane
 and consists of a collection of NSCodec RLE run segment (section 2.2.2.2.1) and NSCodec RLE literal
@@ -1016,13 +956,13 @@ EndData (4 bytes): A 32-bit, unsigned integer that contains the last four raw by
 
 color plane.
 
-2.2.2.2  NSCodec RLE Segment
+##### 2.2.2.2 NSCodec RLE Segment
 
 An NSCodec RLE Segment is either a Run segment (section 2.2.2.2.1) or a Literal segment (section
 2.2.2.2.2). RLE segments are encapsulated in the Segments field of the NSCodec RLE Segments
 (section 2.2.2.1) structure.
 
-2.2.2.2.1 NSCodec RLE Run Segment (NSCODEC_RLE_RUN_SEGMENT)
+###### 2.2.2.2.1 NSCodec RLE Run Segment (NSCODEC_RLE_RUN_SEGMENT)
 
 The NSCODEC_RLE_RUN_SEGMENT structure is used to represent an RLE run (section 3.1.8.1).
 
@@ -1063,7 +1003,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RunConfirm (1 byte): An 8-bit, unsigned integer that MUST be equal to the RunValue field value to
+
+RunConfirm (1 byte): An 8-bit, unsigned integer that MUST be equal to the RunValue field value to
 
 identify the structure as an NSCodec RLE run segment.
 
@@ -1078,7 +1019,7 @@ RunLengthFactor2 (4 bytes): An optional 32-bit field that contains the run lengt
 
 SHOULD NOT be used if the run length is smaller than 256.
 
-2.2.2.2.2 NSCodec RLE Literal Segment (NSCODEC_RLE_LITERAL_SEGMENT)
+###### 2.2.2.2.2 NSCodec RLE Literal Segment (NSCODEC_RLE_LITERAL_SEGMENT)
 
 The NSCODEC_RLE_RUN_SEGMENT structure is used to represent an RLE literal (section 3.1.8.1).
 
@@ -1107,13 +1048,14 @@ Release: April 23, 2024
 
 14 / 31
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPNSC].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Common Details
+### 3.1 Common Details
 
 The following figure and table describe the server-side state machine.
 
@@ -1156,7 +1098,8 @@ Release: April 23, 2024
 
 15 / 31
 
-3.1.1  Abstract Data Model
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1168,29 +1111,29 @@ Note  It is possible to implement the following conceptual data by using a varie
 long as the implementation produces external behavior that is consistent with that described in this
 document.
 
-3.1.1.1  Lossy Bitmap Compression Ability
+##### 3.1.1.1 Lossy Bitmap Compression Ability
 
 The Lossy Bitmap Compression Ability store indicates whether lossy bitmap compression through the
 reduction of color fidelity ([MS-RDPEGDI] section 3.1.9.1.4) is supported. This fact is communicated
 as part of the NSCodec Capability Set (section 2.2.1).
 
-3.1.1.2  Chroma Subsampling Ability
+##### 3.1.1.2 Chroma Subsampling Ability
 
 The Chroma Subsampling Ability store indicates whether chroma subsampling ([MS-RDPEGDI] section
 3.1.9.1.3) is supported. This fact is communicated as part of the NSCodec Capability Set (section
 2.2.1).
 
-3.1.1.3  Maximum Supported Color Loss Level
+##### 3.1.1.3 Maximum Supported Color Loss Level
 
 The Maximum Supported Color Loss Level store indicates the maximum supported color loss level
 ([MS-RDPEGDI] section 3.1.9.1.4). This value is communicated as part of the NSCodec Capability Set
 (section 2.2.1).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Bitmap compression using NSCodec bitmap compression techniques (section 3.1.8) requires that the
 following settings MUST first be determined by examining the NSCodec Capability Set (section 2.2.1):
@@ -1207,7 +1150,7 @@ The NSCodec Capability Set is encapsulated in the Bitmap Codecs Capability Set (
 section 2.2.7.2.10), which is encapsulated in a server-to-client Demand Active PDU ([MS-RDPBCGR]
 section 2.2.1.13.1) or client-to-server Confirm Active PDU ([MS-RDPBCGR] section 2.2.1.13.2).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
@@ -1218,9 +1161,10 @@ Release: April 23, 2024
 
 16 / 31
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  NSCodec Capability Set
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 NSCodec Capability Set
 
 The NSCodec Capability Set (section 2.2.1) structure is sent by both the client and server, and
 advertises properties of the NSCodec Bitmap Codec. This capability set is encapsulated in a Bitmap
@@ -1239,7 +1183,7 @@ receives compressed bitmap data will be able to perform decompression as outline
 If the data encapsulation is invalid or errors are encountered while processing the NSCodec Capability
 Set, the connection SHOULD be dropped.
 
-3.1.5.2  NSCodec Compressed Bitmap Stream
+##### 3.1.5.2 NSCodec Compressed Bitmap Stream
 
 The NSCodec Compressed Bitmap Stream (section 2.2.2) structure contains a stream of bitmap data
 compressed by using NSCodec bitmap compression techniques (section 3.1.8). NSCodec compressed
@@ -1251,15 +1195,15 @@ cases, the data is encapsulated inside an Extended Bitmap Data ([MS-RDPBCGR] sec
 structure. If the data encapsulation is invalid or errors are encountered while decompressing NSCodec
 data (section 3.1.8.4), the connection SHOULD be dropped.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.1.8  NSCodec Bitmap Compression
+#### 3.1.8 NSCodec Bitmap Compression
 
 NSCodec bitmap compression is used when the RDP session color depth is 32 bpp and the bitmap of
 interest is either 24 bpp (RGB with no alpha channel) or 32 bpp (RGB with an alpha channel). The
@@ -1283,7 +1227,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Splitting and combining color planes ([MS-RDPEGDI] section 3.1.9.1.1)
+
+  Splitting and combining color planes ([MS-RDPEGDI] section 3.1.9.1.1)
 
   Color space conversion ([MS-RDPEGDI] section 3.1.9.1.2)
 
@@ -1291,7 +1236,7 @@ Release: April 23, 2024
 
   Color loss reduction ([MS-RDPEGDI] section 3.1.9.1.4)
 
-3.1.8.1  NSCodec Run-Length Encoding
+##### 3.1.8.1 NSCodec Run-Length Encoding
 
 NSCodec run-length encoding is a simple compression scheme that parses an image stream and
 then encodes run lengths with minimal overhead. The algorithm is run on the stream as a whole and
@@ -1320,7 +1265,7 @@ Would be transformed after encoding into the following stream:
 In the case of real image streams, the likelihood of long runs is high, and consequently, the reductions
 in size are significant.
 
-3.1.8.1.1 Encoding Run-Length Sequences
+###### 3.1.8.1.1 Encoding Run-Length Sequences
 
 NSCodec run-length encoding produces three types of sequences:
 
@@ -1352,7 +1297,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  If the total count of repeating byte values starting at the current position in the input stream and
+
+3.  If the total count of repeating byte values starting at the current position in the input stream and
 before the last four bytes is larger than 1 and strictly less than 256, then a short run has been
 identified. Write the current byte value to the output stream twice, and then write the count of
 identical positions minus 2. Advance forward in the input stream by the number of bytes equal to
@@ -1379,13 +1325,14 @@ Release: April 23, 2024
 
 19 / 31
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-RDPNSC].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
 Figure 3: Encoding data by using NSCodec run-length encoding (RLE)
 
-3.1.8.2  Padding the Red, Green, and Blue Color Planes
+##### 3.1.8.2 Padding the Red, Green, and Blue Color Planes
 
 When subsampling of color planes is required, the planes MUST be padded. Padding ensures proper
 alignment of the image geometry and can aid significantly in the implementation of subsequent
@@ -1405,7 +1352,8 @@ Release: April 23, 2024
 
 20 / 31
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RDPNSC].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1428,7 +1376,7 @@ The following figure demonstrates how 3x3 and 4x3 planes are padded to produce a
 
 Figure 4: Examples of color plane padding
 
-3.1.8.3  Compressing a Bitmap
+##### 3.1.8.3 Compressing a Bitmap
 
 The overall scheme used to compress a bitmap with NSCodec bitmap compression is described in the
 following figure. The usage of color reduction and chroma subsampling is negotiated in the NSCodec
@@ -1441,13 +1389,14 @@ Release: April 23, 2024
 
 21 / 31
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-RDPNSC].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 5: Compressing a bitmap
 
-3.1.8.4  Decompressing a Bitmap
+##### 3.1.8.4 Decompressing a Bitmap
 
 The following figure is a flowchart showing how to decompress a bitmap that is compressed with
 NSCodec bitmap compression.
@@ -1459,7 +1408,8 @@ Release: April 23, 2024
 
 22 / 31
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-RDPNSC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1489,7 +1439,8 @@ Release: April 23, 2024
 
 23 / 31
 
-  Super-sampling the Co and Cg planes: Chroma super-sampling is described in [MS-RDPEGDI]
+
+  Super-sampling the Co and Cg planes: Chroma super-sampling is described in [MS-RDPEGDI]
 
 section 3.1.9.1.3.
 
@@ -1511,7 +1462,8 @@ Release: April 23, 2024
 
 24 / 31
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows a network dump of an image compressed using NSCodec. The image
 width is 15, and the height is 10.
@@ -1585,7 +1537,8 @@ Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Run Length decoding of the green chroma plane:
+
+ Run Length decoding of the green chroma plane:
  37 37 19 -> Output 0x37 27 times to the green chroma buffer (NSCODEC_RLE_RUN_SEGMENT)
  36 -> Output 0x36 to the green chroma buffer (NSCODEC_RLE_LITERAL_SEGMENT)
  37 37 06 -> Output 0x37 8 times to the green chroma buffer (NSCODEC_RLE_RUN_SEGMENT)
@@ -1656,13 +1609,14 @@ Release: April 23, 2024
 
 26 / 31
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1673,7 +1627,8 @@ Release: April 23, 2024
 
 27 / 31
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1723,7 +1678,8 @@ Release: April 23, 2024
 
 28 / 31
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1767,7 +1723,8 @@ Release: April 23, 2024
 
 29 / 31
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 16
@@ -1902,7 +1859,8 @@ Release: April 23, 2024
 
 30 / 31
 
-[MS-RDPNSC] - v20240423
+
+[MS-RDPNSC] - v20240423
 Remote Desktop Protocol: NSCodec Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024

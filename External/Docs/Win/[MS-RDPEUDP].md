@@ -63,7 +63,8 @@ Release: November 21, 2025
 
 1 / 46
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -269,271 +270,112 @@ Release: November 21, 2025
 
 2 / 46
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 RDP-UDP Protocol](#131-rdp-udp-protocol)
+    - [1.3.2 Message Flows](#132-message-flows)
+      - [1.3.2.1 UDP Connection Initialization](#1321-udp-connection-initialization)
+      - [1.3.2.2 UDP Data Transfer](#1322-udp-data-transfer)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 VECTOR_ELEMENT_STATE Enumeration](#2211-vectorelementstate-enumeration)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 RDPUDP_FEC_HEADER Structure](#2221-rdpudpfecheader-structure)
+      - [2.2.2.2 RDPUDP_FEC_PAYLOAD_HEADER Structure](#2222-rdpudpfecpayloadheader-structure)
+      - [2.2.2.3 RDPUDP_PAYLOAD_PREFIX Structure](#2223-rdpudppayloadprefix-structure)
+      - [2.2.2.4 RDPUDP_SOURCE_PAYLOAD_HEADER Structure](#2224-rdpudpsourcepayloadheader-structure)
+      - [2.2.2.5 RDPUDP_SYNDATA_PAYLOAD Structure](#2225-rdpudpsyndatapayload-structure)
+      - [2.2.2.6 RDPUDP_ACK_OF_ACKVECTOR_HEADER Structure](#2226-rdpudpackofackvectorheader-structure)
+      - [2.2.2.7 RDPUDP_ACK_VECTOR_HEADER Structure](#2227-rdpudpackvectorheader-structure)
+        - [2.2.2.7.1 ACK Vector Element](#22271-ack-vector-element)
+      - [2.2.2.8 RDPUDP_CORRELATION_ID_PAYLOAD Structure](#2228-rdpudpcorrelationidpayload-structure)
+      - [2.2.2.9 RDPUDP_SYNDATAEX_PAYLOAD Structure](#2229-rdpudpsyndataexpayload-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Transport Modes](#3111-transport-modes)
+      - [3.1.1.2 Sequence Numbers](#3112-sequence-numbers)
+      - [3.1.1.3 MTU Negotiation](#3113-mtu-negotiation)
+      - [3.1.1.4 Acknowledgments](#3114-acknowledgments)
+        - [3.1.1.4.1 Lost Datagrams](#31141-lost-datagrams)
+      - [3.1.1.5 Retransmits](#3115-retransmits)
+      - [3.1.1.6 FEC Computations](#3116-fec-computations)
+        - [3.1.1.6.1 Finite Field Arithmetic](#31161-finite-field-arithmetic)
+          - [3.1.1.6.1.1 Addition and Subtraction](#311611-addition-and-subtraction)
+          - [3.1.1.6.1.2 Multiplication and Division](#311612-multiplication-and-division)
+          - [3.1.1.6.1.3 Logarithms and Exponents](#311613-logarithms-and-exponents)
+        - [3.1.1.6.2 FEC Encoding](#31162-fec-encoding)
+        - [3.1.1.6.3 FEC Decoding](#31163-fec-decoding)
+        - [3.1.1.6.4 Selecting the Coefficients Matrix](#31164-selecting-the-coefficients-matrix)
+        - [3.1.1.6.5 Structure of Source Packets used for FEC Encoding](#31165-structure-of-source-packets-used-for-fec-encoding)
+      - [3.1.1.7 Flow Control](#3117-flow-control)
+      - [3.1.1.8 Congestion Control](#3118-congestion-control)
+      - [3.1.1.9 Keepalives](#3119-keepalives)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Initializing a Connection](#3141-initializing-a-connection)
+      - [3.1.4.2 Sending a Datagram](#3142-sending-a-datagram)
+      - [3.1.4.3 Receiving a Datagram](#3143-receiving-a-datagram)
+      - [3.1.4.4 Terminating a Connection](#3144-terminating-a-connection)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Constructing Messages](#3151-constructing-messages)
+        - [3.1.5.1.1 SYN Datagrams](#31511-syn-datagrams)
+        - [3.1.5.1.2 ACK Datagrams](#31512-ack-datagrams)
+        - [3.1.5.1.3 SYN+ACK Datagrams](#31513-synack-datagrams)
+        - [3.1.5.1.4 ACK and Source Packets Data](#31514-ack-and-source-packets-data)
+        - [3.1.5.1.5 ACK and FEC Packets Data](#31515-ack-and-fec-packets-data)
+      - [3.1.5.2 Connection Sequence](#3152-connection-sequence)
+      - [3.1.5.3 Data Transfer Phase](#3153-data-transfer-phase)
+        - [3.1.5.3.1 Sender Receives Data](#31531-sender-receives-data)
+        - [3.1.5.3.2 Sender Sends Data](#31532-sender-sends-data)
+          - [3.1.5.3.2.1 Source Packet](#315321-source-packet)
+          - [3.1.5.3.2.2 FEC Packet](#315322-fec-packet)
+        - [3.1.5.3.3 Receiver Receives Data](#31533-receiver-receives-data)
+        - [3.1.5.3.4 User Consumes Data](#31534-user-consumes-data)
+      - [3.1.5.4 Termination](#3154-termination)
+        - [3.1.5.4.1 Retransmit Limit](#31541-retransmit-limit)
+        - [3.1.5.4.2 Keepalive Timer Fires](#31542-keepalive-timer-fires)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Retransmit Timer](#3161-retransmit-timer)
+      - [3.1.6.2 Keepalive Timer on the Sender](#3162-keepalive-timer-on-the-sender)
+      - [3.1.6.3 Delayed ACK Timer](#3163-delayed-ack-timer)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 UDP Connection Initialization Packets](#41-udp-connection-initialization-packets)
+    - [4.1.1 SYN Packet](#411-syn-packet)
+    - [4.1.2 SYN and ACK Packet](#412-syn-and-ack-packet)
+  - [4.2 UDP Data Transfer Packets](#42-udp-data-transfer-packets)
+    - [4.2.1 Source Packet](#421-source-packet)
+    - [4.2.2 FEC Packet](#422-fec-packet)
+      - [4.2.2.1 Payload of an FEC Packet](#4221-payload-of-an-fec-packet)
+    - [4.2.3 ACK Packet](#423-ack-packet)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Using Sequence Numbers](#511-using-sequence-numbers)
+    - [5.1.2 RDP-UDP Datagram Validation](#512-rdp-udp-datagram-validation)
+    - [5.1.3 Congestion Notifications](#513-congestion-notifications)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-RDP-UDP Protocol ......................................................................................... 8
-Message Flows ............................................................................................. 8
-UDP Connection Initialization .................................................................... 8
-UDP Data Transfer .................................................................................. 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.1
-1.3.2.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Enumerations ............................................................................................. 12
-VECTOR_ELEMENT_STATE Enumeration ................................................... 12
-Structures ................................................................................................. 12
-RDPUDP_FEC_HEADER Structure ............................................................ 12
-RDPUDP_FEC_PAYLOAD_HEADER Structure ............................................. 14
-RDPUDP_PAYLOAD_PREFIX Structure ...................................................... 14
-RDPUDP_SOURCE_PAYLOAD_HEADER Structure ....................................... 14
-RDPUDP_SYNDATA_PAYLOAD Structure ................................................... 15
-RDPUDP_ACK_OF_ACKVECTOR_HEADER Structure ................................... 15
-RDPUDP_ACK_VECTOR_HEADER Structure ............................................... 16
-ACK Vector Element ......................................................................... 16
-RDPUDP_CORRELATION_ID_PAYLOAD Structure ....................................... 16
-RDPUDP_SYNDATAEX_PAYLOAD Structure ............................................... 17
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-
-2.2.2.8
-2.2.2.9
-
-2.2.2.7.1
-
-3.1
-
-3.1.1
-
-3.1.1.4.1
-
-3.1.1.5
-3.1.1.6
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Common Details .............................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Transport Modes ................................................................................... 19
-Sequence Numbers ............................................................................... 19
-MTU Negotiation ................................................................................... 20
-Acknowledgments ................................................................................. 20
-Lost Datagrams ............................................................................... 20
-Retransmits .......................................................................................... 21
-FEC Computations ................................................................................. 21
-Finite Field Arithmetic ...................................................................... 21
-Addition and Subtraction ............................................................. 21
-Multiplication and Division ........................................................... 22
-Logarithms and Exponents .......................................................... 23
-FEC Encoding .................................................................................. 23
-FEC Decoding .................................................................................. 25
-Selecting the Coefficients Matrix ........................................................ 26
-Structure of Source Packets used for FEC Encoding .............................. 27
-Flow Control ......................................................................................... 27
-Congestion Control ................................................................................ 28
-Keepalives ........................................................................................... 28
-
-3.1.1.6.2
-3.1.1.6.3
-3.1.1.6.4
-3.1.1.6.5
-
-3.1.1.6.1.1
-3.1.1.6.1.2
-3.1.1.6.1.3
-
-3.1.1.7
-3.1.1.8
-3.1.1.9
-
-3.1.1.6.1
-
-[MS-RDPEUDP] - v20251121
-Remote Desktop Protocol: UDP Transport Extension
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-3 / 46
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.5
-
-3.1.5.1
-
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Initializing a Connection ......................................................................... 29
-Sending a Datagram.............................................................................. 29
-Receiving a Datagram ........................................................................... 29
-Terminating a Connection ...................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Constructing Messages .......................................................................... 30
-SYN Datagrams ............................................................................... 30
-ACK Datagrams ............................................................................... 32
-SYN+ACK Datagrams ....................................................................... 32
-ACK and Source Packets Data ........................................................... 33
-ACK and FEC Packets Data ............................................................... 33
-Connection Sequence ............................................................................ 33
-Data Transfer Phase .............................................................................. 34
-Sender Receives Data ...................................................................... 34
-Sender Sends Data .......................................................................... 35
-Source Packet ........................................................................... 35
-FEC Packet ................................................................................ 35
-Receiver Receives Data .................................................................... 35
-User Consumes Data........................................................................ 35
-Termination .......................................................................................... 35
-Retransmit Limit .............................................................................. 35
-Keepalive Timer Fires ....................................................................... 35
-Timer Events .............................................................................................. 36
-Retransmit Timer .................................................................................. 36
-Keepalive Timer on the Sender ............................................................... 36
-Delayed ACK Timer ............................................................................... 36
-Other Local Events ...................................................................................... 36
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-
-3.1.5.2
-3.1.5.3
-
-3.1.5.3.1
-3.1.5.3.2
-
-3.1.5.3.3
-3.1.5.3.4
-
-3.1.5.4
-
-3.1.5.4.1
-3.1.5.4.2
-
-3.1.5.3.2.1
-3.1.5.3.2.2
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.1.7
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 37
-UDP Connection Initialization Packets ................................................................. 37
-SYN Packet ................................................................................................ 37
-SYN and ACK Packet ................................................................................... 37
-UDP Data Transfer Packets ................................................................................ 38
-Source Packet ............................................................................................ 38
-FEC Packet................................................................................................. 39
-Payload of an FEC Packet ....................................................................... 40
-ACK Packet ................................................................................................ 40
-
-4.2.1
-4.2.2
-
-4.2.2.1
-
-4.2.3
-
-4.2
-
-5.1
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Using Sequence Numbers ............................................................................ 42
-RDP-UDP Datagram Validation...................................................................... 42
-Congestion Notifications .............................................................................. 42
-Index of Security Parameters ............................................................................ 42
-
-5.1.1
-5.1.2
-5.1.3
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 43
-
-7  Change Tracking .................................................................................................... 45
-
-8  Index ..................................................................................................................... 46
-
-[MS-RDPEUDP] - v20251121
-Remote Desktop Protocol: UDP Transport Extension
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-4 / 46
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: UDP Transport Extension specifies extensions to the transport
 mechanisms in the Remote Desktop Protocol (RDP). This document specifies network connectivity
@@ -543,7 +385,7 @@ between the user's machine and a remote computer system over the User Datagram P
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -609,7 +451,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-terminal client: The client that initiated the remote desktop connection.
+
+terminal client: The client that initiated the remote desktop connection.
 
 terminal server: A computer on which terminal services is running.
 
@@ -625,14 +468,14 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -649,7 +492,7 @@ Remoting".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [Bewersdorff] Bewersdorff, J., "Galois Theory for Beginners: A Historical Perspective", American
 Mathematical Society, 2006, ISBN-13: 978-0821838174.
@@ -674,7 +517,8 @@ Release: November 21, 2025
 
 6 / 46
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-RDPEUDP].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -687,7 +531,7 @@ RFC 4340, March 2006, http://www.ietf.org/rfc/rfc4340.txt
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: UDP Transport Extension Protocol has been designed to improve the
 performance of the network connectivity compared to a corresponding RDP-TCP connection, especially
@@ -723,11 +567,12 @@ Release: November 21, 2025
 
 7 / 46
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-RDPEUDP].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.3.1  RDP-UDP Protocol
+#### 1.3.1 RDP-UDP Protocol
 
 The Remote Desktop Protocol: UDP Transport Extension Protocol has two distinct phases of operation.
 The initial phase, UDP Connection Initialization (section 1.3.2.1), occurs when a UDP connection is
@@ -750,7 +595,7 @@ The connection between the endpoints is terminated when either the terminal clie
 terminates the connection. No protocol-specific messages are exchanged to communicate that the
 endpoint is no longer present.
 
-1.3.2  Message Flows
+#### 1.3.2 Message Flows
 
 The two endpoints, the terminal client and the terminal server, first set up a connection, and then
 transfer the data as shown in the following figure.
@@ -759,7 +604,7 @@ Figure 2: The UDP connection initialization and UDP data transfer message flow
 
 The following sections describe the two phases of the communication and the detailed data transfer.
 
-1.3.2.1  UDP Connection Initialization
+##### 1.3.2.1 UDP Connection Initialization
 
 In this phase, both endpoints are initialized with mutually agreeable parameters for the connection.
 
@@ -770,7 +615,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-RDPEUDP].images/page009-img01.png)
 ![Extracted image 2 from page 9]([MS-RDPEUDP].images/page009-img02.png)
 <!-- /Extracted images from page 9 -->
@@ -785,7 +631,7 @@ This datagram indicates that a connection has been set up and data can be exchan
 All datagrams in this phase – the SYN, SYN+ACK, and ACK – are delivered reliably by using persistent
 retransmits, irrespective of the mode that the transport is operating in.
 
-1.3.2.2  UDP Data Transfer
+##### 1.3.2.2 UDP Data Transfer
 
 If the UDP Transport Extension version negotiated in the UDP connection initialization phase is version
 3 or higher (section 2.2.2.9), the UDP data transfer is defined in [MS-RDPEUDP2]. The UDP data
@@ -817,7 +663,8 @@ Release: November 21, 2025
 
 9 / 46
 
-The FEC Packets require no acknowledgments (section 3.1.1.4), and they are not retransmitted. The
+
+The FEC Packets require no acknowledgments (section 3.1.1.4), and they are not retransmitted. The
 sender can either set the FEC block size to any value up to 255 or to not send any FEC Packets in the
 stream. Likewise, the receiver, upon a receipt of an FEC Packet, can ignore the FEC Packet and not
 use it for any decoding operations.
@@ -826,19 +673,19 @@ Upon receiving notification of a packet loss, the sender retransmits the lost da
 implementation of the FEC mechanism in the RDP-UDP protocol is only used for recovery from packet
 losses.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: UDP Transport Extension Protocol works on top of the User Datagram
 Protocol (UDP).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The protocol endpoints require UDP connectivity to be established. The network path between the
 endpoints allows the transfer of UDP datagrams in both directions.
 
 The prerequisites for this protocol are identical to those for the UDP protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol can be used in place of any Transmission Control Protocol (TCP) transport for the
 Remote Desktop Protocol (RDP) protocol. The protocol's two modes of operation are required to be
@@ -846,7 +693,7 @@ considered. The RDP-UDP-R mode is used when a stream-based, reliable transport, 
 required. The RDP-UDP-L mode is used when a datagram/message-based, best-efforts transport, akin
 to UDP, is required.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The version of the Remote Desktop Protocol: UDP Transport Extension is negotiated in the SYN
 request and the SYN + ACK response between the two endpoints. The first endpoint optionally
@@ -871,7 +718,7 @@ Implementations MUST support all versions of the protocol less than the version 
 the SYN request. The negotiation of the protocol version between the two endpoints is described in
 section 3.1.5.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -882,7 +729,8 @@ Release: November 21, 2025
 
 10 / 46
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -893,9 +741,10 @@ Release: November 21, 2025
 
 11 / 46
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RDP protocol packets are encapsulated in the User Datagram Protocol (UDP). The UDP
 datagrams MUST be encapsulated in the Internet Protocol version 4 (IPv4) or the Internet
@@ -907,16 +756,16 @@ RDP traffic over UDP is handled by this single port on the terminal server.
 The terminal client MUST open a unique UDP socket for each instance of this transport. Each socket is
 bound to a different port.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All of the messages written to the network or read from the network MUST be in network byte
 order, as described in [RFC4340] section 11.
 
 The protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
-2.2.1.1  VECTOR_ELEMENT_STATE Enumeration
+##### 2.2.1.1 VECTOR_ELEMENT_STATE Enumeration
 
 The VECTOR_ELEMENT_STATE enumeration is sent along with every ACK vector (section 2.2.2.7.1)
 that acknowledges the receipt of a continuous array of datagrams.
@@ -949,9 +798,9 @@ A datagram has not been received yet.
 
 3
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
-2.2.2.1  RDPUDP_FEC_HEADER Structure
+##### 2.2.2.1 RDPUDP_FEC_HEADER Structure
 
 The RDPUDP_FEC_HEADER structure forms the basic header for every datagram sent or received by
 the endpoint.
@@ -963,7 +812,8 @@ Release: November 21, 2025
 
 12 / 46
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1086,7 +936,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flags
+
+Flags
 
 0x1000
 
@@ -1094,7 +945,7 @@ Meaning
 
 (section 2.2.2.9) is present.
 
-2.2.2.2  RDPUDP_FEC_PAYLOAD_HEADER Structure
+##### 2.2.2.2 RDPUDP_FEC_PAYLOAD_HEADER Structure
 
 The RDPUDP_FEC_PAYLOAD_HEADER structure accompanies every datagram that contains an
 FEC payload.
@@ -1136,7 +987,7 @@ uFecIndex (1 byte): An 8-bit unsigned value. This value is generated by the FEC 
 
 uPadding (2 bytes): An array of UINT8 ([MS-DTYP] section 2.2.47).
 
-2.2.2.3  RDPUDP_PAYLOAD_PREFIX Structure
+##### 2.2.2.3 RDPUDP_PAYLOAD_PREFIX Structure
 
 The RDPUDP_PAYLOAD_PREFIX structure specifies the length of a data payload. This header is
 used for generating an FEC Packet or for decoding an FEC Packet. Once a datagram is decoded by
@@ -1157,7 +1008,7 @@ cbPayloadSize
 
 cbPayloadSize (2 bytes): An unsigned 16-bit value that specifies the size of the data payload.
 
-2.2.2.4  RDPUDP_SOURCE_PAYLOAD_HEADER Structure
+##### 2.2.2.4 RDPUDP_SOURCE_PAYLOAD_HEADER Structure
 
 The RDPUDP_SOURCE_PAYLOAD_HEADER structure specifies the metadata of a data payload.
 
@@ -1181,7 +1032,8 @@ Release: November 21, 2025
 
 14 / 46
 
-snSourceStart
+
+snSourceStart
 
 snCoded (4 bytes): An unsigned 32-bit value that specifies the sequence number for the current
 
@@ -1191,7 +1043,7 @@ snSourceStart (4 bytes): An unsigned 32-bit value that specifies the sequence nu
 
 current Source Packet.
 
-2.2.2.5  RDPUDP_SYNDATA_PAYLOAD Structure
+##### 2.2.2.5 RDPUDP_SYNDATA_PAYLOAD Structure
 
 The RDPUDP_SYNDATA_PAYLOAD structure specifies the parameters that are used to initialize the
 UDP connection.
@@ -1227,7 +1079,7 @@ uDownStreamMtu (2 bytes): A 16-bit unsigned value that specifies the maximum siz
 maximum transmission unit (MTU) that the endpoint can accept. This value MUST be greater
 than or equal to 1132 and less than or equal to 1232.
 
-2.2.2.6  RDPUDP_ACK_OF_ACKVECTOR_HEADER Structure
+##### 2.2.2.6 RDPUDP_ACK_OF_ACKVECTOR_HEADER Structure
 
 The RDPUDP_ACK_OF_ACKVECTOR_HEADER structure resets the start position of an ACK vector
 (section 2.2.2.7.1). This structure SHOULD be sent after every 20 packets.
@@ -1254,7 +1106,7 @@ snResetSeqNum and the lowest sequence number the receiver expects (current windo
 The sender populates snResetSeqNum with the greatest cumulative ACK it has received and
 processed.
 
-2.2.2.7  RDPUDP_ACK_VECTOR_HEADER Structure
+##### 2.2.2.7 RDPUDP_ACK_VECTOR_HEADER Structure
 
 The RDPUDP_ACK_VECTOR_HEADER structure contains a variable size array of ACK Vector
 Elements (section 2.2.2.7.1), referred to as the ACK vector.
@@ -1266,7 +1118,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The ACK vector captures the state of the queue of Source Packets at the receiver endpoint. Each
+
+The ACK vector captures the state of the queue of Source Packets at the receiver endpoint. Each
 position in the queue can have two values that indicate whether a Source Packet is present in the
 queue, or not. The state of Source Packets in the array is encoded using run-length encoding (RLE)
 compression.
@@ -1308,13 +1161,13 @@ Padding (variable): A variable-sized array, of length zero or more, such that th
 
 a DWORD ([MS-DTYP] section 2.2.9) boundary.
 
-2.2.2.7.1 ACK Vector Element
+###### 2.2.2.7.1 ACK Vector Element
 
 An ACK Vector Element is an 8-bit structure. The two most significant bits of each element encode
 the VECTOR_ELEMENT_STATE enumeration (section 2.2.1.1), while the six least significant bits
 specify the length of a continuous sequence of datagrams that share the same state.
 
-2.2.2.8  RDPUDP_CORRELATION_ID_PAYLOAD Structure
+##### 2.2.2.8 RDPUDP_CORRELATION_ID_PAYLOAD Structure
 
 The RDPUDP_CORRELATION_ID_PAYLOAD structure allows a terminal client to specify the
 correlation identifier for the connection, which can appear in some of the terminal server's event logs.
@@ -1348,7 +1201,8 @@ Release: November 21, 2025
 
 16 / 46
 
-...
+
+...
 
 uCorrelationId (16 bytes): DTYP.GUID. An array of 16 8-bit, unsigned integers that specifies a
 
@@ -1360,7 +1214,7 @@ value provided in the RDP_NEG_CORRELATION_INFO structure ([MS-RDPBCGR] section
 
 uReserved (16 bytes): 16 8-bit values, all set to 0x00.
 
-2.2.2.9  RDPUDP_SYNDATAEX_PAYLOAD Structure
+##### 2.2.2.9 RDPUDP_SYNDATAEX_PAYLOAD Structure
 
 The RDPUDP_SYNDATAEX_PAYLOAD structure specifies extended parameters that are used to
 configure the UDP connection.
@@ -1444,11 +1298,12 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate an
@@ -1474,7 +1329,7 @@ Congestion Window Reset: The RDPUDP_FLAG_CWR flag (section 2.2.2.1) indicates th
 endpoint has reacted to the congestion notification message, and that the remote endpoint MUST
 stop sending Congestion Notifications.
 
-3.1.1.1  Transport Modes
+##### 3.1.1.1 Transport Modes
 
 When the connection is initialized in the RDP-UDP-R mode, as described in section 1.3.1, persistent
 retransmits ensure that all datagrams written to the sender will be read respectively at the receiver.
@@ -1494,7 +1349,7 @@ receiver window. This ensures new packets are not dropped.
 The order of the datagrams is determined according to their sequence numbers, as specified in section
 3.1.1.2.
 
-3.1.1.2  Sequence Numbers
+##### 3.1.1.2 Sequence Numbers
 
 All Coded Packets and Source Packets have a sequence number that identifies their sending order.
 The sequence numbers for the Coded Packets and the Source Packets are independent of each other.
@@ -1512,7 +1367,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This initial value is a true random number. This field is similar to the initial sequence number (ISN)
+
+This initial value is a true random number. This field is similar to the initial sequence number (ISN)
 field used in the TCP transport protocol; for more information about the ISN field, see [RFC1948].
 
 The Coded Packet sequence number is referred to as the Coded sequence number. The Coded
@@ -1528,7 +1384,7 @@ The sequence numbers wrap around due to space limitations. Implementations MUST 
 wrap-around scenario. For more information about the sequence numbers range, see [RFC793]
 section 3.3.
 
-3.1.1.3  MTU Negotiation
+##### 3.1.1.3 MTU Negotiation
 
 The largest data payload that can be transferred over this protocol is negotiated during the 3-way UDP
 handshake process, called MTU negotiation. The size of the Internet Protocol (IP) or MAC layer
@@ -1556,7 +1412,7 @@ termination, initiated by any layer in the RDP stack, because some part of the d
 The range of uUpStreamMtu and uDownStreamMtu is in the closed interval [1132, 1232]. The
 advertised MTU MUST NOT be smaller than 1132 or larger than 1232.
 
-3.1.1.4  Acknowledgments
+##### 3.1.1.4 Acknowledgments
 
 An acknowledgment (ACK) is sent from the receiver to the sender, informing the sender about the
 receipt of a Source Packet. An acknowledgment MUST be generated for every Source Packet
@@ -1566,7 +1422,7 @@ MUST be acknowledged by the receiver; FEC Packets MUST NOT be acknowledged by th
 
 Each acknowledgment contains an ACK vector (section 2.2.2.7.1).
 
-3.1.1.4.1 Lost Datagrams
+###### 3.1.1.4.1 Lost Datagrams
 
 Lost datagrams notification is a part of the Congestion Control ADM element implementation. It is
 used to control the rate of the data that is transferred between the endpoints as described in section
@@ -1579,7 +1435,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-RDPEUDP].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1588,7 +1445,7 @@ transmission, with sequence numbers greater than the original datagram. Similarl
 a packet as lost only when it receives an acknowledgment (section 3.1.1.4) for any three packets that
 have a sequence number greater than the lost packet.
 
-3.1.1.5  Retransmits
+##### 3.1.1.5 Retransmits
 
 The Remote Desktop Protocol: UDP Transport Extension does not specify a retransmit mechanism. An
 implementation can choose any retransmit method; for example, the Fast Retransmit method, as
@@ -1597,7 +1454,7 @@ described in [RFC5681].
 When the sender detects that the receiver did not receive a specific Source Packet (section
 3.1.1.4.1), the sender retransmits that Source Packet. Only Source Packets MUST be retransmitted.
 
-3.1.1.6  FEC Computations
+##### 3.1.1.6 FEC Computations
 
 This section explains the operations involved in generating an FEC Packet. An FEC Packet is
 generated by a linear combination of a number of Source Packets, as described in section 1.3.2.2,
@@ -1605,7 +1462,7 @@ over a Galois Field, as specified in [Bewersdorff]. A brief introduction on fini
 in section 3.1.1.6.1. The coefficients of the equation are described in section 3.1.1.6.4. The actual FEC
 encoding and decoding are described in section 3.1.1.6.2 and section 3.1.1.6.3, respectively.
 
-3.1.1.6.1 Finite Field Arithmetic
+###### 3.1.1.6.1 Finite Field Arithmetic
 
 A finite field is a finite set of numbers. All arithmetic operations performed on this field will yield a
 result that belongs to the same finite field. For example, a finite field of size 256 with numbers from 0
@@ -1621,7 +1478,7 @@ value equal to zero or 1.
 
 Figure 5: Galois field and binary representation example
 
-3.1.1.6.1.1  Addition and Subtraction
+###### 3.1.1.6.1.1 Addition and Subtraction
 
 Adding or subtracting two polynomials is done by grouping coefficients of the same order, similar to
 regular algebra. However, since this operation is performed in GF(28), the result is brought into the
@@ -1638,7 +1495,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RDPEUDP].images/page021-img01.png)
 ![Extracted image 2 from page 21]([MS-RDPEUDP].images/page021-img02.png)
 ![Extracted image 3 from page 21]([MS-RDPEUDP].images/page021-img03.png)
@@ -1660,7 +1518,7 @@ Pseudo-code example:
      return (x ^ y);
  }
 
-3.1.1.6.1.2  Multiplication and Division
+###### 3.1.1.6.1.2 Multiplication and Division
 
 Multiplication in the finite field can be performed in one of the following two ways:
 
@@ -1699,7 +1557,8 @@ Release: November 21, 2025
 
 21 / 46
 
- BYTE Mul(const int x, const int y)
+
+ BYTE Mul(const int x, const int y)
  {
    if (((x-1) | (y-1)) < 0)
      return (0);
@@ -1709,7 +1568,7 @@ Release: November 21, 2025
 
 Where m_ffExp2Poly and m_ffPoly2Exp are exponent and log tables respectively.
 
-3.1.1.6.1.3  Logarithms and Exponents
+###### 3.1.1.6.1.3 Logarithms and Exponents
 
 Exponents can be calculated by repeatedly multiplying the same number, and then using a modulo
 operation to ensure that the result stays in the finite field.
@@ -1747,7 +1606,7 @@ operation as shown in the following pseudo-code example:
 Logarithms and exponents can be obtained by using the methods described previously to generate
 logarithms and exponent lookup tables.
 
-3.1.1.6.2 FEC Encoding
+###### 3.1.1.6.2 FEC Encoding
 
 As described in section 1.3.2.2, an FEC Packet is added to the data stream after processing a block of
 Source Packets. The size of the FEC Packet is equal to the size of the largest Source Packet in the
@@ -1761,7 +1620,8 @@ Release: November 21, 2025
 
 22 / 46
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-RDPEUDP].images/page023-img01.png)
 ![Extracted image 2 from page 23]([MS-RDPEUDP].images/page023-img02.png)
 <!-- /Extracted images from page 23 -->
@@ -1819,7 +1679,8 @@ Release: November 21, 2025
 
 23 / 46
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-RDPEUDP].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1861,7 +1722,7 @@ FECGeneratorArray, int cbRowCount, int cbColumnCount)
      }
  }
 
-3.1.1.6.3 FEC Decoding
+###### 3.1.1.6.3 FEC Decoding
 
 An FEC decoding operation is the reverse of the FEC encoding (section 3.1.1.6.2) operation. The FEC
 decoding operation solves the linear equation that is used to recover the lost Source Packets. Each
@@ -1886,7 +1747,8 @@ Release: November 21, 2025
 
 24 / 46
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-RDPEUDP].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1917,7 +1779,7 @@ Pseudo-code example:
      }
      printf("\n");
 
-3.1.1.6.4 Selecting the Coefficients Matrix
+###### 3.1.1.6.4 Selecting the Coefficients Matrix
 
 If the Source sequence numbers (section 3.1.1.2) for packets S1, S2, S3 … Sn are s1, s2, s3 … sn, the
 coefficient matrix is calculated as follows.
@@ -1952,7 +1814,8 @@ Release: November 21, 2025
 
 25 / 46
 
-     if ((ucOrigEnd >= ucOrigStart) &&
+
+     if ((ucOrigEnd >= ucOrigStart) &&
          ((*pucFecIndex >= ucOrigStart) && (*pucFecIndex <= ucOrigEnd)))
          *pucFecIndex = (BYTE)(ucOrigEnd+1);
      if ((ucOrigEnd < ucOrigStart) &&
@@ -1977,7 +1840,7 @@ Release: November 21, 2025
      }
  }
 
-3.1.1.6.5 Structure of Source Packets used for FEC Encoding
+###### 3.1.1.6.5 Structure of Source Packets used for FEC Encoding
 
 Only for the FEC Encoding operations, Source Packets are prepended with a 2 byte
 RDPUDP_PAYLOAD_PREFIX (section 2.2.2.3) header. This header is used only for the FEC encoding
@@ -1985,7 +1848,7 @@ and decoding operations, and is not transmitted to the terminal client. This fie
 each Source Packet, specified in the network byte order. When a datagram is recovered using FEC, the
 first 2 bytes constitute of this header, and specify the size of the recovered datagram to the decoder.
 
-3.1.1.7  Flow Control
+##### 3.1.1.7 Flow Control
 
 The Flow Control feature is similar to the TCP transport protocol Flow Control, as specified in
 [RFC793].
@@ -2023,7 +1886,8 @@ Release: November 21, 2025
 
 26 / 46
 
-3.1.1.8  Congestion Control
+
+##### 3.1.1.8 Congestion Control
 
 The Congestion Control abstract data model (ADM) element is used to limit the rate at which the
 sender sends Source Packets. Controlling the network throughput enables sharing the network
@@ -2050,7 +1914,7 @@ The sender reacts to losses that take place every round-trip time (RTT) only. Th
 multiple losses in an RTT, and the sender MUST NOT react to those events. This behavior is similar to
 the NewReno variants behavior, as described in [RFC3782].
 
-3.1.1.9  Keepalives
+##### 3.1.1.9 Keepalives
 
 As the underlying transport is based on UDP and is connectionless, each pair of endpoints MUST
 constantly send data to make sure that the other endpoint is present and is responding to network
@@ -2067,7 +1931,7 @@ send one or more keepalive datagrams in implementation-specific<5> time interval
 to 65 seconds. If the sender does not receive at least one keep-alive datagram every 65 seconds, it
 terminates the connection.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timers are used by the Remote Desktop Protocol: UDP Transport Extension and MUST be
 implemented:
@@ -2091,7 +1955,8 @@ Release: November 21, 2025
 
 27 / 46
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Before the protocol operation can commence, UDP network connectivity has to be established
 between the endpoints: the terminal client and the terminal server.
@@ -2103,30 +1968,30 @@ The terminal client MUST open a UDP socket to the terminal server. The terminal 
 to the port that the terminal server is listening on. If there are multiple connections, each connection
 MUST have a unique port number on the terminal client.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Initializing a Connection
+##### 3.1.4.1 Initializing a Connection
 
 The user of this protocol MUST initialize a UDP connection between the endpoints as described in
 section 1.3.2.1.
 
-3.1.4.2  Sending a Datagram
+##### 3.1.4.2 Sending a Datagram
 
 The user of this protocol can send data from one endpoint to another using this protocol. The protocol
 MUST send the data across only if the two endpoints are in the Established state.
 
-3.1.4.3  Receiving a Datagram
+##### 3.1.4.3 Receiving a Datagram
 
 The user of this protocol MUST be notified on receipt of a datagram when one endpoint receives data
 sent by the remote endpoint. The endpoints MUST be in the Established state.
 
-3.1.4.4  Terminating a Connection
+##### 3.1.4.4 Terminating a Connection
 
 The user of this protocol can terminate a connection at any point in time. Datagrams SHOULD NOT be
 sent by the transport after the user has terminated the connection. All of the datagrams received after
 the connection termination MUST be ignored.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The states of the protocol, divided into the terminal server states and the terminal client states,
 are illustrated in the following figure.
@@ -2138,7 +2003,8 @@ Release: November 21, 2025
 
 28 / 46
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-RDPEUDP].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2166,9 +2032,9 @@ exchanged between the two endpoints.
 Duplicate messages are ignored and discarded by either endpoint. The exchanged messages are
 specified in the following sections.
 
-3.1.5.1  Constructing Messages
+##### 3.1.5.1 Constructing Messages
 
-3.1.5.1.1 SYN Datagrams
+###### 3.1.5.1.1 SYN Datagrams
 
 [MS-RDPEUDP] - v20251121
 Remote Desktop Protocol: UDP Transport Extension
@@ -2177,7 +2043,8 @@ Release: November 21, 2025
 
 29 / 46
 
-The following steps specify the creation of a SYN datagram:
+
+The following steps specify the creation of a SYN datagram:
 
 1.  An RDPUDP_FEC_HEADER structure (section 2.2.2.1) MUST be appended to the UDP datagram.
 
@@ -2277,14 +2144,15 @@ Release: November 21, 2025
 
 30 / 46
 
-connection MUST reset the RDP-UDP protocol version to RDPUDP_PROTOCOL_VERSION_2
+
+connection MUST reset the RDP-UDP protocol version to RDPUDP_PROTOCOL_VERSION_2
 (0x0002).
 
 6.  This datagram MUST be zero-padded to increase the size of this datagram to uUpStreamMtu or
 
 uDownStreamMtu, whichever is smaller.
 
-3.1.5.1.2 ACK Datagrams
+###### 3.1.5.1.2 ACK Datagrams
 
 The following steps specify the creation of an ACK datagram:
 
@@ -2344,7 +2212,7 @@ The RDPUDP_FLAG_ACK_OF_ACKS flag is set.
 
 The snAckOfAcksSeqNum variable was set as the new start position of the ACK Vector.
 
-3.1.5.1.3 SYN+ACK Datagrams
+###### 3.1.5.1.3 SYN+ACK Datagrams
 
 A SYN+ACK datagram consists of a SYN packet, generated as specified in section 3.1.5.1.1, with these
 additional fields set as follows:
@@ -2372,7 +2240,8 @@ Release: November 21, 2025
 
 31 / 46
 
-
+
+
 
 The RDPUDP_SYNDATAEX_PAYLOAD structure (section 2.2.2.9) SHOULD only be present if it is
 also present in the received SYN packet. The uUdpVer field MUST be set to the highest RDP-UDP
@@ -2380,7 +2249,7 @@ protocol version supported by both endpoints. The highest version supported by b
 which is RDPUDP_PROTOCOL_VERSION_1 if either this packet or the SYN packet does not specify
 a version, is the version that MUST be used by both endpoints.
 
-3.1.5.1.4 ACK and Source Packets Data
+###### 3.1.5.1.4 ACK and Source Packets Data
 
 The following steps specify the creation of an ACK and Source Packet datagram:
 
@@ -2411,7 +2280,7 @@ the transport. The initial value is the advertised Initial Sequence Number ADM e
 
 3.  The data payload protocol data MUST be appended.
 
-3.1.5.1.5 ACK and FEC Packets Data
+###### 3.1.5.1.5 ACK and FEC Packets Data
 
 The following steps specify the creation of an ACK and FEC Packet datagram.
 
@@ -2449,7 +2318,7 @@ The uPadding variable MUST be set to zero and ignored by the receiver.
 
 3.  The FEC payload data MUST be appended.
 
-3.1.5.2  Connection Sequence
+##### 3.1.5.2 Connection Sequence
 
 The protocol's connection sequence is illustrated in the figure in section 3.1.5. The following list
 describes the states that the terminal server and terminal client enter:
@@ -2461,7 +2330,8 @@ Release: November 21, 2025
 
 32 / 46
 
-1.  Listen: The terminal server enters the Listen state:
+
+1.  Listen: The terminal server enters the Listen state:
 
 1.  The terminal server binds to a UDP socket, and is ready to accept incoming connections.
 
@@ -2499,13 +2369,13 @@ more than five times, the endpoint will enter the Closed state.<8>
 
 2.  The server enters the Established state.
 
-3.1.5.3  Data Transfer Phase
+##### 3.1.5.3 Data Transfer Phase
 
 The data transfer phase described in this section is used only when the negotiated version in the
 connection sequence is version 1 or version 2. For all other versions, the data transfer phase is
 defined in [MS-RDPEUDP2].
 
-3.1.5.3.1 Sender Receives Data
+###### 3.1.5.3.1 Sender Receives Data
 
 Each Source Packet is identified by a unique Source sequence number, as specified in section
 3.1.1.2. The sender assigns a Source sequence number to each datagram. This number is increased
@@ -2531,13 +2401,14 @@ Release: November 21, 2025
 
 33 / 46
 
-3.1.5.3.2 Sender Sends Data
+
+###### 3.1.5.3.2 Sender Sends Data
 
 Each Coded Packet is identified by a Coded sequence number, as specified in section 3.1.1.2. The
 sender MUST implement a form of Congestion Control, and generate applicable messages, as
 specified in section 3.1.1.8.
 
-3.1.5.3.2.1  Source Packet
+###### 3.1.5.3.2.1 Source Packet
 
 A Source Packet is generated as specified in section 3.1.5.1.4. A Source Packet is sent only if one of
 the following occurs:
@@ -2551,13 +2422,13 @@ retransmitted.
 There is space in the receiver-advertised window for this datagram and the Congestion Control
 logic permits transmission of a datagram.
 
-3.1.5.3.2.2  FEC Packet
+###### 3.1.5.3.2.2 FEC Packet
 
 An FEC Packet is generated, as specified in section 3.1.5.1.5. An FEC Packet is generated when the
 sender has sent one or more data packets and the receiver has not acknowledged one or more of
 these data packets.
 
-3.1.5.3.3 Receiver Receives Data
+###### 3.1.5.3.3 Receiver Receives Data
 
 The receiver MUST accept all of the datagrams with Source sequence numbers (section 3.1.1.2) that
 fall within the range of the receiver-advertised window. All other datagrams MUST be ignored and
@@ -2569,19 +2440,19 @@ The receiver MUST generate an acknowledgment for received Source Packets, as spe
 3.1.5.1.2. The receiver MUST generate Congestion Notification messages, as specified in section
 3.1.1.8.
 
-3.1.5.3.4 User Consumes Data
+###### 3.1.5.3.4 User Consumes Data
 
 The receiver-advertised window MUST increase by 1 for every datagram read by the user from the
 receiver.
 
-3.1.5.4  Termination
+##### 3.1.5.4 Termination
 
-3.1.5.4.1 Retransmit Limit
+###### 3.1.5.4.1 Retransmit Limit
 
 If a datagram has been retransmitted at least three and no more than five times without a response,
 the sender terminates the connection. The endpoint is terminated and enters the Closed state.<9>
 
-3.1.5.4.2 Keepalive Timer Fires
+###### 3.1.5.4.2 Keepalive Timer Fires
 
 If the sender does not receive any ACK from the receiver after 65 seconds, the connection is
 terminated and the endpoint enters the Closed state.
@@ -2593,9 +2464,10 @@ Release: November 21, 2025
 
 34 / 46
 
-3.1.6  Timer Events
 
-3.1.6.1  Retransmit Timer
+#### 3.1.6 Timer Events
+
+##### 3.1.6.1 Retransmit Timer
 
 This timer fires if no acknowledgment (section 3.1.1.4) has been received for a datagram that was
 transmitted earlier. This timer MUST fire at the minimum retransmit time-out or twice the RTT,
@@ -2612,14 +2484,14 @@ multiple retransmissions of the same datagram.<10> If the same datagram has alre
 retransmitted at least three and no more than five times, the endpoints move to the Closed state, and
 the connection is terminated.
 
-3.1.6.2  Keepalive Timer on the Sender
+##### 3.1.6.2 Keepalive Timer on the Sender
 
 This timer fires when the sender has not received any datagram from the receiver within 65 seconds,
 as specified in section 3.1.1.9. This indicates that the receiver is no longer present or has
 disconnected. The upper layers are notified of this event, the endpoints move to the Closed state, and
 the connection is terminated.
 
-3.1.6.3  Delayed ACK Timer
+##### 3.1.6.3 Delayed ACK Timer
 
 This timer fires on the receiver at the delayed ACK time-out after the receipt of a Source Packet if no
 acknowledgment (section 3.1.1.4) has been scheduled for that Source Packet. The delayed ACK time-
@@ -2640,7 +2512,7 @@ of Source Packets, as specified in section 3.1.1.4. In this case, this timer ind
 least one Source Packet at the receiver for which an acknowledgment has not been generated and
 sent.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -2651,9 +2523,10 @@ Release: November 21, 2025
 
 35 / 46
 
-4  Protocol Examples
 
-4.1  UDP Connection Initialization Packets
+## 4 Protocol Examples
+
+### 4.1 UDP Connection Initialization Packets
 
 The following sections describe examples for packets that are created during the UDP Connection
 Initialization (section 1.3.2.1) phase.
@@ -2661,7 +2534,7 @@ Initialization (section 1.3.2.1) phase.
 For readability, the network captures headers have been divided with the "/" delimiter and additional
 information is provided in the field and value tables.
 
-4.1.1  SYN Packet
+#### 4.1.1 SYN Packet
 
 This packet is used in the reliable, best-effort mode, as described in section 1.3.1. The following is an
 example of a network capture of a SYN packet as described in section 3.1.5.1.1.
@@ -2724,7 +2597,7 @@ uReserved
 
 00 00 00 (zero padded to 1232 bytes)
 
-4.1.2  SYN and ACK Packet
+#### 4.1.2 SYN and ACK Packet
 
 The following is an example of a network capture of a SYN and ACK packet as described in section
 3.1.5.1.3.
@@ -2736,7 +2609,8 @@ Release: November 21, 2025
 
 36 / 46
 
- 00 00 00 42 04 00 00 05 00 00 00 42 04 D0 04 D0 00 00 00
+
+ 00 00 00 42 04 00 00 05 00 00 00 42 04 D0 04 D0 00 00 00
 
 The following table describes the fields and values for each header structure.
 
@@ -2778,7 +2652,7 @@ uDownStreamMtu
 
 00 00 00 (zero padded to 1232 bytes)
 
-4.2  UDP Data Transfer Packets
+### 4.2 UDP Data Transfer Packets
 
 The following sections describe examples for packets that are created during the section UDP Data
 Transfer (section 1.3.2.2) phase.
@@ -2786,7 +2660,7 @@ Transfer (section 1.3.2.2) phase.
 For readability, the network captures headers have been divided with the "/" delimiter and additional
 information is provided in the field and value tables.
 
-4.2.1  Source Packet
+#### 4.2.1 Source Packet
 
 The following is an example of a network capture of a Source Packet, as described in section
 3.1.5.3.2.1.
@@ -2830,7 +2704,8 @@ Release: November 21, 2025
 
 37 / 46
 
-Field
+
+Field
 
 Element 1
 
@@ -2862,7 +2737,7 @@ Payload data
 
 17 03 03 00 40 bb …
 
-4.2.2  FEC Packet
+#### 4.2.2 FEC Packet
 
 The following is an example of a network capture of an FEC Packet, as described in section
 3.1.5.3.2.2.
@@ -2942,7 +2817,8 @@ Release: November 21, 2025
 
 38 / 46
 
-Field
+
+Field
 
 uPadding
 
@@ -2954,7 +2830,7 @@ Payload data
 
 40 25 04 f1 …
 
-4.2.2.1  Payload of an FEC Packet
+##### 4.2.2.1 Payload of an FEC Packet
 
 The following is an example of an FEC Packet network payload.
 
@@ -3006,7 +2882,7 @@ If RDP Payload S3 is lost, it will be recovered as
 The first 2 bytes (0, 15) form the RDPUDP_PAYLOAD_PREFIX header (section 2.2.2.3), which gives
 the length of packet S3.
 
-4.2.3  ACK Packet
+#### 4.2.3 ACK Packet
 
 The following is an example of a network capture of an ACK Packet, with the option ACK of ACKS, as
 described in section 3.1.5.1.2.
@@ -3034,7 +2910,8 @@ Release: November 21, 2025
 
 39 / 46
 
-Field
+
+Field
 
 Value
 
@@ -3098,14 +2975,15 @@ Release: November 21, 2025
 
 40 / 46
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Remote Desktop Protocol: UDP Transport Extension Protocol shares a number of security
 considerations with the TCP protocol. The following sections describe these security considerations.
 
-5.1.1  Using Sequence Numbers
+#### 5.1.1 Using Sequence Numbers
 
 The two communicating endpoints exchange the range of sequence numbers they will be generating
 and/or are willing to accept through the Initial Sequence Number and acknowledgments (section
@@ -3117,7 +2995,7 @@ All of the acknowledgments with sequence numbers that fall outside this range ar
 datagrams can be a consequence of packet reordering or packet duplication in the network and do not
 result in a connection termination.
 
-5.1.2  RDP-UDP Datagram Validation
+#### 5.1.2 RDP-UDP Datagram Validation
 
 All headers require validation. The size of the headers and data payload in the datagram tally with the
 size of the UDP datagram and is within the ranges specified by the sender.
@@ -3127,13 +3005,13 @@ example, a datagram that has been marked as received cannot arrive with the stat
 subsequent datagrams. Such acknowledgments can be ignored, as they can either be delayed or
 invalid.
 
-5.1.3  Congestion Notifications
+#### 5.1.3 Congestion Notifications
 
 The receiver generates congestion notifications for lost datagrams. The sender reduces the rate at
 which data is written to the wire. Failure to do so increases congestion on the network, and drives the
 network towards congestion collapse, which impacts all users.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3144,7 +3022,8 @@ Release: November 21, 2025
 
 41 / 46
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3213,7 +3092,8 @@ Remote Desktop Protocol: UDP Transport Extension
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<9> Section 3.1.5.4.1:  The Remote Desktop Protocol: UDP Transport Extension retransmits
+
+<9> Section 3.1.5.4.1:  The Remote Desktop Protocol: UDP Transport Extension retransmits
 datagrams five times before terminating the connection.
 
 <10> Section 3.1.6.1:  The Remote Desktop Protocol: UDP Transport Extension doubles the
@@ -3226,7 +3106,8 @@ Release: November 21, 2025
 
 43 / 46
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3278,7 +3159,8 @@ Release: November 21, 2025
 
 44 / 46
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3409,7 +3291,8 @@ Syntax 12
 
 45 / 46
 
-T
+
+T
 
 Timer events
    client

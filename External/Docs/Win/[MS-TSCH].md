@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 149
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 149
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: April 23, 2024
 
 3 / 149
 
-Date
+
+Date
 
 Revision
 History
@@ -570,542 +573,236 @@ Release: April 23, 2024
 
 4 / 149
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 15
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.4
-
-2.1
-2.2
-2.3
-
-2.4.1
-2.4.2
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-2.3.6
-2.3.7
-2.3.8
-2.3.9
-2.3.10
-2.3.11
-2.3.12
-2.3.13
-2.3.14
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-Common Data Types ........................................................................................ 18
-Constant Values ......................................................................................... 18
-ATSVC_HANDLE ......................................................................................... 19
-SASEC_HANDLE ......................................................................................... 19
-AT_INFO .................................................................................................... 19
-AT_ENUM_CONTAINER ................................................................................ 21
-AT_ENUM .................................................................................................. 22
-Flags ......................................................................................................... 22
-TASK_USER_CRED ...................................................................................... 23
-TASK_LOGON_TYPE .................................................................................... 24
-TASK_XML_ERROR_INFO ............................................................................. 25
-Path Names ............................................................................................... 25
-TASK_NAMES ............................................................................................. 25
-TASK_STATE .............................................................................................. 25
-Error Codes................................................................................................ 26
-.JOB File Format .............................................................................................. 26
-FIXDLEN_DATA .......................................................................................... 26
-Variable-Length Data Section ....................................................................... 29
-Specially Formatted Unicode Strings ........................................................ 29
-Running Instance Count ......................................................................... 30
-Application Name .................................................................................. 30
-Parameters .......................................................................................... 30
-Working Directory ................................................................................. 30
-Author ................................................................................................. 30
-Comment ............................................................................................. 30
-User Data Size/User Data ....................................................................... 30
-Reserved Data Size/Reserved Data ......................................................... 31
-Trigger Count ....................................................................................... 31
-Triggers ............................................................................................... 31
-2.4.2.11.1
-Trigger Type ................................................................................... 33
-2.4.2.11.2  Day of the Month ............................................................................. 34
-2.4.2.11.3  Day of the Week ............................................................................. 34
-2.4.2.11.4  Month of the Year ............................................................................ 35
-2.4.2.11.5  DAILY Trigger ................................................................................. 36
-2.4.2.11.6  WEEKLY Trigger .............................................................................. 36
-2.4.2.11.7  MONTHLYDATE Trigger ..................................................................... 37
-2.4.2.11.8  MONTHLYDOW Trigger ..................................................................... 37
-Job Signature ....................................................................................... 38
-XML Task Definition Format ............................................................................... 39
-
-2.4.2.1
-2.4.2.2
-2.4.2.3
-2.4.2.4
-2.4.2.5
-2.4.2.6
-2.4.2.7
-2.4.2.8
-2.4.2.9
-2.4.2.10
-2.4.2.11
-
-2.4.2.12
-
-2.5
-
-[MS-TSCH] - v20240423
-Task Scheduler Service Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 149
-
-2.5.1
-
-2.5.2
-2.5.3
-
-2.5.4
-
-2.5.1.1
-2.5.1.2
-2.5.1.3
-2.5.1.4
-2.5.1.5
-
-2.5.3.1
-2.5.3.2
-2.5.3.3
-2.5.3.4
-2.5.3.5
-2.5.3.6
-2.5.3.7
-2.5.3.8
-2.5.3.9
-
-Common Data Types ................................................................................... 40
-Standard Data Types ............................................................................. 40
-versionType ......................................................................................... 40
-nonEmptyString .................................................................................... 40
-pathType ............................................................................................. 40
-guidType .............................................................................................. 41
-RegistrationInfo Schema Part ....................................................................... 41
-Triggers Schema Part .................................................................................. 42
-Common Trigger Elements ..................................................................... 42
-BootTrigger .......................................................................................... 43
-RegistrationTrigger ................................................................................ 44
-IdleTrigger ........................................................................................... 44
-TimeTrigger.......................................................................................... 44
-EventTrigger ........................................................................................ 45
-LogonTrigger ........................................................................................ 46
-SessionStateChangeTrigger .................................................................... 46
-CalendarTrigger .................................................................................... 47
-Settings Schema Part .................................................................................. 50
-AllowStartOnDemand ............................................................................ 51
-2.5.4.1
-RestartOnFailure ................................................................................... 51
-2.5.4.2
-MultipleInstancesPolicy .......................................................................... 51
-2.5.4.3
-DisallowStartIfOnBatteries ..................................................................... 52
-2.5.4.4
-StopIfGoingOnBatteries ......................................................................... 52
-2.5.4.5
-AllowHardTerminate .............................................................................. 52
-2.5.4.6
-StartWhenAvailable ............................................................................... 52
-2.5.4.7
-RunOnNetworkAvailable ......................................................................... 52
-2.5.4.8
-2.5.4.9
-NetworkSettings ................................................................................... 52
-2.5.4.10  WakeToRun .......................................................................................... 53
-2.5.4.11
-Enabled ............................................................................................... 53
-2.5.4.12  Hidden ................................................................................................. 53
-2.5.4.13  DeleteExpiredTaskAfter .......................................................................... 53
-2.5.4.14
-IdleSettings .......................................................................................... 53
-2.5.4.15  Maintenance Settings ............................................................................ 54
-ExecutionTimeLimit ............................................................................... 55
-2.5.4.16
-Priority ................................................................................................ 55
-2.5.4.17
-2.5.4.18
-RunOnlyIfIdle ....................................................................................... 55
-2.5.4.19  UseUnifiedSchedulingEngine ................................................................... 55
-2.5.4.20  DisallowStartOnRemoteAppSession ......................................................... 55
-Volatile ................................................................................................ 55
-2.5.4.21
-Data Schema Part ....................................................................................... 55
-Principal Schema Part.................................................................................. 55
-Action Schema Part ..................................................................................... 59
-Exec Action .......................................................................................... 59
-ComHandler Action ............................................................................... 60
-Email Action ......................................................................................... 60
-ShowMessage Action ............................................................................. 61
-XML Tasks Localization ................................................................................ 62
-Task Fields Parameterization ........................................................................ 62
-Parameterization Format ........................................................................ 63
-Parameter Names ................................................................................. 63
-Parameterizable Fields ........................................................................... 63
-
-2.5.7.1
-2.5.7.2
-2.5.7.3
-2.5.7.4
-
-2.5.9.1
-2.5.9.2
-2.5.9.3
-
-2.5.5
-2.5.6
-2.5.7
-
-2.5.8
-2.5.9
-
-3.1
-
-3  Protocol Details ..................................................................................................... 64
-Client Role Details ............................................................................................ 64
-Abstract Data Model .................................................................................... 64
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Higher-Layer Triggered Events ..................................................................... 64
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-[MS-TSCH] - v20240423
-Task Scheduler Service Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 149
-
-3.1.4.3.5
-
-3.1.4.1
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-
-3.1.4.2
-
-3.1.4.2.1
-
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-
-3.1.4.3
-
-3.1.4.3.1
-3.1.4.3.2
-3.1.4.3.3
-3.1.4.3.4
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-
-3.1.4.2.8.1
-3.1.4.2.8.2
-3.1.4.2.8.3
-
-3.1.4.3.4.1
-3.1.4.3.4.2
-3.1.4.3.4.3
-3.1.4.3.4.4
-
-ATSvc Client Processing ......................................................................... 64
-Add Task ........................................................................................ 65
-Delete Task .................................................................................... 65
-Retrieve Task Status ........................................................................ 65
-Enumerate Tasks ............................................................................. 65
-SASec Client Processing ......................................................................... 66
-Common Operations ........................................................................ 66
-Determining Task Folder ............................................................. 66
-Setting Account Information ........................................................ 66
-Add Task ........................................................................................ 67
-Delete Task .................................................................................... 67
-Modify Task .................................................................................... 67
-Retrieve Task Status ........................................................................ 67
-Enumerate Tasks ............................................................................. 68
-ATSvc Account Information ............................................................... 68
-Control Task Operation .................................................................... 68
-Run .......................................................................................... 68
-Stop ......................................................................................... 69
-Stop Instance ............................................................................ 69
-ITaskSchedulerService Client Processing .................................................. 69
-Add Task ........................................................................................ 69
-Add Folder ...................................................................................... 70
-Delete Task or Folder ....................................................................... 70
-Modify Task or Folder ....................................................................... 70
-Set the Security Descriptor of a Task ............................................ 70
-Set the Security Descriptor of a Folder ......................................... 70
-Set the Enabled State of a Task ................................................... 71
-Modify a Task Definition .............................................................. 71
-Retrieve Task and Task Status .......................................................... 71
-Retrieve a Task.......................................................................... 71
-Retrieve a Task's Security Descriptor ............................................ 72
-Retrieve a Running Task's Instance Information ............................ 72
-Retrieve a Task's Scheduled Run Times ........................................ 72
-Retrieve a Task's Last Run Information ......................................... 73
-Retrieve a Task's Information ...................................................... 73
-Retrieve the Number of Times a Task Did Not Run ......................... 73
-Retrieve the Highest Version of the Schema .................................. 74
-Enumerate Tasks or Folders .............................................................. 74
-Enumerate All Tasks in a Folder ................................................... 74
-Enumerate All Subfolders in a Folder ............................................ 74
-Enumerate a Task's Running Instances ......................................... 75
-Message Processing Events and Sequencing Rules .......................................... 75
-Timer Events .............................................................................................. 75
-Server Role Details ........................................................................................... 75
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 76
-Initialization ............................................................................................... 76
-Higher-Layer Triggered Events ..................................................................... 77
-EventLog Events ................................................................................... 77
-Idle ..................................................................................................... 77
-Startup ................................................................................................ 77
-Session Change .................................................................................... 77
-Sleep ................................................................................................... 77
-Wake ................................................................................................... 78
-Message Processing Events and Sequencing Rules .......................................... 78
-Common Operations .............................................................................. 78
-Task Registration Security Checks ..................................................... 78
-Starting a Task ............................................................................... 79
-
-3.1.4.3.5.1
-3.1.4.3.5.2
-3.1.4.3.5.3
-3.1.4.3.5.4
-3.1.4.3.5.5
-3.1.4.3.5.6
-3.1.4.3.5.7
-3.1.4.3.5.8
-
-3.1.4.3.6.1
-3.1.4.3.6.2
-3.1.4.3.6.3
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.1.4.3.6
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-
-3.2.5
-
-3.2.5.1
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-[MS-TSCH] - v20240423
-Task Scheduler Service Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 149
-
-3.2.5.4
-
-3.2.5.2
-
-3.2.5.3
-
-3.2.5.1.3
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-3.2.5.3.5
-3.2.5.3.6
-3.2.5.3.7
-
-Stopping a Task .............................................................................. 79
-ATSvc Message Processing Events and Sequencing Rules ........................... 80
-NetrJobAdd (Opnum 0) .................................................................... 80
-NetrJobDel (Opnum 1) ..................................................................... 81
-NetrJobEnum (Opnum 2) .................................................................. 82
-NetrJobGetInfo (Opnum 3) ............................................................... 83
-SASec Message Processing Events and Sequencing Rules ........................... 84
-Receive File Add Notification ............................................................. 84
-Receive File Delete Notification .......................................................... 87
-Receive File Modification Notification .................................................. 88
-SASetAccountInformation (Opnum 0) ................................................ 88
-SASetNSAccountInformation (Opnum 1) ............................................ 89
-SAGetNSAccountInformation (Opnum 2) ............................................ 90
-SAGetAccountInformation (Opnum 3) ................................................ 91
-ITaskSchedulerService Message Processing Events and Sequencing Rules .... 92
-SchRpcHighestVersion (Opnum 0) ..................................................... 93
-SchRpcRegisterTask (Opnum 1) ........................................................ 94
-SchRpcRetrieveTask (Opnum 2) ....................................................... 104
-SchRpcCreateFolder (Opnum 3) ....................................................... 105
-SchRpcSetSecurity (Opnum 4) ......................................................... 105
-SchRpcGetSecurity (Opnum 5) ......................................................... 106
-SchRpcEnumFolders (Opnum 6) ....................................................... 107
-SchRpcEnumTasks (Opnum 7) ......................................................... 109
-SchRpcEnumInstances (Opnum 8) .................................................... 110
-SchRpcGetInstanceInfo (Opnum 9) ................................................... 111
-SchRpcStopInstance (Opnum 10) ..................................................... 112
-SchRpcStop (Opnum 11) ................................................................. 113
-SchRpcRun (Opnum 12) .................................................................. 113
-SchRpcDelete (Opnum 13) .............................................................. 116
-SchRpcRename (Opnum 14) ............................................................ 116
-SchRpcScheduledRuntimes (Opnum 15) ............................................ 117
-SchRpcGetLastRunInfo (Opnum 16) .................................................. 118
-SchRpcGetTaskInfo (Opnum 17) ...................................................... 119
-SchRpcGetNumberOfMissedRuns (Opnum 18) .................................... 120
-SchRpcEnableTask (Opnum 19) ........................................................ 121
-Timer Events ............................................................................................. 121
-Global Timer ........................................................................................ 122
-Delay Timer ........................................................................................ 122
-RPC Runtime Check Notes ................................................................................ 122
-
-3.2.5.4.1
-3.2.5.4.2
-3.2.5.4.3
-3.2.5.4.4
-3.2.5.4.5
-3.2.5.4.6
-3.2.5.4.7
-3.2.5.4.8
-3.2.5.4.9
-3.2.5.4.10
-3.2.5.4.11
-3.2.5.4.12
-3.2.5.4.13
-3.2.5.4.14
-3.2.5.4.15
-3.2.5.4.16
-3.2.5.4.17
-3.2.5.4.18
-3.2.5.4.19
-3.2.5.4.20
-
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.3
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ............................................................................................... 123
-Packet Sequence for Task Creation .................................................................... 123
-Packet Sequence for Task Creation Using SASec Interface .............................. 123
-Packet Sequence for Task Creation Using ITaskScheduler Interface ................. 123
-Task XML Example ..................................................................................... 124
-Examples of Operations Flow ............................................................................ 125
-SASec Operation Flow ................................................................................ 125
-ITaskSchedulerService Operation Flow ......................................................... 127
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ............................................................................................................... 129
-Security Considerations for Implementers .......................................................... 129
-
-5.1
-
-6  Appendix A: Full IDL ............................................................................................ 130
-Appendix A.1: ATSvc.idl ................................................................................... 130
-Appendix A.2: SaSecRpc.idl .............................................................................. 131
-Appendix A.3: SchRpc.idl ................................................................................. 132
-
-6.1
-6.2
-6.3
-
-7  Appendix B: Product Behavior ............................................................................. 136
-
-8  Change Tracking .................................................................................................. 146
-
-8 / 149
-
-[MS-TSCH] - v20240423
-Task Scheduler Service Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9  Index ................................................................................................................... 147
-
-[MS-TSCH] - v20240423
-Task Scheduler Service Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 149
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+  - [2.3 Common Data Types](#23-common-data-types)
+    - [2.3.1 Constant Values](#231-constant-values)
+    - [2.3.2 ATSVC_HANDLE](#232-atsvchandle)
+    - [2.3.3 SASEC_HANDLE](#233-sasechandle)
+    - [2.3.4 AT_INFO](#234-atinfo)
+    - [2.3.5 AT_ENUM_CONTAINER](#235-atenumcontainer)
+    - [2.3.6 AT_ENUM](#236-atenum)
+    - [2.3.7 Flags](#237-flags)
+    - [2.3.8 TASK_USER_CRED](#238-taskusercred)
+    - [2.3.9 TASK_LOGON_TYPE](#239-tasklogontype)
+    - [2.3.10 TASK_XML_ERROR_INFO](#2310-taskxmlerrorinfo)
+    - [2.3.11 Path Names](#2311-path-names)
+    - [2.3.12 TASK_NAMES](#2312-tasknames)
+    - [2.3.13 TASK_STATE](#2313-taskstate)
+    - [2.3.14 Error Codes](#2314-error-codes)
+  - [2.4 .JOB File Format](#24-job-file-format)
+    - [2.4.1 FIXDLEN_DATA](#241-fixdlendata)
+    - [2.4.2 Variable-Length Data Section](#242-variable-length-data-section)
+      - [2.4.2.1 Specially Formatted Unicode Strings](#2421-specially-formatted-unicode-strings)
+      - [2.4.2.2 Running Instance Count](#2422-running-instance-count)
+      - [2.4.2.3 Application Name](#2423-application-name)
+      - [2.4.2.4 Parameters](#2424-parameters)
+      - [2.4.2.5 Working Directory](#2425-working-directory)
+      - [2.4.2.6 Author](#2426-author)
+      - [2.4.2.7 Comment](#2427-comment)
+      - [2.4.2.8 User Data Size/User Data](#2428-user-data-sizeuser-data)
+      - [2.4.2.9 Reserved Data Size/Reserved Data](#2429-reserved-data-sizereserved-data)
+      - [2.4.2.10 Trigger Count](#24210-trigger-count)
+      - [2.4.2.11 Triggers](#24211-triggers)
+        - [2.4.2.11.1 Trigger Type](#242111-trigger-type)
+        - [2.4.2.11.2 Day of the Month](#242112-day-of-the-month)
+        - [2.4.2.11.3 Day of the Week](#242113-day-of-the-week)
+        - [2.4.2.11.4 Month of the Year](#242114-month-of-the-year)
+        - [2.4.2.11.5 DAILY Trigger](#242115-daily-trigger)
+        - [2.4.2.11.6 WEEKLY Trigger](#242116-weekly-trigger)
+        - [2.4.2.11.7 MONTHLYDATE Trigger](#242117-monthlydate-trigger)
+        - [2.4.2.11.8 MONTHLYDOW Trigger](#242118-monthlydow-trigger)
+      - [2.4.2.12 Job Signature](#24212-job-signature)
+  - [2.5 XML Task Definition Format](#25-xml-task-definition-format)
+    - [2.5.1 Common Data Types](#251-common-data-types)
+      - [2.5.1.1 Standard Data Types](#2511-standard-data-types)
+      - [2.5.1.2 versionType](#2512-versiontype)
+      - [2.5.1.3 nonEmptyString](#2513-nonemptystring)
+      - [2.5.1.4 pathType](#2514-pathtype)
+      - [2.5.1.5 guidType](#2515-guidtype)
+    - [2.5.2 RegistrationInfo Schema Part](#252-registrationinfo-schema-part)
+    - [2.5.3 Triggers Schema Part](#253-triggers-schema-part)
+      - [2.5.3.1 Common Trigger Elements](#2531-common-trigger-elements)
+      - [2.5.3.2 BootTrigger](#2532-boottrigger)
+      - [2.5.3.3 RegistrationTrigger](#2533-registrationtrigger)
+      - [2.5.3.4 IdleTrigger](#2534-idletrigger)
+      - [2.5.3.5 TimeTrigger](#2535-timetrigger)
+      - [2.5.3.6 EventTrigger](#2536-eventtrigger)
+      - [2.5.3.7 LogonTrigger](#2537-logontrigger)
+      - [2.5.3.8 SessionStateChangeTrigger](#2538-sessionstatechangetrigger)
+      - [2.5.3.9 CalendarTrigger](#2539-calendartrigger)
+    - [2.5.4 Settings Schema Part](#254-settings-schema-part)
+      - [2.5.4.1 AllowStartOnDemand](#2541-allowstartondemand)
+      - [2.5.4.2 RestartOnFailure](#2542-restartonfailure)
+      - [2.5.4.3 MultipleInstancesPolicy](#2543-multipleinstancespolicy)
+      - [2.5.4.4 DisallowStartIfOnBatteries](#2544-disallowstartifonbatteries)
+      - [2.5.4.5 StopIfGoingOnBatteries](#2545-stopifgoingonbatteries)
+      - [2.5.4.6 AllowHardTerminate](#2546-allowhardterminate)
+      - [2.5.4.7 StartWhenAvailable](#2547-startwhenavailable)
+      - [2.5.4.8 RunOnNetworkAvailable](#2548-runonnetworkavailable)
+      - [2.5.4.9 NetworkSettings](#2549-networksettings)
+      - [2.5.4.10 WakeToRun](#25410-waketorun)
+      - [2.5.4.11 Enabled](#25411-enabled)
+      - [2.5.4.12 Hidden](#25412-hidden)
+      - [2.5.4.13 DeleteExpiredTaskAfter](#25413-deleteexpiredtaskafter)
+      - [2.5.4.14 IdleSettings](#25414-idlesettings)
+      - [2.5.4.15 Maintenance Settings](#25415-maintenance-settings)
+      - [2.5.4.16 ExecutionTimeLimit](#25416-executiontimelimit)
+      - [2.5.4.17 Priority](#25417-priority)
+      - [2.5.4.18 RunOnlyIfIdle](#25418-runonlyifidle)
+      - [2.5.4.19 UseUnifiedSchedulingEngine](#25419-useunifiedschedulingengine)
+      - [2.5.4.20 DisallowStartOnRemoteAppSession](#25420-disallowstartonremoteappsession)
+      - [2.5.4.21 Volatile](#25421-volatile)
+    - [2.5.5 Data Schema Part](#255-data-schema-part)
+    - [2.5.6 Principal Schema Part](#256-principal-schema-part)
+    - [2.5.7 Action Schema Part](#257-action-schema-part)
+      - [2.5.7.1 Exec Action](#2571-exec-action)
+      - [2.5.7.2 ComHandler Action](#2572-comhandler-action)
+      - [2.5.7.3 Email Action](#2573-email-action)
+      - [2.5.7.4 ShowMessage Action](#2574-showmessage-action)
+    - [2.5.8 XML Tasks Localization](#258-xml-tasks-localization)
+    - [2.5.9 Task Fields Parameterization](#259-task-fields-parameterization)
+      - [2.5.9.1 Parameterization Format](#2591-parameterization-format)
+      - [2.5.9.2 Parameter Names](#2592-parameter-names)
+      - [2.5.9.3 Parameterizable Fields](#2593-parameterizable-fields)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Role Details](#31-client-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 ATSvc Client Processing](#3141-atsvc-client-processing)
+        - [3.1.4.1.1 Add Task](#31411-add-task)
+        - [3.1.4.1.2 Delete Task](#31412-delete-task)
+        - [3.1.4.1.3 Retrieve Task Status](#31413-retrieve-task-status)
+        - [3.1.4.1.4 Enumerate Tasks](#31414-enumerate-tasks)
+      - [3.1.4.2 SASec Client Processing](#3142-sasec-client-processing)
+        - [3.1.4.2.1 Common Operations](#31421-common-operations)
+          - [3.1.4.2.1.1 Determining Task Folder](#314211-determining-task-folder)
+          - [3.1.4.2.1.2 Setting Account Information](#314212-setting-account-information)
+        - [3.1.4.2.2 Add Task](#31422-add-task)
+        - [3.1.4.2.3 Delete Task](#31423-delete-task)
+        - [3.1.4.2.4 Modify Task](#31424-modify-task)
+        - [3.1.4.2.5 Retrieve Task Status](#31425-retrieve-task-status)
+        - [3.1.4.2.6 Enumerate Tasks](#31426-enumerate-tasks)
+        - [3.1.4.2.7 ATSvc Account Information](#31427-atsvc-account-information)
+        - [3.1.4.2.8 Control Task Operation](#31428-control-task-operation)
+          - [3.1.4.2.8.1 Run](#314281-run)
+          - [3.1.4.2.8.2 Stop](#314282-stop)
+          - [3.1.4.2.8.3 Stop Instance](#314283-stop-instance)
+      - [3.1.4.3 ITaskSchedulerService Client Processing](#3143-itaskschedulerservice-client-processing)
+        - [3.1.4.3.1 Add Task](#31431-add-task)
+        - [3.1.4.3.2 Add Folder](#31432-add-folder)
+        - [3.1.4.3.3 Delete Task or Folder](#31433-delete-task-or-folder)
+        - [3.1.4.3.4 Modify Task or Folder](#31434-modify-task-or-folder)
+          - [3.1.4.3.4.1 Set the Security Descriptor of a Task](#314341-set-the-security-descriptor-of-a-task)
+          - [3.1.4.3.4.2 Set the Security Descriptor of a Folder](#314342-set-the-security-descriptor-of-a-folder)
+          - [3.1.4.3.4.3 Set the Enabled State of a Task](#314343-set-the-enabled-state-of-a-task)
+          - [3.1.4.3.4.4 Modify a Task Definition](#314344-modify-a-task-definition)
+        - [3.1.4.3.5 Retrieve Task and Task Status](#31435-retrieve-task-and-task-status)
+          - [3.1.4.3.5.1 Retrieve a Task](#314351-retrieve-a-task)
+          - [3.1.4.3.5.2 Retrieve a Task's Security Descriptor](#314352-retrieve-a-tasks-security-descriptor)
+          - [3.1.4.3.5.3 Retrieve a Running Task's Instance Information](#314353-retrieve-a-running-tasks-instance-information)
+          - [3.1.4.3.5.4 Retrieve a Task's Scheduled Run Times](#314354-retrieve-a-tasks-scheduled-run-times)
+          - [3.1.4.3.5.5 Retrieve a Task's Last Run Information](#314355-retrieve-a-tasks-last-run-information)
+          - [3.1.4.3.5.6 Retrieve a Task's Information](#314356-retrieve-a-tasks-information)
+          - [3.1.4.3.5.7 Retrieve the Number of Times a Task Did Not Run](#314357-retrieve-the-number-of-times-a-task-did-not-run)
+          - [3.1.4.3.5.8 Retrieve the Highest Version of the Schema](#314358-retrieve-the-highest-version-of-the-schema)
+        - [3.1.4.3.6 Enumerate Tasks or Folders](#31436-enumerate-tasks-or-folders)
+          - [3.1.4.3.6.1 Enumerate All Tasks in a Folder](#314361-enumerate-all-tasks-in-a-folder)
+          - [3.1.4.3.6.2 Enumerate All Subfolders in a Folder](#314362-enumerate-all-subfolders-in-a-folder)
+          - [3.1.4.3.6.3 Enumerate a Task's Running Instances](#314363-enumerate-a-tasks-running-instances)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+  - [3.2 Server Role Details](#32-server-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 EventLog Events](#3241-eventlog-events)
+      - [3.2.4.2 Idle](#3242-idle)
+      - [3.2.4.3 Startup](#3243-startup)
+      - [3.2.4.4 Session Change](#3244-session-change)
+      - [3.2.4.5 Sleep](#3245-sleep)
+      - [3.2.4.6 Wake](#3246-wake)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Common Operations](#3251-common-operations)
+        - [3.2.5.1.1 Task Registration Security Checks](#32511-task-registration-security-checks)
+        - [3.2.5.1.2 Starting a Task](#32512-starting-a-task)
+        - [3.2.5.1.3 Stopping a Task](#32513-stopping-a-task)
+      - [3.2.5.2 ATSvc Message Processing Events and Sequencing Rules](#3252-atsvc-message-processing-events-and-sequencing-rules)
+        - [3.2.5.2.1 NetrJobAdd (Opnum 0)](#32521-netrjobadd-opnum-0)
+        - [3.2.5.2.2 NetrJobDel (Opnum 1)](#32522-netrjobdel-opnum-1)
+        - [3.2.5.2.3 NetrJobEnum (Opnum 2)](#32523-netrjobenum-opnum-2)
+        - [3.2.5.2.4 NetrJobGetInfo (Opnum 3)](#32524-netrjobgetinfo-opnum-3)
+      - [3.2.5.3 SASec Message Processing Events and Sequencing Rules](#3253-sasec-message-processing-events-and-sequencing-rules)
+        - [3.2.5.3.1 Receive File Add Notification](#32531-receive-file-add-notification)
+        - [3.2.5.3.2 Receive File Delete Notification](#32532-receive-file-delete-notification)
+        - [3.2.5.3.3 Receive File Modification Notification](#32533-receive-file-modification-notification)
+        - [3.2.5.3.4 SASetAccountInformation (Opnum 0)](#32534-sasetaccountinformation-opnum-0)
+        - [3.2.5.3.5 SASetNSAccountInformation (Opnum 1)](#32535-sasetnsaccountinformation-opnum-1)
+        - [3.2.5.3.6 SAGetNSAccountInformation (Opnum 2)](#32536-sagetnsaccountinformation-opnum-2)
+        - [3.2.5.3.7 SAGetAccountInformation (Opnum 3)](#32537-sagetaccountinformation-opnum-3)
+      - [3.2.5.4 ITaskSchedulerService Message Processing Events and Sequencing Rules](#3254-itaskschedulerservice-message-processing-events-and-sequencing-rules)
+        - [3.2.5.4.1 SchRpcHighestVersion (Opnum 0)](#32541-schrpchighestversion-opnum-0)
+        - [3.2.5.4.2 SchRpcRegisterTask (Opnum 1)](#32542-schrpcregistertask-opnum-1)
+        - [3.2.5.4.3 SchRpcRetrieveTask (Opnum 2)](#32543-schrpcretrievetask-opnum-2)
+        - [3.2.5.4.4 SchRpcCreateFolder (Opnum 3)](#32544-schrpccreatefolder-opnum-3)
+        - [3.2.5.4.5 SchRpcSetSecurity (Opnum 4)](#32545-schrpcsetsecurity-opnum-4)
+        - [3.2.5.4.6 SchRpcGetSecurity (Opnum 5)](#32546-schrpcgetsecurity-opnum-5)
+        - [3.2.5.4.7 SchRpcEnumFolders (Opnum 6)](#32547-schrpcenumfolders-opnum-6)
+        - [3.2.5.4.8 SchRpcEnumTasks (Opnum 7)](#32548-schrpcenumtasks-opnum-7)
+        - [3.2.5.4.9 SchRpcEnumInstances (Opnum 8)](#32549-schrpcenuminstances-opnum-8)
+        - [3.2.5.4.10 SchRpcGetInstanceInfo (Opnum 9)](#325410-schrpcgetinstanceinfo-opnum-9)
+        - [3.2.5.4.11 SchRpcStopInstance (Opnum 10)](#325411-schrpcstopinstance-opnum-10)
+        - [3.2.5.4.12 SchRpcStop (Opnum 11)](#325412-schrpcstop-opnum-11)
+        - [3.2.5.4.13 SchRpcRun (Opnum 12)](#325413-schrpcrun-opnum-12)
+        - [3.2.5.4.14 SchRpcDelete (Opnum 13)](#325414-schrpcdelete-opnum-13)
+        - [3.2.5.4.15 SchRpcRename (Opnum 14)](#325415-schrpcrename-opnum-14)
+        - [3.2.5.4.16 SchRpcScheduledRuntimes (Opnum 15)](#325416-schrpcscheduledruntimes-opnum-15)
+        - [3.2.5.4.17 SchRpcGetLastRunInfo (Opnum 16)](#325417-schrpcgetlastruninfo-opnum-16)
+        - [3.2.5.4.18 SchRpcGetTaskInfo (Opnum 17)](#325418-schrpcgettaskinfo-opnum-17)
+        - [3.2.5.4.19 SchRpcGetNumberOfMissedRuns (Opnum 18)](#325419-schrpcgetnumberofmissedruns-opnum-18)
+        - [3.2.5.4.20 SchRpcEnableTask (Opnum 19)](#325420-schrpcenabletask-opnum-19)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Global Timer](#3261-global-timer)
+      - [3.2.6.2 Delay Timer](#3262-delay-timer)
+  - [3.3 RPC Runtime Check Notes](#33-rpc-runtime-check-notes)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Packet Sequence for Task Creation](#41-packet-sequence-for-task-creation)
+    - [4.1.1 Packet Sequence for Task Creation Using SASec Interface](#411-packet-sequence-for-task-creation-using-sasec-interface)
+    - [4.1.2 Packet Sequence for Task Creation Using ITaskScheduler Interface](#412-packet-sequence-for-task-creation-using-itaskscheduler-interface)
+    - [4.1.3 Task XML Example](#413-task-xml-example)
+  - [4.2 Examples of Operations Flow](#42-examples-of-operations-flow)
+    - [4.2.1 SASec Operation Flow](#421-sasec-operation-flow)
+    - [4.2.2 ITaskSchedulerService Operation Flow](#422-itaskschedulerservice-operation-flow)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: ATSvc.idl](#61-appendix-a1-atsvcidl)
+  - [6.2 Appendix A.2: SaSecRpc.idl](#62-appendix-a2-sasecrpcidl)
+  - [6.3 Appendix A.3: SchRpc.idl](#63-appendix-a3-schrpcidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This specification describes how the Task Scheduler Remoting Protocol is used to register and
 configure a task and to inquire about the status of running tasks on a remote machine.
@@ -1113,7 +810,7 @@ configure a task and to inquire about the status of running tasks on a remote ma
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1180,7 +877,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
+
+fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
 
 location in the Domain Name System's (DNS) hierarchy tree, as defined in [RFC1035] section
 3.1 and [RFC2181] section 11.
@@ -1261,7 +959,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The security descriptor is used to guard access to an object as well as to control which type of
+
+The security descriptor is used to guard access to an object as well as to control which type of
 auditing takes place when the object is accessed. The security descriptor format is specified in
 [MS-DTYP] section 2.4.6; a string representation of security descriptors, called SDDL, is
 specified in [MS-DTYP] section 2.5.1.
@@ -1336,7 +1035,8 @@ Release: April 23, 2024
 
 12 / 149
 
-terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
+
+terminating null character. Unless otherwise specified, all Unicode strings follow the UTF-16LE
 encoding scheme with no Byte Order Mark (BOM).
 
 universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
@@ -1371,14 +1071,14 @@ to other nodes in the document.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1407,7 +1107,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -1441,7 +1142,7 @@ https://www.rfc-editor.org/info/rfc788
 [W3C-XSD] World Wide Web Consortium, "XML Schema Part 2: Datatypes Second Edition", 28
 October 2004, http://www.w3.org/TR/2004/REC-xmlschema-2-20041028
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-AUTHSOD] Microsoft Corporation, "Authentication Services Protocols Overview".
 
@@ -1472,10 +1173,11 @@ Release: April 23, 2024
 
 14 / 149
 
-[MSDN-WSI] Microsoft Corporation, "WTS_SESSION_INFO structure", http://msdn.microsoft.com/en-
+
+[MSDN-WSI] Microsoft Corporation, "WTS_SESSION_INFO structure", http://msdn.microsoft.com/en-
 us/library/aa383864.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Task Scheduler Remoting Protocol is used to register and configure tasks or to query the status of
 running tasks on a remote server. The Task Scheduler Remoting Protocol primarily consists of three
@@ -1517,7 +1219,7 @@ deleting, enumerating, and querying tasks. The remote registry and file system p
 used. The ITaskSchedulerService interface uses XML to specify task configuration (section 2.5). The
 XML schema provides more features than the .JOB File Format for specifying tasks.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The ATSvc, SASec, and ITaskSchedulerService interfaces in the Task Scheduler Remoting Protocol use
 the RPC Protocol [C706] for transport as specified in section 2.1. The SASec interface requires that
@@ -1527,7 +1229,7 @@ considerations.
 
 No higher-layer protocols make use of the Task Scheduler Remoting Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Task Scheduler Remoting Protocol requires the following preconditions:
 
@@ -1543,7 +1245,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1556,12 +1259,12 @@ The client and server are required to have security providers to support encrypt
 
 The client is required to possess credentials recognized by the server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to scheduling tasks and querying their status on remote machines either in
 domain or workstation configurations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are four versions of the Task Scheduler Remoting Protocol that correspond to the ATSvc, SASec,
 and ITaskSchedulerService (for the last two) interfaces. The following table provides the task version
@@ -1602,13 +1305,13 @@ FIXDLEN_DATA (section 2.4.1)), but this field is always set to 0x0001, so it is 
 negotiation. The XML schema contains a Version element (see section 2.5.1), but this element is for
 the use of the task itself and not related to Task Scheduler Remoting Protocol versioning.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT return codes, which are vendor-extensible. Vendors are free to choose
 their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a customer
 code. For more information, see [MS-ERREF].<3>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following is a table of well-known UUIDs used in the ATSvc, SASec, and ITaskSchedulerService
 protocols.
@@ -1620,7 +1323,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
  Value
 
@@ -1658,9 +1362,10 @@ Release: April 23, 2024
 
 17 / 149
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Task Scheduler Remoting Protocol MUST use [MS-RPCE] as its transport protocol.
 
@@ -1682,7 +1387,7 @@ The RPC server MUST require RPC_C_AUTHN_GSS_NEGOTIATE or RPC_C_AUTHN_WINNT
 authorization. The RPC client MUST use an authentication level of
 RPC_C_AUTHN_LEVEL_PKT_PRIVACY (value = 6), as specified in [MS-RPCE] section 2.2.1.1.8.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section uses both Interface Definition Language (IDL) and bit-diagrams to specify syntax.
 Types and structures defined in IDL syntax are marshaled as specified in [C706] section 14. All fields
@@ -1694,7 +1399,7 @@ Except where otherwise specified, the Task Scheduler Remoting Protocol uses the 
 encoding, as specified in [UNICODE], for all string values, including all string constants appearing in
 this specification.
 
-2.3  Common Data Types
+### 2.3 Common Data Types
 
 In addition to the RPC data types specified in [MS-DTYP] Appendix A, the following sections use the
 definitions of BYTE, DWORD, LPDWORD, LPCWSTR, FILETIME, SECURITY_DESCRIPTOR, and
@@ -1703,7 +1408,7 @@ SECURITY_INFORMATION as specified in [MS-DTYP].
 The following additional data types are used in the IDL specification of the Task Scheduler Remoting
 Protocol RPC interfaces.
 
-2.3.1  Constant Values
+#### 2.3.1 Constant Values
 
 The Task Scheduler Remoting Protocol uses the following constant value definitions for interface
 method parameters.
@@ -1727,7 +1432,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -1749,7 +1455,7 @@ The value of MAX_BUFFER_SIZE calculates out to 273.
 
 (DNLEN+UNLEN+1+1)
 
-2.3.2  ATSVC_HANDLE
+#### 2.3.2 ATSVC_HANDLE
 
 The ATSvc interface on a particular server is referred to by its handle, the ATSVC_HANDLE. For the
 ATSvc interface, the handle is the NetBIOS name of the server providing the interface.
@@ -1761,7 +1467,7 @@ This type is declared as follows:
 All the ATSvc methods, as specified in section 3.2.5.2, have an ATSVC_HANDLE as their first
 parameter. This string is translated to an RPC binding handle by using RPC APIs.
 
-2.3.3  SASEC_HANDLE
+#### 2.3.3 SASEC_HANDLE
 
 The SASec interface on a particular server is referred to by its handle, a SASEC_HANDLE. For the
 SASec interface, the handle is the NetBIOS name of the server providing the interface.
@@ -1773,7 +1479,7 @@ This type is declared as follows:
 
  typedef [handle] const wchar_t* SASEC_HANDLE;
 
-2.3.4  AT_INFO
+#### 2.3.4 AT_INFO
 
 The client uses the AT_INFO structure to configure a task in the ATSvc NetrJobAdd (section 3.2.5.2.1)
 method. The server returns the AT_INFO structure with information about a task in the ATSvc
@@ -1796,7 +1502,8 @@ Release: April 23, 2024
 
 19 / 149
 
-JobTime:  This field is the time of day the task is to run, expressed as milliseconds after midnight.
+
+JobTime:  This field is the time of day the task is to run, expressed as milliseconds after midnight.
 
 The value is in the range of 0 to 86399999 (24*60*60*1000-1). JobTime is present on the wire
 as a 32-bit unsigned integer.<5>
@@ -1991,7 +1698,8 @@ Release: April 23, 2024
 
 20 / 149
 
-Flags:  Contains individual bit flags set to zero or more of the following values.
+
+Flags:  Contains individual bit flags set to zero or more of the following values.
 
 0
 
@@ -2077,7 +1785,7 @@ DaysOfMonth to the fifteenth of the month, DayOfWeek to Tuesday, and
 JOB_RUN_PERIODICALLY to 1 will cause the job to run on the fifteenth of every month and on
 Tuesday of every week.
 
-2.3.5  AT_ENUM_CONTAINER
+#### 2.3.5 AT_ENUM_CONTAINER
 
 The ATSvc method NetrJobEnum uses the AT_ENUM_CONTAINER structure to return multiple
 AT_ENUM structures. The format of the AT_ENUM_CONTAINER structure is as follows:
@@ -2100,7 +1808,8 @@ Release: April 23, 2024
 
 21 / 149
 
-2.3.6  AT_ENUM
+
+#### 2.3.6 AT_ENUM
 
 The format of the AT_ENUM structure is almost identical to the AT_INFO structure with only the
 addition of the JobId field:
@@ -2123,7 +1832,7 @@ system.
 All other fields are interpreted according to the corresponding specification given in
 AT_INFO (section 2.3.4) for all other fields.
 
-2.3.7  Flags
+#### 2.3.7 Flags
 
 Several of the following structures have a Flags field. The specific Flags bits are defined as follows.
 
@@ -2221,7 +1930,8 @@ If set to 1, specifies that the task is disabled.
 
 22 / 149
 
-Value
+
+Value
 
 SI
 
@@ -2312,7 +2022,7 @@ Flags (16 bytes): Undefined bits. MUST be set to zero when sent and MUST be igno
 
 receipt.
 
-2.3.8  TASK_USER_CRED
+#### 2.3.8 TASK_USER_CRED
 
 The TASK_USER_CRED structure contains user credentials and is passed to the server during task
 registration, as specified in section 3.2.5.4.2.
@@ -2330,7 +2040,8 @@ Release: April 23, 2024
 
 23 / 149
 
-userId:  Contains the user name identifying the account under which the task can execute. The user
+
+userId:  Contains the user name identifying the account under which the task can execute. The user
 name is a string recognized by Windows authentication, as specified in [MS-AUTHSOD] section
 1.1.1.2.<9>
 
@@ -2366,7 +2077,7 @@ If set to 1, the server can use these credentials if no other credentials are pr
 set to 0, the server can use these credentials instead of the credentials specified in the
 task configuration.
 
-2.3.9  TASK_LOGON_TYPE
+#### 2.3.9 TASK_LOGON_TYPE
 
 The TASK_LOGON_TYPE is a DWORD parameter to the SchRpcRegisterTask method. It specifies how a
 user context is established for a task.
@@ -2410,7 +2121,8 @@ Release: April 23, 2024
 
 24 / 149
 
-2.3.10 TASK_XML_ERROR_INFO
+
+#### 2.3.10 TASK_XML_ERROR_INFO
 
 The TASK_XML_ERROR_INFO structure is a return value from the SchRpcRegisterTask (Opnum 1)
 method that contains additional information about an error in the XML task definition.
@@ -2434,7 +2146,7 @@ node:  Contains the attribute or element name that caused the error, or which is
 
 value:  When this field is not empty, it contains the invalid value that caused the error.
 
-2.3.11 Path Names
+#### 2.3.11 Path Names
 
 Many of the ITaskSchedulerService methods have a Unicode string path parameter. This parameter
 specifies the location of the task in the XML task store, as specified in section 3.2.1. Path names
@@ -2449,7 +2161,7 @@ Names do not:
 
   Consist of the following string: ".."
 
-2.3.12 TASK_NAMES
+#### 2.3.12 TASK_NAMES
 
 The enumeration methods SchRpcEnumFolders (Opnum 6) and SchRpcEnumTasks (Opnum 7) return
 arrays of Unicode strings that contain the names of the enumerated objects. For readability in
@@ -2460,7 +2172,7 @@ This type is declared as follows:
 
  typedef [string] wchar_t** TASK_NAMES;
 
-2.3.13 TASK_STATE
+#### 2.3.13 TASK_STATE
 
 The SchRpcGetInstanceInfo and SchRpcGetTaskInfo methods return information about the current
 state of the task in a DWORD return parameter. The state is encoded as follows.
@@ -2480,7 +2192,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00000000
 
@@ -2510,7 +2223,7 @@ The task is running.
 
 0x00000004
 
-2.3.14 Error Codes
+#### 2.3.14 Error Codes
 
 This specification uses the HRESULT and NET_API_STATUS types, as specified in [MS-DTYP] sections
 2.2.18 and 2.2.37.
@@ -2518,9 +2231,9 @@ This specification uses the HRESULT and NET_API_STATUS types, as specified in [M
 Unless specified explicitly, all failure values are treated as equivalent for protocol purposes and are
 simply passed back to the invoking application.<10>
 
-2.4
+### 2.4 .JOB File Format
 
-.JOB File Format
+
 
 A .JOB file specifies task configuration. Clients that use the SASec interface create the .JOB file and
 write it to the server by using a remote file system protocol, as specified in section 3.1.4.2.2. Clients
@@ -2532,7 +2245,7 @@ A .JOB file consists of two main sections, fixed-length (section 2.4.1) and vari
 All fields in the .JOB file format MUST use little-endian byte ordering unless otherwise stated. All extra
 padding bytes are a value of zero unless otherwise stated and all are ignored upon receipt.
 
-2.4.1  FIXDLEN_DATA
+#### 2.4.1 FIXDLEN_DATA
 
 The FIXDLEN_DATA structure is the fixed-length header in the .JOB description file. The
 FIXDLEN_DATA structure is located at the beginning of the file. The format of the FIXDLEN_DATA
@@ -2566,7 +2279,8 @@ Release: April 23, 2024
 
 26 / 149
 
-App Name Len Offset
+
+App Name Len Offset
 
 Trigger Offset
 
@@ -2643,7 +2357,8 @@ Release: April 23, 2024
 
 27 / 149
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2756,7 +2471,8 @@ Release: April 23, 2024
 
 28 / 149
 
-Value
+
+Value
 
 Meaning
 
@@ -2796,7 +2512,7 @@ Between 0 and 999, for values less than one second, inclusive.
 
 0 — 999
 
-2.4.2  Variable-Length Data Section
+#### 2.4.2 Variable-Length Data Section
 
 Immediately following the FIXDLEN_DATA structure is the Variable-Length Data Section. The variable-
 length data section is composed of the following fields:
@@ -2829,7 +2545,7 @@ Job Signature
 
 This section also contains the specification for specially formatted Unicode strings in section 2.4.2.1.
 
-2.4.2.1  Specially Formatted Unicode Strings
+##### 2.4.2.1 Specially Formatted Unicode Strings
 
 Fields containing a specially formatted Unicode string contain either a 16-bit nonzero character count
 followed by a null-terminated Unicode string, or a 16-bit zero with no following Unicode characters.
@@ -2843,13 +2559,14 @@ Release: April 23, 2024
 
 29 / 149
 
-2.4.2.2  Running Instance Count
+
+##### 2.4.2.2 Running Instance Count
 
 The first field of the variable-length data section is the count of running instances of this task. This
 field contains the number of instances of this task that are currently running. Running instances are
 manipulated as 16-bit unsigned integers. While creating a job, the field is to be ignored on receipt.
 
-2.4.2.3  Application Name
+##### 2.4.2.3 Application Name
 
 The Application Name field follows the Running Instance Count field. The Application Name field and
 the four following fields (Parameters, Working Directory, Author, and Comment) are specially
@@ -2857,31 +2574,31 @@ formatted Unicode strings, as specified in the following sections. The string in
 field is not absent. The content of this field is the same as the Command field specified in section
 2.5.7.1.<13>
 
-2.4.2.4  Parameters
+##### 2.4.2.4 Parameters
 
 The Parameters field follows the Application Name field. The Parameters field contains a specially
 formatted Unicode string, as specified in section 2.4.2.1. The content of this field is the same as the
 Arguments field, as specified in section 2.5.7.1.
 
-2.4.2.5  Working Directory
+##### 2.4.2.5 Working Directory
 
 The Working Directory field follows the Parameters field. The Working Directory field contains a
 specially formatted Unicode string, as specified in section 2.4.2.1. The content of this field is the
 same as the Working Directory field, as specified in section 2.5.7.1.
 
-2.4.2.6  Author
+##### 2.4.2.6 Author
 
 The Author field follows the Working Directory field. The Author field contains a specially formatted
 Unicode string, as specified in section 2.4.2.1. The content of this field is the same as the Author
 field, as specified in section 2.5.2.
 
-2.4.2.7  Comment
+##### 2.4.2.7 Comment
 
 The Comment field follows the Author field. The Comment field contains a specially formatted
 Unicode string, as specified in section 2.4.2.1. The content of this field is the same as the
 Description field, as specified in section 2.5.2.
 
-2.4.2.8  User Data Size/User Data
+##### 2.4.2.8 User Data Size/User Data
 
 The 16-bit User Data Size field follows the Comment field. If User Data bytes are present following
 the User Data Size field, User Data Size contains the number of bytes of User Data. If User Data is
@@ -2911,7 +2628,8 @@ Release: April 23, 2024
 
 30 / 149
 
-2.4.2.9  Reserved Data Size/Reserved Data
+
+##### 2.4.2.9 Reserved Data Size/Reserved Data
 
 The 16-bit Reserved Data Size field follows the User Data field. If Reserved Data bytes are present
 following the Reserved Data Size field, Reserved Data Size SHOULD contain the value eight and an
@@ -2963,9 +2681,9 @@ set to zero when sent and MUST be ignored on receipt.<15>
 
 The Task Flags are not used. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.10
+##### 2.4.2.10 Trigger Count
 
-Trigger Count
+
 
 The 16-bit Trigger Count field follows the Reserved Data field. The Trigger Count field contains the
 size, in bytes, of the following array of triggers.
@@ -3005,9 +2723,9 @@ size, in bytes, of the following array of triggers.
 
 Trigger Count
 
-2.4.2.11
+##### 2.4.2.11 Triggers
 
-Triggers
+
 
 An array of zero or more triggers follows the Trigger Count field. All triggers share the same format.
 
@@ -3033,7 +2751,8 @@ Release: April 23, 2024
 
 31 / 149
 
-Begin Year
+
+Begin Year
 
 Begin Day
 
@@ -3116,7 +2835,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Minutes Duration (4 bytes): This field contains a value in minutes, in the range 0x00000000 to
+
+Minutes Duration (4 bytes): This field contains a value in minutes, in the range 0x00000000 to
 
 0xFFFFFFFF.<22>
 
@@ -3185,9 +2905,9 @@ Reserved2 (2 bytes): MUST be set to zero when sent and MUST be ignored on receip
 
 Reserved3 (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.11.1
+###### 2.4.2.11.1 Trigger Type
 
-Trigger Type
+
 
 The Trigger type specifies how the trigger-specific fields are interpreted and contains one of the
 following values.
@@ -3221,7 +2941,8 @@ Release: April 23, 2024
 
 33 / 149
 
-Name
+
+Name
 
 Value
 
@@ -3246,7 +2967,7 @@ the trigger-specific fields are set to 0.
 
 The different trigger types use some shared bit fields, as indicated in the following sections.
 
-2.4.2.11.2  Day of the Month
+###### 2.4.2.11.2 Day of the Month
 
 The Day of the Month field is specified as follows.
 
@@ -3269,7 +2990,7 @@ X (1 bit): Unused. MUST be set to zero when sent and MUST be ignored on receipt.
 
 be set to 1.
 
-2.4.2.11.3  Day of the Week
+###### 2.4.2.11.3 Day of the Week
 
 The Day of the Week field is specified as follows.
 
@@ -3369,7 +3090,8 @@ Release: April 23, 2024
 
 34 / 149
 
-Value
+
+Value
 
 Description
 
@@ -3401,7 +3123,7 @@ Saturday
 
 Day of the Week (2 bytes): Undefined bits are set to 0 when sent and ignored upon receipt.
 
-2.4.2.11.4  Month of the Year
+###### 2.4.2.11.4 Month of the Year
 
 The Month of the Year field is specified as follows.
 
@@ -3538,7 +3260,8 @@ Release: April 23, 2024
 
 35 / 149
 
-Value
+
+Value
 
 Description
 
@@ -3578,7 +3301,7 @@ Month of the Year (2 bytes): Undefined bits MUST be set to zero when sent and MU
 
 on receipt.
 
-2.4.2.11.5  DAILY Trigger
+###### 2.4.2.11.5 DAILY Trigger
 
 When trigger type is DAILY, the five fields are interpreted as follows:
 
@@ -3619,7 +3342,7 @@ Unused (4 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
 Padding (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.11.6  WEEKLY Trigger
+###### 2.4.2.11.6 WEEKLY Trigger
 
 When the trigger type is WEEKLY, the five fields are interpreted as follows:
 
@@ -3643,7 +3366,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Weeks Interval
+
+Weeks Interval
 
 DaysOfTheWeek
 
@@ -3663,7 +3387,7 @@ Unused (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
 Padding (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.11.7  MONTHLYDATE Trigger
+###### 2.4.2.11.7 MONTHLYDATE Trigger
 
 When trigger type is MONTHLYDATE, the five fields are interpreted as follows:
 
@@ -3700,7 +3424,7 @@ interpreted as specified in section 2.4.2.11.4.
 
 Padding (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.11.8  MONTHLYDOW Trigger
+###### 2.4.2.11.8 MONTHLYDOW Trigger
 
 When trigger type is MONTHLYDOW (monthly day of week), the five fields are interpreted as follows.
 
@@ -3736,7 +3460,8 @@ Release: April 23, 2024
 
 37 / 149
 
-Trigger Type (4 bytes): Trigger frequency type. Set to 0x00000004 for the MONTHLYDOW trigger
+
+Trigger Type (4 bytes): Trigger frequency type. Set to 0x00000004 for the MONTHLYDOW trigger
 
 type.
 
@@ -3776,9 +3501,9 @@ Reserved2 (2 bytes): MUST be set to zero when sent and MUST be ignored on receip
 
 Reserved3 (2 bytes): MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.4.2.12
+##### 2.4.2.12 Job Signature
 
-Job Signature
+
 
 A 32-bit JOB_SIGNATURE_HEADER and 64-byte signature (see the following) MAY follow the array of
 triggers.
@@ -3835,7 +3560,8 @@ Release: April 23, 2024
 
 38 / 149
 
-
+
+
 
 The Security Identifier (SID) of the file owner, the uuidJob field of the FIXDLEN_DATA
 structure, and the null-terminated string value from Application Name in the variable-length data
@@ -3850,7 +3576,7 @@ section is bytewise concatenated in a buffer.
 The hash is signed using MD5, and the signed hash is placed in the 64 bytes after the
 JOB_SIGNATURE_HEADER.
 
-2.5  XML Task Definition Format
+### 2.5 XML Task Definition Format
 
 The ITaskSchedulerService interface uses XML to define tasks. Tasks are XML documents that MUST
 adhere to the schema specified in this section.
@@ -3912,11 +3638,12 @@ Release: April 23, 2024
 
 39 / 149
 
-2.5.1  Common Data Types
+
+#### 2.5.1 Common Data Types
 
 This section specifies common data types used in the XML task definition schema.
 
-2.5.1.1  Standard Data Types
+##### 2.5.1.1 Standard Data Types
 
 The XML task definition schema uses several standard XML types:
 
@@ -3940,7 +3667,7 @@ xs:IDREF: A string name, as specified in [W3C-XSD] section 3.3.10.
 
 xs:anyURI: A path, as specified in [W3C-XSD] section 3.2.17.
 
-2.5.1.2  versionType
+##### 2.5.1.2 versionType
 
 The versionType specifies a string representing a version number. The version number has one of the
 following formats: "X.Y", "X.Y.Z", or "X.Y.Z.W", where X, Y, Z, and W contain one or more decimal
@@ -3952,7 +3679,7 @@ digits.
    </xs:restriction>
  </xs:simpleType>
 
-2.5.1.3  nonEmptyString
+##### 2.5.1.3 nonEmptyString
 
 The nonEmptyString type specifies a string that contains at least one character.
 
@@ -3962,7 +3689,7 @@ The nonEmptyString type specifies a string that contains at least one character.
    </xs:restriction>
  </xs:simpleType>
 
-2.5.1.4  pathType
+##### 2.5.1.4 pathType
 
 The pathType type specifies a string that contains between 1 and 260 characters.
 
@@ -3978,9 +3705,10 @@ Release: April 23, 2024
 
 40 / 149
 
- </xs:simpleType>
 
-2.5.1.5  guidType
+ </xs:simpleType>
+
+##### 2.5.1.5 guidType
 
 The guidType type specifies a string that contains the representation of a GUID, as defined in [MS-
 DTYP] section 2.3.4.
@@ -3993,7 +3721,7 @@ hexadecimal digit. -->
    </xs:restriction>
  </xs:simpleType>
 
-2.5.2  RegistrationInfo Schema Part
+#### 2.5.2 RegistrationInfo Schema Part
 
 If present, this schema part specifies the location and security settings for the task registration and
 additional descriptive fields as specified in this section.
@@ -4046,11 +3774,12 @@ Release: April 23, 2024
 
 41 / 149
 
-Documentation: If present, this field specifies the uniform resource identifier (URI) of external
+
+Documentation: If present, this field specifies the uniform resource identifier (URI) of external
 
 documentation related to the task.
 
-2.5.3  Triggers Schema Part
+#### 2.5.3 Triggers Schema Part
 
 If present, the Triggers schema part specifies the state change or time occurrence and frequency that
 the task will be started within the predefined time boundaries. The triggers control when the task is
@@ -4079,7 +3808,7 @@ the task can be started on the first occurring trigger.
   </xs:choice>
  </xs:group>
 
-2.5.3.1  Common Trigger Elements
+##### 2.5.3.1 Common Trigger Elements
 
 This section specifies the elements that are common to all triggers. For the clarity of the document,
 these will be specified once in this section, but each and every trigger specified in the following
@@ -4118,7 +3847,8 @@ Release: April 23, 2024
 
 42 / 149
 
-         </xs:restriction>
+
+         </xs:restriction>
        </xs:simpleType>
      </xs:element>
      <xs:element name= "Duration" minOccurs= "0">
@@ -4172,7 +3902,7 @@ StopAtDurationEnd: If present, this subfield contains a Boolean value. If the fi
 TRUE, any running task instance can stop at the end of the Duration. If the field has the
 value FALSE, task instances can continue running after the end of the Duration.
 
-2.5.3.2  BootTrigger
+##### 2.5.3.2 BootTrigger
 
 If present, the BootTrigger specifies that the task can start at operating system start-up, after the
 ATSvc server initializes.
@@ -4193,7 +3923,8 @@ Release: April 23, 2024
 
 43 / 149
 
-     </xs:extension>
+
+     </xs:extension>
    </xs:complexContent>
  </xs:complexType>
 
@@ -4201,7 +3932,7 @@ Delay: If present, this field contains a user-specified delay value as specified
 
 2.5.1.1. The task startup can be delayed after boot (ATSvc start-up) by the delay value.
 
-2.5.3.3  RegistrationTrigger
+##### 2.5.3.3 RegistrationTrigger
 
 If present, the RegistrationTrigger specifies that the task can start after registration.
 
@@ -4221,7 +3952,7 @@ Delay: If present, this field contains a user-specified delay value. The task ca
 
 after task registration until the time interval specified by the delay value has elapsed.
 
-2.5.3.4  IdleTrigger
+##### 2.5.3.4 IdleTrigger
 
 If present, the IdleTrigger specifies that the task can start when the machine becomes idle, as
 specified in section 3.2.4.2.
@@ -4233,7 +3964,7 @@ specified in section 3.2.4.2.
    </xs:complexContent>
  </xs:complexType>
 
-2.5.3.5  TimeTrigger
+##### 2.5.3.5 TimeTrigger
 
 If present, the TimeTrigger specifies that the task can start at the specified StartBoundary time.
 
@@ -4260,7 +3991,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.5.3.6  EventTrigger
+
+##### 2.5.3.6 EventTrigger
 
 If present, the EventTrigger specifies that the task can start upon occurrence of an event matching an
 event subscription query, as specified in [MS-EVEN6] section 2.2.16, or on the occurrence of a number
@@ -4336,12 +4068,13 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ValueQueries: If present, this field specifies a set of XML elements. The set has between 1 and 32
+
+ValueQueries: If present, this field specifies a set of XML elements. The set has between 1 and 32
 
 members, inclusive. When an event matches the subscription and fires the trigger, element values
 from the event for task action parameterization (section 2.5.9) can be retrieved.
 
-2.5.3.7  LogonTrigger
+##### 2.5.3.7 LogonTrigger
 
 If present, the LogonTrigger specifies that the task can start at user logon.
 
@@ -4368,7 +4101,7 @@ Delay: If present, this field contains a user-specified delay value as specified
 section 2.5.1.1. The task can have a delayed start after Logon; the time duration of the delayed
 start is equal to the delay value.
 
-2.5.3.8  SessionStateChangeTrigger
+##### 2.5.3.8 SessionStateChangeTrigger
 
 If present, this trigger specifies that the task can start when one of the following system changes
 occurs.<25>
@@ -4406,7 +4139,8 @@ Release: April 23, 2024
 
 46 / 149
 
-UserId: If present, this field MUST contain an account name. The server fires the trigger when that
+
+UserId: If present, this field MUST contain an account name. The server fires the trigger when that
 user has a session change as specified by the StateChange field. The task starts in the context
 (identity) specified by the Principal part as specified in section 2.5.6. Only one UserId is to be
 specified in the SessionStateChangeTrigger.
@@ -4445,7 +4179,7 @@ SessionUnlock
 
 Specifies that the task is started when user unlocks the workstation.
 
-2.5.3.9  CalendarTrigger
+##### 2.5.3.9 CalendarTrigger
 
 If present, the CalendarTrigger specifies that the task can start on the specified days.
 
@@ -4487,7 +4221,8 @@ Release: April 23, 2024
 
 47 / 149
 
-       </xs:simpleType>
+
+       </xs:simpleType>
      </xs:element>
   </xs:all>
  </xs:complexType>
@@ -4564,7 +4299,8 @@ Release: April 23, 2024
 
 48 / 149
 
-   </xs:sequence>
+
+   </xs:sequence>
  </xs:complexType>
  <xs:simpleType name="dayOfMonthType">
    <xs:restriction base="xs:string">
@@ -4640,7 +4376,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DaysOfWeek: If present, this field contains zero or more of the following seven subfields:
+
+DaysOfWeek: If present, this field contains zero or more of the following seven subfields:
 
 Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday. The task runs on
 the specified days of the week.
@@ -4655,7 +4392,7 @@ RandomDelay: If present, this field contains a user-specified maximum delay valu
 "time duration" in section 2.5.1.1. The random delay value MUST be chosen from the interval from
 zero to RandomDelay, inclusive. The task runs after the random delay interval has passed.
 
-2.5.4  Settings Schema Part
+#### 2.5.4 Settings Schema Part
 
 If present, the Settings Schema Part specifies how to run the actions and additional conditions. The
 task can run only if the following machine conditions match the following settings when the trigger
@@ -4714,7 +4451,8 @@ Release: April 23, 2024
 
 50 / 149
 
-     <xs:element name="UseUnifiedSchedulingEngine" type="xs:boolean" default="false"
+
+     <xs:element name="UseUnifiedSchedulingEngine" type="xs:boolean" default="false"
 minOccurs="0" />
      <xs:element name="DisallowStartOnRemoteAppSession" type="xs:boolean" default="false"
 minOccurs="0" />
@@ -4725,13 +4463,13 @@ The following settings are supported only in the v1.4 schema.
      minOccurs="0"/>
      <xs:element name="Volatile" type="xs:boolean" default="false" minOccurs="0"/>
 
-2.5.4.1  AllowStartOnDemand
+##### 2.5.4.1 AllowStartOnDemand
 
 If present and set to TRUE, the AllowStartOnDemand field specifies that the task is started when
 invoked by the user (see section 3.2.5.4.13). Otherwise, the task does not run when invoked by the
 user, but only when the appropriate trigger occurs.
 
-2.5.4.2  RestartOnFailure
+##### 2.5.4.2 RestartOnFailure
 
 If the task fails to run because one of the start conditions is not met (see Settings Schema
 Part (section 2.5.4)) or because of a failure to start an action, the operation is attempted again. The
@@ -4765,7 +4503,7 @@ falls in the range of 1 minute to 31 days, inclusive.
 
 Count: This field is present and contains an integer in the range 1 to 255, inclusive.
 
-2.5.4.3  MultipleInstancesPolicy
+##### 2.5.4.3 MultipleInstancesPolicy
 
 If present, the MultipleInstancesPolicy field contains one of the following values: Parallel, Queue,
 IgnoreNew, or StopExisting.
@@ -4779,7 +4517,8 @@ Release: April 23, 2024
 
 51 / 149
 
- <xs:simpleType name="multipleInstancesPolicyType">
+
+ <xs:simpleType name="multipleInstancesPolicyType">
    <xs:restriction base="xs:string">
        <xs:enumeration value="Parallel"/>
        <xs:enumeration value="Queue"/>
@@ -4800,33 +4539,33 @@ StopExisting: Specifies that the running instance can be stopped and a new insta
 
 on any additional trigger occurrence.
 
-2.5.4.4  DisallowStartIfOnBatteries
+##### 2.5.4.4 DisallowStartIfOnBatteries
 
 The task will not start if the computer is running on batteries, unless this field is present and set to
 FALSE.
 
-2.5.4.5  StopIfGoingOnBatteries
+##### 2.5.4.5 StopIfGoingOnBatteries
 
 The task can be stopped if the computer switches to battery or Uninterrupted Power Supply (UPS)
 power, unless this field is present and set to FALSE.
 
-2.5.4.6  AllowHardTerminate
+##### 2.5.4.6 AllowHardTerminate
 
 The task can be forcibly stopped if it exceeds its absolute execution time limit, unless this field is
 present and is set to FALSE.
 
-2.5.4.7  StartWhenAvailable
+##### 2.5.4.7 StartWhenAvailable
 
 If present and set to TRUE, this field specifies that the task can start when the computer becomes
 available if a scheduled run time was missed. This field applies only to time-based tasks with an end
 boundary or time-based tasks that are set to repeat infinitely.
 
-2.5.4.8  RunOnNetworkAvailable
+##### 2.5.4.8 RunOnNetworkAvailable
 
 If present and set to TRUE, this field specifies that the task can start only if a network connection is
 available.
 
-2.5.4.9  NetworkSettings
+##### 2.5.4.9 NetworkSettings
 
 The NetworkSettings field can be ignored unless the RunOnNetworkAvailable field (section
 2.5.4.8) is present and set to TRUE.<27>
@@ -4845,7 +4584,8 @@ Release: April 23, 2024
 
 52 / 149
 
-       <xs:element name="Name" type="nonEmptyString" minOccurs="0"/>
+
+       <xs:element name="Name" type="nonEmptyString" minOccurs="0"/>
        <xs:element name="Id" type="guidType" minOccurs="0"/>
    </xs:all>
  </xs:complexType>
@@ -4856,36 +4596,36 @@ operating system can be used.
 
 Id: If present, this field contains a GUID (section 2.5.1.5) specifying a network.
 
-2.5.4.10
+##### 2.5.4.10 WakeToRun
 
-WakeToRun
+
 
 If present and set to TRUE, this field specifies that the task can be run by awakening the computer
 from power-suspended mode (standby or hibernate).
 
-2.5.4.11
+##### 2.5.4.11 Enabled
 
-Enabled
+
 
 If present and set to FALSE, this field specifies that the task never runs.
 
-2.5.4.12
+##### 2.5.4.12 Hidden
 
-Hidden
+
 
 If present and set to TRUE, this field specifies that the task does not appear in an administrative
 console or graphic user interface.
 
-2.5.4.13
+##### 2.5.4.13 DeleteExpiredTaskAfter
 
-DeleteExpiredTaskAfter
+
 
 If present, this field contains a time duration in the format specified in section 2.5.1.1. The task can
 be deleted (after this delay) when it has no future scheduled run times.
 
-2.5.4.14
+##### 2.5.4.14 IdleSettings
 
-IdleSettings
+
 
 If present, the IdleSettings field specifies that the task can run only when the machine has been idle
 for the value of the Duration subfield.
@@ -4922,7 +4662,8 @@ Release: April 23, 2024
 
 53 / 149
 
-Duration: If present, this subfield contains a time duration of at least 1 minute (between 1 minute
+
+Duration: If present, this subfield contains a time duration of at least 1 minute (between 1 minute
 
 and 31 days, inclusive). The format is as specified in section 2.5.1.1. The task can have a delayed
 start until the specified Duration has elapsed from the time that the machine became idle. For
@@ -4943,9 +4684,9 @@ RestartOnIdle: If present and set to TRUE, this subfield specifies that the task
 machine returns to idle state. If present and set to FALSE, the task continues running when the
 server returns to idle state.<31>
 
-2.5.4.15
+##### 2.5.4.15 Maintenance Settings
 
-Maintenance Settings
+
 
 If present, the MaintenanceSettings field specifies that the task will run during the machine
 maintenance periods with a given periodicity.
@@ -4995,17 +4736,18 @@ Release: April 23, 2024
 
 54 / 149
 
-2.5.4.16
 
-ExecutionTimeLimit
+##### 2.5.4.16 ExecutionTimeLimit
+
+
 
 If present, this field contains a time duration. The task can gracefully stop when this limit is reached.
 The format is specified in section 2.5.1.1. Additionally, the task can be forcibly stopped in accordance
 with the AllowHardTerminate setting if its execution runtime exceeds this maximum time allowed.
 
-2.5.4.17
+##### 2.5.4.17 Priority
 
-Priority
+
 
 If present, this field contains a value between 1 and 10, inclusive.
 
@@ -5017,35 +4759,35 @@ If present, this field contains a value between 1 and 10, inclusive.
     </xs:restriction>
  </xs:simpleType>
 
-2.5.4.18
+##### 2.5.4.18 RunOnlyIfIdle
 
-RunOnlyIfIdle
+
 
 If present and set to TRUE, this field specifies that the task can only start if the machine is idle
 according to the IdleSettings field defined in section 2.5.4.14.
 
-2.5.4.19
+##### 2.5.4.19 UseUnifiedSchedulingEngine
 
-UseUnifiedSchedulingEngine
+
 
  If present and set to TRUE, the UseUnifiedSchedulingEngine field specifies that the generic task
 scheduling engine provided by the underlying operating system is used to manage the task.
 
-2.5.4.20
+##### 2.5.4.20 DisallowStartOnRemoteAppSession
 
-DisallowStartOnRemoteAppSession
+
 
 The task cannot start if the current session is a "Remote App Session", and if the
 DisallowStartOnRemoteAppSession field is present and set to TRUE.
 
-2.5.4.21
+##### 2.5.4.21 Volatile
 
-Volatile
+
 
 If present and set to TRUE, the Volatile setting specifies that the task will be automatically disabled
 at the next OS startup.
 
-2.5.5  Data Schema Part
+#### 2.5.5 Data Schema Part
 
 If present, this field contains a fragment of XML.
 
@@ -5056,7 +4798,7 @@ If present, this field contains a fragment of XML.
     </xs:sequence>
  </xs:complexType>
 
-2.5.6  Principal Schema Part
+#### 2.5.6 Principal Schema Part
 
 If present, this field specifies the identity used as security principal for the task's execution context.
 For information about the elements in the Action group, see section 2.5.7.
@@ -5070,7 +4812,8 @@ Release: April 23, 2024
 
 55 / 149
 
- <xs:complexType name="principalType">
+
+ <xs:complexType name="principalType">
     <xs:all>
        <xs:element name="UserId" type="nonEmptyString" minOccurs="0"/>
        <xs:element name= "LogonType " type= "logonType "
@@ -5147,7 +4890,8 @@ Release: April 23, 2024
 
 56 / 149
 
-       <xs:enumeration value="SeSyncAgentPrivilege" />
+
+       <xs:enumeration value="SeSyncAgentPrivilege" />
        <xs:enumeration value="SeEnableDelegationPrivilege" />
        <xs:enumeration value="SeManageVolumePrivilege" />
        <xs:enumeration value="SeImpersonatePrivilege" />
@@ -5234,7 +4978,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Unrestricted: Specifies that the task runs in a process that has an unrestricted process token
+
+  Unrestricted: Specifies that the task runs in a process that has an unrestricted process token
 
 SID.
 
@@ -5359,7 +5104,8 @@ Release: April 23, 2024
 
 58 / 149
 
-
+
+
 
 
 
@@ -5402,7 +5148,7 @@ Id attribute:  If present, this field contains a user-selected identifier as spe
 allowing the credential to be referenced elsewhere in the task body. This ID is unique in the
 context of the task.
 
-2.5.7  Action Schema Part
+#### 2.5.7 Action Schema Part
 
 The Action Schema Part is not optional and contains at least one action to be executed once the task's
 triggers and conditions cause the task to run.
@@ -5427,7 +5173,7 @@ triggers and conditions cause the task to run.
     <xs:attribute name="id" type="xs:ID" use="optional"/>
  </xs:complexType>
 
-2.5.7.1  Exec Action
+##### 2.5.7.1 Exec Action
 
 If present, this field contains a command-line action.
 
@@ -5447,7 +5193,8 @@ Release: April 23, 2024
 
 59 / 149
 
-             <xs:element name="WorkingDirectory" type="pathType"
+
+             <xs:element name="WorkingDirectory" type="pathType"
              minOccurs="0"/>
           </xs:all>
        </xs:extension>
@@ -5463,7 +5210,7 @@ WorkingDirectory: If present, this field contains a path of a folder. WorkingDir
 
 a drive specifier.
 
-2.5.7.2  ComHandler Action
+##### 2.5.7.2 ComHandler Action
 
 If present, this field specifies a custom handler.<32><33>
 
@@ -5485,7 +5232,7 @@ section 2.5.1.5).
 
 Data: If present, this field contains a fragment of XML.
 
-2.5.7.3  Email Action
+##### 2.5.7.3 Email Action
 
 If present,<34> this field contains the specification of an email action.
 
@@ -5518,7 +5265,8 @@ Release: April 23, 2024
 
 60 / 149
 
- <xs:complexType name="headerFieldsType">
+
+ <xs:complexType name="headerFieldsType">
     <xs:sequence>
        <xs:element name="HeaderField" type="headerFieldType"
        minOccurs="0" maxOccurs="32"/>
@@ -5570,7 +5318,7 @@ Attachment: If present, this field contains between 0 and 8 (inclusive) Name sub
 file or list of files to be attached to the email. Each subfield can contain a fully qualified path name
 for absolute location. If a path name is unqualified, the working directory can be assumed.
 
-2.5.7.4  ShowMessage Action
+##### 2.5.7.4 ShowMessage Action
 
 If present,<35> the ShowMessageAction field specifies that a message box can be displayed on each
 session where this user is logged on to the local machine.
@@ -5593,13 +5341,14 @@ Release: April 23, 2024
 
 61 / 149
 
- </xs:complexType>
+
+ </xs:complexType>
 
 Title: If present, this field contains a nonempty string for the caption of the message box.
 
 Body: This field is not optional and contains a nonempty string for the contents of the message box.
 
-2.5.8  XML Tasks Localization
+#### 2.5.8 XML Tasks Localization
 
 Some of the fields in the task XML definition MAY be localized. To treat a field as localizable, the
 application specifies the field in the following form:
@@ -5636,7 +5385,7 @@ Email action elements (see section 2.5.7.3):
        <xs:element name="Title" type="nonEmptyString"/>
        <xs:element name="Body" type="nonEmptyString"/>
 
-2.5.9  Task Fields Parameterization
+#### 2.5.9 Task Fields Parameterization
 
 Some of the fields in the XML task definition MAY be parameterized, allowing their values to be
 substituted with referenced parameter values at task runtime. The server performs parameter
@@ -5651,7 +5400,8 @@ Release: April 23, 2024
 
 62 / 149
 
-2.5.9.1  Parameterization Format
+
+##### 2.5.9.1 Parameterization Format
 
 To enable parameter substitution, a parameterizable field has a value in the form of a dollar sign "$"
 and a parameter name enclosed in parentheses. For example, "$(paramName)". If a parameterizable
@@ -5665,7 +5415,7 @@ The string "$$text" is replaced with "$text".
 
 The string "$(paramName)" is replaced with "paramValue".
 
-2.5.9.2  Parameter Names
+##### 2.5.9.2 Parameter Names
 
 The server MUST support the following parameter names in parameterizable fields:
 
@@ -5681,7 +5431,7 @@ MUST NOT replace the parameterizable field. For example, if the parameterizable 
 "$(Arg0)" and the task is started in a context other than SchRpcRun, the parameterizable field is not
 replaced.
 
-2.5.9.3  Parameterizable Fields
+##### 2.5.9.3 Parameterizable Fields
 
 The server MUST support parameter substitution in the following fields in the Action Schema Part:
 
@@ -5713,9 +5463,10 @@ Release: April 23, 2024
 
 63 / 149
 
-3  Protocol Details
 
-3.1  Client Role Details
+## 3 Protocol Details
+
+### 3.1 Client Role Details
 
 The Task Scheduler Remoting Protocol consists of three interfaces:<36>
 
@@ -5742,26 +5493,26 @@ client side of this protocol. Calls made by the higher-layer protocol or applica
 the transport, and the results returned by the transport are passed back directly to the higher-layer
 protocol or application.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST establish a binding to the server as specified in [MS-RPCE] section 3.2.2.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Applications and users use the Task Scheduler Remoting Protocol to implement the following
 conceptual operations: Add Task, Delete Task, Modify Task, Retrieve Task Status, and Enumerate
 Tasks. The following subsections specify how the client uses the ATSvc, SASec, and
 ITaskSchedulerService interfaces to accomplish these operations.
 
-3.1.4.1  ATSvc Client Processing
+##### 3.1.4.1 ATSvc Client Processing
 
 This subsection specifies how the client uses the ATSvc interface to implement the following
 conceptual operations: Add Task, Delete Task, Retrieve Task Status, and Enumerate Tasks.
@@ -5777,13 +5528,14 @@ Release: April 23, 2024
 
 64 / 149
 
-The ATSvc methods take as their first parameter an ATSVC_HANDLE, which is a Unicode string
+
+The ATSvc methods take as their first parameter an ATSVC_HANDLE, which is a Unicode string
 specifying the server. The client MUST map this string to an RPC binding handle for the remote
 server, which it obtained during initialization, as specified in section 3.1.3. For more details, see
 [C706] sections 4.3.5 and 5.1.5.2. This first parameter is not mentioned further in the following
 subsections.
 
-3.1.4.1.1 Add Task
+###### 3.1.4.1.1 Add Task
 
 First, the client MUST construct an AT_INFO structure (section 2.3.4) to specify the task:
 
@@ -5823,7 +5575,7 @@ Next, the client MUST invoke the NetrJobAdd method with the following parameters
 
 Note  The server MUST allocate task IDs sequentially. See section 3.2.5.2.1.
 
-3.1.4.1.2 Delete Task
+###### 3.1.4.1.2 Delete Task
 
 To delete a task, the client MUST first know the task's ID, obtained when adding the task (see section
 3.1.4.1.1) or enumerating tasks (see section 3.1.4.1.4). Then the client MUST invoke the NetrJobDel
@@ -5832,7 +5584,7 @@ IDs in a numeric range (note that the server MUST allocate task IDs sequentially
 3.2.5.2.1), the client MUST invoke the NetrJobDel method specifying in the MinJobId parameter the
 lowest desired task ID and in the MaxJobId parameter the highest desired task ID.
 
-3.1.4.1.3 Retrieve Task Status
+###### 3.1.4.1.3 Retrieve Task Status
 
 To retrieve task status, the client MUST first know the task's ID, obtained when adding the task, as
 specified in section 3.1.4.1.1, or enumerating tasks, as specified in section 3.1.4.1.4. Then the client
@@ -5841,7 +5593,7 @@ AT_INFO structure. The double pointer to an AT_INFO receives a pointer to an AT_
 upon return. The client MUST free the allocated memory for the AT_INFO structure, as specified in
 [C706] section 5.1.1.1.
 
-3.1.4.1.4 Enumerate Tasks
+###### 3.1.4.1.4 Enumerate Tasks
 
 To enumerate tasks, the client MUST invoke the NetrJobEnum method repeatedly.
 
@@ -5854,7 +5606,8 @@ Release: April 23, 2024
 
 65 / 149
 
-  A pointer to an AT_ENUM_CONTAINER to receive the results of the enumeration (the client
+
+  A pointer to an AT_ENUM_CONTAINER to receive the results of the enumeration (the client
 
 SHOULD initialize the AT_ENUM_CONTAINER) with a zero EntriesRead field and a NULL Buffer
 field).
@@ -5881,7 +5634,7 @@ parameter of the previous NetrJobEnum call.
 Finally, the client MUST free the memory allocated for the AT_ENUM array returned from each
 NetrJobEnum call, as specified in [C706] section 5.1.1.1.
 
-3.1.4.2  SASec Client Processing
+##### 3.1.4.2 SASec Client Processing
 
 This subsection specifies how the client uses the SASec interface to implement the following
 conceptual operations: Add Task, Delete Task, Modify Task, Retrieve Task Status, and Enumerate
@@ -5898,18 +5651,18 @@ server, which it obtained during initialization, as specified in section 3.1.3. 
 is as specified in [C706] sections 4.3.5 and 5.1.5.2. This first parameter is not mentioned further in
 this section's subsections.
 
-3.1.4.2.1 Common Operations
+###### 3.1.4.2.1 Common Operations
 
 SASec client processing makes use of several common operations, which are specified once in this
 section to avoid duplication in the following subsections.
 
-3.1.4.2.1.1  Determining Task Folder
+###### 3.1.4.2.1.1 Determining Task Folder
 
 To determine the task folder on the server, the client MUST use the remote registry protocol as
 specified in [MS-RRP] section 3.1.5, by retrieving the TasksFolder location from a location agreed
 upon between the client and the server.<38>
 
-3.1.4.2.1.2  Setting Account Information
+###### 3.1.4.2.1.2 Setting Account Information
 
 To set account information associated with a task, the client MUST invoke the
 SASetAccountInformation method with the following parameter values:
@@ -5930,7 +5683,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The password for the account in the pwszPassword parameter.
 
@@ -5942,7 +5696,7 @@ specified in the pwszAccountName parameter is logged on. In this case, pwszPassw
 SHOULD be NULL. The client can pass an empty string for the pwszAccountName parameter and NULL
 for the pwszPassword parameter to specify that the task MUST run under the local system context.
 
-3.1.4.2.2 Add Task
+###### 3.1.4.2.2 Add Task
 
 First, the client MUST construct a .JOB file as specified in section 2.4 to define the task. The .JOB file
 MUST contain a non-empty Application Name (section 2.4.2.3).
@@ -5957,7 +5711,7 @@ of the file, and write the .JOB file constructed previously to the file on the s
 
 Finally, the client MUST set account information for the task (see section 3.1.4.2.1.2).
 
-3.1.4.2.3 Delete Task
+###### 3.1.4.2.3 Delete Task
 
 First, the client MUST know the task's name. The client could have created the name when adding the
 task (see section 3.1.4.2.2) or obtained the name by enumerating tasks (see section 3.1.4.2.6), or by
@@ -5968,7 +5722,7 @@ Next, the client MUST determine the task folder on the server (see section 3.1.4
 Finally, the client MUST delete a file in the task folder on the server, using the task name as the
 name of the file.<40>
 
-3.1.4.2.4 Modify Task
+###### 3.1.4.2.4 Modify Task
 
 First, the client MUST know the task's name. The client could have created the name when adding the
 task (section 3.1.4.2.2) or obtained the name by enumerating tasks (section 3.1.4.2.6), or by other
@@ -5986,7 +5740,7 @@ name of the file.<41>
 
 Finally, the client SHOULD set account information for the task (section 3.1.4.2.1.2).
 
-3.1.4.2.5 Retrieve Task Status
+###### 3.1.4.2.5 Retrieve Task Status
 
 First, the client MUST know the task's name. The client either created the name when adding the task
 (section 3.1.4.2.2), obtained the name by enumerating tasks (section 3.1.4.2.6), or obtained the
@@ -5999,7 +5753,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Next, the client MUST determine the task folder on the server (see section 3.1.4.2.1.1).
+
+Next, the client MUST determine the task folder on the server (see section 3.1.4.2.1.1).
 
 Next, the client MUST read the .JOB file from the task folder on the server, using the task name as
 the name of the file. If the file is not a valid .JOB file (section 2.4), the client MUST return an error to
@@ -6012,7 +5767,7 @@ zeroes) and then MUST invoke the SAGetAccountInformation method with the followi
 values: the task name in the pwszJobName parameter, the size of the array in WCHAR's in the
 ccBufferSize parameter, and a pointer to the array in the wszBuffer parameter.
 
-3.1.4.2.6 Enumerate Tasks
+###### 3.1.4.2.6 Enumerate Tasks
 
 The client MUST first determine the task folder on the server, as specified in section 3.1.4.2.1.1.
 
@@ -6020,7 +5775,7 @@ Next, the client MUST enumerate all files that have a .JOB extension in the task
 The client MUST read each such file to determine whether it is valid, as specified in section 2.4. The
 client MUST ignore invalid files and return to the application the names of valid .JOB files.<43>
 
-3.1.4.2.7 ATSvc Account Information
+###### 3.1.4.2.7 ATSvc Account Information
 
 The SASec interface has the methods SASetNSAccountInformation and SAGetNSAccountInformation,
 which manipulate the account information that is associated with ATSvc tasks. This account
@@ -6050,9 +5805,9 @@ The size of the array in WCHAR's in the ccBufferSize parameter.
 
   A pointer to the array in the wszBuffer parameter.
 
-3.1.4.2.8 Control Task Operation
+###### 3.1.4.2.8 Control Task Operation
 
-3.1.4.2.8.1  Run
+###### 3.1.4.2.8.1 Run
 
 To run a task, the client MUST first know the path of the task. The path of a task is determined when
 the client creates the task or queries the server (section 3.1.4.3.6).
@@ -6076,7 +5831,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6091,7 +5847,7 @@ The user name to run as (or NULL to run as the client calling the method) in the
 
   A pointer to a buffer to receive the running instance identifier in the pGuid parameter.
 
-3.1.4.2.8.2  Stop
+###### 3.1.4.2.8.2 Stop
 
 To stop one or more instances of a task, the client MUST first know the path of the task. The path of
 the task is determined when the client creates the task or queries the server (section 3.1.4.3.6).
@@ -6104,7 +5860,7 @@ The path of the existing task in the path parameter.
 
   Zero in the flags parameter.
 
-3.1.4.2.8.3  Stop Instance
+###### 3.1.4.2.8.3 Stop Instance
 
 To stop a running instance of a task, the client MUST know the identifier of the particular running
 instance. The identifier of a particular running instance is obtained when running the task explicitly
@@ -6118,7 +5874,7 @@ The identifier of the running instance in the guid parameter.
 
   Zero in the flags parameter.
 
-3.1.4.3  ITaskSchedulerService Client Processing
+##### 3.1.4.3 ITaskSchedulerService Client Processing
 
 This subsection specifies how the client uses the ITaskSchedulerService interface to implement the
 following conceptual operations: Add Task, Delete Task, Retrieve Task Status, and Enumerate Tasks.
@@ -6129,7 +5885,7 @@ This first parameter is not present in the IDL in section 3.2.5.4 because it is 
 specified in [C706] section 4.3.5. This first parameter is not mentioned further in the following
 sections.
 
-3.1.4.3.1 Add Task
+###### 3.1.4.3.1 Add Task
 
 First, the client MUST construct an XML task definition (section 2.4.2.11) that MUST specify the
 features of the task. The task description has several optional elements, but it MUST have an Actions
@@ -6162,7 +5918,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6178,7 +5935,7 @@ The location of a buffer to receive the actual path (or NULL) in the pActualPath
 
 The location of a buffer to receive the ErrorInfo (or NULL) in the pErrorInfo parameter.
 
-3.1.4.3.2 Add Folder
+###### 3.1.4.3.2 Add Folder
 
 To add a folder, the client MUST know the path of the new folder on the server.
 
@@ -6194,7 +5951,7 @@ The desired Security descriptor (or NULL) in the sddl parameter.
 
   Zero in the flags parameter.
 
-3.1.4.3.3 Delete Task or Folder
+###### 3.1.4.3.3 Delete Task or Folder
 
 To delete a task or folder, the client MUST first know the path of the task or folder. The path of the
 task or folder is determined when the client creates the task or folder or queries the server, as
@@ -6208,9 +5965,9 @@ The path of the existing task or folder in the path parameter.
 
   Zero in the flags parameter.
 
-3.1.4.3.4 Modify Task or Folder
+###### 3.1.4.3.4 Modify Task or Folder
 
-3.1.4.3.4.1  Set the Security Descriptor of a Task
+###### 3.1.4.3.4.1 Set the Security Descriptor of a Task
 
 To set the security descriptor of a task, the client MUST first know the path of the task. The path of
 the task is determined when the client creates the task or queries the server, as specified in section
@@ -6226,7 +5983,7 @@ The path of the existing task in the path parameter.
 
   SCH_FLAG_TASK (and TASK_DONT_ADD_PRINCIPAL_ACE, if required) in the flags parameter.
 
-3.1.4.3.4.2  Set the Security Descriptor of a Folder
+###### 3.1.4.3.4.2 Set the Security Descriptor of a Folder
 
 To set the security descriptor of a folder, the client MUST first know the path of the folder. The path
 of the folder is determined when the client creates the folder or queries the server, as specified in
@@ -6247,7 +6004,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.3.4.3  Set the Enabled State of a Task
+
+###### 3.1.4.3.4.3 Set the Enabled State of a Task
 
 To set the enabled state of a task, the client MUST first know the path of the task. The path of the
 task is determined when the client creates the task or queries the server, as specified in section
@@ -6261,7 +6019,7 @@ The client MUST then invoke the SchRpcEnableTask method with the following param
 
   Zero (meaning not enabled) or 1 (meaning enabled) in the enabled parameter.
 
-3.1.4.3.4.4  Modify a Task Definition
+###### 3.1.4.3.4.4 Modify a Task Definition
 
 To modify a task definition, the client MUST first know the path of the task. The path of the task is
 determined when the client creates the task or queries the server, as specified in section 3.1.4.3.6.
@@ -6326,9 +6084,9 @@ The location of a buffer to receive the ErrorInfo (if required) in the pErrorInf
 Finally, the client MUST deallocate the actual path and ErrorInfo, as specified in [C706] section
 5.1.1.1.
 
-3.1.4.3.5 Retrieve Task and Task Status
+###### 3.1.4.3.5 Retrieve Task and Task Status
 
-3.1.4.3.5.1  Retrieve a Task
+###### 3.1.4.3.5.1 Retrieve a Task
 
 To retrieve a task's definition, the client MUST first know the path of the task. The path of the task is
 determined when the client creates the task or queries the server, as specified in section 3.1.4.3.6.
@@ -6342,7 +6100,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The path of the existing task in the path parameter.
 
@@ -6361,7 +6120,7 @@ The location of a buffer to receive the localized task definition in the xmlTask
 The client MUST deallocate the xmlTaskDefinition after successful execution, as specified in [C706]
 section 5.1.1.1.
 
-3.1.4.3.5.2  Retrieve a Task's Security Descriptor
+###### 3.1.4.3.5.2 Retrieve a Task's Security Descriptor
 
 To retrieve a task's security descriptor, the client MUST first know the path of the task. The path of
 the task is determined when the client creates the task or queries the server (section 3.1.4.3.6).
@@ -6384,7 +6143,7 @@ The location of a buffer to receive the security information in the sddl paramet
 The client MUST deallocate the xmlTaskDefinition after successful execution of the method, as
 specified in [C706] section 5.1.1.1.
 
-3.1.4.3.5.3  Retrieve a Running Task's Instance Information
+###### 3.1.4.3.5.3 Retrieve a Running Task's Instance Information
 
 To retrieve a running task's Instance Information the client MUST know the identifier of the particular
 running instance. The identifier of the particular running instance is obtained when running the task
@@ -6423,7 +6182,7 @@ the pEnginePid parameter.
 The client MUST deallocate the pPath and pCurrentAction after successful execution of the method, as
 specified in section 5.1.1.1 of [C706].
 
-3.1.4.3.5.4  Retrieve a Task's Scheduled Run Times
+###### 3.1.4.3.5.4 Retrieve a Task's Scheduled Run Times
 
 72 / 149
 
@@ -6432,7 +6191,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To retrieve a task's scheduled run times, the client MUST first know the path of the task. The path of
+
+To retrieve a task's scheduled run times, the client MUST first know the path of the task. The path of
 the task is determined when the client creates the task or queries the server (section 3.1.4.3.6).
 
 Then the client MUST invoke the SchRpcScheduledRuntimes method with the following parameters:
@@ -6466,7 +6226,7 @@ The location of a buffer to receive the array of run times in the pRuntimes para
 The client MUST deallocate the pRuntimes parameter after successful execution of the method, as
 specified in section 5.1.1.1 of [C706].
 
-3.1.4.3.5.5  Retrieve a Task's Last Run Information
+###### 3.1.4.3.5.5 Retrieve a Task's Last Run Information
 
 To retrieve a task's last run information, the client MUST first know the path of the task. The path of
 the task is determined when the client creates the task or queries the server (section 3.1.4.3.6).
@@ -6486,7 +6246,7 @@ parameter.
 
 The location of a DWORD to receive the last return code in the pLastReturnCode parameter.
 
-3.1.4.3.5.6  Retrieve a Task's Information
+###### 3.1.4.3.5.6 Retrieve a Task's Information
 
 To retrieve a task's information, the client MUST first know the path of the task. The path of the task
 is determined when the client creates the task or queries the server (section 3.1.4.3.6).
@@ -6507,7 +6267,7 @@ The location of a BOOL to receive the task's enabled state in the pEnabled param
 
 The location of a DWORD to receive the task state (or 0) in the pState parameter.
 
-3.1.4.3.5.7  Retrieve the Number of Times a Task Did Not Run
+###### 3.1.4.3.5.7 Retrieve the Number of Times a Task Did Not Run
 
 To retrieve the number of times a task did not run, the client MUST first know the path of the task.
 The path of the task is determined when the client creates the task or queries the server (section
@@ -6527,20 +6287,21 @@ Release: April 23, 2024
 
 73 / 149
 
-
+
+
 
 The location of a DWORD to receive the number of times the task did not run in the
 pNumberOfMissedRuns parameter.
 
-3.1.4.3.5.8  Retrieve the Highest Version of the Schema
+###### 3.1.4.3.5.8 Retrieve the Highest Version of the Schema
 
 To retrieve the highest version of the schema supported by the server, the client MUST invoke the
 SchRpcHighestVersion method passing the location of a DWORD to receive the version number in the
 pVersion parameter.
 
-3.1.4.3.6 Enumerate Tasks or Folders
+###### 3.1.4.3.6 Enumerate Tasks or Folders
 
-3.1.4.3.6.1  Enumerate All Tasks in a Folder
+###### 3.1.4.3.6.1 Enumerate All Tasks in a Folder
 
 To enumerate all tasks in a folder, the client MUST invoke the SchRpcEnumTasks method with the
 following parameters:
@@ -6572,7 +6333,7 @@ SchRpcEnumTasks, the client MUST pass the parameter values as specified earlier,
 MUST NOT modify the pStartIndex parameter because the previous call to SchRpcEnumTasks returned
 the index of the next task to be enumerated.
 
-3.1.4.3.6.2  Enumerate All Subfolders in a Folder
+###### 3.1.4.3.6.2 Enumerate All Subfolders in a Folder
 
 To enumerate all subfolders in a folder, the client MUST invoke the SchRpcEnumFolders method with
 the following parameters:
@@ -6609,10 +6370,11 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST NOT modify the pStartIndex parameter because the previous call to SchRpcEnumFolders
+
+MUST NOT modify the pStartIndex parameter because the previous call to SchRpcEnumFolders
 returned the index of the next folder to be enumerated.
 
-3.1.4.3.6.3  Enumerate a Task's Running Instances
+###### 3.1.4.3.6.3 Enumerate a Task's Running Instances
 
 To enumerate a task's running instances the client MUST first know the task's path. The task's path is
 obtained when adding the task (section 3.1.4.3.1) and when enumerating tasks (section 3.1.4.3.6).
@@ -6635,22 +6397,22 @@ skip them.
 The client MUST deallocate the pNames after successful execution of the method, as specified in
 [C706] section 5.1.1.1.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.2  Server Role Details
+### 3.2 Server Role Details
 
 As specified in this section, the Task Scheduler Remoting Protocol server SHOULD implement the
 ATSvc, SASec, and ITaskSchedulerService interfaces. At least one of the interfaces MUST be
 implemented. The server MAY implement any combination that includeds at least one of the
 interfaces.<44>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6680,7 +6442,8 @@ Release: April 23, 2024
 
 75 / 149
 
-  ATSvc servers MUST support an AT task store, which is a list of AT_ENUM task information
+
+  ATSvc servers MUST support an AT task store, which is a list of AT_ENUM task information
 
 structures (section 2.3.6).
 
@@ -6728,14 +6491,14 @@ task to be stopped (including a process ID or PID), a state (section 2.3.13), a 
 action Unicode string. The action string SHOULD only be valid when the state is
 TASK_STATE_RUNNING. The delay time MAY only be valid when the state is TASK_STATE_QUEUED.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The server MUST maintain a global timer that MUST fire when the next task is scheduled to run.
 
 The server MUST maintain a delay timer that MUST fire when the next entry in the running task list is
 scheduled to transition from TASK_STATE_QUEUED to TASK_STATE_RUNNING.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Task Scheduler Remoting Protocol server MUST initialize by registering its RPC interfaces (see
 rpc_server_use_protseq and rpc_server_register_if in [C706] section 3).
@@ -6747,12 +6510,13 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 This section specifies the Task Scheduler Remoting Protocol server operation in response to system
 state changes.
 
-3.2.4.1  EventLog Events
+##### 3.2.4.1 EventLog Events
 
 If the server implements the ITaskSchedulerService interface and has a task registered with an Event
 trigger (EventTrigger (section 2.5.3.6)), the server MUST subscribe to events (section 3.2.5.4.2) as
@@ -6761,7 +6525,7 @@ specified in [MS-EVEN6] section 3.1.1.9.
 Upon receiving an EventLog ([MS-EVEN]) notification, the server MUST traverse the task store and
 start all valid, enabled tasks (section 3.2.5.1.2) that have a satisfied XPATH query.
 
-3.2.4.2  Idle
+##### 3.2.4.2 Idle
 
 If the server implements the ITaskSchedulerService interface or the SASec interface, the server MUST
 detect when the machine enters an idle state.<47>
@@ -6772,7 +6536,7 @@ enabled tasks (section 3.2.5.1.2) that have idle triggers.
 Upon detecting the end of an idle state, the server MUST traverse the running task list and stop any
 tasks (section 3.2.5.1.3) that are configured to stop when idle state ends.
 
-3.2.4.3  Startup
+##### 3.2.4.3 Startup
 
 If the server implements the ITaskSchedulerService interface or the SASec interface, after server
 initialization (section 3.2.3) the server MUST traverse the task store and MUST start all valid, enabled
@@ -6783,7 +6547,7 @@ store and MUST start all valid, enabled tasks that were scheduled to be started 
 when the service was inactive and that have the StartWhenAvailable field set to TRUE in their XML
 task definition.
 
-3.2.4.4  Session Change
+##### 3.2.4.4 Session Change
 
 If the server implements the ITaskSchedulerService or SASec interface, it MUST detect logon session
 change. If the server implements the ITaskSchedulerService interface, it MUST detect desktop
@@ -6799,7 +6563,7 @@ All valid, enabled tasks that are configured to start for any groups of which th
 
 All valid, enabled tasks that are configured to start for all users.
 
-3.2.4.5  Sleep
+##### 3.2.4.5 Sleep
 
 If the server implements the ITaskSchedulerService interface, it MUST detect when the server is about
 to enter sleep mode. If the task store contains a task that is configured with the WakeToRun field
@@ -6811,10 +6575,11 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-set to TRUE in its XML task definition, the server MUST arrange to exit sleep mode in time to run the
+
+set to TRUE in its XML task definition, the server MUST arrange to exit sleep mode in time to run the
 task.
 
-3.2.4.6  Wake
+##### 3.2.4.6 Wake
 
 If the server implements the ITaskSchedulerService interface, then the interface implementation
 MUST perform the following steps:
@@ -6829,7 +6594,7 @@ server was in sleep mode.
 Start all such tasks that have the StartWhenAvailable field set to TRUE in their XML task
 definition.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 This section uses both IDL and bit-diagrams to specify syntax. Types and structures defined in IDL
 syntax are marshaled as specified in [C706] section 14. All fields in bit-diagrams are marshaled using
@@ -6846,11 +6611,11 @@ Most methods have many possible error returns. In cases where more than one erro
 server processing order specified here is not meant to constrain an implementation's choice of error
 code.
 
-3.2.5.1  Common Operations
+##### 3.2.5.1 Common Operations
 
 This section specifies common server operations.
 
-3.2.5.1.1 Task Registration Security Checks
+###### 3.2.5.1.1 Task Registration Security Checks
 
 When adding a task to the task store, the server SHOULD check the following security permissions
 using any implementation-specific method<48> and MUST return ERROR_ACCESS_DENIED if the task
@@ -6914,7 +6679,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Noninteractive tasks
+
+Noninteractive tasks
 
 Interactive tasks
 
@@ -7003,7 +6769,7 @@ Allowed
 Not
 allowed
 
-3.2.5.1.2 Starting a Task
+###### 3.2.5.1.2 Starting a Task
 
 First, the server MUST obtain the account name associated with the task as follows. For ATSvc tasks,
 the server MUST use the ATSvc account name. For SASec tasks, the server MUST obtain the account
@@ -7031,7 +6797,7 @@ the task in the task store MUST be set to the current time.
 
 When the task finishes executing, the task stops as specified in section 3.2.5.1.3.
 
-3.2.5.1.3 Stopping a Task
+###### 3.2.5.1.3 Stopping a Task
 
 [MS-TSCH] - v20240423
 Task Scheduler Service Remoting Protocol
@@ -7040,10 +6806,11 @@ Release: April 23, 2024
 
 79 / 149
 
-The server MUST delete the entry from the running task list. The server MUST update the task status
+
+The server MUST delete the entry from the running task list. The server MUST update the task status
 and the exit code in the task store.
 
-3.2.5.2  ATSvc Message Processing Events and Sequencing Rules
+##### 3.2.5.2 ATSvc Message Processing Events and Sequencing Rules
 
 The ATSvc RPC interface provides methods to control scheduled tasks. All the ATSvc methods MUST
 have administrator privileges, as specified in section 3.2.5 and its subsections.
@@ -7079,7 +6846,7 @@ NetrJobGetInfo  The NetrJobGetInfo method returns information for a specified AT
 
 Opnum: 3
 
-3.2.5.2.1 NetrJobAdd (Opnum 0)
+###### 3.2.5.2.1 NetrJobAdd (Opnum 0)
 
 The NetrJobAdd method MUST add a single AT task to the server's task store.
 
@@ -7119,7 +6886,8 @@ Release: April 23, 2024
 
 80 / 149
 
-  Return ERROR_INVALID_PARAMETER if the JobTime field of the AT_INFO structure is not as
+
+  Return ERROR_INVALID_PARAMETER if the JobTime field of the AT_INFO structure is not as
 
 specified in section 2.3.4.
 
@@ -7149,7 +6917,7 @@ to 0 on return.
 If any errors are raised during the processing, they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.2.2 NetrJobDel (Opnum 1)
+###### 3.2.5.2.2 NetrJobDel (Opnum 1)
 
 The NetrJobDel method MUST delete a specified range of tasks from the task store. The method is
 capable of deleting all AT tasks or just a subset of the tasks, as determined by the values of the
@@ -7197,7 +6965,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Return ERROR_SUCCESS if the call was successful.
+
+  Return ERROR_SUCCESS if the call was successful.
 
   Return an error if MinJobId is greater than MaxJobId.
 
@@ -7208,7 +6977,7 @@ Release: April 23, 2024
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.2.3 NetrJobEnum (Opnum 2)
+###### 3.2.5.2.3 NetrJobEnum (Opnum 2)
 
 The NetrJobEnum method MUST return an enumeration of all AT tasks on the specified server.
 
@@ -7274,7 +7043,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PreferedMaximumLength is not 0xFFFFFFFF, choose a size equal to the highest even number
+
+PreferedMaximumLength is not 0xFFFFFFFF, choose a size equal to the highest even number
 smaller or equal to PreferedMaximumLength. In both cases, make sure that the size is not greater
 than 65536 and not smaller than (sizeof(AT_ENUM)+520).
 
@@ -7302,7 +7072,7 @@ by the pResumeHandle parameter by the value of the EntriesRead field.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.2.4 NetrJobGetInfo (Opnum 3)
+###### 3.2.5.2.4 NetrJobGetInfo (Opnum 3)
 
 The NetrJobGetInfo method MUST return information for a specified ATSvc task. The task identifier
 MUST be used to locate the task configuration.
@@ -7351,10 +7121,11 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If any errors are raised during the processing, they are returned. For more information on return
+
+If any errors are raised during the processing, they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.3  SASec Message Processing Events and Sequencing Rules
+##### 3.2.5.3 SASec Message Processing Events and Sequencing Rules
 
 The SASec RPC interface is used to securely set or get account information associated with tasks.
 When using the SASec interface, operations such as creating, deleting, and enumerating tasks are
@@ -7396,7 +7167,7 @@ task.
 
 Opnum: 3
 
-3.2.5.3.1 Receive File Add Notification
+###### 3.2.5.3.1 Receive File Add Notification
 
 Upon receipt of a file change notification indicating that a file has been added to the .JOB task store,
 the server MUST examine the file to determine whether it is a valid .JOB file (see section 2.4). The
@@ -7437,7 +7208,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -7546,7 +7318,8 @@ Release: April 23, 2024
 
 85 / 149
 
-Value
+
+Value
 
 Meaning
 
@@ -7660,7 +7433,8 @@ Release: April 23, 2024
 
 86 / 149
 
-Value
+
+Value
 
 Description
 
@@ -7756,7 +7530,7 @@ error from the last attempt to start the task.
 
 task to FALSE.
 
-3.2.5.3.2 Receive File Delete Notification
+###### 3.2.5.3.2 Receive File Delete Notification
 
 Upon receipt of a file change notification indicating that a file has been deleted from the .JOB task
 store, the server MUST:
@@ -7770,13 +7544,14 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Remove all entries in the credential store that have no entries in the account name store
+
+  Remove all entries in the credential store that have no entries in the account name store
 
 referencing them.
 
   Reset the global timer to the time at which the first valid task in the task store is to run.
 
-3.2.5.3.3 Receive File Modification Notification
+###### 3.2.5.3.3 Receive File Modification Notification
 
 Upon receipt of a file change notification indicating that a file has been modified in the .JOB task
 store, the server MUST:
@@ -7787,7 +7562,7 @@ name, not the old task file contents).
 
   Add the new task, as specified in section 3.2.5.3.1.
 
-3.2.5.3.4 SASetAccountInformation (Opnum 0)
+###### 3.2.5.3.4 SASetAccountInformation (Opnum 0)
 
 The SASetAccountInformation method MUST set the credentials under which the task MUST run.
 
@@ -7851,7 +7626,8 @@ Release: April 23, 2024
 
 88 / 149
 
-Return Values: For more information about return codes, see section 2.3.14 or Win32 Error Codes in
+
+Return Values: For more information about return codes, see section 2.3.14 or Win32 Error Codes in
 
 [MS-ERREF] section 2.1.<52>
 
@@ -7928,7 +7704,7 @@ MinutesDuration field.<59>
 If any errors are raised during the processing, they are returned. For more information about
 return codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.3.5 SASetNSAccountInformation (Opnum 1)
+###### 3.2.5.3.5 SASetNSAccountInformation (Opnum 1)
 
 89 / 149
 
@@ -7937,7 +7713,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The SASetNSAccountInformation method MUST configure the credentials under which all ATSvc tasks
+
+The SASetNSAccountInformation method MUST configure the credentials under which all ATSvc tasks
 run.
 
  HRESULT SASetNSAccountInformation(
@@ -7982,7 +7759,7 @@ mapping from pwszAccount to pwszPassword.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.3.6 SAGetNSAccountInformation (Opnum 2)
+###### 3.2.5.3.6 SAGetNSAccountInformation (Opnum 2)
 
 The SAGetNSAccountInformation method MUST return the ATSvc account name.
 
@@ -8010,7 +7787,8 @@ Release: April 23, 2024
 
 90 / 149
 
-wszBuffer: Upon input, MUST be an empty array of size equal to the ccBufferSize parameter. The
+
+wszBuffer: Upon input, MUST be an empty array of size equal to the ccBufferSize parameter. The
 
 client SHOULD initialize the array to contain zeroes. Upon return, the array MUST contain the
 ATSvc account name.
@@ -8043,7 +7821,7 @@ character) is larger than ccBufferSize.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.3.7 SAGetAccountInformation (Opnum 3)
+###### 3.2.5.3.7 SAGetAccountInformation (Opnum 3)
 
 The SAGetAccountInformation method MUST retrieve the account name for a specified task.
 
@@ -8086,7 +7864,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Return SCHED_E_CANNOT_OPEN_TASK if the pwszJobName parameter is not a file name present
+
+  Return SCHED_E_CANNOT_OPEN_TASK if the pwszJobName parameter is not a file name present
 
 in the .JOB task store.
 
@@ -8115,7 +7894,7 @@ larger than ccBufferSize.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4  ITaskSchedulerService Message Processing Events and Sequencing Rules
+##### 3.2.5.4 ITaskSchedulerService Message Processing Events and Sequencing Rules
 
 The ITaskSchedulerService RPC interface provides methods to control scheduled tasks using XML task
 definitions.<64>
@@ -8181,7 +7960,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -8268,7 +8048,7 @@ The SchRpcEnableTask method enables or disables a task.
 
 Opnum: 19
 
-3.2.5.4.1 SchRpcHighestVersion (Opnum 0)
+###### 3.2.5.4.1 SchRpcHighestVersion (Opnum 0)
 
 The SchRpcHighestVersion method MUST return the highest version of the Task Scheduler Remoting
 Protocol that is supported by the server.<65>
@@ -8284,7 +8064,8 @@ Release: April 23, 2024
 
 93 / 149
 
-pVersion: The server MUST return the highest version of the Task Scheduler Remoting Protocol that
+
+pVersion: The server MUST return the highest version of the Task Scheduler Remoting Protocol that
 
 is supported by the server. This version MUST be in the format 0xMMMMmmmm, where 'M' stands
 for the major version hex digits and 'm' stands for the minor version hex digits. pVersion SHOULD
@@ -8307,7 +8088,7 @@ Return Values: For more information on return codes, see section 2.3.14, or Win3
 Upon receipt of the SchRpcHighestVersion call, the server MUST return the highest version of the Task
 Scheduler Remoting Protocol that is supported by the server in the pVersion parameter.
 
-3.2.5.4.2 SchRpcRegisterTask (Opnum 1)
+###### 3.2.5.4.2 SchRpcRegisterTask (Opnum 1)
 
 The SchRpcRegisterTask method MUST register a task with the server.
 
@@ -8385,7 +8166,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 TASK_CREATE
 
@@ -8484,7 +8266,8 @@ Release: April 23, 2024
 
 95 / 149
 
-  SCHED_E_MISSINGNODE
+
+  SCHED_E_MISSINGNODE
 
   SCHED_E_TOO_MANY_NODES
 
@@ -8576,7 +8359,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8667,7 +8451,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  SessionStateChangeTrigger's Delay: The server MUST delay starting the task after the
+
+  SessionStateChangeTrigger's Delay: The server MUST delay starting the task after the
 
 SessionStateChangeTrigger by the delay value. If not present, the server MUST NOT
 delay starting the task.<68>
@@ -8746,7 +8531,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ScheduleByMonthDayOfWeek is specified and the Months field is present but none
+
+ScheduleByMonthDayOfWeek is specified and the Months field is present but none
 of the twelve subfields are present, the server MUST return
 SCHED_E_MISSINGNODE (0x80041319).
 
@@ -8833,7 +8619,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 IdleSettings Duration: The server MUST delay starting the task until the specified
 Duration has elapsed from the time that the machine became idle.
@@ -8926,7 +8713,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  RunLevel: if not present, the server MUST use the value LeastPrivilege.
+
+  RunLevel: if not present, the server MUST use the value LeastPrivilege.
 
   Actions (section 2.5.7): The server MUST support up to 32 actions. The server MUST execute
 
@@ -9024,7 +8812,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -9121,7 +8910,8 @@ Release: April 23, 2024
 
 102 / 149
 
-  Return E_ACCESSDENIED if a password is required (section 3.2.5.1.1) but the password provided
+
+  Return E_ACCESSDENIED if a password is required (section 3.2.5.1.1) but the password provided
 
 in the pCreds parameter is not valid for the principal chosen.
 
@@ -9213,7 +9003,8 @@ Release: April 23, 2024
 
 103 / 149
 
-
+
+
 
 
 
@@ -9229,7 +9020,7 @@ parameter.
 If any errors are raised during the processing they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.3 SchRpcRetrieveTask (Opnum 2)
+###### 3.2.5.4.3 SchRpcRetrieveTask (Opnum 2)
 
 The SchRpcRetrieveTask method MUST return a task definition.
 
@@ -9290,12 +9081,13 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Return the task definition in the xmlTaskDefinition parameter and return S_OK.
+
+  Return the task definition in the xmlTaskDefinition parameter and return S_OK.
 
 If any errors are raised during the processing they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.4 SchRpcCreateFolder (Opnum 3)
+###### 3.2.5.4.4 SchRpcCreateFolder (Opnum 3)
 
 The SchRpcCreateFolder method creates a new folder.
 
@@ -9332,7 +9124,7 @@ deepest existing folder in the path parameter.
 If any errors are raised during the processing they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.5 SchRpcSetSecurity (Opnum 4)
+###### 3.2.5.4.5 SchRpcSetSecurity (Opnum 4)
 
 The SchRpcSetSecurity method MUST set a security descriptor on a task or folder.
 
@@ -9359,7 +9151,8 @@ Release: April 23, 2024
 
 105 / 149
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9442,7 +9235,7 @@ according to the sddl parameter.
 
   Return S_OK.
 
-3.2.5.4.6 SchRpcGetSecurity (Opnum 5)
+###### 3.2.5.4.6 SchRpcGetSecurity (Opnum 5)
 
 The SchRpcGetSecurity method MUST get the security descriptor associated with a task or folder.
 
@@ -9459,7 +9252,8 @@ Release: April 23, 2024
 
 106 / 149
 
- );
+
+ );
 
 path: MUST be the full path associated with a task or folder in the format specified in section 2.3.11).
 
@@ -9512,7 +9306,7 @@ Encode security information in sddl and return the string in the sddl parameter 
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.7 SchRpcEnumFolders (Opnum 6)
+###### 3.2.5.4.7 SchRpcEnumFolders (Opnum 6)
 
 The SchRpcEnumFolders method MUST retrieve a list of folders on the server.
 
@@ -9535,7 +9329,8 @@ Release: April 23, 2024
 
 107 / 149
 
-   [out, string, size_is(, *pcNames)]
+
+   [out, string, size_is(, *pcNames)]
      TASK_NAMES* pNames
  );
 
@@ -9621,7 +9416,8 @@ Release: April 23, 2024
 
 108 / 149
 
-
+
+
 
 Increment the value pointed to by the pStartIndex parameter by the number of enumerated
 subfolder names.
@@ -9631,7 +9427,7 @@ subfolder names.
 If any errors are raised during the processing they are returned. For more information on return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.8 SchRpcEnumTasks (Opnum 7)
+###### 3.2.5.4.8 SchRpcEnumTasks (Opnum 7)
 
 The SchRpcEnumTasks method MUST return the list of tasks in a specific folder.
 
@@ -9705,7 +9501,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Upon receipt of the SchRpcEnumTasks call, the server MUST:
+
+Upon receipt of the SchRpcEnumTasks call, the server MUST:
 
   Return E_INVALIDARG if the out parameters are NULL or if any bit other than
 
@@ -9749,7 +9546,7 @@ names.
 
   Return S_OK if there are no more names to enumerate, else return S_FALSE.
 
-3.2.5.4.9 SchRpcEnumInstances (Opnum 8)
+###### 3.2.5.4.9 SchRpcEnumInstances (Opnum 8)
 
 The SchRpcEnumInstances method MUST return a task's list of instances that are currently running.
 
@@ -9788,7 +9585,8 @@ Release: April 23, 2024
 
 110 / 149
 
-Value
+
+Value
 
 H
 
@@ -9837,9 +9635,9 @@ parameter.
 
   Return S_OK.
 
-3.2.5.4.10
+###### 3.2.5.4.10 SchRpcGetInstanceInfo (Opnum 9)
 
-SchRpcGetInstanceInfo (Opnum 9)
+
 
 The SchRpcGetInstanceInfo method MUST get information about an instance of a running task.
 
@@ -9868,7 +9666,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pState: Location where the state of the instance (section 2.3.13) is to be returned. If NULL, specifies
+
+pState: Location where the state of the instance (section 2.3.13) is to be returned. If NULL, specifies
 
 that the state is not requested.
 
@@ -9922,9 +9721,9 @@ pEnginePID is non-NULL.
 
   Return S_OK.
 
-3.2.5.4.11
+###### 3.2.5.4.11 SchRpcStopInstance (Opnum 10)
 
-SchRpcStopInstance (Opnum 10)
+
 
 The SchRpcStopInstance method MUST stop a specified instance of a task.
 
@@ -9948,7 +9747,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Upon receipt of the SchRpcStopInstance call, the server MUST:
+
+Upon receipt of the SchRpcStopInstance call, the server MUST:
 
   Return E_INVALIDARG if the flags parameter is non-zero.
 
@@ -9962,9 +9762,9 @@ instance ID matching the guid parameter.
 
   Return S_OK.
 
-3.2.5.4.12
+###### 3.2.5.4.12 SchRpcStop (Opnum 11)
 
-SchRpcStop (Opnum 11)
+
 
 The SchRpcStop MUST stop all currently running instances of a task specified by a path.
 
@@ -10005,9 +9805,9 @@ them (section 3.2.5.1.3) if the caller has execute access to the task.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.13
+###### 3.2.5.4.13 SchRpcRun (Opnum 12)
 
-SchRpcRun (Opnum 12)
+
 
 The SchRpcRun method MUST run a task specified by a path.
 
@@ -10025,7 +9825,8 @@ Release: April 23, 2024
 
 113 / 149
 
-   [in] DWORD sessionId,
+
+   [in] DWORD sessionId,
    [in, unique, string] const wchar_t* user,
    [out] GUID* pGuid
  );
@@ -10126,7 +9927,8 @@ Release: April 23, 2024
 
 114 / 149
 
-  Return E_INVALIDARG if any bits other than TASK_RUN_AS_SELF,
+
+  Return E_INVALIDARG if any bits other than TASK_RUN_AS_SELF,
 
 TASK_RUN_IGNORE_CONSTRAINTS, TASK_RUN_USE_SESSION_ID, or TASK_RUN_USER_SID are
 set in the flags parameter.
@@ -10209,7 +10011,8 @@ Release: April 23, 2024
 
 115 / 149
 
-S_OK is also returned when the Task Scheduler service attempted to run the task, but the task did
+
+S_OK is also returned when the Task Scheduler service attempted to run the task, but the task did
 not run due to one of the constraints in the task definition and the
 TASK_RUN_IGNORE_CONSTRAINTS bit was not set to ignore those conditions. Constraints in
 the task definition include DisallowStartIfOnBatteries, RunOnNetworkAvailable, and RunOnlyIfIdle.
@@ -10221,9 +10024,9 @@ section 2.5.4.3.
 If any errors are raised during the processing, they are returned. For more information about return
 codes, see section 2.3.14 and Win32 Error Codes in [MS-ERREF] section 2.1.
 
-3.2.5.4.14
+###### 3.2.5.4.14 SchRpcDelete (Opnum 13)
 
-SchRpcDelete (Opnum 13)
+
 
 The SchRpcDelete method MUST delete a task or folder in the task store.
 
@@ -10266,9 +10069,9 @@ store.<79>
 
   Return S_OK.
 
-3.2.5.4.15
+###### 3.2.5.4.15 SchRpcRename (Opnum 14)
 
-SchRpcRename (Opnum 14)
+
 
 The SchRpcRename method renames a folder or task.
 
@@ -10285,7 +10088,8 @@ Release: April 23, 2024
 
 116 / 149
 
-path: MUST be the full path to the task or to a folder to rename. The path MUST be in the format
+
+path: MUST be the full path to the task or to a folder to rename. The path MUST be in the format
 
 specified in section 2.3.11.
 
@@ -10299,9 +10103,9 @@ Return Values: For more information on return codes, see section 2.3.14, or Win3
 
 Upon receipt of the SchRpcRename call the server MUST return E_NOTIMPL.
 
-3.2.5.4.16
+###### 3.2.5.4.16 SchRpcScheduledRuntimes (Opnum 15)
 
-SchRpcScheduledRuntimes (Opnum 15)
+
 
 The SchRpcScheduledRuntimes method MUST return scheduled run times.
 
@@ -10371,7 +10175,8 @@ Release: April 23, 2024
 
 117 / 149
 
-Note  When passing NULL as a value for parameters, behavior can change based upon the RPC
+
+Note  When passing NULL as a value for parameters, behavior can change based upon the RPC
 Runtime Check, as specified in RPC Runtime Check Notes (section 3.3).
 
   Return the value 0x8007007B, the HRESULT form of the Win32 error ERROR_INVALID_NAME,
@@ -10417,9 +10222,9 @@ The server MUST return the number of computed runtimes in the pcRuntimes paramet
 
   SCHED_S_TASK_NOT_SCHEDULED if the task has no time-based triggers.
 
-3.2.5.4.17
+###### 3.2.5.4.17 SchRpcGetLastRunInfo (Opnum 16)
 
-SchRpcGetLastRunInfo (Opnum 16)
+
 
 The SchRpcGetLastRunInfo method MUST return information about the task's last run.
 
@@ -10453,7 +10258,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Return E_INVALIDARG if any of the following statements are true:
+
+  Return E_INVALIDARG if any of the following statements are true:
 
 
 
@@ -10488,9 +10294,9 @@ not exist on the server in the XML task store.
 
   Return S_OK.
 
-3.2.5.4.18
+###### 3.2.5.4.18 SchRpcGetTaskInfo (Opnum 17)
 
-SchRpcGetTaskInfo (Opnum 17)
+
 
 The SchRpcGetTaskInfo method MUST return information about a specified task.
 
@@ -10540,7 +10346,8 @@ Release: April 23, 2024
 
 119 / 149
 
-Undefined bits. MUST be set to zero when sent and MUST be ignored on receipt.
+
+Undefined bits. MUST be set to zero when sent and MUST be ignored on receipt.
 
 pEnabled: MUST be a pointer to a Boolean that indicates whether the task is currently enabled.
 
@@ -10595,9 +10402,9 @@ state, return TASK_STATE_QUEUED.
 
   Return S_OK.
 
-3.2.5.4.19
+###### 3.2.5.4.19 SchRpcGetNumberOfMissedRuns (Opnum 18)
 
-SchRpcGetNumberOfMissedRuns (Opnum 18)
+
 
 The SchRpcGetNumberOfMissedRuns MUST return the number of times a task was scheduled to run
 but did not due to the server being unavailable (for example, powered off).
@@ -10620,7 +10427,8 @@ Release: April 23, 2024
 
 120 / 149
 
-Return Values: For more information about return codes, see section 2.3.14, or Win32 Error Codes in
+
+Return Values: For more information about return codes, see section 2.3.14, or Win32 Error Codes in
 
 [MS-ERREF] section 2.1.
 
@@ -10642,9 +10450,9 @@ The path is not in the specified format.
 
   Return S_OK.<81>
 
-3.2.5.4.20
+###### 3.2.5.4.20 SchRpcEnableTask (Opnum 19)
 
-SchRpcEnableTask (Opnum 19)
+
 
 The SchRpcEnableTask method MUST enable or disable a task.
 
@@ -10683,7 +10491,7 @@ the task in the task store.
 
   Return S_OK.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 As specified in section 3.2.2, the server MUST maintain a global timer and a delay timer.
 
@@ -10694,7 +10502,8 @@ Release: April 23, 2024
 
 121 / 149
 
-3.2.6.1  Global Timer
+
+##### 3.2.6.1 Global Timer
 
 When the global timer fires, the server MUST traverse the task store and MUST start (see section
 3.2.5.1.2) all valid, enabled tasks that are scheduled to run at or before the current time.
@@ -10704,7 +10513,7 @@ DaysOfMonth and DaysOfWeek fields, unless the JOB_RUN_PERIODICALLY bit is set in
 
 Finally, the server MUST reset the global timer to when the next task is scheduled to run.
 
-3.2.6.2  Delay Timer
+##### 3.2.6.2 Delay Timer
 
 When the delay timer fires, the server MUST traverse the running task list and MUST transition from
 TASK_STATE_QUEUED to TASK_STATE_RUNNING all entries that have reached their scheduled delay
@@ -10713,7 +10522,7 @@ time.
 Finally, the server MUST reset the delay timer to when the next entry in the running task list is
 scheduled to transition from TASK_STATE_QUEUED to TASK_STATE_RUNNING.
 
-3.3  RPC Runtime Check Notes
+### 3.3 RPC Runtime Check Notes
 
 The behavior of the client when methods are executed can be affected by the RPC protocol runtime
 checks and MIDL compiler options used when generating stubs. For example, this often concerns error
@@ -10730,22 +10539,23 @@ Release: April 23, 2024
 
 122 / 149
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-TSCH].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections provide several examples that illustrate the most complex Task Scheduler
 Remoting Protocol operation: task creation by the Scheduling Agent.
 
-4.1  Packet Sequence for Task Creation
+### 4.1 Packet Sequence for Task Creation
 
 This section illustrates the Task Scheduler Remoting Protocol operation by depicting the sequence of
 packets that are sent during the creation of a task, using both the SASec and ITaskSchedulerService
 interfaces.
 
-4.1.1  Packet Sequence for Task Creation Using SASec Interface
+#### 4.1.1 Packet Sequence for Task Creation Using SASec Interface
 
 The following illustration depicts the sequence of packets for creating a task by using the SASec
 interface.
@@ -10757,7 +10567,7 @@ the tasks folder on the server where the task configuration file is stored, as s
 3.1.4.2.1.1. Then the client transfers the .JOB configuration file followed by a client message setting
 the task account information as specified in section 3.2.5.3.4. For more information, see 2.4.
 
-4.1.2  Packet Sequence for Task Creation Using ITaskScheduler Interface
+#### 4.1.2 Packet Sequence for Task Creation Using ITaskScheduler Interface
 
 The following illustration depicts the sequence of packets for creating a task using the
 ITaskSchedulerService interface.
@@ -10769,7 +10579,8 @@ Release: April 23, 2024
 
 123 / 149
 
-<!-- Extracted images from page 124 -->
+
+<!-- Extracted images from page 124 -->
 ![Extracted image 1 from page 124]([MS-TSCH].images/page124-img01.png)
 <!-- /Extracted images from page 124 -->
 
@@ -10780,7 +10591,7 @@ task version supported by the server to which a ITaskScheduler compliant server 
 version information specified in section 1.7. Then the client sends the XML configuration and the
 credentials for running the task, as specified in section 3.1.4.3.1.
 
-4.1.3  Task XML Example
+#### 4.1.3 Task XML Example
 
 The following is an example of a task configuration XML. The XML in this example defines a task that
 starts Notepad when a user logs on. The task has a single execution action (starting Notepad), a
@@ -10819,7 +10630,8 @@ Release: April 23, 2024
 
 124 / 149
 
-             <GroupId>Builtin\Administrators</GroupId>
+
+             <GroupId>Builtin\Administrators</GroupId>
          </Principal>
      </Principals>
      <Settings>
@@ -10834,12 +10646,12 @@ Release: April 23, 2024
      </Actions>
  </Task>
 
-4.2  Examples of Operations Flow
+### 4.2 Examples of Operations Flow
 
 This section provides a conceptual protocol operation flow for the SASec and ITaskSchedulerService
 interfaces.
 
-4.2.1  SASec Operation Flow
+#### 4.2.1 SASec Operation Flow
 
 The following figure provides a conceptual service operation flow with respect to SASec interface.
 
@@ -10850,7 +10662,8 @@ Release: April 23, 2024
 
 125 / 149
 
-<!-- Extracted images from page 126 -->
+
+<!-- Extracted images from page 126 -->
 ![Extracted image 1 from page 126]([MS-TSCH].images/page126-img01.png)
 <!-- /Extracted images from page 126 -->
 
@@ -10881,7 +10694,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 127 -->
+
+<!-- Extracted images from page 127 -->
 ![Extracted image 1 from page 127]([MS-TSCH].images/page127-img01.png)
 <!-- /Extracted images from page 127 -->
 
@@ -10889,7 +10703,7 @@ Set_Task_Account_Failed: Server returns an error indicating that the requested a
 
 be resolved.
 
-4.2.2  ITaskSchedulerService Operation Flow
+#### 4.2.2 ITaskSchedulerService Operation Flow
 
 The following figure illustrates a conceptual protocol operation flow for the ITaskSchedulerService
 interface. All the operations involve the task definition / configuration XML document. For task
@@ -10909,7 +10723,8 @@ Release: April 23, 2024
 
 127 / 149
 
-Op_Request_and_XML_Config_and_Creds_Received: Server receives a request for operation
+
+Op_Request_and_XML_Config_and_Creds_Received: Server receives a request for operation
 
 such as create, update, or delete a task, or enumerate tasks. In the case of creating or updating a
 task, the task XML configuration is passed along in the RPC call, together with the credentials for
@@ -10953,9 +10768,10 @@ Release: April 23, 2024
 
 128 / 149
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Task Scheduler Remoting Protocol has no integral method of security. Instead, this protocol relies
 upon the underlying transports, such as Distributed Component Object Model (DCOM) Remote Protocol
@@ -10990,9 +10806,10 @@ Release: April 23, 2024
 
 129 / 149
 
-6  Appendix A: Full IDL
 
-6.1  Appendix A.1: ATSvc.idl
+## 6 Appendix A: Full IDL
+
+### 6.1 Appendix A.1: ATSvc.idl
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL as specified
 in [MS-DTYP] Appendix A.
@@ -11062,7 +10879,8 @@ Release: April 23, 2024
 
 130 / 149
 
-     [in,out,unique]         LPDWORD pResumeHandle
+
+     [in,out,unique]         LPDWORD pResumeHandle
      );
 
  NET_API_STATUS
@@ -11073,7 +10891,7 @@ Release: April 23, 2024
      );
  }
 
-6.2  Appendix A.2: SaSecRpc.idl
+### 6.2 Appendix A.2: SaSecRpc.idl
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL as specified
 in [MS-DTYP] Appendix A.
@@ -11134,9 +10952,10 @@ Release: April 23, 2024
 
 131 / 149
 
- }
 
-6.3  Appendix A.3: SchRpc.idl
+ }
+
+### 6.3 Appendix A.3: SchRpc.idl
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL as specified
 in [MS-DTYP] Appendix A.
@@ -11205,7 +11024,8 @@ Release: April 23, 2024
 
 132 / 149
 
-         [out, string] wchar_t** pXml
+
+         [out, string] wchar_t** pXml
      );
 
      HRESULT
@@ -11282,7 +11102,8 @@ Release: April 23, 2024
 
 133 / 149
 
-     );
+
+     );
 
      HRESULT
      SchRpcStopInstance
@@ -11359,7 +11180,8 @@ Release: April 23, 2024
 
 134 / 149
 
-         [out] DWORD * pState //TASK_STATE
+
+         [out] DWORD * pState //TASK_STATE
      );
 
      HRESULT
@@ -11384,7 +11206,8 @@ Release: April 23, 2024
 
 135 / 149
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11454,7 +11277,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<1> Section 1.3:  The SASec interface was introduced in the Windows 2000 operating system and the
+
+<1> Section 1.3:  The SASec interface was introduced in the Windows 2000 operating system and the
 ITaskSchedulerService interface made its debut in Windows Vista.
 
 <2> Section 1.3: Windows clients use the server message block (SMB) remote file-system protocol
@@ -11558,7 +11382,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00041303
 
@@ -11691,7 +11516,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -11825,7 +11651,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<11> Section 2.4.1: Windows clients write the following values:
+
+<11> Section 2.4.1: Windows clients write the following values:
 
 Value  Meaning
 
@@ -11890,7 +11717,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In Windows NT 4.0, Windows 2000, Windows XP, and Windows Server 2003, the
+
+In Windows NT 4.0, Windows 2000, Windows XP, and Windows Server 2003, the
 SASetAccountInformation implementation will return S_OK, but the scheduler engine will not load the
 .JOB definition file with the incorrect date set.
 
@@ -11957,7 +11785,8 @@ Release: April 23, 2024
 
 141 / 149
 
-<33> Section 2.5.7.2: Windows Vista and later and Windows Server 2008 and later implementations
+
+<33> Section 2.5.7.2: Windows Vista and later and Windows Server 2008 and later implementations
 allow only out of process activation of COM–based tasks. Implementation of ITaskHandler is able to be
 created with CLSCTX_LOCAL_SERVER context.
 
@@ -12023,7 +11852,8 @@ Release: April 23, 2024
 
 142 / 149
 
-<46> Section 3.2.1: In Windows, this location is in the TasksFolder value under the
+
+<46> Section 3.2.1: In Windows, this location is in the TasksFolder value under the
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SchedulingAgent key. The TasksFolder value is
 required to have the REG_SZ or REG_EXPAND_SZ type. If the TasksFolder value has the
 REG_EXPAND_SZ type, then the value can only use the SystemRoot environment variable.
@@ -12110,7 +11940,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-later and Windows Server 2008 and later, when the Start Hour field or the Start Minute field that is
+
+later and Windows Server 2008 and later, when the Start Hour field or the Start Minute field that is
 provided is out of range, the server returns 0x80041318.
 
 Windows ignores the trigger offset value upon receipt.
@@ -12177,7 +12008,8 @@ Release: April 23, 2024
 
 144 / 149
 
-<65> Section 3.2.5.4.1: Windows Vista and Windows Server 2008 return version 1.2, and Windows
+
+<65> Section 3.2.5.4.1: Windows Vista and Windows Server 2008 return version 1.2, and Windows
 Server 2008 R2 and later and Windows 7 and later return version 1.3.
 
 <66> Section 3.2.5.4.2: Windows Server 2008 and later and Windows 10 and later return
@@ -12246,7 +12078,8 @@ Task Scheduler Service Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12290,7 +12123,8 @@ Release: April 23, 2024
 
 146 / 149
 
-9  Index
+
+## 9 Index
 .
 
 .JOB file format 26
@@ -12426,7 +12260,8 @@ Informative references 14
 
 147 / 149
 
-Initialization
+
+Initialization
    client 64
    server 76
 Introduction 10
@@ -12564,7 +12399,8 @@ Security
 
 148 / 149
 
-Security - implementer considerations 129
+
+Security - implementer considerations 129
 Sequencing rules
    client 75
    server

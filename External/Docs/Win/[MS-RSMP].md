@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 214
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: June 1, 2017
 
 2 / 214
 
-Date
+
+Date
 
 Revision
 History
@@ -513,541 +515,235 @@ Release: June 1, 2017
 
 3 / 214
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 13
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Interfaces for Storage Object Management .................................................... 15
-Interfaces for Media Library Management ...................................................... 15
-Interfaces for Media Management ................................................................. 15
-Interfaces for Message and Notification Distribution ........................................ 15
-Security and Authentication Methods............................................................. 16
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.7.1
-1.7.2
-1.7.3
-1.7.4
-1.7.5
-
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-Common Data Types ................................................................................... 17
-LPGUID ................................................................................................ 17
-2.2.1.1
-NTMS_GUID ......................................................................................... 17
-2.2.1.2
-LPNTMS_GUID ...................................................................................... 17
-2.2.1.3
-NTMS_HANDLE ..................................................................................... 17
-2.2.1.4
-PSECURITY_DESCRIPTOR_NTMS ............................................................. 18
-2.2.1.5
-NtmsObjectsTypes Enumeration.............................................................. 18
-2.2.1.6
-NtmsOpreqCommand Enumeration.......................................................... 19
-2.2.1.7
-NtmsNotificationOperations Enumeration ................................................. 19
-2.2.1.8
-2.2.1.9
-NtmsDismountOptions Enumeration ........................................................ 20
-2.2.1.10  NtmsLmState Enumeration ..................................................................... 20
-2.2.1.11  NTMS_LIBRARYINFORMATION Structure .................................................. 20
-2.2.1.12  NtmsAccessMask................................................................................... 23
-INtmsLibraryControl1 Data Types ................................................................. 23
-NtmsEjectOperation Enumeration ............................................................ 23
-NtmsInjectOperation Enumeration .......................................................... 24
-NtmsInventoryMethod Enumeration ........................................................ 24
-INtmsMediaServices1 Data Types ................................................................. 25
-NtmsAllocateOptions Enumeration ........................................................... 25
-NtmsCreateOptions Enumeration ............................................................ 26
-NtmsMountOptions Enumeration ............................................................. 26
-NtmsMountPriority Enumeration .............................................................. 26
-SECURITY_ATTRIBUTES_NTMS Structure ................................................. 27
-NTMS_ALLOCATION_INFORMATION Structure .......................................... 27
-NTMS_MOUNT_INFORMATION Structure .................................................. 28
-NTMS_ASYNC_IO Structure .................................................................... 28
-INtmsObjectInfo1 Data Types ...................................................................... 28
-NtmsBarCodeState Enumeration ............................................................. 30
-NtmsDriveState Enumeration ................................................................. 30
-NtmsLmOperation Enumeration .............................................................. 31
-NtmsMediaState Enumeration ................................................................. 32
-NtmsOperationalState Enumeration ......................................................... 32
-NtmsOpreqState Enumeration ................................................................ 33
-NtmsPartitionState Enumeration ............................................................. 33
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.4
-
-2.2.3
-
-[MS-RSMP] - v20170601
-Removable Storage Manager (RSM) Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 214
-
-NTMS_CHANGERINFORMATIONA Structure .............................................. 34
-2.2.4.8
-2.2.4.9
-NTMS_CHANGERINFORMATIONW Structure ............................................. 35
-2.2.4.10  NTMS_CHANGERTYPEINFORMATIONA Structure........................................ 35
-2.2.4.11  NTMS_CHANGERTYPEINFORMATIONW Structure ....................................... 36
-2.2.4.12  NTMS_DRIVEINFORMATIONA Structure ................................................... 36
-2.2.4.13  NTMS_DRIVEINFORMATIONW Structure .................................................. 37
-2.2.4.14  NTMS_DRIVETYPEINFORMATIONA Structure ............................................ 38
-2.2.4.15  NTMS_DRIVETYPEINFORMATIONW Structure ............................................ 39
-2.2.4.16  NTMS_LIBREQUESTINFORMATIONA Structure .......................................... 40
-2.2.4.17  NTMS_LIBREQUESTINFORMATIONW Structure ......................................... 42
-2.2.4.18  NTMS_MEDIAPOOLINFORMATION Structure ............................................. 43
-2.2.4.19  NTMS_MEDIATYPEINFORMATION Structure .............................................. 44
-2.2.4.20  NTMS_OBJECTINFORMATIONA Structure ................................................. 48
-2.2.4.21  NTMS_OBJECTINFORMATIONW Structure ................................................. 50
-2.2.4.22  NTMS_STORAGESLOTINFORMATION Structure ......................................... 52
-2.2.4.23  NTMS_IEDOORINFORMATION Structure ................................................... 53
-2.2.4.24  NTMS_IEPORTINFORMATION Structure .................................................... 53
-2.2.4.25  NTMS_LMIDINFORMATION Structure ....................................................... 54
-2.2.4.26  NTMS_COMPUTERINFORMATION Structure............................................... 54
-2.2.4.27  NTMS_OPREQUESTINFORMATIONA Structure ........................................... 56
-2.2.4.28  NTMS_OPREQUESTINFORMATIONW Structure .......................................... 57
-2.2.4.29  NTMS_PARTITIONINFORMATIONA Structure ............................................. 58
-2.2.4.30  NTMS_PARTITIONINFORMATIONW Structure ............................................ 59
-2.2.4.31  NTMS_PMIDINFORMATIONA Structure ..................................................... 60
-2.2.4.32  NTMS_PMIDINFORMATIONW Structure .................................................... 61
-INtmsObjectManagement2 Data Types .......................................................... 62
-NtmsUIOperations Enumeration .............................................................. 62
-NtmsUIType Enumeration ...................................................................... 62
-IMessenger Data Types ............................................................................... 63
-RSM_MESSAGE Structure ....................................................................... 63
-
-2.2.5.1
-2.2.5.2
-
-2.2.6.1
-
-2.2.5
-
-2.2.6
-
-3.1
-
-3.1.5
-
-3.1.1
-
-3.1.5.2
-
-3.1.4.1
-
-3.1.5.1
-
-3.1.1.1
-
-3.1.5.1.1
-
-3.1.4.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 64
-Client Role Details ............................................................................................ 64
-Abstract Data Model .................................................................................... 64
-Notification Callback Objects .................................................................. 64
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 64
-Higher-Layer Triggered Events ..................................................................... 65
-Common Details ................................................................................... 65
-Methods with Prerequisites ............................................................... 65
-Message Processing Events and Sequencing Rules .......................................... 65
-Processing Server Replies to Method Calls ................................................ 65
-Processing Notifications Sent from the Server to the Client ................... 65
-Message Processing Details .................................................................... 66
-IClientSink Interface ........................................................................ 66
-IClientSink::OnNotify (Opnum 3) ................................................. 66
-INtmsNotifySink Interface ................................................................ 66
-INtmsNotifySink::ConnectCallback (Opnum 3)............................... 67
-INtmsNotifySink::OnNotify (Opnum 4) ......................................... 67
-INtmsNotifySink::ReleaseCallback (Opnum 5) ............................... 68
-Timer Events .............................................................................................. 68
-Other Local Events ...................................................................................... 68
-Server Role Details ........................................................................................... 68
-Abstract Data Model .................................................................................... 68
-Server Object ....................................................................................... 69
-List of Objects Present in the System ...................................................... 69
-Libraries ......................................................................................... 69
-Media Pools .................................................................................... 69
-
-3.1.5.2.2.1
-3.1.5.2.2.2
-3.1.5.2.2.3
-
-3.2.1.2.1
-3.2.1.2.2
-
-3.2.1.1
-3.2.1.2
-
-3.1.5.2.1.1
-
-3.1.6
-3.1.7
-
-3.1.5.2.1
-
-3.1.5.2.2
-
-3.2.1
-
-3.2
-
-[MS-RSMP] - v20170601
-Removable Storage Manager (RSM) Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 214
-
-3.2.1.2.3
-
-3.2.1.3
-3.2.1.4
-
-3.2.2
-3.2.3
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.2.1.1
-3.2.5.2.1.2
-3.2.5.2.1.3
-3.2.5.2.1.4
-3.2.5.2.1.5
-3.2.5.2.1.6
-3.2.5.2.1.7
-3.2.5.2.1.8
-3.2.5.2.1.9
-3.2.5.2.1.10
-3.2.5.2.1.11
-3.2.5.2.1.12
-3.2.5.2.1.13
-3.2.5.2.1.14
-3.2.5.2.1.15
-3.2.5.2.1.16
-3.2.5.2.1.17
-
-Media ............................................................................................. 69
-List of Clients Connected to the Server .................................................... 70
-List of Tasks Currently Executed on the Server ......................................... 70
-Timers ...................................................................................................... 70
-Initialization ............................................................................................... 70
-List of Storage Objects Present in the System ........................................... 71
-List of Clients Connected to the Server .................................................... 71
-List of Tasks Currently Executed on the Server ......................................... 71
-Higher-Layer Triggered Events ..................................................................... 71
-Message Processing Events and Sequencing Rules .......................................... 71
-Rules for Modifying the List of Storage Objects ......................................... 71
-Message Processing Details .................................................................... 71
-INtmsLibraryControl1 Interface ......................................................... 72
-INtmsLibraryControl1::EjectNtmsMedia (Opnum 3) ........................ 73
-INtmsLibraryControl1::InjectNtmsMedia (Opnum 4) ....................... 74
-INtmsLibraryControl1::AccessNtmsLibraryDoor (Opnum 5) ............. 76
-INtmsLibraryControl1::CleanNtmsDrive (Opnum 6) ........................ 77
-INtmsLibraryControl1::DismountNtmsDrive (Opnum 7) .................. 78
-INtmsLibraryControl1::InventoryNtmsLibrary (Opnum 8) ................ 79
-INtmsLibraryControl1::CancelNtmsLibraryRequest (Opnum 10) ....... 81
-INtmsLibraryControl1::ReserveNtmsCleanerSlot (Opnum 11) .......... 81
-INtmsLibraryControl1::ReleaseNtmsCleanerSlot (Opnum 12) .......... 83
-INtmsLibraryControl1::InjectNtmsCleaner (Opnum 13) .................. 83
-INtmsLibraryControl1::EjectNtmsCleaner (Opnum 14) .................... 85
-INtmsLibraryControl1::DeleteNtmsLibrary (Opnum 15) .................. 86
-INtmsLibraryControl1::DeleteNtmsDrive (Opnum 16) ..................... 87
-INtmsLibraryControl1::GetNtmsRequestOrder (Opnum 17) ............. 88
-INtmsLibraryControl1::SetNtmsRequestOrder (Opnum 18) ............. 89
-INtmsLibraryControl1::DeleteNtmsRequests (Opnum 19) ............... 90
-INtmsLibraryControl1::BeginNtmsDeviceChangeDetection (Opnum 20)
- ............................................................................................... 91
-INtmsLibraryControl1::SetNtmsDeviceChangeDetection (Opnum 21) 91
-INtmsLibraryControl1::EndNtmsDeviceChangeDetection (Opnum 22) 93
-INtmsMediaServices1 Interface ......................................................... 93
-INtmsMediaServices1::MountNtmsMedia (Opnum 3) ...................... 94
-INtmsMediaServices1::DismountNtmsMedia (Opnum 4) ................. 97
-INtmsMediaServices1::AllocateNtmsMedia (Opnum 6) .................... 98
-INtmsMediaServices1::DeallocateNtmsMedia (Opnum 7) ............... 100
-INtmsMediaServices1::SwapNtmsMedia (Opnum 8) ...................... 101
-INtmsMediaServices1::DecommissionNtmsMedia (Opnum 9) ......... 102
-INtmsMediaServices1::SetNtmsMediaComplete (Opnum 10) .......... 103
-INtmsMediaServices1::DeleteNtmsMedia (Opnum 11) ................... 104
-INtmsMediaServices1::CreateNtmsMediaPoolA (Opnum 12) ........... 105
-INtmsMediaServices1::CreateNtmsMediaPoolW (Opnum 13) .......... 107
-INtmsMediaServices1::GetNtmsMediaPoolNameA (Opnum 14) ....... 108
-INtmsMediaServices1::GetNtmsMediaPoolNameW (Opnum 15) ...... 109
-INtmsMediaServices1::MoveToNtmsMediaPool (Opnum 16) ........... 110
-INtmsMediaServices1::DeleteNtmsMediaPool (Opnum 17) ............. 111
-INtmsMediaServices1::AddNtmsMediaType (Opnum 18) ................ 112
-INtmsMediaServices1::DeleteNtmsMediaType (Opnum 19) ............ 113
-INtmsMediaServices1::ChangeNtmsMediaType (Opnum 20) ........... 114
-INtmsObjectInfo1 Interface ............................................................. 115
-INtmsObjectInfo1::GetNtmsServerObjectInformationA (Opnum 3) . 116
-INtmsObjectInfo1::GetNtmsServerObjectInformationW (Opnum 4) . 117
-INtmsObjectInfo1::SetNtmsObjectInformationA (Opnum 5) ........... 119
-INtmsObjectInfo1::SetNtmsObjectInformationW (Opnum 6) .......... 121
-INtmsObjectInfo1::CreateNtmsMediaA (Opnum 7) ........................ 123
-INtmsObjectInfo1::CreateNtmsMediaW (Opnum 8) ....................... 126
-
-3.2.5.2.2.1
-3.2.5.2.2.2
-3.2.5.2.2.3
-3.2.5.2.2.4
-3.2.5.2.2.5
-3.2.5.2.2.6
-3.2.5.2.2.7
-3.2.5.2.2.8
-3.2.5.2.2.9
-3.2.5.2.2.10
-3.2.5.2.2.11
-3.2.5.2.2.12
-3.2.5.2.2.13
-3.2.5.2.2.14
-3.2.5.2.2.15
-3.2.5.2.2.16
-3.2.5.2.2.17
-
-3.2.5.2.3.1
-3.2.5.2.3.2
-3.2.5.2.3.3
-3.2.5.2.3.4
-3.2.5.2.3.5
-3.2.5.2.3.6
-
-3.2.5.2.1.18
-3.2.5.2.1.19
-
-3.2.5.2.3
-
-3.2.5.2.2
-
-[MS-RSMP] - v20170601
-Removable Storage Manager (RSM) Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 214
-
-3.2.5.2.5
-
-3.2.5.2.4
-
-3.2.5.2.4.1
-3.2.5.2.4.2
-3.2.5.2.4.3
-3.2.5.2.4.4
-3.2.5.2.4.5
-3.2.5.2.4.6
-3.2.5.2.4.7
-3.2.5.2.4.8
-3.2.5.2.4.9
-
-3.2.5.2.5.1
-3.2.5.2.5.2
-3.2.5.2.5.3
-3.2.5.2.5.4
-3.2.5.2.5.5
-3.2.5.2.5.6
-3.2.5.2.5.7
-3.2.5.2.5.8
-3.2.5.2.5.9
-3.2.5.2.5.10
-3.2.5.2.5.11
-3.2.5.2.5.12
-3.2.5.2.5.13
-
-INtmsObjectManagement1 Interface ................................................. 130
-INtmsObjectManagement1::GetNtmsObjectSecurity (Opnum 3) ..... 130
-INtmsObjectManagement1::SetNtmsObjectSecurity (Opnum 4) ..... 131
-INtmsObjectManagement1::GetNtmsObjectAttributeA (Opnum 5) .. 132
-INtmsObjectManagement1::GetNtmsObjectAttributeW (Opnum 6) .. 134
-INtmsObjectManagement1::SetNtmsObjectAttributeA (Opnum 7) ... 136
-INtmsObjectManagement1::SetNtmsObjectAttributeW (Opnum 8) .. 137
-INtmsObjectManagement1::EnumerateNtmsObject (Opnum 9) ...... 138
-INtmsObjectManagement1::DisableNtmsObject (Opnum 10) .......... 139
-INtmsObjectManagement1::EnableNtmsObject (Opnum 11) .......... 140
-INtmsSession1 Interface ................................................................. 141
-INtmsSession1::OpenNtmsServerSessionW (Opnum 3) ................. 142
-INtmsSession1::OpenNtmsServerSessionA (Opnum 4) .................. 143
-INtmsSession1::CloseNtmsSession (Opnum 5) ............................. 144
-INtmsSession1::SubmitNtmsOperatorRequestW (Opnum 6) ........... 145
-INtmsSession1::SubmitNtmsOperatorRequestA (Opnum 7)............ 146
-INtmsSession1::WaitForNtmsOperatorRequest (Opnum 8) ............. 148
-INtmsSession1::CancelNtmsOperatorRequest (Opnum 9) .............. 149
-INtmsSession1::SatisfyNtmsOperatorRequest (Opnum 10) ............ 150
-INtmsSession1::ImportNtmsDatabase (Opnum 11) ....................... 150
-INtmsSession1::ExportNtmsDatabase (Opnum 12) ....................... 151
-INtmsSession1::AddNotification (Opnum 14) ............................... 151
-INtmsSession1::RemoveNotification (Opnum 15) .......................... 152
-INtmsSession1::DispatchNotification (Opnum 16) ......................... 152
-INtmsLibraryControl2 Interface ........................................................ 153
-INtmsLibraryControl2::IdentifyNtmsSlot (Opnum 23) .................... 153
-INtmsObjectManagement2 Interface ................................................. 154
-INtmsObjectManagement2::EnumerateNtmsObjectR (Opnum 12) ... 155
-INtmsObjectManagement2::GetNtmsUIOptionsA (Opnum 13) ........ 156
-INtmsObjectManagement2::GetNtmsUIOptionsW (Opnum 14) ....... 158
-INtmsObjectManagement2::SetNtmsUIOptionsA (Opnum 15) ........ 159
-INtmsObjectManagement2::SetNtmsUIOptionsW (Opnum 16) ........ 160
-INtmsObjectManagement3 Interface ................................................. 161
-INtmsObjectManagement3::GetNtmsObjectAttributeAR (Opnum 17)162
-INtmsObjectManagement3::GetNtmsObjectAttributeWR (Opnum 18)
- .............................................................................................. 163
-IRobustNtmsMediaServices1 Interface .............................................. 164
-IRobustNtmsMediaServices1::GetNtmsMediaPoolNameAR (Opnum 21)
- .............................................................................................. 165
-IRobustNtmsMediaServices1::GetNtmsMediaPoolNameWR (Opnum 22)
- .............................................................................................. 166
-IMessenger Interface ...................................................................... 167
-IMessenger::SendMessage (Opnum 3) ........................................ 168
-IMessenger::RecallMessage (Opnum 4) ....................................... 168
-Timer Events ............................................................................................. 169
-Other Local Events ..................................................................................... 169
-Problem/Warnings for the Tape Drive ..................................................... 169
-
-3.2.5.2.6
-
-3.2.5.2.6.1
-
-3.2.5.2.7
-
-3.2.5.2.7.1
-3.2.5.2.7.2
-3.2.5.2.7.3
-3.2.5.2.7.4
-3.2.5.2.7.5
-
-3.2.5.2.8
-
-3.2.5.2.8.1
-3.2.5.2.8.2
-
-3.2.5.2.10
-
-3.2.5.2.10.1
-3.2.5.2.10.2
-
-3.2.5.2.9
-
-3.2.5.2.9.1
-
-3.2.5.2.9.2
-
-3.2.6
-3.2.7
-
-3.2.7.1
-
-4  Protocol Examples ............................................................................................... 170
-Allocation of Media with INtmsMediaServices1 .................................................... 170
-Registering for Notifications with INtmsSession1 ................................................. 171
-Storage Object Management with INtmsObjectManagement1 ............................... 172
-Media Management Using INtmsMediaServices1 ................................................. 173
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ............................................................................................................... 175
-Security Considerations for Implementers .......................................................... 175
-Index of Security Parameters ........................................................................... 175
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 176
-
-7 / 214
-
-[MS-RSMP] - v20170601
-Removable Storage Manager (RSM) Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7  Appendix B: Product Behavior ............................................................................. 197
-
-8  Change Tracking .................................................................................................. 211
-
-9  Index ................................................................................................................... 212
-
-[MS-RSMP] - v20170601
-Removable Storage Manager (RSM) Remote Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-8 / 214
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Interfaces for Storage Object Management](#171-interfaces-for-storage-object-management)
+    - [1.7.2 Interfaces for Media Library Management](#172-interfaces-for-media-library-management)
+    - [1.7.3 Interfaces for Media Management](#173-interfaces-for-media-management)
+    - [1.7.4 Interfaces for Message and Notification Distribution](#174-interfaces-for-message-and-notification-distribution)
+    - [1.7.5 Security and Authentication Methods](#175-security-and-authentication-methods)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 LPGUID](#2211-lpguid)
+      - [2.2.1.2 NTMS_GUID](#2212-ntmsguid)
+      - [2.2.1.3 LPNTMS_GUID](#2213-lpntmsguid)
+      - [2.2.1.4 NTMS_HANDLE](#2214-ntmshandle)
+      - [2.2.1.5 PSECURITY_DESCRIPTOR_NTMS](#2215-psecuritydescriptorntms)
+      - [2.2.1.6 NtmsObjectsTypes Enumeration](#2216-ntmsobjectstypes-enumeration)
+      - [2.2.1.7 NtmsOpreqCommand Enumeration](#2217-ntmsopreqcommand-enumeration)
+      - [2.2.1.8 NtmsNotificationOperations Enumeration](#2218-ntmsnotificationoperations-enumeration)
+      - [2.2.1.9 NtmsDismountOptions Enumeration](#2219-ntmsdismountoptions-enumeration)
+      - [2.2.1.10 NtmsLmState Enumeration](#22110-ntmslmstate-enumeration)
+      - [2.2.1.11 NTMS_LIBRARYINFORMATION Structure](#22111-ntmslibraryinformation-structure)
+      - [2.2.1.12 NtmsAccessMask](#22112-ntmsaccessmask)
+    - [2.2.2 INtmsLibraryControl1 Data Types](#222-intmslibrarycontrol1-data-types)
+      - [2.2.2.1 NtmsEjectOperation Enumeration](#2221-ntmsejectoperation-enumeration)
+      - [2.2.2.2 NtmsInjectOperation Enumeration](#2222-ntmsinjectoperation-enumeration)
+      - [2.2.2.3 NtmsInventoryMethod Enumeration](#2223-ntmsinventorymethod-enumeration)
+    - [2.2.3 INtmsMediaServices1 Data Types](#223-intmsmediaservices1-data-types)
+      - [2.2.3.1 NtmsAllocateOptions Enumeration](#2231-ntmsallocateoptions-enumeration)
+      - [2.2.3.2 NtmsCreateOptions Enumeration](#2232-ntmscreateoptions-enumeration)
+      - [2.2.3.3 NtmsMountOptions Enumeration](#2233-ntmsmountoptions-enumeration)
+      - [2.2.3.4 NtmsMountPriority Enumeration](#2234-ntmsmountpriority-enumeration)
+      - [2.2.3.5 SECURITY_ATTRIBUTES_NTMS Structure](#2235-securityattributesntms-structure)
+      - [2.2.3.6 NTMS_ALLOCATION_INFORMATION Structure](#2236-ntmsallocationinformation-structure)
+      - [2.2.3.7 NTMS_MOUNT_INFORMATION Structure](#2237-ntmsmountinformation-structure)
+      - [2.2.3.8 NTMS_ASYNC_IO Structure](#2238-ntmsasyncio-structure)
+    - [2.2.4 INtmsObjectInfo1 Data Types](#224-intmsobjectinfo1-data-types)
+      - [2.2.4.1 NtmsBarCodeState Enumeration](#2241-ntmsbarcodestate-enumeration)
+      - [2.2.4.2 NtmsDriveState Enumeration](#2242-ntmsdrivestate-enumeration)
+      - [2.2.4.3 NtmsLmOperation Enumeration](#2243-ntmslmoperation-enumeration)
+      - [2.2.4.4 NtmsMediaState Enumeration](#2244-ntmsmediastate-enumeration)
+      - [2.2.4.5 NtmsOperationalState Enumeration](#2245-ntmsoperationalstate-enumeration)
+      - [2.2.4.6 NtmsOpreqState Enumeration](#2246-ntmsopreqstate-enumeration)
+      - [2.2.4.7 NtmsPartitionState Enumeration](#2247-ntmspartitionstate-enumeration)
+      - [2.2.4.8 NTMS_CHANGERINFORMATIONA Structure](#2248-ntmschangerinformationa-structure)
+      - [2.2.4.9 NTMS_CHANGERINFORMATIONW Structure](#2249-ntmschangerinformationw-structure)
+      - [2.2.4.10 NTMS_CHANGERTYPEINFORMATIONA Structure](#22410-ntmschangertypeinformationa-structure)
+      - [2.2.4.11 NTMS_CHANGERTYPEINFORMATIONW Structure](#22411-ntmschangertypeinformationw-structure)
+      - [2.2.4.12 NTMS_DRIVEINFORMATIONA Structure](#22412-ntmsdriveinformationa-structure)
+      - [2.2.4.13 NTMS_DRIVEINFORMATIONW Structure](#22413-ntmsdriveinformationw-structure)
+      - [2.2.4.14 NTMS_DRIVETYPEINFORMATIONA Structure](#22414-ntmsdrivetypeinformationa-structure)
+      - [2.2.4.15 NTMS_DRIVETYPEINFORMATIONW Structure](#22415-ntmsdrivetypeinformationw-structure)
+      - [2.2.4.16 NTMS_LIBREQUESTINFORMATIONA Structure](#22416-ntmslibrequestinformationa-structure)
+      - [2.2.4.17 NTMS_LIBREQUESTINFORMATIONW Structure](#22417-ntmslibrequestinformationw-structure)
+      - [2.2.4.18 NTMS_MEDIAPOOLINFORMATION Structure](#22418-ntmsmediapoolinformation-structure)
+      - [2.2.4.19 NTMS_MEDIATYPEINFORMATION Structure](#22419-ntmsmediatypeinformation-structure)
+      - [2.2.4.20 NTMS_OBJECTINFORMATIONA Structure](#22420-ntmsobjectinformationa-structure)
+      - [2.2.4.21 NTMS_OBJECTINFORMATIONW Structure](#22421-ntmsobjectinformationw-structure)
+      - [2.2.4.22 NTMS_STORAGESLOTINFORMATION Structure](#22422-ntmsstorageslotinformation-structure)
+      - [2.2.4.23 NTMS_IEDOORINFORMATION Structure](#22423-ntmsiedoorinformation-structure)
+      - [2.2.4.24 NTMS_IEPORTINFORMATION Structure](#22424-ntmsieportinformation-structure)
+      - [2.2.4.25 NTMS_LMIDINFORMATION Structure](#22425-ntmslmidinformation-structure)
+      - [2.2.4.26 NTMS_COMPUTERINFORMATION Structure](#22426-ntmscomputerinformation-structure)
+      - [2.2.4.27 NTMS_OPREQUESTINFORMATIONA Structure](#22427-ntmsoprequestinformationa-structure)
+      - [2.2.4.28 NTMS_OPREQUESTINFORMATIONW Structure](#22428-ntmsoprequestinformationw-structure)
+      - [2.2.4.29 NTMS_PARTITIONINFORMATIONA Structure](#22429-ntmspartitioninformationa-structure)
+      - [2.2.4.30 NTMS_PARTITIONINFORMATIONW Structure](#22430-ntmspartitioninformationw-structure)
+      - [2.2.4.31 NTMS_PMIDINFORMATIONA Structure](#22431-ntmspmidinformationa-structure)
+      - [2.2.4.32 NTMS_PMIDINFORMATIONW Structure](#22432-ntmspmidinformationw-structure)
+    - [2.2.5 INtmsObjectManagement2 Data Types](#225-intmsobjectmanagement2-data-types)
+      - [2.2.5.1 NtmsUIOperations Enumeration](#2251-ntmsuioperations-enumeration)
+      - [2.2.5.2 NtmsUIType Enumeration](#2252-ntmsuitype-enumeration)
+    - [2.2.6 IMessenger Data Types](#226-imessenger-data-types)
+      - [2.2.6.1 RSM_MESSAGE Structure](#2261-rsmmessage-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Role Details](#31-client-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Notification Callback Objects](#3111-notification-callback-objects)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Common Details](#3141-common-details)
+        - [3.1.4.1.1 Methods with Prerequisites](#31411-methods-with-prerequisites)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing Server Replies to Method Calls](#3151-processing-server-replies-to-method-calls)
+        - [3.1.5.1.1 Processing Notifications Sent from the Server to the Client](#31511-processing-notifications-sent-from-the-server-to-the-client)
+      - [3.1.5.2 Message Processing Details](#3152-message-processing-details)
+        - [3.1.5.2.1 IClientSink Interface](#31521-iclientsink-interface)
+          - [3.1.5.2.1.1 IClientSink::OnNotify (Opnum 3)](#315211-iclientsinkonnotify-opnum-3)
+        - [3.1.5.2.2 INtmsNotifySink Interface](#31522-intmsnotifysink-interface)
+          - [3.1.5.2.2.1 INtmsNotifySink::ConnectCallback (Opnum 3)](#315221-intmsnotifysinkconnectcallback-opnum-3)
+          - [3.1.5.2.2.2 INtmsNotifySink::OnNotify (Opnum 4)](#315222-intmsnotifysinkonnotify-opnum-4)
+          - [3.1.5.2.2.3 INtmsNotifySink::ReleaseCallback (Opnum 5)](#315223-intmsnotifysinkreleasecallback-opnum-5)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Role Details](#32-server-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Server Object](#3211-server-object)
+      - [3.2.1.2 List of Objects Present in the System](#3212-list-of-objects-present-in-the-system)
+        - [3.2.1.2.1 Libraries](#32121-libraries)
+        - [3.2.1.2.2 Media Pools](#32122-media-pools)
+        - [3.2.1.2.3 Media](#32123-media)
+      - [3.2.1.3 List of Clients Connected to the Server](#3213-list-of-clients-connected-to-the-server)
+      - [3.2.1.4 List of Tasks Currently Executed on the Server](#3214-list-of-tasks-currently-executed-on-the-server)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 List of Storage Objects Present in the System](#3231-list-of-storage-objects-present-in-the-system)
+      - [3.2.3.2 List of Clients Connected to the Server](#3232-list-of-clients-connected-to-the-server)
+      - [3.2.3.3 List of Tasks Currently Executed on the Server](#3233-list-of-tasks-currently-executed-on-the-server)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Rules for Modifying the List of Storage Objects](#3251-rules-for-modifying-the-list-of-storage-objects)
+      - [3.2.5.2 Message Processing Details](#3252-message-processing-details)
+        - [3.2.5.2.1 INtmsLibraryControl1 Interface](#32521-intmslibrarycontrol1-interface)
+          - [3.2.5.2.1.1 INtmsLibraryControl1::EjectNtmsMedia (Opnum 3)](#325211-intmslibrarycontrol1ejectntmsmedia-opnum-3)
+          - [3.2.5.2.1.2 INtmsLibraryControl1::InjectNtmsMedia (Opnum 4)](#325212-intmslibrarycontrol1injectntmsmedia-opnum-4)
+          - [3.2.5.2.1.3 INtmsLibraryControl1::AccessNtmsLibraryDoor (Opnum 5)](#325213-intmslibrarycontrol1accessntmslibrarydoor-opnum-5)
+          - [3.2.5.2.1.4 INtmsLibraryControl1::CleanNtmsDrive (Opnum 6)](#325214-intmslibrarycontrol1cleanntmsdrive-opnum-6)
+          - [3.2.5.2.1.5 INtmsLibraryControl1::DismountNtmsDrive (Opnum 7)](#325215-intmslibrarycontrol1dismountntmsdrive-opnum-7)
+          - [3.2.5.2.1.6 INtmsLibraryControl1::InventoryNtmsLibrary (Opnum 8)](#325216-intmslibrarycontrol1inventoryntmslibrary-opnum-8)
+          - [3.2.5.2.1.7 INtmsLibraryControl1::CancelNtmsLibraryRequest (Opnum 10)](#325217-intmslibrarycontrol1cancelntmslibraryrequest-opnum-10)
+          - [3.2.5.2.1.8 INtmsLibraryControl1::ReserveNtmsCleanerSlot (Opnum 11)](#325218-intmslibrarycontrol1reserventmscleanerslot-opnum-11)
+          - [3.2.5.2.1.9 INtmsLibraryControl1::ReleaseNtmsCleanerSlot (Opnum 12)](#325219-intmslibrarycontrol1releasentmscleanerslot-opnum-12)
+          - [3.2.5.2.1.10 INtmsLibraryControl1::InjectNtmsCleaner (Opnum 13)](#3252110-intmslibrarycontrol1injectntmscleaner-opnum-13)
+          - [3.2.5.2.1.11 INtmsLibraryControl1::EjectNtmsCleaner (Opnum 14)](#3252111-intmslibrarycontrol1ejectntmscleaner-opnum-14)
+          - [3.2.5.2.1.12 INtmsLibraryControl1::DeleteNtmsLibrary (Opnum 15)](#3252112-intmslibrarycontrol1deletentmslibrary-opnum-15)
+          - [3.2.5.2.1.13 INtmsLibraryControl1::DeleteNtmsDrive (Opnum 16)](#3252113-intmslibrarycontrol1deletentmsdrive-opnum-16)
+          - [3.2.5.2.1.14 INtmsLibraryControl1::GetNtmsRequestOrder (Opnum 17)](#3252114-intmslibrarycontrol1getntmsrequestorder-opnum-17)
+          - [3.2.5.2.1.15 INtmsLibraryControl1::SetNtmsRequestOrder (Opnum 18)](#3252115-intmslibrarycontrol1setntmsrequestorder-opnum-18)
+          - [3.2.5.2.1.16 INtmsLibraryControl1::DeleteNtmsRequests (Opnum 19)](#3252116-intmslibrarycontrol1deletentmsrequests-opnum-19)
+          - [3.2.5.2.1.17 INtmsLibraryControl1::BeginNtmsDeviceChangeDetection (Opnum 20)](#3252117-intmslibrarycontrol1beginntmsdevicechangedetection-opnum-20)
+          - [3.2.5.2.1.18 INtmsLibraryControl1::SetNtmsDeviceChangeDetection (Opnum 21)](#3252118-intmslibrarycontrol1setntmsdevicechangedetection-opnum-21)
+          - [3.2.5.2.1.19 INtmsLibraryControl1::EndNtmsDeviceChangeDetection (Opnum 22)](#3252119-intmslibrarycontrol1endntmsdevicechangedetection-opnum-22)
+        - [3.2.5.2.2 INtmsMediaServices1 Interface](#32522-intmsmediaservices1-interface)
+          - [3.2.5.2.2.1 INtmsMediaServices1::MountNtmsMedia (Opnum 3)](#325221-intmsmediaservices1mountntmsmedia-opnum-3)
+          - [3.2.5.2.2.2 INtmsMediaServices1::DismountNtmsMedia (Opnum 4)](#325222-intmsmediaservices1dismountntmsmedia-opnum-4)
+          - [3.2.5.2.2.3 INtmsMediaServices1::AllocateNtmsMedia (Opnum 6)](#325223-intmsmediaservices1allocatentmsmedia-opnum-6)
+          - [3.2.5.2.2.4 INtmsMediaServices1::DeallocateNtmsMedia (Opnum 7)](#325224-intmsmediaservices1deallocatentmsmedia-opnum-7)
+          - [3.2.5.2.2.5 INtmsMediaServices1::SwapNtmsMedia (Opnum 8)](#325225-intmsmediaservices1swapntmsmedia-opnum-8)
+          - [3.2.5.2.2.6 INtmsMediaServices1::DecommissionNtmsMedia (Opnum 9)](#325226-intmsmediaservices1decommissionntmsmedia-opnum-9)
+          - [3.2.5.2.2.7 INtmsMediaServices1::SetNtmsMediaComplete (Opnum 10)](#325227-intmsmediaservices1setntmsmediacomplete-opnum-10)
+          - [3.2.5.2.2.8 INtmsMediaServices1::DeleteNtmsMedia (Opnum 11)](#325228-intmsmediaservices1deletentmsmedia-opnum-11)
+          - [3.2.5.2.2.9 INtmsMediaServices1::CreateNtmsMediaPoolA (Opnum 12)](#325229-intmsmediaservices1createntmsmediapoola-opnum-12)
+          - [3.2.5.2.2.10 INtmsMediaServices1::CreateNtmsMediaPoolW (Opnum 13)](#3252210-intmsmediaservices1createntmsmediapoolw-opnum-13)
+          - [3.2.5.2.2.11 INtmsMediaServices1::GetNtmsMediaPoolNameA (Opnum 14)](#3252211-intmsmediaservices1getntmsmediapoolnamea-opnum-14)
+          - [3.2.5.2.2.12 INtmsMediaServices1::GetNtmsMediaPoolNameW (Opnum 15)](#3252212-intmsmediaservices1getntmsmediapoolnamew-opnum-15)
+          - [3.2.5.2.2.13 INtmsMediaServices1::MoveToNtmsMediaPool (Opnum 16)](#3252213-intmsmediaservices1movetontmsmediapool-opnum-16)
+          - [3.2.5.2.2.14 INtmsMediaServices1::DeleteNtmsMediaPool (Opnum 17)](#3252214-intmsmediaservices1deletentmsmediapool-opnum-17)
+          - [3.2.5.2.2.15 INtmsMediaServices1::AddNtmsMediaType (Opnum 18)](#3252215-intmsmediaservices1addntmsmediatype-opnum-18)
+          - [3.2.5.2.2.16 INtmsMediaServices1::DeleteNtmsMediaType (Opnum 19)](#3252216-intmsmediaservices1deletentmsmediatype-opnum-19)
+          - [3.2.5.2.2.17 INtmsMediaServices1::ChangeNtmsMediaType (Opnum 20)](#3252217-intmsmediaservices1changentmsmediatype-opnum-20)
+        - [3.2.5.2.3 INtmsObjectInfo1 Interface](#32523-intmsobjectinfo1-interface)
+          - [3.2.5.2.3.1 INtmsObjectInfo1::GetNtmsServerObjectInformationA (Opnum 3)](#325231-intmsobjectinfo1getntmsserverobjectinformationa-opnum-3)
+          - [3.2.5.2.3.2 INtmsObjectInfo1::GetNtmsServerObjectInformationW (Opnum 4)](#325232-intmsobjectinfo1getntmsserverobjectinformationw-opnum-4)
+          - [3.2.5.2.3.3 INtmsObjectInfo1::SetNtmsObjectInformationA (Opnum 5)](#325233-intmsobjectinfo1setntmsobjectinformationa-opnum-5)
+          - [3.2.5.2.3.4 INtmsObjectInfo1::SetNtmsObjectInformationW (Opnum 6)](#325234-intmsobjectinfo1setntmsobjectinformationw-opnum-6)
+          - [3.2.5.2.3.5 INtmsObjectInfo1::CreateNtmsMediaA (Opnum 7)](#325235-intmsobjectinfo1createntmsmediaa-opnum-7)
+          - [3.2.5.2.3.6 INtmsObjectInfo1::CreateNtmsMediaW (Opnum 8)](#325236-intmsobjectinfo1createntmsmediaw-opnum-8)
+        - [3.2.5.2.4 INtmsObjectManagement1 Interface](#32524-intmsobjectmanagement1-interface)
+          - [3.2.5.2.4.1 INtmsObjectManagement1::GetNtmsObjectSecurity (Opnum 3)](#325241-intmsobjectmanagement1getntmsobjectsecurity-opnum-3)
+          - [3.2.5.2.4.2 INtmsObjectManagement1::SetNtmsObjectSecurity (Opnum 4)](#325242-intmsobjectmanagement1setntmsobjectsecurity-opnum-4)
+          - [3.2.5.2.4.3 INtmsObjectManagement1::GetNtmsObjectAttributeA (Opnum 5)](#325243-intmsobjectmanagement1getntmsobjectattributea-opnum-5)
+          - [3.2.5.2.4.4 INtmsObjectManagement1::GetNtmsObjectAttributeW (Opnum 6)](#325244-intmsobjectmanagement1getntmsobjectattributew-opnum-6)
+          - [3.2.5.2.4.5 INtmsObjectManagement1::SetNtmsObjectAttributeA (Opnum 7)](#325245-intmsobjectmanagement1setntmsobjectattributea-opnum-7)
+          - [3.2.5.2.4.6 INtmsObjectManagement1::SetNtmsObjectAttributeW (Opnum 8)](#325246-intmsobjectmanagement1setntmsobjectattributew-opnum-8)
+          - [3.2.5.2.4.7 INtmsObjectManagement1::EnumerateNtmsObject (Opnum 9)](#325247-intmsobjectmanagement1enumeratentmsobject-opnum-9)
+          - [3.2.5.2.4.8 INtmsObjectManagement1::DisableNtmsObject (Opnum 10)](#325248-intmsobjectmanagement1disablentmsobject-opnum-10)
+          - [3.2.5.2.4.9 INtmsObjectManagement1::EnableNtmsObject (Opnum 11)](#325249-intmsobjectmanagement1enablentmsobject-opnum-11)
+        - [3.2.5.2.5 INtmsSession1 Interface](#32525-intmssession1-interface)
+          - [3.2.5.2.5.1 INtmsSession1::OpenNtmsServerSessionW (Opnum 3)](#325251-intmssession1openntmsserversessionw-opnum-3)
+          - [3.2.5.2.5.2 INtmsSession1::OpenNtmsServerSessionA (Opnum 4)](#325252-intmssession1openntmsserversessiona-opnum-4)
+          - [3.2.5.2.5.3 INtmsSession1::CloseNtmsSession (Opnum 5)](#325253-intmssession1closentmssession-opnum-5)
+          - [3.2.5.2.5.4 INtmsSession1::SubmitNtmsOperatorRequestW (Opnum 6)](#325254-intmssession1submitntmsoperatorrequestw-opnum-6)
+          - [3.2.5.2.5.5 INtmsSession1::SubmitNtmsOperatorRequestA (Opnum 7)](#325255-intmssession1submitntmsoperatorrequesta-opnum-7)
+          - [3.2.5.2.5.6 INtmsSession1::WaitForNtmsOperatorRequest (Opnum 8)](#325256-intmssession1waitforntmsoperatorrequest-opnum-8)
+          - [3.2.5.2.5.7 INtmsSession1::CancelNtmsOperatorRequest (Opnum 9)](#325257-intmssession1cancelntmsoperatorrequest-opnum-9)
+          - [3.2.5.2.5.8 INtmsSession1::SatisfyNtmsOperatorRequest (Opnum 10)](#325258-intmssession1satisfyntmsoperatorrequest-opnum-10)
+          - [3.2.5.2.5.9 INtmsSession1::ImportNtmsDatabase (Opnum 11)](#325259-intmssession1importntmsdatabase-opnum-11)
+          - [3.2.5.2.5.10 INtmsSession1::ExportNtmsDatabase (Opnum 12)](#3252510-intmssession1exportntmsdatabase-opnum-12)
+          - [3.2.5.2.5.11 INtmsSession1::AddNotification (Opnum 14)](#3252511-intmssession1addnotification-opnum-14)
+          - [3.2.5.2.5.12 INtmsSession1::RemoveNotification (Opnum 15)](#3252512-intmssession1removenotification-opnum-15)
+          - [3.2.5.2.5.13 INtmsSession1::DispatchNotification (Opnum 16)](#3252513-intmssession1dispatchnotification-opnum-16)
+        - [3.2.5.2.6 INtmsLibraryControl2 Interface](#32526-intmslibrarycontrol2-interface)
+          - [3.2.5.2.6.1 INtmsLibraryControl2::IdentifyNtmsSlot (Opnum 23)](#325261-intmslibrarycontrol2identifyntmsslot-opnum-23)
+        - [3.2.5.2.7 INtmsObjectManagement2 Interface](#32527-intmsobjectmanagement2-interface)
+          - [3.2.5.2.7.1 INtmsObjectManagement2::EnumerateNtmsObjectR (Opnum 12)](#325271-intmsobjectmanagement2enumeratentmsobjectr-opnum-12)
+          - [3.2.5.2.7.2 INtmsObjectManagement2::GetNtmsUIOptionsA (Opnum 13)](#325272-intmsobjectmanagement2getntmsuioptionsa-opnum-13)
+          - [3.2.5.2.7.3 INtmsObjectManagement2::GetNtmsUIOptionsW (Opnum 14)](#325273-intmsobjectmanagement2getntmsuioptionsw-opnum-14)
+          - [3.2.5.2.7.4 INtmsObjectManagement2::SetNtmsUIOptionsA (Opnum 15)](#325274-intmsobjectmanagement2setntmsuioptionsa-opnum-15)
+          - [3.2.5.2.7.5 INtmsObjectManagement2::SetNtmsUIOptionsW (Opnum 16)](#325275-intmsobjectmanagement2setntmsuioptionsw-opnum-16)
+        - [3.2.5.2.8 INtmsObjectManagement3 Interface](#32528-intmsobjectmanagement3-interface)
+          - [3.2.5.2.8.1 INtmsObjectManagement3::GetNtmsObjectAttributeAR (Opnum 17)](#325281-intmsobjectmanagement3getntmsobjectattributear-opnum-17)
+          - [3.2.5.2.8.2 INtmsObjectManagement3::GetNtmsObjectAttributeWR (Opnum 18)](#325282-intmsobjectmanagement3getntmsobjectattributewr-opnum-18)
+        - [3.2.5.2.9 IRobustNtmsMediaServices1 Interface](#32529-irobustntmsmediaservices1-interface)
+          - [3.2.5.2.9.1 IRobustNtmsMediaServices1::GetNtmsMediaPoolNameAR (Opnum 21)](#325291-irobustntmsmediaservices1getntmsmediapoolnamear-opnum-21)
+          - [3.2.5.2.9.2 IRobustNtmsMediaServices1::GetNtmsMediaPoolNameWR (Opnum 22)](#325292-irobustntmsmediaservices1getntmsmediapoolnamewr-opnum-22)
+        - [3.2.5.2.10 IMessenger Interface](#325210-imessenger-interface)
+          - [3.2.5.2.10.1 IMessenger::SendMessage (Opnum 3)](#3252101-imessengersendmessage-opnum-3)
+          - [3.2.5.2.10.2 IMessenger::RecallMessage (Opnum 4)](#3252102-imessengerrecallmessage-opnum-4)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Problem/Warnings for the Tape Drive](#3271-problemwarnings-for-the-tape-drive)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Allocation of Media with INtmsMediaServices1](#41-allocation-of-media-with-intmsmediaservices1)
+  - [4.2 Registering for Notifications with INtmsSession1](#42-registering-for-notifications-with-intmssession1)
+  - [4.3 Storage Object Management with INtmsObjectManagement1](#43-storage-object-management-with-intmsobjectmanagement1)
+  - [4.4 Media Management Using INtmsMediaServices1](#44-media-management-using-intmsmediaservices1)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Removable Storage Manager (RSM) Remote Protocol.
 
@@ -1060,7 +756,7 @@ with these technologies.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1121,7 +817,8 @@ Release: June 1, 2017
 
 9 / 214
 
-ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
+
+ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
@@ -1200,7 +897,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-port: A place to add or remove physical media from a library.
+
+port: A place to add or remove physical media from a library.
 
 remote procedure call (RPC): A communication protocol used primarily between client and
 
@@ -1255,7 +953,7 @@ media are treated this way.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1269,7 +967,8 @@ Release: June 1, 2017
 
 11 / 214
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1297,7 +996,7 @@ Note Registration is required to download the document.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-MoveToNtmsMediaPool] Microsoft Corporation, "MoveToNtmsMediaPool function",
 http://msdn.microsoft.com/en-us/library/bb540698.aspx
@@ -1305,7 +1004,7 @@ http://msdn.microsoft.com/en-us/library/bb540698.aspx
 [MSDN-SetNtmsObjectSecurity] Microsoft Corporation, "SetNtmsObjectSecurity function",
 http://msdn.microsoft.com/en-us/library/bb540745.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The RSM Remote Protocol provides a mechanism for the remote configuration and management of
 removable storage devices such as robotic changers, media libraries, and tape drives. It allows
@@ -1336,7 +1035,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Media Library Management
+
+  Media Library Management
 
 The Media Library Management interface provides functions that:
 
@@ -1367,7 +1067,7 @@ The media management functions enable a client to perform any of the following f
 
   Allocate, deallocate, or decommission media.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The RSM Remote Protocol relies on the DCOM Remote Protocol, which uses RPC as its transport. See
 the full specifications in [MS-DCOM] and [C706].
@@ -1375,18 +1075,18 @@ the full specifications in [MS-DCOM] and [C706].
 There are no other protocols that rely on the RSM Remote Protocol. The RSM Remote Protocol can be
 used by applications directly.<2>
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Network considerations are as specified in [MS-DCOM]. The RSM Remote Protocol also assumes that
 the client has sufficient security privileges to enumerate and configure removable storage on the
 server. For further specifications, see section 2.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The RSM Remote Protocol is applicable for an application to remotely enumerate or configure robotic
 changers, media libraries, and tape drives.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: The RSM Remote Protocol uses the DCOM Remote Protocol [MS-DCOM],
 which in turn uses RPC [C706] over TCP as its only transport. For more information, see section 2.1.
@@ -1401,7 +1101,8 @@ Release: June 1, 2017
 
 13 / 214
 
-1.7.1  Interfaces for Storage Object Management
+
+#### 1.7.1 Interfaces for Storage Object Management
 
 The common interfaces implemented by the RSM server are as follows:
 
@@ -1427,7 +1128,7 @@ INtmsObjectManagement2
 
 INtmsObjectManagement3 <3>
 
-1.7.2  Interfaces for Media Library Management
+#### 1.7.2 Interfaces for Media Library Management
 
 The interface implemented by the RSM server for library management is as follows:
 
@@ -1441,7 +1142,7 @@ The optional interface implemented by the RSM server for library management is a
 
 INtmsLibraryControl2 <4>
 
-1.7.3  Interfaces for Media Management
+#### 1.7.3 Interfaces for Media Management
 
 The interface implemented by the RSM server for managing media is as follows:
 
@@ -1455,7 +1156,7 @@ The optional interface implemented by the RSM server for managing media is as fo
 
 IRobustNtmsMediaServices1 <5>
 
-1.7.4  Interfaces for Message and Notification Distribution
+#### 1.7.4 Interfaces for Message and Notification Distribution
 
 The interface implemented by the RSM client for supporting message distribution and client
 notifications is as follows:
@@ -1489,17 +1190,18 @@ Release: June 1, 2017
 
 14 / 214
 
-1.7.5  Security and Authentication Methods
+
+#### 1.7.5 Security and Authentication Methods
 
 This protocol allows anyone to establish a connection to the RSM server, and it relies upon the
 underlying RPC protocol to obtain the identity of the user making the method call ([MS-RPCE] section
 3.3.3.4.3). The server uses this identity to perform method-specific access checks (section 3.2.5.2).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields for this protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The RSM Remote Protocol has no standards assignments. It uses the following private allocations.
 
@@ -1560,27 +1262,28 @@ Release: June 1, 2017
 
 15 / 214
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how RSM Remote Protocol messages are transported and RSM message
 syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 Message transport MUST use the Microsoft DCOM Remote Protocol [MS-DCOM], which is based on RPC
 [C706].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section specifies the enumerations, structures, and methods that the RSM Remote Protocol uses.
 Unless otherwise specified, all integers MUST be represented in least-significant-byte-first ("little-
 endian") order.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
 The following data types are used in two or more RSM Remote Protocol interfaces.
 
-2.2.1.1  LPGUID
+##### 2.2.1.1 LPGUID
 
 An LPGUID is a pointer to a GUID structure.
 
@@ -1588,7 +1291,7 @@ This type is declared as follows:
 
  typedef GUID* LPGUID;
 
-2.2.1.2  NTMS_GUID
+##### 2.2.1.2 NTMS_GUID
 
 An NTMS_GUID structure is a GUID structure.
 
@@ -1596,7 +1299,7 @@ This type is declared as follows:
 
  typedef GUID NTMS_GUID;
 
-2.2.1.3  LPNTMS_GUID
+##### 2.2.1.3 LPNTMS_GUID
 
 An LPNTMS_GUID is a pointer an NTMS_GUID structure.
 
@@ -1604,7 +1307,7 @@ This type is declared as follows:
 
  typedef GUID* LPNTMS_GUID;
 
-2.2.1.4  NTMS_HANDLE
+##### 2.2.1.4 NTMS_HANDLE
 
 An NTMS_HANDLE is a 32-bit value identifying an RSM object.
 
@@ -1619,7 +1322,8 @@ Release: June 1, 2017
 
 16 / 214
 
-2.2.1.5  PSECURITY_DESCRIPTOR_NTMS
+
+##### 2.2.1.5 PSECURITY_DESCRIPTOR_NTMS
 
 A PSECURITY_DESCRIPTOR_NTMS is a pointer to a byte.
 
@@ -1627,7 +1331,7 @@ This type is declared as follows:
 
  typedef byte* PSECURITY_DESCRIPTOR_NTMS;
 
-2.2.1.6  NtmsObjectsTypes Enumeration
+##### 2.2.1.6 NtmsObjectsTypes Enumeration
 
 The NtmsObjectsTypes enumeration defines the types of RSM objects.
 
@@ -1687,7 +1391,8 @@ Release: June 1, 2017
 
 17 / 214
 
-NTMS_MEDIA_TYPE:  The object is a type of media.
+
+NTMS_MEDIA_TYPE:  The object is a type of media.
 
 NTMS_PARTITION:  The object is a media side.
 
@@ -1699,7 +1404,7 @@ NTMS_OPREQUEST:  The object is an operator request.
 
 NTMS_UI_DESTINATION:  The object is a user interface destination.
 
-2.2.1.7  NtmsOpreqCommand Enumeration
+##### 2.2.1.7 NtmsOpreqCommand Enumeration
 
 The NtmsOpreqCommand enumeration defines the type of an operator request.
 
@@ -1727,7 +1432,7 @@ service a mount for offline media, or to eject media and move it to an offline l
 
 NTMS_OPREQ_MESSAGE:  A message defined by and specific to a given application.
 
-2.2.1.8  NtmsNotificationOperations Enumeration
+##### 2.2.1.8 NtmsNotificationOperations Enumeration
 
 The NtmsNotificationOperations enumeration defines the types of sink notifications.
 
@@ -1755,9 +1460,10 @@ Release: June 1, 2017
 
 18 / 214
 
-NTMS_EVENT_COMPLETE:  The object has completed its operation.
 
-2.2.1.9  NtmsDismountOptions Enumeration
+NTMS_EVENT_COMPLETE:  The object has completed its operation.
+
+##### 2.2.1.9 NtmsDismountOptions Enumeration
 
 The NtmsDismountOptions enumeration defines options for dismount operations.
 
@@ -1773,9 +1479,9 @@ the drive. Subsequent mount requests are satisfied using dismounted or dismounta
 
 NTMS_DISMOUNT_IMMEDIATE:  Dismounts the media immediately.
 
-2.2.1.10
+##### 2.2.1.10 NtmsLmState Enumeration
 
-NtmsLmState Enumeration
+
 
 The NtmsLmState enumeration defines the state of a work request.
 
@@ -1807,9 +1513,9 @@ NTMS_LM_CANCELLED:  The work request has been canceled.
 
 NTMS_LM_STOPPED:  The work request has been stopped.
 
-2.2.1.11
+##### 2.2.1.11 NTMS_LIBRARYINFORMATION Structure
 
-NTMS_LIBRARYINFORMATION Structure
+
 
 The NTMS_LIBRARYINFORMATION structure defines properties specific to a library object.
 
@@ -1827,7 +1533,8 @@ Release: June 1, 2017
 
 19 / 214
 
-   DWORD InventoryMethod;
+
+   DWORD InventoryMethod;
    DWORD dwCleanerUsesRemaining;
    DWORD FirstDriveNumber;
    DWORD dwNumberOfDrives;
@@ -1926,7 +1633,8 @@ Release: June 1, 2017
 
 20 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -2014,7 +1722,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -2028,9 +1737,9 @@ of mounting them in the drive to identify them.
 
 The NTMS_LIBRARYINFORMATION structure defines properties specific to a library object.
 
-2.2.1.12
+##### 2.2.1.12 NtmsAccessMask
 
-NtmsAccessMask
+
 
 The NtmsAccessMask enumeration defines generic access levels.
 
@@ -2047,9 +1756,9 @@ NTMS_MODIFY_ACCESS:  Indicates modify access to an object.
 
 NTMS_CONTROL_ACCESS:  Indicates control access to an object.
 
-2.2.2  INtmsLibraryControl1 Data Types
+#### 2.2.2 INtmsLibraryControl1 Data Types
 
-2.2.2.1  NtmsEjectOperation Enumeration
+##### 2.2.2.1 NtmsEjectOperation Enumeration
 
 The NtmsEjectOperation enumeration defines the types of actions to perform in an eject operation.
 
@@ -2087,7 +1796,8 @@ Release: June 1, 2017
 
 22 / 214
 
-2.2.2.2  NtmsInjectOperation Enumeration
+
+##### 2.2.2.2 NtmsInjectOperation Enumeration
 
 The NtmsInjectOperation enumeration defines the types of actions to perform in an inject operation.
 
@@ -2113,7 +1823,7 @@ NTMS_INJECT_STARTMANY:  Direct the IE port to open continually and check for med
 
 operator placed there. If media are found, the IE port MUST be reopened to receive more media.
 
-2.2.2.3  NtmsInventoryMethod Enumeration
+##### 2.2.2.3 NtmsInventoryMethod Enumeration
 
 The NtmsInventoryMethod enumeration defines the types of inventory actions to perform.
 
@@ -2155,7 +1865,8 @@ Release: June 1, 2017
 
 23 / 214
 
-2.2.3  INtmsMediaServices1 Data Types
+
+#### 2.2.3 INtmsMediaServices1 Data Types
 
 Structures
 
@@ -2200,7 +1911,7 @@ NtmsMountPriority
 
 Defines the priority of mount requests.
 
-2.2.3.1  NtmsAllocateOptions Enumeration
+##### 2.2.3.1 NtmsAllocateOptions Enumeration
 
 The NtmsAllocateOptions enumeration defines options for media allocation.
 
@@ -2235,7 +1946,8 @@ Release: June 1, 2017
 
 24 / 214
 
-2.2.3.2  NtmsCreateOptions Enumeration
+
+##### 2.2.3.2 NtmsCreateOptions Enumeration
 
 The NtmsCreateOptions enumeration defines the types of creation operations.
 
@@ -2256,7 +1968,7 @@ NTMS_OPEN_ALWAYS:  Open an existing media pool. If the pool does not already exi
 
 created.
 
-2.2.3.3  NtmsMountOptions Enumeration
+##### 2.2.3.3 NtmsMountOptions Enumeration
 
 The NtmsMountOptions enumeration defines options for mount operations.
 
@@ -2288,7 +2000,7 @@ NTMS_MOUNT_NOWAIT:  Specify that the server MUST NOT wait for the mount request 
 
 complete.
 
-2.2.3.4  NtmsMountPriority Enumeration
+##### 2.2.3.4 NtmsMountPriority Enumeration
 
 The NtmsMountPriority enumeration defines the priority of mount requests.
 
@@ -2307,7 +2019,8 @@ Release: June 1, 2017
 
 25 / 214
 
-   NTMS_PRIORITY_LOWEST = -15
+
+   NTMS_PRIORITY_LOWEST = -15
  };
 
 NTMS_PRIORITY_DEFAULT:  Specify the default priority.
@@ -2322,7 +2035,7 @@ NTMS_PRIORITY_LOW:  Specify that mounts be performed as a background activity.
 
 NTMS_PRIORITY_LOWEST:  Specify the lowest priority.
 
-2.2.3.5  SECURITY_ATTRIBUTES_NTMS Structure
+##### 2.2.3.5 SECURITY_ATTRIBUTES_NTMS Structure
 
 The SECURITY_ATTRIBUTES_NTMS structure contains the security descriptor for an object.
 
@@ -2346,7 +2059,7 @@ handle MUST NOT be inherited.
 
 nDescriptorLength:  The size, in bytes, of the descriptor.
 
-2.2.3.6  NTMS_ALLOCATION_INFORMATION Structure
+##### 2.2.3.6 NTMS_ALLOCATION_INFORMATION Structure
 
 The NTMS_ALLOCATION_INFORMATION structure contains information about the source media pool
 from which a medium was taken.
@@ -2373,7 +2086,8 @@ Release: June 1, 2017
 
 26 / 214
 
-2.2.3.7  NTMS_MOUNT_INFORMATION Structure
+
+##### 2.2.3.7 NTMS_MOUNT_INFORMATION Structure
 
 The NTMS_MOUNT_INFORMATION structure defines mount information for the management of
 removable storage libraries.
@@ -2392,7 +2106,7 @@ dwSize:  The size, in bytes, of the structure.
 
 lpReserved:  Unused. This value MUST be NULL and MUST be ignored on receipt.
 
-2.2.3.8  NTMS_ASYNC_IO Structure
+##### 2.2.3.8 NTMS_ASYNC_IO Structure
 
 The NTMS_ASYNC_IO structure defines the state of an asynchronous request.
 
@@ -2429,7 +2143,7 @@ bOnStateChange:  Indicates whether or not to signal on every status change. FALS
 
 only upon completion of the request.
 
-2.2.4  INtmsObjectInfo1 Data Types
+#### 2.2.4 INtmsObjectInfo1 Data Types
 
 Enumerations
 
@@ -2442,7 +2156,8 @@ Release: June 1, 2017
 
 27 / 214
 
- Enumeration
+
+ Enumeration
 
  Description
 
@@ -2563,7 +2278,8 @@ Release: June 1, 2017
 
 28 / 214
 
- Structure
+
+ Structure
 
  Description
 
@@ -2595,7 +2311,7 @@ NTMS_PMIDINFORMATIONW
 Describes the properties of a physical media object as a sequence of
 Unicode characters.
 
-2.2.4.1  NtmsBarCodeState Enumeration
+##### 2.2.4.1 NtmsBarCodeState Enumeration
 
 The NtmsBarCodeState enumeration defines the state of a bar code.
 
@@ -2611,7 +2327,7 @@ NTMS_BARCODESTATE_UNREADABLE:  The medium either does not have a bar code, or th
 
 code is unreadable.
 
-2.2.4.2  NtmsDriveState Enumeration
+##### 2.2.4.2 NtmsDriveState Enumeration
 
 The NtmsDriveState enumeration defines the states of a drive.
 
@@ -2644,14 +2360,15 @@ Release: June 1, 2017
 
 29 / 214
 
-NTMS_DRIVESTATE_BEING_CLEANED:  The drive is being cleaned and is unavailable.
+
+NTMS_DRIVESTATE_BEING_CLEANED:  The drive is being cleaned and is unavailable.
 
 NTMS_DRIVESTATE_DISMOUNTABLE:  If a library is set for deferred dismounts, the medium
 
 might be left in the drive of the library when it is dismounted. RSM can satisfy mount requests for
 loaded and dismounted drives.
 
-2.2.4.3  NtmsLmOperation Enumeration
+##### 2.2.4.3 NtmsLmOperation Enumeration
 
 The NtmsLmOperation enumeration defines the types of operation requests.
 
@@ -2716,7 +2433,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-NTMS_LM_EJECTCLEANER:  Eject a cleaner.
+
+NTMS_LM_EJECTCLEANER:  Eject a cleaner.
 
 NTMS_LM_INJECT:  Insert a piece of media into a library.
 
@@ -2738,7 +2456,7 @@ NTMS_LM_RESERVECLEANER:  Reserve a cleaner slot.
 
 NTMS_LM_RELEASECLEANER:  Release a cleaner slot.
 
-2.2.4.4  NtmsMediaState Enumeration
+##### 2.2.4.4 NtmsMediaState Enumeration
 
 The NtmsMediaState enumeration defines the physical states of media.
 
@@ -2771,7 +2489,7 @@ intervention is required.
 
 NTMS_MEDIASTATE_OPREQ:  The medium is waiting for an operator request.
 
-2.2.4.5  NtmsOperationalState Enumeration
+##### 2.2.4.5 NtmsOperationalState Enumeration
 
 The NtmsOperationalState enumeration defines the operational state of an object.
 
@@ -2786,7 +2504,8 @@ Release: June 1, 2017
 
 31 / 214
 
-   NTMS_INITIALIZING = 10,
+
+   NTMS_INITIALIZING = 10,
    NTMS_NEEDS_SERVICE = 20,
    NTMS_NOT_PRESENT = 21
  };
@@ -2799,7 +2518,7 @@ NTMS_NEEDS_SERVICE:  The object has failed and requires service.
 
 NTMS_NOT_PRESENT:  The object is not present.
 
-2.2.4.6  NtmsOpreqState Enumeration
+##### 2.2.4.6 NtmsOpreqState Enumeration
 
 The NtmsOpreqState enumeration defines the state of an operator request.
 
@@ -2831,7 +2550,7 @@ NTMS_OPSTATE_REFUSED:  The user rejected the operator service request.
 
 NTMS_OPSTATE_COMPLETE:  The user completed the operator service request.
 
-2.2.4.7  NtmsPartitionState Enumeration
+##### 2.2.4.7 NtmsPartitionState Enumeration
 
 The NtmsPartitionState enumeration defines the states of a side.
 
@@ -2856,7 +2575,8 @@ Release: June 1, 2017
 
 32 / 214
 
-NTMS_PARTSTATE_UNKNOWN:  The side is in an unknown state.
+
+NTMS_PARTSTATE_UNKNOWN:  The side is in an unknown state.
 
 NTMS_PARTSTATE_UNPREPARED:  The medium is waiting for a free label to be applied.
 
@@ -2882,7 +2602,7 @@ NTMS_PARTSTATE_IMPORT:  The medium is in the import pool.
 
 NTMS_PARTSTATE_RESERVED:  The side is reserved.
 
-2.2.4.8  NTMS_CHANGERINFORMATIONA Structure
+##### 2.2.4.8 NTMS_CHANGERINFORMATIONA Structure
 
 The NTMS_CHANGERINFORMATIONA structure describes the properties of a changer object as a
 sequence of ASCII characters.
@@ -2931,9 +2651,10 @@ Release: June 1, 2017
 
 33 / 214
 
-Library:  The identifier of the library that contains the changer.
 
-2.2.4.9  NTMS_CHANGERINFORMATIONW Structure
+Library:  The identifier of the library that contains the changer.
+
+##### 2.2.4.9 NTMS_CHANGERINFORMATIONW Structure
 
 The NTMS_CHANGERINFORMATIONW structure describes the properties of a changer object as a
 sequence of Unicode [UNICODE] characters.
@@ -2977,9 +2698,9 @@ ScsiLun:  The SCSI logical unit identifier of the changer.
 
 Library:  The identifier of the library that contains the changer.
 
-2.2.4.10
+##### 2.2.4.10 NTMS_CHANGERTYPEINFORMATIONA Structure
 
-NTMS_CHANGERTYPEINFORMATIONA Structure
+
 
 The NTMS_CHANGERTYPEINFORMATIONA structure describes the properties specific to a type of
 changer, as a sequence of ASCII characters.
@@ -3002,7 +2723,8 @@ Release: June 1, 2017
 
 34 / 214
 
-szProduct:   A null-terminated sequence of ASCII characters specifying the name of the changer
+
+szProduct:   A null-terminated sequence of ASCII characters specifying the name of the changer
 
 product, acquired through SCSI commands. If no name is available, this MUST contain an empty
 string.
@@ -3019,9 +2741,9 @@ Device is a changer.
 
 0x00000030
 
-2.2.4.11
+##### 2.2.4.11 NTMS_CHANGERTYPEINFORMATIONW Structure
 
-NTMS_CHANGERTYPEINFORMATIONW Structure
+
 
 The NTMS_CHANGERTYPEINFORMATIONW structure describes the properties specific to a type of
 changer, in Unicode.
@@ -3054,9 +2776,9 @@ Device is a changer.
 
 0x00000030
 
-2.2.4.12
+##### 2.2.4.12 NTMS_DRIVEINFORMATIONA Structure
 
-NTMS_DRIVEINFORMATIONA Structure
+
 
 The NTMS_DRIVEINFORMATIONA structure describes the properties of a drive object, as a sequence
 of ASCII characters.
@@ -3081,7 +2803,8 @@ Release: June 1, 2017
 
 35 / 214
 
-   SYSTEMTIME LastCleanedTs;
+
+   SYSTEMTIME LastCleanedTs;
    NTMS_GUID SavedPartitionId;
    NTMS_GUID Library;
    GUID Reserved;
@@ -3133,9 +2856,9 @@ dwDeferDismountDelay:  Minimum number of seconds that media will remain in the d
 online library after a deferred dismount is performed; the default is 5 minutes. This member does
 not apply to stand-alone libraries.
 
-2.2.4.13
+##### 2.2.4.13 NTMS_DRIVEINFORMATIONW Structure
 
-NTMS_DRIVEINFORMATIONW Structure
+
 
 The NTMS_DRIVEINFORMATIONW structure describes the properties of a drive object, as a sequence
 of Unicode characters.
@@ -3154,7 +2877,8 @@ Release: June 1, 2017
 
 36 / 214
 
-   [string] wchar_t szRevision[32];
+
+   [string] wchar_t szRevision[32];
    unsigned short ScsiPort;
    unsigned short ScsiBus;
    unsigned short ScsiTarget;
@@ -3213,9 +2937,9 @@ dwDeferDismountDelay:  The minimum number of seconds that media MUST remain in t
 an online library after a deferred dismount is performed; the default MUST be five minutes. This
 member MUST NOT apply to stand-alone libraries.
 
-2.2.4.14
+##### 2.2.4.14 NTMS_DRIVETYPEINFORMATIONA Structure
 
-NTMS_DRIVETYPEINFORMATIONA Structure
+
 
 The NTMS_DRIVETYPEINFORMATIONA structure describes the properties specific to a type of drive, in
 ASCII.
@@ -3227,7 +2951,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- typedef struct _NTMS_DRIVETYPEINFORMATIONA {
+
+ typedef struct _NTMS_DRIVETYPEINFORMATIONA {
    char szVendor[128];
    char szProduct[128];
    DWORD NumberOfHeads;
@@ -3279,9 +3004,9 @@ Device is a sequential-access drive.
 
 0x0000001F
 
-2.2.4.15
+##### 2.2.4.15 NTMS_DRIVETYPEINFORMATIONW Structure
 
-NTMS_DRIVETYPEINFORMATIONW Structure
+
 
 The NTMS_DRIVETYPEINFORMATIONW structure describes the properties specific to a type of drive,
 in Unicode.
@@ -3308,7 +3033,8 @@ Release: June 1, 2017
 
 38 / 214
 
-NumberOfHeads:  This parameter is currently unused. It MUST be zero and MUST be ignored on
+
+NumberOfHeads:  This parameter is currently unused. It MUST be zero and MUST be ignored on
 
 receipt.
 
@@ -3344,9 +3070,9 @@ Device is a sequential-access drive.
 
 0x0000001F
 
-2.2.4.16
+##### 2.2.4.16 NTMS_LIBREQUESTINFORMATIONA Structure
 
-NTMS_LIBREQUESTINFORMATIONA Structure
+
 
 The NTMS_LIBREQUESTINFORMATIONA structure describes the properties of a work request, in ASCII.
 
@@ -3401,7 +3127,8 @@ Release: June 1, 2017
 
 39 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -3492,9 +3219,10 @@ Release: June 1, 2017
 
 40 / 214
 
-2.2.4.17
 
-NTMS_LIBREQUESTINFORMATIONW Structure
+##### 2.2.4.17 NTMS_LIBREQUESTINFORMATIONW Structure
+
+
 
 The NTMS_LIBREQUESTINFORMATIONW structure describes the properties of a work request, in
 Unicode.
@@ -3592,7 +3320,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-PartitionId:  The identifier of a side for which the request is submitted to the server.
+
+PartitionId:  The identifier of a side for which the request is submitted to the server.
 
 DriveId:  The identifier of a drive that is being serviced.
 
@@ -3628,9 +3357,9 @@ receives a request from a client to perform an operation on a library.
 
 dwPriority:  The priority of the request.
 
-2.2.4.18
+##### 2.2.4.18 NTMS_MEDIAPOOLINFORMATION Structure
 
-NTMS_MEDIAPOOLINFORMATION Structure
+
 
 The NTMS_MEDIAPOOLINFORMATION structure defines the properties specific to a media pool object.
 
@@ -3678,7 +3407,8 @@ Release: June 1, 2017
 
 42 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -3740,9 +3470,9 @@ dwNumberOfLogicalMedia:  The number of logical media in this media pool.
 
 dwNumberOfMediaPools:  The number of media pools in this media pool.
 
-2.2.4.19
+##### 2.2.4.19 NTMS_MEDIATYPEINFORMATION Structure
 
-NTMS_MEDIATYPEINFORMATION Structure
+
 
 The NTMS_MEDIATYPEINFORMATION structure defines the properties specific to a type of media
 supported by RSM.
@@ -3768,7 +3498,8 @@ Release: June 1, 2017
 
 43 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -3893,7 +3624,8 @@ Release: June 1, 2017
 
 44 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -4018,7 +3750,8 @@ Release: June 1, 2017
 
 45 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -4143,7 +3876,8 @@ Release: June 1, 2017
 
 46 / 214
 
-Value
+
+Value
 
 Meaning
 
@@ -4241,9 +3975,9 @@ Sequential-access device.
 
 0x0000001F
 
-2.2.4.20
+##### 2.2.4.20 NTMS_OBJECTINFORMATIONA Structure
 
-NTMS_OBJECTINFORMATIONA Structure
+
 
 The NTMS_OBJECTINFORMATIONA structure describes the properties of RSM objects, in ASCII.
 
@@ -4254,7 +3988,8 @@ Release: June 1, 2017
 
 47 / 214
 
- typedef struct _NTMS_OBJECTINFORMATIONA {
+
+ typedef struct _NTMS_OBJECTINFORMATIONA {
    DWORD dwSize;
    DWORD dwType;
    SYSTEMTIME Created;
@@ -4330,7 +4065,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-szDescription:   The null-terminated description of the object.<13>
+
+szDescription:   The null-terminated description of the object.<13>
 
 Info:  A device or system control object information that is specific to the value of dwType.
 
@@ -4392,9 +4128,9 @@ Computer:  An NTMS_COMPUTERINFORMATION structure that describes the properties o
 
 computer.
 
-2.2.4.21
+##### 2.2.4.21 NTMS_OBJECTINFORMATIONW Structure
 
-NTMS_OBJECTINFORMATIONW Structure
+
 
 The NTMS_OBJECTINFORMATIONW structure describes the properties of RSM objects, in Unicode.
 
@@ -4414,7 +4150,8 @@ Release: June 1, 2017
 
 49 / 214
 
-   [string] wchar_t szName[64];
+
+   [string] wchar_t szName[64];
    [string] wchar_t szDescription[127];
    [switch_is(dwType)] union {
      [case(NTMS_DRIVE)]
@@ -4490,7 +4227,8 @@ Release: June 1, 2017
 
 50 / 214
 
-DriveType:  An NTMS_DRIVETYPEINFORMATIONW structure that describes the properties specific to
+
+DriveType:  An NTMS_DRIVETYPEINFORMATIONW structure that describes the properties specific to
 
 a type of drive.
 
@@ -4544,9 +4282,9 @@ Computer:  An NTMS_COMPUTERINFORMATION structure that describes the properties o
 
 computer.
 
-2.2.4.22
+##### 2.2.4.22 NTMS_STORAGESLOTINFORMATION Structure
 
-NTMS_STORAGESLOTINFORMATION Structure
+
 
 The NTMS_STORAGESLOTINFORMATION structure defines properties specific to a storage slot object.
 
@@ -4575,7 +4313,8 @@ Release: June 1, 2017
 
 51 / 214
 
-Value
+
+Value
 
 0x00000000
 
@@ -4609,9 +4348,9 @@ The slot needs inventory.
 
 Library:  The library that contains the slot.
 
-2.2.4.23
+##### 2.2.4.23 NTMS_IEDOORINFORMATION Structure
 
-NTMS_IEDOORINFORMATION Structure
+
 
 The NTMS_IEDOORINFORMATION structure defines properties specific to an insert/eject door object.
 
@@ -4652,9 +4391,9 @@ MaxOpenSecs:  The maximum number of seconds the door is to remain open.
 
 Library:  The library that contains this door.
 
-2.2.4.24
+##### 2.2.4.24 NTMS_IEPORTINFORMATION Structure
 
-NTMS_IEPORTINFORMATION Structure
+
 
 The NTMS_IEPORTINFORMATION structure defines properties specific to an IE port object.
 
@@ -4671,7 +4410,8 @@ Release: June 1, 2017
 
 52 / 214
 
-   NTMS_GUID Library;
+
+   NTMS_GUID Library;
  } NTMS_IEPORTINFORMATION;
 
 Number:   The library port number.
@@ -4730,9 +4470,9 @@ operator request is issued. Valid values are between zero and 65,535 seconds.
 
 Library:  The library that contains the port.
 
-2.2.4.25
+##### 2.2.4.25 NTMS_LMIDINFORMATION Structure
 
-NTMS_LMIDINFORMATION Structure
+
 
 The NTMS_LMIDINFORMATION structure defines the properties specific to a logical media object.
 
@@ -4745,9 +4485,9 @@ MediaPool:  The unique identifier of the media pool that contains the logical me
 
 dwNumberOfPartitions:  The number of sides in the media object.
 
-2.2.4.26
+##### 2.2.4.26 NTMS_COMPUTERINFORMATION Structure
 
-NTMS_COMPUTERINFORMATION Structure
+
 
 The NTMS_COMPUTERINFORMATION structure defines the properties specific to the RSM server.
 
@@ -4761,7 +4501,8 @@ Release: June 1, 2017
 
 53 / 214
 
-   DWORD dwOpRequestPurgeTime;
+
+   DWORD dwOpRequestPurgeTime;
    DWORD dwLibRequestFlags;
    DWORD dwOpRequestFlags;
    DWORD dwMediaPoolPolicy;
@@ -4869,9 +4610,10 @@ Release: June 1, 2017
 
 54 / 214
 
-2.2.4.27
 
-NTMS_OPREQUESTINFORMATIONA Structure
+##### 2.2.4.27 NTMS_OPREQUESTINFORMATIONA Structure
+
+
 
 The NTMS_OPREQUESTINFORMATIONA structure describes the properties of an operator request, in
 ASCII.
@@ -4951,7 +4693,8 @@ Release: June 1, 2017
 
 55 / 214
 
-szUser:   A null-terminated sequence of Unicode characters that specifies the name of the interactive
+
+szUser:   A null-terminated sequence of Unicode characters that specifies the name of the interactive
 
 user who submitted the operator request.
 
@@ -4959,9 +4702,9 @@ szComputer:   A null-terminated sequence of Unicode characters that specifies th
 
 computer that submitted the operator request.
 
-2.2.4.28
+##### 2.2.4.28 NTMS_OPREQUESTINFORMATIONW Structure
 
-NTMS_OPREQUESTINFORMATIONW Structure
+
 
 The NTMS_OPREQUESTINFORMATIONW structure describes the properties of an operator request, in
 Unicode.
@@ -5026,7 +4769,8 @@ Release: June 1, 2017
 
 56 / 214
 
-If Request = NTMS_OPREQ_MOVEMEDIA (0x00000004), Arg2 MUST be set to the identifier of
+
+If Request = NTMS_OPREQ_MOVEMEDIA (0x00000004), Arg2 MUST be set to the identifier of
 the library to which the physical medium MUST be moved.
 
 szApplication:   A null-terminated sequence of Unicode characters that specifies the name of the
@@ -5041,9 +4785,9 @@ szComputer:   A null-terminated sequence of Unicode characters that specifies th
 
 computer that submitted the operator request.
 
-2.2.4.29
+##### 2.2.4.29 NTMS_PARTITIONINFORMATIONA Structure
 
-NTMS_PARTITIONINFORMATIONA Structure
+
 
 The NTMS_PARTITIONINFORMATIONA structure describes the properties of a media side object, as a
 sequence of ASCII characters.
@@ -5105,7 +4849,8 @@ Release: June 1, 2017
 
 57 / 214
 
-szOmidLabelType:   A null-terminated sequence of ASCII characters specifying the label type of the
+
+szOmidLabelType:   A null-terminated sequence of ASCII characters specifying the label type of the
 
 on-media identifier.
 
@@ -5124,9 +4869,9 @@ this server.
 
 Capacity:  The number of bytes available on this side.
 
-2.2.4.30
+##### 2.2.4.30 NTMS_PARTITIONINFORMATIONW Structure
 
-NTMS_PARTITIONINFORMATIONW Structure
+
 
 The NTMS_PARTITIONINFORMATIONW structure describes the properties of a media side object, as a
 sequence of Unicode characters. Unicode encoding is specified in [UNICODE].
@@ -5186,7 +4931,8 @@ Release: June 1, 2017
 
 58 / 214
 
-OmidLabelId:   The label identifier of the on-media identifier.
+
+OmidLabelId:   The label identifier of the on-media identifier.
 
 szOmidLabelType:   A null-terminated sequence of Unicode UTF-16 characters specifying the label
 
@@ -5204,9 +4950,9 @@ dwAllocateCount:  The number of times the medium has been allocated.
 
 Capacity:  The number of bytes available on this side.
 
-2.2.4.31
+##### 2.2.4.31 NTMS_PMIDINFORMATIONA Structure
 
-NTMS_PMIDINFORMATIONA Structure
+
 
 The NTMS_PMIDINFORMATIONA structure describes the properties of a physical media object, as a
 sequence of ASCII characters.
@@ -5262,7 +5008,8 @@ Release: June 1, 2017
 
 59 / 214
 
-MediaState:  The value from the NtmsMediaState (section 2.2.4.4) enumeration describing the state
+
+MediaState:  The value from the NtmsMediaState (section 2.2.4.4) enumeration describing the state
 
 of the media.
 
@@ -5274,9 +5021,9 @@ dwDensityCode:  The SCSI density code of the medium.
 
 MountedPartition:  The identifier of the media side that is currently mounted.
 
-2.2.4.32
+##### 2.2.4.32 NTMS_PMIDINFORMATIONW Structure
 
-NTMS_PMIDINFORMATIONW Structure
+
 
 The NTMS_PMIDINFORMATIONW structure describes the properties of a physical media object, as a
 sequence of Unicode characters.
@@ -5336,13 +5083,14 @@ Release: June 1, 2017
 
 60 / 214
 
-dwMediaTypeCode:  The SCSI [ANSI-131-1994] type code of the medium.
+
+dwMediaTypeCode:  The SCSI [ANSI-131-1994] type code of the medium.
 
 dwDensityCode:  The SCSI density code of the medium.
 
 MountedPartition:  The identifier of the media side that is currently mounted.
 
-2.2.5  INtmsObjectManagement2 Data Types
+#### 2.2.5 INtmsObjectManagement2 Data Types
 
 Enumerations
 
@@ -5358,7 +5106,7 @@ NtmsUITypes
 
 Defines the types of UI messages.
 
-2.2.5.1  NtmsUIOperations Enumeration
+##### 2.2.5.1 NtmsUIOperations Enumeration
 
 The NtmsUIOperations enumeration defines the types of operations to perform on a UI destination list.
 
@@ -5375,7 +5123,7 @@ NTMS_UIDEST_DELETE:  Delete a destination from the list.
 
 NTMS_UIDEST_DELETEALL:  Clear the destination list.
 
-2.2.5.2  NtmsUIType Enumeration
+##### 2.2.5.2 NtmsUIType Enumeration
 
 The NtmsUITypes enumeration defines the type of a UI message.
 
@@ -5403,9 +5151,10 @@ Release: June 1, 2017
 
 61 / 214
 
-NTMS_UITYPE_MAX:  Maximum possible value.
 
-2.2.6  IMessenger Data Types
+NTMS_UITYPE_MAX:  Maximum possible value.
+
+#### 2.2.6 IMessenger Data Types
 
 Structures
 
@@ -5417,7 +5166,7 @@ The IMessenger interface uses the following structure.
 
 RSM_MESSAGE  Describes a message.
 
-2.2.6.1  RSM_MESSAGE Structure
+##### 2.2.6.1 RSM_MESSAGE Structure
 
 The RSM_MESSAGE structure describes a message.
 
@@ -5475,22 +5224,23 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the RSM Remote Protocol, including abstract data models,
 interface method syntax, and message processing rules. All return calls from the server are
 synchronous unless otherwise noted within the specific method.
 
-3.1  Client Role Details
+### 3.1 Client Role Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
 protocol behaves. This document does not mandate that implementations adhere to this model as long
 as their external behavior is consistent with that described in this document.
 
-3.1.1.1  Notification Callback Objects
+##### 3.1.1.1 Notification Callback Objects
 
 Clients register callback objects if they want to receive event notifications from the server. For each
 client notification callback object registered with the server, the client maintains a cookie containing a
@@ -5498,11 +5248,11 @@ unique 32-bit value identifying the callback. The cookie is maintained until the
 deregistered. The cookie is then assigned by the server and returned to the client so that the client
 can use it later to deregister the callback object. The client is not to change the identifier.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are required.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client MUST be initialized by creating an RPC binding handle to the INtmsSession1 interface. How
 to get a client-side RPC binding handle for an INtmsSession1 interface is specified in [MS-DCOM]
@@ -5541,7 +5291,8 @@ Release: June 1, 2017
 
 63 / 214
 
-
+
+
 
 Invoke the INtmsSession1::OpenNtmsServerSessionW method for a Unicode session or
 INtmsSession1::OpenNtmsServerSessionA for an ASCII session.
@@ -5555,15 +5306,15 @@ the client-side notification sink interface as NULL.
 The client MUST call the INtmsNotifySink::ReleaseCallback method followed by
 INtmsSession1::CloseNtmsSession before ending the session.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 All method invocations are triggered by higher-layer events, such as commands issued within
 administrative and diagnostic applications. The following sections provide information on method
 invocations.
 
-3.1.4.1  Common Details
+##### 3.1.4.1 Common Details
 
-3.1.4.1.1 Methods with Prerequisites
+###### 3.1.4.1.1 Methods with Prerequisites
 
 Except for the following specified methods, there is no client-specific processing for the methods in
 this protocol. The methods are invoked by an application, and any information or status MUST be
@@ -5600,9 +5351,9 @@ requested them. The client can decide what it wants to do with that notification
 
 further notifications.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Processing Server Replies to Method Calls
+##### 3.1.5.1 Processing Server Replies to Method Calls
 
 Upon receiving a reply from the server in response to a method call, the client MUST validate the
 return code. Return codes from all method calls are HRESULTs. If the returned HRESULT is
@@ -5616,10 +5367,11 @@ Release: June 1, 2017
 
 64 / 214
 
-The client MUST release any DCOM interfaces returned by the server when the client no longer has
+
+The client MUST release any DCOM interfaces returned by the server when the client no longer has
 any use for them.
 
-3.1.5.1.1 Processing Notifications Sent from the Server to the Client
+###### 3.1.5.1.1 Processing Notifications Sent from the Server to the Client
 
 The client can choose to implement the INtmsNotifySink interface and/or the IClientSink interface in
 order to receive notification from the server whenever there are changes to the storage objects on the
@@ -5627,9 +5379,9 @@ server. Notifications are sent to the client for storage object creation, deleti
 client might choose to take some other action based on these notifications. The client might also
 choose to ignore notifications from the server.
 
-3.1.5.2  Message Processing Details
+##### 3.1.5.2 Message Processing Details
 
-3.1.5.2.1 IClientSink Interface
+###### 3.1.5.2.1 IClientSink Interface
 
 The IClientSink interface is implemented by the client to receive notification of RSM events. The UUID
 for this interface is "879C8BBE-41B0-11d1-BE11-00C04FB6BF70". The version for this interface is
@@ -5648,9 +5400,9 @@ Opnum: 3
 
 All methods MUST NOT throw exceptions.
 
-3.1.5.2.1.1
+###### 3.1.5.2.1.1 IClientSink::OnNotify (Opnum 3)
 
-IClientSink::OnNotify (Opnum 3)
+
 
 The OnNotify method notifies the sink of an RSM event.
 
@@ -5687,7 +5439,8 @@ Release: June 1, 2017
 
 65 / 214
 
-3.1.5.2.2 INtmsNotifySink Interface
+
+###### 3.1.5.2.2 INtmsNotifySink Interface
 
 The INtmsNotifySink interface is implemented by clients to receive notifications of RSM events and
 distribute them to those applications registered to receive notifications. The UUID for this interface is
@@ -5718,9 +5471,9 @@ Opnum: 5
 
 All methods MUST NOT throw exceptions.
 
-3.1.5.2.2.1
+###### 3.1.5.2.2.1 INtmsNotifySink::ConnectCallback (Opnum 3)
 
-INtmsNotifySink::ConnectCallback (Opnum 3)
+
 
 The ConnectCallback method connects a connection point to the sink.
 
@@ -5758,9 +5511,9 @@ is, pUnkCP) and a client's sink and return S_OK.
 
 The client MUST save a cookie that uniquely identifies the connection.
 
-3.1.5.2.2.2
+###### 3.1.5.2.2.2 INtmsNotifySink::OnNotify (Opnum 4)
 
-INtmsNotifySink::OnNotify (Opnum 4)
+
 
 The OnNotify method notifies the sink of an RSM event.
 
@@ -5771,7 +5524,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- HRESULT OnNotify(
+
+ HRESULT OnNotify(
    [in] DWORD dwType,
    [in] DWORD dwOperation,
    [in] LPGUID lpIdentifier
@@ -5799,9 +5553,9 @@ Upon receiving this message, the client sink MUST forward the event notification
 whose connection point is cached, and then return the value received from the client whose
 connection point is cached.
 
-3.1.5.2.2.3
+###### 3.1.5.2.2.3 INtmsNotifySink::ReleaseCallback (Opnum 5)
 
-INtmsNotifySink::ReleaseCallback (Opnum 5)
+
 
 The ReleaseCallback method removes a connection point from the sink.
 
@@ -5820,17 +5574,17 @@ S_OK
 Upon receiving this message, the client sink MUST terminate the connection that was established
 through INtmsNotifySink::ConnectCallback and return S_OK.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No timer events are used.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No other local events require special processing on the client.
 
-3.2  Server Role Details
+### 3.2 Server Role Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5843,10 +5597,11 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-adhere to this model as long as their external behavior is consistent with that described in this
+
+adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Server Object
+##### 3.2.1.1 Server Object
 
 The server object exposes the DCOM interfaces for retrieving and interacting with all storage
 management objects. The server object implements the INtmsSession1, INtmsLibraryControl1,
@@ -5866,17 +5621,17 @@ returns an appropriate error indicating that the server is not ready (ERROR_NOT_
 INtmsSession1::OpenNtmsServerSessionW (section 3.2.5.2.5.1) or
 INtmsSession1::OpenNtmsServerSessionA (section 3.2.5.2.5.2).
 
-3.2.1.2  List of Objects Present in the System
+##### 3.2.1.2 List of Objects Present in the System
 
 An RSM system contains libraries, media pools, and media.
 
-3.2.1.2.1 Libraries
+###### 3.2.1.2.1 Libraries
 
 A library can be physically connected (online) or disconnected (offline). The server maintains
 information about those libraries that are currently connected (online), as well as those that were
 connected previously but are currently offline.
 
-3.2.1.2.2 Media Pools
+###### 3.2.1.2.2 Media Pools
 
 A media pool is a logical collection of media that share some common attributes. A media pool
 contains media of only one type, but media in the media pool can be in more than one library. Every
@@ -5907,10 +5662,11 @@ Release: June 1, 2017
 
 68 / 214
 
-The possible types of media pools include system pools, free pools, unrecognized pools, import
+
+The possible types of media pools include system pools, free pools, unrecognized pools, import
 pools, and application pools.
 
-3.2.1.2.3 Media
+###### 3.2.1.2.3 Media
 
 Media can be either physical media or logical media.
 
@@ -5928,7 +5684,7 @@ another object until the server shuts down. The identifier can persist across se
 
 type: One of the SCSI device types [ANSI-131-1994] acquired from device inquiry data.
 
-3.2.1.3  List of Clients Connected to the Server
+##### 3.2.1.3 List of Clients Connected to the Server
 
 For each client connected to the server, the list contains the following data elements:
 
@@ -5944,7 +5700,7 @@ another object until the server shuts down. The identifier can persist across se
 
 the client to receive notifications from the server.
 
-3.2.1.4  List of Tasks Currently Executed on the Server
+##### 3.2.1.4 List of Tasks Currently Executed on the Server
 
 Library Requests
 
@@ -5972,7 +5728,7 @@ or available media that is offline to satisfy the request.
 
 unit.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required.
 
@@ -5983,30 +5739,31 @@ Release: June 1, 2017
 
 69 / 214
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 At start, the server registers the COM interfaces and then initializes the lists of objects and tasks.
 
-3.2.3.1  List of Storage Objects Present in the System
+##### 3.2.3.1 List of Storage Objects Present in the System
 
 The server initializes an empty list and then populates it with all libraries, media pools, and tape drives
 connected to the server.
 
-3.2.3.2  List of Clients Connected to the Server
+##### 3.2.3.2 List of Clients Connected to the Server
 
 The server initializes an empty list.
 
-3.2.3.3  List of Tasks Currently Executed on the Server
+##### 3.2.3.3 List of Tasks Currently Executed on the Server
 
 The server initializes an empty list.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No higher-layer events are processed.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Rules for Modifying the List of Storage Objects
+##### 3.2.5.1 Rules for Modifying the List of Storage Objects
 
 A number of protocol message processing steps result in the server modifying its list of storage
 objects. Possible actions include the following:
@@ -6041,7 +5798,7 @@ notifications.
 The following subsections list the changes that MUST be made by the server to the list of storage
 objects for each one of the protocol messages.
 
-3.2.5.2  Message Processing Details
+##### 3.2.5.2 Message Processing Details
 
 Some RSM Remote Protocol functionality is provided by two parallel methods, one providing support
 for ASCII and the other for Unicode. The server MUST use an object's GUID to map the object to
@@ -6053,7 +5810,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-different names given via equivalent methods and perform identical operations on an object regardless
+
+different names given via equivalent methods and perform identical operations on an object regardless
 of whether the method used is ASCII or Unicode.
 
 Before processing any of the following methods, the server SHOULD obtain the identity and
@@ -6061,7 +5819,7 @@ authorization information about the client from the underlying DCOM or RPC runti
 SHOULD impose an implementation-dependent authorization policy decision before performing the
 function.<20>
 
-3.2.5.2.1 INtmsLibraryControl1 Interface
+###### 3.2.5.2.1 INtmsLibraryControl1 Interface
 
 The INtmsLibraryControl1 interface is implemented by the server to support management of media
 libraries. The UUID for this interface is "4E934F30-341A-11D1-8FB1-00A024CB6019". The version for
@@ -6161,7 +5919,8 @@ Release: June 1, 2017
 
 71 / 214
 
-Method
+
+Method
 
 DeleteNtmsDrive
 
@@ -6210,9 +5969,9 @@ opnum, and the server behavior is undefined<21> because it does not affect inter
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.1.1
+###### 3.2.5.2.1.1 INtmsLibraryControl1::EjectNtmsMedia (Opnum 3)
 
-INtmsLibraryControl1::EjectNtmsMedia (Opnum 3)
+
 
 The EjectNtmsMedia method ejects media from theport of a library.
 
@@ -6265,7 +6024,8 @@ Release: June 1, 2017
 
 72 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6325,9 +6085,9 @@ used to insert and eject media.
 On completion of an asynchronous operation, notification will be sent with the identifier
 lpEjectOperation.
 
-3.2.5.2.1.2
+###### 3.2.5.2.1.2 INtmsLibraryControl1::InjectNtmsMedia (Opnum 4)
 
-INtmsLibraryControl1::InjectNtmsMedia (Opnum 4)
+
 
 The InjectNtmsMedia method allows media to be inserted into the port of an online library.
 
@@ -6344,7 +6104,8 @@ Release: June 1, 2017
 
 73 / 214
 
-lpLibraryId: A pointer to the identifier of a media library.
+
+lpLibraryId: A pointer to the identifier of a media library.
 
 lpInjectOperation: A pointer to the identifier of the insert process. In the case of a
 
@@ -6446,7 +6207,8 @@ Release: June 1, 2017
 
 74 / 214
 
-Because libraries vary in functionality of the NTMS_IEPORT object, each device might operate slightly
+
+Because libraries vary in functionality of the NTMS_IEPORT object, each device might operate slightly
 differently. The following steps specify how the RSM server generally handles a media inject request:
 
 1.  The server allows, unlocks, or extends the NTMS_IEPORT.
@@ -6470,9 +6232,9 @@ AccessNtmsLibraryDoor method can be used to insert and eject media.
 On completion of an asynchronous operation, notification will be sent with the identifier
 lpInjectOperation.
 
-3.2.5.2.1.3
+###### 3.2.5.2.1.3 INtmsLibraryControl1::AccessNtmsLibraryDoor (Opnum 5)
 
-INtmsLibraryControl1::AccessNtmsLibraryDoor (Opnum 5)
+
 
 The AccessNtmsLibraryDoor method unlocks the door of an online library.
 
@@ -6536,7 +6298,8 @@ Release: June 1, 2017
 
 75 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6599,9 +6362,9 @@ with these libraries is identical to its behavior with libraries that the server
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpLibraryId.
 
-3.2.5.2.1.4
+###### 3.2.5.2.1.4 INtmsLibraryControl1::CleanNtmsDrive (Opnum 6)
 
-INtmsLibraryControl1::CleanNtmsDrive (Opnum 6)
+
 
 The CleanNtmsDrive method queues a cleaning request for a drive.
 
@@ -6618,7 +6381,8 @@ Release: June 1, 2017
 
 76 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6706,9 +6470,9 @@ cleaner and issue an operator request to mount one.
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpDriveId.
 
-3.2.5.2.1.5
+###### 3.2.5.2.1.5 INtmsLibraryControl1::DismountNtmsDrive (Opnum 7)
 
-INtmsLibraryControl1::DismountNtmsDrive (Opnum 7)
+
 
 The DismountNtmsDrive method moves a medium from a drive to its storage slot.
 
@@ -6722,7 +6486,8 @@ Release: June 1, 2017
 
 77 / 214
 
- );
+
+ );
 
 lpDriveId: A pointer to the identifier of a drive.
 
@@ -6813,9 +6578,9 @@ returned; otherwise, the media MUST be dismounted from the drive.
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpDriveId.
 
-3.2.5.2.1.6
+###### 3.2.5.2.1.6 INtmsLibraryControl1::InventoryNtmsLibrary (Opnum 8)
 
-INtmsLibraryControl1::InventoryNtmsLibrary (Opnum 8)
+
 
 [MS-RSMP] - v20170601
 Removable Storage Manager (RSM) Remote Protocol
@@ -6824,7 +6589,8 @@ Release: June 1, 2017
 
 78 / 214
 
-The InventoryNtmsLibrary method queues a request to perform an inventory of an online library.
+
+The InventoryNtmsLibrary method queues a request to perform an inventory of an online library.
 
  HRESULT InventoryNtmsLibrary(
    [in] LPNTMS_GUID lpLibraryId,
@@ -6919,7 +6685,8 @@ Release: June 1, 2017
 
 79 / 214
 
- Value
+
+ Value
 
  Meaning
 
@@ -6939,9 +6706,9 @@ is marked.
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpLibraryId.
 
-3.2.5.2.1.7
+###### 3.2.5.2.1.7 INtmsLibraryControl1::CancelNtmsLibraryRequest (Opnum 10)
 
-INtmsLibraryControl1::CancelNtmsLibraryRequest (Opnum 10)
+
 
 The CancelNtmsLibraryRequest method cancels outstanding library requests.
 
@@ -6992,9 +6759,9 @@ the server MUST cancel the specified library request and return success (S_OK).
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpRequestId.
 
-3.2.5.2.1.8
+###### 3.2.5.2.1.8 INtmsLibraryControl1::ReserveNtmsCleanerSlot (Opnum 11)
 
-INtmsLibraryControl1::ReserveNtmsCleanerSlot (Opnum 11)
+
 
 The ReserveNtmsCleanerSlot method reserves a slot in an online library for a drive cleaner
 cartridge.
@@ -7009,7 +6776,8 @@ Release: June 1, 2017
 
 80 / 214
 
-   [in] LPNTMS_GUID lpSlot
+
+   [in] LPNTMS_GUID lpSlot
  );
 
 lpLibrary: A pointer to the identifier of the media library in which to reserve the slot.
@@ -7110,7 +6878,8 @@ Release: June 1, 2017
 
 81 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7173,9 +6942,9 @@ ERROR_RESOURCE_NOT_AVAILABLE (0x8007138E).
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpLibrary.
 
-3.2.5.2.1.9
+###### 3.2.5.2.1.9 INtmsLibraryControl1::ReleaseNtmsCleanerSlot (Opnum 12)
 
-INtmsLibraryControl1::ReleaseNtmsCleanerSlot (Opnum 12)
+
 
 The ReleaseNtmsCleanerSlot method removes an existing slot reservation for a cleaning cartridge.
 
@@ -7206,9 +6975,10 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-On completion of an asynchronous operation, notification will be sent with the identifier lpLibrary.
 
-3.2.5.2.1.10  INtmsLibraryControl1::InjectNtmsCleaner (Opnum 13)
+On completion of an asynchronous operation, notification will be sent with the identifier lpLibrary.
+
+###### 3.2.5.2.1.10 INtmsLibraryControl1::InjectNtmsCleaner (Opnum 13)
 
 The InjectNtmsCleaner method allows a cleaner cartridge to be inserted into an online library unit.
 
@@ -7308,7 +7078,8 @@ Release: June 1, 2017
 
 83 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7356,7 +7127,7 @@ be specified so that the server can keep track of it.
 On completion of an asynchronous operation, notification will be sent with the identifier
 lpInjectOperation.
 
-3.2.5.2.1.11  INtmsLibraryControl1::EjectNtmsCleaner (Opnum 14)
+###### 3.2.5.2.1.11 INtmsLibraryControl1::EjectNtmsCleaner (Opnum 14)
 
 The EjectNtmsCleaner method ejects the cleaning cartridge from the currently reserved cleaner
 slot.
@@ -7385,7 +7156,8 @@ Release: June 1, 2017
 
 84 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7488,7 +7260,8 @@ Release: June 1, 2017
 
 85 / 214
 
-If the library that is specified in the EjectNtmsCleaner method has an NTMS_IEPORT object, RSM uses
+
+If the library that is specified in the EjectNtmsCleaner method has an NTMS_IEPORT object, RSM uses
 the NTMS_IEPORT object to eject the cleaner. If there is no NTMS_IEPORT object, the NTMS_IEDOOR
 object is used to allow the operator to gain access to the cleaner slot.
 
@@ -7497,7 +7270,7 @@ Ejected cleaner cartridges are not tracked in the offline library.
 On completion of an asynchronous operation, notification will be sent with the identifier
 lpEjectOperation.
 
-3.2.5.2.1.12  INtmsLibraryControl1::DeleteNtmsLibrary (Opnum 15)
+###### 3.2.5.2.1.12 INtmsLibraryControl1::DeleteNtmsLibrary (Opnum 15)
 
 The DeleteNtmsLibrary method deletes a library and all the devices in it. Any media in the library are
 moved to the offline library.
@@ -7577,11 +7350,12 @@ Release: June 1, 2017
 
 86 / 214
 
-If validation is successful, the DeleteNtmsLibrary method deletes the library and all devices contained
+
+If validation is successful, the DeleteNtmsLibrary method deletes the library and all devices contained
 within the library from the server database after all media in the library are moved to a location in an
 offline library.
 
-3.2.5.2.1.13  INtmsLibraryControl1::DeleteNtmsDrive (Opnum 16)
+###### 3.2.5.2.1.13 INtmsLibraryControl1::DeleteNtmsDrive (Opnum 16)
 
 The DeleteNtmsDrive method deletes a drive.
 
@@ -7669,7 +7443,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.5.2.1.14  INtmsLibraryControl1::GetNtmsRequestOrder (Opnum 17)
+
+###### 3.2.5.2.1.14 INtmsLibraryControl1::GetNtmsRequestOrder (Opnum 17)
 
 The GetNtmsRequestOrder method retrieves the order in which a request will be processed in the
 library queue.
@@ -7728,7 +7503,7 @@ The server MUST search the request queue for the request ID that is pointed to b
 server finds the entry for lpRequestId, it MUST return the order of that entry in lpdwOrderNumber;
 otherwise, it MUST return 0 in lpdwOrderNumber.
 
-3.2.5.2.1.15  INtmsLibraryControl1::SetNtmsRequestOrder (Opnum 18)
+###### 3.2.5.2.1.15 INtmsLibraryControl1::SetNtmsRequestOrder (Opnum 18)
 
 The SetNtmsRequestOrder method sets the order in which a request will be processed in the library
 queue.
@@ -7751,7 +7526,8 @@ Release: June 1, 2017
 
 88 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7800,7 +7576,7 @@ library queue.
 The server MUST maintain the request queue sorted by request types, as specified in section 2.2.4.3.
 The server MAY select its own ordering mechanism within the same type of requests.<22>
 
-3.2.5.2.1.16  INtmsLibraryControl1::DeleteNtmsRequests (Opnum 19)
+###### 3.2.5.2.1.16 INtmsLibraryControl1::DeleteNtmsRequests (Opnum 19)
 
 The DeleteNtmsRequests method deletes a request or a list of requests. Requests that have already
 been submitted or are queued, waiting, or in progress MUST NOT be deleted.
@@ -7847,7 +7623,8 @@ Release: June 1, 2017
 
 89 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7883,7 +7660,7 @@ Submitted requests, queued requests, waiting requests, and in-progress requests 
 
 An error is not returned if a request or list of requests is not found.
 
-3.2.5.2.1.17  INtmsLibraryControl1::BeginNtmsDeviceChangeDetection (Opnum 20)
+###### 3.2.5.2.1.17 INtmsLibraryControl1::BeginNtmsDeviceChangeDetection (Opnum 20)
 
 The BeginNtmsDeviceChangeDetection method begins a device change detection session. The libraries
 for which media change detection is required MUST be set using the SetNtmsDeviceChangeDetection
@@ -7931,7 +7708,8 @@ Release: June 1, 2017
 
 90 / 214
 
-If the method is implemented, the server MUST verify that lpDetectHandle is not NULL. If it is NULL,
+
+If the method is implemented, the server MUST verify that lpDetectHandle is not NULL. If it is NULL,
 the server MUST immediately fail the operation and return an invalid handler error
 ERROR_INVALID_HANDLE (0x80070006).
 
@@ -7945,7 +7723,7 @@ the EndNtmsDeviceChangeDetection method.
 
 The server MUST return a pointer to the new device change detection handle in lpDetectHandle.
 
-3.2.5.2.1.18  INtmsLibraryControl1::SetNtmsDeviceChangeDetection (Opnum 21)
+###### 3.2.5.2.1.18 INtmsLibraryControl1::SetNtmsDeviceChangeDetection (Opnum 21)
 
 The SetNtmsDeviceChangeDetection method sets one or more target devices for change detection.
 Implementation of this method is optional.<25> The server MAY return a non-implemented error
@@ -8018,7 +7796,8 @@ Release: June 1, 2017
 
 91 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8044,7 +7823,7 @@ EndNtmsDeviceChangeDetection method.
 This method can also be used to poll for changed media in the specified devices. This feature is
 typically used by a UI when opening a leaf node or implementing a refresh option.
 
-3.2.5.2.1.19  INtmsLibraryControl1::EndNtmsDeviceChangeDetection (Opnum 22)
+###### 3.2.5.2.1.19 INtmsLibraryControl1::EndNtmsDeviceChangeDetection (Opnum 22)
 
 The EndNtmsDeviceChangeDetection method ends device change detection for one or more target
 devices. Implementation of this method is optional.<27> The server MAY return a non-implemented
@@ -8089,7 +7868,7 @@ specified using the SetNtmsDeviceChangeDetection method, and closes the change d
 
 Closing the RSM session also ends all device change detection sessions.
 
-3.2.5.2.2 INtmsMediaServices1 Interface
+###### 3.2.5.2.2 INtmsMediaServices1 Interface
 
 92 / 214
 
@@ -8098,7 +7877,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The INtmsMediaServices1 interface is implemented by servers to support management of media. The
+
+The INtmsMediaServices1 interface is implemented by servers to support management of media. The
 UUID for this interface is "D02E4BE0-3419-11D1-8FB1-00A024CB6019". The version for this interface
 is "1.0".
 
@@ -8208,7 +7988,8 @@ Release: June 1, 2017
 
 93 / 214
 
-Method
+
+Method
 
 Description
 
@@ -8230,9 +8011,9 @@ opnum, and the server behavior is undefined<29> since it does not affect interop
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.2.1
+###### 3.2.5.2.2.1 INtmsMediaServices1::MountNtmsMedia (Opnum 3)
 
-INtmsMediaServices1::MountNtmsMedia (Opnum 3)
+
 
 The MountNtmsMedia method mounts one or more pieces of media.
 
@@ -8294,7 +8075,8 @@ Release: June 1, 2017
 
 94 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8416,7 +8198,8 @@ Release: June 1, 2017
 
 95 / 214
 
-Upon receiving this message, the server MUST verify that dwCount is not 0, verify that lpMediaId is
+
+Upon receiving this message, the server MUST verify that dwCount is not 0, verify that lpMediaId is
 not NULL, and verify that lpDriveId is not NULL. If parameter validation fails, the server MUST
 immediately fail the operation and return ERROR_INVALID_PARAMETER (0x80070057).
 
@@ -8467,9 +8250,9 @@ method waits for the period of time that is specified in the dwTimeout parameter
 exceeds the parameter, the mount request is canceled, and the server MUST return ERROR_TIMEOUT
 (0x800705B4).
 
-3.2.5.2.2.2
+###### 3.2.5.2.2.2 INtmsMediaServices1::DismountNtmsMedia (Opnum 4)
 
-INtmsMediaServices1::DismountNtmsMedia (Opnum 4)
+
 
 The DismountNtmsMedia method queues a command to move a medium in a drive to its storage.
 
@@ -8485,7 +8268,8 @@ Release: June 1, 2017
 
 96 / 214
 
- );
+
+ );
 
 lpMediaId: An array of logical media or media side identifiers.
 
@@ -8591,9 +8375,10 @@ Release: June 1, 2017
 
 97 / 214
 
-3.2.5.2.2.3
 
-INtmsMediaServices1::AllocateNtmsMedia (Opnum 6)
+###### 3.2.5.2.2.3 INtmsMediaServices1::AllocateNtmsMedia (Opnum 6)
+
+
 
 The AllocateNtmsMedia method allocates a piece of available media.
 
@@ -8695,7 +8480,8 @@ Release: June 1, 2017
 
 98 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8784,7 +8570,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When an application requires new media that contain data, a user or administrator places the media in
+
+When an application requires new media that contain data, a user or administrator places the media in
 a library or drive. The server identifies the media and places it in the import pool. The application
 searches the import pool, moves the media to its application pool, and allocates it. This routine
 process can be streamlined and made atomic through a single call to AllocateNtmsMedia. After
@@ -8799,9 +8586,9 @@ Only application pools can be specified for allocation by using the AllocateNtms
 
 On completion of an asynchronous operation, notification is sent with the identifier lpMediaId.
 
-3.2.5.2.2.4
+###### 3.2.5.2.2.4 INtmsMediaServices1::DeallocateNtmsMedia (Opnum 7)
 
-INtmsMediaServices1::DeallocateNtmsMedia (Opnum 7)
+
 
 The DeallocateNtmsMedia method deallocates the side that is associated with a piece of logical
 media.
@@ -8870,7 +8657,8 @@ Release: June 1, 2017
 
 100 / 214
 
-When a logical medium is deallocated with the DeallocateNtmsMedia method, the server puts the side
+
+When a logical medium is deallocated with the DeallocateNtmsMedia method, the server puts the side
 that is associated with the logical media in the available or decommissioned media state, and the
 logical media is deleted from the system.
 
@@ -8878,9 +8666,9 @@ Sides are decommissioned upon deallocation if the side has been allocated the ma
 times specified in the media pool. After media enters the decommissioned state, it cannot be allocated
 again.<31>
 
-3.2.5.2.2.5
+###### 3.2.5.2.2.5 INtmsMediaServices1::SwapNtmsMedia (Opnum 8)
 
-INtmsMediaServices1::SwapNtmsMedia (Opnum 8)
+
 
 The SwapNtmsMedia method swaps the position of two media sides.
 
@@ -8967,7 +8755,8 @@ Release: June 1, 2017
 
 101 / 214
 
-The SwapNtmsMedia method swaps the sides that are associated with the two specified LMIDs.
+
+The SwapNtmsMedia method swaps the sides that are associated with the two specified LMIDs.
 
 If the media are not in the NTMS_PARTSTATE_ALLOCATED state of the NtmsPartitionState
 enumeration, the server MUST return ERROR_INVALID_STATE (0x8007139F).
@@ -8976,9 +8765,9 @@ The SwapNtmsMedia method MUST be implemented in such a way that it updates physi
 without affecting the application. For this method to succeed, the media for both LMIDs MUST NOT be
 in use. If any of the media is in use, the server MUST return ERROR_INVALID_MEDIA (0x800710CC).
 
-3.2.5.2.2.6
+###### 3.2.5.2.2.6 INtmsMediaServices1::DecommissionNtmsMedia (Opnum 9)
 
-INtmsMediaServices1::DecommissionNtmsMedia (Opnum 9)
+
 
 The DecommissionNtmsMedia method moves media from available state to decommissioned state.
 Media that are decommissioned by the DecommissionNtmsMedia method are recognized by the
@@ -9062,9 +8851,10 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.5.2.2.7
 
-INtmsMediaServices1::SetNtmsMediaComplete (Opnum 10)
+###### 3.2.5.2.2.7 INtmsMediaServices1::SetNtmsMediaComplete (Opnum 10)
+
+
 
 The SetNtmsMediaComplete method marks a piece of logical media as complete.
 
@@ -9147,9 +8937,9 @@ media cannot be mounted with the NTMS_MOUNT_WRITE flag.
 The SetNtmsMediaComplete method is typically used when an application reaches the end of the
 media. Media that are mounted or in use cannot be marked as complete.
 
-3.2.5.2.2.8
+###### 3.2.5.2.2.8 INtmsMediaServices1::DeleteNtmsMedia (Opnum 11)
 
-INtmsMediaServices1::DeleteNtmsMedia (Opnum 11)
+
 
 The DeleteNtmsMedia method deletes a physical piece of offline media by removing all references to
 it.
@@ -9161,7 +8951,8 @@ Release: June 1, 2017
 
 103 / 214
 
- HRESULT DeleteNtmsMedia(
+
+ HRESULT DeleteNtmsMedia(
    [in] LPNTMS_GUID lpMediaId
  );
 
@@ -9239,9 +9030,9 @@ references to the specified medium from the database.
 Media specified by the DeleteNtmsMedia method MUST be located in an offline library and not have
 a side in the allocated, completed, or reserved states.
 
-3.2.5.2.2.9
+###### 3.2.5.2.2.9 INtmsMediaServices1::CreateNtmsMediaPoolA (Opnum 12)
 
-INtmsMediaServices1::CreateNtmsMediaPoolA (Opnum 12)
+
 
 The CreateNtmsMediaPoolA method creates a new application media pool, with strings encoded using
 ASCII.
@@ -9259,7 +9050,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   [out] LPNTMS_GUID lpPoolId
+
+   [out] LPNTMS_GUID lpPoolId
  );
 
 lpPoolName: A null-terminated sequence of ASCII characters that constitute the name of the new
@@ -9361,7 +9153,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the media pool that is specified by lpPoolName is present, and if dwOptions is not
+
+If the media pool that is specified by lpPoolName is present, and if dwOptions is not
 NTMS_CREATE_NEW, the server MUST open the existing media pool and return success.
 
 If the media pool that is specified by lpPoolName is present and dwOptions is NTMS_CREATE_NEW,
@@ -9383,7 +9176,7 @@ Pool1 and Pool2, in much the same way as folders and files.
 
 Strings that are sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.2.10  INtmsMediaServices1::CreateNtmsMediaPoolW (Opnum 13)
+###### 3.2.5.2.2.10 INtmsMediaServices1::CreateNtmsMediaPoolW (Opnum 13)
 
 The CreateNtmsMediaPoolW method creates a new application media pool whose name is composed of
 a sequence of Unicode characters.
@@ -9440,7 +9233,8 @@ Release: June 1, 2017
 
 106 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9518,7 +9312,7 @@ Pool1 and Pool2, in much the same way as folders and files.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.2.11  INtmsMediaServices1::GetNtmsMediaPoolNameA (Opnum 14)
+###### 3.2.5.2.2.11 INtmsMediaServices1::GetNtmsMediaPoolNameA (Opnum 14)
 
 The GetNtmsMediaPoolNameA method retrieves the full name hierarchy of a media pool, with null-
 terminated strings encoded using ASCII.
@@ -9532,7 +9326,8 @@ Release: June 1, 2017
 
 107 / 214
 
-   [in] LPNTMS_GUID lpPoolId,
+
+   [in] LPNTMS_GUID lpPoolId,
    [out, size_is(*lpdwNameSizeBuf), length_is(*lpdwNameSizeBuf)]
      unsigned  char* lpBufName,
    [in] DWORD* lpdwNameSizeBuf,
@@ -9601,7 +9396,7 @@ ERROR_ACCESS_DENIED (0x80070005).
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.2.12  INtmsMediaServices1::GetNtmsMediaPoolNameW (Opnum 15)
+###### 3.2.5.2.2.12 INtmsMediaServices1::GetNtmsMediaPoolNameW (Opnum 15)
 
 The GetNtmsMediaPoolNameW method retrieves the full name hierarchy of a media pool, with strings
 encoded using Unicode.
@@ -9620,7 +9415,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- );
+
+ );
 
 lpPoolId: A pointer to the identifier of the media pool for which to retrieve the name.
 
@@ -9686,7 +9482,7 @@ ERROR_ACCESS_DENIED (0x80070005).
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.2.13  INtmsMediaServices1::MoveToNtmsMediaPool (Opnum 16)
+###### 3.2.5.2.2.13 INtmsMediaServices1::MoveToNtmsMediaPool (Opnum 16)
 
 The MoveToNtmsMediaPool method moves a medium from its current media pool to another media
 pool.
@@ -9707,7 +9503,8 @@ Release: June 1, 2017
 
 109 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9795,7 +9592,7 @@ medium are in the import state.<32>
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpPoolId.
 
-3.2.5.2.2.14  INtmsMediaServices1::DeleteNtmsMediaPool (Opnum 17)
+###### 3.2.5.2.2.14 INtmsMediaServices1::DeleteNtmsMediaPool (Opnum 17)
 
 The DeleteNtmsMediaPool method deletes an application media pool.
 
@@ -9809,7 +9606,8 @@ Release: June 1, 2017
 
 110 / 214
 
- );
+
+ );
 
 lpPoolId: A pointer to the identifier of a media pool.
 
@@ -9875,7 +9673,7 @@ The server MUST check that the parent is not in a SCRATCH/IMPORT/FOREIGN media p
 MUST NOT perform the delete and MUST return ERROR_INVALID_MEDIA_POOL. Otherwise, the server
 MUST delete the media pool from the database.
 
-3.2.5.2.2.15  INtmsMediaServices1::AddNtmsMediaType (Opnum 18)
+###### 3.2.5.2.2.15 INtmsMediaServices1::AddNtmsMediaType (Opnum 18)
 
 The AddNtmsMediaType method MUST add a media type to a library if there is not currently a relation
 in the library. The method MUST create the system media pools (FREE, IMPORT, and UNRECOGNIZED)
@@ -9897,7 +9695,8 @@ Release: June 1, 2017
 
 111 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9964,7 +9763,7 @@ If parameter validation succeeds, the server MUST verify that the user has the r
 and that the library is enabled and online. If the library is offline, the server MUST return
 ERROR_LIBRARY_OFFLINE (0x800710D1).
 
-3.2.5.2.2.16  INtmsMediaServices1::DeleteNtmsMediaType (Opnum 19)
+###### 3.2.5.2.2.16 INtmsMediaServices1::DeleteNtmsMediaType (Opnum 19)
 
 The DeleteNtmsMediaType method deletes a media type from a library.
 
@@ -9984,7 +9783,8 @@ Release: June 1, 2017
 
 112 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10054,7 +9854,7 @@ no library objects that contain the specified media type relation in the server 
 media pools for that media type MUST be deleted. Inability to delete the system media pools does not
 cause the DeleteNtmsMediaType method to fail.
 
-3.2.5.2.2.17  INtmsMediaServices1::ChangeNtmsMediaType (Opnum 20)
+###### 3.2.5.2.2.17 INtmsMediaServices1::ChangeNtmsMediaType (Opnum 20)
 
  The ChangeNtmsMediaType method moves a physical media identifier to a new media pool and sets
 the media type of the medium to that of the pool.
@@ -10075,7 +9875,8 @@ Release: June 1, 2017
 
 113 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10148,7 +9949,7 @@ ERROR_INVALID_MEDIA_POOL (0x800710CE).
 
 On completion of an asynchronous operation, notification is sent with the identifier lpMediaId.
 
-3.2.5.2.3 INtmsObjectInfo1 Interface
+###### 3.2.5.2.3 INtmsObjectInfo1 Interface
 
 The INtmsObjectInfo1 interface is implemented by the server to support object information retrieval
 and media creation. The UUID for this interface is "69AB7050-3059-11D1-8FAF-00A024CB6019". The
@@ -10166,7 +9967,8 @@ Release: June 1, 2017
 
 114 / 214
 
-Method
+
+Method
 
 Description
 
@@ -10206,9 +10008,9 @@ All methods MUST NOT throw exceptions.
 
 Opnum: 8
 
-3.2.5.2.3.1
+###### 3.2.5.2.3.1 INtmsObjectInfo1::GetNtmsServerObjectInformationA (Opnum 3)
 
-INtmsObjectInfo1::GetNtmsServerObjectInformationA (Opnum 3)
+
 
 The GetNtmsServerObjectInformationA method retrieves information about an object, as a sequence
 of ASCII characters.
@@ -10265,7 +10067,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10360,9 +10163,9 @@ Requires NTMS_USE_ACCESS to the library.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.3.2
+###### 3.2.5.2.3.2 INtmsObjectInfo1::GetNtmsServerObjectInformationW (Opnum 4)
 
-INtmsObjectInfo1::GetNtmsServerObjectInformationW (Opnum 4)
+
 
 [MS-RSMP] - v20170601
 Removable Storage Manager (RSM) Remote Protocol
@@ -10371,7 +10174,8 @@ Release: June 1, 2017
 
 116 / 214
 
-The GetNtmsServerObjectInformationW method retrieves information about an object, as a sequence
+
+The GetNtmsServerObjectInformationW method retrieves information about an object, as a sequence
 of Unicode characters.
 
  HRESULT GetNtmsServerObjectInformationW(
@@ -10461,7 +10265,8 @@ Release: June 1, 2017
 
 117 / 214
 
- Object
+
+ Object
 
  Access
 
@@ -10521,9 +10326,9 @@ Requires NTMS_USE_ACCESS to the library.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.3.3
+###### 3.2.5.2.3.3 INtmsObjectInfo1::SetNtmsObjectInformationA (Opnum 5)
 
-INtmsObjectInfo1::SetNtmsObjectInformationA (Opnum 5)
+
 
 The SetNtmsObjectInformationA method changes the information of an object, with strings encoded
 using ASCII.
@@ -10574,7 +10379,8 @@ Release: June 1, 2017
 
 118 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10680,7 +10486,8 @@ Release: June 1, 2017
 
 119 / 214
 
- Object
+
+ Object
 
  Members
 
@@ -10758,9 +10565,9 @@ MAY require NTMS_MODIFY_ACCESS to the library.<48>
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.3.4
+###### 3.2.5.2.3.4 INtmsObjectInfo1::SetNtmsObjectInformationW (Opnum 6)
 
-INtmsObjectInfo1::SetNtmsObjectInformationW (Opnum 6)
+
 
 The SetNtmsObjectInformationW method changes the information of an object, with strings encoded
 using Unicode.
@@ -10783,7 +10590,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10891,7 +10699,8 @@ Release: June 1, 2017
 
 121 / 214
 
- Object
+
+ Object
 
  Members
 
@@ -10993,9 +10802,9 @@ MAY require NTMS_MODIFY_ACCESS to the library.<64>
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.3.5
+###### 3.2.5.2.3.5 INtmsObjectInfo1::CreateNtmsMediaA (Opnum 7)
 
-INtmsObjectInfo1::CreateNtmsMediaA (Opnum 7)
+
 
 The CreateNtmsMediaA method creates a new offline medium for a media pool, with strings encoded
 using ASCII.
@@ -11007,7 +10816,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- HRESULT CreateNtmsMediaA(
+
+ HRESULT CreateNtmsMediaA(
    [in, out] LPNTMS_OBJECTINFORMATIONA lpMedia,
    [in, out, size_is(*lpdwListBufferSize), length_is(dwListCount)]
      LPNTMS_OBJECTINFORMATIONA lpList,
@@ -11105,7 +10915,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11201,7 +11012,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The lpList parameter MUST point to an NTMS_OBJECTINFORMATIONA structure. A full list of
+
+The lpList parameter MUST point to an NTMS_OBJECTINFORMATIONA structure. A full list of
 NTMS_OBJECTINFORMATIONA members and their descriptions can be found at 2.2.4.20.
 
 The NTMS_OBJECTINFORMATIONA structure MUST meet the following criteria.
@@ -11318,7 +11130,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Member
+
+ Member
 
  Description
 
@@ -11326,9 +11139,9 @@ the first time.<69>
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.3.6
+###### 3.2.5.2.3.6 INtmsObjectInfo1::CreateNtmsMediaW (Opnum 8)
 
-INtmsObjectInfo1::CreateNtmsMediaW (Opnum 8)
+
 
 The CreateNtmsMediaW method creates a new offline medium for a media pool, with strings encoded
 using Unicode.
@@ -11405,7 +11218,8 @@ Release: June 1, 2017
 
 126 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11512,7 +11326,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Member
+
+ Member
 
  Description
 
@@ -11623,7 +11438,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Member
+
+ Member
 
  Description
 
@@ -11653,7 +11469,7 @@ first time.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.4 INtmsObjectManagement1 Interface
+###### 3.2.5.2.4 INtmsObjectManagement1 Interface
 
 The INtmsObjectManagement1 interface is implemented by the server to support security, attribute
 management, and enumeration for objects. The UUID for this interface is "B057DC50-3059-11D1-
@@ -11725,9 +11541,10 @@ Release: June 1, 2017
 
 129 / 214
 
-3.2.5.2.4.1
 
-INtmsObjectManagement1::GetNtmsObjectSecurity (Opnum 3)
+###### 3.2.5.2.4.1 INtmsObjectManagement1::GetNtmsObjectSecurity (Opnum 3)
+
+
 
 The GetNtmsObjectSecurity method retrieves the security descriptor of an object.
 
@@ -11819,15 +11636,16 @@ Release: June 1, 2017
 
 130 / 214
 
-If the buffer size that is specified by nLength is too small, the server MUST return
+
+If the buffer size that is specified by nLength is too small, the server MUST return
 ERROR_INSUFFICIENT_BUFFER (0x8007007A).
 
 Server security uses the standard security descriptors and information members. This allows the
 standard security dialog boxes to be used to select server security.
 
-3.2.5.2.4.2
+###### 3.2.5.2.4.2 INtmsObjectManagement1::SetNtmsObjectSecurity (Opnum 4)
 
-INtmsObjectManagement1::SetNtmsObjectSecurity (Opnum 4)
+
 
  The SetNtmsObjectSecurity method changes the security descriptor of an object.
 
@@ -11908,15 +11726,16 @@ Release: June 1, 2017
 
 131 / 214
 
-If an application uses SetNtmsObjectSecurity to set the discretionary access control list (DACL) of an
+
+If an application uses SetNtmsObjectSecurity to set the discretionary access control list (DACL) of an
 object, the application MUST have WRITE_DAC permission or be the owner of the object.
 
 If an application uses SetNtmsObjectSecurity to set the system DACL of an object, the
 SE_SECURITY_NAME privilege MUST be enabled for the application.
 
-3.2.5.2.4.3
+###### 3.2.5.2.4.3 INtmsObjectManagement1::GetNtmsObjectAttributeA (Opnum 5)
 
-INtmsObjectManagement1::GetNtmsObjectAttributeA (Opnum 5)
+
 
  The GetNtmsObjectAttributeA method retrieves private data of an object, with strings encoded using
 ASCII.
@@ -12003,7 +11822,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12099,9 +11919,9 @@ Requires NTMS_USE_ACCESS to the library.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.4.4
+###### 3.2.5.2.4.4 INtmsObjectManagement1::GetNtmsObjectAttributeW (Opnum 6)
 
-INtmsObjectManagement1::GetNtmsObjectAttributeW (Opnum 6)
+
 
 [MS-RSMP] - v20170601
 Removable Storage Manager (RSM) Remote Protocol
@@ -12110,7 +11930,8 @@ Release: June 1, 2017
 
 133 / 214
 
-The GetNtmsObjectAttributeW method retrieves private data from an object, with strings encoded
+
+The GetNtmsObjectAttributeW method retrieves private data from an object, with strings encoded
 using Unicode.
 
  HRESULT GetNtmsObjectAttributeW(
@@ -12202,7 +12023,8 @@ Release: June 1, 2017
 
 134 / 214
 
-If parameter validation succeeds, the server MUST verify that the user has the required access rights.
+
+If parameter validation succeeds, the server MUST verify that the user has the required access rights.
 If the client does not have the required access rights, NTMS_USE_ACCESS to the object specified in
 lpObjectId is denied and the server MUST return ERROR_ACCESS_DENIED (0x80070005).
 
@@ -12282,9 +12104,9 @@ Requires NTMS_USE_ACCESS to the library.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.4.5
+###### 3.2.5.2.4.5 INtmsObjectManagement1::SetNtmsObjectAttributeA (Opnum 7)
 
-INtmsObjectManagement1::SetNtmsObjectAttributeA (Opnum 7)
+
 
  The SetNtmsObjectAttributeA method changes the private data of an object, with strings encoded
 using ASCII.
@@ -12306,7 +12128,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-dwType: A value from the NtmsObjectsTypes (section 2.2.1.6) enumeration specifying the type of the
+
+dwType: A value from the NtmsObjectsTypes (section 2.2.1.6) enumeration specifying the type of the
 
 object.
 
@@ -12383,9 +12206,9 @@ MUST ignore the invalid dwType.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.4.6
+###### 3.2.5.2.4.6 INtmsObjectManagement1::SetNtmsObjectAttributeW (Opnum 8)
 
-INtmsObjectManagement1::SetNtmsObjectAttributeW (Opnum 8)
+
 
  The SetNtmsObjectAttributeW method changes the private data of an object, with strings encoded
 using Unicode.
@@ -12403,7 +12226,8 @@ Release: June 1, 2017
 
 136 / 214
 
-   [in] DWORD AttributeSize
+
+   [in] DWORD AttributeSize
  );
 
 lpObjectId: A pointer to the identifier of the object for which to set private data.
@@ -12484,9 +12308,9 @@ MUST ignore the invalid dwType.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.4.7
+###### 3.2.5.2.4.7 INtmsObjectManagement1::EnumerateNtmsObject (Opnum 9)
 
-INtmsObjectManagement1::EnumerateNtmsObject (Opnum 9)
+
 
 The EnumerateNtmsObject method enumerates the objects of the container specified by the
 lpContainerId parameter.
@@ -12498,7 +12322,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- HRESULT EnumerateNtmsObject(
+
+ HRESULT EnumerateNtmsObject(
    [in, unique] const LPNTMS_GUID lpContainerId,
    [out, size_is(*lpdwListBufferSize), length_is(*lpdwListBufferSize)]
      LPNTMS_GUID lpList,
@@ -12588,7 +12413,8 @@ Release: June 1, 2017
 
 138 / 214
 
-If the available number of IDs specified in the lpdwListSize parameter is greater than the current
+
+If the available number of IDs specified in the lpdwListSize parameter is greater than the current
 buffer size, lpdwListSize MUST return the required size in lpdwListSize and
 ERROR_INSUFFICIENT_BUFFER (0x8007007A). The client MUST then allocate a larger buffer and try
 again.
@@ -12599,9 +12425,9 @@ libraries).
 If more than one object is listed, the object can be enumerated from more than one container. The
 NULL container is the highest-level container, and enumerates all objects in a system.
 
-3.2.5.2.4.8
+###### 3.2.5.2.4.8 INtmsObjectManagement1::DisableNtmsObject (Opnum 10)
 
-INtmsObjectManagement1::DisableNtmsObject (Opnum 10)
+
 
 The DisableNtmsObject method disables an object.
 
@@ -12672,9 +12498,9 @@ If parameter validation succeeds, the server MUST verify that the user has the r
 and set the object state to DISABLED. If the client does not have the required access rights, the
 server MUST return ERROR_ACCESS_DENIED (0x80070005).
 
-3.2.5.2.4.9
+###### 3.2.5.2.4.9 INtmsObjectManagement1::EnableNtmsObject (Opnum 11)
 
-INtmsObjectManagement1::EnableNtmsObject (Opnum 11)
+
 
 139 / 214
 
@@ -12683,7 +12509,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The EnableNtmsObject method enables an object.
+
+The EnableNtmsObject method enables an object.
 
  HRESULT EnableNtmsObject(
    [in] DWORD dwType,
@@ -12751,7 +12578,7 @@ If parameter validation succeeds, the server MUST verify that the user has the r
 and set the object state to ENABLED. If the client does not have the required access rights, the server
 MUST return ERROR_ACCESS_DENIED (0x80070005).
 
-3.2.5.2.5 INtmsSession1 Interface
+###### 3.2.5.2.5 INtmsSession1 Interface
 
 This interface is used to open and close sessions. Establishing a session is a prerequisite to using the
 other functions of the RSM Remote Protocol.
@@ -12772,7 +12599,8 @@ Release: June 1, 2017
 
 140 / 214
 
-Method
+
+Method
 
 Description
 
@@ -12861,9 +12689,9 @@ opnum, and the server behavior is undefined<75> because it does not affect inter
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.5.1
+###### 3.2.5.2.5.1 INtmsSession1::OpenNtmsServerSessionW (Opnum 3)
 
-INtmsSession1::OpenNtmsServerSessionW (Opnum 3)
+
 
 The OpenNtmsServerSessionW method sets up a session with the server. All input parameters for this
 method are optional.
@@ -12881,7 +12709,8 @@ Release: June 1, 2017
 
 141 / 214
 
-   [in] DWORD dwOptions
+
+   [in] DWORD dwOptions
  );
 
 lpServer: The null-terminated Domain Name System (DNS) or Windows Internet Naming Service
@@ -12962,9 +12791,9 @@ the client, the server MUST return RPC_S_NO_INTERFACES (0x80070719).
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.5.2
+###### 3.2.5.2.5.2 INtmsSession1::OpenNtmsServerSessionA (Opnum 4)
 
-INtmsSession1::OpenNtmsServerSessionA (Opnum 4)
+
 
 [MS-RSMP] - v20170601
 Removable Storage Manager (RSM) Remote Protocol
@@ -12973,7 +12802,8 @@ Release: June 1, 2017
 
 142 / 214
 
-The OpenNtmsServerSessionA method sets up a session with the server. All input parameters for this
+
+The OpenNtmsServerSessionA method sets up a session with the server. All input parameters for this
 method are optional.
 
  HRESULT OpenNtmsServerSessionA(
@@ -13066,11 +12896,12 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.5.3
+Strings sent to this method as parameters MUST be ASCII-encoded.
 
-INtmsSession1::CloseNtmsSession (Opnum 5)
+###### 3.2.5.2.5.3 INtmsSession1::CloseNtmsSession (Opnum 5)
+
+
 
 The CloseNtmsSession method closes a session.
 
@@ -13102,9 +12933,9 @@ when the last reference is removed.
 
 If the client has an outstanding synchronous request, the requests MUST be unwound and canceled.
 
-3.2.5.2.5.4
+###### 3.2.5.2.5.4 INtmsSession1::SubmitNtmsOperatorRequestW (Opnum 6)
 
-INtmsSession1::SubmitNtmsOperatorRequestW (Opnum 6)
+
 
 The SubmitNtmsOperatorRequestW method submits an operator request, with strings encoded using
 Unicode.
@@ -13151,7 +12982,8 @@ Release: June 1, 2017
 
 144 / 214
 
-Value of dwRequest
+
+Value of dwRequest
 
 lpArg1Id
 
@@ -13262,7 +13094,8 @@ Release: June 1, 2017
 
 145 / 214
 
-Upon receiving this message, the server MUST verify that lpRequestId and lpMessage are not NULL. If
+
+Upon receiving this message, the server MUST verify that lpRequestId and lpMessage are not NULL. If
 parameter validation fails, the server MUST immediately fail the operation and return
 ERROR_INVALID_PARAMETER (0x80070057).
 
@@ -13272,9 +13105,9 @@ types as needed.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.5.5
+###### 3.2.5.2.5.5 INtmsSession1::SubmitNtmsOperatorRequestA (Opnum 7)
 
-INtmsSession1::SubmitNtmsOperatorRequestA (Opnum 7)
+
 
 The SubmitNtmsOperatorRequestA method submits an operator request, with strings encoded using
 ASCII.
@@ -13357,7 +13190,8 @@ Release: June 1, 2017
 
 146 / 214
 
-Value of dwRequest
+
+Value of dwRequest
 
 lpArg2Id
 
@@ -13438,9 +13272,9 @@ types as needed.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.5.6
+###### 3.2.5.2.5.6 INtmsSession1::WaitForNtmsOperatorRequest (Opnum 8)
 
-INtmsSession1::WaitForNtmsOperatorRequest (Opnum 8)
+
 
 The WaitForNtmsOperatorRequest method waits for an operator request.
 
@@ -13456,7 +13290,8 @@ Release: June 1, 2017
 
 147 / 214
 
-lpRequestId: A pointer to the identifier of the request for which to wait.
+
+lpRequestId: A pointer to the identifier of the request for which to wait.
 
 dwTimeout: The number of milliseconds to wait. To check for an operator request, specify a time-out
 
@@ -13519,9 +13354,9 @@ request is completed or refused appropriately.
 
 The method MUST return a time-out error if the request is not completed or not refused in dwTimeout.
 
-3.2.5.2.5.7
+###### 3.2.5.2.5.7 INtmsSession1::CancelNtmsOperatorRequest (Opnum 9)
 
-INtmsSession1::CancelNtmsOperatorRequest (Opnum 9)
+
 
 The CancelNtmsOperatorRequest method cancels an operator request.
 
@@ -13561,7 +13396,8 @@ Release: June 1, 2017
 
 148 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13586,9 +13422,9 @@ ERROR_INVALID_PARAMETER (0x80070057).
 This method MUST cancel the given operator request by setting the request state to
 NTMS_OPSTATE_REFUSED.
 
-3.2.5.2.5.8
+###### 3.2.5.2.5.8 INtmsSession1::SatisfyNtmsOperatorRequest (Opnum 10)
 
-INtmsSession1::SatisfyNtmsOperatorRequest (Opnum 10)
+
 
 The SatisfyNtmsOperatorRequest method completes an operator request.
 
@@ -13636,9 +13472,9 @@ ERROR_INVALID_PARAMETER (0x80070057).
 This method MUST satisfy the given operator request by setting the request state to
 NTMS_OPSTATE_COMPLETE.
 
-3.2.5.2.5.9
+###### 3.2.5.2.5.9 INtmsSession1::ImportNtmsDatabase (Opnum 11)
 
-INtmsSession1::ImportNtmsDatabase (Opnum 11)
+
 
 The ImportNtmsDatabase method imports the state of the server at the next server restart.
 
@@ -13653,7 +13489,8 @@ Release: June 1, 2017
 
 149 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13692,7 +13529,7 @@ ERROR_ACCESS_DENIED (0x80070005).
 
 This database is saved by the INtmsSession1::ExportNtmsDatabase method.<77>
 
-3.2.5.2.5.10  INtmsSession1::ExportNtmsDatabase (Opnum 12)
+###### 3.2.5.2.5.10 INtmsSession1::ExportNtmsDatabase (Opnum 12)
 
 The ExportNtmsDatabase method exports the state of the server.
 
@@ -13741,7 +13578,7 @@ ERROR_ACCESS_DENIED (0x80070005). If the client has the required access rights,
 ExportNtmsDatabase creates a consistent set of database files in the export directory under the RSM
 database directory. Any existing files in the export directory are overwritten by this method.<78>
 
-3.2.5.2.5.11  INtmsSession1::AddNotification (Opnum 14)
+###### 3.2.5.2.5.11 INtmsSession1::AddNotification (Opnum 14)
 
 150 / 214
 
@@ -13750,7 +13587,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The AddNotification method registers a client to receive change notifications for a type of object.
+
+The AddNotification method registers a client to receive change notifications for a type of object.
 
  HRESULT AddNotification(
    [in] DWORD dwType
@@ -13775,7 +13613,7 @@ type.
 If parameter validation fails, the server MUST NOT be set to send back notifications, MUST return
 S_OK (0x00000000), and take no further action.
 
-3.2.5.2.5.12  INtmsSession1::RemoveNotification (Opnum 15)
+###### 3.2.5.2.5.12 INtmsSession1::RemoveNotification (Opnum 15)
 
 The RemoveNotification method unregisters a client from receiving change notifications for a type of
 object.
@@ -13812,7 +13650,7 @@ and set the server to stop sending notifications of dwType type. If the client d
 required access rights, the server MUST return ERROR_ACCESS_DENIED (0x80070005) and no further
 action is taken.
 
-3.2.5.2.5.13  INtmsSession1::DispatchNotification (Opnum 16)
+###### 3.2.5.2.5.13 INtmsSession1::DispatchNotification (Opnum 16)
 
 The DispatchNotification method sends a notification to all registered sinks.
 
@@ -13827,7 +13665,8 @@ Release: June 1, 2017
 
 151 / 214
 
-   [in] LPNTMS_GUID lpIdentifier
+
+   [in] LPNTMS_GUID lpIdentifier
  );
 
 dwType: A value from the NtmsObjectsTypes (section 2.2.1.6) enumeration specifying the type of
@@ -13866,7 +13705,7 @@ action is taken.
 
 The server MUST return value returned by client sink.
 
-3.2.5.2.6 INtmsLibraryControl2 Interface
+###### 3.2.5.2.6 INtmsLibraryControl2 Interface
 
 The INtmsLibraryControl2 interface is implemented by the server to support management of media
 libraries. It inherits all objects and methods from the INtmsLibraryControl1 interface. The UUID for
@@ -13888,9 +13727,9 @@ Opnum: 23
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.6.1
+###### 3.2.5.2.6.1 INtmsLibraryControl2::IdentifyNtmsSlot (Opnum 23)
 
-INtmsLibraryControl2::IdentifyNtmsSlot (Opnum 23)
+
 
  The IdentifyNtmsSlot method identifies the media in a storage slot.
 
@@ -13908,7 +13747,8 @@ Release: June 1, 2017
 
 152 / 214
 
-dwOption: A value from the NtmsDismountOptions (section 2.2.1.9) enumeration specifying what to
+
+dwOption: A value from the NtmsDismountOptions (section 2.2.1.9) enumeration specifying what to
 do with the media after identification is complete. If dwOption does not contain a valid value, the
 default value NTMS_DISMOUNT_IMMEDIATE is taken.
 
@@ -13968,7 +13808,7 @@ immediately.
 
 On completion of an asynchronous operation, notification will be sent with the identifier lpSlotId.
 
-3.2.5.2.7 INtmsObjectManagement2 Interface
+###### 3.2.5.2.7 INtmsObjectManagement2 Interface
 
 The INtmsObjectManagement2 interface is implemented by the server to support security, attribute
 and user interface notification management, and enumeration for objects. It inherits all objects and
@@ -13994,7 +13834,8 @@ Release: June 1, 2017
 
 153 / 214
 
-Method
+
+Method
 
 Description
 
@@ -14030,9 +13871,9 @@ Opnum: 16
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.7.1
+###### 3.2.5.2.7.1 INtmsObjectManagement2::EnumerateNtmsObjectR (Opnum 12)
 
-INtmsObjectManagement2::EnumerateNtmsObjectR (Opnum 12)
+
 
 The EnumerateNtmsObjectR method enumerates the objects of the container specified by
 lpContainerId.
@@ -14079,7 +13920,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-dwOptions: Enumeration options. This is applicable only when dwType is NTMS_MEDIA_POOL; if
+
+dwOptions: Enumeration options. This is applicable only when dwType is NTMS_MEDIA_POOL; if
 
 dwType is not NTMS_MEDIA_POOL, this MUST be set to NTMS_ENUM_DEFAULT
 
@@ -14163,9 +14005,9 @@ MUST enumerate top-level objects (such as libraries).
 If more than one object is listed, the object can be enumerated from more than one container. The
 NULL container is the highest-level container, and enumerates all objects in a system.
 
-3.2.5.2.7.2
+###### 3.2.5.2.7.2 INtmsObjectManagement2::GetNtmsUIOptionsA (Opnum 13)
 
-INtmsObjectManagement2::GetNtmsUIOptionsA (Opnum 13)
+
 
 The GetNtmsUIOptionsA method enumerates the list of computer names to which the specified type of
 UI is being directed for an object, with strings encoded using ASCII.
@@ -14177,7 +14019,8 @@ Release: June 1, 2017
 
 155 / 214
 
- HRESULT GetNtmsUIOptionsA(
+
+ HRESULT GetNtmsUIOptionsA(
    [in, unique] const LPNTMS_GUID lpObjectId,
    [in] DWORD dwType,
    [out, size_is(*lpdwBufSize), length_is(*lpdwDataSize)]
@@ -14273,7 +14116,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
  Traverse through all the available destinations, and generate the list of machine names to which
 the specified type of UI is being directed for the given object.
@@ -14289,9 +14133,9 @@ required size.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.7.3
+###### 3.2.5.2.7.3 INtmsObjectManagement2::GetNtmsUIOptionsW (Opnum 14)
 
-INtmsObjectManagement2::GetNtmsUIOptionsW (Opnum 14)
+
 
 The GetNtmsUIOptionsW method enumerates the list of computer names to which the specified type
 of UI is being directed for an object. This method encodes strings using Unicode.
@@ -14367,7 +14211,8 @@ Release: June 1, 2017
 
 157 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14413,9 +14258,9 @@ the required size.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.7.4
+###### 3.2.5.2.7.4 INtmsObjectManagement2::SetNtmsUIOptionsA (Opnum 15)
 
-INtmsObjectManagement2::SetNtmsUIOptionsA (Opnum 15)
+
 
 The SetNtmsUIOptionsA method modifies the list of computer names to which the specified type of UI
 is being directed for an object, with strings encoded using ASCII.
@@ -14458,7 +14303,8 @@ Release: June 1, 2017
 
 158 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14512,9 +14358,9 @@ NTMS_UIDEST_DELETEALL  Clear all names from the list.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.7.5
+###### 3.2.5.2.7.5 INtmsObjectManagement2::SetNtmsUIOptionsW (Opnum 16)
 
-INtmsObjectManagement2::SetNtmsUIOptionsW (Opnum 16)
+
 
 The SetNtmsUIOptionsW method modifies the list of computer names to which the specified type of UI
 is being directed for an object, with strings encoded using Unicode.
@@ -14547,7 +14393,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14607,7 +14454,7 @@ NTMS_UIDEST_DELETEALL  Clear all names from the list.
 
 Strings that are sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.8 INtmsObjectManagement3 Interface
+###### 3.2.5.2.8 INtmsObjectManagement3 Interface
 
 The INtmsObjectManagement3 interface is implemented by the server to support security, attribute
 and user interface notification management, and enumeration for objects. It inherits all objects and
@@ -14636,7 +14483,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Method
+
+Method
 
 Description
 
@@ -14648,9 +14496,9 @@ Opnum: 18
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.8.1
+###### 3.2.5.2.8.1 INtmsObjectManagement3::GetNtmsObjectAttributeAR (Opnum 17)
 
-INtmsObjectManagement3::GetNtmsObjectAttributeAR (Opnum 17)
+
 
 The GetNtmsObjectAttributeAR method retrieves private data from an object, with strings encoded
 using ASCII.
@@ -14730,7 +14578,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14779,9 +14628,9 @@ lpAttributeSize set to zero.
 
 Strings that are sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.8.2
+###### 3.2.5.2.8.2 INtmsObjectManagement3::GetNtmsObjectAttributeWR (Opnum 18)
 
-INtmsObjectManagement3::GetNtmsObjectAttributeWR (Opnum 18)
+
 
 The GetNtmsObjectAttributeWR method retrieves private data from an object, with strings encoded
 using Unicode.
@@ -14810,7 +14659,8 @@ Release: June 1, 2017
 
 162 / 214
 
-lpAttributeName: A null-terminated sequence of Unicode characters specifying the name of the
+
+lpAttributeName: A null-terminated sequence of Unicode characters specifying the name of the
 
 extended attribute to retrieve.
 
@@ -14906,13 +14756,14 @@ Release: June 1, 2017
 
 163 / 214
 
-If the buffer size that is specified by lpdwAttributeBufferSize is too small, the server MUST return
+
+If the buffer size that is specified by lpdwAttributeBufferSize is too small, the server MUST return
 ERROR_INSUFFICIENT_BUFFER (0x8007007A) with lpActualAttributeSize set to the required size and
 lpAttributeSize set to zero.
 
 Strings sent to this method as parameters MUST be Unicode encoded.
 
-3.2.5.2.9 IRobustNtmsMediaServices1 Interface
+###### 3.2.5.2.9 IRobustNtmsMediaServices1 Interface
 
 The IRobustNtmsMediaServices1 interface is implemented by the server to support management of
 media. It inherits all objects and methods from the INtmsMediaServices1 interface (opnums 0–20).
@@ -14944,9 +14795,9 @@ Opnum: 22
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.9.1
+###### 3.2.5.2.9.1 IRobustNtmsMediaServices1::GetNtmsMediaPoolNameAR (Opnum 21)
 
-IRobustNtmsMediaServices1::GetNtmsMediaPoolNameAR (Opnum 21)
+
 
 The GetNtmsMediaPoolNameAR method retrieves the full name hierarchy of a media pool, with strings
 encoded using ASCII.
@@ -14985,7 +14836,8 @@ Release: June 1, 2017
 
 164 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15047,9 +14899,9 @@ return this to the user.
 
 Strings sent to this method as parameters MUST be ASCII-encoded.
 
-3.2.5.2.9.2
+###### 3.2.5.2.9.2 IRobustNtmsMediaServices1::GetNtmsMediaPoolNameWR (Opnum 22)
 
-IRobustNtmsMediaServices1::GetNtmsMediaPoolNameWR (Opnum 22)
+
 
 The GetNtmsMediaPoolNameWR method retrieves the full name hierarchy of a media pool, with strings
 encoded using Unicode.
@@ -15072,7 +14924,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-lpBufName: The null-terminated buffer that contains the name of the media pool.
+
+lpBufName: The null-terminated buffer that contains the name of the media pool.
 
 lpdwNameSizeBuf: A pointer to the size, in bytes, of lpBufName.
 
@@ -15148,9 +15001,9 @@ to the user.
 
 Strings sent to this method as parameters MUST be Unicode-encoded.
 
-3.2.5.2.10
+###### 3.2.5.2.10 IMessenger Interface
 
-IMessenger Interface
+
 
 The IMessenger interface is implemented by the server to support distribution of user interface
 messages. The UUID for this interface is "081E7188-C080-4FF3-9238-29F66D6CABFD". The version
@@ -15163,7 +15016,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-IMessenger inherits the IUnknown interface ([MS-DCOM] section 3.1.1.5.8). Opnums 0, 1, and 2 are
+
+IMessenger inherits the IUnknown interface ([MS-DCOM] section 3.1.1.5.8). Opnums 0, 1, and 2 are
 IUnknown::QueryInterface, IUnknown::AddRef, and IUnknown::Release.
 
 This interface is optional. The server MAY implement IMessenger to support message
@@ -15188,7 +15042,7 @@ Opnum: 4
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.2.10.1  IMessenger::SendMessage (Opnum 3)
+###### 3.2.5.2.10.1 IMessenger::SendMessage (Opnum 3)
 
 The SendMessage method adds a message to the send queue.
 
@@ -15222,7 +15076,7 @@ ERROR_INVALID_PARAMETER (0x80070057).
 
 Otherwise, the server MUST deliver the message to the operator.
 
-3.2.5.2.10.2  IMessenger::RecallMessage (Opnum 4)
+###### 3.2.5.2.10.2 IMessenger::RecallMessage (Opnum 4)
 
 The RecallMessage method retrieves a message from the send queue.
 
@@ -15239,7 +15093,8 @@ Release: June 1, 2017
 
 167 / 214
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15274,17 +15129,17 @@ Find the message in the Sent Message List.
 If there are no more active requests, the server MUST hide any existing notifications, destroy the
 handler object and its corresponding dialog, and free the message object.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are used.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The server MUST track changes in the storage configuration of the system. Such changes can be due
 to administrative change of the hardware configuration, hardware failures, administrative
 configuration of storage objects using various tools, and so on.<84>
 
-3.2.7.1  Problem/Warnings for the Tape Drive
+##### 3.2.7.1 Problem/Warnings for the Tape Drive
 
 When the operating system notifies the server that a problem exists with the tape drive, the server
 MUST respond with an action or informative message. This problem can be one of the following:
@@ -15334,7 +15189,8 @@ Release: June 1, 2017
 
 168 / 214
 
-
+
+
 
 
 
@@ -15349,13 +15205,14 @@ Release: June 1, 2017
 
 169 / 214
 
-<!-- Extracted images from page 170 -->
+
+<!-- Extracted images from page 170 -->
 ![Extracted image 1 from page 170]([MS-RSMP].images/page170-img01.png)
 <!-- /Extracted images from page 170 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Allocation of Media with INtmsMediaServices1
+### 4.1 Allocation of Media with INtmsMediaServices1
 
 The following example illustrates the allocation of media with the RSM Remote Protocol, using the
 INtmsMediaServices1 interface.
@@ -15377,7 +15234,8 @@ Release: June 1, 2017
 
 170 / 214
 
-<!-- Extracted images from page 171 -->
+
+<!-- Extracted images from page 171 -->
 ![Extracted image 1 from page 171]([MS-RSMP].images/page171-img01.png)
 <!-- /Extracted images from page 171 -->
 
@@ -15409,7 +15267,7 @@ INtmsMediaServices1::DismountNtmsMedia and passes in lpMediaId.
 
 14. The server closes the session and indicates success.
 
-4.2  Registering for Notifications with INtmsSession1
+### 4.2 Registering for Notifications with INtmsSession1
 
 The following example illustrates how the RSM client uses the INtmsSession1 interface to register with
 an RSM server for receiving notifications of changes in the storage objects.
@@ -15431,7 +15289,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 172 -->
+
+<!-- Extracted images from page 172 -->
 ![Extracted image 1 from page 172]([MS-RSMP].images/page172-img01.png)
 <!-- /Extracted images from page 172 -->
 
@@ -15444,7 +15303,7 @@ calling the clients' NtmsNotifySink::OnNotify method.
 
 INtmsSession1::RemoveNotification.
 
-4.3  Storage Object Management with INtmsObjectManagement1
+### 4.3 Storage Object Management with INtmsObjectManagement1
 
 The following example illustrates how the RSM client performs storage object management using the
 INtmsObjectManagement1 interface.
@@ -15460,7 +15319,8 @@ Release: June 1, 2017
 
 172 / 214
 
-<!-- Extracted images from page 173 -->
+
+<!-- Extracted images from page 173 -->
 ![Extracted image 1 from page 173]([MS-RSMP].images/page173-img01.png)
 <!-- /Extracted images from page 173 -->
 
@@ -15488,7 +15348,7 @@ attributes for the object.
 
 10. The server indicates success (S_OK).
 
-4.4  Media Management Using INtmsMediaServices1
+### 4.4 Media Management Using INtmsMediaServices1
 
 The following illustrates the how an RSM client performs media management using the
 INtmsMediaServices1 interface.
@@ -15506,7 +15366,8 @@ Release: June 1, 2017
 
 173 / 214
 
-3.  The RSM client calls INtmsObjectManagement1::EnumerateNtmsObject. The dwType parameter is
+
+3.  The RSM client calls INtmsObjectManagement1::EnumerateNtmsObject. The dwType parameter is
 
 set to a value from the NtmsObjectsTypes enumeration.
 
@@ -15525,7 +15386,8 @@ Release: June 1, 2017
 
 174 / 214
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the RSM Remote
 Protocol.<85>
@@ -15547,13 +15409,13 @@ access rights is as follows.
 
     };
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The RSM Remote Protocol allows any user to connect to the server, allowing that user to exploit
 security flaws in the server implementation. The server implementation enforces security on each
 method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -15568,7 +15430,8 @@ Release: June 1, 2017
 
 175 / 214
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  import "ms-dtyp.idl";
 
@@ -15639,7 +15502,8 @@ Release: June 1, 2017
 
 176 / 214
 
- enum NtmsLmState {
+
+ enum NtmsLmState {
      NTMS_LM_QUEUED                  = 0,
      NTMS_LM_INPROCESS               = 1,
      NTMS_LM_PASSED                  = 2,
@@ -15715,7 +15579,8 @@ Release: June 1, 2017
 
 177 / 214
 
-     NTMS_BARCODESTATE_OK            = 1,
+
+     NTMS_BARCODESTATE_OK            = 1,
      NTMS_BARCODESTATE_UNREADABLE    = 2
  };
 
@@ -15792,7 +15657,8 @@ Release: June 1, 2017
 
 178 / 214
 
-     NTMS_PARTSTATE_INCOMPATIBLE     = 2,
+
+     NTMS_PARTSTATE_INCOMPATIBLE     = 2,
      NTMS_PARTSTATE_DECOMMISSIONED   = 3,
      NTMS_PARTSTATE_AVAILABLE        = 4,
      NTMS_PARTSTATE_ALLOCATED        = 5,
@@ -15867,7 +15733,8 @@ Release: June 1, 2017
 
 179 / 214
 
-         byte *         lpSecurityDescriptor;
+
+         byte *         lpSecurityDescriptor;
      BOOL               bInheritHandle;
      DWORD              nDescriptorLength;
  } SECURITY_ATTRIBUTES_NTMS, *LPSECURITY_ATTRIBUTES_NTMS;
@@ -15942,7 +15809,8 @@ Release: June 1, 2017
 
 180 / 214
 
- typedef struct _NTMS_CHANGERTYPEINFORMATIONW {
+
+ typedef struct _NTMS_CHANGERTYPEINFORMATIONW {
      [string] wchar_t   szVendor[128];
      [string] wchar_t   szProduct[128];
      DWORD              DeviceType;
@@ -16019,7 +15887,8 @@ Release: June 1, 2017
 
 181 / 214
 
-     char               szApplication[64];
+
+     char               szApplication[64];
      char               szUser[64];
      char               szComputer[64];
      DWORD              dwErrorCode;
@@ -16096,7 +15965,8 @@ Release: June 1, 2017
 
 182 / 214
 
-     DWORD              dwNumberOfPartitions;
+
+     DWORD              dwNumberOfPartitions;
  } NTMS_LMIDINFORMATION;
 
  typedef struct _NTMS_COMPUTERINFORMATION {
@@ -16173,7 +16043,8 @@ Release: June 1, 2017
 
 183 / 214
 
-     NTMS_GUID          MediaPool;
+
+     NTMS_GUID          MediaPool;
      NTMS_GUID          Location;
      DWORD              LocationType;
      NTMS_GUID          MediaType;
@@ -16250,7 +16121,8 @@ Release: June 1, 2017
 
 184 / 214
 
-         [case(NTMS_MEDIA_TYPE)]      NTMS_MEDIATYPEINFORMATION MediaType;
+
+         [case(NTMS_MEDIA_TYPE)]      NTMS_MEDIATYPEINFORMATION MediaType;
          [case(NTMS_LIBREQUEST)]      NTMS_LIBREQUESTINFORMATIONA LibRequest;
          [case(NTMS_OPREQUEST)]       NTMS_OPREQUESTINFORMATIONA OpRequest;
          [case(NTMS_COMPUTER)]        NTMS_COMPUTERINFORMATION Computer;
@@ -16325,7 +16197,8 @@ Release: June 1, 2017
 
 185 / 214
 
-         );
+
+         );
 
  HRESULT DismountNtmsDrive(
          [in] LPNTMS_GUID          lpDriveId
@@ -16402,7 +16275,8 @@ Release: June 1, 2017
 
 186 / 214
 
- HRESULT SetNtmsDeviceChangeDetection(
+
+ HRESULT SetNtmsDeviceChangeDetection(
          [in] NTMS_HANDLE          DetectHandle,
          [in,
              size_is(dwCount)]
@@ -16477,7 +16351,8 @@ Release: June 1, 2017
 
 187 / 214
 
-         );
+
+         );
 
  HRESULT DecommissionNtmsMedia(
          [in] LPNTMS_GUID               lpMediaId
@@ -16554,7 +16429,8 @@ Release: June 1, 2017
 
 188 / 214
 
- HRESULT ChangeNtmsMediaType(
+
+ HRESULT ChangeNtmsMediaType(
          [in] LPNTMS_GUID               lpMediaId,
          [in] LPNTMS_GUID               lpPoolId
          );
@@ -16625,7 +16501,8 @@ Release: June 1, 2017
 
 189 / 214
 
- [
+
+ [
          object,
          uuid(b057dc50-3059-11d1-8faf-00a024cb6019),
          helpstring("INtms Object Management Interface"),
@@ -16700,7 +16577,8 @@ Release: June 1, 2017
 
 190 / 214
 
-         [in] DWORD                           AttributeSize
+
+         [in] DWORD                           AttributeSize
          );
 
  HRESULT EnumerateNtmsObject(
@@ -16776,7 +16654,8 @@ Release: June 1, 2017
 
 191 / 214
 
-         [out] LPNTMS_GUID                    lpRequestId
+
+         [out] LPNTMS_GUID                    lpRequestId
          );
 
  HRESULT WaitForNtmsOperatorRequest(
@@ -16852,7 +16731,8 @@ Release: June 1, 2017
 
 192 / 214
 
-         );
+
+         );
 
  };
 
@@ -16924,7 +16804,8 @@ Release: June 1, 2017
 
 193 / 214
 
- [
+
+ [
          object,
          uuid(3BBED8D9-2C9A-4b21-8936-ACB2F995BE6C),
          helpstring("INtms Object Management Interface 3"),
@@ -16999,7 +16880,8 @@ Release: June 1, 2017
 
 194 / 214
 
- [
+
+ [
    object,
    uuid(00000000-0000-0000-C000-000000000046),
 
@@ -17074,7 +16956,8 @@ Release: June 1, 2017
 
 195 / 214
 
- [
+
+ [
      uuid(D61A27C6-8F53-11D0-BFA0-00A024151983),
      helpstring("Removable Storage Manager Class"),
  ]
@@ -17090,7 +16973,8 @@ Release: June 1, 2017
 
 196 / 214
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -17170,7 +17054,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 INtmsLibraryControl2
 
@@ -17251,7 +17136,8 @@ Release: June 1, 2017
 
 198 / 214
 
-The following tables identify the security requirements for the RSM methods, which use the following
+
+The following tables identify the security requirements for the RSM methods, which use the following
 key.
 
 Code  Value
@@ -17388,7 +17274,8 @@ M
 
 199 / 214
 
-Method
+
+Method
 
 Media Pool  Library  Computer
 
@@ -17567,7 +17454,8 @@ U
 
 200 / 214
 
-Method
+
+Method
 
 NTMS_CHANGER_TYPE
 
@@ -17734,7 +17622,8 @@ U
 
 201 / 214
 
-Media Pool  Library  Computer
+
+Media Pool  Library  Computer
 
 U
 
@@ -17921,7 +17810,8 @@ Release: June 1, 2017
 
 202 / 214
 
-Method
+
+Method
 
 Media Pool  Library  Computer
 
@@ -18079,7 +17969,8 @@ Release: June 1, 2017
 
 203 / 214
 
-Method
+
+Method
 
 Media Pool  Library  Computer
 
@@ -18218,7 +18109,8 @@ C
 
 204 / 214
 
-Method
+
+Method
 
 Media Pool  Library  Computer
 
@@ -18397,7 +18289,8 @@ Release: June 1, 2017
 
 205 / 214
 
-Method
+
+Method
 
 Media Pool  Library  Computer
 
@@ -18465,7 +18358,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<32> Section 3.2.5.2.2.13: In Windows Server 2003 if the free pool is the source pool, then
+
+<32> Section 3.2.5.2.2.13: In Windows Server 2003 if the free pool is the source pool, then
 NTMS_USE_ACCESS to the free pool and NTMS_CONTROL_ACCESS to the destination pool are
 required. If the free pool is the destination pool, then NTMS_CONTROL_ACCESS to the source pool
 and NTMS_USE_ACCESS to the free pool are required. If the free pool is neither a source pool nor a
@@ -18534,7 +18428,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Windows Server 2003, Windows Server 2003 R2, Windows Vista, and Windows Server 2008 require
+
+Windows Server 2003, Windows Server 2003 R2, Windows Vista, and Windows Server 2008 require
 NTMS_MODIFY_ACCESS to the computer.
 
 <45> Section 3.2.5.2.3.3: In Windows XP and Windows 2000, no access rights are required.
@@ -18603,7 +18498,8 @@ Release: June 1, 2017
 
 208 / 214
 
-<57> Section 3.2.5.2.3.4: In Windows XP and Windows 2000, no access rights are required.
+
+<57> Section 3.2.5.2.3.4: In Windows XP and Windows 2000, no access rights are required.
 
 Windows Server 2003, Windows Server 2003 R2, Windows Vista, and Windows Server 2008 require
 access rights.
@@ -18673,7 +18569,8 @@ Removable Storage Manager (RSM) Remote Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<74> Section 3.2.5.2.4.3: When the input parameter lpdwAttributeBufferSize is not large enough,
+
+<74> Section 3.2.5.2.4.3: When the input parameter lpdwAttributeBufferSize is not large enough,
 ERROR_INSUFFICIENT_BUFFER (0x8007007A) is not returned. Instead, RPC_S_INVALID_BOUND
 (0x800706c6) is returned.
 
@@ -18731,7 +18628,8 @@ Release: June 1, 2017
 
 210 / 214
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -18743,7 +18641,8 @@ Release: June 1, 2017
 
 211 / 214
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -18876,7 +18775,8 @@ InventoryNtmsLibrary method 79
 
 212 / 214
 
-L
+
+L
 
 Local events
    client 68
@@ -19016,7 +18916,8 @@ Server
 
 213 / 214
 
-   abstract data model 68
+
+   abstract data model 68
    higher-layer triggered events 71
    initialization 70
    local events 169

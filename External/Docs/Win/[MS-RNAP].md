@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 69
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: June 1, 2017
 
 2 / 69
 
-Date
+
+Date
 
 Revision
 History
@@ -534,7 +536,8 @@ Release: June 1, 2017
 
 3 / 69
 
-Date
+
+Date
 
 Revision
 History
@@ -562,322 +565,160 @@ Release: June 1, 2017
 
 4 / 69
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Microsoft Vendor-Specific Attributes (VSAs)](#221-microsoft-vendor-specific-attributes-vsas)
+      - [2.2.1.1 MS-RAS-Client-Name](#2211-ms-ras-client-name)
+      - [2.2.1.2 MS-RAS-Client-Version](#2212-ms-ras-client-version)
+      - [2.2.1.3 MS-Quarantine-IPFilter](#2213-ms-quarantine-ipfilter)
+      - [2.2.1.4 MS-Quarantine-Session-Timeout](#2214-ms-quarantine-session-timeout)
+      - [2.2.1.5 MS-User-Security-Identity](#2215-ms-user-security-identity)
+      - [2.2.1.6 MS-Identity-Type](#2216-ms-identity-type)
+      - [2.2.1.7 MS-Service-Class](#2217-ms-service-class)
+      - [2.2.1.8 MS-Quarantine-User-Class](#2218-ms-quarantine-user-class)
+      - [2.2.1.9 MS-Quarantine-State](#2219-ms-quarantine-state)
+      - [2.2.1.10 MS-Quarantine-Grace-Time](#22110-ms-quarantine-grace-time)
+      - [2.2.1.11 MS-Network-Access-Server-Type](#22111-ms-network-access-server-type)
+      - [2.2.1.12 MS-AFW-Zone](#22112-ms-afw-zone)
+      - [2.2.1.13 MS-AFW-Protection-Level](#22113-ms-afw-protection-level)
+      - [2.2.1.14 MS-Machine-Name](#22114-ms-machine-name)
+      - [2.2.1.15 MS-IPv6-Filter](#22115-ms-ipv6-filter)
+      - [2.2.1.16 MS-IPv4-Remediation-Servers](#22116-ms-ipv4-remediation-servers)
+      - [2.2.1.17 MS-IPv6-Remediation-Servers](#22117-ms-ipv6-remediation-servers)
+      - [2.2.1.18 Not-Quarantine-Capable](#22118-not-quarantine-capable)
+      - [2.2.1.19 MS-Quarantine-SoH](#22119-ms-quarantine-soh)
+      - [2.2.1.20 MS-RAS-Correlation-ID](#22120-ms-ras-correlation-id)
+      - [2.2.1.21 MS-Extended-Quarantine-State](#22121-ms-extended-quarantine-state)
+      - [2.2.1.22 HCAP-User-Groups](#22122-hcap-user-groups)
+      - [2.2.1.23 HCAP-Location-Group-Name](#22123-hcap-location-group-name)
+      - [2.2.1.24 HCAP-User-Name](#22124-hcap-user-name)
+      - [2.2.1.25 MS-User-IPv4-Address](#22125-ms-user-ipv4-address)
+      - [2.2.1.26 MS-User-IPv6-Address](#22126-ms-user-ipv6-address)
+      - [2.2.1.27 MS-RDG-Device-Redirection](#22127-ms-rdg-device-redirection)
+    - [2.2.2 Microsoft Vendor-Specific Values for RADIUS Attributes](#222-microsoft-vendor-specific-values-for-radius-attributes)
+      - [2.2.2.1 Vendor-Specific Value for the Tunnel-Type RADIUS Attribute](#2221-vendor-specific-value-for-the-tunnel-type-radius-attribute)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Windows Implementation of RADIUS Attributes](#3151-windows-implementation-of-radius-attributes)
+      - [3.1.5.2 Microsoft VSA Support of RADIUS Messages](#3152-microsoft-vsa-support-of-radius-messages)
+      - [3.1.5.3 Processing RADIUS Attributes](#3153-processing-radius-attributes)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Abstract Interface for Setting an SoHR](#3241-abstract-interface-for-setting-an-sohr)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing RADIUS Access-Request Messages](#3251-processing-radius-access-request-messages)
+        - [3.2.5.1.1 MS-RAS-Client-Name](#32511-ms-ras-client-name)
+        - [3.2.5.1.2 MS-RAS-Client-Version](#32512-ms-ras-client-version)
+        - [3.2.5.1.3 MS-User-Security-Identity](#32513-ms-user-security-identity)
+        - [3.2.5.1.4 MS-Identity-Type](#32514-ms-identity-type)
+        - [3.2.5.1.5 MS-Service-Class](#32515-ms-service-class)
+        - [3.2.5.1.6 MS-Network-Access-Server-Type](#32516-ms-network-access-server-type)
+        - [3.2.5.1.7 MS-Machine-Name](#32517-ms-machine-name)
+        - [3.2.5.1.8 MS-Quarantine-SoH](#32518-ms-quarantine-soh)
+        - [3.2.5.1.9 MS-RAS-Correlation-ID](#32519-ms-ras-correlation-id)
+        - [3.2.5.1.10 HCAP-User-Groups](#325110-hcap-user-groups)
+        - [3.2.5.1.11 HCAP-Location-Group-Name](#325111-hcap-location-group-name)
+        - [3.2.5.1.12 HCAP-User-Name](#325112-hcap-user-name)
+        - [3.2.5.1.13 MS-User-IPv4-Address](#325113-ms-user-ipv4-address)
+        - [3.2.5.1.14 MS-User-IPv6-Address](#325114-ms-user-ipv6-address)
+        - [3.2.5.1.15 Tunnel-Type](#325115-tunnel-type)
+      - [3.2.5.2 Creating RADIUS Access-Accept Messages](#3252-creating-radius-access-accept-messages)
+        - [3.2.5.2.1 MS-Quarantine-IPFilter](#32521-ms-quarantine-ipfilter)
+        - [3.2.5.2.2 MS-Quarantine-Session-Timeout](#32522-ms-quarantine-session-timeout)
+        - [3.2.5.2.3 MS-Quarantine-User-Class](#32523-ms-quarantine-user-class)
+        - [3.2.5.2.4 MS-Quarantine-State](#32524-ms-quarantine-state)
+        - [3.2.5.2.5 MS-Quarantine-Grace-Time](#32525-ms-quarantine-grace-time)
+        - [3.2.5.2.6 MS-AFW-Zone](#32526-ms-afw-zone)
+        - [3.2.5.2.7 MS-AFW-Protection-Level](#32527-ms-afw-protection-level)
+        - [3.2.5.2.8 MS-IPv6-Filter](#32528-ms-ipv6-filter)
+        - [3.2.5.2.9 MS-IPv4-Remediation-Servers](#32529-ms-ipv4-remediation-servers)
+        - [3.2.5.2.10 MS-IPv6-Remediation-Servers](#325210-ms-ipv6-remediation-servers)
+        - [3.2.5.2.11 Not-Quarantine-Capable](#325211-not-quarantine-capable)
+        - [3.2.5.2.12 MS-Quarantine-SoH](#325212-ms-quarantine-soh)
+        - [3.2.5.2.13 MS-Extended-Quarantine-State](#325213-ms-extended-quarantine-state)
+        - [3.2.5.2.14 MS-RDG-Device-Redirection](#325214-ms-rdg-device-redirection)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Abstract Interface for Sending an SoH](#3341-abstract-interface-for-sending-an-soh)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Creating RADIUS Access-Request Messages](#3351-creating-radius-access-request-messages)
+        - [3.3.5.1.1 MS-RAS-Client-Name](#33511-ms-ras-client-name)
+        - [3.3.5.1.2 MS-RAS-Client-Version](#33512-ms-ras-client-version)
+        - [3.3.5.1.3 MS-User-Security-Identity](#33513-ms-user-security-identity)
+        - [3.3.5.1.4 MS-Identity-Type](#33514-ms-identity-type)
+        - [3.3.5.1.5 MS-Service-Class](#33515-ms-service-class)
+        - [3.3.5.1.6 MS-Network-Access-Server-Type](#33516-ms-network-access-server-type)
+        - [3.3.5.1.7 MS-Machine-Name](#33517-ms-machine-name)
+        - [3.3.5.1.8 MS-Quarantine-SoH](#33518-ms-quarantine-soh)
+        - [3.3.5.1.9 MS-RAS-Correlation-ID](#33519-ms-ras-correlation-id)
+        - [3.3.5.1.10 HCAP-User-Groups](#335110-hcap-user-groups)
+        - [3.3.5.1.11 HCAP-Location-Group-Name](#335111-hcap-location-group-name)
+        - [3.3.5.1.12 HCAP-User-Name](#335112-hcap-user-name)
+        - [3.3.5.1.13 MS-User-IPv4-Address](#335113-ms-user-ipv4-address)
+        - [3.3.5.1.14 MS-User-IPv6-Address](#335114-ms-user-ipv6-address)
+        - [3.3.5.1.15 Tunnel-Type](#335115-tunnel-type)
+      - [3.3.5.2 Processing RADIUS Access-Accept Messages](#3352-processing-radius-access-accept-messages)
+        - [3.3.5.2.1 MS-Quarantine-IPFilter](#33521-ms-quarantine-ipfilter)
+        - [3.3.5.2.2 MS-Quarantine-Session-Timeout](#33522-ms-quarantine-session-timeout)
+        - [3.3.5.2.3 MS-Quarantine-User-Class](#33523-ms-quarantine-user-class)
+        - [3.3.5.2.4 MS-Quarantine-State](#33524-ms-quarantine-state)
+        - [3.3.5.2.5 MS-Quarantine-Grace-Time](#33525-ms-quarantine-grace-time)
+        - [3.3.5.2.6 MS-AFW-Zone](#33526-ms-afw-zone)
+        - [3.3.5.2.7 MS-AFW-Protection-Level](#33527-ms-afw-protection-level)
+        - [3.3.5.2.8 MS-IPv6-Filter](#33528-ms-ipv6-filter)
+        - [3.3.5.2.9 MS-IPv4-Remediation-Servers](#33529-ms-ipv4-remediation-servers)
+        - [3.3.5.2.10 MS-IPv6-Remediation-Servers](#335210-ms-ipv6-remediation-servers)
+        - [3.3.5.2.11 Not-Quarantine-Capable](#335211-not-quarantine-capable)
+        - [3.3.5.2.12 MS-Quarantine-SoH](#335212-ms-quarantine-soh)
+        - [3.3.5.2.13 MS-Extended-Quarantine-State](#335213-ms-extended-quarantine-state)
+        - [3.3.5.2.14 MS-RDG-Device-Redirection](#335214-ms-rdg-device-redirection)
+      - [3.3.5.3 Processing RADIUS Access-Reject Messages](#3353-processing-radius-access-reject-messages)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 VPN Connection with RQC/RQS Quarantine](#41-vpn-connection-with-rqcrqs-quarantine)
+  - [4.2 Health Registration Authority (HRA)](#42-health-registration-authority-hra)
+  - [4.3 DHCP NAP](#43-dhcp-nap)
+  - [4.4 VPN NAP](#44-vpn-nap)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Microsoft Vendor-Specific Attributes (VSAs) ................................................... 14
-MS-RAS-Client-Name ............................................................................ 15
-2.2.1.1
-MS-RAS-Client-Version .......................................................................... 15
-2.2.1.2
-MS-Quarantine-IPFilter .......................................................................... 15
-2.2.1.3
-MS-Quarantine-Session-Timeout ............................................................. 19
-2.2.1.4
-MS-User-Security-Identity ...................................................................... 19
-2.2.1.5
-MS-Identity-Type .................................................................................. 20
-2.2.1.6
-MS-Service-Class .................................................................................. 20
-2.2.1.7
-MS-Quarantine-User-Class ..................................................................... 20
-2.2.1.8
-2.2.1.9
-MS-Quarantine-State ............................................................................. 21
-2.2.1.10  MS-Quarantine-Grace-Time .................................................................... 21
-2.2.1.11  MS-Network-Access-Server-Type ............................................................ 21
-2.2.1.12  MS-AFW-Zone ...................................................................................... 22
-2.2.1.13  MS-AFW-Protection-Level ....................................................................... 22
-2.2.1.14  MS-Machine-Name ................................................................................ 23
-2.2.1.15  MS-IPv6-Filter ...................................................................................... 23
-2.2.1.16  MS-IPv4-Remediation-Servers ................................................................ 27
-2.2.1.17  MS-IPv6-Remediation-Servers ................................................................ 27
-2.2.1.18  Not-Quarantine-Capable ........................................................................ 28
-2.2.1.19  MS-Quarantine-SoH .............................................................................. 28
-2.2.1.20  MS-RAS-Correlation-ID .......................................................................... 28
-2.2.1.21  MS-Extended-Quarantine-State .............................................................. 29
-2.2.1.22  HCAP-User-Groups ................................................................................ 29
-2.2.1.23  HCAP-Location-Group-Name ................................................................... 29
-2.2.1.24  HCAP-User-Name .................................................................................. 30
-2.2.1.25  MS-User-IPv4-Address ........................................................................... 30
-2.2.1.26  MS-User-IPv6-Address ........................................................................... 30
-2.2.1.27  MS-RDG-Device-Redirection ................................................................... 30
-Microsoft Vendor-Specific Values for RADIUS Attributes ................................... 31
-Vendor-Specific Value for the Tunnel-Type RADIUS Attribute ...................... 31
-
-2.2.2.1
-
-2.2.2
-
-3.1
-
-3  Protocol Details ..................................................................................................... 32
-Common Details .............................................................................................. 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Windows Implementation of RADIUS Attributes ........................................ 32
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-[MS-RNAP] - v20170601
-Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 69
-
-3.1.5.2
-3.1.5.3
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5.2
-
-Microsoft VSA Support of RADIUS Messages ............................................. 33
-Processing RADIUS Attributes ................................................................. 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-Server Details .................................................................................................. 34
-Abstract Data Model .................................................................................... 34
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 36
-Abstract Interface for Setting an SoHR .................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 39
-Processing RADIUS Access-Request Messages .......................................... 39
-MS-RAS-Client-Name ....................................................................... 39
-3.2.5.1.1
-MS-RAS-Client-Version ..................................................................... 39
-3.2.5.1.2
-MS-User-Security-Identity ................................................................ 39
-3.2.5.1.3
-MS-Identity-Type ............................................................................ 39
-3.2.5.1.4
-MS-Service-Class ............................................................................ 40
-3.2.5.1.5
-MS-Network-Access-Server-Type....................................................... 40
-3.2.5.1.6
-MS-Machine-Name .......................................................................... 40
-3.2.5.1.7
-MS-Quarantine-SoH ......................................................................... 40
-3.2.5.1.8
-MS-RAS-Correlation-ID .................................................................... 40
-3.2.5.1.9
-3.2.5.1.10  HCAP-User-Groups .......................................................................... 40
-3.2.5.1.11  HCAP-Location-Group-Name ............................................................. 40
-3.2.5.1.12  HCAP-User-Name ............................................................................ 41
-3.2.5.1.13  MS-User-IPv4-Address ..................................................................... 41
-3.2.5.1.14  MS-User-IPv6-Address ..................................................................... 41
-Tunnel-Type ................................................................................... 41
-3.2.5.1.15
-Creating RADIUS Access-Accept Messages ............................................... 41
-MS-Quarantine-IPFilter ..................................................................... 42
-3.2.5.2.1
-MS-Quarantine-Session-Timeout ....................................................... 42
-3.2.5.2.2
-MS-Quarantine-User-Class ................................................................ 42
-3.2.5.2.3
-MS-Quarantine-State ....................................................................... 42
-3.2.5.2.4
-MS-Quarantine-Grace-Time .............................................................. 42
-3.2.5.2.5
-MS-AFW-Zone ................................................................................. 42
-3.2.5.2.6
-MS-AFW-Protection-Level ................................................................. 43
-3.2.5.2.7
-MS-IPv6-Filter ................................................................................. 43
-3.2.5.2.8
-3.2.5.2.9
-MS-IPv4-Remediation-Servers .......................................................... 43
-3.2.5.2.10  MS-IPv6-Remediation-Servers .......................................................... 43
-3.2.5.2.11  Not-Quarantine-Capable ................................................................... 43
-3.2.5.2.12  MS-Quarantine-SoH ......................................................................... 43
-3.2.5.2.13  MS-Extended-Quarantine-State ......................................................... 43
-3.2.5.2.14  MS-RDG-Device-Redirection.............................................................. 44
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-Client Details ................................................................................................... 44
-Abstract Data Model .................................................................................... 44
-Timers ...................................................................................................... 44
-Initialization ............................................................................................... 44
-Higher-Layer Triggered Events ..................................................................... 44
-Abstract Interface for Sending an SoH ..................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 46
-Creating RADIUS Access-Request Messages ............................................. 46
-MS-RAS-Client-Name ....................................................................... 46
-MS-RAS-Client-Version ..................................................................... 46
-MS-User-Security-Identity ................................................................ 47
-MS-Identity-Type ............................................................................ 47
-MS-Service-Class ............................................................................ 47
-MS-Network-Access-Server-Type....................................................... 47
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.4.1
-
-3.3.5.1
-
-[MS-RNAP] - v20170601
-Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 69
-
-3.3.5.2
-
-3.3.5.1.7
-MS-Machine-Name .......................................................................... 47
-3.3.5.1.8
-MS-Quarantine-SoH ......................................................................... 47
-MS-RAS-Correlation-ID .................................................................... 47
-3.3.5.1.9
-3.3.5.1.10  HCAP-User-Groups .......................................................................... 47
-3.3.5.1.11  HCAP-Location-Group-Name ............................................................. 48
-3.3.5.1.12  HCAP-User-Name ............................................................................ 48
-3.3.5.1.13  MS-User-IPv4-Address ..................................................................... 48
-3.3.5.1.14  MS-User-IPv6-Address ..................................................................... 48
-Tunnel-Type ................................................................................... 48
-3.3.5.1.15
-Processing RADIUS Access-Accept Messages ............................................ 48
-MS-Quarantine-IPFilter ..................................................................... 48
-3.3.5.2.1
-MS-Quarantine-Session-Timeout ....................................................... 48
-3.3.5.2.2
-MS-Quarantine-User-Class ................................................................ 49
-3.3.5.2.3
-MS-Quarantine-State ....................................................................... 49
-3.3.5.2.4
-MS-Quarantine-Grace-Time .............................................................. 50
-3.3.5.2.5
-MS-AFW-Zone ................................................................................. 50
-3.3.5.2.6
-MS-AFW-Protection-Level ................................................................. 50
-3.3.5.2.7
-MS-IPv6-Filter ................................................................................. 50
-3.3.5.2.8
-3.3.5.2.9
-MS-IPv4-Remediation-Servers .......................................................... 51
-3.3.5.2.10  MS-IPv6-Remediation-Servers .......................................................... 51
-3.3.5.2.11  Not-Quarantine-Capable ................................................................... 51
-3.3.5.2.12  MS-Quarantine-SoH ......................................................................... 51
-3.3.5.2.13  MS-Extended-Quarantine-State ......................................................... 51
-3.3.5.2.14  MS-RDG-Device-Redirection.............................................................. 52
-Processing RADIUS Access-Reject Messages ............................................. 52
-Timer Events .............................................................................................. 52
-Other Local Events ...................................................................................... 52
-
-3.3.5.3
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 53
-VPN Connection with RQC/RQS Quarantine .......................................................... 53
-Health Registration Authority (HRA) ................................................................... 54
-DHCP NAP ....................................................................................................... 55
-VPN NAP ......................................................................................................... 56
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 58
-Security Considerations for Implementers ........................................................... 58
-Index of Security Parameters ............................................................................ 58
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 59
-
-7  Change Tracking .................................................................................................... 66
-
-8  Index ..................................................................................................................... 67
-
-[MS-RNAP] - v20170601
-Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7 / 69
-
-1  Introduction
+## 1 Introduction
 
 The Remote Access Dial In User Service (RADIUS) Protocol (as specified in [RFC2865]) provides
 authentication, authorization, and accounting (AAA) of endpoints in scenarios such as wireless
@@ -889,7 +730,7 @@ of vendor-specific attributes (VSAs) ([RFC2865] section 5.26).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -948,7 +789,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Internet Protocol security (IPsec): A framework of open standards for ensuring private, secure
+
+Internet Protocol security (IPsec): A framework of open standards for ensuring private, secure
 communications over Internet Protocol (IP) networks through the use of cryptographic security
 services. IPsec supports network-level peer authentication, data origin authentication, data
 integrity, data confidentiality (encryption), and replay protection.
@@ -1025,7 +867,8 @@ Release: June 1, 2017
 
 9 / 69
 
-security identifier (SID): An identifier for security principals that is used to identify an account
+
+security identifier (SID): An identifier for security principals that is used to identify an account
 or a group. Conceptually, the SID is composed of an account authority portion (typically a
 domain) and a smaller integer representing an identity relative to the account authority, termed
 the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
@@ -1053,14 +896,14 @@ contains a vendor identifier, the vendor-attribute type, a length, and a vendor-
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1093,7 +936,8 @@ Release: June 1, 2017
 
 10 / 69
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2548] Zorn, G., "Microsoft Vendor-Specific RADIUS Attributes", RFC 2548, March 1999,
@@ -1118,7 +962,7 @@ http://www.ietf.org/rfc/rfc5080.txt
 [TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.1X] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks - Port-Based Network Access Control", IEEE Std 802.1X-2004,
@@ -1145,7 +989,7 @@ Practices", RFC 2882, July 2000, https://www.rfc-editor.org/info/rfc2882
 For Extensible Authentication Protocol (EAP)", RFC 3579, September 2003, https://www.rfc-
 editor.org/info/rfc3579
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Authentication Dial-In User Service (RADIUS) Protocol, as specified in [RFC2865],
 provides authentication, authorization, and accounting (AAA) of endpoints in scenarios such as
@@ -1159,7 +1003,8 @@ Release: June 1, 2017
 
 11 / 69
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RNAP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1189,7 +1034,7 @@ attributes (VSAs), as specified in [RFC2865] section 5.26.
 
 This document defines or otherwise describes the VSAs that are specific to Microsoft.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The VSAs specified in this document rely on and are transported within the RADIUS protocol
 described in [RFC2865].
@@ -1219,19 +1064,20 @@ Release: June 1, 2017
 
 12 / 69
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 For the Microsoft VSAs to be used, the RADIUS protocol described in [RFC2865] and a set of
 Network Access Policies are configured for use between a NAS and a RADIUS server; specifically,
 an administrator is required to configure a RADIUS shared secret between a NAS and a RADIUS
 server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of RADIUS VSAs is applicable in those environments where the RADIUS protocol described in
 [RFC2865] is used to authenticate and authorize network access requests.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None of the Microsoft RADIUS VSAs described in this document affects the versioning or capability
 negotiation of the protocols they are transported over. Some of the Microsoft RADIUS VSAs described
@@ -1241,11 +1087,11 @@ RADIUS client encountering unknown attributes is described in [RFC5080] section 
 See the individual VSAs documented in section 2.2 for information about version fields, if any, that are
 used in each VSA.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Microsoft VSAs themselves do not define any additional vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1273,22 +1119,23 @@ Release: June 1, 2017
 
 13 / 69
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The RADIUS Protocol, specified in [RFC2865], defines the transport of RADIUS and associated
 attributes over UDP.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain information about the VSAs that are defined in this document. These
 VSAs are used in RADIUS Access-Request and Access-Accept messages [RFC2865] in the manner
 specified in sections 3.1.5.2, 3.2.5, and 3.3.5.
 
-2.2.1  Microsoft Vendor-Specific Attributes (VSAs)
+#### 2.2.1 Microsoft Vendor-Specific Attributes (VSAs)
 
 The RADIUS Protocol specification [RFC2865] defines attribute type 0x1A as a VSA. This type was
 defined to allow vendors to extend the RADIUS attribute set. For reference, the format of the
@@ -1361,7 +1208,8 @@ Release: June 1, 2017
 
 14 / 69
 
-Vendor-Type (1 byte): An 8-bit unsigned integer that MUST specify the VSA type contained in
+
+Vendor-Type (1 byte): An 8-bit unsigned integer that MUST specify the VSA type contained in
 the Attribute-Specific Value field. Microsoft VSA vendor types MUST be set as specified in
 [RFC2548] and in sections 2.2.1.1 through 2.2.1.27 of this specification.
 
@@ -1378,7 +1226,7 @@ specified in [RFC2548] and in sections 2.2.1.1 through 2.2.1.27 of this specific
 The attribute definitions in the following sections specify the specific parameters relevant to that
 extension.
 
-2.2.1.1  MS-RAS-Client-Name
+##### 2.2.1.1 MS-RAS-Client-Name
 
 MS-RAS-Client-Name is a VSA, as specified in section 2.2.1. It is used to specify the name of the
 endpoint generating a request.
@@ -1396,7 +1244,7 @@ symbols ! @ # $ % ^ & ' ) ( . - _ { } ~ in addition to letters and numbers.<1>
 
 For more details about MS-RAS-Client-Name, see sections 3.2.5.1.1 and 3.3.5.1.1.
 
-2.2.1.2  MS-RAS-Client-Version
+##### 2.2.1.2 MS-RAS-Client-Version
 
 MS-RAS-Client-Version is a VSA, as specified in section 2.2.1. It is used to specify the version of the
 endpoint generating a request.
@@ -1413,7 +1261,7 @@ string MUST be in network byte order.<2>
 
 For more details about MS-RAS-Client-Version, see sections 3.2.5.1.2 and 3.3.5.1.2.
 
-2.2.1.3  MS-Quarantine-IPFilter
+##### 2.2.1.3 MS-Quarantine-IPFilter
 
 MS-Quarantine-IPFilter is a VSA, as specified in section 2.2.1. It is used to specify the set of IP filters
 to be provisioned for the endpoint associated with a RADIUS Access-Request (as specified in
@@ -1430,7 +1278,8 @@ Release: June 1, 2017
 
 15 / 69
 
-within a packet, they MUST be in order and they MUST be consecutive attributes in the packet. For the
+
+within a packet, they MUST be in order and they MUST be consecutive attributes in the packet. For the
 late bound field, this is used to allow a NAS to change a field in the filter after the connection with the
 endpoint is complete.
 
@@ -1512,7 +1361,8 @@ Release: June 1, 2017
 
 16 / 69
 
-FilterSetCount
+
+FilterSetCount
 
 Offset
 
@@ -1597,7 +1447,8 @@ Release: June 1, 2017
 
 17 / 69
 
-Value
+
+Value
 
 Meaning
 
@@ -1688,7 +1539,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-endpoints. Its value MUST be at least one of the following or a bit-wise OR result of two or
+
+endpoints. Its value MUST be at least one of the following or a bit-wise OR result of two or
 more such values.
 
 Value
@@ -1720,7 +1572,7 @@ protocol values, this MUST be set to 0 (byte order does not matter).
 
 For more details about MS-Quarantine-IPFilter, see sections 3.2.5.2.1 and 3.3.5.2.1.
 
-2.2.1.4  MS-Quarantine-Session-Timeout
+##### 2.2.1.4 MS-Quarantine-Session-Timeout
 
 MS-Quarantine-Session-Timeout is a VSA, as specified in section 2.2.1. It is used to specify a timeout
 value used by a Routing and Remote Access Service (RRAS) server.
@@ -1737,7 +1589,7 @@ disconnected.
 
 For more details about MS-Quarantine-Session-Timeout, see sections 3.2.5.2.2 and 3.3.5.2.2.
 
-2.2.1.5  MS-User-Security-Identity
+##### 2.2.1.5 MS-User-Security-Identity
 
 MS-User-Security-Identity is a VSA, as specified in section 2.2.1. It is used to specify the security-
 identifier (SID), as defined in [MS-DTYP] section 2.4.2, of the user requesting access.
@@ -1759,7 +1611,8 @@ Release: June 1, 2017
 
 19 / 69
 
-2.2.1.6  MS-Identity-Type
+
+##### 2.2.1.6 MS-Identity-Type
 
 MS-Identity-Type is a VSA, as specified in section 2.2.1. It is used to specify that the RADIUS server
 MUST process access authorization based on a machine health-check only.
@@ -1784,7 +1637,7 @@ health check only and not for authentication.
 
 For more details about MS-Identity-Type, see sections 3.2.5.1.4 and 3.3.5.1.4.
 
-2.2.1.7  MS-Service-Class
+##### 2.2.1.7 MS-Service-Class
 
 MS-Service-Class is a VSA, as specified in section 2.2.1. It is used to specify which group of Dynamic
 Host Configuration Protocol (DHCP) scopes will supply an IP address to the endpoint requesting
@@ -1804,7 +1657,7 @@ Dynamic Host Configuration Protocol (DHCP) server.
 
 For more details about MS-Service-Class, see sections 3.2.5.1.5 and 3.3.5.1.5.
 
-2.2.1.8  MS-Quarantine-User-Class
+##### 2.2.1.8 MS-Quarantine-User-Class
 
 MS-Quarantine-User-Class is a VSA, as specified in section 2.2.1. It is used to carry the name of a
 special DHCP user class, as specified in [RFC3004], called NAP user class.
@@ -1829,9 +1682,10 @@ Release: June 1, 2017
 
 20 / 69
 
-For more details about MS-Quarantine-User-Class, see sections 3.2.5.2.3 and 3.3.5.2.3.
 
-2.2.1.9  MS-Quarantine-State
+For more details about MS-Quarantine-User-Class, see sections 3.2.5.2.3 and 3.3.5.2.3.
+
+##### 2.2.1.9 MS-Quarantine-State
 
 MS-Quarantine-State is a VSA, as specified in section 2.2.1. It is used to specify the target restrictive
 state of the endpoint.
@@ -1858,9 +1712,9 @@ Meaning
 
 For more details about MS-Quarantine-State, see sections 3.2.5.2.4 and 3.3.5.2.4.
 
-2.2.1.10
+##### 2.2.1.10 MS-Quarantine-Grace-Time
 
-MS-Quarantine-Grace-Time
+
 
 MS-Quarantine-Grace-Time is a VSA, as specified in section 2.2.1. It is used to specify the amount of
 time a host has to conform to network policy.
@@ -1878,9 +1732,9 @@ to be authorized to have only restricted access.
 
 For more details about MS-Quarantine-Grace-Time, see sections 3.2.5.2.5 and 3.3.5.2.5.
 
-2.2.1.11
+##### 2.2.1.11 MS-Network-Access-Server-Type
 
-MS-Network-Access-Server-Type
+
 
 MS-Network-Access-Server-Type is a VSA, as specified in section 2.2.1. It is used to specify the type
 of the network access server making the request.
@@ -1901,7 +1755,8 @@ Release: June 1, 2017
 
 21 / 69
 
-Value
+
+Value
 
 Meaning
 
@@ -1933,9 +1788,9 @@ All Other Values  A tag value used to identify applicable network access policie
 
 For more details about MS-Network-Access-Server-Type, see sections 3.2.5.1.6 and 3.3.5.1.6.
 
-2.2.1.12
+##### 2.2.1.12 MS-AFW-Zone
 
-MS-AFW-Zone
+
 
 MS-AFW-Zone is a VSA, as specified in section 2.2.1. When a network access server (NAS) that
 understands this attribute receives it, it SHOULD provide it to the endpoint that is requesting access
@@ -1973,9 +1828,9 @@ protected policy).
 
 For more details about MS-AFW-Zone, see sections 3.2.5.2.6 and 3.3.5.2.6.
 
-2.2.1.13
+##### 2.2.1.13 MS-AFW-Protection-Level
 
-MS-AFW-Protection-Level
+
 
 MS-AFW-Protection-Level is a VSA, as specified in section 2.2.1. It is used as a hint for dynamic
 selection of a preconfigured IPsec policy by the endpoint requesting access.
@@ -1993,7 +1848,8 @@ Release: June 1, 2017
 
 22 / 69
 
-Attribute-Specific Value: A 32-bit unsigned integer in network byte order that MUST indicate the
+
+Attribute-Specific Value: A 32-bit unsigned integer in network byte order that MUST indicate the
 protection level that the RADIUS server authorizes for the endpoint. It MUST be set to one of the
 following values.
 
@@ -2013,9 +1869,9 @@ encrypting data.
 
 For more information about MS-AFW-Protection-Level, see sections 3.2.5.2.7 and 3.3.5.2.7.
 
-2.2.1.14
+##### 2.2.1.14 MS-Machine-Name
 
-MS-Machine-Name
+
 
 MS-Machine-Name is a VSA, as specified in section 2.2.1. It is used to communicate the machine
 name of the endpoint requesting network access.
@@ -2033,9 +1889,9 @@ requesting access.
 
 For more details about MS-Machine-Name, see sections 3.2.5.1.7 and 3.3.5.1.7.
 
-2.2.1.15
+##### 2.2.1.15 MS-IPv6-Filter
 
-MS-IPv6-Filter
+
 
 MS-IPv6-Filter is a VSA, as specified in section 2.2.1. It is used to limit the inbound and/or outbound
 access of the endpoint.
@@ -2069,7 +1925,8 @@ Release: June 1, 2017
 
 23 / 69
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2159,7 +2016,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-FilterSetCount (4 bytes): A 32-bit unsigned integer in network byte order specifying the overall
+
+FilterSetCount (4 bytes): A 32-bit unsigned integer in network byte order specifying the overall
 
 size, in bytes, of the list of filter sets specified by this filter set entry.
 
@@ -2244,7 +2102,8 @@ Release: June 1, 2017
 
 25 / 69
 
-Destination Address (16 bytes)
+
+Destination Address (16 bytes)
 
 ...
 
@@ -2324,7 +2183,8 @@ Release: June 1, 2017
 
 26 / 69
 
-Value
+
+Value
 
 Meaning
 
@@ -2349,9 +2209,9 @@ protocol values, this MUST be set to 0 (byte order does not matter).
 
 For more details about MS-IPv6-Filter, see sections 3.2.5.2.8 and 3.3.5.2.8.
 
-2.2.1.16
+##### 2.2.1.16 MS-IPv4-Remediation-Servers
 
-MS-IPv4-Remediation-Servers
+
 
 MS-IPv4-Remediation-Servers is a VSA, as specified in section 2.2.1. This value contains a list of
 servers that are reachable by an endpoint whose access is restricted, so that the endpoint can
@@ -2371,9 +2231,9 @@ Each of the four-octet values MUST be an IPv4 address in network byte order.
 
 For more details about MS-IPv4-Remediation-Servers, see sections 3.2.5.2.9 and 3.3.5.2.9.
 
-2.2.1.17
+##### 2.2.1.17 MS-IPv6-Remediation-Servers
 
-MS-IPv6-Remediation-Servers
+
 
 MS-IPv6-Remediation-Servers is a VSA, as specified in section 2.2.1. This value contains a list of
 servers that are reachable by an endpoint access whose access is restricted, so that the endpoint can
@@ -2398,11 +2258,12 @@ Release: June 1, 2017
 
 27 / 69
 
-For more details about MS-IPv6-Remediation-Servers, see sections 3.2.5.2.10 and 3.3.5.2.10.
 
-2.2.1.18
+For more details about MS-IPv6-Remediation-Servers, see sections 3.2.5.2.10 and 3.3.5.2.10.
 
-Not-Quarantine-Capable
+##### 2.2.1.18 Not-Quarantine-Capable
+
+
 
 Not-Quarantine-Capable is a VSA used by a RADIUS client to specify whether an endpoint sent a
 statement of health (SoH), as specified in section 2.2.1.
@@ -2427,9 +2288,9 @@ Meaning
 
 For more details about Not-Quarantine-Capable, see sections 3.2.5.2.11 and 3.3.5.2.11.
 
-2.2.1.19
+##### 2.2.1.19 MS-Quarantine-SoH
 
-MS-Quarantine-SoH
+
 
 MS-Quarantine-SoH is a VSA, as specified in section 2.2.1. It is used to carry Statement of Health
 information (as specified in [TNC-IF-TNCCSPBSoH] section 3.5).
@@ -2447,9 +2308,9 @@ TNCCSPBSoH].
 For more details about MS-Quarantine-SoH, see sections 3.2.5.1.8, 3.2.5.2.12, 3.3.5.1.8, and
 3.3.5.2.12.
 
-2.2.1.20
+##### 2.2.1.20 MS-RAS-Correlation-ID
 
-MS-RAS-Correlation-ID
+
 
 The MS-RAS-Correlation-ID is a VSA, as specified in section 2.2.1. It is used by the NAS to send an
 identifier, which is used for the correlation of log events, to the RADIUS server.
@@ -2471,9 +2332,10 @@ Release: June 1, 2017
 
 28 / 69
 
-2.2.1.21
 
-MS-Extended-Quarantine-State
+##### 2.2.1.21 MS-Extended-Quarantine-State
+
+
 
 The MS-Extended-Quarantine-State VSA is used to specify additional information about a restricted
 access decision by a RADIUS server, as specified in section 2.2.1.
@@ -2501,9 +2363,9 @@ Infected
 
 0x00000003  Unknown
 
-2.2.1.22
+##### 2.2.1.22 HCAP-User-Groups
 
-HCAP-User-Groups
+
 
 HCAP-User-Groups is a VSA used to specify user groups information received over an HCAP interface
 [CM-HCAP] by a RADIUS client, as specified in section 2.2.1.
@@ -2519,9 +2381,9 @@ Attribute-Specific Value: An octet string that contains characters from Windows 
 (for more information, see [MSDN-ANSI-CODEPAGE]) and MUST specify the group name to which an
 HCAP user belongs (as specified in [MS-HCEP]).
 
-2.2.1.23
+##### 2.2.1.23 HCAP-Location-Group-Name
 
-HCAP-Location-Group-Name
+
 
 HCAP-Location-Group-Name is a VSA used to specify location group information received over a HCAP
 interface [CM-HCAP] by a RADIUS client, as specified in section 2.2.1.
@@ -2544,9 +2406,10 @@ Release: June 1, 2017
 
 29 / 69
 
-2.2.1.24
 
-HCAP-User-Name
+##### 2.2.1.24 HCAP-User-Name
+
+
 
 HCAP-User-Name is a VSA used to indicate user identity information received over a HCAP interface
 [CM-HCAP] by a RADIUS client, as specified in section 2.2.1.
@@ -2562,9 +2425,9 @@ Attribute-Specific Value: An octet string that contains characters from Windows 
 (for more information, see [MSDN-ANSI-CODEPAGE]) and MUST specify the name for the HCAP user
 (as specified in [CM-HCAP]).
 
-2.2.1.25
+##### 2.2.1.25 MS-User-IPv4-Address
 
-MS-User-IPv4-Address
+
 
 MS-User-IPv4-Address is a VSA used to specify the IPv4 address of the endpoint as known to the
 RADIUS client, as specified in section 2.2.1.
@@ -2578,9 +2441,9 @@ Vendor-Length: An 8-bit unsigned integer that MUST be set to 6.
 Attribute-Specific Value: A 32-bit unsigned integer in network byte order that MUST specify the
 IPv4 address of the machine of the user requesting network access.
 
-2.2.1.26
+##### 2.2.1.26 MS-User-IPv6-Address
 
-MS-User-IPv6-Address
+
 
 MS-User-IPv6-Address is a VSA used to specify the IPv6 address of the endpoint as known to the
 RADIUS client, as specified in section 2.2.1.
@@ -2594,9 +2457,9 @@ Vendor-Length: An 8-bit unsigned integer that MUST be set to 18.
 Attribute-Specific Value: A 128-bit unsigned integer in network byte order that MUST specify the
 IPv6 address of the machine of the user requesting network access.
 
-2.2.1.27
+##### 2.2.1.27 MS-RDG-Device-Redirection
 
-MS-RDG-Device-Redirection
+
 
 MS-RDG-Device-Redirection is a VSA specifying filters used by a Remote Desktop Gateway (RDG)
 server, as specified in section 2.2.1.
@@ -2617,7 +2480,8 @@ Release: June 1, 2017
 
 30 / 69
 
- Bit   Meaning
+
+ Bit   Meaning
 
 0
 
@@ -2659,9 +2523,9 @@ Plug and play devices redirection (0: enabled, 1: disabled)
 
 When either bit 29 or bit 30 is set to 1, the values for bits 0..4 are ignored.
 
-2.2.2  Microsoft Vendor-Specific Values for RADIUS Attributes
+#### 2.2.2 Microsoft Vendor-Specific Values for RADIUS Attributes
 
-2.2.2.1  Vendor-Specific Value for the Tunnel-Type RADIUS Attribute
+##### 2.2.2.1 Vendor-Specific Value for the Tunnel-Type RADIUS Attribute
 
 In addition to the values specified in [RFC2868], the standard RADIUS attribute Tunnel-Type
 [RFC2868] is extended to include a value for the Secure Socket Tunneling Protocol (as specified in
@@ -2679,29 +2543,30 @@ Release: June 1, 2017
 
 31 / 69
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 There are no common abstract data model elements.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no common timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no common initialization.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no common higher-level events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Windows Implementation of RADIUS Attributes
+##### 3.1.5.1 Windows Implementation of RADIUS Attributes
 
 Section 3.1.5.2 specifies the Windows implementation of RADIUS VSA attributes.<5>
 
@@ -2766,7 +2631,8 @@ Release: June 1, 2017
 
 32 / 69
 
-Active Directory Attribute
+
+Active Directory Attribute
 
 Description
 
@@ -2778,7 +2644,7 @@ will not be given network access. If the value is
 FALSE, the Machine Account will receive an
 access_reject response specified in [RFC2865].
 
-3.1.5.2  Microsoft VSA Support of RADIUS Messages
+##### 3.1.5.2 Microsoft VSA Support of RADIUS Messages
 
 The RADIUS Protocol standard (as specified in [RFC2865] section 4) defines the messages sent
 between a RADIUS client and a RADIUS server. Each Microsoft VSA is valid only in certain
@@ -3001,7 +2867,8 @@ Release: June 1, 2017
 
 33 / 69
 
-Microsoft vendor-specific attribute  Request  Accept  Reject  Challenge  Accounting-Request
+
+Microsoft vendor-specific attribute  Request  Accept  Reject  Challenge  Accounting-Request
 
 MS-IPv6-Remediation-Servers
 
@@ -3135,22 +3002,22 @@ MS-RDG-Device-Redirection
 
 0
 
-3.1.5.3  Processing RADIUS Attributes
+##### 3.1.5.3 Processing RADIUS Attributes
 
 As specified in [RFC2865] section 5, RADIUS clients and RADIUS servers SHOULD<6> ignore
 VSAs with unknown types.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The RADIUS Protocol is a stateless protocol, as specified in [RFC2865] section 2.5.
 
@@ -3173,7 +3040,8 @@ Release: June 1, 2017
 
 34 / 69
 
-  RASClientName: A list of NULL-terminated strings that is used to restrict the allowed computer
+
+  RASClientName: A list of NULL-terminated strings that is used to restrict the allowed computer
 
 names of the endpoint that is requesting access.
 
@@ -3210,12 +3078,12 @@ list items are specified in section 2.2.1.25.
 restrict the allowed Ipv6 addresses of the endpoint that is requesting access. Possible values for
 list items are specified in section 2.2.1.26.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required. For a discussion of retransmission hints, see the RADIUS Protocol
 documentation, as specified in [RFC2865].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 An administration agent of an RNAP server SHOULD allow configuring of NAP compatibility for
 clients. This configuration SHOULD be passed to the RADIUS server using the following abstract
@@ -3239,12 +3107,13 @@ Release: June 1, 2017
 
 35 / 69
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 The RADIUS exchange is triggered by an Access-Request message sent from a NAS as described in
 [RFC2865] section 2.
 
-3.2.4.1  Abstract Interface for Setting an SoHR
+##### 3.2.4.1 Abstract Interface for Setting an SoHR
 
 SendRadiusAccessAccept: An abstract interface for setting a statement of health response
 (SoHR) message and additional information to be encapsulated in a RADIUS Access-Accept response
@@ -3309,7 +3178,8 @@ Release: June 1, 2017
 
 36 / 69
 
- struct SoHR
+
+ struct SoHR
  {
      Byte[] bytes;
  }
@@ -3383,7 +3253,8 @@ Release: June 1, 2017
 
 37 / 69
 
- struct FilterSet_IPv6
+
+ struct FilterSet_IPv6
  {
      ForwardAction forwardAction;
      Filter_IPv6[] filters;
@@ -3456,7 +3327,8 @@ Release: June 1, 2017
 
 38 / 69
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 In general, RADIUS messages are handled as described in section 3.1.5. The following subsections
 describe details applicable to RADIUS servers.
@@ -3471,13 +3343,13 @@ on the SoH, and the policy is sent in an Access-Accept message, as specified in 
 following subsections describe the processing of Access-Request messages and the construction of
 Access-Accept messages.
 
-3.2.5.1  Processing RADIUS Access-Request Messages
+##### 3.2.5.1 Processing RADIUS Access-Request Messages
 
 When an RNAP server receives an Access-Request message sent from a NAS (as specified in
 [RFC2865]) that contains NAP-specific VSAs, every VSA is processed as described in the following
 sections.
 
-3.2.5.1.1 MS-RAS-Client-Name
+###### 3.2.5.1.1 MS-RAS-Client-Name
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.RASClientName ADM element specified in section 3.2.1 for the value of the
@@ -3486,14 +3358,14 @@ processing.
 
 For more details about this attribute, see section 2.2.1.1.
 
-3.2.5.1.2 MS-RAS-Client-Version
+###### 3.2.5.1.2 MS-RAS-Client-Version
 
 When the RADIUS server receives this attribute, it uses the value of this VSA to log the NAS version
 that sent the access request.
 
 For more details about this attribute, see section 2.2.1.2.
 
-3.2.5.1.3 MS-User-Security-Identity
+###### 3.2.5.1.3 MS-User-Security-Identity
 
 If the RADIUS User-Name attribute ([RFC2865] section 5.1) is found in the request, the RADIUS
 server MUST ignore this attribute. Otherwise, the RADIUS server SHOULD convert the SID to a Fully
@@ -3504,7 +3376,7 @@ send an Access-Reject message back to the NAS and stop processing.
 
 For more details about this attribute, see section 2.2.1.5.
 
-3.2.5.1.4 MS-Identity-Type
+###### 3.2.5.1.4 MS-Identity-Type
 
 This attribute indicates whether a RADIUS server performs only a machine health check (as specified
 in [TNC-IF-TNCCSPBSoH]).
@@ -3522,13 +3394,14 @@ Release: June 1, 2017
 
 39 / 69
 
-The machine health check is performed as specified in [TNC-IF-TNCCSPBSoH], using the SoH
+
+The machine health check is performed as specified in [TNC-IF-TNCCSPBSoH], using the SoH
 statement received either in the MS-Quarantine-SoH attribute (see section 3.2.5.1.8) or inside the
 Extensible Authentication Protocol (EAP) packet (see [MS-PEAP] section 2.2.8.2.2).
 
 For more details about this attribute, see section 2.2.1.6.
 
-3.2.5.1.5 MS-Service-Class
+###### 3.2.5.1.5 MS-Service-Class
 
 When the RADIUS server receives this VSA, it MUST search the PolicyConfiguration.ServiceClass
 ADM element specified in section 3.2.1 for the value of the VSA. If a match is not found, the server
@@ -3536,7 +3409,7 @@ SHOULD send an Access-Reject message back to the NAS and stop processing.
 
 For more details about this attribute, see section 2.2.1.7.
 
-3.2.5.1.6 MS-Network-Access-Server-Type
+###### 3.2.5.1.6 MS-Network-Access-Server-Type
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.NetworkAccessServerType ADM element specified in section 3.2.1 for the
@@ -3545,7 +3418,7 @@ to the NAS and stop processing.
 
 For more details about this attribute, see section 2.2.1.11.
 
-3.2.5.1.7 MS-Machine-Name
+###### 3.2.5.1.7 MS-Machine-Name
 
 If a RADIUS server receives this attribute, it SHOULD determine the machine groups to which the
 machine specified in the attribute belongs, and it MUST search the
@@ -3555,14 +3428,14 @@ and stop processing.
 
 For more details about this attribute, see section 2.2.1.14.
 
-3.2.5.1.8 MS-Quarantine-SoH
+###### 3.2.5.1.8 MS-Quarantine-SoH
 
 This attribute carries the SoH from the endpoint (specified in [TNC-IF-TNCCSPBSoH]) when the
 Extensible Authentication Protocol (EAP) is not used.
 
 For more details about this attribute, see section 2.2.1.19.
 
-3.2.5.1.9 MS-RAS-Correlation-ID
+###### 3.2.5.1.9 MS-RAS-Correlation-ID
 
 A RADIUS client MAY include this GUID value attribute in Access-Request or Accounting-Request
 RADIUS [RFC2865] messages to uniquely identify a session. The server SHOULD use the value of this
@@ -3570,7 +3443,7 @@ attribute, if present, for correlation of log events.<7>
 
 For more details about this attribute, see section 2.2.1.20.
 
-3.2.5.1.10  HCAP-User-Groups
+###### 3.2.5.1.10 HCAP-User-Groups
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.HCAPUserGroup ADM element specified in section 3.2.1 for the value of the
@@ -3579,7 +3452,7 @@ processing.
 
 For more details about this attribute, see section 2.2.1.22.
 
-3.2.5.1.11  HCAP-Location-Group-Name
+###### 3.2.5.1.11 HCAP-Location-Group-Name
 
 [MS-RNAP] - v20170601
 Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
@@ -3588,14 +3461,15 @@ Release: June 1, 2017
 
 40 / 69
 
-When the RADIUS server receives this VSA, it MUST search the
+
+When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.HCAPLocationGroupName ADM element specified in section 3.2.1 for the
 value of the VSA. If a match is not found, the server SHOULD send an Access-Reject message to the
 NAS and stop processing.
 
 For more details about this attribute, see section 2.2.1.23.
 
-3.2.5.1.12  HCAP-User-Name
+###### 3.2.5.1.12 HCAP-User-Name
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.HCAPUserName ADM element specified in section 3.2.1 for the value of the
@@ -3604,7 +3478,7 @@ stop processing.
 
 For more details about this attribute, see section 2.2.1.24.
 
-3.2.5.1.13  MS-User-IPv4-Address
+###### 3.2.5.1.13 MS-User-IPv4-Address
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.UserIPv4Address ADM element specified in section 3.2.1 for the value of the
@@ -3613,7 +3487,7 @@ and stop processing.
 
 For more details about this attribute, see section 2.2.1.25.
 
-3.2.5.1.14  MS-User-IPv6-Address
+###### 3.2.5.1.14 MS-User-IPv6-Address
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.UserIPv6Address ADM element specified in section 3.2.1 for the value of the
@@ -3622,9 +3496,9 @@ and stop processing.
 
 For more details about this attribute, see section 2.2.1.26.
 
-3.2.5.1.15
+###### 3.2.5.1.15 Tunnel-Type
 
-Tunnel-Type
+
 
 A RADIUS server MUST process the Tunnel-Type RADIUS attribute as specified in [RFC2868], with
 one additional enhancement: if the value of the Tunnel-Type RADIUS attribute is 0x00013701, it
@@ -3638,7 +3512,7 @@ authorize the request.
 For more details about this vendor-specific value for the Tunnel-Type RADIUS attribute, see section
 2.2.2.1.
 
-3.2.5.2  Creating RADIUS Access-Accept Messages
+##### 3.2.5.2 Creating RADIUS Access-Accept Messages
 
 When an RNAP server's SendRadiusAccessAccept abstract interface is called, the RNAP server MUST
 create an Access-Accept message. It SHOULD add relevant NAP-specific VSAs as described in the
@@ -3655,10 +3529,11 @@ Release: June 1, 2017
 
 41 / 69
 
-If the RADIUS server does not support NAP machine-health checks or if the machine health was not
+
+If the RADIUS server does not support NAP machine-health checks or if the machine health was not
 evaluated, the attributes described in this section MUST NOT be used.
 
-3.2.5.2.1 MS-Quarantine-IPFilter
+###### 3.2.5.2.1 MS-Quarantine-IPFilter
 
 If the ipv4Filter parameter of the SendRadiusAccessAccept abstract interface (section 3.2.4.1)
 specifies a filter, the RADIUS server MUST add the MS-Quarantine-IPFilter attribute to the Access-
@@ -3666,7 +3541,7 @@ Accept message in order to specify the network access scope of the endpoint. Thi
 constructed as described in section 2.2.1.3. The attribute-specific value is obtained by serializing the
 ipv4Filter parameter to the format described in that section.
 
-3.2.5.2.2 MS-Quarantine-Session-Timeout
+###### 3.2.5.2.2 MS-Quarantine-Session-Timeout
 
 If the quarantineSessionTimeout parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies a time-out, the RADIUS server MUST add the MS-Quarantine-Session-Timeout
@@ -3675,7 +3550,7 @@ remain in a restricted state before being disconnected. This attribute is constr
 section 2.2.1.4. The attribute-specific value is obtained by converting the quarantineSessionTimeout
 parameter to network byte order.
 
-3.2.5.2.3 MS-Quarantine-User-Class
+###### 3.2.5.2.3 MS-Quarantine-User-Class
 
 If the dhcpQuarantineUserClass parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies a user class and the RADIUS client is a DHCP server, the RADIUS server MUST
@@ -3687,7 +3562,7 @@ section.
 
 If the client is not a DHCP server, this attribute MUST NOT be used.
 
-3.2.5.2.4 MS-Quarantine-State
+###### 3.2.5.2.4 MS-Quarantine-State
 
 The RADIUS server MUST add the MS-Quarantine-State attribute to the Access-Accept message in
 order to specify the network access level that the RADIUS server authorizes for the endpoint. This
@@ -3695,7 +3570,7 @@ attribute is constructed as described in section 2.2.1.9. The attribute-specific
 converting the quarantineState parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) to network byte order.
 
-3.2.5.2.5 MS-Quarantine-Grace-Time
+###### 3.2.5.2.5 MS-Quarantine-Grace-Time
 
 If the quarantineGraceTime parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies a grace time, the RADIUS server SHOULD add the MS-Quarantine-Grace-Time
@@ -3704,7 +3579,7 @@ noncompliant endpoint can have full access before being moved to a restricted co
 attribute is constructed as described in section 2.2.1.10. The attribute-specific value is obtained by
 converting the quarantineGraceTime parameter to network byte order.
 
-3.2.5.2.6 MS-AFW-Zone
+###### 3.2.5.2.6 MS-AFW-Zone
 
 If the afwZone parameter of the SendRadiusAccessAccept abstract interface (section 3.2.4.1) specifies
 a zone, and if the RADIUS client is an HCEP server [MS-HCEP], the RADIUS server MUST add the
@@ -3721,7 +3596,8 @@ Release: June 1, 2017
 
 42 / 69
 
-3.2.5.2.7 MS-AFW-Protection-Level
+
+###### 3.2.5.2.7 MS-AFW-Protection-Level
 
 If the afwProtectionLevel parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies a protection level, and if the RADIUS client is an HCEP server [MS-HCEP], the
@@ -3732,7 +3608,7 @@ network byte order.
 
 If the client is not an HCEP server, this attribute MUST NOT be used.
 
-3.2.5.2.8 MS-IPv6-Filter
+###### 3.2.5.2.8 MS-IPv6-Filter
 
 If the ipv6Filter parameter of the SendRadiusAccessAccept abstract interface (section 3.2.4.1)
 specifies a filter, the RADIUS server MUST add the MS-IPv6-Filter attribute to the Access-Accept
@@ -3740,7 +3616,7 @@ message in order to specify the network access scope of the endpoint. This attri
 as described in section 2.2.1.15. The attribute-specific value is obtained by serializing the ipv6Filter
 parameter to the format described in that section.
 
-3.2.5.2.9 MS-IPv4-Remediation-Servers
+###### 3.2.5.2.9 MS-IPv4-Remediation-Servers
 
 If the ipv4RemediationServers parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies remediation servers, the RADIUS server SHOULD add the MS-IPv4-Remediation-
@@ -3748,7 +3624,7 @@ Servers attribute to the Access-Accept message in order to specify IPv4 remediat
 attribute is constructed as described in section 2.2.1.16. The attribute-specific value is obtained by
 serializing the ipv4RemediationServers parameter to the format described in that section.
 
-3.2.5.2.10  MS-IPv6-Remediation-Servers
+###### 3.2.5.2.10 MS-IPv6-Remediation-Servers
 
 If the ipv6RemediationServers parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies remediation servers, the RADIUS server SHOULD add the MS-IPv6-Remediation-
@@ -3756,7 +3632,7 @@ Servers attribute to the Access-Accept message in order to specify IPv6 remediat
 attribute is constructed as described in section 2.2.1.17. The attribute-specific value is obtained by
 serializing the ipv6RemediationServers parameter to the format described in that section.
 
-3.2.5.2.11  Not-Quarantine-Capable
+###### 3.2.5.2.11 Not-Quarantine-Capable
 
 The RADIUS server SHOULD add the Not-Quarantine-Capable attribute to the Access-Accept
 message. The RADIUS server sets the value of the attribute to 0x00000001 if the server received an
@@ -3765,7 +3641,7 @@ not receive an SoH payload, it SHOULD set the value to 0x00000000.
 
 For more details about this attribute, see section 2.2.1.18.
 
-3.2.5.2.12  MS-Quarantine-SoH
+###### 3.2.5.2.12 MS-Quarantine-SoH
 
 This attribute carries the SoH from the endpoint and the SoHR from the RADIUS server (as
 specified in [TNC-IF-TNCCSPBSoH]) when the Extensible Authentication Protocol (EAP) is not
@@ -3776,7 +3652,7 @@ Accept message in order to transfer the SoHR. This attribute is constructed as d
 2.2.1.19. The attribute-specific value is obtained by copying the message parameter of the
 SendRadiusAccessAccept abstract interface (section 3.2.4.1).
 
-3.2.5.2.13  MS-Extended-Quarantine-State
+###### 3.2.5.2.13 MS-Extended-Quarantine-State
 
 [MS-RNAP] - v20170601
 Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
@@ -3785,13 +3661,14 @@ Release: June 1, 2017
 
 43 / 69
 
-If the extendedQuarantineState parameter of the SendRadiusAccessAccept abstract interface (section
+
+If the extendedQuarantineState parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies extended state, the RADIUS server MUST add the MS-Extended-Quarantine-State
 attribute to the Access-Accept message in order to specify additional information about a restricted
 access decision. This attribute is constructed as described in section 2.2.1.21. The attribute-specific
 value is obtained by converting the extendedQuarantineState parameter to network byte order.
 
-3.2.5.2.14  MS-RDG-Device-Redirection
+###### 3.2.5.2.14 MS-RDG-Device-Redirection
 
 If the rdgDeviceRedirection parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies device redirection options, and if the client is an RDG server, the RADIUS server
@@ -3800,37 +3677,37 @@ the device redirection options. This attribute is constructed as described in se
 attribute-specific value is obtained by converting the rdgDeviceRedirection parameter to network byte
 order.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The RADIUS exchange is triggered by an endpoint request to a NAS for network access.
 
-3.3.4.1  Abstract Interface for Sending an SoH
+##### 3.3.4.1 Abstract Interface for Sending an SoH
 
 SendRadiusAccessRequest: An abstract interface used by the PEP to send an SoH request to the
 
@@ -3849,7 +3726,8 @@ Release: June 1, 2017
 
 44 / 69
 
-     [in] bool identityType,
+
+     [in] bool identityType,
      [in] String serviceClass,
      [in] DWORD networkAccessServerType,
      [in] String machineName,
@@ -3917,7 +3795,8 @@ Release: June 1, 2017
 
 45 / 69
 
-rasCorrelationId: A GUID value sent in the RADIUS [RFC2865] Access-Request or Accounting-
+
+rasCorrelationId: A GUID value sent in the RADIUS [RFC2865] Access-Request or Accounting-
 
 Request messages to uniquely identify a RADIUS session. See section 3.2.5.1.9 for additional
 information.
@@ -3956,7 +3835,7 @@ Note that the correlation ID is included in the SoH as specified in [TNC-IF-TNCC
 authentication is independent of the SoH. It is handled by the underlying RADIUS protocol
 implementation and is outside the scope of this document.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 In general, RADIUS messages are handled as described in section 3.1.5. The following subsections
 describe details applicable to RADIUS clients.
@@ -3964,19 +3843,19 @@ describe details applicable to RADIUS clients.
 A NAS operates as a client of RADIUS. The RADIUS client is responsible for passing user information
 to its designated RADIUS server and then acting on the response that is returned.
 
-3.3.5.1  Creating RADIUS Access-Request Messages
+##### 3.3.5.1 Creating RADIUS Access-Request Messages
 
 When an RNAP client's SendRadiusAccessRequest abstract interface is called, the RNAP client MUST
 create an Access-Request message. It SHOULD add relevant NAP-specific attributes as described in
 the following subsections.
 
-3.3.5.1.1 MS-RAS-Client-Name
+###### 3.3.5.1.1 MS-RAS-Client-Name
 
 If the clientName parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to NULL, this attribute MUST NOT be set. Otherwise, the attribute-specific value is obtained by
 serializing the clientName parameter to the format described in section 2.2.1.1.
 
-3.3.5.1.2 MS-RAS-Client-Version
+###### 3.3.5.1.2 MS-RAS-Client-Version
 
 [MS-RNAP] - v20170601
 Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
@@ -3985,11 +3864,12 @@ Release: June 1, 2017
 
 46 / 69
 
-If the clientVersion parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
+
+If the clientVersion parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to NULL, this attribute MUST NOT be set. Otherwise, the attribute-specific value is obtained by
 serializing the clientVersion parameter to the format described in section 2.2.1.2.
 
-3.3.5.1.3 MS-User-Security-Identity
+###### 3.3.5.1.3 MS-User-Security-Identity
 
 If the RADIUS User-Name attribute ([RFC2865] section 5.1) is not found in the RADIUS
 access_request, the MS-User-Security-Identity attribute is used for authentication on the RADIUS
@@ -4003,44 +3883,44 @@ abstract interface (section 3.3.4.1) is set to zero, this attribute MUST NOT be 
 attribute-specific value is obtained by serializing the securityIdentity parameter to the format
 described in section 2.2.1.5.
 
-3.3.5.1.4 MS-Identity-Type
+###### 3.3.5.1.4 MS-Identity-Type
 
 If the identityType parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to false, this attribute MUST NOT be set. Otherwise, the attribute-specific value is set to
 0x00000001 according to the format described in section 2.2.1.6.
 
-3.3.5.1.5 MS-Service-Class
+###### 3.3.5.1.5 MS-Service-Class
 
 If the serviceClass parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to NULL, this attribute MUST NOT be set. Otherwise, the attribute-specific value is obtained by
 serializing the serviceClass parameter to the format described in section 2.2.1.7.
 
-3.3.5.1.6 MS-Network-Access-Server-Type
+###### 3.3.5.1.6 MS-Network-Access-Server-Type
 
 The attribute-specific value is obtained by serializing the networkAccessServerType parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format described in section
 2.2.1.11.
 
-3.3.5.1.7 MS-Machine-Name
+###### 3.3.5.1.7 MS-Machine-Name
 
 The attribute-specific value is obtained by serializing the machineName parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format described in section
 2.2.1.14.
 
-3.3.5.1.8 MS-Quarantine-SoH
+###### 3.3.5.1.8 MS-Quarantine-SoH
 
 The attribute-specific value is obtained by serializing the message parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format described in section
 2.2.1.19.
 
-3.3.5.1.9 MS-RAS-Correlation-ID
+###### 3.3.5.1.9 MS-RAS-Correlation-ID
 
 If the rasCorrelationId parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1)
 is set to the NULL GUID (all bytes are set to zero), this attribute MUST NOT be set. Otherwise, the
 attribute-specific value is obtained by serializing the rasCorrelationId parameter to the format
 described in section 2.2.1.20.
 
-3.3.5.1.10  HCAP-User-Groups
+###### 3.3.5.1.10 HCAP-User-Groups
 
 [MS-RNAP] - v20170601
 Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Structure
@@ -4049,35 +3929,36 @@ Release: June 1, 2017
 
 47 / 69
 
-This VSA is used only by Cisco Network Admission Control. For additional information on HCAP, see
-[CM-HCAP].
-
-3.3.5.1.11  HCAP-Location-Group-Name
 
 This VSA is used only by Cisco Network Admission Control. For additional information on HCAP, see
 [CM-HCAP].
 
-3.3.5.1.12  HCAP-User-Name
+###### 3.3.5.1.11 HCAP-Location-Group-Name
 
 This VSA is used only by Cisco Network Admission Control. For additional information on HCAP, see
 [CM-HCAP].
 
-3.3.5.1.13  MS-User-IPv4-Address
+###### 3.3.5.1.12 HCAP-User-Name
+
+This VSA is used only by Cisco Network Admission Control. For additional information on HCAP, see
+[CM-HCAP].
+
+###### 3.3.5.1.13 MS-User-IPv4-Address
 
 The attribute-specific value is obtained by serializing the userIpv4Address parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format described in section
 2.2.1.25.
 
-3.3.5.1.14  MS-User-IPv6-Address
+###### 3.3.5.1.14 MS-User-IPv6-Address
 
 If the userIpv6Address parameter of the SendRadiusAccessRequest abstract interface (section
 3.3.4.1) is set to a NULL address (all bytes are set to zero), this attribute MUST NOT be set.
 Otherwise, the attribute-specific value is obtained by serializing the userIpv6Address parameter to the
 format described in section 2.2.1.26.
 
-3.3.5.1.15
+###### 3.3.5.1.15 Tunnel-Type
 
-Tunnel-Type
+
 
 A RADIUS client MUST set the Tunnel-Type RADIUS attribute as specified in [RFC2868], with one
 additional enhancement: A VPN server that supports the Secure Socket Tunneling Protocol (SSTP)
@@ -4088,9 +3969,9 @@ it are as described in [MS-SSTP].<15>
 For more details about this vendor-specific value for the Tunnel-Type RADIUS attribute, see section
 2.2.2.1.
 
-3.3.5.2  Processing RADIUS Access-Accept Messages
+##### 3.3.5.2 Processing RADIUS Access-Accept Messages
 
-3.3.5.2.1 MS-Quarantine-IPFilter
+###### 3.3.5.2.1 MS-Quarantine-IPFilter
 
 When a NAS that supports this attribute <16> receives it, the NAS MUST apply the filters defined in
 this attribute on the endpoint connection.
@@ -4102,7 +3983,7 @@ endpoint completes and the client is assigned an address, the filter is replaced
 
 For more details about this attribute, see section 2.2.1.3.
 
-3.3.5.2.2 MS-Quarantine-Session-Timeout
+###### 3.3.5.2.2 MS-Quarantine-Session-Timeout
 
 When a NAS that supports this attribute receives the attribute, it applies a time-out for the endpoint
 client connection set to the attribute's value, in seconds.
@@ -4117,14 +3998,15 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the time-out expires while the connection is still in restricted quarantine, the NAS disconnects the
+
+If the time-out expires while the connection is still in restricted quarantine, the NAS disconnects the
 endpoint connection. <17>
 
 Clients that do not support this attribute ignore it.
 
 For more details about this attribute, see section 2.2.1.4.
 
-3.3.5.2.3 MS-Quarantine-User-Class
+###### 3.3.5.2.3 MS-Quarantine-User-Class
 
 This attribute is to be consumed by a DHCP RADIUS client only.
 
@@ -4135,7 +4017,7 @@ Other RADIUS clients silently ignore this attribute.
 
 For more information about this attribute, see section 2.2.1.8.
 
-3.3.5.2.4 MS-Quarantine-State
+###### 3.3.5.2.4 MS-Quarantine-State
 
 When a network access server (NAS) receives this attribute, it assigns the restrictive state
 specified by this attribute (see [TNC-IF-TNCCSPBSoH]) to the endpoint requesting access.
@@ -4197,7 +4079,8 @@ Release: June 1, 2017
 
 49 / 69
 
-3.3.5.2.5 MS-Quarantine-Grace-Time
+
+###### 3.3.5.2.5 MS-Quarantine-Grace-Time
 
 When a NAS receives this attribute in an Access-Accept message, it applies a time-out to the endpoint
 requesting network access set to expire at the time given by the attribute's value.
@@ -4212,7 +4095,7 @@ is set again.
 
 For more details about this attribute, see section 2.2.1.10.
 
-3.3.5.2.6 MS-AFW-Zone
+###### 3.3.5.2.6 MS-AFW-Zone
 
 This attribute is processed only by RADIUS clients that are configured to support NAP IPsec
 policies.
@@ -4230,7 +4113,7 @@ Other NAS RADIUS clients ignore this attribute.
 
 For more details about this attribute, see section 2.2.1.12.
 
-3.3.5.2.7 MS-AFW-Protection-Level
+###### 3.3.5.2.7 MS-AFW-Protection-Level
 
 This attribute is processed only by RADIUS clients that are configured to support NAP IPsec policies.
 
@@ -4242,7 +4125,7 @@ RADIUS clients that are not configured to support IPsec policies ignore this att
 
 For more details about this attribute, see section 2.2.1.13.
 
-3.3.5.2.8 MS-IPv6-Filter
+###### 3.3.5.2.8 MS-IPv6-Filter
 
 Only the Microsoft Routing and Remote Access Service (RRAS) RADIUS client supports this
 attribute when configured to support RQS/RQC. If received by other RADIUS clients, it is silently
@@ -4264,9 +4147,10 @@ Release: June 1, 2017
 
 50 / 69
 
-For more details about this attribute, see section 2.2.1.15.
 
-3.3.5.2.9 MS-IPv4-Remediation-Servers
+For more details about this attribute, see section 2.2.1.15.
+
+###### 3.3.5.2.9 MS-IPv4-Remediation-Servers
 
 This attribute specifies the IPv4 addresses of the remediation servers. The first 8-bit unsigned integer,
 which is reserved and set to 0 by the RADIUS server, MAY be ignored by the RADIUS client.
@@ -4280,7 +4164,7 @@ or filtering (for example, RRAS)), then it SHOULD ignore this attribute.
 
 For more details about this attribute, see section 2.2.1.16.
 
-3.3.5.2.10  MS-IPv6-Remediation-Servers
+###### 3.3.5.2.10 MS-IPv6-Remediation-Servers
 
 This attribute specifies the IPv6 addresses of the remediation servers. The first 8-bit unsigned integer,
 which is reserved and set to 0 by the RADIUS server, MAY be ignored by the RADIUS client.
@@ -4293,7 +4177,7 @@ A RADIUS client that does not implement this attribute or does not support the r
 
 For more details about this attribute, see section 2.2.1.17.
 
-3.3.5.2.11  Not-Quarantine-Capable
+###### 3.3.5.2.11 Not-Quarantine-Capable
 
 This attribute indicates whether or not the endpoint requesting network access is Network Access
 Protection (NAP)–capable.
@@ -4308,14 +4192,14 @@ A RADIUS client that does not implement this attribute or does not support the r
 
 For more details about this attribute, see section 2.2.1.18.
 
-3.3.5.2.12  MS-Quarantine-SoH
+###### 3.3.5.2.12 MS-Quarantine-SoH
 
 This attribute carries SoH response information (as specified in [TNC-IF-TNCCSPBSoH]) when EAP is
 not used.
 
 For more details about this attribute, see section 2.2.1.19.
 
-3.3.5.2.13  MS-Extended-Quarantine-State
+###### 3.3.5.2.13 MS-Extended-Quarantine-State
 
 When a NAS receives this attribute, it MUST assign the extended Quarantine state specified by this
 attribute, as specified in [TNC-IF-TNCCSPBSoH], to the client requesting access. This attribute is used
@@ -4331,12 +4215,13 @@ Release: June 1, 2017
 
 51 / 69
 
-Accept message, it MAY combine the value of this attribute with the value of MS-Quarantine-State
+
+Accept message, it MAY combine the value of this attribute with the value of MS-Quarantine-State
 attribute in an implementation specific manner.<19>
 
 For more details about this attribute, see section 2.2.1.21.
 
-3.3.5.2.14  MS-RDG-Device-Redirection
+###### 3.3.5.2.14 MS-RDG-Device-Redirection
 
 This attribute is consumed only by the Microsoft Remote Desktop Gateway RADIUS client.
 
@@ -4354,17 +4239,17 @@ A NAS that is not a Microsoft RDG server ignores this attribute.
 
 For more details about this attribute, see section 2.2.1.27.
 
-3.3.5.3  Processing RADIUS Access-Reject Messages
+##### 3.3.5.3 Processing RADIUS Access-Reject Messages
 
 No RNAP attributes are present in Access-Reject messages.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 No timer events are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -4375,16 +4260,17 @@ Release: June 1, 2017
 
 52 / 69
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-RNAP].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of this protocol.
 
-4.1  VPN Connection with RQC/RQS Quarantine
+### 4.1 VPN Connection with RQC/RQS Quarantine
 
 Figure 2: VPN Connection with RQC/RQS Quarantine example
 
@@ -4431,7 +4317,8 @@ Release: June 1, 2017
 
 53 / 69
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-RNAP].images/page054-img01.png)
 <!-- /Extracted images from page 54 -->
 
@@ -4451,7 +4338,7 @@ RADIUS server.
 
 For more information on RQC/RQS Quarantine, see [MSFT-NAQC].
 
-4.2  Health Registration Authority (HRA)
+### 4.2 Health Registration Authority (HRA)
 
 Figure 3: Health Registration Authority (HRA) example
 
@@ -4488,7 +4375,8 @@ Release: June 1, 2017
 
 54 / 69
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-RNAP].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
@@ -4502,7 +4390,7 @@ following attributes:
 
   Attribute 2: MS-AFW-Protection-Level = Encrypted
 
-4.3  DHCP NAP
+### 4.3 DHCP NAP
 
 Figure 4: DHCP NAP example
 
@@ -4545,13 +4433,14 @@ Release: June 1, 2017
 
 55 / 69
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-RNAP].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
   Attribute 2: MS-Quarantine-User-Class = User class
 
-4.4  VPN NAP
+### 4.4 VPN NAP
 
 Figure 5: VPN NAP example
 
@@ -4602,7 +4491,8 @@ Release: June 1, 2017
 
 56 / 69
 
-  Attribute 3: MS-IPv6-Filter = List IPv6 traffic filters
+
+  Attribute 3: MS-IPv6-Filter = List IPv6 traffic filters
 
   Attribute 4: MS-IPv4-Remediation-Servers= List of IPv4 Addresses
 
@@ -4621,9 +4511,10 @@ Release: June 1, 2017
 
 57 / 69
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Microsoft RADIUS VSAs rely on the security of the RADIUS Protocol in which they are transported.
 There are many security considerations for the RADIUS Protocol, as specified in [RFC2865] section 8
@@ -4646,7 +4537,7 @@ validation checks will include, but are not necessarily limited to, the followin
 In addition, implementers can support a mode of operation wherein RADIUS will not be sent or
 received unless protected by IPsec, as specified in [RFC3579] section 4.2.<20>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -4661,7 +4552,8 @@ Release: June 1, 2017
 
 58 / 69
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4731,7 +4623,8 @@ Release: June 1, 2017
 
 59 / 69
 
-4.  The NAS implements the filter list for the endpoint connection and begins filtering traffic.
+
+4.  The NAS implements the filter list for the endpoint connection and begins filtering traffic.
 
 5.  The NAS and endpoint complete the connection request and the endpoint receives IP address
 
@@ -5002,7 +4895,8 @@ Release: June 1, 2017
 
 60 / 69
 
-Windows Server
+
+Windows Server
 
 CPW
 
@@ -5323,7 +5217,8 @@ Release: June 1, 2017
 
 61 / 69
 
-Windows Server
+
+Windows Server
 
 MS-
 Primary-
@@ -5634,7 +5529,8 @@ Release: June 1, 2017
 
 62 / 69
 
-Windows Server
+
+Windows Server
 
 Server-
 Type
@@ -5933,7 +5829,8 @@ Release: June 1, 2017
 
 63 / 69
 
-Windows Server
+
+Windows Server
 
 IPv4-
 Address
@@ -6055,7 +5952,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<12> Section 3.3.4.1: When configured to support NAP, the Microsoft RRAS, DHCP, and HRA RADIUS
+
+<12> Section 3.3.4.1: When configured to support NAP, the Microsoft RRAS, DHCP, and HRA RADIUS
 client send this attribute in an Access-Request message to a RADIUS server.
 
 <13> Section 3.3.4.1: When configured to support NAP, the Microsoft RRAS server sends this
@@ -6097,7 +5995,8 @@ Release: June 1, 2017
 
 65 / 69
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -6109,7 +6008,8 @@ Release: June 1, 2017
 
 66 / 69
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6249,7 +6149,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MS-AFW-Protection-Level (section 3.2.5.2.7 43,
+
+MS-AFW-Protection-Level (section 3.2.5.2.7 43,
 
 MS-User-Security-Identity vendor-specific attribute
 
@@ -6444,7 +6345,8 @@ Vendor-Specific RADIUS Attributes for Network Access Protection (NAP) Data Struc
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-      tunnel-type RADIUS attribute 31
+
+      tunnel-type RADIUS attribute 31
 Versioning 13
 VPN connection with RQC/RQS quarantine example
 

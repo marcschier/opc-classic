@@ -64,7 +64,8 @@ Release: July 29, 2024
 
 1 / 38
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -318,7 +319,8 @@ Release: July 29, 2024
 
 2 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -521,7 +523,8 @@ Release: July 29, 2024
 
 3 / 38
 
-Date
+
+Date
 
 Revision
 History
@@ -570,232 +573,94 @@ Release: July 29, 2024
 
 4 / 38
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 SAM Server-to-Server Request Message Syntax](#22-sam-server-to-server-request-message-syntax)
+    - [2.2.1 Base Request Message](#221-base-request-message)
+    - [2.2.2 PasswordUpdate Request Message](#222-passwordupdate-request-message)
+    - [2.2.3 ResetBadPwdCount Request Message](#223-resetbadpwdcount-request-message)
+    - [2.2.4 PasswordUpdateForward Request Message](#224-passwordupdateforward-request-message)
+    - [2.2.5 Forwarding Password-Change Request Messages](#225-forwarding-password-change-request-messages)
+    - [2.2.6 LastLogonTimeStampUpdate Structure](#226-lastlogontimestampupdate-structure)
+    - [2.2.7 LastLogonTimeStampUpdatesForward Request Message](#227-lastlogontimestampupdatesforward-request-message)
+    - [2.2.8 ResetSmartCardAccountPassword Request Message](#228-resetsmartcardaccountpassword-request-message)
+    - [2.2.9 Return Codes](#229-return-codes)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Details Common to Both Requestor and Responder](#31-details-common-to-both-requestor-and-responder)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Requestor Details](#32-requestor-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Common to All Messages](#3241-common-to-all-messages)
+      - [3.2.4.2 PasswordUpdate Request](#3242-passwordupdate-request)
+      - [3.2.4.3 ResetBadPwdCount Request](#3243-resetbadpwdcount-request)
+      - [3.2.4.4 PasswordUpdateForward Request](#3244-passwordupdateforward-request)
+      - [3.2.4.5 Forwarding a Password-Change Request](#3245-forwarding-a-password-change-request)
+      - [3.2.4.6 LastLogonTimeStampUpdatesForward Request](#3246-lastlogontimestampupdatesforward-request)
+      - [3.2.4.7 ResetSmartCardAccountPassword Request](#3247-resetsmartcardaccountpassword-request)
+        - [3.2.4.7.1 Primary Domain Controller (PDC)](#32471-primary-domain-controller-pdc)
+        - [3.2.4.7.2 Backup Domain Controller (BDC)](#32472-backup-domain-controller-bdc)
+        - [3.2.4.7.3 Read-only Domain Controller (RODC)](#32473-read-only-domain-controller-rodc)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Responder Details](#33-responder-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Message Type](#3351-message-type)
+        - [3.3.5.1.1 Non-Normative Description](#33511-non-normative-description)
+        - [3.3.5.1.2 Normative Specification](#33512-normative-specification)
+      - [3.3.5.3 FWD_PASSWORD_UPDATE_MSG](#3353-fwdpasswordupdatemsg)
+      - [3.3.5.4 FWD_LASTLOGON_TS_UPDATE_MSG 3.3.5.6](#3354-fwdlastlogontsupdatemsg-3356)
+        - [3.3.5.4.1 Non-Normative Description](#33541-non-normative-description)
+        - [3.3.5.4.2 Normative Specification](#33542-normative-specification)
+      - [3.3.5.5 Forwarding a Password-Change Request Message](#3355-forwarding-a-password-change-request-message)
+        - [3.3.5.5.1 Non-Normative Description](#33551-non-normative-description)
+        - [3.3.5.5.2 Normative Specification](#33552-normative-specification)
+      - [3.3.5.6 LastLogonTimeStampUpdatesForward Request Message](#3356-lastlogontimestampupdatesforward-request-message)
+        - [3.3.5.6.1 Non-Normative Description](#33561-non-normative-description)
+        - [3.3.5.6.2 Normative Specification](#33562-normative-specification)
+      - [3.3.5.7 ResetSmartCardAccountPassword Request Message](#3357-resetsmartcardaccountpassword-request-message)
+        - [3.3.5.7.1 Non-Normative Description](#33571-non-normative-description)
+        - [3.3.5.7.2 Normative Specification](#33572-normative-specification)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 SAM Server-to-Server Request Example](#41-sam-server-to-server-request-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-SAM Server-to-Server Request Message Syntax ................................................... 12
-Base Request Message ................................................................................ 12
-PasswordUpdate Request Message ................................................................ 13
-ResetBadPwdCount Request Message ............................................................ 15
-PasswordUpdateForward Request Message .................................................... 15
-Forwarding Password-Change Request Messages ............................................ 17
-LastLogonTimeStampUpdate Structure .......................................................... 17
-LastLogonTimeStampUpdatesForward Request Message .................................. 17
-ResetSmartCardAccountPassword Request Message ........................................ 18
-Return Codes ............................................................................................. 18
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-3.1
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 20
-Details Common to Both Requestor and Responder .............................................. 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Requestor Details ............................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Common to All Messages ....................................................................... 21
-PasswordUpdate Request ....................................................................... 21
-ResetBadPwdCount Request ................................................................... 22
-PasswordUpdateForward Request ............................................................ 22
-Forwarding a Password-Change Request .................................................. 22
-LastLogonTimeStampUpdatesForward Request ......................................... 23
-ResetSmartCardAccountPassword Request ............................................... 23
-Primary Domain Controller (PDC) ...................................................... 23
-Backup Domain Controller (BDC) ....................................................... 23
-Read-only Domain Controller (RODC) ................................................. 23
-Message Processing Events and Sequencing Rules .......................................... 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 24
-Responder Details ............................................................................................ 24
-Abstract Data Model .................................................................................... 24
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-
-3.2.4.7.1
-3.2.4.7.2
-3.2.4.7.3
-
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-[MS-SAMS] - v20240729
-Security Account Manager (SAM) Remote Protocol (Server-to-Server)
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-5 / 38
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.5.2
-
-3.3.5.2.1
-3.3.5.2.2
-
-3.3.5.3
-
-3.3.5.3.1
-3.3.5.3.2
-
-3.3.5.4
-
-3.3.5.4.1
-3.3.5.4.2
-
-3.3.5.5
-
-3.3.5.5.1
-3.3.5.5.2
-
-3.3.5.6
-
-3.3.5.6.1
-3.3.5.6.2
-
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Message Type ....................................................................................... 24
-Non-Normative Description ............................................................... 24
-Normative Specification .................................................................... 24
-PasswordUpdate Request Message .......................................................... 25
-Non-Normative Description ............................................................... 25
-Normative Specification .................................................................... 25
-ResetBadPwdCount Request Message ...................................................... 26
-Non-Normative Description ............................................................... 26
-Normative Specification .................................................................... 26
-PasswordUpdateForward Request Message ............................................... 26
-Non-Normative Description ............................................................... 26
-Normative Specification .................................................................... 26
-Forwarding a Password-Change Request Message ..................................... 27
-Non-Normative Description ............................................................... 27
-Normative Specification .................................................................... 27
-LastLogonTimeStampUpdatesForward Request Message ............................ 27
-Non-Normative Description ............................................................... 27
-Normative Specification .................................................................... 27
-ResetSmartCardAccountPassword Request Message .................................. 28
-Non-Normative Description ............................................................... 28
-Normative Specification .................................................................... 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-
-3.3.5.7.1
-3.3.5.7.2
-
-3.3.5.7
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 30
-SAM Server-to-Server Request Example ............................................................. 30
-
-4.1
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 33
-
-7  Change Tracking .................................................................................................... 36
-
-8  Index ..................................................................................................................... 37
-
-[MS-SAMS] - v20240729
-Security Account Manager (SAM) Remote Protocol (Server-to-Server)
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-6 / 38
-
-1  Introduction
+## 1 Introduction
 
 It is useful to review the Active Directory Technical Specification, as specified in [MS-ADTS], the
 Netlogon Remote Protocol Specification, as specified in [MS-NRPC], and the Security Account Manager
@@ -850,7 +715,7 @@ of password information.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -861,7 +726,8 @@ Release: July 29, 2024
 
 7 / 38
 
-Active Directory: The Windows implementation of a general-purpose directory service, which uses
+
+Active Directory: The Windows implementation of a general-purpose directory service, which uses
 
 LDAP as its primary access protocol. Active Directory stores information about a variety of
 objects in the network such as user accounts, computer accounts, groups, and all related
@@ -933,7 +799,8 @@ Release: July 29, 2024
 
 8 / 38
 
-NT hash: An MD4- or MD5-based cryptographic hash of a clear text password. For more
+
+NT hash: An MD4- or MD5-based cryptographic hash of a clear text password. For more
 
 information, see [MS-NLMP] section 3.3.1 (NTOWFv1, NTLM v1 Authentication), for a normative
 definition.
@@ -978,14 +845,14 @@ Partial replicas are not writable. See also read-only full NC replica.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1006,7 +873,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-[MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
+
+[MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
 [MS-DRSR] Microsoft Corporation, "Directory Replication Service (DRS) Remote Protocol".
 
@@ -1040,11 +908,11 @@ request-is-sent-from-an-rodc
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The SAM Remote Protocol (Server-to-Server) includes four sets of messages. The first set specifies
 messages that a domain controller (DC) sends to a primary domain controller (PDC) within the
@@ -1069,7 +937,8 @@ Release: July 29, 2024
 
 10 / 38
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 Much of this protocol sits directly on top of the Netlogon Remote Protocol, as specified in [MS-NRPC],
 and uses the NetrLogonSendToSam method to transmit the data. This method is specifically designed
@@ -1077,29 +946,29 @@ for this protocol. NetrLogonSendToSam is specified in [MS-NRPC] section 3.5.4.8.
 messages of this protocol use [MS-SAMR]; the message processing descriptions explicitly mention the
 use of [MS-SAMR] in these cases.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The transport is operational on both the requestor and the responder side of the protocol.
 
 The responder is aware of the domain security identifier (SID) of the domain it is servicing.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable for DC to PDC (within the same domain) communication and for RODC to
 DC (within the same domain) communication. The message processing for the NetrLogonSendToSam
 method (as specified in [MS-NRPC] section 3.5.4.8.4) enforces that this protocol is used only for
 communication from a non-PDC DC to a PDC, or from an RODC to a DC.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no versioning or capability negotiation in this protocol. However, details about how to handle
 version or capability differences for both requestor and responder are specified in section 3.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol does not use any additional standards assignments other than what is specified in [MS-
 NRPC] section 1.9.
@@ -1111,9 +980,10 @@ Release: July 29, 2024
 
 11 / 38
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The transport for this protocol, unless otherwise noted, MUST be the NetrLogonSendToSam method,
 as specified in [MS-NRPC] section 3.5.4.8.4.
@@ -1129,7 +999,7 @@ Those messages that do not use the NetrLogonSendToSam method (in particular, for
 Remote Protocol (Client-to-Server) messages) MUST use transport identical to what is described in
 [MS-SAMR] section 2.1. Details about these messages are specified in section 2.2.5.
 
-2.2  SAM Server-to-Server Request Message Syntax
+### 2.2 SAM Server-to-Server Request Message Syntax
 
 This section specifies the format of the bytes in the protocol. Bytes are presented as variable-length
 structures.
@@ -1150,7 +1020,7 @@ Message (section 2.2.4), and ResetSmartCardAccountPassword Request Message (sect
 The format of the return value and values used in this protocol is specified in Return
 Codes (section 2.2.9).
 
-2.2.1  Base Request Message
+#### 2.2.1 Base Request Message
 
 Each request message is a formatted sequence of bytes. All 32-bit values interpreted as unsigned
 integers MUST be encoded in little-endian format (for all messages).
@@ -1187,7 +1057,8 @@ Release: July 29, 2024
 
 12 / 38
 
-Value
+
+Value
 
 Meaning
 
@@ -1231,7 +1102,7 @@ MessageSize bytes long. The interpretation of the data in the Message field depe
 of the request, which is indicated by the MessageType field. Message types are described in
 sections 2.2.2, 2.2.3, 2.2.4, and 2.2.7.
 
-2.2.2  PasswordUpdate Request Message
+#### 2.2.2 PasswordUpdate Request Message
 
 The PasswordUpdate request message requests a change in password-related attributes for the
 directory object specified in the message. The message processing details are specified in section
@@ -1280,7 +1151,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-bits MUST both be set or both be cleared. The responder MUST ignore the LM bit if it is set and
+
+bits MUST both be set or both be cleared. The responder MUST ignore the LM bit if it is set and
 the NT bit is not set.
 
 0  1  2  3  4  5  6  7  8  9
@@ -1368,7 +1240,8 @@ Release: July 29, 2024
 
 14 / 38
 
-  Offset: The offset, in bytes, from the start of the Data field to the first byte of the data that
+
+  Offset: The offset, in bytes, from the start of the Data field to the first byte of the data that
 
 corresponds to this particular element. The offset MUST be double-byte aligned.
 
@@ -1388,7 +1261,7 @@ for all elements of the OffsetLengthArray. This field is double-byte aligned and
 ordered the same as the elements in OffsetLengthArray; any bytes added to achieve alignment
 MUST have no bits set.
 
-2.2.3  ResetBadPwdCount Request Message
+#### 2.2.3 ResetBadPwdCount Request Message
 
 The ResetBadPwdCount request message instructs the responder to update the badPwdCount Active
 Directory attribute for a specified directory object. Message processing details are specified in section
@@ -1418,7 +1291,7 @@ Guid (16 bytes): A GUID, which is a 16-byte value, as specified in [MS-DTYP] sec
 
 GUID MUST be the value of objectGUID for the specified directory object.
 
-2.2.4  PasswordUpdateForward Request Message
+#### 2.2.4 PasswordUpdateForward Request Message
 
 The PasswordUpdateForward request message requests a change in password-related attributes for
 the directory object specified in the message. This message SHOULD be sent only from read-only
@@ -1451,7 +1324,8 @@ Release: July 29, 2024
 
 15 / 38
 
-PasswordExp
+
+PasswordExp
 
 Reserved
 
@@ -1534,7 +1408,8 @@ Release: July 29, 2024
 
 16 / 38
 
-  Offset: The offset, in bytes, from the start of the Data field to the first byte of the data that
+
+  Offset: The offset, in bytes, from the start of the Data field to the first byte of the data that
 
 corresponds to this particular element. The offset is double-byte aligned.
 
@@ -1550,14 +1425,14 @@ for all elements of the OffsetLengthArray. This field is double-byte aligned and
 ordered the same as the elements in OffsetLengthArray; any bytes added to achieve alignment
 MUST have no bits set.
 
-2.2.5  Forwarding Password-Change Request Messages
+#### 2.2.5 Forwarding Password-Change Request Messages
 
 When an RODC receives a SamrOemChangePasswordUser2 or a SamrUnicodeChangePasswordUser2
 request, as specified in [MS-SAMR] sections 3.1.5.10.2 and 3.1.5.10.3, the request MUST be
 forwarded to a writable NC replica. The way in which these messages are forwarded is specified in
 section 3.3.5.5.
 
-2.2.6  LastLogonTimeStampUpdate Structure
+#### 2.2.6 LastLogonTimeStampUpdate Structure
 
 The LastLogonTimeStampUpdate structure specifies an account and a timestamp.
 
@@ -1592,7 +1467,7 @@ Timestamp (8 bytes): A 64-bit signed integer containing the timestamp of the las
 
 account specified by the AccountRid field.
 
-2.2.7  LastLogonTimeStampUpdatesForward Request Message
+#### 2.2.7 LastLogonTimeStampUpdatesForward Request Message
 
 The LastLogonTimeStampUpdatesForward request message requests an update to the
 lastLogonTimeStamp attribute for a specified set of user accounts. This message SHOULD be sent only
@@ -1608,7 +1483,8 @@ Release: July 29, 2024
 
 17 / 38
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1635,7 +1511,7 @@ Reserved (4 bytes): A 32-bit, unsigned integer that MUST be set to zero.
 
 Updates (variable): An array of LastLogonTimeStampUpdate structures.
 
-2.2.8  ResetSmartCardAccountPassword Request Message
+#### 2.2.8 ResetSmartCardAccountPassword Request Message
 
 The ResetSmartCardAccountPassword request message instructs the responder to update the
 dbcsPwd and unicodePwd attributes (section 3.1.1) with random values for a specified directory
@@ -1668,7 +1544,7 @@ GUID MUST be the value of objectGUID (section 3.1.1) for the specified directory
 
 Reserved (1 byte): Reserved. MUST be set to zero.
 
-2.2.9  Return Codes
+#### 2.2.9 Return Codes
 
 The return code generated by the responder MUST be an NTSTATUS code (specified in [MS-ERREF]
 section 2.3). There are four distinguished values that can be returned by this protocol.
@@ -1697,7 +1573,8 @@ Release: July 29, 2024
 
 18 / 38
 
- Return
+
+ Return
 code
 
  Symbolic name
@@ -1731,11 +1608,12 @@ Release: July 29, 2024
 
 19 / 38
 
-3  Protocol Details
 
-3.1  Details Common to Both Requestor and Responder
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Details Common to Both Requestor and Responder
+
+#### 3.1.1 Abstract Data Model
 
 This protocol operates on a domain directory database, the data model for which is described in [MS-
 ADTS] section 3. For convenience, this section contains sufficient information from [MS-ADTS] section
@@ -1800,51 +1678,52 @@ Release: July 29, 2024
 
 20 / 38
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Requestor Details
+### 3.2 Requestor Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Details about the abstract data model are specified in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Common to All Messages
+##### 3.2.4.1 Common to All Messages
 
 None.
 
-3.2.4.2  PasswordUpdate Request
+##### 3.2.4.2 PasswordUpdate Request
 
 This message is used to communicate the state change of a password for a directory entry to the PDC
 on a best-effort basis; if the PDC cannot be reached or the update fails for any reason, the resulting
@@ -1858,7 +1737,8 @@ Release: July 29, 2024
 
 21 / 38
 
-  unicodePwd: When this attribute is updated, a message with the FLAG_NT_HASH and
+
+  unicodePwd: When this attribute is updated, a message with the FLAG_NT_HASH and
 
 FLAG_LM_HASH flags MUST be sent. The values of the NT hash and LM hash MUST be read from
 the requestor's database (unicodePwd and dbcsPwd attributes, respectively).
@@ -1876,7 +1756,7 @@ If more than one update occurs in a given transaction, the updates described abo
 combined into one message so that the responder can make any updates, if necessary, in a single
 transaction.
 
-3.2.4.3  ResetBadPwdCount Request
+##### 3.2.4.3 ResetBadPwdCount Request
 
 This message is used to communicate to the PDC if the badPwdCount attribute must be reset to 0.
 This message MUST be triggered by the following database update on a non-PDC.
@@ -1888,7 +1768,7 @@ as a result of the successful logon, the non-PDC MUST issue a ResetBadPwdCount r
 on a best-effort basis; if the PDC cannot be reached or the update fails for any reason, the resulting
 error MUST be ignored.
 
-3.2.4.4  PasswordUpdateForward Request
+##### 3.2.4.4 PasswordUpdateForward Request
 
 This message is used to communicate a request to change the state of a password for a directory
 entry. This message MUST be triggered only at an RODC by receipt of a NetrServerPasswordSet or
@@ -1898,7 +1778,7 @@ message is sent to the DC with which the RODC has established its secure channel
 [MS-NRPC]. If the forwarding operation returns an error, the operation fails and the error MUST be
 propagated back to the client that originated the password update request.
 
-3.2.4.5  Forwarding a Password-Change Request
+##### 3.2.4.5 Forwarding a Password-Change Request
 
 A request to change the state of a password for a directory entry is forwarded from an RODC to a
 writable NC replica. This behavior is triggered only at an RODC, and only by receipt of a
@@ -1929,7 +1809,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-SamrOemChangePasswordUser2 and SamrUnicodeChangePasswordUser2 are specified in [MS-
+
+SamrOemChangePasswordUser2 and SamrUnicodeChangePasswordUser2 are specified in [MS-
 SAMR] sections 3.1.5.10.2 and 3.1.5.10.3.
 
 4.  The RODC MUST initialize any output parameters with values returned from the target domain
@@ -1940,26 +1821,26 @@ controller.
 
 controller.<9>
 
-3.2.4.6  LastLogonTimeStampUpdatesForward Request
+##### 3.2.4.6 LastLogonTimeStampUpdatesForward Request
 
 This message is used to update the lastLogonTimeStamp attribute for one or more directory entries.
 This message is forwarded from an RODC to a writable NC replica. This behavior is triggered only at
 an RODC, and only as a result of a logon attempt by the specified directory entries. Logon attempts by
 the directory entries SHOULD NOT be affected if the update request returns an error.
 
-3.2.4.7  ResetSmartCardAccountPassword Request
+##### 3.2.4.7 ResetSmartCardAccountPassword Request
 
 This message is used to update the dbcsPwd and unicodePwd attributes on a smart-card-only
 account. This message is forwarded from either a read-only domain controller (RODC) or a
 backup domain controller (BDC) to a writable NC replica. Processing of the request is based on
 the role of the current machine as described in the following sections.
 
-3.2.4.7.1 Primary Domain Controller (PDC)
+###### 3.2.4.7.1 Primary Domain Controller (PDC)
 
 When the current machine is the primary domain controller (PDC), the request is processed locally
 as specified in section 3.3.5.7.
 
-3.2.4.7.2 Backup Domain Controller (BDC)
+###### 3.2.4.7.2 Backup Domain Controller (BDC)
 
 When the current machine is a backup domain controller (BDC), the request is processed as
 follows:
@@ -1974,7 +1855,7 @@ updated user account data to the BDC.
 If the ResetSmartCardAccountPassword request message sent to the PDC fails, the request is
 processed locally as specified in section 3.3.5.7.
 
-3.2.4.7.3 Read-only Domain Controller (RODC)
+###### 3.2.4.7.3 Read-only Domain Controller (RODC)
 
 When the current machine is a read-only domain controller (RODC), the request is processed as
 follows:
@@ -1998,39 +1879,40 @@ Release: July 29, 2024
 
 23 / 38
 
-3.2.5  Message Processing Events and Sequencing Rules
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 All errors MUST be returned to the calling layer. Furthermore, implementations MUST NOT retry the
 operation upon failure because subsequent database updates (either at the requestor or responder)
 might render the information stale in the request. This directive applies to all messages.<10>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Responder Details
+### 3.3 Responder Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 Details about the abstract data model are specified in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The responder MUST begin listening for incoming requests.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 In the following sections, the notation "Message.PasswordUpdate" is used to refer to the
 PasswordUpdate request message (section 2.2.2). By using this convention,
@@ -2043,15 +1925,15 @@ ResetSmartCardAccountPassword request message (section 2.2.8).
 For each message in this section, an informative description of the message is presented first; then, a
 normative description about how the message must be processed is given.
 
-3.3.5.1  Message Type
+##### 3.3.5.1 Message Type
 
-3.3.5.1.1 Non-Normative Description
+###### 3.3.5.1.1 Non-Normative Description
 
 The messages described in sections 3.3.5.2, 3.3.5.3, 3.3.5.4, and 3.3.5.6 contain a message-type
 field. Message processing for those messages begins with the responder examining the message
 type.
 
-3.3.5.1.2 Normative Specification
+###### 3.3.5.1.2 Normative Specification
 
 24 / 38
 
@@ -2060,7 +1942,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-If Message.MessageType is not one of the expected values, as defined in Base Request
+
+If Message.MessageType is not one of the expected values, as defined in Base Request
 Message (section 2.2.1), the responder MUST return an error. Otherwise, the responder MUST
 process the message based on the message type as follows:
 
@@ -2074,13 +1957,13 @@ RESET_PWD_COUNT_MSG
 
 3.3.5.2
 
-3.3.5.3
+##### 3.3.5.3 FWD_PASSWORD_UPDATE_MSG
 
-FWD_PASSWORD_UPDATE_MSG
 
-3.3.5.4
 
-FWD_LASTLOGON_TS_UPDATE_MSG  3.3.5.6
+##### 3.3.5.4 FWD_LASTLOGON_TS_UPDATE_MSG 3.3.5.6
+
+
 
 RESET_SMART_CARD_ONLY_PWD
 
@@ -2139,7 +2022,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-1.  Update the unicodePwd attribute with the data value supplied in
+
+1.  Update the unicodePwd attribute with the data value supplied in
 
 Message.PasswordUpdate.Data, as specified by the fourth array element in
 Message.PasswordUpdate.OffsetLengthArray.
@@ -2186,14 +2070,14 @@ STATUS_SUCCESS; otherwise, the responder MUST return an error code, as specified
 
 3.3.5.4  PasswordUpdateForward Request Message
 
-3.3.5.4.1 Non-Normative Description
+###### 3.3.5.4.1 Non-Normative Description
 
 This message is used by RODCs to communicate the request to change a password. The target user is
 identified by the user account name, and the new password is sent in clear-text by this protocol (the
 transport encrypts the password on the wire). As such, the server message processing changes the
 local database to reflect the requested message.
 
-3.3.5.4.2 Normative Specification
+###### 3.3.5.4.2 Normative Specification
 
 Upon receiving this message, the responder SHOULD<17> return STATUS_NOT_SUPPORTED if the
 requestor is not an RODC. Otherwise, the responder MUST process the data from the message
@@ -2207,7 +2091,8 @@ Release: July 29, 2024
 
 26 / 38
 
-1.  The responder SHOULD validate the integrity of the message with respect to embedded offsets
+
+1.  The responder SHOULD validate the integrity of the message with respect to embedded offsets
 and sizes. Responder implementations SHOULD return STATUS_INVALID_PARAMETER upon
 receiving malformed messages.<18>
 
@@ -2243,9 +2128,9 @@ otherwise, the responder MUST return an error code, as specified in section 2.2.
 
 9.  All updates MUST occur as originating updates.
 
-3.3.5.5  Forwarding a Password-Change Request Message
+##### 3.3.5.5 Forwarding a Password-Change Request Message
 
-3.3.5.5.1 Non-Normative Description
+###### 3.3.5.5.1 Non-Normative Description
 
 When an RODC receives a SamrOemChangePasswordUser2 or SamrUnicodeChangePasswordUser2
 request, as specified in [MS-SAMR] sections 3.1.5.10.2 and 3.1.5.10.3, the request is forwarded to a
@@ -2253,20 +2138,20 @@ writable NC replica in the same domain by initiating a transport session in the 
 and resending the message to that DC. The result of message processing at the DC is then returned to
 the requestor.
 
-3.3.5.5.2 Normative Specification
+###### 3.3.5.5.2 Normative Specification
 
 Upon receiving this message, the responder MUST process the data from the message subject to the
 constraints specified in [MS-SAMR] sections 3.1.5.10.2 and 3.1.5.10.3.
 
-3.3.5.6  LastLogonTimeStampUpdatesForward Request Message
+##### 3.3.5.6 LastLogonTimeStampUpdatesForward Request Message
 
-3.3.5.6.1 Non-Normative Description
+###### 3.3.5.6.1 Non-Normative Description
 
 This message is used by RODCs to forward updates of the lastLogonTimeStamp attribute for one or
 more user accounts to a writable NC replica. The RODC must be configured to allow caching of the
 account credentials on the RODC.
 
-3.3.5.6.2 Normative Specification
+###### 3.3.5.6.2 Normative Specification
 
 Upon receiving this message, the responder SHOULD<21> return STATUS_NOT_SUPPORTED if the
 requestor is not an RODC. Otherwise, the responder MUST process the data from the message
@@ -2279,7 +2164,8 @@ Release: July 29, 2024
 
 27 / 38
 
-1.  The responder SHOULD validate the integrity of the message with respect to embedded offsets
+
+1.  The responder SHOULD validate the integrity of the message with respect to embedded offsets
 and sizes. Responder implementations SHOULD return STATUS_INVALID_PARAMETER upon
 receiving malformed messages.<22>
 
@@ -2305,9 +2191,9 @@ algorithm specified for that attribute in [MS-ADA1]. This MUST be an originating
 
 4.  All errors MUST be ignored.
 
-3.3.5.7  ResetSmartCardAccountPassword Request Message
+##### 3.3.5.7 ResetSmartCardAccountPassword Request Message
 
-3.3.5.7.1 Non-Normative Description
+###### 3.3.5.7.1 Non-Normative Description
 
 This message is used by non-PDC DCs to forward requests that will update the dbcsPwd and
 unicodePwd attributes on a smart-card-only user account with random values.
@@ -2315,7 +2201,7 @@ unicodePwd attributes on a smart-card-only user account with random values.
 This message is used only for users who have passwords that are either expired or within a threshold
 of expiration.
 
-3.3.5.7.2 Normative Specification
+###### 3.3.5.7.2 Normative Specification
 
 The responder SHOULD<24> process the data from the message, subject to all the following
 constraints:
@@ -2358,7 +2244,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-3.  The responder MUST perform the following validation steps before proceeding.
+
+3.  The responder MUST perform the following validation steps before proceeding.
 
 1.  If the msDS-ExpirePasswordsOnSmartCardOnlyAccounts attribute ([MS-ADA2] section 2.319)
 on the naming context (NC) is either false or not present, or if the domain functional level
@@ -2387,11 +2274,11 @@ generated in the previous step.
 
 See [MS-PKCA] section 3.1.5.2.2 for additional information about handling password changes.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2402,13 +2289,14 @@ Release: July 29, 2024
 
 29 / 38
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-SAMS].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  SAM Server-to-Server Request Example
+### 4.1 SAM Server-to-Server Request Example
 
 The following example shows a requestor successfully making a PasswordUpdate (section 2.2.2)
 request.
@@ -2472,7 +2360,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 
 
@@ -2505,16 +2394,17 @@ Release: July 29, 2024
 
 31 / 38
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Because password data can be set through a message in this protocol, this is a highly sensitive
 protocol. It is critical that the implementation of the transport ensures the level of authentication,
 authorization, secrecy, and integrity supplied by the protocol specification of the Netlogon Remote
 Protocol. For more information, see [MS-NRPC] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2525,7 +2415,8 @@ Release: July 29, 2024
 
 32 / 38
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2598,7 +2489,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
- Symbolic name
+
+ Symbolic name
 
  Available in
 
@@ -2667,7 +2559,8 @@ Release: July 29, 2024
 
 34 / 38
 
-<15> Section 3.3.5.3.2: Windows 2000 Server, Windows Server 2003, and Windows Server 2008
+
+<15> Section 3.3.5.3.2: Windows 2000 Server, Windows Server 2003, and Windows Server 2008
 return STATUS_ACCESS_DENIED if the responder is not the PDC.
 
 <16> Section 3.3.5.3.2: In Windows 2000 Server and Windows Server 2003, and in Windows Server
@@ -2706,7 +2599,8 @@ Release: July 29, 2024
 
 35 / 38
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2774,7 +2668,8 @@ Release: July 29, 2024
 
 36 / 38
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2919,7 +2814,8 @@ Security Account Manager (SAM) Remote Protocol (Server-to-Server)
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-   abstract data model (section 3.1.1 20, section
+
+   abstract data model (section 3.1.1 20, section
 
 3.2.1 21)
 

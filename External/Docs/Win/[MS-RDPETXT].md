@@ -64,7 +64,8 @@ Release: November 19, 2024
 
 1 / 94
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -98,335 +99,154 @@ Release: November 19, 2024
 
 2 / 94
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Command PDUs](#131-command-pdus)
+    - [1.3.2 Key Replay and Override](#132-key-replay-and-override)
+      - [1.3.2.1 Asynchronous Design](#1321-asynchronous-design)
+      - [1.3.2.2 Update Collisions](#1322-update-collisions)
+      - [1.3.2.3 Detecting Collisions](#1323-detecting-collisions)
+      - [1.3.2.4 Handling the Collision](#1324-handling-the-collision)
+      - [1.3.2.5 Override](#1325-override)
+    - [1.3.3 Text Paging](#133-text-paging)
+      - [1.3.3.1 Edit Buffers](#1331-edit-buffers)
+      - [1.3.3.2 Solving the Problem of Large Documents](#1332-solving-the-problem-of-large-documents)
+      - [1.3.3.3 Page Size](#1333-page-size)
+      - [1.3.3.4 Handling Text Selections](#1334-handling-text-selections)
+      - [1.3.3.5 Paging in of Selected Text](#1335-paging-in-of-selected-text)
+      - [1.3.3.6 PDUs that Support Text Paging](#1336-pdus-that-support-text-paging)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+      - [2.2.1.1 KeyEventHostInfo](#2211-keyeventhostinfo)
+      - [2.2.1.2 KeyEventAttributes](#2212-keyeventattributes)
+      - [2.2.1.3 KeyPressInfo](#2213-keypressinfo)
+      - [2.2.1.4 HotKeyRegistrationData](#2214-hotkeyregistrationdata)
+      - [2.2.1.5 CompositionClause](#2215-compositionclause)
+      - [2.2.1.6 CoreInputProfile](#2216-coreinputprofile)
+      - [2.2.1.7 CoreInputViewOcclusion](#2217-coreinputviewocclusion)
+      - [2.2.1.8 EditControlRange](#2218-editcontrolrange)
+      - [2.2.1.9 EditControlInfo](#2219-editcontrolinfo)
+      - [2.2.1.10 NavigateFocusInfo](#22110-navigatefocusinfo)
+      - [2.2.1.11 NavigateFocusCompleteInfo](#22111-navigatefocuscompleteinfo)
+      - [2.2.1.12 NonCUIConfiguration](#22112-noncuiconfiguration)
+      - [2.2.1.13 TextInputRect](#22113-textinputrect)
+      - [2.2.1.14 TextFormat](#22114-textformat)
+      - [2.2.1.15 TextInputHostSettings](#22115-textinputhostsettings)
+    - [2.2.2 PDUs](#222-pdus)
+      - [2.2.2.1 RDPTXT_KEY_EVENT_PDU](#2221-rdptxtkeyeventpdu)
+      - [2.2.2.2 RDPTXT_CHARACTER_EVENT_PDU](#2222-rdptxtcharactereventpdu)
+      - [2.2.2.3 RDPTXT_FOCUS_NAVIGATING_EVENT_PDU](#2223-rdptxtfocusnavigatingeventpdu)
+      - [2.2.2.4 RDPTXT_FOCUS_DEPART_COMPLETED_PDU](#2224-rdptxtfocusdepartcompletedpdu)
+      - [2.2.2.5 RDPTXT_ENABLE_WINDOW_PDU](#2225-rdptxtenablewindowpdu)
+      - [2.2.2.6 RDPTXT_ACTIVATION_STATE_CHANGE_PDU](#2226-rdptxtactivationstatechangepdu)
+      - [2.2.2.7 RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU](#2227-rdptxtnoncomponentuiconfigurationchangepdu)
+      - [2.2.2.8 RDPTXT_KEY_EVENT_PAYLOAD_PDU](#2228-rdptxtkeyeventpayloadpdu)
+      - [2.2.2.9 RDPTXT_UPDATE_TEXT_PDU](#2229-rdptxtupdatetextpdu)
+      - [2.2.2.10 RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU](#22210-rdptxtupdatetextandselectionpdu)
+      - [2.2.2.11 RDPTXT_SET_SELECTION_PDU](#22211-rdptxtsetselectionpdu)
+      - [2.2.2.12 RDPTXT_UPDATE_FORMAT_PDU](#22212-rdptxtupdateformatpdu)
+      - [2.2.2.13 RDPTXT_UPDATE_COMPOSITION_PDU](#22213-rdptxtupdatecompositionpdu)
+      - [2.2.2.14 RDPTXT_SET_COMPOSITION_INFO_PDU](#22214-rdptxtsetcompositioninfopdu)
+      - [2.2.2.15 RDPTXT_RECONVERSION_CANDIDATES_PDU](#22215-rdptxtreconversioncandidatespdu)
+      - [2.2.2.16 RDPTXT_DO_RECONVERSION_PDU](#22216-rdptxtdoreconversionpdu)
+      - [2.2.2.17 RDPTXT_UPDATE_INPUT_LOCALE_PDU](#22217-rdptxtupdateinputlocalepdu)
+      - [2.2.2.18 RDPTXT_UPDATE_INPUT_PROFILE_PDU](#22218-rdptxtupdateinputprofilepdu)
+      - [2.2.2.19 RDPTXT_UPDATE_MODE_PDU](#22219-rdptxtupdatemodepdu)
+      - [2.2.2.20 RDPTXT_SET_CONVERSION_MODE_PDU](#22220-rdptxtsetconversionmodepdu)
+      - [2.2.2.21 RDPTXT_ACKNOWLEDGE_OPERATION_PDU](#22221-rdptxtacknowledgeoperationpdu)
+      - [2.2.2.22 RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU](#22222-rdptxtacknowledgehostoperationpdu)
+      - [2.2.2.23 RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU](#22223-rdptxtacknowledgeundopendingkeyeventspdu)
+      - [2.2.2.24 RDPTXT_REGISTER_REMOTE_TEXT_TARGET_PDU](#22224-rdptxtregisterremotetexttargetpdu)
+      - [2.2.2.25 RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU](#22225-rdptxtregisterremotekeytargetpdu)
+      - [2.2.2.26 RDPTXT_REGISTER_REMOTE_EDIT_CONTROL_PDU](#22226-rdptxtregisterremoteeditcontrolpdu)
+      - [2.2.2.27 RDPTXT_REGISTER_REMOTE_COREINPUTVIEW_PDU](#22227-rdptxtregisterremotecoreinputviewpdu)
+      - [2.2.2.28 RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU](#22228-rdptxtunregisterremotetexttargetpdu)
+      - [2.2.2.29 RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU](#22229-rdptxtunregisterremotekeytargetpdu)
+      - [2.2.2.30 RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU](#22230-rdptxtunregisterremoteeditcontrolpdu)
+      - [2.2.2.31 RDPTXT_UNREGISTER_REMOTE_COREINPUTVIEW_PDU](#22231-rdptxtunregisterremotecoreinputviewpdu)
+      - [2.2.2.32 RDPTXT_EDIT_CONTROL_FOCUS_PDU](#22232-rdptxteditcontrolfocuspdu)
+      - [2.2.2.33 RDPTXT_HOST_FOCUS_PDU](#22233-rdptxthostfocuspdu)
+      - [2.2.2.34 RDPTXT_HOST_FOREGROUND_PDU](#22234-rdptxthostforegroundpdu)
+      - [2.2.2.35 RDPTXT_SELECTION_CHANGED_PDU](#22235-rdptxtselectionchangedpdu)
+      - [2.2.2.36 RDPTXT_TEXT_CHANGED_PDU](#22236-rdptxttextchangedpdu)
+      - [2.2.2.37 RDPTXT_CONTROL_CONFIGURATION_UPDATED_PDU](#22237-rdptxtcontrolconfigurationupdatedpdu)
+      - [2.2.2.38 RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU](#22238-rdptxtcontrolconversionmodeupdatedpdu)
+      - [2.2.2.39 RDPTXT_GEOMETRY_CHANGED_PDU](#22239-rdptxtgeometrychangedpdu)
+      - [2.2.2.40 RDPTXT_SOFTWARE_KEYBOARD_INVOCATION_SIGNALS_PDU](#22240-rdptxtsoftwarekeyboardinvocationsignalspdu)
+      - [2.2.2.41 RDPTXT_ACTIVE_VIEW_CHANGED_PDU](#22241-rdptxtactiveviewchangedpdu)
+      - [2.2.2.42 RDPTXT_FOREGROUND_HOST_INFO_UPDATED_PDU](#22242-rdptxtforegroundhostinfoupdatedpdu)
+      - [2.2.2.43 RDPTXT_NOTIFY_SERVER_VERSION_PDU](#22243-rdptxtnotifyserverversionpdu)
+      - [2.2.2.44 RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU](#22244-rdptxtacknowledgeremoteoperationpdu)
+      - [2.2.2.45 RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU](#22245-rdptxtacknowledgekeyeventpdu)
+      - [2.2.2.46 RDPTXT_INPUT_PROFILE_CHANGED_PDU](#22246-rdptxtinputprofilechangedpdu)
+      - [2.2.2.47 RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU](#22247-rdptxtviewocclusionshandledpdu)
+      - [2.2.2.48 RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU](#22248-rdptxteditcontroltextsegmentpdu)
+      - [2.2.2.49 RDPTXT_COMPOSITION_TERMINATED_PDU](#22249-rdptxtcompositionterminatedpdu)
+      - [2.2.2.50 RDPTXT_SOFTWARE_KEYBOARD_POLICY_PDU](#22250-rdptxtsoftwarekeyboardpolicypdu)
+      - [2.2.2.51 RDPTXT_SET_ENABLED_INPUT_PROFILES_PDU](#22251-rdptxtsetenabledinputprofilespdu)
+      - [2.2.2.52 RDPTXT_OCCLUDING_VIEWS_PDU](#22252-rdptxtoccludingviewspdu)
+      - [2.2.2.53 RDPTXT_NOTIFY_CLIENT_VERSION_PDU](#22253-rdptxtnotifyclientversionpdu)
+      - [2.2.2.54 RDPTXT_REPORT_CLIENT_OPTIONS_PDU](#22254-rdptxtreportclientoptionspdu)
+      - [2.2.2.55 RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU](#22255-rdptxtsoftwarekeyboardvisibilitypdu)
+      - [2.2.2.56 RDPTXT_HOTKEY_REGISTRATION_PDU](#22256-rdptxthotkeyregistrationpdu)
+      - [2.2.2.57 RDPTXT_REFRESH_CLIENT_PDU](#22257-rdptxtrefreshclientpdu)
+      - [2.2.2.58 RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU](#22258-rdptxtundopendingkeyeventspdu)
+      - [2.2.2.59 RDPTXT_SEND_KEY_TO_HOST_PDU](#22259-rdptxtsendkeytohostpdu)
+      - [2.2.2.60 RDPTXT_REMOTE_TEXT_TARGET_THREAD_PROPERTIES_PDU](#22260-rdptxtremotetexttargetthreadpropertiespdu)
+      - [2.2.2.61 RDPTXT_REREGISTRATION_REQUEST_PDU](#22261-rdptxtreregistrationrequestpdu)
+      - [2.2.2.62 RDPTXT_REMOTE_INTEGRATION_STATUS_PDU](#22262-rdptxtremoteintegrationstatuspdu)
+      - [2.2.2.63 RDPTXT_ERROR_REPORT_PDU](#22263-rdptxterrorreportpdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Reconversion PDUs](#3151-reconversion-pdus)
+      - [3.1.5.2 PDUs that require acknowledgement](#3152-pdus-that-require-acknowledgement)
+        - [3.1.5.2.1 RDPTXT_EDIT_CONTROL_FOCUS_PDU](#31521-rdptxteditcontrolfocuspdu)
+        - [3.1.5.2.2 RDPTXT_TEXT_CHANGED_PDU](#31522-rdptxttextchangedpdu)
+        - [3.1.5.2.3 RDPTXT_SELECTION_CHANGED_PDU](#31523-rdptxtselectionchangedpdu)
+        - [3.1.5.2.4 RDPTXT_COMPOSITION_TERMINATED_PDU](#31524-rdptxtcompositionterminatedpdu)
+        - [3.1.5.2.5 RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU](#31525-rdptxtcontrolconversionmodeupdatedpdu)
+        - [3.1.5.2.6 RDPTXT_HOST_FOCUS_PDU](#31526-rdptxthostfocuspdu)
+        - [3.1.5.2.7 RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU](#31527-rdptxtundopendingkeyeventspdu)
+        - [3.1.5.2.8 RDPTXT_UPDATE_TEXT_PDU](#31528-rdptxtupdatetextpdu)
+        - [3.1.5.2.9 RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU](#31529-rdptxtupdatetextandselectionpdu)
+        - [3.1.5.2.10 RDPTXT_SET_SELECTION_PDU](#315210-rdptxtsetselectionpdu)
+        - [3.1.5.2.11 RDPTXT_UPDATE_FORMAT_PDU](#315211-rdptxtupdateformatpdu)
+        - [3.1.5.2.12 RDPTXT_UPDATE_COMPOSITION_PDU](#315212-rdptxtupdatecompositionpdu)
+        - [3.1.5.2.13 RDPTXT_KEY_EVENT_PDU](#315213-rdptxtkeyeventpdu)
+        - [3.1.5.2.14 RDPTXT_KEY_EVENT_PAYLOAD_PDU](#315214-rdptxtkeyeventpayloadpdu)
+      - [3.1.5.3 Input Profile Update Confirmation](#3153-input-profile-update-confirmation)
+      - [3.1.5.4 CoreInputView Occlusions](#3154-coreinputview-occlusions)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-1.3.2.5
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Command PDUs............................................................................................ 8
-Key Replay and Override ............................................................................. 11
-Asynchronous Design ............................................................................ 11
-Update Collisions .................................................................................. 11
-Detecting Collisions ............................................................................... 11
-Handling the Collision ............................................................................ 12
-Override .............................................................................................. 13
-Text Paging ................................................................................................ 13
-Edit Buffers .......................................................................................... 13
-Solving the Problem of Large Documents ................................................. 13
-Page Size ............................................................................................. 14
-Handling Text Selections ........................................................................ 14
-Paging in of Selected Text ...................................................................... 14
-PDUs that Support Text Paging ............................................................... 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-1.3.3.4
-1.3.3.5
-1.3.3.6
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Message Syntax ............................................................................................... 18
-Namespaces .............................................................................................. 18
-KeyEventHostInfo ................................................................................. 18
-2.2.1.1
-KeyEventAttributes ............................................................................... 22
-2.2.1.2
-KeyPressInfo ........................................................................................ 22
-2.2.1.3
-HotKeyRegistrationData ......................................................................... 28
-2.2.1.4
-CompositionClause ................................................................................ 29
-2.2.1.5
-CoreInputProfile .................................................................................... 29
-2.2.1.6
-CoreInputViewOcclusion ........................................................................ 32
-2.2.1.7
-EditControlRange .................................................................................. 33
-2.2.1.8
-2.2.1.9
-EditControlInfo ..................................................................................... 33
-2.2.1.10  NavigateFocusInfo ................................................................................ 37
-2.2.1.11  NavigateFocusCompleteInfo ................................................................... 38
-2.2.1.12  NonCUIConfiguration ............................................................................. 39
-TextInputRect ....................................................................................... 39
-2.2.1.13
-TextFormat .......................................................................................... 39
-2.2.1.14
-TextInputHostSettings ........................................................................... 41
-2.2.1.15
-PDUs ......................................................................................................... 41
-RDPTXT_KEY_EVENT_PDU ..................................................................... 44
-RDPTXT_CHARACTER_EVENT_PDU .......................................................... 46
-RDPTXT_FOCUS_NAVIGATING_EVENT_PDU ............................................. 46
-RDPTXT_FOCUS_DEPART_COMPLETED_PDU ............................................ 47
-RDPTXT_ENABLE_WINDOW_PDU ............................................................ 47
-RDPTXT_ACTIVATION_STATE_CHANGE_PDU ............................................ 47
-RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU ................. 48
-RDPTXT_KEY_EVENT_PAYLOAD_PDU ....................................................... 49
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-
-2.2.2
-
-[MS-RDPETXT] - v20241119
-Remote Desktop Protocol: Text Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-3 / 94
-
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-2.2.2.17
-2.2.2.18
-2.2.2.19
-2.2.2.20
-2.2.2.21
-2.2.2.22
-2.2.2.23
-2.2.2.24
-2.2.2.25
-2.2.2.26
-2.2.2.27
-2.2.2.28
-2.2.2.29
-2.2.2.30
-2.2.2.31
-2.2.2.32
-2.2.2.33
-2.2.2.34
-2.2.2.35
-2.2.2.36
-2.2.2.37
-2.2.2.38
-2.2.2.39
-2.2.2.40
-2.2.2.41
-2.2.2.42
-2.2.2.43
-2.2.2.44
-2.2.2.45
-2.2.2.46
-2.2.2.47
-2.2.2.48
-2.2.2.49
-2.2.2.50
-2.2.2.51
-2.2.2.52
-2.2.2.53
-2.2.2.54
-2.2.2.55
-2.2.2.56
-2.2.2.57
-2.2.2.58
-2.2.2.59
-2.2.2.60
-2.2.2.61
-2.2.2.62
-2.2.2.63
-
-RDPTXT_UPDATE_TEXT_PDU .................................................................. 49
-RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU ........................................ 50
-RDPTXT_SET_SELECTION_PDU ............................................................... 51
-RDPTXT_UPDATE_FORMAT_PDU ............................................................. 52
-RDPTXT_UPDATE_COMPOSITION_PDU .................................................... 55
-RDPTXT_SET_COMPOSITION_INFO_PDU ................................................. 56
-RDPTXT_RECONVERSION_CANDIDATES_PDU ........................................... 57
-RDPTXT_DO_RECONVERSION_PDU ......................................................... 57
-RDPTXT_UPDATE_INPUT_LOCALE_PDU .................................................... 58
-RDPTXT_UPDATE_INPUT_PROFILE_PDU ................................................... 58
-RDPTXT_UPDATE_MODE_PDU ................................................................ 59
-RDPTXT_SET_CONVERSION_MODE_PDU ................................................. 60
-RDPTXT_ACKNOWLEDGE_OPERATION_PDU ............................................. 62
-RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU .................................... 63
-RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU ................... 64
-RDPTXT_REGISTER_REMOTE_TEXT_TARGET_PDU .................................... 64
-RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU ...................................... 64
-RDPTXT_REGISTER_REMOTE_EDIT_CONTROL_PDU .................................. 65
-RDPTXT_REGISTER_REMOTE_COREINPUTVIEW_PDU ................................ 66
-RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU ................................ 66
-RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU .................................. 66
-RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU .............................. 67
-RDPTXT_UNREGISTER_REMOTE_COREINPUTVIEW_PDU ............................ 67
-RDPTXT_EDIT_CONTROL_FOCUS_PDU .................................................... 67
-RDPTXT_HOST_FOCUS_PDU................................................................... 68
-RDPTXT_HOST_FOREGROUND_PDU ........................................................ 69
-RDPTXT_SELECTION_CHANGED_PDU ...................................................... 69
-RDPTXT_TEXT_CHANGED_PDU ............................................................... 70
-RDPTXT_CONTROL_CONFIGURATION_UPDATED_PDU ............................... 72
-RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU .......................... 72
-RDPTXT_GEOMETRY_CHANGED_PDU ...................................................... 74
-RDPTXT_SOFTWARE_KEYBOARD_INVOCATION_SIGNALS_PDU .................. 74
-RDPTXT_ACTIVE_VIEW_CHANGED_PDU .................................................. 75
-RDPTXT_FOREGROUND_HOST_INFO_UPDATED_PDU ................................ 76
-RDPTXT_NOTIFY_SERVER_VERSION_PDU ................................................ 76
-RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU ................................ 77
-RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU .............................................. 77
-RDPTXT_INPUT_PROFILE_CHANGED_PDU ................................................ 78
-RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU .......................................... 78
-RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU ....................................... 78
-RDPTXT_COMPOSITION_TERMINATED_PDU ............................................. 79
-RDPTXT_SOFTWARE_KEYBOARD_POLICY_PDU ......................................... 80
-RDPTXT_SET_ENABLED_INPUT_PROFILES_PDU ........................................ 80
-RDPTXT_OCCLUDING_VIEWS_PDU ......................................................... 80
-RDPTXT_NOTIFY_CLIENT_VERSION_PDU ................................................. 81
-RDPTXT_REPORT_CLIENT_OPTIONS_PDU ................................................ 81
-RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU .................................... 82
-RDPTXT_HOTKEY_REGISTRATION_PDU ................................................... 82
-RDPTXT_REFRESH_CLIENT_PDU ............................................................. 83
-RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU ........................................... 83
-RDPTXT_SEND_KEY_TO_HOST_PDU ....................................................... 83
-RDPTXT_REMOTE_TEXT_TARGET_THREAD_PROPERTIES_PDU .................... 84
-RDPTXT_REREGISTRATION_REQUEST_PDU.............................................. 84
-RDPTXT_REMOTE_INTEGRATION_STATUS_PDU ........................................ 84
-RDPTXT_ERROR_REPORT_PDU ............................................................... 85
-
-3  Protocol Details ..................................................................................................... 86
-Common Details .............................................................................................. 86
-
-3.1
-
-4 / 94
-
-[MS-RDPETXT] - v20241119
-Remote Desktop Protocol: Text Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-Abstract Data Model .................................................................................... 86
-Timers ...................................................................................................... 86
-Initialization ............................................................................................... 86
-Higher-Layer Triggered Events ..................................................................... 86
-Message Processing Events and Sequencing Rules .......................................... 86
-Reconversion PDUs ............................................................................... 86
-PDUs that require acknowledgement ....................................................... 86
-RDPTXT_EDIT_CONTROL_FOCUS_PDU ............................................... 86
-RDPTXT_TEXT_CHANGED_PDU ......................................................... 87
-RDPTXT_SELECTION_CHANGED_PDU ................................................ 87
-RDPTXT_COMPOSITION_TERMINATED_PDU ....................................... 87
-RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU .................... 87
-RDPTXT_HOST_FOCUS_PDU ............................................................. 87
-RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU ..................................... 87
-RDPTXT_UPDATE_TEXT_PDU ............................................................ 87
-RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU ................................... 87
-RDPTXT_SET_SELECTION_PDU ......................................................... 87
-RDPTXT_UPDATE_FORMAT_PDU ........................................................ 88
-RDPTXT_UPDATE_COMPOSITION_PDU ............................................... 88
-RDPTXT_KEY_EVENT_PDU ................................................................ 88
-RDPTXT_KEY_EVENT_PAYLOAD_PDU ................................................. 88
-Input Profile Update Confirmation ........................................................... 88
-CoreInputView Occlusions ...................................................................... 88
-Timer Events .............................................................................................. 88
-Other Local Events ...................................................................................... 89
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-3.1.5.2.7
-3.1.5.2.8
-3.1.5.2.9
-3.1.5.2.10
-3.1.5.2.11
-3.1.5.2.12
-3.1.5.2.13
-3.1.5.2.14
-
-3.1.5.3
-3.1.5.4
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 90
-
-5  Security ................................................................................................................. 91
-Security Considerations for Implementers ........................................................... 91
-Index of Security Parameters ............................................................................ 91
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 92
-
-7  Change Tracking .................................................................................................... 93
-
-8  Index ..................................................................................................................... 94
-
-[MS-RDPETXT] - v20241119
-Remote Desktop Protocol: Text Input Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-5 / 94
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Text Input Virtual Channel Extension is used to connect various client
 machine text input methods that run on a remote server to perform those text editing operations in
@@ -436,7 +256,7 @@ editing text in a remote application as is experienced in an application running
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -499,7 +319,8 @@ Release: November 19, 2024
 
 6 / 94
 
-synchronous operation: An operation that is executed on the server side while the client is
+
+synchronous operation: An operation that is executed on the server side while the client is
 
 waiting for the response message.
 
@@ -522,14 +343,14 @@ over a main data connection, in 1600-byte chunks, as specified in Static Virtual
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -545,7 +366,7 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSLearn-CoreInputViewKind] Microsoft Corporation, "CoreInputViewKind Enum",
 https://learn.microsoft.com/en-
@@ -566,7 +387,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-[MSLEARN-InputPane] Microsoft Corporation, "InputPane Class", Soft Input Panel (SIP),
+
+[MSLEARN-InputPane] Microsoft Corporation, "InputPane Class", Soft Input Panel (SIP),
 https://learn.microsoft.com/en-us/uwp/api/windows.ui.viewmanagement.inputpane?view=winrt-
 22621
 
@@ -587,7 +409,7 @@ https://learn.microsoft.com/en-us/uwp/api/windows.ui.viewmanagement.uielementtyp
 [MSLEARN-UnderlineType] Microsoft Corporation, "UnderlineType Enum",
 https://learn.microsoft.com/en-us/uwp/api/windows.ui.text.underlinetype?view=winrt-22621
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol (RDP): Text Input Virtual Channel Extension is used to connect
 various client machine text input methods, that includes input method editors (IMEs) to editable
@@ -615,7 +437,7 @@ Text input system’s key replay behavior and overrides.
 
 Text Paging feature and how that feature is manifest in the text input PDUs.
 
-1.3.1  Command PDUs
+#### 1.3.1 Command PDUs
 
 The commands specified in section 2.2 facilitate communication between input methods (with the
 service that controls/enables/activates those methods) and the editable text surfaces such as edit
@@ -638,7 +460,8 @@ Release: November 19, 2024
 
 8 / 94
 
-  RDPTXT_FOCUS_DEPART_COMPLETED_PDU
+
+  RDPTXT_FOCUS_DEPART_COMPLETED_PDU
 
   RDPTXT_ENABLE_WINDOW_PDU
 
@@ -712,7 +535,8 @@ Release: November 19, 2024
 
 9 / 94
 
-  RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU
+
+  RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU
 
   RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU
 
@@ -785,7 +609,8 @@ Release: November 19, 2024
 
 10 / 94
 
-11. Miscellaneous request commands sent from server to client.
+
+11. Miscellaneous request commands sent from server to client.
 
   RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU
 
@@ -807,12 +632,12 @@ Release: November 19, 2024
 
   RDPTXT_ERROR_REPORT_PDU
 
-1.3.2  Key Replay and Override
+#### 1.3.2 Key Replay and Override
 
 This section provides an overview of the text input system’s key replay behavior. It describes the
 system’s notion of overrides, when they are reported, and how they are handled.
 
-1.3.2.1  Asynchronous Design
+##### 1.3.2.1 Asynchronous Design
 
 To ensure optimal performance of the text input system, all Text Services Framework (TSF)
 communication between client machine input methods and edit controls that run in a RAIL application
@@ -821,7 +646,7 @@ method that are sent from the client machine to the server and notifications of 
 such as pasted text, scripted text updates, selection changes, etc. that are reported from the RAIL app
 on the server to the input methods on the client.
 
-1.3.2.2  Update Collisions
+##### 1.3.2.2 Update Collisions
 
 The asynchronous operation communication downside is that updates can be initiated on both the
 client and server ends at the same time, with neither end knowing about the change happening at the
@@ -829,7 +654,7 @@ other. In this situation, one or the other end is operating in an invalid state.
 app’s state is always considered to be correct, so the input method updates are treated as invalid. This
 situation is referred to as an update collision.
 
-1.3.2.3  Detecting Collisions
+##### 1.3.2.3 Detecting Collisions
 
 Many of the text input PDUs include an operationId parameter. When an input method operation is
 sent from the client machine, the details of that operation with the operationId are kept in a list of
@@ -849,7 +674,8 @@ Release: November 19, 2024
 
 11 / 94
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RDPETXT].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -858,7 +684,7 @@ notification is received while there are one or more items in the pending operat
 side, the operation sent from the client arrives while the count of outstanding notifications is greater
 than 0.
 
-1.3.2.4  Handling the Collision
+##### 1.3.2.4 Handling the Collision
 
 Since the remote app’s view of state is the "truth", it is observed that the pending operations on the
 client side were performed on an invalid state. As such, they need to be undone and then reapplied
@@ -883,7 +709,8 @@ Release: November 19, 2024
 
 12 / 94
 
-1.3.2.5  Override
+
+##### 1.3.2.5 Override
 
 In cases where the server-side update in a collision is produced in response to a key event, it is
 assumed that this key event would not be replayed but other pending keys would be. For example, an
@@ -913,12 +740,12 @@ that send state updates from server to client and that can result in a collision
 field, and override is always be handled the same way to undo all pending actions and replay all but
 the oldest pending key.
 
-1.3.3  Text Paging
+#### 1.3.3 Text Paging
 
 This section gives an overview of the text input system’s Text Paging feature and how that feature is
 manifest in the text input PDUs.
 
-1.3.3.1  Edit Buffers
+##### 1.3.3.1 Edit Buffers
 
 The text input system creates an internal edit buffer for each registered TSF EditControl in the
 system. The primary purpose of this edit buffer is to allow centralized TSF version 3.0 (TSF3) IMEs
@@ -928,7 +755,7 @@ running in the same process. The edit buffer hides the details of the Inter-Proc
 edit control. This allows IMEs to query edit control text quickly and synchronously regardless of the
 latency characteristics of the communication path to the actual control.
 
-1.3.3.2  Solving the Problem of Large Documents
+##### 1.3.3.2 Solving the Problem of Large Documents
 
 In the event that an edit control is created to hold and edit a large text document, the initial transfer
 of text to the associated edit buffer would be large and cause a longer than normal initialization time.
@@ -946,7 +773,8 @@ Release: November 19, 2024
 
 13 / 94
 
-1.3.3.3  Page Size
+
+##### 1.3.3.3 Page Size
 
 First, a caveat, this section discusses page sizes using concrete values, such as 200 or 10,000
 characters. These values are included for illustrative purposes only and do not represent the actual
@@ -959,7 +787,7 @@ characters after the insertion point. These values have actually changed and can
 time. This strategy generally ensures all the text on the screen is paged into the edit buffer regardless
 of whether the caret is at the top of the screen, the bottom of the screen, or anywhere in between.
 
-1.3.3.4  Handling Text Selections
+##### 1.3.3.4 Handling Text Selections
 
 This notion of paging in 20,000 characters around the insertion point is straightforward, but it
 becomes more complicated when the insertion point becomes a range of selected text instead of just
@@ -970,7 +798,7 @@ immediately after this caret will be the text that was after the end of the sele
 range of selected text is treated as an insertion point, in that 10,000 characters is paged in before the
 start of the selection and 10,000 characters is paged in after the end of the selection.
 
-1.3.3.5  Paging in of Selected Text
+##### 1.3.3.5 Paging in of Selected Text
 
 Another complication is the selected text itself. In some cases, IMEs seek the selected text so
 candidates can be generated for updating or replacing the selected text. For this to work, the selected
@@ -1004,7 +832,8 @@ Release: November 19, 2024
 
 14 / 94
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-RDPETXT].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1016,7 +845,7 @@ be returned). Scenario B shows the request for a short document when the caret i
 10,000 characters into the document and where the document length is less than 10,000 characters
 beyond the end of the selection. Scenario C shows a large selection in the middle of a large document.
 
-1.3.3.6  PDUs that Support Text Paging
+##### 1.3.3.6 PDUs that Support Text Paging
 
 The first PDU to support text paging is RDPTXT_TEXT_CHANGED_PDU structure (section 2.2.2.36).
 This PDU includes two string fields updatedTextRegion1 and updatedTextRegion2 and two integer
@@ -1035,7 +864,8 @@ Release: November 19, 2024
 
 15 / 94
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-RDPETXT].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1050,12 +880,12 @@ The other PDU that supports text paging is RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU 
 and the textLength field provides the length for the text field string data that is being paged in.
 When text is being paged out, the range to be cleared is indicated by the cpStart and cpEnd fields.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Text Input Virtual Channel Extension is embedded in dynamic virtual
 channel transports, as specified in [MS-RDPEDYC] sections 1 through 3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Text Input Virtual Channel Extension operates only after its dynamic
 virtual channel transports are fully established. If the dynamic virtual channel transports are
@@ -1063,12 +893,12 @@ terminated, the Remote Desktop Protocol: Text Input Virtual Channel Extension is
 The protocol is terminated by closing the underlying virtual channels. For details about closing the
 dynamic virtual channels, refer to [MS-RDPEDYC] section 3.3.5.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Text Input Virtual Channel Extension is applicable in scenarios where it
 is desirable to use client-side input methods to input text in applications running in a terminal server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 On connection of the Text Input Virtualization dynamic virtual channels, the client and server
 machines exchange version numbers via RDPTXT_NOTIFY_CLIENT_VERSION_PDU (section 2.2.2.53)
@@ -1081,7 +911,8 @@ Release: November 19, 2024
 
 16 / 94
 
-carry two 4-byte integer version numbers, a major version number and a minor version number. The
+
+carry two 4-byte integer version numbers, a major version number and a minor version number. The
 server is to send its version numbers first, on connection, via
 RDPTXT_NOTIFY_SERVER_VERSION_PDU. The client is to respond to this message by recording the
 server version numbers and then sending its own version numbers back via
@@ -1128,11 +959,11 @@ minor version bit where the change was introduced will be included in the update
 documentation. An example of this is the bcpTag member of the CoreInputProfile structure (section
 2.2.1.6).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1143,9 +974,10 @@ Release: November 19, 2024
 
 17 / 94
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Text Input Virtual Channel Extension is designed to operate over non-
 lossy dynamic virtual channels, as specified in [MS-RDPEDYC] sections 1 through 3. The dynamic
@@ -1154,15 +986,15 @@ virtual channel names are the null-terminated ANSI character strings
 for the client to server messages. The usage of channel names in the context of opening a dynamic
 virtual channel (DVC) is specified in [MS-RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Text Input Virtual Channel Extension
 message syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte
 order, unless otherwise specified. Many data types can be found in [MS-DTYP].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
-2.2.1.1  KeyEventHostInfo
+##### 2.2.1.1 KeyEventHostInfo
 
 The KeyEventHostInfo structure provides information about a key event and is included in PDUs
 relating directly to key events and in PDUs that reference an antecedent key event such as
@@ -1228,7 +1060,8 @@ Release: November 19, 2024
 
 18 / 94
 
-...
+
+...
 
 ...
 
@@ -1339,7 +1172,8 @@ Release: November 19, 2024
 
 19 / 94
 
-Value
+
+Value
 
 LockShift
 0x1000
@@ -1455,7 +1289,8 @@ Release: November 19, 2024
 
 20 / 94
 
-Value
+
+Value
 
 Empty
 0x1000
@@ -1563,7 +1398,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-IsExtendedKey (1 byte): A BOOLEAN value. TRUE indicates this is an extended key. For enhanced
+
+IsExtendedKey (1 byte): A BOOLEAN value. TRUE indicates this is an extended key. For enhanced
 
 101- and 102-key keyboards, extended keys are the right ALT and CTRL keys on the main section
 of the keyboard; the INS, DEL, HOME, END, PAGE UP, PAGE DOWN, and arrow keys in the clusters
@@ -1589,7 +1425,7 @@ KeyEventAttributes (6 bytes): A 48-bit KeyEventAttributes struct (section 2.2.1.
 
 a correlation ID and touch coordinates for a key inserted via a touch keyboard.
 
-2.2.1.2  KeyEventAttributes
+##### 2.2.1.2 KeyEventAttributes
 
 The KeyEventAttributes structure stores certain attributes related to a key event. That includes the
 touch point on the touch keyboard used to generate the key and an ID that the system can use to
@@ -1623,7 +1459,7 @@ touchY (2 bytes): A 16-bit SHORT. The y coordinate of the point touched on a tou
 
 to generate the key event.
 
-2.2.1.3  KeyPressInfo
+##### 2.2.1.3 KeyPressInfo
 
 The KeyPressInfo structure contains extensive information about a key event when sent from server
 to client via the RDPTXT_SEND_KEY_TO_HOST_PDU message (section 2.2.2.59). That message and
@@ -1650,7 +1486,8 @@ Release: November 19, 2024
 
 22 / 94
 
-keyInfo (44 bytes)
+
+keyInfo (44 bytes)
 
 ...
 
@@ -1723,7 +1560,8 @@ Release: November 19, 2024
 
 23 / 94
 
-...
+
+...
 
 deliveryEventId
 
@@ -1786,7 +1624,8 @@ Release: November 19, 2024
 
 24 / 94
 
-...
+
+...
 
 beginTimeOfVirt
 
@@ -1882,7 +1721,8 @@ Release: November 19, 2024
 
 25 / 94
 
-timestamp (4 bytes): A 32-bit UINT. Timestamp of the key event.
+
+timestamp (4 bytes): A 32-bit UINT. Timestamp of the key event.
 
 isSent (1 byte): A BOOLEAN flag. TRUE indicates the key event has been sent.
 
@@ -1971,7 +1811,8 @@ Release: November 19, 2024
 
 26 / 94
 
-Value
+
+Value
 
 0x00000003
 
@@ -2054,7 +1895,8 @@ Release: November 19, 2024
 
 27 / 94
 
-isVirt (1 byte): A BOOLEAN flag. TRUE indicates virtual key.
+
+isVirt (1 byte): A BOOLEAN flag. TRUE indicates virtual key.
 
 isPickedAsSampleTelemetry (1 byte): A BOOLEAN flag. TRUE indicates key was picked as sample
 
@@ -2070,7 +1912,7 @@ liteReceivedKeyEvent (1 byte): A BOOLEAN flag. TRUE indicates language-independe
 
 engine received key event.
 
-2.2.1.4  HotKeyRegistrationData
+##### 2.2.1.4 HotKeyRegistrationData
 
 The HotKeyRegistrationData structure contains information about a hotkey that an application
 registers with the system. This structure is used in the RDPTXT_HOTKEY_REGISTRATION_PDU
@@ -2129,7 +1971,7 @@ The specified virtual key is to be chorded with a Windows key to activate the ho
 
 virtualKey (2 bytes): A 16-bit UINT. The base virtual key for the hotkey.
 
-2.2.1.5  CompositionClause
+##### 2.2.1.5 CompositionClause
 
 The CompositionClause structure contains information about an individual clause in a composition
 string. Specifically, where the clause is in the composition string and the original text associated with
@@ -2141,7 +1983,8 @@ Release: November 19, 2024
 
 28 / 94
 
-the clause. This structure is used in the RDPTXT_UPDATE_COMPOSITION_PDU message (section
+
+the clause. This structure is used in the RDPTXT_UPDATE_COMPOSITION_PDU message (section
 2.2.2.13).
 
 0  1  2  3  4  5  6  7  8  9
@@ -2179,7 +2022,7 @@ range (8 bytes): A 64-bit EditControlRange structure (section 2.2.1.8) that indi
 
 characters in the current composition are associated with this clause.
 
-2.2.1.6  CoreInputProfile
+##### 2.2.1.6 CoreInputProfile
 
 The CoreInputProfile structure contains information about an input profile, such as its ID, the
 language it supports, and the keyboard layout it uses. This structure is used in the following PDU
@@ -2227,7 +2070,8 @@ guidProfile
 
 29 / 94
 
-...
+
+...
 
 ...
 
@@ -2308,7 +2152,8 @@ Release: November 19, 2024
 
 30 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -2426,7 +2271,8 @@ Release: November 19, 2024
 
 31 / 94
 
-Value
+
+Value
 
 0x00000000
 
@@ -2451,7 +2297,7 @@ bcpTag (8 bytes): A 64-bit language identifier that can be converted internally 
 
 tag string. Major version introduced=1, minor version bit flag=0x00000002.
 
-2.2.1.7  CoreInputViewOcclusion
+##### 2.2.1.7 CoreInputViewOcclusion
 
 The CoreInputViewOcclusion structure contains information about an occluding region reported by
 the RDPTXT_OCCLUDING_VIEWS_PDU message (section 2.2.2.52).
@@ -2516,7 +2362,8 @@ Release: November 19, 2024
 
 32 / 94
 
-2.2.1.8  EditControlRange
+
+##### 2.2.1.8 EditControlRange
 
 The EditControlRange structure represents a range of text. Indicates caret positions which are
 conceptually placed before the character at the specified index. For example, a range of 0 (begin) to 1
@@ -2554,7 +2401,7 @@ begin (4 bytes): A 32-bit UINT. The caret position of the beginning of the range
 
 end (4 bytes): A 32-bit UINT. The caret position of the end of the range.
 
-2.2.1.9  EditControlInfo
+##### 2.2.1.9 EditControlInfo
 
 The EditControlInfo structure contains settings and other information about an edit control. This
 structure is used in the following PDU messages:
@@ -2595,7 +2442,8 @@ Release: November 19, 2024
 
 33 / 94
 
-visualReferenceId
+
+visualReferenceId
 
 ...
 
@@ -2699,7 +2547,8 @@ Release: November 19, 2024
 
 34 / 94
 
-Value
+
+Value
 
 NativeFx
 0x00000005
@@ -2812,7 +2661,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 0x00000200
 
@@ -2932,7 +2782,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2943,9 +2794,9 @@ Aligns the candidate window to the bottom edge of the screen.
 
 visualReferenceId (8 bytes): A 64-bit UINT64. Currently unused. Set to 0.
 
-2.2.1.10
+##### 2.2.1.10 NavigateFocusInfo
 
-NavigateFocusInfo
+
 
 The NavigateFocusInfo structure provides information about a move of input focus between views.
 This structure is used in the RDPTXT_FOCUS_NAVIGATING_EVENT_PDU message (section 2.2.2.3).
@@ -3013,7 +2864,8 @@ Release: November 19, 2024
 
 37 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -3078,9 +2930,9 @@ startTimeStamp (8 bytes): 64-bit DateTime. Tick count added when NavigateFocusIn
 
 is created and used to help maintain event sequence.
 
-2.2.1.11
+##### 2.2.1.11 NavigateFocusCompleteInfo
 
-NavigateFocusCompleteInfo
+
 
 The NavigateFocusCompleteInfo structure provides additional focus navigation information. This
 structure is used in the RDPTXT_FOCUS_DEPART_COMPLETED_PDU message (section 2.2.2.4).
@@ -3113,15 +2965,16 @@ Release: November 19, 2024
 
 38 / 94
 
-sequenceNumber (16 bytes): A GUID value to uniquely identify the focus navigation being
+
+sequenceNumber (16 bytes): A GUID value to uniquely identify the focus navigation being
 
 completed.
 
 takenFocus (1 byte): A BOOLEAN. TRUE indicates a new target window was successfully activated.
 
-2.2.1.12
+##### 2.2.1.12 NonCUIConfiguration
 
-NonCUIConfiguration
+
 
 The NonCUIConfiguration structure contains information delivered with
 RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU message (section 2.2.2.7).
@@ -3143,9 +2996,9 @@ enableNonCUIDepartFocus (1 byte): A BOOLEAN. TRUE causes a ComponentUI component
 
 window to navigate focus correctly when it is hosted by Win32.
 
-2.2.1.13
+##### 2.2.1.13 TextInputRect
 
-TextInputRect
+
 
 The TextInputRect structure is used to represent rectangular regions that are significant to text
 input messages like edit control or text selection boundaries, or regions of the screen occluded by the
@@ -3184,9 +3037,9 @@ right (4 bytes): A 32-bit UINT. The x coordinate of the right of the rectangle.
 
 bottom (4 bytes): A 32-bit UINT. The y coordinate of the bottom of the rectangle.
 
-2.2.1.14
+##### 2.2.1.14 TextFormat
 
-TextFormat
+
 
 The TextFormat structure contains information that describes how text is to be visually displayed. It
 includes explicit formatting and semantic Reason field to describe why the formatting is being
@@ -3199,7 +3052,8 @@ Release: November 19, 2024
 
 39 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3316,13 +3170,14 @@ Release: November 19, 2024
 
 40 / 94
 
-BackgroundColor (1 byte): A UIElementType enumeration to define the background color.
+
+BackgroundColor (1 byte): A UIElementType enumeration to define the background color.
 
 TextColor (1 byte): A UIElementType enumeration to define the text color.
 
-2.2.1.15
+##### 2.2.1.15 TextInputHostSettings
 
-TextInputHostSettings
+
 
 The TextInputHostSettings structure contains information about a TextInputHost (key target).
 This structure is used in the RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU message (section
@@ -3395,7 +3250,7 @@ IsOwnerAppFrame (1 byte): A BOOLEAN value. TRUE indicates the owner is an applic
 meaning a window that can contain child apps (views). View transitions aren’t notified when this
 value is TRUE.
 
-2.2.2  PDUs
+#### 2.2.2 PDUs
 
 Every message sent over the Text Input Virtual Channel Extension conforms to one of the PDUs
 documented in this section. Each of these PDUs is preceded by a 6-byte header comprising the
@@ -3408,7 +3263,8 @@ Release: November 19, 2024
 
 41 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3538,7 +3394,8 @@ Release: November 19, 2024
 
 42 / 94
 
-Value
+
+Value
 
 0x0303
 
@@ -3677,7 +3534,8 @@ Release: November 19, 2024
 
 43 / 94
 
-Value
+
+Value
 
 0x0600
 
@@ -3705,7 +3563,7 @@ RDPTXT_NOTIFY_CLIENT_VERSION_PDU
 
 RDPTXT_REPORT_CLIENT_OPTIONS_PDU
 
-2.2.2.1  RDPTXT_KEY_EVENT_PDU
+##### 2.2.2.1 RDPTXT_KEY_EVENT_PDU
 
 The RDPTXT_KEY_EVENT_PDU message is sent from client to server to deliver a key event or an
 accelerator key event. Accelerator keys tunnel down through the Component UI tree<1> from parent
@@ -3772,7 +3630,8 @@ Release: November 19, 2024
 
 44 / 94
 
-...
+
+...
 
 textInputHostId (4 bytes): A 32-bit UINT. ID of the TextInputHost associated with the thread or
 
@@ -3862,7 +3721,8 @@ Release: November 19, 2024
 
 45 / 94
 
-keyTextLength (4 bytes): A 32-bit UINT. The length of the keyText string as a count of UTF-16
+
+keyTextLength (4 bytes): A 32-bit UINT. The length of the keyText string as a count of UTF-16
 
 characters.
 
@@ -3884,7 +3744,7 @@ keyNameText (variable): A STRING UCHAR array. The text printed on the physical k
 pressed (according to the current keyboard layout). The text can hold a description such as TIL for
 the Tilde (~) character.
 
-2.2.2.2  RDPTXT_CHARACTER_EVENT_PDU
+##### 2.2.2.2 RDPTXT_CHARACTER_EVENT_PDU
 
 The RDPTXT_CHARACTER_EVENT_PDU message is sent from client to server to deliver a character
 event to the focused edit control in the foreground app.
@@ -3928,7 +3788,7 @@ keyEventInfo (44 bytes): A KeyEventHostInfo structure (section 2.2.1.1) contains
 
 key press that this character event is produced for.
 
-2.2.2.3  RDPTXT_FOCUS_NAVIGATING_EVENT_PDU
+##### 2.2.2.3 RDPTXT_FOCUS_NAVIGATING_EVENT_PDU
 
 The RDPTXT_FOCUS_NAVIGATING_EVENT_PDU message is sent from client to server to raise a
 FocusNavigating event in the application associated with the target TextInputHost.
@@ -3940,7 +3800,8 @@ Release: November 19, 2024
 
 46 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3963,7 +3824,7 @@ navigateFocusInfo (52 bytes): A NavigateFocusInfo structure (section 2.2.1.10) c
 
 information about this focus change.
 
-2.2.2.4  RDPTXT_FOCUS_DEPART_COMPLETED_PDU
+##### 2.2.2.4 RDPTXT_FOCUS_DEPART_COMPLETED_PDU
 
 The RDPTXT_FOCUS_DEPART_COMPLETED_PDU message is sent from client to server to inform the
 app associated with the specified TextInputHost that the specified focus leave has completed.
@@ -3991,7 +3852,7 @@ navigateFocusCompleteInfo (17 bytes): A NavigateFocusCompleteInfo structure (sec
 
 2.2.1.11) that contains information about the completed focus change.
 
-2.2.2.5  RDPTXT_ENABLE_WINDOW_PDU
+##### 2.2.2.5 RDPTXT_ENABLE_WINDOW_PDU
 
 The RDPTXT_ENABLE_WINDOW_PDU message is sent from client to server to enable or disable text
 input in the windows associated with the specified TextInputHost.
@@ -4015,7 +3876,7 @@ textInputHostId (4 bytes): A 32-bit UINT. The ID of the target TextInputHost.
 
 inputEnabled (1 byte): A BOOLEAN value. TRUE enables input while FALSE disables input.
 
-2.2.2.6  RDPTXT_ACTIVATION_STATE_CHANGE_PDU
+##### 2.2.2.6 RDPTXT_ACTIVATION_STATE_CHANGE_PDU
 
 The RDPTXT_ACTIVATION_STATE_CHANGE_PDU message is sent from client to server to update the
 activation state of a view.
@@ -4027,7 +3888,8 @@ Release: November 19, 2024
 
 47 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4089,7 +3951,7 @@ Activation state is not known.
 
 activatedView (4 bytes): A 32-bit UINT. The ID of the view having its activation state changed.
 
-2.2.2.7  RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU
+##### 2.2.2.7 RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU
 
 The RDPTXT_NON_COMPONENTUI_CONFIGURATION_CHANGE_PDU message is sent from client to
 server to configure a CoreWindow associated with the specified TextInputHost to handle a non-
@@ -4123,7 +3985,8 @@ Release: November 19, 2024
 
 48 / 94
 
-2.2.2.8  RDPTXT_KEY_EVENT_PAYLOAD_PDU
+
+##### 2.2.2.8 RDPTXT_KEY_EVENT_PAYLOAD_PDU
 
 The RDPTXT_KEY_EVENT_PAYLOAD_PDU message is sent from client to server to bookend the actions
 (payload) associated with a given key event.
@@ -4188,7 +4051,7 @@ FALSE
 
 Input method did not handle this key event.
 
-2.2.2.9  RDPTXT_UPDATE_TEXT_PDU
+##### 2.2.2.9 RDPTXT_UPDATE_TEXT_PDU
 
 The RDPTXT_UPDATE_TEXT_PDU message is sent from client to server and includes a text string that
 is to replace existing text in the specified replacement range. If the string of new text is empty, the
@@ -4202,7 +4065,8 @@ Release: November 19, 2024
 
 49 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4261,9 +4125,9 @@ newText (variable): A UTF-16 string. The new text to insert at replaceBegin, aft
 
 from replaceBegin to replaceEnd has been removed.
 
-2.2.2.10
+##### 2.2.2.10 RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU
 
-RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU
+
 
 The RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU message is sent from client to server and includes
 a text string that is to replace existing text in the specified replacement range. If the string of new
@@ -4290,7 +4154,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-editControlId
+
+editControlId
 
 textInputHostId
 
@@ -4348,9 +4213,9 @@ selectionEnd (4 bytes): A 32-bit UINT. The end character position of a new selec
 
 the text replacement is completed.
 
-2.2.2.11
+##### 2.2.2.11 RDPTXT_SET_SELECTION_PDU
 
-RDPTXT_SET_SELECTION_PDU
+
 
 The RDPTXT_SET_SELECTION_PDU message is sent from client to server to set a range of selected
 text in the specified edit control. If the specified range has zero length (selectionBegin and
@@ -4363,7 +4228,8 @@ Release: November 19, 2024
 
 51 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4435,9 +4301,9 @@ Neutral
 If the caret is placed at a line break, the control can choose which side of the break to
 render it on.
 
-2.2.2.12
+##### 2.2.2.12 RDPTXT_UPDATE_FORMAT_PDU
 
-RDPTXT_UPDATE_FORMAT_PDU
+
 
 The RDPTXT_UPDATE_FORMAT_PDU message is sent from client to server to update the format for a
 range of text, such as a temporary color or underline.
@@ -4449,7 +4315,8 @@ Release: November 19, 2024
 
 52 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4534,7 +4401,8 @@ Release: November 19, 2024
 
 53 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -4650,7 +4518,8 @@ Release: November 19, 2024
 
 54 / 94
 
-Value
+
+Value
 
 EditStyleTextColor_Gray
 0x00004000
@@ -4669,9 +4538,9 @@ Text color is an application-chosen highlight color.
 
 Mask of all supported text colors.
 
-2.2.2.13
+##### 2.2.2.13 RDPTXT_UPDATE_COMPOSITION_PDU
 
-RDPTXT_UPDATE_COMPOSITION_PDU
+
 
 The RDPTXT_UPDATE_COMPOSITION_PDU message is sent from client to server and delivers
 composition updates to an edit control.
@@ -4745,7 +4614,8 @@ Release: November 19, 2024
 
 55 / 94
 
-Value
+
+Value
 
 0x02
 
@@ -4765,9 +4635,9 @@ of composition clauses that are sub-strings with formatting. Each clause is pref
 string length in UTF-16 characters and suffixed by an 8-byte EditControlRange structure (section
 2.2.1.8).
 
-2.2.2.14
+##### 2.2.2.14 RDPTXT_SET_COMPOSITION_INFO_PDU
 
-RDPTXT_SET_COMPOSITION_INFO_PDU
+
 
 The RDPTXT_SET_COMPOSITION_INFO_PDU message is sent from client to server allowing an IME to
 specify information about the current composition.
@@ -4828,7 +4698,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-determinedTextLength (4 bytes): A 32-bit UINT. The length of the determinedText string in UTF-
+
+determinedTextLength (4 bytes): A 32-bit UINT. The length of the determinedText string in UTF-
 
 16 characters.
 
@@ -4836,9 +4707,9 @@ determinedText (variable): A STRING UCHAR array. Text used to replace the compos
 
 when composition ends.
 
-2.2.2.15
+##### 2.2.2.15 RDPTXT_RECONVERSION_CANDIDATES_PDU
 
-RDPTXT_RECONVERSION_CANDIDATES_PDU
+
 
 The RDPTXT_RECONVERSION_CANDIDATES_PDU message is sent from client to server and includes a
 list of reconversion candidates to be delivered to the specified edit control.
@@ -4886,9 +4757,9 @@ reconvertRange (8 bytes): A 64-bit EditControlRange structure (section 2.2.1.8) 
 
 the range of text in the document that will be reconverted.
 
-2.2.2.16
+##### 2.2.2.16 RDPTXT_DO_RECONVERSION_PDU
 
-RDPTXT_DO_RECONVERSION_PDU
+
 
 The RDPTXT_DO_RECONVERSION_PDU message is sent from server to client to request the active
 IME to perform reconversion in the current context.
@@ -4915,7 +4786,8 @@ Release: November 19, 2024
 
 57 / 94
 
-returnCandidates
+
+returnCandidates
 
 returnRange
 
@@ -4935,9 +4807,9 @@ returnRange (1 byte): A BOOLEAN that indicates a request that the reconversion r
 
 back via RDPTXT_RECONVERSION_CANDIDATES_PDU.
 
-2.2.2.17
+##### 2.2.2.17 RDPTXT_UPDATE_INPUT_LOCALE_PDU
 
-RDPTXT_UPDATE_INPUT_LOCALE_PDU
+
 
 The RDPTXT_UPDATE_INPUT_LOCALE_PDU message is sent from client to server to update the input
 language/locale. When this PDU is sent during initialization of a thread for text input, only the
@@ -4982,9 +4854,9 @@ initialization.
 
 operationId (4 bytes): A 32-bit UINT. The ID of the update operation. Not used for initialization.
 
-2.2.2.18
+##### 2.2.2.18 RDPTXT_UPDATE_INPUT_PROFILE_PDU
 
-RDPTXT_UPDATE_INPUT_PROFILE_PDU
+
 
 The RDPTXT_UPDATE_INPUT_PROFILE_PDU message is sent from client to server to update an input
 profile. In the case of profile activation (not initializing) the server does its best to honor the request,
@@ -4998,7 +4870,8 @@ Release: November 19, 2024
 
 58 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5036,9 +4909,9 @@ initializing (1 byte): A BOOLEAN value set to TRUE when initializing a remote ap
 
 input.
 
-2.2.2.19
+##### 2.2.2.19 RDPTXT_UPDATE_MODE_PDU
 
-RDPTXT_UPDATE_MODE_PDU
+
 
 The RDPTXT_UPDATE_MODE_PDU message is sent from client to server to adjust the mode of a text
 input feature.
@@ -5085,7 +4958,8 @@ Release: November 19, 2024
 
 59 / 94
 
-operationId
+
+operationId
 
 textInputHostId (4 bytes): A 32-bit UINT. The ID of the server-side foreground TextInputHost,
 
@@ -5157,9 +5031,9 @@ operationId (4 bytes): A 32-bit UINT. The ID of the operation. Needs to be repor
 
 client when the update is complete.
 
-2.2.2.20
+##### 2.2.2.20 RDPTXT_SET_CONVERSION_MODE_PDU
 
-RDPTXT_SET_CONVERSION_MODE_PDU
+
 
 The RDPTXT_SET_CONVERSION_MODE_PDU message is sent from client to server to request an
 update to the current IME conversion mode.
@@ -5184,7 +5058,8 @@ Release: November 19, 2024
 
 60 / 94
 
-editControlId
+
+editControlId
 
 Mode
 
@@ -5264,9 +5139,9 @@ normally to produce Latin characters.
 
 IME will select the conversion mode itself.
 
-2.2.2.21
+##### 2.2.2.21 RDPTXT_ACKNOWLEDGE_OPERATION_PDU
 
-RDPTXT_ACKNOWLEDGE_OPERATION_PDU
+
 
 The RDPTXT_ACKNOWLEDGE_OPERATION_PDU message is sent from client to server to acknowledge
 
@@ -5279,7 +5154,8 @@ Release: November 19, 2024
 
 61 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -5386,7 +5262,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 0x0000000B
 
@@ -5399,9 +5276,9 @@ Acknowledges a report that a control has lost focus.
 
 operationId (4 bytes): A 32-bit UINT. The ID of the notification as originally provided by the server.
 
-2.2.2.22
+##### 2.2.2.22 RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU
 
-RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU
+
 
 The RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU message provides an acknowledgement from
 client to server of an operation that was requested by the server.
@@ -5496,7 +5373,8 @@ Release: November 19, 2024
 
 63 / 94
 
-Value
+
+Value
 
 0x0000000A
 
@@ -5512,9 +5390,9 @@ Acknowledges a request to update the IME conversion mode.
 
 Acknowledges a report that a control has lost focus.
 
-2.2.2.23
+##### 2.2.2.23 RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU
 
-RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU
+
 
 The RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU message is sent from client to
 server to report that a key event undo request was received by the client.
@@ -5536,9 +5414,9 @@ undoRequestId (4 bytes): A 32-bit UINT. An identifier for the undo operation tha
 
 sent by the server and processed by the client.
 
-2.2.2.24
+##### 2.2.2.24 RDPTXT_REGISTER_REMOTE_TEXT_TARGET_PDU
 
-RDPTXT_REGISTER_REMOTE_TEXT_TARGET_PDU
+
 
 The RDPTXT_REGISTER_REMOTE_TEXT_TARGET_PDU message is sent from server to client to register
 a system text input object TextInputClient created in the remote application process. These objects
@@ -5561,9 +5439,9 @@ textTargetId (4 bytes): A 32-bit UINT. An identifier to uniquely identify the te
 TextInputClient on the remote system. The ID can be reused by objects from different
 machines.
 
-2.2.2.25
+##### 2.2.2.25 RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU
 
-RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU
+
 
 The RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU message is sent from server to client to register
 a system text input object TextInputHost created in the remote application process. These objects
@@ -5593,7 +5471,8 @@ Release: November 19, 2024
 
 64 / 94
 
-...
+
+...
 
 ...
 
@@ -5628,9 +5507,9 @@ windowInstanceId (8 bytes): A 64-bit UINT. The ID of window on remote system ass
 
 this TextInputHost.
 
-2.2.2.26
+##### 2.2.2.26 RDPTXT_REGISTER_REMOTE_EDIT_CONTROL_PDU
 
-RDPTXT_REGISTER_REMOTE_EDIT_CONTROL_PDU
+
 
 The RDPTXT_REGISTER_REMOTE_EDIT_CONTROL_PDU message is sent from server to client to
 register an edit control associated with a TextInputClient object in the remote application.
@@ -5675,7 +5554,8 @@ Release: November 19, 2024
 
 65 / 94
 
-editControlId (4 bytes): A 32-bit UINT. An ID unique to this edit control only in the context of its
+
+editControlId (4 bytes): A 32-bit UINT. An ID unique to this edit control only in the context of its
 
 TextInputClient.
 
@@ -5683,9 +5563,9 @@ textInputClientId (4 bytes): A 32-bit UINT. An identifier to uniquely identify t
 
 this edit control was registered with on the remote system.
 
-2.2.2.27
+##### 2.2.2.27 RDPTXT_REGISTER_REMOTE_COREINPUTVIEW_PDU
 
-RDPTXT_REGISTER_REMOTE_COREINPUTVIEW_PDU
+
 
 The RDPTXT_REGISTER_REMOTE_COREINPUTVIEW_PDU message is sent from server to client to
 register a CoreInputView object ([MSLEARN-CoreInputView]) created by a remote application that
@@ -5709,9 +5589,9 @@ objectId (4 bytes): A 32-bit UINT. An ID that uniquely identifies the registerin
 
 object on the remote system.
 
-2.2.2.28
+##### 2.2.2.28 RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU
 
-RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU
+
 
 The RDPTXT_UNREGISTER_REMOTE_TEXT_TARGET_PDU message is sent from server to client to
 
@@ -5736,9 +5616,9 @@ objectId
 
 objectId (4 bytes): A 32-bit UINT. The ID of the remote object being unregistered.
 
-2.2.2.29
+##### 2.2.2.29 RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU
 
-RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU
+
 
 The RDPTXT_UNREGISTER_REMOTE_KEY_TARGET_PDU message is sent from server to client to
 unregister a remote object that was registered via RDPTXT_REGISTER_REMOTE_KEY_TARGET_PDU
@@ -5759,9 +5639,9 @@ objectId
 
 objectId (4 bytes): A 32-bit UINT. The ID of the remote object being unregistered.
 
-2.2.2.30
+##### 2.2.2.30 RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU
 
-RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU
+
 
 The RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU message is sent from server to client to
 unregister an edit control that was previously registered via
@@ -5774,7 +5654,8 @@ Release: November 19, 2024
 
 66 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5796,9 +5677,9 @@ with.
 
 editControlId (4 bytes): A 32-bit UINT. The ID of the edit control being unregistered.
 
-2.2.2.31
+##### 2.2.2.31 RDPTXT_UNREGISTER_REMOTE_COREINPUTVIEW_PDU
 
-RDPTXT_UNREGISTER_REMOTE_COREINPUTVIEW_PDU
+
 
 The RDPTXT_UNREGISTER_REMOTE_EDIT_CONTROL_PDU message is sent from server to client to
 unregister a remote object that was registered via
@@ -5819,9 +5700,9 @@ objectId
 
 objectId (4 bytes): A 32-bit UINT. The ID of the remote object to be unregistered.
 
-2.2.2.32
+##### 2.2.2.32 RDPTXT_EDIT_CONTROL_FOCUS_PDU
 
-RDPTXT_EDIT_CONTROL_FOCUS_PDU
+
 
 The RDPTXT_EDIT_CONTROL_FOCUS_PDU message is sent from the server to the client to notify the
 client that an edit control in the remote application has gained or lost focus.
@@ -5866,7 +5747,8 @@ Release: November 19, 2024
 
 67 / 94
 
-...
+
+...
 
 override
 
@@ -5901,9 +5783,9 @@ override (1 byte): A BOOLEAN value. TRUE indicates that the focus change was tri
 response to a key event sent to the application. In this case, the oldest unacknowledged key is not
 to be replayed (see Key Replay and Override section 1.3.2).
 
-2.2.2.33
+##### 2.2.2.33 RDPTXT_HOST_FOCUS_PDU
 
-RDPTXT_HOST_FOCUS_PDU
+
 
 The RDPTXT_HOST_FOCUS_PDU message is sent from the server to the client to notify the client that
 a TextInputHost in the remote server has gained or lost focus.
@@ -5952,9 +5834,10 @@ Release: November 19, 2024
 
 68 / 94
 
-2.2.2.34
 
-RDPTXT_HOST_FOREGROUND_PDU
+##### 2.2.2.34 RDPTXT_HOST_FOREGROUND_PDU
+
+
 
 The RDPTXT_HOST_FOREGROUND_PDU message is sent from the server to the client to notify the
 client that a TextInputHost on the remote server has come to the foreground.
@@ -5984,9 +5867,9 @@ windowInstanceId (8 bytes): A 64-bit UINT. The ID of the window associated with 
 
 TextInputHost that has come to the foreground.
 
-2.2.2.35
+##### 2.2.2.35 RDPTXT_SELECTION_CHANGED_PDU
 
-RDPTXT_SELECTION_CHANGED_PDU
+
 
 The RDPTXT_SELECTION_CHANGED_PDU message is sent from the server to the client to notify the
 client that the range of selected text in the specified edit control has changed. When selectionBegin
@@ -6041,7 +5924,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-all pending key events except for the oldest. The oldest key event is  not to be replayed because it
+
+all pending key events except for the oldest. The oldest key event is  not to be replayed because it
 is the key event that precipitated this update and has already been handled (see Key Replay and
 Override section 1.3.2).
 
@@ -6049,9 +5933,9 @@ originKey (44 bytes): A KeyEventHostInfo structure (section 2.2.1.1) that contai
 
 the key press that precipitated the selection change being reported, if any.
 
-2.2.2.36
+##### 2.2.2.36 RDPTXT_TEXT_CHANGED_PDU
 
-RDPTXT_TEXT_CHANGED_PDU
+
 
 The RDPTXT_TEXT_CHANGED_PDU message is sent from server to client to notify the client about a
 text change in the specified edit control.
@@ -6118,7 +6002,8 @@ Release: November 19, 2024
 
 70 / 94
 
-keyStatesSize
+
+keyStatesSize
 
 keyStates (variable)
 
@@ -6195,7 +6080,8 @@ Release: November 19, 2024
 
 71 / 94
 
-keyStates (variable): A byte array. Contains the key state for each reported virtual key. The state
+
+keyStates (variable): A byte array. Contains the key state for each reported virtual key. The state
 for each key is stored in one byte, represented as a combination of the KEY_STATE_FLAGS bit
 flags defined in the following table.
 
@@ -6223,9 +6109,9 @@ The key was previously down.
 
 The key is currently down.
 
-2.2.2.37
+##### 2.2.2.37 RDPTXT_CONTROL_CONFIGURATION_UPDATED_PDU
 
-RDPTXT_CONTROL_CONFIGURATION_UPDATED_PDU
+
 
 The RDPTXT_CONTROL_CONFIGURATION_UPDATED_PDU message is sent from server to client to
 notify the client about a change in settings or conversion mode in a remote edit control.
@@ -6255,9 +6141,9 @@ editInfo (36 bytes): An EditControlInfo structure (section 2.2.1.9) that contain
 
 the edit control whose settings are being updated.
 
-2.2.2.38
+##### 2.2.2.38 RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU
 
-RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU
+
 
 The RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU message is sent from server to client to
 notify the client about a settings or conversion mode change in a remote edit control.
@@ -6288,7 +6174,8 @@ Release: November 19, 2024
 
 72 / 94
 
-...
+
+...
 
 ...
 
@@ -6383,9 +6270,10 @@ Release: November 19, 2024
 
 73 / 94
 
-2.2.2.39
 
-RDPTXT_GEOMETRY_CHANGED_PDU
+##### 2.2.2.39 RDPTXT_GEOMETRY_CHANGED_PDU
+
+
 
 The RDPTXT_GEOMETRY_CHANGED_PDU message is sent from the server to the client to notify the
 client about changes to control bounds or text selection rectangles. Often used by the IME to position
@@ -6446,9 +6334,9 @@ rangeBounds (16 bytes): A TextInputRect structure (section 2.2.1.13) that define
 
 box for the updated selection.
 
-2.2.2.40
+##### 2.2.2.40 RDPTXT_SOFTWARE_KEYBOARD_INVOCATION_SIGNALS_PDU
 
-RDPTXT_SOFTWARE_KEYBOARD_INVOCATION_SIGNALS_PDU
+
 
 The RDPTXT_SOFTWARE_KEYBOARD_INVOCATION_SIGNALS_PDU message is sent from server to
 client and provides signals related to how an edit control gained focus. These signals are used to
@@ -6462,7 +6350,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6519,9 +6408,9 @@ touch (1 byte): A BOOLEAN value. TRUE indicates that the last pointer down in co
 
 by touch.
 
-2.2.2.41
+##### 2.2.2.41 RDPTXT_ACTIVE_VIEW_CHANGED_PDU
 
-RDPTXT_ACTIVE_VIEW_CHANGED_PDU
+
 
 The RDPTXT_ACTIVE_VIEW_CHANGED_PDU message is sent from server to client to report when the
 active view changes.
@@ -6552,7 +6441,8 @@ Release: November 19, 2024
 
 75 / 94
 
-processId (4 bytes): A 32-bit UINT. The ID of the process on the remote machine that has become
+
+processId (4 bytes): A 32-bit UINT. The ID of the process on the remote machine that has become
 
 active.
 
@@ -6564,9 +6454,9 @@ windowId (8 bytes): A 32-bit UINT. The ID of the window on the remote machine th
 
 activated.
 
-2.2.2.42
+##### 2.2.2.42 RDPTXT_FOREGROUND_HOST_INFO_UPDATED_PDU
 
-RDPTXT_FOREGROUND_HOST_INFO_UPDATED_PDU
+
 
 The RDPTXT_FOREGROUND_HOST_INFO_UPDATED_PDU message is sent from server to client to
 provide updated information about the current foreground TextInputHost.
@@ -6596,9 +6486,9 @@ foregroundHostInfo (variable): A JSON-formatted string containing information ab
 
 foreground TextInputHost.
 
-2.2.2.43
+##### 2.2.2.43 RDPTXT_NOTIFY_SERVER_VERSION_PDU
 
-RDPTXT_NOTIFY_SERVER_VERSION_PDU
+
 
 The RDPTXT_NOTIFY_SERVER_VERSION_PDU message is sent from server to client to notify the client
 of the server’s version of text input virtualization.
@@ -6640,11 +6530,12 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-versionMinor (4 bytes): A 32-bit UINT. The minor version number. See version negotiation.
 
-2.2.2.44
+versionMinor (4 bytes): A 32-bit UINT. The minor version number. See version negotiation.
 
-RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU
+##### 2.2.2.44 RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU
+
+
 
 The RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU message is sent from the server to the client
 to indicate that an operation requested by the client has been completed. The client is to keep actions
@@ -6684,9 +6575,9 @@ errorCode (4 bytes): A 32-bit UINT. A signed integer. If the requested operation
 
 field contains the failed HRESULT value. See [MS-ERREF] section 2.1.
 
-2.2.2.45
+##### 2.2.2.45 RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU
 
-RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU
+
 
 The RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU message is sent from the server to the client to
 acknowledge a key event.
@@ -6726,7 +6617,8 @@ Release: November 19, 2024
 
 77 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -6740,9 +6632,9 @@ Key event was processed synchronously by the target app.
 
 Key event was delivered to the target app which is processing it asynchronously.
 
-2.2.2.46
+##### 2.2.2.46 RDPTXT_INPUT_PROFILE_CHANGED_PDU
 
-RDPTXT_INPUT_PROFILE_CHANGED_PDU
+
 
 The RDPTXT_INPUT_PROFILE_CHANGED_PDU message is sent from server to client to confirm an
 input profile activation initiated through RDPTXT_UPDATE_INPUT_PROFILE_PDU (section 2.2.2.18).
@@ -6773,9 +6665,9 @@ profile (82 bytes): A CoreInputProfile structure (section 2.2.1.6) that contains
 
 profile.
 
-2.2.2.47
+##### 2.2.2.47 RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU
 
-RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU
+
 
 The RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU message is sent from server to client to inform the
 client text input system whether the remote application or application framework handled a notified
@@ -6802,9 +6694,9 @@ handled (1 byte): A BOOLEAN value that indicates whether the remote application 
 
 framework handled the specified notification.
 
-2.2.2.48
+##### 2.2.2.48 RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU
 
-RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU
+
 
 The RDPTXT_EDIT_CONTROL_TEXT_SEGMENT_PDU message is sent from server to client to populate
 or remove a range of text (see Text Paging section 1.3.3).
@@ -6816,7 +6708,8 @@ Release: November 19, 2024
 
 78 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6873,9 +6766,9 @@ characters.
 
 text (variable): A STRING UCHAR array. The text to populate starting at cpStart.
 
-2.2.2.49
+##### 2.2.2.49 RDPTXT_COMPOSITION_TERMINATED_PDU
 
-RDPTXT_COMPOSITION_TERMINATED_PDU
+
 
 The RDPTXT_COMPOSITION_TERMINATED_PDU message is sent from server to client to inform the
 local text input system that a composition has been terminated on the server side.
@@ -6912,14 +6805,15 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-override (1 byte): A BOOLEAN value that indicates that the composition was terminated in response
+
+override (1 byte): A BOOLEAN value that indicates that the composition was terminated in response
 
 to a key event, meaning the first (oldest) pending key is not replayed (see Key Replay and
 Override section 1.3.2).
 
-2.2.2.50
+##### 2.2.2.50 RDPTXT_SOFTWARE_KEYBOARD_POLICY_PDU
 
-RDPTXT_SOFTWARE_KEYBOARD_POLICY_PDU
+
 
 The RDPTXT_SOFTWARE_KEYBOARD_POLICY_PDU message is sent from server to client to update a
 dismissal policy as set by a remote app using the CoreInputView API [MSLEARN-CoreInputView] .
@@ -6947,9 +6841,9 @@ keepVisibleOnFocusLoss (1 byte): A BOOLEAN value that indicates whether or not t
 
 software keyboard visible on loss of edit control focus.
 
-2.2.2.51
+##### 2.2.2.51 RDPTXT_SET_ENABLED_INPUT_PROFILES_PDU
 
-RDPTXT_SET_ENABLED_INPUT_PROFILES_PDU
+
 
 The RDPTXT_SET_ENABLED_INPUT_PROFILES_PDU message is sent from client to server to inform
 the remote text input system of which input profiles are enabled on the client machine.
@@ -6979,9 +6873,9 @@ profiles (variable): An array of CoreInputProfile structures that contains the l
 
 that are enabled. Each CoreInputProfile is 82 bytes.
 
-2.2.2.52
+##### 2.2.2.52 RDPTXT_OCCLUDING_VIEWS_PDU
 
-RDPTXT_OCCLUDING_VIEWS_PDU
+
 
 The RDPTXT_OCCLUDING_VIEWS_PDU message is sent from client to server to inform the remote app
 of the position of the Soft Input Panel (SIP), onscreen keyboard, or other input UI. This allows the
@@ -7008,7 +6902,8 @@ Release: November 19, 2024
 
 80 / 94
 
-occludingViewsSize
+
+occludingViewsSize
 
 occludingViews (variable)
 
@@ -7030,9 +6925,9 @@ precalculatedOcclusion (1 byte): A BOOLEAN value set by API to request use of pr
 
 occlusion regions.
 
-2.2.2.53
+##### 2.2.2.53 RDPTXT_NOTIFY_CLIENT_VERSION_PDU
 
-RDPTXT_NOTIFY_CLIENT_VERSION_PDU
+
 
 The RDPTXT_NOTIFY_CLIENT_VERSION_PDU message is sent from client to server in response to
 RDPTXT_NOTIFY_SERVER_VERSION_PDU (section 2.2.2.43) to notify the server of the client’s version
@@ -7059,9 +6954,9 @@ versionMajor (4 bytes): A 32-bit UINT. The major version number. See version neg
 
 versionMinor (4 bytes): A 32-bit UINT. The minor version number. See version negotiation.
 
-2.2.2.54
+##### 2.2.2.54 RDPTXT_REPORT_CLIENT_OPTIONS_PDU
 
-RDPTXT_REPORT_CLIENT_OPTIONS_PDU
+
 
 The RDPTXT_REPORT_CLIENT_OPTIONS_PDU message is sent from client to server when the
 RemoteDesktop client app requests specific configuration options through its
@@ -7098,7 +6993,8 @@ Release: November 19, 2024
 
 81 / 94
 
-Value
+
+Value
 
 Meaning
 
@@ -7111,9 +7007,9 @@ ReportPredictedKeyEvent for each key sent. Doing so allows IMEs to
 immediately process keys without waiting for them to be reported back
 from the server via RDPTXT_SEND_KEY_TO_HOST_PDU (section 2.2.2.59).
 
-2.2.2.55
+##### 2.2.2.55 RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU
 
-RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU
+
 
 The RDPTXT_SOFTWARE_KEYBOARD_VISIBILITY_PDU message is sent from server to client to
 request that the client show or hide its software input panel (SIP). The request is generally made
@@ -7182,9 +7078,9 @@ Clipboard history pane.
 
 visible (1 byte): A BOOLEAN value that indicates TRUE to show or FALSE to hide the SIP.
 
-2.2.2.56
+##### 2.2.2.56 RDPTXT_HOTKEY_REGISTRATION_PDU
 
-RDPTXT_HOTKEY_REGISTRATION_PDU
+
 
 The RDPTXT_HOTKEY_REGISTRATION_PDU message is sent from server to client to register a hotkey.
 
@@ -7195,7 +7091,8 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7220,17 +7117,17 @@ to define the hotkey.
 
 enabled (1 byte): A BOOLEAN value that specifies whether or not the hotkey is enabled.
 
-2.2.2.57
+##### 2.2.2.57 RDPTXT_REFRESH_CLIENT_PDU
 
-RDPTXT_REFRESH_CLIENT_PDU
+
 
 The RDPTXT_REFRESH_CLIENT_PDU message is sent from server to client when the various
 registrations sent by the remote client need to be purged and refreshed. It is also sent on first connect
 and includes the server’s text virtualization version. There are no parameters.
 
-2.2.2.58
+##### 2.2.2.58 RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU
 
-RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU
+
 
 The RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU message is sent from server to client when an
 inconsistency has been detected between key events and IME actions on the server, and requests
@@ -7253,9 +7150,9 @@ undoRequestId (4 bytes): A 32-bit UINT. An identifier for this undo request, whi
 
 acknowledges.
 
-2.2.2.59
+##### 2.2.2.59 RDPTXT_SEND_KEY_TO_HOST_PDU
 
-RDPTXT_SEND_KEY_TO_HOST_PDU
+
 
 The RDPTXT_SEND_KEY_TO_HOST_PDU message is sent from server to client to route a key event to
 the client machine InputService for IME processing. This PDU is only used with non-performance-
@@ -7287,7 +7184,8 @@ Release: November 19, 2024
 
 83 / 94
 
-opId (4 bytes): A 32-bit UINT. An identifier for the key event, which ensures proper ordering of key
+
+opId (4 bytes): A 32-bit UINT. An identifier for the key event, which ensures proper ordering of key
 
 events and IME actions (in the absence of performance enhancement).
 
@@ -7297,9 +7195,9 @@ keyPressInfo (variable): A byte array that contains a serialized binary blob tha
 sized KeyPressInfo. The InputService will convert this blob into a KeyPressInfo structure
 (section 2.2.1.3).
 
-2.2.2.60
+##### 2.2.2.60 RDPTXT_REMOTE_TEXT_TARGET_THREAD_PROPERTIES_PDU
 
-RDPTXT_REMOTE_TEXT_TARGET_THREAD_PROPERTIES_PDU
+
 
 The RDPTXT_REMOTE_TEXT_TARGET_THREAD_PROPERTIES_PDU message is sent from server to
 client when the first TextInputHost is created for a given thread TextInputClient to tell the client's
@@ -7344,17 +7242,17 @@ IsWin32App
 Indicates that the thread associated with this TextInputClient is treated as a
 Win32 app for purposes of keyboard input routing.
 
-2.2.2.61
+##### 2.2.2.61 RDPTXT_REREGISTRATION_REQUEST_PDU
 
-RDPTXT_REREGISTRATION_REQUEST_PDU
+
 
 The RDPTXT_REREGISTRATION_REQUEST_PDU message is sent from client to server when the client-
 side InputService restarts following a crash. It signals the server-side InputService to reregister its
 TextInputHosts and TextInputClients. There are no parameters.
 
-2.2.2.62
+##### 2.2.2.62 RDPTXT_REMOTE_INTEGRATION_STATUS_PDU
 
-RDPTXT_REMOTE_INTEGRATION_STATUS_PDU
+
 
 The RDPTXT_REMOTE_INTEGRATION_STATUS_PDU message is sent from client to server as a
 notification of how remote integration of text input experiences, as facilitated by this DVC and the
@@ -7380,16 +7278,17 @@ Release: November 19, 2024
 
 84 / 94
 
-isEnabled (1 byte): A BOOLEAN value that indicates the desired state. If FALSE, remote text input
+
+isEnabled (1 byte): A BOOLEAN value that indicates the desired state. If FALSE, remote text input
 
 integration will be turned off, but the DVC will be kept alive. While the server is in the Disabled
 state, it will not send any PDUs across this DVC, and any other PDUs it receives from the client
 (besides this one) will be ignored. If TRUE, allows the transmission of PDUs across this DVC, and
 adjusts behavior of client and server to support remote integration on the client.
 
-2.2.2.63
+##### 2.2.2.63 RDPTXT_ERROR_REPORT_PDU
 
-RDPTXT_ERROR_REPORT_PDU
+
 
 The RDPTXT_ERROR_REPORT_PDU message is sent from client to server to report that an invalid
 operation was attempted, indicates that the local edit buffer is likely out of sync with the control in the
@@ -7432,34 +7331,35 @@ Release: November 19, 2024
 
 85 / 94
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The Text Input Virtual Channel Extension PDUs represent commands and notifications that do not
 result in a specific output or response except as described in this section. In most cases where a
 response is expected, it is a simple acknowledgement, but there are a few exceptions. All required
 responses, simple acknowledgement or otherwise, are described in the following sections.
 
-3.1.5.1  Reconversion PDUs
+##### 3.1.5.1 Reconversion PDUs
 
 When a client machine receives an RDPTXT_DO_RECONVERSION_PDU message (section 2.2.2.16), in
 response it is to produce reconversion candidates. If the returnCandidates or returnRange fields
@@ -7484,11 +7384,11 @@ The textInputClientId and editControlId fields in the
 RDPTXT_RECONVERSION_CANDIDATES_PDU message are to be taken from the corresponding
 fields of the RDPTXT_DO_RECONVERSION_PDU message.
 
-3.1.5.2  PDUs that require acknowledgement
+##### 3.1.5.2 PDUs that require acknowledgement
 
 The PDUs SHOULD provide acknowledgement messages as indicated in the following sections.
 
-3.1.5.2.1 RDPTXT_EDIT_CONTROL_FOCUS_PDU
+###### 3.1.5.2.1 RDPTXT_EDIT_CONTROL_FOCUS_PDU
 
 When a client receives a RDPTXT_EDIT_CONTROL_FOCUS_PDU message (section 2.2.2.32) with
 gainingFocus set to FALSE (0) to acknowledge receipt of the message send an
@@ -7500,61 +7400,62 @@ Remote Desktop Protocol: Text Input Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section 2.2.2.21) with acknowledgementType set to
+
+RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section 2.2.2.21) with acknowledgementType set to
 FocusLoss (0x00000000). Additionally, when a focus loss process has completed, send another
 RDPTXT_ACKNOWLEDGE_OPERATION_PDU with acknowledgementType set to
 FocusLeaveCompleted (0x0000000C).
 
-3.1.5.2.2 RDPTXT_TEXT_CHANGED_PDU
+###### 3.1.5.2.2 RDPTXT_TEXT_CHANGED_PDU
 
 When a client receives a RDPTXT_TEXT_CHANGED_PDU message (section 2.2.2.36), it SHOULD send
 an acknowledgement RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section 2.2.2.21) with
 acknowledgementType set to TextChange (0x00000002).
 
-3.1.5.2.3 RDPTXT_SELECTION_CHANGED_PDU
+###### 3.1.5.2.3 RDPTXT_SELECTION_CHANGED_PDU
 
 When a client receives a RDPTXT_SELECTION_CHANGED_PDU message (section 2.2.2.35), it SHOULD
 send an acknowledgement RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section 2.2.2.21) with
 acknowledgementType set to SelectionChange (0x00000003).
 
-3.1.5.2.4 RDPTXT_COMPOSITION_TERMINATED_PDU
+###### 3.1.5.2.4 RDPTXT_COMPOSITION_TERMINATED_PDU
 
 When a client receives a RDPTXT_COMPOSITION_TERMINATED_PDU message (section 2.2.2.49), it
 SHOULD send an acknowledgement RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section 2.2.2.21)
 with acknowledgementType set to CompositionTerminated (0x0000000A).
 
-3.1.5.2.5 RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU
+###### 3.1.5.2.5 RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU
 
 When a client receives a RDPTXT_CONTROL_CONVERSION_MODE_UPDATED_PDU message (section
 2.2.2.38), it SHOULD send an acknowledgement RDPTXT_ACKNOWLEDGE_OPERATION_PDU (section
 2.2.2.21) with acknowledgementType set to ConversionModeChanged (0x0000000B).
 
-3.1.5.2.6 RDPTXT_HOST_FOCUS_PDU
+###### 3.1.5.2.6 RDPTXT_HOST_FOCUS_PDU
 
 When a client receives a RDPTXT_HOST_FOCUS_PDU message (section 2.2.2.33) with gainingFocus
 set to FALSE (0) it SHOULD send an acknowledgement
 RDPTXT_ACKNOWLEDGE_HOST_OPERATION_PDU (section 2.2.2.22) with acknowledgementType
 set to FocusLoss (0x00000000).
 
-3.1.5.2.7 RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU
+###### 3.1.5.2.7 RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU
 
 When a client receives a RDPTXT_UNDO_PENDING_KEY_EVENTS_PDU message (section 2.2.2.58), it
 SHOULD send an acknowledgement RDPTXT_ACKNOWLEDGE_UNDO_PENDING_KEY_EVENTS_PDU
 (section 2.2.2.23).
 
-3.1.5.2.8 RDPTXT_UPDATE_TEXT_PDU
+###### 3.1.5.2.8 RDPTXT_UPDATE_TEXT_PDU
 
 When a server receives a RDPTXT_UPDATE_TEXT_PDU message (section 2.2.2.9), it SHOULD respond
 with RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU (section 2.2.2.44), that includes the
 received PDU’s operationId.
 
-3.1.5.2.9 RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU
+###### 3.1.5.2.9 RDPTXT_UPDATE_TEXT_AND_SELECTION_PDU
 
 When a server receives a RDPTXT_UPDATE_TEXT_PDU message (section 2.2.2.9), it SHOULD respond
 with RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU (section 2.2.2.44), that includes the
 received PDU’s operationId.
 
-3.1.5.2.10  RDPTXT_SET_SELECTION_PDU
+###### 3.1.5.2.10 RDPTXT_SET_SELECTION_PDU
 
 [MS-RDPETXT] - v20241119
 Remote Desktop Protocol: Text Input Virtual Channel Extension
@@ -7563,24 +7464,25 @@ Release: November 19, 2024
 
 87 / 94
 
-When a server receives a RDPTXT_SET_SELECTION_PDU message (section 2.2.2.11), it SHOULD
+
+When a server receives a RDPTXT_SET_SELECTION_PDU message (section 2.2.2.11), it SHOULD
 respond with RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU (section 2.2.2.44), that includes
 the received PDU’s operationId.
 
-3.1.5.2.11  RDPTXT_UPDATE_FORMAT_PDU
+###### 3.1.5.2.11 RDPTXT_UPDATE_FORMAT_PDU
 
 When a server receives a RDPTXT_UPDATE_FORMAT_PDU message (section 2.2.2.12) and none of the
 set fields of the TextFormat structure in the PDU’s format field are TRUE, it SHOULD respond with
 RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU that includes the received PDU’s operationId.
 
-3.1.5.2.12  RDPTXT_UPDATE_COMPOSITION_PDU
+###### 3.1.5.2.12 RDPTXT_UPDATE_COMPOSITION_PDU
 
 When a server receives a RDPTXT_UPDATE_FORMAT_PDU message (section 2.2.2.12) and the
 compositionAction field is set to EnterComposition (0x01) or LeaveComposition (0x02), the server
 responds with RDPTXT_ACKNOWLEDGE_REMOTE_OPERATION_PDU (section 2.2.2.44), that includes
 the received PDU’s operationId.
 
-3.1.5.2.13  RDPTXT_KEY_EVENT_PDU
+###### 3.1.5.2.13 RDPTXT_KEY_EVENT_PDU
 
 When a server receives a RDPTXT_KEY_EVENT_PDU message (section 2.2.2.1) and the routingStage
 field is set to None (0x02), the server responds with RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU
@@ -7592,7 +7494,7 @@ RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU back right away with acknowledgementType set to
 Raised (0x0002). A second RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU is still sent with
 acknowledgementType set to Completed (0x0001) once the key event has been processed.
 
-3.1.5.2.14  RDPTXT_KEY_EVENT_PAYLOAD_PDU
+###### 3.1.5.2.14 RDPTXT_KEY_EVENT_PAYLOAD_PDU
 
 When a server receives a RDPTXT_KEY_EVENT_PAYLOAD_PDU message (section 2.2.2.8), it SHOULD
 respond with RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU (section 2.2.2.45), with
@@ -7603,20 +7505,20 @@ back a RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU with acknowledgementType set to Raised
 (0x0002). A second RDPTXT_ACKNOWLEDGE_KEY_EVENT_PDU SHOULD still be sent with
 acknowledgementType set to Completed (0x0001) once the original PDU has been processed.
 
-3.1.5.3  Input Profile Update Confirmation
+##### 3.1.5.3 Input Profile Update Confirmation
 
 When a client sends a RDPTXT_UPDATE_INPUT_PROFILE_PDU message (section 2.2.2.18) to a server
 to activate an input profile, the server does its best to fulfill the request, then sends a response
 RDPTXT_INPUT_PROFILE_CHANGED_PDU (section 2.2.2.46) that includes the input profile that was
 actually activated in case it was unable to activate the exact input profile requested.
 
-3.1.5.4  CoreInputView Occlusions
+##### 3.1.5.4 CoreInputView Occlusions
 
 When a server receives an RDPTXT_OCCLUDING_VIEWS_PDU message (section 2.2.2.52), it SHOULD
 respond with RDPTXT_VIEW_OCCLUSIONS_HANDLED_PDU (section 2.2.2.47) to indicate whether the
 remote application or its framework handled the notification.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -7627,7 +7529,8 @@ Release: November 19, 2024
 
 88 / 94
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -7638,7 +7541,8 @@ Release: November 19, 2024
 
 89 / 94
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -7649,9 +7553,10 @@ Release: November 19, 2024
 
 90 / 94
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security Considerations for Developing with Text Services Framework (TSF)
 
@@ -7665,7 +7570,7 @@ remaining method or function calls.
 
 For more information see  [MSLEARN-TSF].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7676,7 +7581,8 @@ Release: November 19, 2024
 
 91 / 94
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7710,7 +7616,8 @@ Release: November 19, 2024
 
 92 / 94
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7747,7 +7654,8 @@ Release: November 19, 2024
 
 93 / 94
 
-T
+
+T
 
 Tracking changes 93
 Transport 18
@@ -7757,7 +7665,7 @@ V
 Vendor-extensible fields 17
 Versioning 16
 
-8  Index
+## 8 Index
 A
 
 Applicability 16

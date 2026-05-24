@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 52
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -267,7 +268,8 @@ Release: June 1, 2017
 
 2 / 52
 
-Date
+
+Date
 
 Revision
 History
@@ -311,336 +313,137 @@ Release: June 1, 2017
 
 3 / 52
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Message Syntax ................................................................................. 12
-Namespaces .............................................................................................. 12
-Messages ................................................................................................... 12
-SignMessageRequest ............................................................................. 13
-SignMessageResponse ........................................................................... 14
-VerifyMessageRequest ........................................................................... 14
-VerifyMessageResponse ......................................................................... 15
-IssueRequest ........................................................................................ 15
-IssueResponse...................................................................................... 16
-LogoutRequest...................................................................................... 16
-LogoutResponse ................................................................................... 17
-CreateErrorMessageRequest ................................................................... 18
-CreateErrorMessageResponse ................................................................. 18
-Elements ................................................................................................... 19
-Complex Types ........................................................................................... 19
-RequestType ........................................................................................ 19
-ResponseType ...................................................................................... 19
-PrincipalType ........................................................................................ 19
-SamlMessageType ................................................................................. 20
-PostBindingType ................................................................................... 20
-RedirectBindingType .............................................................................. 21
-Simple Types ............................................................................................. 21
-LogoutStatusType ................................................................................. 21
-PrincipalTypes ...................................................................................... 22
-Attributes .................................................................................................. 22
-Groups ...................................................................................................... 22
-Attribute Groups ......................................................................................... 22
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-
-2.2.6
-2.2.7
-2.2.8
-
-2.2.5.1
-2.2.5.2
-
-2.2.3
-2.2.4
-
-2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 23
-Common Details .............................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 23
-SignMessage ........................................................................................ 24
-Messages ....................................................................................... 24
-SignMessageRequest .................................................................. 24
-SignMessageResponse ................................................................ 24
-VerifyMessage ...................................................................................... 24
-Messages ....................................................................................... 24
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3.1.4.2.1
-
-3.1.4.1.1
-
-3.1.4.2
-
-3.1.4.1
-
-[MS-SAMLPR] - v20170601
-Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 52
-
-3.1.4.6.2
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.4
-
-3.1.4.4.1
-
-3.1.4.5
-
-3.1.4.5.1
-
-3.1.4.6
-
-3.1.4.6.1
-
-3.1.4.4.1.1
-3.1.4.4.1.2
-
-3.1.4.3.1.1
-3.1.4.3.1.2
-
-3.1.4.2.1.1
-3.1.4.2.1.2
-
-3.1.4.5.1.1
-3.1.4.5.1.2
-
-3.1.4.6.1.1
-3.1.4.6.1.2
-3.1.4.6.1.3
-3.1.4.6.1.4
-
-VerifyMessageRequest ................................................................ 24
-VerifyMessageResponse .............................................................. 24
-Issue ................................................................................................... 25
-Messages ....................................................................................... 25
-IssueRequest ............................................................................ 25
-IssueResponse .......................................................................... 25
-Logout ................................................................................................. 25
-Messages ....................................................................................... 25
-LogoutRequest .......................................................................... 25
-LogoutResponse ........................................................................ 25
-CreateErrorMessage .............................................................................. 25
-Messages ....................................................................................... 26
-CreateErrorMessageRequest ........................................................ 26
-CreateErrorMessageResponse ...................................................... 26
-Types Common to Multiple Operations ..................................................... 26
-Complex Types ............................................................................... 26
-PrincipalType ............................................................................. 26
-SamlMessageType ..................................................................... 26
-PostBindingType ........................................................................ 26
-RedirectBindingType ................................................................... 27
-Simple Types .................................................................................. 27
-LogoutStatusType ...................................................................... 27
-PrincipalTypes ........................................................................... 27
-Status Codes for Operations ................................................................... 27
-Element <Status> ........................................................................... 27
-Element <StatusCode> .................................................................... 28
-Element <StatusMessage> ............................................................... 30
-Element <StatusDetail> ................................................................... 30
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-Server Details .................................................................................................. 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Client Details ................................................................................................... 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 32
-
-3.1.4.6.2.1
-3.1.4.6.2.2
-
-3.1.4.7
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-
-3.1.5
-3.1.6
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-
-4.1
-
-4.2
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 33
-Issue Operation Examples ................................................................................. 33
-IssueRequest Example ................................................................................ 33
-IssueResponse Example .............................................................................. 34
-IssueResponse Example Using Artifact Binding ............................................... 35
-CreateErrorMessage Operation Examples ............................................................ 36
-CreateErrorMessageRequest Example ............................................................ 36
-CreateErrorMessageResponse Example .......................................................... 37
-SignMessage Operation Examples ...................................................................... 37
-SignMessageRequest Example ...................................................................... 37
-SignMessageResponse Example .................................................................... 38
-VerifyMessage Operation Examples .................................................................... 39
-VerifyMessageRequest Example .................................................................... 39
-
-4.2.1
-4.2.2
-
-4.3.1
-4.3.2
-
-4.4.1
-
-4.4
-
-4.3
-
-[MS-SAMLPR] - v20170601
-Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 52
-
-4.5
-
-4.4.2
-4.4.3
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-4.5.5
-4.5.6
-
-VerifyMessageResponse Example .................................................................. 40
-VerifyMessageResponse Example Using Redirect Binding ................................. 40
-Logout Operations Examples ............................................................................. 41
-LogoutRequest Example .............................................................................. 41
-LogoutResponse Example ............................................................................ 42
-LogoutRequest Example - Locally Initiated ..................................................... 43
-LogoutResponse Example:Final Response to Locally Initiated Request ............... 43
-LogoutRequest Example with SAMLResponse and RelayState ........................... 43
-LogoutResponse Example with SAMLRequest and RelayState ........................... 45
-
-5  Security ................................................................................................................. 46
-Security Considerations for Implementers ........................................................... 46
-Index of Security Parameters ............................................................................ 46
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 47
-
-7  Appendix B: Product Behavior ............................................................................... 48
-
-8  Change Tracking .................................................................................................... 49
-
-9  Index ..................................................................................................................... 50
-
-[MS-SAMLPR] - v20170601
-Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 52
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 SignMessageRequest](#2221-signmessagerequest)
+      - [2.2.2.2 SignMessageResponse](#2222-signmessageresponse)
+      - [2.2.2.3 VerifyMessageRequest](#2223-verifymessagerequest)
+      - [2.2.2.4 VerifyMessageResponse](#2224-verifymessageresponse)
+      - [2.2.2.5 IssueRequest](#2225-issuerequest)
+      - [2.2.2.6 IssueResponse](#2226-issueresponse)
+      - [2.2.2.7 LogoutRequest](#2227-logoutrequest)
+      - [2.2.2.8 LogoutResponse](#2228-logoutresponse)
+      - [2.2.2.9 CreateErrorMessageRequest](#2229-createerrormessagerequest)
+      - [2.2.2.10 CreateErrorMessageResponse](#22210-createerrormessageresponse)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 RequestType](#2241-requesttype)
+      - [2.2.4.2 ResponseType](#2242-responsetype)
+      - [2.2.4.3 PrincipalType](#2243-principaltype)
+      - [2.2.4.4 SamlMessageType](#2244-samlmessagetype)
+      - [2.2.4.5 PostBindingType](#2245-postbindingtype)
+      - [2.2.4.6 RedirectBindingType](#2246-redirectbindingtype)
+    - [2.2.5 Simple Types](#225-simple-types)
+      - [2.2.5.1 LogoutStatusType](#2251-logoutstatustype)
+      - [2.2.5.2 PrincipalTypes](#2252-principaltypes)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 SignMessage](#3141-signmessage)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 SignMessageRequest](#314111-signmessagerequest)
+          - [3.1.4.1.1.2 SignMessageResponse](#314112-signmessageresponse)
+      - [3.1.4.2 VerifyMessage](#3142-verifymessage)
+        - [3.1.4.2.1 Messages](#31421-messages)
+          - [3.1.4.2.1.1 VerifyMessageRequest](#314211-verifymessagerequest)
+          - [3.1.4.2.1.2 VerifyMessageResponse](#314212-verifymessageresponse)
+      - [3.1.4.3 Issue](#3143-issue)
+        - [3.1.4.3.1 Messages](#31431-messages)
+          - [3.1.4.3.1.1 IssueRequest](#314311-issuerequest)
+          - [3.1.4.3.1.2 IssueResponse](#314312-issueresponse)
+      - [3.1.4.4 Logout](#3144-logout)
+        - [3.1.4.4.1 Messages](#31441-messages)
+          - [3.1.4.4.1.1 LogoutRequest](#314411-logoutrequest)
+          - [3.1.4.4.1.2 LogoutResponse](#314412-logoutresponse)
+      - [3.1.4.5 CreateErrorMessage](#3145-createerrormessage)
+        - [3.1.4.5.1 Messages](#31451-messages)
+          - [3.1.4.5.1.1 CreateErrorMessageRequest](#314511-createerrormessagerequest)
+          - [3.1.4.5.1.2 CreateErrorMessageResponse](#314512-createerrormessageresponse)
+      - [3.1.4.6 Types Common to Multiple Operations](#3146-types-common-to-multiple-operations)
+        - [3.1.4.6.1 Complex Types](#31461-complex-types)
+          - [3.1.4.6.1.1 PrincipalType](#314611-principaltype)
+          - [3.1.4.6.1.2 SamlMessageType](#314612-samlmessagetype)
+          - [3.1.4.6.1.3 PostBindingType](#314613-postbindingtype)
+          - [3.1.4.6.1.4 RedirectBindingType](#314614-redirectbindingtype)
+        - [3.1.4.6.2 Simple Types](#31462-simple-types)
+          - [3.1.4.6.2.1 LogoutStatusType](#314621-logoutstatustype)
+          - [3.1.4.6.2.2 PrincipalTypes](#314622-principaltypes)
+      - [3.1.4.7 Status Codes for Operations](#3147-status-codes-for-operations)
+        - [3.1.4.7.1 Element <Status>](#31471-element)
+        - [3.1.4.7.2 Element <StatusCode>](#31472-element)
+        - [3.1.4.7.3 Element <StatusMessage>](#31473-element)
+        - [3.1.4.7.4 Element <StatusDetail>](#31474-element)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Issue Operation Examples](#41-issue-operation-examples)
+    - [4.1.1 IssueRequest Example](#411-issuerequest-example)
+    - [4.1.2 IssueResponse Example](#412-issueresponse-example)
+    - [4.1.3 IssueResponse Example Using Artifact Binding](#413-issueresponse-example-using-artifact-binding)
+  - [4.2 CreateErrorMessage Operation Examples](#42-createerrormessage-operation-examples)
+    - [4.2.1 CreateErrorMessageRequest Example](#421-createerrormessagerequest-example)
+    - [4.2.2 CreateErrorMessageResponse Example](#422-createerrormessageresponse-example)
+  - [4.3 SignMessage Operation Examples](#43-signmessage-operation-examples)
+    - [4.3.1 SignMessageRequest Example](#431-signmessagerequest-example)
+    - [4.3.2 SignMessageResponse Example](#432-signmessageresponse-example)
+  - [4.4 VerifyMessage Operation Examples](#44-verifymessage-operation-examples)
+    - [4.4.1 VerifyMessageRequest Example](#441-verifymessagerequest-example)
+    - [4.4.2 VerifyMessageResponse Example](#442-verifymessageresponse-example)
+    - [4.4.3 VerifyMessageResponse Example Using Redirect Binding](#443-verifymessageresponse-example-using-redirect-binding)
+  - [4.5 Logout Operations Examples](#45-logout-operations-examples)
+    - [4.5.1 LogoutRequest Example](#451-logoutrequest-example)
+    - [4.5.2 LogoutResponse Example](#452-logoutresponse-example)
+    - [4.5.3 LogoutRequest Example - Locally Initiated](#453-logoutrequest-example-locally-initiated)
+    - [4.5.4 LogoutResponse Example:Final Response to Locally Initiated Request](#454-logoutresponse-examplefinal-response-to-locally-initiated-request)
+    - [4.5.5 LogoutRequest Example with SAMLResponse and RelayState](#455-logoutrequest-example-with-samlresponse-and-relaystate)
+    - [4.5.6 LogoutResponse Example with SAMLRequest and RelayState](#456-logoutresponse-example-with-samlrequest-and-relaystate)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Security Assertion Markup Language (SAML) Proxy Request Signing
 Protocol, which allows proxy servers to perform operations that require knowledge of configured keys
@@ -650,7 +453,7 @@ server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -713,7 +516,8 @@ Release: June 1, 2017
 
 7 / 52
 
-SHA-1 hash: A hashing algorithm as specified in [FIPS180-2] that was developed by the National
+
+SHA-1 hash: A hashing algorithm as specified in [FIPS180-2] that was developed by the National
 
 Institute of Standards and Technology (NIST) and the National Security Agency (NSA).
 
@@ -758,14 +562,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -785,7 +589,8 @@ Release: June 1, 2017
 
 8 / 52
 
-[SAMLCore2] Cantor, S., Kemp, J., Philpott, R., and Maler, E., Eds., "Assertions and Protocol for the
+
+[SAMLCore2] Cantor, S., Kemp, J., Philpott, R., and Maler, E., Eds., "Assertions and Protocol for the
 OASIS Security Assertion Markup Language (SAML) V2.0", March 2005, http://docs.oasis-
 open.org/security/saml/v2.0/saml-core-2.0-os.pdf
 
@@ -818,12 +623,12 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [WS-Trust1.3] Nadalin, A., Goodner, M., Gudgin, M., Barbir, A., Granqvist, H., "WS-Trust 1.3", OASIS
 Standard 19 March 2007, http://docs.oasis-open.org/ws-sx/ws-trust/200512/ws-trust-1.3-os.html
 
-1.3  Overview
+### 1.3 Overview
 
 The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol (SAMLPR) provides
 the capability for AD FS proxy servers to have the AD FS STS server for an installation perform
@@ -835,7 +640,7 @@ proxy servers can use a single STS server.
 
 The protocol is stateless, with the parameters of each message being fully self-contained.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol (SAMLPR) uses
 SOAP over TCP for local connections, as shown in the following layering diagram:
@@ -847,7 +652,8 @@ Release: June 1, 2017
 
 9 / 52
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-SAMLPR].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-SAMLPR].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -859,17 +665,17 @@ over HTTPS for remote connections, as shown in the following layering diagram:
 
 Figure 2: SAMLPR SOAP over HTTPS layer diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The client is configured with the Uniform Resource Locator (URL) of the server's SOAP service in
 order to call the service.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The SAMLPR Protocol is used by services that perform SAML signature operations for proxy servers by
 STS servers in a manner that is compatible with AD FS 2.0.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol uses the versioning mechanisms defined in the following specification:
 
@@ -884,13 +690,14 @@ Release: June 1, 2017
 
 10 / 52
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The schema for this protocol provides for extensibility points for additional elements to be added to
 each SOAP message body. Elements within these extensibility points that are not understood are
 ignored.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol beyond those defined in the following
 specification:
@@ -904,18 +711,19 @@ Release: June 1, 2017
 
 11 / 52
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Security Assertion Markup Language (SAML) Proxy Request Signing Protocol uses SOAP, as
 specified in [SOAP1.2-1/2003], over TCP locally or HTTPS remotely, for communication.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains no common definitions used by this protocol.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -984,7 +792,7 @@ utility-1.0.xsd
 
 [WSSU1.0]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 Message
 
@@ -1014,7 +822,8 @@ Release: June 1, 2017
 
 12 / 52
 
-Message
+
+Message
 
 Description
 
@@ -1051,7 +860,7 @@ CreateErrorMessageResponse  A reply message to the CreateErrorMessageRequest mes
 
 created SAML error message.
 
-2.2.2.1  SignMessageRequest
+##### 2.2.2.1 SignMessageRequest
 
 The SignMessageRequest message requests that a SAML Message signature be applied to a SAML
 Message, if the configuration for the requested principal specifies that messages are to be signed. It is
@@ -1097,7 +906,8 @@ Release: June 1, 2017
 
 13 / 52
 
-2.2.2.2  SignMessageResponse
+
+##### 2.2.2.2 SignMessageResponse
 
 A SignMessageResponse message is a reply message to SignMessageRequest, containing the resulting
 SAML Message, which is signed, if the configuration for the requested principal specifies that
@@ -1129,7 +939,7 @@ type:
 
 Message: A complex type representing a SAML Protocol message.
 
-2.2.2.3  VerifyMessageRequest
+##### 2.2.2.3 VerifyMessageRequest
 
 The VerifyMessageRequest message requests verification that a SAML Message is from a known
 party and signed according to the metadata directives for that party. It is used by the following
@@ -1168,9 +978,10 @@ Release: June 1, 2017
 
 14 / 52
 
-Message: A complex type representing a SAML Protocol message.
 
-2.2.2.4  VerifyMessageResponse
+Message: A complex type representing a SAML Protocol message.
+
+##### 2.2.2.4 VerifyMessageResponse
 
 The VerifyMessageResponse message is a reply to VerifyMessageRequest, containing a Boolean result.
 It is used by the following message:
@@ -1203,7 +1014,7 @@ IsVerified: A Boolean result indicating whether a SAML Message is from a known p
 
 according to the metadata directives for that party.
 
-2.2.2.5  IssueRequest
+##### 2.2.2.5 IssueRequest
 
 The IssueRequest message requests the issuance of a SAML token. It is used by the following
 message:
@@ -1238,7 +1049,8 @@ Release: June 1, 2017
 
 15 / 52
 
-ActivityId: An opaque string supplied by the caller to track the activity to which this message
+
+ActivityId: An opaque string supplied by the caller to track the activity to which this message
 
 pertains.
 
@@ -1248,7 +1060,7 @@ OnBehalfOf: A complex type representing the party to issue the token for.
 
 SessionState: A structured string representing the information required to log out from this session.
 
-2.2.2.6  IssueResponse
+##### 2.2.2.6 IssueResponse
 
 The IssueResponse message is a reply to IssueRequest, containing a SAML response message. It is
 used by the following message:
@@ -1286,7 +1098,7 @@ AuthenticatingProvider: The URI of a claims provider or a local STS identifier, 
 
 where the user authenticated.
 
-2.2.2.7  LogoutRequest
+##### 2.2.2.7 LogoutRequest
 
 The LogoutRequest message requests that a SAML logout be performed. It is used by the following
 message:
@@ -1310,7 +1122,8 @@ Release: June 1, 2017
 
 16 / 52
 
-         <sequence>
+
+         <sequence>
            <element name="ActivityId" type="string"/>
            <element name="Message" minOccurs="0" type="msis:SamlMessageType"/>
            <element name="SessionState" type="string"/>
@@ -1332,7 +1145,7 @@ LogoutState: A structured string representing additional information required to
 
 session.
 
-2.2.2.8  LogoutResponse
+##### 2.2.2.8 LogoutResponse
 
 The LogoutResponse message is a reply to LogoutRequest, containing updated SessionState and
 LogoutState values. It is used by the following message:
@@ -1380,7 +1193,8 @@ Release: June 1, 2017
 
 17 / 52
 
-2.2.2.9  CreateErrorMessageRequest
+
+##### 2.2.2.9 CreateErrorMessageRequest
 
 The CreateErrorMessageRequest message requests the creation of a SAML error message, which will
 be signed, if the configuration for the requested principal specifies that messages are to be signed. It
@@ -1419,9 +1233,9 @@ Principal: A complex type representing a SAML EntityId for a SAML IdP, a SAML SP
 
 server.
 
-2.2.2.10
+##### 2.2.2.10 CreateErrorMessageResponse
 
-CreateErrorMessageResponse
+
 
 The CreateErrorMessageResponse message is a reply to CreateErrorMessageRequest, containing the
 created SAML error message. It is used by the following messages:
@@ -1456,15 +1270,16 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   </complexType>
+
+   </complexType>
 
 Message: A complex type representing a SAML Protocol message.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of common XML schema complex type definitions defined by
 this specification. XML schema complex type definitions that are specific to a particular operation are
@@ -1496,21 +1311,21 @@ A structure containing SAML binding information for a SAML post binding.
 
 RedirectBindingType  A structure containing SAML binding information for a SAML redirect binding.
 
-2.2.4.1  RequestType
+##### 2.2.4.1 RequestType
 
 This abstract type contains request message parameters for messages using this protocol. The
 schema for this type MUST be as follows:
 
    <complexType name="RequestType" abstract="true"/>
 
-2.2.4.2  ResponseType
+##### 2.2.4.2 ResponseType
 
 This abstract type contains response message parameters for messages using this protocol. The
 schema for this type MUST be as follows:
 
    <complexType name="ResponseType" abstract="true"/>
 
-2.2.4.3  PrincipalType
+##### 2.2.4.3 PrincipalType
 
 This structure contains a PrincipalTypes value and an identifier for the principal. The schema for this
 type MUST be as follows:
@@ -1525,7 +1340,8 @@ Release: June 1, 2017
 
 19 / 52
 
-       <element name="Type" type="msis:PrincipalTypes"/>
+
+       <element name="Type" type="msis:PrincipalTypes"/>
        <element name="Identifier" type="string"/>
      </sequence>
    </complexType>
@@ -1534,7 +1350,7 @@ Type: A PrincipalTypes enumeration value identifying the type of the SAML princi
 
 Identifier: An identifier for the SAML principal. This is a SAML EntityId.
 
-2.2.4.4  SamlMessageType
+##### 2.2.4.4 SamlMessageType
 
 This structure contains a representation of a SAML Protocol message. The schema for this type MUST
 be as follows:
@@ -1574,7 +1390,7 @@ RedirectBindingInformation: Information about the SAML Message using the SAML re
 
 binding, as per [SamlBinding] section 3.4.
 
-2.2.4.5  PostBindingType
+##### 2.2.4.5 PostBindingType
 
 This structure contains SAML binding information for a SAML post binding. The schema for this type
 MUST be as follows:
@@ -1592,11 +1408,12 @@ Release: June 1, 2017
 
 20 / 52
 
-RelayState:  An opaque BLOB that, if present in the request, MUST be returned in the response, as
+
+RelayState:  An opaque BLOB that, if present in the request, MUST be returned in the response, as
 
 per [SamlBinding] section 3.5.3.
 
-2.2.4.6  RedirectBindingType
+##### 2.2.4.6 RedirectBindingType
 
 This structure contains SAML binding information for a SAML redirect binding. The schema for this
 type MUST be as follows:
@@ -1624,7 +1441,7 @@ QueryStringHash:  A base64-encoded SHA-1 hash of the redirect query string (if p
 
 integrity purposes, as per [SamlBinding] section 3.6.4.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 The following table summarizes the set of common XML schema simple type definitions defined by this
 specification. XML schema simple type definitions that are specific to a particular operation are
@@ -1640,7 +1457,7 @@ PrincipalTypes
 
 An enumeration of the types of SAML principals.
 
-2.2.5.1  LogoutStatusType
+##### 2.2.5.1 LogoutStatusType
 
 This type enumerates the set of status values for logout operations. The schema for this type MUST be
 as follows:
@@ -1660,7 +1477,8 @@ Release: June 1, 2017
 
 21 / 52
 
-InProgress:  Indicates that more logout work is required to be performed.
+
+InProgress:  Indicates that more logout work is required to be performed.
 
 LogoutPartial:  Indicates that the logout process is complete, but all session participants might not
 
@@ -1668,7 +1486,7 @@ have been logged out.
 
 LogoutSuccess:  Indicates the logout process is complete, with all session participants logged out.
 
-2.2.5.2  PrincipalTypes
+##### 2.2.5.2 PrincipalTypes
 
 This type enumerates the set of types of SAML principals. The schema for this type MUST be as
 follows:
@@ -1691,15 +1509,15 @@ Authority:  Indicates that the principal is a SAML Identity Provider, identified
 
 Identifier, as per [SAMLCore2] section 8.3.6.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
@@ -1710,13 +1528,14 @@ Release: June 1, 2017
 
 22 / 52
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 This section describes protocol details that are common among multiple port types.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1728,14 +1547,14 @@ The SAMLPR Protocol enables proxy servers to have STS servers perform operations
 held at the STS server. Other than standard SOAP request/response protocol state that is not specific
 to this protocol, no state about the protocol is maintained at either the protocol client or server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no protocol-specific timer events that MUST be serviced by an implementation. This protocol
 does not require timers beyond those that are used by the underlying transport to transmit and
 receive SOAP messages. The protocol does not include provisions for time-based retry for sending
 protocol messages.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No protocol-specific initialization is required to use this protocol. Standard SOAP bindings MUST be
 established between the client and server before initiating communication.
@@ -1746,7 +1565,7 @@ standard STS server SOAP endpoint address is
 https://contoso.com/adfs/services/trust/samlprotocol/proxycertificatetransport, where contoso.com
 represents the server domain name. Other port addresses MAY be used by implementations. <1>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of operations as defined by this specification:
 
@@ -1784,20 +1603,21 @@ Release: June 1, 2017
 
 23 / 52
 
-For each operation there is a request and reply message. In all cases, the sequence of operation is
+
+For each operation there is a request and reply message. In all cases, the sequence of operation is
 that the client sends the request message to the server, which responds with the corresponding reply
 message. The server MUST accept the request messages and the client MUST accept the
 corresponding reply messages, when sent in response to a request message. The behavior of any
 other uses of these messages is undefined.
 
-3.1.4.1  SignMessage
+##### 3.1.4.1 SignMessage
 
 This operation causes a SAML Message signature be applied to the supplied SAML Message when the
 configuration requires signing, with the resulting message being returned as a result. This operation
 consists of the client sending a SignMessageRequest message to the server, which replies with a
 SignMessageResponse message.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of message definitions that are specific to this operation.
 
@@ -1811,22 +1631,22 @@ Conveys request parameters for SignMessage operation.
 
 SignMessageResponse  Conveys response parameters for SignMessage operation.
 
-3.1.4.1.1.1  SignMessageRequest
+###### 3.1.4.1.1.1 SignMessageRequest
 
 This message conveys request parameters for the SignMessage operation.
 
-3.1.4.1.1.2  SignMessageResponse
+###### 3.1.4.1.1.2 SignMessageResponse
 
 This message conveys response parameters for the SignMessage operation.
 
-3.1.4.2  VerifyMessage
+##### 3.1.4.2 VerifyMessage
 
 This operation verifies whether a SAML Message is from a known party and signed according to
 metadata directives for that party, returning the result as a Boolean. This operation consists of the
 client sending a VerifyMessageRequest message to the server, which replies with a
 VerifyMessageResponse message.
 
-3.1.4.2.1 Messages
+###### 3.1.4.2.1 Messages
 
 The following table summarizes the set of message definitions that are specific to this operation.
 
@@ -1840,11 +1660,11 @@ Conveys request parameters for the VerifyMessage operation.
 
 VerifyMessageResponse  Conveys response parameters for the VerifyMessage operation.
 
-3.1.4.2.1.1  VerifyMessageRequest
+###### 3.1.4.2.1.1 VerifyMessageRequest
 
 This message conveys request parameters for the VerifyMessage operation.
 
-3.1.4.2.1.2  VerifyMessageResponse
+###### 3.1.4.2.1.2 VerifyMessageResponse
 
 [MS-SAMLPR] - v20170601
 Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
@@ -1853,14 +1673,15 @@ Release: June 1, 2017
 
 24 / 52
 
-This message conveys response parameters for the VerifyMessage operation.
 
-3.1.4.3  Issue
+This message conveys response parameters for the VerifyMessage operation.
+
+##### 3.1.4.3 Issue
 
 This operation causes the issuance of a SAML token. This operation consists of the client sending an
 IssueRequest message to the server, which replies with an IssueResponse message.
 
-3.1.4.3.1 Messages
+###### 3.1.4.3.1 Messages
 
 The following table summarizes the set of message definitions that are specific to this operation.
 
@@ -1874,24 +1695,24 @@ Conveys request parameters for the Issue operation.
 
 IssueResponse  Conveys response parameters for the Issue operation.
 
-3.1.4.3.1.1
+###### 3.1.4.3.1.1 IssueRequest
 
-IssueRequest
+
 
 This message conveys request parameters for the Issue operation.
 
-3.1.4.3.1.2
+###### 3.1.4.3.1.2 IssueResponse
 
-IssueResponse
+
 
 This message conveys response parameters for the Issue operation.
 
-3.1.4.4  Logout
+##### 3.1.4.4 Logout
 
 This operation causes a SAML session to be logged out. This operation consists of the client sending a
 LogoutRequest message to the server, which replies with a LogoutResponse message.
 
-3.1.4.4.1 Messages
+###### 3.1.4.4.1 Messages
 
 The following table summarizes the set of message definitions that are specific to this operation.
 
@@ -1905,15 +1726,15 @@ Conveys request parameters for the Logout operation.
 
 LogoutResponse  Conveys response parameters for the Logout operation.
 
-3.1.4.4.1.1  LogoutRequest
+###### 3.1.4.4.1.1 LogoutRequest
 
 This message conveys request parameters for the Logout operation.
 
-3.1.4.4.1.2  LogoutResponse
+###### 3.1.4.4.1.2 LogoutResponse
 
 This message conveys response parameters for Logout operation.
 
-3.1.4.5  CreateErrorMessage
+##### 3.1.4.5 CreateErrorMessage
 
 This operation creates a SAML error message, applying a signature, if the configuration for the
 requested principal specifies that messages are to be signed. This operation consists of the client
@@ -1925,10 +1746,11 @@ Release: June 1, 2017
 
 25 / 52
 
-sending a CreateErrorMessageRequest message to the server, which replies with a
+
+sending a CreateErrorMessageRequest message to the server, which replies with a
 CreateErrorMessageResponse message.
 
-3.1.4.5.1 Messages
+###### 3.1.4.5.1 Messages
 
 The following table summarizes the set of message definitions that are specific to this operation.
 
@@ -1942,19 +1764,19 @@ Conveys request parameters for the CreateErrorMessage operation.
 
 CreateErrorMessageResponse  Conveys response parameters for the CreateErrorMessage operation.
 
-3.1.4.5.1.1  CreateErrorMessageRequest
+###### 3.1.4.5.1.1 CreateErrorMessageRequest
 
 This message conveys request parameters for the CreateErrorMessage operation.
 
-3.1.4.5.1.2  CreateErrorMessageResponse
+###### 3.1.4.5.1.2 CreateErrorMessageResponse
 
 This message conveys response parameters for the CreateErrorMessage operation.
 
-3.1.4.6  Types Common to Multiple Operations
+##### 3.1.4.6 Types Common to Multiple Operations
 
 This section describes types that are common to multiple operations.
 
-3.1.4.6.1 Complex Types
+###### 3.1.4.6.1 Complex Types
 
 The following table summarizes the XML schema complex type definitions that are common to multiple
 operations, the schemas for which are defined in section 2.2.4.
@@ -1980,16 +1802,16 @@ RedirectBindingType
 Information about a SAML redirect binding, which consists of its RelayState, if present,
 and signature information, if present.
 
-3.1.4.6.1.1  PrincipalType
+###### 3.1.4.6.1.1 PrincipalType
 
 This complex type identifies participant in a SAML federation, including its role.
 
-3.1.4.6.1.2  SamlMessageType
+###### 3.1.4.6.1.2 SamlMessageType
 
 This complex type specifies the representation of a SAML Protocol message and the binding used to
 send it.
 
-3.1.4.6.1.3  PostBindingType
+###### 3.1.4.6.1.3 PostBindingType
 
 This complex type specifies information about a SAML post binding, which consists of its RelayState,
 if present.
@@ -2001,12 +1823,13 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.4.6.1.4  RedirectBindingType
+
+###### 3.1.4.6.1.4 RedirectBindingType
 
 This complex type specifies information about a SAML redirect binding, which consists of its
 RelayState, if present, and signature information, if present.
 
-3.1.4.6.2 Simple Types
+###### 3.1.4.6.2 Simple Types
 
 The following table summarizes the XML schema simple definitions that are common to multiple
 operations, the schemas for which are defined in section 2.2.5.
@@ -2024,21 +1847,21 @@ PrincipalTypes
 
 Identifies role of participant in SAML federation.
 
-3.1.4.6.2.1  LogoutStatusType
+###### 3.1.4.6.2.1 LogoutStatusType
 
 This simple type indicates whether logout operation has completed or not, and if completed, whether
 all session participants were logged out.
 
-3.1.4.6.2.2  PrincipalTypes
+###### 3.1.4.6.2.2 PrincipalTypes
 
 This simple type identifies the role of the participant in a SAML federation.
 
-3.1.4.7  Status Codes for Operations
+##### 3.1.4.7 Status Codes for Operations
 
 This section describes both the <Status> element and the different status codes as specified in
 [SAMLCore2], section 3.2.2.
 
-3.1.4.7.1 Element <Status>
+###### 3.1.4.7.1 Element <Status>
 
 The <Status> element contains the following three elements:
 
@@ -2083,9 +1906,10 @@ Release: June 1, 2017
 
 27 / 52
 
- </complexType>
 
-3.1.4.7.2 Element <StatusCode>
+ </complexType>
+
+###### 3.1.4.7.2 Element <StatusCode>
 
 The <StatusCode> element contains a code or a set of nested codes that represent the status of the
 request. Every <StatusCode> element has the following attribute:
@@ -2177,7 +2001,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Status code
+
+Status code
 
 Description
 
@@ -2276,20 +2101,21 @@ Release: June 1, 2017
 
 29 / 52
 
-     <sequence>
+
+     <sequence>
          <element ref="samlp:StatusCode" minOccurs="0"/>
      </sequence>
      <attribute name="Value" type="anyURI" use="required"/>
  </complexType>
 
-3.1.4.7.3 Element <StatusMessage>
+###### 3.1.4.7.3 Element <StatusMessage>
 
 The <StatusMessage> element specifies a message that MAY be returned to an operator. The
 following schema fragment defines the <StatusMessage> element:
 
  <element name="StatusMessage" type="string"/>
 
-3.1.4.7.4 Element <StatusDetail>
+###### 3.1.4.7.4 Element <StatusDetail>
 
 The <StatusDetail> element MAY be used to specify additional information concerning the status of
 the request. The additional information consists of zero or more elements from any namespace, with
@@ -2305,26 +2131,26 @@ StatusDetailType complex type:
      </sequence>
  </complexType>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 This protocol does not require timers beyond those that are used by the underlying transport to
 transmit and receive SOAP messages. The protocol does not include provisions for time-based retry
 for sending protocol messages.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 This protocol does not have dependencies on any transport protocols other than HTTP 1.1 and TCP.
 This protocol relies on these transport mechanisms for the correct and timely delivery of protocol
 messages. The protocol does not take action in response to any changes or failure in machine state or
 network communications.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This port type utilizes the common abstract data model described in section 3.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This port type utilizes the common timers design described in section 3.1.2.
 
@@ -2335,7 +2161,8 @@ Release: June 1, 2017
 
 30 / 52
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 This port type utilizes the common initialization design described in section 3.1.3. In addition, an
 implementation SHOULD publish a SOAP endpoint at the port net.tcp://localhost/samlprotocol to be
@@ -2344,35 +2171,35 @@ https://contoso.com/adfs/services/trust/samlprotocol/proxycertificatetransport, 
 represents the server domain name, to be connected to by remote clients. Other port addresses MAY
 be used by implementations.<2>
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This port type utilizes the common message processing events and sequencing rules described in
 section 3.1.4.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 This port type utilizes the common timer events design described in section 3.1.5.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 This port type utilizes the common other local events design described in section 3.1.6.
 
-3.3  Client Details
+### 3.3 Client Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or implementation
 are passed directly to the transport, and the results returned by the transport are passed directly back
 to the higher-layer protocol or application.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This port type utilizes the common abstract data model described in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 This port type utilizes the common timers design described in section 3.1.2.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 This port type utilizes the common initialization design described in section 3.1.3. In addition, an
 implementation SHOULD connect to a SOAP endpoint at the port net.tcp://localhost/samlprotocol for
@@ -2381,12 +2208,12 @@ https://contoso.com/adfs/services/trust/samlprotocol/proxycertificatetransport, 
 represents the STS domain name for a remote connection. Other port addresses MAY be used by
 implementations.<3>
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 This port type utilizes the common message processing events and sequencing rules described in
 section 3.1.4.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 This port type utilizes the common timer events design described in section 3.1.5.
 
@@ -2397,7 +2224,8 @@ Release: June 1, 2017
 
 31 / 52
 
-3.3.6  Other Local Events
+
+#### 3.3.6 Other Local Events
 
 This port type utilizes the common other local events design described in section 3.1.6.
 
@@ -2408,11 +2236,12 @@ Release: June 1, 2017
 
 32 / 52
 
-4  Protocol Examples
 
-4.1  Issue Operation Examples
+## 4 Protocol Examples
 
-4.1.1  IssueRequest Example
+### 4.1 Issue Operation Examples
+
+#### 4.1.1 IssueRequest Example
 
 This is an example of a message requesting issuance of a SAML token.
 
@@ -2480,7 +2309,8 @@ Release: June 1, 2017
 
 33 / 52
 
-JzOfWEYKLbqFa2wZumAj67Mo453IwWaJPqZ+JcExHeghuj9CMgsUxYqVbb2HEjVU3VfGOZVShAQX+HT/W8z9365vHlgXn
+
+JzOfWEYKLbqFa2wZumAj67Mo453IwWaJPqZ+JcExHeghuj9CMgsUxYqVbb2HEjVU3VfGOZVShAQX+HT/W8z9365vHlgXn
 9X4Yg+Af3lvGgiAwznYENKTm5iWJTgINMdMxSt3dkEWZ3mMo7L21FRJLBc2vemz5hkdujTZFFymC2Rp53S700/g6l+b2t
 5NvizlADXwrjZfpdG3c+BUgaq1id162qI6oqKepeo9rwCJwYxnXDZ8060zmSm0N48HbzS6uBETZ7JMKAW/ajaembKaKT4
 mQAeV5DBtwhcjXn4sQ9XHQQSxjKn5MzvDdXB6YZoGq3aGY9IuWYAFAaegDgEyR2aPmlVwJPVCPFhJ9SYAq6UglSu6F5Qy
@@ -2497,7 +2327,7 @@ rUREQM4tvGC5Ni5kApHDj1+LeQHAE1z0mM=</mss:Cookie>
      </s:Body>
    </s:Envelope>
 
-4.1.2  IssueResponse Example
+#### 4.1.2 IssueResponse Example
 
 This is an example of a reply to a request to issue a SAML token, which contains the resulting SAML
 response message.
@@ -2554,7 +2384,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-lvS2JQemJ5UWQ1SVRiY1lZSXlpVFBKZ0UrNEkralIyT211eWVHemlzY0hZc2s3MG5wRWxGb1RKb2NXZXZYb3BTd28yRnZ
+
+lvS2JQemJ5UWQ1SVRiY1lZSXlpVFBKZ0UrNEkralIyT211eWVHemlzY0hZc2s3MG5wRWxGb1RKb2NXZXZYb3BTd28yRnZ
 jNVF0V3dicHN4UnBXS3E4OCtjcXpuV0xoS0lzMG92Y2ZjNzV1aWFnM2xpK2NRajVESm5GSlpSenpJMzFoSUpaRFJ3OXpM
 TmR6eU8zN1J3RmVwRjhESTF6VDdwdFIxSDJKV3ZNQW1nb29rSWh6ZDFXaEFDSHNNNEs4Q09nWnZENmh1d1BQYm9vSWNLT
 XJYWmpwQkhXVlAxZGlpb3JVZ0hZa3czY0xkUzF4bTc5Rk9MZ2lJbWRMcmhSRFFZa0VxeWlRc1g5M2FBVHBTanZvREgzMn
@@ -2607,7 +2438,7 @@ e>
      </s:Body>
    </s:Envelope>
 
-4.1.3  IssueResponse Example Using Artifact Binding
+#### 4.1.3 IssueResponse Example Using Artifact Binding
 
 This is an example of a reply to a request to issue a SAML token, which contains the resulting SAML
 response message. In this example, the SAML Artifact Binding was employed.
@@ -2628,7 +2459,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-     </s:Header>
+
+     </s:Header>
      <s:Body>
        <msis:IssueResponse
 xmlns:msis="http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/">
@@ -2644,9 +2476,9 @@ xmlns:msis="http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/
      </s:Body>
    </s:Envelope>
 
-4.2  CreateErrorMessage Operation Examples
+### 4.2 CreateErrorMessage Operation Examples
 
-4.2.1  CreateErrorMessageRequest Example
+#### 4.2.1 CreateErrorMessageRequest Example
 
 This is an example of a message that requests creation of a SAML error message.
 
@@ -2695,7 +2527,8 @@ Release: June 1, 2017
 
 36 / 52
 
-4.2.2  CreateErrorMessageResponse Example
+
+#### 4.2.2 CreateErrorMessageResponse Example
 
 This is an example of a reply to a message requesting creation of a SAML error message, which
 contains the created SAML error message.
@@ -2734,9 +2567,9 @@ w=</msis:Signature>
      </s:Body>
    </s:Envelope>
 
-4.3  SignMessage Operation Examples
+### 4.3 SignMessage Operation Examples
 
-4.3.1  SignMessageRequest Example
+#### 4.3.1 SignMessageRequest Example
 
 This is an example of a message that requests that a SAML Message signature be applied to a SAML
 Message.
@@ -2765,7 +2598,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-         <msis:Message>
+
+         <msis:Message>
            <msis:BaseUri>http://contoso.com/</msis:BaseUri>
 
 <msis:SAMLRequest>PHNhbWxwOkF1dGhuUmVxdWVzdCBJRD0iXzA4MTZjZjJiLTg2YzUtNDU2Ny04MGVlLTFkZjVmYjV
@@ -2783,7 +2617,7 @@ p0YzpTQU1MOjIuMDpwcm90b2NvbCIgLz4=</msis:SAMLRequest>
      </s:Body>
    </s:Envelope>
 
-4.3.2  SignMessageResponse Example
+#### 4.3.2 SignMessageResponse Example
 
 This is an example of a reply to a request to create a signed SAML Message, which contains the
 resulting SAML Message.
@@ -2838,7 +2672,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-E42Z2t6Ti94VU9weFVlRjV5cXRPOU91dFZFdUV3ZnNqV3hweXFlVUJPT1l4VUZ0MFFKWW9Wc3J4MDgyV0ROS2luSGJVeV
+
+E42Z2t6Ti94VU9weFVlRjV5cXRPOU91dFZFdUV3ZnNqV3hweXFlVUJPT1l4VUZ0MFFKWW9Wc3J4MDgyV0ROS2luSGJVeV
 h2RUovOURvYit0K2lTUGp1N2VtUkphVEtubnZtaEdQeXRadTVzazlyVDdPMTBISlNCQkZISTJGZmRBPTwvZHM6WDUwOUN
 lcnRpZmljYXRlPjwvZHM6WDUwOURhdGE+PC9LZXlJbmZvPjwvZHM6U2lnbmF0dXJlPjwvc2FtbHA6QXV0aG5SZXF1ZXN0
 Pg==</msis:SAMLRequest>
@@ -2848,9 +2683,9 @@ Pg==</msis:SAMLRequest>
      </s:Body>
    </s:Envelope>
 
-4.4  VerifyMessage Operation Examples
+### 4.4 VerifyMessage Operation Examples
 
-4.4.1  VerifyMessageRequest Example
+#### 4.4.1 VerifyMessageRequest Example
 
 This is an example of a message that requests verification that a SAML Message is from a known
 party and signed according to the configuration for that party.
@@ -2911,7 +2746,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-lcnRpZmljYXRlPjwvZHM6WDUwOURhdGE+PC9LZXlJbmZvPjwvZHM6U2lnbmF0dXJlPjwvc2FtbHA6QXV0aG5SZXF1ZXN0
+
+lcnRpZmljYXRlPjwvZHM6WDUwOURhdGE+PC9LZXlJbmZvPjwvZHM6U2lnbmF0dXJlPjwvc2FtbHA6QXV0aG5SZXF1ZXN0
 Pg==</msis:SAMLRequest>
            <msis:PostBindingInformation></msis:PostBindingInformation>
          </msis:Message>
@@ -2919,7 +2755,7 @@ Pg==</msis:SAMLRequest>
      </s:Body>
    </s:Envelope>
 
-4.4.2  VerifyMessageResponse Example
+#### 4.4.2 VerifyMessageResponse Example
 
 This is an example of a reply to a request to verify that a SAML Message is from a known party and
 signed according to the configuration for that party, containing the verification response.
@@ -2941,7 +2777,7 @@ xmlns:msis="http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/
      </s:Body>
    </s:Envelope>
 
-4.4.3  VerifyMessageResponse Example Using Redirect Binding
+#### 4.4.3 VerifyMessageResponse Example Using Redirect Binding
 
 This is an example of a reply to a request to verify that a SAML Message is from a known party and
 signed according to the configuration for that party, containing the verification response. In this
@@ -2980,7 +2816,8 @@ Release: June 1, 2017
 
 40 / 52
 
-           <msis:RedirectBindingInformation>
+
+           <msis:RedirectBindingInformation>
 
 <msis:Signature>Gd1KRh71Ko9hiCiS2UoDJ4fSCp1eCB0Zu5GGDYlie1lmaMc3zX/EwaIHd+fOZ+NchzJn5rhrEjznI
 5KmV3jdtBDgocf2z3C/U/3HeKVde5eqC7NPchGOHhmotd1Ik2KzxmMgOW9st8m4fpLqqrx39oVInL9rIfMs3x9IFg3CoC
@@ -2994,9 +2831,9 @@ k=</msis:Signature>
      </s:Body>
    </s:Envelope>
 
-4.5  Logout Operations Examples
+### 4.5 Logout Operations Examples
 
-4.5.1  LogoutRequest Example
+#### 4.5.1 LogoutRequest Example
 
 This is an example of a message requesting that a SAML logout be performed.
 
@@ -3052,7 +2889,8 @@ Release: June 1, 2017
 
 41 / 52
 
-yMlJpekFnTUJBQUdqU1RCSE1FVUdBMVVkQVFRK01EeUFFS2tpemh0OExGNkxtbWt3ZXd5V3dUcWhGakFVTVJJd0VBWURW
+
+yMlJpekFnTUJBQUdqU1RCSE1FVUdBMVVkQVFRK01EeUFFS2tpemh0OExGNkxtbWt3ZXd5V3dUcWhGakFVTVJJd0VBWURW
 UVFERXdsc2IyTmhiR2h2YzNTQ0VFU1NnWHpJY1Vtb1FnUVFWb1pmd05Bd0RRWUpLb1pJaHZjTkFRRUVCUUFEZ1lFQVBUN
 XhBNHc4UHROSGwvZmtoL1gzVk93RlZNWUFQYkpNVmdDbDV5TGZRMUxONmdrek4veFVPcHhVZUY1eXF0TzlPdXRWRXVFd2
 Zzald4cHlxZVVCT09ZeFVGdDBRSllvVnNyeDA4MldETktpbkhiVXlYdkVKLzlEb2IrdCtpU1BqdTdlbVJKYVRLbm52bWh
@@ -3070,7 +2908,7 @@ foo&&&&?ID?</msis:LogoutState>
      </s:Body>
    </s:Envelope>
 
-4.5.2  LogoutResponse Example
+#### 4.5.2 LogoutResponse Example
 
 This is an example of a reply to a request that a SAML logout be performed, which contains the
 updated SessionState and LogoutState values.
@@ -3121,7 +2959,8 @@ Release: June 1, 2017
 
 42 / 52
 
-4.5.3  LogoutRequest Example - Locally Initiated
+
+#### 4.5.3 LogoutRequest Example - Locally Initiated
 
 This is an example of a message requesting that a SAML logout be performed. In this example, the
 request is being sent to the endpoint on the local host.
@@ -3148,7 +2987,7 @@ xmlns:msis="http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/
      </s:Body>
    </s:Envelope>
 
-4.5.4  LogoutResponse Example:Final Response to Locally Initiated Request
+#### 4.5.4 LogoutResponse Example:Final Response to Locally Initiated Request
 
 This is an example of a reply to a request that a SAML logout be performed, which contains the
 updated SessionState and LogoutState values. In this example, the final response to a locally initiated
@@ -3173,7 +3012,7 @@ xmlns:msis="http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/
      </s:Body>
    </s:Envelope>
 
-4.5.5  LogoutRequest Example with SAMLResponse and RelayState
+#### 4.5.5 LogoutRequest Example with SAMLResponse and RelayState
 
 This is an example of a message requesting that a SAML logout be performed. In this example, the
 request contains both a SAMLResponse and RelayState.
@@ -3188,7 +3027,8 @@ Release: June 1, 2017
 
 43 / 52
 
-     <s:Header>
+
+     <s:Header>
        <a:Action
 s:mustUnderstand="1">http://schemas.microsoft.com/ws/2009/12/identityserver/samlprotocol/Proc
 essRequest</a:Action>
@@ -3258,7 +3098,8 @@ Release: June 1, 2017
 
 44 / 52
 
-4.5.6  LogoutResponse Example with SAMLRequest and RelayState
+
+#### 4.5.6 LogoutResponse Example with SAMLRequest and RelayState
 
 This is an example of a reply to a request that a SAML logout be performed, which contains the
 updated SessionState and LogoutState values. In this example, the response is to a request where the
@@ -3312,9 +3153,10 @@ Release: June 1, 2017
 
 45 / 52
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers have to ensure that SSL is used to authenticate between clients and servers on different
 machines, and that the server is the intended server referred to by the server endpoint. Implementers
@@ -3322,7 +3164,7 @@ also have to ensure that the remote client role authenticates to the server role
 can trust the client to perform SSL client certificate authentication where appropriate. Otherwise
 there are no specific security considerations beyond those specified in normative references.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3333,7 +3175,8 @@ Release: June 1, 2017
 
 46 / 52
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation, the following example provides the full Web Services Description
 Language (WSDL) ([WSDL]).
@@ -3371,7 +3214,8 @@ Release: June 1, 2017
 
 47 / 52
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3421,7 +3265,8 @@ Release: June 1, 2017
 
 48 / 52
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3433,7 +3278,8 @@ Release: June 1, 2017
 
 49 / 52
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3581,7 +3427,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-LogoutResponse example - final response to locally
+
+LogoutResponse example - final response to locally
 
 initiated request 43
 
@@ -3729,7 +3576,8 @@ Security Assertion Markup Language (SAML) Proxy Request Signing Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-T
+
+T
 
 Timer events
    client (section 3.1.5 30, section 3.3.5 31)

@@ -64,7 +64,8 @@ Release: November 21, 2025
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -318,7 +319,8 @@ Release: November 21, 2025
 
 2 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -525,7 +527,8 @@ Release: November 21, 2025
 
 3 / 48
 
-Date
+
+Date
 
 Revision
 History
@@ -564,201 +567,87 @@ Release: November 21, 2025
 
 4 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DRS_MSG](#221-drsmsg)
+    - [2.2.2 CURRENT_PROTOCOL_VERSION](#222-currentprotocolversion)
+    - [2.2.3 MAIL_REP_MSG_V1](#223-mailrepmsgv1)
+    - [2.2.4 MAIL_REP_MSG_V2](#224-mailrepmsgv2)
+  - [2.3 Certificate Formats](#23-certificate-formats)
+    - [2.3.1 Domain Controller Replication Certificate](#231-domain-controller-replication-certificate)
+    - [2.3.2 Directory Email Replication Certificate](#232-directory-email-replication-certificate)
+  - [2.4 Active Directory Objects](#24-active-directory-objects)
+    - [2.4.1 Computer Object](#241-computer-object)
+    - [2.4.2 Server Object](#242-server-object)
+      - [2.4.2.1 mailAddress Attribute](#2421-mailaddress-attribute)
+    - [2.4.3 nTDSDSA Object](#243-ntdsdsa-object)
+      - [2.4.3.1 msDs-Behavior-Version Attribute](#2431-msds-behavior-version-attribute)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Sending Role Details](#32-sending-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Serialization Processing](#3241-serialization-processing)
+      - [3.2.4.2 Compression Processing](#3242-compression-processing)
+      - [3.2.4.3 Cryptographic Processing](#3243-cryptographic-processing)
+      - [3.2.4.4 Frame Message Processing](#3244-frame-message-processing)
+      - [3.2.4.5 Lower-Layer SMTP MTA Interaction](#3245-lower-layer-smtp-mta-interaction)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Receiving Role Details](#33-receiving-role-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 SMTP Header Processing](#3351-smtp-header-processing)
+      - [3.3.5.2 Frame Message Processing](#3352-frame-message-processing)
+      - [3.3.5.3 Cryptographic Processing](#3353-cryptographic-processing)
+      - [3.3.5.4 Decompression and Deserialization Processing](#3354-decompression-and-deserialization-processing)
+      - [3.3.5.5 Higher-Layer DRS Protocol Interaction](#3355-higher-layer-drs-protocol-interaction)
+      - [3.3.5.6 Extension Frame Decoding and Validation](#3356-extension-frame-decoding-and-validation)
+      - [3.3.5.7 Certificate Post-Processing](#3357-certificate-post-processing)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Data Transfer Via SMTP Replication](#41-data-transfer-via-smtp-replication)
+  - [4.2 Sample SMTP Message](#42-sample-smtp-message)
+  - [4.3 DRS Protocol Extensions for SMTP Transport Frame](#43-drs-protocol-extensions-for-smtp-transport-frame)
+  - [4.4 Configuring SMTP Replication](#44-configuring-smtp-replication)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 18
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Message Syntax ............................................................................................... 19
-DRS_MSG .................................................................................................. 19
-CURRENT_PROTOCOL_VERSION ................................................................... 20
-MAIL_REP_MSG_V1 .................................................................................... 20
-MAIL_REP_MSG_V2 .................................................................................... 22
-Certificate Formats ........................................................................................... 24
-Domain Controller Replication Certificate ....................................................... 25
-Directory Email Replication Certificate ........................................................... 25
-Active Directory Objects .................................................................................... 26
-Computer Object ........................................................................................ 26
-Server Object ............................................................................................. 26
-mailAddress Attribute ............................................................................ 27
-nTDSDSA Object ........................................................................................ 27
-msDs-Behavior-Version Attribute ............................................................ 27
-
-2.3.1
-2.3.2
-
-2.4.1
-2.4.2
-
-2.4.2.1
-
-2.4.3.1
-
-2.4.3
-
-2.4
-
-3.2
-
-3.1
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 28
-Common Details .............................................................................................. 28
-Abstract Data Model .................................................................................... 28
-Timers ...................................................................................................... 28
-Initialization ............................................................................................... 28
-Higher-Layer Triggered Events ..................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Sending Role Details ......................................................................................... 29
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 31
-Serialization Processing ......................................................................... 31
-Compression Processing......................................................................... 31
-Cryptographic Processing ....................................................................... 31
-Frame Message Processing ..................................................................... 32
-Lower-Layer SMTP MTA Interaction ......................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 33
-Receiving Role Details ....................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 33
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-
-3.2.5
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-
-3.3
-
-[MS-SRPL] - v20251121
-Directory Replication Service (DRS) Protocol Extensions for SMTP
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-5 / 48
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-
-3.3.6
-3.3.7
-
-Initialization ............................................................................................... 33
-Higher-Layer Triggered Events ..................................................................... 33
-Message Processing Events and Sequencing Rules .......................................... 34
-SMTP Header Processing ........................................................................ 34
-Frame Message Processing ..................................................................... 34
-Cryptographic Processing ....................................................................... 34
-Decompression and Deserialization Processing .......................................... 35
-Higher-Layer DRS Protocol Interaction ..................................................... 35
-Extension Frame Decoding and Validation ................................................ 36
-Certificate Post-Processing ..................................................................... 36
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-
-4  Protocol Examples ................................................................................................. 38
-Data Transfer Via SMTP Replication .................................................................... 38
-Sample SMTP Message ..................................................................................... 38
-DRS Protocol Extensions for SMTP Transport Frame .............................................. 39
-Configuring SMTP Replication............................................................................. 39
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 41
-Security Considerations for Implementers ........................................................... 41
-Index of Security Parameters ............................................................................ 41
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 42
-
-7  Change Tracking .................................................................................................... 46
-
-8  Index ..................................................................................................................... 47
-
-[MS-SRPL] - v20251121
-Directory Replication Service (DRS) Protocol Extensions for SMTP
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-6 / 48
-
-1  Introduction
+## 1 Introduction
 
 As specified in [MS-ADTS], domain controllers (DCs) use the Directory Replication Service (DRS)
 Remote Protocol (as specified in [MS-DRSR]) to replicate their configurations, schema, and domain
@@ -778,7 +667,7 @@ define extensions or changes to the SMTP protocol itself.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -825,7 +714,8 @@ Release: November 21, 2025
 
 7 / 48
 
-certificate: When referring to X.509v3 certificates, that information consists of a public key, a
+
+certificate: When referring to X.509v3 certificates, that information consists of a public key, a
 
 distinguished name (DN) of some entity assumed to have control over the private key
 corresponding to the public key in the certificate, and some number of other attributes and
@@ -896,7 +786,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-DS DC on one server. The AD LDS DC contains full NC replicas of the config NC and the
+
+DS DC on one server. The AD LDS DC contains full NC replicas of the config NC and the
 schema NC in its forest. The domain controller is the server side of Authentication Protocol
 Domain Support [MS-APDS].
 
@@ -971,7 +862,8 @@ Release: November 21, 2025
 
 9 / 48
 
-Knowledge Consistency Checker (KCC): A component of the Active Directory replication that
+
+Knowledge Consistency Checker (KCC): A component of the Active Directory replication that
 is used to create spanning trees for domain controller to domain controller replication and
 to translate those trees into settings of variables that implement the replication topology.
 
@@ -1043,7 +935,8 @@ Release: November 21, 2025
 
 10 / 48
 
-replication: The process of propagating the effects of all originating writes to any replica of a
+
+replication: The process of propagating the effects of all originating writes to any replica of a
 naming context (NC), to all replicas of the NC. If originating writes cease and replication
 continues, all replicas converge to a common application-visible state.
 
@@ -1085,14 +978,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1114,7 +1007,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
 
@@ -1179,7 +1073,8 @@ Release: November 21, 2025
 
 12 / 48
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [DUBUISSON] Dubuisson, O., "ASN.1 Communication between Heterogeneous Systems", Morgan
 Kaufmann, October 2000, ISBN: 0126333610.
@@ -1195,7 +1090,7 @@ bb3f-2f657bd23f78
 [MSSS] Microsoft Corporation, "Serialization Services", http://msdn.microsoft.com/en-
 us/library/aa378670.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 As specified in [MS-ADTS], domain controllers (DCs) use the Directory Replication Service (DRS)
 Remote Protocol (as specified in [MS-DRSR]) to replicate their configurations, schema, and domain
@@ -1249,7 +1144,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-SRPL].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1270,7 +1166,8 @@ Release: November 21, 2025
 
 14 / 48
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-SRPL].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1293,7 +1190,8 @@ Release: November 21, 2025
 
 15 / 48
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-SRPL].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1329,11 +1227,12 @@ Release: November 21, 2025
 
 16 / 48
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-SRPL].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The DRS Protocol Extensions for SMTP are a means of encapsulating serialized DRS RPC messages
 and transporting them inside an SMTP mail message.
@@ -1361,7 +1260,7 @@ information in a format suitable for inclusion in an SMTP message. The MIME enco
 as the body of an SMTP message, as specified in [RFC2822]. An SMTP Mail Transfer Agent (MTA)
 (as specified in [RFC2821]) is used to transport SMTP messages to the remote DC.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The DC requires the ability to send and receive SMTP messages. Any SMTP Mail Transfer Agent
 (MTA) (as specified in [RFC2821]) can be used.<1>
@@ -1376,7 +1275,8 @@ Release: November 21, 2025
 
 17 / 48
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The DRS Protocol Extensions for SMTP are used by DCs, in a forest, when they are replicating Active
 Directory contents by using the Directory Replication Service (DRS) Remote Protocol, as specified in
@@ -1395,7 +1295,7 @@ The DRS Protocol Extensions for SMTP specified in this document are not a genera
 mechanism. They are defined only for transport of the IDL_DRSGetNcChanges RPC request and
 response messages that are part of the DRS Remote Protocol, as specified in [MS-DRSR].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -1416,11 +1316,11 @@ are used when receiving messages. Therefore, two machines implementing this prot
 configured to use different encryption and/or hashing algorithms can fail decryption and
 verification. See section 3.3.5.3 for details.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1437,11 +1337,12 @@ Release: November 21, 2025
 
 18 / 48
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The DRS Protocol Extensions for SMTP use SMTP (as specified in [RFC2821]) as a transport.
 
@@ -1454,7 +1355,7 @@ local-part and domain used in the mailAddress are implementation-specific.<2>
 
 A DC MAY interpret SMTP delivery status notifications (DSNs) for error reporting purposes.<3>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Conceptually, the message frame used by the DRS Protocol Extensions for SMTP is a backward-
 compatible structure that has evolved over two successive product versions. The two versions of the
@@ -1494,7 +1395,7 @@ they are not interpreted by the DRS Protocol Extensions for SMTP. In the case of
 Extensions for SMTP, these capabilities are present in every message, in contrast to the core DRS
 Remote Protocol, where they are exchanged only on the first IDL_DRSBind message.
 
-2.2.1  DRS_MSG
+#### 2.2.1 DRS_MSG
 
 The data carried by the MAIL_REP_MSG_V1 or MAIL_REP_MSG_V2 message MUST be a Network
 Data Representation (NDR)–encoded binary large object (BLOB) that contains one of the
@@ -1507,7 +1408,8 @@ Release: November 21, 2025
 
 19 / 48
 
-  DRS_MSG_GETCHGREQ_V4
+
+  DRS_MSG_GETCHGREQ_V4
 
   DRS_MSG_GETCHGREQ_V7
 
@@ -1522,7 +1424,7 @@ of the DRS request or response.
 Other DRS message structures MUST NOT be carried as payload of the DRS Protocol Extensions for
 SMTP.
 
-2.2.2  CURRENT_PROTOCOL_VERSION
+#### 2.2.2 CURRENT_PROTOCOL_VERSION
 
 The following constant is used by the DRS Protocol Extensions for SMTP.
 
@@ -1537,7 +1439,7 @@ CURRENT_PROTOCOL_VERSION
 This constant specifies the current version of the DRS Protocol Extensions for
 SMTP.
 
-2.2.3  MAIL_REP_MSG_V1
+#### 2.2.3 MAIL_REP_MSG_V1
 
 This structure defines the V1 format for a DRS Protocol Extensions for SMTP frame. This structure is
 not part of the RPC data stream. The RPC data stream from the higher-layer DRS Protocol is
@@ -1581,7 +1483,8 @@ Release: November 21, 2025
 
 20 / 48
 
-...
+
+...
 
 CompressionVersionCaller (4 bytes): A 32-bit, unsigned integer that indicates the compression
 
@@ -1681,7 +1584,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-If the value of the cbDataOffset field is 0, then the value of this field MUST be ignored on receipt.
+
+If the value of the cbDataOffset field is 0, then the value of this field MUST be ignored on receipt.
 If the RP bit is set in the dwMsgType, then the payload is a DRS_MSG_GETCHGREPLY_V1
 message; if the RQ bit is set, then the payload is a DRS_MSG_GETCHGREQ_V4 message.
 
@@ -1689,7 +1593,7 @@ PayloadData (variable):  Variable-length region that contains the Send-Message-P
 
 stream, as specified in section 3.2.1.
 
-2.2.4  MAIL_REP_MSG_V2
+#### 2.2.4 MAIL_REP_MSG_V2
 
 This structure defines the V2 format for a DRS Protocol Extensions for SMTP frame. It appears at the
 beginning of the attachment data sent using SMTP. All numeric header fields MUST be in the little-
@@ -1751,7 +1655,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-ProtocolVersionCaller (4 bytes):  A 32-bit, unsigned integer that indicates the protocol version for
+
+ProtocolVersionCaller (4 bytes):  A 32-bit, unsigned integer that indicates the protocol version for
 
 this message. This field MUST be set to the value of the CURRENT_PROTOCOL_VERSION.
 
@@ -1851,7 +1756,8 @@ Release: November 21, 2025
 
 23 / 48
 
-ExtCapabilityVector (variable): The variable length region that contains the entire
+
+ExtCapabilityVector (variable): The variable length region that contains the entire
 
 DRS_EXTENSIONS_INT structure, as specified in [MS-DRSR] section 5.39. The contents of bytes
 5–8 of this structure also appear in dwExtFlags.
@@ -1864,7 +1770,7 @@ PayloadData (variable): Variable-length region that contains the Send-Message-Pa
 
 stream (as specified in section 3.2.1). This field MUST begin at offset cbDataOffset.
 
-2.3  Certificate Formats
+### 2.3 Certificate Formats
 
 An X.509 certificate (as specified in [X509]) that encapsulates a public key for the purpose of
 secure communication is a prerequisite for using the DRS Protocol Extensions for SMTP. Each DC
@@ -1922,7 +1828,8 @@ Release: November 21, 2025
 
 24 / 48
 
-2.3.1  Domain Controller Replication Certificate
+
+#### 2.3.1 Domain Controller Replication Certificate
 
 The Domain Controller Replication certificate is defined as an X.509 (as specified in [X509])
 certificate with specific extensions and values, as described below.
@@ -1965,7 +1872,7 @@ Microsoft.
 
   Microsoft-defined X.509v3 extension for certificate template name.<8>
 
-2.3.2  Directory Email Replication Certificate
+#### 2.3.2 Directory Email Replication Certificate
 
 The Directory Email Replication certificate is defined as an X.509 (as specified in [X509]) certificate
 with specific extensions and values, as described below.
@@ -1994,7 +1901,8 @@ Release: November 21, 2025
 
 25 / 48
 
-The Certificate Subject Alternative Name section MUST contain the GUID of the DC object in the
+
+The Certificate Subject Alternative Name section MUST contain the GUID of the DC object in the
 directory and the DNS name. For example:
 
   Other Name: 1.3.6.1.4.1.311.25.1 = ac 4b 29 06 aa d6 5d 4f a9 9c 4c bc b0 6a 65 d9
@@ -2024,9 +1932,9 @@ Microsoft.
 
   Microsoft-defined X.509v3 extension for certificate template information.<9>
 
-2.4  Active Directory Objects
+### 2.4 Active Directory Objects
 
-2.4.1  Computer Object
+#### 2.4.1 Computer Object
 
 The Computer object represents a computer in the Active Directory forest, and it is found by default
 at the following relative distinguished name (RDN) within the domain NC:
@@ -2040,7 +1948,7 @@ further verify that the certificate contains the GUID of a Computer object that 
 
 The schema definition for the Computer object is specified in [MS-ADSC].
 
-2.4.2  Server Object
+#### 2.4.2 Server Object
 
 This is the Active Directory Server object from the Active Directory Schema, as specified in [MS-
 ADTS] section 6.1.1.2.2.
@@ -2061,7 +1969,8 @@ Release: November 21, 2025
 
 26 / 48
 
-2.4.2.1  mailAddress Attribute
+
+##### 2.4.2.1 mailAddress Attribute
 
 The mailAddress attribute of the Server object (section 2.4.2) that corresponds to a DC indicates the
 SMTP recipient address used by that server for the DRS Protocol Extensions for SMTP transport.
@@ -2074,7 +1983,7 @@ determines the appropriate email To address field by querying the value of this 
 destination computer's Server object. The directory server sets the From address field by querying the
 value of this attribute for its own Server object.
 
-2.4.3  nTDSDSA Object
+#### 2.4.3 nTDSDSA Object
 
 The nTDSDSA object is the Active Directory Server object (section 2.4.2) from the Active Directory
 Schema, as specified in [MS-ADTS] section 6.1.1.2.2.
@@ -2088,7 +1997,7 @@ DC.
 The GUID of this nTDSDSA object is invariant for the lifetime of the DC. The implementation MAY use
 this GUID value as an alternative identifier for the DC.<10>
 
-2.4.3.1  msDs-Behavior-Version Attribute
+##### 2.4.3.1 msDs-Behavior-Version Attribute
 
 The nTDSDSA object (section 2.4.3) class contains the msDs-Behavior-Version attribute. This attribute
 specifies the DC version. The contents of this attribute are as specified in [MS-ADTS] section 6.1.4.2.
@@ -2100,7 +2009,8 @@ Release: November 21, 2025
 
 27 / 48
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The higher layer is the Directory Replication Service (DRS) Remote Protocol (as specified in [MS-
 DRSR]). The lower layer is the SMTP Mail Transfer Agent (MTA) delivery function.
@@ -2111,9 +2021,9 @@ Extensions for SMTP first inserts the extension frame into a MIME attachment, th
 attachment into an SMTP message, and finally gives the SMTP message to the lower-layer SMTP Mail
 Transfer Agent (MTA) for delivery to the recipient.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 Each DC that uses the DRS Protocol Extensions for SMTP maintains the following state.
 
@@ -2131,11 +2041,11 @@ SMTP on this DC can receive SMTP messages.
 
 Local-DC-Certificate: This value is the DC certificate for the local DC.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The configurations of any two DCs are required to meet certain conditions before the DRS Protocol
 Extensions for SMTP can be used to replicate state between them.
@@ -2179,7 +2089,8 @@ Release: November 21, 2025
 
 28 / 48
 
-
+
+
 
 The NC is the schema NC.
 
@@ -2219,23 +2130,23 @@ DC will be able to receive SMTP messages that are sent to Local-DC-Mail-Address.
 domain of Local-DC-Mail-Address might need to be registered in the DNS in a fashion that allows the
 local DC to receive SMTP messages that are sent to the domain.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Sending Role Details
+### 3.2 Sending Role Details
 
 This section defines the steps taken when the DRS Protocol Extensions for SMTP receive a message
 from the higher-layer Directory Replication Service (DRS) Remote Protocol [MS-DRSR] to send to
@@ -2250,7 +2161,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 When the Directory Replication Service (DRS) Remote Protocol invokes the DRS Protocol Extensions
 for SMTP, it provides the transport with the following information.
@@ -2310,11 +2222,11 @@ Send-Message-Data between processing steps.
 
 Each variable represents a separate, contiguously allocated buffer.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
@@ -2325,7 +2237,8 @@ Release: November 21, 2025
 
 30 / 48
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 The Directory Replication Service (DRS) Remote Protocol layer invokes the DRS Protocol Extensions
 for SMTP after the construction of the DRS Protocol message, as follows:
@@ -2342,7 +2255,7 @@ The DC, in the server role, has received a request message, completed processing
 and is sending a response message. The DRS Protocol layer invokes the send-processing steps at
 the point indicated in the text of "Server Behavior," as specified in [MS-DRSR] section 4.1.10.5.
 
-3.2.4.1  Serialization Processing
+##### 3.2.4.1 Serialization Processing
 
 The DRS Protocol Extensions for SMTP MUST perform the following procedure to marshal the data on
 the DRS Protocol message in the Send-Message-Data byte stream. The extension MUST encode the
@@ -2350,7 +2263,7 @@ Send-Message-Data byte stream as an RPC IDL structured type by using the RPC Ext
 Serialization Version 1," as specified in [MS-RPCE] section 2.2.6. (For additional examples, see
 [MSSS].) The result is Send-Message-Serialized-Data.
 
-3.2.4.2  Compression Processing
+##### 3.2.4.2 Compression Processing
 
 The DRS Protocol Extensions for SMTP SHOULD perform the following data compression procedure on
 the Send-Message-Serialized-Data byte stream. When compressing, the extension MUST compress the
@@ -2363,7 +2276,7 @@ between compressed and uncompressed data for the DRS compression algorithms by d
 processing steps for decompression. After the data is compressed, the result is the Send-Message-
 Compressed-Data byte stream.
 
-3.2.4.3  Cryptographic Processing
+##### 3.2.4.3 Cryptographic Processing
 
 The DRS Protocol Extensions for SMTP MUST perform a certificate service (as specified in [MS-
 WCCE]) cryptographic operation on the Send-Message-Compressed-Data byte stream. All
@@ -2401,7 +2314,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-For a Response message, the result of the encryption step defined above MUST be cryptographically
+
+For a Response message, the result of the encryption step defined above MUST be cryptographically
 signed. For Request messages, the Send-Message-Compressed-Data byte stream MUST be
 cryptographically signed. The result of the cryptographic signature operation MUST be in "PKCS #7
 Format" as specified in [RFC2315]. The hash function used in the signature operation MUST be
@@ -2409,7 +2323,7 @@ either RSA MD5 or SHA256. <14> The result MUST include Local-DC-Certificate in t
 associated certificates. The result of the signing operation is the Send-Message-Data-Authenticated
 byte stream.
 
-3.2.4.4  Frame Message Processing
+##### 3.2.4.4 Frame Message Processing
 
 The following specifies the layout of the two defined frames in sections 2.2.3 and 2.2.4.
 
@@ -2421,7 +2335,7 @@ Send-Message-Payload. If the Send-Frame-Type indicates type MAIL_REP_MSG_V2, the
 of DRS_EXTENSION (as specified in [MS-DRSR]) MUST be inserted into the frame, as specified in
 section 2.2.4. The result is the Send-Message-Frame byte stream.
 
-3.2.4.5  Lower-Layer SMTP MTA Interaction
+##### 3.2.4.5 Lower-Layer SMTP MTA Interaction
 
 An SMTP message (as specified in [RFC2822]) is prepared as follows.
 
@@ -2458,11 +2372,11 @@ message.
 The SMTP message is given to the SMTP Mail Transfer Agent (MTA) and directs it to perform a send
 operation to the address specified by the Send-Recipient-Mail-Address string variable.<15>
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The lower-layer SMTP delivery agent MAY return DSNs for previously sent messages.<16>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -2473,18 +2387,19 @@ Release: November 21, 2025
 
 32 / 48
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 The lower-layer SMTP Mail Transfer Agent (MTA) delivers SMTP messages on its own schedule
 using whatever network transport that it selects.
 
-3.3  Receiving Role Details
+### 3.3 Receiving Role Details
 
 This section specifies the behavior of the DRS Protocol Extensions for SMTP when the SMTP Mail
 Transfer Agent (MTA) receives an SMTP message. This section also defines the behavior for both
 servers and clients.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section defines the working variables that are used when performing in the receiving role. The
 following working variables are populated during frame decoding, as described in subsequent sections.
@@ -2519,15 +2434,15 @@ processing steps.
 Each variable represents a separate, contiguously allocated buffer. Each processing step defines the
 method of construction and specifies internal field alignment requirements, if any.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events for this role. The lower-layer SMTP Mail Transfer Agent
 (MTA) delivers messages to the DRS Protocol Extensions for SMTP, as described in the next section.
@@ -2539,7 +2454,8 @@ Release: November 21, 2025
 
 33 / 48
 
-3.3.5  Message Processing Events and Sequencing Rules
+
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 Message processing in the DRS Protocol Extensions for SMTP begins when the SMTP Mail Transfer
 Agent (MTA) delivers an SMTP message to the server process for the DRS Protocol Extensions for
@@ -2547,7 +2463,7 @@ SMTP. This operation MUST validate the frame that is received from the SMTP Mail
 (MTA), decode the frame into its constituent fields, and pass the resulting DRS data to the DRS
 Remote Protocol layer.
 
-3.3.5.1  SMTP Header Processing
+##### 3.3.5.1 SMTP Header Processing
 
 The SMTP message MUST meet the following criteria. If any of the criteria are not met, the SMTP
 message MUST be dropped, and it MAY be logged. The SMTP header fields are specified in [RFC2822].
@@ -2574,7 +2490,7 @@ If all criteria are met, the contents of the SMTP message From field MUST be pla
 Mail-Address working variable. The body from the SMTP message MUST be extracted and the base64-
 encoding MUST be decoded. The decoded result is Receive-Frame.
 
-3.3.5.2  Frame Message Processing
+##### 3.3.5.2 Frame Message Processing
 
 The implementation MUST ensure the validity of the Receive-Frame byte stream contents prior to their
 use. If any of the frame validation constraints described in section 3.3.5.6 are not met, the Receive-
@@ -2596,7 +2512,7 @@ If dwMsgType flag RP is set, Received-Message-Type equals Response.
 The extension SHOULD set the working variable Received-Compression-Method to the value of frame
 field CompressionVersionCaller.
 
-3.3.5.3  Cryptographic Processing
+##### 3.3.5.3 Cryptographic Processing
 
 The extension MUST perform a certificate service [MS-WCCE] cryptographic operation on the
 Receive-Data. All cryptographic operations MUST employ the Abstract Syntax Notation One
@@ -2616,7 +2532,8 @@ Release: November 21, 2025
 
 34 / 48
 
-The validity of the Sender-DC-Certificate, MUST be verified as specified in section 3.3.5.7. If the
+
+The validity of the Sender-DC-Certificate, MUST be verified as specified in section 3.3.5.7. If the
 Sender-DC-Certificate is not valid, the Receive-Frame MUST be dropped.
 
 Certificate-based cryptographic operation consists of an unconditional signature verification step,
@@ -2645,7 +2562,7 @@ When the implementation updates the map, the following semantics are used: The a
 SMTP-ADDR-DC-CERT-MAP(Sender-Mail-Address) MUST be set equal to the Sender-Certificate, and
 any value previously stored MUST be overwritten.
 
-3.3.5.4  Decompression and Deserialization Processing
+##### 3.3.5.4 Decompression and Deserialization Processing
 
 The order of operations is a decompression step, followed by a data-unmarshaling step.
 
@@ -2658,7 +2575,7 @@ The expanded result MUST be deserialized as an RPC IDL structured type by using 
 Extension "Type Serialization Version 1," as specified in [MS-RPCE] section 2.2.6. The result is the
 Receive-Message-Deserialized-Data byte stream.
 
-3.3.5.5  Higher-Layer DRS Protocol Interaction
+##### 3.3.5.5 Higher-Layer DRS Protocol Interaction
 
 The Receive-Message-Deserialized-Data byte stream is provided to the DRS Protocol layer for further
 interpretation.
@@ -2685,7 +2602,8 @@ Release: November 21, 2025
 
 35 / 48
 
-3.3.5.6  Extension Frame Decoding and Validation
+
+##### 3.3.5.6 Extension Frame Decoding and Validation
 
 This section defines specific frame validation constraints. The implementation MUST discard frames
 that are not valid.
@@ -2749,7 +2667,7 @@ specified in section 3.2.1.
 If the Receive-Frame is neither a MAIL_REP_MSG_V1 nor a MAIL_REP_MSG_V2, it MUST be
 considered not valid.
 
-3.3.5.7  Certificate Post-Processing
+##### 3.3.5.7 Certificate Post-Processing
 
 The Sender-Domain Controller-Certificate value, as a Domain Controller Certificate (section 2.3),
 MUST contain the GUID of an Active Directory object.
@@ -2773,7 +2691,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 
 
@@ -2789,11 +2708,11 @@ implementation-specific references between the Computer object in a domain NC, w
 might not be present locally as an NC replica, and the Server object in the configuration NC, which
 is held locally.<23>
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 The lower-layer SMTP Mail Transfer Agent (MTA) receives SMTP messages on its own schedule.
 This document does not specify the configuration or operation of the SMTP Mail Transfer Agent (MTA).
@@ -2805,7 +2724,8 @@ Release: November 21, 2025
 
 37 / 48
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section illustrates the operation of the DRS Protocol Extensions for SMTP specified in this
 document by tracing the steps of a single DRS Remote Protocol, as specified in [MS-DRSR] exchange
@@ -2814,7 +2734,7 @@ message that carries the DRS request and includes a decoding of the DRS Protocol
 SMTP frame inside that SMTP message. Section 4.4 provides guidance about how to set up a test case
 in which DCs use the DRS Protocol Extensions for SMTP.
 
-4.1  Data Transfer Via SMTP Replication
+### 4.1 Data Transfer Via SMTP Replication
 
 A single SMTP replication operation consists of four sub-operations as follows. Note that for the
 purposes of this section, the "client" is the DC that is requesting replicated data from a "server."
@@ -2842,7 +2762,7 @@ then passes the BLOB to the DRS engine, which processes the response.
 For the purpose of this example, DC1 (the "server") and DC3 (the "client") exist as described
 previously, configured for SMTP replication.
 
-4.2  Sample SMTP Message
+### 4.2 Sample SMTP Message
 
 The following is a sample SMTP message that contains a DRS request message from DC3 to DC1. The
 FQDN of the machines as registered in DNS are d2975006-04cb-4f9d-b797-
@@ -2872,7 +2792,8 @@ Release: November 21, 2025
 
 38 / 48
 
-4.3  DRS Protocol Extensions for SMTP Transport Frame
+
+### 4.3 DRS Protocol Extensions for SMTP Transport Frame
 
 The following is the actual mail attachment from the sample SMTP message described in section 4.2
 after base64 decoding.
@@ -2918,7 +2839,7 @@ CNDJ6nn5us4RjIIAqgBLqQsCAAAACAAAAA4AAABfAFIAZQBmADEANAAwADgANQA4ADEANQAxAAAA
  00000d90: 7a89 f8f2 b482 ac4c 4306 3dc5            z......LC.=.
  # end payload data
 
-4.4  Configuring SMTP Replication
+### 4.4 Configuring SMTP Replication
 
 As an aid for implementers who are attempting to set up and test the DRS Protocol Extensions for
 SMTP, this section provides an example of how to configure SMTP replication between two DCs. In
@@ -2943,7 +2864,8 @@ Release: November 21, 2025
 
 39 / 48
 
-  DC3
+
+  DC3
 
   Domain controller name: DC3
 
@@ -2962,9 +2884,10 @@ Release: November 21, 2025
 
 40 / 48
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 As specified in sections 2.2.3, 2.2.4, and 3, information such as whether the message is a request or a
 response, and which message version, is present in both the DRS Protocol Extensions for SMTP
@@ -2980,7 +2903,7 @@ When data is encrypted, the key length that is used is determined by the length 
 the recipient's certificate. The Domain Controller Replication certificate has a public key length of 56-
 bits and the Domain Controller Email certificate has a public key length of 128 bits.<25>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -3019,7 +2942,8 @@ Release: November 21, 2025
 
 41 / 48
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3087,7 +3011,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<5> Section 2.2.3: Windows 2000 Server systems set the cbDataOffset field to 0 in a V1 frame.
+
+<5> Section 2.2.3: Windows 2000 Server systems set the cbDataOffset field to 0 in a V1 frame.
 Windows Server 2003 and later systems set the cbDataOffset field to 32 in a V1 frame. However,
 Windows Server 2003 and later systems accept V1 frames with cbDataOffset equal to 0 or with
 cbDataOffset equal to 32.
@@ -3164,7 +3089,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<13> Section 3.2.4.3: For encryption, by default, Windows Server 2008 uses the AES128 encryption
+
+<13> Section 3.2.4.3: For encryption, by default, Windows Server 2008 uses the AES128 encryption
 algorithm, but it can be configured to use the RSA RC4 encryption algorithm. The configuration
 mechanism is outside the scope of the protocol.
 
@@ -3232,7 +3158,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<21> Section 3.3.5.3: In the case of a Response, the Windows implementation does not add the
+
+<21> Section 3.3.5.3: In the case of a Response, the Windows implementation does not add the
 sender's certificate to the map.
 
 <22> Section 3.3.5.6: As a sender, Windows 2000 Server can set the dwMsgVersion field of a V1
@@ -3271,7 +3198,8 @@ Release: November 21, 2025
 
 45 / 48
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3315,7 +3243,8 @@ Release: November 21, 2025
 
 46 / 48
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3453,7 +3382,8 @@ Directory Replication Service (DRS) Protocol Extensions for SMTP
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-   abstract data model (section 3.1.1 28, section
+
+   abstract data model (section 3.1.1 28, section
 
 3.2.1 30)
 

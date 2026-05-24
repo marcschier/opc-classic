@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 135
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 135
 
-Date
+
+Date
 
 Revision
 History
@@ -541,650 +543,175 @@ Release: April 23, 2024
 
 3 / 135
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.5.1
-
-2.2.4
-2.2.5
-
-2.2.2.1
-2.2.2.2
-
-2.2.3.1
-2.2.3.2
-
-2.2.2.3
-2.2.2.4
-
-2.2.2.2.1
-2.2.2.2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-RTP Payload Format for ASF Data Packets ...................................................... 15
-General Usage ...................................................................................... 15
-RTP Header Usage for ASF Data .............................................................. 16
-RTP Payload Format Header ................................................................... 16
-ASF Data Packet Payload ....................................................................... 17
-RTP Payload Format for Forward Error Correction ........................................... 18
-General Usage ...................................................................................... 18
-Vandermonde Matrix Algorithm ............................................................... 18
-Basic Principles Used in the Encoding Technique .................................. 19
-Generation of a Vandermonde Matrix ................................................. 19
-RTP Header Usage for RTP FEC Data ........................................................ 20
-RTP Packet Header FEC Extension ........................................................... 20
-RTP Payload Format for Retransmitted RTP Packets and Packet-Pair Data .......... 21
-Transmitting Copies of RTP Packets ......................................................... 22
-Transmitting Packet-Pair Data ................................................................ 22
-RTCP NACK Packet Syntax ........................................................................... 23
-Session Description Protocol Extensions ........................................................ 24
-Bandwidth Modifiers for the "b=" Field ..................................................... 24
-"AS" Bandwidth Modifier ................................................................... 24
-"RS" Bandwidth Modifier ................................................................... 24
-"RR" Bandwidth Modifier ................................................................... 24
-"X-AV" Bandwidth Modifier ............................................................... 25
-Attributes for the "a=" Field ................................................................... 25
-Control URL Attribute ("a=control") ................................................... 25
-Max packetsize Attribute ("a=maxps") ............................................... 25
-Program Parameters URL Attribute ("a=pgmpu") ................................. 25
-application/vnd.ms.wms-hdr.asfv1 ............................................... 26
-application/x-wms-contentdesc ................................................... 26
-Reliable Attribute ("a=reliable") ........................................................ 26
-Stream Number Attribute ("a=stream") ............................................. 26
-Type Attribute ("a=type") ................................................................. 27
-broadcast.................................................................................. 27
-lastentry ................................................................................... 27
-notseekable .............................................................................. 27
-notstridable ............................................................................... 27
-playlist ..................................................................................... 27
-skipbackward ............................................................................ 27
-skipforward ............................................................................... 27
-RTP Payload Format for ASF Data Packets ................................................ 28
-
-2.2.5.2.6.1
-2.2.5.2.6.2
-2.2.5.2.6.3
-2.2.5.2.6.4
-2.2.5.2.6.5
-2.2.5.2.6.6
-2.2.5.2.6.7
-
-2.2.5.1.1
-2.2.5.1.2
-2.2.5.1.3
-2.2.5.1.4
-
-2.2.5.2.1
-2.2.5.2.2
-2.2.5.2.3
-
-2.2.5.2.4
-2.2.5.2.5
-2.2.5.2.6
-
-2.2.5.2.3.1
-2.2.5.2.3.2
-
-2.2.5.3
-
-2.2.5.2
-
-[MS-RTSP] - v20240423
-Real-Time Streaming Protocol (RTSP) Windows Media Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 135
-
-2.2.6
-
-2.2.6.3
-
-2.2.5.4
-2.2.5.5
-
-2.2.6.1
-2.2.6.2
-
-2.2.6.4
-2.2.6.5
-2.2.6.6
-2.2.6.7
-
-2.2.6.3.1
-2.2.6.3.2
-2.2.6.3.3
-2.2.6.3.4
-2.2.6.3.5
-2.2.6.3.6
-2.2.6.3.7
-2.2.6.3.8
-2.2.6.3.9
-
-2.2.6.2.1
-2.2.6.2.2
-2.2.6.2.3
-2.2.6.2.4
-2.2.6.2.5
-2.2.6.2.6
-2.2.6.2.7
-2.2.6.2.8
-2.2.6.2.9
-2.2.6.2.10
-2.2.6.2.11
-2.2.6.2.12
-
-RTP Payload Format for FEC Data ............................................................ 28
-RTP Payload Format for Retransmitted RTP Packets and Packet-Pair Data .... 29
-RTSP Header Fields ..................................................................................... 29
-Bandwidth ............................................................................................ 30
-Cache-Control ...................................................................................... 30
-max-age ........................................................................................ 30
-must-revalidate ............................................................................... 30
-no-cache ........................................................................................ 30
-no-store ......................................................................................... 31
-no-user-cache ................................................................................. 31
-private ........................................................................................... 31
-proxy-revalidate .............................................................................. 31
-public ............................................................................................. 31
-x-wms-content-size ......................................................................... 31
-x-wms-event-subscription ................................................................ 31
-x-wms-proxy-split ........................................................................... 31
-x-wms-stream-type ......................................................................... 31
-Content-Type ....................................................................................... 32
-application/sdp ............................................................................... 32
-application/x-rtsp-packetpair ............................................................ 32
-application/x-rtsp-udp-packetpair ...................................................... 33
-application/x-wms-extension-cmd ..................................................... 33
-application/x-wms-getcontentinfo ...................................................... 33
-application/x-wms-Logconnectstats ................................................... 33
-application/x-wms-Logplaystats ........................................................ 33
-application/x-wms-sendevent ........................................................... 33
-application/x-wms-streamswitch ....................................................... 33
-Cookie ................................................................................................. 33
-If-Match ............................................................................................... 34
-If-None-Match ...................................................................................... 34
-Range .................................................................................................. 34
-x-asf-byte ...................................................................................... 34
-x-asf-packet ................................................................................... 34
-RTP-Info .............................................................................................. 35
-Set-Cookie ........................................................................................... 35
-Supported ............................................................................................ 35
-com.microsoft.wm.eosmsg ............................................................... 36
-com.microsoft.wm.fastcache ............................................................. 36
-com.microsoft.wm.locid.................................................................... 36
-com.microsoft.wm.packetpairssrc ...................................................... 37
-com.microsoft.wm.predstrm ............................................................. 37
-com.microsoft.wm.srvppair ............................................................... 37
-com.microsoft.wm.sswitch ................................................................ 37
-com.microsoft.wm.startupprofile ....................................................... 38
-2.2.6.11
-Transport ............................................................................................. 38
-2.2.6.12  User-Agent ........................................................................................... 39
-X-Accelerate-Streaming ......................................................................... 39
-2.2.6.13
-X-Accept-Authentication ........................................................................ 40
-2.2.6.14
-X-Accept-Proxy-Authentication ............................................................... 40
-2.2.6.15
-X-Broadcast-Id ..................................................................................... 40
-2.2.6.16
-X-Burst-Streaming ................................................................................ 40
-2.2.6.17
-X-Notice .............................................................................................. 41
-2.2.6.18
-X-Player-Lag-Time ................................................................................ 41
-2.2.6.19
-X-Playlist ............................................................................................. 41
-2.2.6.20
-X-Playlist-Change-Notice ........................................................................ 42
-2.2.6.21
-X-Playlist-Gen-Id .................................................................................. 42
-2.2.6.22
-X-Playlist-Seek-Id ................................................................................. 42
-2.2.6.23
-X-Proxy-Client-Agent ............................................................................. 42
-2.2.6.24
-
-2.2.6.10.1
-2.2.6.10.2
-2.2.6.10.3
-2.2.6.10.4
-2.2.6.10.5
-2.2.6.10.6
-2.2.6.10.7
-2.2.6.10.8
-
-2.2.6.8
-2.2.6.9
-2.2.6.10
-
-2.2.6.7.1
-2.2.6.7.2
-
-[MS-RTSP] - v20240423
-Real-Time Streaming Protocol (RTSP) Windows Media Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 135
-
-2.2.7
-
-2.2.6.25
-2.2.6.26
-2.2.6.27
-2.2.6.28
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-2.2.7.4
-2.2.7.5
-2.2.7.6
-2.2.7.7
-2.2.7.8
-2.2.7.9
-2.2.7.10
-
-X-Proxy-Client-Verb .............................................................................. 43
-X-Receding-PlaylistChange ..................................................................... 43
-X-RTP-Info ........................................................................................... 43
-X-StartupProfile .................................................................................... 44
-Request Types............................................................................................ 45
-Announce ............................................................................................. 45
-Describe .............................................................................................. 46
-EndOfStream ........................................................................................ 46
-GetContentInfo ..................................................................................... 47
-KeepAlive ............................................................................................. 48
-LogConnect .......................................................................................... 48
-LogPlay ................................................................................................ 49
-Pause .................................................................................................. 49
-Play ..................................................................................................... 50
-SelectStream ........................................................................................ 50
-SelectStream Using SETUP ............................................................... 52
-SelectStream Using TEARDOWN ........................................................ 52
-SelectStream Using SET_PARAMETER ................................................ 53
-SendEvent ........................................................................................... 53
-2.2.7.11
-TcpPacketPair ....................................................................................... 54
-2.2.7.12
-Teardown ............................................................................................. 54
-2.2.7.13
-2.2.7.14  UdpPacketPair ...................................................................................... 54
-
-2.2.7.10.1
-2.2.7.10.2
-2.2.7.10.3
-
-3.1
-
-3.1.4.3
-
-3.1.4.3.1
-
-3.1.4.2.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-
-3  Protocol Details ..................................................................................................... 56
-Client Details ................................................................................................... 56
-Abstract Data Model .................................................................................... 56
-Timers ...................................................................................................... 57
-Initialization ............................................................................................... 58
-Higher-Layer Triggered Events ..................................................................... 58
-Request to Retrieve Caching Information ................................................. 58
-Request to Retrieve Content Information ................................................. 58
-Sending the Describe Request ........................................................... 59
-Request to Start Streaming Content ........................................................ 59
-Sending a SelectStream Request ....................................................... 59
-Request to Change Currently Selected Streams ........................................ 60
-Streams to Play from the New Playlist Entry Are Selected .......................... 60
-Request to Retransmit Lost RTP Packets .................................................. 61
-Request to Stop Streaming .................................................................... 61
-Request to Change Playback Position ....................................................... 62
-Playback of Content Has Finished ............................................................ 62
-Request to Finish Streaming Session ....................................................... 62
-Processing Events and Sequencing Rules ....................................................... 62
-Sending a Request (All Request Types) .................................................... 62
-Receiving a Response (All Request Types) ................................................ 64
-Receiving a GetContentInfo Response ...................................................... 64
-Receiving a Describe Response ............................................................... 64
-Receiving a TcpPacketPair Response ........................................................ 65
-Receiving a SelectStream Response for the Retransmission Stream ............. 65
-Receiving a UdpPacketPair Response ....................................................... 66
-Receiving an RTP Packet Containing Packet-Pair Data ................................ 66
-Receiving a SelectStream Response ........................................................ 67
-Sending a Play Request in READY State .............................................. 67
-Receiving a Play Response ..................................................................... 68
-Receiving a LogConnect Response ........................................................... 69
-Receiving RTP Packets ........................................................................... 69
-Processing of RTP Packets When FEC Is Used ...................................... 69
-Processing of RTP Packets ................................................................ 70
-Receiving an EndOfStream Request ......................................................... 71
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3.1.5.10
-3.1.5.11
-3.1.5.12
-
-3.1.5.12.1
-3.1.5.12.2
-
-3.1.5.9.1
-
-3.1.5.13
-
-3.1.5
-
-[MS-RTSP] - v20240423
-Real-Time Streaming Protocol (RTSP) Windows Media Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 135
-
-3.1.6
-
-3.1.6.1
-3.1.6.2
-
-3.1.7
-
-3.1.7.1
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.1.5.16.1
-
-3.1.5.14
-3.1.5.15
-3.1.5.16
-
-3.1.5.17
-3.1.5.18
-3.1.5.19
-3.1.5.20
-
-Receiving a LogPlay Response ................................................................ 72
-Receiving an Announce Request .............................................................. 72
-Receiving a SelectStream Response After Announce .................................. 72
-Sending a Play Request in PLAYING State ........................................... 73
-Receiving a Pause Response ................................................................... 73
-Receiving a KeepAlive Response ............................................................. 73
-Receiving a SendEvent Response ............................................................ 74
-Receiving a Teardown Response ............................................................. 74
-Timer Events .............................................................................................. 74
-Firewall Timer Expires ........................................................................... 74
-Keepalive Timer Expires ......................................................................... 74
-Other Local Events ...................................................................................... 74
-TCP Connection Is Disconnected ............................................................. 74
-Server Details .................................................................................................. 74
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 78
-Initialization ............................................................................................... 78
-Higher-Layer Triggered Events ..................................................................... 78
-Notification that the Last RTP Packet Has Been Sent .................................. 78
-Notification that a New ASF File Header Is Available .................................. 79
-Notification That an ASF Packet Is Ready to Be Sent.................................. 81
-Processing Events and Sequencing Rules ....................................................... 82
-Receiving a Request (All Request Types) .................................................. 82
-Sending a Response (All Request Types) .................................................. 83
-Receiving a GetContentInfo Request ........................................................ 84
-Receiving a Describe Request ................................................................. 84
-Receiving a TcpPacketPair Request .......................................................... 86
-Receiving a SelectStream Request .......................................................... 86
-Receiving a SelectStream Request Using SETUP .................................. 86
-Receiving a SelectStream Request Using TEARDOWN ........................... 86
-Receiving a SelectStream Request Using SET_PARAMETER ................... 86
-Common Processing Rules for SelectStream ....................................... 87
-Receiving a UdpPacketPair Request ......................................................... 88
-Receiving a Play Request ....................................................................... 88
-Receiving a LogConnect Request ............................................................. 90
-Receiving an RTCP Packet ...................................................................... 91
-Receiving a Pause Request ..................................................................... 92
-Receiving a LogPlay Request .................................................................. 93
-Receiving an EndOfStream Response ....................................................... 93
-Receiving an Announce Response ............................................................ 94
-Receiving a KeepAlive Request ............................................................... 94
-Receiving a SendEvent Request .............................................................. 95
-Receiving a Teardown Request ............................................................... 96
-Timer Events .............................................................................................. 96
-Lag-Timer Timer Expires ........................................................................ 96
-Idle-Timeout Timer Expires .................................................................... 96
-Heartbeat Timer Expires ........................................................................ 96
-Other Local Events ...................................................................................... 96
-Selected-Stream Adjustment .................................................................. 96
-Client Closes TCP Connection .................................................................. 96
-Server Role .......................................................................................... 96
-Redirection ........................................................................................... 96
-Cache-Control Data ............................................................................... 97
-RTSP Request Received ......................................................................... 97
-Computing Values for the X-StartupProfile Header .................................... 97
-Inspecting a Single ASF Payload ........................................................ 98
-MaxDiffSndTime Calculations ............................................................ 99
-ChosenRate Calculations ................................................................. 100
-
-3.2.5.6.1
-3.2.5.6.2
-3.2.5.6.3
-3.2.5.6.4
-
-3.2.5.7
-3.2.5.8
-3.2.5.9
-3.2.5.10
-3.2.5.11
-3.2.5.12
-3.2.5.13
-3.2.5.14
-3.2.5.15
-3.2.5.16
-3.2.5.17
-
-3.2.7.7.1
-3.2.7.7.2
-3.2.7.7.3
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-3.2.6.2
-3.2.6.3
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-3.2.7.4
-3.2.7.5
-3.2.7.6
-3.2.7.7
-
-[MS-RTSP] - v20240423
-Real-Time Streaming Protocol (RTSP) Windows Media Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 135
-
-3.2.7.7.4
-
-MaxBytes, Time and ByteRate Calculations ........................................ 100
-Broadcast ID ....................................................................................... 101
-3.2.7.8
-AS-Bandwidth Request ......................................................................... 101
-3.2.7.9
-Fast Start Request ............................................................................... 101
-3.2.7.10
-3.2.7.11
-Proxy Authentication ............................................................................ 101
-3.2.7.12  Origin Server Authentication .................................................................. 102
-
-4.4
-
-4.3.1
-
-4.1
-4.2
-4.3
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-
-4  Protocol Examples ............................................................................................... 103
-RTP Packet Syntax .......................................................................................... 103
-Vandermonde Matrix Algorithm ......................................................................... 104
-SDP Examples ................................................................................................ 107
-Retransmission Stream .............................................................................. 107
-RTSP Examples ............................................................................................... 107
-SETUP Request .......................................................................................... 107
-Packet-Pair Bandwidth Estimation Using UDP ................................................ 108
-Packet-Pair Bandwidth Estimation Using TCP ................................................. 109
-Predictive Stream Selection and SelectStream ............................................... 110
-SelectStream Using SET_PARAMETER ..................................................... 110
-SelectStream Using TEARDOWN ............................................................ 111
-SelectStream After Predictive Stream Selection ....................................... 112
-Client Requests FEC Stream from Server ................................................ 112
-Server-Side Playlist Entry Switching ............................................................. 113
-Stream Playback with Authentication ........................................................... 114
-Streaming, Pausing, Fast-Forwarding, and Stopping Playback ......................... 116
-Logging and RTSP ........................................................................................... 117
-Submitting Connect-Time Statistics .............................................................. 117
-Submitting a Play Log ................................................................................ 118
-RTSP Proxy Server Interaction .......................................................................... 119
-Sequencing for Playlist Content Delivery ....................................................... 121
-Sequencing for Broadcast Content Delivery ................................................... 123
-Proxy Server and Origin Server Communication............................................. 125
-
-4.4.4.1
-4.4.4.2
-4.4.4.3
-4.4.4.4
-
-4.4.5
-4.4.6
-4.4.7
-
-4.6.1
-4.6.2
-4.6.3
-
-4.5.1
-4.5.2
-
-4.5
-
-4.6
-
-5  Security ............................................................................................................... 127
-Security Considerations for Implementers .......................................................... 127
-Index of Security Parameters ........................................................................... 127
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 128
-
-7  Change Tracking .................................................................................................. 132
-
-8  Index ................................................................................................................... 133
-
-[MS-RTSP] - v20240423
-Real-Time Streaming Protocol (RTSP) Windows Media Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 135
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.4 The syntax of RTCP negative acknowledgement (NACK)](#224-the-syntax-of-rtcp-negative-acknowledgement-nack)
+    - [2.2.5 Extensions to SDP](#225-extensions-to-sdp)
+    - [2.2.6 The syntax of RTSP headers](#226-the-syntax-of-rtsp-headers)
+    - [2.2.7 Logical request types, and how each type of request is](#227-logical-request-types-and-how-each-type-of-request-is)
+      - [2.2.7.1 Announce](#2271-announce)
+      - [2.2.7.2 Describe](#2272-describe)
+      - [2.2.7.3 EndOfStream](#2273-endofstream)
+      - [2.2.7.4 GetContentInfo](#2274-getcontentinfo)
+      - [2.2.7.5 KeepAlive](#2275-keepalive)
+      - [2.2.7.6 LogConnect](#2276-logconnect)
+      - [2.2.7.7 LogPlay](#2277-logplay)
+      - [2.2.7.8 Pause](#2278-pause)
+      - [2.2.7.9 Play](#2279-play)
+      - [2.2.7.10 SelectStream](#22710-selectstream)
+        - [2.2.7.10.1 SelectStream Using SETUP](#227101-selectstream-using-setup)
+        - [2.2.7.10.2 SelectStream Using TEARDOWN](#227102-selectstream-using-teardown)
+        - [2.2.7.10.3 SelectStream Using SET_PARAMETER](#227103-selectstream-using-setparameter)
+      - [2.2.7.11 SendEvent](#22711-sendevent)
+      - [2.2.7.12 TcpPacketPair](#22712-tcppacketpair)
+      - [2.2.7.13 Teardown](#22713-teardown)
+      - [2.2.7.14 UdpPacketPair](#22714-udppacketpair)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Request to Retrieve Caching Information](#3141-request-to-retrieve-caching-information)
+      - [3.1.4.2 Request to Retrieve Content Information](#3142-request-to-retrieve-content-information)
+        - [3.1.4.2.1 Sending the Describe Request](#31421-sending-the-describe-request)
+      - [3.1.4.3 Request to Start Streaming Content](#3143-request-to-start-streaming-content)
+        - [3.1.4.3.1 Sending a SelectStream Request](#31431-sending-a-selectstream-request)
+      - [3.1.4.4 Request to Change Currently Selected Streams](#3144-request-to-change-currently-selected-streams)
+      - [3.1.4.5 Streams to Play from the New Playlist Entry Are Selected](#3145-streams-to-play-from-the-new-playlist-entry-are-selected)
+      - [3.1.4.6 Request to Retransmit Lost RTP Packets](#3146-request-to-retransmit-lost-rtp-packets)
+      - [3.1.4.7 Request to Stop Streaming](#3147-request-to-stop-streaming)
+      - [3.1.4.8 Request to Change Playback Position](#3148-request-to-change-playback-position)
+      - [3.1.4.9 Playback of Content Has Finished](#3149-playback-of-content-has-finished)
+      - [3.1.4.10 Request to Finish Streaming Session](#31410-request-to-finish-streaming-session)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending a Request (All Request Types)](#3151-sending-a-request-all-request-types)
+      - [3.1.5.2 Receiving a Response (All Request Types)](#3152-receiving-a-response-all-request-types)
+      - [3.1.5.3 Receiving a GetContentInfo Response](#3153-receiving-a-getcontentinfo-response)
+      - [3.1.5.4 Receiving a Describe Response](#3154-receiving-a-describe-response)
+      - [3.1.5.5 Receiving a TcpPacketPair Response](#3155-receiving-a-tcppacketpair-response)
+      - [3.1.5.6 Receiving a SelectStream Response for the Retransmission Stream](#3156-receiving-a-selectstream-response-for-the-retransmission-stream)
+      - [3.1.5.7 Receiving a UdpPacketPair Response](#3157-receiving-a-udppacketpair-response)
+      - [3.1.5.8 Receiving an RTP Packet Containing Packet-Pair Data](#3158-receiving-an-rtp-packet-containing-packet-pair-data)
+      - [3.1.5.9 Receiving a SelectStream Response](#3159-receiving-a-selectstream-response)
+        - [3.1.5.9.1 Sending a Play Request in READY State](#31591-sending-a-play-request-in-ready-state)
+      - [3.1.5.10 Receiving a Play Response](#31510-receiving-a-play-response)
+      - [3.1.5.11 Receiving a LogConnect Response](#31511-receiving-a-logconnect-response)
+      - [3.1.5.12 Receiving RTP Packets](#31512-receiving-rtp-packets)
+        - [3.1.5.12.2 and then continue processing the remainder of the rules in the current section.](#315122-and-then-continue-processing-the-remainder-of-the-rules-in-the-current-section)
+      - [3.1.5.13 Receiving an EndOfStream Request](#31513-receiving-an-endofstream-request)
+      - [3.1.5.14 Receiving a LogPlay Response](#31514-receiving-a-logplay-response)
+      - [3.1.5.15 Receiving an Announce Request](#31515-receiving-an-announce-request)
+      - [3.1.5.16 Receiving a SelectStream Response After Announce](#31516-receiving-a-selectstream-response-after-announce)
+        - [3.1.5.16.1 Sending a Play Request in PLAYING State](#315161-sending-a-play-request-in-playing-state)
+      - [3.1.5.17 Receiving a Pause Response](#31517-receiving-a-pause-response)
+      - [3.1.5.18 Receiving a KeepAlive Response](#31518-receiving-a-keepalive-response)
+      - [3.1.5.19 Receiving a SendEvent Response](#31519-receiving-a-sendevent-response)
+      - [3.1.5.20 Receiving a Teardown Response](#31520-receiving-a-teardown-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Firewall Timer Expires](#3161-firewall-timer-expires)
+      - [3.1.6.2 Keepalive Timer Expires](#3162-keepalive-timer-expires)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 TCP Connection Is Disconnected](#3171-tcp-connection-is-disconnected)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Notification that the Last RTP Packet Has Been Sent](#3241-notification-that-the-last-rtp-packet-has-been-sent)
+      - [3.2.4.2 Notification that a New ASF File Header Is Available](#3242-notification-that-a-new-asf-file-header-is-available)
+      - [3.2.4.3 Notification That an ASF Packet Is Ready to Be Sent](#3243-notification-that-an-asf-packet-is-ready-to-be-sent)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Request (All Request Types)](#3251-receiving-a-request-all-request-types)
+      - [3.2.5.2 Sending a Response (All Request Types)](#3252-sending-a-response-all-request-types)
+      - [3.2.5.3 Receiving a GetContentInfo Request](#3253-receiving-a-getcontentinfo-request)
+      - [3.2.5.4 Receiving a Describe Request](#3254-receiving-a-describe-request)
+      - [3.2.5.5 Receiving a TcpPacketPair Request](#3255-receiving-a-tcppacketpair-request)
+      - [3.2.5.6 Receiving a SelectStream Request](#3256-receiving-a-selectstream-request)
+        - [3.2.5.6.1 Receiving a SelectStream Request Using SETUP](#32561-receiving-a-selectstream-request-using-setup)
+        - [3.2.5.6.2 Receiving a SelectStream Request Using TEARDOWN](#32562-receiving-a-selectstream-request-using-teardown)
+        - [3.2.5.6.3 Receiving a SelectStream Request Using SET_PARAMETER](#32563-receiving-a-selectstream-request-using-setparameter)
+        - [3.2.5.6.4 Common Processing Rules for SelectStream](#32564-common-processing-rules-for-selectstream)
+      - [3.2.5.7 Receiving a UdpPacketPair Request](#3257-receiving-a-udppacketpair-request)
+      - [3.2.5.8 Receiving a Play Request](#3258-receiving-a-play-request)
+      - [3.2.5.9 Receiving a LogConnect Request](#3259-receiving-a-logconnect-request)
+      - [3.2.5.10 Receiving an RTCP Packet](#32510-receiving-an-rtcp-packet)
+      - [3.2.5.11 Receiving a Pause Request](#32511-receiving-a-pause-request)
+      - [3.2.5.12 Receiving a LogPlay Request](#32512-receiving-a-logplay-request)
+      - [3.2.5.13 Receiving an EndOfStream Response](#32513-receiving-an-endofstream-response)
+      - [3.2.5.14 Receiving an Announce Response](#32514-receiving-an-announce-response)
+      - [3.2.5.15 Receiving a KeepAlive Request](#32515-receiving-a-keepalive-request)
+      - [3.2.5.16 Receiving a SendEvent Request](#32516-receiving-a-sendevent-request)
+      - [3.2.5.17 Receiving a Teardown Request](#32517-receiving-a-teardown-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Lag-Timer Timer Expires](#3261-lag-timer-timer-expires)
+      - [3.2.6.2 Idle-Timeout Timer Expires](#3262-idle-timeout-timer-expires)
+      - [3.2.6.3 Heartbeat Timer Expires](#3263-heartbeat-timer-expires)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Selected-Stream Adjustment](#3271-selected-stream-adjustment)
+      - [3.2.7.2 Client Closes TCP Connection](#3272-client-closes-tcp-connection)
+      - [3.2.7.3 Server Role](#3273-server-role)
+      - [3.2.7.4 Redirection](#3274-redirection)
+      - [3.2.7.5 Cache-Control Data](#3275-cache-control-data)
+      - [3.2.7.6 RTSP Request Received](#3276-rtsp-request-received)
+      - [3.2.7.7 Computing Values for the X-StartupProfile Header](#3277-computing-values-for-the-x-startupprofile-header)
+        - [3.2.7.7.1 Inspecting a Single ASF Payload](#32771-inspecting-a-single-asf-payload)
+        - [3.2.7.7.2 MaxDiffSndTime Calculations](#32772-maxdiffsndtime-calculations)
+        - [3.2.7.7.3 ChosenRate Calculations](#32773-chosenrate-calculations)
+        - [3.2.7.7.4 MaxBytes, Time and ByteRate Calculations](#32774-maxbytes-time-and-byterate-calculations)
+      - [3.2.7.8 Broadcast ID](#3278-broadcast-id)
+      - [3.2.7.9 AS-Bandwidth Request](#3279-as-bandwidth-request)
+      - [3.2.7.10 Fast Start Request](#32710-fast-start-request)
+      - [3.2.7.11 Proxy Authentication](#32711-proxy-authentication)
+      - [3.2.7.12 Origin Server Authentication](#32712-origin-server-authentication)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 RTP Packet Syntax](#41-rtp-packet-syntax)
+  - [4.2 Vandermonde Matrix Algorithm](#42-vandermonde-matrix-algorithm)
+  - [4.3 SDP Examples](#43-sdp-examples)
+    - [4.3.1 Retransmission Stream](#431-retransmission-stream)
+  - [4.4 RTSP Examples](#44-rtsp-examples)
+    - [4.4.1 SETUP Request](#441-setup-request)
+    - [4.4.2 Packet-Pair Bandwidth Estimation Using UDP](#442-packet-pair-bandwidth-estimation-using-udp)
+    - [4.4.3 Packet-Pair Bandwidth Estimation Using TCP](#443-packet-pair-bandwidth-estimation-using-tcp)
+    - [4.4.4 Predictive Stream Selection and SelectStream](#444-predictive-stream-selection-and-selectstream)
+      - [4.4.4.1 SelectStream Using SET_PARAMETER](#4441-selectstream-using-setparameter)
+      - [4.4.4.2 SelectStream Using TEARDOWN](#4442-selectstream-using-teardown)
+      - [4.4.4.3 SelectStream After Predictive Stream Selection](#4443-selectstream-after-predictive-stream-selection)
+      - [4.4.4.4 Client Requests FEC Stream from Server](#4444-client-requests-fec-stream-from-server)
+    - [4.4.5 Server-Side Playlist Entry Switching](#445-server-side-playlist-entry-switching)
+    - [4.4.6 Stream Playback with Authentication](#446-stream-playback-with-authentication)
+    - [4.4.7 Streaming, Pausing, Fast-Forwarding, and Stopping Playback](#447-streaming-pausing-fast-forwarding-and-stopping-playback)
+  - [4.5 Logging and RTSP](#45-logging-and-rtsp)
+    - [4.5.1 Submitting Connect-Time Statistics](#451-submitting-connect-time-statistics)
+    - [4.5.2 Submitting a Play Log](#452-submitting-a-play-log)
+  - [4.6 RTSP Proxy Server Interaction](#46-rtsp-proxy-server-interaction)
+    - [4.6.1 Sequencing for Playlist Content Delivery](#461-sequencing-for-playlist-content-delivery)
+    - [4.6.2 Sequencing for Broadcast Content Delivery](#462-sequencing-for-broadcast-content-delivery)
+    - [4.6.3 Proxy Server and Origin Server Communication](#463-proxy-server-and-origin-server-communication)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Real-Time Streaming Protocol (RTSP): Windows Media Extensions are used for transmitting real-
 time multimedia data such as audio and video data from a server to a client.
@@ -1199,7 +726,7 @@ RTSP Windows Media Extensions use TCP and UDP.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1258,7 +785,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Real-Time Streaming Protocol (RTSP): A protocol used for transferring real-time multimedia
+
+Real-Time Streaming Protocol (RTSP): A protocol used for transferring real-time multimedia
 
 data (for example, audio and video) between a server and a client, as specified in [RFC2326]. It
 is a streaming protocol; this means that RTSP attempts to facilitate scenarios in which the
@@ -1333,7 +861,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-known as globally unique identifiers (GUIDs) and these terms are used interchangeably in
+
+known as globally unique identifiers (GUIDs) and these terms are used interchangeably in
 the Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does
 not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
 use of this term does not imply or require that the algorithms described in [RFC4122] or [C706]
@@ -1351,14 +880,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1400,7 +929,8 @@ Release: April 23, 2024
 
 11 / 135
 
-[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
+
+[RFC2617] Franks, J., Hallam-Baker, P., Hostetler, J., et al., "HTTP Authentication: Basic and Digest
 Access Authentication", RFC 2617, June 1999, https://www.rfc-editor.org/info/rfc2617
 
 [RFC3550] Schulzrinne, H., Casner, S., Frederick, R., and Jacobson, V., "RTP: A Transport Protocol for
@@ -1431,7 +961,7 @@ editor.org/info/rfc4585
 [RFC5234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", STD
 68, RFC 5234, January 2008, https://www.rfc-editor.org/info/rfc5234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MMSP] Microsoft Corporation, "Microsoft Media Server (MMS) Protocol".
 
@@ -1450,7 +980,7 @@ editor.org/info/rfc768
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.3  Overview
+### 1.3 Overview
 
 The Real-Time Streaming Protocol (RTSP) [RFC2326] is used for transferring real-time multimedia
 data, including audio and video, between a server and a client. It is a streaming protocol, which
@@ -1464,7 +994,8 @@ Release: April 23, 2024
 
 12 / 135
 
-RTSP uses a Transmission Control Protocol (TCP) connection for control of the streaming media
+
+RTSP uses a Transmission Control Protocol (TCP) connection for control of the streaming media
 session, although it is also possible to use UDP for this purpose.
 
 The entity that sends the RTSP request that initiates the session is referred as the client, and the
@@ -1491,7 +1022,7 @@ Protocol (RTCP) packets [RFC3556].
 This specification defines extensions to RTSP, SDP, RTP, and RTCP that enable the delivery of
 multimedia data that is encapsulated in Advanced Systems Format (ASF) packets [ASF].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 RTSP relies on TCP [RFC793] for controlling the streaming media session. Although the User
 Datagram Protocol (UDP) [RFC768] is also allowed, it is rarely used for this purpose.
@@ -1512,7 +1043,7 @@ packets is limited to TCP only.
 RTSP is similar in functionality to the Microsoft Media Server (MMS) protocol [MS-MMSP]. However,
 RTSP with Windows Media extensions provides additional functionality that is not available in MMS.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 RTSP Windows Media Extensions do not provide a mechanism for a client to discover the URL to the
 server. Therefore, it is a prerequisite that the client obtains a URL to the server before this protocol
@@ -1525,7 +1056,8 @@ Release: April 23, 2024
 
 13 / 135
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 RTSP is suitable for streaming delivery of real-time multimedia data. The term streaming means that
 the data is transmitted at some fixed rate or at some rate that is related to the rate at which the data
@@ -1542,7 +1074,7 @@ If the multimedia data is transmitted over TCP, the Windows Media HTTP Streaming
 WMSP] might be a suitable alternative. That protocol provides the same functionality as RTSP with the
 Windows Media extensions, except that the delivery of ASF packets is restricted to TCP.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1577,11 +1109,11 @@ The Supported (section 2.2.6.10) header.
 
 The X-Accept-Authentication (section 2.2.6.14) header.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Vendor-extensible fields are specified in [RFC2326].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following port numbers have been assigned for use by RTSP, RTP and RTCP.
 
@@ -1614,11 +1146,12 @@ Release: April 23, 2024
 
 14 / 135
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how messages are encapsulated on the wire and common data types.
 
-2.1  Transport
+### 2.1 Transport
 
 RTSP requests and responses are sent over either UDP or TCP.<1>
 
@@ -1632,7 +1165,7 @@ supported by any one implementation are implementation-specific.<2>
 
 HTTP access authentication is specified in [RFC2616] section 11.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following table lists the structures that are defined in this section.
 
@@ -1664,28 +1197,28 @@ and packet-pair data
 
 RTCP NACK Packet Syntax
 
-2.2.4
+#### 2.2.4 The syntax of RTCP negative acknowledgement (NACK)
 
-The syntax of RTCP negative acknowledgement (NACK)
+
 packets
 
 Session Description Protocol Extensions
 
-2.2.5
+#### 2.2.5 Extensions to SDP
 
-Extensions to SDP
+
 
 RTSP Header Fields
 
-2.2.6
+#### 2.2.6 The syntax of RTSP headers
 
-The syntax of RTSP headers
+
 
 Request types
 
-2.2.7
+#### 2.2.7 Logical request types, and how each type of request is
 
-Logical request types, and how each type of request is
+
 mapped to an RTSP method
 
 2.2.1  RTP Payload Format for ASF Data Packets
@@ -1710,7 +1243,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This RTP payload format allows for multiple ASF data packets to be combined into a single RTP packet.
+
+This RTP payload format allows for multiple ASF data packets to be combined into a single RTP packet.
 It is also possible to split (fragment) an ASF data packet across several consecutive RTP packets.
 
 Each ASF data packet, or fragment thereof, is preceded by an RTP payload format header, specified in
@@ -1788,7 +1322,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-D (1 bit): This field MUST be set to 1 if the Duration field is present in the RTP payload format
+
+D (1 bit): This field MUST be set to 1 if the Duration field is present in the RTP payload format
 
 header. Otherwise, this field MUST be set to 0. In all RTP payload format headers that precede
 fragments of the same ASF data packet, the D field MUST be set to the same value.
@@ -1856,7 +1391,8 @@ Release: April 23, 2024
 
 17 / 135
 
-If the ASF data packet contains a Padding Data field, as specified in [ASF] section 5.2.4, that field
+
+If the ASF data packet contains a Padding Data field, as specified in [ASF] section 5.2.4, that field
 SHOULD be removed before encapsulating the ASF data packet in an RTP packet. If the Padding
 Data field is removed, the Padding Length field in the ASF payload parsing information section (as
 specified in [ASF] section 5.2.2) MUST be updated to indicate a nonexistent Padding Data field.
@@ -1920,7 +1456,8 @@ Release: April 23, 2024
 
 18 / 135
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-RTSP].images/page019-img01.png)
 ![Extracted image 2 from page 19]([MS-RTSP].images/page019-img02.png)
 ![Extracted image 3 from page 19]([MS-RTSP].images/page019-img03.png)
@@ -1967,7 +1504,8 @@ Release: April 23, 2024
 
 19 / 135
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-RTSP].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -2042,7 +1580,8 @@ Release: April 23, 2024
 
 20 / 135
 
-TS Recovery
+
+TS Recovery
 
 Padding1
 
@@ -2120,7 +1659,8 @@ Release: April 23, 2024
 
 21 / 135
 
-This RTP payload format can also be used for transmitting packet-pair data. Packet-pair data can be
+
+This RTP payload format can also be used for transmitting packet-pair data. Packet-pair data can be
 used by the receiver to estimate the bottleneck bandwidth in the network path between the
 transmitter and the receiver.
 
@@ -2199,7 +1739,8 @@ Release: April 23, 2024
 
 22 / 135
 
-RES (3 bits): This field MUST be set to 0 and MUST be ignored by the receiver.
+
+RES (3 bits): This field MUST be set to 0 and MUST be ignored by the receiver.
 
 Length/Offset (3 bytes): This field MUST specify the size of the packet-pair data that directly
 
@@ -2280,7 +1821,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- ssrc                   = 1*10DIGIT
+
+ ssrc                   = 1*10DIGIT
  sdes-value      = ssrc "@WMS:7ff42e07-3c7c-4eb5-9c17-6bdd11ad90de"
 
 The preceding syntax is specified using Augmented Backus-Naur Form (ABNF) [RFC5234].
@@ -2344,7 +1886,8 @@ Release: April 23, 2024
 
 24 / 135
 
-A "b=" field with the "RR" bandwidth modifier, as specified in [RFC3556] section 2, MUST be specified
+
+A "b=" field with the "RR" bandwidth modifier, as specified in [RFC3556] section 2, MUST be specified
 at the session level or once for every media description. The bandwidth that is specified by the "b="
 field MUST be 0.
 
@@ -2407,7 +1950,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- pgmpu     = "a=pgmpu:"
+
+ pgmpu     = "a=pgmpu:"
              dataurl              ; defined in [RFC2397] section 3
 
 As specified in [RFC2397], the data URL specifies the kind of data it encodes using a MIME-format
@@ -2469,7 +2013,8 @@ Release: April 23, 2024
 
 26 / 135
 
- Stream-num
+
+ Stream-num
 
  Meaning
 
@@ -2540,7 +2085,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This property indicates that the server supports skipping to the next entry in the server-side playlist
+
+This property indicates that the server supports skipping to the next entry in the server-side playlist
 by using the pl-offset token on the X-Playlist (section 2.2.6.20) header.
 
 2.2.5.3  RTP Payload Format for ASF Data Packets
@@ -2605,7 +2151,8 @@ Release: April 23, 2024
 
 28 / 135
 
-The following example shows the SDP syntax for a case in which RTP payload type 96 is used for ASF
+
+The following example shows the SDP syntax for a case in which RTP payload type 96 is used for ASF
 data packets containing audio data, and RTP payload type 98 is used for FEC packets generated from
 the payload type 96 source packets. The URL on the "a=control" field and on the "a=fmtp" field are
 both relative URLs. (The base URL is not shown in this example.)
@@ -2667,7 +2214,8 @@ Release: April 23, 2024
 
 29 / 135
 
-This section defines the syntax of RTSP headers by using ABNF. Any ABNF syntax rules not specified
+
+This section defines the syntax of RTSP headers by using ABNF. Any ABNF syntax rules not specified
 in [RFC5234] use the ABNF extensions specified in [RFC2326] section 15.
 
 2.2.6.1  Bandwidth
@@ -2729,7 +2277,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.6.2.4 no-store
+
+2.2.6.2.4 no-store
 
 This directive specifies that the cache MUST NOT store the content on persistent storage, such as a
 hard drive.
@@ -2798,7 +2347,8 @@ Release: April 23, 2024
 
 31 / 135
 
-This directive specifies a comma-separated list of properties that apply to the content. The list is
+
+This directive specifies a comma-separated list of properties that apply to the content. The list is
 enclosed in quotation marks.
 
 The broadcast property specifies that the content is broadcast, or live (and therefore can be suitable
@@ -2861,7 +2411,8 @@ Release: April 23, 2024
 
 32 / 135
 
-When used in the response to the GET_PARAMETER request method, this media type indicates that
+
+When used in the response to the GET_PARAMETER request method, this media type indicates that
 the message body contains three $P packets, as specified in [MS-WMSP] section 2.2.3.7.
 
 2.2.6.3.3 application/x-rtsp-udp-packetpair
@@ -2925,7 +2476,8 @@ Release: April 23, 2024
 
 33 / 135
 
-2.2.6.5  If-Match
+
+2.2.6.5  If-Match
 
 The syntax of the If-Match header MUST adhere to the ABNF syntax specified in [RFC2616] section
 14.24, with the following modification: The maximum number of entity-tag fields is 32.
@@ -2983,7 +2535,8 @@ Release: April 23, 2024
 
 34 / 135
 
-The x-asf-packet token is used to express a start position and, optionally, a stop position as an ASF
+
+The x-asf-packet token is used to express a start position and, optionally, a stop position as an ASF
 data packet number. ASF data packet numbers are expressed as integer decimal numbers. The first
 ASF data packet in the ASF file has number 0, and each ASF data packet in the file increments by one.
 
@@ -3049,7 +2602,8 @@ Release: April 23, 2024
 
 35 / 135
 
-             | "com.microsoft.wm.fastcache"
+
+             | "com.microsoft.wm.fastcache"
              | "com.microsoft.wm.locid"
              | "com.microsoft.wm.packetpairssrc"
              | "com.microsoft.wm.predstrm"
@@ -3118,7 +2672,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MAY include the LocationId field in each RTP payload format header, as long as the client has
+
+MAY include the LocationId field in each RTP payload format header, as long as the client has
 specified the com.microsoft.wm.locid token.
 
 If a client never sends the Supported header, or if a client does not specify the
@@ -3191,7 +2746,8 @@ Release: April 23, 2024
 
 37 / 135
 
-The com.microsoft.wm.sswitch token specifies support for the SelectStream (section 2.2.7.10)
+
+The com.microsoft.wm.sswitch token specifies support for the SelectStream (section 2.2.7.10)
 message body.
 
 If a server never sends the Supported header, or if a server does not specify the
@@ -3260,7 +2816,8 @@ Release: April 23, 2024
 
 38 / 135
 
-When used in a request, the numerical value after the FecPerSpan parameter specifies the number of
+
+When used in a request, the numerical value after the FecPerSpan parameter specifies the number of
 RTP FEC packets that the client wants to be included in each span. Each span will include at least one
 RTP FEC packet, and any additional RTP FEC packets provide additional protection against lost RTP
 source packets, with the overhead of having to transmit the RTP FEC packet.
@@ -3331,7 +2888,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                            1*10DIGIT
+
+                            1*10DIGIT
                             ";AccelBandwidth="
                             1*10DIGIT
 
@@ -3403,7 +2961,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The ABNF syntax for the X-Burst-Streaming header is as follows:
+
+The ABNF syntax for the X-Burst-Streaming header is as follows:
 
  X-Burst-Streaming     = "X-Burst-Streaming: BurstDuration="
                          1*10DIGIT
@@ -3471,7 +3030,8 @@ Release: April 23, 2024
 
 41 / 135
 
-2.2.6.21
+
+2.2.6.21
 
 X-Playlist-Change-Notice
 
@@ -3541,7 +3101,8 @@ Release: April 23, 2024
 
 42 / 135
 
-This header is defined only for requests sent to a server by an intermediate device, such as a proxy
+
+This header is defined only for requests sent to a server by an intermediate device, such as a proxy
 server that is acting as a client.
 
 The syntax of the X-Proxy-Client-Agent header is as follows:
@@ -3609,7 +3170,8 @@ Release: April 23, 2024
 
 43 / 135
 
-wants to continue to receive. Any streams that the client no longer wants to receive are omitted from
+
+wants to continue to receive. Any streams that the client no longer wants to receive are omitted from
 the X-RTP-Info header.
 
 The syntax of the X-RTP-Info header is modeled after the syntax of the RTP-Info header, as specified
@@ -3688,7 +3250,8 @@ Release: April 23, 2024
 
 44 / 135
 
-stamp of the ASF payload at which this maximum occurs. It is recommended that clients buffer at
+
+stamp of the ASF payload at which this maximum occurs. It is recommended that clients buffer at
 least the amount of data that this header indicates to prevent buffer underflow.
 
 This header is defined only for use in responses sent to a client.<18> For more information about the
@@ -3712,7 +3275,7 @@ the URL that references the entire presentation rather than an individual stream
 This section defines the syntax of RTSP requests by using ABNF. Any ABNF syntax rules not specified
 in [RFC5234] use the ABNF extensions specified in [RFC2326] section 15.
 
-2.2.7.1  Announce
+##### 2.2.7.1 Announce
 
 The purpose of the Announce request is to send information to the client on a new entry in a server-
 side playlist that the server will start to stream. The Announce request describes the playlist entry
@@ -3765,7 +3328,8 @@ Release: April 23, 2024
 
 45 / 135
 
- transport=RTP/AVP/UDP;
+
+ transport=RTP/AVP/UDP;
  unicast;server_port=5004-5005;client_port=1788-1789;
  ssrc=e740fe80;mode=PLAY;thinlevel=0
  Content-Length: 61337
@@ -3773,7 +3337,7 @@ Release: April 23, 2024
  CSeq: 2
  User-Agent: WMServer/9.0.0.3191
 
-2.2.7.2  Describe
+##### 2.2.7.2 Describe
 
 The purpose of the Describe request is to request information on one particular piece of multimedia
 content, which is identified by a URL. The client sends this request before it asks the server to start
@@ -3808,7 +3372,7 @@ The following example shows a Describe request.
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch,
  com.microsoft.wm.eosmsg, com.microsoft.wm.predstrm
 
-2.2.7.3  EndOfStream
+##### 2.2.7.3 EndOfStream
 
 The purpose of the EndOfStream request is to inform the client that the server has transmitted the
 last RTP packet for all of the selected streams in the content.
@@ -3838,7 +3402,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The purpose of the RTP-Info header is to allow the client to determine the RTP sequence number of
+
+The purpose of the RTP-Info header is to allow the client to determine the RTP sequence number of
 the last RTP packet transmitted for each stream. Because the seq parameter specifies the RTP
 sequence number of the first RTP packet transmitted after the SET_PARAMETER request, it follows
 that the RTP sequence number of the last RTP packet transmitted prior to the SET_PARAMETER
@@ -3872,7 +3437,7 @@ The following example shows an EndOfStream request.
  EOF: true
  End-Of-Playlist-Entry: true
 
-2.2.7.4  GetContentInfo
+##### 2.2.7.4 GetContentInfo
 
 The purpose of the GetContentInfo request is to retrieve cache-control information from the server
 without incurring the overhead of a Describe request. This request is normally sent only by clients that
@@ -3906,12 +3471,13 @@ Release: April 23, 2024
 
 47 / 135
 
- X-Accept-Authentication: Negotiate, NTLM, Digest
+
+ X-Accept-Authentication: Negotiate, NTLM, Digest
  Accept-Language: en-US, *;q=0.1
  Content-Type: application/x-wms-getcontentinfo
  CSeq: 1
 
-2.2.7.5  KeepAlive
+##### 2.2.7.5 KeepAlive
 
 The purpose of the KeepAlive request is to ensure that the RTSP session, specified by the Session
 header, is not closed by the server due to the communication link having been idle for a period of
@@ -3948,7 +3514,7 @@ The following example shows a KeepAlive request.
  Session: 13856065358275910855
  CSeq: 10
 
-2.2.7.6  LogConnect
+##### 2.2.7.6 LogConnect
 
 The purpose of the LogConnect request is to submit statistics on the client to the server. This request
 is optionally sent to the server when streaming starts for the first time, so the logging message does
@@ -3982,14 +3548,15 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- X-Accept-Authentication: Negotiate, NTLM, Digest
+
+ X-Accept-Authentication: Negotiate, NTLM, Digest
  Accept-Language: en-us, *;q=0.1
  Session: 2828013918854793989
  Content-Type: application/x-wms-Logconnectstats;charset=UTF-8
  CSeq: 8
  <Connect-Time Log message as defined in [MS-WMLOG] section 2.8>
 
-2.2.7.7  LogPlay
+##### 2.2.7.7 LogPlay
 
 The purpose of the LogPlay request is to submit statistics on the streamed content to the server. The
 request specifies parameters such as streaming quality and packet transmission statistics.
@@ -4026,7 +3593,7 @@ The following example shows a LogPlay request:
  CSeq: 9
  <Streaming Log message as defined in [MS-WMLOG] section 2.6>
 
-2.2.7.8  Pause
+##### 2.2.7.8 Pause
 
 The purpose of the Pause request is to request that the server stop streaming RTP packets for all of
 the currently selected streams.
@@ -4054,9 +3621,10 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- CSeq: 7
 
-2.2.7.9  Play
+ CSeq: 7
+
+##### 2.2.7.9 Play
 
 The main purpose of the Play request is to ask the server to start streaming RTP packets for the
 currently selected streams. If the server has switched to a new entry in a server-side playlist and is
@@ -4101,9 +3669,9 @@ The following example shows a Play request.
  X-RTP-Info: url=rtsp://myserver.com/ServerSidePlaylist.wsx/audio,
   url=rtsp://myserver.com/ServerSidePlaylist.wsx/rtx
 
-2.2.7.10
+##### 2.2.7.10 SelectStream
 
-SelectStream
+
 
 The purpose of the SelectStream request is to ask the server to modify the streaming state of one or
 two streams in the content. It is possible to ask the server to start or stop streaming a particular
@@ -4129,7 +3697,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The syntax for the SelectStream requests that request a server to start or stop thinning that stream
+
+The syntax for the SelectStream requests that request a server to start or stop thinning that stream
 (that is, start or stop transmitting only ASF media objects that are marked as containing key-frame
 data) is defined in section 2.2.7.10.3.
 
@@ -4211,14 +3780,15 @@ Release: April 23, 2024
 
 51 / 135
 
-If the value of the NewStream parameter is 4,294,967,295, then the value of the ThinLevel parameter
+
+If the value of the NewStream parameter is 4,294,967,295, then the value of the ThinLevel parameter
 SHOULD be 0 and MUST be ignored by the server.
 
 The server's response to a SelectStream request does not include a message body.
 
-2.2.7.10.1
+###### 2.2.7.10.1 SelectStream Using SETUP
 
-SelectStream Using SETUP
+
 
 The syntax for the SETUP request method is specified in [RFC2326] section 10.4, with the following
 additional constraints:
@@ -4266,9 +3836,9 @@ The following example shows a SETUP request without message body.
  X-Playlist-Gen-Id: 2
  Transport: RTP/AVP/TCP;unicast;interleaved=0-1;ssrc=6095d7d7;mode=PLAY
 
-2.2.7.10.2
+###### 2.2.7.10.2 SelectStream Using TEARDOWN
 
-SelectStream Using TEARDOWN
+
 
 The syntax for the TEARDOWN request method is specified in [RFC2326] section 10.7, with the
 following additional constraints:
@@ -4291,7 +3861,8 @@ Release: April 23, 2024
 
 52 / 135
 
-  When the message body is included, the value of the NewStream parameter MUST be
+
+  When the message body is included, the value of the NewStream parameter MUST be
 
 4,294,967,295 and the value of the ThinLevel parameter SHOULD be 0. The value of the
 OldStreamURI parameter MUST be the stream URL of the stream that is being deselected.
@@ -4302,9 +3873,9 @@ method), and then wants to deselect stream 2, then the URL on the TEARDOWN reque
 that of stream 1. The URL for stream 2 will be specified in the message body of the TEARDOWN
 request.
 
-2.2.7.10.3
+###### 2.2.7.10.3 SelectStream Using SET_PARAMETER
 
-SelectStream Using SET_PARAMETER
+
 
 The syntax for the SET_PARAMETER request method is specified in [RFC2326] section 10.9, with the
 following additional constraints:
@@ -4335,9 +3906,9 @@ replace stream 1 with stream 2, the URL on the request line is that of stream 1.
 subsequently uses SET_PARAMETER to replace stream 2 with stream 3, the URL on the request line is
 still that of stream 1, because the URL used to select stream 2 was that of stream 1.
 
-2.2.7.11
+##### 2.2.7.11 SendEvent
 
-SendEvent
+
 
 The purpose of the SendEvent request is to submit a remote event to the server. The most common
 remote event is remote-log, which specifies rendering statistics independently of streaming statistics.
@@ -4368,11 +3939,12 @@ Release: April 23, 2024
 
 53 / 135
 
-The response to a SendEvent request MUST NOT have a message body.
 
-2.2.7.12
+The response to a SendEvent request MUST NOT have a message body.
 
-TcpPacketPair
+##### 2.2.7.12 TcpPacketPair
+
+
 
 The purpose of the TcpPacketPair request is to request packet-pair data delivered over the TCP
 connection. The server's response to this request will contain three packets of random data. The
@@ -4422,9 +3994,9 @@ The following example shows a TcpPacketPair request:
  Content-Type: application/x-rtsp-packetpair
  CSeq: 2
 
-2.2.7.13
+##### 2.2.7.13 Teardown
 
-Teardown
+
 
 The purpose of the Teardown request is to deselect all streams that were previously selected by using
 SelectStream requests. It also invalidates the RTSP session state.
@@ -4441,9 +4013,9 @@ The TEARDOWN request includes the Session header (as specified in [RFC2326] sect
 The response to the Teardown request is defined as the response to the TEARDOWN request
 method, with the constraint that the response cannot include a message body.
 
-2.2.7.14
+##### 2.2.7.14 UdpPacketPair
 
-UdpPacketPair
+
 
 The purpose of the UdpPacketPair request is to request packet-pair data delivered as RTP packets over
 UDP, using the RTP payload format for packet-pair data, as specified in section 2.2.3. The server's
@@ -4455,7 +4027,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-response to this request contains an empty message body because the packet-pair data is transmitted
+
+response to this request contains an empty message body because the packet-pair data is transmitted
 over UDP. By measuring the time it takes for the second RTP packet to arrive, the client can estimate
 the bottleneck bandwidth in the network path between the server and the client.
 
@@ -4498,16 +4071,17 @@ Release: April 23, 2024
 
 55 / 135
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-RTSP].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of RTSP Windows Media Extensions, including abstract data
 models and message processing rules.
 
-3.1  Client Details
+### 3.1 Client Details
 
 The state machine for RTSP clients is specified in [RFC2326] section A.1 and depicted in the following
 figure. RTSP Windows Media Extensions define an additional state transition: An EndOfStream request
@@ -4522,7 +4096,7 @@ all timers, and stops processing further messages. Possible errors include failu
 server, unexpected closure of the connection to the server, or the response to a request indicating an
 error.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
@@ -4541,7 +4115,8 @@ Release: April 23, 2024
 
 56 / 135
 
-$P-Arrival-Time: This is an unsigned 64-bit integer that stores the time at which a $P packet is
+
+$P-Arrival-Time: This is an unsigned 64-bit integer that stores the time at which a $P packet is
 
 received. Because this variable is used only for computing relative time differences, the absolute
 clock offset is of no consequence and can be chosen arbitrarily. The value of the variable is in
@@ -4597,7 +4172,7 @@ X-Playlist-Change-Notice-Variable: This variable is assigned by the client to id
 has specified that the X-Playlist-Change-Notice header was set to "true". Possible values are "true"
 or "false". The default value is "false".
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Firewall: This timer is used when waiting for the RTP packets that contain packet-pair data that the
 server transmits by using UDP. The minimum-allowed value for the time-out period is 1 second,
@@ -4615,7 +4190,8 @@ Release: April 23, 2024
 
 57 / 135
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Initialization of the protocol occurs as the result of a higher layer asking for information on multimedia
 content located on a server. That event is specified in section 3.1.4.2.
@@ -4625,9 +4201,9 @@ that do not have a default defined MUST be initialized as follows:
 
 The State variable MUST be set to INIT.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Request to Retrieve Caching Information
+##### 3.1.4.1 Request to Retrieve Caching Information
 
 This event can occur when the application is a caching proxy server. Possible uses for this event
 include allowing the higher layer to check whether content is available or whether the content can be
@@ -4650,7 +4226,7 @@ sending the GetContentInfo request.
 After sending the request, the client MUST wait for the response to be received. How to process the
 response is specified in section 3.1.5.3.
 
-3.1.4.2  Request to Retrieve Content Information
+##### 3.1.4.2 Request to Retrieve Content Information
 
 This event causes the client to send a Describe request to the server. The following are the most
 common scenarios in which an application would ask the client for information on multimedia
@@ -4682,11 +4258,12 @@ Release: April 23, 2024
 
 58 / 135
 
-The client MUST then establish a TCP connection to the server, using the IP address and port number
+
+The client MUST then establish a TCP connection to the server, using the IP address and port number
 obtained by parsing the URL. Next, the client MUST send the Describe request to the server, as
 specified in section 3.1.4.2.1.
 
-3.1.4.2.1 Sending the Describe Request
+###### 3.1.4.2.1 Sending the Describe Request
 
 The Describe request MUST adhere to the Describe syntax, as specified in section 2.2.7.2.
 
@@ -4696,7 +4273,7 @@ sending the Describe request.
 After sending the request, the client MUST wait for the response to be received. How to process the
 response is specified in section 3.1.5.4.
 
-3.1.4.3  Request to Start Streaming Content
+##### 3.1.4.3 Request to Start Streaming Content
 
 This higher-layer triggered event can occur when the client is not currently streaming from the
 server. The event causes the client to send one or more SelectStream requests to the server followed
@@ -4717,7 +4294,7 @@ streamed on behalf of another client.
 
 Next, the client MUST send a SelectStream request to the server, as specified in section 3.1.4.3.1.
 
-3.1.4.3.1 Sending a SelectStream Request
+###### 3.1.4.3.1 Sending a SelectStream Request
 
 Because the ASF file header specifies multiple streams, the higher layer MUST select exactly what
 streams that are listed in the ASF file header are streamed from the server. The client MUST send one
@@ -4750,14 +4327,15 @@ Release: April 23, 2024
 
 59 / 135
 
-If the value of the State variable is INIT, the client MUST only send one SelectStream request.
+
+If the value of the State variable is INIT, the client MUST only send one SelectStream request.
 (Subsequent SelectStream requests will be sent after the response to the first one is received.)
 
 The client MUST wait for the response to a SelectStream request. How to process the response is
 specified in section 3.1.5.9. If the value of the State variable is PLAYING, the client MUST continue to
 process incoming RTP packets while it is waiting for the response to a SelectStream request.
 
-3.1.4.4  Request to Change Currently Selected Streams
+##### 3.1.4.4 Request to Change Currently Selected Streams
 
 This event occurs when the higher layer wants to change the streams that are currently being
 streamed. For example, the higher layer can decide to switch from an English language audio stream
@@ -4770,7 +4348,7 @@ SelectStream request.
 
 Each SelectStream request MUST be sent by following the rules specified in section 3.1.4.3.1.
 
-3.1.4.5  Streams to Play from the New Playlist Entry Are Selected
+##### 3.1.4.5 Streams to Play from the New Playlist Entry Are Selected
 
 This event occurs after the client has received the Announce request and has delivered the ASF file
 header for the new playlist entry to the higher layer. For details, see section 3.1.5.15. When this
@@ -4817,7 +4395,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For each SelectStream request the client sends, the client increment the SelectStream-request-
+
+For each SelectStream request the client sends, the client increment the SelectStream-request-
 counter by 1.
 
 The client MUST wait for the response to each of the SelectStream requests that it has sent. How to
@@ -4827,7 +4406,7 @@ RTP packets while it is waiting for the response to the SelectStream requests.
 If the client did not send any SelectStream requests, it MUST now send a Play request, as specified in
 section 3.1.5.16.1.
 
-3.1.4.6  Request to Retransmit Lost RTP Packets
+##### 3.1.4.6 Request to Retransmit Lost RTP Packets
 
 This event occurs if the higher layer has detected that one or more RTP packets containing ASF data
 packets has been lost, and the higher layer wants to ask the server to resend one or more of the lost
@@ -4854,7 +4433,7 @@ the response to the SelectStream request for the retransmission stream.
 The RTCP packet that contains the NACK message MUST be sent to the UDP port for RTCP packets
 that is given by the value of the RTCP-Destination-Port variable.
 
-3.1.4.7  Request to Stop Streaming
+##### 3.1.4.7 Request to Stop Streaming
 
 This event occurs if the higher layer wants to stop streaming. The end user can request that the
 streaming stop. Or the end user can request to seek some position in the content while the client is
@@ -4884,10 +4463,11 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If requests were sent, the client MUST wait for the response to the Pause request. How to process the
+
+If requests were sent, the client MUST wait for the response to the Pause request. How to process the
 response is specified in section 3.1.5.17.
 
-3.1.4.8  Request to Change Playback Position
+##### 3.1.4.8 Request to Change Playback Position
 
 This event occurs when the higher layer wants to start streaming from some specific position in the
 content.
@@ -4899,7 +4479,7 @@ If the value of the State variable is PLAYING, the client MUST first request the
 streaming, as specified in section 3.1.4.7. Once this has completed, the client MUST request to start
 streaming at the new playback position, as specified in section 3.1.4.3.
 
-3.1.4.9  Playback of Content Has Finished
+##### 3.1.4.9 Playback of Content Has Finished
 
 This event occurs when the application software is a media player that has finished rendering (that is,
 playing back) the content in the current playlist entry.
@@ -4916,9 +4496,9 @@ If the value of the State variable is PLAYING, the client MUST also be prepared 
 and an EndOfStream request. Information on how to process RTP packets is specified in section
 3.1.5.12, and information on how to process an EndOfStream request is specified in section 3.1.5.13.
 
-3.1.4.10
+##### 3.1.4.10 Request to Finish Streaming Session
 
-Request to Finish Streaming Session
+
 
 This event occurs if the higher layer wants to finish the streaming session. Possible causes are the
 end user requesting that different content start streaming or the end user attempting to exit the client
@@ -4934,9 +4514,9 @@ If the Teardown request is sent, the client MUST wait for the response to be rec
 the State variable is not READY and is not PLAYING, then the client MUST close the TCP connection to
 the server. Information on how to process the response is specified in section 3.1.5.20.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  Sending a Request (All Request Types)
+##### 3.1.5.1 Sending a Request (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the client sends a request of
 any of the types, as specified in section 2.2.7, to the server.
@@ -4950,7 +4530,8 @@ Release: April 23, 2024
 
 62 / 135
 
-The request sent by the client MUST NOT specify any of the headers and tokens as specified in section
+
+The request sent by the client MUST NOT specify any of the headers and tokens as specified in section
 2.2.7 that are defined only for use in responses.
 
 All headers that are specified in [RFC2326] section 12 that are defined as mandatory for requests
@@ -5018,10 +4599,11 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the request contains a non-empty message body, the client MUST specify the Content-
+
+If the request contains a non-empty message body, the client MUST specify the Content-
 Type (section 2.2.6.3) header.
 
-3.1.5.2  Receiving a Response (All Request Types)
+##### 3.1.5.2 Receiving a Response (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the client receives the
 response to a request that it has sent. These steps MUST be performed prior to any processing that is
@@ -5060,14 +4642,14 @@ revalidate, public, or proxy-revalidate).
 If the Set-Cookie header is present in the response, the cookies on that header MUST be processed
 according to the rules specified in section 2.2.6.9.
 
-3.1.5.3  Receiving a GetContentInfo Response
+##### 3.1.5.3 Receiving a GetContentInfo Response
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
 If the RTSP status code indicates that the request succeeded (as specified in [RFC2326] section 11),
 the server SHOULD report the information in the Cache-Control header to the higher layer.
 
-3.1.5.4  Receiving a Describe Response
+##### 3.1.5.4 Receiving a Describe Response
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5084,7 +4666,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-304, the URL on the Location header MUST replace the URL used in the Describe request. The server
+
+304, the URL on the Location header MUST replace the URL used in the Describe request. The server
 MUST close the current TCP connection and establish a new TCP connection to the server or proxy
 server, as appropriate, depending on the status code. The client MUST then continue by following the
 steps, as specified in section 3.1.4.2.1.
@@ -5120,7 +4703,7 @@ request. How to process the response is specified in section 3.1.5.5. <26>
 Otherwise, the client MUST wait until a higher-layer triggered event occurs. The next higher-layer
 triggered event is a request to start streaming content, as specified in section 3.1.4.3.
 
-3.1.5.5  Receiving a TcpPacketPair Response
+##### 3.1.5.5 Receiving a TcpPacketPair Response
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5137,7 +4720,7 @@ transferred.
 The client MUST now wait until a higher-layer triggered event occurs. The next higher-layer triggered
 event is a request to start streaming content, as specified in section 3.1.4.3.
 
-3.1.5.6  Receiving a SelectStream Response for the Retransmission Stream
+##### 3.1.5.6 Receiving a SelectStream Response for the Retransmission Stream
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5150,7 +4733,8 @@ Release: April 23, 2024
 
 65 / 135
 
-The client MUST set the value of the RTCP-Destination-Port variable to the value of the second port
+
+The client MUST set the value of the RTCP-Destination-Port variable to the value of the second port
 number in the server_port parameter of the Transport header.
 
 If the Server-features variable indicates that the server supports
@@ -5171,7 +4755,7 @@ pair data is specified in section 3.1.5.8.
 Otherwise, the client MUST wait until a higher-layer triggered event occurs. The next higher-layer
 triggered event is a request to start streaming content, which is specified in section 3.1.4.3.
 
-3.1.5.7  Receiving a UdpPacketPair Response
+##### 3.1.5.7 Receiving a UdpPacketPair Response
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5181,7 +4765,7 @@ to be received. How to process RTP packets containing packet-pair data is specif
 Otherwise, the client MUST wait until a higher-layer triggered event occurs. The next higher-layer
 triggered event is a request to start streaming content, as specified in section 3.1.4.3.
 
-3.1.5.8  Receiving an RTP Packet Containing Packet-Pair Data
+##### 3.1.5.8 Receiving an RTP Packet Containing Packet-Pair Data
 
 The client MUST verify that the RTP packet is compliant with the syntax as specified in section 2.2.3.2.
 If the value of the Server-features variable in the abstract data model indicates that the server
@@ -5217,10 +4801,11 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The next higher-layer triggered event is a request to start streaming content, as specified in section
+
+The next higher-layer triggered event is a request to start streaming content, as specified in section
 3.1.4.3.
 
-3.1.5.9  Receiving a SelectStream Response
+##### 3.1.5.9 Receiving a SelectStream Response
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5247,7 +4832,7 @@ How to process RTP packets is specified in section 3.1.5.12.
 Otherwise, if the value of the State variable is READY, the client MUST send a Play request, following
 the rules as specified in section 3.1.5.9.1.
 
-3.1.5.9.1 Sending a Play Request in READY State
+###### 3.1.5.9.1 Sending a Play Request in READY State
 
 The Play request MUST adhere to the syntax as specified in section 2.2.7.9.
 
@@ -5284,7 +4869,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-playback. The client MUST send this information by using the Scale header, as specified in [RFC2326]
+
+playback. The client MUST send this information by using the Scale header, as specified in [RFC2326]
 section 12.34.
 
 The higher layer SHOULD specify both an amount of data that is to be streamed faster than real time
@@ -5319,9 +4905,9 @@ session, the client MUST send a LogConnect request.
 The client MUST now wait for the response to the Play request to be received. How to process the
 response is specified in section 3.1.5.10.
 
-3.1.5.10
+##### 3.1.5.10 Receiving a Play Response
 
-Receiving a Play Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5352,12 +4938,13 @@ Release: April 23, 2024
 
 68 / 135
 
-If the response includes the X-StartupProfile (section 2.2.6.28) header, then the server SHOULD make
+
+If the response includes the X-StartupProfile (section 2.2.6.28) header, then the server SHOULD make
 all fields on that header available to the higher layer.
 
-3.1.5.11
+##### 3.1.5.11 Receiving a LogConnect Response
 
-Receiving a LogConnect Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5367,9 +4954,9 @@ receive an EndOfStream request. How to process this request is specified in sect
 
 Otherwise, the client MUST wait for a higher-layer triggered event.
 
-3.1.5.12
+##### 3.1.5.12 Receiving RTP Packets
 
-Receiving RTP Packets
+
 
 The client MUST verify that the RTP packet is compliant with the RTP payload format syntax. The RTP
 payload format for ASF data packets is specified in section 2.2.1. The RTP payload format for FEC
@@ -5392,7 +4979,7 @@ current section.
 
 If the RTP packet uses the RTP payload format for ASF data packets or if the RTP packet uses the RTP
 payload format for retransmitted RTP packets, then the client MUST follow the rules in section
-3.1.5.12.2 and then continue processing the remainder of the rules in the current section.
+###### 3.1.5.12.2 and then continue processing the remainder of the rules in the current section.
 
 If the client has sent any requests for which it has not yet received a response, it MUST be prepared
 to receive the response. The client MUST also be prepared to receive more RTP packets and to follow
@@ -5426,7 +5013,8 @@ Release: April 23, 2024
 
 69 / 135
 
-
+
+
 
 
 
@@ -5510,7 +5098,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5546,9 +5135,9 @@ packet is not to be removed, then the client MUST NOT remove the current RTP pac
 Order-List and MUST stop processing any remaining packets in RTP-Order-List. The client will
 process RTP-Order-List again the next time an RTP packet that contains ASF data is received.
 
-3.1.5.13
+##### 3.1.5.13 Receiving an EndOfStream Request
 
-Receiving an EndOfStream Request
+
 
 The client MUST validate that the request adheres to the syntax as specified in section 2.2.7.3.
 
@@ -5588,14 +5177,15 @@ Release: April 23, 2024
 
 71 / 135
 
-If the State variable is PLAYING, the client MUST also be prepared to receive an Announce request.
+
+If the State variable is PLAYING, the client MUST also be prepared to receive an Announce request.
 How to process this request is specified in section 3.1.5.15.
 
 Otherwise, the client MUST be prepared for a higher-layer triggered event to occur.
 
-3.1.5.14
+##### 3.1.5.14 Receiving a LogPlay Response
 
-Receiving a LogPlay Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5604,9 +5194,9 @@ received. How to process this request is specified in section 3.1.5.15.
 
 Otherwise, the client MUST wait for a higher-layer triggered event.
 
-3.1.5.15
+##### 3.1.5.15 Receiving an Announce Request
 
-Receiving an Announce Request
+
 
 The client MUST validate that the request adheres to the syntax as specified in section 2.2.7.1. If the
 Announce request does not adhere to the syntax specified in section 2.2.7.1, then the server MUST
@@ -5640,9 +5230,9 @@ The client MUST also be prepared to receive a higher-layer triggered event. The 
 triggered event is a request to select the streams from the new playlist entry, as specified in section
 3.1.4.5.
 
-3.1.5.16
+##### 3.1.5.16 Receiving a SelectStream Response After Announce
 
-Receiving a SelectStream Response After Announce
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5660,15 +5250,16 @@ Release: April 23, 2024
 
 72 / 135
 
-For any received response, the client MUST decrement the SelectStream-request-counter by 1.
+
+For any received response, the client MUST decrement the SelectStream-request-counter by 1.
 
 When the SelectStream-request-counter equals 0, no more responses to previously transmitted
 requests remain, and the client MUST now send a Play request following the rules as specified in
 section 3.1.5.16.1.
 
-3.1.5.16.1
+###### 3.1.5.16.1 Sending a Play Request in PLAYING State
 
-Sending a Play Request in PLAYING State
+
 
 The Play request MUST adhere to the syntax as specified in section 2.2.7.9.
 
@@ -5702,9 +5293,9 @@ section 12.34.
 The client MUST now wait for the response to the Play request to be received. How to process the
 response is specified in section 3.1.5.10.
 
-3.1.5.17
+##### 3.1.5.17 Receiving a Pause Response
 
-Receiving a Pause Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5715,9 +5306,9 @@ the response to be received. How to process this response is specified in sectio
 
 Otherwise, the client MUST wait for a higher-layer triggered event.
 
-3.1.5.18
+##### 3.1.5.18 Receiving a KeepAlive Response
 
-Receiving a KeepAlive Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5732,11 +5323,12 @@ Release: April 23, 2024
 
 73 / 135
 
-Otherwise, the client MUST wait for a higher-layer triggered event.
 
-3.1.5.19
+Otherwise, the client MUST wait for a higher-layer triggered event.
 
-Receiving a SendEvent Response
+##### 3.1.5.19 Receiving a SendEvent Response
+
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
@@ -5746,17 +5338,17 @@ receive an EndOfStream request. How to process this request is specified in sect
 
 Otherwise, the client MUST wait for a higher-layer triggered event.
 
-3.1.5.20
+##### 3.1.5.20 Receiving a Teardown Response
 
-Receiving a Teardown Response
+
 
 The client MUST first follow the steps as specified in section 3.1.5.2.
 
 The client MUST close the TCP connection to the server.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Firewall Timer Expires
+##### 3.1.6.1 Firewall Timer Expires
 
 The client MUST report to the higher layer that it is not possible to receive RTP packets streamed over
 UDP. The likely cause is that a firewall is blocking UDP packets.
@@ -5765,7 +5357,7 @@ After this, the client MUST wait for a higher-layer triggered event to occur. (T
 up, close the TCP connection, and display an error to the user; or the higher layer can simply decide
 that all streams are streamed by using TCP instead of UDP.)
 
-3.1.6.2  Keepalive Timer Expires
+##### 3.1.6.2 Keepalive Timer Expires
 
 When the KeepAlive timer expires, the following actions MUST take place:
 
@@ -5775,14 +5367,14 @@ When the KeepAlive timer expires, the following actions MUST take place:
 
  Information on how to process the response is specified in section 3.1.5.18.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  TCP Connection Is Disconnected
+##### 3.1.7.1 TCP Connection Is Disconnected
 
 If the TCP connection to the server is disconnected, and the client did not initiate the disconnection,
 then the client MUST report this as an error to the higher layer.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The state machine for RTSP servers is specified in [RFC2326] section A.2 and as depicted in the
 following illustration. RTSP Windows Media Extensions define an additional state transition: A higher-
@@ -5798,13 +5390,14 @@ Release: April 23, 2024
 
 74 / 135
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-RTSP].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
 Figure 6: RTSP state diagram (server perspective)
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5844,7 +5437,8 @@ Release: April 23, 2024
 
 75 / 135
 
-Pending-ASF-File-Header: This variable stores an ASF header received from the higher layer that
+
+Pending-ASF-File-Header: This variable stores an ASF header received from the higher layer that
 
 has not yet been sent to the client. The ASF header is for the next playlist entry. The default value
 is NULL.
@@ -5919,7 +5513,8 @@ Release: April 23, 2024
 
 76 / 135
 
-Profile_PlaybackRate: An unsigned integer number that specifies the sum of the average bit rates,
+
+Profile_PlaybackRate: An unsigned integer number that specifies the sum of the average bit rates,
 in bytes per second, of each stream listed in the Selected-Streams variable. The minimum value
 is 0. The maximum value is 2,147,483,647. The initial value is 0.
 
@@ -5996,7 +5591,8 @@ Release: April 23, 2024
 
 77 / 135
 
-value is 0, it means that the server is sending RTP packets for streams other than the
+
+value is 0, it means that the server is sending RTP packets for streams other than the
 retransmission stream over TCP. The default value is 0.
 
 v-port: The value of this variable defines the RTP UDP port number in the client_port parameter of
@@ -6007,7 +5603,7 @@ v-ssrc: The value of this variable is an identifier assigned by the server to th
 ssrc field that the server provided in the Transport header in its response (see section 2.2.6.11).
 The initial value is 0.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Heartbeat: This timer expires repeatedly, at a regular interval. The default interval is once every
 
@@ -6025,7 +5621,7 @@ Lag-Timer: This timer is used for implementing the delay required for the Announ
 specified by the X-Player-Lag-Time (section 2.2.6.19). The initial value is 0. The timer value
 SHOULD NOT exceed 15 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of the session state occurs when a Describe or SelectStream request is received and the
 request does not specify the Session header (as specified in [RFC2326] section 12.37).
@@ -6036,9 +5632,9 @@ that do not have a default defined MUST be initialized as follows:
 The State variable MUST be set to INIT. The server SHOULD confirm its role as specified in section
 3.2.7.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Notification that the Last RTP Packet Has Been Sent
+##### 3.2.4.1 Notification that the Last RTP Packet Has Been Sent
 
 When the higher layer notifies the server that the last RTP packet has been sent, the server MUST
 send an EndOfStream (section 2.2.7.3) request to the client.
@@ -6065,7 +5661,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the value of the Playlist-gen-id variable in the abstract data model does not equal 0, and the higher
+
+If the value of the Playlist-gen-id variable in the abstract data model does not equal 0, and the higher
 layer specifies that a new ASF header is forthcoming, then the syntax element "End-Of-Playlist-Entry:
 true" MUST be included in the EndOfStream request. Otherwise, the syntax element "End-Of-Playlist-
 Entry: true" MUST NOT be included in the EndOfStream request.
@@ -6092,7 +5689,7 @@ process the response is specified in section 3.2.5.13. While waiting for the res
 also be prepared to receive RTCP packets. How to handle RTCP packets is specified in section
 3.2.5.10.
 
-3.2.4.2  Notification that a New ASF File Header Is Available
+##### 3.2.4.2 Notification that a New ASF File Header Is Available
 
 As a prerequisite for this event, the higher layer MUST already have notified the server that it has sent
 the last RTP packet for the previous playlist entry, as specified in section 3.2.4.1.
@@ -6133,7 +5730,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.2.2. The SDP MUST include the stream attribute for each media description. For more
+
+2.2.5.2.2. The SDP MUST include the stream attribute for each media description. For more
 information about how the stream attribute is included in SDP, see section 2.2.5.2.5.
 
 For each media description that corresponds to a stream in the ASF content, the server SHOULD
@@ -6206,7 +5804,8 @@ Release: April 23, 2024
 
 80 / 135
 
-The server SHOULD provide the value of the Selected-New-Streams variable to the higher layer and
+
+The server SHOULD provide the value of the Selected-New-Streams variable to the higher layer and
 allow the higher layer to modify the Selected-New-Streams variable.
 
 The server SHOULD provide the value of the Selected-Replacement-Streams variable to the higher
@@ -6257,7 +5856,7 @@ specified in section 3.2.5.14 to be received. How to process the response is spe
 3.2.5.14. While waiting for the response, the server MUST also be prepared to receive RTCP packets.
 How to handle RTCP packets is specified in section 3.2.5.10.
 
-3.2.4.3  Notification That an ASF Packet Is Ready to Be Sent
+##### 3.2.4.3 Notification That an ASF Packet Is Ready to Be Sent
 
 This event can occur when the value of the State variable is PLAYING. The higher layer provides an
 ASF packet that will be sent to the client by the server using RTP packets.
@@ -6274,7 +5873,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the ASF payload in an ASF packet belongs to a stream that is listed in the Selected-New-Streams
+
+If the ASF payload in an ASF packet belongs to a stream that is listed in the Selected-New-Streams
 variable and the ASF payload does not have the Key Frame Bit ([ASF] section 5.2.3) set to 1, the ASF
 payload MUST be removed from the ASF packet.
 
@@ -6328,9 +5928,9 @@ different spans SHOULD be transmitted in interleaved order. For example, the fir
 from the first span, followed by the first FEC RTP packet from the second span, followed by the
 second FEC RTP packet from the first span, and so on.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Request (All Request Types)
+##### 3.2.5.1 Receiving a Request (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the server receives a request
 from a client. These steps MUST be performed prior to any processing that is specific to a particular
@@ -6347,7 +5947,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server SHOULD invoke the local event specified in section 3.2.7.6 to report to the higher layer
+
+The server SHOULD invoke the local event specified in section 3.2.7.6 to report to the higher layer
 that a RTSP request has been received. If, as a result of invoking the event in section 3.2.7.6, the
 higher layer specifies that the RTSP request is rejected, the server MUST delete the session state, if
 any, and close the TCP connection to the client.
@@ -6400,7 +6001,7 @@ If the Idle-Timeout timer is running, it MUST be stopped.
 If the Heartbeat timer is not running, it SHOULD be started and set to expire at an interval of once
 every 30,000 milliseconds.
 
-3.2.5.2  Sending a Response (All Request Types)
+##### 3.2.5.2 Sending a Response (All Request Types)
 
 This section specifies common steps that MUST be performed whenever the server sends a response
 to a request from the client.
@@ -6415,7 +6016,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All headers that are specified in [RFC2326] section 12, that are defined as mandatory for responses,
+
+All headers that are specified in [RFC2326] section 12, that are defined as mandatory for responses,
 MUST be included in the response.
 
 The server SHOULD specify the Supported (section 2.2.6.10) header in the response, except when
@@ -6446,7 +6048,7 @@ header MUST be equal to the value of the Playlist-gen-id variable.
 The Idle-Timeout timer MUST be started unless the value of the State variable in the abstract data
 model is PLAYING and RTP packets are transmitted over TCP.
 
-3.2.5.3  Receiving a GetContentInfo Request
+##### 3.2.5.3 Receiving a GetContentInfo Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6459,7 +6061,7 @@ missing, this MUST NOT be treated as an error.
 
 The GetContentInfo response MUST follow the rules as specified in sections 3.2.5.2 and 2.2.7.4.
 
-3.2.5.4  Receiving a Describe Request
+##### 3.2.5.4 Receiving a Describe Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6480,7 +6082,8 @@ Release: April 23, 2024
 
 84 / 135
 
-If the higher layer indicates that the client is to be redirected to another server, the server MUST
+
+If the higher layer indicates that the client is to be redirected to another server, the server MUST
 respond with status code 302. If the client is to be redirected to a proxy server, as specified in section
 3.2.7.4, the server SHOULD respond with status code 305. In both cases, the URL of the server, or
 proxy server, MUST be specified on the Location header in the response. Information on the Location
@@ -6546,7 +6149,8 @@ Release: April 23, 2024
 
 85 / 135
 
-For each media description that corresponds to a stream in the ASF content, the server SHOULD
+
+For each media description that corresponds to a stream in the ASF content, the server SHOULD
 request the "AS" bandwidth modifier from the higher layer (as specified in 3.2.7.9), and the server
 MUST include the "AS" bandwidth modifier in SDP as specified in section 2.2.5.1.1.
 
@@ -6561,7 +6165,7 @@ specified in section 3.2.5.6.
 If the status code of the response was 401 or 407, the server MUST wait for another Describe request
 and process it as specified in this section.
 
-3.2.5.5  Receiving a TcpPacketPair Request
+##### 3.2.5.5 Receiving a TcpPacketPair Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6577,7 +6181,7 @@ After sending the response, the server MUST wait for another request to be recei
 SelectStream request will be received at this point. How to process this request is specified in section
 3.2.5.6.
 
-3.2.5.6  Receiving a SelectStream Request
+##### 3.2.5.6 Receiving a SelectStream Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6590,19 +6194,19 @@ in section 3.2.5.6.2.
 If the SelectStream request uses the SET_PARAMETER request method, it MUST be processed as
 specified in section 3.2.5.6.3.
 
-3.2.5.6.1 Receiving a SelectStream Request Using SETUP
+###### 3.2.5.6.1 Receiving a SelectStream Request Using SETUP
 
 The SelectStream request MUST follow the rules as specified in sections 2.2.7.10 and 2.2.7.10.1.
 
 The SelectStream request MUST be processed as specified in section 3.2.5.6.4.
 
-3.2.5.6.2 Receiving a SelectStream Request Using TEARDOWN
+###### 3.2.5.6.2 Receiving a SelectStream Request Using TEARDOWN
 
 The SelectStream request MUST follow the rules as specified in sections 2.2.7.10 and 2.2.7.10.2.
 
 The SelectStream request MUST be processed as specified in section 3.2.5.6.4.
 
-3.2.5.6.3 Receiving a SelectStream Request Using SET_PARAMETER
+###### 3.2.5.6.3 Receiving a SelectStream Request Using SET_PARAMETER
 
 The SelectStream request MUST follow the rules as specified in sections 2.2.7.10 and 2.2.7.10.3.
 
@@ -6613,7 +6217,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The SelectStream request MUST be processed as specified in section 3.2.5.6.4.
+
+The SelectStream request MUST be processed as specified in section 3.2.5.6.4.
 
 In addition to the rules in section 3.2.5.6.4, if the values of the OldStream and NewStream
 parameters of the message body are not identical, then the following rules also apply:
@@ -6635,7 +6240,7 @@ Selected-Streams variable, the server MUST add an entry to the Selected-Replacem
 Streams variable where the value of the OldStream parameter of the message body is the old
 stream and the value of the NewStream parameter of the message body is the new stream.
 
-3.2.5.6.4 Common Processing Rules for SelectStream
+###### 3.2.5.6.4 Common Processing Rules for SelectStream
 
 The server MUST check with the higher layer that the URL that the client specified in the request is
 valid. It MUST be one of the URLs specified by the control attribute in SDP (section 2.2.5.2.1) or the
@@ -6686,7 +6291,8 @@ Release: April 23, 2024
 
 87 / 135
 
-or a Teardown request. The server MUST continue transmitting RTP packets while in the PLAYING
+
+or a Teardown request. The server MUST continue transmitting RTP packets while in the PLAYING
 state and MUST be prepared to receive RTCP packets.
 
 How to process a SelectStream request is specified in section 3.2.5.6.
@@ -6705,7 +6311,7 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.7  Receiving a UdpPacketPair Request
+##### 3.2.5.7 Receiving a UdpPacketPair Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6727,7 +6333,7 @@ After sending the response, the server MUST wait for another request to be recei
 SelectStream request will be received at this point. How to process this request is specified in section
 3.2.5.6.
 
-3.2.5.8  Receiving a Play Request
+##### 3.2.5.8 Receiving a Play Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6752,7 +6358,8 @@ Release: April 23, 2024
 
 88 / 135
 
-If the request specified the X-RTP-Info (section 2.2.6.27) header in the Play request, and the header
+
+If the request specified the X-RTP-Info (section 2.2.6.27) header in the Play request, and the header
 does not adhere to the syntax in section 2.2.6.27, then the server SHOULD treat this as an error and
 specify status code 400 in the response.
 
@@ -6826,7 +6433,8 @@ Release: April 23, 2024
 
 89 / 135
 
-If the request includes the X-Playlist-Seek-Id header, and if the value of this header is equal to the
+
+If the request includes the X-Playlist-Seek-Id header, and if the value of this header is equal to the
 Previous-playlist-entry-id variable, but not 0, the server MUST assign this value to the Playlist-
 gen-id variable in the abstract data model. The server MUST set the value of the Previous-playlist-
 entry-id variable to 0, and MUST send an EndOfStream request immediately after sending the Play
@@ -6877,7 +6485,7 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.9  Receiving a LogConnect Request
+##### 3.2.5.9 Receiving a LogConnect Request
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -6894,7 +6502,8 @@ Release: April 23, 2024
 
 90 / 135
 
-The LogConnect response MUST follow the rules as specified in sections 3.2.5.2 and 2.2.7.6.
+
+The LogConnect response MUST follow the rules as specified in sections 3.2.5.2 and 2.2.7.6.
 
 After sending the response, the server MUST wait for another request to be received.
 
@@ -6920,9 +6529,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.10
+##### 3.2.5.10 Receiving an RTCP Packet
 
-Receiving an RTCP Packet
+
 
 The server MUST verify that the RTCP packet contains a generic NACK message adhering to the syntax
 as specified in section 2.2.4.
@@ -6964,7 +6573,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-After this, the server MUST wait for a request to be received.
+
+After this, the server MUST wait for a request to be received.
 
 If the value of the State variable is READY, then any one or more of the following requests are
 possible: SelectStream, Play, KeepAlive, SendEvent, or Teardown request.
@@ -6988,9 +6598,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.11
+##### 3.2.5.11 Receiving a Pause Request
 
-Receiving a Pause Request
+
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -7032,9 +6642,10 @@ Release: April 23, 2024
 
 92 / 135
 
-3.2.5.12
 
-Receiving a LogPlay Request
+##### 3.2.5.12 Receiving a LogPlay Request
+
+
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -7070,9 +6681,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.13
+##### 3.2.5.13 Receiving an EndOfStream Response
 
-Receiving an EndOfStream Response
+
 
 The server MUST validate that the response adheres to the syntax as specified in section 2.2.7.3. If
 the EndOfStream response request does not adhere to the syntax specified in section 2.2.7.3, the
@@ -7105,7 +6716,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-How to process a SelectStream request is specified in section 3.2.5.6.
+
+How to process a SelectStream request is specified in section 3.2.5.6.
 
 How to process a Play request is specified in section 3.2.5.8.
 
@@ -7119,9 +6731,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.14
+##### 3.2.5.14 Receiving an Announce Response
 
-Receiving an Announce Response
+
 
 The server MUST set the value of the Announce-Sent variable to 0.
 
@@ -7153,9 +6765,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.15
+##### 3.2.5.15 Receiving a KeepAlive Request
 
-Receiving a KeepAlive Request
+
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -7178,7 +6790,8 @@ Release: April 23, 2024
 
 94 / 135
 
-continue transmitting RTP packets while in the PLAYING state and MUST be prepared to receive RTCP
+
+continue transmitting RTP packets while in the PLAYING state and MUST be prepared to receive RTCP
 packets.
 
 How to process a SelectStream request is specified in section 3.2.5.6.
@@ -7195,9 +6808,9 @@ How to process a Teardown request is specified in section 3.2.5.17.
 
 How to process RTCP packets is specified in section 3.2.5.10.
 
-3.2.5.16
+##### 3.2.5.16 Receiving a SendEvent Request
 
-Receiving a SendEvent Request
+
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -7247,9 +6860,10 @@ Release: April 23, 2024
 
 95 / 135
 
-3.2.5.17
 
-Receiving a Teardown Request
+##### 3.2.5.17 Receiving a Teardown Request
+
+
 
 The server MUST first follow the steps as specified in section 3.2.5.1.
 
@@ -7260,46 +6874,46 @@ The Teardown response MUST follow the rules as specified in sections 3.2.5.2 and
 After sending the response, the server MUST close the TCP connection to the client and delete the
 session state.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Lag-Timer Timer Expires
+##### 3.2.6.1 Lag-Timer Timer Expires
 
 When the Lag-Timer expires, the server MUST follow the rules specified in section 3.2.4.2, but use the
 New-ASF-File-Header value as the ASF File Header, and MUST NOT restart the Lag-Timer.
 
-3.2.6.2  Idle-Timeout Timer Expires
+##### 3.2.6.2 Idle-Timeout Timer Expires
 
 When the Idle-Timeout timer expires, the server MUST close the TCP connection to the client if the
 connection is still open. After that, the server MUST delete the session state.
 
-3.2.6.3  Heartbeat Timer Expires
+##### 3.2.6.3 Heartbeat Timer Expires
 
 When the Heartbeat timer expires, the timer SHOULD be restarted (or remain running), so that it will
 expire again at the next regular interval.
 
 The server SHOULD set the TransactionsPerHeartBeat variable in the Abstract Data Model to 0.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Selected-Stream Adjustment
+##### 3.2.7.1 Selected-Stream Adjustment
 
 The server SHOULD provide a mechanism for allowing the higher-layer to evaluate and adjust the
 values specified in the Selected-Streams variable.
 
-3.2.7.2  Client Closes TCP Connection
+##### 3.2.7.2 Client Closes TCP Connection
 
 If the value of the State variable in the abstract data model is READY or PLAYING and the client
 disconnected its TCP connection, then the State variable MUST be set to READY and the Idle-Timeout
 timer MUST be started. If the value of the State variable is INIT, then the session state MUST be
 deleted.
 
-3.2.7.3  Server Role
+##### 3.2.7.3 Server Role
 
 The server SHOULD provide a mechanism to determine from the higher layer whether the server is
 operating in a proxy server role or regular server role. If the server is acting like a proxy server, the
 server MUST set the proxy-role element value to 1.
 
-3.2.7.4  Redirection
+##### 3.2.7.4 Redirection
 
 The server MUST provide a mechanism to determine from the higher layer whether a request from the
 client is to be redirected to a server or to a proxy server. If the higher layer determines that the client
@@ -7311,15 +6925,16 @@ Release: April 23, 2024
 
 96 / 135
 
-is to be redirected, then the higher layer MUST provide the URL to the server or proxy server. The
+
+is to be redirected, then the higher layer MUST provide the URL to the server or proxy server. The
 higher layer MUST also specify if the provided URL is for a server or a proxy server.
 
-3.2.7.5  Cache-Control Data
+##### 3.2.7.5 Cache-Control Data
 
 The server SHOULD provide the URL received in the RTSP request to the higher-layer. In response,
 the higher-layer SHOULD provide the CCdir token as specified in 2.2.6.2.
 
-3.2.7.6  RTSP Request Received
+##### 3.2.7.6 RTSP Request Received
 
 The server SHOULD provide a mechanism to inform the higher layer that an RTSP request has been
 received. The higher layer acknowledges the event by indicating whether the request can be accepted
@@ -7329,7 +6944,7 @@ The input parameters to this event SHOULD include the RTSP request type (for exa
 PLAY). The output parameter is a flag that indicates whether the higher layer determined that the
 request is accepted or rejected.
 
-3.2.7.7  Computing Values for the X-StartupProfile Header
+##### 3.2.7.7 Computing Values for the X-StartupProfile Header
 
 This local event occurs when the server has received a Play request and intends to include the X-
 StartupProfile (section 2.2.6.28) header in the response.
@@ -7375,7 +6990,8 @@ Release: April 23, 2024
 
 97 / 135
 
-The XSP-MaxBytes parameter ([MS-WMSP] section 2.2.1.12.2) of the X-StartupProfile header SHOULD
+
+The XSP-MaxBytes parameter ([MS-WMSP] section 2.2.1.12.2) of the X-StartupProfile header SHOULD
 contain five maxbyte-value parameters, and the values of the maxbyte-value parameters SHOULD be
 set to values of the Profile_MaxBytes array's elements. The assignment SHOULD be done such that
 the value of the first maxbyte-value parameter is equal to the value of the first element in the
@@ -7420,7 +7036,7 @@ that the value of the first byterate-val parameter is equal to the value of the 
 Profile_ByteRate array, and the value of the second byterate-val parameter is equal to the value of
 the second element in the Profile_ByteRate array.
 
-3.2.7.7.1 Inspecting a Single ASF Payload
+###### 3.2.7.7.1 Inspecting a Single ASF Payload
 
 If the value of the Profile_FirstSendTime variable is 18,446,744,073,709,551,615, the content is
 broadcast content, the ASF payload belongs to a video stream, and the ASF payload has the Key
@@ -7439,7 +7055,8 @@ Release: April 23, 2024
 
 98 / 135
 
-If the value of the Profile_FirstSendTime variable is 18,446,744,073,709,551,615 and the content
+
+If the value of the Profile_FirstSendTime variable is 18,446,744,073,709,551,615 and the content
 is not broadcast content, then the value of the Profile_FirstSendTime variable MUST be set to the
 value of the Send Time field of the ASF packet that includes the ASF payload.
 
@@ -7497,7 +7114,7 @@ The value of the Profile_BytesNeeded variable MUST now be increased by the size 
 object in the ASF payload, and then the server SHOULD continue inspecting the next applicable ASF
 payload, as specified in section 3.2.7.7.
 
-3.2.7.7.2 MaxDiffSndTime Calculations
+###### 3.2.7.7.2 MaxDiffSndTime Calculations
 
 The signed integer obtained by subtracting the value of the Presentation Time field of the ASF
 payload from the value of the Profile_LastPresTime variable is referred to as DiffPresTime.
@@ -7509,7 +7126,8 @@ Release: April 23, 2024
 
 99 / 135
 
-The signed integer obtained by subtracting the value of the Send Time field of the ASF packet that
+
+The signed integer obtained by subtracting the value of the Send Time field of the ASF packet that
 includes the ASF payload from the value of the Profile_LastSendTime variable is referred to as
 DiffSndTime.
 
@@ -7519,7 +7137,7 @@ variable MUST be set to the value of the Presentation Time field of the ASF payl
 of the Profile_MaxDiffSndTime variable MUST be set to the sum of the DiffPresTime and
 DiffSndTime values.
 
-3.2.7.7.3 ChosenRate Calculations
+###### 3.2.7.7.3 ChosenRate Calculations
 
 If the value of the Send Time field of the ASF packet that includes the ASF payload is greater than
 the value of the Profile_FirstSendTime variable, then the server MUST compute the sum of the
@@ -7548,7 +7166,7 @@ Profile_LastPresTime variable, then the server MUST perform the processing rules
 The server MUST now set the value of the Profile_LastPresTime variable to the value of the
 Presentation Time field of the ASF payload.
 
-3.2.7.7.4 MaxBytes, Time and ByteRate Calculations
+###### 3.2.7.7.4 MaxBytes, Time and ByteRate Calculations
 
 If the value of the Profile_LastPresTime variable is greater than the value of the
 Profile_FirstPresTime variable, then the server MUST subtract the value of the
@@ -7576,7 +7194,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the value of the signed integer, and the corresponding elements in the Profile_Time and
+
+the value of the signed integer, and the corresponding elements in the Profile_Time and
 Profile_ByteRate arrays MUST also be updated as follows:
 
 
@@ -7593,7 +7212,7 @@ For example, if the signed integer is greater than the value of the third elemen
 Profile_MaxBytes array, then the third element in the Profile_MaxBytes, Profile_Time, and
 Profile_ByteRate arrays are all modified.
 
-3.2.7.8  Broadcast ID
+##### 3.2.7.8 Broadcast ID
 
 The higher layer SHOULD provide a numerical identifier that uniquely identifies the source of
 broadcast content within the scope of the current server-side playlist. For example, if the same live
@@ -7602,15 +7221,15 @@ same for each of those entries. There is no requirement that the numerical ident
 different server-side playlists. If a playlist entry is not using a broadcast content source, the numerical
 identifier MUST be 0.
 
-3.2.7.9  AS-Bandwidth Request
+##### 3.2.7.9 AS-Bandwidth Request
 
 The server SHOULD provide a mechanism to provide the stream number of the ASF file to the higher
 layer. In response, the higher layer SHOULD provide the value for the "AS" bandwidth modifier as
 specified in 2.2.5.1.1.
 
-3.2.7.10
+##### 3.2.7.10 Fast Start Request
 
-Fast Start Request
+
 
 The server SHOULD provide a mechanism to inform the higher layer of a request by the client to
 receive packets at an accelerated rate. The higher layer SHOULD also be informed if the request used
@@ -7623,9 +7242,9 @@ accelerated delivery SHOULD NOT exceed the duration requested by the client. The
 report whether it is able to comply with the request and MUST report the accelerated rate and
 duration that was chosen.
 
-3.2.7.11
+##### 3.2.7.11 Proxy Authentication
 
-Proxy Authentication
+
 
 This local event can occur when a Describe request is received and the value of the proxy-role
 variable is 1. The purpose of this local event is to enable the higher layer to authenticate the client.
@@ -7652,7 +7271,8 @@ Release: April 23, 2024
 
 101 / 135
 
-
+
+
 
 The list of authentication schemes on the X-Accept-Proxy-Authentication header (section
 2.2.6.15), if any, that was provided by the client in the Describe request. The server MUST specify
@@ -7677,9 +7297,9 @@ authorized or not authorized to use the proxy server. If the higher layer does n
 indication and does not provide a value for the Proxy-Authenticate header, the server MUST
 assume that the client is authorized to use the proxy server.
 
-3.2.7.12
+##### 3.2.7.12 Origin Server Authentication
 
-Origin Server Authentication
+
 
 This local event can occur when a Describe request is received. The purpose of this local event is to
 enable the higher layer to authenticate the client. After the higher layer has authenticated the client,
@@ -7731,12 +7351,13 @@ Release: April 23, 2024
 
 102 / 135
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of RTSP Windows Media Extensions.
 
-4.1  RTP Packet Syntax
+### 4.1 RTP Packet Syntax
 
 The size of the RTP payload format header, as specified in section 2.2.1, varies from 4 to 16 bytes,
 depending on how the R, D, and I fields are set. When none of the fields are set to 1, the size of the
@@ -7773,13 +7394,14 @@ Release: April 23, 2024
 
 103 / 135
 
-<!-- Extracted images from page 104 -->
+
+<!-- Extracted images from page 104 -->
 ![Extracted image 1 from page 104]([MS-RTSP].images/page104-img01.png)
 <!-- /Extracted images from page 104 -->
 
 Figure 7: RTP packet diagram
 
-4.2  Vandermonde Matrix Algorithm
+### 4.2 Vandermonde Matrix Algorithm
 
 The Vandermonde matrix is created by following the steps as specified in section 2.2.2.2.2.
 
@@ -7793,7 +7415,8 @@ Release: April 23, 2024
 
 104 / 135
 
-<!-- Extracted images from page 105 -->
+
+<!-- Extracted images from page 105 -->
 ![Extracted image 1 from page 105]([MS-RTSP].images/page105-img01.png)
 ![Extracted image 2 from page 105]([MS-RTSP].images/page105-img02.png)
 <!-- /Extracted images from page 105 -->
@@ -7811,7 +7434,8 @@ Release: April 23, 2024
 
 105 / 135
 
-<!-- Extracted images from page 106 -->
+
+<!-- Extracted images from page 106 -->
 ![Extracted image 1 from page 106]([MS-RTSP].images/page106-img01.png)
 ![Extracted image 2 from page 106]([MS-RTSP].images/page106-img02.png)
 <!-- /Extracted images from page 106 -->
@@ -7846,7 +7470,8 @@ Release: April 23, 2024
 
 106 / 135
 
-<!-- Extracted images from page 107 -->
+
+<!-- Extracted images from page 107 -->
 ![Extracted image 1 from page 107]([MS-RTSP].images/page107-img01.png)
 <!-- /Extracted images from page 107 -->
 
@@ -7855,9 +7480,9 @@ Figure 12: Vandermonde-generated data equation using GF28 (implementation)
 A client that has lost some RTP packets arranges the RTP packets that it received as the result matrix,
 and multiplies it with the inverse of the identity matrix to obtain the source matrix.
 
-4.3  SDP Examples
+### 4.3 SDP Examples
 
-4.3.1  Retransmission Stream
+#### 4.3.1 Retransmission Stream
 
 Windows Media Services is capable of retransmitting lost RTP packets. Windows Media Services
 indicates that it supports retransmission of RTP packets by including a retransmission stream in the
@@ -7869,9 +7494,9 @@ wms-rtx" in the rtpmap attribute, as shown in the following example.
  a=control:rtx
  a=stream:65536
 
-4.4  RTSP Examples
+### 4.4 RTSP Examples
 
-4.4.1  SETUP Request
+#### 4.4.1 SETUP Request
 
 To recover lost RTP packets, the client selects the retransmission stream by sending the SETUP
 request (section 2.2.7.10.1) to the server. In the SETUP request (section 2.2.7.10.1), the client
@@ -7890,11 +7515,12 @@ Release: April 23, 2024
 
 107 / 135
 
-<!-- Extracted images from page 108 -->
+
+<!-- Extracted images from page 108 -->
 ![Extracted image 1 from page 108]([MS-RTSP].images/page108-img01.png)
 <!-- /Extracted images from page 108 -->
 
-4.4.2  Packet-Pair Bandwidth Estimation Using UDP
+#### 4.4.2 Packet-Pair Bandwidth Estimation Using UDP
 
  The following sequence occurs between a client and server when conducting the packet-pair
 experiment over UDP:
@@ -7936,7 +7562,8 @@ Release: April 23, 2024
 
 108 / 135
 
- Accept: application/sdp
+
+ Accept: application/sdp
  CSeq: 5
  Supported: com.microsoft.wm.srvppair, com.microsoft.wm.sswitch,
  com.microsoft.wm.eosmsg, com.microsoft.wm.predstrm,
@@ -7990,7 +7617,7 @@ Release: April 23, 2024
 
  type: high-entropy-packetpair
 
-4.4.3  Packet-Pair Bandwidth Estimation Using TCP
+#### 4.4.3 Packet-Pair Bandwidth Estimation Using TCP
 
 The following sequence occurs between a client and server when conducting the packet-pair
 experiment over TCP:
@@ -8010,7 +7637,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 110 -->
+
+<!-- Extracted images from page 110 -->
 ![Extracted image 1 from page 110]([MS-RTSP].images/page110-img01.png)
 <!-- /Extracted images from page 110 -->
 
@@ -8022,7 +7650,7 @@ Release: April 23, 2024
 
 Figure 14: Packet-pair experiment sequence over TCP
 
-4.4.4  Predictive Stream Selection and SelectStream
+#### 4.4.4 Predictive Stream Selection and SelectStream
 
 The server can switch from streaming one piece of content to another. This can occur, for example,
 when a server-side playlist is used. When the server transitions from one entry to the next, it can
@@ -8043,7 +7671,7 @@ before sending any subsequent Play (section 2.2.7.9) requests. In this case, the
 include the URL of the rejected stream in the X-RTP-Info (section 2.2.6.27) header of the
 Play (section 2.2.7.9) request.
 
-4.4.4.1  SelectStream Using SET_PARAMETER
+##### 4.4.4.1 SelectStream Using SET_PARAMETER
 
 A client can request the server to switch streams. The stream switch requests are performed by
 submitting a SelectStream (section 2.2.7.10) request to the server. The
@@ -8057,7 +7685,8 @@ Release: April 23, 2024
 
 110 / 135
 
- Content-Type: application/x-wms-streamswitch
+
+ Content-Type: application/x-wms-streamswitch
 
 This is an example of the message body in the request:
 
@@ -8100,7 +7729,7 @@ Server to client:
  .
  ... continue receiving content...
 
-4.4.4.2  SelectStream Using TEARDOWN
+##### 4.4.4.2 SelectStream Using TEARDOWN
 
 When the SelectStream (section 2.2.7.10) request uses the TEARDOWN and SETUP methods, the
 method can also contain an SSEntry message body (indicated by the application/x-wms-
@@ -8115,7 +7744,8 @@ Release: April 23, 2024
 
 111 / 135
 
-For example, an application sets up the following stream:
+
+For example, an application sets up the following stream:
 
  SETUP rtsp://host/abc/audio
 
@@ -8134,7 +7764,7 @@ Later, if the application wants to send a SelectStream (section 2.2.7.10) reques
 
 Note  The value 5 is the ASF stream ID for the audio=5 stream.
 
-4.4.4.3  SelectStream After Predictive Stream Selection
+##### 4.4.4.3 SelectStream After Predictive Stream Selection
 
 Assume for the first entry that the client selects the following streams: /audio, /video. For the second
 entry, the server predicts streams /audio=2, /video=5. If the client wants to deselect the stream
@@ -8154,7 +7784,7 @@ For example, the client can use the following request to deselect the /audio=2 s
 
  2 2 2 rtsp://host/abc/audio=2 rtsp://host/abc/audio=2
 
-4.4.4.4  Client Requests FEC Stream from Server
+##### 4.4.4.4 Client Requests FEC Stream from Server
 
 From the SDP description sequence, the client can select audio or video streams, and for each of these
 it can select associated FEC streams.
@@ -8177,7 +7807,8 @@ Release: April 23, 2024
 
 112 / 135
 
- SETUP rtsp://myserver.com/mycontent.wmv/stream=5/fec98 RTSP/1.0
+
+ SETUP rtsp://myserver.com/mycontent.wmv/stream=5/fec98 RTSP/1.0
  Transport:
  RTP/AVP/UDP;unicast;client_port=2408;ssrc=6dded651;mode=PLAY;FecSpan=4;
  FecPerSpan=1;FecBurstMargin=6, RTP/AVP/TCP;unicast;interleaved=0-1;
@@ -8204,7 +7835,7 @@ Server to client:
  Server: WMServer/ 9.0.0.197
  Cache-Control: must-revalidate, proxy-revalidate
 
-4.4.5  Server-Side Playlist Entry Switching
+#### 4.4.5 Server-Side Playlist Entry Switching
 
 Content is identified as sourcing from a server-side playlist in the SDP included in the response to the
 Describe (section 2.2.7.2) request.
@@ -8240,7 +7871,8 @@ Release: April 23, 2024
 
 113 / 135
 
-<!-- Extracted images from page 114 -->
+
+<!-- Extracted images from page 114 -->
 ![Extracted image 1 from page 114]([MS-RTSP].images/page114-img01.png)
 <!-- /Extracted images from page 114 -->
 
@@ -8270,7 +7902,7 @@ The following illustration shows the previously described sequence.
 
 Figure 15: Streaming sequence between client and server for a server-side playlist
 
-4.4.6  Stream Playback with Authentication
+#### 4.4.6 Stream Playback with Authentication
 
 The following sequence occurs between a client and server if the server requires the client to be
 authenticated:
@@ -8291,7 +7923,8 @@ Release: April 23, 2024
 
 114 / 135
 
-<!-- Extracted images from page 115 -->
+
+<!-- Extracted images from page 115 -->
 ![Extracted image 1 from page 115]([MS-RTSP].images/page115-img01.png)
 <!-- /Extracted images from page 115 -->
 
@@ -8322,7 +7955,8 @@ Release: April 23, 2024
 
 115 / 135
 
-4.4.7  Streaming, Pausing, Fast-Forwarding, and Stopping Playback
+
+#### 4.4.7 Streaming, Pausing, Fast-Forwarding, and Stopping Playback
 
 The following sequence occurs between a client and server while performing other transport
 operations in between streaming and then stopping a file:
@@ -8396,15 +8030,16 @@ Release: April 23, 2024
 
 116 / 135
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-RTSP].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
 Figure 17: RTSP client-server stream playback sequence with transport operations
 
-4.5  Logging and RTSP
+### 4.5 Logging and RTSP
 
-4.5.1  Submitting Connect-Time Statistics
+#### 4.5.1 Submitting Connect-Time Statistics
 
 Submitting the connect-time statistics log is done by using the SET_PARAMETER (section 2.2.7)
 request method with the Content-Type header set to application/x-wms-Logconnectstats, as specified
@@ -8417,7 +8052,8 @@ Release: April 23, 2024
 
 117 / 135
 
-Client to server (note the absence of content in the <Summary> </Summary> tags):
+
+Client to server (note the absence of content in the <Summary> </Summary> tags):
 
  SET_PARAMETER rtsp://myserver.com/mycontent.wmv RTSP/1.0
  Content-Length: 218
@@ -8442,7 +8078,7 @@ Server to client:
  Session: 2828013918854793989;timeout=60
  Server: WMServer/9.0.0.3101
 
-4.5.2  Submitting a Play Log
+#### 4.5.2 Submitting a Play Log
 
 Client to server (note the <Summary></Summary> tags in this example):
 
@@ -8481,7 +8117,8 @@ Release: April 23, 2024
 
 118 / 135
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-RTSP].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -8491,7 +8128,7 @@ Release: April 23, 2024
  Session: 2828013918854793989;timeout=60
  Server: WMServer/9.0.0.3067
 
-4.6  RTSP Proxy Server Interaction
+### 4.6 RTSP Proxy Server Interaction
 
 A server that is configured to operate as a proxy server provides the service of routing client requests
 to one or more origin servers that publish the streaming media content. In this case, the proxy
@@ -8516,7 +8153,8 @@ Release: April 23, 2024
 
 119 / 135
 
-<!-- Extracted images from page 120 -->
+
+<!-- Extracted images from page 120 -->
 ![Extracted image 1 from page 120]([MS-RTSP].images/page120-img01.png)
 <!-- /Extracted images from page 120 -->
 
@@ -8554,13 +8192,14 @@ Release: April 23, 2024
 
 120 / 135
 
-<!-- Extracted images from page 121 -->
+
+<!-- Extracted images from page 121 -->
 ![Extracted image 1 from page 121]([MS-RTSP].images/page121-img01.png)
 <!-- /Extracted images from page 121 -->
 
 Figure 20: Caching proxy server states
 
-4.6.1  Sequencing for Playlist Content Delivery
+#### 4.6.1 Sequencing for Playlist Content Delivery
 
 The following sequence occurs when a client is requesting playlist content. A proxy server handles
 requests and content delivery to and from the client, connecting with the playlist origin server if
@@ -8584,7 +8223,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client role and uses the client role to open a connection with the origin server. These steps are
+
+client role and uses the client role to open a connection with the origin server. These steps are
 described in section 4.6.3.
 
 3.  The higher layer of the proxy server checks whether the content in the local cache is valid. If the
@@ -8629,13 +8269,14 @@ Release: April 23, 2024
 
 122 / 135
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-RTSP].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
 Figure 21: Playlist content delivery
 
-4.6.2  Sequencing for Broadcast Content Delivery
+#### 4.6.2 Sequencing for Broadcast Content Delivery
 
 The following sequence occurs when a client is requesting broadcast content. A proxy server handles
 requests and content delivery between the client and the origin server that generates the broadcast.
@@ -8653,7 +8294,8 @@ Release: April 23, 2024
 
 123 / 135
 
-2.  The higher layer of the proxy server checks whether it has a client role that is currently receiving
+
+2.  The higher layer of the proxy server checks whether it has a client role that is currently receiving
 the content. If the content is not being received by any client role, then the higher layer of the
 proxy server creates an instance of the client role and uses it to open a connection with the origin
 server. These steps are described in section 4.6.3.
@@ -8695,13 +8337,14 @@ Release: April 23, 2024
 
 124 / 135
 
-<!-- Extracted images from page 125 -->
+
+<!-- Extracted images from page 125 -->
 ![Extracted image 1 from page 125]([MS-RTSP].images/page125-img01.png)
 <!-- /Extracted images from page 125 -->
 
 Figure 22: Broadcast content delivery
 
-4.6.3  Proxy Server and Origin Server Communication
+#### 4.6.3 Proxy Server and Origin Server Communication
 
  The following sequence occurs when a proxy server is requesting content from an origin server:
 
@@ -8724,7 +8367,8 @@ Release: April 23, 2024
 
 125 / 135
 
-4.
+
+4.
 
  If the content is not fully cached in the proxy server's local cache, or if the content will not be
 cached or split, the higher layer of the proxy server instructs the client role to send a
@@ -8749,12 +8393,13 @@ Release: April 23, 2024
 
 126 / 135
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of RTSP Windows Media
 Extensions.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 RTSP Windows Media Extensions are at risk of an attack in which the attacker spoofs RTCP packets
 containing generic NACK messages, causing the server to flood the client unnecessarily with
@@ -8763,7 +8408,7 @@ parameter in the Transport (section 2.2.6.11) header in such a way that it is di
 predict its value. The server can also impose a limit on how many RTP packets per second that it will
 retransmit to a client.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The only security parameter, HTTP access authentication, is found in section 2.1.
 
@@ -8774,7 +8419,8 @@ Release: April 23, 2024
 
 127 / 135
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8842,7 +8488,8 @@ Release: April 23, 2024
 
 128 / 135
 
-<2> Section 2.1: Windows Media Format 9 Series SDK, Windows Media Format 9.5 SDK, Windows
+
+<2> Section 2.1: Windows Media Format 9 Series SDK, Windows Media Format 9.5 SDK, Windows
 Vista and later support NTLM, Digest (as specified in [RFC2617]), and Negotiate (as specified in
 [RFC4559]) authentication. Basic authentication is supported only when challenged by a proxy server.
 Windows Media Services on Windows Server 2003, Windows Server 2008, and Windows Server 2008
@@ -8909,7 +8556,8 @@ Release: April 23, 2024
 
 129 / 135
 
-and Windows Media Services on Windows Server 2003, Windows Server 2008, and Windows Server
+
+and Windows Media Services on Windows Server 2003, Windows Server 2008, and Windows Server
 2008 R2.
 
 <16> Section 2.2.6.10.8: This rule is not adhered to by the client role in Windows Media Format 9
@@ -8975,7 +8623,8 @@ Release: April 23, 2024
 
 130 / 135
 
-<29> Section 3.2: Windows Media Services on Windows Server 2003 does not support transitions in
+
+<29> Section 3.2: Windows Media Services on Windows Server 2003 does not support transitions in
 or out of the RECORD state.
 
 <30> Section 3.2.5.2: The com.microsoft.wm.startupprofile token is specified only by Windows Media
@@ -9012,7 +8661,8 @@ Release: April 23, 2024
 
 131 / 135
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -9056,7 +8706,8 @@ Release: April 23, 2024
 
 132 / 135
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -9187,7 +8838,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   RTP Payload Format for Retransmitted RTP Packets
+
+   RTP Payload Format for Retransmitted RTP Packets
 
 and Packet-Pair Data 21
 
@@ -9339,7 +8991,8 @@ Real-Time Streaming Protocol (RTSP) Windows Media Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RTP payload format header 16
+
+RTP payload format header 16
 RTP_Packet_Header_FEC_Extension packet 20
 RTP_Payload_Format_Header packet 16
 RTSP examples (section 4.4 107, section 4.5 117)

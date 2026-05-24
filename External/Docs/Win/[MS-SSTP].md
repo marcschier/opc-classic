@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 90
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -534,7 +536,8 @@ Release: April 23, 2024
 
 3 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -585,337 +588,106 @@ Release: April 23, 2024
 
 4 / 90
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-SSTP Packet ............................................................................................... 14
-SSTP Control Packet.................................................................................... 15
-SSTP Data Packet ....................................................................................... 16
-SSTP Attributes .......................................................................................... 17
-Encapsulated Protocol ID Attribute ................................................................ 18
-Crypto Binding Request Attribute .................................................................. 19
-Crypto Binding Attribute .............................................................................. 20
-Status Info Attribute ................................................................................... 22
-Call Connect Request Message (SSTP_MSG_CALL_CONNECT_REQUEST) ........... 25
-Call Connect Acknowledge Message (SSTP_MSG_CALL_CONNECT_ACK) ............ 26
-Call Connected Message (SSTP_MSG_CALL_CONNECTED) ............................... 28
-Call Connect Negative Acknowledgment Message
-(SSTP_MSG_CALL_CONNECT_NAK) .............................................................. 31
-Call Abort Message (SSTP_MSG_CALL_ABORT) .............................................. 33
-Call Disconnect Message (SSTP_MSG_CALL_DISCONNECT).............................. 35
-Call Disconnect Acknowledge (SSTP_MSG_CALL_DISCONNECT_ACK), Echo Request
-(SSTP_MSG_ECHO_REQUEST), and Echo Response (SSTP_MSG_ECHO_RESPONSE)
-Messages ................................................................................................... 37
-
-2.2.13
-2.2.14
-2.2.15
-
-3.1
-
-3.1.2
-
-3.1.1
-
-3.1.1.1
-
-3.1.1.1.1
-3.1.1.1.2
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-
-3  Protocol Details ..................................................................................................... 39
-Common Details .............................................................................................. 39
-Abstract Data Model .................................................................................... 39
-State Machine....................................................................................... 39
-State Machine Call Disconnect ........................................................... 39
-State Machine Call Abort .................................................................. 41
-Timers ...................................................................................................... 42
-Abort-Related Timers............................................................................. 42
-Disconnect-Related Timers ..................................................................... 42
-Hello Timer .......................................................................................... 43
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Processing Events and Sequencing Rules ....................................................... 44
-Status and Error Handling ...................................................................... 44
-SSTP Packet Processing ......................................................................... 44
-Timer Events .............................................................................................. 44
-Abort Timer Processing .......................................................................... 44
-Disconnect Timer Processing .................................................................. 45
-Hello Timer Processing ........................................................................... 45
-Other Local Events ...................................................................................... 45
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-3.1.7
-
-3.1.6
-
-[MS-SSTP] - v20240423
-Secure Socket Tunneling Protocol (SSTP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 90
-
-3.1.7.1
-3.1.7.2
-
-3.2
-
-3.2.1
-
-3.2.1.1
-
-3.2.1.1.1
-
-3.2.2.1
-
-3.2.2
-
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-
-3.2.5.3
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-3.2.5.2.4
-
-3.2.5.3.1
-3.2.5.3.2
-3.2.5.3.3
-3.2.5.3.4
-3.2.5.3.5
-3.2.5.3.6
-3.2.5.3.7
-3.2.5.3.8
-
-Interface with PPP ................................................................................. 45
-Interface with HTTPS ............................................................................. 45
-Client Details ................................................................................................... 46
-Abstract Data Model .................................................................................... 46
-State Machine....................................................................................... 47
-Call Establishment ........................................................................... 47
-Timers ...................................................................................................... 49
-Negotiation Timer ................................................................................. 49
-Initialization ............................................................................................... 49
-Higher-Layer Triggered Events ..................................................................... 49
-Establish SSTP Tunnel Event .................................................................. 49
-Disconnect SSTP Tunnel Event ................................................................ 50
-Processing Events and Sequencing Rules ....................................................... 51
-Status and Error Handling ...................................................................... 51
-Crypto Binding ...................................................................................... 51
-Input Data Used in the Crypto Binding HMAC-SHA1-160 Operation ........ 52
-Key Used in the Crypto Binding HMAC-SHA1-160 Operation .................. 52
-Input Data Used in the Crypto Binding HMAC-SHA256-256 Operation .... 54
-Key Used in the Crypto Binding HMAC-SHA256-256 Operation .............. 54
-Packet Processing ................................................................................. 55
-General Packet Validation ................................................................. 55
-Receiving an SSTP_MSG_CALL_CONNECT_ACK Message ...................... 55
-Receiving an SSTP_MSG_CALL_CONNECT_NAK Message ...................... 56
-Receiving an SSTP_MSG_CALL_ABORT Message .................................. 57
-Receiving an SSTP_MSG_CALL_DISCONNECT Message ........................ 57
-Receiving an SSTP_MSG_CALL_DISCONNECT_ACK Message ................. 58
-Receiving an SSTP_MSG_ECHO_REQUEST Message ............................. 58
-Receiving an SSTP_MSG_ECHO_RESPONSE Message ........................... 59
-Timer Events .............................................................................................. 59
-Negotiation Timer Processing .................................................................. 59
-Other Local Events ...................................................................................... 59
-Client-Side Interface with PPP ................................................................. 59
-Client-Side Interface with HTTPS............................................................. 60
-Server Details .................................................................................................. 60
-Abstract Data Model .................................................................................... 60
-State Machine....................................................................................... 61
-Call Establishment ........................................................................... 61
-Timers ...................................................................................................... 63
-Negotiation Timer ................................................................................. 63
-Initialization ............................................................................................... 63
-Higher-Layer Triggered Events ..................................................................... 64
-Processing Events and Sequencing Rules ....................................................... 64
-Status and Error Handling ...................................................................... 64
-Packet Processing ................................................................................. 64
-General Packet Validation ................................................................. 64
-Receiving an SSTP_MSG_CALL_CONNECT_REQUEST Message............... 64
-Receiving an SSTP_MSG_CALL_CONNECTED Message .......................... 65
-Receiving an SSTP_MSG_CALL_ABORT Message .................................. 67
-Receiving an SSTP_MSG_CALL_DISCONNECT Message ........................ 67
-Receiving an SSTP_MSG_CALL_DISCONNECT_ACK Message ................. 68
-Receiving an SSTP_MSG_ECHO_REQUEST Message ............................. 68
-Receiving an SSTP_MSG_ECHO_RESPONSE Message ........................... 68
-Timer Events .............................................................................................. 69
-Negotiation Timer Processing .................................................................. 69
-Other Local Events ...................................................................................... 69
-Server-Side Interface with PPP ............................................................... 69
-Server-Side Interface with HTTPS ........................................................... 70
-Server-Side Interface with Management Layer .......................................... 70
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-3.3.5.2.4
-3.3.5.2.5
-3.3.5.2.6
-3.3.5.2.7
-3.3.5.2.8
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-3.2.7.1
-3.2.7.2
-
-3.3
-
-3.3.1
-
-3.3.1.1
-
-3.3.1.1.1
-
-3.3.2.1
-
-3.3.2
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-
-[MS-SSTP] - v20240423
-Secure Socket Tunneling Protocol (SSTP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 90
-
-4  Protocol Examples ................................................................................................. 71
-HTTPS Layer Establishment ............................................................................... 71
-HTTP Layer Teardown ....................................................................................... 71
-SSTP Layer Establishment ................................................................................. 72
-SSTP Layer Teardown ....................................................................................... 72
-Handling HTTP Proxies ...................................................................................... 73
-Handling the HTTPS Termination Proxy ............................................................... 74
-Crypto Binding ................................................................................................. 74
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5.1
-5.2
-5.3
-
-5  Security ................................................................................................................. 79
-Security Considerations for Implementers ........................................................... 79
-Index of Security Parameters ............................................................................ 79
-Attack Scenarios .............................................................................................. 79
-Unauthorized Client Connecting to an SSTP Server ......................................... 79
-Unauthorized SSTP Server Accepting Connections from a Genuine SSTP Client ... 80
-Man in the Middle ....................................................................................... 81
-
-5.3.1
-5.3.2
-5.3.3
-
-6  Appendix A: Product Behavior ............................................................................... 84
-
-7  Change Tracking .................................................................................................... 87
-
-8  Index ..................................................................................................................... 88
-
-[MS-SSTP] - v20240423
-Secure Socket Tunneling Protocol (SSTP)
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 90
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SSTP Packet](#221-sstp-packet)
+    - [2.2.2 SSTP Control Packet](#222-sstp-control-packet)
+    - [2.2.3 SSTP Data Packet](#223-sstp-data-packet)
+    - [2.2.4 SSTP Attributes](#224-sstp-attributes)
+    - [2.2.5 Encapsulated Protocol ID Attribute](#225-encapsulated-protocol-id-attribute)
+    - [2.2.6 Crypto Binding Request Attribute](#226-crypto-binding-request-attribute)
+    - [2.2.7 Crypto Binding Attribute](#227-crypto-binding-attribute)
+    - [2.2.8 Status Info Attribute](#228-status-info-attribute)
+    - [2.2.9 Call Connect Request Message (SSTP_MSG_CALL_CONNECT_REQUEST)](#229-call-connect-request-message-sstpmsgcallconnectrequest)
+    - [2.2.10 Call Connect Acknowledge Message (SSTP_MSG_CALL_CONNECT_ACK)](#2210-call-connect-acknowledge-message-sstpmsgcallconnectack)
+    - [2.2.11 Call Connected Message (SSTP_MSG_CALL_CONNECTED)](#2211-call-connected-message-sstpmsgcallconnected)
+    - [2.2.12 Call Connect Negative Acknowledgment Message](#2212-call-connect-negative-acknowledgment-message)
+    - [2.2.13 Call Abort Message (SSTP_MSG_CALL_ABORT)](#2213-call-abort-message-sstpmsgcallabort)
+    - [2.2.14 Call Disconnect Message (SSTP_MSG_CALL_DISCONNECT)](#2214-call-disconnect-message-sstpmsgcalldisconnect)
+    - [2.2.15 Call Disconnect Acknowledge (SSTP_MSG_CALL_DISCONNECT_ACK), Echo](#2215-call-disconnect-acknowledge-sstpmsgcalldisconnectack-echo)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 State Machine](#3111-state-machine)
+        - [3.1.1.1.1 State Machine Call Disconnect](#31111-state-machine-call-disconnect)
+        - [3.1.1.1.2 State Machine Call Abort](#31112-state-machine-call-abort)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Abort-Related Timers](#3121-abort-related-timers)
+      - [3.1.2.2 Disconnect-Related Timers](#3122-disconnect-related-timers)
+      - [3.1.2.3 Hello Timer](#3123-hello-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Status and Error Handling](#3151-status-and-error-handling)
+      - [3.1.5.2 SSTP Packet Processing](#3152-sstp-packet-processing)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Abort Timer Processing](#3161-abort-timer-processing)
+      - [3.1.6.2 Disconnect Timer Processing](#3162-disconnect-timer-processing)
+      - [3.1.6.3 Hello Timer Processing](#3163-hello-timer-processing)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Interface with PPP](#3171-interface-with-ppp)
+      - [3.1.7.2 Interface with HTTPS](#3172-interface-with-https)
+    - [3.2.7 and 3.3.7.](#327-and-337)
+      - [3.2.7.1 Client-Side Interface with PPP](#3271-client-side-interface-with-ppp)
+      - [3.2.7.2 Client-Side Interface with HTTPS](#3272-client-side-interface-with-https)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 State Machine](#3311-state-machine)
+        - [3.3.1.1.1 Call Establishment](#33111-call-establishment)
+    - [3.3.4 and 3.3.5. The additional states for the Call Abort and Call Disconnect transitions are defined in](#334-and-335-the-additional-states-for-the-call-abort-and-call-disconnect-transitions-are-defined-in)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Status and Error Handling](#3351-status-and-error-handling)
+      - [3.3.5.2 Packet Processing](#3352-packet-processing)
+        - [3.3.5.2.1 General Packet Validation](#33521-general-packet-validation)
+        - [3.3.5.2.2 Receiving an SSTP_MSG_CALL_CONNECT_REQUEST Message](#33522-receiving-an-sstpmsgcallconnectrequest-message)
+        - [3.3.5.2.3 Receiving an SSTP_MSG_CALL_CONNECTED Message](#33523-receiving-an-sstpmsgcallconnected-message)
+        - [3.3.5.2.4 Receiving an SSTP_MSG_CALL_ABORT Message](#33524-receiving-an-sstpmsgcallabort-message)
+        - [3.3.5.2.5 Receiving an SSTP_MSG_CALL_DISCONNECT Message](#33525-receiving-an-sstpmsgcalldisconnect-message)
+        - [3.3.5.2.6 Receiving an SSTP_MSG_CALL_DISCONNECT_ACK Message](#33526-receiving-an-sstpmsgcalldisconnectack-message)
+        - [3.3.5.2.7 Receiving an SSTP_MSG_ECHO_REQUEST Message](#33527-receiving-an-sstpmsgechorequest-message)
+        - [3.3.5.2.8 Receiving an SSTP_MSG_ECHO_RESPONSE Message](#33528-receiving-an-sstpmsgechoresponse-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Negotiation Timer Processing](#3361-negotiation-timer-processing)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Server-Side Interface with PPP](#3371-server-side-interface-with-ppp)
+      - [3.3.7.2 Server-Side Interface with HTTPS](#3372-server-side-interface-with-https)
+      - [3.3.7.3 Server-Side Interface with Management Layer](#3373-server-side-interface-with-management-layer)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 HTTPS Layer Establishment](#41-https-layer-establishment)
+  - [4.2 HTTP Layer Teardown](#42-http-layer-teardown)
+  - [4.3 SSTP Layer Establishment](#43-sstp-layer-establishment)
+  - [4.4 SSTP Layer Teardown](#44-sstp-layer-teardown)
+  - [4.5 Handling HTTP Proxies](#45-handling-http-proxies)
+  - [4.6 Handling the HTTPS Termination Proxy](#46-handling-the-https-termination-proxy)
+  - [4.7 Crypto Binding](#47-crypto-binding)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+  - [5.3 Attack Scenarios](#53-attack-scenarios)
+    - [5.3.1 Unauthorized Client Connecting to an SSTP Server](#531-unauthorized-client-connecting-to-an-sstp-server)
+    - [5.3.2 Unauthorized SSTP Server Accepting Connections from a Genuine SSTP Client](#532-unauthorized-sstp-server-accepting-connections-from-a-genuine-sstp-client)
+    - [5.3.3 Man in the Middle](#533-man-in-the-middle)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document describes the Microsoft Secure Socket Tunneling Protocol (SSTP), a mechanism to
 transport data-link layer (L2) frames on a Hypertext Transfer Protocol over Secure Sockets Layer
@@ -944,7 +716,7 @@ load balancer (or trusted man-in-the-middle) and the SSTP server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -990,7 +762,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SSL/TLS handshake: The process of negotiating and establishing a connection protected by
+
+SSL/TLS handshake: The process of negotiating and establishing a connection protected by
 
 Secure Sockets Layer (SSL) or Transport Layer Security (TLS). For more information, see
 [SSL3] and [RFC2246].
@@ -1029,14 +802,14 @@ executing a certain state transition.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1062,7 +835,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC1994] Simpson, W, "PPP Challenge Handshake Authentication Protocol (CHAP)", RFC 1994,
+
+[RFC1994] Simpson, W, "PPP Challenge Handshake Authentication Protocol (CHAP)", RFC 1994,
 August 1996, https://www.rfc-editor.org/info/rfc1994
 
 [RFC2104] Krawczyk, H., Bellare, M., and Canetti, R., "HMAC: Keyed-Hashing for Message
@@ -1114,7 +888,7 @@ version3-00
 [SSLPROXY] Luotonen, A., "Tunneling TCP based protocols through Web proxy servers", Version 01,
 August 1998, https://datatracker.ietf.org/doc/html/draft-luotonen-web-proxy-tunneling-01
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1750] Eastlake III, D., Crocker, S., and Schiller, J., "Randomness Recommendations for
 Security", RFC 1750, December 1994, http://www.ietf.org/rfc/rfc1750.txt
@@ -1129,13 +903,14 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC4306] Kaufman, C., "Internet Key Exchange (IKEv2) Protocol", RFC 4306, December 2005,
+
+[RFC4306] Kaufman, C., "Internet Key Exchange (IKEv2) Protocol", RFC 4306, December 2005,
 https://www.rfc-editor.org/info/rfc4306
 
 [RFC5247] Microsoft Corporation, "Extensible Authentication Protocol (EAP) Key Management
 Framework", RFC 5247, August 2008, https://www.rfc-editor.org/info/rfc5247
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Secure Socket Tunneling Protocol (SSTP). SSTP is a mechanism to
 encapsulate Point-to-Point Protocol (PPP) traffic over an HTTPS protocol, as specified in [RFC1945],
@@ -1202,7 +977,8 @@ Release: April 23, 2024
 
 11 / 90
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-SSTP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1250,7 +1026,7 @@ PPP, see [RFC1661].
 
 On the server side, operations to remove the encapsulation occur in reverse order.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following network stack diagram shows the relationship of this protocol to other protocols.
 
@@ -1267,17 +1043,18 @@ Release: April 23, 2024
 
 12 / 90
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Secure Socket Tunneling Protocol (SSTP) is useful for establishing VPN connections over public
 networks. If this protocol is run in a high-loss environment, then TCP connections might encounter
 limited data transfer rates over this protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Secure Socket Tunneling Protocol (SSTP) contains version fields in all the messages. This
 functionality allows a server implementation to support multiple versions of SSTP and to determine
@@ -1291,11 +1068,11 @@ The server presents the hashing functions that it supports, and the client selec
 that it also supports from this list. If both the client and server support both SHA1 and SHA256, then
 the client prefers SHA256 over SHA1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Secure Socket Tunneling Protocol (SSTP) has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Secure Socket Tunneling Protocol (SSTP) has not been assigned any standards from any accepted
 industry standards body.
@@ -1307,9 +1084,10 @@ Release: April 23, 2024
 
 13 / 90
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Because SSTP runs by means of an HTTPS connection, SSTP relies entirely on HTTPS for the reliable
 delivery of its messages. The SSTP client MUST authenticate the SSTP server by using HTTPS
@@ -1319,9 +1097,9 @@ Therefore, PPP authentication is required even when the SSTP server authenticate
 using HTTPS authentication. For more information about PPP authentication, see [RFC1661] section
 3.5.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  SSTP Packet
+#### 2.2.1 SSTP Packet
 
 The following diagram shows the format of this packet when is sent on the HTTPS connection.
 
@@ -1394,7 +1172,8 @@ Release: April 23, 2024
 
 14 / 90
 
-R (4 bits): This 4-bit field is reserved for future use. MUST be set to zero when sent and MUST be
+
+R (4 bits): This 4-bit field is reserved for future use. MUST be set to zero when sent and MUST be
 
 ignored on receipt.
 
@@ -1410,7 +1189,7 @@ Length, minus 4. This field contains either the SSTP control message when field 
 section 2.2.3). SSTP data packets carry PPP frames as payload (which includes PPP control frames
 as well as PPP data frames). For more information, see [RFC1661].
 
-2.2.2  SSTP Control Packet
+#### 2.2.2 SSTP Control Packet
 
 This packet is a type of SSTP packet that is used by both the client and the server to send control
 messages to each other. The following diagram specifies the format that MUST be used for the SSTP
@@ -1484,7 +1263,8 @@ Release: April 23, 2024
 
 15 / 90
 
-Length (12 bits): A 12-bit unsigned integer in network byte order that MUST specify the length,
+
+Length (12 bits): A 12-bit unsigned integer in network byte order that MUST specify the length,
 
 in bytes, of the entire SSTP packet, including the 4-byte SSTP header (that is, Version, 7-bit
 Reserved field, 1-bit C field, 4-bit R field, and 12-bit Length field).
@@ -1539,7 +1319,7 @@ Attributes (variable): An ordered list of variable-sized attributes that compose
 
 message. Each attribute MUST follow the format as specified in section 2.2.4.
 
-2.2.3  SSTP Data Packet
+#### 2.2.3 SSTP Data Packet
 
 The SSTP data packet is a type of SSTP packet that is used by both the SSTP client and SSTP server
 to send a higher-layer payload (that is, a PPP frame) to each other. The following diagram specifies
@@ -1586,7 +1366,8 @@ Release: April 23, 2024
 
 16 / 90
 
-C (1 bit): A 1-bit field that is used to indicate whether the packet is an SSTP control packet or an
+
+C (1 bit): A 1-bit field that is used to indicate whether the packet is an SSTP control packet or an
 SSTP data packet. The value MUST be set to zero to indicate a data packet that carries higher-
 layer payloads.
 
@@ -1619,7 +1400,7 @@ determined from previously received Encapsulated Protocol ID Attribute (section 
 currently supports only PPP [RFC1661] as the encapsulated protocol (see section 2.2.5 for
 details).  The length of this field is equal to the value of the field Length, minus 4.
 
-2.2.4  SSTP Attributes
+#### 2.2.4 SSTP Attributes
 
 The following diagram specifies the format that MUST be used for all SSTP attributes.
 
@@ -1679,7 +1460,8 @@ Release: April 23, 2024
 
 17 / 90
 
-LengthPacket (2 bytes): A 16-bit unsigned integer in network byte order that packs data for two
+
+LengthPacket (2 bytes): A 16-bit unsigned integer in network byte order that packs data for two
 
 fields, configured in the following format.
 
@@ -1705,7 +1487,7 @@ attribute-specific data. The different attribute-specific data are described in 
 2.2.8. The fields "Reserved", "Attribute ID", and "LengthPacket" have been repeated in those
 sections for complete illustration.
 
-2.2.5  Encapsulated Protocol ID Attribute
+#### 2.2.5 Encapsulated Protocol ID Attribute
 
 The following diagram specifies the format that MUST be used for the Encapsulated Protocol ID
 attribute. This attribute is used to negotiate the higher-layer protocols that are supported by the client
@@ -1769,7 +1551,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length (12 bits): A 12-bit unsigned integer in network byte order that MUST specify the length
+
+Length (12 bits): A 12-bit unsigned integer in network byte order that MUST specify the length
 
 of the Encapsulated Protocol ID attribute. This field MUST be set to 0x006.
 
@@ -1783,7 +1566,7 @@ Value
 
  SSTP_ENCAPSULATED_PROTOCOL_PPP   0x0001
 
-2.2.6  Crypto Binding Request Attribute
+#### 2.2.6 Crypto Binding Request Attribute
 
 The following diagram specifies the format that MUST be used for the Crypto Binding Request
 attribute. This attribute is used by the SSTP server to communicate the supported hashing methods
@@ -1858,7 +1641,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Hash Protocol Bitmask (1 byte): This 1-byte bitmask field is used (with the
+
+Hash Protocol Bitmask (1 byte): This 1-byte bitmask field is used (with the
 
 ServerHashProtocolSupported state variable described in section 3.3.1) to specify the hashing
 methods allowed by the server that the client uses to compute the Compound MAC in the Crypto
@@ -1905,7 +1689,7 @@ Nonce (32 bytes): A 256-bit unsigned integer that contains a temporally unique (
 
 For more information, see [RFC1750].
 
-2.2.7  Crypto Binding Attribute
+#### 2.2.7 Crypto Binding Attribute
 
 The following diagram specifies the format that MUST be used for the Crypto Binding attribute. This
 attribute is sent by the SSTP client to the SSTP server and is used to ensure that the SSTP client
@@ -1952,7 +1736,8 @@ Release: April 23, 2024
 
 20 / 90
 
-Cert Hash (variable)
+
+Cert Hash (variable)
 
 ...
 
@@ -2031,7 +1816,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-certificate as described in [RFC5280]; it is available as a part of the SSL/TLS handshake ([SSL3]
+
+certificate as described in [RFC5280]; it is available as a part of the SSL/TLS handshake ([SSL3]
 section 5.6.2 and [RFC2246] section 7.4.2). The SSL/TLS handshake happens during the HTTPS
 session setup. For more details on the SSL/TLS handshake, see [SSL3] section 5.6 and [RFC2246]
 section 7.4. The length of this field is either 20 bytes when SHA1 hash is used or 32 bytes when
@@ -2055,7 +1841,7 @@ Padding1 (variable): A variable-length field that is reserved for future use. MU
 when sent and MUST be ignored on receipt. This field is either zero bytes long when the SHA256
 Cert Hash is used, or 12 bytes long when the SHA1 Cert Hash is used.
 
-2.2.8  Status Info Attribute
+#### 2.2.8 Status Info Attribute
 
 The following diagram specifies the format that MUST be used for the Status Info attribute. Both the
 client and server use this attribute to indicate to each other the reason for failure and the unsupported
@@ -2111,7 +1897,8 @@ Release: April 23, 2024
 
 22 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5
@@ -2212,7 +1999,8 @@ SSTP peer.
 
 23 / 90
 
-Value
+
+Value
 
 Meaning
 
@@ -2321,7 +2109,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2360,7 +2149,7 @@ description. This field MUST NOT be present (that is, it is of zero length) in a
 the Status Info attribute is present. The maximum length of this field MUST be 64 bytes. If the
 original attribute is greater than 64 bytes, only the first 64 bytes are sent back.
 
-2.2.9  Call Connect Request Message (SSTP_MSG_CALL_CONNECT_REQUEST)
+#### 2.2.9 Call Connect Request Message (SSTP_MSG_CALL_CONNECT_REQUEST)
 
 The following diagram specifies the format that MUST be used for this message. This message MUST
 be the first message that is sent by the SSTP client after it establishes an HTTPS connection with the
@@ -2412,7 +2201,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved (7 bits): This 7-bit field is reserved for future use. MUST be set to zero when sent and
+
+Reserved (7 bits): This 7-bit field is reserved for future use. MUST be set to zero when sent and
 
 MUST be ignored on receipt.
 
@@ -2484,7 +2274,7 @@ Protocol ID (2 bytes): A 2-byte field in network byte order that contains the va
 SSTP_ENCAPSULATED_PROTOCOL_PPP). Note that SSTP Version 1 supports only the transport of
 PPP frames. For more information, see [RFC1661].
 
-2.2.10 Call Connect Acknowledge Message (SSTP_MSG_CALL_CONNECT_ACK)
+#### 2.2.10 Call Connect Acknowledge Message (SSTP_MSG_CALL_CONNECT_ACK)
 
 The following diagram specifies the format that MUST be used for this message. The server sends this
 message in response to an acceptable Call Connect Request message from a client. Note that this
@@ -2497,7 +2287,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The fields of the structure MUST be transmitted in network byte order from left to right.
+
+The fields of the structure MUST be transmitted in network byte order from left to right.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2594,7 +2385,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute ID (1 byte): An 8-bit (1-byte) field that is used to specify the type of attribute; its value
+
+Attribute ID (1 byte): An 8-bit (1-byte) field that is used to specify the type of attribute; its value
 
 MUST be 0x04 for the Crypto Binding Request attribute.
 
@@ -2670,7 +2462,7 @@ Nonce (32 bytes): A 256-bit unsigned integer that contains a temporally unique (
 
 For more information, see [RFC1750].
 
-2.2.11 Call Connected Message (SSTP_MSG_CALL_CONNECTED)
+#### 2.2.11 Call Connected Message (SSTP_MSG_CALL_CONNECTED)
 
 The following diagram specifies the format that MUST be used for this message.  The client sends this
 message to the server as a response to the Call Connect Acknowledge message after SSL/TLS
@@ -2685,7 +2477,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-another medium. For example, wireless packets could be received that are not intended for SSTP
+
+another medium. For example, wireless packets could be received that are not intended for SSTP
 communication during protocol operation and could represent an attack. For more information about
 the PPP authentication phase, see section 3.5 of [RFC1661].
 
@@ -2769,7 +2562,8 @@ Release: April 23, 2024
 
 29 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5
@@ -2859,7 +2653,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the server certificate that is obtained during SSL/TLS handshake and stored in the
+
+the server certificate that is obtained during SSL/TLS handshake and stored in the
 ClientCertificateHash state variable (described in section 3.2.1). The length of the field is either
 20 bytes long when the SHA1 hash is used or 32 bytes long when the SHA256 hash is used.
 
@@ -2880,7 +2675,7 @@ when sent and MUST be ignored on receipt. This field is either zero bytes in len
 SHA256 Hash Protocol is used for Compound MAC computation or 12 bytes in length when the
 SHA1 Hash Protocol is used.
 
-2.2.12 Call Connect Negative Acknowledgment Message
+#### 2.2.12 Call Connect Negative Acknowledgment Message
 
 (SSTP_MSG_CALL_CONNECT_NAK)
 
@@ -2948,7 +2743,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-C (1 bit): A 1-bit field that is used to indicate whether the packet is an SSTP control packet or an
+
+C (1 bit): A 1-bit field that is used to indicate whether the packet is an SSTP control packet or an
 
 SSTP data packet. The value MUST be 1 for a message that is a control packet.
 
@@ -3044,7 +2840,8 @@ Release: April 23, 2024
 
 32 / 90
 
-For example, if the Encapsulated Protocol ID that is suggested by the client is not acceptable to
+
+For example, if the Encapsulated Protocol ID that is suggested by the client is not acceptable to
 the server, then it replies with a Status Info attribute that contains AttribID = 0x01 (that is,
 SSTP_ATTRIB_ENCAPSULATED_PROTOCOL_ID), Status = 0x00000004 (that is,
 ATTRIB_STATUS_VALUE_NOT_SUPPORTED), and AttribValue = value proposed by the client.
@@ -3088,7 +2885,7 @@ understood by the server. This field MUST NOT be present (that is, it is of zero
 other case where the Status Info attribute is present. The maximum length of this field is 64
 bytes. If the original attribute is greater than 64 bytes, then only the first 64 bytes are sent back.
 
-2.2.13 Call Abort Message (SSTP_MSG_CALL_ABORT)
+#### 2.2.13 Call Abort Message (SSTP_MSG_CALL_ABORT)
 
 This is sent by an SSTP peer to the SSTP far end in order to initiate an abnormal disconnection of
 the SSTP connection. This behavior occurs when an invalid message is received as specified in the
@@ -3144,7 +2941,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Version (1 byte): An 8-bit (1-byte) field that is used to communicate and negotiate the version of
+
+Version (1 byte): An 8-bit (1-byte) field that is used to communicate and negotiate the version of
 
 SSTP that is being used. The upper 4 bits are MAJOR version, which MUST be 0x1, and the lower 4
 bits are MINOR version, which MUST be set to 0x0. Therefore, the 8-bit value of the Version field
@@ -3232,7 +3030,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Value
 
@@ -3279,7 +3078,7 @@ ATTRIB_STATUS_NEGOTIATION_TIMEOUT
 
 ATTRIB_STATUS_ATTRIB_NOT_SUPPORTED_IN_MSG  0x00000009
 
-2.2.14 Call Disconnect Message (SSTP_MSG_CALL_DISCONNECT)
+#### 2.2.14 Call Disconnect Message (SSTP_MSG_CALL_DISCONNECT)
 
 This message is sent by an SSTP peer to the SSTP far end in order to initiate the normal
 disconnection of the SSTP connection, such as when a user initiates a manual disconnect.
@@ -3338,7 +3137,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved (7 bits): This 7-bit field is reserved for future use. MUST be set to zero when sent and
+
+Reserved (7 bits): This 7-bit field is reserved for future use. MUST be set to zero when sent and
 
 MUST be ignored on receipt.
 
@@ -3425,7 +3225,8 @@ Release: April 23, 2024
 
 36 / 90
 
-2.2.15 Call Disconnect Acknowledge (SSTP_MSG_CALL_DISCONNECT_ACK), Echo
+
+#### 2.2.15 Call Disconnect Acknowledge (SSTP_MSG_CALL_DISCONNECT_ACK), Echo
 
 Request (SSTP_MSG_ECHO_REQUEST), and Echo Response
 (SSTP_MSG_ECHO_RESPONSE) Messages
@@ -3513,7 +3314,8 @@ Release: April 23, 2024
 
 37 / 90
 
-Name
+
+Name
 
 Value
 
@@ -3539,16 +3341,17 @@ Release: April 23, 2024
 
 38 / 90
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of this protocol, including client, server, and common abstract
 data models, as well as message processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 The following details are common between the SSTP client and the SSTP server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a model of possible data organization that an implementation maintains to
 participate in this protocol. The described organization is provided to facilitate the explanation of how
@@ -3575,13 +3378,13 @@ server are as follows:
 
   Call_Disconnect_Ack_Pending
 
-3.1.1.1  State Machine
+##### 3.1.1.1 State Machine
 
 This section describes the state machine that applies to both the client and server for the Call
 Disconnect and Call Abort phases. The state machine for call establishment is different for the client
 and server and is as specified in sections 3.2.1.1.1 and 3.3.1.1.1, respectively.
 
-3.1.1.1.1 State Machine Call Disconnect
+###### 3.1.1.1.1 State Machine Call Disconnect
 
 The following figure shows the state machine when the SSTP connection has to be disconnected.
 
@@ -3592,7 +3395,8 @@ Release: April 23, 2024
 
 39 / 90
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-SSTP].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -3632,7 +3436,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-SSTP].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -3648,7 +3453,7 @@ Call Disconnect is completed.
 
 The additional states for the Call Abort transitions are defined in section 3.1.1.1.2.
 
-3.1.1.1.2 State Machine Call Abort
+###### 3.1.1.1.2 State Machine Call Abort
 
 The following figure shows the state machine when a call is aborted.
 
@@ -3673,7 +3478,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-State Name
+
+State Name
 
 Description
 
@@ -3702,9 +3508,9 @@ layer to be disconnected. When either of these conditions is met, the Call Abort
 completed. Any SSTP control message received while in this state is silently
 discarded.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Abort-Related Timers
+##### 3.1.2.1 Abort-Related Timers
 
 There are two timers related to abort processing:
 
@@ -3735,7 +3541,7 @@ expires, the SSTP far end MUST clear the connection state to clean up the connec
 
 The first timer SHOULD be set at 3 seconds. The second timer SHOULD be set to 1 second.
 
-3.1.2.2  Disconnect-Related Timers
+##### 3.1.2.2 Disconnect-Related Timers
 
 There are two timers related to disconnect processing:
 
@@ -3754,7 +3560,8 @@ Release: April 23, 2024
 
 42 / 90
 
-The first timer is started by an SSTP peer when it has initiated a disconnect by sending the Call
+
+The first timer is started by an SSTP peer when it has initiated a disconnect by sending the Call
 Disconnect message to the SSTP far end. If the SSTP peer receives a Call Disconnect Acknowledge
 message from the SSTP far end before the timer expires, then it MUST cancel the timer and
 immediately clear the connection state to clean up the connection.
@@ -3766,7 +3573,7 @@ Disconnect Acknowledge message that is sent by the SSTP far end.
 
 The first timer SHOULD be set to 5 seconds. The second timer SHOULD be set to 1 second.
 
-3.1.2.3  Hello Timer
+##### 3.1.2.3 Hello Timer
 
 To detect HTTPS connection failures in the absence of any active data transfers, Echo Request and
 Echo Response messages are periodically sent by the SSTP peer and SSTP far end, respectively.
@@ -3782,11 +3589,11 @@ MUST abort the connection without sending a Call Abort packet.
 
 The Hello timer SHOULD be set to 60 seconds.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 See sections 3.2.3 and 3.3.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The SSTP layer interfaces with the PPP layer using the following events. These events are triggered by
 the PPP layer.
@@ -3814,9 +3621,10 @@ Release: April 23, 2024
 
 43 / 90
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  Status and Error Handling
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Status and Error Handling
 
 This protocol MUST attempt to delineate the SSTP frames that are contained in the HTTPS stream. If
 the delineation fails because of an unsupported or unrecognized packet format, then the connection
@@ -3840,7 +3648,7 @@ MUST include the list of attributes that are not acceptable and the reason that 
 
 For a list of status acknowledgments, see section 2.2.8.
 
-3.1.5.2  SSTP Packet Processing
+##### 3.1.5.2 SSTP Packet Processing
 
 Common packet processing functionality is as follows:
 
@@ -3869,9 +3677,9 @@ larger values.
 SSTP packet processing for common messages is covered separately for the client state machine and
 server state machine, in sections 3.2.5.3 and 3.3.5.2.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Abort Timer Processing
+##### 3.1.6.1 Abort Timer Processing
 
 When the TIMER_VAL_ABORT_STATE_TIMER_1 expires, the SSTP peer MUST immediately force the
 connection state to clear and therefore clean up the connection.
@@ -3883,10 +3691,11 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the TIMER_VAL_ABORT_STATE_TIMER_2 expires, the SSTP peer MUST immediately clear the
+
+When the TIMER_VAL_ABORT_STATE_TIMER_2 expires, the SSTP peer MUST immediately clear the
 connection state to clean up the connection.
 
-3.1.6.2  Disconnect Timer Processing
+##### 3.1.6.2 Disconnect Timer Processing
 
 When the TIMER_VAL_DISCONNECT_STATE_TIMER_1 expires, the SSTP peer MUST immediately
 perform forceful cleanup of the connection.
@@ -3894,14 +3703,14 @@ perform forceful cleanup of the connection.
 When the TIMER_VAL_DISCONNECT_STATE_TIMER_2 expires, the SSTP peer MUST immediately clean
 up the connection.
 
-3.1.6.3  Hello Timer Processing
+##### 3.1.6.3 Hello Timer Processing
 
 When the Hello timer expires, an Echo Request packet MUST be sent by the SSTP peer to the SSTP
 far end.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Interface with PPP
+##### 3.1.7.1 Interface with PPP
 
 The SSTP layer interfaces with a local PPP layer on both clients and servers. This interface occurs
 using the following events triggered by the SSTP layer.
@@ -3931,7 +3740,7 @@ Lower Link Down: This event is used by the SSTP layer to notify the PPP layer ab
 (that is, HTTPS) going down. This event is triggered when the SSTP layer gets an HTTPS
 connection disconnected event from the HTTPS layer.
 
-3.1.7.2  Interface with HTTPS
+##### 3.1.7.2 Interface with HTTPS
 
 The SSTP layer on both client-side and server-side implementations interfaces with the local HTTPS
 layer using the following events.
@@ -3952,7 +3761,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Close HTTPS connection: This event is used by an SSTP peer to close the HTTPS connection.
+
+Close HTTPS connection: This event is used by an SSTP peer to close the HTTPS connection.
 
 Send HTTPS stream: This event is used by the SSTP client and the SSTP server to send an SSTP
 control packet or an SSTP data packet to the local HTTPS layer. The HTTPS layer encrypts the
@@ -3966,7 +3776,7 @@ immediately aborted (section 3.1.5.1) and a lower link down event is sent to the
 delineation succeeds, the SSTP control packets are passed to the SSTP state machine for further
 processing (sections 3.2.5.3 and 3.3.5.2). The SSTP data packets, including all PPP control frames
 and all PPP data frames, are passed to the PPP layer after further processing as defined in sections
-3.2.7 and 3.3.7.
+#### 3.2.7 and 3.3.7.
 
 HTTPS connection disconnected: This interface is used by the HTTPS layer to indicate a
 
@@ -4020,7 +3830,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-hash. This variable is used to generate the value of the Crypto Binding attribute (section 2.2.7)
+
+hash. This variable is used to generate the value of the Crypto Binding attribute (section 2.2.7)
 when the client sends an SSTP_MSG_CALL_CONNECTED message (sections 3.2.5.2 and 3.2.7).
 
 ClientBypassHLAuth: In this Boolean variable, the SSTP layer stores a flag that will be used to
@@ -4076,7 +3887,8 @@ Release: April 23, 2024
 
 47 / 90
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-SSTP].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -4104,7 +3916,8 @@ Release: April 23, 2024
 
 48 / 90
 
-State Name
+
+State Name
 
 Description
 
@@ -4177,7 +3990,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TRUE and the ClientHTTPCookie variable with a name-value pair. In this scenario, the
+
+TRUE and the ClientHTTPCookie variable with a name-value pair. In this scenario, the
 ClientHTTPCookie is trusted by the management layer on the SSTP server using an implementation-
 specific mechanism. See the Accept New Connection event (section 3.3.7.3) for more details on
 validating the name-value pair. The SSTP layer MUST first establish a bidirectional HTTPS session (for
@@ -4243,7 +4057,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CurrentState to Call_Disconnect_In_Progress_1. Upon entering this state, the SSTP peer sends an
+
+CurrentState to Call_Disconnect_In_Progress_1. Upon entering this state, the SSTP peer sends an
 SSTP_MSG_CALL_DISCONNECT to the SSTP far end, starts the
 TIMER_VAL_DISCONNECT_STATE_TIMER_1 timer and then updates CurrentState to
 Call_Disconnect_Ack_Pending. The SSTP far end MUST acknowledge the disconnect request by
@@ -4311,7 +4126,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  PPP negotiation is initiated, and PPP authentication is completed. For more information about PPP,
+
+5.  PPP negotiation is initiated, and PPP authentication is completed. For more information about PPP,
 
 see [RFC1661].
 
@@ -4387,7 +4203,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Higher-Layer Authentication Key (HLAK)
+
+  Higher-Layer Authentication Key (HLAK)
 
 First, a 32-byte long string is generated from keys that are provided by the higher-layer PPP
 authentication method. This key is sent to the SSTP layer as part of the Inner Authentication
@@ -4461,7 +4278,8 @@ Release: April 23, 2024
 
 53 / 90
 
-  K = Key, S = Seed, LEN = output length, represented as binary in a single unsigned 16-bit
+
+  K = Key, S = Seed, LEN = output length, represented as binary in a single unsigned 16-bit
 
 integer. This integer MUST be encoded in little-endian format.
 
@@ -4547,7 +4365,8 @@ Release: April 23, 2024
 
 54 / 90
 
-If the HLAK is more than 32 octets, then the first 32 octets form the HLAK. Note that this covers
+
+If the HLAK is more than 32 octets, then the first 32 octets form the HLAK. Note that this covers
 EAP-TLS as well because, the EAP TLS master session key is at least 64 bytes (see [RFC5247]). If
 the HLAK is less than 32 octets, then the string is padded with 0x00 at the end to obtain a total
 length of 32 octets.
@@ -4630,7 +4449,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  At least one of the hash protocols in the Hash Protocol Bitmask field is a hash protocol
+
+  At least one of the hash protocols in the Hash Protocol Bitmask field is a hash protocol
 
 supported by the client (as specified in the ClientHashProtocolSupported state variable
 described in section 3.2.1). If more than one hash protocol is supported, a stronger one is
@@ -4707,7 +4527,8 @@ Release: April 23, 2024
 
 56 / 90
 
-
+
+
 
 If the retry count is exceeded, the SSTP client MUST:
 
@@ -4785,7 +4606,8 @@ Release: April 23, 2024
 
 57 / 90
 
-3.  Send an SSTP_MSG_CALL_DISCONNECT_ACK (section 2.2.15) message.
+
+3.  Send an SSTP_MSG_CALL_DISCONNECT_ACK (section 2.2.15) message.
 
 4.  Start the TIMER_VAL_DISCONNECT_STATE_TIMER_2 timer (section 3.1.2.2).
 
@@ -4860,7 +4682,8 @@ Release: April 23, 2024
 
 58 / 90
 
-3.2.5.3.8 Receiving an SSTP_MSG_ECHO_RESPONSE Message
+
+3.2.5.3.8 Receiving an SSTP_MSG_ECHO_RESPONSE Message
 
 If CurrentState is set to Client_Call_Connected:
 
@@ -4901,7 +4724,7 @@ Negotiation Timer Expired:
 
 For local events common to both client and server, see section 3.1.7.
 
-3.2.7.1  Client-Side Interface with PPP
+##### 3.2.7.1 Client-Side Interface with PPP
 
 Inner Authentication Completed Event: This event will be sent by the higher layer when the
 
@@ -4933,7 +4756,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Else, drop the PPP frame.
 
@@ -4949,7 +4773,7 @@ the HTTPS layer.
 
 Else, drop the PPP frame.
 
-3.2.7.2  Client-Side Interface with HTTPS
+##### 3.2.7.2 Client-Side Interface with HTTPS
 
 When the HTTPS layer establishes a successful HTTPS connection, it sends this event to the SSTP
 layer along with the hash of the server's certificate. The SSTP client stores the hash in the
@@ -4975,11 +4799,11 @@ If the PPP frame is a data frame, the client checks if CurrentState is set to
 Client_Call_Connected. If the condition is true, the client sends the data to the PPP layer. Else,
 the client drops the SSTP data packet.
 
-3.3  Server Details
+### 3.3 Server Details
 
  The following section provides details of the SSTP server.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a model of possible data organization that a client-side implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5011,7 +4835,8 @@ Release: April 23, 2024
 
 60 / 90
 
-  Server_Call_Connected
+
+  Server_Call_Connected
 
 Additional state values common to both the client and server state machines are defined in section
 3.1.1.
@@ -5062,9 +4887,9 @@ administrator to indicate whether bypass of higher-layer authentication is enabl
 machine. This variable will be used by the SSTP layer to pass the HTTP cookie that was read while
 accepting the HTTP connection to the management layer (see 3.3.7.3).
 
-3.3.1.1  State Machine
+##### 3.3.1.1 State Machine
 
-3.3.1.1.1 Call Establishment
+###### 3.3.1.1.1 Call Establishment
 
 The following figure shows the state machine when the client establishes the outgoing SSTP tunnel.
 
@@ -5078,7 +4903,8 @@ Release: April 23, 2024
 
 61 / 90
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-SSTP].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -5113,7 +4939,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-State Name
+
+State Name
 
 Description
 
@@ -5142,7 +4969,7 @@ SSTP connection.
 
 The preceding description covers the state transitions for a successful SSTP connection. Failure
 transitions are covered in the state machine diagram in this section and are also covered in sections
-3.3.4 and 3.3.5. The additional states for the Call Abort and Call Disconnect transitions are defined in
+#### 3.3.4 and 3.3.5. The additional states for the Call Abort and Call Disconnect transitions are defined in
 section 3.1.1.1. The higher level events and messages are explained in sections 3.3.4, 3.3.5, 3.1.4
 and 3.1.5.
 
@@ -5188,7 +5015,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server administrator initializes the list of possible hash protocols that the SSTP server supports in
+
+The server administrator initializes the list of possible hash protocols that the SSTP server supports in
 the ServerHashProtocolSupported state variable (described in 3.3.1).
 
 The server administrator sets the ServerBypassHLAuthConfigured variable to TRUE if higher-layer
@@ -5212,21 +5040,21 @@ the server MUST start disconnect processing. The management layer can issue disc
 based on an administrator command or any other local policies. <15> Server disconnect processing is
 the same as the client-side disconnect processing (section 3.2.4.2).
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Status and Error Handling
+##### 3.3.5.1 Status and Error Handling
 
 See section 3.1.5.1.
 
-3.3.5.2  Packet Processing
+##### 3.3.5.2 Packet Processing
 
-3.3.5.2.1 General Packet Validation
+###### 3.3.5.2.1 General Packet Validation
 
 When the SSTP peer receives a packet, it MUST validate that the packet conforms to the syntax as
 specified in section 2.2 Message Syntax and its subsections. If an invalid packet is received, then error
 handling MUST occur. For more information about error handling see section 3.1.5.1.
 
-3.3.5.2.2 Receiving an SSTP_MSG_CALL_CONNECT_REQUEST Message
+###### 3.3.5.2.2 Receiving an SSTP_MSG_CALL_CONNECT_REQUEST Message
 
 If CurrentState is set to Call_Abort_Timeout_Pending, Call_Abort_Pending,
 Call_Disconnect_Ack_Pending, or Call_Disconnect_Timeout_Pending:
@@ -5258,7 +5086,8 @@ Release: April 23, 2024
 
 64 / 90
 
-If CurrentState is set to Server_Connect_Request_Pending, the following message processing takes
+
+If CurrentState is set to Server_Connect_Request_Pending, the following message processing takes
 place.
 
 The SSTP_MSG_CALL_CONNECT_REQUEST message MUST be either the first message that is received
@@ -5324,7 +5153,7 @@ values:
 
 ATTRIB_STATUS_RETRY_COUNT_EXCEEDED.
 
-3.3.5.2.3 Receiving an SSTP_MSG_CALL_CONNECTED Message
+###### 3.3.5.2.3 Receiving an SSTP_MSG_CALL_CONNECTED Message
 
 65 / 90
 
@@ -5333,7 +5162,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the CurrentState state variable (described in section 3.3.1) is set to Call_Abort_Timeout_Pending,
+
+If the CurrentState state variable (described in section 3.3.1) is set to Call_Abort_Timeout_Pending,
 Call_Abort_Pending, Call_Disconnect_Ack_Pending, or Call_Disconnect_Timeout_Pending:
 
 
@@ -5413,7 +5243,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Call Abort message MUST have the attribute id set to SSTP_ATTRIB_CRYPTO_BINDING and the
+
+The Call Abort message MUST have the attribute id set to SSTP_ATTRIB_CRYPTO_BINDING and the
 status field MUST be set to ATTRIB_STATUS_VALUE_NOT_SUPPORTED under the following condition:
 The nonce is not matching OR the certificate does not match OR the hash algorithm does not match
 OR the Compound MAC is invalid.
@@ -5421,7 +5252,7 @@ OR the Compound MAC is invalid.
 If an unacceptable packet is received, error handling SHOULD occur. For error handling, see section
 3.1.5.1. For security considerations, see section 5.
 
-3.3.5.2.4 Receiving an SSTP_MSG_CALL_ABORT Message
+###### 3.3.5.2.4 Receiving an SSTP_MSG_CALL_ABORT Message
 
 If CurrentState is set to Call_Abort_Pending:
 
@@ -5451,7 +5282,7 @@ The HTTPS listener MUST continue to function as it did before the cleanup proces
 connection MUST NOT affect other existing HTTPS connections and MUST NOT affect the ability of the
 HTTPS listener to accept new connections.
 
-3.3.5.2.5 Receiving an SSTP_MSG_CALL_DISCONNECT Message
+###### 3.3.5.2.5 Receiving an SSTP_MSG_CALL_DISCONNECT Message
 
 If CurrentState is set to Call_Abort_Timeout_Pending, Call_Abort_Pending, or
 Call_Disconnect_Timeout_Pending:
@@ -5487,13 +5318,14 @@ Release: April 23, 2024
 
 67 / 90
 
-4.  Change CurrentState to Call_Disconnect_Timeout_Pending.
+
+4.  Change CurrentState to Call_Disconnect_Timeout_Pending.
 
 The HTTPS listener MUST continue to function as it did before the cleanup process. The cleanup of the
 connection MUST NOT affect other existing HTTPS connections and MUST NOT affect the ability of the
 HTTPS listener to accept new connections.
 
-3.3.5.2.6 Receiving an SSTP_MSG_CALL_DISCONNECT_ACK Message
+###### 3.3.5.2.6 Receiving an SSTP_MSG_CALL_DISCONNECT_ACK Message
 
 If CurrentState is set to Call_Disconnect_Ack_Pending, the server MUST:
 
@@ -5524,7 +5356,7 @@ The HTTPS listener MUST continue to function as it did before the cleanup proces
 connection MUST NOT affect other existing HTTPS connections and MUST NOT affect the ability of the
 HTTPS listener to accept new connections.
 
-3.3.5.2.7 Receiving an SSTP_MSG_ECHO_REQUEST Message
+###### 3.3.5.2.7 Receiving an SSTP_MSG_ECHO_REQUEST Message
 
 If CurrentState is set to Server_Call_Connected:
 
@@ -5549,7 +5381,7 @@ Else if CurrentState is set to any other value:
 
 4.  Change CurrentState to Call_Abort_Pending.
 
-3.3.5.2.8 Receiving an SSTP_MSG_ECHO_RESPONSE Message
+###### 3.3.5.2.8 Receiving an SSTP_MSG_ECHO_RESPONSE Message
 
 If CurrentState is set to Server_Call_Connected:
 
@@ -5562,7 +5394,8 @@ Release: April 23, 2024
 
 68 / 90
 
-Else if CurrentState is set to Call_Abort_Timeout_Pending, Call_Abort_Pending,
+
+Else if CurrentState is set to Call_Abort_Timeout_Pending, Call_Abort_Pending,
 Call_Disconnect_Ack_Pending, or Call_Disconnect_Timeout_Pending:
 
 
@@ -5579,9 +5412,9 @@ Else if CurrentState is set to any other value:
 
 4.  Change CurrentState to Call_Abort_Pending.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Negotiation Timer Processing
+##### 3.3.6.1 Negotiation Timer Processing
 
 Negotiation Timer Expired:
 
@@ -5593,11 +5426,11 @@ Negotiation Timer Expired:
 
 4.  Change CurrentState to Call_Abort_Pending.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 For local events common to both client and server, see section 3.1.7.
 
-3.3.7.1  Server-Side Interface with PPP
+##### 3.3.7.1 Server-Side Interface with PPP
 
 Inner Authentication Completed Event: This event will be sent by the higher layer when the
 
@@ -5633,7 +5466,8 @@ Release: April 23, 2024
 
 69 / 90
 
-
+
+
 
 If CurrentState is set to Server_Call_Connected: Generate an SSTP data
 packet (section 2.2.3) with the PPP frame as the higher-layer payload and send the packet to
@@ -5643,7 +5477,7 @@ the HTTPS layer.
 
 Else, drop the PPP frame.
 
-3.3.7.2  Server-Side Interface with HTTPS
+##### 3.3.7.2 Server-Side Interface with HTTPS
 
 The SSTP server receives notification of a New HTTPS Connection Received event from the lower
 layer when a new, incoming HTTPS connection is established. The SSTP server then creates a new
@@ -5675,7 +5509,7 @@ If the PPP frame is a data frame, the server checks if CurrentState is set to
 Server_Call_Connected. If the condition is true, the server sends the data to the PPP layer.
 Else, the server drops the SSTP data packet.
 
-3.3.7.3  Server-Side Interface with Management Layer
+##### 3.3.7.3 Server-Side Interface with Management Layer
 
 The SSTP layer on the server-side implementation interfaces with the management layer using the
 following events:
@@ -5711,9 +5545,10 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4  Protocol Examples
 
-4.1  HTTPS Layer Establishment
+## 4 Protocol Examples
+
+### 4.1 HTTPS Layer Establishment
 
 During initialization, the SSTP server configures both the server certificate to use and the URL in
 which it is interested. This URL will be a well-known URL between the client and the server. The server
@@ -5758,7 +5593,7 @@ The response sent is as follows.
  Server: Microsoft-HTTPAPI/2.0
  Date: Thu, 09 Nov 2006 00:51:09 GMT
 
-4.2  HTTP Layer Teardown
+### 4.2 HTTP Layer Teardown
 
 After the SSTP finite state machine (FSM) is completed, it performs its own teardown. When the
 teardown is completed, the SSTP FSM signals the HTTP layer to tear down itself.
@@ -5775,11 +5610,12 @@ Release: April 23, 2024
 
 71 / 90
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-SSTP].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
-4.3  SSTP Layer Establishment
+### 4.3 SSTP Layer Establishment
 
 After the bidirectional HTTPS layer is up, the SSTP finite state machine begins. The server initializes
 the FSM by waiting for the SSTP Call Connect Request message to arrive from the client. After the Call
@@ -5795,7 +5631,7 @@ not broken.
 
 Figure 6: SSTP call setup for a non-proxy scenario
 
-4.4  SSTP Layer Teardown
+### 4.4 SSTP Layer Teardown
 
 This protocol uses forceful teardown through the Call Abort message in addition to graceful shutdown
 through the Call Disconnect message.
@@ -5815,13 +5651,14 @@ Release: April 23, 2024
 
 72 / 90
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-SSTP].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
 Figure 7: SSTP graceful shutdown
 
-4.5  Handling HTTP Proxies
+### 4.5 Handling HTTP Proxies
 
 In the case that an SSTP tunnel is established through a proxy, the typical CONNECT request is as
 follows.
@@ -5852,20 +5689,21 @@ Release: April 23, 2024
 
 73 / 90
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-SSTP].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
 Figure 8: SSTP call setup for a proxy scenario
 
-4.6  Handling the HTTPS Termination Proxy
+### 4.6 Handling the HTTPS Termination Proxy
 
 If an SSTP tunnel is established through an HTTPS termination proxy, the HTTPS connection
 terminates at the proxy and a new HTTP bidirectional connection to the SSTP server is attempted.
 The query variable tenantid (section 3.2.4.1) can be used to select the SSTP server behind the proxy.
 After the connection is established, the proxy forwards the data across the two connections.
 
-4.7  Crypto Binding
+### 4.7 Crypto Binding
 
  The client sends an SSTP_MSG_CALL_CONNECT_REQUEST that encapsulates the PPP protocol. The
 actual data bytes are as follows.
@@ -5877,7 +5715,8 @@ Secure Socket Tunneling Protocol (SSTP)
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 10 01 00 0E 00 01 00 01 00 01 00 06 00 01
+
+ 10 01 00 0E 00 01 00 01 00 01 00 06 00 01
 
  The details for the packet are as follows.
 
@@ -5958,7 +5797,8 @@ Release: April 23, 2024
 
 75 / 90
 
-The client continues with the PPP negotiation after receiving the preceding message. When PPP
+
+The client continues with the PPP negotiation after receiving the preceding message. When PPP
 authentication is finished, the client completes the crypto binding by sending an
 SSTP_MSG_CALL_CONNECTED message. The data bytes that are transmitted in this scenario are as
 follows.
@@ -6029,7 +5869,8 @@ Release: April 23, 2024
 
 76 / 90
 
- 79 93 EF 31 4C 49 3D AC E9 F0 2D 60 E7 E6 1C 84
+
+ 79 93 EF 31 4C 49 3D AC E9 F0 2D 60 E7 E6 1C 84
  B6 69 0A AF E9 D7 AE EA 92 CB BE 8A D5 99 42 2D
 
   Compound MAC:
@@ -6093,7 +5934,8 @@ Release: April 23, 2024
 
 77 / 90
 
-The compound MAC is computed based on the following values for HLAK and certificate hash.
+
+The compound MAC is computed based on the following values for HLAK and certificate hash.
 
 Higher-Layer Authentication Key (HLAK):
 
@@ -6155,9 +5997,10 @@ Release: April 23, 2024
 
 78 / 90
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Because SSTP Version 1 supports only transport of PPP frames, there is no need for any negotiation of
 parameters in the SSTP Call Connect Request message, Call Connect Acknowledge message, and Call
@@ -6170,7 +6013,7 @@ attribute in the Call Connected message from the SSTP client. The server drops a
 that are received before the Call Connected message is received. For more information about PPP, see
 [RFC1661].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter  Section
 
@@ -6182,9 +6025,9 @@ Hashing algorithms
 
 3.2.5.2
 
-5.3  Attack Scenarios
+### 5.3 Attack Scenarios
 
-5.3.1  Unauthorized Client Connecting to an SSTP Server
+#### 5.3.1 Unauthorized Client Connecting to an SSTP Server
 
 In this scenario, an unauthorized attacker poses as a valid SSTP client and tries to connect to a valid
 SSTP server. The HTTPS connection goes through because the server does not authenticate the client
@@ -6198,13 +6041,14 @@ Release: April 23, 2024
 
 79 / 90
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-SSTP].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
 Figure 9: Unauthorized client connecting to an SSTP server
 
-5.3.2  Unauthorized SSTP Server Accepting Connections from a Genuine SSTP Client
+#### 5.3.2 Unauthorized SSTP Server Accepting Connections from a Genuine SSTP Client
 
 In this scenario, a valid SSTP client is redirected by an attacker to an unauthorized SSTP server (for
 example, by DNS poisoning). In this scenario, the connection is terminated by the client at the
@@ -6222,13 +6066,14 @@ Release: April 23, 2024
 
 80 / 90
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-SSTP].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
 Figure 10: Client connecting to an unauthorized SSTP server
 
-5.3.3  Man in the Middle
+#### 5.3.3 Man in the Middle
 
 In this scenario, an attacker poses as a man in the middle (MITM). For example, an MITM could be
 using a rogue wireless access point in a wireless-enabled enterprise environment.
@@ -6266,7 +6111,8 @@ Release: April 23, 2024
 
 81 / 90
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-SSTP].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -6286,7 +6132,8 @@ Release: April 23, 2024
 
 82 / 90
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-SSTP].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
@@ -6306,7 +6153,8 @@ Release: April 23, 2024
 
 83 / 90
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6373,7 +6221,8 @@ Release: April 23, 2024
 
 84 / 90
 
-<5> Section 3.2.1: In applicable Windows releases, except Windows Vista and Windows Server 2008,
+
+<5> Section 3.2.1: In applicable Windows releases, except Windows Vista and Windows Server 2008,
 support bypass of PPP authentication. On the client side, this protocol exposes APIs to the
 management layer to indicate ClientBypassHLAuth and ClientHTTPCookie. On the server side, this
 protocol exposes Routing and Remote Access Server APIs to indicate Accept New Connection along
@@ -6442,7 +6291,8 @@ Release: April 23, 2024
 
 85 / 90
 
-<17> Section 3.3.5.2.3: Applicable Windows Server releases start allowing PPP control frames from
+
+<17> Section 3.3.5.2.3: Applicable Windows Server releases start allowing PPP control frames from
 the client and request the PPP layer to start the FSM. However, neither operating system will allow
 any data frames until the PPP negotiation is completed.
 
@@ -6464,7 +6314,8 @@ Release: April 23, 2024
 
 86 / 90
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6508,7 +6359,8 @@ Release: April 23, 2024
 
 87 / 90
 
-8  Index
+
+## 8 Index
 A
 
 Abort timers (section 3.1.2.1 42, section 3.1.6.1 44)
@@ -6674,7 +6526,8 @@ Examples
 
 88 / 90
 
-   crypto binding 74
+
+   crypto binding 74
    handling HTTP proxies 73
    HTTPS layer establishment 71
    HTTPS layer teardown 71
@@ -6828,7 +6681,8 @@ References 9
 
 89 / 90
 
-   normative 9
+
+   normative 9
 Relationship to other protocols 12
 Rogue client - security 79
 Rogue SSTP server and genuine SSTP client -

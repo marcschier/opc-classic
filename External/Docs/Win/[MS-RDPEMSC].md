@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -89,205 +90,86 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Common Data Types](#222-common-data-types)
+      - [2.2.2.1 RDP_MOUSE_CURSOR_HEADER](#2221-rdpmousecursorheader)
+      - [2.2.2.2 RDP_MOUSE_CURSOR_CAPSET](#2222-rdpmousecursorcapset)
+      - [2.2.2.3 Capability Sets](#2223-capability-sets)
+        - [2.2.2.3.1 RDP_MOUSE_CURSOR_CAPSET_VERSION1](#22231-rdpmousecursorcapsetversion1)
+      - [2.2.2.4 TS_POINT16](#2224-tspoint16)
+      - [2.2.2.5 TS_POINTERATTRIBUTE](#2225-tspointerattribute)
+      - [2.2.2.6 TS_LARGEPOINTERATTRIBUTE](#2226-tslargepointerattribute)
+    - [2.2.3 Messages](#223-messages)
+      - [2.2.3.1 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU](#2231-rdpmousecursorcapsadvertisepdu)
+      - [2.2.3.2 RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU](#2232-rdpmousecursorcapsconfirmpdu)
+      - [2.2.3.3 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU](#2233-rdpmousecursormouseptrupdatepdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing a Mouse Cursor Message](#3151-processing-a-mouse-cursor-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Pointer Image Cache](#3211-pointer-image-cache)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message](#3251-processing-an-rdpmousecursorcapsadvertisepdu-message)
+      - [3.2.5.2 Sending an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message](#3252-sending-an-rdpmousecursorcapsconfirmpdu-message)
+      - [3.2.5.3 Sending an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message](#3253-sending-an-rdpmousecursormouseptrupdatepdu-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Pointer Image Cache](#3311-pointer-image-cache)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Sending an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message](#3351-sending-an-rdpmousecursorcapsadvertisepdu-message)
+      - [3.3.5.2 Processing an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message](#3352-processing-an-rdpmousecursorcapsconfirmpdu-message)
+      - [3.3.5.3 Processing an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message](#3353-processing-an-rdpmousecursormouseptrupdatepdu-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Capabilities Exchange](#41-capabilities-exchange)
+    - [4.1.1 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU](#411-rdpmousecursorcapsadvertisepdu)
+    - [4.1.2 RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU](#412-rdpmousecursorcapsconfirmpdu)
+  - [4.2 Mouse Pointer Updates](#42-mouse-pointer-updates)
+    - [4.2.1 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINT16](#421-rdpmousecursormouseptrupdatepdu-with-tspoint16)
+    - [4.2.2 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINTERATTRIBUTE](#422-rdpmousecursormouseptrupdatepdu-with-tspointerattribute)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Namespaces ................................................................................................ 8
-Common Data Types ..................................................................................... 8
-RDP_MOUSE_CURSOR_HEADER................................................................ 8
-RDP_MOUSE_CURSOR_CAPSET ................................................................ 9
-Capability Sets ..................................................................................... 10
-RDP_MOUSE_CURSOR_CAPSET_VERSION1 ........................................ 10
-TS_POINT16 ......................................................................................... 10
-TS_POINTERATTRIBUTE ......................................................................... 11
-TS_LARGEPOINTERATTRIBUTE ............................................................... 12
-Messages ................................................................................................... 13
-RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU ........................................ 13
-RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU ........................................... 14
-RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU ..................................... 14
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-2.2.2.3.1
-
-2.2.3
-
-3.2
-
-3.1
-
-3.2.1
-
-3.1.5.1
-
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 16
-Common Details .............................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Processing a Mouse Cursor Message ........................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Pointer Image Cache ............................................................................. 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Processing an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message ....... 17
-Sending an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message ............. 17
-Sending an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message ....... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 18
-Client Details ................................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Pointer Image Cache ............................................................................. 18
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3.1.1
-
-3.2.1.1
-
-3.3.1
-
-3.3
-
-[MS-RDPEMSC] - v20240423
-Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 26
-
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.6
-3.3.7
-
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 18
-Sending an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message ........... 18
-Processing an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message .......... 18
-Processing an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message .... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 19
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 20
-Capabilities Exchange ....................................................................................... 20
-RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU .............................................. 20
-RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU ................................................. 20
-Mouse Pointer Updates ..................................................................................... 20
-RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINT16 ................. 20
-RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINTERATTRIBUTE . 20
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-RDPEMSC] - v20240423
-Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol Mouse Cursor Virtual Channel Extension (RDPEMSC) is an extension of
 [MS-RDPBCGR], which runs over a dynamic virtual channel, as defined in [MS-RDPEDYC]. RDPEMSC is
@@ -297,7 +179,7 @@ Server Pointer Update PDU (TS_POINTER_PDU) message in [MS-RDPBCGR].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -308,14 +190,14 @@ the memory location with the lowest address.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -330,11 +212,11 @@ Extension".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel (RDPESMC) Extension is used to send
 mouse cursor shapes and position updates from the terminal server to the terminal client and replaces
@@ -351,7 +233,8 @@ Release: April 23, 2024
 
 5 / 26
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-RDPEMSC].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -417,7 +300,8 @@ Release: April 23, 2024
 
 6 / 26
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension is embedded in a dynamic
 virtual channel transport, as described in [MS-RDPEDYC] sections 1 to 3.
@@ -425,7 +309,7 @@ virtual channel transport, as described in [MS-RDPEDYC] sections 1 to 3.
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension replaces the TS_POINTER_PDU
 described in [MS-RDPBCGR] section 2.2.9.1.1.4.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension (RDPEMSC) operates only after
 the dynamic virtual channel transport (RDPEDYC) is fully established. If the dynamic virtual channel
@@ -436,13 +320,13 @@ allow for fragmentation. Packet reassembly is based on the information provided 
 dynamic virtual channel transport. This document assumes that packet chunks have already been
 reassembled.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension is applicable in scenarios
 where the mouse cursor shape and position must be kept in sync between a remote session hosted on
 a terminal server and a terminal server client rendering and providing mouse input to the session.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 During the initializing phase, the client and server exchange capabilities using the
 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (section 2.2.3.1) and
@@ -450,11 +334,11 @@ RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (section 2.2.3.2) messages. The client initiat
 exchange when the dynamic virtual channel (sections 1.4 and 2.1) over which the core input
 messages will flow has been opened.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -465,9 +349,10 @@ Release: April 23, 2024
 
 7 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension is designed to operate over a
 dynamic virtual channel, as specified in [MS-RDPEDYC] sections 1 to 3. The dynamic virtual channel
@@ -475,17 +360,17 @@ name is the null-terminated ANSI character string "Microsoft::Windows::RDS::Mous
 usage of channel names in the context of opening a dynamic virtual channel is specified in [MS-
 RDPEDYC] section 2.2.2.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension
 message syntax. All multiple-byte fields within a message MUST be marshaled in little-endian byte
 order, unless otherwise specified.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
-2.2.2  Common Data Types
+#### 2.2.2 Common Data Types
 
-2.2.2.1  RDP_MOUSE_CURSOR_HEADER
+##### 2.2.2.1 RDP_MOUSE_CURSOR_HEADER
 
 The RDP_MOUSE_CURSOR_HEADER structure is included in all mouse cursor PDUs. This structure
 is used to identify the PDU type and specify the update type of the
@@ -541,7 +426,8 @@ Release: April 23, 2024
 
 8 / 26
 
-Value
+
+Value
 
 Meaning
 
@@ -603,7 +489,7 @@ For all other values of pduType, this field MUST be set to zero.
 
 reserved (2 bytes): A 16-bit, unsigned integer that SHOULD be set to zero.
 
-2.2.2.2  RDP_MOUSE_CURSOR_CAPSET
+##### 2.2.2.2 RDP_MOUSE_CURSOR_CAPSET
 
 The RDP_MOUSE_CAPSET structure specifies the layout of a capability set sent in the
 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (section 2.2.3.1) message. All the capability sets
@@ -629,7 +515,8 @@ Release: April 23, 2024
 
 9 / 26
 
-version
+
+version
 
 size
 
@@ -660,9 +547,9 @@ capsData (variable): A variable-length array of bytes that contains data specifi
 
 set.
 
-2.2.2.3  Capability Sets
+##### 2.2.2.3 Capability Sets
 
-2.2.2.3.1 RDP_MOUSE_CURSOR_CAPSET_VERSION1
+###### 2.2.2.3.1 RDP_MOUSE_CURSOR_CAPSET_VERSION1
 
 The RDP_MOUSE_CURSOR_CAPSET_VERSION1 structure is used to define capabilities for version
 1 of the mouse cursor protocol and conforms to the capability set layout specified in section 2.2.2.2.
@@ -694,7 +581,7 @@ size (4 bytes): A 32-bit, unsigned integer that specifies the size in bytes of t
 
 field MUST be set to 0x0000000C.
 
-2.2.2.4  TS_POINT16
+##### 2.2.2.4 TS_POINT16
 
 The TS_POINT16 structure specifies a point relative to the top-left corner of the virtual desktop
 bounding box.
@@ -706,7 +593,8 @@ Release: April 23, 2024
 
 10 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -729,7 +617,7 @@ yPos (2 bytes): A 16-bit, unsigned integer. The y-coordinate relative to the top
 
 virtual desktop bounding box.
 
-2.2.2.5  TS_POINTERATTRIBUTE
+##### 2.2.2.5 TS_POINTERATTRIBUTE
 
 The TS_POINTERATTRIBUTE structure is used to send pointer data at an arbitrary color depth up to
 a maximum size of 96x96 pixels.
@@ -792,7 +680,8 @@ Release: April 23, 2024
 
 11 / 26
 
-hotSpot (4 bytes): A TS_POINT16 (section 2.2.2.4) structure containing the x-coordinates and y-
+
+hotSpot (4 bytes): A TS_POINT16 (section 2.2.2.4) structure containing the x-coordinates and y-
 
 coordinates of the pointer hotspot.
 
@@ -828,7 +717,7 @@ pad (1 byte, optional): An optional 8-bit, unsigned integer. It is used as a pad
 
 this field MUST be ignored.
 
-2.2.2.6  TS_LARGEPOINTERATTRIBUTE
+##### 2.2.2.6 TS_LARGEPOINTERATTRIBUTE
 
 The TS_LARGEPOINTERATTRIBUTE structure is used to transport mouse pointer shapes larger than
 96x96 pixels in size.
@@ -873,7 +762,8 @@ Release: April 23, 2024
 
 12 / 26
 
-andMaskData (variable)
+
+andMaskData (variable)
 
 ...
 
@@ -927,9 +817,9 @@ pad (1 byte, optional): An optional 8-bit, unsigned integer. It is used as a pad
 
 this field MUST be ignored.
 
-2.2.3  Messages
+#### 2.2.3 Messages
 
-2.2.3.1  RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU
+##### 2.2.3.1 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU
 
 The RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU message is sent by the client and is used to
 advertise capabilities to the server.
@@ -941,7 +831,8 @@ Release: April 23, 2024
 
 13 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -966,7 +857,7 @@ capsSets (variable): A variable-length array of RDP_MOUSE_CURSOR_CAPSET (section
 
 structures.
 
-2.2.3.2  RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU
+##### 2.2.3.2 RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU
 
 The RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU message is sent by the server to confirm capabilities
 for the connection.
@@ -994,7 +885,7 @@ pduType field MUST be set to PDUTYPE_SC_CAPS_CONFIRM (0x02).
 
 capsSet (variable): A variable-length RDP_MOUSE_CURSOR_CAPSET (section 2.2.2.2) structure.
 
-2.2.3.3  RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU
+##### 2.2.3.3 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU
 
 The RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU message is sent by the server and is used to
 transport updated mouse cursor parameters and position changes.
@@ -1029,7 +920,8 @@ Release: April 23, 2024
 
 14 / 26
 
-…
+
+…
 
 header (4 bytes): An RDP_MOUSE_CURSOR_HEADER (section 2.2.2.1) structure. The embedded
 
@@ -1066,29 +958,30 @@ Release: April 23, 2024
 
 15 / 26
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.5.1  Processing a Mouse Cursor Message
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Processing a Mouse Cursor Message
 
 All mouse cursor messages are prefaced by the RDP_MOUSE_CURSOR_HEADER (section 2.2.2.1)
 structure.
@@ -1097,21 +990,21 @@ When a mouse cursor message is processed, the pduType field in the header MUST b
 determine if the message is within the subset of expected messages as described in section 1.3. If the
 message is not expected, it SHOULD be ignored.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.1.1  Pointer Image Cache
+##### 3.2.1.1 Pointer Image Cache
 
 The Pointer Image Cache contains a collection of pointer images sent to the client using the
 TS_POINTERATTRIBUTE (section 2.2.2.5) and TS_LARGEPOINTERATTRIBUTE (section 2.2.2.6)
@@ -1125,23 +1018,24 @@ Release: April 23, 2024
 
 16 / 26
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Upon receiving the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (section 2.2.3.1) message, the
 server MUST send the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (section 2.2.3.2) message to the
 client, as specified in section 3.2.5.2, to signal that the Initialization Phase is complete.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Processing an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message
+##### 3.2.5.1 Processing an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU message are specified
 in section 2.2.3.1.
@@ -1150,7 +1044,7 @@ The header field MUST be processed as specified in section 3.1.5.1. If the messa
 server SHOULD send an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (section 2.2.3.2) message to
 the client, as specified in section 3.2.5.2.
 
-3.2.5.2  Sending an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message
+##### 3.2.5.2 Sending an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU message are specified in
 section 2.2.3.2. The message fields MUST be populated in accordance with this description. The server
@@ -1162,7 +1056,7 @@ server SHOULD hook the mouse cursor subsystem, listen for changes to the cursor 
 position, and send updates using the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU message, as
 specified in section 3.2.5.3.
 
-3.2.5.3  Sending an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message
+##### 3.2.5.3 Sending an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU message are
 specified in section 2.2.3.3. The message fields MUST be populated in accordance with this
@@ -1177,7 +1071,7 @@ and if a hit is found, the cachedPointerIndex field SHOULD be populated with the
 sent to the client (as opposed to  sending an entire TS_POINTERATTRIBUTE or
 TS_LARGEPOINTERATTRIBUTE structure).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -1188,17 +1082,18 @@ Release: April 23, 2024
 
 17 / 26
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.1.1  Pointer Image Cache
+##### 3.3.1.1 Pointer Image Cache
 
 The Pointer Image Cache contains a collection of pointer images sent to the client using the
 TS_POINTERATTRIBUTE (section 2.2.2.5) and TS_LARGEPOINTERATTRIBUTE (section 2.2.2.6)
@@ -1207,31 +1102,31 @@ an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU (section 2.2.3.3) that contains a
 cachedPointerIndex field. The size and color depth (either variable or fixed at 24 bpp) of the cache
 are specified in the Pointer Capability Set ([MS-RDPBCGR] section 2.2.7.1.5).
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client MUST send the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (section 2.2.3.1) message to
 the server, as specified in section 3.3.5.1, once the dynamic virtual channel (section 2.1) is opened.
 After the server responds with the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (section 2.2.3.2), the
 Initialization Phase is complete.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Sending an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message
+##### 3.3.5.1 Sending an RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU message are specified
 in section 2.2.3.1. The message fields MUST be populated in accordance with this description. The
 client MUST correctly populate the capsSet field with one or more of the capability sets specified in
 section 2.2.3. Each capability set type MUST NOT appear more than once.
 
-3.3.5.2  Processing an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message
+##### 3.3.5.2 Processing an RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU message are specified in
 section 2.2.3.2.
@@ -1246,7 +1141,8 @@ Release: April 23, 2024
 
 18 / 26
 
-3.3.5.3  Processing an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message
+
+##### 3.3.5.3 Processing an RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU Message
 
 The structure and fields of the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU message are
 specified in section 2.2.3.3.
@@ -1258,11 +1154,11 @@ store the mouse cursor image in the Pointer Image Cache (section 3.3.1.1) using 
 specified by the cacheIndex field. This cache entry will be used to retrieve the image if the
 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU contains a cachedPointerIndex field.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -1273,11 +1169,12 @@ Release: April 23, 2024
 
 19 / 26
 
-4  Protocol Examples
 
-4.1  Capabilities Exchange
+## 4 Protocol Examples
 
-4.1.1  RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU
+### 4.1 Capabilities Exchange
+
+#### 4.1.1 RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU
 
 The following is an annotated dump of the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (section
 2.2.3.1).
@@ -1291,7 +1188,7 @@ The following is an annotated dump of the RDP_MOUSE_CURSOR_CAPS_ADVERTISE_PDU (s
 01 00 00 00 -> CAPS_HEADER::version = 0x00000001
 0c 00 00 00 -> CAPS_HEADER::size = 0x0000000C (12)
 
-4.1.2  RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU
+#### 4.1.2 RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU
 
 The following is an annotated dump of the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (section
 2.2.3.2).
@@ -1305,9 +1202,9 @@ The following is an annotated dump of the RDP_MOUSE_CURSOR_CAPS_CONFIRM_PDU (sec
 01 00 00 00 -> CAPS_HEADER::version 1 (4 Bytes)
 0c 00 00 00 -> CAPS_HEADER::size 0xC (4 bytes)
 
-4.2  Mouse Pointer Updates
+### 4.2 Mouse Pointer Updates
 
-4.2.1  RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINT16
+#### 4.2.1 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINT16
 
 The following is an annotated dump of the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU (section
 2.2.3.3) containing a TS_POINT16 (section 2.2.2.4) structure.
@@ -1319,7 +1216,7 @@ The following is an annotated dump of the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU (
  78 00 -> TS_POINT16::xPos = 120
  64 00 -> TS_POINT16::yPos = 100
 
-4.2.2  RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINTERATTRIBUTE
+#### 4.2.2 RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU with TS_POINTERATTRIBUTE
 
 The following is an annotated dump of the RDP_MOUSE_CURSOR_MOUSEPTR_UPDATE_PDU (section
 2.2.3.3) containing a TS_POINTERATTRIBUTE (section 2.2.2.5) structure.
@@ -1331,7 +1228,8 @@ Remote Desktop Protocol: Mouse Cursor Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000000 03 0b 00 00 18 00 00 00 0e 00 0f 00 30 00 30 00  ............0.0.
+
+ 00000000 03 0b 00 00 18 00 00 00 0e 00 0f 00 30 00 30 00  ............0.0.
  00000010 20 01 00 1b 00 00 00 00 00 00 00 00 00 00 00 00  ................
  00000020 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
  00000030 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
@@ -1358,13 +1256,14 @@ Release: April 23, 2024
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1375,7 +1274,8 @@ Release: April 23, 2024
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1427,7 +1327,8 @@ Release: April 23, 2024
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1471,7 +1372,8 @@ Release: April 23, 2024
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1610,7 +1512,8 @@ Release: April 23, 2024
 
 25 / 26
 
-Tracking changes 24
+
+Tracking changes 24
 Transport 8
 Triggered events - higher-layer
    client 18

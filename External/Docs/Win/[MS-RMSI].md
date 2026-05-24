@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 67
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -300,7 +301,8 @@ Release: April 23, 2024
 
 2 / 67
 
-Date
+
+Date
 
 Revision
 History
@@ -463,374 +465,151 @@ Release: April 23, 2024
 
 3 / 67
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Decommissioning Interface .......................................................................... 11
-Precertification Interface .............................................................................. 12
-Republishing Interface ................................................................................. 12
-Prelicensing Interface .................................................................................. 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Message Syntax ................................................................................. 15
-Namespaces .............................................................................................. 15
-Messages ................................................................................................... 16
-Elements ................................................................................................... 16
-Complex Types ........................................................................................... 16
-ArrayOfString ....................................................................................... 16
-ArrayOfXmlNode ................................................................................... 17
-VersionData ......................................................................................... 17
-Simple Types ............................................................................................. 18
-Attributes .................................................................................................. 18
-Groups ...................................................................................................... 18
-Attribute Groups ......................................................................................... 18
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.2
-
-3.1.5
-3.1.6
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 19
-Common Details .............................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Common SOAP Headers ......................................................................... 19
-Common Fault Codes............................................................................. 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-Decommissioning Interface Server Details ........................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-AcquireContentKey ................................................................................ 21
-Messages ....................................................................................... 22
-AcquireContentKeySoapIn ........................................................... 22
-AcquireContentKeySoapOut ........................................................ 23
-Elements ........................................................................................ 23
-AcquireContentKey ..................................................................... 23
-AcquireContentKeyResponse ....................................................... 23
-Complex Types ............................................................................... 24
-
-3.2.4.1.1.1
-3.2.4.1.1.2
-
-3.2.4.1.2.1
-3.2.4.1.2.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1.3
-
-3.2.4.1.1
-
-3.2.4.1.2
-
-3.2.4.1
-
-[MS-RMSI] - v20240423
-Rights Management Services (RMS): ISV Extension Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 67
-
-3.3
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.2.4.1.4
-
-3.3.4.1
-
-3.3.4.1.1
-
-3.3.4.1.2
-
-3.3.4.1.3
-
-3.3.4.1.4
-
-3.3.4.1.4.1
-
-3.2.4.1.4.1
-
-3.3.4.1.2.1
-3.3.4.1.2.2
-
-3.3.4.1.1.1
-3.3.4.1.1.2
-
-3.2.4.1.3.1
-3.2.4.1.3.2
-3.2.4.1.3.3
-3.2.4.1.3.4
-
-3.3.4.1.3.1
-3.3.4.1.3.2
-3.3.4.1.3.3
-3.3.4.1.3.4
-3.3.4.1.3.5
-
-ArrayOfAcquireContentKeyParams ............................................... 24
-AcquireContentKeyParams .......................................................... 24
-ArrayOfAcquireContentKeyResponse ............................................ 24
-AcquireContentKeyResponse ....................................................... 25
-Simple Types .................................................................................. 25
-KeyType ................................................................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Precertification Interface Server Details .............................................................. 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-Precertify ............................................................................................. 26
-Messages ....................................................................................... 28
-PrecertifySoapIn ........................................................................ 28
-PrecertifySoapOut ...................................................................... 28
-Elements ........................................................................................ 28
-Precertify .................................................................................. 28
-PrecertifyResponse ..................................................................... 29
-Complex Types ............................................................................... 29
-ArrayOfPrecertifyParams ............................................................. 29
-PrecertifyParams ........................................................................ 30
-Identification ............................................................................. 30
-ArrayOfPrecertifyResponse .......................................................... 30
-PrecertifyResponse ..................................................................... 31
-Simple Types .................................................................................. 31
-AuthenticationMode .................................................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 32
-Republishing Interface Server Details ................................................................. 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-EditIssuanceLicense .............................................................................. 32
-Messages ....................................................................................... 35
-EditIssuanceLicenseSoapIn ......................................................... 35
-EditIssuanceLicenseSoapOut ....................................................... 35
-Elements ........................................................................................ 35
-EditIssuanceLicense ................................................................... 36
-EditIssuanceLicenseResponse ...................................................... 36
-Complex Types ............................................................................... 36
-ArrayOfEditIssuanceLicenseParams .............................................. 36
-EditIssuanceLicenseParams ......................................................... 37
-ArrayOfEditIssuanceLicenseResponse ........................................... 37
-EditIssuanceLicenseResponse ...................................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-Prelicensing Interface Server Details................................................................... 38
-Abstract Data Model .................................................................................... 38
-Timers ...................................................................................................... 38
-Initialization ............................................................................................... 38
-Message Processing Events and Sequencing Rules .......................................... 39
-AcquirePreLicense ................................................................................. 39
-Messages ....................................................................................... 40
-AcquirePreLicenseSoapIn ............................................................ 40
-AcquirePreLicenseSoapOut .......................................................... 40
-
-3.4.4.1.3.1
-3.4.4.1.3.2
-3.4.4.1.3.3
-3.4.4.1.3.4
-
-3.5.4.1.1.1
-3.5.4.1.1.2
-
-3.4.4.1.1.1
-3.4.4.1.1.2
-
-3.4.4.1.2.1
-3.4.4.1.2.2
-
-3.4.4.1
-
-3.4.4.1.1
-
-3.4.4.1.2
-
-3.4.4.1.3
-
-3.5.4.1
-
-3.5.4.1.1
-
-3.3.5
-3.3.6
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.5
-
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-[MS-RMSI] - v20240423
-Rights Management Services (RMS): ISV Extension Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 67
-
-3.5.4.1.3
-
-3.5.4.1.2
-
-3.5.4.1.2.1
-3.5.4.1.2.2
-
-Elements ........................................................................................ 41
-AcquirePreLicense ...................................................................... 41
-AcquirePreLicenseResponse ......................................................... 41
-Complex Types ............................................................................... 41
-ArrayOfAcquirePreLicenseParams ................................................. 42
-AcquirePreLicenseParams ............................................................ 42
-ArrayOfAcquirePreLicenseResponse .............................................. 43
-AcquirePreLicenseResponse ......................................................... 43
-AcquirePreLicenseException ........................................................ 43
-Timer Events .............................................................................................. 44
-Other Local Events ...................................................................................... 44
-
-3.5.4.1.3.1
-3.5.4.1.3.2
-3.5.4.1.3.3
-3.5.4.1.3.4
-3.5.4.1.3.5
-
-3.5.5
-3.5.6
-
-4  Protocol Examples ................................................................................................. 45
-Using Decommissioning to Remove Protection from Content .................................. 45
-Using Precertification to Pre-License Protected Content ......................................... 45
-
-4.1
-4.2
-
-5.1
-
-5  Security ................................................................................................................. 48
-Security Considerations for Implementers ........................................................... 48
-Decommissioning Interface .......................................................................... 48
-Precertification Interface .............................................................................. 48
-Republishing Interface ................................................................................. 48
-Prelicensing Interface .................................................................................. 48
-Index of Security Parameters ............................................................................ 48
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 49
-Decommissioning Interface ............................................................................... 49
-Precertification Interface ................................................................................... 51
-Republishing Interface ...................................................................................... 53
-Prelicensing Interface ....................................................................................... 56
-
-6.1
-6.2
-6.3
-6.4
-
-7  Appendix B: Product Behavior ............................................................................... 60
-
-8  Change Tracking .................................................................................................... 62
-
-9  Index ..................................................................................................................... 63
-
-[MS-RMSI] - v20240423
-Rights Management Services (RMS): ISV Extension Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 67
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Decommissioning Interface](#131-decommissioning-interface)
+    - [1.3.2 Precertification Interface](#132-precertification-interface)
+    - [1.3.3 Republishing Interface](#133-republishing-interface)
+    - [1.3.4 Prelicensing Interface](#134-prelicensing-interface)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 ArrayOfString](#2241-arrayofstring)
+      - [2.2.4.2 ArrayOfXmlNode](#2242-arrayofxmlnode)
+      - [2.2.4.3 VersionData](#2243-versiondata)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Common SOAP Headers](#3141-common-soap-headers)
+      - [3.1.4.2 Common Fault Codes](#3142-common-fault-codes)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Decommissioning Interface Server Details](#32-decommissioning-interface-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 AcquireContentKey](#3241-acquirecontentkey)
+        - [3.2.4.1.1 Messages](#32411-messages)
+          - [3.2.4.1.1.1 AcquireContentKeySoapIn](#324111-acquirecontentkeysoapin)
+          - [3.2.4.1.1.2 AcquireContentKeySoapOut](#324112-acquirecontentkeysoapout)
+        - [3.2.4.1.2 Elements](#32412-elements)
+          - [3.2.4.1.2.1 AcquireContentKey](#324121-acquirecontentkey)
+          - [3.2.4.1.2.2 AcquireContentKeyResponse](#324122-acquirecontentkeyresponse)
+        - [3.2.4.1.3 Complex Types](#32413-complex-types)
+          - [3.2.4.1.3.1 ArrayOfAcquireContentKeyParams](#324131-arrayofacquirecontentkeyparams)
+          - [3.2.4.1.3.2 AcquireContentKeyParams](#324132-acquirecontentkeyparams)
+          - [3.2.4.1.3.3 ArrayOfAcquireContentKeyResponse](#324133-arrayofacquirecontentkeyresponse)
+          - [3.2.4.1.3.4 AcquireContentKeyResponse](#324134-acquirecontentkeyresponse)
+        - [3.2.4.1.4 Simple Types](#32414-simple-types)
+          - [3.2.4.1.4.1 KeyType](#324141-keytype)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 Precertification Interface Server Details](#33-precertification-interface-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Precertify](#3341-precertify)
+        - [3.3.4.1.1 Messages](#33411-messages)
+          - [3.3.4.1.1.1 PrecertifySoapIn](#334111-precertifysoapin)
+          - [3.3.4.1.1.2 PrecertifySoapOut](#334112-precertifysoapout)
+        - [3.3.4.1.2 Elements](#33412-elements)
+          - [3.3.4.1.2.1 Precertify](#334121-precertify)
+          - [3.3.4.1.2.2 PrecertifyResponse](#334122-precertifyresponse)
+        - [3.3.4.1.3 Complex Types](#33413-complex-types)
+          - [3.3.4.1.3.1 ArrayOfPrecertifyParams](#334131-arrayofprecertifyparams)
+          - [3.3.4.1.3.2 PrecertifyParams](#334132-precertifyparams)
+          - [3.3.4.1.3.3 Identification](#334133-identification)
+          - [3.3.4.1.3.4 ArrayOfPrecertifyResponse](#334134-arrayofprecertifyresponse)
+          - [3.3.4.1.3.5 PrecertifyResponse](#334135-precertifyresponse)
+        - [3.3.4.1.4 Simple Types](#33414-simple-types)
+          - [3.3.4.1.4.1 AuthenticationMode](#334141-authenticationmode)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 Republishing Interface Server Details](#34-republishing-interface-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 EditIssuanceLicense](#3441-editissuancelicense)
+        - [3.4.4.1.1 Messages](#34411-messages)
+          - [3.4.4.1.1.1 EditIssuanceLicenseSoapIn](#344111-editissuancelicensesoapin)
+          - [3.4.4.1.1.2 EditIssuanceLicenseSoapOut](#344112-editissuancelicensesoapout)
+        - [3.4.4.1.2 Elements](#34412-elements)
+          - [3.4.4.1.2.1 EditIssuanceLicense](#344121-editissuancelicense)
+          - [3.4.4.1.2.2 EditIssuanceLicenseResponse](#344122-editissuancelicenseresponse)
+        - [3.4.4.1.3 Complex Types](#34413-complex-types)
+          - [3.4.4.1.3.1 ArrayOfEditIssuanceLicenseParams](#344131-arrayofeditissuancelicenseparams)
+          - [3.4.4.1.3.2 EditIssuanceLicenseParams](#344132-editissuancelicenseparams)
+          - [3.4.4.1.3.3 ArrayOfEditIssuanceLicenseResponse](#344133-arrayofeditissuancelicenseresponse)
+          - [3.4.4.1.3.4 EditIssuanceLicenseResponse](#344134-editissuancelicenseresponse)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 Prelicensing Interface Server Details](#35-prelicensing-interface-server-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 AcquirePreLicense](#3541-acquireprelicense)
+        - [3.5.4.1.1 Messages](#35411-messages)
+          - [3.5.4.1.1.1 AcquirePreLicenseSoapIn](#354111-acquireprelicensesoapin)
+          - [3.5.4.1.1.2 AcquirePreLicenseSoapOut](#354112-acquireprelicensesoapout)
+        - [3.5.4.1.2 Elements](#35412-elements)
+          - [3.5.4.1.2.1 AcquirePreLicense](#354121-acquireprelicense)
+          - [3.5.4.1.2.2 AcquirePreLicenseResponse](#354122-acquireprelicenseresponse)
+        - [3.5.4.1.3 Complex Types](#35413-complex-types)
+          - [3.5.4.1.3.1 ArrayOfAcquirePreLicenseParams](#354131-arrayofacquireprelicenseparams)
+          - [3.5.4.1.3.2 AcquirePreLicenseParams](#354132-acquireprelicenseparams)
+          - [3.5.4.1.3.3 ArrayOfAcquirePreLicenseResponse](#354133-arrayofacquireprelicenseresponse)
+          - [3.5.4.1.3.4 AcquirePreLicenseResponse](#354134-acquireprelicenseresponse)
+          - [3.5.4.1.3.5 AcquirePreLicenseException](#354135-acquireprelicenseexception)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Using Decommissioning to Remove Protection from Content](#41-using-decommissioning-to-remove-protection-from-content)
+  - [4.2 Using Precertification to Pre-License Protected Content](#42-using-precertification-to-pre-license-protected-content)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Decommissioning Interface](#511-decommissioning-interface)
+    - [5.1.2 Precertification Interface](#512-precertification-interface)
+    - [5.1.3 Republishing Interface](#513-republishing-interface)
+    - [5.1.4 Prelicensing Interface](#514-prelicensing-interface)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+  - [6.1 Decommissioning Interface](#61-decommissioning-interface)
+  - [6.2 Precertification Interface](#62-precertification-interface)
+  - [6.3 Republishing Interface](#63-republishing-interface)
+  - [6.4 Prelicensing Interface](#64-prelicensing-interface)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This specification describes the Rights Management Services (RMS): Independent Software Vendor
 (ISV) Extension Protocol which is used to communicate information between applications and RMS
@@ -843,7 +622,7 @@ decommission protected content and retrieve a recipient's public key certificate
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -901,7 +680,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-that policy. The PL is created when content is protected. Also known as an Issuance License
+
+that policy. The PL is created when content is protected. Also known as an Issuance License
 (IL).
 
 RMS account certificate (RAC): An XrML 1.2 certificate chain that contains an asymmetric
@@ -943,14 +723,14 @@ content file and describes the usage policies that apply. Also known as an "End-
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -973,7 +753,8 @@ Release: April 23, 2024
 
 8 / 67
 
-[SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
+
+[SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
 W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
 
 [SOAP1.2-1/2007] Gudgin, M., Hadley, M., Mendelsohn, N., et al., "SOAP Version 1.2 Part 1:
@@ -1003,7 +784,7 @@ http://contentguard.com/contact-us
 
 Note Contact the owner of the XrML specification for more information.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [KERBKEY] Microsoft Corporation, "KERB_CRYPTO_KEY", http://msdn.microsoft.com/en-
 us/library/aa378058.aspx
@@ -1011,7 +792,7 @@ us/library/aa378058.aspx
 [NTLM] Microsoft Corporation, "Microsoft NTLM", http://msdn.microsoft.com/en-
 us/library/aa378749.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Rights Management Services (RMS) is a client/server technology that provides information protection
 through content encryption and fine-grained policy definition and enforcement. The RMS: Client-to-
@@ -1043,7 +824,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RMSI].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1073,7 +855,8 @@ Release: April 23, 2024
 
 10 / 67
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RMSI].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1105,7 +888,7 @@ Prelicensing: Enables protected content to be delivered with an authorization to
 recipient user without requiring a precertification request. The Prelicensing interface is used to
 retrieve a use license for the specified user.
 
-1.3.1  Decommissioning Interface
+#### 1.3.1 Decommissioning Interface
 
 If an organization were to decide to stop using RMS entirely and remove its deployment, it would need
 to remove RMS protection from content. One method is to have people with owner rights to each piece
@@ -1123,13 +906,14 @@ Release: April 23, 2024
 
 11 / 67
 
-When servicing the request, the RMS server does not verify whether the requestor can be granted
+
+When servicing the request, the RMS server does not verify whether the requestor can be granted
 access to the content as specified in the publishing license. Rather, the RMS server returns the content
 key to any requestor. As a result, the Decommissioning interface is disabled for normal operation by
 default. The interface exposes one request and response message to support decommissioning via the
 AcquireContentKey operation.
 
-1.3.2  Precertification Interface
+#### 1.3.2 Precertification Interface
 
 When protected content is sent to recipients, each recipient has to acquire a use license that
 grants access to the content. The use license describes the usage policy for that user with that content
@@ -1149,7 +933,7 @@ use license from the RMS Server using the RMS: Client-to-Server Protocol [MS-RMP
 Precertification interface exposes one request and response message to enable precertification via the
 Precertify operation.
 
-1.3.3  Republishing Interface
+#### 1.3.3 Republishing Interface
 
 After protected content is published, it might become necessary to alter the set of rights that are
 granted to users in the original IL. The EditIssuanceLicense (section 3.4.4.1) operation allows a client
@@ -1162,7 +946,7 @@ access to this service is typically restricted to computers or users trusted by 
 Republishing interface exposes one request and response message to enable republishing via the
 EditIssuanceLicense operation.
 
-1.3.4  Prelicensing Interface
+#### 1.3.4 Prelicensing Interface
 
 When using the Precertification interface, the application is required to contact a server that is capable
 of issuing an RAC for a specific recipient. In an environment with multiple certification services, an
@@ -1185,11 +969,12 @@ Release: April 23, 2024
 
 12 / 67
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RMSI].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The RMS: ISV Extension Protocol uses the SOAP messaging protocol, as specified in [SOAP1.1], for
 formatting requests and responses. It transmits these messages using the HTTP and/or HTTPS
@@ -1199,13 +984,13 @@ underlying transport protocols. The content files are downloaded using HTTP 1.1,
 
 Figure 4: ISV Extension Protocol transport stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that the RMS server has been started and is fully bootstrapped and initialized before the
 RMS: ISV Extension Protocol can start. Server initialization is described in the RMS: Client-to-Server
 Protocol Specification [MS-RMPR].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The RMS: ISV Extension Protocol is used for the following purposes:
 
@@ -1230,7 +1015,8 @@ Release: April 23, 2024
 
 13 / 67
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -1252,11 +1038,11 @@ On a request, the <VersionData> structure contains a <MinimumVersion> and
 On a response, the <VersionData> structure contains <MinimumVersion> and
 <MaximumVersion> values that the RMS server is capable of understanding.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The RMS: ISV Extension Protocol has not been ratified by any standards body or organization.
 
@@ -1267,11 +1053,12 @@ Release: April 23, 2024
 
 14 / 67
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The RMS: ISV Extension Protocol is composed of four SOAP-based interfaces:
 
@@ -1306,13 +1093,13 @@ Prelicensing: This interface MUST be exposed at the following URL:
 
 [baseURL]/licensing/license.asmx: AcquirePreLicense
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses XML
 Schema, as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services Description Language,
 as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS-2ED]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1338,7 +1125,8 @@ Release: April 23, 2024
 
 15 / 67
 
-Prefix  Namespace URI
+
+Prefix  Namespace URI
 
 Reference
 
@@ -1390,15 +1178,15 @@ All interfaces in the RMS: ISV Extension Protocol use the same SOAP header for b
 responses. The SOAP header for requests and responses to these interfaces MUST contain the
 VersionData element specified in section 2.2.4.3.
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML Schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of common XML Schema complex type definitions defined by
 this specification. XML Schema complex type definitions that are specific to a particular operation are
@@ -1420,7 +1208,7 @@ is enclosed in the <Certificate> element.
 
 Represents the capability version of the client and server.
 
-2.2.4.1  ArrayOfString
+##### 2.2.4.1 ArrayOfString
 
 The <ArrayOfString> complex type is an array of strings.
 
@@ -1440,7 +1228,8 @@ Release: April 23, 2024
 
 16 / 67
 
-2.2.4.2  ArrayOfXmlNode
+
+##### 2.2.4.2 ArrayOfXmlNode
 
 The <ArrayOfXmlNode> complex type contains an array of XML elements, each of which is
 represented as an XML fragment. Each XML fragment is enclosed in the <Certificate> element.
@@ -1462,7 +1251,7 @@ Certificate: Any eXtensible Rights Markup Language, as specified in [XRML], cert
 
 that can be represented as a literal within an XML element in the protocol.
 
-2.2.4.3  VersionData
+##### 2.2.4.3 VersionData
 
 The VersionData complex type is used to represent the capability version of the requestor and the
 responder.
@@ -1510,26 +1299,27 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MaximumVersion: Specifies the highest capability version supported. The version data in this type
+
+MaximumVersion: Specifies the highest capability version supported. The version data in this type
 
 MUST be represented by a literal string and MUST conform to the format "a.b.c.d". Subversion
 value "a" MUST be the most major component of the version, value "b" MUST be the next most
 major  component, value "c" MUST be the next most major  components, and "d" MUST be the
 minor subversion value.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -1540,7 +1330,8 @@ Release: April 23, 2024
 
 18 / 67
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Rights Management Services (RMS): ISV Extension Protocol operates between an application and
 an RMS server. The initiator or requestor is the client for the protocol, and the responder is the server
@@ -1551,23 +1342,23 @@ other states required on the client side of this protocol. Calls made by the hig
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
-
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.3 Initialization
 
-3.1.4.1  Common SOAP Headers
+None.
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
+
+##### 3.1.4.1 Common SOAP Headers
 
 The interfaces of the Rights Management Services (RMS): ISV Extension Protocol use the same SOAP
 header for both requests and responses. The SOAP header for requests and responses to these
@@ -1605,7 +1396,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Response
+
+Response
 
 When responding to a requestor, including when responding with an error, the responder MUST
 specify the lowest capability version it can support as the <MinimumVersion> parameter. The
@@ -1614,7 +1406,7 @@ parameter. If the responder's maximum capability version is lower than the reque
 capability version, the requestor SHOULD resend its request and alter its request to conform to the
 capability version range specified by the responder.<3>
 
-3.1.4.2  Common Fault Codes
+##### 3.1.4.2 Common Fault Codes
 
 The RMS: ISV Extension Protocol notifies a requestor of application-level faults by generating SOAP
 fault code (as specified in [SOAP1.1] section 4.4). In the SOAP fault, the <faultcode> element
@@ -1650,21 +1442,21 @@ Microsoft.DigitalRightsManagement.Core.UnsupportedDataVersionException SOAP faul
 input element required for successful processing of the operation is set to NULL, the server SHOULD
 return a System.ArgumentNullException SOAP fault code.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Decommissioning Interface Server Details
+### 3.2 Decommissioning Interface Server Details
 
 The Decommissioning interface is used to extract the content key from a publishing license. The
 complex types, simple types, and elements described in this section are used in the Decomissioning
 Service.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1676,7 +1468,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RMSI].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1692,15 +1485,15 @@ Publishing license: An XrML 1.2 license that defines usage policy for protected 
 the content key with which that content is encrypted. The usage policy and content key in the
 publishing license are encrypted with the server's public key.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -1708,7 +1501,7 @@ Description
 
 AcquireContentKey Operation  Used to acquire a content key from a decommissioned RMS server.
 
-3.2.4.1  AcquireContentKey
+##### 3.2.4.1 AcquireContentKey
 
 In the AcquireContentKey operation, the requestor submits a publishing license and the server
 returns the content key from that publishing license.
@@ -1727,7 +1520,8 @@ Release: April 23, 2024
 
 21 / 67
 
-To perform the request validation, the server MUST validate the input parameters upon receiving an
+
+To perform the request validation, the server MUST validate the input parameters upon receiving an
 AcquireContentKey request and the server MUST be configured to accept decommissioning requests.
 
 If a request includes more than one publishing license, the server SHOULD ignore all but the first PL.
@@ -1770,7 +1564,7 @@ request.
 
 UnsignedIssuanceLicenseNoMatchingIssuedPrincipalException  None of the issued principals match this server.
 
-3.2.4.1.1 Messages
+###### 3.2.4.1.1 Messages
 
 Message
 
@@ -1782,7 +1576,7 @@ Contains a publishing license for a content access request.
 
 AcquireContentKeySoapOut  Contains the key used to decrypt the content.
 
-3.2.4.1.1.1  AcquireContentKeySoapIn
+###### 3.2.4.1.1.1 AcquireContentKeySoapIn
 
 The AcquireContentKeySoapIn message contains the publishing license for the protected content.
 
@@ -1799,7 +1593,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4.1.1.2  AcquireContentKeySoapOut
+
+###### 3.2.4.1.1.2 AcquireContentKeySoapOut
 
 The AcquireContentKeySoapOut message contains the content key used to decrypt the protected data
 corresponding to the publishing license.
@@ -1812,7 +1607,7 @@ AcquireContentKeyResponse: The <AcquireContentKeyResponse> element, as specified
 
 3.2.4.1.2.2.
 
-3.2.4.1.2 Elements
+###### 3.2.4.1.2 Elements
 
 Element
 
@@ -1824,7 +1619,7 @@ Contains the body of the request for the AcquireContentKey operation.
 
 <AcquireContentKeyResponse>  Contains the response to an AcquireContentKey request message.
 
-3.2.4.1.2.1  AcquireContentKey
+###### 3.2.4.1.2.1 AcquireContentKey
 
 The <AcquireContentKey> element contains the body of the request for the AcquireContentKey
 operation.
@@ -1846,7 +1641,7 @@ request. The array MUST contain at least one request for a content key. The arra
 more than one request for a content key. The server SHOULD only process the first element of the
 array.
 
-3.2.4.1.2.2  AcquireContentKeyResponse
+###### 3.2.4.1.2.2 AcquireContentKeyResponse
 
 The <AcquireContentKeyResponse> element contains a content key that corresponds to the
 publishing license submitted in the original AcquireContentKey request.
@@ -1867,11 +1662,12 @@ Release: April 23, 2024
 
 23 / 67
 
-AcquireContentKeyResult:  An array in which each element contains a content key to be returned
+
+AcquireContentKeyResult:  An array in which each element contains a content key to be returned
 to the requestor. The array is of the <ArrayOfAcquireContentKeyResponse> complex type as
 defined by the schema in section 3.2.4.1.3.3. The array MUST contain one element.
 
-3.2.4.1.3 Complex Types
+###### 3.2.4.1.3 Complex Types
 
 Complex Type
 
@@ -1892,7 +1688,7 @@ The parameters that are used to acquire a content key.
 
 The parameters returned from an AcquireContentKey operation.
 
-3.2.4.1.3.1  ArrayOfAcquireContentKeyParams
+###### 3.2.4.1.3.1 ArrayOfAcquireContentKeyParams
 
 The <ArrayOfAcquireContentKeyParams> complex type is an array that contains
 <AcquireContentKeyParams> elements. The array SHOULD contain at least one
@@ -1913,7 +1709,7 @@ AcquireContentKeyParams: An element that contains the parameters of the request.
 is of the <AcquireContentKeyParams> complex type as defined by the schema in section
 3.2.4.1.3.2.
 
-3.2.4.1.3.2  AcquireContentKeyParams
+###### 3.2.4.1.3.2 AcquireContentKeyParams
 
 The <AcquireContentKeyParams> complex type contains the publishing license for which the
 content key is being requested.
@@ -1929,7 +1725,7 @@ IssuanceLicense: An element that contains the publishing license that uses the <
 complex type, as defined in section 2.2.4.2. The format of the publishing license is described in
 the RMS: Client-to-Server Protocol Specification [MS-RMPR].
 
-3.2.4.1.3.3  ArrayOfAcquireContentKeyResponse
+###### 3.2.4.1.3.3 ArrayOfAcquireContentKeyResponse
 
 The <ArrayOfAcquireContentKeyResponse> complex type is an array that contains
 <AcquireContentKeyResponse> elements. The array MUST contain one
@@ -1942,7 +1738,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <s:complexType name="ArrayOfAcquireContentKeyResponse">
+
+ <s:complexType name="ArrayOfAcquireContentKeyResponse">
   <s:sequence>
      <s:element minOccurs="1" maxOccurs="unbounded"
        name="AcquireContentKeyResponse" nillable="true"
@@ -1954,7 +1751,7 @@ AcquireContentKeyResponse: An element that contains the content key in the respo
 element is of the <AcquireContentKeyResponse> complex type as defined by the schema in
 section 3.2.4.1.3.4.
 
-3.2.4.1.3.4  AcquireContentKeyResponse
+###### 3.2.4.1.3.4 AcquireContentKeyResponse
 
 The <AcquireContentKeyResponse> complex type contains the content key being requested.
 
@@ -1973,7 +1770,7 @@ ContentKeyType: The type of the key. This element is a string belonging to the <
 
 enumeration as defined by the schema in section 3.2.4.1.4.1.
 
-3.2.4.1.4 Simple Types
+###### 3.2.4.1.4 Simple Types
 
 Simple Type  Description
 
@@ -1981,7 +1778,7 @@ Simple Type  Description
 
 An enumeration of strings that describe the type of the key being returned.
 
-3.2.4.1.4.1  KeyType
+###### 3.2.4.1.4.1 KeyType
 
 The <KeyType> simple type is an enumeration of strings that describe the type of the key being
 returned. The <KeyType> MUST be one of the values in the enumeration.
@@ -2010,21 +1807,22 @@ Release: April 23, 2024
 
 25 / 67
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.3  Precertification Interface Server Details
+### 3.3 Precertification Interface Server Details
 
 The Precertification interface is used to retrieve a user's public key certificate from a server. The
 complex types, simple types, and elements that are described in this section are used in the
 Precertification Service.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2044,15 +1842,15 @@ RAC key pair: The key pair from the user's RAC.
 User public key certificate: A certificate similar to the RAC that contains only the user's public
 key. This certificate takes the format of the RAC minus the FEDERATIONPRINCIPALS node.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -2064,7 +1862,7 @@ Operation
 Allows an application to obtain the public key certificate of a user's RAC for prelicensing
 content.
 
-3.3.4.1  Precertify
+##### 3.3.4.1 Precertify
 
 In the Precertify operation, the requestor specifies a recipient's identity and the server returns that
 recipient's public key certificate.
@@ -2076,7 +1874,8 @@ Release: April 23, 2024
 
 26 / 67
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-RMSI].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2144,7 +1943,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Exception
+
+Exception
 
 ClusterDecommissionedException
 
@@ -2163,7 +1963,7 @@ inner exception.
 
 Access is unauthorized.
 
-3.3.4.1.1 Messages
+###### 3.3.4.1.1 Messages
 
 Message
 
@@ -2175,7 +1975,7 @@ Contains the identity of the user.
 
 PrecertifySoapOut  Contains the public key certificate of the user.
 
-3.3.4.1.1.1  PrecertifySoapIn
+###### 3.3.4.1.1.1 PrecertifySoapIn
 
 The PrecertifySoapIn message contains the identity of the user for which the application is requesting
 the public key certificate.
@@ -2186,7 +1986,7 @@ the public key certificate.
 
 Precertify: The <Precertify> element, as specified in section 3.3.4.1.2.1.
 
-3.3.4.1.1.2  PrecertifySoapOut
+###### 3.3.4.1.1.2 PrecertifySoapOut
 
 The <PrecertifySoapOut> message contains the public key certificate of the user for prelicensing
 content.
@@ -2197,7 +1997,7 @@ content.
 
 PrecertifyResponse: The <PrecertifyResponse> element, as specified in section 3.3.4.1.2.2.
 
-3.3.4.1.2 Elements
+###### 3.3.4.1.2 Elements
 
 Element
 
@@ -2209,7 +2009,7 @@ Contains the body of the request for the Precertify operation.
 
 <PrecertifyResponse>  Contains the response to a Precertify request message.
 
-3.3.4.1.2.1  Precertify
+###### 3.3.4.1.2.1 Precertify
 
 The <Precertify> element contains the body of the request for the Precertify operation.
 
@@ -2220,7 +2020,8 @@ Release: April 23, 2024
 
 28 / 67
 
- <s:element name="Precertify">
+
+ <s:element name="Precertify">
    <s:complexType>
      <s:sequence>
        <s:element minOccurs="0" maxOccurs="1" name="requestParams"
@@ -2237,7 +2038,7 @@ the array does not contain a request for a public key certificate or if it conta
 request for a public key certificate, the server SHOULD throw the
 Microsoft.DigitalRightsManagement.Core.DRMSArgumentException exception.
 
-3.3.4.1.2.2  PrecertifyResponse
+###### 3.3.4.1.2.2 PrecertifyResponse
 
 The <PrecertifyResponse> element contains the response to a Precertify request operation.
 
@@ -2254,7 +2055,7 @@ PrecertifyResult: An array in which each element contains a public key certifica
 the requestor. The array is of the <ArrayOfPrecertifyResponse> complex type as defined by the
 schema in section 3.3.4.1.3.4. The array MUST contain one element.
 
-3.3.4.1.3 Complex Types
+###### 3.3.4.1.3 Complex Types
 
 Complex Type
 
@@ -2280,7 +2081,7 @@ contain public key certificates.
 
 Contains the signed publishing license.
 
-3.3.4.1.3.1  ArrayOfPrecertifyParams
+###### 3.3.4.1.3.1 ArrayOfPrecertifyParams
 
 The <ArrayOfPrecertifyParams> complex type is an array that contains <PrecertifyParams> elements.
 The array MUST contain one <PrecertifyParams> element.
@@ -2297,14 +2098,15 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   </s:sequence>
+
+   </s:sequence>
  </s:complexType>
 
 PrecertifyParams: An element that contains the parameters of the request. The element is of the
 
 <PrecertifyParams> complex type as defined by the schema in section 3.3.4.1.3.2.
 
-3.3.4.1.3.2  PrecertifyParams
+###### 3.3.4.1.3.2 PrecertifyParams
 
 The <PrecertifyParams> complex type contains the user identity information. At least one of
 UserName or Identification MUST be present. Both MAY be present.
@@ -2323,9 +2125,9 @@ Identification: Contains further identification information for the user, and is
 
 complex type as defined by the schema in section 3.3.4.1.3.3.
 
-3.3.4.1.3.3
+###### 3.3.4.1.3.3 Identification
 
-Identification
+
 
 The <Identification> complex type contains information that identifies the target user.
 AuthenticationMode MUST be present.
@@ -2354,7 +2156,7 @@ Email: SHOULD be NULL.
 
 ProxyAddresses: SHOULD be NULL.
 
-3.3.4.1.3.4  ArrayOfPrecertifyResponse
+###### 3.3.4.1.3.4 ArrayOfPrecertifyResponse
 
 The <ArrayOfPrecertifyResponse> complex type is an array that contains <PrecertifyResponse>
 elements, which in turn contain public key certificates. The array MUST contain one
@@ -2367,7 +2169,8 @@ Release: April 23, 2024
 
 30 / 67
 
-  <s:complexType name="ArrayOfPrecertifyResponse">
+
+  <s:complexType name="ArrayOfPrecertifyResponse">
    <s:sequence>
      <s:element minOccurs="0" maxOccurs="unbounded" name="PrecertifyResponse"
        type="tns:PrecertifyResponse" />
@@ -2378,7 +2181,7 @@ PrecertifyResponse: An element that contains the public key certificate in the r
 element is of the <PrecertifyResponse> complex type as defined by the schema in section
 3.3.4.1.3.5.
 
-3.3.4.1.3.5  PrecertifyResponse
+###### 3.3.4.1.3.5 PrecertifyResponse
 
 The <PrecertifyResponse> complex type contains the signed publishing license.
 
@@ -2398,7 +2201,7 @@ Certificate: An element that contains the XML of the public key certificate. The
 is an RMS Account Certificate (RAC) without the FEDERATIONPRINCIPALS node. The format of
 the RAC is described in the RMS: Client-to-Server Protocol Specification [MS-RMPR].
 
-3.3.4.1.4 Simple Types
+###### 3.3.4.1.4 Simple Types
 
 Simple Type
 
@@ -2408,7 +2211,7 @@ Description
 
 bootstrapping.
 
-3.3.4.1.4.1  AuthenticationMode
+###### 3.3.4.1.4.1 AuthenticationMode
 
 The <AuthenticationMode> simple type is an enumeration of possible authentication modes used by
 the user during bootstrapping.
@@ -2421,7 +2224,7 @@ the user during bootstrapping.
 
 Windows: Specifies Windows Integrated Authentication (either [NTLM] or Kerberos).
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
@@ -2432,17 +2235,18 @@ Release: April 23, 2024
 
 31 / 67
 
-3.3.6  Other Local Events
+
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  Republishing Interface Server Details
+### 3.4 Republishing Interface Server Details
 
 The Republishing interface is used to create a new signed publishing license that has the same
 content key as an existing signed publishing license. The complex types and elements that are
 described in this section are used in the Republishing Service.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2458,15 +2262,15 @@ Publishing license: An XrML 1.2 license that defines the usage policy for protec
 that contains the content key with which that content is encrypted. The usage policy and content
 key in the publishing license are encrypted with the public key of the server.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -2476,7 +2280,7 @@ EditIssuanceLicense  Allows an application to obtain a new signed publishing lic
 
 content key as an existing publishing license.
 
-3.4.4.1  EditIssuanceLicense
+##### 3.4.4.1 EditIssuanceLicense
 
 In the EditIssuanceLicense operation, the requestor specifies a signed publishing license and an
 unsigned publishing license, and the server returns a signed publishing license.
@@ -2488,7 +2292,8 @@ Release: April 23, 2024
 
 32 / 67
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-RMSI].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2547,7 +2352,8 @@ Release: April 23, 2024
 
 33 / 67
 
-
+
+
 
 
 
@@ -2636,7 +2442,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Exception
+
+Exception
 
 Microsoft.DigitalRightsManagement.Licensing.InvalidOfficialRightsTemplateException
 
@@ -2662,7 +2469,7 @@ cannot
 process the
 request.
 
-3.4.4.1.1 Messages
+###### 3.4.4.1.1 Messages
 
 Message
 
@@ -2674,7 +2481,7 @@ Contains a signed publishing license and an unsigned publishing license.
 
 EditIssuanceLicenseSoapOut  Contains a new signed publishing license.
 
-3.4.4.1.1.1  EditIssuanceLicenseSoapIn
+###### 3.4.4.1.1.1 EditIssuanceLicenseSoapIn
 
 The EditIssuanceLicenseSoapIn message contains a signed publishing license and an unsigned
 publishing license.
@@ -2685,7 +2492,7 @@ publishing license.
 
 EditIssuanceLicense: The <EditIssuanceLicense> element, as specified in section 3.4.4.1.2.1.
 
-3.4.4.1.1.2  EditIssuanceLicenseSoapOut
+###### 3.4.4.1.1.2 EditIssuanceLicenseSoapOut
 
 The EditIssuanceLicenseSoapOut message contains a signed publishing license.
 
@@ -2697,7 +2504,7 @@ EditIssuanceLicenseResponse: The <EditIssuanceLicenseResponse> element, as speci
 
 section 3.4.4.1.2.2.
 
-3.4.4.1.2 Elements
+###### 3.4.4.1.2 Elements
 
 Element
 
@@ -2716,7 +2523,8 @@ Release: April 23, 2024
 
 35 / 67
 
-3.4.4.1.2.1  EditIssuanceLicense
+
+###### 3.4.4.1.2.1 EditIssuanceLicense
 
 The <EditIssuanceLicense> element contains the body of the request for the EditIssuanceLicense
 operation.
@@ -2735,7 +2543,7 @@ an individual request. The array is of the <ArrayOfEditIssuanceLicenseParams> co
 defined by the schema in section 3.4.4.1.3.1. The array MUST contain one request for a signed
 publishing license.
 
-3.4.4.1.2.2  EditIssuanceLicenseResponse
+###### 3.4.4.1.2.2 EditIssuanceLicenseResponse
 
 The <EditIssuanceLicenseResponse> element contains the response to an EditIssuanceLicense request
 operation.
@@ -2754,7 +2562,7 @@ to be returned to the requestor. The array is of the <ArrayOfEditIssuanceLicense
 complex type, as defined by the schema in section 3.4.4.1.3.3. The array MUST contain one
 element.
 
-3.4.4.1.3 Complex Types
+###### 3.4.4.1.3 Complex Types
 
 Complex Type
 
@@ -2777,7 +2585,7 @@ elements.
 
 Contains the signed publishing license.
 
-3.4.4.1.3.1  ArrayOfEditIssuanceLicenseParams
+###### 3.4.4.1.3.1 ArrayOfEditIssuanceLicenseParams
 
 The <ArrayOfEditIssuanceLicenseParams> complex type is an array that contains
 <EditIssuanceLicenseParams> elements. The array MUST contain exactly one
@@ -2792,7 +2600,8 @@ Release: April 23, 2024
 
 36 / 67
 
-   <s:sequence>
+
+   <s:sequence>
      <s:element minOccurs="0" maxOccurs="unbounded" name="EditIssuanceLicenseParams"
        nillable="true" type="tns:EditIssuanceLicenseParams" />
    </s:sequence>
@@ -2803,7 +2612,7 @@ EditIssuanceLicenseParams: An element that contains the parameters of the reques
 is of the <EditIssuanceLicenseParams> complex type, as defined by the schema in section
 3.4.4.1.3.2.
 
-3.4.4.1.3.2  EditIssuanceLicenseParams
+###### 3.4.4.1.3.2 EditIssuanceLicenseParams
 
 The <EditIssuanceLicenseParams> complex type contains the signed publishing license and the
 unsigned publishing license.
@@ -2835,7 +2644,7 @@ UnsignedIssuanceLicense: An XML string that contains the leaf certificate of the
 
 publishing license.
 
-3.4.4.1.3.3  ArrayOfEditIssuanceLicenseResponse
+###### 3.4.4.1.3.3 ArrayOfEditIssuanceLicenseResponse
 
 The <ArrayOfEditIssuanceLicenseResponse> complex type is an array that contains
 <EditIssuanceLicenseResponse> elements. The array MUST contain exactly one
@@ -2860,7 +2669,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.4.4.1.3.4  EditIssuanceLicenseResponse
+
+###### 3.4.4.1.3.4 EditIssuanceLicenseResponse
 
 The <EditIssuanceLicenseResponse> complex type contains a signed publishing license certificate
 chain.
@@ -2876,20 +2686,20 @@ CertificateChain: An element that contains the signed publishing license. The el
 
 <ArrayOfXmlNode> complex type as defined by the schema in section 2.2.4.2.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
-3.5  Prelicensing Interface Server Details
+### 3.5 Prelicensing Interface Server Details
 
 The Prelicensing interface is used to retrieve use licenses on behalf of recipients. The complex types
 and elements that are described in this section are used in the Prelicensing Service.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2907,11 +2717,11 @@ Use license: An XrML 1.2 license that authorizes a user to access a given protec
 
 that describes the applicable usage policies.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
@@ -2922,11 +2732,12 @@ Release: April 23, 2024
 
 38 / 67
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-RMSI].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 Operation
 
@@ -2934,7 +2745,7 @@ Description
 
 AcquirePreLicense  Allows an application to retrieve use licenses on behalf of recipients.
 
-3.5.4.1  AcquirePreLicense
+##### 3.5.4.1 AcquirePreLicense
 
 In the AcquirePreLicense operation, the requestor specifies a list of recipient email addresses and a
 publishing license, and the server returns a use license for each recipient.
@@ -2978,7 +2789,8 @@ Release: April 23, 2024
 
 39 / 67
 
-Once validation is complete, the server retrieves each user's RAC public key, evaluates the rights
+
+Once validation is complete, the server retrieves each user's RAC public key, evaluates the rights
 granted to the user by the IssuanceLicense, and generates a use license with a content key that is
 protected by the user's RAC public key. The process for generating a use license is defined in [MS-
 RMPR] section 3.4.4.1.
@@ -3020,7 +2832,7 @@ only service requests to the Decommissioning interface (section
 
 AcquirePreLicenseInvalidLicenseeException  The license specified in AcquirePreLicense is invalid.
 
-3.5.4.1.1 Messages
+###### 3.5.4.1.1 Messages
 
 Message
 
@@ -3032,7 +2844,7 @@ Contains the user email addresses and a publishing license.
 
 AcquirePreLicenseSoapOut  Contains the use license for each user.
 
-3.5.4.1.1.1  AcquirePreLicenseSoapIn
+###### 3.5.4.1.1.1 AcquirePreLicenseSoapIn
 
 The AcquirePreLicenseSoapIn message contains the user email addresses and a publishing license.
 
@@ -3042,7 +2854,7 @@ The AcquirePreLicenseSoapIn message contains the user email addresses and a publ
 
 AcquirePreLicense: The <AcquirePreLicense> element, as specified in section 3.5.4.1.2.1.
 
-3.5.4.1.1.2  AcquirePreLicenseSoapOut
+###### 3.5.4.1.1.2 AcquirePreLicenseSoapOut
 
 40 / 67
 
@@ -3051,7 +2863,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The AcquirePreLicenseSoapOut message contains the use license for each user.
+
+The AcquirePreLicenseSoapOut message contains the use license for each user.
 
  <wsdl:message name="AcquirePreLicenseSoapOut">
    <wsdl:part name="parameters" element="tns:AcquirePreLicenseResponse" />
@@ -3061,7 +2874,7 @@ AcquirePreLicenseResponse: The <AcquirePreLicenseResponse> element, as specified
 
 3.5.4.1.2.2.
 
-3.5.4.1.2 Elements
+###### 3.5.4.1.2 Elements
 
 Element
 
@@ -3073,7 +2886,7 @@ Contains the body of the request for the AcquirePreLicense operation.
 
 <AcquirePreLicenseResponse>  Contains the response to an AcquirePreLicense request message.
 
-3.5.4.1.2.1  AcquirePreLicense
+###### 3.5.4.1.2.1 AcquirePreLicense
 
 The <AcquirePreLicense> element contains the body of the request for the AcquirePreLicense
 operation.
@@ -3091,7 +2904,7 @@ RequestParams: An array in which each element contains all of the parameters tha
 an individual request. The array is of the <ArrayOfAcquirePreLicenseParams> element type, as
 defined by the schema in section 3.5.4.1.3.1.
 
-3.5.4.1.2.2  AcquirePreLicenseResponse
+###### 3.5.4.1.2.2 AcquirePreLicenseResponse
 
 The <AcquirePreLicenseResponse> element contains the response to an AcquirePreLicense request
 operation.
@@ -3110,7 +2923,7 @@ AcquirePreLicenseResult: An array in which each element contains a signed publis
 be returned to the requestor. The array is of the <ArrayOfAcquirePreLicenseResponse> complex
 type, as defined by the schema in 3.5.4.1.3.3.
 
-3.5.4.1.3 Complex Types
+###### 3.5.4.1.3 Complex Types
 
 [MS-RMSI] - v20240423
 Rights Management Services (RMS): ISV Extension Protocol
@@ -3119,7 +2932,8 @@ Release: April 23, 2024
 
 41 / 67
 
-Complex type
+
+Complex type
 
 Description
 
@@ -3146,7 +2960,7 @@ the server.
 Contains information about the error that occurred while generating a
 use license for a user.
 
-3.5.4.1.3.1  ArrayOfAcquirePreLicenseParams
+###### 3.5.4.1.3.1 ArrayOfAcquirePreLicenseParams
 
 The <ArrayOfAcquirePreLicenseParams> complex type is an array that contains
 <AcquirePreLicenseParams> elements.
@@ -3161,7 +2975,7 @@ The <ArrayOfAcquirePreLicenseParams> complex type is an array that contains
 AcquirePreLicenseParams: An element that contains the parameters of the request. The element is
 of the <AcquirePreLicenseParams> complex type, as defined by the schema in section 3.5.4.1.3.2.
 
-3.5.4.1.3.2  AcquirePreLicenseParams
+###### 3.5.4.1.3.2 AcquirePreLicenseParams
 
 The <AcquirePreLicenseParams> complex type contains an array of email addresses and a publishing
 license.
@@ -3198,9 +3012,10 @@ Release: April 23, 2024
 
 42 / 67
 
-ApplicationData: This field is currently unused and SHOULD be empty.
 
-3.5.4.1.3.3  ArrayOfAcquirePreLicenseResponse
+ApplicationData: This field is currently unused and SHOULD be empty.
+
+###### 3.5.4.1.3.3 ArrayOfAcquirePreLicenseResponse
 
 The <ArrayOfAcquirePreLicenseResponse> complex type is an array that contains
 <AcquirePreLicenseResponse> elements.
@@ -3215,7 +3030,7 @@ The <ArrayOfAcquirePreLicenseResponse> complex type is an array that contains
 AcquirePreLicenseResponse: An element that contains the response. The element is of the
 <AcquirePreLicenseResponse> complex type, as defined by the schema in 3.5.4.1.3.4.
 
-3.5.4.1.3.4  AcquirePreLicenseResponse
+###### 3.5.4.1.3.4 AcquirePreLicenseResponse
 
 The <AcquirePreLicenseResponse> complex type contains an array of use licenses and the licensor
 certificate chain of the server.
@@ -3243,7 +3058,7 @@ element is of the <ArrayOfXmlNode> complex type as defined by the schema in sect
 
 ReferenceCertificates: This field is currently unused and MUST be empty.
 
-3.5.4.1.3.5  AcquirePreLicenseException
+###### 3.5.4.1.3.5 AcquirePreLicenseException
 
 The <AcquirePreLicenseException> complex type contains information about the error that occurred
 while generating a use license for a user.
@@ -3263,17 +3078,18 @@ Release: April 23, 2024
 
 43 / 67
 
-ExceptionString: A string that contains the exception that occurred while generating a use license for
+
+ExceptionString: A string that contains the exception that occurred while generating a use license for
 
 a user.
 
 batchindex: An integer that corresponds to the index.
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 None.
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 None.
 
@@ -3284,16 +3100,17 @@ Release: April 23, 2024
 
 44 / 67
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-RMSI].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe operations as used in common scenarios to illustrate the function of
 the RMS: ISV Extension Protocol.
 
-4.1  Using Decommissioning to Remove Protection from Content
+### 4.1 Using Decommissioning to Remove Protection from Content
 
 An RMS server is placed in decommissioning mode so that RMS protection can be removed across the
 organization and all content can be decrypted:
@@ -3320,7 +3137,7 @@ usage policy.
 
 protection.
 
-4.2  Using Precertification to Pre-License Protected Content
+### 4.2 Using Precertification to Pre-License Protected Content
 
 After content has been protected by a publisher and distributed to recipients, each recipient typically
 makes a request to the RMS server in order to acquire a use license granting access to the content.
@@ -3336,7 +3153,8 @@ Release: April 23, 2024
 
 45 / 67
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-RMSI].images/page046-img01.png)
 ![Extracted image 2 from page 46]([MS-RMSI].images/page046-img02.png)
 <!-- /Extracted images from page 46 -->
@@ -3365,7 +3183,8 @@ Release: April 23, 2024
 
 46 / 67
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-RMSI].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3393,11 +3212,12 @@ Release: April 23, 2024
 
 47 / 67
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.1.1  Decommissioning Interface
+### 5.1 Security Considerations for Implementers
+
+#### 5.1.1 Decommissioning Interface
 
 The Decommissioning interface allows a requestor to retrieve the content key for protected content
 regardless of whether the requestor is granted access to the content by its usage policy. It is intended
@@ -3405,7 +3225,7 @@ only as an emergency measure in case RMS protection must be removed from all con
 therefore strongly recommended that the Decommissioning interface not be exposed during normal
 server operation, and reserved only for use when absolutely necessary.<6>
 
-5.1.2  Precertification Interface
+#### 5.1.2 Precertification Interface
 
 The Precertification interface might involve communicating a recipient's email address between the
 requestor and the RMS Server. This can be considered sensitive or private information. An attacker
@@ -3417,7 +3237,7 @@ recipient a target of another attack.
 It is strongly recommended that communication be done over HTTPS instead of HTTP so that this
 traffic is protected.
 
-5.1.3  Republishing Interface
+#### 5.1.3 Republishing Interface
 
 The Republishing interface allows a requestor to alter the rights granted by any publishing license
 that allows republishing. This enables the requestor to gain access to content that is protected by the
@@ -3426,7 +3246,7 @@ publishing license or to grant other users access to that content.
 It is strongly recommended that access to this interface be limited to a set of trusted users or
 machines.
 
-5.1.4  Prelicensing Interface
+#### 5.1.4 Prelicensing Interface
 
 The Prelicensing interface involves the communication of a recipient's email address between the
 requestor and the RMS Server. This information could be considered sensitive or private. An attacker
@@ -3438,7 +3258,7 @@ recipient a target of another attack.
 It is strongly recommended that communication be transported over HTTPS, rather than HTTP, to
 ensure traffic protection.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3449,11 +3269,12 @@ Release: April 23, 2024
 
 48 / 67
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This section contains the full WSDL for both interfaces of the RMS: ISV Extension Protocol.
 
-6.1  Decommissioning Interface
+### 6.1 Decommissioning Interface
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -3524,7 +3345,8 @@ Release: April 23, 2024
 
 49 / 67
 
-             type="tns:AcquireContentKeyResponse" />
+
+             type="tns:AcquireContentKeyResponse" />
          </s:sequence>
        </s:complexType>
        <s:complexType name="AcquireContentKeyResponse">
@@ -3601,7 +3423,8 @@ Release: April 23, 2024
 
 50 / 67
 
-       <soap12:operation
+
+       <soap12:operation
          soapAction="http://microsoft.com/DRM/DecommissionService/
          AcquireContentKey" style="document" />
        <wsdl:input>
@@ -3630,7 +3453,7 @@ Release: April 23, 2024
    </wsdl:service>
  </wsdl:definitions>
 
-6.2  Precertification Interface
+### 6.2 Precertification Interface
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -3676,7 +3499,8 @@ Release: April 23, 2024
 
 51 / 67
 
-         </s:sequence>
+
+         </s:sequence>
        </s:complexType>
        <s:complexType name="Identification">
          <s:sequence>
@@ -3753,7 +3577,8 @@ Release: April 23, 2024
 
 52 / 67
 
-   </wsdl:message>
+
+   </wsdl:message>
    <wsdl:portType name="PrecertificationWebServiceSoap">
      <wsdl:operation name="Precertify">
        <wsdl:input message="tns:PrecertifySoapIn" />
@@ -3812,7 +3637,7 @@ Release: April 23, 2024
    </wsdl:service>
  </wsdl:definitions>
 
-6.3  Republishing Interface
+### 6.3 Republishing Interface
 
  <?xml version="1.0" encoding="utf-8"?>
  <wsdl:definitions
@@ -3828,7 +3653,8 @@ Release: April 23, 2024
 
 53 / 67
 
-    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/"
     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
     xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
@@ -3905,7 +3731,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           </s:element>
+
+           </s:element>
          </s:sequence>
        </s:complexType>
        <s:element name="VersionData" type="tns:VersionData" />
@@ -3982,12 +3809,13 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <soap12:address location="http://luna/_wmcs/licensing/editissuancelicense.asmx" />
+
+       <soap12:address location="http://luna/_wmcs/licensing/editissuancelicense.asmx" />
      </wsdl:port>
    </wsdl:service>
  </wsdl:definitions>
 
-6.4  Prelicensing Interface
+### 6.4 Prelicensing Interface
 
  <?xml version="1.0" encoding="utf-8"?>
    <wsdl:definitions
@@ -4055,7 +3883,8 @@ Release: April 23, 2024
 
 56 / 67
 
-             <s:element minOccurs="0" maxOccurs="1" name="AcquireLicenseResult"
+
+             <s:element minOccurs="0" maxOccurs="1" name="AcquireLicenseResult"
 type="tns:ArrayOfAcquireLicenseResponse" />
            </s:sequence>
          </s:complexType>
@@ -4132,7 +3961,8 @@ Release: April 23, 2024
 
 57 / 67
 
-       </s:element>
+
+       </s:element>
        <s:complexType name="ArrayOfAcquirePreLicenseResponse">
          <s:sequence>
            <s:element minOccurs="0" maxOccurs="unbounded" name="AcquirePreLicenseResponse"
@@ -4209,7 +4039,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </wsdl:input>
+
+       </wsdl:input>
        <wsdl:output>
          <soap:body use="literal" />
          <soap:header message="tns:AcquirePreLicenseVersionData" part="VersionData"
@@ -4265,7 +4096,8 @@ Release: April 23, 2024
 
 59 / 67
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4335,7 +4167,8 @@ Release: April 23, 2024
 
 60 / 67
 
-<5> Section 3.3.4.1.3.3:  <AuthenticationMode> is Windows.
+
+<5> Section 3.3.4.1.3.3:  <AuthenticationMode> is Windows.
 
 <6> Section 5.1.1: RMS Server disables the Decommissioning interface by default. If it is enabled by
 an administrator, all regular functions of the RMS server are disabled. Reverting from a
@@ -4348,7 +4181,8 @@ Release: April 23, 2024
 
 61 / 67
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4392,7 +4226,8 @@ Release: April 23, 2024
 
 62 / 67
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4559,7 +4394,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   Precertification interface server (section 3.1.3 19,
+
+   Precertification interface server (section 3.1.3 19,
 
          local events (section 3.1.6 20, section 3.5.6
 
@@ -4745,7 +4581,8 @@ Message processing
 
 64 / 67
 
-      fault codes 20
+
+      fault codes 20
       overview 21
       SOAP headers 19
    Precertification interface server
@@ -4908,7 +4745,8 @@ Republishing
 
 65 / 67
 
-            fault codes 20
+
+            fault codes 20
             overview 32
             SOAP headers 19
          overview 32
@@ -5090,7 +4928,8 @@ Rights Management Services (RMS): ISV Extension Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Transport - message 15
+
+Transport - message 15
 Types
    complex 16
    simple 18

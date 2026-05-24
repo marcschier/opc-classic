@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 233
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: September 16, 2024
 
 2 / 233
 
-Date
+
+Date
 
 Revision
 History
@@ -550,7 +552,8 @@ Release: September 16, 2024
 
 3 / 233
 
-Date
+
+Date
 
 Revision
 History
@@ -608,528 +611,243 @@ Release: September 16, 2024
 
 4 / 233
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Simple Data Types](#221-simple-data-types)
+      - [2.2.1.1 SRVSVC_HANDLE](#2211-srvsvchandle)
+      - [2.2.1.2 SHARE_DEL_HANDLE](#2212-sharedelhandle)
+      - [2.2.1.3 PSHARE_DEL_HANDLE](#2213-psharedelhandle)
+    - [2.2.2 Constants](#222-constants)
+      - [2.2.2.1 Sessionclient Types](#2221-sessionclient-types)
+      - [2.2.2.2 MAX_PREFERRED_LENGTH](#2222-maxpreferredlength)
+      - [2.2.2.3 Session User Flags](#2223-session-user-flags)
+      - [2.2.2.4 Share Types](#2224-share-types)
+      - [2.2.2.5 Client-Side Caching (CSC) States](#2225-client-side-caching-csc-states)
+      - [2.2.2.6 Platform IDs](#2226-platform-ids)
+      - [2.2.2.7 Software Type Flags](#2227-software-type-flags)
+      - [2.2.2.8 Name Types](#2228-name-types)
+      - [2.2.2.9 Path Types](#2229-path-types)
+      - [2.2.2.10 Common Error Codes](#22210-common-error-codes)
+      - [2.2.2.11 SHARE_INFO Parameter Error Codes](#22211-shareinfo-parameter-error-codes)
+      - [2.2.2.12 SERVER_INFO Parameter Error Codes](#22212-serverinfo-parameter-error-codes)
+      - [2.2.2.13 DFS Entry Flags](#22213-dfs-entry-flags)
+    - [2.2.3 Unions](#223-unions)
+      - [2.2.3.1 CONNECT_ENUM_UNION](#2231-connectenumunion)
+      - [2.2.3.2 FILE_ENUM_UNION](#2232-fileenumunion)
+      - [2.2.3.3 FILE_INFO](#2233-fileinfo)
+      - [2.2.3.4 SESSION_ENUM_UNION](#2234-sessionenumunion)
+      - [2.2.3.5 SHARE_ENUM_UNION](#2235-shareenumunion)
+      - [2.2.3.6 SHARE_INFO](#2236-shareinfo)
+      - [2.2.3.7 SERVER_INFO](#2237-serverinfo)
+      - [2.2.3.8 SERVER_XPORT_ENUM_UNION](#2238-serverxportenumunion)
+      - [2.2.3.9 TRANSPORT_INFO](#2239-transportinfo)
+      - [2.2.3.10 SERVER_ALIAS_INFO](#22310-serveraliasinfo)
+    - [2.2.4 Structures](#224-structures)
+      - [2.2.4.1 CONNECTION_INFO_0](#2241-connectioninfo0)
+      - [2.2.4.2 CONNECTION_INFO_1](#2242-connectioninfo1)
+      - [2.2.4.3 CONNECT_INFO_0_CONTAINER](#2243-connectinfo0container)
+      - [2.2.4.4 CONNECT_INFO_1_CONTAINER](#2244-connectinfo1container)
+      - [2.2.4.5 CONNECT_ENUM_STRUCT](#2245-connectenumstruct)
+      - [2.2.4.6 FILE_INFO_2](#2246-fileinfo2)
+      - [2.2.4.7 FILE_INFO_3](#2247-fileinfo3)
+      - [2.2.4.8 FILE_INFO_2_CONTAINER](#2248-fileinfo2container)
+      - [2.2.4.9 FILE_INFO_3_CONTAINER](#2249-fileinfo3container)
+      - [2.2.4.10 FILE_ENUM_STRUCT](#22410-fileenumstruct)
+      - [2.2.4.11 SESSION_INFO_0](#22411-sessioninfo0)
+      - [2.2.4.12 SESSION_INFO_1](#22412-sessioninfo1)
+      - [2.2.4.13 SESSION_INFO_2](#22413-sessioninfo2)
+      - [2.2.4.14 SESSION_INFO_10](#22414-sessioninfo10)
+      - [2.2.4.15 SESSION_INFO_502](#22415-sessioninfo502)
+      - [2.2.4.16 SESSION_INFO_0_CONTAINER](#22416-sessioninfo0container)
+      - [2.2.4.17 SESSION_INFO_1_CONTAINER](#22417-sessioninfo1container)
+      - [2.2.4.18 SESSION_INFO_2_CONTAINER](#22418-sessioninfo2container)
+      - [2.2.4.19 SESSION_INFO_10_CONTAINER](#22419-sessioninfo10container)
+      - [2.2.4.20 SESSION_INFO_502_CONTAINER](#22420-sessioninfo502container)
+      - [2.2.4.21 SESSION_ENUM_STRUCT](#22421-sessionenumstruct)
+      - [2.2.4.22 SHARE_INFO_0](#22422-shareinfo0)
+      - [2.2.4.23 SHARE_INFO_1](#22423-shareinfo1)
+      - [2.2.4.24 SHARE_INFO_2](#22424-shareinfo2)
+      - [2.2.4.25 SHARE_INFO_501](#22425-shareinfo501)
+      - [2.2.4.26 SHARE_INFO_502_I](#22426-shareinfo502i)
+      - [2.2.4.27 SHARE_INFO_503_I](#22427-shareinfo503i)
+      - [2.2.4.28 SHARE_INFO_1004](#22428-shareinfo1004)
+      - [2.2.4.29 SHARE_INFO_1005](#22429-shareinfo1005)
+      - [2.2.4.30 SHARE_INFO_1006](#22430-shareinfo1006)
+      - [2.2.4.31 SHARE_INFO_1501_I](#22431-shareinfo1501i)
+      - [2.2.4.32 SHARE_INFO_0_CONTAINER](#22432-shareinfo0container)
+      - [2.2.4.33 SHARE_INFO_1_CONTAINER](#22433-shareinfo1container)
+      - [2.2.4.34 SHARE_INFO_2_CONTAINER](#22434-shareinfo2container)
+      - [2.2.4.35 SHARE_INFO_501_CONTAINER](#22435-shareinfo501container)
+      - [2.2.4.36 SHARE_INFO_502_CONTAINER](#22436-shareinfo502container)
+      - [2.2.4.37 SHARE_INFO_503_CONTAINER](#22437-shareinfo503container)
+      - [2.2.4.38 SHARE_ENUM_STRUCT](#22438-shareenumstruct)
+      - [2.2.4.39 STAT_SERVER_0](#22439-statserver0)
+      - [2.2.4.40 SERVER_INFO_100](#22440-serverinfo100)
+      - [2.2.4.41 SERVER_INFO_101](#22441-serverinfo101)
+      - [2.2.4.42 SERVER_INFO_102](#22442-serverinfo102)
+      - [2.2.4.43 SERVER_INFO_103](#22443-serverinfo103)
+      - [2.2.4.44 SERVER_INFO_502](#22444-serverinfo502)
+      - [2.2.4.45 SERVER_INFO_503](#22445-serverinfo503)
+      - [2.2.4.46 SERVER_INFO_599](#22446-serverinfo599)
+      - [2.2.4.47 SERVER_INFO_1005](#22447-serverinfo1005)
+      - [2.2.4.48 SERVER_INFO_1107](#22448-serverinfo1107)
+      - [2.2.4.49 SERVER_INFO_1010](#22449-serverinfo1010)
+      - [2.2.4.50 SERVER_INFO_1016](#22450-serverinfo1016)
+      - [2.2.4.51 SERVER_INFO_1017](#22451-serverinfo1017)
+      - [2.2.4.52 SERVER_INFO_1018](#22452-serverinfo1018)
+      - [2.2.4.53 SERVER_INFO_1501](#22453-serverinfo1501)
+      - [2.2.4.54 SERVER_INFO_1502](#22454-serverinfo1502)
+      - [2.2.4.55 SERVER_INFO_1503](#22455-serverinfo1503)
+      - [2.2.4.56 SERVER_INFO_1506](#22456-serverinfo1506)
+      - [2.2.4.57 SERVER_INFO_1510](#22457-serverinfo1510)
+      - [2.2.4.58 SERVER_INFO_1511](#22458-serverinfo1511)
+      - [2.2.4.59 SERVER_INFO_1512](#22459-serverinfo1512)
+      - [2.2.4.60 SERVER_INFO_1513](#22460-serverinfo1513)
+      - [2.2.4.61 SERVER_INFO_1514](#22461-serverinfo1514)
+      - [2.2.4.62 SERVER_INFO_1515](#22462-serverinfo1515)
+      - [2.2.4.63 SERVER_INFO_1516](#22463-serverinfo1516)
+      - [2.2.4.64 SERVER_INFO_1518](#22464-serverinfo1518)
+      - [2.2.4.65 SERVER_INFO_1523](#22465-serverinfo1523)
+      - [2.2.4.66 SERVER_INFO_1528](#22466-serverinfo1528)
+      - [2.2.4.67 SERVER_INFO_1529](#22467-serverinfo1529)
+      - [2.2.4.68 SERVER_INFO_1530](#22468-serverinfo1530)
+      - [2.2.4.69 SERVER_INFO_1533](#22469-serverinfo1533)
+      - [2.2.4.70 SERVER_INFO_1534](#22470-serverinfo1534)
+      - [2.2.4.71 SERVER_INFO_1535](#22471-serverinfo1535)
+      - [2.2.4.72 SERVER_INFO_1536](#22472-serverinfo1536)
+      - [2.2.4.73 SERVER_INFO_1538](#22473-serverinfo1538)
+      - [2.2.4.74 SERVER_INFO_1539](#22474-serverinfo1539)
+      - [2.2.4.75 SERVER_INFO_1540](#22475-serverinfo1540)
+      - [2.2.4.76 SERVER_INFO_1541](#22476-serverinfo1541)
+      - [2.2.4.77 SERVER_INFO_1542](#22477-serverinfo1542)
+      - [2.2.4.78 SERVER_INFO_1543](#22478-serverinfo1543)
+      - [2.2.4.79 SERVER_INFO_1544](#22479-serverinfo1544)
+      - [2.2.4.80 SERVER_INFO_1545](#22480-serverinfo1545)
+      - [2.2.4.81 SERVER_INFO_1546](#22481-serverinfo1546)
+      - [2.2.4.82 SERVER_INFO_1547](#22482-serverinfo1547)
+      - [2.2.4.83 SERVER_INFO_1548](#22483-serverinfo1548)
+      - [2.2.4.84 SERVER_INFO_1549](#22484-serverinfo1549)
+      - [2.2.4.85 SERVER_INFO_1550](#22485-serverinfo1550)
+      - [2.2.4.86 SERVER_INFO_1552](#22486-serverinfo1552)
+      - [2.2.4.87 SERVER_INFO_1553](#22487-serverinfo1553)
+      - [2.2.4.88 SERVER_INFO_1554](#22488-serverinfo1554)
+      - [2.2.4.89 SERVER_INFO_1555](#22489-serverinfo1555)
+      - [2.2.4.90 SERVER_INFO_1556](#22490-serverinfo1556)
+      - [2.2.4.91 DISK_INFO](#22491-diskinfo)
+      - [2.2.4.92 DISK_ENUM_CONTAINER](#22492-diskenumcontainer)
+      - [2.2.4.93 SERVER_TRANSPORT_INFO_0](#22493-servertransportinfo0)
+      - [2.2.4.94 SERVER_TRANSPORT_INFO_1](#22494-servertransportinfo1)
+      - [2.2.4.95 SERVER_TRANSPORT_INFO_2](#22495-servertransportinfo2)
+      - [2.2.4.96 SERVER_TRANSPORT_INFO_3](#22496-servertransportinfo3)
+      - [2.2.4.97 SERVER_XPORT_INFO_0_CONTAINER](#22497-serverxportinfo0container)
+      - [2.2.4.98 SERVER_XPORT_INFO_1_CONTAINER](#22498-serverxportinfo1container)
+      - [2.2.4.99 SERVER_XPORT_INFO_2_CONTAINER](#22499-serverxportinfo2container)
+      - [2.2.4.100 SERVER_XPORT_INFO_3_CONTAINER](#224100-serverxportinfo3container)
+      - [2.2.4.101 SERVER_XPORT_ENUM_STRUCT](#224101-serverxportenumstruct)
+      - [2.2.4.102 SERVER_ALIAS_INFO_0](#224102-serveraliasinfo0)
+      - [2.2.4.103 SERVER_ALIAS_INFO_0_CONTAINER](#224103-serveraliasinfo0container)
+      - [2.2.4.104 SERVER_ALIAS_ENUM_STRUCT](#224104-serveraliasenumstruct)
+      - [2.2.4.105 TIME_OF_DAY_INFO](#224105-timeofdayinfo)
+      - [2.2.4.106 ADT_SECURITY_DESCRIPTOR](#224106-adtsecuritydescriptor)
+      - [2.2.4.107 NET_DFS_ENTRY_ID](#224107-netdfsentryid)
+      - [2.2.4.108 NET_DFS_ENTRY_ID_CONTAINER](#224108-netdfsentryidcontainer)
+      - [2.2.4.109 DFS_SITENAME_INFO](#224109-dfssitenameinfo)
+      - [2.2.4.110 DFS_SITELIST_INFO](#224110-dfssitelistinfo)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.4.12 and section 3.1.4.15.](#31412-and-section-31415)
+      - [3.1.4.13 NetrShareDelSticky (Opnum 19)](#31413-netrsharedelsticky-opnum-19)
+      - [3.1.4.14 NetrShareDelStart (Opnum 37)](#31414-netrsharedelstart-opnum-37)
+      - [3.1.4.15 NetrShareDelCommit (Opnum 38)](#31415-netrsharedelcommit-opnum-38)
+      - [3.1.4.16 NetrShareCheck (Opnum 20)](#31416-netrsharecheck-opnum-20)
+      - [3.1.4.17 NetrServerGetInfo (Opnum 21)](#31417-netrservergetinfo-opnum-21)
+      - [3.1.4.18 NetrServerSetInfo (Opnum 22)](#31418-netrserversetinfo-opnum-22)
+      - [3.1.4.19 NetrServerDiskEnum (Opnum 23)](#31419-netrserverdiskenum-opnum-23)
+      - [3.1.4.20 NetrServerStatisticsGet (Opnum 24)](#31420-netrserverstatisticsget-opnum-24)
+      - [3.1.4.21 NetrRemoteTOD (Opnum 28)](#31421-netrremotetod-opnum-28)
+      - [3.1.4.22 NetrServerTransportAdd (Opnum 25)](#31422-netrservertransportadd-opnum-25)
+      - [3.1.4.23 NetrServerTransportAddEx (Opnum 41)](#31423-netrservertransportaddex-opnum-41)
+      - [3.1.4.24 NetrServerTransportEnum (Opnum 26)](#31424-netrservertransportenum-opnum-26)
+      - [3.1.4.25 NetrServerTransportDel (Opnum 27)](#31425-netrservertransportdel-opnum-27)
+      - [3.1.4.26 NetrServerTransportDelEx (Opnum 53)](#31426-netrservertransportdelex-opnum-53)
+      - [3.1.4.27 NetrpGetFileSecurity (Opnum 39)](#31427-netrpgetfilesecurity-opnum-39)
+      - [3.1.4.28 NetrpSetFileSecurity (Opnum 40)](#31428-netrpsetfilesecurity-opnum-40)
+      - [3.1.4.29 NetprPathType (Opnum 30)](#31429-netprpathtype-opnum-30)
+      - [3.1.4.30 NetprPathCanonicalize (Opnum 31)](#31430-netprpathcanonicalize-opnum-31)
+      - [3.1.4.31 NetprPathCompare (Opnum 32)](#31431-netprpathcompare-opnum-32)
+      - [3.1.4.32 NetprNameValidate (Opnum 33)](#31432-netprnamevalidate-opnum-33)
+      - [3.1.4.33 NetprNameCanonicalize (Opnum 34)](#31433-netprnamecanonicalize-opnum-34)
+      - [3.1.4.34 NetprNameCompare (Opnum 35)](#31434-netprnamecompare-opnum-35)
+      - [3.1.4.35 NetrDfsGetVersion (Opnum 43)](#31435-netrdfsgetversion-opnum-43)
+      - [3.1.4.36 NetrDfsCreateLocalPartition (Opnum 44)](#31436-netrdfscreatelocalpartition-opnum-44)
+      - [3.1.4.37 NetrDfsDeleteLocalPartition (Opnum 45)](#31437-netrdfsdeletelocalpartition-opnum-45)
+      - [3.1.4.38 NetrDfsSetLocalVolumeState (Opnum 46)](#31438-netrdfssetlocalvolumestate-opnum-46)
+      - [3.1.4.39 NetrDfsCreateExitPoint (Opnum 48)](#31439-netrdfscreateexitpoint-opnum-48)
+      - [3.1.4.40 NetrDfsModifyPrefix (Opnum 50)](#31440-netrdfsmodifyprefix-opnum-50)
+      - [3.1.4.41 NetrDfsDeleteExitPoint (Opnum 49)](#31441-netrdfsdeleteexitpoint-opnum-49)
+      - [3.1.4.42 NetrDfsFixLocalVolume (Opnum 51)](#31442-netrdfsfixlocalvolume-opnum-51)
+      - [3.1.4.43 NetrDfsManagerReportSiteInfo (Opnum 52)](#31443-netrdfsmanagerreportsiteinfo-opnum-52)
+      - [3.1.4.44 NetrServerAliasAdd (Opnum 54)](#31444-netrserveraliasadd-opnum-54)
+      - [3.1.4.45 NetrServerAliasEnum (Opnum 55)](#31445-netrserveraliasenum-opnum-55)
+      - [3.1.4.46 NetrServerAliasDel (Opnum 56)](#31446-netrserveraliasdel-opnum-56)
+      - [3.1.4.47 NetrShareDelEx (Opnum 57)](#31447-netrsharedelex-opnum-57)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 Server Looks Up Shares](#3161-server-looks-up-shares)
+      - [3.1.6.2 Server Registers a New Session](#3162-server-registers-a-new-session)
+      - [3.1.6.3 Server Deregisters a Session](#3163-server-deregisters-a-session)
+      - [3.1.6.4 Server Registers a New Open](#3164-server-registers-a-new-open)
+      - [3.1.6.5 Server Deregisters an Open](#3165-server-deregisters-an-open)
+      - [3.1.6.6 Server Registers a New Treeconnect](#3166-server-registers-a-new-treeconnect)
+      - [3.1.6.7 Server Deregisters a Treeconnect](#3167-server-deregisters-a-treeconnect)
+      - [3.1.6.8 Server Normalizes a ServerName](#3168-server-normalizes-a-servername)
+      - [3.1.6.9 Local Application Enables Advertising a Service](#3169-local-application-enables-advertising-a-service)
+      - [3.1.6.10 Local Application Disables Advertising a Service](#31610-local-application-disables-advertising-a-service)
+      - [3.1.6.11 Server Queries Existing Services](#31611-server-queries-existing-services)
+      - [3.1.6.12 Server Service Terminates](#31612-server-service-terminates)
+      - [3.1.6.13 Local Application Pauses or Resumes the CIFS Server](#31613-local-application-pauses-or-resumes-the-cifs-server)
+      - [3.1.6.14 Server Notifies Completion of Initialization](#31614-server-notifies-completion-of-initialization)
+      - [3.1.6.15 Server Notifies Current Uses of a Share](#31615-server-notifies-current-uses-of-a-share)
+      - [3.1.6.16 Server Updates Connection Count on a Transport](#31616-server-updates-connection-count-on-a-transport)
+      - [3.1.6.17 Server Looks Up Null Session Pipes](#31617-server-looks-up-null-session-pipes)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of ResumeHandle](#41-example-of-resumehandle)
+  - [4.2 Two-Phase Share Deletion](#42-two-phase-share-deletion)
+  - [4.3 Adding a Scoped Share With an Alias to a Server](#43-adding-a-scoped-share-with-an-alias-to-a-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-Simple Data Types ...................................................................................... 15
-SRVSVC_HANDLE .................................................................................. 15
-SHARE_DEL_HANDLE ............................................................................ 15
-PSHARE_DEL_HANDLE ........................................................................... 16
-Constants .................................................................................................. 16
-Sessionclient Types ............................................................................... 16
-2.2.2.1
-MAX_PREFERRED_LENGTH ..................................................................... 16
-2.2.2.2
-Session User Flags ................................................................................ 16
-2.2.2.3
-Share Types ......................................................................................... 16
-2.2.2.4
-Client-Side Caching (CSC) States ............................................................ 17
-2.2.2.5
-Platform IDs ......................................................................................... 18
-2.2.2.6
-Software Type Flags .............................................................................. 18
-2.2.2.7
-Name Types ......................................................................................... 20
-2.2.2.8
-Path Types ........................................................................................... 21
-2.2.2.9
-Common Error Codes ............................................................................ 23
-2.2.2.10
-SHARE_INFO Parameter Error Codes ....................................................... 24
-2.2.2.11
-2.2.2.12
-SERVER_INFO Parameter Error Codes ..................................................... 25
-2.2.2.13  DFS Entry Flags .................................................................................... 29
-Unions....................................................................................................... 30
-CONNECT_ENUM_UNION ....................................................................... 30
-FILE_ENUM_UNION ............................................................................... 30
-FILE_INFO ........................................................................................... 30
-SESSION_ENUM_UNION ........................................................................ 31
-SHARE_ENUM_UNION ........................................................................... 31
-SHARE_INFO ........................................................................................ 32
-SERVER_INFO ...................................................................................... 33
-SERVER_XPORT_ENUM_UNION ............................................................... 37
-TRANSPORT_INFO ................................................................................ 38
-SERVER_ALIAS_INFO ............................................................................ 38
-Structures ................................................................................................. 39
-CONNECTION_INFO_0 ........................................................................... 39
-CONNECTION_INFO_1 ........................................................................... 39
-CONNECT_INFO_0_CONTAINER .............................................................. 39
-CONNECT_INFO_1_CONTAINER .............................................................. 40
-CONNECT_ENUM_STRUCT ...................................................................... 40
-FILE_INFO_2 ........................................................................................ 41
-FILE_INFO_3 ........................................................................................ 41
-FILE_INFO_2_CONTAINER ..................................................................... 42
-FILE_INFO_3_CONTAINER ..................................................................... 42
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-
-2.2.4
-
-2.2.3
-
-[MS-SRVS] - v20240916
-Server Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 233
-
-2.2.4.10
-2.2.4.11
-2.2.4.12
-2.2.4.13
-2.2.4.14
-2.2.4.15
-2.2.4.16
-2.2.4.17
-2.2.4.18
-2.2.4.19
-2.2.4.20
-2.2.4.21
-2.2.4.22
-2.2.4.23
-2.2.4.24
-2.2.4.25
-2.2.4.26
-2.2.4.27
-2.2.4.28
-2.2.4.29
-2.2.4.30
-2.2.4.31
-2.2.4.32
-2.2.4.33
-2.2.4.34
-2.2.4.35
-2.2.4.36
-2.2.4.37
-2.2.4.38
-2.2.4.39
-2.2.4.40
-2.2.4.41
-2.2.4.42
-2.2.4.43
-2.2.4.44
-2.2.4.45
-2.2.4.46
-2.2.4.47
-2.2.4.48
-2.2.4.49
-2.2.4.50
-2.2.4.51
-2.2.4.52
-2.2.4.53
-2.2.4.54
-2.2.4.55
-2.2.4.56
-2.2.4.57
-2.2.4.58
-2.2.4.59
-2.2.4.60
-2.2.4.61
-2.2.4.62
-2.2.4.63
-2.2.4.64
-2.2.4.65
-2.2.4.66
-2.2.4.67
-
-FILE_ENUM_STRUCT ............................................................................. 42
-SESSION_INFO_0 ................................................................................. 43
-SESSION_INFO_1 ................................................................................. 43
-SESSION_INFO_2 ................................................................................. 44
-SESSION_INFO_10 ............................................................................... 44
-SESSION_INFO_502 .............................................................................. 45
-SESSION_INFO_0_CONTAINER ............................................................... 45
-SESSION_INFO_1_CONTAINER ............................................................... 46
-SESSION_INFO_2_CONTAINER ............................................................... 46
-SESSION_INFO_10_CONTAINER ............................................................. 46
-SESSION_INFO_502_CONTAINER ........................................................... 47
-SESSION_ENUM_STRUCT ...................................................................... 47
-SHARE_INFO_0 .................................................................................... 47
-SHARE_INFO_1 .................................................................................... 48
-SHARE_INFO_2 .................................................................................... 48
-SHARE_INFO_501 ................................................................................. 48
-SHARE_INFO_502_I .............................................................................. 49
-SHARE_INFO_503_I .............................................................................. 50
-SHARE_INFO_1004 ............................................................................... 51
-SHARE_INFO_1005 ............................................................................... 51
-SHARE_INFO_1006 ............................................................................... 52
-SHARE_INFO_1501_I ............................................................................ 52
-SHARE_INFO_0_CONTAINER .................................................................. 52
-SHARE_INFO_1_CONTAINER .................................................................. 53
-SHARE_INFO_2_CONTAINER .................................................................. 53
-SHARE_INFO_501_CONTAINER .............................................................. 53
-SHARE_INFO_502_CONTAINER .............................................................. 53
-SHARE_INFO_503_CONTAINER .............................................................. 54
-SHARE_ENUM_STRUCT .......................................................................... 54
-STAT_SERVER_0 ................................................................................... 55
-SERVER_INFO_100 ............................................................................... 56
-SERVER_INFO_101 ............................................................................... 56
-SERVER_INFO_102 ............................................................................... 56
-SERVER_INFO_103 ............................................................................... 57
-SERVER_INFO_502 ............................................................................... 59
-SERVER_INFO_503 ............................................................................... 59
-SERVER_INFO_599 ............................................................................... 60
-SERVER_INFO_1005 ............................................................................. 65
-SERVER_INFO_1107 ............................................................................. 65
-SERVER_INFO_1010 ............................................................................. 65
-SERVER_INFO_1016 ............................................................................. 65
-SERVER_INFO_1017 ............................................................................. 66
-SERVER_INFO_1018 ............................................................................. 66
-SERVER_INFO_1501 ............................................................................. 66
-SERVER_INFO_1502 ............................................................................. 66
-SERVER_INFO_1503 ............................................................................. 67
-SERVER_INFO_1506 ............................................................................. 67
-SERVER_INFO_1510 ............................................................................. 67
-SERVER_INFO_1511 ............................................................................. 67
-SERVER_INFO_1512 ............................................................................. 68
-SERVER_INFO_1513 ............................................................................. 68
-SERVER_INFO_1514 ............................................................................. 68
-SERVER_INFO_1515 ............................................................................. 68
-SERVER_INFO_1516 ............................................................................. 69
-SERVER_INFO_1518 ............................................................................. 69
-SERVER_INFO_1523 ............................................................................. 69
-SERVER_INFO_1528 ............................................................................. 69
-SERVER_INFO_1529 ............................................................................. 70
-
-[MS-SRVS] - v20240916
-Server Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 233
-
-SERVER_INFO_1530 ............................................................................. 70
-2.2.4.68
-SERVER_INFO_1533 ............................................................................. 70
-2.2.4.69
-SERVER_INFO_1534 ............................................................................. 70
-2.2.4.70
-SERVER_INFO_1535 ............................................................................. 71
-2.2.4.71
-SERVER_INFO_1536 ............................................................................. 71
-2.2.4.72
-SERVER_INFO_1538 ............................................................................. 71
-2.2.4.73
-SERVER_INFO_1539 ............................................................................. 71
-2.2.4.74
-SERVER_INFO_1540 ............................................................................. 72
-2.2.4.75
-SERVER_INFO_1541 ............................................................................. 72
-2.2.4.76
-SERVER_INFO_1542 ............................................................................. 72
-2.2.4.77
-SERVER_INFO_1543 ............................................................................. 72
-2.2.4.78
-SERVER_INFO_1544 ............................................................................. 73
-2.2.4.79
-SERVER_INFO_1545 ............................................................................. 73
-2.2.4.80
-SERVER_INFO_1546 ............................................................................. 73
-2.2.4.81
-SERVER_INFO_1547 ............................................................................. 73
-2.2.4.82
-SERVER_INFO_1548 ............................................................................. 74
-2.2.4.83
-SERVER_INFO_1549 ............................................................................. 74
-2.2.4.84
-SERVER_INFO_1550 ............................................................................. 74
-2.2.4.85
-SERVER_INFO_1552 ............................................................................. 74
-2.2.4.86
-SERVER_INFO_1553 ............................................................................. 75
-2.2.4.87
-SERVER_INFO_1554 ............................................................................. 75
-2.2.4.88
-SERVER_INFO_1555 ............................................................................. 75
-2.2.4.89
-2.2.4.90
-SERVER_INFO_1556 ............................................................................. 75
-2.2.4.91  DISK_INFO .......................................................................................... 76
-2.2.4.92  DISK_ENUM_CONTAINER ....................................................................... 76
-SERVER_TRANSPORT_INFO_0 ................................................................ 76
-2.2.4.93
-SERVER_TRANSPORT_INFO_1 ................................................................ 76
-2.2.4.94
-SERVER_TRANSPORT_INFO_2 ................................................................ 77
-2.2.4.95
-SERVER_TRANSPORT_INFO_3 ................................................................ 77
-2.2.4.96
-SERVER_XPORT_INFO_0_CONTAINER ..................................................... 78
-2.2.4.97
-SERVER_XPORT_INFO_1_CONTAINER ..................................................... 78
-2.2.4.98
-2.2.4.99
-SERVER_XPORT_INFO_2_CONTAINER ..................................................... 79
-2.2.4.100  SERVER_XPORT_INFO_3_CONTAINER ..................................................... 79
-2.2.4.101  SERVER_XPORT_ENUM_STRUCT ............................................................. 79
-2.2.4.102  SERVER_ALIAS_INFO_0 ......................................................................... 80
-2.2.4.103  SERVER_ALIAS_INFO_0_CONTAINER ...................................................... 80
-2.2.4.104  SERVER_ALIAS_ENUM_STRUCT .............................................................. 81
-2.2.4.105  TIME_OF_DAY_INFO ............................................................................. 81
-2.2.4.106  ADT_SECURITY_DESCRIPTOR................................................................. 82
-2.2.4.107  NET_DFS_ENTRY_ID ............................................................................. 82
-2.2.4.108  NET_DFS_ENTRY_ID_CONTAINER ........................................................... 83
-2.2.4.109  DFS_SITENAME_INFO ........................................................................... 83
-2.2.4.110  DFS_SITELIST_INFO ............................................................................. 83
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 84
-Server Details .................................................................................................. 84
-Abstract Data Model .................................................................................... 84
-Global.................................................................................................. 85
-Per Transport ....................................................................................... 86
-Per Alias .............................................................................................. 86
-Server Properties Object (ServerConfiguration) ........................................ 87
-Per TreeConnect ................................................................................... 87
-Per Open ............................................................................................. 87
-Per Share ............................................................................................. 87
-Per Session .......................................................................................... 88
-Algorithm for Determining Path Type ....................................................... 88
-Timers ...................................................................................................... 89
-Initialization ............................................................................................... 90
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-3.1.1.8
-3.1.1.9
-
-3.1.2
-3.1.3
-
-[MS-SRVS] - v20240916
-Server Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 233
-
-3.1.4
-
-Message Processing Events and Sequencing Rules .......................................... 92
-NetrConnectionEnum (Opnum 8) ............................................................ 95
-3.1.4.1
-NetrFileEnum (Opnum 9) ....................................................................... 98
-3.1.4.2
-NetrFileGetInfo (Opnum 10) .................................................................. 100
-3.1.4.3
-NetrFileClose (Opnum 11) ..................................................................... 102
-3.1.4.4
-NetrSessionEnum (Opnum 12)............................................................... 103
-3.1.4.5
-NetrSessionDel (Opnum 13) .................................................................. 107
-3.1.4.6
-NetrShareAdd (Opnum 14) .................................................................... 108
-3.1.4.7
-NetrShareEnum (Opnum 15) ................................................................. 111
-3.1.4.8
-3.1.4.9
-NetrShareEnumSticky (Opnum 36) ........................................................ 115
-3.1.4.10  NetrShareGetInfo (Opnum 16) .............................................................. 116
-3.1.4.11  NetrShareSetInfo (Opnum 17) ............................................................... 119
-3.1.4.12  NetrShareDel (Opnum 18) .................................................................... 123
-3.1.4.13  NetrShareDelSticky (Opnum 19) ............................................................ 125
-3.1.4.14  NetrShareDelStart (Opnum 37) ............................................................. 125
-3.1.4.15  NetrShareDelCommit (Opnum 38) .......................................................... 126
-3.1.4.16  NetrShareCheck (Opnum 20)................................................................. 127
-3.1.4.17  NetrServerGetInfo (Opnum 21) ............................................................. 128
-3.1.4.18  NetrServerSetInfo (Opnum 22) .............................................................. 133
-3.1.4.19  NetrServerDiskEnum (Opnum 23) .......................................................... 140
-3.1.4.20  NetrServerStatisticsGet (Opnum 24) ...................................................... 141
-3.1.4.21  NetrRemoteTOD (Opnum 28) ................................................................ 142
-3.1.4.22  NetrServerTransportAdd (Opnum 25) ..................................................... 143
-3.1.4.23  NetrServerTransportAddEx (Opnum 41) .................................................. 144
-3.1.4.24  NetrServerTransportEnum (Opnum 26) .................................................. 146
-3.1.4.25  NetrServerTransportDel (Opnum 27) ...................................................... 148
-3.1.4.26  NetrServerTransportDelEx (Opnum 53) .................................................. 148
-3.1.4.27  NetrpGetFileSecurity (Opnum 39) .......................................................... 150
-3.1.4.28  NetrpSetFileSecurity (Opnum 40) ........................................................... 151
-3.1.4.29  NetprPathType (Opnum 30) .................................................................. 151
-3.1.4.30  NetprPathCanonicalize (Opnum 31) ........................................................ 152
-3.1.4.31  NetprPathCompare (Opnum 32) ............................................................. 154
-3.1.4.32  NetprNameValidate (Opnum 33) ............................................................ 155
-3.1.4.33  NetprNameCanonicalize (Opnum 34) ...................................................... 156
-3.1.4.34  NetprNameCompare (Opnum 35) ........................................................... 158
-3.1.4.35  NetrDfsGetVersion (Opnum 43) ............................................................. 159
-3.1.4.36  NetrDfsCreateLocalPartition (Opnum 44) ................................................. 160
-3.1.4.37  NetrDfsDeleteLocalPartition (Opnum 45) ................................................. 161
-3.1.4.38  NetrDfsSetLocalVolumeState (Opnum 46) ............................................... 162
-3.1.4.39  NetrDfsCreateExitPoint (Opnum 48) ....................................................... 163
-3.1.4.40  NetrDfsModifyPrefix (Opnum 50)............................................................ 164
-3.1.4.41  NetrDfsDeleteExitPoint (Opnum 49) ....................................................... 165
-3.1.4.42  NetrDfsFixLocalVolume (Opnum 51) ....................................................... 166
-3.1.4.43  NetrDfsManagerReportSiteInfo (Opnum 52) ............................................ 168
-3.1.4.44  NetrServerAliasAdd (Opnum 54) ............................................................ 168
-3.1.4.45  NetrServerAliasEnum (Opnum 55) ......................................................... 170
-3.1.4.46  NetrServerAliasDel (Opnum 56) ............................................................. 172
-3.1.4.47  NetrShareDelEx (Opnum 57) ................................................................. 173
-Timer Events ............................................................................................. 174
-Other Local Events ..................................................................................... 174
-Server Looks Up Shares ........................................................................ 174
-Server Registers a New Session ............................................................. 175
-Server Deregisters a Session ................................................................. 175
-Server Registers a New Open ................................................................ 175
-Server Deregisters an Open .................................................................. 175
-Server Registers a New Treeconnect....................................................... 175
-Server Deregisters a Treeconnect .......................................................... 175
-Server Normalizes a ServerName ........................................................... 176
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-3.1.6.7
-3.1.6.8
-
-3.1.5
-3.1.6
-
-[MS-SRVS] - v20240916
-Server Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 233
-
-3.1.6.9
-3.1.6.10
-3.1.6.11
-3.1.6.12
-3.1.6.13
-3.1.6.14
-3.1.6.15
-3.1.6.16
-3.1.6.17
-
-Local Application Enables Advertising a Service ........................................ 176
-Local Application Disables Advertising a Service ....................................... 177
-Server Queries Existing Services ............................................................ 177
-Server Service Terminates .................................................................... 177
-Local Application Pauses or Resumes the CIFS Server ............................... 177
-Server Notifies Completion of Initialization .............................................. 177
-Server Notifies Current Uses of a Share .................................................. 177
-Server Updates Connection Count on a Transport .................................... 177
-Server Looks Up Null Session Pipes ........................................................ 177
-Client Details .................................................................................................. 178
-Abstract Data Model ................................................................................... 178
-Timers ..................................................................................................... 178
-Initialization .............................................................................................. 178
-Message Processing Events and Sequencing Rules ......................................... 178
-Timer Events ............................................................................................. 178
-Other Local Events ..................................................................................... 178
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ............................................................................................... 179
-Example of ResumeHandle ............................................................................... 179
-Two-Phase Share Deletion ................................................................................ 180
-Adding a Scoped Share With an Alias to a Server ................................................ 180
-
-4.1
-4.2
-4.3
-
-5  Security ............................................................................................................... 183
-Security Considerations for Implementers .......................................................... 183
-Index of Security Parameters ........................................................................... 183
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 184
-
-7  Appendix B: Product Behavior ............................................................................. 208
-
-8  Change Tracking .................................................................................................. 225
-
-9  Index ................................................................................................................... 226
-
-[MS-SRVS] - v20240916
-Server Service Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-9 / 233
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Server Service Remote Protocol. The Server Service Remote Protocol is a
 remote procedure call (RPC)–based protocol that is used for remotely enabling file and printer
@@ -1140,7 +858,7 @@ Windows.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1199,7 +917,8 @@ Release: September 16, 2024
 
 10 / 233
 
-Interface Definition Language (IDL): The International Standards Organization (ISO) standard
+
+Interface Definition Language (IDL): The International Standards Organization (ISO) standard
 
 language for specifying the interface for remote procedure calls. For more information, see
 [C706] section 4.
@@ -1273,7 +992,8 @@ Release: September 16, 2024
 
 11 / 233
 
-universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
+
+universally unique identifier (UUID): A 128-bit value. UUIDs can be used for multiple
 
 purposes, from tagging objects with an extremely short lifetime, to reliably identifying very
 persistent objects in cross-process communication such as client and server interfaces, manager
@@ -1291,14 +1011,14 @@ work item: A buffer that receives a user request, which is held by the Server Me
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1342,7 +1062,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC1002] Network Working Group, "Protocol Standard for a NetBIOS Service on a TCP/UDP
+
+[RFC1002] Network Working Group, "Protocol Standard for a NetBIOS Service on a TCP/UDP
 Transport: Detailed Specifications", STD 19, RFC 1002, March 1987, https://www.rfc-
 editor.org/info/rfc1002
 
@@ -1355,7 +1076,7 @@ November 1987, https://www.rfc-editor.org/info/rfc1035
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDFS] Microsoft Corporation, "How DFS Works", March 2003, http://technet.microsoft.com/en-
 us/library/cc782417%28WS.10%29.aspx
@@ -1371,7 +1092,7 @@ us/windows-server/storage/folder-redirection/folder-redirection-rup-overview
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Server Service Remote Protocol is designed for remotely querying and configuring a Server
 Message Block (SMB) server on a remote computer. By using this protocol, a client can query and
@@ -1395,7 +1116,7 @@ This is an RPC-based protocol. The server does not maintain client state informa
 method calls is imposed on this protocol, with the exception of net share deletion, which requires a
 two-phase commit, net file get information, and net file close.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on RPC and SMB for its transport. This protocol uses RPC over named pipes,
 as specified in section 2.1. Named pipes use the SMB protocols, as specified in [MS-CIFS], [MS-SMB],
@@ -1408,7 +1129,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-This protocol calls the Common Internet File System (CIFS) Protocol, the Server Message Block (SMB)
+
+This protocol calls the Common Internet File System (CIFS) Protocol, the Server Message Block (SMB)
 Protocol, or the SMB Version 2 Protocol for file server management.
 
 CIFS, SMB, and SMB Version 2 call the Server Service Remote Protocol for synchronizing the
@@ -1420,7 +1142,7 @@ data among all protocols at all times.
 This protocol calls the DFS Namespace Management Protocol, as specified in [MS-DFSNM], to identify
 a DFS share.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Server Service Remote Protocol is an RPC interface and, as a result, has the prerequisites that
 are described in [MS-RPCE] section 1.5 as being common to RPC interfaces.
@@ -1429,7 +1151,7 @@ It is assumed that a Server Service Remote Protocol client has obtained the name
 machine that supports the Server Service Remote Protocol before this protocol is invoked. This
 specification does not describe how a client invokes this protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Server Service Remote Protocol is applicable to environments that require management and
 monitoring of a file server. In particular, this protocol provides for the creation, deletion, and
@@ -1439,11 +1161,11 @@ that file server. Therefore, this protocol is applicable to environments that re
 The Server Service Remote Protocol is used for the management of file servers that use the SMB
 Protocol, as specified in [MS-SMB].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
@@ -1451,7 +1173,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 defined in [MS-EERR]. Vendors SHOULD reuse those values with their indicated meaning. Choosing
 any other value runs the risk of a collision in the future.<1>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1474,9 +1196,10 @@ Release: September 16, 2024
 
 14 / 233
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RPC methods that the Server Service Remote Protocol exposes are available on one endpoint:
 
@@ -1494,7 +1217,7 @@ underlying RPC protocol to retrieve the identity of the caller that made the met
 [MS-RPCE] section 3.3.3.4.3. The server SHOULD use this identity to perform method-specific access
 checks as specified in section 3.1.4.<2>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types defined in [C706] and [MS-RPCE], the data types that follow are
 defined in the Microsoft Interface Definition Language (MIDL) specification for this RPC
@@ -1526,9 +1249,9 @@ WCHAR
 
 [MS-DTYP] section 2.2.60
 
-2.2.1  Simple Data Types
+#### 2.2.1 Simple Data Types
 
-2.2.1.1  SRVSVC_HANDLE
+##### 2.2.1.1 SRVSVC_HANDLE
 
 SRVSVC_HANDLE: A pointer to a null-terminated Unicode UTF-16 string that specifies the Internet
 host name or NetBIOS host name of the remote server on which the method is to execute that is
@@ -1545,7 +1268,8 @@ Release: September 16, 2024
 
 15 / 233
 
-2.2.1.2  SHARE_DEL_HANDLE
+
+##### 2.2.1.2 SHARE_DEL_HANDLE
 
 SHARE_DEL_HANDLE: An RPC context handle, as specified in [C706] section 6, returned by the
 NetrShareDelStart method, to be provided as a parameter to the NetrShareDelCommit method.
@@ -1554,7 +1278,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* SHARE_DEL_HANDLE;
 
-2.2.1.3  PSHARE_DEL_HANDLE
+##### 2.2.1.3 PSHARE_DEL_HANDLE
 
 PSHARE_DEL_HANDLE: A pointer to a SHARE_DEL_HANDLE (section 2.2.1.2) datatype.
 
@@ -1562,9 +1286,9 @@ This type is declared as follows:
 
  typedef SHARE_DEL_HANDLE* PSHARE_DEL_HANDLE;
 
-2.2.2  Constants
+#### 2.2.2 Constants
 
-2.2.2.1  Sessionclient Types
+##### 2.2.2.1 Sessionclient Types
 
 Sessionclient is a Unicode UTF-16 string value that is used to specify the type of client that
 established the session.<3>
@@ -1572,7 +1296,7 @@ established the session.<3>
 The client generates an implementation-defined string that describes the client operating system
 version. The server SHOULD NOT enforce any limits on the Sessionclient string length.<4>
 
-2.2.2.2  MAX_PREFERRED_LENGTH
+##### 2.2.2.2 MAX_PREFERRED_LENGTH
 
 The following table describes the MAX_PREFERRED_LENGTH constant.
 
@@ -1589,7 +1313,7 @@ parameter to any method in section 3.1.4 that takes a PreferedMaximumLength
 parameter. When specified as an input parameter, this value indicates that the
 method MUST allocate as much space as the data requires.
 
-2.2.2.3  Session User Flags
+##### 2.2.2.3 Session User Flags
 
 The following flags specify information that is related to how a user established a session.
 
@@ -1618,7 +1342,8 @@ Release: September 16, 2024
 
 16 / 233
 
-2.2.2.4  Share Types
+
+##### 2.2.2.4 Share Types
 
 The following values are used to specify the type of a shared resource.
 
@@ -1689,7 +1414,7 @@ A temporary share that is not persisted for creation each time the file server i
 
 0x40000000
 
-2.2.2.5  Client-Side Caching (CSC) States
+##### 2.2.2.5 Client-Side Caching (CSC) States
 
 The following values are used to specify states that provide hints to clients about whether to cache
 files by using client-side caching with the SMB Protocol, as specified in [MS-SMB].
@@ -1728,13 +1453,14 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
 0x30
 
-2.2.2.6  Platform IDs
+##### 2.2.2.6 Platform IDs
 
 The following values are returned by the server to indicate its platform version.<5><6>
 
@@ -1772,7 +1498,7 @@ Specified by a server running VMS.
 
 700
 
-2.2.2.7  Software Type Flags
+##### 2.2.2.7 Software Type Flags
 
 The SV_TYPE flags indicate the services that are available on the server.
 
@@ -1833,7 +1559,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -1961,7 +1688,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -1985,7 +1713,7 @@ SV_TYPE_ALL
 
 All servers.
 
-2.2.2.8  Name Types
+##### 2.2.2.8 Name Types
 
 The following values specify types of names that are used with the NetprNameValidate,
 NetprNameCanonicalize, and NetprNameCompare methods.
@@ -2073,7 +1801,8 @@ Release: September 16, 2024
 
 20 / 233
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2213,7 +1942,7 @@ Yes
 
 No
 
-2.2.2.9  Path Types
+##### 2.2.2.9 Path Types
 
 The following values specify types of paths used with the NetprPathType, NetprPathCanonicalize, and
 NetprPathCompare methods.
@@ -2241,7 +1970,8 @@ Release: September 16, 2024
 
 21 / 233
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2366,7 +2096,8 @@ Release: September 16, 2024
 
 22 / 233
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -2460,9 +2191,9 @@ NULL port
 
 16464
 
-2.2.2.10
+##### 2.2.2.10 Common Error Codes
 
-Common Error Codes
+
 
 The following error codes are referenced in this specification.
 
@@ -2483,7 +2214,8 @@ Release: September 16, 2024
 
 23 / 233
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2612,9 +2344,10 @@ Release: September 16, 2024
 
 24 / 233
 
-2.2.2.11
 
-SHARE_INFO Parameter Error Codes
+##### 2.2.2.11 SHARE_INFO Parameter Error Codes
+
+
 
 When an invalid value is specified for a field of the SHARE_INFO structure, one of the following values
 MUST be used to indicate which field contains an invalid value. In the following table, "*" is a wildcard
@@ -2678,9 +2411,9 @@ Indicates that a shi*_security_descriptor member caused the error.
 
 SHARE_FILE_SD_PARMNUM
 
-2.2.2.12
+##### 2.2.2.12 SERVER_INFO Parameter Error Codes
 
-SERVER_INFO Parameter Error Codes
+
 
 When an invalid value is specified for a field of the SERVER_INFO structure, one of the following
 values MUST be used to indicate which field contains an invalid value. In the following table, "*" is a
@@ -2719,7 +2452,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2844,7 +2578,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2978,7 +2713,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3110,7 +2846,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3158,9 +2895,9 @@ SV_MAXWORKITEMIDLETIME_PARMNUM
 Indicates that a sv*_maxworkitemidletime member caused the
 error.
 
-2.2.2.13
+##### 2.2.2.13 DFS Entry Flags
 
-DFS Entry Flags
+
 
 The following flags specify the details about a DFS entry that an SMB file server maintains. For more
 details about DFS entries, see [MS-DFSC].
@@ -3230,7 +2967,8 @@ Release: September 16, 2024
 
 29 / 233
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3252,9 +2990,9 @@ Entry refers to a volume that is offline.
 
 0x2000
 
-2.2.3  Unions
+#### 2.2.3 Unions
 
-2.2.3.1  CONNECT_ENUM_UNION
+##### 2.2.3.1 CONNECT_ENUM_UNION
 
 The CONNECT_ENUM_UNION union contains information about a connection. It is used in the
 definition of the CONNECTION_ENUM_STRUCT structure.
@@ -3276,7 +3014,7 @@ Level1:  A pointer to a structure containing information about a connection, as 
 
 2.2.4.4.
 
-2.2.3.2  FILE_ENUM_UNION
+##### 2.2.3.2 FILE_ENUM_UNION
 
 The FILE_ENUM_UNION union contains information about files, devices, and pipes. It is used in the
 definition of the FILE_ENUM_STRUCT structure.
@@ -3305,7 +3043,8 @@ Release: September 16, 2024
 
 30 / 233
 
-2.2.3.3  FILE_INFO
+
+##### 2.2.3.3 FILE_INFO
 
 The FILE_INFO union contains information about a file, device, or pipe. This union is used by the
 NetrFileGetInfo method.
@@ -3329,7 +3068,7 @@ FileInfo3:  A pointer to a structure that contains information about a file, dev
 
 details, see FILE_INFO_3 (section 2.2.4.7).
 
-2.2.3.4  SESSION_ENUM_UNION
+##### 2.2.3.4 SESSION_ENUM_UNION
 
 The SESSION_ENUM_UNION union contains information about sessions. It is used in the definition of
 the SESSION_ENUM_STRUCT structure.
@@ -3376,7 +3115,8 @@ Release: September 16, 2024
 
 31 / 233
 
-2.2.3.5  SHARE_ENUM_UNION
+
+##### 2.2.3.5 SHARE_ENUM_UNION
 
 The SHARE_ENUM_UNION union contains information about shares. It is used in the definition of the
 SHARE_ENUM_STRUCT structure.
@@ -3422,7 +3162,7 @@ Level503:  A pointer to a structure that contains information about shares, as s
 
 2.2.4.37.
 
-2.2.3.6  SHARE_INFO
+##### 2.2.3.6 SHARE_INFO
 
 The SHARE_INFO union contains information about a share.
 
@@ -3453,7 +3193,8 @@ Release: September 16, 2024
 
 32 / 233
 
-     LPSHARE_INFO_1005 ShareInfo1005;
+
+     LPSHARE_INFO_1005 ShareInfo1005;
    [case(501)]
      LPSHARE_INFO_501 ShareInfo501;
    [case(503)]
@@ -3502,7 +3243,7 @@ ShareInfo503:  A pointer to a structure that contains information about a share,
 
 section 2.2.4.27.
 
-2.2.3.7  SERVER_INFO
+##### 2.2.3.7 SERVER_INFO
 
 The SERVER_INFO union contains information about a server.
 
@@ -3533,7 +3274,8 @@ Release: September 16, 2024
 
 33 / 233
 
-   [case(1107)]
+
+   [case(1107)]
      LPSERVER_INFO_1107 ServerInfo1107;
    [case(1010)]
      LPSERVER_INFO_1010 ServerInfo1010;
@@ -3610,7 +3352,8 @@ Release: September 16, 2024
 
 34 / 233
 
-     LPSERVER_INFO_1547 ServerInfo1547;
+
+     LPSERVER_INFO_1547 ServerInfo1547;
    [case(1548)]
      LPSERVER_INFO_1548 ServerInfo1548;
    [case(1549)]
@@ -3694,7 +3437,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ServerInfo1502:  A pointer to a structure that contains information about a server, as specified in
+
+ServerInfo1502:  A pointer to a structure that contains information about a server, as specified in
 
 section 2.2.4.54.
 
@@ -3781,7 +3525,8 @@ Release: September 16, 2024
 
 36 / 233
 
-ServerInfo1539:  A pointer to a structure that contains information about a server, as specified in
+
+ServerInfo1539:  A pointer to a structure that contains information about a server, as specified in
 
 section 2.2.4.74.
 
@@ -3849,7 +3594,7 @@ ServerInfo1556:  A pointer to a structure that contains information about a serv
 
 section 2.2.4.90.
 
-2.2.3.8  SERVER_XPORT_ENUM_UNION
+##### 2.2.3.8 SERVER_XPORT_ENUM_UNION
 
 The SERVER_XPORT_ENUM_UNION union contains information about file server transports.
 
@@ -3867,7 +3612,8 @@ Release: September 16, 2024
 
 37 / 233
 
-     PSERVER_XPORT_INFO_1_CONTAINER Level1;
+
+     PSERVER_XPORT_INFO_1_CONTAINER Level1;
    [case(2)]
      PSERVER_XPORT_INFO_2_CONTAINER Level2;
    [case(3)]
@@ -3890,7 +3636,7 @@ Level3:  A pointer to a structure containing information about file server trans
 
 section 2.2.4.100.
 
-2.2.3.9  TRANSPORT_INFO
+##### 2.2.3.9 TRANSPORT_INFO
 
 The TRANSPORT_INFO union contains information about a transport over which a file server is
 operational.
@@ -3926,9 +3672,9 @@ Transport3:  A pointer to a structure containing information about a file server
 
 in section 2.2.4.96.
 
-2.2.3.10
+##### 2.2.3.10 SERVER_ALIAS_INFO
 
-SERVER_ALIAS_INFO
+
 
 The SERVER_ALIAS_INFO union contains information about an alias attached to a server name.
 
@@ -3944,7 +3690,8 @@ Release: September 16, 2024
 
 38 / 233
 
-     LPSERVER_ALIAS_INFO_0 ServerAliasInfo0;
+
+     LPSERVER_ALIAS_INFO_0 ServerAliasInfo0;
  } SERVER_ALIAS_INFO,
   *PSERVER_ALIAS_INFO,
   *LPSERVER_ALIAS_INFO;
@@ -3953,9 +3700,9 @@ ServerAliasInfo0:  A pointer to a structure containing information about an alia
 
 server, as specified in section 2.2.4.102.
 
-2.2.4  Structures
+#### 2.2.4 Structures
 
-2.2.4.1  CONNECTION_INFO_0
+##### 2.2.4.1 CONNECTION_INFO_0
 
 The CONNECTION_INFO_0 structure contains the identifier of a connection.
 
@@ -3969,7 +3716,7 @@ coni0_id:  Specifies a connection identifier. For more information, see Abstract
 
 Model (section 3.1.1).
 
-2.2.4.2  CONNECTION_INFO_1
+##### 2.2.4.2 CONNECTION_INFO_1
 
 The CONNECTION_INFO_1 structure contains the identifier of a connection, the number of open files,
 the connection time, the number of users on the connection, and the type of connection.
@@ -4013,10 +3760,11 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-method. The name that is not specified in the Qualifier parameter to NetrConnectionEnum MUST
+
+method. The name that is not specified in the Qualifier parameter to NetrConnectionEnum MUST
 be returned in the coni1_netname field.
 
-2.2.4.3  CONNECT_INFO_0_CONTAINER
+##### 2.2.4.3 CONNECT_INFO_0_CONTAINER
 
 The CONNECT_INFO_0_CONTAINER structure contains a value that indicates the number of entries
 that the NetrConnectionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4032,7 +3780,7 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the CONNECTION_INFO_0 entries returned by the method.
 
-2.2.4.4  CONNECT_INFO_1_CONTAINER
+##### 2.2.4.4 CONNECT_INFO_1_CONTAINER
 
 The CONNECT_INFO_1_CONTAINER structure contains a value that indicates the number of entries
 that the NetrConnectionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4048,7 +3796,7 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the CONNECTION_INFO_1 entries returned by the method.
 
-2.2.4.5  CONNECT_ENUM_STRUCT
+##### 2.2.4.5 CONNECT_ENUM_STRUCT
 
 The CONNECT_ENUM_STRUCT structure specifies the information level that the client requests when
 invoking the NetrConnectionEnum (section 3.1.4.1) method and encapsulates the
@@ -4079,7 +3827,8 @@ Release: September 16, 2024
 
 40 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 1
 
@@ -4090,7 +3839,7 @@ ConnectInfo:  Contains either a CONNECT_INFO_0_CONTAINER structure or a
 CONNECT_INFO_1_CONTAINER structure depending on the value of the Level parameter. The
 enumerated elements are returned in this member.
 
-2.2.4.6  FILE_INFO_2
+##### 2.2.4.6 FILE_INFO_2
 
 The FILE_INFO_2 structure contains the identifier for a file, device, or pipe.
 
@@ -4104,7 +3853,7 @@ fi2_id:  Specifies a DWORD value that contains the identifier that is assigned t
 
 pipe when it was opened. See section 3.1.1 for details.
 
-2.2.4.7  FILE_INFO_3
+##### 2.2.4.7 FILE_INFO_3
 
 The FILE_INFO_3 structure contains the identifier and other pertinent information about files, devices,
 and pipes.
@@ -4162,7 +3911,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -4193,7 +3943,7 @@ fi3_pathname:  A pointer to a string that specifies the path of the opened file,
 
 fi3_username:  A pointer to a string that specifies which user opened the file, device, or pipe.
 
-2.2.4.8  FILE_INFO_2_CONTAINER
+##### 2.2.4.8 FILE_INFO_2_CONTAINER
 
 The FILE_INFO_2_CONTAINER structure contains a value that indicates the number of entries that the
 NetrFileEnum method returns and a pointer to the buffer that contains the entries.
@@ -4209,7 +3959,7 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the FILE_INFO_2 entries returned by the method.
 
-2.2.4.9  FILE_INFO_3_CONTAINER
+##### 2.2.4.9 FILE_INFO_3_CONTAINER
 
 The FILE_INFO_3_CONTAINER structure contains a value that indicates the number of entries that the
 NetrFileEnum method returns and a pointer to the buffer that contains the entries.
@@ -4225,9 +3975,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the FILE_INFO_3 entries returned by the method.
 
-2.2.4.10
+##### 2.2.4.10 FILE_ENUM_STRUCT
 
-FILE_ENUM_STRUCT
+
 
 The FILE_ENUM_STRUCT structure specifies the information level that the client requests in the
 NetrFileEnum method and encapsulates the FILE_ENUM_UNION union that receives the entries that
@@ -4240,7 +3990,8 @@ Release: September 16, 2024
 
 42 / 233
 
- typedef struct _FILE_ENUM_STRUCT {
+
+ typedef struct _FILE_ENUM_STRUCT {
    DWORD Level;
    [switch_is(Level)] FILE_ENUM_UNION FileInfo;
  } FILE_ENUM_STRUCT,
@@ -4265,9 +4016,9 @@ FileInfo:  Contains a file info container structure whose type is determined by 
 
 shown in the preceding table. The enumerated elements are returned in this member.
 
-2.2.4.11
+##### 2.2.4.11 SESSION_INFO_0
 
-SESSION_INFO_0
+
 
 The SESSION_INFO_0 structure contains the name of the computer that established the session.
 
@@ -4281,9 +4032,9 @@ sesi0_cname:  A pointer to a null-terminated Unicode UTF-16 Internet host name o
 
 host name of the computer that established the session.
 
-2.2.4.12
+##### 2.2.4.12 SESSION_INFO_1
 
-SESSION_INFO_1
+
 
 The SESSION_INFO_1 structure contains information about the session, including the name of the
 computer and user; open files, pipes, and devices that are on the computer; session active and idle
@@ -4319,7 +4070,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sesi1_time:  Specifies a DWORD value that contains the number of seconds since the session was
+
+sesi1_time:  Specifies a DWORD value that contains the number of seconds since the session was
 
 created.
 
@@ -4330,9 +4082,9 @@ been idle.
 sesi1_user_flags:  Specifies a DWORD value that specifies how the user established the session.
 This member MUST be a combination of one or more of the values that are defined in 2.2.2.3.
 
-2.2.4.13
+##### 2.2.4.13 SESSION_INFO_2
 
-SESSION_INFO_2
+
 
 The SESSION_INFO_2 structure contains information about the session, including the name of the
 computer; name of the user; open files, pipes, and devices that are on the computer; session active
@@ -4379,9 +4131,9 @@ sesi2_cltype_name:  A pointer to a null-terminated Unicode UTF-16 string that sp
 client that established the session. The server simply stores this string, as specified in section
 2.2.2.1, and its value does not modify the behavior of the protocol. <9>
 
-2.2.4.14
+##### 2.2.4.14 SESSION_INFO_10
 
-SESSION_INFO_10
+
 
 The SESSION_INFO_10 structure contains information about the session, including the name of the
 computer, the name of the user, and the active and idle times for the session.
@@ -4397,7 +4149,8 @@ Release: September 16, 2024
 
 44 / 233
 
-   DWORD sesi10_time;
+
+   DWORD sesi10_time;
    DWORD sesi10_idle_time;
  } SESSION_INFO_10,
   *PSESSION_INFO_10,
@@ -4415,9 +4168,9 @@ sesi10_time:  Specifies the number of seconds the session has been active.
 
 sesi10_idle_time:  Specifies the number of seconds the session has been idle.
 
-2.2.4.15
+##### 2.2.4.15 SESSION_INFO_502
 
-SESSION_INFO_502
+
 
 The SESSION_INFO_502 structure contains information about the session, including the name of the
 computer; the name of the user; open files, pipes, and devices that are on the computer; the client
@@ -4471,9 +4224,10 @@ Release: September 16, 2024
 
 45 / 233
 
-2.2.4.16
 
-SESSION_INFO_0_CONTAINER
+##### 2.2.4.16 SESSION_INFO_0_CONTAINER
+
+
 
 The SESSION_INFO_0_CONTAINER structure contains a value that indicates the number of entries
 that the NetrSessionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4489,9 +4243,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SESSION_INFO_0 entries returned by the method.
 
-2.2.4.17
+##### 2.2.4.17 SESSION_INFO_1_CONTAINER
 
-SESSION_INFO_1_CONTAINER
+
 
 The SESSION_INFO_1_CONTAINER structure contains a value that indicates the number of entries
 that the NetrSessionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4507,9 +4261,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SESSION_INFO_1 entries returned by the method.
 
-2.2.4.18
+##### 2.2.4.18 SESSION_INFO_2_CONTAINER
 
-SESSION_INFO_2_CONTAINER
+
 
 The SESSION_INFO_2_CONTAINER structure contains a value that indicates the number of entries
 that the NetrSessionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4525,9 +4279,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SESSION_INFO_2 entries returned by the method.
 
-2.2.4.19
+##### 2.2.4.19 SESSION_INFO_10_CONTAINER
 
-SESSION_INFO_10_CONTAINER
+
 
 The SESSION_INFO_10_CONTAINER structure contains a value that indicates the number of entries
 that the NetrSessionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4544,16 +4298,17 @@ Release: September 16, 2024
 
 46 / 233
 
-  *PSESSION_INFO_10_CONTAINER,
+
+  *PSESSION_INFO_10_CONTAINER,
   *LPSESSION_INFO_10_CONTAINER;
 
 EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SESSION_INFO_10 entries returned by the method.
 
-2.2.4.20
+##### 2.2.4.20 SESSION_INFO_502_CONTAINER
 
-SESSION_INFO_502_CONTAINER
+
 
 The SESSION_INFO_502_CONTAINER structure contains a value that indicates the number of entries
 that the NetrSessionEnum method returns and a pointer to the buffer that contains the entries.
@@ -4569,9 +4324,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SESSION_INFO_502 entries returned by the method.
 
-2.2.4.21
+##### 2.2.4.21 SESSION_ENUM_STRUCT
 
-SESSION_ENUM_STRUCT
+
 
 The SESSION_ENUM_STRUCT structure specifies the information level that the client requests in the
 NetrSessionEnum method and encapsulates the SESSION_ENUM_UNION union that receives the
@@ -4620,9 +4375,10 @@ Release: September 16, 2024
 
 47 / 233
 
-2.2.4.22
 
-SHARE_INFO_0
+##### 2.2.4.22 SHARE_INFO_0
+
+
 
 The SHARE_INFO_0 structure contains the name of the shared resource. For a description of the fields
 in this structure, see the description for the SHARE_INFO_502_I (section 2.2.4.26) structure
@@ -4634,9 +4390,9 @@ in this structure, see the description for the SHARE_INFO_502_I (section 2.2.4.2
   *PSHARE_INFO_0,
   *LPSHARE_INFO_0;
 
-2.2.4.23
+##### 2.2.4.23 SHARE_INFO_1
 
-SHARE_INFO_1
+
 
 The SHARE_INFO_1 structure contains information about the shared resource, including the name and
 type of the resource and a comment associated with the resource. For a description of the fields in this
@@ -4651,9 +4407,9 @@ denotes the same information as shi502_xxx).
   *PSHARE_INFO_1,
   *LPSHARE_INFO_1;
 
-2.2.4.24
+##### 2.2.4.24 SHARE_INFO_2
 
-SHARE_INFO_2
+
 
 The SHARE_INFO_2 structure contains information about the shared resource, including the name,
 type, and permissions of the resource, comments associated with the resource, the maximum number
@@ -4675,9 +4431,9 @@ information as shi502_xxx).
   *PSHARE_INFO_2,
   *LPSHARE_INFO_2;
 
-2.2.4.25
+##### 2.2.4.25 SHARE_INFO_501
 
-SHARE_INFO_501
+
 
 The SHARE_INFO_501 structure contains information about the shared resource, including the name
 and type of the resource and a comment that is associated with the resource. For a description of the
@@ -4693,7 +4449,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _SHARE_INFO_501 {
+
+ typedef struct _SHARE_INFO_501 {
    [string] wchar_t* shi501_netname;
    DWORD shi501_type;
    [string] wchar_t* shi501_remark;
@@ -4702,9 +4459,9 @@ Release: September 16, 2024
   *PSHARE_INFO_501,
   *LPSHARE_INFO_501;
 
-2.2.4.26
+##### 2.2.4.26 SHARE_INFO_502_I
 
-SHARE_INFO_502_I
+
 
 The SHARE_INFO_502_I structure contains information about the shared resource, including the name
 of the resource, type, and permissions, the number of connections, and other pertinent information.
@@ -4769,7 +4526,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-shi502_reserved:  The length of the security descriptor that is being passed in the
+
+shi502_reserved:  The length of the security descriptor that is being passed in the
 
 shi502_security_descriptor member.
 
@@ -4777,9 +4535,9 @@ shi502_security_descriptor:  Specifies the SECURITY_DESCRIPTOR, as described in 
 
 section 2.4.6, that is associated with this share.
 
-2.2.4.27
+##### 2.2.4.27 SHARE_INFO_503_I
 
-SHARE_INFO_503_I
+
 
 The SHARE_INFO_503_I structure contains information about the shared resource, including the name
 of the resource, type, and permissions, the number of connections, and other pertinent information.
@@ -4848,7 +4606,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-server name> to locate a scoped share as specified in section 2.2.4.102. A value of "*" indicates
+
+server name> to locate a scoped share as specified in section 2.2.4.102. A value of "*" indicates
 that there is no configured server name.
 
 shi503_reserved:  The length of the security descriptor passed in the shi503_security_descriptor
@@ -4859,9 +4618,9 @@ shi503_security_descriptor:  Specifies the SECURITY_DESCRIPTOR, as described in 
 
 section 2.4.6, that is associated with this share.
 
-2.2.4.28
+##### 2.2.4.28 SHARE_INFO_1004
 
-SHARE_INFO_1004
+
 
 The SHARE_INFO_1004 structure contains a comment that is associated with the shared resource. For
 a description of the fields in this structure, see the description for the
@@ -4874,9 +4633,9 @@ shi502_xxx).
   *PSHARE_INFO_1004,
   *LPSHARE_INFO_1004;
 
-2.2.4.29
+##### 2.2.4.29 SHARE_INFO_1005
 
-SHARE_INFO_1005
+
 
 The SHARE_INFO_1005 structure contains information about the shared resource.
 
@@ -4941,7 +4700,8 @@ Release: September 16, 2024
 
 51 / 233
 
-Value
+
+Value
 
 Meaning
 
@@ -4995,9 +4755,9 @@ encrypted.<15>
 A share on which remote file access is requested to
 be compressed.<16>
 
-2.2.4.30
+##### 2.2.4.30 SHARE_INFO_1006
 
-SHARE_INFO_1006
+
 
 The SHARE_INFO_1006 structure specifies the maximum number of concurrent connections that the
 shared resource can accommodate. For a description of the fields in this structure, see the description
@@ -5010,9 +4770,9 @@ as shi502_xxx).
   *PSHARE_INFO_1006,
   *LPSHARE_INFO_1006;
 
-2.2.4.31
+##### 2.2.4.31 SHARE_INFO_1501_I
 
-SHARE_INFO_1501_I
+
 
 The SHARE_INFO_1501_I structure contains a security descriptor in self-relative format and a DWORD
 that contains its length.<17> For a description of the fields in this structure, see the description for
@@ -5033,9 +4793,10 @@ Release: September 16, 2024
 
 52 / 233
 
-2.2.4.32
 
-SHARE_INFO_0_CONTAINER
+##### 2.2.4.32 SHARE_INFO_0_CONTAINER
+
+
 
 The SHARE_INFO_0_CONTAINER structure contains a value that indicates the number of entries that
 the NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5049,9 +4810,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_0 entries returned by the method.
 
-2.2.4.33
+##### 2.2.4.33 SHARE_INFO_1_CONTAINER
 
-SHARE_INFO_1_CONTAINER
+
 
 The SHARE_INFO_1_CONTAINER structure contains a value that indicates the number of entries that
 the NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5065,9 +4826,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_1 entries returned by the method.
 
-2.2.4.34
+##### 2.2.4.34 SHARE_INFO_2_CONTAINER
 
-SHARE_INFO_2_CONTAINER
+
 
 The SHARE_INFO_2_CONTAINER structure contains a value that indicates the number of entries that
 the NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5083,9 +4844,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_2 entries returned by the method.
 
-2.2.4.35
+##### 2.2.4.35 SHARE_INFO_501_CONTAINER
 
-SHARE_INFO_501_CONTAINER
+
 
 The SHARE_INFO_501_CONTAINER structure contains a value that indicates the number of entries
 that the NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5104,13 +4865,14 @@ Release: September 16, 2024
 
 53 / 233
 
-EntriesRead:  The number of entries returned by the method.
+
+EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_501 entries returned by the method.
 
-2.2.4.36
+##### 2.2.4.36 SHARE_INFO_502_CONTAINER
 
-SHARE_INFO_502_CONTAINER
+
 
 The SHARE_INFO_502_CONTAINER structure contains a value that indicates the number of entries
 that the NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5126,9 +4888,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_502_I entries returned by the method.
 
-2.2.4.37
+##### 2.2.4.37 SHARE_INFO_503_CONTAINER
 
-SHARE_INFO_503_CONTAINER
+
 
 The SHARE_INFO_503_CONTAINER structure contains a value that indicates the number of entries the
 NetrShareEnum method returns and a pointer to the buffer that contains the entries.
@@ -5144,9 +4906,9 @@ EntriesRead:  The number of entries returned by the method.
 
 Buffer:  A pointer to the SHARE_INFO_503_I entries returned by the method.
 
-2.2.4.38
+##### 2.2.4.38 SHARE_ENUM_STRUCT
 
-SHARE_ENUM_STRUCT
+
 
 The SHARE_ENUM_STRUCT structure specifies the information level that the client requests in the
 NetrShareEnum method and encapsulates the SHARE_ENUM_UNION union that receives the entries
@@ -5176,7 +4938,8 @@ Release: September 16, 2024
 
 54 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 1
 
@@ -5202,9 +4965,9 @@ ShareInfo:  Contains a share information container whose type is specified by th
 
 the preceding table shows. The enumerated share entries are returned in this member.
 
-2.2.4.39
+##### 2.2.4.39 STAT_SERVER_0
 
-STAT_SERVER_0
+
 
 The STAT_SERVER_0 structure contains statistical information about the server.
 
@@ -5263,7 +5026,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sts0_serrorout:  Specifies a DWORD value that indicates the number of times a session failed with
+
+sts0_serrorout:  Specifies a DWORD value that indicates the number of times a session failed with
 
 an error. This field MUST be set to 0.
 
@@ -5307,9 +5071,9 @@ sts0_bigbufneed:  Specifies a DWORD value that indicates the number of times the
 
 a large buffer but failed to allocate one. This field MUST be set to 0.
 
-2.2.4.40
+##### 2.2.4.40 SERVER_INFO_100
 
-SERVER_INFO_100
+
 
 The SERVER_INFO_100 structure contains information about the specified server, including the name
 and platform. It MUST be used only to query information about a server. For a description of the fields
@@ -5323,9 +5087,9 @@ same information as sv103_xxx).
   *PSERVER_INFO_100,
   *LPSERVER_INFO_100;
 
-2.2.4.41
+##### 2.2.4.41 SERVER_INFO_101
 
-SERVER_INFO_101
+
 
 The SERVER_INFO_101 structure contains information about the specified server, including name,
 platform, type of server, and associated software. For a description about the fields in this structure,
@@ -5345,15 +5109,16 @@ Release: September 16, 2024
 
 56 / 233
 
-   DWORD sv101_type;
+
+   DWORD sv101_type;
    [string] wchar_t* sv101_comment;
  } SERVER_INFO_101,
   *PSERVER_INFO_101,
   *LPSERVER_INFO_101;
 
-2.2.4.42
+##### 2.2.4.42 SERVER_INFO_102
 
-SERVER_INFO_102
+
 
 The SERVER_INFO_102 structure contains information about the specified server, including the
 name, platform, and type of server, attributes, and associated software. For information about the
@@ -5378,9 +5143,9 @@ the same information as sv103_xxx).
   *PSERVER_INFO_102,
   *LPSERVER_INFO_102;
 
-2.2.4.43
+##### 2.2.4.43 SERVER_INFO_103
 
-SERVER_INFO_103
+
 
 The SERVER_INFO_103 structure contains information about CIFS and SMB Version 1.0 file servers,
 including the name, platform, type of server, attributes, associated software, and capabilities.
@@ -5415,7 +5180,8 @@ Release: September 16, 2024
 
 57 / 233
 
-sv103_name:  A pointer to a null-terminated Unicode UTF-16 Internet host name or NetBIOS
+
+sv103_name:  A pointer to a null-terminated Unicode UTF-16 Internet host name or NetBIOS
 
 host name of a server.
 
@@ -5493,7 +5259,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -5510,9 +5277,9 @@ The branch cache component is installed.<20>
 
 0x0002
 
-2.2.4.44
+##### 2.2.4.44 SERVER_INFO_502
 
-SERVER_INFO_502
+
 
 The SERVER_INFO_502 structure contains information about a specified server. For a description of
 the fields in this structure, see the description for the SERVER_INFO_599 structure (sv502_xxx
@@ -5541,9 +5308,9 @@ denotes the same information as sv599_xxx).
   *PSERVER_INFO_502,
   *LPSERVER_INFO_502;
 
-2.2.4.45
+##### 2.2.4.45 SERVER_INFO_503
 
-SERVER_INFO_503
+
 
 The SERVER_INFO_503 structure contains information about a specified server. For a description of
 the fields in this structure, see the description for the SERVER_INFO_599 structure (sv503_xxx
@@ -5574,7 +5341,8 @@ Release: September 16, 2024
 
 59 / 233
 
-   int sv503_acceptdownlevelapis;
+
+   int sv503_acceptdownlevelapis;
    int sv503_lmannounce;
    [string] wchar_t* sv503_domain;
    DWORD sv503_maxcopyreadlen;
@@ -5604,9 +5372,9 @@ Release: September 16, 2024
   *PSERVER_INFO_503,
   *LPSERVER_INFO_503;
 
-2.2.4.46
+##### 2.2.4.46 SERVER_INFO_599
 
-SERVER_INFO_599
+
 
 The SERVER_INFO_599 structure contains information about a specified server. The
 SERVER_INFO_599 fields involve implementation-specific details of CIFS and SMB Version 1.0 file
@@ -5649,7 +5417,8 @@ Release: September 16, 2024
 
 60 / 233
 
-   DWORD sv599_scavtimeout;
+
+   DWORD sv599_scavtimeout;
    DWORD sv599_minrcvqueue;
    DWORD sv599_minfreeworkitems;
    DWORD sv599_xactmemsize;
@@ -5727,7 +5496,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sv599_maxrawbuflen:  The server MUST validate the value on receipt. This value MUST be set to
+
+sv599_maxrawbuflen:  The server MUST validate the value on receipt. This value MUST be set to
 
 65,535. Due to historical reasons, the server does not store this value.
 
@@ -5803,7 +5573,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[MS-CIFS] sections 2.2.6.2 and 2.2.6.3. The range of values MUST be from 10 to 10,000,
+
+[MS-CIFS] sections 2.2.6.2 and 2.2.6.3. The range of values MUST be from 10 to 10,000,
 inclusive.
 
 sv599_minkeepcomplsearch:  The server MUST validate this value on receipt. The range of values
@@ -5877,7 +5648,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sv599_enableoplockforceclose:  Unused. MUST be set to zero and ignored on receipt.
+
+sv599_enableoplockforceclose:  Unused. MUST be set to zero and ignored on receipt.
 
 sv599_enablefcbopens:  Specifies whether several MS-DOS File Control Blocks (FCBs) are placed in
 a single location accessible to the server. If enabled, this option can save resources on the server.
@@ -5954,7 +5726,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-sv599_maxlinkdelay:  Specifies the maximum link delay, in seconds, for the server. The server
+
+sv599_maxlinkdelay:  Specifies the maximum link delay, in seconds, for the server. The server
 
 enables raw I/O [MS-SMB] for a connection only if oplocks are enabled for this connection and the
 link delay on the connection is less than or equal to this value. The range of values MUST be from
@@ -5981,9 +5754,9 @@ sv599_maxworkitemidletime:  Specifies the maximum work item idle time, in second
 historical reasons, the server only stores this value, and it has no effect on server operation. The
 range of values MUST be from 10 to 1,800, inclusive.
 
-2.2.4.47
+##### 2.2.4.47 SERVER_INFO_1005
 
-SERVER_INFO_1005
+
 
 The SERVER_INFO_1005 structure contains information about a specified server.
 
@@ -5997,9 +5770,9 @@ sv1005_comment:  This member is defined in the sv103_comment member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.48
+##### 2.2.4.48 SERVER_INFO_1107
 
-SERVER_INFO_1107
+
 
 The SERVER_INFO_1107 structure contains information about a specified server.
 
@@ -6013,9 +5786,9 @@ sv1107_users:  This member is defined in the sv103_users member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.49
+##### 2.2.4.49 SERVER_INFO_1010
 
-SERVER_INFO_1010
+
 
 The SERVER_INFO_1010 structure contains information about a specified server.
 
@@ -6031,15 +5804,16 @@ Release: September 16, 2024
 
 65 / 233
 
-  *LPSERVER_INFO_1010;
+
+  *LPSERVER_INFO_1010;
 
 sv1010_disc:  This member is defined in the sv103_disc member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.50
+##### 2.2.4.50 SERVER_INFO_1016
 
-SERVER_INFO_1016
+
 
 The SERVER_INFO_1016 structure contains information about a specified server.
 
@@ -6053,9 +5827,9 @@ sv1016_hidden:  This member is defined in the sv103_hidden member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.51
+##### 2.2.4.51 SERVER_INFO_1017
 
-SERVER_INFO_1017
+
 
 The SERVER_INFO_1017 structure contains information about a specified server.
 
@@ -6069,9 +5843,9 @@ sv1017_announce:  This member is defined in the sv103_announce member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.52
+##### 2.2.4.52 SERVER_INFO_1018
 
-SERVER_INFO_1018
+
 
 The SERVER_INFO_1018 structure contains information about a specified server.
 
@@ -6085,9 +5859,9 @@ sv1018_anndelta:  This member is defined in the sv103_ anndelta member in
 
 SERVER_INFO_103 (section 2.2.4.43).
 
-2.2.4.53
+##### 2.2.4.53 SERVER_INFO_1501
 
-SERVER_INFO_1501
+
 
 The SERVER_INFO_1501 structure contains information about a specified server.
 
@@ -6104,13 +5878,14 @@ Release: September 16, 2024
 
 66 / 233
 
-sv1501_sessopens:  This member is defined in the sv599_sessopens member in
+
+sv1501_sessopens:  This member is defined in the sv599_sessopens member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.54
+##### 2.2.4.54 SERVER_INFO_1502
 
-SERVER_INFO_1502
+
 
 The SERVER_INFO_1502 structure contains information about a specified server.
 
@@ -6124,9 +5899,9 @@ sv1502_sessvcs:  This member is defined in the sv599_sessvcs member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.55
+##### 2.2.4.55 SERVER_INFO_1503
 
-SERVER_INFO_1503
+
 
 The SERVER_INFO_1503 structure contains information about a specified server.
 
@@ -6140,9 +5915,9 @@ sv1503_opensearch:  This member is defined in the sv599_opensearch member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.56
+##### 2.2.4.56 SERVER_INFO_1506
 
-SERVER_INFO_1506
+
 
 The SERVER_INFO_1506 structure contains information about a specified server.
 
@@ -6156,9 +5931,9 @@ sv1506_maxworkitems:  This member is defined in the sv599_maxworkitems member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.57
+##### 2.2.4.57 SERVER_INFO_1510
 
-SERVER_INFO_1510
+
 
 The SERVER_INFO_1510 structure contains information about a specified server.
 
@@ -6179,9 +5954,10 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.4.58
 
-SERVER_INFO_1511
+##### 2.2.4.58 SERVER_INFO_1511
+
+
 
 The SERVER_INFO_1511 structure contains information about a specified server.
 
@@ -6195,9 +5971,9 @@ sv1511_sessconns:  This member is defined in the sv599_sessconns member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.59
+##### 2.2.4.59 SERVER_INFO_1512
 
-SERVER_INFO_1512
+
 
 The SERVER_INFO_1512 structure contains information about a specified server.
 
@@ -6211,9 +5987,9 @@ sv1512_maxnonpagedmemoryusage:  This member is defined in the
 
 sv599_maxnonpagedmemoryusage member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.60
+##### 2.2.4.60 SERVER_INFO_1513
 
-SERVER_INFO_1513
+
 
 The SERVER_INFO_1513 structure contains information about a specified server.
 
@@ -6227,9 +6003,9 @@ sv1513_maxpagedmemoryusage:  This member is defined in the
 
 sv599_maxpagedmemoryusage member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.61
+##### 2.2.4.61 SERVER_INFO_1514
 
-SERVER_INFO_1514
+
 
 The SERVER_INFO_1514 structure contains information about a specified server.
 
@@ -6250,9 +6026,10 @@ Release: September 16, 2024
 
 68 / 233
 
-2.2.4.62
 
-SERVER_INFO_1515
+##### 2.2.4.62 SERVER_INFO_1515
+
+
 
 The SERVER_INFO_1515 structure contains information about a specified server.
 
@@ -6266,9 +6043,9 @@ sv1515_enableforcedlogoff:  This member is defined in the sv599_enableforcedlogo
 
 in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.63
+##### 2.2.4.63 SERVER_INFO_1516
 
-SERVER_INFO_1516
+
 
 The SERVER_INFO_1516 structure contains information about a specified server.
 
@@ -6282,9 +6059,9 @@ sv1516_timesource:  This member is defined in the sv599_timesource member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.64
+##### 2.2.4.64 SERVER_INFO_1518
 
-SERVER_INFO_1518
+
 
 The SERVER_INFO_1518 structure contains information about a specified server.
 
@@ -6298,9 +6075,9 @@ sv1518_lmannounce:  This member is defined in the sv599_lmannounce member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.65
+##### 2.2.4.65 SERVER_INFO_1523
 
-SERVER_INFO_1523
+
 
 The SERVER_INFO_1523 structure contains information about a specified server.
 
@@ -6321,9 +6098,10 @@ Release: September 16, 2024
 
 69 / 233
 
-2.2.4.66
 
-SERVER_INFO_1528
+##### 2.2.4.66 SERVER_INFO_1528
+
+
 
 The SERVER_INFO_1528 structure contains information about a specified server.
 
@@ -6337,9 +6115,9 @@ sv1528_scavtimeout:  This member is defined in the sv599_scavtimeout member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.67
+##### 2.2.4.67 SERVER_INFO_1529
 
-SERVER_INFO_1529
+
 
 The SERVER_INFO_1529 structure contains information about a specified server.
 
@@ -6353,9 +6131,9 @@ sv1529_minrcvqueue:  This member is defined in the sv599_minrcvqueue member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.68
+##### 2.2.4.68 SERVER_INFO_1530
 
-SERVER_INFO_1530
+
 
 The SERVER_INFO_1530 structure contains information about a specified server.
 
@@ -6369,9 +6147,9 @@ sv1530_minfreeworkitems:  This member is defined in the sv599_minfreeworkitems m
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.69
+##### 2.2.4.69 SERVER_INFO_1533
 
-SERVER_INFO_1533
+
 
 The SERVER_INFO_1533 structure contains information about a specified server.
 
@@ -6392,9 +6170,10 @@ Release: September 16, 2024
 
 70 / 233
 
-2.2.4.70
 
-SERVER_INFO_1534
+##### 2.2.4.70 SERVER_INFO_1534
+
+
 
 The SERVER_INFO_1534 structure contains information about a specified server.
 
@@ -6408,9 +6187,9 @@ sv1534_oplockbreakwait:  This member is defined in the sv599_oplockbreakwait mem
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.71
+##### 2.2.4.71 SERVER_INFO_1535
 
-SERVER_INFO_1535
+
 
 The SERVER_INFO_1535 structure contains information about a specified server.
 
@@ -6424,9 +6203,9 @@ sv1535_oplockbreakresponsewait:  This member is defined in the
 
 sv599_oplockbreakresponsewait member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.72
+##### 2.2.4.72 SERVER_INFO_1536
 
-SERVER_INFO_1536
+
 
 The SERVER_INFO_1536 structure contains information about a specified server.
 
@@ -6440,9 +6219,9 @@ sv1536_enableoplocks:  This member is defined in the sv599_enableoplocks member 
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.73
+##### 2.2.4.73 SERVER_INFO_1538
 
-SERVER_INFO_1538
+
 
 The SERVER_INFO_1538 structure contains information about a specified server.
 
@@ -6463,9 +6242,10 @@ Release: September 16, 2024
 
 71 / 233
 
-2.2.4.74
 
-SERVER_INFO_1539
+##### 2.2.4.74 SERVER_INFO_1539
+
+
 
 The SERVER_INFO_1539 structure contains information about a specified server.
 
@@ -6479,9 +6259,9 @@ sv1539_enableraw:  This member is defined in the sv599_enableraw member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.75
+##### 2.2.4.75 SERVER_INFO_1540
 
-SERVER_INFO_1540
+
 
 The SERVER_INFO_1540 structure contains information about a specified server.
 
@@ -6495,9 +6275,9 @@ sv1540_enablesharednetdrives:  This member is defined in the sv599_enablesharedn
 
 member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.76
+##### 2.2.4.76 SERVER_INFO_1541
 
-SERVER_INFO_1541
+
 
 The SERVER_INFO_1541 structure contains information about a specified server.
 
@@ -6511,9 +6291,9 @@ sv1541_minfreeconnections:  This member is defined in the sv599_minfreeconnectio
 
 member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.77
+##### 2.2.4.77 SERVER_INFO_1542
 
-SERVER_INFO_1542
+
 
 The SERVER_INFO_1542 structure contains information about a specified server.
 
@@ -6534,9 +6314,10 @@ Release: September 16, 2024
 
 72 / 233
 
-2.2.4.78
 
-SERVER_INFO_1543
+##### 2.2.4.78 SERVER_INFO_1543
+
+
 
 The SERVER_INFO_1543 structure contains information about a specified server.
 
@@ -6550,9 +6331,9 @@ sv1543_initsesstable:  This member is defined in the sv599_initsesstable member 
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.79
+##### 2.2.4.79 SERVER_INFO_1544
 
-SERVER_INFO_1544
+
 
 The SERVER_INFO_1544 structure contains information about a specified server.
 
@@ -6566,9 +6347,9 @@ sv1544_initconntable:  This member is defined in the sv599_initconntable member 
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.80
+##### 2.2.4.80 SERVER_INFO_1545
 
-SERVER_INFO_1545
+
 
 The SERVER_INFO_1545 structure contains information about a specified server.
 
@@ -6582,9 +6363,9 @@ sv1545_initfiletable:  This member is defined in the sv599_initfiletable member 
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.81
+##### 2.2.4.81 SERVER_INFO_1546
 
-SERVER_INFO_1546
+
 
 The SERVER_INFO_1546 structure contains information about a specified server.
 
@@ -6605,9 +6386,10 @@ Release: September 16, 2024
 
 73 / 233
 
-2.2.4.82
 
-SERVER_INFO_1547
+##### 2.2.4.82 SERVER_INFO_1547
+
+
 
 The SERVER_INFO_1547 structure contains information about a specified server.
 
@@ -6621,9 +6403,9 @@ sv1547_alertschedule:  This member is defined in the sv599_alertschedule member 
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.83
+##### 2.2.4.83 SERVER_INFO_1548
 
-SERVER_INFO_1548
+
 
 The SERVER_INFO_1548 structure contains information about a specified server.
 
@@ -6637,9 +6419,9 @@ sv1548_errorthreshold:  This member is defined in the sv599_errorthreshold membe
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.84
+##### 2.2.4.84 SERVER_INFO_1549
 
-SERVER_INFO_1549
+
 
 The SERVER_INFO_1549 structure contains information about a specified server.
 
@@ -6653,9 +6435,9 @@ sv1549_networkerrorthreshold:  This member is defined in the sv599_networkerrort
 
 member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.85
+##### 2.2.4.85 SERVER_INFO_1550
 
-SERVER_INFO_1550
+
 
 The SERVER_INFO_1550 structure contains information about a specified server.
 
@@ -6676,9 +6458,10 @@ Release: September 16, 2024
 
 74 / 233
 
-2.2.4.86
 
-SERVER_INFO_1552
+##### 2.2.4.86 SERVER_INFO_1552
+
+
 
 The SERVER_INFO_1552 structure contains information about a specified server.
 
@@ -6692,9 +6475,9 @@ sv1552_maxlinkdelay:  This member is defined in the sv599_maxlinkdelay member in
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.87
+##### 2.2.4.87 SERVER_INFO_1553
 
-SERVER_INFO_1553
+
 
 The SERVER_INFO_1553 structure contains information about a specified server.
 
@@ -6708,9 +6491,9 @@ sv1553_minlinkthroughput:  This member is defined in the sv599_minlinkthroughput
 
 in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.88
+##### 2.2.4.88 SERVER_INFO_1554
 
-SERVER_INFO_1554
+
 
 The SERVER_INFO_1554 structure contains information about a specified server.
 
@@ -6724,9 +6507,9 @@ sv1554_linkinfovalidtime:  This member is defined in the sv599_linkinfovalidtime
 
 SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.89
+##### 2.2.4.89 SERVER_INFO_1555
 
-SERVER_INFO_1555
+
 
 The SERVER_INFO_1555 structure contains information about a specified server.
 
@@ -6747,9 +6530,10 @@ Release: September 16, 2024
 
 75 / 233
 
-2.2.4.90
 
-SERVER_INFO_1556
+##### 2.2.4.90 SERVER_INFO_1556
+
+
 
 The SERVER_INFO_1556 structure contains information about a specified server.
 
@@ -6763,9 +6547,9 @@ sv1556_maxworkitemidletime:  This member is defined in the sv599_maxworkitemidle
 
 member in SERVER_INFO_599 (section 2.2.4.46).
 
-2.2.4.91
+##### 2.2.4.91 DISK_INFO
 
-DISK_INFO
+
 
 The DISK_INFO structure contains information (the drive letter) about the disk device on the server.
 
@@ -6781,9 +6565,9 @@ followed by the null-terminating character (for example, "A:\0"). The first char
 MUST be a drive letter in the range "A" through "Z", inclusive. The second character MUST be the
 ":" character.
 
-2.2.4.92
+##### 2.2.4.92 DISK_ENUM_CONTAINER
 
-DISK_ENUM_CONTAINER
+
 
 The DISK_ENUM_CONTAINER structure contains a value that indicates the number of entries that the
 NetrServerDiskEnum method returns and a pointer to the buffer that contains the entries.
@@ -6798,9 +6582,9 @@ EntriesRead:  The number of entries that the method returns.
 
 Buffer:  A pointer to the DISK_INFO entries that the method returns.
 
-2.2.4.93
+##### 2.2.4.93 SERVER_TRANSPORT_INFO_0
 
-SERVER_TRANSPORT_INFO_0
+
 
 The SERVER_TRANSPORT_INFO_0 structure contains information about the specified transport
 protocol, including the name, address, and location on the network. The definitions of fields in this
@@ -6821,15 +6605,16 @@ Release: September 16, 2024
 
 76 / 233
 
-   DWORD svti0_transportaddresslength;
+
+   DWORD svti0_transportaddresslength;
    [string] wchar_t* svti0_networkaddress;
  } SERVER_TRANSPORT_INFO_0,
   *PSERVER_TRANSPORT_INFO_0,
   *LPSERVER_TRANSPORT_INFO_0;
 
-2.2.4.94
+##### 2.2.4.94 SERVER_TRANSPORT_INFO_1
 
-SERVER_TRANSPORT_INFO_1
+
 
 The SERVER_TRANSPORT_INFO_1 structure contains information about the specified transport
 protocol, including the name, address, and location on the network. The definitions of fields in this
@@ -6849,9 +6634,9 @@ svti3_xxx.
   *PSERVER_TRANSPORT_INFO_1,
   *LPSERVER_TRANSPORT_INFO_1;
 
-2.2.4.95
+##### 2.2.4.95 SERVER_TRANSPORT_INFO_2
 
-SERVER_TRANSPORT_INFO_2
+
 
 The SERVER_TRANSPORT_INFO_2 structure contains information about the specified transport
 protocol, including the name and address. The definitions of fields in this structure are specified in
@@ -6871,9 +6656,9 @@ SERVER_TRANSPORT_INFO_3 fields with names of the form svti3_xxx.
   *PSERVER_TRANSPORT_INFO_2,
   *LPSERVER_TRANSPORT_INFO_2;
 
-2.2.4.96
+##### 2.2.4.96 SERVER_TRANSPORT_INFO_3
 
-SERVER_TRANSPORT_INFO_3
+
 
 The SERVER_TRANSPORT_INFO_3 structure contains information about the specified transport
 protocol, including the name, address, and password (credentials).
@@ -6894,7 +6679,8 @@ Release: September 16, 2024
 
 77 / 233
 
-   unsigned long svti3_flags;
+
+   unsigned long svti3_flags;
    DWORD svti3_passwordlength;
    unsigned char svti3_password[256];
  } SERVER_TRANSPORT_INFO_3,
@@ -6958,9 +6744,9 @@ svti3_password:  Specifies the credentials to use for the new transport address.
 
 svti3_passwordlength member is zero, the credentials for the server MUST be used.
 
-2.2.4.97
+##### 2.2.4.97 SERVER_XPORT_INFO_0_CONTAINER
 
-SERVER_XPORT_INFO_0_CONTAINER
+
 
 The SERVER_XPORT_INFO_0_CONTAINER structure contains a value that indicates the number of
 entries that the NetrServerTransportEnum method returns and a pointer to the buffer that contains
@@ -6978,15 +6764,16 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  *PSERVER_XPORT_INFO_0_CONTAINER;
+
+  *PSERVER_XPORT_INFO_0_CONTAINER;
 
 EntriesRead:  The number of entries that the method returns.
 
 Buffer:  A pointer to the SERVER_TRANSPORT_INFO_0 entries that the method returns.
 
-2.2.4.98
+##### 2.2.4.98 SERVER_XPORT_INFO_1_CONTAINER
 
-SERVER_XPORT_INFO_1_CONTAINER
+
 
 The SERVER_XPORT_INFO_1_CONTAINER structure contains a value that indicates the number of
 entries that the NetrServerTransportEnum method returns and a pointer to the buffer that contains
@@ -7002,9 +6789,9 @@ EntriesRead:  The number of entries that the method returns.
 
 Buffer:  A pointer to the SERVER_TRANSPORT_INFO_1 entries that the method returns.
 
-2.2.4.99
+##### 2.2.4.99 SERVER_XPORT_INFO_2_CONTAINER
 
-SERVER_XPORT_INFO_2_CONTAINER
+
 
 The SERVER_XPORT_INFO_2_CONTAINER structure contains a value that indicates the number of
 entries that the NetrServerTransportEnum method returns and a pointer to the buffer that contains
@@ -7020,9 +6807,9 @@ EntriesRead:  The number of entries that the method returns.
 
 Buffer:  A pointer to the SERVER_TRANSPORT_INFO_2 entries that the method returns.
 
-2.2.4.100
+##### 2.2.4.100 SERVER_XPORT_INFO_3_CONTAINER
 
-SERVER_XPORT_INFO_3_CONTAINER
+
 
 The SERVER_XPORT_INFO_3_CONTAINER structure contains a value that indicates the number of
 entries that the NetrServerTransportEnum method returns and a pointer to the buffer that contains
@@ -7045,9 +6832,10 @@ Release: September 16, 2024
 
 79 / 233
 
-2.2.4.101
 
-SERVER_XPORT_ENUM_STRUCT
+##### 2.2.4.101 SERVER_XPORT_ENUM_STRUCT
+
+
 
 The SERVER_XPORT_ENUM_STRUCT structure specifies the information level that the client requests
 in the NetrServerTransportEnum method and encapsulates the SERVER_XPORT_ENUM_UNION union
@@ -7087,9 +6875,9 @@ XportInfo:  Contains information about file server transports in the format that
 Level parameter, as shown in the preceding table. This member receives the enumerated
 information.
 
-2.2.4.102
+##### 2.2.4.102 SERVER_ALIAS_INFO_0
 
-SERVER_ALIAS_INFO_0
+
 
 The SERVER_ALIAS_INFO_0 structure contains the information about alias, including alias name and
 server target name.
@@ -7128,13 +6916,14 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-srvai0_reserved:  This field is not used. The server MUST ignore the value of this parameter on
+
+srvai0_reserved:  This field is not used. The server MUST ignore the value of this parameter on
 
 receipt.
 
-2.2.4.103
+##### 2.2.4.103 SERVER_ALIAS_INFO_0_CONTAINER
 
-SERVER_ALIAS_INFO_0_CONTAINER
+
 
 The SERVER_ALIAS_INFO_0_CONTAINER structure contains a value that indicates the number of
 entries that the NetrServerAliasEnum method returns and a pointer to the buffer that contains the
@@ -7149,9 +6938,9 @@ EntriesRead:  The number of entries that the method returns.
 
 Buffer:  A pointer to the SERVER_ALIAS_INFO_0 entries that the method returns.
 
-2.2.4.104
+##### 2.2.4.104 SERVER_ALIAS_ENUM_STRUCT
 
-SERVER_ALIAS_ENUM_STRUCT
+
 
 The SERVER_ALIAS_ENUM_STRUCT structure specifies the information level that the client requests in
 the NetrServerAliasEnum method and encapsulates the SERVER_ALIAS_ENUM_UNION union that
@@ -7182,9 +6971,9 @@ ServerAliasInfo:  Contains information about server aliases in the format that i
 Level parameter, as shown in the preceding table. This member receives the enumerated
 information.
 
-2.2.4.105
+##### 2.2.4.105 TIME_OF_DAY_INFO
 
-TIME_OF_DAY_INFO
+
 
 The TIME_OF_DAY_INFO structure contains information about the time of day from a remote server.
 
@@ -7204,7 +6993,8 @@ Release: September 16, 2024
 
 81 / 233
 
-   DWORD tod_tinterval;
+
+   DWORD tod_tinterval;
    DWORD tod_day;
    DWORD tod_month;
    DWORD tod_year;
@@ -7261,9 +7051,9 @@ tod_weekday:  Specifies a DWORD value that contains the day of the week. This va
 
 the range 0 through 6, inclusive, where 0 is Sunday, 1 is Monday, and so on.
 
-2.2.4.106
+##### 2.2.4.106 ADT_SECURITY_DESCRIPTOR
 
-ADT_SECURITY_DESCRIPTOR
+
 
 The ADT_SECURITY_DESCRIPTOR structure contains a security descriptor in self-relative format and a
 value that includes the length of the buffer that contains the descriptor. For more information, see
@@ -7284,13 +7074,14 @@ Release: September 16, 2024
 
 82 / 233
 
-Buffer:  A buffer for the security descriptor in self-relative form. For more information, see [MS-DTYP]
+
+Buffer:  A buffer for the security descriptor in self-relative form. For more information, see [MS-DTYP]
 
 section 2.4.6.
 
-2.2.4.107
+##### 2.2.4.107 NET_DFS_ENTRY_ID
 
-NET_DFS_ENTRY_ID
+
 
 The NET_DFS_ENTRY_ID structure specifies a DFS local partition.
 
@@ -7306,9 +7097,9 @@ Prefix:  A pointer to a null-terminated Unicode UTF-16 string that contains the 
 
 partition.
 
-2.2.4.108
+##### 2.2.4.108 NET_DFS_ENTRY_ID_CONTAINER
 
-NET_DFS_ENTRY_ID_CONTAINER
+
 
 The NET_DFS_ENTRY_ID_CONTAINER structure contains a pointer to a buffer that contains
 NET_DFS_ENTRY_ID entries and a value that indicates the count of entries in the buffer.
@@ -7323,9 +7114,9 @@ Count:  The count of buffer array entries returned by the method.
 
 Buffer:  An array of NET_DFS_ENTRY_ID entries returned by the method.
 
-2.2.4.109
+##### 2.2.4.109 DFS_SITENAME_INFO
 
-DFS_SITENAME_INFO
+
 
 The DFS_SITENAME_INFO structure specifies a site name.
 
@@ -7358,9 +7149,10 @@ Release: September 16, 2024
 
 83 / 233
 
-2.2.4.110
 
-DFS_SITELIST_INFO
+##### 2.2.4.110 DFS_SITELIST_INFO
+
+
 
 The DFS_SITELIST_INFO structure contains a value that indicates the count of entries and an array of
 DFS_SITELIST_INFO entries that the NetrDfsManagerReportSiteInfo method returns.
@@ -7383,7 +7175,8 @@ Release: September 16, 2024
 
 84 / 233
 
-3  Protocol Details
+
+## 3 Protocol Details
 
  The methods in this RPC interface all return 0x00000000 to indicate success and a nonzero,
 implementation-specific, error code to indicate failure. Unless otherwise specified, a server-side
@@ -7397,11 +7190,11 @@ protocol respectively rather than to client or server versions of an operating s
 MUST all behave the same, regardless whether the server side of the protocol is running in a client or
 server version of an operating system.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The server responds to messages it receives from the client.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
@@ -7448,7 +7241,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-made unavailable dynamically, which is referred to as removing a share. The server MUST keep a list
+
+made unavailable dynamically, which is referred to as removing a share. The server MUST keep a list
 of all active shares that are identified by a share identifier. If the share is marked as a sticky share,
 the same information MUST be stored in persistent storage. The server MUST support two-phase
 deletion of shares.<35>
@@ -7471,7 +7265,7 @@ NetrDfsGetVersion (Opnum 43) (section 3.1.4.35) through section NetrDfsManagerRe
 (Opnum 52) (section 3.1.4.43). The server MUST keep a list of the DFS shares and links and the
 associated information about the shares and links.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 The server MUST implement the following:
 
@@ -7503,7 +7297,7 @@ PrinterShareCount: A numeric value that indicates the number of printer shares o
 
 ShareList: A list of shares. Each element in the list is a Share as defined in section 3.1.1.7. Entries
 are inserted into the list as specified in section 3.1.4.7 and removed as specified in section
-3.1.4.12 and section 3.1.4.15.
+##### 3.1.4.12 and section 3.1.4.15.
 
 SessionList: A list of sessions. Each element in the list is a Session as defined in section 3.1.1.8.
 
@@ -7521,7 +7315,8 @@ Release: September 16, 2024
 
 86 / 233
 
-StatisticsStartTime: A DWORD value indicating the time, in seconds, when the server statistics
+
+StatisticsStartTime: A DWORD value indicating the time, in seconds, when the server statistics
 
 collection started.
 
@@ -7600,7 +7395,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.1.4  Server Properties Object (ServerConfiguration)
+
+3.1.1.4  Server Properties Object (ServerConfiguration)
 
 The ServerConfiguration object maintains the server configuration information for CIFS and SMB
 Version 1.0 file servers. The properties defined by this object MUST be persisted by the server.
@@ -7672,7 +7468,8 @@ Release: September 16, 2024
 
 88 / 233
 
-Share.AllowNamespaceCaching: A BOOLEAN that, if set, indicates that clients are allowed to cache
+
+Share.AllowNamespaceCaching: A BOOLEAN that, if set, indicates that clients are allowed to cache
 
 directory enumeration results for better performance.
 
@@ -7752,7 +7549,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  // <computer-name> is any string other than ".")
+
+  // <computer-name> is any string other than ".")
           If (PathName begins with "\\<computer-name>\’’)
             If (Remaining part of the PathName is not empty)
      If (Remaining part of the PathName contains ’*’ or ‘?’)
@@ -7821,7 +7619,8 @@ Release: September 16, 2024
 
 90 / 233
 
-3.1.3  Initialization
+
+3.1.3  Initialization
 
 The server MUST initialize GlobalServerAnnounce to SV_TYPE_SERVER. The server SHOULD
 combine any architecture-specific flags defined in section 2.2.2.7 to the GlobalServerAnnounce
@@ -7914,7 +7713,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -8013,7 +7813,8 @@ Release: September 16, 2024
 
 92 / 233
 
-  SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS bit in shi1005_flags MUST be set if
+
+  SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS bit in shi1005_flags MUST be set if
 
 Share.RestrictExclusiveOpens is TRUE.
 
@@ -8111,7 +7912,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 NetrFileEnum
 
@@ -8234,7 +8036,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 Description
 
@@ -8355,7 +8158,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 Description
 
@@ -8463,7 +8267,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-   [in, string, unique] WCHAR* Qualifier,
+
+   [in, string, unique] WCHAR* Qualifier,
    [in, out] LPCONNECT_ENUM_STRUCT InfoStruct,
    [in] DWORD PreferedMaximumLength,
    [out] DWORD* TotalEntries,
@@ -8532,7 +8337,8 @@ Release: September 16, 2024
 
 97 / 233
 
-If the Qualifier is a computer name, the server MUST return all treeconnects made from the specified
+
+If the Qualifier is a computer name, the server MUST return all treeconnects made from the specified
 computer to the server by returning only the entries where ServerName matches with the Qualifier.
 
 If the Qualifier parameter is a NULL (zero-length) string, or if the length of the Qualifier parameter
@@ -8608,7 +8414,8 @@ Release: September 16, 2024
 
 98 / 233
 
-
+
+
 
 If the client specified a ResumeHandle and if the server returns ERROR_MORE_DATA
 (0x000000EA), the server MUST set ResumeHandle to the index value of the last enumerated
@@ -8681,7 +8488,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -8770,7 +8578,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 fi2_id MUST be set to open.fi3_id.
 
@@ -8849,7 +8658,8 @@ Release: September 16, 2024
 
 101 / 233
 
- );
+
+ );
 
 ServerName: An SRVSVC_HANDLE (section 2.2.1.1) pointer that identifies the server. The client
 
@@ -8939,7 +8749,8 @@ Release: September 16, 2024
 
 102 / 233
 
-The FileId parameter specifies the file identifier of the open resource in FileList to return information
+
+The FileId parameter specifies the file identifier of the open resource in FileList to return information
 for. The value of this parameter MUST have been returned in a previous NetrFileEnum message
 response by the server.
 
@@ -9018,7 +8829,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9093,7 +8905,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-first call and remain unchanged for subsequent calls. If the ResumeHandle parameter is NULL, no
+
+first call and remain unchanged for subsequent calls. If the ResumeHandle parameter is NULL, no
 resume handle MUST be stored. If this parameter is not NULL and the method returns
 ERROR_MORE_DATA, this parameter receives an implementation-specific nonzero value that can
 be passed in subsequent calls to this method to continue with the enumeration.
@@ -9189,7 +9002,8 @@ Release: September 16, 2024
 
 105 / 233
 
-characters, including the terminating null character, the server MUST fail the call with an
+
+characters, including the terminating null character, the server MUST fail the call with an
 ERROR_INVALID_PARAMETER error code.
 
 The UserName parameter specifies a qualifier for the returned information. If a UserName is specified
@@ -9277,7 +9091,8 @@ Release: September 16, 2024
 
 106 / 233
 
-
+
+
 
 sesi2_cltype_name MUST be set to session.sesi502_cltype_name.
 
@@ -9366,7 +9181,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.4.6  NetrSessionDel (Opnum 13)
+
+3.1.4.6  NetrSessionDel (Opnum 13)
 
 The NetrSessionDel method MUST end one or more network sessions between a server and a client.
 
@@ -9451,7 +9267,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If both ClientName and UserName are unspecified (a NULL (zero-length) string), the server MUST fail
+
+If both ClientName and UserName are unspecified (a NULL (zero-length) string), the server MUST fail
 the call with a NERR_ClientNameNotFound or an ERROR_INVALID_PARAMETER error code.
 
 The server MUST enumerate all Session entries in SessionList. For each entry, the server MUST
@@ -9532,7 +9349,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9626,7 +9444,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -9710,7 +9529,8 @@ Release: September 16, 2024
 
 111 / 233
 
-  Share.MaxUses MUST be set to 0xFFFF if shi*_max_uses is not specified; otherwise it MUST be
+
+  Share.MaxUses MUST be set to 0xFFFF if shi*_max_uses is not specified; otherwise it MUST be
 
 set to shi*_max_uses.
 
@@ -9806,7 +9626,8 @@ Release: September 16, 2024
 
 112 / 233
 
-   [in, string, unique] SRVSVC_HANDLE ServerName,
+
+   [in, string, unique] SRVSVC_HANDLE ServerName,
    [in, out] LPSHARE_ENUM_STRUCT InfoStruct,
    [in] DWORD PreferedMaximumLength,
    [out] DWORD* TotalEntries,
@@ -9888,7 +9709,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-input parameter. When the server receives STATUS_SUCCESS for a share, it MUST consider the
+
+input parameter. When the server receives STATUS_SUCCESS for a share, it MUST consider the
 received SHARE_INFO_503_I and SHARE_INFO_1005 structures as valid. The server MUST return
 information about each shared resource on a server.
 
@@ -9985,7 +9807,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -10078,7 +9901,8 @@ Release: September 16, 2024
 
 115 / 233
 
-
+
+
 
 
 
@@ -10152,7 +9976,8 @@ Release: September 16, 2024
 
 116 / 233
 
-Return Values: The method returns 0x00000000 (NERR_Success) to indicate success; otherwise, it
+
+Return Values: The method returns 0x00000000 (NERR_Success) to indicate success; otherwise, it
 returns a nonzero error code. The method can take any specific error code value, as specified in
 [MS-ERREF] section 2.2. The most common error codes are listed in the following table.
 
@@ -10242,7 +10067,8 @@ Release: September 16, 2024
 
 117 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 502
 
@@ -10339,7 +10165,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-STATUS_SUCCESS for a share, it MUST consider the received SHARE_INFO_503_I and
+
+STATUS_SUCCESS for a share, it MUST consider the received SHARE_INFO_503_I and
 SHARE_INFO_1005 structures as valid. The server MUST return information about the shared resource
 on the server.
 
@@ -10446,7 +10273,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -10534,7 +10362,8 @@ Release: September 16, 2024
 
 120 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 502
 
@@ -10641,7 +10470,8 @@ Release: September 16, 2024
 
 121 / 233
 
-The NetName parameter specifies the name of the share for which to set information in ShareList.
+
+The NetName parameter specifies the name of the share for which to set information in ShareList.
 The NetName MUST be a nonempty, null-terminated UTF-16 string; otherwise, the server MUST fail
 the call with an ERROR_INVALID_PARAMETER error code.
 
@@ -10715,7 +10545,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  SHARE_INFO_503_I.shi503_remark MUST be set to shi502_remark.
+
+  SHARE_INFO_503_I.shi503_remark MUST be set to shi502_remark.
 
   SHARE_INFO_503_I.shi503_max_uses MUST be set to shi502_max_uses.
 
@@ -10791,7 +10622,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The server MUST return ERROR_INVALID_DATA to the caller.
 
@@ -10879,7 +10711,8 @@ Release: September 16, 2024
 
 124 / 233
 
-   [in] DWORD Reserved
+
+   [in] DWORD Reserved
  );
 
 ServerName: An SRVSVC_HANDLE (section 2.2.1.1) pointer that identifies the server. The client
@@ -10961,9 +10794,10 @@ Release: September 16, 2024
 
 125 / 233
 
-3.1.4.13
 
-NetrShareDelSticky (Opnum 19)
+##### 3.1.4.13 NetrShareDelSticky (Opnum 19)
+
+
 
 The NetrShareDelSticky method marks the share as nonpersistent by clearing the IsPersistent
 member of a Share in the ShareList.
@@ -11014,9 +10848,9 @@ The server SHOULD<74> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<75> fail the call.
 
-3.1.4.14
+##### 3.1.4.14 NetrShareDelStart (Opnum 37)
 
-NetrShareDelStart (Opnum 37)
+
 
 The NetrShareDelStart method performs the initial phase of a two-phase share delete.
 
@@ -11033,7 +10867,8 @@ Release: September 16, 2024
 
 126 / 233
 
- );
+
+ );
 
 ServerName: An SRVSVC_HANDLE (section 2.2.1.1) pointer that identifies the server. The client
 
@@ -11084,9 +10919,9 @@ The server SHOULD<76> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<77> fail the call.
 
-3.1.4.15
+##### 3.1.4.15 NetrShareDelCommit (Opnum 38)
 
-NetrShareDelCommit (Opnum 38)
+
 
 The NetrShareDelCommit method performs the final phase of a two-phase share delete.
 
@@ -11101,7 +10936,8 @@ Release: September 16, 2024
 
 127 / 233
 
-ContextHandle: A handle returned by the first phase of a two-phase share delete.
+
+ContextHandle: A handle returned by the first phase of a two-phase share delete.
 
 Return Values: The method returns 0x00000000 (NERR_Success) to indicate success. Otherwise, the
 method returns a nonzero error code unless the share being deleted is IPC$. If the share being
@@ -11132,9 +10968,9 @@ NetName> as input parameters.
 
 The server does not enforce any security measures when processing this call.
 
-3.1.4.16
+##### 3.1.4.16 NetrShareCheck (Opnum 20)
 
-NetrShareCheck (Opnum 20)
+
 
 The NetrShareCheck method checks whether a server is sharing a device.
 
@@ -11177,7 +11013,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11213,9 +11050,9 @@ If no match is found, the server MUST fail the call by using an NERR_DeviceNotSh
 
 The server does not enforce any security measures when it processes this call.
 
-3.1.4.17
+##### 3.1.4.17 NetrServerGetInfo (Opnum 21)
 
-NetrServerGetInfo (Opnum 21)
+
 
 The NetrServerGetInfo method retrieves current configuration information for CIFS and SMB Version
 1.0 servers.
@@ -11265,7 +11102,8 @@ Release: September 16, 2024
 
 129 / 233
 
-InfoStruct: This is a structure of type LPSERVER_INFO, as specified in section 2.2.3.7. The content of
+
+InfoStruct: This is a structure of type LPSERVER_INFO, as specified in section 2.2.3.7. The content of
 the InfoStruct parameter is determined by the Level parameter, as the preceding table shows.
 
 Return Values: The method returns 0x00000000 (NERR_Success) to indicate success; otherwise, it
@@ -11365,7 +11203,8 @@ Release: September 16, 2024
 
 130 / 233
 
-If the value of the Level parameter is 102, the server MUST return its information by filling the
+
+If the value of the Level parameter is 102, the server MUST return its information by filling the
 SERVER_INFO_102 structure in the ServerInfo102 member of the InfoStruct parameter.
 
 
@@ -11476,7 +11315,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -11589,7 +11429,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -11698,7 +11539,8 @@ Release: September 16, 2024
 
 133 / 233
 
-
+
+
 
 
 
@@ -11740,9 +11582,9 @@ The ServerName parameter MUST be either NULL or a null-terminated string, as des
 2.2.1.1. If it is non-NULL, the length of the string MUST be less than 1,024 or the server MUST fail the
 call with ERROR_INVALID_PARAMETER.
 
-3.1.4.18
+##### 3.1.4.18 NetrServerSetInfo (Opnum 22)
 
-NetrServerSetInfo (Opnum 22)
+
 
 The NetrServerSetInfo method sets server operating parameters for CIFS and SMB Version 1.0 file
 servers; it can set them individually or collectively. The information is stored in a way that allows it to
@@ -11791,7 +11633,8 @@ Release: September 16, 2024
 
 134 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 599
 
@@ -11928,7 +11771,8 @@ Release: September 16, 2024
 
 135 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 1543
 
@@ -12041,7 +11885,8 @@ Release: September 16, 2024
 
 136 / 233
 
-The value of the Level parameter can be 101, 102, 502, 503, 599, 1005, 1107, 1010, 1016, 1017,
+
+The value of the Level parameter can be 101, 102, 502, 503, 599, 1005, 1107, 1010, 1016, 1017,
 1018, 1501, 1502, 1503, 1506, 1510, 1511, 1512, 1513, 1514, 1515, 1516, 1518, 1523, 1528, 1529,
 1530, 1533, 1534, 1535, 1536, 1538, 1539, 1540, 1541, 1542, 1543, 1544, 1545, 1546, 1547, 1548,
 1549, 1550, 1552, 1553, 1554, 1555, and 1556.
@@ -12108,7 +11953,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
+
+settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
 method).
 
 If the Level parameter is equal to 1501, the server MUST update all the settings in
@@ -12175,7 +12021,8 @@ Release: September 16, 2024
 
 138 / 233
 
-settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
+
+settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
 method).
 
 If the Level parameter is equal to 1523, the server MUST update all the settings in
@@ -12243,7 +12090,8 @@ Release: September 16, 2024
 
 139 / 233
 
-settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
+
+settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
 method).
 
 If the Level parameter is equal to 1542, the server MUST update all the settings in
@@ -12311,7 +12159,8 @@ Release: September 16, 2024
 
 140 / 233
 
-settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
+
+settable (that is, they are not defined as ignored on receipt or ignored for the NetrServerSetInfo
 method).
 
 If the Level parameter is equal to 1555, the server MUST update all the settings in
@@ -12349,9 +12198,9 @@ The server SHOULD<84> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<85> fail the call.
 
-3.1.4.19
+##### 3.1.4.19 NetrServerDiskEnum (Opnum 23)
 
-NetrServerDiskEnum (Opnum 23)
+
 
 The NetrServerDiskEnum method retrieves a list of disk drives on a server. The method returns an
 array of three-character strings (a drive letter, a colon, and a terminating null character).
@@ -12379,7 +12228,8 @@ Release: September 16, 2024
 
 141 / 233
 
-Value  Meaning
+
+Value  Meaning
 
 0
 
@@ -12448,9 +12298,9 @@ The server SHOULD<86> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<87> fail the call.
 
-3.1.4.20
+##### 3.1.4.20 NetrServerStatisticsGet (Opnum 24)
 
-NetrServerStatisticsGet (Opnum 24)
+
 
 The NetrServerStatisticsGet method retrieves the operating statistics for a service.
 
@@ -12466,7 +12316,8 @@ Release: September 16, 2024
 
 142 / 233
 
-   [in] DWORD Options,
+
+   [in] DWORD Options,
    [out] LPSTAT_SERVER_0* InfoStruct
  );
 
@@ -12509,9 +12360,9 @@ The server SHOULD<88> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<89> fail the call.
 
-3.1.4.21
+##### 3.1.4.21 NetrRemoteTOD (Opnum 28)
 
-NetrRemoteTOD (Opnum 28)
+
 
 The NetrRemoteTOD method returns the time of day information on a server.
 
@@ -12534,7 +12385,8 @@ Release: September 16, 2024
 
 143 / 233
 
-Return Values: The method returns 0x00000000 (NERR_Success) to indicate success; otherwise, it
+
+Return Values: The method returns 0x00000000 (NERR_Success) to indicate success; otherwise, it
 returns a nonzero error code. The method can take any specific error code value, as specified in
 [MS-ERREF] section 2.2.
 
@@ -12548,9 +12400,9 @@ The server SHOULD<90> enforce security measures to verify that the caller has th
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<91> fail the call.
 
-3.1.4.22
+##### 3.1.4.22 NetrServerTransportAdd (Opnum 25)
 
-NetrServerTransportAdd (Opnum 25)
+
 
 The NetrServerTransportAdd method binds the server to the transport protocol.
 
@@ -12623,16 +12475,17 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SERVER_TRANSPORT_INFO_0). The NetrServerTransportAddEx message is specified in section
+
+SERVER_TRANSPORT_INFO_0). The NetrServerTransportAddEx message is specified in section
 3.1.4.23.
 
 The server MAY<92> enforce security measures to verify that the caller has the required permissions
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<93> fail the call.
 
-3.1.4.23
+##### 3.1.4.23 NetrServerTransportAddEx (Opnum 41)
 
-NetrServerTransportAddEx (Opnum 41)
+
 
 The NetrServerTransportAddEx method binds the specified server to the transport protocol. This
 extended method allows the caller to specify information levels 1, 2, and 3 beyond what the
@@ -12718,7 +12571,8 @@ Release: September 16, 2024
 
 145 / 233
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12799,9 +12653,10 @@ Release: September 16, 2024
 
 146 / 233
 
-3.1.4.24
 
-NetrServerTransportEnum (Opnum 26)
+##### 3.1.4.24 NetrServerTransportEnum (Opnum 26)
+
+
 
 The NetrServerTransportEnum method enumerates the information about transport protocols that the
 server manages in TransportList.
@@ -12889,7 +12744,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12962,9 +12818,10 @@ Release: September 16, 2024
 
 148 / 233
 
-3.1.4.25
 
-NetrServerTransportDel (Opnum 27)
+##### 3.1.4.25 NetrServerTransportDel (Opnum 27)
+
+
 
 The NetrServerTransportDel method unbinds (or disconnects) the transport protocol from the server.
 If this method succeeds, the server can no longer communicate with clients by using the specified
@@ -13035,9 +12892,9 @@ The server MAY<98> enforce security measures to verify that the caller has the r
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<99> fail the call.
 
-3.1.4.26
+##### 3.1.4.26 NetrServerTransportDelEx (Opnum 53)
 
-NetrServerTransportDelEx (Opnum 53)
+
 
 The server receives the NetrServerTransportDelEx method in an RPC_REQUEST packet. In response,
 the server unbinds (or disconnects) the transport protocol from the server. If this method succeeds,
@@ -13050,7 +12907,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-TCP or XNS). This extended method allows level 1 beyond what the NetrServerTransportDel method
+
+TCP or XNS). This extended method allows level 1 beyond what the NetrServerTransportDel method
 allows.
 
  NET_API_STATUS NetrServerTransportDelEx(
@@ -13122,13 +12980,14 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The server SHOULD<102> enforce security measures to verify that the caller has the required
+
+The server SHOULD<102> enforce security measures to verify that the caller has the required
 permissions to execute this call. If the caller does not have the required credentials, the server
 SHOULD<103> fail the call.
 
-3.1.4.27
+##### 3.1.4.27 NetrpGetFileSecurity (Opnum 39)
 
-NetrpGetFileSecurity (Opnum 39)
+
 
 The NetrpGetFileSecurity method returns to the caller a copy of the security descriptor that protects a
 file or directory.
@@ -13192,9 +13051,10 @@ Release: September 16, 2024
 
 151 / 233
 
-3.1.4.28
 
-NetrpSetFileSecurity (Opnum 40)
+##### 3.1.4.28 NetrpSetFileSecurity (Opnum 40)
+
+
 
 The NetrpSetFileSecurity method sets the security of a file or directory.
 
@@ -13249,9 +13109,9 @@ The server SHOULD<107> enforce security measures to verify that the caller has t
 permissions to execute this call. If the caller does not have the required credentials, the server
 SHOULD<108> fail the call.
 
-3.1.4.29
+##### 3.1.4.29 NetprPathType (Opnum 30)
 
-NetprPathType (Opnum 30)
+
 
 The NetprPathType method checks a path name to determine its type.
 
@@ -13267,7 +13127,8 @@ Release: September 16, 2024
 
 152 / 233
 
-   [in] DWORD Flags
+
+   [in] DWORD Flags
  );
 
 ServerName: An SRVSVC_HANDLE (section 2.2.1.1) pointer that identifies the server. The client
@@ -13319,9 +13180,9 @@ The server MAY<109> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<110> fail the call.
 
-3.1.4.30
+##### 3.1.4.30 NetprPathCanonicalize (Opnum 31)
 
-NetprPathCanonicalize (Opnum 31)
+
 
 The NetprPathCanonicalize method converts a path name to the canonical format.
 
@@ -13341,7 +13202,8 @@ Release: September 16, 2024
 
 153 / 233
 
- );
+
+ );
 
 ServerName: An SRVSVC_HANDLE (section 2.2.1.1) pointer that identifies the server. The client
 
@@ -13410,7 +13272,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-After the canonicalization is successfully finished, the server MUST determine the path type of the
+
+After the canonicalization is successfully finished, the server MUST determine the path type of the
 canonicalized path name, as specified in NetprPathType (section 3.1.4.29), and store the result in the
 PathType parameter. Valid return codes for the PathType parameter are as specified in Path
 Types (section 2.2.2.9). If this fails, the server MUST fail the call with an ERROR_INVALID_NAME error
@@ -13420,9 +13283,9 @@ The server MAY<114> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<115> fail the call.
 
-3.1.4.31
+##### 3.1.4.31 NetprPathCompare (Opnum 32)
 
-NetprPathCompare (Opnum 32)
+
 
 The NetprPathCompare method performs comparison of two paths.
 
@@ -13484,7 +13347,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Any combination of Name1 (canonicalized or not), Name2 (canonicalized or not), and Flags (0 or 1) is
+
+Any combination of Name1 (canonicalized or not), Name2 (canonicalized or not), and Flags (0 or 1) is
 valid.
 
 If Flags is set to 0, the server MUST first attempt to canonicalize both Name1 and Name2 (and MUST
@@ -13512,9 +13376,9 @@ The server MAY<118> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<119> fail the call.
 
-3.1.4.32
+##### 3.1.4.32 NetprNameValidate (Opnum 33)
 
-NetprNameValidate (Opnum 33)
+
 
 The NetprNameValidate method performs checks to ensure that the specified name is a valid name for
 the specified type.
@@ -13553,7 +13417,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-and that the length of the Name parameter is no greater than the maximum allowed length for its
+
+and that the length of the Name parameter is no greater than the maximum allowed length for its
 NameType (as specified in section 2.2.2.8).
 
 The NameType parameter determines what validation is done on the name that is specified by the
@@ -13571,9 +13436,9 @@ The server MAY<121> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<122> fail the call.
 
-3.1.4.33
+##### 3.1.4.33 NetprNameCanonicalize (Opnum 34)
 
-NetprNameCanonicalize (Opnum 34)
+
 
 The NetprNameCanonicalize method converts a name to the canonical format for the specified type.
 
@@ -13630,7 +13495,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-In response to a NetprNameCanonicalize message, the server MUST convert the value of the Name
+
+In response to a NetprNameCanonicalize message, the server MUST convert the value of the Name
 parameter to one of the canonical forms that are defined in section 2.2.2.8.
 
 The NameType parameter determines what needs to be done on the name that is specified by the
@@ -13746,7 +13612,8 @@ Release: September 16, 2024
 
 158 / 233
 
-NameType
+
+NameType
 
 9
 
@@ -13792,9 +13659,9 @@ The server MAY<123> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<124> fail the call.
 
-3.1.4.34
+##### 3.1.4.34 NetprNameCompare (Opnum 35)
 
-NetprNameCompare (Opnum 35)
+
 
 The NetprNameCompare method does comparison of two names of a specific name type.
 
@@ -13845,7 +13712,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-NameType (as specified in section 2.2.2.8). If the supplied names are not canonicalized, the server
+
+NameType (as specified in section 2.2.2.8). If the supplied names are not canonicalized, the server
 MUST do the canonicalization of the names.
 
 The Name1 parameter and Name2 parameter specify the two names to be compared.
@@ -13881,9 +13749,9 @@ The server MAY<126> enforce security measures to verify that the caller has the 
 to execute this call. If the caller does not have the required credentials, the server SHOULD<127> fail
 the call.
 
-3.1.4.35
+##### 3.1.4.35 NetrDfsGetVersion (Opnum 43)
 
-NetrDfsGetVersion (Opnum 43)
+
 
 The NetrDfsGetVersion method checks whether the server is a DFS server and if so, returns the DFS
 version. An implementation MAY<128> choose to support this method.
@@ -13915,16 +13783,17 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The Version parameter is a pointer to a DWORD. If the server supports DFS, the server MUST set this
+
+The Version parameter is a pointer to a DWORD. If the server supports DFS, the server MUST set this
 parameter to an implementation-specific<130> DFS version number that the server supports.
 
 The server MAY<131> enforce security measures to verify that the server enforces these security
 measures and that the caller has the required permissions to execute this call. If the caller does not
 have the required credentials, the server SHOULD<132> fail the call.
 
-3.1.4.36
+##### 3.1.4.36 NetrDfsCreateLocalPartition (Opnum 44)
 
-NetrDfsCreateLocalPartition (Opnum 44)
+
 
 The NetrDfsCreateLocalPartition method marks a share as being a DFS share. In addition, if the
 RelationInfo parameter is non-NULL, it creates DFS links, as specified in [MS-DFSC], for each of the
@@ -13987,7 +13856,8 @@ Release: September 16, 2024
 
 161 / 233
 
-This parameter MUST NOT be NULL, or the server MUST fail the call with an
+
+This parameter MUST NOT be NULL, or the server MUST fail the call with an
 ERROR_INVALID_PARAMETER error code. If the EntryUid parameter matches a GUID for an existing
 local partition, the server MUST fail the call with an ERROR_INVALID_PARAMETER error code.
 
@@ -14021,9 +13891,9 @@ The server MAY<137> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<138> fail the call.
 
-3.1.4.37
+##### 3.1.4.37 NetrDfsDeleteLocalPartition (Opnum 45)
 
-NetrDfsDeleteLocalPartition (Opnum 45)
+
 
 The NetrDfsDeleteLocalPartition method deletes a DFS share (Prefix) on the server. An
 implementation MAY<139> choose to support this method.
@@ -14059,7 +13929,8 @@ Release: September 16, 2024
 
 162 / 233
 
-The Prefix parameter specifies the path of the DFS share to delete. This string MUST be in one of the
+
+The Prefix parameter specifies the path of the DFS share to delete. This string MUST be in one of the
 following two forms:
 
 
@@ -14082,9 +13953,9 @@ The server MAY<141> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<142> fail the call.
 
-3.1.4.38
+##### 3.1.4.38 NetrDfsSetLocalVolumeState (Opnum 46)
 
-NetrDfsSetLocalVolumeState (Opnum 46)
+
 
 The NetrDfsSetLocalVolumeState method sets a local DFS share online or offline. An implementation
 MAY<143> choose to support this method.
@@ -14133,7 +14004,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The State parameter specifies whether the share state MUST be set to online or offline. If the value of
+
+The State parameter specifies whether the share state MUST be set to online or offline. If the value of
 State is 0x80, the share state MUST be set to offline. For any other value, the share state MUST be set
 to online.
 
@@ -14141,9 +14013,9 @@ The server MAY<145> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<146> fail the call.
 
-3.1.4.39
+##### 3.1.4.39 NetrDfsCreateExitPoint (Opnum 48)
 
-NetrDfsCreateExitPoint (Opnum 48)
+
 
 The NetrDfsCreateExitPoint method creates a DFS link on the server. An implementation MAY<147>
 choose to support this method.
@@ -14211,7 +14083,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The Type parameter specifies the type of the new link and MUST be one of the values listed in section
+
+The Type parameter specifies the type of the new link and MUST be one of the values listed in section
 2.2.2.13. If the value of this parameter is PKT_ENTRY_TYPE_MACHINE, the server MUST fail the call
 and return an implementation-specific error code.
 
@@ -14222,9 +14095,9 @@ The server MAY<150> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<151> fail the call.
 
-3.1.4.40
+##### 3.1.4.40 NetrDfsModifyPrefix (Opnum 50)
 
-NetrDfsModifyPrefix (Opnum 50)
+
 
 The NetrDfsModifyPrefix method changes the path that corresponds to a DFS link on the server. An
 implementation MAY<152> choose to support this method.
@@ -14285,9 +14158,10 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.4.41
 
-NetrDfsDeleteExitPoint (Opnum 49)
+##### 3.1.4.41 NetrDfsDeleteExitPoint (Opnum 49)
+
+
 
 The NetrDfsDeleteExitPoint method deletes a DFS link on the server. An implementation MAY<156>
 choose to support this method.
@@ -14355,9 +14229,10 @@ Release: September 16, 2024
 
 166 / 233
 
-3.1.4.42
 
-NetrDfsFixLocalVolume (Opnum 51)
+##### 3.1.4.42 NetrDfsFixLocalVolume (Opnum 51)
+
+
 
 The NetrDfsFixLocalVolume method provides knowledge of a new DFS share on the server. An
 implementation MAY<160> choose to support this method.
@@ -14453,7 +14328,8 @@ Release: September 16, 2024
 
 167 / 233
 
-StgId: A pointer to a variable that specifies an ID for the local storage. The server MUST ignore the
+
+StgId: A pointer to a variable that specifies an ID for the local storage. The server MUST ignore the
 
 value that is passed in for the StgId parameter.
 
@@ -14540,7 +14416,8 @@ Release: September 16, 2024
 
 168 / 233
 
-
+
+
 
 The second form is \DomainName\DomDfsname\path_to_link, where DomainName is the name of
 the domain that hosts the DFS root; DomDfsname is the name of the root of a domain-based DFS
@@ -14558,9 +14435,9 @@ The server MAY<164> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<165> fail the call.
 
-3.1.4.43
+##### 3.1.4.43 NetrDfsManagerReportSiteInfo (Opnum 52)
 
-NetrDfsManagerReportSiteInfo (Opnum 52)
+
 
 The NetrDfsManagerReportSiteInfo method obtains a list of names that SHOULD<166> correspond to
 the Active Directory sites covered by the specified server. An implementation MAY<167> choose to
@@ -14592,9 +14469,9 @@ The server MAY<169> enforce security measures to verify that the caller has the 
 to execute this call. If the server enforces these security measures and the caller does not have the
 required credentials, the server SHOULD<170> fail the call.
 
-3.1.4.44
+##### 3.1.4.44 NetrServerAliasAdd (Opnum 54)
 
-NetrServerAliasAdd (Opnum 54)
+
 
 The NetrServerAliasAdd method attaches an alias name to an existing server name and inserts Alias
 objects into AliasList, through which the shared resource can be accessed either with server name or
@@ -14612,7 +14489,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-   [in, switch_is(Level)] LPSERVER_ALIAS_INFO InfoStruct
+
+   [in, switch_is(Level)] LPSERVER_ALIAS_INFO InfoStruct
 
 );
 
@@ -14700,7 +14578,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-srvai*_default is 0 or an empty string if srvai*_default is nonzero; otherwise, the server MUST fail
+
+srvai*_default is 0 or an empty string if srvai*_default is nonzero; otherwise, the server MUST fail
 the call with an ERROR_INVALID_PARAMETER error code. If srvai*_alias is a nonempty string and it
 matches an existing Alias.alias in the AliasList, the server MUST fail the call with an
 ERROR_INVALID_PARAMETER error code. If srvai*_alias is an empty string and srvai*_default is
@@ -14716,9 +14595,9 @@ The server MUST persist the InfoStruct and Level parameters to a persistent conf
 alias with the same srvai0_alias and srvai0_target already exists in the store, the preexisting entry
 MUST be overwritten with this entry.
 
-3.1.4.45
+##### 3.1.4.45 NetrServerAliasEnum (Opnum 55)
 
-NetrServerAliasEnum (Opnum 55)
+
 
 The NetrServerAliasEnum method retrieves alias information for a server based on specified alias
 name or server name.
@@ -14772,7 +14651,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14867,7 +14747,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If the client specified a ResumeHandle and if the server returns ERROR_MORE_DATA
 (0x000000EA), the server MUST set ResumeHandle to the index of the last enumerated alias in
@@ -14881,9 +14762,9 @@ The server SHOULD<173> enforce security measures to verify that the caller has t
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<174> fail the call.
 
-3.1.4.46
+##### 3.1.4.46 NetrServerAliasDel (Opnum 56)
 
-NetrServerAliasDel (Opnum 56)
+
 
 The NetrServerAliasDel method deletes an alias name from a server alias list based on specified alias
 name.
@@ -14956,7 +14837,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14984,9 +14866,9 @@ SHOULD<176> fail the call.
 
 The server MUST delete configuration data for this alias from the persistent configuration store.
 
-3.1.4.47
+##### 3.1.4.47 NetrShareDelEx (Opnum 57)
 
-NetrShareDelEx (Opnum 57)
+
 
 The NetrShareDelEx method deletes a share from the ShareList, which disconnects all connections to
 the shared resource. If the share is sticky, all information about the share is also deleted from
@@ -15029,7 +14911,8 @@ Release: September 16, 2024
 
 174 / 233
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15089,16 +14972,16 @@ The server SHOULD<178> enforce security measures to verify that the caller has t
 permissions to execute this routine. If the caller does not have the required credentials, the server
 SHOULD<179> fail the call.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers that are required in the
 underlying RPC transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.1.6.1  Server Looks Up Shares
+##### 3.1.6.1 Server Looks Up Shares
 
 The server MUST provide the tuple <ServerName, ShareName> to look up shares in ShareList, as
 specified in section 3.1.1.1.
@@ -15112,7 +14995,8 @@ Release: September 16, 2024
 
 175 / 233
 
-ServerName: The name of a local server to which the shared resource attaches. This could be an
+
+ServerName: The name of a local server to which the shared resource attaches. This could be an
 
 empty string.
 
@@ -15127,33 +15011,33 @@ To look up the share(s) in ShareList, the following algorithm MUST be used.
  ENDFOR
  RETURN NULL
 
-3.1.6.2  Server Registers a New Session
+##### 3.1.6.2 Server Registers a New Session
 
 The CIFS or SMB2 server requesting registration of a Session provides no parameters. The server
 MUST insert a new Session into SessionList, and MUST assign Session.GlobalSessionId the value that
 uniquely identifies the entry in the list. This value MUST be returned to the caller.
 
-3.1.6.3  Server Deregisters a Session
+##### 3.1.6.3 Server Deregisters a Session
 
 The CIFS or SMB2 server MUST provide the SessionId of the Session that is being deregistered.
 
 The server MUST look up the Session in SessionList where Session.GlobalSessionId is equal to the
 SessionId provided by the caller, and remove it from SessionList.
 
-3.1.6.4  Server Registers a New Open
+##### 3.1.6.4 Server Registers a New Open
 
 The CIFS or SMB2 server requesting registration of an Open provides no parameters. The server MUST
 insert a new Open into FileList, and MUST assign Open.GlobalFileId a value that uniquely identifies
 the entry in the list. This value MUST be returned to the caller.
 
-3.1.6.5  Server Deregisters an Open
+##### 3.1.6.5 Server Deregisters an Open
 
 The CIFS or SMB2 server MUST provide the FileId of the Open that is being deregistered.
 
 The server MUST look up the Open in FileList, where Open.GlobalFileId is equal to the FileId provided
 by the caller, and remove it from FileList.
 
-3.1.6.6  Server Registers a New Treeconnect
+##### 3.1.6.6 Server Registers a New Treeconnect
 
 The CIFS or SMB2 server requesting registration of a TreeConnect MUST provide the tuple
 <ServerName, ShareName>. The server MUST insert a new TreeConnect into TreeConnectList
@@ -15162,7 +15046,7 @@ the list. This value MUST be returned to the caller. The server MUST look up the
 ShareList, where ShareName matches Share.ShareName, and MUST increase
 Share.CurrentUses by 1.
 
-3.1.6.7  Server Deregisters a Treeconnect
+##### 3.1.6.7 Server Deregisters a Treeconnect
 
 The CIFS or SMB2 server MUST provide the tuple <ServerName, ShareName> and the
 TreeconnectId of the TreeConnect that is being deregistered.
@@ -15174,12 +15058,13 @@ Release: September 16, 2024
 
 176 / 233
 
-The server MUST look up the TreeConnect in TreeConnectList, where
+
+The server MUST look up the TreeConnect in TreeConnectList, where
 TreeConnect.GlobalTreeConnectId is equal to the TreeconnectId provided by the caller, and MUST
 remove it from TreeConnectList. The server MUST look up the Share in the ShareList, where
 ShareName matches Share.ShareName, and MUST decrease Share.CurrentUses by 1.
 
-3.1.6.8  Server Normalizes a ServerName
+##### 3.1.6.8 Server Normalizes a ServerName
 
 The server MUST provide the tuple <ServerName, ShareName> as input parameters.
 
@@ -15227,7 +15112,7 @@ look up the share in ShareList, using the following algorithm:
  ENDFOR
  RETURN empty string
 
-3.1.6.9  Local Application Enables Advertising a Service
+##### 3.1.6.9 Local Application Enables Advertising a Service
 
 The caller MUST provide the service type flags, as specified in section 2.2.2.7, that it is enabling. The
 server MUST set these flag to TRUE in GlobalServerAnnounce.
@@ -15239,23 +15124,24 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.6.10
 
-Local Application Disables Advertising a Service
+##### 3.1.6.10 Local Application Disables Advertising a Service
+
+
 
 The caller MUST provide the service type flags, as specified in section 2.2.2.7, that it is disabling. The
 server MUST set these flag to FALSE in GlobalServerAnnounce.
 
-3.1.6.11
+##### 3.1.6.11 Server Queries Existing Services
 
-Server Queries Existing Services
+
 
 The server MUST return GlobalServerAnnounce to the caller to indicate the available services
 running on the server.
 
-3.1.6.12
+##### 3.1.6.12 Server Service Terminates
 
-Server Service Terminates
+
 
 When the server service terminates, the server MUST disable the SMB server as specified in [MS-
 CIFS] section 3.3.4.19, and MUST disable the SMB2 server as specified in [MS-SMB2] section
@@ -15266,9 +15152,9 @@ The server MUST remove all elements from AliasList, ShareList, and TransportList
 The server MUST free AliasList, FileList, ShareList, SessionList, TransportList, and
 TreeConnectList.
 
-3.1.6.13
+##### 3.1.6.13 Local Application Pauses or Resumes the CIFS Server
 
-Local Application Pauses or Resumes the CIFS Server
+
 
 The server SHOULD <180> enforce security measures to verify that the caller has the required
 permissions to execute this routine. If the caller does not have the required credentials, the server
@@ -15277,35 +15163,35 @@ the CIFS server as specified in [MS-CIFS] section 3.3.4.20. If the call is for t
 the server service MUST resume normal operation of the CIFS server as specified in [MS-CIFS] section
 3.3.4.21.
 
-3.1.6.14
+##### 3.1.6.14 Server Notifies Completion of Initialization
 
-Server Notifies Completion of Initialization
+
 
 The CIFS, SMB, or SMB2 server that calls this event provides a string that indicates the name of the
 protocol. If the protocol name is "CIFS", indicating notification from a CIFS or SMB server, the server
 MUST set CifsInitialized to TRUE. If the protocol name is "SMB2", the server MUST set
 Smb2Initialized to TRUE.
 
-3.1.6.15
+##### 3.1.6.15 Server Notifies Current Uses of a Share
 
-Server Notifies Current Uses of a Share
+
 
 The CIFS or SMB2 server MUST provide the tuple <ServerName, ShareName>. The server MUST
 look up the Share in the ShareList, where ShareName matches Share.ShareName, and MUST
 return Share.CurrentUses.
 
-3.1.6.16
+##### 3.1.6.16 Server Updates Connection Count on a Transport
 
-Server Updates Connection Count on a Transport
+
 
 The CIFS or SMB2 server MUST provide the tuple <TransportName,ConnectionFlag>. The server MUST
 look up the Transport in the TransportList, where TransportName matches Transport.Name. If
 ConnectionFlag is TRUE, the server MUST increase Transport.ConnectionCount by 1. If
 ConnectionFlag is FALSE, the server MUST decrease Transport.ConnectionCount by 1.
 
-3.1.6.17
+##### 3.1.6.17 Server Looks Up Null Session Pipes
 
-Server Looks Up Null Session Pipes
+
 
 The CIFS or SMB2 server MUST provide the pipe name, without the "\pipe\" prefix. The server MUST
 look up the pipe name in NullSessionPipeList. If a matching name is found in NullSessionPipeList,
@@ -15318,22 +15204,23 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 No abstract data model is used.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those internal ones that are used in RPC to implement
 resiliency to network outages. For more information, see [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST create an RPC connection to the remote computer, as specified in section 2.1.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 Upon the completion of the RPC method, the client MUST return the result unmodified to the higher
 layer. This is a stateless protocol with the exception of the NetrShareDelCommit method.
@@ -15359,11 +15246,11 @@ The client MUST ignore errors returned from the RPC server and notify the applic
 the error that was received in the higher layer. Otherwise, no special message processing is required
 on the client beyond the processing that is required in the underlying RPC protocol.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -15374,11 +15261,12 @@ Release: September 16, 2024
 
 179 / 233
 
-<!-- Extracted images from page 180 -->
+
+<!-- Extracted images from page 180 -->
 ![Extracted image 1 from page 180]([MS-SRVS].images/page180-img01.png)
 <!-- /Extracted images from page 180 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 For most methods, the Server Service Remote Protocol is a simple request-response protocol. For
 every method that the server receives, except the NetrShareDelStart method and the
@@ -15390,7 +15278,7 @@ returns NERR_Success, as shown in the following figure.
 
 Figure 1: A simple request-response example
 
-4.1  Example of ResumeHandle
+### 4.1 Example of ResumeHandle
 
 The client calls the NetrFileEnum method to enumerate all open files on a server named
 "wingtiptoys". There are five open files on the server "wingtiptoys".
@@ -15424,11 +15312,12 @@ Release: September 16, 2024
 
 180 / 233
 
-<!-- Extracted images from page 181 -->
+
+<!-- Extracted images from page 181 -->
 ![Extracted image 1 from page 181]([MS-SRVS].images/page181-img01.png)
 <!-- /Extracted images from page 181 -->
 
-4.2  Two-Phase Share Deletion
+### 4.2 Two-Phase Share Deletion
 
 The following figure shows the protocol message sequence for a two-phase share deletion.
 
@@ -15449,7 +15338,7 @@ messages for a two-phase share delete:
 between the client and the server is deleted, the client does not receive a status that indicates the
 successful completion of the NetrShareDelCommit method.
 
-4.3  Adding a Scoped Share With an Alias to a Server
+### 4.3 Adding a Scoped Share With an Alias to a Server
 
 The following figure shows the protocol message sequence for an administrator remotely configuring a
 server to support an additional server name, and configuring an alias for that new name.
@@ -15461,7 +15350,8 @@ Release: September 16, 2024
 
 181 / 233
 
-<!-- Extracted images from page 182 -->
+
+<!-- Extracted images from page 182 -->
 ![Extracted image 1 from page 182]([MS-SRVS].images/page182-img01.png)
 <!-- /Extracted images from page 182 -->
 
@@ -15497,7 +15387,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ServerName parameter for NetrShareEnum would not see the shares added as specified in step 3
+
+ServerName parameter for NetrShareEnum would not see the shares added as specified in step 3
 above. (Note that the administrator is responsible for configuring the network such that the names
 "server" and "server.example.com" correctly resolve to the server above. This is not handled by
 NetrServerTransportAddEx (Opnum 41).)
@@ -15509,15 +15400,16 @@ Release: September 16, 2024
 
 183 / 233
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol allows any user to connect to the server; therefore, any security weakness in the server
 implementation could be exploitable. It is important that the server implementation enforce security
 on each method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol allows any user to establish a connection to the RPC server as specified in section 2.1.
 
@@ -15528,7 +15420,8 @@ Release: September 16, 2024
 
 184 / 233
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where "ms-dtyp.idl" is the IDL as specified in
 [MS-DTYP] Appendix A.
@@ -15602,7 +15495,8 @@ Release: September 16, 2024
 
 185 / 233
 
-     typedef struct _FILE_INFO_2
+
+     typedef struct _FILE_INFO_2
      {
          DWORD fi2_id;
      } FILE_INFO_2, *PFILE_INFO_2, *LPFILE_INFO_2;
@@ -15679,7 +15573,8 @@ Release: September 16, 2024
 
 186 / 233
 
-     typedef struct _SESSION_INFO_1
+
+     typedef struct _SESSION_INFO_1
      {
          [string] wchar_t * sesi1_cname;
          [string] wchar_t * sesi1_username;
@@ -15755,7 +15650,8 @@ Release: September 16, 2024
 
 187 / 233
 
-         [string] wchar_t * sesi502_transport;
+
+         [string] wchar_t * sesi502_transport;
      } SESSION_INFO_502,
       *PSESSION_INFO_502,
       *LPSESSION_INFO_502;
@@ -15832,7 +15728,8 @@ Release: September 16, 2024
 
 188 / 233
 
-         [size_is(EntriesRead)] LPSHARE_INFO_503_I Buffer;
+
+         [size_is(EntriesRead)] LPSHARE_INFO_503_I Buffer;
      }   SHARE_INFO_503_CONTAINER,
        *PSHARE_INFO_503_CONTAINER,
       *LPSHARE_INFO_503_CONTAINER;
@@ -15909,7 +15806,8 @@ Release: September 16, 2024
 
 189 / 233
 
-         DWORD shi501_flags;
+
+         DWORD shi501_flags;
      } SHARE_INFO_501,
       *PSHARE_INFO_501,
       *LPSHARE_INFO_501;
@@ -15986,7 +15884,8 @@ Release: September 16, 2024
 
 190 / 233
 
-             LPSHARE_INFO_0 ShareInfo0;
+
+             LPSHARE_INFO_0 ShareInfo0;
          [case(1)]
              LPSHARE_INFO_1 ShareInfo1;
          [case(2)]
@@ -16063,7 +15962,8 @@ Release: September 16, 2024
 
 191 / 233
 
-         DWORD sv502_sizreqbuf;
+
+         DWORD sv502_sizreqbuf;
          DWORD sv502_initworkitems;
          DWORD sv502_maxworkitems;
          DWORD sv502_rawworkitems;
@@ -16140,7 +16040,8 @@ Release: September 16, 2024
 
 192 / 233
 
-         DWORD sv599_sessopens;
+
+         DWORD sv599_sessopens;
          DWORD sv599_sessvcs;
          DWORD sv599_opensearch;
          DWORD sv599_sizreqbuf;
@@ -16217,7 +16118,8 @@ Release: September 16, 2024
 
 193 / 233
 
-         DWORD sv1107_users;
+
+         DWORD sv1107_users;
      } SERVER_INFO_1107,
       *PSERVER_INFO_1107,
       *LPSERVER_INFO_1107;
@@ -16294,7 +16196,8 @@ Release: September 16, 2024
 
 194 / 233
 
-         DWORD sv1512_maxnonpagedmemoryusage;
+
+         DWORD sv1512_maxnonpagedmemoryusage;
      } SERVER_INFO_1512, *PSERVER_INFO_1512, *LPSERVER_INFO_1512;
 
      typedef struct _SERVER_INFO_1513
@@ -16371,7 +16274,8 @@ Release: September 16, 2024
 
 195 / 233
 
-     {
+
+     {
          int sv1538_enablefcbopens;
      } SERVER_INFO_1538, *PSERVER_INFO_1538, *LPSERVER_INFO_1538;
 
@@ -16447,7 +16351,8 @@ Release: September 16, 2024
 
 196 / 233
 
-     typedef struct _SERVER_INFO_1553
+
+     typedef struct _SERVER_INFO_1553
      {
          DWORD sv1553_minlinkthroughput;
      } SERVER_INFO_1553, *PSERVER_INFO_1553, *LPSERVER_INFO_1553;
@@ -16524,7 +16429,8 @@ Release: September 16, 2024
 
 197 / 233
 
-             LPSERVER_INFO_1516 ServerInfo1516;
+
+             LPSERVER_INFO_1516 ServerInfo1516;
          [case(1518)]
              LPSERVER_INFO_1518 ServerInfo1518;
          [case(1523)]
@@ -16600,7 +16506,8 @@ Release: September 16, 2024
 
 198 / 233
 
-     typedef struct _SERVER_TRANSPORT_INFO_0
+
+     typedef struct _SERVER_TRANSPORT_INFO_0
      {
          DWORD svti0_numberofvcs;
          [string] wchar_t * svti0_transportname;
@@ -16676,7 +16583,8 @@ Release: September 16, 2024
 
 199 / 233
 
-     typedef struct _SERVER_XPORT_INFO_3_CONTAINER
+
+     typedef struct _SERVER_XPORT_INFO_3_CONTAINER
      {
          DWORD EntriesRead;
          [size_is(EntriesRead)] LPSERVER_TRANSPORT_INFO_3 Buffer;
@@ -16753,7 +16661,8 @@ Release: September 16, 2024
 
 200 / 233
 
-         DWORD tod_elapsedt;
+
+         DWORD tod_elapsedt;
          DWORD tod_msecs;
          DWORD tod_hours;
          DWORD tod_mins;
@@ -16830,7 +16739,8 @@ Release: September 16, 2024
 
 201 / 233
 
-     void Opnum1NotUsedOnWire(void);
+
+     void Opnum1NotUsedOnWire(void);
 
  // This method not used on the wire
      void Opnum2NotUsedOnWire(void);
@@ -16907,7 +16817,8 @@ Release: September 16, 2024
 
 202 / 233
 
-         [in,string,unique] WCHAR * ClientName,
+
+         [in,string,unique] WCHAR * ClientName,
          [in,string,unique] WCHAR * UserName
      );
 
@@ -16984,7 +16895,8 @@ Release: September 16, 2024
 
 203 / 233
 
-         [in] DWORD Level,
+
+         [in] DWORD Level,
          [in, switch_is(Level)] LPSERVER_INFO ServerInfo,
          [in,out,unique] DWORD * ParmErr
      );
@@ -17061,7 +16973,8 @@ Release: September 16, 2024
 
 204 / 233
 
-         [in,range(0, 64000)] DWORD OutbufLen,
+
+         [in,range(0, 64000)] DWORD OutbufLen,
          [in,string] WCHAR * Prefix,
          [in,out] DWORD * PathType,
          [in] DWORD Flags
@@ -17138,7 +17051,8 @@ Release: September 16, 2024
 
 205 / 233
 
-         [in] SECURITY_INFORMATION RequestedInformation,
+
+         [in] SECURITY_INFORMATION RequestedInformation,
          [out] PADT_SECURITY_DESCRIPTOR *SecurityDescriptor
      );
 
@@ -17215,7 +17129,8 @@ Release: September 16, 2024
 
 206 / 233
 
-     NetrDfsDeleteExitPoint (
+
+     NetrDfsDeleteExitPoint (
          [in,string,unique] SRVSVC_HANDLE ServerName,
          [in] GUID * Uid,
          [in,string] WCHAR * Prefix,
@@ -17292,7 +17207,8 @@ Release: September 16, 2024
 
 207 / 233
 
- }
+
+ }
 
 [MS-SRVS] - v20240916
 Server Service Remote Protocol
@@ -17301,7 +17217,8 @@ Release: September 16, 2024
 
 208 / 233
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -17370,7 +17287,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-windows_server_2008 operating system and later, set this field to an empty string. The following table
+
+windows_server_2008 operating system and later, set this field to an empty string. The following table
 specifies the Sessionclient string and corresponding Windows operating system version.
 
 Sessionclient String
@@ -17472,7 +17390,8 @@ Release: September 16, 2024
 
 210 / 233
 
-Sessionclient String
+
+Sessionclient String
 
 Windows Operating System Version
 
@@ -17558,7 +17477,8 @@ Release: September 16, 2024
 
 211 / 233
 
-Operating system
+
+Operating system
 
 Major version
 
@@ -17684,7 +17604,8 @@ Release: September 16, 2024
 
 212 / 233
 
-<20> Section 2.2.4.43: SRV_HASH_GENERATION_ACTIVE is enabled only if
+
+<20> Section 2.2.4.43: SRV_HASH_GENERATION_ACTIVE is enabled only if
 SRV_SUPPORT_HASH_GENERATION is enabled.
 
 <21> Section 2.2.4.46: The allowed range of values on Windows NT 4.0 is 1 to 2,048, inclusive.
@@ -17750,7 +17671,8 @@ Release: September 16, 2024
 
 213 / 233
 
-<29> Section 2.2.4.96: This member is usually the NetBIOS name that the server is using, or it can
+
+<29> Section 2.2.4.96: This member is usually the NetBIOS name that the server is using, or it can
 represent an SMB/IPX name.
 
 <30> Section 2.2.4.96: The server normalizes this to 16 characters by truncating the given length to
@@ -17818,7 +17740,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Operating system
+
+Operating system
 
 Pipes
 
@@ -17937,7 +17860,8 @@ Release: September 16, 2024
 
 215 / 233
 
-
+
+
 
 
 
@@ -18072,7 +17996,8 @@ Release: September 16, 2024
 
 216 / 233
 
-
+
+
 
 
 
@@ -18169,7 +18094,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<51> Section 3.1.4.4: If the caller is not a member of the Administrator or Server Operator local
+
+<51> Section 3.1.4.4: If the caller is not a member of the Administrator or Server Operator local
 group, Windows-based servers fail the call with the error code ERROR_ACCESS_DENIED.
 
 <52> Section 3.1.4.5: The Windows implementation checks to see whether the caller is a member of
@@ -18238,7 +18164,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<68> Section 3.1.4.12: Windows uses the registry as permanent storage.
+
+<68> Section 3.1.4.12: Windows uses the registry as permanent storage.
 
 <69> Section 3.1.4.12: Windows-based clients set this field to an arbitrary value. The actual value
 does not affect server behavior because the server is required to ignore this field.
@@ -18304,7 +18231,8 @@ Release: September 16, 2024
 
 219 / 233
 
-<83> Section 3.1.4.18: If any member of the structure ServerInfo  is found invalid, the server fails
+
+<83> Section 3.1.4.18: If any member of the structure ServerInfo  is found invalid, the server fails
 the call with an implementation-specific error code.
 
 <84> Section 3.1.4.18: The Windows implementation checks whether the client is a member of the
@@ -18373,7 +18301,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<103> Section 3.1.4.26: If the client is not a member of the Administrators or Server Operators local
+
+<103> Section 3.1.4.26: If the client is not a member of the Administrators or Server Operators local
 group, Windows-based servers fail the call with the error code ERROR_ACCESS_DENIED.
 
 <104> Section 3.1.4.27: Windows-based servers fail the call with an ERROR_INVALID_PARAMETER if
@@ -18449,7 +18378,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<115> Section 3.1.4.30: No security restrictions are imposed by Windows-based server
+
+<115> Section 3.1.4.30: No security restrictions are imposed by Windows-based server
 implementations on the caller.
 
 <116> Section 3.1.4.31: If the Flags parameter is 1, the server ignores the PathType parameter.
@@ -18516,7 +18446,8 @@ Release: September 16, 2024
 
 222 / 233
 
-<135> Section 3.1.4.36: This method is only supported in Windows 2000 and Windows XP.
+
+<135> Section 3.1.4.36: This method is only supported in Windows 2000 and Windows XP.
 Otherwise, it returns an implementation-specific error code.
 
 <136> Section 3.1.4.36: Both ShortName and EntryPrefix are used to match a DFS path. If the latter
@@ -18585,7 +18516,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<155> Section 3.1.4.40: No security restrictions are imposed by Windows-based server
+
+<155> Section 3.1.4.40: No security restrictions are imposed by Windows-based server
 implementations on the caller.
 
 <156> Section 3.1.4.41: This method is only supported in Windows 2000 and Windows XP.
@@ -18653,7 +18585,8 @@ Server Service Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<169> Section 3.1.4.43: No security restrictions are imposed by Windows-based server
+
+<169> Section 3.1.4.43: No security restrictions are imposed by Windows-based server
 implementations on the caller.
 
 <170> Section 3.1.4.43: No security restrictions are imposed by Windows-based server
@@ -18706,7 +18639,8 @@ Release: September 16, 2024
 
 225 / 233
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -18718,7 +18652,8 @@ Release: September 16, 2024
 
 226 / 233
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -18858,7 +18793,8 @@ ITYPE_PATH_SYS_PRINT_M 21
 
 227 / 233
 
-ITYPE_PATH_SYS_QUEUE 21
+
+ITYPE_PATH_SYS_QUEUE 21
 ITYPE_PATH_SYS_QUEUE_M 21
 ITYPE_PATH_SYS_SEM 21
 ITYPE_PATH_SYS_SEM_M 21
@@ -18997,7 +18933,8 @@ LPSHARE_INFO_0 47
 
 228 / 233
 
-LPSHARE_INFO_1 48
+
+LPSHARE_INFO_1 48
 LPSHARE_INFO_1004 51
 LPSHARE_INFO_1005 51
 LPSHARE_INFO_1006 52
@@ -19140,7 +19077,8 @@ NetrFileClose (Opnum 11) method 102
 
 229 / 233
 
-NetrFileClose method 102
+
+NetrFileClose method 102
 NetrFileEnum (Opnum 9) method 98
 NetrFileEnum method 98
 NetrFileGetInfo (Opnum 10) method 100
@@ -19278,7 +19216,8 @@ PSERVER_INFO_1514 68
 
 230 / 233
 
-PSERVER_INFO_1515 68
+
+PSERVER_INFO_1515 68
 PSERVER_INFO_1516 69
 PSERVER_INFO_1518 69
 PSERVER_INFO_1523 69
@@ -19418,7 +19357,8 @@ Server
 
 231 / 233
 
-   NetrDfsDeleteLocalPartition (Opnum 45) method
+
+   NetrDfsDeleteLocalPartition (Opnum 45) method
 
 161
 
@@ -19569,7 +19509,8 @@ SHARE_INFO_0 structure 47
 
 232 / 233
 
-SHARE_INFO_0_CONTAINER structure 52
+
+SHARE_INFO_0_CONTAINER structure 52
 SHARE_INFO_1 structure 48
 SHARE_INFO_1_CONTAINER structure 53
 SHARE_INFO_1004 structure 51

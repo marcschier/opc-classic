@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 43
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -164,242 +165,105 @@ Release: April 23, 2024
 
 2 / 43
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Microsoft Vendor-Specific Attributes (VSAs)](#221-microsoft-vendor-specific-attributes-vsas)
+      - [2.2.1.1 MS-RAS-Client-Name](#2211-ms-ras-client-name)
+      - [2.2.1.2 MS-RAS-Client-Version](#2212-ms-ras-client-version)
+      - [2.2.1.3 MS-User-Security-Identity](#2213-ms-user-security-identity)
+      - [2.2.1.4 MS-Network-Access-Server-Type](#2214-ms-network-access-server-type)
+      - [2.2.1.5 MS-Machine-Name](#2215-ms-machine-name)
+      - [2.2.1.6 MS-IPv6-Filter](#2216-ms-ipv6-filter)
+      - [2.2.1.7 MS-RAS-Correlation-ID](#2217-ms-ras-correlation-id)
+      - [2.2.1.8 MS-User-IPv4-Address](#2218-ms-user-ipv4-address)
+      - [2.2.1.9 MS-User-IPv6-Address](#2219-ms-user-ipv6-address)
+      - [2.2.1.10 MS-RDG-Device-Redirection](#22110-ms-rdg-device-redirection)
+      - [2.2.1.11 MS-Azure-Policy-ID](#22111-ms-azure-policy-id)
+    - [2.2.2 Microsoft Vendor-Specific Values for RADIUS Attributes](#222-microsoft-vendor-specific-values-for-radius-attributes)
+      - [2.2.2.1 Vendor-Specific Value for the Tunnel-Type RADIUS Attribute](#2221-vendor-specific-value-for-the-tunnel-type-radius-attribute)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Windows Implementation of RADIUS Attributes](#3151-windows-implementation-of-radius-attributes)
+      - [3.1.5.2 Microsoft VSA Support of RADIUS Messages](#3152-microsoft-vsa-support-of-radius-messages)
+      - [3.1.5.3 Processing RADIUS Attributes](#3153-processing-radius-attributes)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Abstract Interface for Setting an Access-Accept Message](#3241-abstract-interface-for-setting-an-access-accept-message)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing RADIUS Access-Request Messages](#3251-processing-radius-access-request-messages)
+        - [3.2.5.1.1 MS-RAS-Client-Name](#32511-ms-ras-client-name)
+        - [3.2.5.1.2 MS-RAS-Client-Version](#32512-ms-ras-client-version)
+        - [3.2.5.1.3 MS-User-Security-Identity](#32513-ms-user-security-identity)
+        - [3.2.5.1.4 MS-Network-Access-Server-Type](#32514-ms-network-access-server-type)
+        - [3.2.5.1.5 MS-Machine-Name](#32515-ms-machine-name)
+        - [3.2.5.1.6 MS-RAS-Correlation-ID](#32516-ms-ras-correlation-id)
+        - [3.2.5.1.7 MS-User-IPv4-Address](#32517-ms-user-ipv4-address)
+        - [3.2.5.1.8 MS-User-IPv6-Address](#32518-ms-user-ipv6-address)
+        - [3.2.5.1.9 Tunnel-Type](#32519-tunnel-type)
+      - [3.2.5.2 Creating RADIUS Access-Accept Messages](#3252-creating-radius-access-accept-messages)
+        - [3.2.5.2.1 MS-IPv6-Filter](#32521-ms-ipv6-filter)
+        - [3.2.5.2.2 MS-RDG-Device-Redirection](#32522-ms-rdg-device-redirection)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Client Details](#33-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Abstract Interface for Sending an Access Request Message](#3341-abstract-interface-for-sending-an-access-request-message)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Creating RADIUS Access-Request Messages](#3351-creating-radius-access-request-messages)
+        - [3.3.5.1.1 MS-RAS-Client-Name](#33511-ms-ras-client-name)
+        - [3.3.5.1.2 MS-RAS-Client-Version](#33512-ms-ras-client-version)
+        - [3.3.5.1.3 MS-User-Security-Identity](#33513-ms-user-security-identity)
+        - [3.3.5.1.4 MS-Network-Access-Server-Type](#33514-ms-network-access-server-type)
+        - [3.3.5.1.5 MS-Machine-Name](#33515-ms-machine-name)
+        - [3.3.5.1.6 MS-RAS-Correlation-ID](#33516-ms-ras-correlation-id)
+        - [3.3.5.1.7 MS-User-IPv4-Address](#33517-ms-user-ipv4-address)
+        - [3.3.5.1.8 MS-User-IPv6-Address](#33518-ms-user-ipv6-address)
+        - [3.3.5.1.9 Tunnel-Type](#33519-tunnel-type)
+      - [3.3.5.2 Processing RADIUS Access-Accept Messages](#3352-processing-radius-access-accept-messages)
+        - [3.3.5.2.1 MS-IPv6-Filter](#33521-ms-ipv6-filter)
+        - [3.3.5.2.2 MS-RDG-Device-Redirection](#33522-ms-rdg-device-redirection)
+        - [3.3.5.2.3 MS-Azure-Policy-ID](#33523-ms-azure-policy-id)
+      - [3.3.5.3 Processing RADIUS Access-Reject Messages](#3353-processing-radius-access-reject-messages)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-Microsoft Vendor-Specific Attributes (VSAs) ................................................... 10
-MS-RAS-Client-Name ............................................................................ 11
-2.2.1.1
-MS-RAS-Client-Version .......................................................................... 11
-2.2.1.2
-MS-User-Security-Identity ...................................................................... 11
-2.2.1.3
-MS-Network-Access-Server-Type ............................................................ 12
-2.2.1.4
-MS-Machine-Name ................................................................................ 12
-2.2.1.5
-MS-IPv6-Filter ...................................................................................... 12
-2.2.1.6
-MS-RAS-Correlation-ID .......................................................................... 16
-2.2.1.7
-MS-User-IPv4-Address ........................................................................... 17
-2.2.1.8
-2.2.1.9
-MS-User-IPv6-Address ........................................................................... 17
-2.2.1.10  MS-RDG-Device-Redirection ................................................................... 17
-2.2.1.11  MS-Azure-Policy-ID ............................................................................... 18
-Microsoft Vendor-Specific Values for RADIUS Attributes ................................... 18
-Vendor-Specific Value for the Tunnel-Type RADIUS Attribute ...................... 18
-
-2.2.2.1
-
-2.2.2
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 19
-Common Details .............................................................................................. 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Windows Implementation of RADIUS Attributes ........................................ 19
-Microsoft VSA Support of RADIUS Messages ............................................. 20
-Processing RADIUS Attributes ................................................................. 20
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Server Details .................................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Abstract Interface for Setting an Access-Accept Message ........................... 22
-Message Processing Events and Sequencing Rules .......................................... 24
-Processing RADIUS Access-Request Messages .......................................... 24
-MS-RAS-Client-Name ....................................................................... 24
-MS-RAS-Client-Version ..................................................................... 24
-MS-User-Security-Identity ................................................................ 24
-MS-Network-Access-Server-Type....................................................... 24
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5
-
-3.2
-
-[MS-RNAS] - v20240423
-Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 43
-
-3.2.5.2
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.4.1
-
-3.3.5.1
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-3.2.5.1.9
-
-MS-Machine-Name .......................................................................... 25
-MS-RAS-Correlation-ID .................................................................... 25
-MS-User-IPv4-Address ..................................................................... 25
-MS-User-IPv6-Address ..................................................................... 25
-Tunnel-Type ................................................................................... 25
-Creating RADIUS Access-Accept Messages ............................................... 25
-MS-IPv6-Filter ................................................................................. 25
-MS-RDG-Device-Redirection.............................................................. 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Client Details ................................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Abstract Interface for Sending an Access Request Message ........................ 26
-Message Processing Events and Sequencing Rules .......................................... 28
-Creating RADIUS Access-Request Messages ............................................. 28
-MS-RAS-Client-Name ....................................................................... 28
-MS-RAS-Client-Version ..................................................................... 28
-MS-User-Security-Identity ................................................................ 28
-MS-Network-Access-Server-Type....................................................... 29
-MS-Machine-Name .......................................................................... 29
-MS-RAS-Correlation-ID .................................................................... 29
-MS-User-IPv4-Address ..................................................................... 29
-MS-User-IPv6-Address ..................................................................... 29
-Tunnel-Type ................................................................................... 29
-Processing RADIUS Access-Accept Messages ............................................ 29
-MS-IPv6-Filter ................................................................................. 29
-MS-RDG-Device-Redirection.............................................................. 30
-MS-Azure-Policy-ID ......................................................................... 30
-Processing RADIUS Access-Reject Messages ............................................. 30
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-
-3.3.5.1.1
-3.3.5.1.2
-3.3.5.1.3
-3.3.5.1.4
-3.3.5.1.5
-3.3.5.1.6
-3.3.5.1.7
-3.3.5.1.8
-3.3.5.1.9
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-
-3.3.5.2
-
-3.3.5.3
-
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 31
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 33
-
-7  Change Tracking .................................................................................................... 41
-
-8  Index ..................................................................................................................... 42
-
-[MS-RNAS] - v20240423
-Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 43
-
-1  Introduction
+## 1 Introduction
 
 The Remote Access Dial In User Service (RADIUS) Protocol (as specified in [RFC2865]) provides
 authentication, authorization, and accounting (AAA) of endpoints in scenarios such as wireless
@@ -411,7 +275,7 @@ of vendor-specific attributes (VSAs) ([RFC2865] section 5.26).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -469,7 +333,8 @@ Release: April 23, 2024
 
 5 / 43
 
-RADIUS attribute: An abstract identifier for a value or set of values that describe elements of a
+
+RADIUS attribute: An abstract identifier for a value or set of values that describe elements of a
 RADIUS protocol exchange. RADIUS attributes describe the details of an endpoint's connection
 request and provides configuration data for a network access server (NAS) to provide service
 to the endpoint.
@@ -528,7 +393,7 @@ contains a vendor identifier, the vendor-attribute type, a length, and a vendor-
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -542,7 +407,8 @@ Release: April 23, 2024
 
 6 / 43
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -579,7 +445,7 @@ https://www.rfc-editor.org/info/rfc3162
 For Extensible Authentication Protocol (EAP)", RFC 3579, September 2003, https://www.rfc-
 editor.org/info/rfc3579
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.1X] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks - Port-Based Network Access Control", IEEE Std 802.1X-2004,
@@ -607,11 +473,12 @@ Release: April 23, 2024
 
 7 / 43
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-RNAS].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Authentication Dial-In User Service (RADIUS) Protocol, as specified in [RFC2865],
 provides authentication, authorization, and accounting (AAA) of endpoints in scenarios such as
@@ -643,7 +510,7 @@ specific attributes (VSAs) , as specified in [RFC2865] section 5.26.
 
 This document defines or otherwise describes the VSAs that are specific to Microsoft.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The VSAs specified in this document rely on and are transported within the RADIUS protocol, as
 described in [RFC2865].
@@ -668,19 +535,20 @@ Release: April 23, 2024
 
 8 / 43
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 For the Microsoft VSAs to be used, the RADIUS protocol as specified in [RFC2865] and a set of
 Network Access Policies are configured for use between a NAS and a RADIUS server; specifically,
 an administrator is required to configure a RADIUS shared secret between a NAS and a RADIUS
 server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The use of RADIUS VSAs is applicable in those environments where the RADIUS protocol described in
 [RFC2865] is used to authenticate and authorize network access requests.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None of the Microsoft RADIUS VSAs described in this document affects the versioning or capability
 negotiation of the protocols they are transported over. Some of the Microsoft RADIUS VSAs described
@@ -690,11 +558,11 @@ RADIUS client encountering unknown attributes is described in [RFC5080] section 
 See the individual VSAs documented in section 2.2 for information about version fields, if any, that are
 used in each VSA.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Microsoft VSAs themselves do not define any additional vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -722,22 +590,23 @@ Release: April 23, 2024
 
 9 / 43
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  Transport
+### 2.1 Transport
 
 The RADIUS Protocol, specified in [RFC2865], defines the transport of RADIUS and associated
 attributes over UDP.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections contain information about the VSAs that are defined in this document. These
 VSAs are used in RADIUS Access-Request and Access-Accept messages [RFC2865] in the manner
 specified in sections 3.1.5.2, 3.2.5, and 3.3.5.
 
-2.2.1  Microsoft Vendor-Specific Attributes (VSAs)
+#### 2.2.1 Microsoft Vendor-Specific Attributes (VSAs)
 
 The RADIUS Protocol specification [RFC2865] defines attribute type 0x1A as a VSA. This type was
 defined to allow vendors to extend the RADIUS attribute set. For reference, the format of the
@@ -810,7 +679,8 @@ Release: April 23, 2024
 
 10 / 43
 
-Vendor-Type (1 byte): An 8-bit unsigned integer that MUST specify the VSA type contained in
+
+Vendor-Type (1 byte): An 8-bit unsigned integer that MUST specify the VSA type contained in
 the Attribute-Specific Value field. Microsoft VSA vendor types MUST be set as specified in
 [RFC2548] and in sections 2.2.1.1 through 2.2.1.10 of this specification.
 
@@ -827,7 +697,7 @@ specified in [RFC2548] and in sections 2.2.1.1 through 2.2.1.10 of this specific
 The attribute definitions in the following sections specify the specific parameters relevant to
 that extension.
 
-2.2.1.1  MS-RAS-Client-Name
+##### 2.2.1.1 MS-RAS-Client-Name
 
 MS-RAS-Client-Name is a VSA, as specified in section 2.2.1. It is used to specify the name of the
 endpoint generating a request.
@@ -845,7 +715,7 @@ symbols ! @ # $ % ^ & ' ) ( . - _ { } ~ in addition to letters and numbers.<1>
 
 For more details about MS-RAS-Client-Name, see sections 3.2.5.1.1 and 3.3.5.1.1.
 
-2.2.1.2  MS-RAS-Client-Version
+##### 2.2.1.2 MS-RAS-Client-Version
 
 MS-RAS-Client-Version is a VSA, as specified in section 2.2.1. It is used to specify the version of the
 endpoint generating a request.
@@ -862,7 +732,7 @@ string MUST be in network byte order.<2>
 
 For more details about MS-RAS-Client-Version, see sections 3.2.5.1.2 and 3.3.5.1.2.
 
-2.2.1.3  MS-User-Security-Identity
+##### 2.2.1.3 MS-User-Security-Identity
 
 MS-User-Security-Identity is a VSA, as specified in section 2.2.1. It is used to specify the security-
 identifier (SID), as defined in [MS-DTYP] section 2.4.2, of the user requesting access.
@@ -878,13 +748,14 @@ Release: April 23, 2024
 
 11 / 43
 
-Vendor-Length: An 8-bit unsigned integer that MUST be set to 2 plus the length of the Attribute-
+
+Vendor-Length: An 8-bit unsigned integer that MUST be set to 2 plus the length of the Attribute-
 Specific Value field. Its value MUST be at least 3.
 
 Attribute-Specific Value: This field MUST contain the account SID of the user requesting access in
 the format of a binary SID used to authenticate a remote access client.
 
-2.2.1.4  MS-Network-Access-Server-Type
+##### 2.2.1.4 MS-Network-Access-Server-Type
 
 MS-Network-Access-Server-Type is a VSA, as specified in section 2.2.1. It is used to specify the type
 of the network access server making the request.
@@ -926,7 +797,7 @@ All Other Values  A tag value used to identify applicable network access policie
 
 For more details about MS-Network-Access-Server-Type, see sections 3.2.5.1.4 and 3.3.5.1.4.
 
-2.2.1.5  MS-Machine-Name
+##### 2.2.1.5 MS-Machine-Name
 
 MS-Machine-Name is a VSA, as specified in section 2.2.1. It is used to communicate the machine
 name of the endpoint requesting network access.
@@ -944,7 +815,7 @@ requesting access.
 
 For more details about MS-Machine-Name, see sections 3.2.5.1.5 and 3.3.5.1.5.
 
-2.2.1.6  MS-IPv6-Filter
+##### 2.2.1.6 MS-IPv6-Filter
 
 MS-IPv6-Filter is a VSA, as specified in section 2.2.1. It is used to limit the inbound and/or outbound
 access of the endpoint.
@@ -956,7 +827,8 @@ Release: April 23, 2024
 
 12 / 43
 
-This attribute can be sent by a RADIUS server to define the network access scope of the endpoint. It
+
+This attribute can be sent by a RADIUS server to define the network access scope of the endpoint. It
 is used only for IPv6 addresses and MS-Filter; [RFC2548] VSA is the corresponding attribute for IPv4
 addresses.<3> This attribute defines traffic filters to a NAS for restricting access for a specific
 network access connection. If multiple MS-IPv6-Filter attributes are contained within a packet, they
@@ -1040,7 +912,8 @@ Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Stru
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-InfoSize
+
+InfoSize
 
 FilterSetCount
 
@@ -1121,7 +994,8 @@ Release: April 23, 2024
 
 14 / 43
 
-Value
+
+Value
 
 Meaning
 
@@ -1196,7 +1070,8 @@ Release: April 23, 2024
 
 15 / 43
 
-Name
+
+Name
 
 Value
 
@@ -1253,7 +1128,7 @@ protocol values, this MUST be set to 0 (byte order does not matter).
 
 For more details about MS-IPv6-Filter, see sections 3.2.5.2.1 and 3.3.5.2.1.
 
-2.2.1.7  MS-RAS-Correlation-ID
+##### 2.2.1.7 MS-RAS-Correlation-ID
 
 The MS-RAS-Correlation-ID is a VSA, as specified in section 2.2.1. It is used by the NAS to send an
 identifier, which is used for the correlation of log events, to the RADIUS server.
@@ -1276,7 +1151,8 @@ Release: April 23, 2024
 
 16 / 43
 
-2.2.1.8  MS-User-IPv4-Address
+
+##### 2.2.1.8 MS-User-IPv4-Address
 
 MS-User-IPv4-Address is a VSA used to specify the IPv4 address of the endpoint as known to the
 RADIUS client, as specified in section 2.2.1.
@@ -1291,7 +1167,7 @@ Attribute-Specific Value: A 32-bit unsigned integer in network byte order that M
 
 IPv4 address of the machine of the user requesting network access.
 
-2.2.1.9  MS-User-IPv6-Address
+##### 2.2.1.9 MS-User-IPv6-Address
 
 MS-User-IPv6-Address is a VSA used to specify the IPv6 address of the endpoint as known to the
 RADIUS client, as specified in section 2.2.1.
@@ -1306,9 +1182,9 @@ Attribute-Specific Value: A 128-bit unsigned integer in network byte order that 
 
 IPv6 address of the machine of the user requesting network access.
 
-2.2.1.10
+##### 2.2.1.10 MS-RDG-Device-Redirection
 
-MS-RDG-Device-Redirection
+
 
 MS-RDG-Device-Redirection is a VSA specifying filters used by a Remote Desktop Gateway (RDG)
 server, as specified in section 2.2.1.
@@ -1364,7 +1240,8 @@ Release: April 23, 2024
 
 17 / 43
 
- Bit   Meaning
+
+ Bit   Meaning
 
 0: Device redirection is controlled, first, by bit 29 and then by bits 0..4
 
@@ -1374,9 +1251,9 @@ Release: April 23, 2024
 
 When either bit 29 or bit 30 is set to 1, the values for bits 0..4 are ignored.
 
-2.2.1.11
+##### 2.2.1.11 MS-Azure-Policy-ID
 
-MS-Azure-Policy-ID
+
 
 The MS-Azure-Policy-ID is a VSA, as specified in section 2.2.1. It is used by the Radius Server to send
 an identifier which is used by Azure Point to Site VPN Server to match an authenticated RADIUS user
@@ -1392,9 +1269,9 @@ Attribute-Specific Value plus 2.
 Attribute-Specific Value: An octet string containing the Policy ID configured on the Azure Point to
 Site VPN Server.
 
-2.2.2  Microsoft Vendor-Specific Values for RADIUS Attributes
+#### 2.2.2 Microsoft Vendor-Specific Values for RADIUS Attributes
 
-2.2.2.1  Vendor-Specific Value for the Tunnel-Type RADIUS Attribute
+##### 2.2.2.1 Vendor-Specific Value for the Tunnel-Type RADIUS Attribute
 
 In addition to the values specified in [RFC2868], the standard RADIUS attribute Tunnel-Type
 [RFC2868] is extended to include a value for the Secure Socket Tunneling Protocol (as specified in
@@ -1412,29 +1289,30 @@ Release: April 23, 2024
 
 18 / 43
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 There are no common abstract data model elements.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no common timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no common initialization.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no common higher-level events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Windows Implementation of RADIUS Attributes
+##### 3.1.5.1 Windows Implementation of RADIUS Attributes
 
 Section 3.1.5.2 specifies the Windows implementation of RADIUS VSA attributes.<4>
 
@@ -1499,7 +1377,8 @@ Release: April 23, 2024
 
 19 / 43
 
-Active Directory Attribute
+
+Active Directory Attribute
 
 Description
 
@@ -1511,7 +1390,7 @@ will not be given network access. If the value is
 FALSE, the Machine Account will receive an Access-
 Reject response specified in [RFC2865].
 
-3.1.5.2  Microsoft VSA Support of RADIUS Messages
+##### 3.1.5.2 Microsoft VSA Support of RADIUS Messages
 
 The RADIUS Protocol standard (as specified in [RFC2865] section 4) defines the messages sent
 between a RADIUS client and a RADIUS server. Each Microsoft VSA is valid only in certain
@@ -1667,7 +1546,7 @@ MS-Azure-Policy-ID
 
 0
 
-3.1.5.3  Processing RADIUS Attributes
+##### 3.1.5.3 Processing RADIUS Attributes
 
 As specified in [RFC2865] section 5, RADIUS clients and RADIUS servers SHOULD<5> ignore VSAs
 with unknown types.
@@ -1679,17 +1558,18 @@ Release: April 23, 2024
 
 20 / 43
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1732,7 +1612,7 @@ list items are specified in section 2.2.1.8.
 restrict the allowed Ipv6 addresses of the endpoint that is requesting access. Possible values for
 list items are specified in section 2.2.1.9.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are required. For a discussion of retransmission hints, see the RADIUS Protocol
 documentation, as specified in [RFC2865].
@@ -1744,19 +1624,20 @@ Release: April 23, 2024
 
 21 / 43
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The RNAS server uses the policy configuration for the RADIUS authorization. This configuration is
 maintained in an XML file on the server machine and is loaded into the PolicyConfiguration
 structure that is specified in section 3.2.1 when the server starts. The configuration is updated by the
 network administrator.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The RADIUS exchange is triggered by an Access-Request message sent from a NAS as specified in
 [RFC2865] section 2.
 
-3.2.4.1  Abstract Interface for Setting an Access-Accept Message
+##### 3.2.4.1 Abstract Interface for Setting an Access-Accept Message
 
 SendRadiusAccessAccept: An abstract interface for setting information to be encapsulated in a
 RADIUS Access-Accept response that is sent from the RNAS Policy Server back to the original RADIUS
@@ -1811,7 +1692,8 @@ Release: April 23, 2024
 
 22 / 43
 
- struct Filter_IPv4
+
+ struct Filter_IPv4
  {
      IPv4Address sourceAddress;
      IPv4Address sourceMask;
@@ -1887,7 +1769,8 @@ Release: April 23, 2024
 
 23 / 43
 
-     FilterSetEntry_IPv6[] filterEntries;
+
+     FilterSetEntry_IPv6[] filterEntries;
  }
 
 rdgDeviceRedirection: A DWORD value that specifies the device redirection options. For more
@@ -1895,7 +1778,7 @@ rdgDeviceRedirection: A DWORD value that specifies the device redirection option
 information about possible values, see section 2.2.1.10. This parameter is applicable only when
 the client is an RDG server. Otherwise, it should be ignored.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 In general, RADIUS messages are handled as specified in section 3.1.5. The following subsections
 describe details applicable to RADIUS servers.
@@ -1905,12 +1788,12 @@ the user and/or computer, and authorizing the endpoint. The RADIUS server respon
 a set of RADIUS attributes that place restrictions on, or otherwise specify requirements for, the
 connectivity that the NAS grants to the endpoint.
 
-3.2.5.1  Processing RADIUS Access-Request Messages
+##### 3.2.5.1 Processing RADIUS Access-Request Messages
 
 When an RNAS server receives an Access-Request message sent from a network access server
 (NAS) (as specified in [RFC2865]), every VSA is processed as specified in the following sections.
 
-3.2.5.1.1 MS-RAS-Client-Name
+###### 3.2.5.1.1 MS-RAS-Client-Name
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.RASClientName ADM element specified in section 3.2.1 for the value of the
@@ -1919,14 +1802,14 @@ processing.
 
 For more details about this attribute, see section 2.2.1.1.
 
-3.2.5.1.2 MS-RAS-Client-Version
+###### 3.2.5.1.2 MS-RAS-Client-Version
 
 When the RADIUS server receives this attribute, it uses the value of this VSA to log the NAS version
 that sent the access request.
 
 For more details about this attribute, see section 2.2.1.2.
 
-3.2.5.1.3 MS-User-Security-Identity
+###### 3.2.5.1.3 MS-User-Security-Identity
 
 If the RADIUS User-Name attribute ([RFC2865] section 5.1) is found in the request, the RADIUS
 server MUST ignore this attribute. Otherwise, the RADIUS server SHOULD convert the SID to a Fully
@@ -1937,7 +1820,7 @@ send an Access-Reject message back to the NAS and stop processing.
 
 For more details about this attribute, see section 2.2.1.3.
 
-3.2.5.1.4 MS-Network-Access-Server-Type
+###### 3.2.5.1.4 MS-Network-Access-Server-Type
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.NetworkAccessServerType ADM element specified in section 3.2.1 for the
@@ -1953,7 +1836,8 @@ Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Stru
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.1.5 MS-Machine-Name
+
+###### 3.2.5.1.5 MS-Machine-Name
 
 If a RADIUS server receives this attribute, it SHOULD determine the machine groups to which the
 machine specified in the attribute belongs, and it MUST search the
@@ -1963,7 +1847,7 @@ and stop processing.
 
 For more details about this attribute, see section 2.2.1.5.
 
-3.2.5.1.6 MS-RAS-Correlation-ID
+###### 3.2.5.1.6 MS-RAS-Correlation-ID
 
 A RADIUS client MAY include this GUID value attribute in Access-Request or Accounting-Request
 RADIUS [RFC2865] messages to uniquely identify a session. The server SHOULD<6> use the value of
@@ -1971,7 +1855,7 @@ this attribute, if present, for correlation of log events.
 
 For more details about this attribute, see section 2.2.1.7.
 
-3.2.5.1.7 MS-User-IPv4-Address
+###### 3.2.5.1.7 MS-User-IPv4-Address
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.UserIPv4Address ADM element specified in section 3.2.1 for the value of the
@@ -1980,7 +1864,7 @@ and stop processing.
 
 For more details about this attribute, see section 2.2.1.8.
 
-3.2.5.1.8 MS-User-IPv6-Address
+###### 3.2.5.1.8 MS-User-IPv6-Address
 
 When the RADIUS server receives this VSA, it MUST search the
 PolicyConfiguration.UserIPv6Address ADM element specified in section 3.2.1 for the value of the
@@ -1989,7 +1873,7 @@ stop processing.
 
 For more details about this attribute, see section 2.2.1.9.
 
-3.2.5.1.9 Tunnel-Type
+###### 3.2.5.1.9 Tunnel-Type
 
 A RADIUS server MUST process the Tunnel-Type RADIUS attribute as specified in [RFC2868], with one
 additional enhancement: if the value of the Tunnel-Type RADIUS attribute is 0x00013701, it SHOULD
@@ -2003,13 +1887,13 @@ authorize the request.
 For more details about this vendor-specific value for the Tunnel-Type RADIUS attribute, see section
 2.2.2.1.
 
-3.2.5.2  Creating RADIUS Access-Accept Messages
+##### 3.2.5.2 Creating RADIUS Access-Accept Messages
 
 When an RNAS server's SendRadiusAccessAccept abstract interface is called, the RNAS server MUST
 create an Access-Accept message. It SHOULD add relevant VSAs as specified in the following
 subsections.
 
-3.2.5.2.1 MS-IPv6-Filter
+###### 3.2.5.2.1 MS-IPv6-Filter
 
 [MS-RNAS] - v20240423
 Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Structure
@@ -2018,13 +1902,14 @@ Release: April 23, 2024
 
 25 / 43
 
-If the ipv6Filter parameter of the SendRadiusAccessAccept abstract interface (section 3.2.4.1)
+
+If the ipv6Filter parameter of the SendRadiusAccessAccept abstract interface (section 3.2.4.1)
 specifies a filter, the RADIUS server MUST add the MS-IPv6-Filter attribute to the Access-Accept
 message in order to specify the network access scope of the endpoint. This attribute is constructed as
 specified in section 2.2.1.6. The attribute-specific value is obtained by serializing the ipv6Filter
 parameter to the format specified in that section.
 
-3.2.5.2.2 MS-RDG-Device-Redirection
+###### 3.2.5.2.2 MS-RDG-Device-Redirection
 
 If the rdgDeviceRedirection parameter of the SendRadiusAccessAccept abstract interface (section
 3.2.4.1) specifies device redirection options, and if the client is an RDG server, the RADIUS server
@@ -2033,37 +1918,37 @@ the device redirection options. This attribute is constructed as specified in se
 attribute-specific value is obtained by converting the rdgDeviceRedirection parameter to network byte
 order.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Client Details
+### 3.3 Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No timers are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The RADIUS exchange is triggered by an endpoint request to a NAS for network access.
 
-3.3.4.1  Abstract Interface for Sending an Access Request Message
+##### 3.3.4.1 Abstract Interface for Sending an Access Request Message
 
 SendRadiusAccessRequest: An abstract interface used by the PEP to send an Access  Request to
 the NAS Policy Server. The interface is defined as follows:
@@ -2081,7 +1966,8 @@ Release: April 23, 2024
 
 26 / 43
 
-     [in] String serviceClass,
+
+     [in] String serviceClass,
      [in] DWORD networkAccessServerType,
      [in] String machineName,
      [in] GUID rasCorrelationId,
@@ -2154,7 +2040,8 @@ Release: April 23, 2024
 
 27 / 43
 
- {
+
+ {
      Byte[4] bytes;
  }
 
@@ -2171,7 +2058,7 @@ The following is the structure definition of this parameter.
      Byte[16] bytes;
  }
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 In general, RADIUS messages are handled as specified in section 3.1.5. The following subsections
 describe details applicable to RADIUS clients.
@@ -2179,25 +2066,25 @@ describe details applicable to RADIUS clients.
 A NAS operates as a client of RADIUS. The RADIUS client is responsible for passing user information
 to its designated RADIUS server and then acting on the response that is returned.
 
-3.3.5.1  Creating RADIUS Access-Request Messages
+##### 3.3.5.1 Creating RADIUS Access-Request Messages
 
 When an RNAS client's SendRadiusAccessRequest abstract interface is called, the RNAS client MUST
 create an Access-Request message. It SHOULD add relevant attributes as specified in the following
 subsections.
 
-3.3.5.1.1 MS-RAS-Client-Name
+###### 3.3.5.1.1 MS-RAS-Client-Name
 
 If the clientName parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to NULL, this attribute MUST NOT be set. Otherwise, the attribute-specific value is obtained by
 serializing the clientName parameter to the format specified in section 2.2.1.1.
 
-3.3.5.1.2 MS-RAS-Client-Version
+###### 3.3.5.1.2 MS-RAS-Client-Version
 
 If the clientVersion parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1) is
 set to NULL, this attribute MUST NOT be set. Otherwise, the attribute-specific value is obtained by
 serializing the clientVersion parameter to the format specified in section 2.2.1.2.
 
-3.3.5.1.3 MS-User-Security-Identity
+###### 3.3.5.1.3 MS-User-Security-Identity
 
 If the RADIUS User-Name attribute ([RFC2865] section 5.1) is not found in the RADIUS
 access_request, the MS-User-Security-Identity attribute is used for authentication on the RADIUS
@@ -2218,39 +2105,40 @@ Release: April 23, 2024
 
 28 / 43
 
-3.3.5.1.4 MS-Network-Access-Server-Type
+
+###### 3.3.5.1.4 MS-Network-Access-Server-Type
 
 The attribute-specific value is obtained by serializing the networkAccessServerType parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format specified in section
 2.2.1.4.
 
-3.3.5.1.5 MS-Machine-Name
+###### 3.3.5.1.5 MS-Machine-Name
 
 The attribute-specific value is obtained by serializing the machineName parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format specified in section
 2.2.1.5.
 
-3.3.5.1.6 MS-RAS-Correlation-ID
+###### 3.3.5.1.6 MS-RAS-Correlation-ID
 
 If the rasCorrelationId parameter of the SendRadiusAccessRequest abstract interface (section 3.3.4.1)
 is set to the NULL GUID (all bytes are set to zero), this attribute MUST NOT be set. Otherwise, the
 attribute-specific value is obtained by serializing the rasCorrelationId parameter to the format
 specified in section 2.2.1.7.
 
-3.3.5.1.7 MS-User-IPv4-Address
+###### 3.3.5.1.7 MS-User-IPv4-Address
 
 The attribute-specific value is obtained by serializing the userIpv4Address parameter of the
 SendRadiusAccessRequest abstract interface (section 3.3.4.1) to the format specified in section
 2.2.1.8.
 
-3.3.5.1.8 MS-User-IPv6-Address
+###### 3.3.5.1.8 MS-User-IPv6-Address
 
 If the userIpv6Address parameter of the SendRadiusAccessRequest abstract interface (section
 3.3.4.1) is set to a NULL address (all bytes are set to zero), this attribute MUST NOT be set.
 Otherwise, the attribute-specific value is obtained by serializing the userIpv6Address parameter to the
 format specified in section 2.2.1.9.
 
-3.3.5.1.9 Tunnel-Type
+###### 3.3.5.1.9 Tunnel-Type
 
 A RADIUS client MUST set the Tunnel-Type RADIUS attribute as specified in [RFC2868], with one
 additional enhancement: A VPN server that supports the Secure Socket Tunneling Protocol (SSTP)
@@ -2261,9 +2149,9 @@ are as specified in [MS-SSTP].<10>
 For more details about this vendor-specific value for the Tunnel-Type RADIUS attribute, see section
 2.2.2.1.
 
-3.3.5.2  Processing RADIUS Access-Accept Messages
+##### 3.3.5.2 Processing RADIUS Access-Accept Messages
 
-3.3.5.2.1 MS-IPv6-Filter
+###### 3.3.5.2.1 MS-IPv6-Filter
 
 Only the Microsoft Routing and Remote Access Service (RRAS) RADIUS client supports this attribute
 when configured to support RQS/RQC. If received by other RADIUS clients, it is silently discarded.
@@ -2284,9 +2172,10 @@ Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Stru
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For more details about this attribute, see section 2.2.1.6.
 
-3.3.5.2.2 MS-RDG-Device-Redirection
+For more details about this attribute, see section 2.2.1.6.
+
+###### 3.3.5.2.2 MS-RDG-Device-Redirection
 
 This attribute is consumed only by the Microsoft Remote Desktop Gateway RADIUS client.
 
@@ -2304,7 +2193,7 @@ A NAS that is not a Microsoft RDG server ignores this attribute.
 
 For more details about this attribute, see section 2.2.1.10.
 
-3.3.5.2.3 MS-Azure-Policy-ID
+###### 3.3.5.2.3 MS-Azure-Policy-ID
 
 This attribute is consumed only by the Microsoft Azure Point to Site VPN Server.
 
@@ -2315,17 +2204,17 @@ A NAS that is not a Microsoft Azure Point to Site VPN Server ignores this attrib
 
 For more details about this attribute, see section 2.2.1.11.
 
-3.3.5.3  Processing RADIUS Access-Reject Messages
+##### 3.3.5.3 Processing RADIUS Access-Reject Messages
 
 No RNAP attributes are present in Access-Reject messages.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 No timer events are required for this protocol.
 
 For a discussion on retransmission hints, see [RFC2865].
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2336,7 +2225,8 @@ Release: April 23, 2024
 
 30 / 43
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -2347,9 +2237,10 @@ Release: April 23, 2024
 
 31 / 43
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Microsoft RADIUS VSAs rely on the security of the RADIUS Protocol in which they are transported.
 There are many security considerations for the RADIUS Protocol, as specified in [RFC2865] section 8
@@ -2372,7 +2263,7 @@ validation checks will include, but are not necessarily limited to, the followin
 In addition, implementers can support a mode of operation wherein RADIUS will not be sent or
 received unless protected by IPsec, as specified in [RFC3579] section 4.2.<11>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2387,7 +2278,8 @@ Release: April 23, 2024
 
 32 / 43
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2456,7 +2348,8 @@ Vendor-Specific RADIUS Attributes for Network Policy and Access Server Data Stru
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<2> Section 2.2.1.2: For Windows XP, the Attribute-Specific Value is "MSRASV5.10". Otherwise for
+
+<2> Section 2.2.1.2: For Windows XP, the Attribute-Specific Value is "MSRASV5.10". Otherwise for
 Windows-based clients, this value is "MSRASV5.20" except for Windows 2000 and Windows XP.
 
 <3> Section 2.2.1.6: When Windows is operating as a NAS in a RAS server or VPN server role, the
@@ -2703,7 +2596,8 @@ Release: April 23, 2024
 
 34 / 43
 
-Windo
+
+Windo
 ws
 2000
 Server
@@ -3071,7 +2965,8 @@ Release: April 23, 2024
 
 35 / 43
 
-Windo
+
+Windo
 ws
 2000
 Server
@@ -3395,7 +3290,8 @@ Release: April 23, 2024
 
 36 / 43
 
-Windo
+
+Windo
 ws
 2000
 Server
@@ -3708,7 +3604,8 @@ Release: April 23, 2024
 
 37 / 43
 
-Windo
+
+Windo
 ws
 2000
 Server
@@ -3963,7 +3860,8 @@ Release: April 23, 2024
 
 38 / 43
 
-Windo
+
+Windo
 ws
 2000
 Server
@@ -4102,7 +4000,8 @@ Release: April 23, 2024
 
 39 / 43
 
-<10> Section 3.3.5.1.9: Only Windows Server 2008, Windows Server 2008 R2, Windows Server 2012,
+
+<10> Section 3.3.5.1.9: Only Windows Server 2008, Windows Server 2008 R2, Windows Server 2012,
 and Windows Server 2012 R2 VPN servers support this vendor-specific value for the RADIUS Tunnel-
 Type Attribute.
 
@@ -4116,7 +4015,8 @@ Release: April 23, 2024
 
 40 / 43
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4160,7 +4060,8 @@ Release: April 23, 2024
 
 41 / 43
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4299,7 +4200,8 @@ Release: April 23, 2024
 
 42 / 43
 
-   other local events 26
+
+   other local events 26
    sequencing rules 24
       implementation - RADIUS attributes 19
       VSA support - RADIUS messages 20

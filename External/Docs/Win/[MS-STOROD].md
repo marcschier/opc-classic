@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 51
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -221,146 +222,63 @@ Release: October 26, 2021
 
 2 / 51
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Capabilities](#211-system-capabilities)
+      - [2.1.1.1 Managing Disks and Volumes](#2111-managing-disks-and-volumes)
+      - [2.1.1.2 Backing Up and Restoring Data](#2112-backing-up-and-restoring-data)
+      - [2.1.1.3 Managing Removable Media](#2113-managing-removable-media)
+      - [2.1.1.4 Providing File Encryption and Access Control](#2114-providing-file-encryption-and-access-control)
+    - [2.1.2 Protocol Relationship](#212-protocol-relationship)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems](#232-dependencies-on-other-systems)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Manage Disks and Volumes](#251-manage-disks-and-volumes)
+      - [2.5.1.1 Create and Modify a Volume](#2511-create-and-modify-a-volume)
+      - [2.5.1.2 Convert a Basic Disk to a Dynamic Disk](#2512-convert-a-basic-disk-to-a-dynamic-disk)
+      - [2.5.1.3 Make an Offline Disk Online](#2513-make-an-offline-disk-online)
+      - [2.5.1.4 Configure HBA Ports and iSCSI Initiators](#2514-configure-hba-ports-and-iscsi-initiators)
+    - [2.5.2 Backup and Restore Data](#252-backup-and-restore-data)
+      - [2.5.2.1 Create a Shadow Copy Storage Association](#2521-create-a-shadow-copy-storage-association)
+      - [2.5.2.2 Back Up or Restore an Encrypted File](#2522-back-up-or-restore-an-encrypted-file)
+      - [2.5.2.3 Perform Backup of a File Share Remotely](#2523-perform-backup-of-a-file-share-remotely)
+    - [2.5.3 Manage Removable Media](#253-manage-removable-media)
+      - [2.5.3.1 Create and Delete a Media Pool](#2531-create-and-delete-a-media-pool)
+      - [2.5.3.2 Mount and Dismount Media](#2532-mount-and-dismount-media)
+      - [2.5.3.3 Delete Work Queue Items](#2533-delete-work-queue-items)
+    - [2.5.4 Encrypted File Access Control and Encryption](#254-encrypted-file-access-control-and-encryption)
+      - [2.5.4.1 Provide Cryptographic Access Permissions to an Encrypted File](#2541-provide-cryptographic-access-permissions-to-an-encrypted-file)
+      - [2.5.4.2 Encrypt a File](#2542-encrypt-a-file)
+      - [2.5.4.3 Decrypt an Encrypted File](#2543-decrypt-an-encrypted-file)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Make a Disk Online](#31-example-1-make-a-disk-online)
+  - [3.2 Example 2: Configure an iSCSI Initiator](#32-example-2-configure-an-iscsi-initiator)
+  - [3.3 Example 3: Create a Shadow Copy Storage Association](#33-example-3-create-a-shadow-copy-storage-association)
+  - [3.4 Example 4: Create and Delete a Media Pool](#34-example-4-create-and-delete-a-media-pool)
+  - [3.5 Example 5: Encrypt a File](#35-example-5-encrypt-a-file)
+  - [3.6 Example 6: Decrypting an Encrypted File](#36-example-6-decrypting-an-encrypted-file)
+  - [3.7 Example 7: Perform Backup of a File Share Remotely](#37-example-7-perform-backup-of-a-file-share-remotely)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.5.1
-
-2.1.1
-
-2.1.2
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.3.1
-2.3.2
-
-2.5.1.1
-2.5.1.2
-2.5.1.3
-2.5.1.4
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-2.1.1.4
-
-2  Functional Architecture ........................................................................................... 9
-Overview .......................................................................................................... 9
-System Capabilities ..................................................................................... 12
-Managing Disks and Volumes ................................................................. 12
-Backing Up and Restoring Data ............................................................... 12
-Managing Removable Media ................................................................... 13
-Providing File Encryption and Access Control ............................................ 13
-Protocol Relationship ................................................................................... 13
-Protocol Summary ............................................................................................ 14
-Environment .................................................................................................... 15
-Dependencies on This System ...................................................................... 15
-Dependencies on Other Systems .................................................................. 15
-Assumptions and Preconditions .......................................................................... 15
-Use Cases ....................................................................................................... 16
-Manage Disks and Volumes .......................................................................... 16
-Create and Modify a Volume ................................................................... 17
-Convert a Basic Disk to a Dynamic Disk ................................................... 18
-Make an Offline Disk Online .................................................................... 19
-Configure HBA Ports and iSCSI Initiators.................................................. 21
-Backup and Restore Data ............................................................................ 22
-Create a Shadow Copy Storage Association .............................................. 23
-Back Up or Restore an Encrypted File ...................................................... 24
-Perform Backup of a File Share Remotely ................................................. 25
-Manage Removable Media ............................................................................ 26
-Create and Delete a Media Pool .............................................................. 27
-Mount and Dismount Media .................................................................... 28
-Delete Work Queue Items ...................................................................... 29
-Encrypted File Access Control and Encryption ................................................. 30
-Provide Cryptographic Access Permissions to an Encrypted File ................... 31
-Encrypt a File ....................................................................................... 32
-Decrypt an Encrypted File ...................................................................... 33
-Versioning, Capability Negotiation, and Extensibility ............................................. 34
-Error Handling ................................................................................................. 35
-Coherency Requirements .................................................................................. 35
-Security .......................................................................................................... 35
-Additional Considerations .................................................................................. 35
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-2.5.2.1
-2.5.2.2
-2.5.2.3
-
-2.5.4.1
-2.5.4.2
-2.5.4.3
-
-2.5.3.1
-2.5.3.2
-2.5.3.3
-
-2.5.2
-
-2.5.3
-
-2.5.4
-
-3  Examples ............................................................................................................... 37
-Example 1: Make a Disk Online .......................................................................... 37
-Example 2: Configure an iSCSI Initiator .............................................................. 38
-Example 3: Create a Shadow Copy Storage Association ........................................ 39
-Example 4: Create and Delete a Media Pool ......................................................... 41
-Example 5: Encrypt a File ................................................................................. 42
-Example 6: Decrypting an Encrypted File ............................................................ 43
-Example 7: Perform Backup of a File Share Remotely ........................................... 44
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-3.7
-
-4  Microsoft Implementations ................................................................................... 47
-Product Behavior .............................................................................................. 48
-
-4.1
-
-5  Change Tracking .................................................................................................... 49
-
-[MS-STOROD] - v20211026
-Storage Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 51
-
-6  Index ..................................................................................................................... 50
-
-[MS-STOROD] - v20211026
-Storage Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 51
-
-1  Introduction
+## 1 Introduction
 
 The Storage Services protocols consist of a set of protocols for configuring and administering storage
 services operations in the Windows operating system, such as managing disks and volumes, backing
@@ -375,7 +293,7 @@ the peripheral component interconnect (PCI) bus, the redundant arrays of indepen
 application. The Disk Management services provide a unified interface that simplifies the management
 of dissimilar storage devices.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 Data that is stored on servers is critically important for the day-to-day activities of any organization.
 This data needs to be accessed, stored, and recovered reliably. In response to the expanding
@@ -430,7 +348,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-A volume is an area on a storage device that is managed by the file system as a discrete logical
+
+A volume is an area on a storage device that is managed by the file system as a discrete logical
 storage unit. For more information about volume management, see [MSDN-VOLMAN].
 
  Removable storage
@@ -455,7 +374,7 @@ Removable storage components interact with data management applications such as 
 Removable storage components enable multiple applications to share storage media resources, which
 can reduce costs.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -504,7 +423,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-file allocation table (FAT): A data structure that the operating system creates when a volume is
+
+file allocation table (FAT): A data structure that the operating system creates when a volume is
 formatted by using FAT or FAT32 file systems. The operating system stores information about
 each file in the FAT so that it can retrieve the file later.
 
@@ -581,14 +501,15 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-storage server: A server that hosts hard disks, removable media, and files.
+
+storage server: A server that hosts hard disks, removable media, and files.
 
 volume: A group of one or more partitions that forms a logical region of storage and the basis for
 a file system. A volume is an area on a storage device that is managed by the file system as a
 discrete logical storage unit. A partition contains at least one volume, and a volume can exist
 on one or more partitions.
 
-1.3  References
+### 1.3 References
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
@@ -638,14 +559,15 @@ Release: October 26, 2021
 
 8 / 51
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section provides an overview of the capabilities of the Storage Services protocols, their
 relationships, and a summary of the Storage Services protocols, system dependencies, use cases,
 versioning, capability negotiation, error handling, coherency requirements, and security
 considerations.
 
-2.1  Overview
+### 2.1 Overview
 
 The Storage Services protocols provide disk and volume management services, data backup and
 restore, removable media management, encrypted file access control, and file encryption.
@@ -672,7 +594,8 @@ Release: October 26, 2021
 
 9 / 51
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-STOROD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -705,7 +628,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-STOROD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -755,7 +679,8 @@ Release: October 26, 2021
 
 11 / 51
 
-2.1.1  System Capabilities
+
+#### 2.1.1 System Capabilities
 
 The Storage Services protocols enable the administrator to store and access data reliably, recover
 stored data, and manage the data on the servers. The overall functionality of the Storage Services
@@ -777,14 +702,14 @@ protocols includes the following:
 
  Providing file encryption and access control (section 2.1.1.4)
 
-2.1.1.1  Managing Disks and Volumes
+##### 2.1.1.1 Managing Disks and Volumes
 
 The Storage Services protocols provide an interface for managing disks and volumes and provide an
 end-to-end solution for managing storage hardware and disks and for creating volumes on those
 disks. This functionality is provided by the Disk Management Remote (DMRP) Protocol, as described in
 [MS-DMRP],<2> and the Virtual Disk Service (VDS) Protocol, as described in [MS-VDS].<3>
 
-2.1.1.2  Backing Up and Restoring Data
+##### 2.1.1.2 Backing Up and Restoring Data
 
 The Shadow Copy Management Protocol, as described in [MS-SCMP], the File Server Remote VSS
 Protocol, as described in [MS-FSRVP], and the Encrypting File System Remote (EFSRPC) Protocol, as
@@ -833,7 +758,8 @@ Release: October 26, 2021
 
 12 / 51
 
-2.1.1.3  Managing Removable Media
+
+##### 2.1.1.3 Managing Removable Media
 
 Managing removable media is a technology that enables multiple applications to share local
 libraries and tape or disk drives. It is used to configure and track the removable storage media, such
@@ -846,7 +772,7 @@ include CD-ROM, DVD, and tape drives, such as 4 mm, 8 mm, and Digital Linear Tap
 drives. This functionality is provided by the Removable Storage Manager Remote Protocol, as
 described in [MS-RSMP].
 
-2.1.1.4  Providing File Encryption and Access Control
+##### 2.1.1.4 Providing File Encryption and Access Control
 
 The encryption functionality provides an additional level of security for files and directories. It provides
 cryptographic protection of individual files on NTFS file system volumes that use a public key
@@ -862,7 +788,7 @@ compromised. Additional access control functionality can be provided by the Encr
 and is accessed remotely through the Encrypting File System Remote Protocol, as described in [MS-
 EFSR].
 
-2.1.2  Protocol Relationship
+#### 2.1.2 Protocol Relationship
 
 The following diagram shows the relationship among the Storage Services protocols.
 
@@ -873,7 +799,8 @@ Release: October 26, 2021
 
 13 / 51
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-STOROD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -888,7 +815,7 @@ The DMRP, VDS, and RSMP Protocols use DCOM as the transport.
 The SCMP Protocol uses the interfaces, described in [MS-OAUT], which in turn uses DCOM as the
 transport.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the Storage Services member protocols.
 
@@ -927,7 +854,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -981,18 +909,18 @@ EFSR]
 [MS-
 FSRVP]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. The context includes the
 systems that use the interfaces that are provided by this system of protocols, other systems that
 depend on this system, and the appropriate communication between the system components within
 their environment.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 None.
 
-2.3.2  Dependencies on Other Systems
+#### 2.3.2 Dependencies on Other Systems
 
 The Storage Services protocols depend on the following entities:
 
@@ -1015,7 +943,7 @@ certificate enrollment algorithm, as described in [MS-ADTS] section 3.1.1.3.
 The Group Policy Protocols system, as described in [MS-GPOD], for enabling remote administrative
 configuration of the Encrypting File System (EFS).
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions need to be satisfied for the Storage Services protocols to
 operate successfully:
@@ -1032,7 +960,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 
 
@@ -1048,7 +977,7 @@ The network services and infrastructure are functional and configured so that re
 components such as protocols and ports are remotely accessible. The network access is required
 to enable system components that are running on different computers to communicate.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 The following table lists the use cases that span the functionality of the Storage Services protocols.
 The use cases are grouped into four groups as shown in the first column of the following table.
@@ -1095,7 +1024,7 @@ Decrypt an Encrypted File (section 2.5.4.3)
 
 The following sections provide detailed descriptions for each of the use cases in each group.
 
-2.5.1  Manage Disks and Volumes
+#### 2.5.1 Manage Disks and Volumes
 
 The Manage Disks and Volumes use case group consists of four use cases that illustrate the
 functionality for managing disks and volumes:
@@ -1117,7 +1046,8 @@ Release: October 26, 2021
 
 16 / 51
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-STOROD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1125,7 +1055,7 @@ Figure 4: Manage Disks and Volumes use case diagram
 
 The following sections describe each use case for the Manage Disks and Volumes use case group.
 
-2.5.1.1  Create and Modify a Volume
+##### 2.5.1.1 Create and Modify a Volume
 
 Goal
 
@@ -1162,7 +1092,8 @@ Release: October 26, 2021
 
 17 / 51
 
-  Administrator: The administrator is the person who administers the storage. The administrator is
+
+  Administrator: The administrator is the person who administers the storage. The administrator is
 interested in organizing the storage, setting access rights, and enforcing quota-based limits on the
 storage. The administrator is external to the Storage Services protocols and interacts with the
 Storage Services protocols through the Admin Client.
@@ -1215,7 +1146,7 @@ A variation of this use case is to create and modify a volume by using the Virtu
 Protocol. The main success scenario steps of the variation are identical to those in the main use case
 that are described in this section.
 
-2.5.1.2  Convert a Basic Disk to a Dynamic Disk
+##### 2.5.1.2 Convert a Basic Disk to a Dynamic Disk
 
 Goal
 
@@ -1235,7 +1166,8 @@ Release: October 26, 2021
 
 18 / 51
 
-  Admin Tool: A Microsoft Management Console (MMC) component, which is used by the
+
+  Admin Tool: A Microsoft Management Console (MMC) component, which is used by the
 
 administrator to configure the storage on the server.
 
@@ -1297,7 +1229,7 @@ A variation of this use case is to convert a basic disk to a dynamic disk by usi
 Service Protocol, as described in [MS-VDS]. The main success scenario steps of the variation are
 identical to those in the main use case that are described in this section.
 
-2.5.1.3  Make an Offline Disk Online
+##### 2.5.1.3 Make an Offline Disk Online
 
 Goal
 
@@ -1310,7 +1242,8 @@ Release: October 26, 2021
 
 19 / 51
 
-Context of Use
+
+Context of Use
 
 The administrator is setting up a storage server, and in this process the administrator is required to
 make an offline disk to an online disk.
@@ -1383,11 +1316,12 @@ Release: October 26, 2021
 
 20 / 51
 
-A variation of this use case is to convert an offline disk into an online disk by using the Virtual Disk
+
+A variation of this use case is to convert an offline disk into an online disk by using the Virtual Disk
 Service Protocol, as described [MS-VDS]. The main success scenario steps of the variation are
 identical to those in the main use case as described in this section.
 
-2.5.1.4  Configure HBA Ports and iSCSI Initiators
+##### 2.5.1.4 Configure HBA Ports and iSCSI Initiators
 
 Goal
 
@@ -1458,7 +1392,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-STOROD].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1472,7 +1407,7 @@ If the communication channel for the Virtual Disk Service (VDS) Protocol cannot 
 becomes disconnected, the Admin Client attempts to establish a connection multiple times until it fails.
 The configuration of the HBA ports and the iSCSI initiators depends on when the connection failed.
 
-2.5.2  Backup and Restore Data
+#### 2.5.2 Backup and Restore Data
 
 The Backup and Restore Data use case group consists of two use cases that illustrate the functionality
 for backing up and restoring data:
@@ -1492,7 +1427,8 @@ Release: October 26, 2021
 
 22 / 51
 
-2.5.2.1  Create a Shadow Copy Storage Association
+
+##### 2.5.2.1 Create a Shadow Copy Storage Association
 
 Goal
 
@@ -1566,7 +1502,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.5.2.2  Back Up or Restore an Encrypted File
+
+##### 2.5.2.2 Back Up or Restore an Encrypted File
 
 Goal
 
@@ -1638,11 +1575,12 @@ Release: October 26, 2021
 
 24 / 51
 
-If the communication channel for the Encrypting File System Remote (EFSRPC) Protocol cannot be
+
+If the communication channel for the Encrypting File System Remote (EFSRPC) Protocol cannot be
 established, or it becomes disconnected, the Admin Client attempts to establish a connection multiple
 times until it fails. The backup of the encrypted file depends on when the connection failed.
 
-2.5.2.3  Perform Backup of a File Share Remotely
+##### 2.5.2.3 Perform Backup of a File Share Remotely
 
 Goal
 
@@ -1712,7 +1650,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-6.  The Admin Client contacts the File Server Shadow Copy Agent Service to get the shadow copy
+
+6.  The Admin Client contacts the File Server Shadow Copy Agent Service to get the shadow copy
 
 information on a file share on the server by using the GetShareMapping method, as described in
 [MS-FSRVP] section 3.1.4.11.
@@ -1735,7 +1674,7 @@ Admin Client calls the RecoveryCompleteShadowCopySet method. The File Server Sha
 Agent Service then initiates the action to make the shadow copy share read-only, and the shadow
 copy share creation sequence is finished.
 
-2.5.3  Manage Removable Media
+#### 2.5.3 Manage Removable Media
 
 The Manage Removable Media use case group consists of three use cases that illustrate the
 functionality for managing removable storage:
@@ -1755,13 +1694,14 @@ Release: October 26, 2021
 
 26 / 51
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-STOROD].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
 Figure 6: Manage Removable Media use case diagram
 
-2.5.3.1  Create and Delete a Media Pool
+##### 2.5.3.1 Create and Delete a Media Pool
 
 Goal
 
@@ -1797,7 +1737,8 @@ Release: October 26, 2021
 
 27 / 51
 
-  Administrator: The administrator is the person who administers the storage. The administrator is
+
+  Administrator: The administrator is the person who administers the storage. The administrator is
 interested in organizing the storage and setting access rights. The administrator is external to the
 Storage Services protocols and interacts with the Storage Services protocols through the Admin
 Client.
@@ -1841,7 +1782,7 @@ If the communication channel for the Removable Storage Manager (RSM) Remote Prot
 established, or it becomes disconnected, the Admin Client attempts to establish a connection multiple
 times until it fails. The media pool creation or deletion depends on when the connection failed.
 
-2.5.3.2  Mount and Dismount Media
+##### 2.5.3.2 Mount and Dismount Media
 
 Goal
 
@@ -1870,7 +1811,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-is to correctly interpret, execute, and display the results of the commands that are issued by
+
+is to correctly interpret, execute, and display the results of the commands that are issued by
 administrator.
 
   RSMP service: The RSMP service is the server-side implementation of the protocols in the
@@ -1924,7 +1866,7 @@ If the communication channel for the Removable Storage Manager (RSM) Remote Prot
 established, or it becomes disconnected, the Admin Client attempts to establish a connection multiple
 times until it fails. Whether the media is mounted or not depends on when the connection failed.
 
-2.5.3.3  Delete Work Queue Items
+##### 2.5.3.3 Delete Work Queue Items
 
 Goal
 
@@ -1944,7 +1886,8 @@ Release: October 26, 2021
 
 29 / 51
 
-  Admin Tool: A Microsoft Management Console (MMC) component, which is used by the
+
+  Admin Tool: A Microsoft Management Console (MMC) component, which is used by the
 
 administrator to configure the storage on the server.
 
@@ -2001,7 +1944,7 @@ established, or it becomes disconnected, the Admin Client attempts to establish 
 times until it fails. Whether the required work queue items were deleted or not depends on when the
 connection failed.
 
-2.5.4  Encrypted File Access Control and Encryption
+#### 2.5.4 Encrypted File Access Control and Encryption
 
 The File Access Control and Encryption use case group consists of three use cases that illustrate the
 functionality for file access control and encryption:
@@ -2023,7 +1966,8 @@ Release: October 26, 2021
 
 30 / 51
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-STOROD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2032,7 +1976,7 @@ encryption.
 
 Figure 7: Encrypted file access control and encryption use case diagram
 
-2.5.4.1  Provide Cryptographic Access Permissions to an Encrypted File
+##### 2.5.4.1 Provide Cryptographic Access Permissions to an Encrypted File
 
 Goals
 
@@ -2073,7 +2017,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -2109,7 +2054,7 @@ established, or it becomes disconnected, the Admin Client attempts to establish 
 times until it fails. Whether the required access to the encrypted file is obtained or not depends on
 when the connection failed.
 
-2.5.4.2  Encrypt a File
+##### 2.5.4.2 Encrypt a File
 
 Goals
 
@@ -2148,7 +2093,8 @@ Release: October 26, 2021
 
 32 / 51
 
-
+
+
 
 
 
@@ -2188,7 +2134,7 @@ established, or it becomes disconnected, the Admin Client attempts to establish 
 times until it fails. Whether the required encryption of the file has finished or not depends on when the
 connection failed.
 
-2.5.4.3  Decrypt an Encrypted File
+##### 2.5.4.3 Decrypt an Encrypted File
 
 Goals
 
@@ -2225,7 +2171,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Preconditions
+
+Preconditions
 
 
 
@@ -2266,7 +2213,7 @@ established, or it becomes disconnected, the Admin Client attempts to establish 
 times until it fails. Whether the required decryption of the file has finished or not depends on when the
 connection failed.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 There are ten versions of the Storage Services protocols. The following table provides a summary of
 different versions and the protocols that are implemented in each version.
@@ -2325,7 +2272,8 @@ Release: October 26, 2021
 
 34 / 51
 
-Storage Services protocols
+
+Storage Services protocols
 version
 
 Protocols implemented
@@ -2345,7 +2293,7 @@ the Versioning and Capability Negotiation sections in the respective protocol sp
 There are no extensions of the Storage Services protocols other than the extensions that are
 described in the respective protocols.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The Storage Services protocols do not define any error handling requirements beyond those that are
 described in the specifications of the protocols that are supported by the Storage Services system, as
@@ -2355,16 +2303,16 @@ Various errors can impact one or more of the Storage Services protocols. The err
 resulting protocol semantics are described in the "Protocol Details" section of the corresponding
 protocol specifications.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 None.
 
-2.9  Security
+### 2.9 Security
 
 There are no additional security considerations other than those that are described in [MS-EFSR]
 section 5.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 The following table lists the remote procedure call (RPC) binding that each member of the Service
 Storage protocols uses for the RPC transport.
@@ -2414,7 +2362,8 @@ Release: October 26, 2021
 
 35 / 51
 
-Protocol name
+
+Protocol name
 
 [MS-FSRVP]
 
@@ -2429,7 +2378,8 @@ Release: October 26, 2021
 
 36 / 51
 
-3  Examples
+
+## 3 Examples
 
 This section provides the following examples that describe the functionality of the Storage Services
 protocols:
@@ -2462,7 +2412,7 @@ Example 6: Decrypting an Encrypted File (section 3.6)
 
 Example 7: Perform a Backup of a File Share Remotely (section 3.7)
 
-3.1  Example 1: Make a Disk Online
+### 3.1 Example 1: Make a Disk Online
 
 This example demonstrates making the disk online as described in section 2.5.1.3
 
@@ -2503,7 +2453,8 @@ Release: October 26, 2021
 
 37 / 51
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-STOROD].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2520,7 +2471,7 @@ convert an offline disk to an online disk.
 information in an implementation-specific manner. It responds to the Admin Client and returns
 zero on success.
 
-3.2  Example 2: Configure an iSCSI Initiator
+### 3.2 Example 2: Configure an iSCSI Initiator
 
 This example demonstrates the configuration of an iSCSI initiator, as described in section 2.5.1.4.
 
@@ -2560,7 +2511,8 @@ Release: October 26, 2021
 
 38 / 51
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-STOROD].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2576,7 +2528,7 @@ the IVdsServiceIscsi::SetInitiatorSharedSecret() method, as described in [MS-VDS
 
 zero on success.
 
-3.3  Example 3: Create a Shadow Copy Storage Association
+### 3.3 Example 3: Create a Shadow Copy Storage Association
 
 This example demonstrates the creation of a shadow copy storage association as described in
 section 2.5.2.1.
@@ -2618,7 +2570,8 @@ Release: October 26, 2021
 
 39 / 51
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-STOROD].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2663,11 +2616,12 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-STOROD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
-3.4  Example 4: Create and Delete a Media Pool
+### 3.4 Example 4: Create and Delete a Media Pool
 
 This example demonstrates creating and deleting a media pool as described in section 2.5.3.1.
 
@@ -2725,11 +2679,12 @@ Release: October 26, 2021
 
 41 / 51
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-STOROD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
-3.5  Example 5: Encrypt a File
+### 3.5 Example 5: Encrypt a File
 
 This example demonstrates encrypting a file as described in section 2.5.4.2.
 
@@ -2790,11 +2745,12 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-STOROD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
-3.6  Example 6: Decrypting an Encrypted File
+### 3.6 Example 6: Decrypting an Encrypted File
 
 This example demonstrates decrypting an encrypted file as described in section 2.5.4.3.
 
@@ -2852,13 +2808,14 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  The Admin Client contacts the EFS service to decrypt the file by using the EfsRpcDecryptFileSrv
+
+3.  The Admin Client contacts the EFS service to decrypt the file by using the EfsRpcDecryptFileSrv
 
 method, as described in [MS-EFSR] section 3.1.4.2.6.
 
 4.  The EFS service decrypts the required file and returns zero on success.
 
-3.7  Example 7: Perform Backup of a File Share Remotely
+### 3.7 Example 7: Perform Backup of a File Share Remotely
 
 This example demonstrates backing up a file share remotely as described in section 2.5.2.3.
 
@@ -2883,7 +2840,8 @@ Release: October 26, 2021
 
 44 / 51
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-STOROD].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -2908,7 +2866,8 @@ Storage Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The File Server Shadow Copy Agent service processes the method and returns zero on success.
+
+4.  The File Server Shadow Copy Agent service processes the method and returns zero on success.
 
 5.  The Admin Client calls the SetContext method to set the context of subsequent shadow copy
 
@@ -2973,7 +2932,8 @@ Release: October 26, 2021
 
 46 / 51
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following Microsoft products:
 
@@ -3059,7 +3019,8 @@ Release: October 26, 2021
 
 47 / 51
 
-Storage Services protocols version  Operating system version
+
+Storage Services protocols version  Operating system version
 
 Storage Services protocols 9.0
 
@@ -3103,7 +3064,7 @@ Windows 11
 
 Exceptions, if any, are noted in section 4.1.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 1: The Disk Management services were introduced in Storage Services protocols 2.0. For
 more information see section 4.
@@ -3139,7 +3100,8 @@ Release: October 26, 2021
 
 48 / 51
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3176,7 +3138,8 @@ Release: October 26, 2021
 
 49 / 51
 
-6  Index
+
+## 6 Index
 A
 
 Abstract 5
@@ -3314,7 +3277,8 @@ Manage Disks and Volumes use case group
 
 50 / 51
 
-V
+
+V
 
 Versioning
    Microsoft implementations 47

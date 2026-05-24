@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 41
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 41
 
-Date
+
+Date
 
 Revision
 History
@@ -530,7 +532,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -581,281 +584,117 @@ Release: April 23, 2024
 
 4 / 41
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.3.1
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Messages](#131-messages)
+      - [1.3.1.1 Application and Window Filtering](#1311-application-and-window-filtering)
+      - [1.3.1.2 Participant Management](#1312-participant-management)
+      - [1.3.1.3 Graphics Stream Control](#1313-graphics-stream-control)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Order Header (ORDER_HDR)](#221-common-order-header-orderhdr)
+    - [2.2.2 Unicode String (UNICODE_STRING)](#222-unicode-string-unicodestring)
+    - [2.2.3 Application and Window Filtering](#223-application-and-window-filtering)
+      - [2.2.3.1 Filter-Updated PDU (OD_FILTER_STATE_UPDATED)](#2231-filter-updated-pdu-odfilterstateupdated)
+      - [2.2.3.2 Application-Created PDU (OD_APP_CREATED)](#2232-application-created-pdu-odappcreated)
+      - [2.2.3.3 Application-Removed PDU (OD_APP_REMOVED)](#2233-application-removed-pdu-odappremoved)
+      - [2.2.3.4 Window-Created PDU (OD_WND_CREATED)](#2234-window-created-pdu-odwndcreated)
+      - [2.2.3.5 Window-Removed PDU (OD_WND_REMOVED)](#2235-window-removed-pdu-odwndremoved)
+      - [2.2.3.6 Show Window PDU (OD_WND_SHOW)](#2236-show-window-pdu-odwndshow)
+      - [2.2.3.7 Window Region Update PDU (OD_WND_REGION_UPDATE)](#2237-window-region-update-pdu-odwndregionupdate)
+    - [2.2.4 Participant Management](#224-participant-management)
+      - [2.2.4.1 Participant-Created PDU (OD_PARTICIPANT_CREATED)](#2241-participant-created-pdu-odparticipantcreated)
+      - [2.2.4.2 Participant-Removed PDU (OD_PARTICIPANT_REMOVED)](#2242-participant-removed-pdu-odparticipantremoved)
+      - [2.2.4.3 Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE)](#2243-change-participant-control-level-pdu-odparticipantctrlchange)
+      - [2.2.4.4 Change Participant Control Level Response PDU](#2244-change-participant-control-level-response-pdu)
+    - [2.2.5 Graphics Stream Control](#225-graphics-stream-control)
+      - [2.2.5.1 Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED)](#2251-graphics-stream-paused-pdu-odgraphicsstreampaused)
+      - [2.2.5.2 Graphics Stream-Resumed PDU (OD_GRAPHICS_STREAM_RESUMED)](#2252-graphics-stream-resumed-pdu-odgraphicsstreamresumed)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message-Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Processing the Common PDU Header](#3151-processing-the-common-pdu-header)
+      - [3.1.5.2 Processing UNICODE_STRING Fields](#3152-processing-unicodestring-fields)
+      - [3.1.5.3 Processing Application, Window, and Participant IDs](#3153-processing-application-window-and-participant-ids)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Participant Details](#32-participant-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message-Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Application and Window Filtering](#3251-application-and-window-filtering)
+        - [3.2.5.1.1 Processing an Application-Created PDU](#32511-processing-an-application-created-pdu)
+        - [3.2.5.1.2 Processing an Application-Removed PDU](#32512-processing-an-application-removed-pdu)
+        - [3.2.5.1.3 Processing a Filter-Updated PDU](#32513-processing-a-filter-updated-pdu)
+        - [3.2.5.1.4 Processing a Window-Created PDU](#32514-processing-a-window-created-pdu)
+        - [3.2.5.1.5 Processing a Window-Removed PDU](#32515-processing-a-window-removed-pdu)
+        - [3.2.5.1.6 Processing a Window Region Update PDU](#32516-processing-a-window-region-update-pdu)
+      - [3.2.5.2 Participant Management](#3252-participant-management)
+        - [3.2.5.2.1 Processing a Participant-Created PDU](#32521-processing-a-participant-created-pdu)
+        - [3.2.5.2.2 Processing a Participant-Removed PDU](#32522-processing-a-participant-removed-pdu)
+        - [3.2.5.2.3 Processing the Change Participant Control Level Response PDU](#32523-processing-the-change-participant-control-level-response-pdu)
+      - [3.2.5.3 Graphics Stream Control](#3253-graphics-stream-control)
+        - [3.2.5.3.1 Processing a Graphics Stream-Paused PDU](#32531-processing-a-graphics-stream-paused-pdu)
+        - [3.2.5.3.2 Processing a Graphics Stream-Resumed PDU](#32532-processing-a-graphics-stream-resumed-pdu)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Sharing Manager Details](#33-sharing-manager-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Application and Window Filtering](#3351-application-and-window-filtering)
+        - [3.3.5.1.1 Processing the Show Window PDU](#33511-processing-the-show-window-pdu)
+      - [3.3.5.2 Participant Management](#3352-participant-management)
+        - [3.3.5.2.1 Processing a Participant-Created PDU](#33521-processing-a-participant-created-pdu)
+        - [3.3.5.2.2 Processing a Participant-Removed PDU](#33522-processing-a-participant-removed-pdu)
+        - [3.3.5.2.3 Processing the Change Participant Control Level PDU](#33523-processing-the-change-participant-control-level-pdu)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sharing Manager-Generated PDUs](#41-sharing-manager-generated-pdus)
+    - [4.1.1 Filter-Updated PDU 1](#411-filter-updated-pdu-1)
+    - [4.1.2 Participant-Created PDU](#412-participant-created-pdu)
+    - [4.1.3 Participant-Removed PDU](#413-participant-removed-pdu)
+    - [4.1.4 Filter-Updated PDU 2](#414-filter-updated-pdu-2)
+    - [4.1.5 Application-Created PDU](#415-application-created-pdu)
+    - [4.1.6 Application-Removed PDU](#416-application-removed-pdu)
+    - [4.1.7 Window-Created PDU](#417-window-created-pdu)
+    - [4.1.8 Window-Removed PDU](#418-window-removed-pdu)
+    - [4.1.9 Request Control Level Change Response PDU](#419-request-control-level-change-response-pdu)
+    - [4.1.10 Window Region Update PDU](#4110-window-region-update-pdu)
+  - [4.2 Participant-Generated PDUs](#42-participant-generated-pdus)
+    - [4.2.1 Request Control Level Change PDU](#421-request-control-level-change-pdu)
+    - [4.2.2 Request Show Window PDU](#422-request-show-window-pdu)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Messages ..................................................................................................... 8
-Application and Window Filtering ............................................................... 8
-Participant Management .......................................................................... 8
-Graphics Stream Control .......................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ..................................................................................... 10
-
-1.3.1.1
-1.3.1.2
-1.3.1.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Common Order Header (ORDER_HDR) .......................................................... 11
-Unicode String (UNICODE_STRING) .............................................................. 12
-Application and Window Filtering .................................................................. 12
-Filter-Updated PDU (OD_FILTER_STATE_UPDATED) .................................. 12
-Application-Created PDU (OD_APP_CREATED) .......................................... 13
-Application-Removed PDU (OD_APP_REMOVED) ....................................... 14
-Window-Created PDU (OD_WND_CREATED) ............................................. 14
-Window-Removed PDU (OD_WND_REMOVED) .......................................... 15
-Show Window PDU (OD_WND_SHOW) ..................................................... 15
-Window Region Update PDU (OD_WND_REGION_UPDATE)......................... 16
-Participant Management .............................................................................. 16
-Participant-Created PDU (OD_PARTICIPANT_CREATED) ............................. 16
-Participant-Removed PDU (OD_PARTICIPANT_REMOVED) .......................... 17
-Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE) ... 18
-Change Participant Control Level Response PDU
-(OD_PARTICIPANT_CTRL_CHANGE_RESPONSE) ....................................... 19
-Graphics Stream Control .............................................................................. 20
-Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED) .............. 20
-Graphics Stream-Resumed PDU (OD_GRAPHICS_STREAM_RESUMED) ......... 20
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-
-2.2.5.1
-2.2.5.2
-
-2.2.4
-
-2.2.5
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 21
-Common Details .............................................................................................. 21
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Message-Processing Events and Sequencing Rules .......................................... 23
-Processing the Common PDU Header ....................................................... 23
-Processing UNICODE_STRING Fields ........................................................ 24
-Processing Application, Window, and Participant IDs .................................. 24
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-Participant Details ............................................................................................ 24
-Abstract Data Model .................................................................................... 24
-Timers ...................................................................................................... 25
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.2.1
-3.2.2
-
-3.1.6
-3.1.7
-
-3.2
-
-[MS-RDPEMC] - v20240423
-Remote Desktop Protocol: Multiparty Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 41
-
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.3
-
-3.2.5.1
-
-3.2.5.2
-
-3.2.5.3.1
-3.2.5.3.2
-
-3.2.5.2.1
-3.2.5.2.2
-3.2.5.2.3
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Message-Processing Events and Sequencing Rules .......................................... 25
-Application and Window Filtering ............................................................. 25
-Processing an Application-Created PDU .............................................. 25
-Processing an Application-Removed PDU ............................................ 25
-Processing a Filter-Updated PDU ........................................................ 25
-Processing a Window-Created PDU .................................................... 25
-Processing a Window-Removed PDU .................................................. 26
-Processing a Window Region Update PDU ........................................... 26
-Participant Management ........................................................................ 26
-Processing a Participant-Created PDU ................................................ 26
-Processing a Participant-Removed PDU .............................................. 26
-Processing the Change Participant Control Level Response PDU ............. 27
-Graphics Stream Control ........................................................................ 27
-Processing a Graphics Stream-Paused PDU ......................................... 27
-Processing a Graphics Stream-Resumed PDU ...................................... 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-Sharing Manager Details ................................................................................... 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Application and Window Filtering ............................................................. 28
-Processing the Show Window PDU ..................................................... 28
-Participant Management ........................................................................ 28
-Processing a Participant-Created PDU ................................................ 28
-Processing a Participant-Removed PDU .............................................. 28
-Processing the Change Participant Control Level PDU ........................... 28
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.3.5.1
-
-3.3.5.1.1
-
-3.3.5.2
-
-3.3.5.2.1
-3.3.5.2.2
-3.3.5.2.3
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.6
-3.3.7
-
-4.1
-
-4  Protocol Examples ................................................................................................. 29
-Sharing Manager-Generated PDUs ...................................................................... 29
-Filter-Updated PDU 1 .................................................................................. 29
-4.1.1
-Participant-Created PDU .............................................................................. 29
-4.1.2
-Participant-Removed PDU ............................................................................ 30
-4.1.3
-Filter-Updated PDU 2 .................................................................................. 30
-4.1.4
-Application-Created PDU .............................................................................. 31
-4.1.5
-Application-Removed PDU ............................................................................ 31
-4.1.6
-Window-Created PDU .................................................................................. 31
-4.1.7
-Window-Removed PDU ................................................................................ 32
-4.1.8
-4.1.9
-Request Control Level Change Response PDU ................................................. 32
-4.1.10  Window Region Update PDU ......................................................................... 32
-Participant-Generated PDUs .............................................................................. 33
-Request Control Level Change PDU ............................................................... 33
-Request Show Window PDU ......................................................................... 33
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ................................................................................................................. 34
-Security Considerations for Implementers ........................................................... 34
-Index of Security Parameters ............................................................................ 34
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 35
-
-7  Change Tracking .................................................................................................... 38
-
-8  Index ..................................................................................................................... 39
-
-[MS-RDPEMC] - v20240423
-Remote Desktop Protocol: Multiparty Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 41
-
-[MS-RDPEMC] - v20240423
-Remote Desktop Protocol: Multiparty Virtual Channel Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 41
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol: Multiparty Virtual Channel Extension describes the messages that are
 exchanged between a remote desktop host and the participants with which it is engaging in
@@ -867,7 +706,7 @@ shared desktop.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -911,7 +750,7 @@ Unicode character: Unless otherwise specified, a 16-bit UTF-16 code unit.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -925,7 +764,8 @@ Release: April 23, 2024
 
 8 / 41
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -941,11 +781,11 @@ Remoting".
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Desktop Protocol: Basic Connectivity and Graphics Remoting Protocol (as specified in
 [MS-RDPBCGR]) enables the remote display of desktop and application content. To effectively
@@ -955,9 +795,9 @@ being shared. The Remote Desktop Protocol: Multiparty Virtual Channel Extension 
 messages that are used to communicate the information between the participants and to signal the
 occurrence of significant events.
 
-1.3.1  Messages
+#### 1.3.1 Messages
 
-1.3.1.1  Application and Window Filtering
+##### 1.3.1.1 Application and Window Filtering
 
 A host can choose to share all application windows on a desktop or, instead, limit the sharing to a
 subset. The process of limiting the sharing to a subset is known as filtering. Application filtering is
@@ -976,7 +816,7 @@ filtering state, application names, and window names to the participants.
 
 For more information, see sections 3.2.5.1 and 3.3.5.1.
 
-1.3.1.2  Participant Management
+##### 1.3.1.2 Participant Management
 
 Participant management facilities allow the sharing manager to send notifications to all participants
 when an individual participant connects or disconnects from the sharing session or when a
@@ -989,21 +829,22 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For more information, see sections 3.2.5.2 and 3.3.5.2.
 
-1.3.1.3  Graphics Stream Control
+For more information, see sections 3.2.5.2 and 3.3.5.2.
+
+##### 1.3.1.3 Graphics Stream Control
 
 The host can choose to momentarily suspend or resume desktop sharing. This capability is useful
 when an event, such as the input of a plain-text password, would reveal sensitive information to all
 participants. Participants are notified when sharing is suspended, so that they know why they are no
 longer receiving information, as specified in sections 2.2.5 and 3.2.5.3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Desktop Protocol: Multiparty Virtual Channel Extension is embedded in static virtual
 channel transport, as specified in [MS-RDPBCGR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Remote Desktop Protocol: Multiparty Virtual Channel Extension operates only after a static virtual
 channel transport, as specified in [MS-RDPBCGR] section 3.1.5.2, with the name "encomsp" (encoded
@@ -1014,14 +855,14 @@ Extension occurs.
 The client sends a pre-connection PDU prior to establishing a Remote Desktop Protocol (RDP)
 connection, as specified in [MS-RDPEPS] section 2.2.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Remote Desktop Protocol: Multiparty Virtual Channel Extension is designed to be run within the
 context of an RDP Virtual Channel established between a client and server. This protocol is applicable
 when information is being communicated among the host and the participants in a multiparty
 sharing session.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol does not require any specific versioning and does not provide any versioning mechanism.
 
@@ -1034,7 +875,7 @@ Both the host and the participant can add new, optional messages to this protoco
 header format remains the same. Both the host and the participant ignore messages of unknown
 types.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs, as specified in [MS-ERREF] section 2.1. Vendors are free to choose
 their own values, as long as the C bit (0x20000000) is set, indicating it is a customer code.
@@ -1050,7 +891,8 @@ Release: April 23, 2024
 
 10 / 41
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 No standards have been assigned to this protocol.
 
@@ -1061,12 +903,13 @@ Release: April 23, 2024
 
 11 / 41
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify the transport and syntax of Remote Desktop Protocol: Multiparty Virtual
 Channel Extension messages.
 
-2.1  Transport
+### 2.1 Transport
 
 The Remote Desktop Protocol: Multiparty Virtual Channel Extension is designed to operate over static
 virtual channels, as specified in [MS-RDPBCGR] section 3.1.5.2, using the name "encomsp" (encoded
@@ -1074,9 +917,9 @@ as a string of ANSI characters).
 
 The RDP layer manages the creation, setup, and data transmission over the virtual channel.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Order Header (ORDER_HDR)
+#### 2.2.1 Common Order Header (ORDER_HDR)
 
 The messages, or protocol data unit (PDU), exchanged as part of this protocol MUST start with the
 Common Order Header (ORDER_HDR), which identifies the type of message contained in the PDU
@@ -1168,7 +1011,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x0008
 
@@ -1214,7 +1058,7 @@ Length (2 bytes): A 16-bit, unsigned integer that specifies the length of the da
 by the PDU. This field MUST be the payload size plus the size of the common header and MUST be
 used in decoding the individual PDUs.
 
-2.2.2  Unicode String (UNICODE_STRING)
+#### 2.2.2 Unicode String (UNICODE_STRING)
 
 The Unicode String (UNICODE_STRING) packet is used to pack a variable-length Unicode string.
 
@@ -1244,9 +1088,9 @@ The variable-length Unicode string comprises the first n Unicode characters in t
 where n is the lesser of the value of the cchString field and the number of characters preceding
 the first null in the array.
 
-2.2.3  Application and Window Filtering
+#### 2.2.3 Application and Window Filtering
 
-2.2.3.1  Filter-Updated PDU (OD_FILTER_STATE_UPDATED)
+##### 2.2.3.1 Filter-Updated PDU (OD_FILTER_STATE_UPDATED)
 
 The Filter-Updated PDU (OD_FILTER_STATE_UPDATED) is used to inform the participants whether
 application filtering is enabled, as specified in section 3.2.5.1.3.
@@ -1271,7 +1115,8 @@ Release: April 23, 2024
 
 13 / 41
 
-Flags
+
+Flags
 
 HDR (4 bytes): The common PDU header (as specified in section 2.2.1). The Type field of the
 
@@ -1291,7 +1136,7 @@ The filter is enabled. If this bit is 0 then the filter is disabled.
 
 0x0001
 
-2.2.3.2  Application-Created PDU (OD_APP_CREATED)
+##### 2.2.3.2 Application-Created PDU (OD_APP_CREATED)
 
 The Application-Created PDU (OD_APP_CREATED) is sent by the sharing manager to notify
 participants of newly created applications or other changes in application information. For more
@@ -1352,7 +1197,8 @@ Release: April 23, 2024
 
 14 / 41
 
-2.2.3.3  Application-Removed PDU (OD_APP_REMOVED)
+
+##### 2.2.3.3 Application-Removed PDU (OD_APP_REMOVED)
 
 The Application-Removed PDU (OD_APP_REMOVED) is sent by the sharing manager to notify
 participants that an application MUST be removed from their application lists. Processing instructions
@@ -1382,7 +1228,7 @@ AppId (4 bytes): The 32-bit, unsigned integer that specifies the AppId of the ap
 removed. The integer MUST uniquely identify an application in the application list, as specified in
 the AppId field description of Application-Created PDU (section 2.2.3.2).
 
-2.2.3.4  Window-Created PDU (OD_WND_CREATED)
+##### 2.2.3.4 Window-Created PDU (OD_WND_CREATED)
 
 The Window-Created PDU (OD_WND_CREATED) is sent by the sharing manager to notify
 participants that a window was created or updated. Every window MUST be associated with an
@@ -1442,7 +1288,8 @@ Release: April 23, 2024
 
 15 / 41
 
-AppId (4 bytes): The 32-bit, unsigned integer that specifies the AppId of the application that owns
+
+AppId (4 bytes): The 32-bit, unsigned integer that specifies the AppId of the application that owns
 the window. The integer MUST uniquely identify an application in the application list, as specified
 in the AppId field description of the Application-Created PDU (section 2.2.3.2).
 
@@ -1456,7 +1303,7 @@ Name (variable): A UNICODE_STRING that specifies the name of the window. Impleme
 choose any UNICODE_STRING as the Name; there are no restrictions on allowable
 characters.<4>
 
-2.2.3.5  Window-Removed PDU (OD_WND_REMOVED)
+##### 2.2.3.5 Window-Removed PDU (OD_WND_REMOVED)
 
 The Window-Removed PDU (OD_WND_REMOVED) is sent by the sharing manager to notify
 participants that a window SHOULD be removed from their window lists (section 3.2.5.1.5 ).
@@ -1483,7 +1330,7 @@ WndId (4 bytes): A 32-bit, unsigned integer that specifies the WndId of the wind
 The integer MUST uniquely identify a window in the window list, as specified in the WndId field
 description of the Window-Created PDU (section 2.2.3.4).
 
-2.2.3.6  Show Window PDU (OD_WND_SHOW)
+##### 2.2.3.6 Show Window PDU (OD_WND_SHOW)
 
 The Show Window PDU (OD_WND_SHOW) is sent by a participant to request that the sharing
 manager display one of the shared windows. For instance, this PDU can be used when the participant
@@ -1520,7 +1367,8 @@ Release: April 23, 2024
 
 16 / 41
 
-2.2.3.7  Window Region Update PDU (OD_WND_REGION_UPDATE)
+
+##### 2.2.3.7 Window Region Update PDU (OD_WND_REGION_UPDATE)
 
 The Window Region Update PDU (OD_WND_REGION_UPDATE) MAY<5> be used by the sharing
 manager to inform the participants that the size of an application window has changed (section
@@ -1567,12 +1415,12 @@ bottom (4 bytes): A 32-bit, unsigned integer. The inclusive lower bound of the r
 
 the application window.
 
-2.2.4  Participant Management
+#### 2.2.4 Participant Management
 
 The messages in this section are used to create and maintain the list of participants that view and
 interact with the shared desktop.
 
-2.2.4.1  Participant-Created PDU (OD_PARTICIPANT_CREATED)
+##### 2.2.4.1 Participant-Created PDU (OD_PARTICIPANT_CREATED)
 
 The Participant-Created PDU (OD_PARTICIPANT_CREATED) is used by the sharing manager to notify
 participants that a new participant is now receiving the shared desktop. It is also used to notify
@@ -1602,7 +1450,8 @@ Release: April 23, 2024
 
 17 / 41
 
-Flags
+
+Flags
 
 FriendlyName (variable)
 
@@ -1651,7 +1500,7 @@ FriendlyName (variable): A UNICODE_STRING that specifies the name that is associ
 
 participant.
 
-2.2.4.2  Participant-Removed PDU (OD_PARTICIPANT_REMOVED)
+##### 2.2.4.2 Participant-Removed PDU (OD_PARTICIPANT_REMOVED)
 
 The Participant-Removed PDU (OD_PARTICIPANT_REMOVED) is used by the sharing manager to
 inform the participants that a participant SHOULD be removed from the participant list (section
@@ -1691,7 +1540,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DiscType (4 bytes): A 32-bit, unsigned integer that specifies the disconnect type. Possible values
+
+DiscType (4 bytes): A 32-bit, unsigned integer that specifies the disconnect type. Possible values
 
 include the following.
 
@@ -1735,7 +1585,7 @@ participant.
 
 0xD0000001  The disconnect was the result of an error on the host side.
 
-2.2.4.3  Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE)
+##### 2.2.4.3 Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE)
 
 The Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE) is sent by a
 participant to request a different control level. For instance, a view-only participant could ask the
@@ -1785,7 +1635,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x0001
 
@@ -1807,7 +1658,7 @@ ParticipantId (4 bytes): A 32-bit, unsigned integer that specifies the unique id
 
 participant.
 
-2.2.4.4  Change Participant Control Level Response PDU
+##### 2.2.4.4 Change Participant Control Level Response PDU
 (OD_PARTICIPANT_CTRL_CHANGE_RESPONSE)
 
 The Change Participant Control Level Response PDU (OD_PARTICIPANT_CTRL_CHANGE_RESPONSE) is
@@ -1885,9 +1736,10 @@ Release: April 23, 2024
 
 20 / 41
 
-2.2.5  Graphics Stream Control
 
-2.2.5.1  Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED)
+#### 2.2.5 Graphics Stream Control
+
+##### 2.2.5.1 Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED)
 
 The Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED) is used by the sharing
 manager to inform the participants that sharing is suspended (section 3.2.5.3.1).
@@ -1910,7 +1762,7 @@ HDR (4 bytes): The common PDU header (as specified in Common Order Header (secti
 The Type field of the common PDU header MUST be set to ODTYPE_GRAPHICS_STREAM_PAUSED
 (0x000A).
 
-2.2.5.2  Graphics Stream-Resumed PDU (OD_GRAPHICS_STREAM_RESUMED)
+##### 2.2.5.2 Graphics Stream-Resumed PDU (OD_GRAPHICS_STREAM_RESUMED)
 
 The Graphics Stream-Resumed PDU (OD_GRAPHICS_STREAM_RESUMED) is used by the sharing
 manager to inform the participants that desktop sharing has resumed (section 3.2.5.3.2).
@@ -1940,16 +1792,17 @@ Release: April 23, 2024
 
 21 / 41
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-RDPEMC].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The following sections specify details of the Remote Desktop Protocol: Multiparty Virtual Channel
 Extension, including abstract data models and message processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 Figure 1: Participant Handling of Participant-Created and Participant-Removed Messages
 
@@ -1960,14 +1813,15 @@ Release: April 23, 2024
 
 22 / 41
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-RDPEMC].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 Figure 2: Participant Handling of GRAPHICS-STREAM-UNPAUSED and GRAPHICS-STREAM-
 PAUSED PDUs
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1994,7 +1848,7 @@ Because the notifications for both created and updated applications use the same
 SHOULD distinguish between the two. A client does this by checking whether it already has a record
 for the unique ID associated with the PDU.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are used.
 
@@ -2005,18 +1859,19 @@ Release: April 23, 2024
 
 23 / 41
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Before messages can be sent, the static virtual channel MUST be established by using the parameters
 specified in section 2.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Message-Processing Events and Sequencing Rules
+#### 3.1.5 Message-Processing Events and Sequencing Rules
 
-3.1.5.1  Processing the Common PDU Header
+##### 3.1.5.1 Processing the Common PDU Header
 
 The Type field (as specified in Common Order Header (ORDER_HDR) (section 2.2.1)) MUST be
 examined to determine if it corresponds to a known message type. If the type does not correspond to
@@ -2112,7 +1967,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Type field value
+
+ Type field value
 
 0x000D
 
@@ -2126,7 +1982,7 @@ header. When processing a message, the receiver MUST verify that enough network 
 the virtual channel packet to process a message of the size specified by the Length field. The receiver
 SHOULD disconnect from the sharing session if there is not enough data.<8>
 
-3.1.5.2  Processing UNICODE_STRING Fields
+##### 3.1.5.2 Processing UNICODE_STRING Fields
 
 Some messages in the Remote Desktop Protocol: Multiparty Virtual Channel Extension contain
 UNICODE_STRING (section 2.2.2) packets. These are variable size fields with the length described by
@@ -2135,7 +1991,7 @@ the receiver MUST validate the string by doubling the value of the cchString fie
 and then check whether there are sufficient bytes left in the message to account for the presence of
 the string, plus any additional fields.
 
-3.1.5.3  Processing Application, Window, and Participant IDs
+##### 3.1.5.3 Processing Application, Window, and Participant IDs
 
 When an Application-Created message is received, the client SHOULD check its application list to see if
 it contains a record for the value in the AppId field. If no record exists, the client MUST create a
@@ -2157,17 +2013,17 @@ Removed PDUs before sending the Application-Removed PDU for the application to w
 corresponds. If the client receives an Application-Removed PDU, it SHOULD remove any window from
 the window list with an AppId that corresponds to the application removed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Participant Details
+### 3.2 Participant Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 Refer to the common details abstract data model in section 3.1.1.
 
@@ -2178,24 +2034,25 @@ Release: April 23, 2024
 
 25 / 41
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Before messages can be sent, the static virtual channel MUST be established by using the parameters
 specified in section 2.1.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message-Processing Events and Sequencing Rules
+#### 3.2.5 Message-Processing Events and Sequencing Rules
 
-3.2.5.1  Application and Window Filtering
+##### 3.2.5.1 Application and Window Filtering
 
-3.2.5.1.1 Processing an Application-Created PDU
+###### 3.2.5.1.1 Processing an Application-Created PDU
 
 The receiver of an Application-Created PDU (OD_APP_CREATED) MUST first validate the common
 header for consistency (as specified in section 3.1.5.1).
@@ -2210,7 +2067,7 @@ terminated.<9><10>
 If the receiver wants to use the application and window list facilities of this protocol, it SHOULD
 process the information according to section 3.1.5.3.
 
-3.2.5.1.2 Processing an Application-Removed PDU
+###### 3.2.5.1.2 Processing an Application-Removed PDU
 
 The receiver of an Application-Removed PDU (OD_APP_REMOVED) MUST first validate the common
 header for consistency (section 3.1.5.1). If the PDU size is not long enough to contain all the fields in
@@ -2219,7 +2076,7 @@ the message, the connection SHOULD be terminated.<11>
 If the receiver wants to use the application and window list facilities of this protocol, it SHOULD
 process the information according to section 3.1.5.3.
 
-3.2.5.1.3 Processing a Filter-Updated PDU
+###### 3.2.5.1.3 Processing a Filter-Updated PDU
 
 The receiver of the Filter-Updated PDU (OD_FILTER_STATE_UPDATED) (section 2.2.3.1) MUST first
 validate the common header for consistency (section 3.1.5.1). If the PDU size is not long enough to
@@ -2230,7 +2087,7 @@ and windowing filtering are enabled by the sharing manager (see Filter-Updated P
 (OD_FILTER_STATE_UPDATED) (section 2.2.3.1)). The receiver SHOULD also remove all the windows
 and applications that it lists, because the sharing manager is about to send an updated list.<13>
 
-3.2.5.1.4 Processing a Window-Created PDU
+###### 3.2.5.1.4 Processing a Window-Created PDU
 
 The receiver of the Window-Created PDU (OD_WND_CREATED) (section 2.2.3.4) MUST validate the
 common header for consistency (section 3.1.5.1). If the PDU size is not long enough to contain all the
@@ -2242,13 +2099,14 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-fields in the message, the connection SHOULD be terminated.<14> After the header is validated, the
+
+fields in the message, the connection SHOULD be terminated.<14> After the header is validated, the
 receiver MUST validate the Name field according to the rules described in section 3.1.5.2.
 
 If the receiver wants to use the application and window list facilities of this protocol, it SHOULD
 process the information according to section 3.1.5.3.
 
-3.2.5.1.5 Processing a Window-Removed PDU
+###### 3.2.5.1.5 Processing a Window-Removed PDU
 
 The receiver of the Window-Removed PDU (OD_WND_REMOVED) (section 2.2.3.5) MUST first validate
 the common header for consistency (section 3.1.5.1). If the PDU size is not long enough to contain all
@@ -2257,7 +2115,7 @@ the fields in the message, the connection SHOULD be terminated.<15>
 If the receiver wants use the application and window list facilities of this protocol, it SHOULD process
 the information according to section 3.1.5.3.
 
-3.2.5.1.6 Processing a Window Region Update PDU
+###### 3.2.5.1.6 Processing a Window Region Update PDU
 
 The receiver of the Window Region Update PDU (OD_WND_REGION_UPDATE) (section 2.2.3.7) MUST
 first validate the common header for consistency (section 3.1.5.1). If the PDU size is not long enough
@@ -2266,9 +2124,9 @@ to contain all the fields in the message, the connection SHOULD be terminated.<1
 Receipt of this PDU indicates that the application window size has changed. The PDU is stateless and
 has no sequencing rules.
 
-3.2.5.2  Participant Management
+##### 3.2.5.2 Participant Management
 
-3.2.5.2.1 Processing a Participant-Created PDU
+###### 3.2.5.2.1 Processing a Participant-Created PDU
 
 The receiver of the Participant-Created PDU (OD_PARTICIPANT_CREATED) (section 2.2.4.1) MUST
 verify the common header for consistency (section 3.1.5.1). If the PDU size is not long enough to
@@ -2289,7 +2147,7 @@ which the user belongs.<19>
 If the receiver wants to use the Participant list facilities of this protocol, it SHOULD process the
 information according to section 3.1.5.3.
 
-3.2.5.2.2 Processing a Participant-Removed PDU
+###### 3.2.5.2.2 Processing a Participant-Removed PDU
 
 The receiver of the Participant-Removed PDU (OD_PARTICIPANT_REMOVED) (section 2.2.4.2) MUST
 first validate the common header for consistency (section 3.1.5.1). If the PDU size is not long enough
@@ -2308,7 +2166,8 @@ Release: April 23, 2024
 
 27 / 41
 
-3.2.5.2.3 Processing the Change Participant Control Level Response PDU
+
+###### 3.2.5.2.3 Processing the Change Participant Control Level Response PDU
 
 The receiver of the Change Participant Control Level Response PDU
 (OD_PARTICIPANT_CTRL_CHANGE_RESPONSE) (section 2.2.4.4) MUST first validate the common
@@ -2320,9 +2179,9 @@ After validating the common header, the receiver SHOULD verify that the Particip
 The participant SHOULD check the ReasonCode field to determine why the change participant
 control level request was accepted or rejected.
 
-3.2.5.3  Graphics Stream Control
+##### 3.2.5.3 Graphics Stream Control
 
-3.2.5.3.1 Processing a Graphics Stream-Paused PDU
+###### 3.2.5.3.1 Processing a Graphics Stream-Paused PDU
 
 The receiver of the Graphics Stream-Paused PDU (OD_GRAPHICS_STREAM_PAUSED) (section 2.2.5.1)
 MUST verify the common header for consistency (section 3.1.5.1). If the PDU size is not long enough
@@ -2331,7 +2190,7 @@ to contain all the fields in the message, the connection SHOULD be terminated.<2
 Receipt of this PDU indicates that the sharing manager has suspended the graphic stream (as
 specified in section 1.3.1.3). The PDU is stateless and has no sequencing rules.
 
-3.2.5.3.2 Processing a Graphics Stream-Resumed PDU
+###### 3.2.5.3.2 Processing a Graphics Stream-Resumed PDU
 
 The receiver of the Graphics Stream-Resumed PDU
 (OD_GRAPHICS_STREAM_RESUMED) (section 2.2.5.2) MUST first validate the common header for
@@ -2341,25 +2200,25 @@ message, the connection SHOULD be terminated.<24>
 Receipt of this PDU indicates that the graphic stream is no longer paused (section 1.3.1.3). The PDU is
 stateless and has no sequencing rules.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Sharing Manager Details
+### 3.3 Sharing Manager Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 Refer to the common details abstract data model in section 3.1.1.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Before messages can be sent, the static virtual channel MUST be established by using the parameters
 specified in section 2.1.
@@ -2371,15 +2230,16 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.4  Higher-Layer Triggered Events
+
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Application and Window Filtering
+##### 3.3.5.1 Application and Window Filtering
 
-3.3.5.1.1 Processing the Show Window PDU
+###### 3.3.5.1.1 Processing the Show Window PDU
 
 The receiver of the Show Window PDU (OD_WND_SHOW) (section 2.2.3.6) MUST verify the common
 header for consistency (section 3.1.5.1). If the PDU size is not long enough to contain all the fields in
@@ -2389,17 +2249,17 @@ The WndId field in the PDU MUST specify the window that the participant wants to
 sharing manager SHOULD <26> validate the WndId field against the existing windows and
 SHOULD <27> verify that the participant is entitled to make that request before granting it.
 
-3.3.5.2  Participant Management
+##### 3.3.5.2 Participant Management
 
-3.3.5.2.1 Processing a Participant-Created PDU
+###### 3.3.5.2.1 Processing a Participant-Created PDU
 
 See section 3.2.5.2.1.<28>
 
-3.3.5.2.2 Processing a Participant-Removed PDU
+###### 3.3.5.2.2 Processing a Participant-Removed PDU
 
 See section 3.2.5.2.2.<29>
 
-3.3.5.2.3 Processing the Change Participant Control Level PDU
+###### 3.3.5.2.3 Processing the Change Participant Control Level PDU
 
 The receiver of the Change Participant Control Level PDU
 (OD_PARTICIPANT_CTRL_CHANGE) (section 2.2.4.3) MUST first validate the common header for
@@ -2413,11 +2273,11 @@ participant is entitled to the requested permissions before granting the request
 Upon granting the request, the recipient SHOULD notify participants by sending a Participant-Created
 PDU (OD_PARTICIPANT_CREATED) (section 2.2.4.1) reflecting the new permission granted.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2428,14 +2288,15 @@ Release: April 23, 2024
 
 29 / 41
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several operations that are used in common scenarios to illustrate the
 function of the Remote Desktop Protocol: Multiparty Virtual Channel Extension.
 
-4.1  Sharing Manager-Generated PDUs
+### 4.1 Sharing Manager-Generated PDUs
 
-4.1.1  Filter-Updated PDU 1
+#### 4.1.1 Filter-Updated PDU 1
 
 The following is a network capture of the Filter-Updated PDU
 (OD_FILTER_STATE_UPDATED) (section 2.2.3.1).
@@ -2446,7 +2307,7 @@ The following is a network capture of the Filter-Updated PDU
  05 00 -> OD_FILTER_STATE_UPDATED: ORDER_HDR : Length = 05
  00 -> OD_FILTER_STATE_UPDATED: Flags = 0
 
-4.1.2  Participant-Created PDU
+#### 4.1.2 Participant-Created PDU
 
 The following are network captures of the Participant-Created PDU
 (OD_PARTICIPANT_CREATED) (section 2.2.4.1).
@@ -2493,7 +2354,8 @@ Release: April 23, 2024
 
 30 / 41
 
-      -> OD_PARTICIPANT_CREATED: UNICODE_STRING: String "TESTUSER02"
+
+      -> OD_PARTICIPANT_CREATED: UNICODE_STRING: String "TESTUSER02"
 
 This network capture shows the PDU sent to notify a participant of a change to its current control
 level. Note that the flag indicates permission to view only.
@@ -2514,7 +2376,7 @@ level. Note that the flag indicates permission to view only.
  54 00 45 00 53 00 54 00 55 00 53 00 45 00 52 00 30 00 32 00
       -> OD_PARTICIPANT_CREATED: UNICODE_STRING: String "TESTUSER02"
 
-4.1.3  Participant-Removed PDU
+#### 4.1.3 Participant-Removed PDU
 
 The following is a network capture of the Participant-Removed PDU
 (OD_PARTICIPANT_REMOVED) (section 2.2.4.2). This PDU is sent to all participants to notify them
@@ -2531,7 +2393,7 @@ that a participant has been removed.
  06 00 0A D0 -> OD_PARTICIPANT_REMOVED: DiscCode =
       0xD00A0006 (Could not send data to the participant)
 
-4.1.4  Filter-Updated PDU 2
+#### 4.1.4 Filter-Updated PDU 2
 
 The following are network captures of the Filter-Updated PDU
 (OD_FILTER_STATE_UPDATED) (section 2.2.3.1). This PDU is sent to notify participants of the filter's
@@ -2553,14 +2415,15 @@ Release: April 23, 2024
 
 31 / 41
 
-OD_FILTER_STATE_UPDATED
+
+OD_FILTER_STATE_UPDATED
  00000000 01 00 05 00 00 .....
  01 00 -> OD_FILTER_STATE_UPDATED: ORDER_HDR : Type = 01
       (OD_FILTER_STATE_UPDATED)
  05 00 -> OD_FILTER_STATE_UPDATED: ORDER_HDR : Length = 05
  00 -> OD_FILTER_STATE_UPDATED: Flags = 0
 
-4.1.5  Application-Created PDU
+#### 4.1.5 Application-Created PDU
 
 The following is a network capture of the Application-Created PDU
 (OD_APP_CREATED) (section 2.2.3.2). This PDU is sent to notify participants that an application has
@@ -2577,7 +2440,7 @@ been created.
  04 00 -> OD_APP_CREATED: UNICODE_STRING : cchString = 4
  63 00 61 00 6C 00 63 00 -> OD_APP_CREATED: UNICODE_STRING String : "calc"
 
-4.1.6  Application-Removed PDU
+#### 4.1.6 Application-Removed PDU
 
 The following is a network capture of the Application-Removed PDU
 (OD_APP_REMOVED) (section 2.2.3.3). This PDU is sent to notify participants that an application has
@@ -2589,7 +2452,7 @@ been removed.
  08 00 -> OD_APP_REMOVED: ORDER_HDR : Length = 08
  90 0C 00 00 -> OD_APP_REMOVED: AppId = 3216
 
-4.1.7  Window-Created PDU
+#### 4.1.7 Window-Created PDU
 
 The following is a wire capture of the Window-Created PDU (OD_WND_CREATED) (section 2.2.3.4).
 This PDU is sent to notify participants that a window has been created.
@@ -2617,7 +2480,8 @@ Release: April 23, 2024
 
 32 / 41
 
-4.1.8  Window-Removed PDU
+
+#### 4.1.8 Window-Removed PDU
 
 The following is a wire capture of the Window-Removed PDU (OD_WND_REMOVED) (section 2.2.3.5).
 This PDU is sent to notify participants that a window has been removed.
@@ -2628,7 +2492,7 @@ This PDU is sent to notify participants that a window has been removed.
  08 00 -> OD_WND_REMOVED: ORDER_HDR : Length = 08
  96 03 1C 00 ->OD_WND_REMOVED: WndId = 1835926
 
-4.1.9  Request Control Level Change Response PDU
+#### 4.1.9 Request Control Level Change Response PDU
 
 The following is a network capture of the Change Participant Control Level Response PDU
 (OD_PARTICIPANT_CTRL_CHANGE_RESPONSE) (section 2.2.4.4). This PDU is sent in response to a
@@ -2645,7 +2509,7 @@ Change Participant Control Level PDU (OD_PARTICIPANT_CTRL_CHANGE) (section 2.2.4
  00 00 00 01 -> OD_PARTICIPANT_CTRL_CHANGE_RESPONSE: ParticipantId = 1
  00 00 00 00 -> OD_PARTICIPANT_CTRL_CHANGE_RESPONSE: ReasonCode = 0
 
-4.1.10 Window Region Update PDU
+#### 4.1.10 Window Region Update PDU
 
 The following is a network capture of the Window Region Update PDU (OD_WND_REGION_UPDATE)
 (section 2.2.3.7). This PDU is sent to notify participants that an application-window rectangle has
@@ -2671,9 +2535,10 @@ Release: April 23, 2024
 
 33 / 41
 
-4.2  Participant-Generated PDUs
 
-4.2.1  Request Control Level Change PDU
+### 4.2 Participant-Generated PDUs
+
+#### 4.2.1 Request Control Level Change PDU
 
 The following is a network capture of the Change Participant Control Level PDU
 (OD_PARTICIPANT_CTRL_CHANGE) (section 2.2.4.3). The participant is requesting permission to
@@ -2689,7 +2554,7 @@ view and interact with the applications.
       and REQUEST_INTERACT
  00 00 00 00 00 -> OD_PARTICIPANT_CTRL_CHANGE: ParticipantId = 0
 
-4.2.2  Request Show Window PDU
+#### 4.2.2 Request Show Window PDU
 
 The following is a wire capture of the Show Window PDU (OD_WND_SHOW) (section 2.2.3.6).
 
@@ -2706,17 +2571,18 @@ Release: April 23, 2024
 
 34 / 41
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Remote Desktop
 Protocol: Multiparty Virtual Channel Extension.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 There are no security considerations for protocol messages as all static virtual channel traffic is
 encrypted, as specified in [MS-RDPBCGR].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2727,7 +2593,8 @@ Release: April 23, 2024
 
 35 / 41
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2795,7 +2662,8 @@ Release: April 23, 2024
 
 36 / 41
 
-<7> Section 3.1.5.1: In Windows implementations, PDUs that have an unknown type in the order
+
+<7> Section 3.1.5.1: In Windows implementations, PDUs that have an unknown type in the order
 header are ignored by the receivers.
 
 <8> Section 3.1.5.1: Windows implementations disconnect the client whenever the header length
@@ -2863,7 +2731,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<19> Section 3.2.5.2.1: In Windows implementations, the GroupId field is not interpreted by the
+
+<19> Section 3.2.5.2.1: In Windows implementations, the GroupId field is not interpreted by the
 participant.
 
 <20> Section 3.2.5.2.2: In Windows implementations, if more data is received for a message than the
@@ -2930,7 +2799,8 @@ Release: April 23, 2024
 
 38 / 41
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2974,7 +2844,8 @@ Release: April 23, 2024
 
 39 / 41
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3122,7 +2993,8 @@ Remote Desktop Protocol: Multiparty Virtual Channel Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OD_PARTICIPANT_CTRL_CHANGE packet 18
+
+OD_PARTICIPANT_CTRL_CHANGE packet 18
 OD_PARTICIPANT_REMOVED packet 17
 OD_WND_CREATED packet 14
 OD_WND_REMOVED packet 15

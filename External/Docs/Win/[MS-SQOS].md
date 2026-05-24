@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 33
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -162,176 +163,73 @@ Release: April 23, 2024
 
 2 / 33
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Constants](#221-constants)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 Logical Flow Status Codes](#2221-logical-flow-status-codes)
+      - [2.2.2.2 STORAGE_QOS_CONTROL_REQUEST Structure](#2222-storageqoscontrolrequest-structure)
+      - [2.2.2.3 STORAGE_QOS_CONTROL_RESPONSE Structure](#2223-storageqoscontrolresponse-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.1.2 Per Logical Flow](#3112-per-logical-flow)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Per Logical Flow](#3121-per-logical-flow)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Application Issues a Storage Quality of Service Control Request for a Logical](#3141-application-issues-a-storage-quality-of-service-control-request-for-a-logical)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Storage Quality of Service Control Response](#3151-receiving-a-storage-quality-of-service-control-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Initiating Read or Write Requests for a Logical Flow](#3171-initiating-read-or-write-requests-for-a-logical-flow)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per Open](#3212-per-open)
+      - [3.2.1.3 Per Logical Flow](#3213-per-logical-flow)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Handling a Storage Quality of Service Control Request](#3241-handling-a-storage-quality-of-service-control-request)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Storage Quality of Service Control Request](#3251-receiving-a-storage-quality-of-service-control-request)
+        - [3.2.5.1.1 Handling a Request to Associate an Open to a Logical Flow](#32511-handling-a-request-to-associate-an-open-to-a-logical-flow)
+        - [3.2.5.1.2 Handling a Request to Set or Probe Policy for a Logical Flow](#32512-handling-a-request-to-set-or-probe-policy-for-a-logical-flow)
+        - [3.2.5.1.3 Handling a Request to Update Counters for a Logical Flow](#32513-handling-a-request-to-update-counters-for-a-logical-flow)
+        - [3.2.5.1.4 Handling a Request to Query Status Information for a Logical Flow](#32514-handling-a-request-to-query-status-information-for-a-logical-flow)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Computing Normalized I/O Size](#41-computing-normalized-io-size)
+  - [4.2 Associating a Handle to a Logical Flow and Configuring Policy](#42-associating-a-handle-to-a-logical-flow-and-configuring-policy)
+  - [4.3 Probing Policy and Querying Logical Flow Status](#43-probing-policy-and-querying-logical-flow-status)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Constants .................................................................................................... 8
-Structures ................................................................................................... 8
-Logical Flow Status Codes ........................................................................ 8
-STORAGE_QOS_CONTROL_REQUEST Structure .......................................... 9
-STORAGE_QOS_CONTROL_RESPONSE Structure ...................................... 12
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.5
-
-3.1.2
-
-3.1.1
-
-3.1.7.1
-
-3.1.5.1
-
-3.1.2.1
-
-3.1.4.1
-
-3.1.6
-3.1.7
-
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 15
-Client Details ................................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Global.................................................................................................. 15
-Per Logical Flow .................................................................................... 15
-Timers ...................................................................................................... 16
-Per Logical Flow .................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Application Issues a Storage Quality of Service Control Request for a Logical
-Flow .................................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 17
-Receiving a Storage Quality of Service Control Response ........................... 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Initiating Read or Write Requests for a Logical Flow .................................. 18
-Server Details .................................................................................................. 18
-Abstract Data Model .................................................................................... 18
-Global.................................................................................................. 18
-Per Open ............................................................................................. 19
-Per Logical Flow .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Handling a Storage Quality of Service Control Request .............................. 19
-Message Processing Events and Sequencing Rules .......................................... 20
-Receiving a Storage Quality of Service Control Request ............................. 20
-Handling a Request to Associate an Open to a Logical Flow ................... 20
-Handling a Request to Set or Probe Policy for a Logical Flow ................. 20
-Handling a Request to Update Counters for a Logical Flow .................... 21
-Handling a Request to Query Status Information for a Logical Flow ........ 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5
-
-3.2.1
-
-3.2
-
-[MS-SQOS] - v20240423
-Storage Quality of Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 33
-
-4  Protocol Examples ................................................................................................. 23
-Computing Normalized I/O Size ......................................................................... 23
-Associating a Handle to a Logical Flow and Configuring Policy ................................ 23
-Probing Policy and Querying Logical Flow Status .................................................. 25
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-SQOS] - v20240423
-Storage Quality of Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 33
-
-1  Introduction
+## 1 Introduction
 
 The Storage Quality of Service (QoS) Protocol is a block-based protocol that is used to manage the
 Quality of Service configuration of I/O flows targeting remote files accessed over SMB3.
@@ -339,7 +237,7 @@ Quality of Service configuration of I/O flows targeting remote files accessed ov
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -382,14 +280,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -402,18 +300,19 @@ Storage Quality of Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
+
+[MS-SMB2] Microsoft Corporation, "Server Message Block (SMB) Protocol Versions 2 and 3".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Storage Quality of Service (QoS) Protocol allows a client application to perform the following high-
 level operations:
@@ -434,12 +333,12 @@ responsible for implementing policies by performing tasks such as collecting met
 rates for logical flows, determining status of logical flows, and manipulating I/O request queues to
 satisfy throughput requirements.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on Server Message Block (SMB) Protocol Version 3 for its transport, as specified
 in [MS-SMB2].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Storage QoS Protocol has the following preconditions:
 
@@ -447,12 +346,12 @@ The Storage QoS Protocol has the following preconditions:
 
 has to be done before a client can issue any Storage QoS Protocol commands.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Storage QoS Protocol is applicable for all scenarios that access a remote file between a Storage
 QoS-aware client and a server operating in a Storage QoS-managed environment.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Storage Quality of Service Protocol has two versions.<1>
 
@@ -481,11 +380,12 @@ Release: April 23, 2024
 
 6 / 33
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol shares the standards assignments of Server Message Block Protocol Versions 2 and 3, as
 specified in [MS-SMB2] section 1.9.
@@ -497,9 +397,10 @@ Release: April 23, 2024
 
 7 / 33
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The following sections specify how Storage QoS Protocol messages are encapsulated on the wire and
 common protocol data types used.
@@ -518,9 +419,9 @@ Unless otherwise noted, fields marked as "Reserved" MUST be set to 0 when being 
 ignored when received. These fields are reserved for future protocol expansion and MUST NOT be used
 for implementation-specific functionality.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Constants
+#### 2.2.1 Constants
 
 Constant name
 
@@ -540,9 +441,9 @@ STORAGE_QOS_INITIATOR_NAME_SIZE
 Maximum length, in bytes, for the InitiatorName
 and InitiatorNodeName fields in section 2.2.2.2.
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
-2.2.2.1  Logical Flow Status Codes
+##### 2.2.2.1 Logical Flow Status Codes
 
 Name
 
@@ -577,7 +478,8 @@ Release: April 23, 2024
 
 8 / 33
 
-Name
+
+Name
 
 Meaning
 
@@ -596,7 +498,7 @@ policy applied to the logical flow.
 Status information is not available for the logical
 flow.
 
-2.2.2.2  STORAGE_QOS_CONTROL_REQUEST Structure
+##### 2.2.2.2 STORAGE_QOS_CONTROL_REQUEST Structure
 
 The STORAGE_QOS_CONTROL_REQUEST packet is sent by the client to request one or more
 operations on a logical flow.
@@ -655,7 +557,8 @@ Release: April 23, 2024
 
 9 / 33
 
-...
+
+...
 
 InitiatorNameOffset
 
@@ -724,7 +627,8 @@ Release: April 23, 2024
 
 10 / 33
 
-Value
+
+Value
 
 Meaning
 
@@ -821,7 +725,8 @@ Release: April 23, 2024
 
 11 / 33
 
-LowerLatencyIncrement (8 bytes): The total latency (accumulated across all I/O requests for the
+
+LowerLatencyIncrement (8 bytes): The total latency (accumulated across all I/O requests for the
 logical flow) measured by the initiator, excluding any delay accumulated by I/O requests in the
 initiator’s queues while waiting to be issued to lower layers. This value is expressed in 100-
 nanosecond units.
@@ -843,7 +748,7 @@ InitiatorNodeName (variable): A UNICODE string supplying the name of the node ho
 logical flow initiator. The string MUST NOT be null-terminated and its length in bytes MUST be less
 than or equal to STORAGE_QOS_INITIATOR_NAME_SIZE.
 
-2.2.2.3  STORAGE_QOS_CONTROL_RESPONSE Structure
+##### 2.2.2.3 STORAGE_QOS_CONTROL_RESPONSE Structure
 
 The STORAGE_QOS_CONTROL_RESPONSE packet is sent by the server in response to a
 STORAGE_QOS_CONTROL_REQUEST packet.
@@ -894,7 +799,8 @@ Release: April 23, 2024
 
 12 / 33
 
-...
+
+...
 
 TimeToLive
 
@@ -967,7 +873,8 @@ Release: April 23, 2024
 
 13 / 33
 
-Reserved (4 bytes): Unused field. The server MUST set this field to zero.
+
+Reserved (4 bytes): Unused field. The server MUST set this field to zero.
 
 MaximumBandwidth (8 bytes): The maximum bandwidth currently assigned to the logical flow,
 
@@ -980,11 +887,12 @@ Release: April 23, 2024
 
 14 / 33
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -992,13 +900,13 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 The client MUST implement the following:
 
 Dialect: The dialect version used to negotiate with the server. This value MUST be 1.0 or 1.1.
 
-3.1.1.2  Per Logical Flow
+##### 3.1.1.2 Per Logical Flow
 
 The client MUST maintain the following state information for each logical flow that it owns:
 
@@ -1047,15 +955,16 @@ Release: April 23, 2024
 
 15 / 33
 
-3.1.2  Timers
 
-3.1.2.1  Per Logical Flow
+#### 3.1.2 Timers
+
+##### 3.1.2.1 Per Logical Flow
 
 StatusRequestTimer: When this timer expires, the client SHOULD issue a status request for the
 
 logical flow, as specified in section 3.1.6.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The following values MUST be initialized to zero:
 
@@ -1081,9 +990,9 @@ If the client supports the SQoS 1.1 dialect, the following MUST be initialized t
 
   LogicalFlow.MaximumBandwidth
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Application Issues a Storage Quality of Service Control Request for a Logical
+##### 3.1.4.1 Application Issues a Storage Quality of Service Control Request for a Logical
 
 Flow
 
@@ -1123,7 +1032,8 @@ Storage Quality of Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1195,9 +1105,9 @@ input parameters:
 
 The maximum output buffer size that it will accept.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving a Storage Quality of Service Control Response
+##### 3.1.5.1 Receiving a Storage Quality of Service Control Response
 
 If the response returned by the server indicates failure the client SHOULD set the
 LogicalFlow.StatusRequestTimer to expire within implementation-specific<4> default interval.
@@ -1211,7 +1121,8 @@ Storage Quality of Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1233,7 +1144,7 @@ an implementation-specific<5> default interval.
 The client MUST set LogicalFlow.BaseIoSize to the BaseIoSize value received in the
 STORAGE_QOS_CONTROL_RESPONSE buffer.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 When the client issues a Storage QoS Request with the STORAGE_QOS_CONTROL_FLAG_SET_POLICY
 set in the Options field, the client SHOULD either include the
@@ -1247,9 +1158,9 @@ STORAGE_QOS_CONTROL_FLAG_UPDATE_COUNTERS flags. If the logical flow is idle at t
 timer expires (that is, there are no I/O requests in progress), the client MAY delay the status request
 until new I/O requests are available.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Initiating Read or Write Requests for a Logical Flow
+##### 3.1.7.1 Initiating Read or Write Requests for a Logical Flow
 
 If LogicalFlow.MaximumIoRate is greater than zero or if the client implements the SQoS 1.1 dialect
 and LogicalFlow.MaximumBandwidth is greater than zero, the client MUST limit the average I/O
@@ -1257,9 +1168,9 @@ initiation rate for the logical flow to the value indicated by LogicalFlow.Maxim
 client implements the SQoS 1.1 dialect, the minimum of LogicalFlow.MaximumIoRate and
 LogicalFlow.MaximumBandwidth.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1267,7 +1178,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 The server MUST implement the following:
 
@@ -1280,15 +1191,16 @@ Release: April 23, 2024
 
 18 / 33
 
-Dialect: The dialect version used to negotiate with the client. This value MUST be 1.0 or 1.1.
 
-3.2.1.2  Per Open
+Dialect: The dialect version used to negotiate with the client. This value MUST be 1.0 or 1.1.
+
+##### 3.2.1.2 Per Open
 
 LogicalFlowID: The GUID of the logical flow to which the Open is currently associated. If this value is
 
 an empty GUID, the Open is not associated to any logical flow.
 
-3.2.1.3  Per Logical Flow
+##### 3.2.1.3 Per Logical Flow
 
 LogicalFlowID: The GUID of the logical flow.
 
@@ -1316,17 +1228,17 @@ BandwidthLimit: The client-defined bandwidth limit currently requested for the l
 
 kilobyte per second units.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Dialect MUST be set to the highest dialect that the server implements.<6>
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Handling a Storage Quality of Service Control Request
+##### 3.2.4.1 Handling a Storage Quality of Service Control Request
 
 The calling application provides:
 
@@ -1350,9 +1262,10 @@ Release: April 23, 2024
 
 19 / 33
 
-3.2.5  Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Storage Quality of Service Control Request
+#### 3.2.5 Message Processing Events and Sequencing Rules
+
+##### 3.2.5.1 Receiving a Storage Quality of Service Control Request
 
 If the server does not support the Storage Quality of Service function, it SHOULD fail the request with
 STATUS_INVALID_DEVICE_REQUEST.
@@ -1372,7 +1285,7 @@ STORAGE_QOS_CONTROL_FLAG_PROBE_POLICY flag for the rest of the processing.
 The server MUST follow the processing rules described in sections 3.2.5.1.1, 3.2.5.1.2, 3.2.5.1.3, and
 3.2.5.1.4.
 
-3.2.5.1.1 Handling a Request to Associate an Open to a Logical Flow
+###### 3.2.5.1.1 Handling a Request to Associate an Open to a Logical Flow
 
 If Request.Options includes the STORAGE_QOS_CONTROL_FLAG_SET_LOGICAL_FLOW_ID or
 STORAGE_QOS_CONTROL_FLAG_PROBE_POLICY flags and Request.LogicalFlowID is set to a non-
@@ -1390,7 +1303,7 @@ Request.LogicalFlowID is set to an empty GUID, the server MUST remove the associ
 the Open and the logical flow currently associated to the Open. The Open MUST NOT be associated
 with any other logical flow.
 
-3.2.5.1.2 Handling a Request to Set or Probe Policy for a Logical Flow
+###### 3.2.5.1.2 Handling a Request to Set or Probe Policy for a Logical Flow
 
 If Request.Options includes the STORAGE_QOS_CONTROL_FLAG_SET_POLICY and the Open is not
 associated to a logical flow, the server MUST fail the request with error STATUS_NOT_FOUND.
@@ -1415,7 +1328,8 @@ Release: April 23, 2024
 
 20 / 33
 
-
+
+
 
 (Request.InitiatorNameLength + Request.InitiatorNameOffset) is greater than
 RequestSize.
@@ -1467,7 +1381,7 @@ as follows:
 If the server implements Storage QoS Protocol Version 1.1, LogicalFlow.BandwidthLimit is set
 to Request.BandwidthLimit.
 
-3.2.5.1.3 Handling a Request to Update Counters for a Logical Flow
+###### 3.2.5.1.3 Handling a Request to Update Counters for a Logical Flow
 
 If Request.Options includes the STORAGE_QOS_CONTROL_FLAG_UPDATE_COUNTERS flag and the
 Open is not associated to a logical flow, the server MUST fail the request with error
@@ -1495,7 +1409,8 @@ Release: April 23, 2024
 
 21 / 33
 
-3.2.5.1.4 Handling a Request to Query Status Information for a Logical Flow
+
+###### 3.2.5.1.4 Handling a Request to Query Status Information for a Logical Flow
 
 The following processing rules apply only when Request.Options includes the
 STORAGE_QOS_CONTROL_GET_STATUS flag.
@@ -1546,11 +1461,11 @@ The response MUST be sent to the client.
 If the server has not failed the request for any of the reasons described earlier, the server MUST
 return STATUS_SUCCESS to the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1561,12 +1476,13 @@ Release: April 23, 2024
 
 22 / 33
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Storage Quality of Service Protocol.
 
-4.1  Computing Normalized I/O Size
+### 4.1 Computing Normalized I/O Size
 
 The following formula can be used to convert the size of an I/O request in bytes (IoSizeInBytes) to
 an I/O size expressed in normalized units (NormalizedIoSize):
@@ -1608,7 +1524,7 @@ Normalized I/O request size
 
 128
 
-4.2  Associating a Handle to a Logical Flow and Configuring Policy
+### 4.2 Associating a Handle to a Logical Flow and Configuring Policy
 
 The following diagram demonstrated the steps taken to open a remote file, associate the
 corresponding handle to a logical flow and configure a QoS policy for the logical flow.
@@ -1620,7 +1536,8 @@ Release: April 23, 2024
 
 23 / 33
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-SQOS].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1666,7 +1583,8 @@ Release: April 23, 2024
 
 24 / 33
 
-4.  The server sends an SMB2 IOCTL Response with STATUS_SUCCESS and no output buffer.
+
+4.  The server sends an SMB2 IOCTL Response with STATUS_SUCCESS and no output buffer.
 
 5.  The client sends an SMB2 IOCTL Request with a STORAGE_QOS_CONTROL_REQUEST buffer to set
 
@@ -1716,7 +1634,7 @@ LowerLatencyIncrement: 0x0000000000000000
 
 6.  The server sends an SMB2 IOCTL Response with STATUS_SUCCESS and no output buffer.
 
-4.3  Probing Policy and Querying Logical Flow Status
+### 4.3 Probing Policy and Querying Logical Flow Status
 
 The following diagram demonstrated the steps taken to probe current policy configuration for an open
 and to query logical flow status.
@@ -1728,7 +1646,8 @@ Release: April 23, 2024
 
 25 / 33
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-SQOS].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1791,7 +1710,8 @@ Release: April 23, 2024
 
 26 / 33
 
- E4 32 3A B1 AD E2 B2 5D A4 F8 5C D3 BE 9D 69 6E
+
+ E4 32 3A B1 AD E2 B2 5D A4 F8 5C D3 BE 9D 69 6E
  4E F2 B4 04 E9 B3 94 45 AD AA E3 27 52 8D E5 4B
  C6 4D 9E 1B C0 F8 9F 41 87 85 80 65 BC FF 72 84
  8D 0F 00 00
@@ -1823,13 +1743,14 @@ Release: April 23, 2024
 
 27 / 33
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1840,7 +1761,8 @@ Release: April 23, 2024
 
 28 / 33
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1918,7 +1840,8 @@ Release: April 23, 2024
 
 29 / 33
 
-Operating System
+
+Operating System
 
 Supported Versions
 
@@ -1990,7 +1913,8 @@ Storage Quality of Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<9> Section 3.2.5.1.4:  Windows Server 2016, Windows Server operating system, Windows Server
+
+<9> Section 3.2.5.1.4:  Windows Server 2016, Windows Server operating system, Windows Server
 2019, and Windows Server 2022 set this value to 8192 for all logical flows.
 
 [MS-SQOS] - v20240423
@@ -2000,7 +1924,8 @@ Release: April 23, 2024
 
 31 / 33
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2044,7 +1969,8 @@ Release: April 23, 2024
 
 32 / 33
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model

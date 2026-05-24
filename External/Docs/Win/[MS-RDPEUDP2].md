@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -115,238 +116,99 @@ Release: April 23, 2024
 
 2 / 37
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 RDP-UDP to RDP-UDP2 Transition](#131-rdp-udp-to-rdp-udp2-transition)
+    - [1.3.2 RDP-UDP2 Data Transfer Phase](#132-rdp-udp2-data-transfer-phase)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 RDP-UDP2 Packet](#221-rdp-udp2-packet)
+      - [2.2.1.1 RDP-UDP2 Packet Header](#2211-rdp-udp2-packet-header)
+      - [2.2.1.2 RDP-UDP2 Optional Payloads](#2212-rdp-udp2-optional-payloads)
+        - [2.2.1.2.1 Acknowledgement Payload](#22121-acknowledgement-payload)
+        - [2.2.1.2.2 OverheadSize Payload](#22122-overheadsize-payload)
+        - [2.2.1.2.3 DelayAckInfo Payload](#22123-delayackinfo-payload)
+        - [2.2.1.2.4 AckOfAcks Payload](#22124-ackofacks-payload)
+        - [2.2.1.2.5 DataHeader Payload](#22125-dataheader-payload)
+        - [2.2.1.2.6 Acknowledgement Vector Payload](#22126-acknowledgement-vector-payload)
+        - [2.2.1.2.7 DataBody Payload](#22127-databody-payload)
+      - [2.2.1.3 PacketPrefixByte](#2213-packetprefixbyte)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 RDP-UDP2 Data Transfer Operation](#3111-rdp-udp2-data-transfer-operation)
+        - [3.1.1.1.1 RDP-UDP2 Packet Layout](#31111-rdp-udp2-packet-layout)
+        - [3.1.1.1.2 RDP-UDP2 Packet Header](#31112-rdp-udp2-packet-header)
+        - [3.1.1.1.3 Sequence Numbers](#31113-sequence-numbers)
+        - [3.1.1.1.4 ACK Timestamps](#31114-ack-timestamps)
+        - [3.1.1.1.5 RDP-UDP2 Packet Network Format](#31115-rdp-udp2-packet-network-format)
+          - [3.1.1.1.5.1 Sending RDP-UDP2 Packet](#311151-sending-rdp-udp2-packet)
+          - [3.1.1.1.5.2 Receiving RDP-UDP2 Packet](#311152-receiving-rdp-udp2-packet)
+      - [3.1.1.2 RDP-UDP2 Implementation Concepts](#3112-rdp-udp2-implementation-concepts)
+        - [3.1.1.2.1 Sender Window Buffer](#31121-sender-window-buffer)
+        - [3.1.1.2.2 Receiver Window Buffer](#31122-receiver-window-buffer)
+        - [3.1.1.2.3 Loss Detection](#31123-loss-detection)
+        - [3.1.1.2.4 Reliability Controller](#31124-reliability-controller)
+          - [3.1.1.2.4.1 Sender Reliability Controller](#311241-sender-reliability-controller)
+          - [3.1.1.2.4.2 Receiver Reliability Controller](#311242-receiver-reliability-controller)
+      - [3.1.1.3 Keepalives](#3113-keepalives)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 OverheadSize Payload](#3151-overheadsize-payload)
+      - [3.1.5.2 DelayAckInfo Payload](#3152-delayackinfo-payload)
+      - [3.1.5.3 AckOfAcks Payload](#3153-ackofacks-payload)
+      - [3.1.5.4 DataHeader Payload](#3154-dataheader-payload)
+      - [3.1.5.5 DataBody Payload](#3155-databody-payload)
+      - [3.1.5.6 Acknowledgment Payload](#3156-acknowledgment-payload)
+      - [3.1.5.7 Acknowledgment Vector Payload](#3157-acknowledgment-vector-payload)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example1: Sending Data Packets Without Packet Loss or Reordering](#41-example1-sending-data-packets-without-packet-loss-or-reordering)
+    - [4.1.1 On the Sender when sending the packet](#411-on-the-sender-when-sending-the-packet)
+    - [4.1.2 On the Receiver when receiving the packet](#412-on-the-receiver-when-receiving-the-packet)
+    - [4.1.3 On the Sender when receiving the acknowledgment payload from the receiver](#413-on-the-sender-when-receiving-the-acknowledgment-payload-from-the-receiver)
+  - [4.2 Example 2: Sending Data Packets with 1 Packet reordering](#42-example-2-sending-data-packets-with-1-packet-reordering)
+    - [4.2.1 On the Receiver when receiving the packet with next higher sequence number](#421-on-the-receiver-when-receiving-the-packet-with-next-higher-sequence-number)
+    - [4.2.2 On the Sender when receiving the acknowledgment vector payload from the](#422-on-the-sender-when-receiving-the-acknowledgment-vector-payload-from-the)
+    - [4.2.3 On the Receiver when receiving the missing packet](#423-on-the-receiver-when-receiving-the-missing-packet)
+    - [4.2.4 On the Sender when receiving the acknowledgment payload from the receiver](#424-on-the-sender-when-receiving-the-acknowledgment-payload-from-the-receiver)
+  - [4.3 Example 3: Sending Data Packets with One Packet Lost in the Middle](#43-example-3-sending-data-packets-with-one-packet-lost-in-the-middle)
+    - [4.3.1 On the Receiver when receiving the packet with higher sequence numbers after](#431-on-the-receiver-when-receiving-the-packet-with-higher-sequence-numbers-after)
+    - [4.3.2 On the Sender when receiving multiple acknowledgment vector payloads from](#432-on-the-sender-when-receiving-multiple-acknowledgment-vector-payloads-from)
+    - [4.3.3 On the Receiver when receiving the AckOfAcks packet](#433-on-the-receiver-when-receiving-the-ackofacks-packet)
+    - [4.3.4 On the Receiver when receiving the retransmitted packet](#434-on-the-receiver-when-receiving-the-retransmitted-packet)
+  - [4.4 Data Example Sending Data Packet piggybacked with ACK](#44-data-example-sending-data-packet-piggybacked-with-ack)
+    - [4.4.1 Assumptions](#441-assumptions)
+    - [4.4.2 Header](#442-header)
+    - [4.4.3 Payloads](#443-payloads)
+    - [4.4.4 Packet Layout](#444-packet-layout)
+    - [4.4.5 PacketPrefixByte](#445-packetprefixbyte)
+    - [4.4.6 Packet OnWire Version](#446-packet-onwire-version)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-RDP-UDP to RDP-UDP2 Transition ................................................................... 7
-RDP-UDP2 Data Transfer Phase ...................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 10
-RDP-UDP2 Packet ....................................................................................... 10
-RDP-UDP2 Packet Header ....................................................................... 11
-RDP-UDP2 Optional Payloads .................................................................. 12
-Acknowledgement Payload ............................................................... 12
-OverheadSize Payload ...................................................................... 13
-DelayAckInfo Payload ...................................................................... 13
-AckOfAcks Payload .......................................................................... 13
-DataHeader Payload ........................................................................ 14
-Acknowledgement Vector Payload...................................................... 14
-DataBody Payload ........................................................................... 15
-PacketPrefixByte ................................................................................... 15
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-2.2.1.2.6
-2.2.1.2.7
-
-2.2.1.3
-
-3.1
-
-3.1.1
-
-3.1.1.2
-
-3.1.1.1
-
-3.1.1.1.5.1
-3.1.1.1.5.2
-
-3.1.1.1.1
-3.1.1.1.2
-3.1.1.1.3
-3.1.1.1.4
-3.1.1.1.5
-
-3  Protocol Details ..................................................................................................... 17
-Common Details .............................................................................................. 17
-Abstract Data Model .................................................................................... 17
-RDP-UDP2 Data Transfer Operation ......................................................... 17
-RDP-UDP2 Packet Layout .................................................................. 17
-RDP-UDP2 Packet Header ................................................................. 17
-Sequence Numbers .......................................................................... 18
-ACK Timestamps ............................................................................. 18
-RDP-UDP2 Packet Network Format .................................................... 19
-Sending RDP-UDP2 Packet .......................................................... 19
-Receiving RDP-UDP2 Packet ........................................................ 20
-RDP-UDP2 Implementation Concepts ....................................................... 20
-Sender Window Buffer ..................................................................... 21
-Receiver Window Buffer ................................................................... 22
-Loss Detection ................................................................................ 22
-Reliability Controller......................................................................... 23
-Sender Reliability Controller ........................................................ 23
-Receiver Reliability Controller ...................................................... 23
-Keepalives ........................................................................................... 23
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-OverheadSize Payload ........................................................................... 24
-DelayAckInfo Payload ............................................................................ 24
-
-3.1.1.2.1
-3.1.1.2.2
-3.1.1.2.3
-3.1.1.2.4
-
-3.1.1.2.4.1
-3.1.1.2.4.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-
-3.1.1.3
-
-[MS-RDPEUDP2] - v20240423
-Remote Desktop Protocol: UDP Transport Extension Version 2
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 37
-
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-
-3.1.6
-3.1.7
-
-AckOfAcks Payload ................................................................................ 24
-DataHeader Payload .............................................................................. 25
-DataBody Payload ................................................................................. 25
-Acknowledgment Payload ....................................................................... 25
-Acknowledgment Vector Payload ............................................................. 26
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-
-4.3
-
-4.1
-
-4.2
-
-4.2.1
-4.2.2
-
-4.2.3
-4.2.4
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 27
-Example1: Sending Data Packets Without Packet Loss or Reordering ...................... 27
-On the Sender when sending the packet ........................................................ 27
-On the Receiver when receiving the packet .................................................... 27
-On the Sender when receiving the acknowledgment payload from the receiver ... 28
-Example 2: Sending Data Packets with 1 Packet reordering ................................... 28
-On the Receiver when receiving the packet with next higher sequence number .. 28
-On the Sender when receiving the acknowledgment vector payload from the
-receiver ..................................................................................................... 29
-On the Receiver when receiving the missing packet ........................................ 29
-On the Sender when receiving the acknowledgment payload from the receiver ... 29
-Example 3: Sending Data Packets with One Packet Lost in the Middle ..................... 29
-On the Receiver when receiving the packet with higher sequence numbers after the
-lost packet ................................................................................................. 29
-On the Sender when receiving multiple acknowledgment vector payloads from the
-receiver ..................................................................................................... 30
-On the Receiver when receiving the AckOfAcks packet .................................... 30
-On the Receiver when receiving the retransmitted packet ................................ 30
-Data Example Sending Data Packet piggybacked with ACK .................................... 30
-Assumptions .............................................................................................. 30
-Header ...................................................................................................... 31
-Payloads .................................................................................................... 31
-Packet Layout ............................................................................................ 31
-PacketPrefixByte ......................................................................................... 32
-Packet OnWire Version ................................................................................ 32
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-4.4.5
-4.4.6
-
-4.3.3
-4.3.4
-
-4.3.1
-
-4.3.2
-
-4.4
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 34
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-RDPEUDP2] - v20240423
-Remote Desktop Protocol: UDP Transport Extension Version 2
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Remote Desktop Protocol UDP Transport Extension v2 (RDPEUDP2) specifies extensions to the
 transport mechanisms in the Remote Desktop Protocol (RDP). The extension specifies the network
@@ -356,7 +218,7 @@ Protocol (UDP).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -405,7 +267,7 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -419,7 +281,8 @@ Release: April 23, 2024
 
 5 / 37
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -430,11 +293,11 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The RDP-UDP2 transport specifies an extension mode to the RDP-UDP transport defined in the
 document [MS-RDPEUDP]. This document describes the operational behaviors of the transport
@@ -473,7 +336,8 @@ Release: April 23, 2024
 
 6 / 37
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-RDPEUDP2].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
@@ -484,7 +348,7 @@ this mode, the endpoint retransmits datagrams that have been lost by the underly
 Because RDP-UDP2 transport does not support "Best-Efforts" mode or RDP-UDP-L, it does not include
 a forward error correction (FEC) mechanism.
 
-1.3.1  RDP-UDP to RDP-UDP2 Transition
+#### 1.3.1 RDP-UDP to RDP-UDP2 Transition
 
 The Remote Desktop UDP Transport Extension v2 protocol has two distinct phases of operation. The
 initial phase, UDP Connection Initialization, occurs when a UDP connection is initialized between the
@@ -505,13 +369,14 @@ Release: April 23, 2024
 
 7 / 37
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-RDPEUDP2].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
 Figure 2: Relationship between RDP-UDP to RDP-UDP2
 
-1.3.2  RDP-UDP2 Data Transfer Phase
+#### 1.3.2 RDP-UDP2 Data Transfer Phase
 
 In this phase, which follows the Connection Initialization Phase, data generated by the users of this
 protocol is exchanged between the endpoints as shown in the figure "The RDP-UDP2 bidirectional
@@ -526,12 +391,12 @@ when either the connection is terminated by the user, or when an endpoint determ
 remote endpoint is no longer present. No protocol-specific messages are exchanged to communicate
 that the endpoint is no longer present.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The relationship of the RDP-UDP2 transport to the original RDP-UDP transport is described in section
 1.3.1.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This extension requires an RDP-UDP protocol to exist and its initialization phase to be completed. After
 this initialization phase, the flow of messages will be directed either through the RDP-UDP data
@@ -544,20 +409,21 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
 
-1.7  Versioning and Capability Negotiation
+### 1.6 Applicability Statement
+
+### 1.7 Versioning and Capability Negotiation
 
 During the RDP-UDP initialization stage, the UDP transport performs a handshake to negotiate
 between the client and server for a commonly supported UDP version. If the version is greater than or
 equal to RDPUDP_PROTOCOL_VERSION_3, which is a new version that corresponds to the new
 extension specified in this document, the transport message flow switches to the RDP-UDP2 version.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -568,9 +434,10 @@ Release: April 23, 2024
 
 9 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RDP protocol packets are encapsulated in the User Datagram Protocol (UDP). The UDP
 datagrams MUST be encapsulated in the Internet Protocol version 4 (IPv4) or the Internet
@@ -582,7 +449,7 @@ RDP traffic over UDP is handled by this single port on the terminal server.
 The terminal client MUST open a unique UDP socket for each instance of this transport. Each socket is
 bound to a different port.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message layouts detailed in this section describe the contents of the data packets that are sent
 from the Sender to the Receiver. However, the actual bytes to be sent via UDP MUST be converted to
@@ -591,7 +458,7 @@ the format described in section 3.1.1.1.5.1 before being transmitted.
 All multiple-byte fields within a message MUST be marshaled in little-endian byte order, unless
 otherwise specified.
 
-2.2.1  RDP-UDP2 Packet
+#### 2.2.1 RDP-UDP2 Packet
 
 This section describes the bitmap overview of an RDP-UDP2 Packet and how it is constructed, as well
 as the message syntax for the various structures used in the construction of the RDP-UDP2 Packet.
@@ -643,7 +510,8 @@ Release: April 23, 2024
 
 10 / 37
 
-...
+
+...
 
 DataBody Payload (variable)
 
@@ -669,7 +537,7 @@ ACKVEC Payload (variable): An ACKVEC Payload field as defined in section 2.2.1.2
 
 DataBody Payload (variable): A DataBody Payload field as defined in section 2.2.1.2.7.
 
-2.2.1.1  RDP-UDP2 Packet Header
+##### 2.2.1.1 RDP-UDP2 Packet Header
 
 The Header field is mandatory, and it specifies the presence of the various optional payloads that
 follow.
@@ -735,7 +603,8 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags
+
+Flags
 
 0x040
 
@@ -752,14 +621,14 @@ maximum buffer size in multiples of the MTU. This variable is imposed on the Rec
 Sender endpoint when receiving packets from the Sender of the receiver endpoint. The maximum
 buffer size is equal to (1<< LogWindowSize)*MTU, in bytes.
 
-2.2.1.2  RDP-UDP2 Optional Payloads
+##### 2.2.1.2 RDP-UDP2 Optional Payloads
 
 The following optional payloads are exchanged over the RDP-UDP2 packet. The presence of each of
 these optional payloads is indicated by the Flags field in the RDP-UDP2 packet header (section
 2.2.1.1). Each RDP-UDP2 packet MUST contain one or more of the optional payloads in addition to the
 header.
 
-2.2.1.2.1 Acknowledgement Payload
+###### 2.2.1.2.1 Acknowledgement Payload
 
 The Acknowledgment payload carries acknowledgment information for one or more packets received
 by the Receiver. The presence of this payload is flagged by the ACK (0x01) flag in the header (section
@@ -822,13 +691,14 @@ Release: April 23, 2024
 
 12 / 37
 
-D - delayAckTimeAdditions (variable): delayAckTimeAdditions is an array of bytes with
+
+D - delayAckTimeAdditions (variable): delayAckTimeAdditions is an array of bytes with
 
 numDelayedAcks as the array size, and each byte represents the time difference between 2
 adjacent acknowledgments in units of (1<<delayedAckTimeScale) microseconds. The array is
 arranged in reverse order for the packets to be acknowledged.
 
-2.2.1.2.2 OverheadSize Payload
+###### 2.2.1.2.2 OverheadSize Payload
 
 The OverheadSize payload carries the overhead bytes for a packet at the RDP-UDP2 layer, which is
 equal to the difference between the size of a raw UDP packet as it is received and the size of the user
@@ -852,7 +722,7 @@ OverheadSize
 OverheadSize (1 byte): An 8-bit unsigned integer that specifies the average header size of the
 extra bytes prepended from the RDP-UDP2 transport layer to the raw UDP layer.
 
-2.2.1.2.3 DelayAckInfo Payload
+###### 2.2.1.2.3 DelayAckInfo Payload
 
 The DelayAckInfo payload carries information about the delay acknowledgment parameters allowed by
 the Sender. The presence of this payload is flagged by the DELAYACKINFO (0x100) flag in the
@@ -885,7 +755,7 @@ received, the Receiver SHOULD accumulate the acknowledgment of this packet while
 this timeout is reached, or a maximum of MaxDelayedAcks acknowledgments have accumulated,
 at which point, the receiver MUST send the ACK payload (section 2.2.1.2.1) immediately.
 
-2.2.1.2.4 AckOfAcks Payload
+###### 2.2.1.2.4 AckOfAcks Payload
 
 The AckOfAcks payload carries information about the lowest unacknowledged packets on the Sender
 side. The presence of this payload is flagged by the AOA (0x010) flag in the header (section 2.2.1.1),
@@ -913,13 +783,14 @@ Release: April 23, 2024
 
 13 / 37
 
-AckOfAcksSeqNum (2 bytes): A 16-bit unsigned integer that specifies the lower 16 bits of the
+
+AckOfAcksSeqNum (2 bytes): A 16-bit unsigned integer that specifies the lower 16 bits of the
 
 sequence number the Sender is waiting to receive acknowledgment of. The Receiver can infer that
 the Sender has received the acknowledgments for the packets with earlier sequence numbers, and
 updates its Receiver Window (section 3.1.1.2.2) accordingly.
 
-2.2.1.2.5 DataHeader Payload
+###### 2.2.1.2.5 DataHeader Payload
 
 The DataHeader payload is the header portion of the data payload. The presence of this payload is
 flagged by the DATA (0x004) flag in the header (section 2.2.1.1), and it is sent by the Sender.
@@ -941,7 +812,7 @@ DataSeqNum (2 bytes): A 16-bit unsigned integer that specifies lower 16 bits of 
 
 number representing this data segment.
 
-2.2.1.2.6 Acknowledgement Vector Payload
+###### 2.2.1.2.6 Acknowledgement Vector Payload
 
 The Acknowledgment Vector payload contains the information of a vector of acknowledgments for all
 packets within the current Receiver Window (section 3.1.1.2.2). The presence of this payload is
@@ -1004,7 +875,8 @@ Release: April 23, 2024
 
 14 / 37
 
-codedAckVector (variable): An array of bytes, of size specified by codedAckVecSize, which
+
+codedAckVector (variable): An array of bytes, of size specified by codedAckVecSize, which
 contains a list describing the acknowledgement state of each packet in the range starting at
 BaseSeqNum. Each byte MUST be independently coded in one of the following two modes. The
 array represents the state information of sequential packets within the Receiver Window (section
@@ -1025,7 +897,7 @@ remaining 6 bits MUST contain the length of the run which represents the number 
 subsequent consecutive sequence numbers that are in the state specified by the second most
 significant bit.
 
-2.2.1.2.7 DataBody Payload
+###### 2.2.1.2.7 DataBody Payload
 
 The DataBody payload contains the Remote Desktop Protocol data that is being sent over the UDP
 transport. The presence of this payload is flagged by the DATA (0x004) flag in the header (section
@@ -1061,7 +933,7 @@ Data (variable): A variable size array of bytes sent by higher layers of the Rem
 
 stack.
 
-2.2.1.3  PacketPrefixByte
+##### 2.2.1.3 PacketPrefixByte
 
 The PacketPrefixByte is a byte that MUST be sent with each RDP-UDP2 packet. The byte MUST be
 inserted in the RDP-UDP2 packet as described in section 3.1.1.1.5.
@@ -1092,7 +964,8 @@ Release: April 23, 2024
 
 15 / 37
 
-B - Packet_Type_Index (4 bits): A 4-bit unsigned integer that indicates the type of the packet. The
+
+B - Packet_Type_Index (4 bits): A 4-bit unsigned integer that indicates the type of the packet. The
 
 value for this field MUST be set to either 0 or 8.
 
@@ -1108,11 +981,12 @@ Release: April 23, 2024
 
 16 / 37
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1129,7 +1003,7 @@ transport. The information exchanged over this protocol is used to detect availa
 adapt the Remote Desktop Protocol to provide optimal performance for the detected runtime network
 condition.
 
-3.1.1.1  RDP-UDP2 Data Transfer Operation
+##### 3.1.1.1 RDP-UDP2 Data Transfer Operation
 
 In the data transfer phase of RDP-UDP2 transport, the terminal client and terminal server of an RDP-
 UDP2 connection are treated as peers and use the same protocol. The connection between the two
@@ -1146,7 +1020,7 @@ can be combined into a burst acknowledgment packet to further reduce the number 
 The RDP-UDP2 transport only supports reliable UDP mode. In this mode, any packet that has been
 detected as lost must be retransmitted. This transport does not include an FEC layer.
 
-3.1.1.1.1 RDP-UDP2 Packet Layout
+###### 3.1.1.1.1 RDP-UDP2 Packet Layout
 
 An RDP-UDP2 Packet Layout consists of a mandatory header, followed by one or more optional
 payloads. The presence of each optional payload is indicated in the bitmap flags in the header. As
@@ -1155,7 +1029,7 @@ combine payloads corresponding to both independent transport connections. Depend
 a payload, its length is either fixed or variable. In the case of a variable length payload, the length
 information is included as part of the payload itself.
 
-3.1.1.1.2 RDP-UDP2 Packet Header
+###### 3.1.1.1.2 RDP-UDP2 Packet Header
 
 The header (section 2.2.1.1) is a 16-bit structure that is mandatory for all RDP-UDP2 packets. The
 header has a Flags field that is a bit mask that indicates the presence of the optional payloads. The
@@ -1172,11 +1046,12 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The user generated data from higher layers of the RDP stack is encapsulated in the DATA payload
+
+The user generated data from higher layers of the RDP stack is encapsulated in the DATA payload
 which is composed of a DataHeader payload and a DataBody payload. Both payloads MUST be present
 if the Flags field in the RDP-UDP2 header has the DATA bit set to 1.
 
-3.1.1.1.3 Sequence Numbers
+###### 3.1.1.1.3 Sequence Numbers
 
 All Coded Packets have a sequence number that identifies their sending order. The sequence number
 uniquely identifies each datagram sent by the Sender. The sequence number value is increased by one
@@ -1224,7 +1099,7 @@ the candidate sequence number is 0x8000 less than the last known full sequence n
 (0x1234ff68), 0x10000 is added to the candidate sequence number to generate the corrected full
 sequence number of 0x12350003.
 
-3.1.1.1.4 ACK Timestamps
+###### 3.1.1.1.4 ACK Timestamps
 
 The ACK payload (section 2.2.1.2.1) and ACK Vector payload (section 2.2.1.2.6) include a 24-bit
 timestamp representing when the Receiver received the data packet being acknowledged. The unit of
@@ -1240,7 +1115,8 @@ Release: April 23, 2024
 
 18 / 37
 
-In this procedure, the input is the lower 24-bit timestamp in units of 4 microseconds coded on wire,
+
+In this procedure, the input is the lower 24-bit timestamp in units of 4 microseconds coded on wire,
 and a reference full range sequence number that is nearby. The procedure consists of these steps:
 
 1.  Convert the reference full range timestamp to units of 4 microseconds.
@@ -1265,7 +1141,7 @@ add 0x1000000 to the candidate timestamp.
 
 considered as an invalid timestamp by the sender and MUST NOT be used.
 
-3.1.1.1.5 RDP-UDP2 Packet Network Format
+###### 3.1.1.1.5 RDP-UDP2 Packet Network Format
 
 Each RDP-UDP2 packet should include a PacketPrefixByte as defined in section 2.2.1.3. If the RDP-
 UDP2 packet size is less than 7 bytes, then the Short_Packet_Length field MUST be set to the size
@@ -1286,7 +1162,7 @@ dummy packet is treated as a normal RDP-UDP2 packet by the UDP transport. Howeve
 this packet MUST not generate a retransmit. In addition, the contents MUST be ignored by higher
 layers using the UDP transport.
 
-3.1.1.1.5.1  Sending RDP-UDP2 Packet
+###### 3.1.1.1.5.1 Sending RDP-UDP2 Packet
 
 Before an RDP-UDP2 packet is sent over the UDP transport by the sender, it MUST be transformed to
 include the PacketPrefixByte using the procedure outlined below. After the procedure is completed,
@@ -1319,7 +1195,8 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An RDP-UDP2 packet has the following 10 bytes: 0x30, 0x35, 0x56, 0x78, 0xa2, 0x36, 0x73, 0xee,
+
+An RDP-UDP2 packet has the following 10 bytes: 0x30, 0x35, 0x56, 0x78, 0xa2, 0x36, 0x73, 0xee,
 0x68, 0xf2.
 
 Step1: PacketPrefixByte = 0x10.
@@ -1333,7 +1210,7 @@ Step 3: The payload is prefixed with the PacketPrefixByte: 0x10, 0x30, 0x35, 0x5
 Step 4: Swap the first and eighth byte to generate the final payload that can be sent over UDP: 0x73,
 0x30, 0x35, 0x56, 0x78, 0xa2, 0x36, 0x10, 0xee, 0x68, 0xf2.
 
-3.1.1.1.5.2  Receiving RDP-UDP2 Packet
+###### 3.1.1.1.5.2 Receiving RDP-UDP2 Packet
 
 When an RDP-UDP2 payload is received, the receiver MUST parse the PacketPrefixByte and RDP-
 UDP2 packet from the payload using the procedure outlined below.
@@ -1352,7 +1229,7 @@ Short_Packet_Length) bytes from the payload.
 
 2.2.1.1).
 
-3.1.1.2  RDP-UDP2 Implementation Concepts
+##### 3.1.1.2 RDP-UDP2 Implementation Concepts
 
 An RDP-UDP2 stack can be implemented using these key components:
 
@@ -1381,13 +1258,14 @@ Release: April 23, 2024
 
 20 / 37
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-RDPEUDP2].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
 Figure 3: Conceptual composition of an RDP-UDP2 implementation stack
 
-3.1.1.2.1 Sender Window Buffer
+###### 3.1.1.2.1 Sender Window Buffer
 
 The Sender Window Buffer is a circular buffer implemented by the Sender. The circular buffer is of size
 1<<(LogWindowSize field in the RDP-UDP2 Packet Header) (section 2.2.1.1). It contains an active
@@ -1430,7 +1308,8 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All the nodes with lower sequence numbers in the active range in the "Pending" state are changed
+
+All the nodes with lower sequence numbers in the active range in the "Pending" state are changed
 to the "Received" state. In this scenario, the Sender SHOULD send an AckOfAcks packet to inform
 the Receiver of the new lowest sequence number that is in the active range.
 
@@ -1440,7 +1319,7 @@ SHOULD include concepts like the Reliability Controller (section 3.1.1.2.4) for 
 packets, Congestion Controller for inferring the runtime network conditions, and the components
 that will consume the payload from the packet.
 
-3.1.1.2.2 Receiver Window Buffer
+###### 3.1.1.2.2 Receiver Window Buffer
 
 The Receiver Window Buffer is a circular buffer implemented by the Receiver. The circular buffer is of
 size 1<<(LogWindowSize field in the RDP-UDP2 Packet Header) (see section 2.2.1.1). It contains an
@@ -1473,7 +1352,7 @@ the "Received" state.
 
 set as the new lower bound of the buffer.
 
-3.1.1.2.3 Loss Detection
+###### 3.1.1.2.3 Loss Detection
 
 A loss detection logic is implemented by the Sender to declare any possible packet loss. It implements
 two ways for such detection:
@@ -1503,9 +1382,10 @@ Release: April 23, 2024
 
 22 / 37
 
-3.1.1.2.4 Reliability Controller
 
-3.1.1.2.4.1  Sender Reliability Controller
+###### 3.1.1.2.4 Reliability Controller
+
+###### 3.1.1.2.4.1 Sender Reliability Controller
 
 A Reliability Controller on the Sender side is implemented so that any lost packet can be resent to
 ensure the reliability of the transport. This can be achieved with the following procedure:
@@ -1524,7 +1404,7 @@ packet, the copy stored in the temporary buffer is retrieved and resent with a n
 number. Note that the ChannelSeqNum remains the same because it is part of the DataBody
 payload now.
 
-3.1.1.2.4.2  Receiver Reliability Controller
+###### 3.1.1.2.4.2 Receiver Reliability Controller
 
 A reliability controller on the Receiver side simply forwards all packets (with the channel sequence
 number removed) received from the RDP-UDP2 Transport if their ChannelSeqNums are sequentially
@@ -1534,7 +1414,7 @@ as received out of order, or they are declared as lost by the Sender and a resen
 ChannelSeqNum eventually arrives. This arrival fills the gap in the ChannelSeqNum so that packets
 buffered are free to be passed to the next layer up.
 
-3.1.1.3  Keepalives
+##### 3.1.1.3 Keepalives
 
 As the underlying transport is based on UDP and is connectionless, each pair of endpoints MUST
 constantly send data to make sure that the other endpoint is present and is responding to network
@@ -1548,7 +1428,7 @@ datagram every 16 seconds, this indicates that the receiver is no longer present
 The upper layers are notified of this event, the endpoints move to the Closed state, and the
 connection is terminated.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The following timers are used by the Remote Desktop Protocol: UDP Transport Extension v2 and MUST
 be implemented:
@@ -1572,20 +1452,21 @@ Release: April 23, 2024
 
 23 / 37
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Before the protocol operation can commence, User Datagram Protocol (UDP) network connectivity
 MUST be established between the endpoints: the terminal client (1) and the terminal server. After
 the UDP connection is established, the terminal server and terminal client MUST complete the
 Connection Initialization Phase using the [MS-RDPEUDP] protocol as described in section 1.3.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  OverheadSize Payload
+##### 3.1.5.1 OverheadSize Payload
 
 OverheadSize payload is defined in section 2.2.1.2.2 and is intended to be sent by the Receiver to the
 Sender. It contains the extra header size from the RDP-UDP2 transport layer to the lowest layer in the
@@ -1594,7 +1475,7 @@ because a Receiver tracks the raw packet size received at the raw UDP layer. Sen
 optional, and, if present, it can be used, for example, by the congestion control algorithm to fine tune
 the bandwidth reported.
 
-3.1.5.2  DelayAckInfo Payload
+##### 3.1.5.2 DelayAckInfo Payload
 
 The DelayAckInfo payload is defined in section 2.2.1.2.3 and is intended to be sent by the Sender to
 the Receiver, informing the Receiver of the format to use when sending acknowledgments. The
@@ -1609,7 +1490,7 @@ Right after the initialization phase, a default value for the DelayAckInfo is as
 can adjust this information whenever it sees fit, and can send this payload multiple times during a
 connection.
 
-3.1.5.3  AckOfAcks Payload
+##### 3.1.5.3 AckOfAcks Payload
 
 The AckOfAcks payload is defined in section 2.2.1.2.4.
 
@@ -1640,10 +1521,11 @@ Release: April 23, 2024
 
 24 / 37
 
-AckOfAck sequence number. Furthermore, as a traffic optimization the Sender SHOULD choose to
+
+AckOfAck sequence number. Furthermore, as a traffic optimization the Sender SHOULD choose to
 only piggyback this payload on any existing outgoing traffic.
 
-3.1.5.4  DataHeader Payload
+##### 3.1.5.4 DataHeader Payload
 
 The DataHeader payload is defined in section 2.2.1.2.5, and is the header part of the DATA payload
 associated with the DATA flag. The DataHeader payload is sent by the Sender when there is upper
@@ -1656,7 +1538,7 @@ number back to the Sender through an acknowledgment packet, either immediately o
 fashion, by accumulating a number of subsequent packets to arrive for an array of acknowledgment
 information and packaging them together into a single acknowledgment payload.
 
-3.1.5.5  DataBody Payload
+##### 3.1.5.5 DataBody Payload
 
 The DataBody payload is defined in section 2.2.1.2.7 and is the second part of the DATA payload
 associated with the DATA flag.The DataBody payload contains the actual data and is the last optional
@@ -1672,7 +1554,7 @@ data payload, it remains the same through the retransmission, which allows the R
 controller to match the retransmitted packet with the lost packet. This is different from the SeqNum
 in DataHeader which is different every time a retransmission packet is sent.
 
-3.1.5.6  Acknowledgment Payload
+##### 3.1.5.6 Acknowledgment Payload
 
 The Acknowledgment payload is flagged by the presence of the ACK bit in the header, and it is
 intended by the Receiver to acknowledge to the Sender that a new data packet was just received
@@ -1705,7 +1587,8 @@ Release: April 23, 2024
 
 25 / 37
 
-3.1.5.7  Acknowledgment Vector Payload
+
+##### 3.1.5.7 Acknowledgment Vector Payload
 
 This payload is defined in section 2.2.1.2.6.
 
@@ -1754,11 +1637,11 @@ NOT have the TimeStampPresent set, and its base sequence number SHOULD specify t
 state. The last acknowledgement vector can have the TimeStampPresent set, indicating that it has
 valid timestamp information for the packet with the latest sequence number received.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1769,14 +1652,15 @@ Release: April 23, 2024
 
 26 / 37
 
-4  Protocol Examples
 
-4.1  Example1: Sending Data Packets Without Packet Loss or Reordering
+## 4 Protocol Examples
+
+### 4.1 Example1: Sending Data Packets Without Packet Loss or Reordering
 
 This may be the most typical scenario. A Sender is requested to send a data blob to its Receiver. The
 following sequence of events typically takes place:
 
-4.1.1  On the Sender when sending the packet
+#### 4.1.1 On the Sender when sending the packet
 
 1.  The Sender constructs a packet layout by first prepending an incremental channel sequence
 
@@ -1815,7 +1699,7 @@ layout described in section 2.2.1.
 
 preparation for sending.
 
-4.1.2  On the Receiver when receiving the packet
+#### 4.1.2 On the Receiver when receiving the packet
 
 1.  A packet is received at the RDP-UDP layer. Because the UDP version is set to
 
@@ -1844,7 +1728,8 @@ Release: April 23, 2024
 
 27 / 37
 
-5.  The Receiver then forwards the packet to the Reliability Controller. The Reliability Controller strips
+
+5.  The Receiver then forwards the packet to the Reliability Controller. The Reliability Controller strips
 
 out the channel sequence number and sets it as the current channel sequence number, and then
 forwards the rest of the data payload to the upper layer immediately (section 3.1.1.2.4.2).
@@ -1859,7 +1744,7 @@ reception timing information. It may or may not send it immediately, depending o
 for the DelayAckInfo payload and if there is any opposite direction traffic to piggy back on. But
 eventually it will be sent out to the Sender (section 2.2.1.2.1).
 
-4.1.3  On the Sender when receiving the acknowledgment payload from the receiver
+#### 4.1.3 On the Sender when receiving the acknowledgment payload from the receiver
 
 1.  The Sender updates the circular lower bound of the active range of the Sender window buffer to
 the current sequence number and mark it as Received. Any sequence numbers circularly below
@@ -1870,7 +1755,7 @@ this number are also marked as Received (section 3.1.1.2.1).
 of the original data packet is removed and discarded from the temporary buffer (section
 3.1.1.2.4.1).
 
-4.2  Example 2: Sending Data Packets with 1 Packet reordering
+### 4.2 Example 2: Sending Data Packets with 1 Packet reordering
 
 This may be a very typical scenario depending on the hardware used on the communication path. A
 reorder could happen if the traffic takes multiple routes, and it could also happen if some of the end
@@ -1879,7 +1764,7 @@ different packets. In the current scenario, a Sender is requested to send a data
 but data gets slightly reordered. The events for sending the packets out is the same as in section
 4.1.1. The following sections describe events after the packet is sent.
 
-4.2.1  On the Receiver when receiving the packet with next higher sequence number
+#### 4.2.1 On the Receiver when receiving the packet with next higher sequence number
 
 1.  Refer to step 1–3 in section 4.1.2 for low level processing when a packet is received by the
 
@@ -1916,7 +1801,8 @@ Release: April 23, 2024
 
 28 / 37
 
-4.2.2  On the Sender when receiving the acknowledgment vector payload from the
+
+#### 4.2.2 On the Sender when receiving the acknowledgment vector payload from the
 
 receiver
 
@@ -1930,7 +1816,7 @@ range of the Sender window buffer (section 3.1.1.2.1).
 of the original data packet is removed and discarded from the temporary buffer (section
 3.1.1.2.4.1).
 
-4.2.3  On the Receiver when receiving the missing packet
+#### 4.2.3 On the Receiver when receiving the missing packet
 
 1.  Refer to steps 1–3 in section 4.1.2 for low level processing when a packet is received by the
 
@@ -1955,7 +1841,7 @@ sequence number just received (section 3.1.1.2.2).
 
 sends it immediately (section 2.2.1.2.1).
 
-4.2.4  On the Sender when receiving the acknowledgment payload from the receiver
+#### 4.2.4 On the Sender when receiving the acknowledgment payload from the receiver
 
 1.  The Sender updates the circular lower bound of the active range of the Sender window buffer to 1
 beyond the current sequence number and marks it as Received. Any sequence numbers circularly
@@ -1966,14 +1852,14 @@ below this number are also marked as Received (section 3.1.1.2.1).
 of the original data packet is removed and discarded from the temporary buffer (section
 3.1.1.2.4.1).
 
-4.3  Example 3: Sending Data Packets with One Packet Lost in the Middle
+### 4.3 Example 3: Sending Data Packets with One Packet Lost in the Middle
 
 This may happen in a lossy network environment such as Wi-Fi or due to network congestion. In the
 current scenario, a Sender sends a number of packets to its Receiver, but one of them is never
 received by the Receiver. The events for sending the packets out is the same as in section 4.1.1. The
 following sections describe events for the packets received after the lost one.
 
-4.3.1  On the Receiver when receiving the packet with higher sequence numbers after
+#### 4.3.1 On the Receiver when receiving the packet with higher sequence numbers after
 
 the lost packet
 
@@ -1988,7 +1874,8 @@ Release: April 23, 2024
 
 29 / 37
 
-4.3.2  On the Sender when receiving multiple acknowledgment vector payloads from
+
+#### 4.3.2 On the Sender when receiving multiple acknowledgment vector payloads from
 
 the receiver
 
@@ -2017,7 +1904,7 @@ buffers it onto the temporary buffer (section 3.1.1.2.4.1).
 
 of the active range of the Sender windows buffer (section 2.2.1.2.4).
 
-4.3.3  On the Receiver when receiving the AckOfAcks packet
+#### 4.3.3 On the Receiver when receiving the AckOfAcks packet
 
 1.  The Receiver advances the circular lower bound of the active range of the Receiver window buffer
 
@@ -2025,19 +1912,19 @@ to beyond the new sequence number coded in the AckOfAcks packet (section 3.1.1.2
 
 2.  The Receiver stops sending the acknowledgment vector to the Sender.
 
-4.3.4  On the Receiver when receiving the retransmitted packet
+#### 4.3.4 On the Receiver when receiving the retransmitted packet
 
 This is same as in section 4.1.2, except that when forwarding the packet to the Receiver reliability
 controller, the channel sequence number should fill in the missing hole, indicating that this is the
 packet the rest of the packets have been waiting on. Therefore these packets are also forwarded to
 the upper layer after this retransmitted packet is forwarded (section 3.1.1.2.4.2).
 
-4.4  Data Example Sending Data Packet piggybacked with ACK
+### 4.4 Data Example Sending Data Packet piggybacked with ACK
 
 Here is an actual data example with data packet piggybacked by a number of payloads from the same
 and other directions.
 
-4.4.1  Assumptions
+#### 4.4.1 Assumptions
 
 
 
@@ -2065,7 +1952,8 @@ Release: April 23, 2024
 
 30 / 37
 
-
+
+
 
 Three sequence numbers to acknowledge:  0x24681355, 0x24681356, and 0x24681357
 with their respective received times in microseconds: 0x12345578, 0x12345789, and
@@ -2083,11 +1971,11 @@ with their respective received times in microseconds: 0x12345578, 0x12345789, an
 
 logWindowSize: 0xc (section 2.2.1.1).
 
-4.4.2  Header
+#### 4.4.2 Header
 
 Header is evaluated to:0xc018
 
-4.4.3  Payloads
+#### 4.4.3 Payloads
 
 Various payloads are evaluated to:
 
@@ -2115,7 +2003,7 @@ delayedACKTimeAdditions: 0x29,0x84
 
               ChannelSeqNum: 0x5679
 
-4.4.4  Packet Layout
+#### 4.4.4 Packet Layout
 
 Packet Layout is evaluated to:
 
@@ -2138,11 +2026,12 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.4.5  PacketPrefixByte
+
+#### 4.4.5 PacketPrefixByte
 
 PacketPrefixByte is evaluated to: 0x00
 
-4.4.6  Packet OnWire Version
+#### 4.4.6 Packet OnWire Version
 
 The final OnWire version is evaluated to:
 
@@ -2156,13 +2045,14 @@ Release: April 23, 2024
 
 32 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2173,7 +2063,8 @@ Release: April 23, 2024
 
 33 / 37
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2213,7 +2104,8 @@ Release: April 23, 2024
 
 34 / 37
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2318,7 +2210,8 @@ Release: April 23, 2024
 
 35 / 37
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 17
@@ -2458,7 +2351,8 @@ Remote Desktop Protocol: UDP Transport Extension Version 2
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Vendor-extensible fields 9
+
+Vendor-extensible fields 9
 Versioning 9
 
 [MS-RDPEUDP2] - v20240423

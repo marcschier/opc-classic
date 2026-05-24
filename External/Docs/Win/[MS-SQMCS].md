@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 47
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -189,263 +190,112 @@ Release: June 1, 2017
 
 2 / 47
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Message Upload Data Contents](#222-message-upload-data-contents)
+    - [2.2.3 SQM Session](#223-sqm-session)
+    - [2.2.4 Common Structures](#224-common-structures)
+      - [2.2.4.1 SQM Header](#2241-sqm-header)
+      - [2.2.4.2 SQM Sections](#2242-sqm-sections)
+      - [2.2.4.3 SQM Section Header](#2243-sqm-section-header)
+      - [2.2.4.4 SQM Section Data](#2244-sqm-section-data)
+        - [2.2.4.4.1 SQM Data Point Sections](#22441-sqm-data-point-sections)
+          - [2.2.4.4.1.1 SQM DWORD Data Point](#224411-sqm-dword-data-point)
+          - [2.2.4.4.1.2 SQM QWORD Data Point](#224412-sqm-qword-data-point)
+          - [2.2.4.4.1.3 SQM STRING Data Point](#224413-sqm-string-data-point)
+        - [2.2.4.4.2 SQM Stream Section](#22442-sqm-stream-section)
+          - [2.2.4.4.2.1 SQM Stream Header](#224421-sqm-stream-header)
+          - [2.2.4.4.2.2 SQM Stream Record Header](#224422-sqm-stream-record-header)
+          - [2.2.4.4.2.3 SQM Stream Record](#224423-sqm-stream-record)
+            - [2.2.4.4.2.3.1 SQM Stream DWORD Record](#2244231-sqm-stream-dword-record)
+            - [2.2.4.4.2.3.2 SQM Stream QWORD Record](#2244232-sqm-stream-qword-record)
+            - [2.2.4.4.2.3.3 SQM Stream STRING Record](#2244233-sqm-stream-string-record)
+    - [2.2.5 Message Response](#225-message-response)
+    - [2.2.6 Adaptive Software Quality Metrics (A-SQM) Manifest](#226-adaptive-software-quality-metrics-a-sqm-manifest)
+      - [2.2.6.1 A-SQM Manifest Download Header](#2261-a-sqm-manifest-download-header)
+      - [2.2.6.2 A-SQM Manifest](#2262-a-sqm-manifest)
+      - [2.2.6.3 A-SQM Header](#2263-a-sqm-header)
+      - [2.2.6.4 A-SQM Section Header](#2264-a-sqm-section-header)
+      - [2.2.6.5 A-SQM Escalation Rule Section](#2265-a-sqm-escalation-rule-section)
+        - [2.2.6.5.1 A-SQM Rule Header](#22651-a-sqm-rule-header)
+        - [2.2.6.5.2 A-SQM Rule Clause](#22652-a-sqm-rule-clause)
+      - [2.2.6.6 A-SQM Property Set Section](#2266-a-sqm-property-set-section)
+        - [2.2.6.6.1 A-SQM Property Set Header](#22661-a-sqm-property-set-header)
+        - [2.2.6.6.2 A-SQM Property](#22662-a-sqm-property)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Message Construction](#3151-message-construction)
+        - [3.1.5.1.1 SQM Header Construction](#31511-sqm-header-construction)
+        - [3.1.5.1.2 Constructing SQM Sections](#31512-constructing-sqm-sections)
+          - [3.1.5.1.2.1 SQM Session Upload Construction - Option 1 - Compressed](#315121-sqm-session-upload-construction-option-1-compressed)
+          - [3.1.5.1.2.2 SQM Sections Upload Construction - Option 2 - Uncompressed](#315122-sqm-sections-upload-construction-option-2-uncompressed)
+        - [3.1.5.1.3 Constructing the SQM Session](#31513-constructing-the-sqm-session)
+      - [3.1.5.2 Message Data Upload Processing](#3152-message-data-upload-processing)
+        - [3.1.5.2.1 HTTP 200 Status](#31521-http-200-status)
+        - [3.1.5.2.2 HTTP 201 Status](#31522-http-201-status)
+        - [3.1.5.2.3 HTTP 403 Status](#31523-http-403-status)
+        - [3.1.5.2.4 HTTP Status - Other](#31524-http-status-other)
+      - [3.1.5.3 Processing an A-SQM Resource Message](#3153-processing-an-a-sqm-resource-message)
+        - [3.1.5.3.1 Downloading an A-SQM Resource](#31531-downloading-an-a-sqm-resource)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing a Client Message SQM Header](#3251-processing-a-client-message-sqm-header)
+      - [3.2.5.2 Processing SQM Section Data - Option 1 - Compressed](#3252-processing-sqm-section-data-option-1-compressed)
+      - [3.2.5.3 Processing SQM Section Data - Option 2 - Uncompressed](#3253-processing-sqm-section-data-option-2-uncompressed)
+      - [3.2.5.4 Processing the A-SQM Manifest Version Request](#3254-processing-the-a-sqm-manifest-version-request)
+      - [3.2.5.5 Sending a Client Response](#3255-sending-a-client-response)
+      - [3.2.5.6 A-SQM Manifest](#3256-a-sqm-manifest)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Proxy Details](#33-proxy-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 SQM Upload Example](#41-sqm-upload-example)
+  - [4.2 SQM Header Example](#42-sqm-header-example)
+  - [4.3 SQM Section Header](#43-sqm-section-header)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.4.4.2
-
-2.2.4.4.1
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-
-2.2.4.4.1.1
-2.2.4.4.1.2
-2.2.4.4.1.3
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Namespaces ................................................................................................ 9
-Message Upload Data Contents ...................................................................... 9
-SQM Session ................................................................................................ 9
-Common Structures .................................................................................... 10
-SQM Header ......................................................................................... 10
-SQM Sections ....................................................................................... 14
-SQM Section Header .............................................................................. 14
-SQM Section Data ................................................................................. 15
-SQM Data Point Sections .................................................................. 15
-SQM DWORD Data Point ............................................................. 15
-SQM QWORD Data Point ............................................................. 15
-SQM STRING Data Point ............................................................. 16
-SQM Stream Section ........................................................................ 17
-SQM Stream Header ................................................................... 17
-SQM Stream Record Header ........................................................ 18
-SQM Stream Record ................................................................... 18
-SQM Stream DWORD Record ................................................. 18
-SQM Stream QWORD Record ................................................. 18
-SQM Stream STRING Record .................................................. 19
-Message Response ...................................................................................... 19
-Adaptive Software Quality Metrics (A-SQM) Manifest ....................................... 20
-A-SQM Manifest Download Header .......................................................... 20
-A-SQM Manifest .................................................................................... 21
-A-SQM Header ...................................................................................... 22
-A-SQM Section Header .......................................................................... 23
-A-SQM Escalation Rule Section ............................................................... 24
-A-SQM Rule Header ......................................................................... 24
-A-SQM Rule Clause .......................................................................... 25
-A-SQM Property Set Section ................................................................... 26
-A-SQM Property Set Header .............................................................. 26
-A-SQM Property .............................................................................. 27
-Directory Service Schema Elements ................................................................... 28
-
-2.2.4.4.2.3.1
-2.2.4.4.2.3.2
-2.2.4.4.2.3.3
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-2.2.6.4
-2.2.6.5
-
-2.2.4.4.2.1
-2.2.4.4.2.2
-2.2.4.4.2.3
-
-2.2.6.6.1
-2.2.6.6.2
-
-2.2.6.5.1
-2.2.6.5.2
-
-2.2.5
-2.2.6
-
-2.2.6.6
-
-2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 29
-Client Details ................................................................................................... 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-[MS-SQMCS] - v20170601
-Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-3 / 47
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.1.3
-
-3.1.5.2
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-
-3.1.5.3
-
-3.1.5.3.1
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-
-Message Processing Events and Sequencing Rules .......................................... 29
-Message Construction ............................................................................ 29
-SQM Header Construction ................................................................. 29
-Constructing SQM Sections ............................................................... 30
-SQM Session Upload Construction - Option 1 - Compressed ............ 30
-SQM Sections Upload Construction - Option 2 - Uncompressed ........ 30
-Constructing the SQM Session ........................................................... 30
-Message Data Upload Processing ............................................................ 30
-HTTP 200 Status ............................................................................. 31
-HTTP 201 Status ............................................................................. 31
-HTTP 403 Status ............................................................................. 31
-HTTP Status - Other......................................................................... 31
-Processing an A-SQM Resource Message .................................................. 31
-Downloading an A-SQM Resource ...................................................... 31
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-Server Details .................................................................................................. 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Processing a Client Message SQM Header ................................................. 33
-Processing SQM Section Data - Option 1 - Compressed .............................. 33
-Processing SQM Section Data - Option 2 - Uncompressed .......................... 33
-Processing the A-SQM Manifest Version Request ....................................... 33
-Sending a Client Response ..................................................................... 33
-A-SQM Manifest .................................................................................... 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-Proxy Details ................................................................................................... 34
-Abstract Data Model .................................................................................... 35
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Message Processing Events and Sequencing Rules .......................................... 35
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 36
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-4  Protocol Examples ................................................................................................. 37
-SQM Upload Example ....................................................................................... 37
-SQM Header Example ....................................................................................... 38
-SQM Section Header ......................................................................................... 39
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 41
-Security Considerations for Implementers ........................................................... 41
-Index of Security Parameters ............................................................................ 41
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 42
-
-7  Change Tracking .................................................................................................... 45
-
-8  Index ..................................................................................................................... 46
-
-[MS-SQMCS] - v20170601
-Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 47
-
-1  Introduction
+## 1 Introduction
 
 This document is a specification of the Software Quality Metrics (SQM) Client-to-Service Protocol
 Version 1 which is used to send software instrumentation metrics to the SQM service and by the client
@@ -459,7 +309,7 @@ access the SQM service.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -516,7 +366,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SQM partner: An abstract entity within the SQM service that logically groups instrumentation
+
+SQM partner: An abstract entity within the SQM service that logically groups instrumentation
 
 information.
 
@@ -539,14 +390,14 @@ encoding scheme with no Byte Order Mark (BOM).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -562,7 +413,7 @@ assist you in finding the relevant information.
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CAB] Microsoft Corporation, "Microsoft Cabinet Format", March 1997,
 http://msdn.microsoft.com/en-us/library/bb417343.aspx
@@ -573,7 +424,7 @@ us/library/aa380255.aspx
 [MSDN-WER] Microsoft Corporation, "Windows Error Reporting", http://msdn.microsoft.com/en-
 us/library/bb513641(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Software Quality Metrics (SQM) Client-to-Service Protocol defines how a SQM-enabled client
 sends instrumentation data to the SQM service. The SQM Client-to-Service Protocol specifies the
@@ -585,7 +436,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-data transfer method, which includes an instrumentation namespace identifier and binary structured
+
+data transfer method, which includes an instrumentation namespace identifier and binary structured
 instrumentation data.
 
 SQM-enabled clients produce and send SQM instrumentation data. This data allows application
@@ -617,28 +469,28 @@ The SQM Client-to-Service Protocol uses the following communication methods:
 
   Downloading A-SQM data created at the SQM service by using HTTP/HTTPS GET.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Hypertext Transfer Protocol (HTTP) and Hypertext Transfer
 Protocol over Secure Sockets Layer (HTTPS) for transport, as specified in [RFC2616].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 To use the SQM service, a client registers as a SQM partner with the SQM service and adds SQM
 instrumentation to the client application.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable only to SQM-enabled clients that are enabled to collect telemetry data using
 the SQM service.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The SQM Client-to-Service Protocol does not perform capacity or version negotiation. The client
 communicates with a SQM service that supports version 1 of the SQM Client-to-Service Protocol. The
 protocol uses HTTP/HTTPS as the transport.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -649,7 +501,8 @@ Release: June 1, 2017
 
 7 / 47
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -660,27 +513,28 @@ Release: June 1, 2017
 
 8 / 47
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-SQMCS].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol is implemented on top of HTTP/HTTPS. A proxy MAY impose additional requirements as
 part of the transfer. There is no authentication between the SQM client and SQM service, or between
 the SQM proxy and the SQM service.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 SQM data MUST be associated with a partner namespace. The SQM Client-to-Service Protocol uses
 HTTP 1.1 syntax to communicate the SQM partner namespace within the URL string. For data upload,
 the URL MUST contain the SQM partner namespace following the SQM service host name.<1>
 
-2.2.2  Message Upload Data Contents
+#### 2.2.2 Message Upload Data Contents
 
 Messages are uploaded by using HTTP/HTTPS POST. The binary data is contained in the POST body of
 the HTTP/HTTPS request. The binary data schema is laid out in a SQM session, as shown in Figure 1
@@ -691,7 +545,7 @@ section 2.2.4.
 
 Figure 1: HTTP POST body containing a SQM session
 
-2.2.3  SQM Session
+#### 2.2.3 SQM Session
 
 A SQM session is comprised of a SQM header and zero or more SQM sections within the binary large
 object (BLOB) as shown in Figure 2. The SQM-enabled client MAY send the SQM header only (for
@@ -706,7 +560,8 @@ Release: June 1, 2017
 
 9 / 47
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-SQMCS].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-SQMCS].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -717,9 +572,9 @@ The following figure illustrates the compressed SQM session binary data stream l
 
 Figure 3: SQM session binary data stream layout (compressed)
 
-2.2.4  Common Structures
+#### 2.2.4 Common Structures
 
-2.2.4.1  SQM Header
+##### 2.2.4.1 SQM Header
 
 Every SQM session uploaded in the HTTP POST body MUST begin with a SQM session header.
 
@@ -746,7 +601,8 @@ Release: June 1, 2017
 
 10 / 47
 
-HeaderLength
+
+HeaderLength
 
 Flags
 
@@ -799,7 +655,8 @@ Release: June 1, 2017
 
 11 / 47
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-SQMCS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -841,7 +698,8 @@ Release: June 1, 2017
 
 12 / 47
 
-DataLength (4 bytes): A 32-bit unsigned integer specifying the length of the SQM section data
+
+DataLength (4 bytes): A 32-bit unsigned integer specifying the length of the SQM section data
 
 (compressed or uncompressed), in bytes. This value MUST be specified. A value of 0x0 indicates
 there is no SQM section data.
@@ -933,7 +791,8 @@ Release: June 1, 2017
 
 13 / 47
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-SQMCS].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -948,7 +807,7 @@ of the SQM section data before data compression. This value MUST be specified if
 InternalFlags field has a value of 0x1. The SQM client and SQM server SHOULD use the same
 algorithm as specified in the DataChecksum description.
 
-2.2.4.2  SQM Sections
+##### 2.2.4.2 SQM Sections
 
 SQM sections follow the SQM header in the data upload contained in the HTTP/HTTPS POST body.
 Each section has a SQM section header, as specified in section 2.2.4.3, and a SQM section data BLOB,
@@ -957,7 +816,7 @@ specified in section 2.2.4.4.1, and SQM stream sections, as specified in section
 
 Figure 5: SQM section in a binary data stream
 
-2.2.4.3  SQM Section Header
+##### 2.2.4.3 SQM Section Header
 
 The SQM section header describes the SQM section data BLOB. The SQM section header is composed
 of two fields: a SectionType field and a SectionLength field.
@@ -1006,14 +865,15 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.4.4  SQM Section Data
+
+##### 2.2.4.4 SQM Section Data
 
 SQM section data follows a SQM section header and can be either a SQM data point section or a SQM
 stream section. A SectionType value of 0x00000000, 0x00000003, or 0x00000006 in the SQM
 section header specifies a SQM data point section. A SectionType value of 0x00000005 in the SQM
 section header specifies a SQM stream section.
 
-2.2.4.4.1 SQM Data Point Sections
+###### 2.2.4.4.1 SQM Data Point Sections
 
 A SQM data point section is a type of SQM section data. Each SQM data point section is a set of zero
 or more SQM data points of DWORD, QWORD, or STRING data type (see [MS-DTYP] sections 2.2.9,
@@ -1021,7 +881,7 @@ or more SQM data points of DWORD, QWORD, or STRING data type (see [MS-DTYP] sect
 identical type (DWORD, QWORD, or STRING) as specified in the SectionType value (0x00000000,
 0x00000006, 0x00000003 respectively) in the SQM section header.
 
-2.2.4.4.1.1  SQM DWORD Data Point
+###### 2.2.4.4.1.1 SQM DWORD Data Point
 
 The SQM DWORD data point is a 3-tuple that describes a user-defined DWORD value. The
 SectionType value in the SQM section header MUST be 0x00000000.
@@ -1060,7 +920,7 @@ TickCount (4 bytes): A 32-bit unsigned integer specifying the number of millisec
 
 elapsed since the ClientSessionStartTime (see section 2.2.4.1).
 
-2.2.4.4.1.2  SQM QWORD Data Point
+###### 2.2.4.4.1.2 SQM QWORD Data Point
 
 The SQM QWORD data point is a 3-tuple that describes a user-defined QWORD value. The
 SectionType in the SQM section header MUST be 0x00000006.
@@ -1090,7 +950,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-SQMCS].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1111,7 +972,7 @@ TickCount (4 bytes): A 32-bit unsigned integer specifying the number of millisec
 
 elapsed since the ClientSessionStartTime (see section 2.2.4.1).
 
-2.2.4.4.1.3  SQM STRING Data Point
+###### 2.2.4.4.1.3 SQM STRING Data Point
 
 The SQM STRING data point is a 4-tuple that describes a user-defined Unicode character array
 value. This SectionType in the SQM section header MUST be 0x00000003.
@@ -1164,7 +1025,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-SQMCS].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1172,7 +1034,7 @@ String (variable): An array of bytes specifying an array of Unicode character va
 
 MUST be specified. This meaning of this value is defined by the SQM partner.
 
-2.2.4.4.2 SQM Stream Section
+###### 2.2.4.4.2 SQM Stream Section
 
 A SQM stream section is a type of SQM section data. Each SQM stream section contains a stream
 header (see section 2.2.4.4.2.1) followed by zero or more stream records (see section 2.2.4.4.2.3).
@@ -1181,7 +1043,7 @@ stream record.
 
 Figure 6: SQM stream section in a SQM section data BLOB
 
-2.2.4.4.2.1  SQM Stream Header
+###### 2.2.4.4.2.1 SQM Stream Header
 
 The SQM stream header describes the SQM stream. The header is a 3-tuple comprised of a data point
 identifier, a count of the number of entries per record, and a count of the number of records.
@@ -1223,11 +1085,12 @@ Release: June 1, 2017
 
 17 / 47
 
-CountRecords (4 bytes): A 32-bit unsigned integer specifying the number of record sets in the
+
+CountRecords (4 bytes): A 32-bit unsigned integer specifying the number of record sets in the
 
 stream. This value MUST be specified.
 
-2.2.4.4.2.2  SQM Stream Record Header
+###### 2.2.4.4.2.2 SQM Stream Record Header
 
 The SQM stream record header describes the SQM stream record that immediately follows the SQM
 stream record header in the SQM section data.
@@ -1259,13 +1122,13 @@ Meaning
 
 0x00000006  The data type in the stream entry is SQM QWORD.
 
-2.2.4.4.2.3  SQM Stream Record
+###### 2.2.4.4.2.3 SQM Stream Record
 
 The SQM stream record is a single entry of type DWORD, QWORD, or STRING as specified in the
 StreamEntryType value (0x00000000, 0x00000006, and 0x00000003 respectively) in the SQM
 stream record header.
 
-2.2.4.4.2.3.1  SQM Stream DWORD Record
+###### 2.2.4.4.2.3.1 SQM Stream DWORD Record
 
 The SQM stream DWORD record is a 2-tuple single entry of type DWORD. The StreamEntryType
 value in the Stream Record Header MUST be 0x00000000.
@@ -1293,7 +1156,7 @@ DataValue (4 bytes): ):  A DWORD specifying the value associated with the Stream
 
 in the SQM Stream Header. This value is defined by the SQM partner.
 
-2.2.4.4.2.3.2  SQM Stream QWORD Record
+###### 2.2.4.4.2.3.2 SQM Stream QWORD Record
 
 The SQM stream QWORD record is a 2-tuple single entry of type QWORD. The StreamEntryType
 value in the Stream Record Header MUST be 0x00000006.
@@ -1305,7 +1168,8 @@ Release: June 1, 2017
 
 18 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1330,7 +1194,7 @@ DataValue (8 bytes): A QWORD specifying the value associated with the StreamIden
 
 the SQM Stream Header. This value is defined by the SQM partner.
 
-2.2.4.4.2.3.3  SQM Stream STRING Record
+###### 2.2.4.4.2.3.3 SQM Stream STRING Record
 
 The SQM stream STRING record is a 3-tuple single entry of type STRING that describes a user-defined
 Unicode character array value. The StreamEntryType value in the stream record header MUST be
@@ -1370,7 +1234,7 @@ String (variable): An array of bytes specifying an array of Unicode character va
 
 defined by the SQM partner.
 
-2.2.5  Message Response
+#### 2.2.5 Message Response
 
 The service-to-client response is specified by one of the following HTTP status codes.
 
@@ -1393,7 +1257,8 @@ Release: June 1, 2017
 
 19 / 47
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-SQMCS].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1434,7 +1299,7 @@ HTTP 403 Status:  An HTTP 403 status response indicates a successful client requ
 
 recommended that the client wait 14 days before sending any additional upload requests.
 
-2.2.6  Adaptive Software Quality Metrics (A-SQM) Manifest
+#### 2.2.6 Adaptive Software Quality Metrics (A-SQM) Manifest
 
 The A-SQM manifest contains the rules that control what instrumentation data is updated. A-SQM uses
 HTTP/HTTPS GET to download a manifest package. The package contains a header describing the
@@ -1442,7 +1307,7 @@ contents and an A-SQM manifest.
 
 Figure 7: A-SQM download package using HTTP/HTTPS GET
 
-2.2.6.1  A-SQM Manifest Download Header
+##### 2.2.6.1 A-SQM Manifest Download Header
 
 The A-SQM download header describes the A-SQM file contained within the download.
 
@@ -1453,7 +1318,8 @@ Release: June 1, 2017
 
 20 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1484,7 +1350,7 @@ file. The SQM client and SQM server SHOULD<5> use the same algorithm.
 
 Reserved (4 bytes): A 32-bit unsigned integer. A value of 0x0 MUST be specified.
 
-2.2.6.2  A-SQM Manifest
+##### 2.2.6.2 A-SQM Manifest
 
 The A-SQM manifest is stored in the downloaded A-SQM file. The A-SQM manifest contains a header
 describing the entire manifest BLOB followed by one or more A-SQM sections. Each section has a
@@ -1498,13 +1364,14 @@ Release: June 1, 2017
 
 21 / 47
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-SQMCS].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 8: A-SQM Manifest with one or more sections
 
-2.2.6.3  A-SQM Header
+##### 2.2.6.3 A-SQM Header
 
 The A-SQM header describes the contents of the manifest.
 
@@ -1530,7 +1397,8 @@ Release: June 1, 2017
 
 22 / 47
 
-Length
+
+Length
 
 SectionCount
 
@@ -1564,7 +1432,7 @@ PartnerName (128 bytes): A null-terminated Unicode string (16-bit character unit
 
 the SQM partner name.
 
-2.2.6.4  A-SQM Section Header
+##### 2.2.6.4 A-SQM Section Header
 
 The A-SQM section header describes the contents of the A-SQM section. The A-SQM section header is
 composed of two fields: a SectionLength field and SectionType field. Sections can be in any order.
@@ -1607,13 +1475,14 @@ Release: June 1, 2017
 
 23 / 47
 
-Value
+
+Value
 
  Meaning
 
 0x00000002  Property set section type.
 
-2.2.6.5  A-SQM Escalation Rule Section
+##### 2.2.6.5 A-SQM Escalation Rule Section
 
 The A-SQM escalation rule section contains a rule that the SQM-enabled client uses to modify
 behavior. An A-SQM escalation section is specified by a value of 0x1 in the SectionType field of the
@@ -1622,7 +1491,7 @@ data point values (see section 2.2.4.4.1) and/or defined data stream values (see
 Clauses are joined together with a group operator. A rule is either of type callback or report, and is
 read as either TRUE or FALSE.
 
-2.2.6.5.1 A-SQM Rule Header
+###### 2.2.6.5.1 A-SQM Rule Header
 
 The A-SQM rule header describes the rule.
 
@@ -1678,7 +1547,8 @@ Release: June 1, 2017
 
 24 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1735,7 +1605,7 @@ RuleExpirationTime (8 bytes): A 64-bit FILETIME value specifying the time the ru
 
 FILETIME is defined in [MS-RPCE] section 6.
 
-2.2.6.5.2 A-SQM Rule Clause
+###### 2.2.6.5.2 A-SQM Rule Clause
 
 The A-SQM rule clause specifies the comparison value and method to be performed. The result of a
 clause comparison is either TRUE or FALSE.
@@ -1770,7 +1640,8 @@ Release: June 1, 2017
 
 25 / 47
 
-ClauseLength (4 bytes): A 32-bit unsigned integer specifying the length of the clause, in bytes.
+
+ClauseLength (4 bytes): A 32-bit unsigned integer specifying the length of the clause, in bytes.
 
 EvaluationFlag (4 bytes): A 32-bit unsigned integer specifying the clause evaluation flag. This value
 MUST be specified. An AND clause specifies a single unique bit set to 0x1 within the rule. An OR
@@ -1829,13 +1700,13 @@ Value
 
 There is a limit of 32 AND clauses per rule.
 
-2.2.6.6  A-SQM Property Set Section
+##### 2.2.6.6 A-SQM Property Set Section
 
 An A-SQM property set section is specified by a value of 0x2 in the SectionType field of the A-SQM
 section header (see section 2.2.6.4). Each A-SQM property set section contains one or more
 properties as specified in sections 2.2.6.6.1 and 2.2.6.6.2.
 
-2.2.6.6.1 A-SQM Property Set Header
+###### 2.2.6.6.1 A-SQM Property Set Header
 
 The A-SQM property set header describes the properties contained within the section.
 
@@ -1846,7 +1717,8 @@ Release: June 1, 2017
 
 26 / 47
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1887,7 +1759,7 @@ The PropertySetName byte length is computed: HeaderLength – 0xC. The PropertyS
 is aligned on an 8-byte boundary so it is possible for the byte length to be larger than the null-
 terminated Unicode string requires.
 
-2.2.6.6.2 A-SQM Property
+###### 2.2.6.6.2 A-SQM Property
 
 An A-SQM property is a key-value pair. Each key within the property set MUST be unique. The key-
 value is an SQM-enabled application-defined value. All key-value pairs are treated as null-terminated
@@ -1929,7 +1801,8 @@ Release: June 1, 2017
 
 27 / 47
 
-PropertyValueLength (4 bytes): A 32-bit unsigned integer specifying the length of the
+
+PropertyValueLength (4 bytes): A 32-bit unsigned integer specifying the length of the
 
 PropertyValue, in bytes.
 
@@ -1948,7 +1821,7 @@ character units).
 The PropertyValue is aligned on an 8-byte boundary so it is possible for the byte length to be
 larger than the null-terminated Unicode string requires.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -1959,42 +1832,43 @@ Release: June 1, 2017
 
 28 / 47
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-SQMCS].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Client Details
+### 3.1 Client Details
 
 The client role in the SQM Client-to-Service Protocol is illustrated in the following figure.
 
 Figure 9: Client-to-Service data upload and response
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Message Construction
+##### 3.1.5.1 Message Construction
 
 The client constructs a data upload message as specified in section 2.2.2. Once the data is complete,
 the client prepares the data for upload.
 
-3.1.5.1.1 SQM Header Construction
+###### 3.1.5.1.1 SQM Header Construction
 
 The client creates a SQM header as specified in section 2.2.4.1. The client sets the SQM Header field
 values as specified in sections 2.2.4.1 and 3.1.5.1.1.
@@ -2006,7 +1880,8 @@ Release: June 1, 2017
 
 29 / 47
 
-3.1.5.1.2 Constructing SQM Sections
+
+###### 3.1.5.1.2 Constructing SQM Sections
 
 The client constructs a SQM section as follows:
 
@@ -2020,7 +1895,7 @@ same checksum algorithm so that the server can validate the message stream.
 
 4.  The client computes a count of the SQM sections.
 
-3.1.5.1.2.1  SQM Session Upload Construction - Option 1 - Compressed
+###### 3.1.5.1.2.1 SQM Session Upload Construction - Option 1 - Compressed
 
 The client compresses the SQM section data as illustrated in Figure 3. The client computes the length
 of the compressed SQM section data and computes the checksum of the compressed SQM section
@@ -2050,7 +1925,7 @@ The DataChecksum field is set to the compressed SQM section data checksum value.
 
 The SectionCount field is set to the section count value.
 
-3.1.5.1.2.2  SQM Sections Upload Construction - Option 2 - Uncompressed
+###### 3.1.5.1.2.2 SQM Sections Upload Construction - Option 2 - Uncompressed
 
 
 
@@ -2071,12 +1946,12 @@ The DataChecksum field is set to the uncompressed SQM section checksum value.
 
 The SectionCount field is set to the section count value.
 
-3.1.5.1.3 Constructing the SQM Session
+###### 3.1.5.1.3 Constructing the SQM Session
 
 The client creates the SQM Session by joining the SQM header and the SQM section data (compressed
 or uncompressed) as illustrated in Figure 2 and Figure 3.
 
-3.1.5.2  Message Data Upload Processing
+##### 3.1.5.2 Message Data Upload Processing
 
 The client creates a SQM data upload message consisting of one SQM session as described previously.
 The client MUST set the SQM header ClientUploadTime field to the client's current UTC time as
@@ -2092,7 +1967,8 @@ Release: June 1, 2017
 
 30 / 47
 
-The maximum POST body upload length is a well-known value contracted with the SQM service. This
+
+The maximum POST body upload length is a well-known value contracted with the SQM service. This
 value MUST be known (see section 2.2.1).
 
   Upload length: The maximum POST body length (in bytes) as contracted with the SQM service for
@@ -2111,11 +1987,11 @@ returned in the HTTP header depending on the HTTP status value as specified in s
 The client processes the response message based on the HTTP status code response described in
 sections 3.1.5.2.1 through 3.1.5.2.4.
 
-3.1.5.2.1 HTTP 200 Status
+###### 3.1.5.2.1 HTTP 200 Status
 
 This message is sent when the upload is complete and no additional action is necessary.
 
-3.1.5.2.2 HTTP 201 Status
+###### 3.1.5.2.2 HTTP 201 Status
 
 The HTTP header has additional information as defined in section 2.2.5. The response message MUST
 contain a ThrottleInterval and/or ManifestVersion key-value pair as specified in section 2.2.5. The
@@ -2128,24 +2004,24 @@ service for the period specified in the ThrottleInternal message (section 2.2.5)
 ManifestVersion:  If the ManifestVersion value is not equal to the current client SQM manifest
 version, the client downloads an SQM manifest resource as described in section 3.1.5.3.
 
-3.1.5.2.3 HTTP 403 Status
+###### 3.1.5.2.3 HTTP 403 Status
 
 The client SHOULD NOT send any data to the SQM service for a period of 14 days (see section
 2.2.5).
 
-3.1.5.2.4 HTTP Status - Other
+###### 3.1.5.2.4 HTTP Status - Other
 
 The client MAY retry the upload at a later time if an HTTP error status code (other than a 403 error
 status code described previously) is returned.
 
-3.1.5.3  Processing an A-SQM Resource Message
+##### 3.1.5.3 Processing an A-SQM Resource Message
 
 Upon receipt of a ManifestVersion value as specified in section 3.1.5.2.2, the client compares the
 client's current manifest version value with the ManifestVersion value. If the two values are equal,
 the client takes no further action. If the two values are not equal, the client SHOULD<7> download
 the manifest version as described in section 3.1.5.3.1.
 
-3.1.5.3.1 Downloading an A-SQM Resource
+###### 3.1.5.3.1 Downloading an A-SQM Resource
 
 The client downloads an A-SQM resource by using HTTPS GET (see section 2.2.6).<8> The client
 forms the GET request by using the SQM-enabled application's partner namespace. In the following
@@ -2162,7 +2038,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-SQMCS].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2175,29 +2052,29 @@ algorithm so that the server can validate the manifest.
 The client makes this resource available to SQM-enabled applications based on the SQM partner
 namespace.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 The server role in the SQM Client-to-Service Protocol is illustrated in the following figure.
 
 Figure 10: Server role in the SQM Client-to-Service Protocol
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
@@ -2208,22 +2085,23 @@ Release: June 1, 2017
 
 32 / 47
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The SQM session data upload is processed during the HTTP connection. The server MUST capture the
 HTTP POST body. The POST body contains the SQM session. The server processes the POST body as
 described in the following sections.
 
-3.2.5.1  Processing a Client Message SQM Header
+##### 3.2.5.1 Processing a Client Message SQM Header
 
 The SQM header fields SHOULD be validated as specified in section 2.2.4.1 and described in section
 3.1.5.1.1.
 
-3.2.5.2  Processing SQM Section Data - Option 1 - Compressed
+##### 3.2.5.2 Processing SQM Section Data - Option 1 - Compressed
 
 The server checks the SQM header InternalFlags field as specified in section 2.2.4.1. If bit 0 is set to
 1, then the server processes the compressed data as follows:
@@ -2246,7 +2124,7 @@ the SQM header RawDataLength field.
 
 specified in the SQM header RawDataChecksum field.
 
-3.2.5.3  Processing SQM Section Data - Option 2 - Uncompressed
+##### 3.2.5.3 Processing SQM Section Data - Option 2 - Uncompressed
 
 The server checks the SQM header InternalFlags field as specified in section 2.2.4.1. If bit 0 is set to
 0, then the server processes the data as follows:
@@ -2259,13 +2137,13 @@ DataLength field.
 
 header DataChecksum field.
 
-3.2.5.4  Processing the A-SQM Manifest Version Request
+##### 3.2.5.4 Processing the A-SQM Manifest Version Request
 
 The server checks the SQM header InternalFlags field as specified in section 2.2.4.1. If bit 3 is set to
 1 and the server manifest version is not equal to the SQM header ClientVersion field, then the server
 sends a manifest version response.
 
-3.2.5.5  Sending a Client Response
+##### 3.2.5.5 Sending a Client Response
 
 The server sends one of the following responses to the client:
 
@@ -2280,7 +2158,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Throttle Response:  The server sends an HTTP 201 status response to the client if the message is
+
+Throttle Response:  The server sends an HTTP 201 status response to the client if the message is
 successfully processed and the server requests that the client halt further client-server SQM
 communication for the period (in days) as indicated in the value of the throttle key-value pair as
 specified in section 2.2.5. This response MAY be combined with an A-SQM manifest response.
@@ -2294,21 +2173,21 @@ Fixed-Throttle Response:  The server sends an HTTP 403 Status response to the cl
 
 requests that the client halt further client-server SQM communication for 14 days.
 
-3.2.5.6  A-SQM Manifest
+##### 3.2.5.6 A-SQM Manifest
 
 The server allows the client to download the A-SQM manifest as specified in section 2.2.5 and
 described in section 3.1.5.3.1 using HTTP/HTTPS GET. The server resolves the HTTP/HTTPS GET URL
 to the physical A-SQM manifest.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Proxy Details
+### 3.3 Proxy Details
 
 This section specifies the proxy role in the SQM Client-to-Service Protocol.
 
@@ -2325,13 +2204,14 @@ Release: June 1, 2017
 
 34 / 47
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-SQMCS].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
 Figure 11: Client upload through a proxy server
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The SQM protocol relay transmits protocol messages on behalf of a client in environments where the
 client cannot access the SQM service directly (primarily where the client is protected by the firewall).
@@ -2344,19 +2224,19 @@ the SQM service. If the proxy receives a message that does not fit the XML model
 message is forwarded directly to the SQM service, without modification. This enables support for A-
 SQM and SQM protocol message transmission.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The client MAY be configured manually to send SQM data to the relay.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 The relay receives a SQM message from the client via an HTTP POST sent by using the proxy port
 configured on the SQM service. If the POST contains a payload that adheres to the SQM format, the
@@ -2369,7 +2249,8 @@ Release: June 1, 2017
 
 35 / 47
 
-additive change only. The payload is then repackaged and sent to the SQM service by using SSL over
+
+additive change only. The payload is then repackaged and sent to the SQM service by using SSL over
 port 443.
 
 All other protocol messages are directly sent directly through the proxy without modification in a
@@ -2378,11 +2259,11 @@ and the second transmission is communicated using over SSL by using port 443. If
 a message that is not of a recognized format, the message is sent to the SQM service with no
 changes.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -2393,9 +2274,10 @@ Release: June 1, 2017
 
 36 / 47
 
-4  Protocol Examples
 
-4.1  SQM Upload Example
+## 4 Protocol Examples
+
+### 4.1 SQM Upload Example
 
 The following is a network capture of a SQM upload.
 
@@ -2467,7 +2349,8 @@ Release: June 1, 2017
 
 37 / 47
 
- 03B0  D4 EA 01 00 00 00 00 00 00 00 B4 9B 08 4B 01 00
+
+ 03B0  D4 EA 01 00 00 00 00 00 00 00 B4 9B 08 4B 01 00
  03C0  00 00 00 00 00 00 F1 EA BC BB 01 00 00 00 14 0E
  03D0  00 00 89 15 1A C3 01 00 00 00 C1 15 00 00 CF F5
  03E0  30 E6 01 00 00 00 E1 15 00 00 E7 DA B9 EA 01 00
@@ -2477,7 +2360,7 @@ Release: June 1, 2017
  0420  00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00
  0430  00 00 01 00 00 00
 
-4.2  SQM Header Example
+### 4.2 SQM Header Example
 
 This section provides an example of a SQM header, as described in section 2.2.4.1.
 
@@ -2497,13 +2380,14 @@ Release: June 1, 2017
 
 38 / 47
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-SQMCS].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
 Figure 12: SQM header example
 
-4.3  SQM Section Header
+### 4.3 SQM Section Header
 
 This section provides an example of a SQM section header, as described in section 2.2.4.3.
 
@@ -2514,7 +2398,8 @@ Software Quality Metrics (SQM) Client-to-Service Version 1 Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-SQMCS].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2530,15 +2415,16 @@ Release: June 1, 2017
 
 40 / 47
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 HTTPS is the recommended transport mechanism when downloading an A-SQM manifest. Using HTTPS
 provides protection from man in the middle (MITM) attacks, in which a private connection is
 controlled by an outside attacker, when the web server is trusted.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2549,7 +2435,8 @@ Release: June 1, 2017
 
 41 / 47
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2630,7 +2517,8 @@ Release: June 1, 2017
 
 42 / 47
 
-Bit Position  Meaning
+
+Bit Position  Meaning
 
 7
 
@@ -2701,7 +2589,8 @@ Release: June 1, 2017
 
 43 / 47
 
-where %SQM-PARTNERNAME% is replaced with the actual partner name and %MANIFESTVERSION%
+
+where %SQM-PARTNERNAME% is replaced with the actual partner name and %MANIFESTVERSION%
 is replaced with the ManifestVersion value, in decimal form, as specified in section 2.2.4.1, and
 section 3.1.5.2.2. The SQM partner name is known to the SQM client and the SQM server.
 
@@ -2719,7 +2608,8 @@ Release: June 1, 2017
 
 44 / 47
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2731,7 +2621,8 @@ Release: June 1, 2017
 
 45 / 47
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2870,7 +2761,8 @@ Release: June 1, 2017
 
 46 / 47
 
-Versioning 7
+
+Versioning 7
 
    other local events 36
    overview 34

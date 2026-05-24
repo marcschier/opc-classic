@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 15
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: June 1, 2017
 
 2 / 15
 
-Date
+
+Date
 
 Revision
 History
@@ -487,103 +489,50 @@ Release: June 1, 2017
 
 3 / 15
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Device Details](#31-device-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Control Point Details](#32-control-point-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-
-2.1
-2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ....................................................................................................... 8
-Device Details .................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 8
-Message Processing Events and Sequencing Rules ............................................ 8
-Timer Events ................................................................................................ 8
-Other Local Events ........................................................................................ 8
-Control Point Details ........................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 10
-
-5  Security ................................................................................................................. 11
-Security Considerations for Implementers ........................................................... 11
-Index of Security Parameters ............................................................................ 11
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 12
-
-7  Change Tracking .................................................................................................... 13
-
-8  Index ..................................................................................................................... 14
-
-[MS-SSDP] - v20170601
-SSDP: Networked Home Entertainment Devices (NHED) Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 15
-
-1  Introduction
+## 1 Introduction
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions are a set of extensions to the
 Simple Service Discovery Protocol (SSDP), as specified in [UPNPARCH1], and are used to detect
@@ -593,7 +542,7 @@ devices on a home network. In this specification, the SSDP: Networked Home Enter
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -611,14 +560,14 @@ upon open, Internet-based communication standards.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -635,7 +584,7 @@ http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0.pdf
 
 [UPnP] UPnP Forum, "Standards", http://upnp.org/sdcps-and-certification/standards/sdcps/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SSDP1] Goland, Yaron Y., Cai, T., Leach, P., Gu, Y., and Albright, S., "Simple Service Discovery
 Protocol (SSDP)", 1999, http://tools.ietf.org/html/draft-cai-ssdp-v1-03
@@ -647,7 +596,8 @@ Release: June 1, 2017
 
 5 / 15
 
-1.3  Overview
+
+### 1.3 Overview
 
 SSDP (as specified in [UPNPARCH1]) is used to detect Universal Plug and Play (as specified in
 [UPnP]) devices on a network. SSDP is maintained by the UPnP Forum and is published by the UPnP
@@ -660,7 +610,7 @@ description document (substituted with device-specific information in an Alterna
 header in each announcement) and by removing the need for a multicast listener (substituted with
 frequent periodic announcements).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions depend on protocols described
 in section 1.1 of [UPNPARCH1], specifically:
@@ -673,29 +623,29 @@ in section 1.1 of [UPNPARCH1], specifically:
 
 Internet Protocol (IP)
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions have no additional
 prerequisites/preconditions beyond what is required for SSDP, as specified in [UPNPARCH1].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions provide a mechanism for a
 control point to discover a device on the network without requiring the device to implement a
 complete SSDP stack.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The AL header (as specified in [SSDP1]) in the ssdp:alive message contains a bracketed list of URIs
 (as specified in [RFC3986]). The vendor can extend that list with any URIs that comply with the rules
 specified in [RFC3986].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments other than what is specified in [UPNPARCH1].
 
@@ -706,14 +656,15 @@ Release: June 1, 2017
 
 6 / 15
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions MUST follow the Simple
 Service Discovery Protocol discovery advertisement messages syntax, as specified in [UPNPARCH1]
@@ -739,54 +690,55 @@ Release: June 1, 2017
 
 7 / 15
 
-3  Protocol Details
 
-3.1  Device Details
+## 3 Protocol Details
+
+### 3.1 Device Details
 
 SSDP (as specified in [UPNPARCH1]) is used for device discovery between control points and devices.
 On the device, specific messages are multicast.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Because the SSDP: Networked Home Entertainment Devices (NHED) Extensions are implemented such
 that the traditional SSDP search does not exist on the device, the device SHOULD send ssdp:alive
 messages on a periodic basis that is more frequent than the Simple Service Discovery Protocol default.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.2  Control Point Details
+### 3.2 Control Point Details
 
  SSDP is used for device discovery between control points (as specified in [UPNPARCH1]) and devices
 (as specified in [UPNPARCH1]). The control point listens for multicast messages from the device.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No abstract data model is required.
 
@@ -797,31 +749,32 @@ Release: June 1, 2017
 
 8 / 15
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 No timers are required.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
@@ -833,7 +786,8 @@ Release: June 1, 2017
 
 9 / 15
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 A new device is set up and plugged in to the home network for the first time. When it is turned on, the
 device first sends over port 1900 a UDP multicast message of ssdp:byebye, and then, immediately
@@ -880,14 +834,15 @@ Release: June 1, 2017
 
 10 / 15
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The SSDP: Networked Home Entertainment Devices (NHED) Extensions do not specify anything
 beyond what is specified by [UPNPARCH1].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for the SSDP: Networked Home Entertainment Devices (NHED)
 Extensions.
@@ -899,7 +854,8 @@ Release: June 1, 2017
 
 11 / 15
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -929,7 +885,8 @@ Release: June 1, 2017
 
 12 / 15
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -941,7 +898,8 @@ Release: June 1, 2017
 
 13 / 15
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1075,7 +1033,8 @@ Release: June 1, 2017
 
 14 / 15
 
-Triggered events - higher-layer
+
+Triggered events - higher-layer
    control point 9
    device 8
 

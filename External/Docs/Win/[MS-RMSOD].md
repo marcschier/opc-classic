@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 54
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -263,212 +264,92 @@ Release: October 26, 2021
 
 2 / 54
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
+## Table of Contents
 
-1.1
-1.2
-1.3
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 Purpose of RMS](#211-purpose-of-rms)
+    - [2.1.2 Functional Overview](#212-functional-overview)
+      - [2.1.2.1 Abstract Components](#2121-abstract-components)
+      - [2.1.2.2 Client-to-Server and Server-to-Server Functionality](#2122-client-to-server-and-server-to-server-functionality)
+    - [2.1.3 Communication Within RMS](#213-communication-within-rms)
+    - [2.1.4 Applicability](#214-applicability)
+    - [2.1.5 Relevant Standards](#215-relevant-standards)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on RMS](#231-dependencies-on-rms)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+      - [2.3.2.1 SOAP](#2321-soap)
+      - [2.3.2.2 Cryptographic Keys](#2322-cryptographic-keys)
+      - [2.3.2.3 Directory Services](#2323-directory-services)
+      - [2.3.2.4 Federated Sign-On](#2324-federated-sign-on)
+      - [2.3.2.5 XrML](#2325-xrml)
+      - [2.3.2.6 RMS Certificates and Licenses](#2326-rms-certificates-and-licenses)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Actors](#251-actors)
+    - [2.5.2 Supporting Actors and System Interests Summary](#252-supporting-actors-and-system-interests-summary)
+    - [2.5.3 Use Case Summary Diagrams](#253-use-case-summary-diagrams)
+    - [2.5.4 Use Case Descriptions](#254-use-case-descriptions)
+      - [2.5.4.1 Enroll RMS Server - RMS Server](#2541-enroll-rms-server-rms-server)
+      - [2.5.4.2 Bootstrap RMS Client - RMS Client Application](#2542-bootstrap-rms-client-rms-client-application)
+      - [2.5.4.3 Sub-Enroll Server - RMS Server](#2543-sub-enroll-server-rms-server)
+      - [2.5.4.4 Find Service Locations for Client - RMS Server](#2544-find-service-locations-for-client-rms-server)
+      - [2.5.4.5 Acquire Templates - RMS Client Application](#2545-acquire-templates-rms-client-application)
+      - [2.5.4.6 Publish Protected Content Online - RMS Client Application](#2546-publish-protected-content-online-rms-client-application)
+      - [2.5.4.7 Publish Protected Content Offline - RMS Client Application](#2547-publish-protected-content-offline-rms-client-application)
+      - [2.5.4.8 Consume Protected Content - RMS Client Application](#2548-consume-protected-content-rms-client-application)
+      - [2.5.4.9 Expand Groups - RMS Server](#2549-expand-groups-rms-server)
+      - [2.5.4.10 Find Service Locations for Group Expansion - RMS Server](#25410-find-service-locations-for-group-expansion-rms-server)
+      - [2.5.4.11 Decommission Server - ISV Application](#25411-decommission-server-isv-application)
+      - [2.5.4.12 Republishing Content - ISV Application](#25412-republishing-content-isv-application)
+      - [2.5.4.13 Perform Precertification - ISV Application](#25413-perform-precertification-isv-application)
+      - [2.5.4.14 Perform Prelicensing - ISV Application](#25414-perform-prelicensing-isv-application)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Activating the RMS Servers](#31-example-1-activating-the-rms-servers)
+    - [3.1.1 Activate the Server](#311-activate-the-server)
+    - [3.1.2 Activate a Subordinate RMS Server](#312-activate-a-subordinate-rms-server)
+  - [3.2 Example 2: Using Offline Publishing to Protect Content](#32-example-2-using-offline-publishing-to-protect-content)
+    - [3.2.1 Client Bootstrapping](#321-client-bootstrapping)
+      - [3.2.1.1 Activate the Computer](#3211-activate-the-computer)
+      - [3.2.1.2 Find Service Locations](#3212-find-service-locations)
+      - [3.2.1.3 Certify the User](#3213-certify-the-user)
+      - [3.2.1.4 Acquire a CLC](#3214-acquire-a-clc)
+    - [3.2.2 Acquire Templates](#322-acquire-templates)
+    - [3.2.3 Offline Publishing](#323-offline-publishing)
+  - [3.3 Example 3: Using Online Publishing to Protect Content](#33-example-3-using-online-publishing-to-protect-content)
+    - [3.3.1 Acquire Templates](#331-acquire-templates)
+    - [3.3.2 Online Publishing](#332-online-publishing)
+      - [3.3.2.1 Acquire the Server's Certificate](#3321-acquire-the-servers-certificate)
+      - [3.3.2.2 Generate a Publishing License](#3322-generate-a-publishing-license)
+      - [3.3.2.3 Sign the Publishing License](#3323-sign-the-publishing-license)
+  - [3.4 Example 4: Consuming Protected Content](#34-example-4-consuming-protected-content)
+    - [3.4.1 Client Bootstrapping](#341-client-bootstrapping)
+      - [3.4.1.1 Activate the Computer](#3411-activate-the-computer)
+      - [3.4.1.2 Certify the User](#3412-certify-the-user)
+      - [3.4.1.3 Find Service Locations](#3413-find-service-locations)
+    - [3.4.2 Licensing](#342-licensing)
+  - [3.5 Example 5: Accessing the Server for Advanced Scenarios](#35-example-5-accessing-the-server-for-advanced-scenarios)
+    - [3.5.1 Republishing Content](#351-republishing-content)
+    - [3.5.2 Perform Precertification](#352-perform-precertification)
+    - [3.5.3 Perform Prelicensing](#353-perform-prelicensing)
+    - [3.5.4 Decommission Server](#354-decommission-server)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.2
-2.3
-
-2.4
-2.5
-
-2.1.1
-2.1.2
-
-2.3.1
-2.3.2
-
-2.1.2.1
-2.1.2.2
-
-2.1.3
-2.1.4
-2.1.5
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-2.3.2.5
-2.3.2.6
-
-2  Functional Architecture ........................................................................................... 9
-Overview .......................................................................................................... 9
-Purpose of RMS ............................................................................................ 9
-Functional Overview .................................................................................... 11
-Abstract Components ............................................................................ 11
-Client-to-Server and Server-to-Server Functionality .................................. 12
-Communication Within RMS ......................................................................... 17
-Applicability ............................................................................................... 17
-Relevant Standards ..................................................................................... 17
-Protocol Summary ............................................................................................ 18
-Environment .................................................................................................... 18
-Dependencies on RMS ................................................................................. 19
-Dependencies on Other Systems/Components ................................................ 19
-SOAP ................................................................................................... 19
-Cryptographic Keys ............................................................................... 19
-Directory Services ................................................................................. 19
-Federated Sign-On ................................................................................ 20
-XrML ................................................................................................... 20
-RMS Certificates and Licenses ................................................................. 20
-Assumptions and Preconditions .......................................................................... 21
-Use Cases ....................................................................................................... 21
-Actors ....................................................................................................... 21
-Supporting Actors and System Interests Summary ......................................... 22
-Use Case Summary Diagrams ...................................................................... 22
-Use Case Descriptions ................................................................................. 25
-Enroll RMS Server - RMS Server ............................................................. 25
-2.5.4.1
-Bootstrap RMS Client - RMS Client Application .......................................... 26
-2.5.4.2
-Sub-Enroll Server - RMS Server .............................................................. 27
-2.5.4.3
-Find Service Locations for Client - RMS Server .......................................... 29
-2.5.4.4
-Acquire Templates - RMS Client Application .............................................. 30
-2.5.4.5
-Publish Protected Content Online - RMS Client Application .......................... 31
-2.5.4.6
-Publish Protected Content Offline - RMS Client Application .......................... 32
-2.5.4.7
-Consume Protected Content - RMS Client Application ................................. 33
-2.5.4.8
-Expand Groups - RMS Server ................................................................. 34
-2.5.4.9
-2.5.4.10
-Find Service Locations for Group Expansion - RMS Server .......................... 35
-2.5.4.11  Decommission Server - ISV Application ................................................... 36
-Republishing Content - ISV Application .................................................... 37
-2.5.4.12
-Perform Precertification - ISV Application ................................................. 39
-2.5.4.13
-Perform Prelicensing - ISV Application ..................................................... 40
-2.5.4.14
-Versioning, Capability Negotiation, and Extensibility ............................................. 41
-Error Handling ................................................................................................. 41
-Coherency Requirements .................................................................................. 42
-Security .......................................................................................................... 42
-Additional Considerations .................................................................................. 42
-
-2.6
-2.7
-2.8
-2.9
-2.10
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-
-3.1
-
-3  Examples ............................................................................................................... 43
-Example 1: Activating the RMS Servers .............................................................. 43
-Activate the Server ..................................................................................... 43
-Activate a Subordinate RMS Server ............................................................... 43
-Example 2: Using Offline Publishing to Protect Content ......................................... 43
-
-3.1.1
-3.1.2
-
-3.2
-
-[MS-RMSOD] - v20211026
-Rights Management Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 54
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-
-3.3
-
-3.2.2
-3.2.3
-
-3.3.1
-3.3.2
-
-3.4
-
-3.4.1
-
-3.3.2.1
-3.3.2.2
-3.3.2.3
-
-3.4.1.1
-3.4.1.2
-3.4.1.3
-
-Client Bootstrapping.................................................................................... 44
-Activate the Computer ........................................................................... 44
-Find Service Locations ........................................................................... 45
-Certify the User .................................................................................... 45
-Acquire a CLC ....................................................................................... 45
-Acquire Templates ...................................................................................... 45
-Offline Publishing ........................................................................................ 45
-Example 3: Using Online Publishing to Protect Content ......................................... 45
-Acquire Templates ...................................................................................... 46
-Online Publishing ........................................................................................ 46
-Acquire the Server's Certificate ............................................................... 46
-Generate a Publishing License ................................................................ 46
-Sign the Publishing License .................................................................... 47
-Example 4: Consuming Protected Content ........................................................... 47
-Client Bootstrapping.................................................................................... 47
-Activate the Computer ........................................................................... 47
-Certify the User .................................................................................... 48
-Find Service Locations ........................................................................... 48
-Licensing ................................................................................................... 48
-Example 5: Accessing the Server for Advanced Scenarios ..................................... 48
-Republishing Content .................................................................................. 48
-Perform Precertification ............................................................................... 48
-Perform Prelicensing ................................................................................... 49
-Decommission Server .................................................................................. 49
-
-3.5
-
-3.4.2
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-4  Microsoft Implementations ................................................................................... 50
-Product Behavior .............................................................................................. 50
-
-4.1
-
-5  Change Tracking .................................................................................................... 51
-
-6  Index ..................................................................................................................... 52
-
-[MS-RMSOD] - v20211026
-Rights Management Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 54
-
-1  Introduction
+## 1 Introduction
 
 The Rights Management Services (RMS) protocols enable information-protection functionality that
 works with RMS-enabled applications to help safeguard digital information from unauthorized use,
@@ -485,7 +366,7 @@ the common user scenarios. It does not restate the processing rules and other de
 to each protocol. These details are described in the protocol specifications for each of the protocols
 and data structures that make up this system.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 This section summarizes concepts that are specific to the Rights Management Services (RMS) protocol
 group, including:
@@ -519,7 +400,7 @@ ISV extensions: These extensions provide a means for implementations to access R
 
 necessarily going through the RMS client.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -538,7 +419,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-bootstrapping: A process that RMS clients can use to self-activate.
+
+bootstrapping: A process that RMS clients can use to self-activate.
 
 certificate: As used in this document, certificates are expressed in [XRML] section 1.2.
 
@@ -612,7 +494,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-given piece of content and grants the server the right to issue use licenses (ULs) based on
+
+given piece of content and grants the server the right to issue use licenses (ULs) based on
 that policy. The PL is created when content is protected. Also known as an Issuance License
 (IL).
 
@@ -654,7 +537,7 @@ of an RMS server.
 use license (UL): An XrML 1.2 license that authorizes a user to access a given protected content
 file and describes the usage policies that apply. Also known as an "End-User License (EUL)".
 
-1.3  References
+### 1.3 References
 
 [FIPS180-2] National Institute of Standards and Technology, "Secure Hash Standard", FIPS PUB 180-
 2, August 2002, http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
@@ -683,7 +566,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
+
+[RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
 2616, June 1999, https://www.rfc-editor.org/info/rfc2616
 
 [RFC3377] Hodges, J. and Morgan, R., "Lightweight Directory Access Protocol (v3): Technical
@@ -733,9 +617,10 @@ Release: October 26, 2021
 
 8 / 54
 
-2  Functional Architecture
 
-2.1  Overview
+## 2 Functional Architecture
+
+### 2.1 Overview
 
 RMS has three major roles: the creator, the consumer, and the server. The creator builds content
 and chooses an access policy for that content. When the RMS creator protects the content, it is
@@ -757,7 +642,7 @@ signing these issued certificates and policies with keys that it holds in escrow
 evaluating and issuing authorization policies that are based on identity credentials that the client
 provides in protocol requests.
 
-2.1.1  Purpose of RMS
+#### 2.1.1 Purpose of RMS
 
 RMS provides the ability to secure information and to restrict access to authorized users. It also
 provides the ability to enforce access policies and to restrict information access to trusted
@@ -771,7 +656,8 @@ Release: October 26, 2021
 
 9 / 54
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-RMSOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -819,16 +705,17 @@ Release: October 26, 2021
 
 10 / 54
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-RMSOD].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-2.1.2  Functional Overview
+#### 2.1.2 Functional Overview
 
 This section describes the relationships between RMS and external components, RMS dependencies,
 and other components that are influenced by RMS.
 
-2.1.2.1  Abstract Components
+##### 2.1.2.1 Abstract Components
 
 At a high level, there are three main components in RMS: the RMS server, the RMS client application,
 and the ISV client applications. The RMS server, which acts only within RMS, provides RMS services
@@ -852,7 +739,8 @@ Release: October 26, 2021
 
 11 / 54
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-RMSOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -862,7 +750,7 @@ The RMS server maintains RMS configuration, logging, and directory services data
 certificates, such as an RMS account certificate (RAC), are stored in the database. A directory
 service is also required to provide user authentication and other directory services.
 
-2.1.2.2  Client-to-Server and Server-to-Server Functionality
+##### 2.1.2.2 Client-to-Server and Server-to-Server Functionality
 
 RMS protocols have two main sets of services, the client-to-server services and the server-to-server
 services. The client-to-server services are the individual interfaces that RMS client applications call to
@@ -881,7 +769,8 @@ Release: October 26, 2021
 
 12 / 54
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-RMSOD].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -925,7 +814,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-to the server templates. Details of the AcquireTemplateInformation request can be found in
+
+to the server templates. Details of the AcquireTemplateInformation request can be found in
 [MS-RMPR] section 3.4.4.2.
 
 AcquireTemplates: After receiving the list of templates, the client determines which templates to
@@ -995,7 +885,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-using the GetDirectoryForAccount and GetServiceLocationForDirectory abstract interfaces and
+
+using the GetDirectoryForAccount and GetServiceLocationForDirectory abstract interfaces and
 returns the URL to the RMS client application. Details of the FindServiceLocationsForUser
 request can be found in [MS-RMPR] section 3.7.4.2.
 
@@ -1066,7 +957,8 @@ Release: October 26, 2021
 
 15 / 54
 
-Group Expansion over SOAP: RMS servers use the Group Expansion over SOAP interface of the
+
+Group Expansion over SOAP: RMS servers use the Group Expansion over SOAP interface of the
 RMS: Server-to-Server Protocol to determine group membership of authorized users across
 complex network directories.
 
@@ -1137,7 +1029,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-the altered rights. The RMS server responds with a new, signed PL that contains the same content
+
+the altered rights. The RMS server responds with a new, signed PL that contains the same content
 key as the original PL.
 
 PLs are required to permit republishing, as specified in [MS-RMSI] section 3.4.4.1. In addition,
@@ -1159,18 +1052,18 @@ server to retrieve a public key for a user when the user's key resides on that s
 Prelicensing interface exposes one request/response message to enable prelicensing via the
 AcquirePreLicense operation ([MS-RMSI] section 3.5.4.1).
 
-2.1.3  Communication Within RMS
+#### 2.1.3 Communication Within RMS
 
 RMS protocols use the SOAP messaging protocol for all communication. See [MS-RMPR], [MS-RMPRS],
 and [MS-RMSI] for more information on the implementation of these interfaces.
 
-2.1.4  Applicability
+#### 2.1.4 Applicability
 
 Applicability: The RMS protocols are used to manage user access to protected information, such as
 
 documents, email, and files.
 
-2.1.5  Relevant Standards
+#### 2.1.5 Relevant Standards
 
 Conformance with external standards: The RMS protocols use the following standards to enable
 
@@ -1204,7 +1097,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Web Services Description Language, as specified in [WSDL]. This standard provides a general purpose
+
+Web Services Description Language, as specified in [WSDL]. This standard provides a general purpose
 XML language for describing the interface, protocol bindings, and the deployment details of network
 services.
 
@@ -1220,7 +1114,7 @@ Microsoft Web Browser Federated Sign-On Protocol, as specified in [MS-MWBF]  and
 standard allows integration with Active Directory Federation Services to support federated identities. It
 enables two-way collaboration between organizations when only one organization has an RMS server.
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the RMS protocols.
 
@@ -1281,7 +1175,7 @@ RMPRS]
 [MS-
 RMSI]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which RMS exists. RMS includes the systems that use the
 interfaces that are provided by the RMS protocols, other components that depend on RMS, and, as
@@ -1299,16 +1193,17 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-An RMS client can be any device with the capability to connect to an RMS server by using HTTP. Client
+
+An RMS client can be any device with the capability to connect to an RMS server by using HTTP. Client
 implementations are free to persistently store certificates that are provided by the RMS server.
 
 An RMS server is a web server that is capable of communicating with clients over HTTP.
 
-2.3.1  Dependencies on RMS
+#### 2.3.1 Dependencies on RMS
 
 None.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The RMS protocols depend on the following technologies:
 
@@ -1326,7 +1221,7 @@ Federated sign-on (section 2.3.2.4)
 
   RMS certificates and licenses (section 2.3.2.6)
 
-2.3.2.1  SOAP
+##### 2.3.2.1 SOAP
 
 SOAP is a simple XML-based protocol that enables applications to exchange information over HTTP.
 SOAP provides a way to communicate between applications that are running on different operating
@@ -1340,7 +1235,7 @@ configured to use TCP/IP. There is no specific requirement for the type of physi
 topology. For more information about SOAP, see [SOAP1.1], [SOAP1.2-1/2003], and [SOAP1.2-
 2/2003].
 
-2.3.2.2  Cryptographic Keys
+##### 2.3.2.2 Cryptographic Keys
 
 RMS uses both symmetric and asymmetric (also known as public-key) cryptography. Cryptography in
 RMS is used to protect various certificates, licenses, and content. This functionality provides
@@ -1354,7 +1249,7 @@ feasible to determine one key with only the other. The public key can be freely 
 generally used to encrypt data or verify signatures. The private key is kept secret and is generally
 used for decrypting and signing data.
 
-2.3.2.3  Directory Services
+##### 2.3.2.3 Directory Services
 
 RMS uses directory services, such as Active Directory, as a central repository for storing and retrieving
 identity and account information about RMS users. The directory services are also used to enable the
@@ -1366,7 +1261,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-RMS client to discover the RMS server and to authenticate requests to the server. In scenarios where
+
+RMS client to discover the RMS server and to authenticate requests to the server. In scenarios where
 Active Directory is used as the directory service and the RMS server has joined a domain, the domain
 serves as the primary source of identity for the RMS server and RMS users. The domain, through the
 relevant security protocols, provides the basis for authentication within the domain, allowing principals
@@ -1377,13 +1273,13 @@ identifiers (SIDs)), which are stored in the directory. In scenarios where other
 used, separate authentication mechanisms can be used, such as anonymous authentication. For more
 information about Active Directory, see [MS-ADOD].
 
-2.3.2.4  Federated Sign-On
+##### 2.3.2.4 Federated Sign-On
 
 Use of federated sign-on allows enterprises to establish relationships for exchanging protected content
 with entities outside their directory infrastructure. For more information about federated sign-on, see
 the federated sign-On protocols and extensions ([MS-MWBE] and [MS-MWBF]).
 
-2.3.2.5  XrML
+##### 2.3.2.5 XrML
 
 The eXtensible rights Markup Language (XrML) is a general-purpose, XML-based specification
 grammar for expressing rights and conditions that are associated with digital content, services, or any
@@ -1412,7 +1308,7 @@ XrML supports an extensive list of rights. In addition, applications can define 
 particular needs. By defining additional rights, enterprises can build many business, usage, and
 workflow models to meet their specific requirements. For more information about XrML, see [XRML].
 
-2.3.2.6  RMS Certificates and Licenses
+##### 2.3.2.6 RMS Certificates and Licenses
 
 RMS defines specific XrML certificates to identify and trust different entities in the system. Licenses
 are also XrML certificates but are used to specify rights and conditions that govern content use. The
@@ -1432,7 +1328,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Use licenses
+
+  Use licenses
 
   Client licensor certificates
 
@@ -1465,7 +1362,7 @@ Use license: The UL authorizes access to a given piece of protected content and 
 
 policies that apply. The UL contains the symmetric content key for decrypting the content.
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 Given the environment described in section 2.3, RMS has the following assumptions and
 preconditions:
@@ -1490,11 +1387,11 @@ Each member protocol that is supported by RMS, as listed in section 2.2, can hav
 assumptions and preconditions when that protocol is being used. See the relevant member protocol
 specification for details.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 This section describes the major use cases of the RMS protocols and the rationale for their use.
 
-2.5.1  Actors
+#### 2.5.1 Actors
 
 Stakeholders (actors) that use the RMS protocols include users, computers, applications, servers, and
 services. The actors that participate in the RMS use cases are:
@@ -1510,7 +1407,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Client computer: A computer or device, such as a mobile phone, that hosts an RMS client
+
+Client computer: A computer or device, such as a mobile phone, that hosts an RMS client
 
 application.
 
@@ -1535,11 +1433,11 @@ key and certificate chain. Upon initialization of the RMS version 2 server, the 
 its own unsigned SLC, signs it with this shared enrollment private key, and appends the certificate
 chain.
 
-2.5.2  Supporting Actors and System Interests Summary
+#### 2.5.2 Supporting Actors and System Interests Summary
 
 There are no other systems in which RMS is an actor.
 
-2.5.3  Use Case Summary Diagrams
+#### 2.5.3 Use Case Summary Diagrams
 
 The following table provides an overview for the groups of use cases that span the functionality of the
 RMS protocols. The sections that follow provide detailed descriptions of the use cases in each group.
@@ -1598,7 +1496,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-RMSOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1611,7 +1510,8 @@ Release: October 26, 2021
 
 23 / 54
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-RMSOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1625,15 +1525,16 @@ Release: October 26, 2021
 
 24 / 54
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-RMSOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 7: Access the server for advanced scenarios
 
-2.5.4  Use Case Descriptions
+#### 2.5.4 Use Case Descriptions
 
-2.5.4.1  Enroll RMS Server - RMS Server
+##### 2.5.4.1 Enroll RMS Server - RMS Server
 
 Goal
 
@@ -1663,7 +1564,8 @@ Release: October 26, 2021
 
 25 / 54
 
-  Supporting actors: The supporting actor is the RMS cloud service.
+
+  Supporting actors: The supporting actor is the RMS cloud service.
 
 Stakeholders and interests
 
@@ -1703,7 +1605,7 @@ Extensions
 Enrollment requests can also be made asynchronously by an RMS administrator exporting the
 enrollment request and sending it to the RMS cloud service from another computer.
 
-2.5.4.2  Bootstrap RMS Client - RMS Client Application
+##### 2.5.4.2 Bootstrap RMS Client - RMS Client Application
 
 Goal
 
@@ -1735,7 +1637,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  RMS user, as described in section 2.5.1.
+
+  RMS user, as described in section 2.5.1.
 
   Client computer, as described in section 2.5.1.
 
@@ -1788,7 +1691,7 @@ Extensions
 
 None.
 
-2.5.4.3  Sub-Enroll Server - RMS Server
+##### 2.5.4.3 Sub-Enroll Server - RMS Server
 
 Goal
 
@@ -1808,7 +1711,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-server licensor certificate (SLC)from its own. For a subordinate RMS server, this process replaces
+
+server licensor certificate (SLC)from its own. For a subordinate RMS server, this process replaces
 the standard RMS server bootstrapping process specified in [MS-RMPR] section 3.1.3.
 
 When a subordinate RMS server is deployed, it needs to trust identities that are issued by the root
@@ -1885,9 +1789,10 @@ Release: October 26, 2021
 
 28 / 54
 
-None.
 
-2.5.4.4  Find Service Locations for Client - RMS Server
+None.
+
+##### 2.5.4.4 Find Service Locations for Client - RMS Server
 
 Goal
 
@@ -1958,11 +1863,12 @@ Release: October 26, 2021
 
 29 / 54
 
-Extensions
+
+Extensions
 
 None.
 
-2.5.4.5  Acquire Templates - RMS Client Application
+##### 2.5.4.5 Acquire Templates - RMS Client Application
 
 Goal
 
@@ -2027,7 +1933,8 @@ Release: October 26, 2021
 
 30 / 54
 
-3.  The RMS client application makes subsequent requests to the server for individual rights policy
+
+3.  The RMS client application makes subsequent requests to the server for individual rights policy
 
 templates by using the AcquireTemplates operation ([MS-RMPR] section 3.4.4.3). The client places
 the templates from the server in a local license store.
@@ -2036,7 +1943,7 @@ Extensions
 
 None.
 
-2.5.4.6  Publish Protected Content Online - RMS Client Application
+##### 2.5.4.6 Publish Protected Content Online - RMS Client Application
 
 Goal
 
@@ -2102,7 +2009,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The RMS client application sends a request to the RMS server to retrieve the public portion of the
+
+2.  The RMS client application sends a request to the RMS server to retrieve the public portion of the
 
 server's SLC.
 
@@ -2122,7 +2030,7 @@ Extensions
 
 None.
 
-2.5.4.7  Publish Protected Content Offline - RMS Client Application
+##### 2.5.4.7 Publish Protected Content Offline - RMS Client Application
 
 Goal
 
@@ -2178,7 +2086,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Main success scenario
+
+Main success scenario
 
 1.  Trigger: An attempt to protect content by using RMS, which can be trigged by an RMS user using
 
@@ -2198,7 +2107,7 @@ Extensions
 
 None.
 
-2.5.4.8  Consume Protected Content - RMS Client Application
+##### 2.5.4.8 Consume Protected Content - RMS Client Application
 
 Goal
 
@@ -2254,7 +2163,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Success guarantee
+
+Success guarantee
 
 The RMS client application receives the license to consume the content and is able to remove the
 protection.
@@ -2280,7 +2190,7 @@ Extensions
 
 None.
 
-2.5.4.9  Expand Groups - RMS Server
+##### 2.5.4.9 Expand Groups - RMS Server
 
 Goal
 
@@ -2326,7 +2236,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Stakeholders and interests
+
+Stakeholders and interests
 
   RMS client application, as described in section 2.5.1.
 
@@ -2388,9 +2299,9 @@ Extensions
 
 None.
 
-2.5.4.10
+##### 2.5.4.10 Find Service Locations for Group Expansion - RMS Server
 
-Find Service Locations for Group Expansion - RMS Server
+
 
 Goal
 
@@ -2405,7 +2316,8 @@ Release: October 26, 2021
 
 35 / 54
 
-RMS servers use the Find Service Locations interface to find the Group Expansion interface on a
+
+RMS servers use the Find Service Locations interface to find the Group Expansion interface on a
 remote server before making a group expansion request across forests.
 
 Actors
@@ -2457,9 +2369,9 @@ Extensions
 
 None.
 
-2.5.4.11
+##### 2.5.4.11 Decommission Server - ISV Application
 
-Decommission Server - ISV Application
+
 
 Goal
 
@@ -2480,7 +2392,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-it so that it can then be used to decrypt the content. Because each protected document has a PL, and
+
+it so that it can then be used to decrypt the content. Because each protected document has a PL, and
 each PL has its own content key, this process is repeated for each protected document that will have
 its protection removed.
 
@@ -2541,9 +2454,9 @@ Extensions
 
 None.
 
-2.5.4.12
+##### 2.5.4.12 Republishing Content - ISV Application
 
-Republishing Content - ISV Application
+
 
 Goal
 
@@ -2554,7 +2467,8 @@ Release: October 26, 2021
 
 37 / 54
 
-Create a new signed publishing license (PL) that has the same content key as an existing signed
+
+Create a new signed publishing license (PL) that has the same content key as an existing signed
 PL.
 
 Context of use
@@ -2636,9 +2550,10 @@ Release: October 26, 2021
 
 38 / 54
 
-2.5.4.13
 
-Perform Precertification - ISV Application
+##### 2.5.4.13 Perform Precertification - ISV Application
+
+
 
 Goal
 
@@ -2718,7 +2633,8 @@ Release: October 26, 2021
 
 39 / 54
 
-3.  The ISV application contacts the RMS server, retrieving the public part of the recipient's RAC by
+
+3.  The ISV application contacts the RMS server, retrieving the public part of the recipient's RAC by
 
 using the Precertification interface. The RMS server returns the public part of the RAC.
 
@@ -2730,9 +2646,9 @@ Extensions
 
 None.
 
-2.5.4.14
+##### 2.5.4.14 Perform Prelicensing - ISV Application
 
-Perform Prelicensing - ISV Application
+
 
 Goal
 
@@ -2804,7 +2720,8 @@ Release: October 26, 2021
 
 40 / 54
 
-The success guarantee is the same as the minimal guarantee.
+
+The success guarantee is the same as the minimal guarantee.
 
 Main success scenario
 
@@ -2829,7 +2746,7 @@ Extensions
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 The RMS protocols have client and server versions 1.0, 1.0 SP1, 1.0 SP2, and 2.0.
 
@@ -2839,7 +2756,7 @@ MaximumVersion value indicating the range of versions that the client is capable
 response, the VersionData structure contains a MinimumVersion and MaximumVersion value that the
 server is capable of supporting.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The RMS protocols are SOAP-based protocols that use HTTP 1.1 for transport. The protocols allow a
 server to notify a client of application-level faults by generating SOAP faults as specified in [SOAP1.1]
@@ -2889,17 +2806,18 @@ Release: October 26, 2021
 
 41 / 54
 
-The RMS protocols cannot function if there are failures on the services that they depend on, such as
+
+The RMS protocols cannot function if there are failures on the services that they depend on, such as
 network connectivity, availability of DNS, or availability of a directory service.
 
 Note  The Binary Group Expansion interface uses the HTTP transport ([RFC1945] and [RFC2616])
 and does not generate SOAP faults.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 None.
 
-2.9  Security
+### 2.9 Security
 
 This section documents security issues that are not otherwise described in the technical documents
 (TDs) for the RMS member protocols. It does not duplicate what is already in the RMS member
@@ -2908,7 +2826,7 @@ protocol TDs unless there is some unique aspect that applies to RMS as a whole.
 RMS does not define any security requirements beyond the security requirements described in the
 specifications of the protocols that are supported by RMS, as listed in section 2.2.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -2919,7 +2837,8 @@ Release: October 26, 2021
 
 42 / 54
 
-3  Examples
+
+## 3 Examples
 
 This section provides a series of examples illustrating the use of the RMS protocols. The examples are:
 
@@ -2941,9 +2860,9 @@ Each example, where applicable, assumes the client is well informed of the appro
 obtained by using service location discovery, a directory service, or pre-existing local configuration
 data.
 
-3.1  Example 1: Activating the RMS Servers
+### 3.1 Example 1: Activating the RMS Servers
 
-3.1.1  Activate the Server
+#### 3.1.1 Activate the Server
 
 Before participating in RMS, the RMS server enrolls as defined in [MS-RMPR] section 3.1.3. To enroll,
 the RMS server needs to have a server licensor certificate (SLC). Server enrollment requests can
@@ -2958,7 +2877,7 @@ SLC, signs it with this shared enrollment private key, and then appends the cert
 
 For more information about contacting the RMS cloud service, see [MS-RMPR] section 3.1.3.2.
 
-3.1.2  Activate a Subordinate RMS Server
+#### 3.1.2 Activate a Subordinate RMS Server
 
 An RMS server can be deployed as a subordinate to another RMS server. A root RMS server grants the
 subordinate RMS server the right to perform only certain licensing tasks by issuing a subordinate SLC
@@ -2970,7 +2889,7 @@ section 3.3.4.1) to the root RMS server. Then, to establish trust, the subordina
 a limited licensor certificate from the root RMS server by using the GetLicensorCertificate operation
 ([MS-RMPRS] section 3.4.4.1).
 
-3.2  Example 2: Using Offline Publishing to Protect Content
+### 3.2 Example 2: Using Offline Publishing to Protect Content
 
 One of the most common tasks in RMS is that of publishing protected content using an RMS client
 application. This section describes the typical procedure for a user and computer that has not used
@@ -2986,7 +2905,8 @@ Release: October 26, 2021
 
 43 / 54
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-RMSOD].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -2997,9 +2917,9 @@ interchangeable. It is possible to call FindServiceLocationsForUser (to get the 
 GetClientLicensorCert) before calling Certify as long as both requests are completed before calling
 GetClientLicensorCert.
 
-3.2.1  Client Bootstrapping
+#### 3.2.1 Client Bootstrapping
 
-3.2.1.1  Activate the Computer
+##### 3.2.1.1 Activate the Computer
 
 Before a computer or device can participate in RMS, it generates a security processor certificate
 (SPC). Beginning with RMS protocol versions 1.0 SP1, clients self-activate, generating their own
@@ -3012,7 +2932,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.2.1.2  Find Service Locations
+
+##### 3.2.1.2 Find Service Locations
 
 Depending on the deployment topology of the servers in the network, different servers can be used for
 different functions for a given user. The client makes a FindServiceLocationsForUser request to the
@@ -3020,14 +2941,14 @@ RMS server, and in return receives the URL of the server to make subsequent call
 bootstrapping. Details about the FindServiceLocationsForUser method can be found in [MS-
 RMPR] section 3.7.4.2.
 
-3.2.1.3  Certify the User
+##### 3.2.1.3 Certify the User
 
 After the computer is activated, the user is certified to participate in RMS. This result is accomplished
 by binding an encryption key pair to both the user and the client computer by way of an RMS
 account certificate (RAC). The user has a RAC to access protected content or to publish protected
 content offline. Full details of client certification can be found in [MS-RMPR] section 3.3.4.1.
 
-3.2.1.4  Acquire a CLC
+##### 3.2.1.4 Acquire a CLC
 
 To publish offline, the user has to have a signing key pair. The client licensor certificate (CLC)
 binds a signing key pair to the user through the user's RAC. The CLC private key is encrypted by the
@@ -3035,7 +2956,7 @@ RAC public key, and the SPC and RAC are required to decrypt the signing key. The
 GetClientLicensorCert request to acquire a CLC from that server. More information can be found in
 [MS-RMPR] section 3.5.4.2, which details the GetClientLicensorCert request.
 
-3.2.2  Acquire Templates
+#### 3.2.2 Acquire Templates
 
 An RMS client application can request rights policy templates from an RMS server. First, the RMS
 client application makes an AcquireTemplateInformation request to the server. The server returns
@@ -3050,7 +2971,7 @@ provided that can be enabled and is run separately to maintain the local store o
 makes add/delete/edit updates to the templates in the local store. Through this process, the client
 always keeps its templates in sync with the templates on the server.
 
-3.2.3  Offline Publishing
+#### 3.2.3 Offline Publishing
 
 Publishing offline is performed entirely by the RMS client application and does not involve any
 interaction with the RMS server. When the client is used to protect content, it generates a publishing
@@ -3064,7 +2985,7 @@ using the CLC private key, and the resultant signed PL chain includes the PL, th
 licensor certificate (SLC) from the CLC chain. For more details on offline publishing, see [MS-RMPR]
 section 1.3.5.
 
-3.3  Example 3: Using Online Publishing to Protect Content
+### 3.3 Example 3: Using Online Publishing to Protect Content
 
 Content can be published by using online publishing, where the client does not have to maintain
 certificates locally and use the server to sign publishing licenses (PLs). In online publishing, the
@@ -3076,7 +2997,8 @@ Rights Management Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-RMSOD].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3086,13 +3008,13 @@ are used in the publishing process.
 
 Figure 9: Message flow for protecting content when using online publishing
 
-3.3.1  Acquire Templates
+#### 3.3.1 Acquire Templates
 
 Templates are acquired as described in section 3.2.2.
 
-3.3.2  Online Publishing
+#### 3.3.2 Online Publishing
 
-3.3.2.1  Acquire the Server's Certificate
+##### 3.3.2.1 Acquire the Server's Certificate
 
 When publishing content, the RMS client application has to have the public key from the server's
 server licensor certificate (SLC) to encrypt the symmetric content key and usage rights in the
@@ -3101,7 +3023,7 @@ generate use licenses. To get the server's SLC, the RMS client application sends
 GetLicensorCertificate operation. No custom data is sent in this request, and when the server
 receives the request, it returns the SLC to the RMS client application.
 
-3.3.2.2  Generate a Publishing License
+##### 3.3.2.2 Generate a Publishing License
 
 After the RMS client application has the server licensor certificate (SLC) and templates that are
 required for publishing, it generates a publishing license (PL). The RMS server is not contacted
@@ -3115,18 +3037,19 @@ Release: October 26, 2021
 
 46 / 54
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-RMSOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
-3.3.2.3  Sign the Publishing License
+##### 3.3.2.3 Sign the Publishing License
 
 The final step in online publishing is to sign the publishing license (PL). This step is performed by
 the RMS client application by making an AcquireIssuanceLicense request to the RMS server. In the
 AcquireIssuanceLicense request, the unsigned PL is sent to the server; the server signs it and
 returns the signed PL.
 
-3.4  Example 4: Consuming Protected Content
+### 3.4 Example 4: Consuming Protected Content
 
 When a user receives protected content to consume, a series of steps are required to set them up in
 RMS and for the application to acquire a use license to open the protected content. This section
@@ -3140,9 +3063,9 @@ interchangeable. It is possible to call FindServiceLocationsForUser (to get the 
 GetClientLicensorCert) before calling Certify as long as both requests are completed before calling
 AcquireLicense.
 
-3.4.1  Client Bootstrapping
+#### 3.4.1 Client Bootstrapping
 
-3.4.1.1  Activate the Computer
+##### 3.4.1.1 Activate the Computer
 
 In this example, activating the computer for client bootstrapping is the same as in Example 2. See
 section 3.2.1.1 for more details.
@@ -3154,7 +3077,8 @@ Release: October 26, 2021
 
 47 / 54
 
-3.4.1.2  Certify the User
+
+##### 3.4.1.2 Certify the User
 
 To access protected content, the user needs a RAC that corresponds to the user's account. After
 performing any necessary service discovery, the client uses the Certify request to acquire a RAC. The
@@ -3162,12 +3086,12 @@ server issues an asymmetric encryption key pair and identifies the user account 
 to have a valid security processor certificate (SPC) before calling the Certify request. Full details
 of client certification can be found in [MS-RMPR] section 3.3.4.1.
 
-3.4.1.3  Find Service Locations
+##### 3.4.1.3 Find Service Locations
 
 In this example, finding service locations for client bootstrapping is the same as in Example 2. See
 section 3.2.1.2 for details.
 
-3.4.2  Licensing
+#### 3.4.2 Licensing
 
 The use license (UL) describes what usage policies apply to the user while accessing a particular
 protected content file. It also contains the content key that is encrypted with the user's RAC public
@@ -3180,9 +3104,9 @@ and PL and passes through any application data that is present. If validation su
 granted access, the server generates a use license and returns it to the client. More details on the
 AcquireLicense request can be found in [MS-RMPR] section 3.4.4.1.
 
-3.5  Example 5: Accessing the Server for Advanced Scenarios
+### 3.5 Example 5: Accessing the Server for Advanced Scenarios
 
-3.5.1  Republishing Content
+#### 3.5.1 Republishing Content
 
 Republishing is performed when there is a need to alter the set of rights that were granted to users in
 the original publishing license (PL), but without re-encrypting the content with a new content key.
@@ -3193,7 +3117,7 @@ request includes both the signed PL that is used to protect the content and an u
 updated set of rights. The RMS server then adds the existing content key to the unsigned PL for the
 updated content, signs the PL, and returns it to the ISV client application.
 
-3.5.2  Perform Precertification
+#### 3.5.2 Perform Precertification
 
 Precertification is used to create a use license (UL) for a recipient in advance, so that the UL can be
 provided with the content.
@@ -3214,7 +3138,8 @@ Release: October 26, 2021
 
 48 / 54
 
-3.5.3  Perform Prelicensing
+
+#### 3.5.3 Perform Prelicensing
 
 Like precertification, prelicensing is used to obtain use licenses (ULs) in advance. Prelicensing
 optimizes the process by allowing the RMS server to act on the client's behalf. Prelicensing does not
@@ -3227,7 +3152,7 @@ RMS server by using the AcquirePreLicense operation ([MS-RMSI] section 3.5.4.1).
 recipients is indicated with a list of email addresses. The RMS server performs precertification for each
 recipient and returns the associated use licenses to the ISV client application.
 
-3.5.4  Decommission Server
+#### 3.5.4 Decommission Server
 
 Decommissioning is used to extract the content key from a publishing license (PL)  when
 decrypting protected content. The content can then be accessed outside of RMS or after RMS has been
@@ -3249,7 +3174,8 @@ Release: October 26, 2021
 
 49 / 54
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following versions of Windows:
 
@@ -3289,7 +3215,7 @@ The information in this specification is applicable to the following versions of
 
   Windows 11 operating system
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 3.2.1.1: Support for the RMS version 1.0 client has ended, and the cloud activation
 service is no longer available for activation requests. Activate requests from RMS version 1.0 clients
@@ -3306,7 +3232,8 @@ Release: October 26, 2021
 
 50 / 54
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3347,7 +3274,8 @@ Release: October 26, 2021
 
 51 / 54
 
-6  Index
+
+## 6 Index
 A
 
 Accessing the server for advanced scenarios
@@ -3482,7 +3410,8 @@ Examples
 
 52 / 54
 
-      licensing 48
+
+      licensing 48
    overview 43
    using
       offline publishing to protect content
@@ -3620,7 +3549,8 @@ RMS
 
 53 / 54
 
-         bootstrap RMS client - RMS client application
+
+         bootstrap RMS client - RMS client application
 
 26
 

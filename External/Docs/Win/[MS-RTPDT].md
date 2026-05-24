@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 16
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -300,7 +301,8 @@ Release: June 1, 2017
 
 2 / 16
 
-Date
+
+Date
 
 Revision
 History
@@ -452,124 +454,59 @@ Release: June 1, 2017
 
 3 / 16
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DTMF Telephony Event](#221-dtmf-telephony-event)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Receiver Details](#32-receiver-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Sender Details](#33-sender-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-DTMF Telephony Event .................................................................................. 7
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ....................................................................................................... 8
-Common Details ................................................................................................ 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Higher-Layer Triggered Events ....................................................................... 8
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-Receiver Details ................................................................................................. 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-Sender Details ................................................................................................... 9
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-3.3.6
-3.3.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.3
-
-4  Protocol Examples ................................................................................................. 11
-
-5  Security ................................................................................................................. 12
-Security Considerations for Implementers ........................................................... 12
-Index of Security Parameters ............................................................................ 12
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 13
-
-7  Change Tracking .................................................................................................... 14
-
-8  Index ..................................................................................................................... 15
-
-[MS-RTPDT] - v20170601
-Real-Time Transport Protocol (RTP/RTCP): DTMF Digits, Telephony Tones and Telephony Signals Data Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 16
-
-1  Introduction
+## 1 Introduction
 
 The Real-Time Transport Protocol (RTP/RTCP): DTMF Digits, Telephony Tones, and Telephony Signals
 Data Extensions Protocol (RTPDT) is an extension to [RFC4733]. RTPDT describes the payload format
@@ -581,7 +518,7 @@ be used.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -602,14 +539,14 @@ and [RFC3264].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -635,11 +572,12 @@ Release: June 1, 2017
 
 5 / 16
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The RTP/RTCP: DTMF Digits, Telephony Tones, and Telephony Signals Data Extensions protocol
 describes a mechanism for transmission of in-band and out-of-band telephony digits, tones, and
@@ -648,13 +586,13 @@ signals. It is an extension to [RFC4733].
 The RTPDT protocol is limited to telephony signals using out-of-band transmission. The in-band
 transmission of digits and tones is not supported by this protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol relies on RTP as specified in [MS-RTPME] as its transport mechanism. This protocol can
 be used to communicate signaling DTMF telephony events between clients and gateways using the
 RTP payload.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is a payload of RTP; therefore, a valid RTP session has to be established between a
 client and a gateway.
@@ -663,12 +601,12 @@ Furthermore, because of the dynamic payload typing of the telephony events, out-
 is required to bind the payload type of the RTP payload to the telephony events. This is done using the
 Session Description Protocol [MS-SDP].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable wherever telephony digits, tones, or signals need to be sent or consumed
 either by remote clients or through gateways.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
   Supported Transports: This protocol is sent using the RTP transport mechanism [MS-RTPME].
 
@@ -687,11 +625,11 @@ authentication method, or both methods used by the RTP version 2 protocol.
 
  Localization: None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -702,9 +640,10 @@ Release: June 1, 2017
 
 6 / 16
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RTP/RTCP: DTMF Digits, Telephony Tones and Telephony Signals Data Extensions protocol MUST
 be sent using RTP as specified in [MS-RTPME] as its transport. This protocol assumes that a
@@ -713,12 +652,12 @@ successful RTP session has been established with valid payload information.
 The Session Description Protocol (SDP) [MS-SDP] MUST be used to negotiate the payload type
 information.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The structure and syntax of the RTP/RTCP: DTMF Digits, Telephony Tones and Telephony Signals Data
 Extensions protocol is defined in [RFC4733] section 2.3.
 
-2.2.1  DTMF Telephony Event
+#### 2.2.1 DTMF Telephony Event
 
 The DTMF Telephony Event format is described in [RFC4733] section 2.3.
 
@@ -729,7 +668,8 @@ Release: June 1, 2017
 
 7 / 16
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The RTP/RTCP: DTMF Digits, Telephony Tones, and Telephony Signals Extensions protocol conforms
 more to the "sender-receiver" paradigm than the classic "client-server" paradigm. More specifically, it
@@ -739,7 +679,7 @@ telephony signals.
 This specification covers the common details between the sender and receiver. It then provides the
 specifics of the sender and receiver details.
 
-3.1  Common Details
+### 3.1 Common Details
 
 In [RFC4733], out-of-band negotiation of telephony signal information is required to establish a
 session. During this negotiation, both payload types and the clock rate of the telephony signals are
@@ -768,19 +708,19 @@ used.
 
 All clock frequencies for DTMF signals, tones, and digits MUST be fixed at 8,000 Hertz.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
@@ -791,55 +731,56 @@ Release: June 1, 2017
 
 8 / 16
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 There are no sequence rules or processing event requirements for this protocol above that described
 in [RFC4733].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Receiver Details
+### 3.2 Receiver Details
 
 Redundant payload support as described in [MS-RTPRAD] MUST NOT be used.
 
 Multiple events per the RTP block MUST NOT be used.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 There are no sequence rules or processing event requirements for this protocol above that described
 in [RFC4733].
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Sender Details
+### 3.3 Sender Details
 
 Implementation for this protocol MUST NOT generate redundant blocks as described in [MS-RTPRAD].
 
@@ -852,37 +793,38 @@ Release: June 1, 2017
 
 9 / 16
 
-The sender MUST NOT generate a DTMF event whose duration exceeds the maximum expressible
+
+The sender MUST NOT generate a DTMF event whose duration exceeds the maximum expressible
 duration as specified in [RFC4733] section 2.3.5.
 
 The sender MUST NOT generate a DTMF event payload with a zero duration.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 There are no sequence rules or processing event requirements for this protocol above that described
 in [RFC4733].
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -893,7 +835,8 @@ Release: June 1, 2017
 
 10 / 16
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following is an example of the SDP negotiation for the DTMF events.
 
@@ -941,13 +884,14 @@ Release: June 1, 2017
 
 11 / 16
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 There are no additional protocol considerations beyond those described in [RFC4733].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No security parameters are used by this protocol.
 
@@ -958,7 +902,8 @@ Release: June 1, 2017
 
 12 / 16
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -986,7 +931,8 @@ Release: June 1, 2017
 
 13 / 16
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -998,7 +944,8 @@ Release: June 1, 2017
 
 14 / 16
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1145,7 +1092,8 @@ Real-Time Transport Protocol (RTP/RTCP): DTMF Digits, Telephony Tones and Teleph
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-   receiver (section 3.1.5 9, section 3.2.5 9)
+
+   receiver (section 3.1.5 9, section 3.2.5 9)
    sender (section 3.1.5 9, section 3.3.5 10)
 Standards assignments 6
 Syntax

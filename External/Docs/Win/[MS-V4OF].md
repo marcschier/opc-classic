@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 19
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: June 1, 2017
 
 2 / 19
 
-Date
+
+Date
 
 Revision
 History
@@ -512,104 +514,49 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 STP Packet](#221-stp-packet)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 and 3.1.4.2.](#3141-and-3142)
+      - [3.1.4.2 Sending a MULTICAST IPv4 Datagram](#3142-sending-a-multicast-ipv4-datagram)
+      - [3.1.4.3 Sending an STP Packet](#3143-sending-an-stp-packet)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving an STP Packet](#3151-receiving-an-stp-packet)
+      - [3.1.5.2 Receiving a MULTICAST 1394 Frame](#3152-receiving-a-multicast-1394-frame)
+      - [3.1.5.3 Receiving an Unrecognized Message](#3153-receiving-an-unrecognized-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-STP Packet................................................................................................... 9
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 10
-Common Details .............................................................................................. 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Sending a UNICAST IPv4 Datagram ......................................................... 10
-Sending a MULTICAST IPv4 Datagram ..................................................... 10
-Sending an STP Packet .......................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 11
-Receiving an STP Packet ........................................................................ 11
-Receiving a MULTICAST 1394 Frame ....................................................... 11
-Receiving an Unrecognized Message ........................................................ 11
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 11
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.6
-3.1.7
-
-3.1.5
-
-4  Protocol Examples ................................................................................................. 12
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 17
-
-8  Index ..................................................................................................................... 18
-
-[MS-V4OF] - v20170601
-IPv4 Over IEEE 1394 Protocol Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 19
-
-1  Introduction
+## 1 Introduction
 
 The IPv4 Over IEEE 1394 (IPo1394) protocol is described by the Internet Engineering Task Force
 (IETF), and is specified in [RFC2734]. The IPo1394 protocol specifies the necessary methods, data
@@ -625,7 +572,7 @@ of [RFC2734] where necessary.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -644,14 +591,14 @@ that OUI assignment.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -676,7 +623,8 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-V4OF].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
@@ -692,7 +640,7 @@ http://www.ietf.org/rfc/rfc2855.txt
 [RFC791] Postel, J., Ed., "Internet Protocol: DARPA Internet Program Protocol Specification", RFC 791,
 September 1981, https://www.rfc-editor.org/info/rfc791
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE802.3] Institute of Electrical and Electronics Engineers, "Telecommunications and information
 exchange between systems-Local and metropolitan area networks-Specific requirements Part 3:
@@ -708,7 +656,7 @@ Networking", http://technet.microsoft.com/en-us/library/bb457038(TechNet.10).asp
 http://technet2.microsoft.com/WindowsServer/en/Library/8c6c4acb-49db-4d8a-844f-
 1fe31c4b2ded1033.mspx
 
-1.3  Overview
+### 1.3 Overview
 
 The IPv4 over IEEE 1394 protocol (IPo1394) is used to transport IPv4 (as specified in [RFC791])
 datagrams over the high Performance Serial Bus (as specified in [IEEE1394]). The primary use of the
@@ -738,11 +686,12 @@ Release: June 1, 2017
 
 6 / 19
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-V4OF].images/page007-img01.png)
 <!-- /Extracted images from page 7 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 IPv4 Over IEEE 1394 (IPo1394) Protocol relates to other protocols only insofar as those protocols run
 over IPv4, which in turn can run over IPo1394. The extensions specified in this document do not affect
@@ -766,12 +715,12 @@ the use of some fields in DHCP packets has to be clarified to achieve interopera
 implementations of IPo1394 and DHCP. DHCP for IEEE 1394, as specified in [RFC2855], specifies the
 IPo1394 use of these fields in DHCP packets.<2>
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The IPv4 Over IEEE 1394 Protocol Extensions do not add any new prerequisites or preconditions
 beyond those specified in [RFC2734].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The extension described herein does not change the applicability of the IPo1394 protocol, with one
 notable exception. IPo1394, as specified in [RFC2734], does not support bridging. The extension
@@ -783,19 +732,20 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-described in this document allows bridging to operate in a network that contains one or more 1394
+
+described in this document allows bridging to operate in a network that contains one or more 1394
 links.<3>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The IPv4 Over IEEE 1394 Protocol Extensions do not introduce any new vendor-extensible fields
 beyond those specified in [RFC2734] section 10.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The new value of 0x0777 for ether_type, as specified in Spanning Tree Algorithm and Protocol (STP)
 packet (section 2.2.1), was chosen by Microsoft but is not yet reserved by the IEEE Registration
@@ -808,22 +758,23 @@ Release: June 1, 2017
 
 8 / 19
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how IPv4 Over IEEE 1394 Protocol Extensions messages are transported
 and gives details on the message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 The IPo1394 transport, as specified in [RFC2734], is not changed by this protocol extension.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Except as specified in the Spanning Tree Algorithm and Protocol (STP) packet (section 2.2.1), the
 message syntax for the IPo1394 protocol remains unchanged from the base protocol as specified in
 [RFC2734] section 4.2.
 
-2.2.1  STP Packet
+#### 2.2.1 STP Packet
 
 The Spanning Tree Algorithm and Protocol (STP) (as specified in [IEEE802.1D] sections 8 and 9) is
 used to detect network loops. The extension specified in this document extends IPo1394 to support
@@ -887,7 +838,8 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Standard STP message (variable): A standard STP message.
+
+Standard STP message (variable): A standard STP message.
 
 [MS-V4OF] - v20170601
 IPv4 Over IEEE 1394 Protocol Extensions
@@ -896,22 +848,23 @@ Release: June 1, 2017
 
 10 / 19
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As specified in [RFC2734], IPo1394 is a point-to-point protocol used for transmitting IPv4 datagrams
 over an IEEE 1394 high-performance serial bus.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No additional state is required beyond that in the base protocol, as specified in [RFC2734].<4>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No new timers are required beyond those in the base protocol, as specified in [RFC2734].<5>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Spanning Tree Algorithm and Protocol (STP) is unchanged from what is specified in [IEEE802.1D]
 section 9, but because it expects EUI-48 addresses (as Ethernet uses), it is necessary to explain how
@@ -925,24 +878,24 @@ unique on the subnet, for use by STP when it needs to construct a bridge ID.<6>
 
 No additional initialization is required beyond that in the base protocol, as specified in [RFC2734].<7>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No additional higher-layer triggered events exist beyond those in the base protocol, as specified in
 [RFC2734]. The behavior of the existing higher-layer triggered events is as specified in sections
-3.1.4.1 and 3.1.4.2.
+##### 3.1.4.1 and 3.1.4.2.
 
 3.1.4.1  Sending a UNICAST IPv4 Datagram
 
 When IPv4 (as specified in [RFC791]) transmits a unicast IPv4 datagram, the behavior is unchanged
 from what is specified in [RFC2734] section 7.<8>
 
-3.1.4.2  Sending a MULTICAST IPv4 Datagram
+##### 3.1.4.2 Sending a MULTICAST IPv4 Datagram
 
 An implementation of IPv4 over IEEE 1394 MAY use "multicast transmit" (as specified in [RFC2734]
 sections 9 and 9.1) to send a multicast IPv4 datagram, or it MAY use the "IP Broadcast" to send a
 multicast IPv4 datagram on the BROADCAST_CHANNEL, as specified in [RFC2734] section 8.<9>
 
-3.1.4.3  Sending an STP Packet
+##### 3.1.4.3 Sending an STP Packet
 
 IPo1394 MUST encapsulate the STP packet with the IPo1394 encapsulation header, as specified in
 [RFC2734] section 4.2, and MUST set the value 0x0777 in the ether_type field present in the
@@ -956,38 +909,39 @@ Release: June 1, 2017
 
 11 / 19
 
-On Ethernet media, STP packets are sent to the Bridge Group Address (as specified in [IEEE802.1D]
+
+On Ethernet media, STP packets are sent to the Bridge Group Address (as specified in [IEEE802.1D]
 section 9). When transmitted over 1394, STP packets MUST be sent on the 1394 broadcast channel
 (as specified in [RFC2734] section 8).
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Except as noted in this section, the message processing and sequencing rules are unchanged from the
 base protocol, as specified in [RFC2734].
 
-3.1.5.1  Receiving an STP Packet
+##### 3.1.5.1 Receiving an STP Packet
 
 IPo1394 MUST correctly recognize the STP packet by recognizing the ether_type value in the packet
 encapsulation header that has a value of 0x0777. The STP packet format is specified in section 2.2.1.
 After receiving the STP packet, the IPo1394 protocol passes it up to the STP layer, which implements
 the network loop detection logic, as specified in [IEEE802.1D].
 
-3.1.5.2  Receiving a MULTICAST 1394 Frame
+##### 3.1.5.2 Receiving a MULTICAST 1394 Frame
 
 More information on the IPo1394 implementation of multicast frames is specified in [RFC2734] section
 9.<10>
 
-3.1.5.3  Receiving an Unrecognized Message
+##### 3.1.5.3 Receiving an Unrecognized Message
 
 The rules for processing an unrecognized message are unchanged from what is specified in [RFC2734]
 via [RFC791]. Specifically, an unrecognized message is dropped.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 [RFC2734] specifies the 1394 ARP request/response packet format but it does not describe a
 sequencing mechanism.<11>
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When a new IP address is acquired, the same actions are taken that are specified in section 3.1.3.
 
@@ -1000,11 +954,12 @@ Release: June 1, 2017
 
 12 / 19
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-V4OF].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following figure shows a scenario where Device 1 is connected to Bridge 1 via IPo1394. Bridge 1 is
 connected to Bridge 2 via IPo1394, and Bridge 2 is connected to Device 2 via Ethernet.
@@ -1080,7 +1035,8 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-V4OF].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1093,18 +1049,19 @@ Release: June 1, 2017
 
 14 / 19
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the IPv4 Over IEEE 1394
 Protocol Extensions.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The basic IPv4 over IEEE 1394 protocol (IPo1394) has no security mechanism. This document does
 not add any security to IPo1394. The protocol extension described in this document does not
 introduce new security risks nor does it provide any security mechanisms.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1115,7 +1072,8 @@ Release: June 1, 2017
 
 15 / 19
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1183,7 +1141,8 @@ IPv4 Over IEEE 1394 Protocol Extensions
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<10> Section 3.1.5.2: The Windows implementation of IPo1394 implements the "multicast receive" as
+
+<10> Section 3.1.5.2: The Windows implementation of IPo1394 implements the "multicast receive" as
 specified in relation to the Multicast Channel Allocation Protocol (MCAP), as specified in [RFC2734]
 section 9.3.
 
@@ -1219,7 +1178,8 @@ Release: June 1, 2017
 
 17 / 19
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1231,7 +1191,8 @@ Release: June 1, 2017
 
 18 / 19
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 10

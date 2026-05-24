@@ -63,7 +63,8 @@ Release: January 14, 2026
 
 1 / 180
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: January 14, 2026
 
 2 / 180
 
-Date
+
+Date
 
 Revision
 History
@@ -563,7 +565,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Date
+
+Date
 
 Revision
 History
@@ -588,709 +591,232 @@ Release: January 14, 2026
 
 4 / 180
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 15
-Normative References ................................................................................. 15
-Informative References ............................................................................... 16
-Overview ........................................................................................................ 17
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 19
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 20
-Vendor-Extensible Fields ................................................................................... 20
-Standards Assignments ..................................................................................... 20
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3
-
-2.2.1.4
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.4.1
-2.2.1.4.2
-
-2.2.1.2.1
-2.2.1.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2.2.1.3.1
-2.2.1.3.2
-2.2.1.3.3
-
-2  Messages ............................................................................................................... 22
-Transport ........................................................................................................ 22
-Message Syntax ............................................................................................... 22
-Common Data Type Extensions .................................................................... 23
-Character Sequences ............................................................................. 23
-Pathname Extensions ....................................................................... 23
-File Attributes ....................................................................................... 24
-Extended File Attribute (SMB_EXT_FILE_ATTR) Extensions ................... 24
-File System Attribute Extensions ....................................................... 25
-Unique Identifiers ................................................................................. 26
-FileId Generation ............................................................................. 27
-VolumeGUID Generation .................................................................. 27
-Copychunk Resume Key Generation ................................................... 27
-Access Masks ....................................................................................... 27
-File_Pipe_Printer_Access_Mask ......................................................... 27
-Directory_Access_Mask .................................................................... 29
-Defined Constant Extensions ........................................................................ 31
-SMB_COM Command Codes ................................................................... 31
-Transaction Subcommand Codes ............................................................. 31
-Information Level Codes ........................................................................ 31
-FIND Information Level Codes ........................................................... 31
-QUERY_FS Information Level Codes ................................................... 32
-QUERY Information Level Codes ........................................................ 32
-SET Information Level Codes ............................................................ 32
-Pass-through Information Level Codes ............................................... 32
-Other Information Level Codes .......................................................... 32
-SMB Error Classes and Codes ................................................................. 32
-Session Key Protection Hash .................................................................. 34
-SMB Message Structure Extensions ............................................................... 35
-SMB Header Extensions ......................................................................... 35
-SMB Command Extensions ........................................................................... 37
-SMB_COM_OPEN_ANDX (0x2D) .............................................................. 37
-Client Request Extensions................................................................. 37
-Server Response Extensions ............................................................. 38
-SMB_COM_READ_ANDX (0x2E) .............................................................. 40
-Client Request Extensions................................................................. 40
-Server Response Extensions ............................................................. 42
-SMB_COM_WRITE_ANDX (0x2F) ............................................................. 43
-Client Request Extensions................................................................. 43
-Server Response Extensions ............................................................. 44
-SMB_COM_TRANSACTION2 (0x32) Extensions ......................................... 45
-SMB_COM_NEGOTIATE (0x72) ............................................................... 45
-
-2.2.2.3.1
-2.2.2.3.2
-2.2.2.3.3
-2.2.2.3.4
-2.2.2.3.5
-2.2.2.3.6
-
-2.2.4.1.1
-2.2.4.1.2
-
-2.2.4.2.1
-2.2.4.2.2
-
-2.2.4.3.1
-2.2.4.3.2
-
-2.2.4.4
-2.2.4.5
-
-2.2.2.4
-2.2.2.5
-
-2.2.3.1
-
-2.2.4.1
-
-2.2.4.2
-
-2.2.4.3
-
-2.2.3
-
-2.2.4
-
-[MS-SMB] - v20260114
-Server Message Block (SMB) Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 14, 2026
-
-5 / 180
-
-2.2.4.5.1
-2.2.4.5.2
-
-2.2.4.5.2.1
-2.2.4.5.2.2
-
-2.2.4.6
-
-2.2.4.6.1
-2.2.4.6.2
-
-2.2.4.7
-
-2.2.4.7.1
-2.2.4.7.2
-
-2.2.4.8
-2.2.4.9
-
-2.2.4.9.1
-2.2.4.9.2
-
-2.2.4.10
-
-2.2.5
-
-2.2.5.1
-2.2.5.2
-
-2.2.6
-
-2.2.6.1
-
-2.2.6.1.1
-2.2.6.1.2
-
-2.2.6.2
-
-2.2.6.2.1
-2.2.6.2.2
-
-2.2.6.3
-
-2.2.6.3.1
-2.2.6.3.2
-
-2.2.6.4
-
-2.2.6.4.1
-2.2.6.4.2
-
-2.2.6.5
-
-2.2.6.5.1
-2.2.6.5.2
-
-2.2.6.6
-
-2.2.6.6.1
-2.2.6.6.2
-
-2.2.6.7
-
-2.2.6.7.1
-2.2.6.7.2
-
-2.2.6.8
-
-2.2.6.8.1
-2.2.6.8.2
-
-2.2.7.1
-
-2.2.7.1.1
-2.2.7.1.2
-
-2.2.7.2
-
-2.2.7.2.1
-
-2.2.7
-
-Client Request Extensions................................................................. 45
-Server Response Extensions ............................................................. 45
-Extended Security Response ....................................................... 45
-Non-Extended Security Response ................................................. 50
-SMB_COM_SESSION_SETUP_ANDX (0x73) .............................................. 53
-Client Request Extensions................................................................. 53
-Server Response Extensions ............................................................. 55
-SMB_COM_TREE_CONNECT_ANDX (0x75) ............................................... 58
-Client Request Extensions................................................................. 58
-Server Response Extensions ............................................................. 59
-SMB_COM_NT_TRANSACT (0xA0) Extensions ........................................... 61
-SMB_COM_NT_CREATE_ANDX (0xA2) ..................................................... 61
-Client Request Extensions................................................................. 61
-Server Response Extensions ............................................................. 64
-SMB_COM_SEARCH (0x81) Extensions .................................................... 67
-Transaction Subcommand Extensions ............................................................ 67
-TRANS_RAW_READ_NMPIPE (0x0011)..................................................... 67
-TRANS_CALL_NMPIPE (0x0054) .............................................................. 67
-Transaction 2 Subcommand Extensions ......................................................... 67
-TRANS2_FIND_FIRST2 (0x0001) ............................................................ 67
-Client Request Extensions................................................................. 67
-Server Response Extensions ............................................................. 68
-TRANS2_FIND_NEXT2 (0x0002) ............................................................. 68
-Client Request Extensions................................................................. 68
-Server Response Extensions ............................................................. 68
-TRANS2_QUERY_FS_INFORMATION (0x0003) .......................................... 68
-Client Request Extensions................................................................. 68
-Server Response Extensions ............................................................. 69
-TRANS2_SET_FS_INFORMATION (0x0004)............................................... 69
-Client Request................................................................................. 69
-Server Response ............................................................................. 70
-TRANS2_QUERY_PATH_INFORMATION (0x0005) ...................................... 71
-Client Request Extensions................................................................. 71
-Server Response Extensions ............................................................. 71
-TRANS2_SET_PATH_INFORMATION (0x0006) ........................................... 71
-Client Request Extensions................................................................. 71
-Server Response Extensions ............................................................. 71
-TRANS2_QUERY_FILE_INFORMATION (0x0007) ........................................ 71
-Client Request Extensions................................................................. 72
-Server Response Extensions ............................................................. 72
-TRANS2_SET_FILE_INFORMATION (0x0008) ............................................ 72
-Client Request Extensions................................................................. 72
-Server Response Extensions ............................................................. 72
-NT Transact Subcommand Extensions ........................................................... 72
-NT_TRANSACT_CREATE (0x0001) Extensions ........................................... 72
-Client Request Extensions................................................................. 72
-Server Response Extensions ............................................................. 74
-NT_TRANSACT_IOCTL (0x0002) ............................................................. 77
-Client Request Extensions................................................................. 77
-SRV_COPYCHUNK ...................................................................... 80
-Server Response Extensions ............................................................. 81
-FSCTL_SRV_ENUMERATE_SNAPSHOTS Response ........................... 81
-FSCTL_SRV_REQUEST_RESUME_KEY Response ............................. 82
-FSCTL_SRV_COPYCHUNK Response ............................................. 83
-NT_TRANSACT_SET_SECURITY_DESC (0x0003) Extensions ....................... 84
-NT_TRANSACT_QUERY_SECURITY_DESC (0x0006) Extensions ................... 84
-NT_TRANSACT_QUERY_QUOTA (0x0007)................................................. 85
-Client Request................................................................................. 85
-
-2.2.7.2.1.1
-
-2.2.7.2.2
-
-2.2.7.2.2.1
-2.2.7.2.2.2
-2.2.7.2.2.3
-
-2.2.7.3
-2.2.7.4
-2.2.7.5
-
-2.2.7.5.1
-
-[MS-SMB] - v20260114
-Server Message Block (SMB) Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 14, 2026
-
-6 / 180
-
-2.2.8
-
-2.2.7.5.2
-
-2.2.7.6
-
-2.2.7.6.1
-2.2.7.6.2
-
-Server Response ............................................................................. 87
-NT_TRANSACT_SET_QUOTA (0x0008) ..................................................... 89
-Client Request................................................................................. 89
-Server Response ............................................................................. 90
-Information Levels ...................................................................................... 91
-FIND Information Level Extensions .......................................................... 91
-SMB_FIND_FILE_BOTH_DIRECTORY_INFO Extensions ......................... 91
-SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO ..................................... 93
-SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO .................................... 95
-QUERY_FS Information Level Extensions .................................................. 97
-SMB_QUERY_FS_ATTRIBUTE_INFO .................................................... 97
-QUERY Information Level Extensions ....................................................... 97
-SET Information level Extensions ............................................................ 97
-
-2.2.8.1
-
-2.2.8.1.1
-2.2.8.1.2
-2.2.8.1.3
-
-2.2.8.2
-
-2.2.8.2.1
-
-2.2.8.3
-2.2.8.4
-
-3.2
-
-3.1
-
-3.2.1
-
-3.1.5
-
-3.1.1
-
-3.1.5.1
-
-3.1.1.1
-
-3.1.4.1
-
-3.1.6
-3.1.7
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.2
-3.1.3
-3.1.4
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-
-3  Protocol Details ..................................................................................................... 98
-Common Details .............................................................................................. 98
-Abstract Data Model .................................................................................... 98
-Global.................................................................................................. 98
-Timers ...................................................................................................... 98
-Initialization ............................................................................................... 98
-Higher-Layer Triggered Events ..................................................................... 98
-Sending Any Message ............................................................................ 98
-Message Processing Events and Sequencing Rules .......................................... 99
-Receiving Any Message .......................................................................... 99
-Timer Events .............................................................................................. 99
-Other Local Events ...................................................................................... 99
-Client Details ................................................................................................... 99
-Abstract Data Model .................................................................................... 99
-Global.................................................................................................. 99
-Per SMB Connection ............................................................................. 100
-Per SMB Session .................................................................................. 100
-Per Tree Connect ................................................................................. 100
-Per Unique Open .................................................................................. 100
-Timers ..................................................................................................... 100
-Initialization .............................................................................................. 101
-Higher-Layer Triggered Events .................................................................... 101
-Sending Any Message ........................................................................... 101
-Scanning a Path for a Previous Version Token .................................... 101
-Application Requests Connecting to a Share ............................................ 101
-Connection Establishment ................................................................ 101
-Dialect Negotiation ......................................................................... 101
-Capabilities Negotiation ................................................................... 102
-User Authentication ........................................................................ 102
-Sequence Diagram .................................................................... 103
-Connecting to the Share (Tree Connect) ............................................ 105
-Application Requests Opening a File ....................................................... 105
-SMB_COM_NT_CREATE_ANDX Request ............................................. 105
-SMB_COM_OPEN_ANDX Request (deprecated) ................................... 106
-Application Requests Reading from a File, Named Pipe, or Device .............. 106
-Large Read Support ........................................................................ 106
-Application Requests Writing to a File, Named Pipe, or Device ................... 107
-Application Requests a Directory Enumeration ......................................... 107
-Application Requests Querying File Attributes .......................................... 107
-Application Requests Setting File Attributes ............................................. 108
-Application Requests Querying File System Attributes ............................... 108
-Application Requests Setting File System Attributes ................................. 109
-Application Requests Sending an I/O Control to a File or Device ................. 109
-Application Requests Enumerating Available Previous Versions ............. 109
-
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-3.2.4.10
-3.2.4.11
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-3.2.4.2.4
-
-3.2.4.3.1
-3.2.4.3.2
-
-3.2.4.2.4.1
-
-3.2.4.11.1
-
-3.2.4.2.5
-
-3.2.4.4.1
-
-3.2.4.1.1
-
-3.2.4.3
-
-3.2.4.4
-
-3.2.4.1
-
-3.2.4.2
-
-[MS-SMB] - v20260114
-Server Message Block (SMB) Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 14, 2026
-
-7 / 180
-
-3.2.4.11.2
-
-3.2.4.12
-3.2.4.13
-3.2.4.14
-3.2.4.15
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-3.2.5.9
-
-3.2.5.9.1
-
-3.2.5.9.2
-3.2.5.9.3
-
-3.2.5.10
-3.2.5.11
-
-3.2.5.11.1
-
-3.2.5.9.1.1
-3.2.5.9.1.2
-
-3.2.4.11.2.1
-3.2.4.11.2.2
-
-Performing a Server-Side Data Copy ................................................. 109
-Application queries the Copychunk Resume Key of the Source File .. 110
-Application requests a Server-side Data Copy ............................... 110
-Application Requests Querying of DFS Referral ........................................ 111
-Application Requests Querying User Quota Information............................. 111
-Application Requests Setting User Quota Information ............................... 112
-Application Requests the Session Key for a Connection ............................. 112
-Message Processing Events and Sequencing Rules ......................................... 113
-Receiving Any Message ......................................................................... 113
-Receiving an SMB_COM_NEGOTIATE Response ........................................ 113
-Receiving an SMB_COM_SESSION_SETUP_ANDX Response ....................... 114
-Receiving an SMB_COM_TREE_CONNECT_ANDX Response ........................ 115
-Receiving an SMB_COM_NT_CREATE_ANDX Response .............................. 116
-Receiving an SMB_COM_OPEN_ANDX Response ....................................... 116
-Receiving an SMB_COM_READ_ANDX Response ....................................... 117
-Receiving an SMB_COM_WRITE_ANDX Response ..................................... 117
-Receiving any SMB_COM_NT_TRANSACT Response .................................. 117
-Receiving an NT_TRANSACT_IOCTL Response .................................... 117
-Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code ... 117
-Receiving an FSCTL_SRV_COPYCHUNK Function Code ................... 117
-Receiving an NT_TRANSACT_QUERY_QUOTA Response ....................... 117
-Receiving an NT_TRANSACT_SET_QUOTA Response ........................... 117
-Receiving an SMB_COM_SEARCH Response ............................................. 118
-Receiving any SMB_COM_TRANSACTION2 subcommand Response ............. 118
-Receiving any TRANS2_SET_FS_INFORMATION Response ................... 118
-Timer Events ............................................................................................. 118
-Other Local Events ..................................................................................... 118
-Server Details ................................................................................................. 118
-Abstract Data Model ................................................................................... 118
-Global................................................................................................. 118
-Per Share ............................................................................................ 119
-Per SMB Connection ............................................................................. 119
-Per Pending SMB Command .................................................................. 119
-Per SMB Session .................................................................................. 119
-Per Tree Connect ................................................................................. 119
-Per Unique Open .................................................................................. 120
-Timers ..................................................................................................... 120
-Authentication Expiration Timer ............................................................. 120
-Initialization .............................................................................................. 120
-Higher-Layer Triggered Events .................................................................... 120
-Sending Any Message ........................................................................... 120
-Sending Any Error Response Message ............................................... 121
-Server Application Queries a User Session Key ........................................ 121
-DFS Server Notifies SMB Server That DFS Is Active .................................. 121
-DFS Server Notifies SMB Server That a Share Is a DFS Share .................... 121
-DFS Server Notifies SMB Server That a Share Is Not a DFS Share .............. 121
-Server Application Updates a Share ........................................................ 121
-Server Application Requests Querying a Share ......................................... 121
-Message Processing Events and Sequencing Rules ......................................... 122
-Receiving Any Message ......................................................................... 122
-Scanning a Path for a Previous Version Token .................................... 123
-Granting Oplocks ............................................................................ 123
-Receiving an SMB_COM_NEGOTIATE Request .......................................... 124
-Receiving an SMB_COM_SESSION_SETUP_ANDX Request ......................... 124
-Receiving an SMB_COM_TREE_CONNECT_ANDX Request .......................... 126
-Receiving an SMB_COM_NT_CREATE_ANDX Request ................................ 128
-Receiving an SMB_COM_OPEN_ANDX Request ......................................... 129
-Receiving an SMB_COM_READ_ANDX Request ......................................... 129
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-3.3.1.6
-3.3.1.7
-
-3.3.2.1
-
-3.3.2
-
-3.3.3
-3.3.4
-
-3.3.4.2
-3.3.4.3
-3.3.4.4
-3.3.4.5
-3.3.4.6
-3.3.4.7
-
-3.3.5
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-3.3.5.7
-
-3.3.4.1
-
-3.3.4.1.1
-
-[MS-SMB] - v20260114
-Server Message Block (SMB) Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 14, 2026
-
-8 / 180
-
-3.3.5.8
-3.3.5.9
-3.3.5.10
-
-3.3.5.10.1
-3.3.5.10.2
-3.3.5.10.3
-3.3.5.10.4
-3.3.5.10.5
-3.3.5.10.6
-3.3.5.10.7
-3.3.5.10.8
-3.3.5.10.9
-
-3.3.5.11
-
-3.3.5.11.1
-
-Receiving an SMB_COM_WRITE_ANDX Request ....................................... 130
-Receiving an SMB_COM_SEARCH Request ............................................... 130
-Receiving any SMB_COM_TRANSACTION2 subcommand ........................... 130
-Receiving any Information Level ....................................................... 130
-Receiving a TRANS2_FIND_FIRST2 Request ....................................... 130
-Receiving a TRANS2_FIND_NEXT2 Request........................................ 131
-Receiving a TRANS2_QUERY_FILE_INFORMATION Request .................. 131
-Receiving a TRANS2_QUERY_PATH_INFORMATION Request ................. 131
-Receiving a TRANS2_SET_FILE_INFORMATION Request ...................... 131
-Receiving a TRANS2_SET_PATH_INFORMATION Request ..................... 131
-Receiving a TRANS2_QUERY_FS_INFORMATION Request .................... 132
-Receiving a TRANS2_SET_FS_INFORMATION Request ......................... 132
-Receiving any SMB_COM_NT_TRANSACT Subcommand ............................ 132
-Receiving an NT_TRANSACT_IOCTL Request ...................................... 132
-Receiving an FSCTL_SRV_ENUMERATE_SNAPSHOTS Function Code 132
-Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code ... 133
-Receiving an FSCTL_SRV_COPYCHUNK Request ............................ 133
-Receiving an NT_TRANS_QUERY_QUOTA Request ............................... 134
-Receiving an NT_TRANS_SET_QUOTA Request ................................... 134
-Receiving an NT_TRANSACT_CREATE Request ................................... 135
-Timer Events ............................................................................................. 135
-Authentication Expiration Timer Event .................................................... 135
-Other Local Events ..................................................................................... 135
-
-3.3.5.11.1.1
-3.3.5.11.1.2
-3.3.5.11.1.3
-
-3.3.5.11.2
-3.3.5.11.3
-3.3.5.11.4
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-4  Protocol Examples ............................................................................................... 136
-Extended Security Authentication ...................................................................... 136
-Previous File Version Enumeration ..................................................................... 138
-Message Signing Example ................................................................................ 141
-Copy File (Remote to Local) .............................................................................. 143
-Copy File (Local to Remote) .............................................................................. 146
-FSCTL SRV COPYCHUNK .................................................................................. 149
-TRANS TRANSACT NMPIPE ............................................................................... 155
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ............................................................................................................... 159
-Security Considerations for Implementers .......................................................... 159
-Index of Security Parameters ........................................................................... 159
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 160
-
-7  Change Tracking .................................................................................................. 179
-
-8  Index ................................................................................................................... 180
-
-[MS-SMB] - v20260114
-Server Message Block (SMB) Protocol
-Copyright © 2026 Microsoft Corporation
-Release: January 14, 2026
-
-9 / 180
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Type Extensions](#221-common-data-type-extensions)
+      - [2.2.1.1 Character Sequences](#2211-character-sequences)
+        - [2.2.1.1.1 Pathname Extensions](#22111-pathname-extensions)
+      - [2.2.1.2 File Attributes](#2212-file-attributes)
+        - [2.2.1.2.1 Extended File Attribute (SMB_EXT_FILE_ATTR) Extensions](#22121-extended-file-attribute-smbextfileattr-extensions)
+        - [2.2.1.2.2 File System Attribute Extensions](#22122-file-system-attribute-extensions)
+      - [2.2.1.3 Unique Identifiers](#2213-unique-identifiers)
+        - [2.2.1.3.1 FileId Generation](#22131-fileid-generation)
+        - [2.2.1.3.2 VolumeGUID Generation](#22132-volumeguid-generation)
+        - [2.2.1.3.3 Copychunk Resume Key Generation](#22133-copychunk-resume-key-generation)
+      - [2.2.1.4 Access Masks](#2214-access-masks)
+        - [2.2.1.4.1 File_Pipe_Printer_Access_Mask](#22141-filepipeprinteraccessmask)
+        - [2.2.1.4.2 Directory_Access_Mask](#22142-directoryaccessmask)
+    - [2.2.2 Defined Constant Extensions](#222-defined-constant-extensions)
+      - [2.2.2.1 SMB_COM Command Codes](#2221-smbcom-command-codes)
+      - [2.2.2.2 Transaction Subcommand Codes](#2222-transaction-subcommand-codes)
+      - [2.2.2.3 Information Level Codes](#2223-information-level-codes)
+        - [2.2.2.3.1 FIND Information Level Codes](#22231-find-information-level-codes)
+        - [2.2.2.3.2 QUERY_FS Information Level Codes](#22232-queryfs-information-level-codes)
+        - [2.2.2.3.3 QUERY Information Level Codes](#22233-query-information-level-codes)
+        - [2.2.2.3.4 SET Information Level Codes](#22234-set-information-level-codes)
+        - [2.2.2.3.5 Pass-through Information Level Codes](#22235-pass-through-information-level-codes)
+        - [2.2.2.3.6 Other Information Level Codes](#22236-other-information-level-codes)
+      - [2.2.2.4 SMB Error Classes and Codes](#2224-smb-error-classes-and-codes)
+      - [2.2.2.5 Session Key Protection Hash](#2225-session-key-protection-hash)
+    - [2.2.3 SMB Message Structure Extensions](#223-smb-message-structure-extensions)
+      - [2.2.3.1 SMB Header Extensions](#2231-smb-header-extensions)
+    - [2.2.4 SMB Command Extensions](#224-smb-command-extensions)
+      - [2.2.4.1 SMB_COM_OPEN_ANDX (0x2D)](#2241-smbcomopenandx-0x2d)
+        - [2.2.4.1.1 Client Request Extensions](#22411-client-request-extensions)
+        - [2.2.4.1.2 Server Response Extensions](#22412-server-response-extensions)
+      - [2.2.4.2 SMB_COM_READ_ANDX (0x2E)](#2242-smbcomreadandx-0x2e)
+        - [2.2.4.2.1 Client Request Extensions](#22421-client-request-extensions)
+        - [2.2.4.2.2 Server Response Extensions](#22422-server-response-extensions)
+      - [2.2.4.3 SMB_COM_WRITE_ANDX (0x2F)](#2243-smbcomwriteandx-0x2f)
+        - [2.2.4.3.1 Client Request Extensions](#22431-client-request-extensions)
+        - [2.2.4.3.2 Server Response Extensions](#22432-server-response-extensions)
+      - [2.2.4.4 SMB_COM_TRANSACTION2 (0x32) Extensions](#2244-smbcomtransaction2-0x32-extensions)
+    - [2.2.6 and in [MS-CIFS] section 2.2.6.](#226-and-in-ms-cifs-section-226)
+    - [2.2.7 and in [MS-CIFS] section 2.2.7.](#227-and-in-ms-cifs-section-227)
+      - [2.2.7.1 NT_TRANSACT_CREATE (0x0001) Extensions](#2271-nttransactcreate-0x0001-extensions)
+        - [2.2.7.1.1 Client Request Extensions](#22711-client-request-extensions)
+        - [2.2.7.1.2 Server Response Extensions](#22712-server-response-extensions)
+      - [2.2.7.2 NT_TRANSACT_IOCTL (0x0002)](#2272-nttransactioctl-0x0002)
+        - [2.2.7.2.1 Client Request Extensions](#22721-client-request-extensions)
+          - [2.2.7.2.1.1 SRV_COPYCHUNK](#227211-srvcopychunk)
+        - [2.2.7.2.2 Server Response Extensions](#22722-server-response-extensions)
+          - [2.2.7.2.2.1 FSCTL_SRV_ENUMERATE_SNAPSHOTS Response](#227221-fsctlsrvenumeratesnapshots-response)
+          - [2.2.7.2.2.2 FSCTL_SRV_REQUEST_RESUME_KEY Response](#227222-fsctlsrvrequestresumekey-response)
+          - [2.2.7.2.2.3 FSCTL_SRV_COPYCHUNK Response](#227223-fsctlsrvcopychunk-response)
+      - [2.2.7.3 NT_TRANSACT_SET_SECURITY_DESC (0x0003) Extensions](#2273-nttransactsetsecuritydesc-0x0003-extensions)
+      - [2.2.7.4 NT_TRANSACT_QUERY_SECURITY_DESC (0x0006) Extensions](#2274-nttransactquerysecuritydesc-0x0006-extensions)
+      - [2.2.7.5 NT_TRANSACT_QUERY_QUOTA (0x0007)](#2275-nttransactqueryquota-0x0007)
+        - [2.2.7.5.1 Client Request](#22751-client-request)
+        - [2.2.7.5.2 Server Response](#22752-server-response)
+      - [2.2.7.6 NT_TRANSACT_SET_QUOTA (0x0008)](#2276-nttransactsetquota-0x0008)
+        - [2.2.7.6.1 Client Request](#22761-client-request)
+        - [2.2.7.6.2 Server Response](#22762-server-response)
+    - [2.2.8 Information Levels](#228-information-levels)
+      - [2.2.8.1 FIND Information Level Extensions](#2281-find-information-level-extensions)
+        - [2.2.8.1.1 SMB_FIND_FILE_BOTH_DIRECTORY_INFO Extensions](#22811-smbfindfilebothdirectoryinfo-extensions)
+        - [2.2.8.1.2 SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO](#22812-smbfindfileidfulldirectoryinfo)
+        - [2.2.8.1.3 SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO](#22813-smbfindfileidbothdirectoryinfo)
+      - [2.2.8.2 QUERY_FS Information Level Extensions](#2282-queryfs-information-level-extensions)
+        - [2.2.8.2.1 SMB_QUERY_FS_ATTRIBUTE_INFO](#22821-smbqueryfsattributeinfo)
+      - [2.2.8.3 QUERY Information Level Extensions](#2283-query-information-level-extensions)
+      - [2.2.8.4 SET Information level Extensions](#2284-set-information-level-extensions)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Sending Any Message](#3141-sending-any-message)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving Any Message](#3151-receiving-any-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per SMB Connection](#3212-per-smb-connection)
+      - [3.2.1.3 Per SMB Session](#3213-per-smb-session)
+      - [3.2.1.4 Per Tree Connect](#3214-per-tree-connect)
+      - [3.2.1.5 Per Unique Open](#3215-per-unique-open)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Sending Any Message](#3241-sending-any-message)
+        - [3.2.4.1.1 Scanning a Path for a Previous Version Token](#32411-scanning-a-path-for-a-previous-version-token)
+      - [3.2.4.2 Application Requests Connecting to a Share](#3242-application-requests-connecting-to-a-share)
+        - [3.2.4.2.1 Connection Establishment](#32421-connection-establishment)
+        - [3.2.4.2.2 Dialect Negotiation](#32422-dialect-negotiation)
+        - [3.2.4.2.3 Capabilities Negotiation](#32423-capabilities-negotiation)
+        - [3.2.4.2.4 User Authentication](#32424-user-authentication)
+          - [3.2.4.2.4.1 Sequence Diagram](#324241-sequence-diagram)
+        - [3.2.4.2.5 Connecting to the Share (Tree Connect)](#32425-connecting-to-the-share-tree-connect)
+      - [3.2.4.3 Application Requests Opening a File](#3243-application-requests-opening-a-file)
+        - [3.2.4.3.1 SMB_COM_NT_CREATE_ANDX Request](#32431-smbcomntcreateandx-request)
+        - [3.2.4.3.2 SMB_COM_OPEN_ANDX Request (deprecated)](#32432-smbcomopenandx-request-deprecated)
+      - [3.2.4.4 Application Requests Reading from a File, Named Pipe, or Device](#3244-application-requests-reading-from-a-file-named-pipe-or-device)
+        - [3.2.4.4.1 Large Read Support](#32441-large-read-support)
+      - [3.2.4.5 Application Requests Writing to a File, Named Pipe, or Device](#3245-application-requests-writing-to-a-file-named-pipe-or-device)
+      - [3.2.4.6 Application Requests a Directory Enumeration](#3246-application-requests-a-directory-enumeration)
+      - [3.2.4.7 Application Requests Querying File Attributes](#3247-application-requests-querying-file-attributes)
+      - [3.2.4.8 Application Requests Setting File Attributes](#3248-application-requests-setting-file-attributes)
+      - [3.2.4.9 Application Requests Querying File System Attributes](#3249-application-requests-querying-file-system-attributes)
+      - [3.2.4.10 Application Requests Setting File System Attributes](#32410-application-requests-setting-file-system-attributes)
+      - [3.2.4.11 Application Requests Sending an I/O Control to a File or Device](#32411-application-requests-sending-an-io-control-to-a-file-or-device)
+        - [3.2.4.11.1 Application Requests Enumerating Available Previous Versions](#324111-application-requests-enumerating-available-previous-versions)
+        - [3.2.4.11.2 Performing a Server-Side Data Copy](#324112-performing-a-server-side-data-copy)
+          - [3.2.4.11.2.1 Application queries the Copychunk Resume Key of the Source File](#3241121-application-queries-the-copychunk-resume-key-of-the-source-file)
+          - [3.2.4.11.2.2 Application requests a Server-side Data Copy](#3241122-application-requests-a-server-side-data-copy)
+      - [3.2.4.12 Application Requests Querying of DFS Referral](#32412-application-requests-querying-of-dfs-referral)
+      - [3.2.4.13 Application Requests Querying User Quota Information](#32413-application-requests-querying-user-quota-information)
+      - [3.2.4.14 Application Requests Setting User Quota Information](#32414-application-requests-setting-user-quota-information)
+      - [3.2.4.15 Application Requests the Session Key for a Connection](#32415-application-requests-the-session-key-for-a-connection)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving Any Message](#3251-receiving-any-message)
+      - [3.2.5.2 Receiving an SMB_COM_NEGOTIATE Response](#3252-receiving-an-smbcomnegotiate-response)
+      - [3.2.5.3 Receiving an SMB_COM_SESSION_SETUP_ANDX Response](#3253-receiving-an-smbcomsessionsetupandx-response)
+      - [3.2.5.4 Receiving an SMB_COM_TREE_CONNECT_ANDX Response](#3254-receiving-an-smbcomtreeconnectandx-response)
+      - [3.2.5.5 Receiving an SMB_COM_NT_CREATE_ANDX Response](#3255-receiving-an-smbcomntcreateandx-response)
+      - [3.2.5.6 Receiving an SMB_COM_OPEN_ANDX Response](#3256-receiving-an-smbcomopenandx-response)
+      - [3.2.5.7 Receiving an SMB_COM_READ_ANDX Response](#3257-receiving-an-smbcomreadandx-response)
+      - [3.2.5.8 Receiving an SMB_COM_WRITE_ANDX Response](#3258-receiving-an-smbcomwriteandx-response)
+      - [3.2.5.9 Receiving any SMB_COM_NT_TRANSACT Response](#3259-receiving-any-smbcomnttransact-response)
+        - [3.2.5.9.1 Receiving an NT_TRANSACT_IOCTL Response](#32591-receiving-an-nttransactioctl-response)
+          - [3.2.5.9.1.1 Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code](#325911-receiving-an-fsctlsrvrequestresumekey-function-code)
+          - [3.2.5.9.1.2 Receiving an FSCTL_SRV_COPYCHUNK Function Code](#325912-receiving-an-fsctlsrvcopychunk-function-code)
+        - [3.2.5.9.2 Receiving an NT_TRANSACT_QUERY_QUOTA Response](#32592-receiving-an-nttransactqueryquota-response)
+        - [3.2.5.9.3 Receiving an NT_TRANSACT_SET_QUOTA Response](#32593-receiving-an-nttransactsetquota-response)
+      - [3.2.5.10 Receiving an SMB_COM_SEARCH Response](#32510-receiving-an-smbcomsearch-response)
+      - [3.2.5.11 Receiving any SMB_COM_TRANSACTION2 subcommand Response](#32511-receiving-any-smbcomtransaction2-subcommand-response)
+        - [3.2.5.11.1 Receiving any TRANS2_SET_FS_INFORMATION Response](#325111-receiving-any-trans2setfsinformation-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Server Details](#33-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Global](#3311-global)
+      - [3.3.1.2 Per Share](#3312-per-share)
+      - [3.3.1.3 Per SMB Connection](#3313-per-smb-connection)
+      - [3.3.1.4 Per Pending SMB Command](#3314-per-pending-smb-command)
+      - [3.3.1.5 Per SMB Session](#3315-per-smb-session)
+      - [3.3.1.6 Per Tree Connect](#3316-per-tree-connect)
+      - [3.3.1.7 Per Unique Open](#3317-per-unique-open)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Authentication Expiration Timer](#3321-authentication-expiration-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Sending Any Message](#3341-sending-any-message)
+        - [3.3.4.1.1 Sending Any Error Response Message](#33411-sending-any-error-response-message)
+      - [3.3.4.2 Server Application Queries a User Session Key](#3342-server-application-queries-a-user-session-key)
+      - [3.3.4.3 DFS Server Notifies SMB Server That DFS Is Active](#3343-dfs-server-notifies-smb-server-that-dfs-is-active)
+      - [3.3.4.4 DFS Server Notifies SMB Server That a Share Is a DFS Share](#3344-dfs-server-notifies-smb-server-that-a-share-is-a-dfs-share)
+      - [3.3.4.5 DFS Server Notifies SMB Server That a Share Is Not a DFS Share](#3345-dfs-server-notifies-smb-server-that-a-share-is-not-a-dfs-share)
+      - [3.3.4.6 Server Application Updates a Share](#3346-server-application-updates-a-share)
+      - [3.3.4.7 Server Application Requests Querying a Share](#3347-server-application-requests-querying-a-share)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving Any Message](#3351-receiving-any-message)
+        - [3.3.5.1.1 Scanning a Path for a Previous Version Token](#33511-scanning-a-path-for-a-previous-version-token)
+        - [3.3.5.1.2 Granting Oplocks](#33512-granting-oplocks)
+      - [3.3.5.2 Receiving an SMB_COM_NEGOTIATE Request](#3352-receiving-an-smbcomnegotiate-request)
+      - [3.3.5.3 Receiving an SMB_COM_SESSION_SETUP_ANDX Request](#3353-receiving-an-smbcomsessionsetupandx-request)
+      - [3.3.5.4 Receiving an SMB_COM_TREE_CONNECT_ANDX Request](#3354-receiving-an-smbcomtreeconnectandx-request)
+      - [3.3.5.5 Receiving an SMB_COM_NT_CREATE_ANDX Request](#3355-receiving-an-smbcomntcreateandx-request)
+      - [3.3.5.6 Receiving an SMB_COM_OPEN_ANDX Request](#3356-receiving-an-smbcomopenandx-request)
+      - [3.3.5.7 Receiving an SMB_COM_READ_ANDX Request](#3357-receiving-an-smbcomreadandx-request)
+      - [3.3.5.8 Receiving an SMB_COM_WRITE_ANDX Request](#3358-receiving-an-smbcomwriteandx-request)
+      - [3.3.5.9 Receiving an SMB_COM_SEARCH Request](#3359-receiving-an-smbcomsearch-request)
+      - [3.3.5.10 Receiving any SMB_COM_TRANSACTION2 subcommand](#33510-receiving-any-smbcomtransaction2-subcommand)
+        - [3.3.5.10.1 Receiving any Information Level](#335101-receiving-any-information-level)
+        - [3.3.5.10.2 Receiving a TRANS2_FIND_FIRST2 Request](#335102-receiving-a-trans2findfirst2-request)
+        - [3.3.5.10.3 Receiving a TRANS2_FIND_NEXT2 Request](#335103-receiving-a-trans2findnext2-request)
+        - [3.3.5.10.4 Receiving a TRANS2_QUERY_FILE_INFORMATION Request](#335104-receiving-a-trans2queryfileinformation-request)
+        - [3.3.5.10.5 Receiving a TRANS2_QUERY_PATH_INFORMATION Request](#335105-receiving-a-trans2querypathinformation-request)
+        - [3.3.5.10.6 Receiving a TRANS2_SET_FILE_INFORMATION Request](#335106-receiving-a-trans2setfileinformation-request)
+        - [3.3.5.10.7 Receiving a TRANS2_SET_PATH_INFORMATION Request](#335107-receiving-a-trans2setpathinformation-request)
+        - [3.3.5.10.8 Receiving a TRANS2_QUERY_FS_INFORMATION Request](#335108-receiving-a-trans2queryfsinformation-request)
+        - [3.3.5.10.9 Receiving a TRANS2_SET_FS_INFORMATION Request](#335109-receiving-a-trans2setfsinformation-request)
+      - [3.3.5.11 Receiving any SMB_COM_NT_TRANSACT Subcommand](#33511-receiving-any-smbcomnttransact-subcommand)
+        - [3.3.5.11.1 Receiving an NT_TRANSACT_IOCTL Request](#335111-receiving-an-nttransactioctl-request)
+          - [3.3.5.11.1.1 Receiving an FSCTL_SRV_ENUMERATE_SNAPSHOTS Function Code](#3351111-receiving-an-fsctlsrvenumeratesnapshots-function-code)
+          - [3.3.5.11.1.2 Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code](#3351112-receiving-an-fsctlsrvrequestresumekey-function-code)
+          - [3.3.5.11.1.3 Receiving an FSCTL_SRV_COPYCHUNK Request](#3351113-receiving-an-fsctlsrvcopychunk-request)
+        - [3.3.5.11.2 Receiving an NT_TRANS_QUERY_QUOTA Request](#335112-receiving-an-nttransqueryquota-request)
+        - [3.3.5.11.3 Receiving an NT_TRANS_SET_QUOTA Request](#335113-receiving-an-nttranssetquota-request)
+        - [3.3.5.11.4 Receiving an NT_TRANSACT_CREATE Request](#335114-receiving-an-nttransactcreate-request)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Authentication Expiration Timer Event](#3361-authentication-expiration-timer-event)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Extended Security Authentication](#41-extended-security-authentication)
+  - [4.2 Previous File Version Enumeration](#42-previous-file-version-enumeration)
+  - [4.3 Message Signing Example](#43-message-signing-example)
+  - [4.4 Copy File (Remote to Local)](#44-copy-file-remote-to-local)
+  - [4.5 Copy File (Local to Remote)](#45-copy-file-local-to-remote)
+  - [4.6 FSCTL SRV COPYCHUNK](#46-fsctl-srv-copychunk)
+  - [4.7 TRANS TRANSACT NMPIPE](#47-trans-transact-nmpipe)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Server Message Block (SMB) Version 1.0 Protocol defines extensions to the Common Internet File
 System (CIFS) Protocol, which is specified in [MS-CIFS]. Unless specifically extended or overridden in
@@ -1310,7 +836,7 @@ the specifications of the SMB extensions.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1358,7 +884,8 @@ Release: January 14, 2026
 
 10 / 180
 
-deprecated: A deprecated feature is one that has been superseded in the protocol by a newer
+
+deprecated: A deprecated feature is one that has been superseded in the protocol by a newer
 feature. Use of deprecated features is discouraged. Server implementations might need to
 implement deprecated features to support clients that negotiate earlier SMB dialects.
 
@@ -1429,7 +956,8 @@ Release: January 14, 2026
 
 11 / 180
 
-little-endian: Multiple-byte values that are byte-ordered with the least significant byte stored in
+
+little-endian: Multiple-byte values that are byte-ordered with the least significant byte stored in
 
 the memory location with the lowest address.
 
@@ -1508,7 +1036,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-reparse point: An attribute that can be added to a file to store a collection of user-defined data
+
+reparse point: An attribute that can be added to a file to store a collection of user-defined data
 that is opaque to NTFS or ReFS. If a file that has a reparse point is opened, the open will
 normally fail with STATUS_REPARSE, so that the relevant file system filter driver can detect the
 open of a file associated with (owned by) this reparse point. At that point, each installed filter
@@ -1575,7 +1104,8 @@ Release: January 14, 2026
 
 13 / 180
 
-share connect: The act of establishing authentication and shared state between a Common
+
+share connect: The act of establishing authentication and shared state between a Common
 
 Internet File System (CIFS) server and client that allows a CIFS client to access a share offered
 by the CIFS server.
@@ -1647,20 +1177,21 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-volume identifier (VolumeId): A 128-bit value used to represent a volume. The value of a
+
+volume identifier (VolumeId): A 128-bit value used to represent a volume. The value of a
 VolumeId is unique on a single computer (the local file system or a remote file server).
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1712,7 +1243,8 @@ Release: January 14, 2026
 
 15 / 180
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MD5Collision] Klima, V., "Tunnels in Hash Functions: MD5 Collisions Within a Minute", March 2006,
 http://eprint.iacr.org/2006/105.pdf
@@ -1778,7 +1310,8 @@ Release: January 14, 2026
 
 16 / 180
 
-1.3  Overview
+
+### 1.3 Overview
 
 Client systems use the Common Internet File System (CIFS) Protocol to request file and print services
 from server systems over a network. CIFS is a stateful protocol, in which clients establish a session
@@ -1834,7 +1367,7 @@ supports quotas, the client can constrain the file system capacity consumed by t
 Many of these capabilities are exposed in enhancements to the SMB_COM_NEGOTIATE (section
 2.2.4.5) and SMB_COM_SESSION_SETUP_ANDX (section 2.2.4.6) command requests and responses.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The extensions to the CIFS protocol rely on the Simple and Protected Generic Security Service
 Application Program Interface Negotiation Mechanism (SPNEGO), as described in [MS-AUTHSOD]
@@ -1849,7 +1382,8 @@ Release: January 14, 2026
 
 17 / 180
 
-The Server Message Block (SMB) Version 2 Protocol is a new version of SMB. For more information
+
+The Server Message Block (SMB) Version 2 Protocol is a new version of SMB. For more information
 about the SMB Version 2 Protocol, see [MS-SMB2]. This specification does not require implementation
 of the SMB Version 2 Protocol.
 
@@ -1893,13 +1427,14 @@ Release: January 14, 2026
 
 18 / 180
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-SMB].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 Figure 1: Relationships to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The SMB Version 1.0 Protocol assumes the availability of the following resources:
 
@@ -1909,7 +1444,7 @@ The SMB Version 1.0 Protocol assumes the availability of the following resources
 
 printer objects.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The extensions specified in this document are applicable to environments in which the security
 characteristics of the base protocol, as specified in [MS-CIFS], are insufficient. In particular, these
@@ -1922,13 +1457,14 @@ Release: January 14, 2026
 
 19 / 180
 
-The extensions are applicable to an environment that requires tighter data retention policies. In
+
+The extensions are applicable to an environment that requires tighter data retention policies. In
 particular, through the use of previous version capabilities, the extensions allow access to versions of
 a file that have been changed or deleted when the server supports this capability. This feature is
 applicable to environments that require more stringent data retention policies that include maintaining
 access to previous versions of files.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1973,13 +1509,13 @@ connecting successfully to servers that do not implement these features.
 Negotiation of the use of the Generic Security Service Application Program Interface (GSS API) for
 authentication is specified in section 3.2.4.2.4. The GSS API is specified in [RFC2743].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The CAP_UNIX capability bit is specified in order to allow third-party implementers to collaborate on
 the definition of a specific set of extensions. SMB_COM_TRANSACTION2 Information Levels in the
 range 0x200 to 0x3E0 (inclusive) are reserved for these extensions.<1>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 In addition to any standards assignments specified in [MS-CIFS], the Direct TCP Transport, as
 specified in section 2.2, makes use of the following assignment:
@@ -2001,7 +1537,8 @@ Release: January 14, 2026
 
 20 / 180
 
-SMB transports can have assigned port numbers or other assigned values. See the documentation for
+
+SMB transports can have assigned port numbers or other assigned values. See the documentation for
 the specific transport for more information.
 
 [MS-SMB] - v20260114
@@ -2011,12 +1548,13 @@ Release: January 14, 2026
 
 21 / 180
 
-2  Messages
+
+## 2 Messages
 
 An SMB Version 1.0 Protocol implementation MUST implement CIFS, as specified by section 2 of the
 [MS-CIFS] specification.
 
-2.1  Transport
+### 2.1 Transport
 
 In addition to the transport protocols listed in section 2.1 of [MS-CIFS], the extended version of the
 protocol supports the use of TCP as a transport layer. Hereafter, the special TCP-related
@@ -2074,7 +1612,7 @@ SMB Message (variable): The body of the SMB packet. The length of an SMB message
 
 on the SMB command represented by the message.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 A client exchanges messages with a server to access resources on the server. These messages are
 called SMB messages or SMBs. Every SMB message has a common format, as defined in [MS-CIFS]
@@ -2087,7 +1625,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-All SMB messages MUST begin with a fixed-length SMB header (as specified in [MS-CIFS], section
+
+All SMB messages MUST begin with a fixed-length SMB header (as specified in [MS-CIFS], section
 2.2.1). The header contains a command field that indicates the operation code that the client requests
 or to which the server responds. An SMB message is of variable length. The actual length depends on
 the SMB command field (and consequent appended data structures) and whether the SMB message
@@ -2106,11 +1645,11 @@ When an error occurs, unless otherwise noted in this specification, an SMB serve
 Error Response message. An Error Response message is comprised of a complete SMB header, along
 with an empty parameter and data portion.<5>
 
-2.2.1  Common Data Type Extensions
+#### 2.2.1 Common Data Type Extensions
 
-2.2.1.1  Character Sequences
+##### 2.2.1.1 Character Sequences
 
-2.2.1.1.1 Pathname Extensions
+###### 2.2.1.1.1 Pathname Extensions
 
 In addition to the specification in [MS-CIFS] section 2.2.1.1.2, pathnames include the following
 extension:
@@ -2151,7 +1690,8 @@ Release: January 14, 2026
 
 23 / 180
 
-In addition, it is possible to request an enumeration of available previous version timestamps (or
+
+In addition, it is possible to request an enumeration of available previous version timestamps (or
 snapshots) of a file or directory. While the NT_TRANSACT_IOCTL subcommand can be used with the
 FSCTL_SRV_ENUMERATE_SNAPSHOTS FSCTL code to enumerate available previous version
 timestamps using a valid Fid (section 2.2.7.2.1), these extensions also present a path-based method
@@ -2166,9 +1706,9 @@ discussed earlier in this section, can be specified in the following ways:
  \\server\mydocs\@GMT-*\reviews
  \\server\mydocs\reviews\@GMT-*
 
-2.2.1.2  File Attributes
+##### 2.2.1.2 File Attributes
 
-2.2.1.2.1 Extended File Attribute (SMB_EXT_FILE_ATTR) Extensions
+###### 2.2.1.2.1 Extended File Attribute (SMB_EXT_FILE_ATTR) Extensions
 
 The list of extended file attributes valid in 32-bit attribute values, as specified in [MS-CIFS] section
 2.2.1.2.3, has been extended to include the following attributes:
@@ -2255,7 +1795,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name & bitmask
+
+Name & bitmask
 
 Extension  Meaning
 
@@ -2322,7 +1863,7 @@ N/A
 SHOULD be set to zero when sending and MUST be ignored upon
 receipt of the message.
 
-2.2.1.2.2 File System Attribute Extensions
+###### 2.2.1.2.2 File System Attribute Extensions
 
 The list of file system attributes, as specified in [MS-CIFS] section 2.2.8.2.6, has been extended. For
 completeness, the following table lists all of the available attribute flags and their symbolic constants.
@@ -2401,7 +1942,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name & bitmask
+
+Name & bitmask
 
 Extension  Meaning
 
@@ -2524,7 +2066,7 @@ N/A
 These bits fields SHOULD be set to zero when sending
 and MUST be ignored when the message is received.
 
-2.2.1.3  Unique Identifiers
+##### 2.2.1.3 Unique Identifiers
 
 The SMB Version 1.0 Protocol makes use of the following data types from [MS-DTYP]:
 
@@ -2544,9 +2086,10 @@ Release: January 14, 2026
 
 26 / 180
 
-  Copychunk Resume Key
 
-2.2.1.3.1 FileId Generation
+  Copychunk Resume Key
+
+###### 2.2.1.3.1 FileId Generation
 
 64-bit file identifiers (FileIds) are generated on SMB servers. The generation of FileIds MUST satisfy
 the following constraints:
@@ -2566,7 +2109,7 @@ NOT be changed when a file is renamed. When the file is deleted, the FileId MAY 
 
   All possible values for FileId are valid.
 
-2.2.1.3.2 VolumeGUID Generation
+###### 2.2.1.3.2 VolumeGUID Generation
 
 VolumeGUIDs (Volume Globally Unique Identifiers, or volume identifiers, see also [MS-DTYP]
 section 2.3.4) are generated on SMB servers. The generation of VolumeGUIDs MUST satisfy the
@@ -2587,7 +2130,7 @@ change when the system is restarted.
 
   All possible values for the VolumeGUID are valid.
 
-2.2.1.3.3 Copychunk Resume Key Generation
+###### 2.2.1.3.3 Copychunk Resume Key Generation
 
 Copychunk Resume Keys are generated on SMB servers. The generation of Copychunk Resume
 Keys MUST satisfy the following constraints:
@@ -2612,7 +2155,7 @@ The Copychunk Resume Key MUST remain valid for the lifetime of the open file on 
 COPYCHUNK_RESUME_KEY (see sections 2.2.7.2.1 and 2.2.7.2.2.2) represents an opaque data type
 that contains the server-returned Copychunk Resume Key.
 
-2.2.1.4  Access Masks
+##### 2.2.1.4 Access Masks
 
 The SMB protocol introduces the use of Access Mask structures, which are based on the
 ACCESS_MASK data type specified in [MS-DTYP] section 2.4.3. SMB defines two types of access
@@ -2620,7 +2163,7 @@ masks for two basic groups: either for a file, pipe, or printer (specified in se
 directory (specified in section 2.2.1.4.2). Each access mask MUST be a combination of zero or more of
 the bit positions.
 
-2.2.1.4.1 File_Pipe_Printer_Access_Mask
+###### 2.2.1.4.1 File_Pipe_Printer_Access_Mask
 
 27 / 180
 
@@ -2629,7 +2172,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-The following SMB Access Mask structure is defined for use on a file, named pipe, or printer.
+
+The following SMB Access Mask structure is defined for use on a file, named pipe, or printer.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2760,7 +2304,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Value
+
+Value
 
 Meaning
 
@@ -2807,7 +2352,7 @@ This value indicates a request for the following combination of access flags
 listed above: FILE_READ_DATA, FILE_READ_ATTRIBUTES, FILE_READ_EA,
 SYNCHRONIZE, and READ_CONTROL.
 
-2.2.1.4.2 Directory_Access_Mask
+###### 2.2.1.4.2 Directory_Access_Mask
 
 The following SMB Access Mask is defined for use on a directory.
 
@@ -2878,7 +2423,8 @@ Release: January 14, 2026
 
 29 / 180
 
-Value
+
+Value
 
 Meaning
 
@@ -2983,9 +2529,9 @@ This value indicates a request for the following access flags listed above:
 FILE_LIST_DIRECTORY, FILE_READ_ATTRIBUTES, FILE_READ_EA,
 SYNCHRONIZE, and READ_CONTROL.
 
-2.2.2  Defined Constant Extensions
+#### 2.2.2 Defined Constant Extensions
 
-2.2.2.1  SMB_COM Command Codes
+##### 2.2.2.1 SMB_COM Command Codes
 
 No new SMB_COM command codes are introduced other than those specified in [MS-CIFS] section
 2.2.2.1.<15>
@@ -2997,7 +2543,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-2.2.2.2  Transaction Subcommand Codes
+
+##### 2.2.2.2 Transaction Subcommand Codes
 
 In addition to the transaction subcommand codes specified in [MS-CIFS] section 2.2.2.2, the following
 modifications and extensions apply. In the following tables, the Description column is also used to
@@ -3065,12 +2612,12 @@ NT_TRANSACT_CREATE command, as specified in [MS-CIFS] section
 an NT_TRANSACT_CREATE command, as specified in [MS-CIFS] section
 3.3.5.59.1.<16>
 
-2.2.2.3  Information Level Codes
+##### 2.2.2.3 Information Level Codes
 
 The following new Information Level codes are specified in addition to those defined in [MS-CIFS]
 section 2.2.2.3.
 
-2.2.2.3.1 FIND Information Level Codes
+###### 2.2.2.3.1 FIND Information Level Codes
 
 The following new Information Level codes are specified in addition to those specified in [MS-CIFS]
 section 2.2.2.3.1.<17>
@@ -3101,7 +2648,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name
+
+Name
 
 Code
 
@@ -3118,19 +2666,19 @@ Dialect
 NT
 LANMAN
 
-2.2.2.3.2 QUERY_FS Information Level Codes
+###### 2.2.2.3.2 QUERY_FS Information Level Codes
 
 No new SMB-specific Information Level codes are specified for these extensions.
 
-2.2.2.3.3 QUERY Information Level Codes
+###### 2.2.2.3.3 QUERY Information Level Codes
 
 No new SMB-specific Information Level codes are specified for these extensions.
 
-2.2.2.3.4 SET Information Level Codes
+###### 2.2.2.3.4 SET Information Level Codes
 
 No new SMB-specific Information Level codes are specified for these extensions.
 
-2.2.2.3.5 Pass-through Information Level Codes
+###### 2.2.2.3.5 Pass-through Information Level Codes
 
 This document provides an extension of a new Information Level code value range called pass-
 through Information Levels, which can be used to set or query information on the server. These
@@ -3146,12 +2694,12 @@ To access these new Information Levels, a client adds the constant SMB_INFO_PASS
 InformationLevel field of the particular SMB_COM_TRANSACTION2 subcommand being used to
 access the Information Levels.
 
-2.2.2.3.6 Other Information Level Codes
+###### 2.2.2.3.6 Other Information Level Codes
 
 In addition, SMB_COM_TRANSACTION2 Information Levels in the range 0x200 to 0x3E0 (inclusive)
 are reserved for third-party extensions, as described in section 1.8.<19>
 
-2.2.2.4  SMB Error Classes and Codes
+##### 2.2.2.4 SMB Error Classes and Codes
 
 The following is a list of 32-bit status codes that are required to implement these extensions, their
 associated values, and a description of what they represent.<20>
@@ -3186,7 +2734,8 @@ Release: January 14, 2026
 
 32 / 180
 
-NT status value
+
+NT status value
 
 Description
 
@@ -3318,7 +2867,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-NT status value
+
+NT status value
 
 Description
 
@@ -3365,7 +2915,7 @@ STATUS_SMB_TOO_MANY_UIDS
 The client has requested too many UID values from the server or the
 client already has an SMB session setup with this UID value.
 
-2.2.2.5  Session Key Protection Hash
+##### 2.2.2.5 Session Key Protection Hash
 
 The SSKeyHash is a well-known constant array.
 
@@ -3412,9 +2962,10 @@ Release: January 14, 2026
 
 34 / 180
 
-2.2.3  SMB Message Structure Extensions
 
-2.2.3.1  SMB Header Extensions
+#### 2.2.3 SMB Message Structure Extensions
+
+##### 2.2.3.1 SMB Header Extensions
 
 All client requests MUST begin with a fixed-size SMB header, as specified in [MS-CIFS] section
 2.2.3.1. All server responses, with the exception of the SMB_COM_READ_RAW response message, as
@@ -3494,7 +3045,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name &  bitmask
+
+Name &  bitmask
 
 Meaning
 
@@ -3568,11 +3120,11 @@ PIDHigh (2 bytes): This field MUST give the 2 high bytes of the process identifi
 Client.Supports32BitPIDs, as specified in section 3.2.1.1, is TRUE. Otherwise, it MUST be set to
 zero.
 
-2.2.4  SMB Command Extensions
+#### 2.2.4 SMB Command Extensions
 
-2.2.4.1  SMB_COM_OPEN_ANDX (0x2D)
+##### 2.2.4.1 SMB_COM_OPEN_ANDX (0x2D)
 
-2.2.4.1.1 Client Request Extensions
+###### 2.2.4.1.1 Client Request Extensions
 
 An SMB_COM_OPEN_ANDX request is sent by a client to open a file or named pipe on a server. The
 new flag value in the Flags field of the SMB_COM_OPEN_ANDX request,
@@ -3584,7 +3136,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-SMB_OPEN_EXTENDED_RESPONSE, is used to trigger new behavior that is specified in this document.
+
+SMB_OPEN_EXTENDED_RESPONSE, is used to trigger new behavior that is specified in this document.
 All other fields are as specified in [MS-CIFS] section 2.2.4.41.1.
 
 This command has been deprecated. Client implementations SHOULD use
@@ -3670,7 +3223,8 @@ Release: January 14, 2026
 
 37 / 180
 
-Flags (2 bytes): A 16-bit field of bit flags. For completeness, all flags are listed in the following table.
+
+Flags (2 bytes): A 16-bit field of bit flags. For completeness, all flags are listed in the following table.
 Bit values listed as reserved SHOULD be set to zero by the client and MUST be ignored by the
 server.
 
@@ -3713,7 +3267,7 @@ described later in this section.
 Reserved; SHOULD be set to zero by the client, and MUST be ignored
 by the server.
 
-2.2.4.1.2 Server Response Extensions
+###### 2.2.4.1.2 Server Response Extensions
 
 If the client requested extended information by setting SMB_OPEN_EXTENDED_RESPONSE, then a
 successful response takes the following format. Aside from WordCount, ResourceType, ServerFID,
@@ -3755,7 +3309,8 @@ Release: January 14, 2026
 
 38 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3855,7 +3410,8 @@ Release: January 14, 2026
 
 39 / 180
 
-...
+
+...
 
 ResourceType (2 bytes): The file type. This field MUST be interpreted as follows:
 
@@ -3933,9 +3489,9 @@ ByteCount (2 bytes): The value of this field SHOULD<25> be set to zero. The serv
 
 send any data in this message.
 
-2.2.4.2  SMB_COM_READ_ANDX (0x2E)
+##### 2.2.4.2 SMB_COM_READ_ANDX (0x2E)
 
-2.2.4.2.1 Client Request Extensions
+###### 2.2.4.2.1 Client Request Extensions
 
 An SMB_COM_READ_ANDX request is sent by a client to read from a file or named pipe on a server.
 These extensions overload the Timeout field with the new Timeout_or_MaxCountHigh field, which
@@ -3949,7 +3505,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
- SMB_Parameters
+
+ SMB_Parameters
    {
    UCHAR WordCount;
    Words
@@ -4040,7 +3597,8 @@ Release: January 14, 2026
 
 41 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4068,7 +3626,7 @@ and SHOULD be set to 0xFFFF by the client if MaxCountHigh is 0xFFFF. For all oth
 this field SHOULD be set to zero by the client. For all values, this field MUST be ignored by the
 server.
 
-2.2.4.2.2 Server Response Extensions
+###### 2.2.4.2.2 Server Response Extensions
 
 A successful response takes the following format. Aside from the first two bytes of the
 SMB_Parameters.Words.Reserved2[] field being extended for use as the new DataLengthHigh
@@ -4129,7 +3687,8 @@ Release: January 14, 2026
 
 42 / 180
 
-Available
+
+Available
 
 Reserved1
 
@@ -4155,9 +3714,9 @@ Reserved2 (8 bytes): This field MUST be set to zero by the server and MUST be ig
 
 client.
 
-2.2.4.3  SMB_COM_WRITE_ANDX (0x2F)
+##### 2.2.4.3 SMB_COM_WRITE_ANDX (0x2F)
 
-2.2.4.3.1 Client Request Extensions
+###### 2.2.4.3.1 Client Request Extensions
 
 An SMB_COM_WRITE_ANDX request is sent by a client to write data to a file or named pipe on a
 server. These extensions allocate the SMB_Parameters.Words.Reserved field for use as the
@@ -4204,7 +3763,8 @@ Release: January 14, 2026
 
 43 / 180
 
-Words (variable):
+
+Words (variable):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -4252,7 +3812,7 @@ data to write to the file. If the number of bytes to be written is greater than 
 in the DataLength field of the request and the two most significant bytes of the length in the
 DataLengthHigh field.
 
-2.2.4.3.2 Server Response Extensions
+###### 2.2.4.3.2 Server Response Extensions
 
 A successful response takes the following format. These extensions allocate the first two bytes of the
 SMB_Parameters.Words.Reserved field for use as the CountHigh field. This field is used when the
@@ -4289,7 +3849,8 @@ Release: January 14, 2026
 
 44 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4323,7 +3884,7 @@ Reserved (2 bytes): This field is reserved. Servers MUST set this field to zero 
 
 ignore this field upon receipt.
 
-2.2.4.4  SMB_COM_TRANSACTION2 (0x32) Extensions
+##### 2.2.4.4 SMB_COM_TRANSACTION2 (0x32) Extensions
 
 The SMB_COM_TRANSACTION2 request is sent by a client to execute a specific operation of various
 types on the server. These operations include file enumeration, query and set file attribute operations,
@@ -4334,7 +3895,7 @@ SMB_COM_TRANSACTION2 is defined as specified in [MS-CIFS] sections 3.2.4.1.5, 3.
 
 Valid SMB_COM_TRANSACTION2 subcommand codes, also known as "Trans2 subcommands", are
 specified in section 2.2.2.2. The format and syntax of these subcommands are specified in section
-2.2.6 and in [MS-CIFS] section 2.2.6.
+#### 2.2.6 and in [MS-CIFS] section 2.2.6.
 
 2.2.4.5  SMB_COM_NEGOTIATE (0x72)
 
@@ -4370,7 +3931,8 @@ Release: January 14, 2026
 
 45 / 180
 
-   Words
+
+   Words
      {
      USHORT   DialectIndex;
      UCHAR    SecurityMode;
@@ -4450,7 +4012,8 @@ Release: January 14, 2026
 
 46 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4548,7 +4111,8 @@ Release: January 14, 2026
 
 47 / 180
 
-The rest of the values in the capabilities table are included for completeness.
+
+The rest of the values in the capabilities table are included for completeness.
 
 Name and bitmask
 
@@ -4673,7 +4237,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name and bitmask
+
+Name and bitmask
 
 Meaning
 
@@ -4788,7 +4353,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-...
+
+...
 
 SecurityBlob (variable)
 
@@ -4857,7 +4423,8 @@ Release: January 14, 2026
 
 50 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4962,7 +4529,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-capable of receiving from the client, measured from the start of the SMB header to the end
+
+capable of receiving from the client, measured from the start of the SMB header to the end
 of the packet. This value does not account for any underlying transport-layer packet headers
 and thus does not account for the size of the complete network packet.<41>
 
@@ -5041,7 +4609,8 @@ Release: January 14, 2026
 
 52 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5119,7 +4688,8 @@ Release: January 14, 2026
 
 53 / 180
 
-     UCHAR      SecurityBlob[SecurityBlobLength];
+
+     UCHAR      SecurityBlob[SecurityBlobLength];
      SMB_STRING NativeOS[];
      SMB_STRING NativeLanMan[];
      }
@@ -5215,7 +4785,8 @@ Release: January 14, 2026
 
 54 / 180
 
-SecurityBlobLength (2 bytes): This value MUST specify the length in bytes of the variable-
+
+SecurityBlobLength (2 bytes): This value MUST specify the length in bytes of the variable-
 
 length SecurityBlob field that is contained within the request.
 
@@ -5301,7 +4872,8 @@ Release: January 14, 2026
 
 55 / 180
 
-When extended security is being used (see section 3.2.4.2.4), a successful response MUST take the
+
+When extended security is being used (see section 3.2.4.2.4), a successful response MUST take the
 following form. Aside from the SecurityBlobLength field, the additional capabilities used in the
 Capabilities field, the ByteCount and SecurityBlob fields, and the omission of the PrimaryDomain field,
 all of the other fields are as specified in [MS-CIFS] section 2.2.4.53.2.
@@ -5384,7 +4956,8 @@ Release: January 14, 2026
 
 56 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5490,7 +5063,8 @@ Release: January 14, 2026
 
 57 / 180
 
-NativeLanMan (variable)
+
+NativeLanMan (variable)
 
 ...
 
@@ -5558,7 +5132,8 @@ Release: January 14, 2026
 
 58 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5655,7 +5230,8 @@ Release: January 14, 2026
 
 59 / 180
 
-SMB_Parameters
+
+SMB_Parameters
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -5774,7 +5350,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Name & bitmask
+
+Name & bitmask
 
 Value  Meaning
 
@@ -5840,7 +5417,7 @@ SMB_COM_NT_TRANSACT is as specified in [MS-CIFS] sections 3.2.4.1.5, 3.2.5.1.4, 
 
 Valid SMB_COM_NT_TRANSACT subcommand codes, also known as "NT Trans subcommand" codes,
 are specified in section 2.2.2.2. The format and syntax of these subcommands are specified in section
-2.2.7 and in [MS-CIFS] section 2.2.7.
+#### 2.2.7 and in [MS-CIFS] section 2.2.7.
 
 2.2.4.9  SMB_COM_NT_CREATE_ANDX (0xA2)
 
@@ -5860,7 +5437,8 @@ Release: January 14, 2026
 
 61 / 180
 
-  An additional parameter value is added to the ImpersonationLevel field.
+
+  An additional parameter value is added to the ImpersonationLevel field.
 
 SECURITY_DELEGATION is added to allow the server to call other servers while impersonating the
 original client.
@@ -5953,7 +5531,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-...
+
+...
 
 ...
 
@@ -6059,7 +5638,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-implementations SHOULD reserve all bits not specified in the [MS-CIFS] section 2.2.4.64
+
+implementations SHOULD reserve all bits not specified in the [MS-CIFS] section 2.2.4.64
 CreateOptions table and the following table.
 
 Name and bitmask
@@ -6144,7 +5724,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-OplockLevel
+
+OplockLevel
 
 FID
 
@@ -6223,7 +5804,8 @@ Release: January 14, 2026
 
 65 / 180
 
-Name & value
+
+Name & value
 
 Meaning
 
@@ -6322,7 +5904,8 @@ Release: January 14, 2026
 
 66 / 180
 
-MaximalAccessRights (4 bytes): The maximum access rights that the user opening the file has
+
+MaximalAccessRights (4 bytes): The maximum access rights that the user opening the file has
 been granted for this file open. This field MUST be encoded in an ACCESS_MASK format, as
 specified in section 2.2.1.4.
 
@@ -6386,7 +5969,8 @@ Release: January 14, 2026
 
 67 / 180
 
-Aside from the Information Level extensions and the FileName field, all of the other fields are as
+
+Aside from the Information Level extensions and the FileName field, all of the other fields are as
 specified in [MS-CIFS] 2.2.6.2.1.
 
 Trans2_Parameters
@@ -6449,7 +6033,8 @@ Release: January 14, 2026
 
 68 / 180
 
-A TRANS2_QUERY_FS_INFORMATION subcommand of the SMB_COM_TRANSACTION2 is sent by the
+
+A TRANS2_QUERY_FS_INFORMATION subcommand of the SMB_COM_TRANSACTION2 is sent by the
 client to request attribute information about the file system, as specified in [MS-CIFS] section
 2.2.6.4.1.
 
@@ -6525,7 +6110,8 @@ Release: January 14, 2026
 
 69 / 180
 
-The Trans2_Data block carries the structure of the Information Level specified by the request's
+
+The Trans2_Data block carries the structure of the Information Level specified by the request's
 
 Trans2_Parameters.InformationLevel field. Because this subcommand only accepts pass-
 through Information Levels, the structure of this section is implementation specific.
@@ -6656,7 +6242,8 @@ valid.
 
 70 / 180
 
-SMB
+
+SMB
 error
 class
 
@@ -6746,7 +6333,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-2.2.6.7.1 Client Request Extensions
+
+2.2.6.7.1 Client Request Extensions
 
 A TRANS2_QUERY_FILE_INFORMATION subcommand of SMB_COM_TRANSACTION2 is sent by a client
 to request attribute information for a file or directory that has been opened, as specified in [MS-CIFS]
@@ -6779,9 +6367,9 @@ when the request is successful, as specified in [MS-CIFS] section 2.2.6.9.2.
 
 2.2.7  NT Transact Subcommand Extensions
 
-2.2.7.1  NT_TRANSACT_CREATE (0x0001) Extensions
+##### 2.2.7.1 NT_TRANSACT_CREATE (0x0001) Extensions
 
-2.2.7.1.1 Client Request Extensions
+###### 2.2.7.1.1 Client Request Extensions
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) command with an NT_TRANSACT_CREATE
 subcommand is sent by a client to open a file or device on the server. The NT_TRANSACT_CREATE
@@ -6814,7 +6402,8 @@ Release: January 14, 2026
 
 72 / 180
 
-   ULONG         DesiredAccess;
+
+   ULONG         DesiredAccess;
    LARGE_INTEGER AllocationSize;
    SMB_EXT_FILE_ATTR ExtFileAttributes;
    ULONG         ShareAccess;
@@ -6885,7 +6474,8 @@ Release: January 14, 2026
 
 73 / 180
 
-Flags (4 bytes): A 32-bit field containing a set of flags that modify the client request. Unused bits
+
+Flags (4 bytes): A 32-bit field containing a set of flags that modify the client request. Unused bits
 
 SHOULD be set to 0 by the client when sending a message and MUST be ignored when received by
 the server.
@@ -6974,7 +6564,7 @@ FILE_OPEN_REPARSE_POINT
 If the file or directory being opened is a reparse point, open the reparse
 point itself rather than the target that the reparse point references.
 
-2.2.7.1.2 Server Response Extensions
+###### 2.2.7.1.2 Server Response Extensions
 
 [MS-SMB] - v20260114
 Server Message Block (SMB) Protocol
@@ -6983,7 +6573,8 @@ Release: January 14, 2026
 
 74 / 180
 
-When a client requests extended information by setting
+
+When a client requests extended information by setting
 NT_CREATE_REQUEST_EXTENDED_RESPONSE, a successful response takes the following format.
 
 Aside from ResponseType, NMPipeStatus_or_FileStatusFlags, VolumeGUID, FileId,
@@ -7059,7 +6650,8 @@ Release: January 14, 2026
 
 75 / 180
 
-ExtFileAttributes
+
+ExtFileAttributes
 
 AllocationSize (variable)
 
@@ -7150,7 +6742,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-FileStatusFlags (2 bytes): A 16-bit field that shows extra information about the opened file or
+
+FileStatusFlags (2 bytes): A 16-bit field that shows extra information about the opened file or
 directory. Any combination of the following flags is valid. Unused bit fields SHOULD be set to
 zero by the server and MUST be ignored by the client.
 
@@ -7198,13 +6791,13 @@ Implementations that do not support the notion of a guest account MUST set this 
 If the FILE_OPEN_REPARSE_POINT flag bit is set in CreateOptions, and there is a symbolic link error,
 the server MUST return STATUS_STOPPED_ON_SYMLINK to the client.
 
-2.2.7.2  NT_TRANSACT_IOCTL (0x0002)
+##### 2.2.7.2 NT_TRANSACT_IOCTL (0x0002)
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) command with an NT_TRANSACT_IOCTL subcommand
 is sent by a client to pass an IOCTL or file system control (FSCTL) command to a server. The
 NT_TRANSACT_IOCTL subcommand is specified in [MS-CIFS] section 2.2.7.2.
 
-2.2.7.2.1 Client Request Extensions
+###### 2.2.7.2.1 Client Request Extensions
 
 The NT_TRANSACT_IOCTL request is a special case of the SMB_COM_NT_TRANSACT command
 request. Only the NT_TRANSACT_IOCTL specifics are described here.
@@ -7222,7 +6815,8 @@ Release: January 14, 2026
 
 77 / 180
 
-Name
+
+Name
 
 Value
 
@@ -7304,7 +6898,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Words (46 bytes):
+
+Words (46 bytes):
 
 MaxDataCount (4 bytes): This field MUST be greater than or equal to 0x001D.
 
@@ -7377,7 +6972,8 @@ Release: January 14, 2026
 
 79 / 180
 
-   }
+
+   }
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -7420,7 +7016,7 @@ CopychunkList (variable): A concatenated list of copychunks. Each entry is forma
 
 SRV_COPYCHUNK structure.
 
-2.2.7.2.1.1  SRV_COPYCHUNK
+###### 2.2.7.2.1.1 SRV_COPYCHUNK
 
  SRV_COPYCHUNK
    {
@@ -7454,7 +7050,8 @@ Release: January 14, 2026
 
 80 / 180
 
-...
+
+...
 
 CopyLength
 
@@ -7472,7 +7069,7 @@ Reserved (4 bytes): This field SHOULD<67> be set to zero by the client and MUST 
 
 receipt by the server.
 
-2.2.7.2.2 Server Response Extensions
+###### 2.2.7.2.2 Server Response Extensions
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) response for an NT_TRANSACT_IOCTL ([MS-CIFS]
 section 2.2.7.2) subcommand MUST be sent by a server in reply to a successful NT_TRANSACT_IOCTL
@@ -7481,7 +7078,7 @@ request.
 The NT_TRANSACT_IOCTL response is a special case of the SMB_COM_NT_TRANSACT command
 response. Only the NT_TRANSACT_IOCTL specifics are described here.
 
-2.2.7.2.2.1  FSCTL_SRV_ENUMERATE_SNAPSHOTS Response
+###### 2.2.7.2.2.1 FSCTL_SRV_ENUMERATE_SNAPSHOTS Response
 
 The FSCTL_SRV_ENUMERATE_SNAPSHOTS response format is a special case of the
 NT_TRANSACT_IOCTL subcommand. Only the FSCTL_SRV_ENUMERATE_SNAPSHOTS response
@@ -7526,7 +7123,8 @@ Release: January 14, 2026
 
 81 / 180
 
-   WCHAR SnapShotMultiSZ[];
+
+   WCHAR SnapShotMultiSZ[];
    }
 
 0  1  2  3  4  5  6  7  8  9
@@ -7566,7 +7164,7 @@ following form: @GMT-YYYY.MM.DD-HH.MM.SS. The concatenated list MUST be terminat
 additional 16-bit Unicode NULL character. If the response contains no snapshots, then the server
 MUST set this field to two 16-bit Unicode NULL characters.
 
-2.2.7.2.2.2  FSCTL_SRV_REQUEST_RESUME_KEY Response
+###### 2.2.7.2.2.2 FSCTL_SRV_REQUEST_RESUME_KEY Response
 
 The FSCTL_SRV_REQUEST_RESUME_KEY response format is a special case of the
 NT_TRANSACT_IOCTL subcommand. Only the FSCTL_SRV_REQUEST_RESUME_KEY response specifics
@@ -7596,7 +7194,8 @@ Release: January 14, 2026
 
 82 / 180
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7632,7 +7231,7 @@ this field SHOULD be set to zero by the server and MUST be ignored by the client
 Context (variable): The copychunk resume key's extended context information. Since this feature is
 not used, this field SHOULD<68> be zero bytes in length. The client MUST ignore it on receipt.
 
-2.2.7.2.2.3  FSCTL_SRV_COPYCHUNK Response
+###### 2.2.7.2.2.3 FSCTL_SRV_COPYCHUNK Response
 
 The FSCTL_SRV_COPYCHUNK response format is a special case of NT_TRANSACT_IOCTL
 subcommand. Only the FSCTL_SRV_COPYCHUNK response specifics are described here.
@@ -7678,7 +7277,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-ChunkBytesWritten (4 bytes): This field is unused. This field MUST be set to zero by the server and
+
+ChunkBytesWritten (4 bytes): This field is unused. This field MUST be set to zero by the server and
 
 MUST be ignored by the client.
 
@@ -7686,7 +7286,7 @@ TotalBytesWritten (4 bytes): This field MUST represent the total number of bytes
 
 destination file across all copychunk operations.
 
-2.2.7.3  NT_TRANSACT_SET_SECURITY_DESC (0x0003) Extensions
+##### 2.2.7.3 NT_TRANSACT_SET_SECURITY_DESC (0x0003) Extensions
 
 An SMB_COM_NT_TRANSACT command (section 2.2.4.8) with an
 NT_TRANSACT_SET_SECURITY_DESC allows a client to set the security descriptors for a file or device
@@ -7752,7 +7352,7 @@ Security descriptor information used for backup operation.
 
 0x00010000
 
-2.2.7.4  NT_TRANSACT_QUERY_SECURITY_DESC (0x0006) Extensions
+##### 2.2.7.4 NT_TRANSACT_QUERY_SECURITY_DESC (0x0006) Extensions
 
 An SMB_COM_NT_TRANSACT command (section 2.2.4.8) with an
 NT_TRANSACT_QUERY_SECURITY_DESC allows a client to retrieve the security descriptors for a file or
@@ -7771,7 +7371,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-descriptors in one request. The descriptor response format contains storage for all the descriptors. The
+
+descriptors in one request. The descriptor response format contains storage for all the descriptors. The
 values returned for security descriptors corresponding to bits not mentioned in the following table
 MUST be ignored.
 
@@ -7828,13 +7429,13 @@ Security descriptor information used for backup operation.
 
 0x00010000
 
-2.2.7.5  NT_TRANSACT_QUERY_QUOTA (0x0007)
+##### 2.2.7.5 NT_TRANSACT_QUERY_QUOTA (0x0007)
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) command with an NT_TRANSACT_QUERY_QUOTA
 subcommand code is used by a client to query quota information for a user or multiple users. This
 subcommand is new to these extensions.
 
-2.2.7.5.1 Client Request
+###### 2.2.7.5.1 Client Request
 
 The NT_TRANSACT_QUERY_QUOTA request is a special case of the SMB_COM_NT_TRANSACT
 command request. Only the NT_TRANSACT_QUERY_QUOTA specifics are described here.
@@ -7862,7 +7463,8 @@ Release: January 14, 2026
 
 85 / 180
 
- NT_Trans_Parameters
+
+ NT_Trans_Parameters
    {
    USHORT   FID;
    BOOLEAN  ReturnSingleEntry;
@@ -7949,7 +7551,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-...
+
+...
 
 SidList (variable): A list of one or more SIDs that are formatted as a
 
@@ -7959,7 +7562,7 @@ quota information is being requested. If StartSidLength is non-zero, then this f
 a start SID. If both SidListLength and StartSidLength are zero, then this field MUST NOT be
 included in the request.
 
-2.2.7.5.2 Server Response
+###### 2.2.7.5.2 Server Response
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) response for an NT_TRANSACT_QUERY_QUOTA
 subcommand MUST be sent by a server in reply to a client NT_TRANSACT_QUERY_QUOTA
@@ -8036,7 +7639,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-QuotaInformation (variable): A concatenated list of FILE_QUOTA_INFORMATION structures, as
+
+QuotaInformation (variable): A concatenated list of FILE_QUOTA_INFORMATION structures, as
 
 specified in [MS-FSCC] section 2.4.41.
 
@@ -8228,13 +7832,14 @@ Release: January 14, 2026
 
 88 / 180
 
-2.2.7.6  NT_TRANSACT_SET_QUOTA (0x0008)
+
+##### 2.2.7.6 NT_TRANSACT_SET_QUOTA (0x0008)
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) request with an NT_TRANSACT_SET_QUOTA
 subcommand code is sent by a client to set user quota information on the underlying object store of a
 server. This subcommand is new to these extensions.
 
-2.2.7.6.1 Client Request
+###### 2.2.7.6.1 Client Request
 
 The NT_TRANSACT_SET_QUOTA request is a special case of the SMB_COM_NT_TRANSACT command
 request. Only the NT_TRANSACT_SET_QUOTA specifics are described here.
@@ -8319,11 +7924,12 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-QuotaInformation (variable): A concatenated list of FILE_QUOTA_INFORMATION structures, as
+
+QuotaInformation (variable): A concatenated list of FILE_QUOTA_INFORMATION structures, as
 
 specified in [MS-FSCC] section 2.4.41.
 
-2.2.7.6.2 Server Response
+###### 2.2.7.6.2 Server Response
 
 An SMB_COM_NT_TRANSACT (section 2.2.4.8) response for the NT_TRANSACT_SET_QUOTA
 subcommand MUST be sent by a server in reply to a client NT_TRANSACT_SET_QUOTA request when
@@ -8497,7 +8103,8 @@ Release: January 14, 2026
 
 90 / 180
 
-2.2.8  Information Levels
+
+#### 2.2.8 Information Levels
 
 In addition to the specification in [MS-CIFS] section 2.2.8, the client MUST map the application
 provided FSCC information levels to SMB information levels as specified below.
@@ -8514,9 +8121,9 @@ SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO
 
 FileIdBothDirectoryInformation  SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO
 
-2.2.8.1  FIND Information Level Extensions
+##### 2.2.8.1 FIND Information Level Extensions
 
-2.2.8.1.1 SMB_FIND_FILE_BOTH_DIRECTORY_INFO Extensions
+###### 2.2.8.1.1 SMB_FIND_FILE_BOTH_DIRECTORY_INFO Extensions
 
 If the query being executed is a request for the enumeration of available previous versions (section
 2.2.1.1.1), then the returned structure is identical to the structure that is specified in [MS-CIFS]
@@ -8571,7 +8178,8 @@ Release: January 14, 2026
 
 91 / 180
 
-LastWriteTime
+
+LastWriteTime
 
 ...
 
@@ -8644,7 +8252,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-ExtFileAttributes (4 bytes):  Extended attributes for this file that MUST be marked as a
+
+ExtFileAttributes (4 bytes):  Extended attributes for this file that MUST be marked as a
 
 DIRECTORY.
 
@@ -8668,7 +8277,7 @@ FileName (variable): An @GMT token that represents an available previous version
 
 directory.
 
-2.2.8.1.2 SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO
+###### 2.2.8.1.2 SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO
 
 The fields and encoding of the TRANS2_FIND_FIRST2 SMB_FIND_FILE_ID_FULL_DIRECTORY_INFO
 Information Level response message are identical to the fields and encoding of the
@@ -8722,7 +8331,8 @@ Release: January 14, 2026
 
 93 / 180
 
-...
+
+...
 
 LastWriteTime
 
@@ -8787,14 +8397,15 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-FileId (8 bytes): A LARGE_INTEGER that serves as an internal file system identifier. This number
+
+FileId (8 bytes): A LARGE_INTEGER that serves as an internal file system identifier. This number
 
 MUST be unique for each file on a given volume. If a remote file system does not support unique
 FileId values, then the FileId field MUST be set to zero.
 
 FileName (variable): This field contains the name of the file.
 
-2.2.8.1.3 SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO
+###### 2.2.8.1.3 SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO
 
 The fields and encoding of the TRANS2_FIND_FIRST2 SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO
 Information Level response message are identical to the fields and encoding of
@@ -8859,7 +8470,8 @@ Release: January 14, 2026
 
 95 / 180
 
-...
+
+...
 
 EndOfFile
 
@@ -8933,19 +8545,20 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-2.2.8.2  QUERY_FS Information Level Extensions
 
-2.2.8.2.1 SMB_QUERY_FS_ATTRIBUTE_INFO
+##### 2.2.8.2 QUERY_FS Information Level Extensions
+
+###### 2.2.8.2.1 SMB_QUERY_FS_ATTRIBUTE_INFO
 
 For this Information Level, the server SHOULD check the FileSystemAttributes field and remove the
 attribute flags that are not supported by the underlying object store before sending the response to
 the client.<75>
 
-2.2.8.3  QUERY Information Level Extensions
+##### 2.2.8.3 QUERY Information Level Extensions
 
 No new SMB-specific Information Levels are specified for these extensions.
 
-2.2.8.4  SET Information level Extensions
+##### 2.2.8.4 SET Information level Extensions
 
 No new SMB-specific Information Levels are specified for these extensions.
 
@@ -8956,14 +8569,15 @@ Release: January 14, 2026
 
 97 / 180
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 An SMB implementation MUST implement CIFS, as specified by section 3 of the [MS-CIFS]
 specification.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains in order to participate in this protocol. The described organization is provided to explain how
@@ -8973,21 +8587,21 @@ long as their external behavior is consistent with what is described in this doc
 The following elements extend the global abstract data model that is specified in [MS-CIFS] section
 3.1.1.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 There are no global parameters defined as common to both client and server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no timers common to both client and server.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No new common variables are defined in this document.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Sending Any Message
+##### 3.1.4.1 Sending Any Message
 
  Processing of any message is handled as specified in [MS-CIFS] section 3.1.4.1 with the following
 additions: The MD5 algorithm, as specified in [RFC1321], MUST be used to generate a hash of the
@@ -9015,12 +8629,13 @@ Release: January 14, 2026
 
 98 / 180
 
-The resulting 8-byte signature MUST be copied into the SecuritySignature field of the SMB header,
+
+The resulting 8-byte signature MUST be copied into the SecuritySignature field of the SMB header,
 after which the message can be transmitted.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receiving Any Message
+##### 3.1.5.1 Receiving Any Message
 
  Processing of any message is handled as specified in [MS-CIFS] section 3.1.5.1 with the following
 additions:
@@ -9049,17 +8664,17 @@ the signature that is calculated, then the message MUST be discarded and no furt
 is done. The receiver MAY also terminate the connection by disconnecting the underlying transport
 connection and cleaning up any state associated with the connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no timers common to both client and server.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no local events common to both client and server.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains in order to participate in this protocol. The described organization is provided to explain how
@@ -9075,7 +8690,8 @@ Release: January 14, 2026
 
 99 / 180
 
-3.2.1.1  Global
+
+##### 3.2.1.1 Global
 
 Client.MessageSigningPolicy: A state that determines whether or not this node signs messages.
 
@@ -9104,7 +8720,7 @@ Security Services (GSS), as specified in [RFC2743], for selecting the authentica
 
 Client.Supports32BidPIDs: A flag that indicates whether the client supports 32-bit process IDs.
 
-3.2.1.2  Per SMB Connection
+##### 3.2.1.2 Per SMB Connection
 
 Client.Connection.GSSNegotiateToken:  A byte array that contains the token received during an
 
@@ -9112,7 +8728,7 @@ extended security negotiation and that is remembered for authentication.
 
 Client.Connection.ServerGUID:  A GUID generated by the server to uniquely identify this server.
 
-3.2.1.3  Per SMB Session
+##### 3.2.1.3 Per SMB Session
 
 Client.Session.AuthenticationState: A session can be in one of three states:
 
@@ -9136,7 +8752,7 @@ Client.Session.UserCredentials: An opaque implementation-specific entity that id
 
 credentials that were used to authenticate to the server.
 
-3.2.1.4  Per Tree Connect
+##### 3.2.1.4 Per Tree Connect
 
 Client.TreeConnect.GuestMaximalShareAccessRights:  The GuestMaximalShareAccessRights
 value as returned in the SMB_COM_TREE_CONNECT_ANDX server response (section 2.2.4.7.2).
@@ -9145,7 +8761,7 @@ Client.TreeConnect.MaximalShareAccessRights: The MaximalShareAccessRights value 
 
 returned in the SMB_COM_TREE_CONNECT_ANDX server response (section 2.2.4.7.2).
 
-3.2.1.5  Per Unique Open
+##### 3.2.1.5 Per Unique Open
 
 None.
 
@@ -9156,11 +8772,12 @@ Release: January 14, 2026
 
 100 / 180
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 There are no new client timers other than those specified in [MS-CIFS] section 3.2.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of the following additional parameters is required beyond that specified in [MS-CIFS]
 section 3.2.3.
@@ -9190,14 +8807,14 @@ When an SMB session is established on an SMB connection, the following value MUS
 
 All other values are initialized as specified in [MS-CIFS] section 3.2.3.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Sending Any Message
+##### 3.2.4.1 Sending Any Message
 
 The following global details are presented to a client that sends any message in addition to what is
 specified in [MS-CIFS] section 3.2.4.1.
 
-3.2.4.1.1 Scanning a Path for a Previous Version Token
+###### 3.2.4.1.1 Scanning a Path for a Previous Version Token
 
 The application requests a previous version of a file by placing a time indicator in the path as a
 directory element, as specified in section 2.2.1.1.1. For any path-based operation (for
@@ -9207,11 +8824,11 @@ application for a formatted @GMT token.
 If a previous version token is present in the pathname as a directory element or a final target, the
 client SHOULD<79> set the SMB_FLAGS2_REPARSE_PATH flag in the SMB header of the request.
 
-3.2.4.2  Application Requests Connecting to a Share
+##### 3.2.4.2 Application Requests Connecting to a Share
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.
 
-3.2.4.2.1 Connection Establishment
+###### 3.2.4.2.1 Connection Establishment
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.1.
 
@@ -9222,17 +8839,18 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-3.2.4.2.2 Dialect Negotiation
+
+###### 3.2.4.2.2 Dialect Negotiation
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.2.
 
-3.2.4.2.3 Capabilities Negotiation
+###### 3.2.4.2.3 Capabilities Negotiation
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.3, with the addition that
 the new capabilities flags (specified in section 2.2.4.5.2) are also to be considered in the list of
 possible capabilities.
 
-3.2.4.2.4 User Authentication
+###### 3.2.4.2.4 User Authentication
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.4, with the following
 additions:
@@ -9331,7 +8949,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-The client MUST do one of the following:
+
+The client MUST do one of the following:
 
 
 
@@ -9355,7 +8974,7 @@ SMB_Data.Bytes.SecurityBlob field to the GSS output token generated by the
 GSS_Init_sec_context() interface, and the SMB_Parameters.Words.SecurityBlobLength to the
 length of the GSS output token.
 
-3.2.4.2.4.1  Sequence Diagram
+###### 3.2.4.2.4.1 Sequence Diagram
 
 For the user to be successfully authenticated and to establish a session, the client MUST follow a
 security negotiation scheme that can involve one or more roundtrips of
@@ -9377,7 +8996,8 @@ Release: January 14, 2026
 
 103 / 180
 
-<!-- Extracted images from page 104 -->
+
+<!-- Extracted images from page 104 -->
 ![Extracted image 1 from page 104]([MS-SMB].images/page104-img01.png)
 <!-- /Extracted images from page 104 -->
 
@@ -9416,7 +9036,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Upon receiving the extended SMB_COM_SESSION_SETUP_ANDX server response (section 2.2.4.6.2),
+
+Upon receiving the extended SMB_COM_SESSION_SETUP_ANDX server response (section 2.2.4.6.2),
 the SMB client invokes the local security package to determine whether the session setup request
 SHOULD be completed, aborted, or continued. A completed session indicates that the server has
 enough information to establish the session. An aborted session indicates that the server cannot
@@ -9439,7 +9060,7 @@ SMB_COM_SESSION_SETUP_ANDX Server Response N, where N is a number larger than 1.
 All additional SMB session setup roundtrips follow the same sequence details as Session Setup
 Roundtrip, as described earlier in this topic.<84>
 
-3.2.4.2.5 Connecting to the Share (Tree Connect)
+###### 3.2.4.2.5 Connecting to the Share (Tree Connect)
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.2.5, with the following
 additions:
@@ -9463,7 +9084,7 @@ SMB_COM_TREE_CONNECT_ANDX request to TRUE, as defined in section 2.2.4.3.2.
 
 The client sends this message to the server.
 
-3.2.4.3  Application Requests Opening a File
+##### 3.2.4.3 Application Requests Opening a File
 
 The processing of this event is handled as specified in [MS-CIFS] sections 3.2.4.5 and 3.2.4.6, with
 the following additions:
@@ -9473,7 +9094,7 @@ access information. The client can issue either an SMB_COM_NT_CREATE_ANDX reques
 SMB_COM_OPEN_ANDX request to make use of these extensions, as specified in section
 3.2.4.3.1.<86>
 
-3.2.4.3.1 SMB_COM_NT_CREATE_ANDX Request
+###### 3.2.4.3.1 SMB_COM_NT_CREATE_ANDX Request
 
 105 / 180
 
@@ -9482,7 +9103,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-To access these extensions, the application can also provide:
+
+To access these extensions, the application can also provide:
 
   RequestExtendedResponse: A BOOLEAN. If TRUE, then it indicates that the application is
 
@@ -9496,7 +9118,7 @@ For a named pipe request, the client MUST set the SYNCHRONIZE bit in the Desired
 the FILE_SYNCHRONOUS_IO_ALERT or FILE_SYNCHRONOUS_IO_NONALERT bit is set in the
 CreateOptions field.
 
-3.2.4.3.2 SMB_COM_OPEN_ANDX Request (deprecated)
+###### 3.2.4.3.2 SMB_COM_OPEN_ANDX Request (deprecated)
 
 To access these extensions, the application can also provide:
 
@@ -9507,7 +9129,7 @@ requesting a server to send an extended response.
 If the application is requesting an extended server response, then the client SHOULD<87> set the
 SMB_OPEN_EXTENDED_RESPONSE flag in the SMB_Parameters.Flags field of the request.
 
-3.2.4.4  Application Requests Reading from a File, Named Pipe, or Device
+##### 3.2.4.4 Application Requests Reading from a File, Named Pipe, or Device
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.14, with the following
 additions:
@@ -9534,7 +9156,7 @@ two most significant bytes of the count, thus allowing for a 32-bit read count w
 MaxCountOfBytesToReturn field. If the read count is not larger than 0xFFFF, then the client
 MUST set MaxCountHigh to zero.
 
-3.2.4.4.1 Large Read Support
+###### 3.2.4.4.1 Large Read Support
 
 If the CAP_LARGE_READX bit is set in Client.Connection.ServerCapabilities, then the client is
 allowed to issue a read of a size larger than Client.Connection.MaxBufferSize using an
@@ -9554,13 +9176,14 @@ Release: January 14, 2026
 
 106 / 180
 
-
+
+
 
 If a large read is being issued and the object being read is a file, then the two least significant
 bytes of the count of bytes to read MUST be placed into the MaxCountOfBytesToReturn field
 and the two most significant bytes of the count MUST be placed into the MaxCountHigh field.
 
-3.2.4.5  Application Requests Writing to a File, Named Pipe, or Device
+##### 3.2.4.5 Application Requests Writing to a File, Named Pipe, or Device
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.15 with the following
 additions:
@@ -9583,7 +9206,7 @@ If the count of bytes to be written is greater than or equal to 0x00010000 (64K)
 set the two least significant bytes of the count in the DataLength field of the request and the two
 most significant bytes of the count in the DataLengthHigh field.
 
-3.2.4.6  Application Requests a Directory Enumeration
+##### 3.2.4.6 Application Requests a Directory Enumeration
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.27, with the following
 additions:
@@ -9607,7 +9230,7 @@ request follows the same previous version token parsing rules as specified in se
 
 The message is sent to the server.
 
-3.2.4.7  Application Requests Querying File Attributes
+##### 3.2.4.7 Application Requests Querying File Attributes
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.12, with the following
 additions:
@@ -9621,7 +9244,8 @@ Release: January 14, 2026
 
 107 / 180
 
-The extension adds support for pass-through Information Levels, as defined in section 2.2.2.3.5. If
+
+The extension adds support for pass-through Information Levels, as defined in section 2.2.2.3.5. If
 the CAP_INFOLEVEL_PASSTHRU bit in Client.Connection.ServerCapabilities is set, the client MUST
 increment the Information Level value by SMB_INFO_PASSTHROUGH (0x03e8) and place the resulting
 value in the InformationLevel field of a TRANS2_QUERY_FILE_INFORMATION or
@@ -9647,7 +9271,7 @@ Because the TRANS2_QUERY_PATH_INFORMATION subcommand request is a path-based ope
 the path SHOULD be scanned for previous version tokens by the client, as specified in section
 3.2.4.1.1.
 
-3.2.4.8  Application Requests Setting File Attributes
+##### 3.2.4.8 Application Requests Setting File Attributes
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.13, with the following
 additions:
@@ -9666,7 +9290,7 @@ Previous Version Tokens
 Because the TRANS2_SET_PATH_INFORMATION subcommand request is a path-based operation, the
 path SHOULD be scanned for previous version tokens by the client, as specified in section 3.2.4.1.1.
 
-3.2.4.9  Application Requests Querying File System Attributes
+##### 3.2.4.9 Application Requests Querying File System Attributes
 
 The processing of this event is handled as specified in [MS-CIFS] section 2.2.2.3.5, with the following
 additions:
@@ -9684,9 +9308,10 @@ Release: January 14, 2026
 
 108 / 180
 
-3.2.4.10
 
-Application Requests Setting File System Attributes
+##### 3.2.4.10 Application Requests Setting File System Attributes
+
+
 
 The application MUST provide the following:
 
@@ -9712,9 +9337,9 @@ section 2.2.6.4.1.
 The client MUST use Open.TreeConnect and Open.Session to send the request to the server. The
 request MUST be sent to the server, as specified in section 3.2.4.1.
 
-3.2.4.11
+##### 3.2.4.11 Application Requests Sending an I/O Control to a File or Device
 
-Application Requests Sending an I/O Control to a File or Device
+
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.22, with the following
 additions:
@@ -9722,15 +9347,15 @@ additions:
 A list of FSCTLs is specified in [MS-FSCC] section 2.3. Three I/O control codes specific to the
 extension are described in the following subsections.
 
-3.2.4.11.1  Application Requests Enumerating Available Previous Versions
+###### 3.2.4.11.1 Application Requests Enumerating Available Previous Versions
 
 An application can request that a client retrieve an enumeration of available previous version time
 stamps for a share by issuing the FSCTL_SRV_ENUMERATE_SNAPSHOTS control code, as specified in
 section 2.2.7.2.1.<91> The request is sent to the server.
 
-3.2.4.11.2
+###### 3.2.4.11.2 Performing a Server-Side Data Copy
 
-Performing a Server-Side Data Copy
+
 
 An outline of the steps taken for a server-side data copy follows. The application first requests the
 FSCTL_SRV_REQUEST_ RESUME_KEY operation and the client issues the request to the server as
@@ -9746,13 +9371,14 @@ Release: January 14, 2026
 
 109 / 180
 
-<!-- Extracted images from page 110 -->
+
+<!-- Extracted images from page 110 -->
 ![Extracted image 1 from page 110]([MS-SMB].images/page110-img01.png)
 <!-- /Extracted images from page 110 -->
 
 Figure 3: Server-side data copy of an entire file
 
-3.2.4.11.2.1  Application queries the Copychunk Resume Key of the Source File
+###### 3.2.4.11.2.1 Application queries the Copychunk Resume Key of the Source File
 
 The application provides a handle to the Open representing the source file.
 
@@ -9762,7 +9388,7 @@ The Fid of the source file (Open.FID) is placed in the FID field of the client r
 FSCTL_SRV_REQUEST_RESUME_KEY function code. No NT_Trans_Data block is required. The
 request is sent to the server and the server's response is processed as specified in section 3.2.5.9.1.1.
 
-3.2.4.11.2.2  Application requests a Server-side Data Copy
+###### 3.2.4.11.2.2 Application requests a Server-side Data Copy
 
 The application provides:
 
@@ -9773,7 +9399,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-  A handle to the Open representing the destination file.
+
+  A handle to the Open representing the destination file.
 
   Copychunk Resume Key of the source file.
 
@@ -9799,15 +9426,15 @@ each data block.
 The request is sent to the server and the server’s response is processed as specified in section
 3.2.5.9.1.2.
 
-3.2.4.12
+##### 3.2.4.12 Application Requests Querying of DFS Referral
 
-Application Requests Querying of DFS Referral
+
 
 Processing of this event is handled as specified in [MS-CIFS] section 3.2.4.44.<92>
 
-3.2.4.13
+##### 3.2.4.13 Application Requests Querying User Quota Information
 
-Application Requests Querying User Quota Information
+
 
 The application MUST provide:
 
@@ -9852,7 +9479,8 @@ Release: January 14, 2026
 
 111 / 180
 
-
+
+
 
 The NT_Trans_Parameters fields of SidListLength, StartSidLength, and StartSidOffset MUST
 be set according to the following rules:
@@ -9880,9 +9508,9 @@ STATUS_INVALID_PARAMETER to the calling application.
 
 The request is sent to the server.
 
-3.2.4.14
+##### 3.2.4.14 Application Requests Setting User Quota Information
 
-Application Requests Setting User Quota Information
+
 
 The application MUST provide:
 
@@ -9906,9 +9534,9 @@ contents of the NT_Trans_Data block, as specified in section 2.2.7.6.1.
 
 The client sends the request to the server.
 
-3.2.4.15
+##### 3.2.4.15 Application Requests the Session Key for a Connection
 
-Application Requests the Session Key for a Connection
+
 
 An application provides one of the following:
 
@@ -9935,13 +9563,14 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-If a session is found, Client.Session.AuthenticationState is Valid, and
+
+If a session is found, Client.Session.AuthenticationState is Valid, and
 Client.Session.SessionKeyState is Available, then the first 16-bytes of Client.Session.SessionKey
 MUST be returned to the calling application.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving Any Message
+##### 3.2.5.1 Receiving Any Message
 
 In addition to the global processing rules for a client that receives any message, as specified in [MS-
 CIFS] section 3.2.5.1, the following processing rules apply to the extensions presented in this
@@ -9973,7 +9602,7 @@ removed from the Client.Connection.SessionTable. If authentication succeeds, the
 MUST set Client.Session.AuthenticationState to Valid and retry the operation that failed with
 STATUS_NETWORK_SESSION_EXPIRED.
 
-3.2.5.2  Receiving an SMB_COM_NEGOTIATE Response
+##### 3.2.5.2 Receiving an SMB_COM_NEGOTIATE Response
 
 Processing of an SMB_COM_NEGOTIATE response is handled as specified in [MS-CIFS] section 3.2.5.2
 with the following additions:
@@ -9996,7 +9625,8 @@ Release: January 14, 2026
 
 113 / 180
 
-3.2.5.3  Receiving an SMB_COM_SESSION_SETUP_ANDX Response
+
+##### 3.2.5.3 Receiving an SMB_COM_SESSION_SETUP_ANDX Response
 
 The processing of an SMB_COM_SESSION_SETUP_ANDX response is handled as specified in [MS-
 CIFS] section 3.2.5.3 with the following additions:
@@ -10079,7 +9709,8 @@ Release: January 14, 2026
 
 114 / 180
 
-If the CAP_EXTENDED_SECURITY bit in Client.Connection.ServerCapabilities is not set, then the
+
+If the CAP_EXTENDED_SECURITY bit in Client.Connection.ServerCapabilities is not set, then the
 client processes the response.<96> If the Status field of the response does not contain
 STATUS_SUCCESS, then the client MUST propagate the error to the application that initiated the
 authentication. The connection MUST remain open for the client to attempt another authentication.
@@ -10135,7 +9766,7 @@ Once these steps are completed, the client MUST verify the signature of this res
 follows the steps specified in section 3.1.5.1, by passing in a sequence number of one because this is
 the first signed packet.
 
-3.2.5.4  Receiving an SMB_COM_TREE_CONNECT_ANDX Response
+##### 3.2.5.4 Receiving an SMB_COM_TREE_CONNECT_ANDX Response
 
 The processing of an SMB_COM_TREE_CONNECT_ANDX Response is handled as specified in [MS-CIFS]
 section 3.2.5.4 with the following additions:
@@ -10155,7 +9786,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Client.Connection.TreeConnectTable[TID].GuestMaximalShareAccessRights to the values that
+
+Client.Connection.TreeConnectTable[TID].GuestMaximalShareAccessRights to the values that
 are in the response fields of SMB_Parameters.Words.MaximalShareAccessRights and
 SMB_Parameters.Words.GuestMaximalShareAccessRights, respectively.
 
@@ -10196,7 +9828,7 @@ If the TREE_CONNECT_ANDX_EXTENDED_SIGNATURE bit is not set, then the
 Client.Session.SessionKey is not changed and Client.Session.SessionKeyState MUST be set to
 Available.
 
-3.2.5.5  Receiving an SMB_COM_NT_CREATE_ANDX Response
+##### 3.2.5.5 Receiving an SMB_COM_NT_CREATE_ANDX Response
 
 The processing of an SMB_COM_NT_CREATE_ANDX response is handled as specified in [MS-CIFS]
 section 3.2.5.36 with the following additions:
@@ -10207,7 +9839,7 @@ The client MUST determine whether the server returned an extended response, as s
 Otherwise, the extended information that is specified in section 2.2.4.9.2 MUST also be propagated
 back to the calling application.
 
-3.2.5.6  Receiving an SMB_COM_OPEN_ANDX Response
+##### 3.2.5.6 Receiving an SMB_COM_OPEN_ANDX Response
 
 The processing of an SMB_COM_OPEN_ANDX response is handled as specified in [MS-CIFS] section
 3.2.5.25 with the following additions:
@@ -10225,7 +9857,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-3.2.5.7  Receiving an SMB_COM_READ_ANDX Response
+
+##### 3.2.5.7 Receiving an SMB_COM_READ_ANDX Response
 
 The processing of an SMB_COM_READ_ANDX response is handled as specified in [MS-CIFS] section
 3.2.5.26 with the following additions:
@@ -10236,7 +9869,7 @@ section 2.2.4.42.2, are interpreted as the 16-bit DataLengthHigh field (specifie
 The DataLengthHigh field MUST contain the two most-significant bytes of a 32-bit length count of
 bytes read from the server.
 
-3.2.5.8  Receiving an SMB_COM_WRITE_ANDX Response
+##### 3.2.5.8 Receiving an SMB_COM_WRITE_ANDX Response
 
 The processing of an SMB_COM_WRITE_ANDX response is handled as specified in [MS-CIFS] section
 3.2.5.27 with the following additions:
@@ -10245,17 +9878,17 @@ The 16-bit SMB_Parameters.Words.Reserved field, specified in [MS-CIFS] section 2
 now interpreted as a 16-bit CountHigh field followed by an 8-bit Reserved field. The CountHigh
 field MUST contain the two most-significant bytes of a 32-bit count of bytes written by the server.
 
-3.2.5.9  Receiving any SMB_COM_NT_TRANSACT Response
+##### 3.2.5.9 Receiving any SMB_COM_NT_TRANSACT Response
 
 The processing of any SMB_COM_NT_TRANSACT response is handled as specified in [MS-CIFS] section
 3.2.5.40.
 
-3.2.5.9.1 Receiving an NT_TRANSACT_IOCTL Response
+###### 3.2.5.9.1 Receiving an NT_TRANSACT_IOCTL Response
 
 The processing of an NT_TRANSACT_IOCTL response is handled as specified in [MS-CIFS] section
 3.2.5.40.2 with the following additions.
 
-3.2.5.9.1.1  Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code
+###### 3.2.5.9.1.1 Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code
 
 If the response indicates that an error occurred, then the client MUST propagate the error to the
 application that initiated the call.
@@ -10263,13 +9896,13 @@ application that initiated the call.
 If the response indicates that the operation is successful, then the client MUST return the copychunk
 resume key that is received in the Data block of the response to the application that initiated the call.
 
-3.2.5.9.1.2  Receiving an FSCTL_SRV_COPYCHUNK Function Code
+###### 3.2.5.9.1.2 Receiving an FSCTL_SRV_COPYCHUNK Function Code
 
 The success or failure code MUST be returned to the calling application. The FSCTL_SRV_COPYCHUNK
 response (section 2.2.7.2.2) MUST also be returned to the calling application in both success and
 failure situations.
 
-3.2.5.9.2 Receiving an NT_TRANSACT_QUERY_QUOTA Response
+###### 3.2.5.9.2 Receiving an NT_TRANSACT_QUERY_QUOTA Response
 
 If the response indicates an error occurred, then the client MUST propagate the error to the
 application that initiated the call.
@@ -10277,7 +9910,7 @@ application that initiated the call.
 If the response indicates the operation is successful, then the client MUST return the information
 received in the Data block of the response to the application that initiated the call.
 
-3.2.5.9.3 Receiving an NT_TRANSACT_SET_QUOTA Response
+###### 3.2.5.9.3 Receiving an NT_TRANSACT_SET_QUOTA Response
 
 The client MUST propagate the success or failure code in the response to the application that initiated
 the call.
@@ -10289,36 +9922,37 @@ Release: January 14, 2026
 
 117 / 180
 
-3.2.5.10
 
-Receiving an SMB_COM_SEARCH Response
+##### 3.2.5.10 Receiving an SMB_COM_SEARCH Response
+
+
 
 The processing of an SMB_COM_SEARCH response is handled as specified in [MS-CIFS] section
 3.2.5.33.
 
-3.2.5.11
+##### 3.2.5.11 Receiving any SMB_COM_TRANSACTION2 subcommand Response
 
-Receiving any SMB_COM_TRANSACTION2 subcommand Response
+
 
 Aside from the following subcommand responses, all other SMB_COM_TRANSACTION2 subcommand
 responses are handled as specified in [MS-CIFS] section 3.2.5.39.
 
-3.2.5.11.1  Receiving any TRANS2_SET_FS_INFORMATION Response
+###### 3.2.5.11.1 Receiving any TRANS2_SET_FS_INFORMATION Response
 
 The client MUST propagate the success or failure code in the response to the application that initiated
 the call.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no new client timers other than those specified in [MS-CIFS] section 3.2.6.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no new client local events other than those specified in [MS-CIFS] section 3.2.7.
 
-3.3  Server Details
+### 3.3 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains in order to participate in this protocol. The described organization is provided to explain how
@@ -10327,7 +9961,7 @@ long as their external behavior is consistent with what is described in this doc
 
 The following elements extend the client abstract data model specified in [MS-CIFS] section 3.3.1.
 
-3.3.1.1  Global
+##### 3.3.1.1 Global
 
 ServerStatistics: Server statistical information. This contains all the members of the
 STAT_SERVER_0 structure, as specified in [MS-SRVS] section 2.2.4.39.
@@ -10361,7 +9995,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Server.MaxTotalCopyChunkSize: The maximum total number of bytes the server will accept for a
+
+Server.MaxTotalCopyChunkSize: The maximum total number of bytes the server will accept for a
 
 server-side data copy operation.
 
@@ -10369,7 +10004,7 @@ Server.CopyChunkTimeOut: The amount of time for which the server restricts the p
 
 single server-side data copy operation.
 
-3.3.1.2  Per Share
+##### 3.3.1.2 Per Share
 
 Server.Share.ShareFlags: A DWORD bitmask value that MUST contain zero or more of the values,
 as specified in [MS-SRVS] section 2.2.2.5.
@@ -10380,16 +10015,16 @@ information, see [MSDFS].
 
 Server.Share.SnapshotList: The list of available snapshots.
 
-3.3.1.3  Per SMB Connection
+##### 3.3.1.3 Per SMB Connection
 
 Server.Connection.GSSNegotiateToken: A byte array that contains the token received during an
 extended security negotiation and that is remembered for authentication.
 
-3.3.1.4  Per Pending SMB Command
+##### 3.3.1.4 Per Pending SMB Command
 
 There is no new state introduced per pending SMB command.
 
-3.3.1.5  Per SMB Session
+##### 3.3.1.5 Per SMB Session
 
 Server.Session.AuthenticationState: A session can be in one of four states:
 
@@ -10416,7 +10051,7 @@ Server.Session.AuthenticationExpirationTime: A value that specifies the time at 
 
 session will be expired.
 
-3.3.1.6  Per Tree Connect
+##### 3.3.1.6 Per Tree Connect
 
 Server.TreeConnect.Share: The share on which this tree connect was established.
 
@@ -10432,20 +10067,21 @@ Release: January 14, 2026
 
 119 / 180
 
-3.3.1.7  Per Unique Open
+
+##### 3.3.1.7 Per Unique Open
 
 Server.Open.GrantedAccess: The access level granted on this Open.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Authentication Expiration Timer
+##### 3.3.2.1 Authentication Expiration Timer
 
 The Authentication Expiration Timer, a re-authentication timer, is used to mark an authentication as
 expired when its authentication-specific expiration time is reached. This timer controls the periodic
 scheduling of searching for sessions that have passed their Authentication expiration time. The server
 SHOULD<97> schedule this timer such that sessions are expired in a timely manner.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The Authentication Expiration Timer, as specified in section 3.3.2.1, MUST be started at system
 startup. The following values MUST be initialized at system startup:
@@ -10482,9 +10118,9 @@ When an SMB session is established on an SMB connection, the following value MUS
 
 All other values are initialized as specified in [MS-CIFS] section 3.3.3.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Sending Any Message
+##### 3.3.4.1 Sending Any Message
 
 This interface is used internally by the server to send a message to the client. It is not exposed to
 external callers.
@@ -10499,12 +10135,13 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-3.3.4.1.1 Sending Any Error Response Message
+
+###### 3.3.4.1.1 Sending Any Error Response Message
 
 In response to an error in the processing of any SMB request, the server SHOULD<103> follow the
 format as specified in [MS-CIFS] section 3.3.4.1.2.
 
-3.3.4.2  Server Application Queries a User Session Key
+##### 3.3.4.2 Server Application Queries a User Session Key
 
 The application MUST provide:
 
@@ -10526,24 +10163,24 @@ STATUS_ACCESS_DENIED and ServerStatistics.sts0_permerrors MUST be increased by 1
 Server.Session.SessionKeyState is Available, then the first 16-bytes of
 Server.Session.SessionKey MUST be returned to the calling application.
 
-3.3.4.3  DFS Server Notifies SMB Server That DFS Is Active
+##### 3.3.4.3 DFS Server Notifies SMB Server That DFS Is Active
 
 In response to this event, the SMB server MUST set the global state variable Server.IsDfsCapable to
 TRUE. If the DFS server is running on this computer, it MUST notify the SMB server that the DFS
 capability is available via this event.
 
-3.3.4.4  DFS Server Notifies SMB Server That a Share Is a DFS Share
+##### 3.3.4.4 DFS Server Notifies SMB Server That a Share Is a DFS Share
 
 In response to this event, the SMB server MUST set the Server.Share.IsDfs to TRUE. When a DFS
 server running on this computer claims a share as a DFS share, it MUST notify the SMB server via this
 event.
 
-3.3.4.5  DFS Server Notifies SMB Server That a Share Is Not a DFS Share
+##### 3.3.4.5 DFS Server Notifies SMB Server That a Share Is Not a DFS Share
 
 In response to this event, the SMB server MUST clear the Server.ShareIsDfs attribute of the share
 specified in section 3.3.1.2.
 
-3.3.4.6  Server Application Updates a Share
+##### 3.3.4.6 Server Application Updates a Share
 
 The calling application MUST provide a share in the SHARE_INFO_503_I and SHARE_INFO_1005
 structures as input parameters to update an existing share. The server MUST look up the share in
@@ -10555,7 +10192,7 @@ following values set; otherwise, the server MUST return an implementation-depend
 
   Share.ShareFlags MUST be set to shi1005_flags.
 
-3.3.4.7  Server Application Requests Querying a Share
+##### 3.3.4.7 Server Application Requests Querying a Share
 
 The calling application MUST provide the tuple <ServerName, ShareName> of the share that is being
 queried. The server MUST look up the share in the Server.ShareTable. If the matching share is
@@ -10567,7 +10204,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-found, the server MUST return a share in the SHARE_INFO_503_I and SHARE_INFO_1005 structures
+
+found, the server MUST return a share in the SHARE_INFO_503_I and SHARE_INFO_1005 structures
 to the caller as specified in [MS-CIFS] section 3.3.4.12 with the following values set; otherwise, the
 server MUST return an implementation-dependent error.
 
@@ -10581,9 +10219,9 @@ SHARE_INFO_1005.shi1005_flags
 
 Server.Share.ShareFlags
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Receiving Any Message
+##### 3.3.5.1 Receiving Any Message
 
 The following global details are presented to a server that receives any message in addition to what is
 specified in [MS-CIFS] section 3.3.5.2.
@@ -10635,7 +10273,8 @@ Release: January 14, 2026
 
 122 / 180
 
-
+
+
 
 If Connection.SessionTable[UID].AuthenticationState is equal to Expired or
 ReauthInProgress, and the received message is one of the following requests, the server MUST
@@ -10685,7 +10324,7 @@ allow all operations.
 
 
 
-3.3.5.1.1 Scanning a Path for a Previous Version Token
+###### 3.3.5.1.1 Scanning a Path for a Previous Version Token
 
 If a request is a path-based operation (for example, SMB_COM_NT_CREATE_ANDX) and has
 SMB_FLAGS2_REPARSE_PATH set in the Flag2 field of the SMB header, then the server MUST
@@ -10700,7 +10339,7 @@ against the previous version selected.
 If no previous version token is found in the pathname, the server MUST process the path-based
 operation normally.
 
-3.3.5.1.2 Granting Oplocks
+###### 3.3.5.1.2 Granting Oplocks
 
 The server SHOULD grant oplocks according to the process specified in [MS-CIFS] section 3.3.5.2.7,
 with the following additions:
@@ -10717,10 +10356,11 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-NT_CREATE_REQUEST_OPBATCH oplock, the server SHOULD<108> downgrade the request and
+
+NT_CREATE_REQUEST_OPBATCH oplock, the server SHOULD<108> downgrade the request and
 grant a level II oplock.
 
-3.3.5.2  Receiving an SMB_COM_NEGOTIATE Request
+##### 3.3.5.2 Receiving an SMB_COM_NEGOTIATE Request
 
 The processing of an SMB_COM_NEGOTIATE request is handled as specified in [MS-CIFS] section
 3.3.5.42, with the following additions:
@@ -10747,7 +10387,7 @@ The server MUST initialize its GSS mechanism with the Integrity, Confidentiality
 and use the Server-Initiated variation, as specified in [RFC4178]. The SMB_COM_NEGOTIATE
 response packet is sent to the client.<109>
 
-3.3.5.3  Receiving an SMB_COM_SESSION_SETUP_ANDX Request
+##### 3.3.5.3 Receiving an SMB_COM_SESSION_SETUP_ANDX Request
 
 The processing of an SMB_COM_SESSION_SETUP_ANDX request is handled as specified in [MS-CIFS]
 section 3.3.5.43 with the following additions:<110>
@@ -10787,7 +10427,8 @@ Release: January 14, 2026
 
 124 / 180
 
-Otherwise, the server MUST look up the authentication state for this session and take the following
+
+Otherwise, the server MUST look up the authentication state for this session and take the following
 actions based on this state.
 
 
@@ -10861,7 +10502,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-If bit zero of the Action field of the SMB_COM_SESSION_SETUP_ANDX response is set, then signing
+
+If bit zero of the Action field of the SMB_COM_SESSION_SETUP_ANDX response is set, then signing
 MUST NOT be activated. If the value of this field is one, then the user attempted to log in as a user
 other than Guest, but could not be authenticated for that account. Using a fallback mechanism on the
 server, the user is now logged in as Guest.
@@ -10906,7 +10548,7 @@ If Server.Session.AuthenticationExpirationTime expires, the Authentication Expir
 marks the Server.Connection.SessionTable[UID].AuthenticationState as Expired when the time-
 out occurs, as specified in 3.3.2.1.
 
-3.3.5.4  Receiving an SMB_COM_TREE_CONNECT_ANDX Request
+##### 3.3.5.4 Receiving an SMB_COM_TREE_CONNECT_ANDX Request
 
 The processing of an SMB_COM_TREE_CONNECT_ANDX request is handled as specified in [MS-CIFS]
 section 3.3.5.45 with the following additions:<113>
@@ -10930,7 +10572,8 @@ Release: January 14, 2026
 
 126 / 180
 
-The server MUST calculate the maximal share access rights for the user that requests the tree
+
+The server MUST calculate the maximal share access rights for the user that requests the tree
 connect using the following algorithm.
 
  MaxRights = 0x00000000
@@ -10999,7 +10642,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-3.3.5.5  Receiving an SMB_COM_NT_CREATE_ANDX Request
+
+##### 3.3.5.5 Receiving an SMB_COM_NT_CREATE_ANDX Request
 
 The processing of an SMB_COM_NT_CREATE_ANDX request is handled as specified in [MS-CIFS]
 section 3.3.5.51 with the following additions:
@@ -11074,7 +10718,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-If Server.IsDfsCapable is TRUE and Server.Share.IsDfs is True, then server MUST invoke the
+
+If Server.IsDfsCapable is TRUE and Server.Share.IsDfs is True, then server MUST invoke the
 interface defined in [MS-DFSC] section 3.2.4.1 to normalize the pathname by supplying FileName as
 the input parameter. If normalization fails, the server MUST fail the create request with the error code
 returned by the DFS normalization routine.  If the normalization procedure succeeds, returning an
@@ -11090,7 +10735,7 @@ FILE_OPEN_REPARSE_POINT is specified in the CreateOptions field of the request. 
 FILE_OPEN_REPARSE_POINT is specified, the server MUST open the underlying file or directory and
 return a handle to it. Otherwise, the server MUST return an error as specified in section 2.2.7.1.2.
 
-3.3.5.6  Receiving an SMB_COM_OPEN_ANDX Request
+##### 3.3.5.6 Receiving an SMB_COM_OPEN_ANDX Request
 
 The processing of an SMB_COM_OPEN_ANDX request is handled as specified in [MS-CIFS] section
 3.3.5.35 with the following additions:
@@ -11121,7 +10766,7 @@ manner. If the file has no security applied, MaximalAccessRights MUST be set to 
 access is granted for the client on this share, the server MUST fail the request with
 STATUS_ACCESS_DENIED and MUST increase ServerStatistics.sts0_permerrors by 1.
 
-3.3.5.7  Receiving an SMB_COM_READ_ANDX Request
+##### 3.3.5.7 Receiving an SMB_COM_READ_ANDX Request
 
 The processing of an SMB_COM_READ_ANDX request is handled as specified in [MS-CIFS] section
 3.3.5.36 with the following additions:<125>
@@ -11140,7 +10785,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-to read and is combined with the value of MaxCountOfBytesToReturn to create a 32-bit count of
+
+to read and is combined with the value of MaxCountOfBytesToReturn to create a 32-bit count of
 bytes to read (as specified in section 3.2.4.4). If MaxCountHigh is set to 0xFFFF, then the value
 MUST be ignored, and only the length received in MaxCountOfBytesToReturn is used.
 
@@ -11151,7 +10797,7 @@ then the server MAY<126>Return the requested number of bytes in the response, se
 significant bytes of the count in the DataLength field in the response, and the two most significant
 bytes of the count in the DataLengthHigh field (specified in section 2.2.4.2.2).
 
-3.3.5.8  Receiving an SMB_COM_WRITE_ANDX Request
+##### 3.3.5.8 Receiving an SMB_COM_WRITE_ANDX Request
 
 The processing of an SMB_COM_WRITE_ANDX request is handled as specified in [MS-CIFS] section
 3.3.5.37 with the following additions:
@@ -11165,7 +10811,7 @@ DataLengthHigh <<16), the server SHOULD<127> fail the request and return ERRSRV/
 If the server successfully writes data to the underlying object store, then the count of bytes written
 MUST be set in the Count and CountHigh fields of the response, as specified in section 2.2.4.3.2.
 
-3.3.5.9  Receiving an SMB_COM_SEARCH Request
+##### 3.3.5.9 Receiving an SMB_COM_SEARCH Request
 
 The processing of an SMB_COM_SEARCH request is handled as specified in [MS-CIFS] section
 3.3.5.47, with the following additions:
@@ -11173,14 +10819,14 @@ The processing of an SMB_COM_SEARCH request is handled as specified in [MS-CIFS]
 If the FileName field in the request is an empty string, the server SHOULD<128> return the root
 directory information in the response.
 
-3.3.5.10
+##### 3.3.5.10 Receiving any SMB_COM_TRANSACTION2 subcommand
 
-Receiving any SMB_COM_TRANSACTION2 subcommand
+
 
 The processing of any SMB_COM_TRANSACTION2 subcommand request is handled as specified in
 [MS-CIFS] section 3.3.5.58 with the following additions:
 
-3.3.5.10.1  Receiving any Information Level
+###### 3.3.5.10.1 Receiving any Information Level
 
 If the server receives client request with a pass-through Information Level (section 2.2.2.3.5) and
 the CAP_INFOLEVEL_PASSTHRU bit is set in Server.Capabilities, then the server MUST decrement
@@ -11194,7 +10840,7 @@ STATUS_INVALID_PARAMETER.
 The returned status and response data, if any, are sent to the client in a Trans2 subcommand
 response message that corresponds to the same subcommand that initiated the request.<130>
 
-3.3.5.10.2  Receiving a TRANS2_FIND_FIRST2 Request
+###### 3.3.5.10.2 Receiving a TRANS2_FIND_FIRST2 Request
 
 New Information Levels
 
@@ -11205,7 +10851,8 @@ Release: January 14, 2026
 
 130 / 180
 
-The server SHOULD allow for the new Information Levels, as specified in section 2.2.2.3.1. If the
+
+The server SHOULD allow for the new Information Levels, as specified in section 2.2.2.3.1. If the
 server does not support the new Information Levels, then it MUST fail the operation with
 STATUS_NOT_SUPPORTED.<131>
 
@@ -11218,7 +10865,7 @@ enumeration of previous versions that are valid for the share. It does this by m
 entry for each previous version, as defined in section 2.2.8.1.1. If the server chooses not to do this,
 then the enumeration MUST be processed as a normal TRANS2_FIND_FIRST2 operation.
 
-3.3.5.10.3  Receiving a TRANS2_FIND_NEXT2 Request
+###### 3.3.5.10.3 Receiving a TRANS2_FIND_NEXT2 Request
 
 New Information Levels
 
@@ -11231,14 +10878,14 @@ Enumerating Previous Versions
 Likewise, a query for previous version information that is started MUST be continued at the client's
 request with further entries generated, as defined in section 3.3.5.10.1.
 
-3.3.5.10.4  Receiving a TRANS2_QUERY_FILE_INFORMATION Request
+###### 3.3.5.10.4 Receiving a TRANS2_QUERY_FILE_INFORMATION Request
 
 Pass-through Information Levels
 
 If the client requests a pass-through Information Level, then the processing follows as specified in
 section 3.3.5.10.1.
 
-3.3.5.10.5  Receiving a TRANS2_QUERY_PATH_INFORMATION Request
+###### 3.3.5.10.5 Receiving a TRANS2_QUERY_PATH_INFORMATION Request
 
 If the FileName sent in the request is a reparse point, the server MUST perform the operation on the
 reparse point itself rather than the target that the reparse point references.
@@ -11248,14 +10895,14 @@ Pass-through Information Levels
 If the client requests a pass-through Information Level, then the processing follows as specified in
 section 3.3.5.10.1.
 
-3.3.5.10.6  Receiving a TRANS2_SET_FILE_INFORMATION Request
+###### 3.3.5.10.6 Receiving a TRANS2_SET_FILE_INFORMATION Request
 
 Pass-through Information Levels
 
 If the client requests a pass-through Information Level, then the processing follows as specified in
 section 3.3.5.10.1.<133>
 
-3.3.5.10.7  Receiving a TRANS2_SET_PATH_INFORMATION Request
+###### 3.3.5.10.7 Receiving a TRANS2_SET_PATH_INFORMATION Request
 
 If the FileName sent in the request is a reparse point, the server MUST perform the operation on the
 reparse point itself rather than the target that the reparse point references.
@@ -11272,7 +10919,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-3.3.5.10.8  Receiving a TRANS2_QUERY_FS_INFORMATION Request
+
+###### 3.3.5.10.8 Receiving a TRANS2_QUERY_FS_INFORMATION Request
 
 Pass-through Information Levels
 
@@ -11286,7 +10934,7 @@ FILE_SUPPORTS_POSIX_UNLINK_RENAME in FileSystemAttributes field
 of FileFsAttributeInformation structure, specified in [MS-FSCC] section 2.5.1, before sending to the
 client.
 
-3.3.5.10.9  Receiving a TRANS2_SET_FS_INFORMATION Request
+###### 3.3.5.10.9 Receiving a TRANS2_SET_FS_INFORMATION Request
 
 The server MAY support setting file system information. If the server does not support setting file
 system information, then it MUST fail the request with STATUS_ACCESS_DENIED.
@@ -11298,14 +10946,14 @@ There is no way to know if a server file system supports a given Information Lev
 perspective, if a client issues a request and it fails with STATUS_NOT_SUPPORTED, then it MUST be
 inferred that the server file system does not support the request.
 
-3.3.5.11
+##### 3.3.5.11 Receiving any SMB_COM_NT_TRANSACT Subcommand
 
-Receiving any SMB_COM_NT_TRANSACT Subcommand
+
 
 The processing of any SMB_COM_NT_TRANSACT subcommand request is handled as specified in [MS-
 CIFS] section 3.3.5.59 with the following additions specified in section 3.3.5.11.1.
 
-3.3.5.11.1  Receiving an NT_TRANSACT_IOCTL Request
+###### 3.3.5.11.1 Receiving an NT_TRANSACT_IOCTL Request
 
 The NT_TRANSACT_IOCTL extensions listed in section 2.2.7.2.1 are not directly passed to the
 underlying object store. Instead, processing is as specified in the following sections.
@@ -11320,7 +10968,7 @@ When the server receives an undefined FSCTL or IOCTL operation request that does
 private FSCTL requirements of [MS-FSCC] 2.3, the server MUST NOT pass the request to the
 underlying object store and MUST fail the request with STATUS_NOT_SUPPORTED.
 
-3.3.5.11.1.1  Receiving an FSCTL_SRV_ENUMERATE_SNAPSHOTS Function Code
+###### 3.3.5.11.1.1 Receiving an FSCTL_SRV_ENUMERATE_SNAPSHOTS Function Code
 
 This is a request to enumerate the available previous versions for a share.
 
@@ -11339,7 +10987,8 @@ Release: January 14, 2026
 
 132 / 180
 
-The server MUST construct an FSCTL_SRV_ENUMERATE_SNAPSHOTS response, as specified in section
+
+The server MUST construct an FSCTL_SRV_ENUMERATE_SNAPSHOTS response, as specified in section
 2.2.7.2.2.1, with the following values.
 
 If there are no previous versions of the file available or if the size required in bytes is greater than the
@@ -11377,7 +11026,7 @@ When sending the response to the client, the server SHOULD NOT <140>include any 
 after NT_Trans_Data in the FSCTL_SRV_ENUMERATE_SNAPSHOTS response (as specified in section
 2.2.7.2.2.1) and the client MUST ignore any additional data on receipt.
 
-3.3.5.11.1.2  Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code
+###### 3.3.5.11.1.2 Receiving an FSCTL_SRV_REQUEST_RESUME_KEY Function Code
 
 This is a request for an opaque copychunk resume key for use in an FSCTL_SRV_COPYCHUNK
 operation. The server MUST generate a 24-byte value that is used to uniquely identify the open of the
@@ -11394,7 +11043,7 @@ STATUS_INVALID_PARAMETER.
 If the server does not support this operation, then it MUST fail the request with
 STATUS_NOT_SUPPORTED.
 
-3.3.5.11.1.3  Receiving an FSCTL_SRV_COPYCHUNK Request
+###### 3.3.5.11.1.3 Receiving an FSCTL_SRV_COPYCHUNK Request
 
 This is a request for a server-side data copy as specified in section 2.2.7.2.1. The server MUST identify
 the source file based on the copychunk resume key field of the FSCTL_SRV_COPYCHUNK request.
@@ -11412,7 +11061,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-file is not opened for write-data access, then the server MUST fail the operation with
+
+file is not opened for write-data access, then the server MUST fail the operation with
 STATUS_ACCESS_DENIED and ServerStatistics.sts0_permerrors MUST be increased by 1.
 
 The server MUST validate that the amount of data to be written is within the server's configured
@@ -11456,7 +11106,7 @@ time specified by Server.CopyChunkTimeOut.
 If the server does not support this operation, then it MUST fail the request with
 STATUS_NOT_SUPPORTED.
 
-3.3.5.11.2  Receiving an NT_TRANS_QUERY_QUOTA Request
+###### 3.3.5.11.2 Receiving an NT_TRANS_QUERY_QUOTA Request
 
 The server MUST query the underlying object store, in an implementation-specific manner<141>, to
 enumerate the quota information for the list of SIDs specified in the SidList field, on which the file or
@@ -11468,7 +11118,7 @@ The format of the request determines which entries need to be returned, as speci
 2.2.7.5.1. The server MUST place the quota information in the response, as specified in section
 2.2.7.5.2, and send the response back to the client.
 
-3.3.5.11.3  Receiving an NT_TRANS_SET_QUOTA Request
+###### 3.3.5.11.3 Receiving an NT_TRANS_SET_QUOTA Request
 
 The server MUST attempt to apply the provided quota information to the underlying object store on
 which the file or directory indicated by the Fid resides, in an implementation-specific manner.<142>
@@ -11482,13 +11132,14 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-The server MUST apply the quota information provided in the NT_Trans_Data block of the request
+
+The server MUST apply the quota information provided in the NT_Trans_Data block of the request
 (see section 2.2.7.6.1).
 
 The resulting success or error received from the underlying object store MUST be returned in the
 response, as specified in section 2.2.7.6.2.
 
-3.3.5.11.4  Receiving an NT_TRANSACT_CREATE Request
+###### 3.3.5.11.4 Receiving an NT_TRANSACT_CREATE Request
 
 The processing of this subcommand request is handled as specified in [MS-CIFS] section 3.3.5.59.1
 with the following exception.
@@ -11497,16 +11148,16 @@ If the MaxParameterCount field of the SMB_COM_NT_TRANSACT request contains a val
 less than the size of the NT_TRANSACT_CREATE Response as specified in section 2.2.7.1.2, the server
 SHOULD<143> fail the request with STATUS_INVALID_SMB (ERRSRV/ERRerror).
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Authentication Expiration Timer Event
+##### 3.3.6.1 Authentication Expiration Timer Event
 
  When the Authentication Expiration Timer expires, the server MUST scan all sessions and it MUST set
 Server.Connection.SessionTable[UID].AuthenticationState to Expired, for which the
 Server.Connection.SessionTable[UID].AuthenticationState is valid and
 Server.Session.AuthenticationExpirationTime has passed, as specified in section 3.3.5.3.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 There are no new server local events other than those specified in [MS-CIFS] section 3.3.7.
 
@@ -11517,16 +11168,17 @@ Release: January 14, 2026
 
 135 / 180
 
-<!-- Extracted images from page 136 -->
+
+<!-- Extracted images from page 136 -->
 ![Extracted image 1 from page 136]([MS-SMB].images/page136-img01.png)
 <!-- /Extracted images from page 136 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe common scenarios that indicate normal traffic flow on the wire in order
 to illustrate the extensions to CIFS that are specified in this document.
 
-4.1  Extended Security Authentication
+### 4.1 Extended Security Authentication
 
 The following diagram depicts the protocol message sequence for a multi-phase extended security
 exchange and previous versions enumeration and access on the share root folder.
@@ -11555,7 +11207,8 @@ Release: January 14, 2026
 
 136 / 180
 
- Flags2 Summary = 51207 (0xC807)
+
+ Flags2 Summary = 51207 (0xC807)
    1100 1000 0000 0111
    ....  1...  ....  ....  = Extended security negotiation is supported
  Dialect Strings
@@ -11617,7 +11270,8 @@ Release: January 14, 2026
 
 137 / 180
 
- Server -> Client: Command = SMB_COM_SESSION_SETUP_ANDX
+
+ Server -> Client: Command = SMB_COM_SESSION_SETUP_ANDX
  NT status code = 0xC0000016, STATUS_MORE_PROCESSING_REQUIRED
  Header: Tid = 0x0000 Mid = 0x0070 Uid = 0x0802
  Flags2 Summary = 51207 (0xC807)
@@ -11654,7 +11308,7 @@ FRAME 6. Server response with session setup completion
 
 At this point, the client has been successfully authenticated.
 
-4.2  Previous File Version Enumeration
+### 4.2 Previous File Version Enumeration
 
 The following example shows how the client accesses a previous version of the share root folder. It is
 assumed that the client has already authenticated, established a tree connect to the target share,
@@ -11668,7 +11322,8 @@ Release: January 14, 2026
 
 138 / 180
 
-<!-- Extracted images from page 139 -->
+
+<!-- Extracted images from page 139 -->
 ![Extracted image 1 from page 139]([MS-SMB].images/page139-img01.png)
 <!-- /Extracted images from page 139 -->
 
@@ -11706,7 +11361,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-The client uses standard SMB commands to access the snapshot. The client also indicates in the
+
+The client uses standard SMB commands to access the snapshot. The client also indicates in the
 header Flags2 that the name in the request is tokenized with the previous version information. This
 indicates to the server that the client is accessing a previous version of the path. The server processes
 the request and returns the path information for the snapshot directory rather than to the current
@@ -11762,7 +11418,8 @@ Release: January 14, 2026
 
 140 / 180
 
- Create Action = File Opened
+
+ Create Action = File Opened
 
 These similar steps can be used to open a file rather than a directory on a remote volume. In that
 case, the @GMT token is contained in the relative path, such as \directory\@GMT-2006.04.26-
@@ -11772,7 +11429,7 @@ to read its contents.
 Likewise, the @GMT token path in the example can be used as part of a TRANS2_FIND_FIRST2 and
 TRANS2_FIND_NEXT2 to enumerate the contents of the volume at the time of the snapshot.
 
-4.3  Message Signing Example
+### 4.3 Message Signing Example
 
 The following is the sequence of events that is related to SMB message authentication. In the
 following scenario, as specified in [RFC4178], authentication is used between the client and the
@@ -11823,7 +11480,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-At this stage, the SessionKey is not yet available.
+
+At this stage, the SessionKey is not yet available.
 
  Client -> Server: SMB: C session setup & X
  SMB Flags2 contains 0xC807
@@ -11886,7 +11544,8 @@ Release: January 14, 2026
 
 142 / 180
 
- SECURITY_SIGNATURE: Bit2 (set)
+
+ SECURITY_SIGNATURE: Bit2 (set)
 
 The expected sequence number is 1 for the response packet from the server.
 
@@ -11925,7 +11584,7 @@ appropriate sequence number. The NTLM challenge response is the authentication t
 in the SMB_COM_SESSION_SETUP_ANDX request in the UnicodePassword field if NTLM was
 used for authentication, or in the OEMPassword field if LM authentication was used.
 
-4.4  Copy File (Remote to Local)
+### 4.4 Copy File (Remote to Local)
 
 The following example illustrates the sequence of operations during the copying of a file from a remote
 location to the local machine. The example assumes that the connection establishment and session
@@ -11938,7 +11597,8 @@ Release: January 14, 2026
 
 143 / 180
 
-<!-- Extracted images from page 144 -->
+
+<!-- Extracted images from page 144 -->
 ![Extracted image 1 from page 144]([MS-SMB].images/page144-img01.png)
 <!-- /Extracted images from page 144 -->
 
@@ -11980,7 +11640,8 @@ Release: January 14, 2026
 
 144 / 180
 
-             SMB: .........................0...... = Not Device
+
+             SMB: .........................0...... = Not Device
              SMB: ........................1....... = Normal
              SMB: .......................0........ = Not Temporary
              SMB: ......................0......... = Not Sparse File
@@ -12050,7 +11711,8 @@ Release: January 14, 2026
 
 145 / 180
 
- Client -> Server: SMB: C Read Andx, Dialect = NTLM 0.12
+
+ Client -> Server: SMB: C Read Andx, Dialect = NTLM 0.12
          SMB: Tree ID      (Tid) = 2049 (0x801)
          SMB: Process ID   (Pid) = 65279 (0xFEFF)
          SMB: User ID      (Uid) = 2048 (0x800)
@@ -12093,7 +11755,7 @@ SMB_COM_CLOSE Response
          SMB: User ID      (Uid) = 2048 (0x800)
          SMB: Multiplex ID (Mid) = 1984 (0x7C0)
 
-4.5  Copy File (Local to Remote)
+### 4.5 Copy File (Local to Remote)
 
 The following example illustrates the sequence of operations while copying a local file to a remote
 share. The frames do not include the connection establishment or session management, for
@@ -12106,7 +11768,8 @@ Release: January 14, 2026
 
 146 / 180
 
-<!-- Extracted images from page 147 -->
+
+<!-- Extracted images from page 147 -->
 ![Extracted image 1 from page 147]([MS-SMB].images/page147-img01.png)
 <!-- /Extracted images from page 147 -->
 
@@ -12149,7 +11812,8 @@ Release: January 14, 2026
 
 147 / 180
 
-             SMB: ........................0....... = Not Normal
+
+             SMB: ........................0....... = Not Normal
              SMB: .......................0........ = Not Temporary
              SMB: ......................0......... = Not Sparse File
              SMB: .....................0.......... = Not Reparse Point
@@ -12218,7 +11882,8 @@ Release: January 14, 2026
 
 148 / 180
 
- Client -> Server: SMB: C Write Andx, Dialect = NTLM 0.12
+
+ Client -> Server: SMB: C Write Andx, Dialect = NTLM 0.12
          SMB: Tree ID      (Tid) = 2049 (0x801)
          SMB: Process ID   (Pid) = 65279 (0xFEFF)
          SMB: User ID      (Uid) = 2048 (0x800)
@@ -12256,7 +11921,7 @@ SMB_COM_CLOSE Response
          SMB: User ID      (Uid) = 2048 (0x800)
          SMB: Multiplex ID (Mid) = 2400 (0x960)
 
-4.6  FSCTL SRV COPYCHUNK
+### 4.6 FSCTL SRV COPYCHUNK
 
 The following example refers to the sequence of operations for a file copy in which the source and the
 destination are on the same server. The FSCTL_SRV_COPYCHUNK (section 2.2.7.2) is used. The
@@ -12270,7 +11935,8 @@ Release: January 14, 2026
 
 149 / 180
 
-<!-- Extracted images from page 150 -->
+
+<!-- Extracted images from page 150 -->
 ![Extracted image 1 from page 150]([MS-SMB].images/page150-img01.png)
 <!-- /Extracted images from page 150 -->
 
@@ -12302,7 +11968,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-             SMB: ............................1... = Read EA Allowed
+
+             SMB: ............................1... = Read EA Allowed
              SMB: ...........................0.... = Write EA Denied
              SMB: ..........................0..... = File Execute Denied
              SMB: .........................0...... = File Delete Denied
@@ -12375,7 +12042,8 @@ Release: January 14, 2026
 
 151 / 180
 
-             SMB: .......................0........ = Not Temporary
+
+             SMB: .......................0........ = Not Temporary
              SMB: ......................0......... = Not Sparse File
              SMB: .....................0.......... = Not Reparse Point
              SMB: ....................0........... = Not Compressed
@@ -12448,7 +12116,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-         SMB: File name = destinationfile.txt
+
+         SMB: File name = destinationfile.txt
 
 NT_CREATE_ANDX Response
 
@@ -12511,7 +12180,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
- List:
+
+ List:
      SourceOffset = 0 _(00 00 00 00 00 00 00 00)
      DestinationOffset = 0 (00 00 00 00 00 00 00 00)
      Length = 1731 (3C 06 00 00)
@@ -12568,14 +12238,15 @@ Release: January 14, 2026
 
 154 / 180
 
-<!-- Extracted images from page 155 -->
+
+<!-- Extracted images from page 155 -->
 ![Extracted image 1 from page 155]([MS-SMB].images/page155-img01.png)
 <!-- /Extracted images from page 155 -->
 
          SMB: User ID      (Uid) = 2048 (0x800)
          SMB: Multiplex ID (Mid) = 656 (0x290)
 
-4.7  TRANS TRANSACT NMPIPE
+### 4.7 TRANS TRANSACT NMPIPE
 
 The following example illustrates how the TRANS_TRANSACT_NMPIPE is used.
 
@@ -12606,7 +12277,8 @@ Release: January 14, 2026
 
 155 / 180
 
-             SMB: ...........................1.... = Write EA Allowed
+
+             SMB: ...........................1.... = Write EA Allowed
              SMB: ..........................0..... = File Execute Denied
              SMB: .........................0...... = File Delete Denied
              SMB: ........................1....... = File Read Attributes Allowed
@@ -12679,7 +12351,8 @@ Release: January 14, 2026
 
 156 / 180
 
-             SMB: ........................1....... = Normal
+
+             SMB: ........................1....... = Normal
              SMB: .......................0........ = Not Temporary
              SMB: ......................0......... = Not Sparse File
              SMB: .....................0.......... = Not Reparse Point
@@ -12740,7 +12413,8 @@ Release: January 14, 2026
 
 157 / 180
 
-   SMB: Tree ID      (Tid) = 2048 (0x800)
+
+   SMB: Tree ID      (Tid) = 2048 (0x800)
    SMB: Process ID   (Pid) = 65279 (0xFEFF)
    SMB: User ID      (Uid) = 2048 (0x800)
    SMB: Multiplex ID (Mid) = 4112 (0x1010)
@@ -12752,12 +12426,13 @@ Release: January 14, 2026
 
 158 / 180
 
-5  Security
+
+## 5 Security
 
 The following section specifies security considerations for implementers of the Server Message Block
 (SMB) Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 The CIFS Protocol contains support for NTLM but lacks support for new authentication protocols. The
 extensions defined in this document offer support for increased security in remote file and printer
@@ -12782,7 +12457,7 @@ deleted or modified. This can provide access to information that was not availab
 extensions. However, this access is still subject to the same access checks to which it is normally
 subject.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -12809,7 +12484,8 @@ Release: January 14, 2026
 
 159 / 180
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12877,7 +12553,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<3> Section 2.1: Windows-based clients and servers use TCP port 445 as the destination TCP port on
+
+<3> Section 2.1: Windows-based clients and servers use TCP port 445 as the destination TCP port on
 the SMB server, the well-known port number assigned by IANA to Microsoft-DS.
 
 <4> Section 2.1: Windows 7 and Windows Server 2008 R2 servers without [MS11-048] do not
@@ -12947,7 +12624,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-system Information Classes, as specified in [MS-FSCC] sections 2.4 and 2.5. Windows-based servers
+
+system Information Classes, as specified in [MS-FSCC] sections 2.4 and 2.5. Windows-based servers
 do not support setting the following NT Information Levels via the pass-through Information Level
 mechanism.
 
@@ -13023,7 +12701,8 @@ Release: January 14, 2026
 
 162 / 180
 
-<30> Section 2.2.4.5.2.1: Windows Server 2008 operating system and later do not support
+
+<30> Section 2.2.4.5.2.1: Windows Server 2008 operating system and later do not support
 SMB_COM_READ_MPX or SMB_COM_WRITE_MPX and disconnect the client by closing the underlying
 transport connection if either command is received from the client.
 
@@ -13091,7 +12770,8 @@ Release: January 14, 2026
 
 163 / 180
 
-<44> Section 2.2.4.6.1: Windows-based SMB clients set this field based upon the version and service
+
+<44> Section 2.2.4.6.1: Windows-based SMB clients set this field based upon the version and service
 pack level of the Windows operating system. A list of possible values for this field includes the
 following.
 
@@ -13173,7 +12853,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<52> Section 2.2.4.9.2: Windows–based servers set the FileId field to zero. The FileId field is
+
+<52> Section 2.2.4.9.2: Windows–based servers set the FileId field to zero. The FileId field is
 ignored by Windows-based SMB clients.
 
 <53> Section 2.2.4.9.2: Windows-based servers and clients support the notion of a guest account.
@@ -13242,7 +12923,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<73> Section 2.2.8.1.3: The SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO Information Level is not
+
+<73> Section 2.2.8.1.3: The SMB_FIND_FILE_ID_BOTH_DIRECTORY_INFO Information Level is not
 present in Windows 2000 Server and Windows XP.
 
 <74> Section 2.2.8.1.3: Windows-based SMB servers set the FileIndex field to a nonzero value if the
@@ -13315,7 +12997,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<90> Section 3.2.4.6: Windows-based clients send these requests to the server regardless of the
+
+<90> Section 3.2.4.6: Windows-based clients send these requests to the server regardless of the
 Information Level provided in the request.
 
 <91> Section 3.2.4.11.1: Windows XP and later clients use this FSCTL. Windows 2000-based clients
@@ -13390,7 +13073,8 @@ Release: January 14, 2026
 
 167 / 180
 
-OS/2 Error
+
+OS/2 Error
 
 DOS Error
 
@@ -13468,7 +13152,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-Share.ShareFlags contains SHI1005_FLAGS_ENCRYPT_DATA and the RejectUnencryptedAccess
+
+Share.ShareFlags contains SHI1005_FLAGS_ENCRYPT_DATA and the RejectUnencryptedAccess
 registry key is set to a nonzero value.
 
 <114> Section 3.3.5.4: Windows 2000 never sets the SMB_UNIQUE_FILE_NAME bit in the
@@ -13547,7 +13232,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-  OpLockKey is empty.
+
+  OpLockKey is empty.
 
 The returned Status is copied into the SMB_Header.Status field of the response. If the operation
 fails, the Status is returned in an Error Response, and processing is complete.
@@ -13623,7 +13309,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<117> Section 3.3.5.5: Windows 2000, Windows XP, Windows Server 2003, Windows Server 2003
+
+<117> Section 3.3.5.5: Windows 2000, Windows XP, Windows Server 2003, Windows Server 2003
 R2, Windows Vista, Windows Server 2008, Windows 7, Windows Server 2008 R2, Windows 8, and
 Windows Server 2012 do not perform this verification.
 
@@ -13699,7 +13386,8 @@ Release: January 14, 2026
 
 171 / 180
 
-
+
+
 
 The AccessMode subfield of the AccessMode field in the request is used to set the value of
 DesiredAccess. The AccessMode subfield represents the lowest-order four bits of the
@@ -13806,7 +13494,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-CreateOptions value
+
+CreateOptions value
 
 SMB_COM_OPEN_ANDX equivalent
 
@@ -13898,7 +13587,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-<130> Section 3.3.5.10.1:  If CAP_INFOLEVEL_PASSTHRU capability is set in Server.Capabilities,
+
+<130> Section 3.3.5.10.1:  If CAP_INFOLEVEL_PASSTHRU capability is set in Server.Capabilities,
 and client requested “FileAllInformation” pass-through Information Level, Windows-based servers
 respond with the structure specified in [MS-CIFS] section 2.2.8.3.10.
 
@@ -13987,7 +13677,8 @@ Release: January 14, 2026
 
 174 / 180
 
-Name
+
+Name
 
 Value
 
@@ -14109,7 +13800,8 @@ Release: January 14, 2026
 
 175 / 180
 
-Name
+
+Name
 
 Value
 
@@ -14235,7 +13927,8 @@ Release: January 14, 2026
 
 176 / 180
 
-<138> Section 3.3.5.11.1.1: If MaxDataCount is not 0x10, Windows-based servers do not refresh
+
+<138> Section 3.3.5.11.1.1: If MaxDataCount is not 0x10, Windows-based servers do not refresh
 the Server.Share.SnapshotList.
 
 <139> Section 3.3.5.11.1.1: Windows-based SMB servers place two extra bytes set to zero in
@@ -14310,7 +14003,8 @@ Server Message Block (SMB) Protocol
 Copyright © 2026 Microsoft Corporation
 Release: January 14, 2026
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -14356,7 +14050,8 @@ Release: January 14, 2026
 
 178 / 180
 
-8  Index
+
+## 8 Index
 _
 
 __packet__ packet 74
@@ -14507,7 +14202,8 @@ O
 
 179 / 180
 
-Other local events
+
+Other local events
    client 118
    server 135
 Overview (synopsis) 17
