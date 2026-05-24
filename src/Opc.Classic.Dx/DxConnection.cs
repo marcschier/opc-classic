@@ -20,7 +20,7 @@ public sealed record DxConnection
 {
     /// <summary>Constructs a DX connection definition or query mask.</summary>
     public DxConnection(
-        string name,
+        string? name = null,
         string? description = null,
         string? itemPath = null,
         string? itemName = null,
@@ -44,8 +44,6 @@ public sealed record DxConnection
         string? vendorData = null,
         int mask = 0)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
-
         if (sourceItemQueueSize is < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(sourceItemQueueSize));
@@ -83,14 +81,14 @@ public sealed record DxConnection
         UpdateRateMilliseconds = updateRateMilliseconds;
         DeadbandPercent = deadbandPercent;
         VendorData = vendorData;
-        Mask = mask;
+        Mask = mask == 0 ? ComputeMask(this) : mask;
     }
 
-    /// <summary>Native <c>dwMask</c> presence bits. Codecs will interpret it later.</summary>
+    /// <summary>Native <c>dwMask</c> presence bits.</summary>
     public int Mask { get; init; }
 
     /// <summary>Server-assigned DX connection name.</summary>
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
     /// <summary>Server-defined description.</summary>
     public string? Description { get; init; }
@@ -171,5 +169,41 @@ public sealed record DxConnection
         }
 
         return copy;
+    }
+
+    private static int ComputeMask(DxConnection connection)
+    {
+        var mask = DxMask.None;
+        AddIf(!string.IsNullOrEmpty(connection.ItemPath), DxMask.ItemPath, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.ItemName), DxMask.ItemName, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.Version), DxMask.Version, ref mask);
+        AddIf(connection.BrowsePaths.Length > 0, DxMask.BrowsePaths, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.Name), DxMask.Name, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.Description), DxMask.Description, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.Keyword), DxMask.Keyword, ref mask);
+        AddIf(connection.DefaultSourceItemConnected.HasValue, DxMask.DefaultSourceItemConnected, ref mask);
+        AddIf(connection.DefaultTargetItemConnected.HasValue, DxMask.DefaultTargetItemConnected, ref mask);
+        AddIf(connection.DefaultOverridden.HasValue, DxMask.DefaultOverridden, ref mask);
+        AddIf(connection.DefaultOverrideValue.HasValue, DxMask.DefaultOverrideValue, ref mask);
+        AddIf(connection.SubstituteValue.HasValue, DxMask.SubstituteValue, ref mask);
+        AddIf(connection.EnableSubstituteValue.HasValue, DxMask.EnableSubstituteValue, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.TargetItemPath), DxMask.TargetItemPath, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.TargetItemName), DxMask.TargetItemName, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.SourceServerName), DxMask.SourceServerName, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.SourceItemPath), DxMask.SourceItemPath, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.SourceItemName), DxMask.SourceItemName, ref mask);
+        AddIf(connection.SourceItemQueueSize.HasValue, DxMask.SourceItemQueueSize, ref mask);
+        AddIf(connection.UpdateRateMilliseconds.HasValue, DxMask.UpdateRate, ref mask);
+        AddIf(connection.DeadbandPercent.HasValue, DxMask.DeadBand, ref mask);
+        AddIf(!string.IsNullOrEmpty(connection.VendorData), DxMask.VendorData, ref mask);
+        return (int)mask;
+    }
+
+    private static void AddIf(bool condition, DxMask value, ref DxMask mask)
+    {
+        if (condition)
+        {
+            mask |= value;
+        }
     }
 }

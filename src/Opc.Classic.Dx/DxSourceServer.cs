@@ -15,8 +15,8 @@ public sealed record DxSourceServer
 {
     /// <summary>Constructs a source-server definition.</summary>
     public DxSourceServer(
-        string name,
-        string serverUrl,
+        string? name = null,
+        string? serverUrl = null,
         string? description = null,
         string? serverType = null,
         string? itemPath = null,
@@ -26,9 +26,6 @@ public sealed record DxSourceServer
         int mask = 0,
         int reserved = 0)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
-        ArgumentException.ThrowIfNullOrWhiteSpace(serverUrl);
-
         Name = name;
         ServerUrl = serverUrl;
         Description = description;
@@ -37,18 +34,18 @@ public sealed record DxSourceServer
         ItemName = itemName;
         Version = version;
         DefaultConnected = defaultConnected;
-        Mask = mask;
+        Mask = mask == 0 ? ComputeMask(this) : mask;
         Reserved = reserved;
     }
 
-    /// <summary>Native <c>dwMask</c> presence bits. Codecs will interpret it later.</summary>
+    /// <summary>Native <c>dwMask</c> presence bits.</summary>
     public int Mask { get; init; }
 
     /// <summary>Friendly name used by DX connections to refer to this source server.</summary>
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
     /// <summary>Source server URL, typically an OPC DA URL or ProgID-qualified endpoint.</summary>
-    public string ServerUrl { get; init; }
+    public string? ServerUrl { get; init; }
 
     /// <summary>Server-defined description.</summary>
     public string? Description { get; init; }
@@ -70,4 +67,26 @@ public sealed record DxSourceServer
 
     /// <summary>Reserved DWORD carried by the native structure.</summary>
     public int Reserved { get; init; }
+
+    private static int ComputeMask(DxSourceServer source)
+    {
+        var mask = DxMask.None;
+        AddIf(!string.IsNullOrEmpty(source.ItemPath), DxMask.ItemPath, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.ItemName), DxMask.ItemName, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.Version), DxMask.Version, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.Name), DxMask.Name, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.Description), DxMask.Description, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.ServerType), DxMask.ServerType, ref mask);
+        AddIf(!string.IsNullOrEmpty(source.ServerUrl), DxMask.ServerUrl, ref mask);
+        AddIf(source.DefaultConnected.HasValue, DxMask.DefaultSourceServerConnected, ref mask);
+        return (int)mask;
+    }
+
+    private static void AddIf(bool condition, DxMask value, ref DxMask mask)
+    {
+        if (condition)
+        {
+            mask |= value;
+        }
+    }
 }

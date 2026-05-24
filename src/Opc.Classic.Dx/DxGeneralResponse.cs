@@ -40,6 +40,9 @@ public sealed record DxGeneralResponse
     /// <summary>Per-entity operation results. Empty when the operation returned no item-level errors.</summary>
     public DxIdentifiedResult[] Errors { get; init; }
 
+    /// <summary>Per-entity operation results using the OPC DX IDL member name.</summary>
+    public DxIdentifiedResult[] IdentifiedResults => Errors;
+
     /// <summary>Reserved DWORD carried by the native structure.</summary>
     public int Reserved { get; init; }
 
