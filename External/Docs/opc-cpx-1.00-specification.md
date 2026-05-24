@@ -8,7 +8,8 @@ Released
 
 December 10, 2003
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -60,7 +61,8 @@ This specification requires Windows 95, Windows NT 4.0 or later.
 
 ii
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -129,7 +131,8 @@ library component, either individually or together.
 
 iii
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -159,7 +162,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 iv
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -197,7 +201,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 v
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -211,130 +216,69 @@ are constructed.  These properties can be used by any version of OPC DA, includi
 
 vi
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
-Table of Contents
+## Table of Contents
 
-Released
+- [1. Introduction](#1-introduction)
+  - [1.1 Overview](#11-overview)
+  - [1.2 Audience](#12-audience)
+  - [1.3 Deliverables](#13-deliverables)
+  - [1.4 Errata](#14-errata)
+- [2. OPC Complex Data Fundamentals](#2-opc-complex-data-fundamentals)
+  - [2.1 OPC Overview](#21-opc-overview)
+  - [2.2 Where OPC Complex Data Fits](#22-where-opc-complex-data-fits)
+- [3. Complex Data Model](#3-complex-data-model)
+  - [3.1 Definition](#31-definition)
+  - [3.2 Complex Data Type Descriptions](#32-complex-data-type-descriptions)
+  - [3.3 Complex Data Type Item Properties](#33-complex-data-type-item-properties)
+    - [3.3.1 Type System ID Property](#331-type-system-id-property)
+    - [3.3.2 Dictionary ID Property](#332-dictionary-id-property)
+    - [3.3.3 Type ID Property](#333-type-id-property)
+    - [3.3.4 Dictionary Property](#334-dictionary-property)
+    - [3.3.5 Type Description Property](#335-type-description-property)
+    - [3.3.6 Consistency Window Property](#336-consistency-window-property)
+    - [3.3.7 Write Behavior Property](#337-write-behavior-property)
+  - [3.4 Complex Data Namespace](#34-complex-data-namespace)
+- [4. Complex Data Behavior](#4-complex-data-behavior)
+- [5. Complex Data Examples](#5-complex-data-examples)
+  - [5.1 XML Schema](#51-xml-schema)
+  - [5.2 Function Block Example](#52-function-block-example)
+- [6. OPC Binary Type System](#6-opc-binary-type-system)
+  - [6.1 Concepts](#61-concepts)
+    - [6.1.1 Dictionary Composition](#611-dictionary-composition)
+    - [6.1.2 Defining Constructed Types](#612-defining-constructed-types)
+    - [6.1.3 Defining Derived Types](#613-defining-derived-types)
+  - [6.2 Schema Description](#62-schema-description)
+    - [6.2.1 OPC Binary Dictionary](#621-opc-binary-dictionary)
+    - [6.2.2 Type Description](#622-type-description)
+    - [6.2.3 Field Type](#623-field-type)
+    - [6.2.4 Standard Field Types](#624-standard-field-types)
+      - [6.2.4.1 Type Reference](#6241-type-reference)
+      - [6.2.4.2 Primitive Data Types](#6242-primitive-data-types)
+  - [6.3 Type Description Examples](#63-type-description-examples)
+- [7. Type Conversions](#7-type-conversions)
+  - [7.1 Purpose](#71-purpose)
+  - [7.2 Representation](#72-representation)
+- [8. Data Filters and Queries](#8-data-filters-and-queries)
+  - [8.1 Purpose](#81-purpose)
+  - [8.2 Representation](#82-representation)
+- [9. Error Codes](#9-error-codes)
+- [Appendix A OPC Binary Schema](#appendix-a-opc-binary-schema)
 
-INTRODUCTION .................................................................................................................................1
-1
-OVERVIEW ...........................................................................................................................................1
-1.1
-AUDIENCE ............................................................................................................................................1
-1.2
-DELIVERABLES.....................................................................................................................................1
-1.3
-ERRATA................................................................................................................................................1
-1.4
-2  OPC COMPLEX DATA FUNDAMENTALS ....................................................................................2
-2.1
-OPC OVERVIEW...................................................................................................................................2
-2.2  WHERE OPC COMPLEX DATA FITS......................................................................................................3
-3  COMPLEX DATA MODEL ................................................................................................................4
-DEFINITION ..........................................................................................................................................4
-3.1
-COMPLEX DATA TYPE DESCRIPTIONS ..................................................................................................5
-3.2
-COMPLEX DATA TYPE ITEM PROPERTIES .............................................................................................5
-3.3
-Type System ID Property ............................................................................................................7
-3.3.1
-Dictionary ID Property ................................................................................................................8
-3.3.2
-Type ID Property .........................................................................................................................9
-3.3.3
-Dictionary Property .....................................................................................................................9
-3.3.4
-Type Description Property...........................................................................................................9
-3.3.5
-3.3.6
-Consistency Window Property ....................................................................................................9
-3.3.7  Write Behavior Property............................................................................................................10
-3.4
-COMPLEX DATA NAMESPACE ............................................................................................................10
-4  COMPLEX DATA BEHAVIOR........................................................................................................12
+## 1. Introduction
 
-6.2
-
-6.1.1
-6.1.2
-6.1.3
-
-6.2.1
-6.2.2
-6.2.3
-6.2.4
-
-5  COMPLEX DATA EXAMPLES .......................................................................................................13
-XML SCHEMA ...................................................................................................................................13
-5.1
-5.2
-FUNCTION BLOCK EXAMPLE ..............................................................................................................16
-6  OPC BINARY TYPE SYSTEM .........................................................................................................19
-CONCEPTS ..........................................................................................................................................19
-6.1
-Dictionary Composition ............................................................................................................19
-Defining Constructed Types ......................................................................................................20
-Defining Derived Types ............................................................................................................20
-SCHEMA DESCRIPTION .......................................................................................................................20
-OPC Binary Dictionary..............................................................................................................20
-Type Description .......................................................................................................................21
-Field Type..................................................................................................................................22
-Standard Field Types .................................................................................................................24
-Type Reference......................................................................................................................................24
-Primitive Data Types .............................................................................................................................24
-6.3
-TYPE DESCRIPTION EXAMPLES ..........................................................................................................28
-7  TYPE CONVERSIONS ......................................................................................................................29
-PURPOSE.............................................................................................................................................29
-7.1
-7.2
-REPRESENTATION...............................................................................................................................29
-8  DATA FILTERS AND QUERIES .....................................................................................................32
-PURPOSE.............................................................................................................................................32
-8.1
-8.2
-REPRESENTATION...............................................................................................................................32
-9  ERROR CODES..................................................................................................................................36
-
-6.2.4.1
-6.2.4.2
-
-vii
-
-OPC Complex Data Specification
-Version 1.00
-
-F O U N D A T I O N
-
-Released
-
-APPENDIX A.  OPC BINARY SCHEMA .............................................................................................37
-
-viii
-
-OPC Complex Data Specification
-Version 1.00
-
-F O U N D A T I O N
-
-Released
-
-1
-
-Introduction
-
-1.1  Overview
+### 1.1 Overview
 
 This specification describes how to represent and access complex data within the existing OPC Data
 Access (DA) framework. It also describes how existing complex type systems such as the eXtensible
 Markup Language (XML) Schema can be used to describe complex data.
 
-1.2  Audience
+### 1.2 Audience
 
 This specification is intended as reference material for developers of OPC compliant Client and Server
 applications. It is assumed that the reader is familiar with the OPC Data Access specifications,
@@ -344,13 +288,13 @@ This specification is intended to facilitate development of OPC DA Servers in C 
 DA Client applications in the language of choice.  Therefore, the developer of the respective
 component is expected to be fluent in the technology required for the specific component.
 
-1.3  Deliverables
+### 1.3 Deliverables
 
 The deliverables from the OPC Foundation with respect to the OPC Complex Data Project include the
 OPC Complex Data 1.00 Specification and OPC Complex Data 1.00 sample code, available from the
 OPC Foundation Web Site (members only).
 
-1.4  Errata
+### 1.4 Errata
 
 Any clarifications or corrections to this specification found after publication will be posted to the
 following web page:
@@ -359,20 +303,21 @@ http://www.opcfoundation.org/forum/viewtopic.php?t=346
 
 1
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-2  OPC Complex Data Fundamentals
+## 2. OPC Complex Data Fundamentals
 
 Complex data is a term that describes OPC Data Access (DA) items whose values are constructed.
 OPC Complex Data provides a mechanism for OPC DA clients to discover the structure of the data
 values.  This section introduces OPC Data Access and how OPC Complex Data relates to it.
 
-2.1  OPC Overview
+### 2.1 OPC Overview
 
 An OPC DA Client can connect to one or more OPC DA Servers provided by one or more vendors.
 
@@ -428,7 +373,8 @@ hierarchical namespace where related items (i.e. I/O points connected to a singl
 
 2
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -444,7 +390,7 @@ perform direct I/O operations such as reading and writing the current value, qua
 client may also establish subscriptions that require the OPC DA server to notify the client when the
 value or quality of an item changes.
 
-2.2  Where OPC Complex Data Fits
+### 2.2 Where OPC Complex Data Fits
 
 The OPC DA specifications require DA items to be simple types or arrays of simple types. Therefore,
 prior to the OPC Complex Data Specification, OPC DA servers represented structured data simply as a
@@ -497,16 +443,17 @@ the type descriptions.
 
 3
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-3  Complex Data Model
+## 3. Complex Data Model
 
-3.1  Definition
+### 3.1 Definition
 
 Complex data is an OPC DA item whose value has a defined structure.  A Complex Data item may be
 composed of a combination of structured data, simple items, and complex items.  Structured data, in
@@ -587,7 +534,8 @@ complex item.
 
 4
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -642,7 +590,7 @@ DA Item Property
 
 Figure 4 - Example Complex Data Item
 
-3.2  Complex Data Type Descriptions
+### 3.2 Complex Data Type Descriptions
 
 Complex Data Type Descriptions define the structure of complex data items. Their descriptions are
 independent of whether or not some of the components are exposed by the OPC DA Server as other
@@ -666,7 +614,7 @@ clients may need to be able to understand more than one Type System. Allowing th
 Type Systems ensures that the full capabilities of native Type Systems can be used to describe
 complex data.
 
-3.3  Complex Data Type Item Properties
+### 3.3 Complex Data Type Item Properties
 
 Complex Data Type Descriptions are provided through DA Item Properties, as shown in Figure 5
 below.
@@ -680,7 +628,8 @@ complex types it contains.
 
 5
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -774,7 +723,8 @@ Dictionary ID Item is the Dictionary ID, allowing clients to subscribe to it to 
 
 6
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -878,7 +828,7 @@ on the Type System.
 Some servers may not have access to the type descriptions. In these cases, the client needs to be
 able to determine the structure of the data based on the Type ID.
 
-3.3.1  Type System ID Property
+#### 3.3.1 Type System ID Property
 
 This property is identifies the Type System. If the server supports the CPX namespace (see Section
 3.4), then this identifier is used as the name of the Type System branch in the namespace.  A DA client
@@ -889,7 +839,8 @@ or by the OPC Foundation. The following Type Systems are defined by this specifi
 
 7
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -931,7 +882,7 @@ The following restrictions apply to all items described with OPC Binary type sys
 
 •  The TypeID is the value of the ‘TypeID’ attribute for the ‘TypeDescription’ element.
 
-3.3.2  Dictionary ID Property
+#### 3.3.2 Dictionary ID Property
 
 Most type systems provide a set of standard types that may be used to define data.  Many also allow
 extending these types with user-defined types. The resulting set of type descriptions is commonly
@@ -967,14 +918,15 @@ from the client with the ‘E_TYPE_CHANGED’ error.
 
 8
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-3.3.3  Type ID Property
+#### 3.3.3 Type ID Property
 
 This property is an identifier for the Type Description of a complex data item. The identifier is unique
 within the context of the Dictionary ID.  The syntax for the identifier is defined by the specified type
@@ -982,7 +934,7 @@ system. Usually, this property contains an identifier that can be used to locate
 dictionary. Values for this identifier are defined by the type system or by the source of the data that the
 type description describes (i.e. the device that is the source of the complex data).
 
-3.3.4  Dictionary Property
+#### 3.3.4 Dictionary Property
 
 The dictionary associated with the Dictionary ID Item may be represented by a single, consolidated
 schema, dictionary, or similar entity.
@@ -1001,7 +953,7 @@ corresponding change to the Dictionary ID. This includes changes made while the 
 so that the new Dictionary ID is available when the DA server restarts. In other words, the DA client
 may safely cache the dictionary between sessions with a DA server.
 
-3.3.5  Type Description Property
+#### 3.3.5 Type Description Property
 
 The Complex Data Type Item Description Property is a BLOB that contains the information necessary
 for clients to interpret the value of a complex data item. It is not used with data item values that are not
@@ -1015,7 +967,7 @@ When this property is present, the corresponding Complex Data “Type ID” Prop
 present.  However, the converse is not true; for some complex data items the Complex Data Type ID
 Item Property will be present, but this property will not.
 
-3.3.6  Consistency Window Property
+#### 3.3.6 Consistency Window Property
 
 This property is a string that indicates support for time consistency between and among elements of the
 complex data item.  The value is normally the string form of an integer that specifies in milliseconds
@@ -1035,14 +987,15 @@ value, then the server returns an error.
 
 9
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-3.3.7  Write Behavior Property
+#### 3.3.7 Write Behavior Property
 
 This property is a string that indicates whether the server supports “All or Nothing” or “Best Effort”
 writes to the complex data value.
@@ -1056,7 +1009,7 @@ elements were updated, and are, consequently, read-only.
 supported, the client is advised to perform a read operation after a successful write to determine which
 elements were updated.
 
-3.4  Complex Data Namespace
+### 3.4 Complex Data Namespace
 
 In addition to providing support for the Complex Data Item Properties just described, OPC Servers
 may also extend their namespace to allow clients to browse for supported complex data descriptions.
@@ -1103,7 +1056,8 @@ Figure 6 – Complex Data Namespace
 
 10
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1138,14 +1092,15 @@ Otherwise, the Type ID is used.
 
 11
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-4  Complex Data Behavior
+## 4. Complex Data Behavior
 
 Type Conversion :
 
@@ -1199,16 +1154,17 @@ successfully written by the server.
 
 12
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-5  Complex Data Examples
+## 5. Complex Data Examples
 
-5.1  XML Schema
+### 5.1 XML Schema
 
 The elements of a structure are described in the following table:
 
@@ -1278,7 +1234,8 @@ Boolean
 
 13
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1385,7 +1342,8 @@ the ‘/’ character.
 
 14
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1465,7 +1423,8 @@ Namespace (i.e. in /CPX/XMLSchema/Sample2 branch).
 
 15
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1477,7 +1436,7 @@ than the XML schema that describes the underlying data. The decision to use a di
 made by the designers of the DA server who are best able to evaluate the needs of the DA clients any
 potential performance issues.
 
-5.2  Function Block Example
+### 5.2 Function Block Example
 
 The figure is an example of a Function Block complex data type:
 
@@ -1573,7 +1532,8 @@ described by the “Fieldbus” type system.
 
 16
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1666,7 +1626,8 @@ below shows the complex data item properties for the Function Block Header:
 
 17
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1756,16 +1717,17 @@ data items that all share the same dictionary.
 
 18
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-6  OPC Binary Type System
+## 6. OPC Binary Type System
 
-6.1  Concepts
+### 6.1 Concepts
 
 The OPC Binary Schema defines the format of OPC Binary dictionaries. Each OPC Binary dictionary
 is an XML document that describes of one or more OPC Complex Data items whose values are
@@ -1844,7 +1806,7 @@ Derived Types
 
 Figure 7 – OPC Binary Dictionary Structure
 
-6.1.1  Dictionary Composition
+#### 6.1.1 Dictionary Composition
 
 The Containment Hierarchy portion of Figure 7 above shows two containment relationships. The first
 illustrates that OPC Binary Dictionaries are composed of a set of Type Descriptions. This relationship
@@ -1852,7 +1814,8 @@ does not imply that the dictionary is a data structure.
 
 19
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1862,7 +1825,7 @@ Released
 These Type Descriptions are used to define constructed types or primitive types. Each is described
 below.
 
-6.1.2  Defining Constructed Types
+#### 6.1.2 Defining Constructed Types
 
 The second containment relationship in the Containment Hierarchy portion of Figure 7 shows that
 constructed types, defined as TypeDescriptions (see Section 6.2.2), are composed of a set of fields.
@@ -1873,7 +1836,7 @@ type definitions, or they may be either “primitive” or “derived”.  Primi
 specification in Section 6.2.4.2 while Derived Types are defined by the containing dictionary (see
 Section 6.1.3).
 
-6.1.3  Defining Derived Types
+#### 6.1.3 Defining Derived Types
 
 The Type Hierarchy portion of the figure shows the derivation of Primitive and Derived Types.
 Primitive Types are extensions (sub-types) of the Field Type in the OPC Binary XML Schema.
@@ -1882,9 +1845,9 @@ Types. XML instances are defined by providing values for attributes.
 
 The remainder of this section describes the XML Schema for the OPC Binary Dictionary.
 
-6.2  Schema Description
+### 6.2 Schema Description
 
-6.2.1  OPC Binary Dictionary
+#### 6.2.1 OPC Binary Dictionary
 
 The TypeDictionary element is the root element of an OPC Binary dictionary.  The XML Schema
 definition for the TypeDictionary is shown below.
@@ -1904,7 +1867,8 @@ definition for the TypeDictionary is shown below.
 
 20
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -1965,7 +1929,7 @@ The un-encoded 32-bit Unicode character set.
 The Unicode character set encoded with a nominal 8 bit character size.
 The Unicode character set encoded with a nominal 16 bit character size.
 
-6.2.2  Type Description
+#### 6.2.2 Type Description
 
 The Type Description is used to define a constructed type. The XML Schema definition for the
 TypeDescription is shown below.
@@ -1989,7 +1953,8 @@ of the field is a reference to another TypeDescription, and that TypeDescription
 
 21
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2040,7 +2005,7 @@ attribute is inherited from the containing structure (either the Dictionary or a
 this attribute value is not specified for a Type Description, and the Type Description is used in more than
 one containing structure, then the value is inherited independently for each containment.
 
-6.2.3  Field Type
+#### 6.2.3 Field Type
 
 Field Types are used to define the data types used for fields of constructed types.  The XML Schema
 definition for FieldType is shown below.
@@ -2059,7 +2024,8 @@ types of Field Type).
 
 22
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2165,14 +2131,15 @@ Hexidecimal String
 
 23
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-6.2.4  Standard Field Types
+#### 6.2.4 Standard Field Types
 
 This specification defines the following standard field types.
 
@@ -2223,7 +2190,7 @@ All other standard Field Types are referred to as “Primitive Types”.  Dictio
 primitive types by deriving their own from them.  Derived types are defined in the dictionary’s XML
 by defining instances of Primitive Types.
 
-6.2.4.1  Type Reference
+#### 6.2.4.1 Type Reference
 
 Type References are used only to define fields. The XML Schema definition for TypeReference is
 shown below.
@@ -2247,7 +2214,7 @@ TypeID
 Description
 The  TypeID of another type description that provides the type for this field.
 
-6.2.4.2  Primitive Data Types
+#### 6.2.4.2 Primitive Data Types
 
 Primitive data types are defined for fields with unstructured, or primitive, values.  A field containing a
 primitive value that cannot be fully described by one of the primitive types must be described by either
@@ -2257,7 +2224,8 @@ Format, ElementCount, and Terminator Field Type Attributes are used (see Section
 
 24
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2320,7 +2288,8 @@ equal to the character size for the encoding.
 
 25
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2421,7 +2390,8 @@ The XML Schema definition for FloatingPoint is shown below.
 
 26
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2466,14 +2436,15 @@ DefaultFloatFormat
 
 27
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-6.3  Type Description Examples
+### 6.3 Type Description Examples
 
 1)  Definition of a bitfield structure that includes explicit padding.
 
@@ -2549,16 +2520,17 @@ Illustrates a variable length array with a length that must be determined at run
 
 28
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-7  Type Conversions
+## 7. Type Conversions
 
-7.1  Purpose
+### 7.1 Purpose
 
 DA servers that support complex data usually expose this data in its native format. However, this
 format may not be useful to all DA clients. For example, a DA server may wish to support clients
@@ -2574,7 +2546,7 @@ mechanism allows DA clients to browse the set of complex type conversions that a
 individual DA complex data item and to them read from or write to the DA item in any one of the
 available formats.
 
-7.2  Representation
+### 7.2 Representation
 
 Servers that support type conversions would represent the set of available conversions for a specific
 complex data item by creating a branch named ‘CPX’ under the complex data item within the DA
@@ -2619,7 +2591,8 @@ accessing the items contained in this CPX branch instead of the base native comp
 
 29
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2695,7 +2668,8 @@ An item that provides access to the same data in the XML format would have the f
 
 30
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2732,16 +2706,17 @@ long as the names that appear in the DA server address space follow the conventi
 
 31
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-8  Data Filters and Queries
+## 8. Data Filters and Queries
 
-8.1  Purpose
+### 8.1 Purpose
 
 Servers that support complex data items may also wish to support more sophisticated queries and/or
 filters that can control what the the DA server returns to the client. Applications for filters or queries
@@ -2771,7 +2746,7 @@ value returned to the client remains the same.
 source. The DA server caches this query and uses it to extract data whenever it processes a
 read request.
 
-8.2  Representation
+### 8.2 Representation
 
 Unlike the Type Conversions described in the previous section, Data Filters require the DA server to
 use information provided by the DA client. In addition, different clients may wish to establish different
@@ -2782,7 +2757,8 @@ Items that are available. Figure 9 illustrates the complex data item hierarchy w
 
 32
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2864,7 +2840,8 @@ The filter parameters are passed as an XML document with the following schema:
 
 33
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -2941,7 +2918,8 @@ A DA client could specify the following XPath for the data filter.
 
 34
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -3017,14 +2995,15 @@ refers to the item in the format that is actually being manipulated by the data 
 
 35
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-9  Error Codes
+## 9. Error Codes
 
 This specification defines a number of complex data specific error codes.
 
@@ -3051,14 +3030,15 @@ The item value is empty because the data filter has excluded all fields.
 
 36
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
 
 Released
 
-Appendix A.  OPC Binary Schema
+## Appendix A OPC Binary Schema
 
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema
@@ -3130,7 +3110,8 @@ Appendix A.  OPC Binary Schema
 
 37
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N
@@ -3209,7 +3190,8 @@ Released
 
 38
 
-OPC Complex Data Specification
+
+OPC Complex Data Specification
 Version 1.00
 
 F O U N D A T I O N

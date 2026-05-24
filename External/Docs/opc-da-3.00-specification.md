@@ -176,292 +176,166 @@ o IOPCGroupStateMgt2
 • Clarify SetActiveState to indicate that an item transition from inactive to active will ultimately 
 result in a quality change, triggering a callback. 
 • Add new server status enumeration (OPC_STATUS_COMM_FAULT) 
-• Heading labels added to methods for easier access via the Table of Contents 
-• Removed Legacy Interfaces from this version of the specification 
-o IOPCServerPublicGroups 
-o IOPCBrowseServerAddressSpace 
-o IOPCPublicGroupStateMgt 
-o IOPCAsyncIO 
-o IOPCItemProperties 
-• In addition, spelling, grammer, formatting and minor clarifications were added to improve the 
-quality of the specification 
-• Added Item Properties section 
-• Clarify RemoveGroup 
-• Added CATIDs to idl 
-• Provided the ability to read and write the quality and timestamp 
-• KeepAlive mechanism was added to confirm the callback connection health 
- 
- 
- 
-Revision 2.05A Highlights 
-This revision clarifies section 4.2.13 Note (5) regarding roundup when converting floats and doubles to 
-integers. Also correct an error in the property definitions in Appendix D (200-207 were off by 1). 
- 
-Revision 2.05 Highlights 
-This revision includes numerous clarifications to Section 4.2.13 regarding data conversion between Native 
-and Requested data types.  
- 
-Revision 2.04 Highlights 
-This revision includes additional minor clarifications to certain ambiguities which were discovered during 
-Interoperability sessions and during the development of the Compliance Test. The affected sections 
-include: TimeBias and DeadBand discussion in Group Object: General Properties (4.5.1). LocaleID for 
-SetState (to make it clear the behaviour is optional). Addition or Clarification of error returns 
-E_INVALIDARG and  S_FALSE return for GetItemProperties, LookupItemIDs, AddItems, ValidateItems, 
- v
+## Table of Contents
 
-<!-- Page 6 -->
+- [1. Introduction](#1-introduction)
+  - [1.1 Audience](#11-audience)
+  - [1.2 Deliverables](#12-deliverables)
+- [2. OPC Data Access Fundamentals](#2-opc-data-access-fundamentals)
+  - [2.1 OPC Overview](#21-opc-overview)
+  - [2.2 Where OPC Fits](#22-where-opc-fits)
+  - [2.3 General OPC Architecture and Components](#23-general-opc-architecture-and-components)
+  - [2.4 OPC Data Access Architecture Companion Specifications](#24-opc-data-access-architecture-companion-specifications)
+  - [2.5 Overview of the Objects and Interfaces](#25-overview-of-the-objects-and-interfaces)
+  - [2.6 The Address Space and Configuration of the Server](#26-the-address-space-and-configuration-of-the-server)
+  - [2.7 Application Level Server and Network Node Selection](#27-application-level-server-and-network-node-selection)
+  - [2.8 Synchronization and Serialization Issues](#28-synchronization-and-serialization-issues)
+  - [2.9 Persistent Storage Story](#29-persistent-storage-story)
+- [3. OPC Data Access Quick Reference](#3-opc-data-access-quick-reference)
+  - [3.1 Custom Interface](#31-custom-interface)
+- [4. OPC Custom Interface](#4-opc-custom-interface)
+  - [4.1 Overview of the OPC Custom Interface](#41-overview-of-the-opc-custom-interface)
+  - [4.2 General Information](#42-general-information)
+    - [4.2.1 Version Interoperability](#421-version-interoperability)
+    - [4.2.2 Ownership of memory](#422-ownership-of-memory)
+    - [4.2.3 Standard Interfaces](#423-standard-interfaces)
+    - [4.2.4 Null Strings and Null Pointers](#424-null-strings-and-null-pointers)
+    - [4.2.5 Returned Arrays](#425-returned-arrays)
+    - [4.2.6 CACHE data, DEVICE data and TimeStamps](#426-cache-data-device-data-and-timestamps)
+    - [4.2.7 Time Series Values](#427-time-series-values)
+    - [4.2.8 Asy nchronous vs. Synchronous Interfaces](#428-asy-nchronous-vs-synchronous-interfaces)
+    - [4.2.9 The ACTIVE flags, Deadband and Update Rate](#429-the-active-flags-deadband-and-update-rate)
+    - [4.2.10 Errors and return codes](#4210-errors-and-return-codes)
+    - [4.2.11 Startup Issues](#4211-startup-issues)
+    - [4.2.12 VARIANT Data Types and Interoperability](#4212-variant-data-types-and-interoperability)
+    - [4.2.13 Localization and LocaleID](#4213-localization-and-localeid)
+    - [4.2.14 Item Properties](#4214-item-properties)
+    - [4.2.15 IOPCSyncIO](#4215-iopcsyncio)
+    - [4.2.16 IOPCASyncIO2](#4216-iopcasyncio2)
+    - [4.2.17 SUBSCRIPTION via IOPCDataCallback](#4217-subscription-via-iopcdatacallback)
+  - [4.3 OPCServer Object](#43-opcserver-object)
+    - [4.3.1 Overview](#431-overview)
+    - [4.3.2 IUnknow n](#432-iunknow-n)
+    - [4.3.3 IOPCCommon](#433-iopccommon)
+    - [4.3.4 IOPCServer](#434-iopcserver)
+      - [4.3.4.1 IOPCServer::AddGroup](#4341-iopcserveraddgroup)
+      - [4.3.4.2 IOPCServer::GetErrorString](#4342-iopcservergeterrorstring)
+      - [4.3.4.3 IOPCServer::GetGroupByName](#4343-iopcservergetgroupbyname)
+      - [4.3.4.4 IOPCServer::GetStatus](#4344-iopcservergetstatus)
+      - [4.3.4.5 IOPCServer::RemoveGroup](#4345-iopcserverremovegroup)
+      - [4.3.4.6 IOPCServer::CreateGroupEnumerator](#4346-iopcservercreategroupenumerator)
+    - [4.3.5 IConnectionPointCo ntainer (on OPCServer)](#435-iconnectionpointco-ntainer-on-opcserver)
+      - [4.3.5.1 IConnectionPointCont ainer::EnumConnectionPoints](#4351-iconnectionpointcont-ainerenumconnectionpoints)
+      - [4.3.5.2 IConnectionPointCont ainer:: FindConnectionPoint](#4352-iconnectionpointcont-ainer-findconnectionpoint)
+    - [4.3.6 IOPCBrow se](#436-iopcbrow-se)
+      - [4.3.6.1 IOPCBrow se:: Browse](#4361-iopcbrow-se-browse)
+      - [4.3.6.2 IOPCBrow se::GetProperties](#4362-iopcbrow-segetproperties)
+    - [4.3.7 IOPCItemIO](#437-iopcitemio)
+      - [4.3.7.1 IOPCItemIO::Read](#4371-iopcitemioread)
+      - [4.3.7.2 IOPCItemIO::WriteV QT](#4372-iopcitemiowritev-qt)
+  - [4.4 OPCGroup Object](#44-opcgroup-object)
+    - [4.4.1 General Properties](#441-general-properties)
+      - [4.4.1.1 Name](#4411-name)
+      - [4.4.1.2 Cached data](#4412-cached-data)
+      - [4.4.1.3 Active](#4413-active)
+      - [4.4.1.4 Update Rate](#4414-update-rate)
+      - [4.4.1.5 Time Zone (TimeBias)](#4415-time-zone-timebias)
+      - [4.4.1.6 Percent Deadband](#4416-percent-deadband)
+      - [4.4.1.7 ClientHandle](#4417-clienthandle)
+      - [4.4.1.8 Reading and Writing Data](#4418-reading-and-writing-data)
+    - [4.4.2 IOPCItemMgt](#442-iopcitemmgt)
+      - [4.4.2.1 IOPCItem Mgt::AddItems](#4421-iopcitem-mgtadditems)
+      - [4.4.2.2 IOPCItem Mgt::ValidateItems](#4422-iopcitem-mgtvalidateitems)
+      - [4.4.2.3 IOPCItem Mgt::RemoveItems](#4423-iopcitem-mgtremoveitems)
+      - [4.4.2.4 IOPCItem Mgt::SetActiveState](#4424-iopcitem-mgtsetactivestate)
+      - [4.4.2.5 IOPCItem Mgt::SetClientHandles](#4425-iopcitem-mgtsetclienthandles)
+      - [4.4.2.6 IOPCItem Mgt::SetDatatypes](#4426-iopcitem-mgtsetdatatypes)
+      - [4.4.2.7 IOPCItem Mgt::CreateEnumerator](#4427-iopcitem-mgtcreateenumerator)
+    - [4.4.3 IOPCGroupStateMgt](#443-iopcgroupstatemgt)
+      - [4.4.3.1 IOPCGroupStateMgt::GetSta te](#4431-iopcgroupstatemgtgetsta-te)
+      - [4.4.3.2 IOPCGroupStateMgt::SetState](#4432-iopcgroupstatemgtsetstate)
+      - [4.4.3.3 IOPCGroupStateMgt::SetName](#4433-iopcgroupstatemgtsetname)
+      - [4.4.3.4 IOPCGroupStateMgt::CloneGroup](#4434-iopcgroupstatemgtclonegroup)
+    - [4.4.4 IOPCGroupStateMgt2](#444-iopcgroupstatemgt2)
+      - [4.4.4.1 IOPCGroupStateMgt2::SetKeepAlive](#4441-iopcgroupstatemgt2setkeepalive)
+      - [4.4.4.2 IOPCGroupStateMgt2::GetKeepAlive](#4442-iopcgroupstatemgt2getkeepalive)
+    - [4.4.5 IOPCSyncI O](#445-iopcsynci-o)
+      - [4.4.5.1 IOPCSyncI O::Read](#4451-iopcsynci-oread)
+      - [4.4.5.2 IOPCSyncI O::Write](#4452-iopcsynci-owrite)
+    - [4.4.6 IOPCSyncI O2](#446-iopcsynci-o2)
+      - [4.4.6.1 IOPCSyncI O2::ReadMaxAge](#4461-iopcsynci-o2readmaxage)
+      - [4.4.6.2 IOPCSyncI O2::WriteVQT](#4462-iopcsynci-o2writevqt)
+    - [4.4.7 IOPCAsyn cIO2](#447-iopcasyn-cio2)
+      - [4.4.7.1 IOPCAsyn cIO2::Read](#4471-iopcasyn-cio2read)
+      - [4.4.7.2 IOPCAsyn cIO2::Write](#4472-iopcasyn-cio2write)
+      - [4.4.7.3 IOPCAsyn cIO2::Refresh2](#4473-iopcasyn-cio2refresh2)
+      - [4.4.7.4 IOPCAsyn cIO2::Cancel2](#4474-iopcasyn-cio2cancel2)
+      - [4.4.7.5 IOPCAsyn cIO2::SetEnable](#4475-iopcasyn-cio2setenable)
+      - [4.4.7.6 IOPCAsyn cIO2::GetEnable](#4476-iopcasyn-cio2getenable)
+    - [4.4.8 IOPCAsyn cIO3](#448-iopcasyn-cio3)
+      - [4.4.8.1 IOPCAsyn cIO3::ReadMaxAge](#4481-iopcasyn-cio3readmaxage)
+      - [4.4.8.2 IOPCAsyn cIO3::WriteVQT](#4482-iopcasyn-cio3writevqt)
+      - [4.4.8.3 IOPCAsyn cIO3:: RefreshMaxAge](#4483-iopcasyn-cio3-refreshmaxage)
+    - [4.4.9 IOPCItemDeadband Mgt](#449-iopcitemdeadband-mgt)
+      - [4.4.9.1 IOPCItem DeadbandMgt::SetItemDeadband](#4491-iopcitem-deadbandmgtsetitemdeadband)
+      - [4.4.9.2 IOPCItemDeadband Mgt:: GetItemDeadband](#4492-iopcitemdeadband-mgt-getitemdeadband)
+      - [4.4.9.3 IOPCItemDeadband Mgt:: ClearItemDeadband](#4493-iopcitemdeadband-mgt-clearitemdeadband)
+    - [4.4.10 IOPCItemSamplingMgt (optional)](#4410-iopcitemsamplingmgt-optional)
+      - [4.4.10.1 IOPCItem SamplingMgt::SetItemSamplingRate](#44101-iopcitem-samplingmgtsetitemsamplingrate)
+      - [4.4.10.2 IOPCItemSamplingMgt::GetItemSamplingRate](#44102-iopcitemsamplingmgtgetitemsamplingrate)
+      - [4.4.10.3 IOPCItem SamplingMgt::ClearItemSamplingRate](#44103-iopcitem-samplingmgtclearitemsamplingrate)
+      - [4.4.10.4 IOPCItem SamplingMgt::SetItemBufferEnable](#44104-iopcitem-samplingmgtsetitembufferenable)
+      - [4.4.10.5 IOPCItemSamplingM gt::GetItemBufferEnable](#44105-iopcitemsamplingm-gtgetitembufferenable)
+    - [4.4.11 IConnectionPointContainer (on OPCGroup)](#4411-iconnectionpointcontainer-on-opcgroup)
+      - [4.4.11.1 IConnectionPointCo ntainer::EnumConnectionPoints](#44111-iconnectionpointco-ntainerenumconnectionpoints)
+      - [4.4.11.2 IConnectionPointCont ainer:: FindConnectionPoint](#44112-iconnectionpointcont-ainer-findconnectionpoint)
+    - [4.4.12 IEnumOPCItemAttributes](#4412-ienumopcitemattributes)
+      - [4.4.12.1 IEnumOPCItemAttributes::Next](#44121-ienumopcitemattributesnext)
+      - [4.4.12.2 IEnumOPCItemAttributes::Skip](#44122-ienumopcitemattributesskip)
+      - [4.4.12.3 IEnumOPCItemAttributes::Reset](#44123-ienumopcitemattributesreset)
+      - [4.4.12.4 IEnumOPCItemAttributes::Clone](#44124-ienumopcitemattributesclone)
+  - [4.5 Client Side Interfaces](#45-client-side-interfaces)
+    - [4.5.1 IOPCDataCallback](#451-iopcdatacallback)
+      - [4.5.1.1 IOPCDataCallback::OnDataCh ange](#4511-iopcdatacallbackondatach-ange)
+      - [4.5.1.2 IOPCDataCallback::OnReadComplete](#4512-iopcdatacallbackonreadcomplete)
+      - [4.5.1.3 IOPCDataCallback::OnWriteComplete](#4513-iopcdatacallbackonwritecomplete)
+      - [4.5.1.4 IOPCDataCallback::OnCancel Complete](#4514-iopcdatacallbackoncancel-complete)
+    - [4.5.2 IOPCShutdow n](#452-iopcshutdow-n)
+      - [4.5.2.1 IOPCShutdow n::ShutdownRequest](#4521-iopcshutdow-nshutdownrequest)
+- [5. OPC Data Access Custom Interface](#5-opc-data-access-custom-interface)
+  - [5.1 Component Categories](#51-component-categories)
+  - [5.2 Registry Entries for Custom Interface](#52-registry-entries-for-custom-interface)
+  - [5.3 Registry Entries for the Proxy/Stub DLL](#53-registry-entries-for-the-proxystub-dll)
+- [6. Description of Data Types, Parameters and Structures](#6-description-of-data-types-parameters-and-structures)
+  - [6.1 Item Definition](#61-item-definition)
+  - [6.2 AccessPat h](#62-accesspat-h)
+  - [6.3 Blob](#63-blob)
+  - [6.4 Time Stamps](#64-time-stamps)
+  - [6.5 Variant Data Types for OPC Data Items](#65-variant-data-types-for-opc-data-items)
+  - [6.6 Constants](#66-constants)
+    - [6.6.1 OPCHANDLE](#661-opchandle)
+      - [6.6.1.1 Group Handles](#6611-group-handles)
+      - [6.6.1.2 Item Handles](#6612-item-handles)
+  - [6.7 Structures and Masks](#67-structures-and-masks)
+    - [6.7.1 OPCITEMSTAT E](#671-opcitemstat-e)
+    - [6.7.2 OPCITEMDEF](#672-opcitemdef)
+    - [6.7.3 OPCITEMRESULT](#673-opcitemresult)
+    - [6.7.4 OPCITEMATTRIBUTES](#674-opcitemattributes)
+    - [6.7.5 OPCSERVERST ATUS](#675-opcserverst-atus)
+    - [6.7.6 Access Rights](#676-access-rights)
+    - [6.7.7 OPCITEMPROPERT Y](#677-opcitempropert-y)
+    - [6.7.8 OPCITEMPROPERTIES](#678-opcitemproperties)
+    - [6.7.9 OPCBRO WSEELEMENT](#679-opcbro-wseelement)
+    - [6.7.10 OPCITEMVQT](#6710-opcitemvqt)
+  - [6.8 OPC Quality flags](#68-opc-quality-flags)
+- [7. Summary of OPC Error Codes](#7-summary-of-opc-error-codes)
+- [8. Appendix A - opcerror.h](#8-appendix-a-opcerrorh)
+- [9. Appendix B - Data Access IDL Specification](#9-appendix-b-data-access-idl-specification)
 
-OPC Data Access Custom Interface 
-Specification Version 3.0 
- 
-F O U N D A T I O N  
-Released 
- 
-RemoveItems, SetActiveState, SetClientHandles, SetDataTypes, both SyncIO and AsyncIO Read and 
-Write. In particular for S_FALSE: change 'was partially successful' to 'completed with one or more errors'. 
-This now clearly implies that the method outputs (specifically the ppErrors returns) are defined in this case. 
-Other adjustments to the text were to make error returns more consistant across functions. Clarify 
-GetItemID behavior. In Refresh2 and IOPCDataCallback::OnDataChange the Transaction ID parameter is 
-clarified. Specifically: 0 is an allowed value. See also the introduction to OPCAsyncIO (4.5.6). Also add 
-section 4.2.14 as a general discussion of Client and Server responsibilites regarding LocaleID. 
- 
-Revision 2.03 Highlights 
-This revision includes minor clarifications to the Deadband discussion (4.5.1.6). It also clarifies the 
-behavior of empty enumerators; The descriptions of IOPCServer::CreateGroupEnumerator and 
-IOPCBrowseServerAddressSpace::BrowseAccessPaths have been clarified and corrected. They are now 
-consistant with the existing description of IOPCBrowseServerAddressSpace::BrowseOPCItemIDs. 
- 
-Revision 2.02 Highlights 
-This revision includes minor clarifications to the OPCItemProperties Interface discussions (4.4.6), 
-GroupStateMgt::SetState (4.5.3.2) and the old (1.0) Stream Marshalling Discussion (4.6.4.6). 
- 
-Revision 2.01 Highlights 
-This revision includes clarifications to the dwAccessRightsFilter in IOPCBrowseServerAddressSpace and 
-also the discussion of access rights in general (section 6.7.6). 
- 
-Revision 2.0 Highlights 
-This revision includes enhancements to the 1.0A Specification. Although changes were made throughout 
-the document, the following areas are or particular importance: 
- 
-• This is now refered to as the OPC Data Access Specification as there are other OPC efforts underway. 
-• The Automation Interface specification has been separated into a separate document. 
-• All previous (1.0A) Custom Interfaces remain in place and unchanged except for minor clarifications. 
-• Async and exception based connections should now be done using ConnectionPoints rather than 
-IDataObject.  The existing IOPCAsyncIO, IDataObject and Client side IAdviseSink interfaces support 
-‘old style’ (Version 1.0) connections. The new IOPCAsyncIO2, IConnectionPointContainer and Client 
-side IOPCDataCallback interfaces support the ‘new style’ Version 2.0 connections. 
-• The behavior of the existing IOPCAsyncIO, IDataObject and Client side IAdviseSink interfaces is 
-unchanged however their support is optional for OPC 2.0 complaint software. The new 
-IOPCAsyncIO2, IConnectionPointContainer and Client side IOPCDataCallback interfaces are required 
-for 2.0 compliant software. 
-• A new ‘convenience’ interface is defined. IOPCItemProperties allows easy access to common and 
-vendor specific properties or attributes of an Item or Tag. 
-• A ShutdownRequest capability is added via a Connection point on the Server object and a Client side 
-IOPCShutdown interface that allows the server to request that all clients disconnect from the server. 
-This interface will also be used by other OPC server types. 
-• An IOPCCommon interface is added to the server. This interface provides several common LocaleID 
-related functions. This interface will also be used by other OPC server types. 
-• The OPC_BROWSE_TO capability is added to BrowseServerAddressSpace. 
- 
- vi
-
-<!-- Page 7 -->
-
-OPC Data Access Custom Interface 
-Specification Version 3.0 
- 
-F O U N D A T I O N  
-Released 
- 
-Table of Contents 
-1 INTRODUCTION ................................................................................................................... ..............1 
-1.1 AUDIENCE ............................................................................................................................... .............1 
-1.2 DELIVERABLES............................................................................................................................... ......1 
-2 OPC DATA ACCESS FUNDAMENTALS ......................................................................................... 2 
-2.1 OPC OVERVIEW............................................................................................................................... ....2 
-2.2 WHERE OPC FITS ............................................................................................................................... .3 
-2.3 GENERAL OPC ARCHITECTURE AND COMPONENTS............................................................................. 4 
-2.4 OPC DATA ACCESS ARCHITECTURE COMPANION SPECIFICATIONS.....................................................5 
-2.5 OVERVIEW OF THE OBJECTS AND INTERFACES..................................................................................... 6 
-2.6 THE ADDRESS SPACE AND CONFIGURATION OF THE SERVER ............................................................... 7 
-2.7 APPLICATION LEVEL SERVER AND NETWORK NODE SELECTION .........................................................8 
-2.8 SYNCHRONIZATION AND SERIALIZATION ISSUES.................................................................................. 8 
-2.9 PERSISTENT  STORAGE STORY.............................................................................................................. 9 
-3 OPC DATA ACCESS QUICK REFERENCE.................................................................................. 10 
-3.1 CUSTOM INTERFACE........................................................................................................................... 10 
-4 OPC CUSTOM INTERFACE........................................................................................................... .11 
-4.1 OVERVIEW OF THE OPC CUSTOM INTERFACE.................................................................................... 11 
-4.2 GENERAL INFORMATION .................................................................................................................... 12 
-4.2.1 Version Interoperability....................................................................................................... ......12 
-4.2.2 Ownership of memory ............................................................................................................ ...13 
-4.2.3 Standard Interfaces ............................................................................................................ ........14 
-4.2.4 Null Strings and Null Pointers................................................................................................. ..14 
-4.2.5 Returned Arrays................................................................................................................ .........14 
-4.2.6 CACHE data, DEVICE data and TimeStamps .......................................................................... 14 
-4.2.7 Time Series Values............................................................................................................. .......15 
-4.2.8 Asynchronous vs. Synchronous Interfaces ................................................................................ 15 
-4.2.9 The ACTIVE flags, Deadband and Update Rate ....................................................................... 15 
-4.2.10 Errors and return codes........................................................................................................ ......15 
-4.2.11 Startup Issues................................................................................................................. ............15 
-4.2.12 VARIANT Data Types and Interoperability..............................................................................16 
-4.2.13 Localization and LocaleID ...................................................................................................... ..19 
-4.2.14 Item Properties................................................................................................................ ...........19 
-4.2.15 IOPCSyncIO..................................................................................................................... .........25 
-4.2.16 IOPCASyncIO2................................................................................................................... ......26 
-4.2.17 SUBSCRIPTION via IOPCDataCallback ................................................................................. 27 
-4.3 OPCSERVER OBJECT.......................................................................................................................... 28 
-4.3.1 Overview ....................................................................................................................... ............28 
-4.3.2 IUnknown....................................................................................................................... ...........29 
-4.3.3 IOPCCommon ..................................................................................................................... ......29 
-4.3.4 IOPCServer..................................................................................................................... ...........30 
-4.3.4.1 IOPCServer::AddGroup ........................................................................................................... .............30 
-4.3.4.2 IOPCServer::GetErrorString..................................................................................................................33 
-4.3.4.3 IOPCServer::GetGroupByName ..................................................................................................... ......34 
-4.3.4.4 IOPCServer::GetStatus.......................................................................................................... ................35 
-4.3.4.5 IOPCServer::RemoveGroup ........................................................................................................ ..........36 
-4.3.4.6 IOPCServer::CreateGroupEnumerator .............................................................................................. ....38 
-4.3.5 IConnectionPointContainer (on OPCServer)............................................................................. 40 
-4.3.5.1 IConnectionPointContainer::EnumConnectionPoints............................................................................41  
-4.3.5.2 IConnectionPointContainer:: FindConnectionPoint ..............................................................................42  
-4.3.6 IOPCBrowse..................................................................................................................... .........43 
- vii
-
-<!-- Page 8 -->
-
-OPC Data Access Custom Interface 
-Specification Version 3.0 
- 
-F O U N D A T I O N  
-Released 
- 
-4.3.6.1 IOPCBrowse:: Browse ............................................................................................................ ..............43 
-4.3.6.2 IOPCBrowse::GetProperties...................................................................................................... ............46 
-4.3.7 IOPCItemIO ..................................................................................................................... .........48 
-4.3.7.1 IOPCItemIO::Read ............................................................................................................... .................48 
-4.3.7.2 IOPCItemIO::WriteVQT ........................................................................................................... ............51 
-4.4 OPCGROUP OBJECT........................................................................................................................... 53 
-4.4.1 General Properties ............................................................................................................. ........54 
-4.4.1.1 Name ........................................................................................................................... ..........................54 
-4.4.1.2 Cached data .................................................................................................................... .......................54 
-4.4.1.3 Active ......................................................................................................................... ...........................54 
-4.4.1.4 Update Rate .................................................................................................................... .......................55 
-4.4.1.5 Time Zone (TimeBias) ........................................................................................................... ...............55 
-4.4.1.6 Percent Deadband............................................................................................................... ...................56 
-4.4.1.7 ClientHandle................................................................................................................... .......................56 
-4.4.1.8 Reading and Writing Data ....................................................................................................... ..............56 
-4.4.2 IOPCItemMgt .................................................................................................................... ........58 
-4.4.2.1 IOPCItemMgt::AddItems .......................................................................................................... ............58 
-4.4.2.2 IOPCItemMgt::ValidateItems..................................................................................................... ...........60 
-4.4.2.3 IOPCItemMgt::RemoveItems....................................................................................................... .........62 
-4.4.2.4 IOPCItemMgt::SetActiveState .................................................................................................... ..........63 
-4.4.2.5 IOPCItemMgt::SetClientHandles .................................................................................................. ........64 
-4.4.2.6 IOPCItemMgt::SetDatatypes...................................................................................................... ...........65 
-4.4.2.7 IOPCItemMgt::CreateEnumerator.................................................................................................. .......66 
-4.4.3 IOPCGroupStateMgt .............................................................................................................. ...67 
-4.4.3.1 IOPCGroupStateMgt::GetState .................................................................................................... .........67 
-4.4.3.2 IOPCGroupStateMgt::SetState .................................................................................................... ..........69 
-4.4.3.3 IOPCGroupStateMgt::SetName..................................................................................................... ........71 
-4.4.3.4 IOPCGroupStateMgt::CloneGroup .................................................................................................. .....72 
-4.4.4 IOPCGroupStateMgt2 ............................................................................................................. ..74 
-4.4.4.1 IOPCGroupStateMgt2::SetKeepAlive............................................................................................... ....74 
-4.4.4.2 IOPCGroupStateMgt2::GetKeepAlive ............................................................................................... ...76 
-4.4.5 IOPCSyncIO..................................................................................................................... .........77 
-4.4.5.1 IOPCSyncIO::Read ............................................................................................................... ................77 
-4.4.5.2 IOPCSyncIO::Write.............................................................................................................. .................80 
-4.4.6 IOPCSyncIO2.................................................................................................................... ........82 
-4.4.6.1 IOPCSyncIO2::ReadMaxAge........................................................................................................ ........82 
-4.4.6.2 IOPCSyncIO2::WriteVQT .......................................................................................................... ..........85 
-4.4.7 IOPCAsyncIO2................................................................................................................... .......87 
-4.4.7.1 IOPCAsyncIO2::Read ............................................................................................................. ..............88 
-4.4.7.2 IOPCAsyncIO2::Write ............................................................................................................ ..............91 
-4.4.7.3 IOPCAsyncIO2::Refresh2 ......................................................................................................... ............94 
-4.4.7.4 IOPCAsyncIO2::Cancel2 .......................................................................................................... ............96 
-4.4.7.5 IOPCAsyncIO2::SetEnable ........................................................................................................ ...........97 
-4.4.7.6 IOPCAsyncIO2::GetEnable........................................................................................................ ...........98 
-4.4.8 IOPCAsyncIO3................................................................................................................... .......99 
-4.4.8.1 IOPCAsyncIO3::ReadMaxAge ....................................................................................................... ......99 
-4.4.8.2 IOPCAsyncIO3::WriteVQT ......................................................................................................... .......102 
-4.4.8.3 IOPCAsyncIO3:: RefreshMaxAge ................................................................................................... ...104 
-4.4.9 IOPCItemDeadbandMgt.......................................................................................................... 106 
-4.4.9.1 IOPCItemDeadbandMgt::SetItemDeadband ....................................................................................... 106 
-4.4.9.2 IOPCItemDeadbandMgt:: GetItemDeadband...................................................................................... 108 
-4.4.9.3 IOPCItemDeadbandMgt:: ClearItemDeadband................................................................................... 110 
-4.4.10 IOPCItemSamplingMgt  (optional) ......................................................................................... 112 
-4.4.10.1 IOPCItemSamplingMgt::SetItemSamplingRate.............................................................................. 113 
-4.4.10.2 IOPCItemSamplingMgt::GetItemSamplingRate............................................................................. 116 
-4.4.10.3 IOPCItemSamplingMgt::ClearItemSamplingRate .......................................................................... 118 
-4.4.10.4 IOPCItemSamplingMgt::SetItemBufferEnable............................................................................... 119 
-4.4.10.5 IOPCItemSamplingMgt::GetItemBufferEnable.............................................................................. 121 
-4.4.11 IConnectionPointContainer (on OPCGroup)........................................................................... 123 
- viii
-
-<!-- Page 9 -->
-
-OPC Data Access Custom Interface 
-Specification Version 3.0 
- 
-F O U N D A T I O N  
-Released 
- 
-4.4.11.1 IConnectionPointContainer::EnumConnectionPoints ..................................................................... 124 
-4.4.11.2 IConnectionPointContainer:: FindConnectionPoint........................................................................ 125 
-4.4.12 IEnumOPCItemAttributes ....................................................................................................... 126 
-4.4.12.1 IEnumOPCItemAttributes::Next ................................................................................................... ..126 
-4.4.12.2 IEnumOPCItemAttributes::Skip ................................................................................................... ..127 
-4.4.12.3 IEnumOPCItemAttributes::Reset.................................................................................................. ..128 
-4.4.12.4 IEnumOPCItemAttributes::Clone .................................................................................................. .129 
-4.5 CLIENT SIDE INTERFACES................................................................................................................. 130 
-4.5.1 IOPCDataCallback ............................................................................................................... ...130 
-4.5.1.1 IOPCDataCallback::OnDataChange................................................................................................. ...131 
-4.5.1.2 IOPCDataCallback::OnReadComplete............................................................................................... .134 
-4.5.1.3 IOPCDataCallback::OnWriteComplete.............................................................................................. .136 
-4.5.1.4 IOPCDataCallback::OnCancelComplete............................................................................................. 138 
-4.5.2 IOPCShutdown................................................................................................................... .....139 
-4.5.2.1 IOPCShutdown::ShutdownRequest.................................................................................................. ...139 
-5 INSTALLATION ISSUES............................................................................................................ ....140 
-5.1 COMPONENT CATEGORIES................................................................................................................ 140 
-5.2 REGISTRY ENTRIES FOR CUSTOM INTERFACE .................................................................................. 140 
-5.3 REGISTRY ENTRIES FOR THE PROXY/STUB DLL .............................................................................. 141 
-6 DESCRIPTION OF DATA TYPES, PARAMETERS AND STRUCTURES..............................142 
-6.1 ITEM DEFINITION.............................................................................................................................. 142 
-6.2 ACCESSPATH............................................................................................................................... .....143 
-6.3 BLOB ............................................................................................................................... .................144 
-6.4 TIME STAMPS ............................................................................................................................... ....144 
-6.5 VARIANT DATA TYPES FOR OPC DATA ITEMS ................................................................................ 145 
-6.6 CONSTANTS............................................................................................................................... .......146 
-6.6.1 OPCHANDLE...................................................................................................................... ...146 
-6.6.1.1 Group Handles.................................................................................................................. ...................146 
-6.6.1.2 Item Handles........................................................................................................................................146 
-6.7 STRUCTURES AND MASKS ................................................................................................................ 147 
-6.7.1 OPCITEMSTATE ................................................................................................................... 147 
-6.7.2 OPCITEMDEF ..................................................................................................................... ...148 
-6.7.3 OPCITEMRESULT.................................................................................................................150 
-6.7.4  OPCITEMATTRIBUTES ...................................................................................................... 151 
-6.7.5 OPCSERVERSTATUS ........................................................................................................... 153 
-6.7.6 Access Rights .................................................................................................................. ........154 
-6.7.7 OPCITEMPROPERTY ........................................................................................................... 156 
-6.7.8 OPCITEMPROPERTIES ........................................................................................................ 157 
-6.7.9 OPCBROWSEELEMENT ...................................................................................................... 158 
-6.7.10 OPCITEMVQT ..................................................................................................................... ..159 
-6.8 OPC QUALITY FLAGS....................................................................................................................... 160 
-7  SUMMARY OF OPC ERROR CODES......................................................................................... 164 
-8 APPENDIX A - OPCERROR.H ...................................................................................................... 167 
-9 APPENDIX B - DATA ACCESS IDL SPECIFICATION.............................................................173 
- 
- ix
-
-<!-- Page 10 -->
-
-OPC Data Access Custom Interface 
-Specification Version 3.0 
- 
-F O U N D A T I O N  
-Released 
- 
-1 Introduct ion 
+## 1. Introduction
 A General Introduction to OPC is contained in a separate OPC Overview Document 
 (OPCOVW.DOC). This particular document deals specifically with the OPC Data Access Interfaces. 
-1.1 Audience 
+### 1.1 Audience
 This specification is intended as reference material for developers of OPC compliant Clients and 
 Servers. It is assumed that the reader is familiar with Microsoft OLE/COM technology and the needs 
 of the Process Control industry. 
@@ -469,7 +343,7 @@ This specification is intended to facilitate development of OPC Servers in C and
 client applications in the language of choice.  Therefore, the developer of the respective component is 
 expected to be fluent in the technology required for the specific component. 
  
-1.2 Deliverables 
+### 1.2 Deliverables
 The deliverables from the OPC Foundation with respect to the OPC Data Access Specification 3.0 
 include the OPC Specification itself, OPC IDL files (included in this document as Appendices) and the 
 OPC Error header files (included in this document). As a convenience, standard proxystub DLLs and a 
@@ -493,11 +367,11 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-2 OPC Data Access Fundamentals 
+## 2. OPC Data Access Fundamentals
 This section introduces OPC Data Access and covers topics which are specific to OPC Data Access. 
 Additional common topics including Windows NT, UNICODE, Threading Models, etc are discussed 
 in the OPC Overview Document (OPCOVW.DOC). 
-2.1 OPC Overview 
+### 2.1 OPC Overview
 This specification describes the OPC COM Objects and their interfaces implemented by OPC Servers.  
 An OPC Client can connect to OPC Servers provided by one or more vendors. 
  
@@ -569,7 +443,7 @@ in a DCS system exist regardless of whether an OPC client is currently accessing
 should be thought of as simply specifying the address of the data, not as the actual physical source of 
 the data that the address references. 
  
-2.2 Where OPC Fits 
+### 2.2 Where OPC Fits
 Although OPC is primarily designed for accessing data from a networked server, OPC interfaces can 
 be used in many places within an application. At the lowest level they can get raw data from the 
 physical devices into a SCADA or DCS, or from the SCADA or DCS system into the application. The 
@@ -597,7 +471,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-2.3 General OPC Architecture and Components 
+### 2.3 General OPC Architecture and Components
 OPC is a specification for two sets of interfaces; the OPC Custom Interfaces and the OPC Automation 
 interfaces.  A revised automation interface may be provided with release 3.0 of the OPC specification. 
 This is shown below.  
@@ -664,7 +538,7 @@ clients to promote efficient communications with the physical device.  For input
 returned by the device is buffered for asynchronous distribution or synchronous collection by various 
 OPC clients.  For outputs (writes), the OPC Server updates the physical device data on behalf of OPC 
 Clients.  
-2.4 OPC Data Access Architecture Companion Specifications 
+### 2.4 OPC Data Access Architecture Companion Specifications
 OPC Data Access provides the baseline functionality for accessing (reading and writing) data from 
 various networked devices via a standard set of interfaces.  The interfaces facilitate the interoperability 
 between clients and servers discovering each other and communicating the set of capabilities 
@@ -686,17 +560,17 @@ Complex Data has not been incorporated into the OPC Data Access 3.0 specificatio
 OPC  Data eXchange,  (OPC DX) has been designed to move plant floor data horizontally between 
 OPC DA servers. By presenting this new technology, the OPC DX enables data interoperability 
 between Ethernet-based systems including PLCs, HMI/SCADA, Devices, and PCs. 
- 5
+
 
 <!-- Page 15 -->
 
-OPC Data Access Custom Interface 
+## 5. OPC Data Access Custom Interface
 Specification Version 3.0 
  
 F O U N D A T I O N  
 Released 
  
-2.5 Overview of the Objects and Interfaces 
+### 2.5 Overview of the Objects and Interfaces
 The OPC Server object provides a way to access (read/write) or communicate to a set of data sources. 
 The types of sources available are a function of the server implementation. 
 An OPC client connects to an OPC server and communicates to the OPC server through the interfaces.  
@@ -758,7 +632,7 @@ Object
  
 Figure 2-8 - Standard OPC Group Object 
  
-2.6 The Address Space and Configuration of the Server 
+### 2.6 The Address Space and Configuration of the Server
 This release of the OPC specification assumes that a server configuration address space may be 
 managed and persistently stored using the IPersistFile interface.  Only the server specific information 
 is persistently stored.  All client configuration information (Group and Item Definitions) must be 
@@ -793,7 +667,7 @@ Released
 interfaces described here provide the client the ability to easily define, manage, and recreate these lists 
 as needed through the use of ‘OPCGroups’.  The clients direct the server to create, manage and delete 
 these groups on their behalf (persistence of the groups is the responsibility of the client application).  
-2.7 Application Level Server and Network Node Selection 
+### 2.7 Application Level Server and Network Node Selection
 OPC Data Access supports the concept of organizing client requests into groups within a server.  Such 
 groups can contain requests for data from only one particular OPC Server object. In order to access 
 data, a client application will need to specify the following: 
@@ -805,7 +679,7 @@ CoCreateInstanceEx)
 address space) 
 It is beyond the scope of this specification to discuss the implications of this on the architecture and 
 user interface of the client program. 
-2.8 Synchronization and Serialization Issues 
+### 2.8 Synchronization and Serialization Issues
 By ‘synchronization’ we mean the ability of a client to read or write values and attributes in a single 
 transaction.  For example, most applications want to insure that the value, quality and time stamp 
 attributes of a particular item are in ‘sync’.  Also, a reporting package might want to insure that a 
@@ -859,7 +733,7 @@ later.
 Many of these issues will be clarified in the detailed descriptions of the methods below. 
  
  
-2.9 Persistent  Storage Story 
+### 2.9 Persistent Storage Story
 OPC Servers may implement an optional interface to facilitate OPC clients telling an OPC server to 
 persistent (store) the OPC server configuration information.  OPC Server configuration information 
 may include information about the devices and data source necessary to facilitate communication 
@@ -878,10 +752,10 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-3 OPC Data Access Quick Reference 
+## 3. OPC Data Access Quick Reference
 This section includes a quick reference for the methods on the Custom Interface. These interfaces, their 
 parameters and behavior are defined in more detail later in the reference sections. 
-3.1 Custom Interface 
+### 3.1 Custom Interface
 Note: This section does not show additional standard COM Interfaces such as IUnknown, IEnumString 
 and IEnumUnknown used by OPC Data Access. 
  OPCServer 
@@ -917,8 +791,8 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4 OPC Custom Interface 
-4.1 Overview of the OPC Custom Interface 
+## 4. OPC Custom Interface
+### 4.1 Overview of the OPC Custom Interface
 The OPC Custom Interface Objects include the following custom objects: 
 • OPCServer 
 • OPCGroup 
@@ -950,10 +824,10 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.2 General Information 
+### 4.2 General Information
 This section provides general information about the OPC Interfaces, and some background information 
 about how the designers of OPC expected these interfaces to be implemented and used. 
-4.2.1 Version Interoperability 
+#### 4.2.1 Version Interoperability
 Data Access Servers may be compatible with the requirements of Versions 1.0a, 2.x or 3.0 of the 
 specification or with any combinations of the Data Access Specification Versions. Data Access Clients 
 may also be compatible with the requirements of Versions 1.0a, 2.x or 3.0 of the specification or with 
@@ -1005,7 +879,7 @@ IConnectionPointContainer N/A Required Required
 IOPCAsyncIO Required Optional N/A 
 IDataObject Required Optional N/A 
  
-4.2.2 Ownership of memory 
+#### 4.2.2 Ownership of memory
 Per the COM specification, clients must free all memory associated with ‘out’ or ‘in/out’ parameters.  
 This includes memory that is pointed to by elements within any structures.  This is very important for 
 client writers to understand, otherwise they will experience memory leaks that are difficult to find.  See 
@@ -1027,12 +901,12 @@ Note:  If the error result is any FAILED error such as E_OUTOFMEMORY , the OPC s
 return NULL for all `out' pointers (this is standard COM behavior).  This rule also applies to the error 
 arrays (ppErrors) returned by many of the functions below.  In general, a robust OPC client should 
 check each out or in/out pointer for NULL prior to freeing it. 
-4.2.3 Standard Interfaces 
+#### 4.2.3 Standard Interfaces
 Per the COM specification, all methods must be implemented on each required interface.  
 Per the COM specification, any optional interfaces that are supported must have all functions within 
 that interface implemented, even if the implementation is only a stub implementation returning 
 E_NOTIMPL. 
-4.2.4 Null Strings and Null Pointers 
+#### 4.2.4 Null Strings and Null Pointers
 Both of these terms are used below.  They are NOT the same thing.  A NULL Pointer is an invalid 
 pointer (0) which will cause an exception if used.  A NUL String is a valid (non zero) pointer to a 1 
 character array where that character is a NUL (i.e. 0). If a NUL string is returned from a method as an 
@@ -1041,14 +915,14 @@ NUL will be lost. Also note that a NULL pointer cannot be passed for an [in,stri
 COM marshalling restrictions. In this case a pointer to a NUL string should be passed to indicate an 
 omitted parameter.  Whenever possible, NUL strings are used in this specification.  C# does not handle 
 NUL pointers or NUL strings. 
-4.2.5 Returned Arrays 
+#### 4.2.5 Returned Arrays
 You will note the syntax size_is(,dwCount) in the IDL used in combination with pointers to pointers.  
 This indicates that the returned item is a pointer to an actual array of the indicated type, rather than a 
 pointer to an array of pointers to items of the indicated type.  This simplifies marshaling, creation, and 
 access of the data by the server and client. 
  
  
-4.2.6 CACHE data, DEVICE data and TimeStamps 
+#### 4.2.6 CACHE data, DEVICE data and TimeStamps
 For the most part the terms CACHE and DEVICE are treated as ‘abstract’ within this specification. 
 That is, reading CACHE or DEVICE data simply affects the described behavior of various interfaces 
 in a well defined way. The implementation details of these capabilities is not dictated by this 
@@ -1080,14 +954,14 @@ and that (b) the connection to the device is good and (c) that device sent an up
 three minutes ago with a value of 1.234. In this case the value returned from a cache read would be 
 1.234 and more important, the timestamp returned for this value would be the current time (within 0.5 
 second) since it is known that the value for the item is in fact still 1.234 as of 0.5 seconds ago. 
-4.2.7 Time Series Values 
+#### 4.2.7 Time Series Values
 The OPC Data Access interfaces are designed primarily to take snapshots of current real time process 
 or automation data. The Timestamp returned with those values is intended primarily as an indication of 
 the quality of that ‘current’ data. These interfaces are not really intended to deal with buffered time 
 series data for a single point such as historical data.  If the server chooses to implement the 
 IOPCItemSamplingMgt interface, buffering of data is allowed.  See IOPCItemSamplingMgt for more 
 details. 
-4.2.8 Asy nchronous vs. Synchronous Interfaces 
+#### 4.2.8 Asy nchronous vs. Synchronous Interfaces
 Assuming that most clients want to access Cached data, there are several ways for a client to obtain 
 that data from a server.  
 • It can perform a synchronous read from cache (simple and reasonably efficient). This may be 
@@ -1097,11 +971,11 @@ the ‘scanning’ that the server is already doing.
 • It can ‘subscribe’ to cached data using IOPCDataCallback.. This is the recommended behavior for 
 clients because it will minimize use of CPU and NETWORK resources. 
  
-4.2.9 The ACTIVE flags, Deadband and Update Rate  
+#### 4.2.9 The ACTIVE flags, Deadband and Update Rate
 These attributes of groups and items can be used to reduce resource use by clients and servers. They 
 are discussed in more detail later under GROUPS. In general, they affect how often the cached data 
 and quality information is updated and how often calls are made to the client’s IOPCDataCallback. 
-4.2.10 Errors and return codes 
+#### 4.2.10 Errors and return codes
 The OPC specification describes interfaces and corresponding behavior that an OPC server 
 implements, and an OPC client application depends on.   A list of OPC Specific errors and return codes 
 is contained in the summary of OPC error codes section in this specification.  For each method 
@@ -1112,7 +986,7 @@ In two cases (Read and Write) it is also allowed for a server to return Vendor S
 Such codes can be passed to GetErrorString method. This is discussed in more detail later. 
 In all cases  ‘E’ error codes will indicate FAILED type errors and ‘S’ error codes will indicate at least 
 partial success.  
-4.2.11 Startup Issues 
+#### 4.2.11 Startup Issues
 After Items are added to a group, it may take some time for the server to actually obtain values for 
 these items. In such cases the client might perform a read (from cache), or establish an AdviseSink or 
 ConnectionPoint based subscription and/or execute a Refresh on such a subscription before the values 
@@ -1135,7 +1009,7 @@ If the server cannot determine the datatype quickly at AddItem time it will retu
 canonical datatype.  Note that in the case of the sync read and also asyncio2 operations the server can 
 return vendor specific error information which could indicate a vendor specific error such as 
 "SERVER WAITING FOR INITIAL DATA". 
-4.2.12 VARIANT Data Types and Interoperability 
+#### 4.2.12 VARIANT Data Types and Interoperability
 In order to promote interoperability, the following rules and recommendations are presented. 
 General Recommendations: 
 • The VARIANT types VT_I2, I4, R4, R8, CY, DATE, BSTR, BOOL, UI1 as well as single arrays 
@@ -1308,7 +1182,7 @@ F O U N D A T I O N
 Released 
  
  
-4.2.13 Localization and LocaleID 
+#### 4.2.13 Localization and LocaleID
 As mentioned elsewhere in this document, the extent to which a server supports localization is up to 
 the vendor. However certain issues require some discussion. Localization is important not just for error 
 strings and messages. It is also potentially important for values that are read or written as strings. The 
@@ -1329,7 +1203,7 @@ So for example, if the client tells the server to return German formatted string
 particular object then the server can reasonably expect the client to pass German formatted strings 
 when writing to that object. 
  
-4.2.14 Item Properties 
+#### 4.2.14 Item Properties
 Overview 
 Item Properties can be accessed by the legacy IOPCItemProperties interface or by the 
 IOPCBrowse::GetProperties method.  These interfaces can be used by clients to browse the available 
@@ -1635,7 +1509,7 @@ The client should take care dealing with these vendor specific IDs - i.e. not ma
 them. Different vendors may not provide the same information for IDs of 5000 and above. 
  
  
-4.2.15 IOPCSyncIO 
+#### 4.2.15 IOPCSyncIO
  
 Interface ::Method Source Enable 
 Callbacks 
@@ -1678,7 +1552,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.2.16 IOPCASyncIO2 
+#### 4.2.16 IOPCASyncIO2
  
 Interface ::Method Source Enable 
 Callbacks 
@@ -1737,7 +1611,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.2.17 SUBSCRIPTION via IOPCDataCallback 
+#### 4.2.17 SUBSCRIPTION via IOPCDataCallback
 OnDataChange 
 Interface ::Method Source Enable 
 Callbacks 
@@ -1818,8 +1692,8 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3 OPCServer Object 
-4.3.1 Overview  
+### 4.3 OPCServer Object
+#### 4.3.1 Overview
 The OPCServer object is the primary object that an OPC server exposes.  The interfaces that this object 
 provides include: 
 • IUnknown 
@@ -1842,11 +1716,11 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.2 IUnknow n  
+#### 4.3.2 IUnknow n
 The server must provide a standard IUnknown Interface. Since this is a well defined interface it is not 
 discussed in detail. See the OLE Programmer’s reference for additional information. This interface 
 must be provided, and all functions implemented as required by Microsoft.. 
-4.3.3 IOPCCommon  
+#### 4.3.3 IOPCCommon
 Other OPC Servers such as alarms and events share this interface design. It provides the ability to set 
 and query a LocaleID that would be in effect for the particular client/server session. That is, as with a 
 Group definition, the actions of one client do not affect any other clients. 
@@ -1886,12 +1760,12 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4 IOPCServer  
+#### 4.3.4 IOPCServer
 This is the main interface to an OPC server.  The OPC server is registered with the operating system as 
 specified in the Installation and Registration Chapter of this specification.   
 This interface must be provided, and all functions implemented as specified. 
  
-4.3.4.1 IOPCServer::AddGroup  
+#### 4.3.4.1 IOPCServer::AddGroup
  
 HRESULT AddGroup( 
  [in, string] LPCWSTR szName,  
@@ -2030,7 +1904,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4.2 IOPCServer::GetErrorString  
+#### 4.3.4.2 IOPCServer::GetErrorString
 HRESULT GetErrorString(  
  [in] HRESULT dwError, 
  [in] LCID dwLocale, 
@@ -2075,7 +1949,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4.3 IOPCServer::GetGroupByName  
+#### 4.3.4.3 IOPCServer::GetGroupByName
 HRESULT GetGroupByName( 
  [in, string] LPCWSTR szName, 
  [in]  REFIID riid, 
@@ -2116,7 +1990,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4.4 IOPCServer::GetStatus  
+#### 4.3.4.4 IOPCServer::GetStatus
 HRESULT GetStatus(  
  [out] OPCSERVERSTATUS ** ppServerStatus 
  ); 
@@ -2147,7 +2021,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4.5 IOPCServer::RemoveGroup  
+#### 4.3.4.5 IOPCServer::RemoveGroup
 HRESULT RemoveGroup( 
  [i n] OPCHANDLE hServerGroup, 
  [i n] BOOL bForce 
@@ -2216,7 +2090,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.4.6 IOPCServer::CreateGroupEnumerator 
+#### 4.3.4.6 IOPCServer::CreateGroupEnumerator
 HRESULT CreateGroupEnumerator( 
 [in] OPCENUMSCOPE dwScope,  
 [in] REFIID riid,  
@@ -2289,7 +2163,7 @@ Released
  
  
  
-4.3.5 IConnectionPointCo ntainer (on OPCServer) 
+#### 4.3.5 IConnectionPointCo ntainer (on OPCServer)
 This interface provides access to the connection point for IOPCShutdown. 
 The general principles of ConnectionPoints are not discussed here as they are covered very clearly in 
 the Microsoft Documentation. The reader is assumed to be familiar with this technology.  OPC DA 
@@ -2311,7 +2185,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.5.1 IConnectionPointCont ainer::EnumConnectionPoints 
+#### 4.3.5.1 IConnectionPointCont ainer::EnumConnectionPoints
 HRESULT EnumConnectionPoints(  
 IEnumConnectionPoints **ppEnum 
   ); 
@@ -2344,7 +2218,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.5.2 IConnectionPointCont ainer:: FindConnectionPoint 
+#### 4.3.5.2 IConnectionPointCont ainer:: FindConnectionPoint
 HRESULT FindConnectionPoint(  
 REFIID riid, 
 IConnectionPoint **ppCP 
@@ -2377,12 +2251,12 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.6 IOPCBrow se 
+#### 4.3.6 IOPCBrow se
  
 IOPCBrowse interace provides improved methods for browsing the server address space and for 
 obtaining the item properties.  The methods in this interface are designed to mirror the corresponding 
 methods in the XML-DA interface. 
-4.3.6.1 IOPCBrow se:: Browse 
+#### 4.3.6.1 IOPCBrow se:: Browse
 HRESULT Browse( 
  [in, string] LPWSTR szItemID, 
  [in,out, string] LPWSTR * pszContinuationPoint, 
@@ -2530,7 +2404,7 @@ F O U N D A T I O N
 Released 
  
  
-4.3.6.2 IOPCBrow se::GetProperties 
+#### 4.3.6.2 IOPCBrow se::GetProperties
 HRESULT GetProperties(  
  [i n] DWORD dwItemCount, 
 [in, string, size_is(dwItemCount)] LPWSTR * pszItemIDs, 
@@ -2590,7 +2464,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.7 IOPCItemIO 
+#### 4.3.7 IOPCItemIO
 The purpose of this interface is to provide an extremely easy way for simple applications to obtain 
 OPC data.  Programmers should be aware that in most servers, the design of the Group based OPC 
 interfaces will provide much better performance than this interface. In terms of performance, the user 
@@ -2598,7 +2472,7 @@ of this interface should assume that it will behave as if he were to create a gr
 perform a single read or write and then delete the group. 
 A second purpose of this interface is to provide a method for writing timestamp and quality 
 information into servers that support this functionality. 
-4.3.7.1 IOPCItemIO::Read 
+#### 4.3.7.1 IOPCItemIO::Read
 HRESULT Read ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] LPCWSTR  *pszItemIDs,  
@@ -2739,7 +2613,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.3.7.2 IOPCItemIO::WriteV QT 
+#### 4.3.7.2 IOPCItemIO::WriteV QT
 HRESULT WriteVQT ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] LPCWSTR  *pszItemIDs, 
@@ -2827,7 +2701,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4 OPCGroup Object  
+### 4.4 OPCGroup Object
 The OPCGroup object is the object that an OPC server delivers to manage a collection of items.  The 
 interfaces that this object provides include: 
 • IUnknown 
@@ -2857,14 +2731,14 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.1 General Properties 
+#### 4.4.1 General Properties
 The OPCGroup has certain general properties and behaviors which affect the operation of the 
 Interfaces and Methods. These are discussed here in order to minimize duplication.  
-4.4.1.1 Name 
+#### 4.4.1.1 Name
 Each group has a name. The name must be unique among the other groups that belong to that clientThe 
 client can change the name of a group. 
 Group names are Case Sensitive. Group1 would be different from group1. 
-4.4.1.2 Cached data 
+#### 4.4.1.2 Cached data
 The methods below allow the client to specify that some operations can be performed on ‘CACHE’ or 
 ‘DEVICE’. It is expected that most servers will implement some sort of CACHE.  As discussed earlier 
 these terms are simply part of the interface definition.  The way the functions described below behave 
@@ -2874,7 +2748,7 @@ while access to the ‘DEVICE is expected to be ‘slow’ but more accurate. CA
 the Active state of the group and the items in the group while DEVICE data is not. Note again that 
 although we sometimes make suggestions, this specification does not dictate any particular 
 implementation or performance.  
-4.4.1.3 Active 
+#### 4.4.1.3 Active
 Groups and Items within Groups have an Active Flag. The active state of the group is maintained 
 separately from the active state of the items. Changing the state of the group does not change the state 
 of the items. 
@@ -2904,7 +2778,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.1.4 Update Rate 
+#### 4.4.1.4 Update Rate
 The client can specify an ‘update rate’ for each group. This determines the time between when the 
 exception limit is checked. If the exception limit is exceeded, the CACHE is updated. The server 
 should make a ‘best effort’ to keep the data fresh. This also affects the maximum rate at which 
@@ -2931,7 +2805,7 @@ as well as how ‘fresh’ the cache will be for this particular item.
 than the group update rate, then the server will buffer each occurrence and then pass this information 
 onto the client in the scheduled callback.  The amount of data buffered is server dependent.  See 
 IOPCItemSamplingMgt for more detail. 
-4.4.1.5 Time Zone (TimeBias) 
+#### 4.4.1.5 Time Zone (TimeBias)
 In some cases the data may have been collected by a device operating in a time zone other than that of 
 the client. Then it will be useful to know what the time of the device was at the time the data was 
 collected (e.g. to determine what ‘shift’ was on duty at the time). 
@@ -2961,7 +2835,7 @@ F O U N D A T I O N
 Released 
  
  
-4.4.1.6 Percent Deadband 
+#### 4.4.1.6 Percent Deadband
 The range of the Deadband is from 0.0 to 100.0 Percent. Deadband will only apply to items in the 
 group that have a dwEUType of Analog available. If the dwEUType is Analog, then the EU Low and 
 EU High values for the item can be used to calculate the range for the item. This range will be 
@@ -2982,13 +2856,13 @@ requests a deadband other than 0.0.
 The UpdateRate for a group or the sampling rate of the item, if set, determines time between when a 
 value is checked to see if the exception limit has been exceeded. The PercentDeadband is used to keep 
 noisy signals from updating the client unnecessarily. 
-4.4.1.7 ClientHandle 
+#### 4.4.1.7 ClientHandle
 This handle will be returned in any callback. This allows the client to identify the group to which the 
 data belongs. 
 It is expected that a client will assign unique value to the client handle if it intends to use any of the 
 asynchronous functions of the OPC interfaces, such as IOPCAsyncIO2, and 
 IConnectionPoint/IOPCDataCallback interfaces. 
-4.4.1.8 Reading and Writing Data 
+#### 4.4.1.8 Reading and Writing Data
 There are basically six ways to get data into a client.  
 • IOPCSyncIO::Read (from cache or device) 
 • IOPCAsyncIO2::Read (from device) 
@@ -3029,9 +2903,9 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2 IOPCItemMgt 
+#### 4.4.2 IOPCItemMgt
 IOPCItemMgt allows a client to add, remove and control the behavior of items is a group. 
-4.4.2.1 IOPCItem Mgt::AddItems 
+#### 4.4.2.1 IOPCItem Mgt::AddItems
 HRESULT AddItems(  
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCITEMDEF * pItemArray, 
@@ -3114,7 +2988,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.2 IOPCItem Mgt::ValidateItems 
+#### 4.4.2.2 IOPCItem Mgt::ValidateItems
 HRESULT ValidateItems(  
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCITEMDEF * pItemArray, 
@@ -3190,7 +3064,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.3 IOPCItem Mgt::RemoveItems 
+#### 4.4.2.3 IOPCItem Mgt::RemoveItems
 HRESULT RemoveItems(  
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -3237,7 +3111,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.4 IOPCItem Mgt::SetActiveState 
+#### 4.4.2.4 IOPCItem Mgt::SetActiveState
 HRESULT SetActiveState( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -3284,7 +3158,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.5 IOPCItem Mgt::SetClientHandles 
+#### 4.4.2.5 IOPCItem Mgt::SetClientHandles
 HRESULT SetClientHandles( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -3328,7 +3202,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.6 IOPCItem Mgt::SetDatatypes 
+#### 4.4.2.6 IOPCItem Mgt::SetDatatypes
 HRESULT SetDatatypes( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -3375,7 +3249,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.2.7 IOPCItem Mgt::CreateEnumerator 
+#### 4.4.2.7 IOPCItem Mgt::CreateEnumerator
 HRESULT CreateEnumerator( 
 [in] REFIID riid,  
 [out, iid_is(riid)] LPUNKNOWN* ppUnk 
@@ -3413,10 +3287,10 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.3 IOPCGroupStateMgt 
+#### 4.4.3 IOPCGroupStateMgt
 IOPCGroupStateMgt allows the client to manage the overall state of the group. Primarily this allows 
 changes to the update rate and active state of the group. 
-4.4.3.1 IOPCGroupStateMgt::GetSta te 
+#### 4.4.3.1 IOPCGroupStateMgt::GetSta te
 HRESULT GetState( 
  [out] DWORD * pUpdateRate,  
  [out] BOOL * pActive,  
@@ -3478,7 +3352,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.3.2 IOPCGroupStateMgt::SetState  
+#### 4.4.3.2 IOPCGroupStateMgt::SetState
 HRESULT SetState(  
  [unique, in] DWORD * pRequestedUpdateRate,  
  [out] DWORD * pRevisedUpdateRate,  
@@ -3547,7 +3421,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.3.3 IOPCGroupStateMgt::SetName 
+#### 4.4.3.3 IOPCGroupStateMgt::SetName
 HRESULT SetName(  
  [in, string] LPCWSTR szName, 
  ); 
@@ -3577,7 +3451,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.3.4 IOPCGroupStateMgt::CloneGroup 
+#### 4.4.3.4 IOPCGroupStateMgt::CloneGroup
  
 HRESULT CloneGroup( 
  [in, string] LPCWSTR szName, 
@@ -3643,7 +3517,7 @@ F O U N D A T I O N
 Released 
  
  
-4.4.4 IOPCGroupStateMgt2 
+#### 4.4.4 IOPCGroupStateMgt2
 This interface was added to enhance the existing IOPCGroupStateMgt interface.  
 IOPCGroupStateMgt2 inherits from IOPCGroupStateMgt and therefore all IOPCGroupStateMgt 
 methods defined in IOPCGroupStateMgt are also part of this interface and will not be documented 
@@ -3654,7 +3528,7 @@ non-zero keep-alive time, the server will insure that the client receives a call
 minimally at the rate indicated by the keep-alive time, even when there are no new events to report. By 
 providing callbacks at a minimum known frequency, the client can be assured of the health of the 
 server and subscription without resorting to pinging the server with calls to GetStatus(). 
-4.4.4.1 IOPCGroupStateMgt2::SetKeepAlive 
+#### 4.4.4.1 IOPCGroupStateMgt2::SetKeepAlive
 HRESULT SetKeepAlive(  
         [in] DWORD dwKeepAliveTime, 
         [out] DWORD *pdwRevisedKeepAliveTime  
@@ -3712,7 +3586,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.4.2 IOPCGroupStateMgt2::GetKeepAlive 
+#### 4.4.4.2 IOPCGroupStateMgt2::GetKeepAlive
 HRESULT GetKeepAlive(  
         [out] DWORD *pdwKeepAliveTime  
    ) ; 
@@ -3739,13 +3613,13 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.5 IOPCSyncI O 
+#### 4.4.5 IOPCSyncI O
 IOPCSyncIO allows a client to perform synchronous read and write operations to a server. The 
 operations will run to completion.  
 Refer to the Data Acquisition and Active State Behavior table for an overview of the server data 
 acquisition behavior and it’s affect on functionality within this interface. 
 Also refer to the Serialization and Syncronization issues section earlier in this document. 
-4.4.5.1 IOPCSyncI O::Read 
+#### 4.4.5.1 IOPCSyncI O::Read
 HRESULT Read( 
  [in]  OPCDATASOURCE dwSource, 
  [in] DWORD dwCount,  
@@ -3862,7 +3736,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.5.2 IOPCSyncI O::Write 
+#### 4.4.5.2 IOPCSyncI O::Write
 HRESULT Write( 
  [in] DWORD dwCount,  
  [in, size_is(dwCount)] OPCHANDLE * phServer,  
@@ -3950,7 +3824,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.6 IOPCSyncI O2 
+#### 4.4.6 IOPCSyncI O2
 This interface was added to enhance the existing IOPCSyncIO interface.  IOPCSyncIO2 inherits from 
 IOPCSyncIO and therefore all IOPCSyncIO methods defined in IOPCSyncIO are also part of this 
 interface and will not be documented here.  Please refer to the IOPCSyncIO interface methods for 
@@ -3961,7 +3835,7 @@ to Read from a group based on a “MaxAge” is provided. This interface differs
 interface in that it is group based as opposed to server based. 
  
  
-4.4.6.1 IOPCSyncI O2::ReadMaxAge 
+#### 4.4.6.1 IOPCSyncI O2::ReadMaxAge
 HRESULT ReadMaxAge ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] OPCHANDLE *phServer 
@@ -4103,7 +3977,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.6.2 IOPCSyncI O2::WriteVQT 
+#### 4.4.6.2 IOPCSyncI O2::WriteVQT
 HRESULT WriteVQT ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] OPCHANDLE  *phServer, 
@@ -4193,7 +4067,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7 IOPCAsyn cIO2 
+#### 4.4.7 IOPCAsyn cIO2
 IOPCAsyncIO2 allows a client to perform asynchronous read and write operations to a server. The 
 operations will be ‘queued’ and the function will return immediately so that the client can continue to 
 run. Each operation is treated as a ‘transaction’ and is associated with a transaction ID. As the 
@@ -4238,7 +4112,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.1 IOPCAsyn cIO2::Read 
+#### 4.4.7.1 IOPCAsyn cIO2::Read
 HRESULT Read( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -4344,7 +4218,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.2 IOPCAsyn cIO2::Write 
+#### 4.4.7.2 IOPCAsyn cIO2::Write
 HRESULT Write( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -4453,7 +4327,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.3 IOPCAsyn cIO2::Refresh2 
+#### 4.4.7.3 IOPCAsyn cIO2::Refresh2
 HRESULT Refresh2( 
  [in]  OPCDATASOURCE dwSource, 
  [ in] DWORD dwTransactionID, 
@@ -4526,7 +4400,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.4 IOPCAsyn cIO2::Cancel2 
+#### 4.4.7.4 IOPCAsyn cIO2::Cancel2
 HRESULT Cancel2( 
  [ in] DWORD dwCancelID 
  ); 
@@ -4561,7 +4435,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.5 IOPCAsyn cIO2::SetEnable 
+#### 4.4.7.5 IOPCAsyn cIO2::SetEnable
 HRESULT SetEnable( 
  [i n] BOOL bEnable 
  ); 
@@ -4608,7 +4482,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.7.6 IOPCAsyn cIO2::GetEnable 
+#### 4.4.7.6 IOPCAsyn cIO2::GetEnable
 HRESULT GetEnable( 
  [o ut] BOOL *pbEnable 
  ); 
@@ -4639,7 +4513,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.8 IOPCAsyn cIO3 
+#### 4.4.8 IOPCAsyn cIO3
 This interface was added to enhance the existing IOPCAsyncIO2 interface.  IOPCAsyncIO3 inherits 
 from IOPCAsyncIO2 and therefore all IOPCAsyncIO2 methods defined in IOPCAsyncIO2 are also 
 part of this interface and will not be documented here.  Please refer to the IOPCAsyncIO2 interface 
@@ -4651,7 +4525,7 @@ provided. This interface differs from the IOPCItemIO interface in that it is asy
 based as opposed to server based. 
  
  
-4.4.8.1 IOPCAsyn cIO3::ReadMaxAge 
+#### 4.4.8.1 IOPCAsyn cIO3::ReadMaxAge
 HRESULT ReadMaxAge ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] OPCHANDLE *phServer 
@@ -4790,7 +4664,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.8.2 IOPCAsyn cIO3::WriteVQT 
+#### 4.4.8.2 IOPCAsyn cIO3::WriteVQT
 HRESULT WriteVQT ( 
     [in]  DWORD dwCount,  
     [in, sizeis(dwCount)] OPCHANDLE  *phServer, 
@@ -4897,7 +4771,7 @@ NOTE: all of the results must be returned by the server in a single callback. Th
 group require multiple physical transactions to one or more physical devices then the server must wait 
 until all of them are complete before invoking the callback. 
 Client must free the returned ppError array. 
-4.4.8.3 IOPCAsyn cIO3:: RefreshMaxAge 
+#### 4.4.8.3 IOPCAsyn cIO3:: RefreshMaxAge
 HRESULT RefreshMaxAge( 
  [in]  DWORD dwMaxAge, 
  [in]  DWORD dwTransactionID, 
@@ -4992,14 +4866,14 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.9 IOPCItemDeadband Mgt 
+#### 4.4.9 IOPCItemDeadband Mgt
 This interface allows the PercentDeadband to be set for individual items within a group.  Once the item 
 PercentDeadband is set, it overrides the PercentDeadband set for the entire group.  This provides a 
 mechanism to set the PercentDeadband on a “noisy” item, which may reside in a group that doesn’t 
 have the group PercentDeadband set. It also allows individual items to be fine tuned with respect to 
 notifications based on an expected range of change.   
  
-4.4.9.1 IOPCItem DeadbandMgt::SetItemDeadband 
+#### 4.4.9.1 IOPCItem DeadbandMgt::SetItemDeadband
 HRESULT SetItemDeadband(  
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5072,7 +4946,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.9.2 IOPCItemDeadband Mgt:: GetItemDeadband 
+#### 4.4.9.2 IOPCItemDeadband Mgt:: GetItemDeadband
 HRESULT GetItemDeadband( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5146,7 +5020,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.9.3 IOPCItemDeadband Mgt:: ClearItemDeadband 
+#### 4.4.9.3 IOPCItemDeadband Mgt:: ClearItemDeadband
 HRESULT ClearItemDeadband( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5216,7 +5090,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.10 IOPCItemSamplingMgt  (optional) 
+#### 4.4.10 IOPCItemSamplingMgt (optional)
 This optional interface allows the client to manipulate the rate at which individual items within a group 
 are obtained from the underlying device.  It does not affect the group update rate of the callbacks for 
 OnDataChange.  
@@ -5303,7 +5177,7 @@ previous sample and have a timestamp that reflects the last time the item was kn
 If an item has more than one value/quality/timestamp to be returned with a particular OnDataChange 
 callback, then there will be multiple duplicate ClientHandles, depending on the size of the collection, 
 returned with their corresponding value/quality/timestamp trio. 
-4.4.10.1 IOPCItem SamplingMgt::SetItemSamplingRate 
+#### 4.4.10.1 IOPCItem SamplingMgt::SetItemSamplingRate
 HRESULT SetItemSamplingRate (  
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5419,7 +5293,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.10.2 IOPCItemSamplingMgt::GetItemSamplingRate 
+#### 4.4.10.2 IOPCItemSamplingMgt::GetItemSamplingRate
 HRESULT GetItemSamplingRate ( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5487,7 +5361,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.10.3 IOPCItem SamplingMgt::ClearItemSamplingRate 
+#### 4.4.10.3 IOPCItem SamplingMgt::ClearItemSamplingRate
 HRESULT ClearItemSamplingRate ( 
  [ in] DWORD dwCount, 
  [in, size_is(dwCount)] OPCHANDLE * phServer, 
@@ -5540,7 +5414,7 @@ Released
  
 The ppErrors array is allocated by the server and must be freed by the client. 
  
-4.4.10.4 IOPCItem SamplingMgt::SetItemBufferEnable 
+#### 4.4.10.4 IOPCItem SamplingMgt::SetItemBufferEnable
 HRESULT SetItemBufferEnable ( 
  [ in] DWORD dwCount, 
 [in, size_is(dwCount)]   OPCHANDLE  * phServer, 
@@ -5609,7 +5483,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.10.5 IOPCItemSamplingM gt::GetItemBufferEnable 
+#### 4.4.10.5 IOPCItemSamplingM gt::GetItemBufferEnable
 HRESULT GetItemBufferEnable ( 
  [ in] DWORD dwCount, 
 [in, size_is(dwCount)]   OPCHANDLE  * phServer, 
@@ -5676,7 +5550,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.11 IConnectionPointContainer (on OPCGroup) 
+#### 4.4.11 IConnectionPointContainer (on OPCGroup)
 This interface provides functionality similar to the IDataObject but is easier to implement and to 
 understand and also provides some functionality that was missing from the IDataObject Interface. The 
 client must use the new IOPCAsyncIO2 interface to communicate via connections established with this 
@@ -5710,7 +5584,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.11.1 IConnectionPointCo ntainer::EnumConnectionPoints 
+#### 4.4.11.1 IConnectionPointCo ntainer::EnumConnectionPoints
 HRESULT EnumConnectionPoints(  
             IEnumConnectionPoints **ppEnum 
             ); 
@@ -5743,7 +5617,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.11.2 IConnectionPointCont ainer:: FindConnectionPoint 
+#### 4.4.11.2 IConnectionPointCont ainer:: FindConnectionPoint
 HRESULT FindConnectionPoint(  
   REFIID riid, 
   IConnectionPoint **ppCP 
@@ -5778,7 +5652,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.12 IEnumOPCItemAttributes 
+#### 4.4.12 IEnumOPCItemAttributes
 IEnumOPCItemAttributes allows a client to find out the contents (items) of a group and the attributes 
 of those items. 
  NOTE: most of the returned information was either supplied by or returned to the client at the time it 
@@ -5788,7 +5662,7 @@ some clients.  This interface is also useful for debugging .This interface is re
 IOPCItemMgt::CreateEnumerator.  It is not available through query interface. 
 Since enumeration is a standard interface this is described only briefly. 
 See the OLE Programmer’s reference for Enumerators for a list and discussion of error codes. 
-4.4.12.1 IEnumOPCItemAttributes::Next 
+#### 4.4.12.1 IEnumOPCItemAttributes::Next
 HRESULT Next(  
  [in] ULONG celt, 
  [out, size_is(,*pceltFetched)] OPCITEMATTRIBUTES ** ppItemArray, 
@@ -5817,7 +5691,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.12.2 IEnumOPCItemAttributes::Skip 
+#### 4.4.12.2 IEnumOPCItemAttributes::Skip
 HRESULT Skip(  
  [in] ULONG celt 
  ); 
@@ -5840,7 +5714,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.12.3 IEnumOPCItemAttributes::Reset 
+#### 4.4.12.3 IEnumOPCItemAttributes::Reset
 HRESULT Reset(  
  voi d 
  ); 
@@ -5863,7 +5737,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.4.12.4 IEnumOPCItemAttributes::Clone 
+#### 4.4.12.4 IEnumOPCItemAttributes::Clone
 HRESULT Clone(  
  [out] IEnumOPCItemAttributes** ppEnumItemAttributes 
  ); 
@@ -5888,8 +5762,8 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5 Client Side Interfaces 
-4.5.1 IOPCDataCallback 
+### 4.5 Client Side Interfaces
+#### 4.5.1 IOPCDataCallback
 In order to use connection points, the client must create an object that supports both the IUnknown and 
 IOPCDataCallback Interface. The client would pass a pointer to the IUnknown interface (NOT the 
 IOPCDataCallback) to the Advise method of the proper IConnectionPoint in the server (as obtained 
@@ -5916,7 +5790,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5.1.1 IOPCDataCallback::OnDataCh ange 
+#### 4.5.1.1 IOPCDataCallback::OnDataCh ange
 HRESULT OnDataChange( 
  [in] DWORD  dwTransid,  
  [in] OPCHANDLE hGroup,  
@@ -6046,7 +5920,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5.1.2 IOPCDataCallback::OnReadComplete 
+#### 4.5.1.2 IOPCDataCallback::OnReadComplete
 HRESULT OnReadComplete( 
  [in] DWORD  dwTransid,  
  [in] OPCHANDLE hGroup,  
@@ -6144,7 +6018,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5.1.3 IOPCDataCallback::OnWriteComplete 
+#### 4.5.1.3 IOPCDataCallback::OnWriteComplete
 HRESULT OnWriteComplete( 
  [in] DWORD  dwTransid,  
  [in] OPCHANDLE   hGroup,  
@@ -6223,7 +6097,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5.1.4 IOPCDataCallback::OnCancel Complete 
+#### 4.5.1.4 IOPCDataCallback::OnCancel Complete
 HRESULT OnCancelComplete( 
  [in] DWORD  dwTransid,  
  [in] OPCHANDLE   hGroup 
@@ -6255,7 +6129,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-4.5.2 IOPCShutdow n 
+#### 4.5.2 IOPCShutdow n
 In order to use this connection point, the client must create an object that supports both the IUnknown 
 and IOPCShutdown Interface. The client would pass a pointer to the IUnknown interface (NOT the 
 IOPCShutdown) to the Advise method of the proper IConnectionPoint in the server (as obtained from 
@@ -6268,7 +6142,7 @@ client should release all connections and interfaces for this server.
 A client which is connected to multiple OPCServers (for example Data access and/or other servers 
 such as Alarms and events servers from one or more vendors) should maintain separate shutdown 
 callbacks for each object since any server can shut down independently of the others. 
-4.5.2.1 IOPCShutdow n::ShutdownRequest 
+#### 4.5.2.1 IOPCShutdow n::ShutdownRequest
 HRESULT ShutdownRequest ( 
  [in] LPWSTR  szReason 
 ); 
@@ -6306,7 +6180,7 @@ affecting OLE software is management of the Windows Registry and Component Categ
 issues here are (a) what entries need to be made and (b) how they can be made. 
 Again, certain common installation and registry topics including self-registration, automatic proxy/stub 
 registration and registry reference counting are discussed in the OPC Overview Document. 
-5.1 Component Categories 
+### 5.1 Component Categories
 The OPC Data Access Interface defines the following Component Categories. Listed below are the 
 CATIDs, Descriptors and Symbolic Equates to be used for Data Access. 
  
@@ -6324,7 +6198,7 @@ documentation for additional information.
  
 These CATIDs are defined in their associated idl file.  For Data Access 1.0, 2.0, 3.0 and XMLDA, the 
 CATIDs are in the opcda.idl. 
-5.2 Registry Entries for Custom Interface 
+### 5.2 Registry Entries for Custom Interface
 The following entries are the minimum required to support the Custom Interface for OPC Compliant 
 Servers.   
 Required by all: 
@@ -6369,7 +6243,7 @@ to locate the DLL or EXE given the CLSID. The vendor should define at least one 
 In general, self registration as described in the Microsoft documentation is recommended for both DLL 
 and EXE servers to simplify installation.  
  
-5.3 Registry Entries for the Proxy/Stub DLL 
+### 5.3 Registry Entries for the Proxy/Stub DLL
 The proxy/stub DLL is used for marshalling interfaces to LOCAL or REMOTE servers. It is generated 
 directly from the IDL code and should be the same for every OPC Server. In general the Proxy/Stub 
 will use self-registration. (Define REGISTER_PROXY_DLL during the build).  Since this is 
@@ -6392,10 +6266,10 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6 Description of Data Types, Parameters and Structures 
+## 6. Description of Data Types, Parameters and Structures
 Some structures contain ‘reserved’ words. These are generally inserted to pad structures to be 32 bit 
 aligned. 
-6.1 Item Definition 
+### 6.1 Item Definition
 The ItemID is the fully qualified definition of a data item in the server, commonly referred to as the 
 WHAT.  No other information is required to identify the data item for the client to be able to read/write 
 values. 
@@ -6431,7 +6305,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.2 AccessPat h  
+### 6.2 AccessPat h
 The AccessPath is intended as a way for the client to provide to the server a suggested data path (e.g. a 
 particular modem or network interface).  It indicates HOW to get the data. 
 The ITEM ID provides all of the information needed to locate and process a data item. The Access 
@@ -6461,7 +6335,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.3 Blob 
+### 6.3 Blob
 We will discuss why the Blob exists and how it behaves. 
 The Blob is basically a scratch area for the server to associate with items in order to speed up access to 
 or processing of those items. The exact way in which it is used is server specific. 
@@ -6494,7 +6368,7 @@ The difference between the server handle and the Blob is that the server handle 
 (DWORD), should not be stored between sessions by the client and that it’s implementation is required 
 since it is the only way to identify items after they have been added.  The Blob is variable in length, is 
 optional and may be stored by the client between sessions. 
-6.4 Time Stamps  
+### 6.4 Time Stamps
 Time stamps are in the form of a FILETIME as this is more compact than other available standard time 
 structures. There are numerous WIN32 functions for converting between various time formats and time 
 zones. Time stamps are always in UTC, this form is beneficial because it is always increasing and is 
@@ -6512,7 +6386,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.5 Variant Data Types for OPC Data Items 
+### 6.5 Variant Data Types for OPC Data Items
 Under NT 4.0 and Windows 95 with DCOM support, all VARIANT data types can be marshaled 
 through standard marshalling. Under Automation, types will be coerced to known Automation data 
 types. 
@@ -6537,14 +6411,14 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.6 Constants 
-6.6.1 OPCHANDLE 
+### 6.6 Constants
+#### 6.6.1 OPCHANDLE
 OPCHANDLEs are used in conjunction with both groups and items within groups.  The purpose of 
 handles in OPC is to allow faster access to various objects by both the client and the server.  
 The exact internal implementation of the server handles is entirely vendor specific. The client should 
 never make any assumptions about the server handles and the server should never make any 
 assumptions about the client handles. 
-6.6.1.1 Group Handles 
+#### 6.6.1.1 Group Handles
 OPC groups have both a client and a server handle associated with them.  
 The server group handle is unique across the server and must be returned when the group is created. 
 The handle is then passed by the client to various methods. The server group handle can be assumed to 
@@ -6558,7 +6432,7 @@ the asynchronous functions of the OPC interfaces (including IOPCAsyncIO2, and IC
 interfaces), since this is the only key to the information that the server gives back to the client via the 
 IConnectionPoint interface. 
  
-6.6.1.2 Item Handles 
+#### 6.6.1.2 Item Handles
 OPC items have both a client and a server handle associated with them.  
 The server item handle is unique within the group and will be returned when the item is created. It is 
 then passed by the client to various methods. The server item handle can be assumed to remain valid 
@@ -6582,8 +6456,8 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7 Structures and Masks 
-6.7.1 OPCITEMSTAT E 
+### 6.7 Structures and Masks
+#### 6.7.1 OPCITEMSTAT E
 This structure is used by IOPCSyncIO::Read 
 typedef struct { 
  OPCHANDLE hClient; 
@@ -6623,7 +6497,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.2 OPCITEMDEF 
+#### 6.7.2 OPCITEMDEF
 typedef struct { 
  [string] LPWSTR szAccessPath; 
  [strin g] LPWSTR szItemID; 
@@ -6694,7 +6568,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.3 OPCITEMRESULT 
+#### 6.7.3 OPCITEMRESULT
 typedef struct { 
  O PCHANDLE   h Server; 
  VAR TYPE  vt CanonicalDataType; 
@@ -6739,7 +6613,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.4  OPCITEMATTRIBUTES  
+#### 6.7.4 OPCITEMATTRIBUTES
 typedef struct { 
  [string] LPWSTR szAccessPath; 
  [strin g] LPWSTR  szItemID; 
@@ -6840,7 +6714,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.5 OPCSERVERST ATUS 
+#### 6.7.5 OPCSERVERST ATUS
 typedef struct { 
  FILET IME   ftStartTim e; 
  FILET IME   ftCurrentTim e; 
@@ -6928,7 +6802,7 @@ meaning that some data is still available.  It is expected
 that items affected by the fault will individually return 
 with a BAD quality indication for the items. 
  
-6.7.6 Access Rights  
+#### 6.7.6 Access Rights
 This represents the server's ability to access a single OPC data item. Note the low 16 bits of the 
 DWORD are reserved for OPC use and currently include the OPC Access Rights defined in the IDL 
 and described below. The high 16 bits of the DWORD are available for vendor specific use. 
@@ -6970,7 +6844,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.7 OPCITEMPROPERT Y 
+#### 6.7.7 OPCITEMPROPERT Y
 A pointer to an array of this structure is an element of the structure OPCITEMPROPERTIES.. 
  
 typedef struct tagOPCITEMPROPERTY { 
@@ -7015,7 +6889,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.8 OPCITEMPROPERTIES  
+#### 6.7.8 OPCITEMPROPERTIES
 This structure is used in IOPCBrowse::GetProperties() and as an element of the structure 
 OPCBROWSEELEMENT. 
  
@@ -7053,7 +6927,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.9 OPCBRO WSEELEMENT  
+#### 6.7.9 OPCBRO WSEELEMENT
 This structure is returned by IOPCBrowse::Browse(). 
  
 typedef struct  tagOPCBROWSEELEMENT { 
@@ -7110,7 +6984,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.7.10 OPCITEMVQT 
+#### 6.7.10 OPCITEMVQT
 This structure is used by IOPCItemIO::WriteVQT 
 typedef struct { 
  VAR IANT vDataValue; 
@@ -7143,7 +7017,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-6.8 OPC Quality flags 
+### 6.8 OPC Quality flags
 These flags represent the quality state for a item's data value. This is intended to be similar to but 
 slightly simpler than the Fieldbus Data Quality Specification (section 4.4.1 in the H1 Final 
 Specifications). This design makes it fairly easy for both servers and client applications to determine 
@@ -7340,7 +7214,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-7  Summary of OPC Error Codes 
+## 7. Summary of OPC Error Codes
  
 We have attempted to minimize the number of unique errors by identifying common generic problems 
 and defining error codes that can be reused in many contexts. An OPC server should only return those 
@@ -7457,7 +7331,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-8 Appendix A - opcerror.h 
+## 8. Appendix A - opcerror.h
 The following is for information only and the associated text file should be used as the definitive reference, 
 and additionally may be updated separately from the specification.  The information should be taken from 
 the associated text file and copied into a file named opcerror.h as opposed from this specification.  To 
@@ -7821,7 +7695,7 @@ Specification Version 3.0
 F O U N D A T I O N  
 Released 
  
-9 Appendix B - Data Access IDL Specification 
+## 9. Appendix B - Data Access IDL Specification
 The following is for information only and the associated text file should be used as the definitive 
 reference, and additionally may be updated separately from the specification.  The information should 
 be taken from the associated text file and copied into a file named opcda.idl as opposed from this 

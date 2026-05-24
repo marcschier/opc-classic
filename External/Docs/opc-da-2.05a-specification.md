@@ -13,7 +13,8 @@ Version 2.05A
 
 June 28 2002
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Specification Type
 
@@ -62,7 +63,8 @@ This specification requires Windows 95, Windows NT 4.0 or later
 
 ii
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 NON-EXCLUSIVE LICENSE AGREEMENT
 
@@ -118,7 +120,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 iii
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 GENERAL PROVISIONS:
 
@@ -151,7 +154,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 iv
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Revision 2.05A Highlights
 This revision clarifies section 4.2.13 Note (5) regarding roundup when converting floats and doubles to
@@ -208,7 +212,8 @@ unchanged however their support is optional for OPC 2.0 complaint software. The 
 
 v
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 IOPCAsyncIO2, IConnectionPointContainer and Client side IOPCDataCallback interfaces are required
 for 2.0 compliant software.
@@ -229,247 +234,109 @@ related functions. This interface will also be used by other OPC server types.
 
 vi
 
-OPC Data Access Custom Interface Specification 2.05
 
-Table of Contents
+OPC Data Access Custom Interface Specification 2.05
 
-1
+## Table of Contents
 
-INTRODUCTION .................................................................................................................................1
+- [1. Introduction](#1-introduction)
+  - [1.1 Audience](#11-audience)
+  - [1.2 Deliverables](#12-deliverables)
+- [2. OPC Data Access Fundamentals](#2-opc-data-access-fundamentals)
+  - [2.1 OPC Overview](#21-opc-overview)
+  - [2.2 Where OPC Fits](#22-where-opc-fits)
+  - [2.3 General OPC Architecture and Components](#23-general-opc-architecture-and-components)
+  - [2.4 Overview of the Objects and Interfaces](#24-overview-of-the-objects-and-interfaces)
+  - [2.5 The Address Space and Configuration of the Server](#25-the-address-space-and-configuration-of-the-server)
+  - [2.6 Application Level Server and Network Node Selection](#26-application-level-server-and-network-node-selection)
+  - [2.7 Synchronization and Serialization Issues](#27-synchronization-and-serialization-issues)
+  - [2.8 Public (aka shared) Groups](#28-public-aka-shared-groups)
+  - [2.9 Persistent Storage Story](#29-persistent-storage-story)
+- [3. OPC Data Access Quick Reference](#3-opc-data-access-quick-reference)
+  - [3.1 Custom Interface](#31-custom-interface)
+    - [3.1.1 OPCServer Object](#311-opcserver-object)
+    - [3.1.2 OPCGroup Object](#312-opcgroup-object)
+    - [3.1.3 EnumOPCItemAttributes Object](#313-enumopcitemattributes-object)
+  - [3.2 Custom Interface/Client Side](#32-custom-interfaceclient-side)
+- [4. OPC Custom Interface](#4-opc-custom-interface)
+  - [4.1 Overview of the OPC Custom Interface](#41-overview-of-the-opc-custom-interface)
+  - [4.2 General Information](#42-general-information)
+    - [4.2.1 Version Interoperability](#421-version-interoperability)
+    - [4.2.2 Ownership of memory](#422-ownership-of-memory)
+    - [4.2.3 Standard Interfaces](#423-standard-interfaces)
+    - [4.2.4 Null Strings and Null Pointers](#424-null-strings-and-null-pointers)
+    - [4.2.5 Returned Arrays](#425-returned-arrays)
+    - [4.2.6 Public Groups](#426-public-groups)
+    - [4.2.7 CACHE data, DEVICE data and TimeStamps](#427-cache-data-device-data-and-timestamps)
+    - [4.2.8 Time Series Values](#428-time-series-values)
+    - [4.2.9 Asynchronous vs. Synchronous Interfaces](#429-asynchronous-vs-synchronous-interfaces)
+    - [4.2.10 The ACTIVE flags, Deadband and Update Rate](#4210-the-active-flags-deadband-and-update-rate)
+    - [4.2.11 Errors and return codes](#4211-errors-and-return-codes)
+    - [4.2.12 Startup Issues](#4212-startup-issues)
+    - [4.2.13 VARIANT Data Types and Interoperability](#4213-variant-data-types-and-interoperability)
+    - [4.2.14 Localization and LocaleID](#4214-localization-and-localeid)
+  - [4.3 IOPCSyncIO](#43-iopcsyncio)
+    - [4.3.1 IOPCSyncIO](#431-iopcsyncio)
+    - [4.3.2 IOPCASyncIO2](#432-iopcasyncio2)
+    - [4.3.3 SUBSCRIPTION via IOPCDataCallback](#433-subscription-via-iopcdatacallback)
+    - [4.3.4 IOPCASyncIO (old)](#434-iopcasyncio-old)
+    - [4.3.5 SUBSCRIPTION via IDataObject (old)](#435-subscription-via-idataobject-old)
+  - [4.4 Overview](#44-overview)
+    - [4.4.1 Overview](#441-overview)
+    - [4.4.2 IUnknown](#442-iunknown)
+    - [4.4.3 IOPCCommon](#443-iopccommon)
+    - [4.4.4 IOPCServer](#444-iopcserver)
+    - [4.4.5 IConnectionPointContainer (on OPCServer)](#445-iconnectionpointcontainer-on-opcserver)
+    - [4.4.6 IOPCItemProperties](#446-iopcitemproperties)
+    - [4.4.7 IOPCServerPublicGroups (optional)](#447-iopcserverpublicgroups-optional)
+    - [4.4.8 IOPCBrowseServerAddressSpace (optional)](#448-iopcbrowseserveraddressspace-optional)
+    - [4.4.9 IPersistFile (optional)](#449-ipersistfile-optional)
+  - [4.5 OPCGroup Object](#45-opcgroup-object)
+    - [4.5.1 General Properties](#451-general-properties)
+    - [4.5.2 IOPCItemMgt](#452-iopcitemmgt)
+    - [4.5.3 IOPCGroupStateMgt](#453-iopcgroupstatemgt)
+    - [4.5.4 IOPCPublicGroupStateMgt](#454-iopcpublicgroupstatemgt)
+    - [4.5.5 IOPCSyncIO](#455-iopcsyncio)
+    - [4.5.6 IOPCAsyncIO2](#456-iopcasyncio2)
+    - [4.5.7 IConnectionPointContainer (on OPCGroup)](#457-iconnectionpointcontainer-on-opcgroup)
+    - [4.5.8 IEnumOPCItemAttributes](#458-ienumopcitemattributes)
+    - [4.5.9 IOPCAsyncIO (old)](#459-iopcasyncio-old)
+    - [4.5.10 IDataObject (old)](#4510-idataobject-old)
+  - [4.6 Client Side Interfaces](#46-client-side-interfaces)
+    - [4.6.1 IOPCDataCallback](#461-iopcdatacallback)
+    - [4.6.2 IOPCShutdown](#462-iopcshutdown)
+    - [4.6.3 IAdviseSink (old)](#463-iadvisesink-old)
+    - [4.6.4 IAdviseSink - Data Stream Formats (old)](#464-iadvisesink-data-stream-formats-old)
+- [5. VT_I2](#5-vti2)
+  - [5.1 Component Categories](#51-component-categories)
+  - [5.2 Registry Entries for Custom Interface](#52-registry-entries-for-custom-interface)
+- [6. Description of Data Types, Parameters and Structures](#6-description-of-data-types-parameters-and-structures)
+  - [6.1 Item Definition](#61-item-definition)
+  - [6.2 AccessPath](#62-accesspath)
+  - [6.3 Blob](#63-blob)
+  - [6.4 Time Stamps](#64-time-stamps)
+  - [6.5 Variant Data Types for OPC Data Items](#65-variant-data-types-for-opc-data-items)
+  - [6.6 Constants](#66-constants)
+    - [6.6.1 OPCHANDLE](#661-opchandle)
+  - [6.7 Structures and Masks](#67-structures-and-masks)
+    - [6.7.1 OPCITEMSTATE](#671-opcitemstate)
+    - [6.7.2 OPCITEMDEF](#672-opcitemdef)
+    - [6.7.3 OPCITEMRESULT](#673-opcitemresult)
+    - [6.7.4 OPCITEMATTRIBUTES](#674-opcitemattributes)
+    - [6.7.5 OPCSERVERSTATUS](#675-opcserverstatus)
+    - [6.7.6 Access Rights](#676-access-rights)
+  - [6.8 OPC Quality flags](#68-opc-quality-flags)
+- [7. Summary of OPC Error Codes](#7-summary-of-opc-error-codes)
+- [8. Appendix A - OPCError.h](#8-appendix-a-opcerrorh)
+- [9. Appendix B - Data Access IDL Specification](#9-appendix-b-data-access-idl-specification)
+- [Appendix D OPCProps.h](#appendix-d-opcpropsh)
 
-1.1
-1.2
-
-AUDIENCE ........................................................................................................................................1
-DELIVERABLES.................................................................................................................................1
-
-2   OPC DATA ACCESS FUNDAMENTALS .........................................................................................2
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-
-OPC OVERVIEW...............................................................................................................................2
-WHERE OPC FITS.............................................................................................................................3
-GENERAL OPC ARCHITECTURE AND COMPONENTS .........................................................................4
-OVERVIEW OF THE OBJECTS AND INTERFACES.................................................................................6
-THE ADDRESS SPACE AND CONFIGURATION OF THE SERVER ...........................................................7
-APPLICATION LEVEL SERVER AND NETWORK NODE SELECTION .....................................................8
-SYNCHRONIZATION AND SERIALIZATION ISSUES..............................................................................8
-PUBLIC (AKA SHARED) GROUPS .......................................................................................................9
-PERSISTENT  STORAGE STORY..........................................................................................................9
-
-3   OPC DATA ACCESS QUICK REFERENCE..................................................................................10
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-
-3.2
-
-CUSTOM INTERFACE.......................................................................................................................10
-OPCServer Object .................................................................................................................11
-OPCGroup Object..................................................................................................................13
-EnumOPCItemAttributes Object ...........................................................................................14
-CUSTOM INTERFACE/CLIENT SIDE .................................................................................................15
-
-4   OPC CUSTOM INTERFACE............................................................................................................16
-
-4.1
-4.2
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-4.2.5
-4.2.6
-4.2.7
-4.2.8
-4.2.9
-4.2.10
-4.2.11
-4.2.12
-4.2.13
-4.2.14
-
-4.3
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-4.3.5
-
-4.4
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-4.4.5
-4.4.6
-4.4.7
-
-OVERVIEW OF THE OPC CUSTOM INTERFACE ................................................................................16
-GENERAL INFORMATION ................................................................................................................17
-Version Interoperability.........................................................................................................17
-Ownership of memory ...........................................................................................................18
-Standard Interfaces ................................................................................................................18
-Null Strings and Null Pointers ...............................................................................................18
-Returned Arrays.....................................................................................................................18
-Public Groups ........................................................................................................................18
-CACHE data, DEVICE data and TimeStamps ......................................................................19
-Time Series Values................................................................................................................19
-Asynchronous vs. Synchronous Interfaces ............................................................................19
-The ACTIVE flags, Deadband and Update Rate ...................................................................19
-Errors and return codes..........................................................................................................20
-Startup Issues.........................................................................................................................20
-VARIANT Data Types and Interoperability..........................................................................20
-Localization and LocaleID ....................................................................................................23
-DATA ACQUISITION AND ACTIVE STATE BEHAVIOR ......................................................................24
-IOPCSyncIO..........................................................................................................................24
-IOPCASyncIO2 .....................................................................................................................25
-SUBSCRIPTION via IOPCDataCallback .............................................................................26
-IOPCASyncIO (old) ..............................................................................................................27
-SUBSCRIPTION via IDataObject (old)................................................................................28
-OPCSERVER OBJECT......................................................................................................................29
-Overview ...............................................................................................................................29
-IUnknown ..............................................................................................................................30
-IOPCCommon .......................................................................................................................30
-IOPCServer............................................................................................................................31
-IConnectionPointContainer (on OPCServer).........................................................................40
-IOPCItemProperties...............................................................................................................43
-IOPCServerPublicGroups (optional) .....................................................................................55
-
-vii
-
-OPC Data Access Custom Interface Specification 2.05
-
-4.4.8
-4.4.9
-
-4.5
-
-4.5.1
-4.5.2
-4.5.3
-4.5.4
-4.5.5
-4.5.6
-4.5.7
-4.5.8
-4.5.9
-4.5.10
-
-4.6
-
-4.6.1
-4.6.2
-4.6.3
-4.6.4
-
-IOPCBrowseServerAddressSpace (optional) ........................................................................58
-IPersistFile (optional) ............................................................................................................67
-OPCGROUP OBJECT.......................................................................................................................71
-General Properties .................................................................................................................72
-IOPCItemMgt ........................................................................................................................75
-IOPCGroupStateMgt .............................................................................................................84
-IOPCPublicGroupStateMgt ...................................................................................................91
-IOPCSyncIO..........................................................................................................................93
-IOPCAsyncIO2......................................................................................................................99
-IConnectionPointContainer (on OPCGroup).......................................................................111
-IEnumOPCItemAttributes ...................................................................................................114
-IOPCAsyncIO (old).............................................................................................................118
-IDataObject (old).................................................................................................................127
-CLIENT SIDE INTERFACES.............................................................................................................132
-IOPCDataCallback ..............................................................................................................132
-IOPCShutdown....................................................................................................................140
-IAdviseSink (old) ................................................................................................................141
-IAdviseSink - Data Stream Formats (old) ...........................................................................143
-
-5
-
-INSTALLATION ISSUES................................................................................................................148
-
-5.1
-5.2
-5.3
-
-COMPONENT CATEGORIES............................................................................................................148
-REGISTRY ENTRIES FOR CUSTOM INTERFACE ..............................................................................148
-REGISTRY ENTRIES FOR THE PROXY/STUB DLL ..........................................................................149
-
-6   DESCRIPTION OF DATA TYPES, PARAMETERS AND STRUCTURES..............................150
-
-6.1
-6.2
-6.3
-6.4
-6.5
-6.6
-
-6.6.1
-
-6.7
-
-6.7.1
-6.7.2
-6.7.3
-6.7.4
-6.7.5
-6.7.6
-
-6.8
-
-ITEM DEFINITION..........................................................................................................................150
-ACCESSPATH................................................................................................................................151
-BLOB ............................................................................................................................................152
-TIME STAMPS ...............................................................................................................................152
-VARIANT DATA TYPES FOR OPC DATA ITEMS.............................................................................153
-CONSTANTS..................................................................................................................................154
-OPCHANDLE .....................................................................................................................154
-STRUCTURES AND MASKS ............................................................................................................155
-OPCITEMSTATE ...............................................................................................................155
-OPCITEMDEF ....................................................................................................................156
-OPCITEMRESULT.............................................................................................................157
- OPCITEMATTRIBUTES ..................................................................................................158
-OPCSERVERSTATUS .......................................................................................................160
-Access Rights ......................................................................................................................161
-OPC QUALITY FLAGS ...................................................................................................................162
-
-7
-
- SUMMARY OF OPC ERROR CODES.........................................................................................166
-
-8   APPENDIX A - OPCERROR.H ......................................................................................................168
-
-9   APPENDIX B - DATA ACCESS IDL SPECIFICATION .............................................................172
-
-10
-
-APPENDIX D - OPCPROPS.H....................................................................................................185
-
-viii
-
-OPC Data Access Custom Interface Specification 2.05
-
-1
-
-Introduction
+## 1. Introduction
 
 A General Introduction to OPC is contained in a separate OPC Overview Document
 (OPCOVW.DOC). This particular document deals specifically with the OPC Data Access Interfaces.
 
-1.1  Audience
+### 1.1 Audience
 
 This specification is intended as reference material for developers of OPC compliant Clients and
 Servers. It is assumed that the reader is familiar with Microsoft OLE/COM technology and the needs
@@ -479,7 +346,7 @@ This specification is intended to facilitate development of OPC Servers in C and
 client applications in the language of choice.  Therefore, the developer of the respective component is
 expected to be fluent in the technology required for the specific component.
 
-1.2  Deliverables
+### 1.2 Deliverables
 
 The deliverables from the OPC Foundation with respect to the OPC Data Access Specification 2.0
 include the OPC Specification itself, OPC IDL files (included in this document as Appendices) and the
@@ -499,17 +366,18 @@ use of Visual Basic, Delphi and other Automation enabled products to interface w
 
 1
 
-OPC Data Access Custom Interface Specification 2.05
 
-2
+OPC Data Access Custom Interface Specification 2.05
 
-OPC Data Access Fundamentals
+
+
+## 2. OPC Data Access Fundamentals
 
 This section introduces OPC Data Access and covers topics which are specific to OPC Data Access.
 Additional common topics including Windows NT, UNICODE, Threading Models, etc are discussed
 in the OPC Overview Document (OPCOVW.DOC).
 
-2.1  OPC Overview
+### 2.1 OPC Overview
 
 This specification describes the OPC COM Objects and their interfaces implemented by OPC Servers.
 An OPC Client can connect to OPC Servers provided by one or more vendors.
@@ -564,7 +432,8 @@ items in a particular operator display or report.  Data can be read and written.
 
 2
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 connections can also be created between the client and the items in the group and can be enabled and
 disabled as needed.  An OPC client can configure the rate that an OPC server should provide the data
@@ -599,7 +468,7 @@ in a DCS system exist regardless of whether an OPC client is currently accessing
 should be thought of as simply specifying the address of the data, not as the actual physical source of
 the data that the address references.
 
-2.2  Where OPC Fits
+### 2.2 Where OPC Fits
 
 Although OPC is primarily designed for accessing data from a networked server, OPC interfaces can
 be used in many places within an application. At the lowest level they can get raw data from the
@@ -634,9 +503,10 @@ Figure 2-4 - OPC Client/Server Relationship
 
 3
 
-OPC Data Access Custom Interface Specification 2.05
 
-2.3  General OPC Architecture and Components
+OPC Data Access Custom Interface Specification 2.05
+
+### 2.3 General OPC Architecture and Components
 
 OPC is a specification for two sets of interfaces; the OPC Custom Interfaces and the OPC Automation
 interfaces.  A revised automation interface will be provided with release 2.0 of the OPC specification.
@@ -710,7 +580,8 @@ Figure 2-6 - Typical OPC Architecture
 
 4
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 It is also expected that the server will consolidate and optimize data accesses requested by the various
 clients to promote efficient communications with the physical device.  For inputs (Reads), data
@@ -720,9 +591,10 @@ Clients.
 
 5
 
-OPC Data Access Custom Interface Specification 2.05
 
-2.4  Overview of the Objects and Interfaces
+OPC Data Access Custom Interface Specification 2.05
+
+### 2.4 Overview of the Objects and Interfaces
 
 The OPC Server object provides a way to access (read/write) or communicate to a set of data sources..
 The types of sources available are a function of the server implementation.
@@ -760,7 +632,8 @@ Figure 2-7 - Standard OPC Server Object
 
 6
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 IUnknown
 
@@ -788,9 +661,9 @@ ncIO] old
 
 Figure 2-8 - Standard OPC Group Object
 
-2.5
 
-The Address Space and Configuration of the Server
+
+### 2.5 The Address Space and Configuration of the Server
 
 This release of the OPC specification assumes that a server configuration address space may be
 managed and persistently stored using the IPersistFile interface.  Only the server specific information
@@ -821,7 +694,8 @@ the data items the client applications are currently requesting.
 
 7
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 It is expected that this server address space is stable and is managed within the server.  The clients will
 define and manage the relatively small lists of items called ‘groups’ as needed from time to time.  The
@@ -831,7 +705,7 @@ these groups on their behalf (persistence of the groups is the responsibility of
 Although it is possible, with the usage of public groups, that the server could provide persistent storage
 of these type of groups, or treat them as server defined groups.
 
-2.6  Application Level Server and Network Node Selection
+### 2.6 Application Level Server and Network Node Selection
 
 OPC Data Access supports the concept of organizing client requests into groups within a server.  Such
 groups can contain requests for data from only one particular OPC Server object. In order to access
@@ -852,7 +726,7 @@ address space)
 It is beyond the scope of this specification to discuss the implications of this on the architecture and
 user interface of the client program.
 
-2.7  Synchronization and Serialization Issues
+### 2.7 Synchronization and Serialization Issues
 
 By ‘synchronization’ we mean the ability of a client to read or write values and attributes in a single
 transaction.  For example, most applications want to insure that the value, quality and time stamp
@@ -891,7 +765,8 @@ client might be reading.
 
 8
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 3.  Threading issues are always important but this is especially true on SMP systems.
 
@@ -914,7 +789,7 @@ later.
 
 Many of these issues will be clarified in the detailed descriptions of the methods below.
 
-2.8  Public (aka shared) Groups
+### 2.8 Public (aka shared) Groups
 
 The purpose of the public group concept is to provide a way to share data configuration information
 across multiple client applications. Typically, in process control systems, multiple client applications
@@ -927,7 +802,7 @@ attributes of the data items.
 Because the information is shared across multiple clients, some restrictions may be required to make
 sure that the configuration information across multiple clients remains consistent.
 
-2.9  Persistent  Storage Story
+### 2.9 Persistent Storage Story
 
 OPC Servers may implement an optional interface to facilitate OPC clients telling an OPC server to
 persistent (store) the OPC server configuration information.  OPC Server configuration information
@@ -940,16 +815,17 @@ required by their application..
 
 9
 
-OPC Data Access Custom Interface Specification 2.05
 
-3
+OPC Data Access Custom Interface Specification 2.05
 
-OPC Data Access Quick Reference
+
+
+## 3. OPC Data Access Quick Reference
 
 This section includes a quick reference for the methods on the Custom Interface. These interfaces, their
 parameters and behavior are defined in more detail later in the reference sections.
 
-3.1  Custom Interface
+### 3.1 Custom Interface
 
 Note: This section does not show additional standard COM Interfaces such as IUnknown, IEnumString
 and IEnumUnknown used by OPC Data Access.
@@ -981,9 +857,10 @@ IEnumOPCItemAttributes
 
 10
 
-OPC Data Access Custom Interface Specification 2.05
 
-3.1.1  OPCServer Object
+OPC Data Access Custom Interface Specification 2.05
+
+#### 3.1.1 OPCServer Object
 
 IOPCCommon
 
@@ -1041,7 +918,8 @@ ppszNewItemIDs, ppErrors );
 
 11
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 IOPCBrowseServerAddressSpace (optional)
 
@@ -1082,9 +960,10 @@ GetCurFileName( ppszFileName);
 
 12
 
-OPC Data Access Custom Interface Specification 2.05
 
-3.1.2  OPCGroup Object
+OPC Data Access Custom Interface Specification 2.05
+
+#### 3.1.2 OPCGroup Object
 
 IOPCGroupStateMgt
 
@@ -1162,7 +1041,8 @@ FindConnectionPoint( REFIID riid, IConnectionPoint ppCP);
 
 13
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 IOPCAsyncIO (old)
 
@@ -1184,7 +1064,7 @@ HRESULT
 Dunadvise(Connection);
 Note: all other functions can be stubs which return E_NOTIMPL.
 
-3.1.3  EnumOPCItemAttributes Object
+#### 3.1.3 EnumOPCItemAttributes Object
 IEnumOPCItemAttributes
 
 HRESULT
@@ -1199,9 +1079,10 @@ Clone(ppEnumItemAttributes);
 
 14
 
-OPC Data Access Custom Interface Specification 2.05
 
-3.2  Custom Interface/Client Side
+OPC Data Access Custom Interface Specification 2.05
+
+### 3.2 Custom Interface/Client Side
 
 IOPCDataCallback
 
@@ -1236,13 +1117,14 @@ Note: all other functions can be stubs which return E_NOTIMPL.
 
 15
 
-OPC Data Access Custom Interface Specification 2.05
 
-4
+OPC Data Access Custom Interface Specification 2.05
 
-OPC Custom Interface
 
-4.1  Overview of the OPC Custom Interface
+
+## 4. OPC Custom Interface
+
+### 4.1 Overview of the OPC Custom Interface
 
 The OPC Custom Interface Objects include the following custom objects:
 
@@ -1282,14 +1164,15 @@ explicit lists.
 
 16
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.2  General Information
+OPC Data Access Custom Interface Specification 2.05
+
+### 4.2 General Information
 
 This section provides general information about the OPC Interfaces, and some background information
 about how the designers of OPC expected these interfaces to be implemented and used.
 
-4.2.1  Version Interoperability
+#### 4.2.1 Version Interoperability
 
 Data Access Servers may be compatible with the requirements of Version 1.0a of the specification or
 with Version 2.0 of the specification or both. Data Access Clients may also be compatible with the
@@ -1351,7 +1234,7 @@ IOPCGroupStateMgt
 
 IOPCPublicGroupStateMgt
 
-IOPCSyncIO
+### 4.3 IOPCSyncIO
 
 IOPCAsyncIO2
 
@@ -1413,9 +1296,10 @@ N/A
 
 N/A
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.2.2  Ownership of memory
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.2.2 Ownership of memory
 
 Per the COM specification, clients must free all memory associated with ‘out’ or ‘in/out’ parameters.
 This includes memory that is pointed to by elements within any structures.  This is very important for
@@ -1431,7 +1315,7 @@ return NULL for all `out' pointers (this is standard COM behavior).  This rule a
 arrays (ppErrors) returned by many of the functions below.  In general, a robust OPC client should
 check each out or in/out pointer for NULL prior to freeing it.
 
-4.2.3  Standard Interfaces
+#### 4.2.3 Standard Interfaces
 
 Per the COM specification, all methods must be implemented on each required interface.
 
@@ -1439,7 +1323,7 @@ Per the COM specification, any optional interfaces that are supported must have 
 that interface implemented, even if the implementation is only a stub implementation returning
 E_NOTIMPL.
 
-4.2.4  Null Strings and Null Pointers
+#### 4.2.4 Null Strings and Null Pointers
 
 Both of these terms are used below.  They are NOT the same thing.  A NULL Pointer is an invalid
 pointer (0) which will cause an exception if used.  A NUL String is a valid (non zero) pointer to a 1
@@ -1449,14 +1333,14 @@ NUL will be lost. Also note that a NULL pointer cannot be passed for an [in,stri
 COM marshalling restrictions. In this case a pointer to a NUL string should be passed to indicate an
 omitted parameter.
 
-4.2.5  Returned Arrays
+#### 4.2.5 Returned Arrays
 
 You will note the syntax size_is(,dwCount) in the IDL used in combination with pointers to pointers.
 This indicates that the returned item is a pointer to an actual array of the indicated type, rather than a
 pointer to an array of pointers to items of the indicated type.  This simplifies marshaling , creation, and
 access of the data by the server and client.
 
-4.2.6  Public Groups
+#### 4.2.6 Public Groups
 
 Public groups are optional. The server vendor and the client vendor may elect to support this behavior
 as appropriate for their application.  There are some specific rules that must be adhered to if the public
@@ -1476,9 +1360,10 @@ rates, etc) will be maintained as unique instance data for that client to group 
 
 18
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.2.7  CACHE data, DEVICE data and TimeStamps
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.2.7 CACHE data, DEVICE data and TimeStamps
 
 For the most part the terms CACHE and DEVICE are treated as ‘abstract’ within this specification.
 That is, reading CACHE or DEVICE data simply affects the described behavior of various interfaces
@@ -1505,14 +1390,14 @@ three minutes ago with a value of 1.234. In this case the value returned from a 
 1.234 and more important, the timestamp returned for this value would be the current time (within 0.5
 second) since it is known that the value for the item is in fact still 1.234 as of 0.5 seconds ago.
 
-4.2.8  Time Series Values
+#### 4.2.8 Time Series Values
 
 The OPC Data Access interfaces are designed primarily to take snapshots of current real time process
 or automation data. The Timestamp returned with those values is intended primarily as an indication of
 the quality of that ‘current’ data. These interfaces are not really intended to deal with buffered time
 series data for a single point such as historical data.
 
-4.2.9  Asynchronous vs. Synchronous Interfaces
+#### 4.2.9 Asynchronous vs. Synchronous Interfaces
 
 Assuming that most clients want to access Cached data, there are several ways for a client to obtain
 that data from a server.
@@ -1530,7 +1415,7 @@ It can ‘subscribe’ to cached data using IAdviseSink or IOPCDataCallback whic
 but very efficient. This is the recommended behavior for clients because it will minimize use of
 CPU and NETWORK resources.
 
-4.2.10 The ACTIVE flags, Deadband and Update Rate
+#### 4.2.10 The ACTIVE flags, Deadband and Update Rate
 
 These attributes of groups and items can be used to reduce resource use by clients and servers. They
 are discussed in more detail later under GROUPS. In general, they affect how often the cached data
@@ -1539,9 +1424,10 @@ IOPCDataCallback.
 
 19
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.2.11 Errors and return codes
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.2.11 Errors and return codes
 
 The OPC specification describes interfaces and corresponding behavior that an OPC server
 implements, and an OPC client application depends on.   A list of OPC Specific errors and return codes
@@ -1556,7 +1442,7 @@ Such codes can be passed to GetErrorString method. This is discussed in more det
 In all cases  ‘E’ error codes will indicate FAILED type errors and ‘S’ error codes will indicate at least
 partial success.
 
-4.2.12 Startup Issues
+#### 4.2.12 Startup Issues
 
 After Items are added to a group, it may take some time for the server to actually obtain values for
 these items. In such cases the client might perform a read (from cache), or establish an AdviseSink or
@@ -1570,7 +1456,7 @@ and BAD qualities. Note that in the case of the sync read and also asyncio2 oper
 return vendor specific error information which could indicate a vendor specific error such as
 "SERVER WAITING FOR INITIAL DATA".
 
-4.2.13 VARIANT Data Types and Interoperability
+#### 4.2.13 VARIANT Data Types and Interoperability
 
 In order to promote interoperability, the following rules and recommendations are presented.
 
@@ -1614,7 +1500,8 @@ above.
 
 20
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 •  Servers should be prepared to deal in an elegant way with requested types even when they are
 unable to convert their data to this type. That is, they should not malfunction, return incorrect
@@ -1848,7 +1735,8 @@ rather than ‘True” or “False”. If a server chooses to convert to “True
 
 21
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 the Locale (e.g. by passing VARIANT_LOCALBOOL to VariantChangeTypeEx). It should also be
 noted that the C++ keyword ‘true’ is an abstract type which converts to ‘1’ when assigned to any other
@@ -1905,9 +1793,10 @@ returned.
 
 22
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.2.14 Localization and LocaleID
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.2.14 Localization and LocaleID
 
 As mentioned elsewhere in this document, the extent to which a server supports localization is up to
 the vendor. However certain issues require some discussion. Localization is important not just for error
@@ -1934,7 +1823,8 @@ writing to that object.
 
 23
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.3  Data Acquisition and Active State Behavior
 
@@ -1969,7 +1859,7 @@ cause a change in quality but will not cause a callback since by definition call
 inactive items. That is, if you later do an explicit read (sync or async) of an inactive group or item you
 will get a quality indicating that the item is inactive.
 
-4.3.1  IOPCSyncIO
+#### 4.3.1 IOPCSyncIO
 
 Interface ::Method
 
@@ -2050,9 +1940,10 @@ value and quality.
 
 24
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.3.2  IOPCASyncIO2
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.3.2 IOPCASyncIO2
 
 Interface ::Method
 
@@ -2197,9 +2088,10 @@ call.
 
 25
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.3.3  SUBSCRIPTION via IOPCDataCallback
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.3.3 SUBSCRIPTION via IOPCDataCallback
 
 OnDataChange
 
@@ -2331,9 +2223,10 @@ active items that are contained in active groups.
 
 26
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.3.4  IOPCASyncIO (old)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.3.4 IOPCASyncIO (old)
 
 Interface ::Method
 
@@ -2519,9 +2412,10 @@ call.
 
 27
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.3.5  SUBSCRIPTION via IDataObject (old)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.3.5 SUBSCRIPTION via IDataObject (old)
 
 Interface ::Method
 
@@ -2604,11 +2498,12 @@ active items that are contained in active groups.
 
 28
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4  OPCServer Object
 
-4.4.1  Overview
+#### 4.4.1 Overview
 
 The OPCServer object is the primary object that an OPC server exposes.  The interfaces that this object
 provides include:
@@ -2650,15 +2545,16 @@ IOPCServer::CreateGroupEnumerator.
 
 29
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.2  IUnknown
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.2 IUnknown
 
 The server must provide a standard IUnknown Interface. Since this is a well defined interface it is not
 discussed in detail. See the OLE Programmer’s reference for additional information. This interface
 must be provided, and all  functions implemented as required by Microsoft..
 
-4.4.3  IOPCCommon
+#### 4.4.3 IOPCCommon
 
 Other OPC Servers such as alarms and events share this interface design. It provides the ability to set
 and query a LocaleID which would be in effect for the particular client/server session. That is, as with
@@ -2695,9 +2591,10 @@ HRESULT SetClientName (
 
 30
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.4  IOPCServer
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.4 IOPCServer
 
 This is the main interface to an OPC server.  The OPC server is registered with the operating system as
 specified in the Installation and Registration Chapter of this specification.
@@ -2765,7 +2662,8 @@ use the default system TimeBias. See discussion of
 
 31
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 pPercentDeadband
 
@@ -2853,7 +2751,8 @@ A Group is a logical container for a client to organize and manipulate data item
 
 32
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The server will create a group object, and return a pointer to the interface requested by the client.  If
 the client requests an optional interface that the server does not support,  the server is expected to
@@ -2887,7 +2786,8 @@ See the MoveToPublic function for additional requirements related to public grou
 
 33
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.4.2
 HRESULT GetErrorString(
@@ -2963,7 +2863,8 @@ To get the default value for the system, the dwLocale should be LOCALE_SYSTEM_DE
 
 34
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.4.3
 HRESULT GetGroupByName(
@@ -3038,7 +2939,8 @@ If needed, the client can obtain the hServerGroup Handle via IOPCGroupStateMgt::
 
 35
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.4.4
 HRESULT GetStatus(
@@ -3094,7 +2996,8 @@ connected and available.
 
 36
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.4.5
 HRESULT RemoveGroup(
@@ -3169,7 +3072,8 @@ This function should not be called for Public Groups.
 
 37
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.4.6
 HRESULT CreateGroupEnumerator(
@@ -3226,7 +3130,8 @@ OPC_ENUM_ALL_CONNECTIONS be avoided by clients.
 
 38
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -3284,9 +3189,10 @@ returned IUnknown pointers when he is done with them.
 
 39
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.5  IConnectionPointContainer (on OPCServer)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.5 IConnectionPointContainer (on OPCServer)
 
 This interface provides access to the connection point for IOPCShutdown.
 
@@ -3305,7 +3211,8 @@ allowed to return E_NOTIMPL.
 
 40
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.5.1
 
@@ -3350,7 +3257,8 @@ callbacks are also allowed.
 
 41
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.5.2
 
@@ -3396,11 +3304,12 @@ OPCServers must support IID_IOPCShutdown. Additional vendor specific callbacks a
 
 42
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.6  IOPCItemProperties
+OPC Data Access Custom Interface Specification 2.05
 
-Overview
+#### 4.4.6 IOPCItemProperties
+
+### 4.4 Overview
 
 This interface can be used by clients to browse the available properties (also refered to as attributes or
 parameters) associated with an ITEMID and to read the current values of these properties. In some
@@ -3457,7 +3366,8 @@ A100.CV) would produce an error from AddItem then properties 1-6 are not availab
 
 43
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Note that a server could chose to assign a 'default' value to an unqualified tag such that for example
 A100 becomes equivalent to A100.CV. Such a server might chose to return properties 1-6 when passed
@@ -3516,7 +3426,8 @@ Engineering Units values should be used to scale a bargraph representation of th
 
 44
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Note that because these associations can be 'many to many' and can also be circular, a client
 application would not want to automatically investigate them all.
@@ -3554,7 +3465,8 @@ the system.
 
 45
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ID
 
@@ -3572,11 +3484,11 @@ STANDARD DESCIPTION
 
 4
 
-5
+
 
 6
 
-VT_I2
+## 5. VT_I2
 
 "Item Canonical DataType"
 
@@ -3659,7 +3571,8 @@ VT_BSTR
 
 46
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 101
 
@@ -3771,7 +3684,8 @@ The name of an operator display associated with this ItemID
 
 47
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The COLORREF in which the item should be displayed
 
@@ -3895,7 +3809,8 @@ For multistate alarms, the condition exceeded
 
 48
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 VT_R8
 
@@ -3973,7 +3888,8 @@ localize any data items returned as strings.  The item descriptions are not loca
 
 49
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.6.1
 
@@ -4053,7 +3969,8 @@ for different ItemIDs.
 
 50
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.6.2
 
@@ -4132,7 +4049,8 @@ The function failed.
 
 51
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ‘Errors’ Return Codes
 
@@ -4164,7 +4082,8 @@ interface will make it difficult for the server to optimize performace. See Look
 
 52
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.6.3
 
@@ -4242,7 +4161,8 @@ The function was not successful
 
 53
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ‘Errors’ Return Codes
 
@@ -4270,9 +4190,10 @@ The caller must Free the returned NewItemIDs and Errors array.
 
 54
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.7  IOPCServerPublicGroups (optional)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.7 IOPCServerPublicGroups (optional)
 
 This optional interface allows management of public groups.
 
@@ -4299,7 +4220,8 @@ exception to this behavior is that he cannot add or remove items.
 
 55
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.7.1
 
@@ -4375,7 +4297,8 @@ to call RemoveGroup or RemovePublicGroup to free these client specific resources
 
 56
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.7.2
 
@@ -4454,9 +4377,10 @@ IOPCGroupStateMgt::GetState.
 
 57
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.8  IOPCBrowseServerAddressSpace (optional)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.8 IOPCBrowseServerAddressSpace (optional)
 
 This interface provides a way for clients to browse the available data items in the server, giving the
 user a list of the valid definitions for an ITEM ID.  It allows for either flat or hierarchical address
@@ -4519,7 +4443,8 @@ string is not used.
 
 58
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Examples of a Hierarchical Space:
 
@@ -4571,7 +4496,8 @@ etc…
 
 59
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.8.1
 
@@ -4626,7 +4552,8 @@ call ChangeBrowsePosition
 
 60
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.8.2
 
@@ -4702,7 +4629,8 @@ E_INVALIDARG if they pass this to a 1.0 server.
 
 61
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.8.3
 
@@ -4769,7 +4697,8 @@ HRESULT is other than S_OK or S_FALSE
 
 62
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Return Codes
 
@@ -4830,7 +4759,8 @@ The client must Release each Enumerator when he is done with it.
 
 63
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.8.4
 
@@ -4908,14 +4838,16 @@ The client must free the returned string.
 
 64
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ItemID is the unique ‘key’ to the data, it is considered the ‘what’ or ‘where’ that allows the server to
 connect to the data source.
 
 65
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.8.5
 
@@ -4982,9 +4914,10 @@ uses this function to identify the possible access paths for the specified itemI
 
 66
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.4.9  IPersistFile (optional)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.4.9 IPersistFile (optional)
 
 This is a standard implementation of the IPersistFile Interface. The descriptions below are brief and
 describe behavior specific to OPC. Refer to the OLE programmers reference for additional
@@ -5044,7 +4977,8 @@ needs to be saved.
 
 67
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.9.2
 
@@ -5118,7 +5052,8 @@ HRESULT Save(
 
 68
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Description
 
@@ -5192,7 +5127,8 @@ Comments
 
 69
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.4.9.5
 
@@ -5237,9 +5173,10 @@ The client must free the returned string.
 
 70
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5  OPCGroup Object
+OPC Data Access Custom Interface Specification 2.05
+
+### 4.5 OPCGroup Object
 
 The OPCGroup object is the object that an OPC server delivers to manage a collection of items.  The
 interfaces that this object provides include:
@@ -5271,9 +5208,10 @@ for delivering a COM interface.
 
 71
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.1  General Properties
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.1 General Properties
 
 The OPCGroup has certain general properties and behaviors which affect the operation of  the
 Interfaces and Methods. These are discussed here in order to minimize duplication.
@@ -5336,7 +5274,8 @@ items within the group that changed.(this will be discussed more in later sectio
 
 72
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.1.4
 
@@ -5404,7 +5343,8 @@ notification will be sent to the IAdviseSink (if any). The pPercentDeadband is a
 
 73
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 the server. If the client does not specify this value on a server that does support the behavior, the
 default value of 0 (zero) will be assumed, and all value changes will update the CACHE. Note that the
@@ -5469,9 +5409,10 @@ track of both.
 
 74
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.2  IOPCItemMgt
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.2 IOPCItemMgt
 
 IOPCItemMgt allows a client to add, remove and control the behavior of items is a group.
 
@@ -5518,7 +5459,8 @@ failed it provides a reason.
 
 75
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -5605,7 +5547,8 @@ processed.
 
 76
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.2
 HRESULT ValidateItems(
@@ -5687,7 +5630,8 @@ Refer to individual error returns for failure analysis.
 
 77
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ppErrors Codes
 
@@ -5724,7 +5668,8 @@ returned by VariantChangeType or VariantChangeTypeEx.
 
 78
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.3
 HRESULT RemoveItems(
@@ -5802,7 +5747,8 @@ Items cannot be removed from a public group.
 
 79
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.4
 HRESULT SetActiveState(
@@ -5879,7 +5825,8 @@ items).  Activating items will generally result in an IAdvise callback at the ne
 
 80
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.5
 HRESULT SetClientHandles(
@@ -5955,7 +5902,8 @@ client has connected.
 
 81
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.6
 HRESULT SetDatatypes(
@@ -6037,7 +5985,8 @@ returned by VariantChangeType or VariantChangeTypeEx.
 
 82
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.2.7
 HRESULT CreateEnumerator(
@@ -6094,9 +6043,10 @@ The client must release the returned interface pointer when it is done with it.
 
 83
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.3  IOPCGroupStateMgt
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.3 IOPCGroupStateMgt
 
 IOPCGroupStateMgt allows the client to manage the overall state of the group. Primarily this allows
 changes to the update rate and active state of the group.
@@ -6163,7 +6113,8 @@ The server generated group handle
 
 84
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -6198,7 +6149,8 @@ The client must free the returned ppName string.
 
 85
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.3.2
 HRESULT SetState(
@@ -6267,7 +6219,8 @@ client’s IAdvise by the Groups IDataObject.
 
 86
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -6310,7 +6263,8 @@ Servers which do not support dynamic localization can ignore this parameter.
 
 87
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.3.3
 HRESULT SetName(
@@ -6363,7 +6317,8 @@ Group names are required to be unique with respect to an individual client to se
 
 88
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.3.4
 
@@ -6421,7 +6376,8 @@ any HRESULT other than S_OK
 
 89
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -6465,9 +6421,10 @@ then be modified by the client.
 
 90
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.4  IOPCPublicGroupStateMgt
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.4 IOPCPublicGroupStateMgt
 
 This optional interface is used to convert a private group to a public group. Servers optionally provide
 this interface on group objects. A group created by a client is always created initially as a private
@@ -6522,7 +6479,8 @@ method is useful for debugging.
 
 91
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.4.2
 
@@ -6579,9 +6537,10 @@ For the items in the group, the client handle, active status and requested data 
 
 92
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.5  IOPCSyncIO
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.5 IOPCSyncIO
 
 IOPCSyncIO allows a client to perform synchronous read and write operations to a server. The
 operations will run to completion.
@@ -6655,7 +6614,8 @@ Time stamp are UNDEFINED.
 
 93
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -6741,7 +6701,8 @@ operations from being performed on the server by any other clients.
 
 94
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 For this reason Clients are expected to use CACHE reads in most cases. DEVICE reads are intended
 for ‘special’ circumstances such as diagnostics.
@@ -6751,7 +6712,8 @@ sure to call VariantClear() on the variant in the ITEMRESULT.
 
 95
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.5.2
 HRESULT Write(
@@ -6802,7 +6764,8 @@ rejected by the device.
 
 96
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -6866,7 +6829,8 @@ obtained from GetErrorString.
 
 97
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Comments
 
@@ -6891,9 +6855,10 @@ The ppErrors array is allocated by the server and must be freed by the client.
 
 98
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.6  IOPCAsyncIO2
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.6 IOPCAsyncIO2
 
 This interface is similar to IOPCAsync. This interface is intended to replace IOPCAsyncIO.
 
@@ -6959,7 +6924,8 @@ record the transaction ID.
 
 99
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.1
 HRESULT Read(
@@ -7010,7 +6976,8 @@ See below.
 
 100
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -7097,7 +7064,8 @@ from that returned from Read.
 
 101
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 NOTE: the server must return all of the results in a single callback. Thus, if the items in the group
 require multiple physical transactions to one or more physical devices then the server must wait until
@@ -7107,7 +7075,8 @@ The Client must free the returned ppError array.
 
 102
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.2
 HRESULT Write(
@@ -7163,7 +7132,8 @@ See below.
 
 103
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -7249,7 +7219,8 @@ differ from that returned from Write.
 
 104
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 NOTE: all of the results must be returned by the server in a single callback. Thus if the items in the
 group require multiple physical transactions to one or more physical devices then the server must wait
@@ -7259,7 +7230,8 @@ Client must free the returned ppError array.
 
 105
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.3
 HRESULT Refresh2(
@@ -7338,7 +7310,8 @@ from a Refresh2 request then a non-zero ID should be passed to Refresh2().
 
 106
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Functionally it is also similar to what could be achieved by doing a READ of all of the active items in
 a group.
@@ -7359,7 +7332,8 @@ client when performing the normal subscription logic.
 
 107
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.4
 HRESULT Cancel2(
@@ -7409,7 +7383,8 @@ fails then a read, write or datachange callback may occur (or may already have o
 
 108
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.5
 HRESULT SetEnable(
@@ -7475,7 +7450,8 @@ essentially an Async read from Cache.
 
 109
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.6.6
 HRESULT GetEnable(
@@ -7521,9 +7497,10 @@ See IOPCAsyncIO2::SetEnable() for additional information.
 
 110
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.7  IConnectionPointContainer (on OPCGroup)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.7 IConnectionPointContainer (on OPCGroup)
 
 This interface provides functionality similar to the IDataObject but is easier to implement and to
 understand and also provides some functionality which was missing from the IDataObject Interface.
@@ -7556,7 +7533,8 @@ IOPCDataCallback is allowed to return E_NOTIMPL.
 
 111
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.7.1
 
@@ -7601,7 +7579,8 @@ callbacks are also allowed.
 
 112
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.7.2
 
@@ -7648,9 +7627,10 @@ allowed.
 
 113
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.8  IEnumOPCItemAttributes
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.8 IEnumOPCItemAttributes
 
 IEnumOPCItemAttributes allows a client to find out the contents (items) of a group and the attributes
 of those items.
@@ -7707,7 +7687,8 @@ szItemID, szAccessPath, pBlob, vEUInfo.
 
 114
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.8.2
 HRESULT Skip(
@@ -7735,7 +7716,8 @@ Skip is probably not useful in the context of OPC.
 
 115
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.8.3
 HRESULT Reset(
@@ -7759,7 +7741,8 @@ Comments
 
 116
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.8.4
 HRESULT Clone(
@@ -7788,9 +7771,10 @@ The client must release the returned interface pointer when it is done with it.
 
 117
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.9  IOPCAsyncIO (old)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.9 IOPCAsyncIO (old)
 
 IOPCAsyncIO  allows a client to perform asynchronous read and write operations to a server. The
 operations will be ‘queued’ and the function will return immediately so that the client can continue to
@@ -7829,7 +7813,8 @@ following possible approach is suggested for those cases where this is needed.
 
 118
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Mainline Code
 
@@ -7873,7 +7858,8 @@ END CRITICAL SECTION
 
 119
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.9.1
 HRESULT Read(
@@ -7939,7 +7925,8 @@ field.
 
 120
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -8021,7 +8008,8 @@ may also use the transactionID when attempting to cancel an in progress asynchro
 
 121
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.9.2
 HRESULT Write(
@@ -8081,7 +8069,8 @@ access rights, etc.) will be returned in the callback.
 
 122
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -8157,7 +8146,8 @@ See the notes under ‘Read’ regarding the transaction ID.
 
 123
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.9.3
 HRESULT Refresh(
@@ -8243,7 +8233,8 @@ server must wait until all of them are complete before invoking OnDataChange.
 
 124
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The expected behavior is that this Refresh will not affect the timing of normal OnDataChange
 callbacks which are based on the UpdateRate.  For example, if the update rate is 1 hour and this
@@ -8259,7 +8250,8 @@ See the notes under ‘Read’ regarding the transaction ID.
 
 125
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.9.4
 HRESULT Cancel(
@@ -8309,9 +8301,10 @@ may occur (or may already have occured).
 
 126
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.5.10 IDataObject (old)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.5.10 IDataObject (old)
 
 The OPC Specification requires the IDataObject to be implemented for the OPC servers.
 
@@ -8376,7 +8369,8 @@ and OLE related internal errors can result if the server sends data faster than 
 
 127
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The performance of the OPC servers and OPC clients is highly tied to the developers implementation
 of these critical interfaces.
@@ -8391,7 +8385,8 @@ the required functionality.
 
 128
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.10.1
 
@@ -8464,7 +8459,8 @@ provides back to the client with the OnDataChange stream.
 
 129
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The ‘formats’ really represent different types of events rather than different formats for the same data.
 
@@ -8483,7 +8479,8 @@ The storage medium will always be TYMED_HGLOBAL (for computability with DCOM).
 
 130
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.5.10.2
 
@@ -8520,11 +8517,12 @@ The function was successful.
 
 131
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.6  Client Side Interfaces
+OPC Data Access Custom Interface Specification 2.05
 
-4.6.1  IOPCDataCallback
+### 4.6 Client Side Interfaces
+
+#### 4.6.1 IOPCDataCallback
 
 In order to use connection points, the client must create an object that supports both the IUnknown and
 IOPCDataCallback Interface. The client would pass a pointer to the IUnknown interface (NOT the
@@ -8549,7 +8547,8 @@ these callbacks there are no 'out' parameters so all memory is owned by the serv
 
 132
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.1.1
 
@@ -8637,7 +8636,8 @@ The client must always return S_OK.
 
 133
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 ‘pErrors’ Return Codes
 
@@ -8704,7 +8704,8 @@ Variants.
 
 134
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.1.2
 
@@ -8787,7 +8788,8 @@ provide more useful information to the user.
 
 135
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 HRESULT Return Codes
 
@@ -8850,7 +8852,8 @@ return.
 
 136
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.1.3
 
@@ -8939,7 +8942,8 @@ was clamped).
 
 137
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 E_xxx - the data item was NOT written and
 there is a vendor specific error which provides
@@ -8962,7 +8966,8 @@ return.
 
 138
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.1.4
 
@@ -9007,9 +9012,10 @@ NOT receive this callback
 
 139
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.6.2  IOPCShutdown
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.6.2 IOPCShutdown
 
 In order to use this connection point, the client must create an object that supports both the IUnknown
 and IOPCShutdown Interface. The client would pass a pointer to the IUnknown interface (NOT the
@@ -9065,9 +9071,10 @@ shutdown requests.
 
 140
 
-OPC Data Access Custom Interface Specification 2.05
 
-4.6.3  IAdviseSink (old)
+OPC Data Access Custom Interface Specification 2.05
+
+#### 4.6.3 IAdviseSink (old)
 
 The client need only provide a full implementation of OnDataChange. The other methods of
 IAdviseSink can be implemented as stubs since they will never be called.  Callbacks can occur for
@@ -9092,7 +9099,8 @@ developers implementation of these critical interfaces.
 
 141
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.3.1
 
@@ -9158,7 +9166,8 @@ fe.tymed = TYMED_HGLOBAL;
 
 142
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The storage medium will always be TYMED_HGLOBAL (for computability with DCOM). The global
 memory handle can be found in pSTM.hGlobal. GlobalLock() can be used to convert this to a pointer.
@@ -9197,7 +9206,7 @@ OPCGROUPHEADERWRITE
 
 OPCITEMHEADERWRITE[hdr.dwItemCount]
 
-4.6.4  IAdviseSink - Data Stream Formats (old)
+#### 4.6.4 IAdviseSink - Data Stream Formats (old)
 
 This section describes the data structures associated with the three stream formats used in the
 IDataObject / IAdviseSink connection.  It also discusses the critical issue of the Packing of these
@@ -9220,7 +9229,8 @@ RegisterClipboardFormat();
 
 143
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.4.1
 typedef struct {
@@ -9285,7 +9295,8 @@ information available to the callback function is the Quality Field.
 
 144
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.4.2
 typedef struct {
@@ -9358,7 +9369,8 @@ The Quality bits for the data.
 
 145
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.4.4
 typedef struct {
@@ -9435,7 +9447,8 @@ The item level HRESULTs for Write are the same as those returned for Sync Write.
 
 146
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 4.6.4.6
 
@@ -9470,7 +9483,8 @@ when the data is unmarshalled and stored locally.
 
 147
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 5
 
@@ -9484,7 +9498,7 @@ issues here are (a) what entries need to be made and (b) how they can be made.
 Again, certain common installation and registry topics including self registration, automatic proxy/stub
 registration and registry reference counting are discussed in the OPC Overview Document
 
-5.1  Component Categories
+### 5.1 Component Categories
 
 The OPC Data Access Interface defines the following Component Catagories. Listed below are the
 CATIDs, Descriptors and Symbolic Equates to be used for Data Access.
@@ -9501,7 +9515,7 @@ It is expected that a server will first create any category it uses and then wil
 Unregistering a server should cause it to be removed from that category. See the ICatRegister
 documentation for additional information.
 
-5.2  Registry Entries for Custom Interface
+### 5.2 Registry Entries for Custom Interface
 
 The following entries are the minimum required to support the Custom Interface for OPC Compliant
 Servers.
@@ -9538,7 +9552,8 @@ a key given the ProgID and obtain the CLSID as the value of that key.  See the e
 
 148
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 3.  The OPC line creates a ‘flag’ subkey that has no value. This was used for Data Access 1.0 to allow
 the client to browse for the available OPC servers. As of verson 2.0, the prefered approach is for
@@ -9579,17 +9594,18 @@ should be marshalled by a separate vendor specific Proxy/Stub DLL.
 
 149
 
-OPC Data Access Custom Interface Specification 2.05
 
-6
+OPC Data Access Custom Interface Specification 2.05
 
-Description of Data Types, Parameters and Structures
+
+
+## 6. Description of Data Types, Parameters and Structures
 Some structures contain ‘reserved’ words. These are generally inserted to pad structures to be 32 bit
 aligned.
 
-6.1
 
-Item Definition
+
+### 6.1 Item Definition
 
 The ItemID is the fully qualified definition of a data item in the server, commonly referred to as the
 WHAT.  No other information is required to identify the data item for the client to be able to read/write
@@ -9622,9 +9638,10 @@ A server that supports low level access to a PLC might support a syntax such as
 
 150
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.2  AccessPath
+OPC Data Access Custom Interface Specification 2.05
+
+### 6.2 AccessPath
 
 The AccessPath is intended as a way for the client to provide to the server a suggested data path (e.g. a
 particular modem or network interface).  It indicates HOW to get the data.
@@ -9650,9 +9667,10 @@ path for all items (i.e. a NUL string).
 
 151
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.3  Blob
+OPC Data Access Custom Interface Specification 2.05
+
+### 6.3 Blob
 
 We will discuss why the Blob exists and how it behaves.
 
@@ -9695,9 +9713,9 @@ The difference between the server handle and the Blob is that the server handle 
 since it is the only way to identify items after they have been added.  The Blob is variable in length, is
 optional and may be stored by the client between sessions.
 
-6.4
 
-Time Stamps
+
+### 6.4 Time Stamps
 
 Time stamps are in the form of a FILETIME as this is more compact than other available standard time
 structures. There are numerous WIN32 functions for converting between various time formats and time
@@ -9708,9 +9726,10 @@ the device itself then it should be provided by the server.
 
 152
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.5  Variant Data Types for OPC Data Items
+OPC Data Access Custom Interface Specification 2.05
+
+### 6.5 Variant Data Types for OPC Data Items
 
 Under NT 4.0 and Windows 95 with DCOM support, all VARIANT data types can be marshaled
 through standard marshalling. Under Automation, types will be coerced to known Automation data
@@ -9726,11 +9745,12 @@ flag be set to OPC_QUALITY_BAD.
 
 153
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.6  Constants
+OPC Data Access Custom Interface Specification 2.05
 
-6.6.1  OPCHANDLE
+### 6.6 Constants
+
+#### 6.6.1 OPCHANDLE
 
 OPCHANDLEs are used in conjunction with both groups and items within groups.  The purpose of
 handles in OPC is to allow faster access to various objects by both the client and the server.
@@ -9785,11 +9805,12 @@ back to the client via the IAdviseSink interface.
 
 154
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.7  Structures and Masks
+OPC Data Access Custom Interface Specification 2.05
 
-6.7.1  OPCITEMSTATE
+### 6.7 Structures and Masks
+
+#### 6.7.1 OPCITEMSTATE
 
 This structure is used by IOPCSyncIO::Read
 
@@ -9836,9 +9857,10 @@ QUALITY flag be set to OPC_QUALITY_BAD.
 
 155
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.7.2  OPCITEMDEF
+OPC Data Access Custom Interface Specification 2.05
+
+#### 6.7.2 OPCITEMDEF
 typedef struct {
 
 szAccessPath;
@@ -9938,9 +9960,10 @@ more information on this topic.
 
 156
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.7.3  OPCITEMRESULT
+OPC Data Access Custom Interface Specification 2.05
+
+#### 6.7.3 OPCITEMRESULT
 typedef struct {
 
 hServer;
@@ -10003,9 +10026,10 @@ structure.
 
 157
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.7.4   OPCITEMATTRIBUTES
+OPC Data Access Custom Interface Specification 2.05
+
+#### 6.7.4 OPCITEMATTRIBUTES
 typedef struct {
 
 szAccessPath;
@@ -10094,7 +10118,8 @@ Comments below.
 
 158
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Comment:
 
@@ -10131,9 +10156,10 @@ FreeOPCITEMATTRIBUTES(ptr) in order to minimize the chance of memory leaks.
 
 159
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.7.5  OPCSERVERSTATUS
+OPC Data Access Custom Interface Specification 2.05
+
+#### 6.7.5 OPCSERVERSTATUS
 typedef struct {
 
 FILETIME
@@ -10213,7 +10239,8 @@ name of the company and the type of device(s) supported.
 
 160
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 OPCSERVERSTATE Values  Description
 
@@ -10252,7 +10279,7 @@ normally. Inputs may be real or may be simulated
 depending on the vendor implementation. Quality will
 generally be returned normally.
 
-6.7.6  Access Rights
+#### 6.7.6 Access Rights
 
 This represents the server's ability to access a single OPC data item. Note the low 16 bits of the
 DWORD are reserved for OPC use and currently include the OPC Access Rights defined in the IDL
@@ -10287,9 +10314,10 @@ The client can change the data item's value.
 
 161
 
-OPC Data Access Custom Interface Specification 2.05
 
-6.8  OPC Quality flags
+OPC Data Access Custom Interface Specification 2.05
+
+### 6.8 OPC Quality flags
 
 These flags represent the quality state for a item's data value. This is intended to be similar to but
 slightly simpler than the Fieldbus Data Quality Specification (section 4.4.1 in the H1 Final
@@ -10373,7 +10401,8 @@ NUL string or a 0 numeric value.
 
 162
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 The Substatus BitField
 
@@ -10484,7 +10513,8 @@ the application.
 
 163
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Substatus for UNCERTAIN Quality:
 
@@ -10579,7 +10609,8 @@ Servers which do not support Substatus should return 0.
 
 164
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 Substatus for GOOD Quality:
 
@@ -10680,11 +10711,12 @@ the OPC header files.
 
 165
 
-OPC Data Access Custom Interface Specification 2.05
 
-7
+OPC Data Access Custom Interface Specification 2.05
 
- Summary of OPC Error Codes
+
+
+## 7. Summary of OPC Error Codes
 
 We have attempted to minimize the number of unique errors by identifying common generic problems
 and defining error codes that can be reused in many contexts. An OPC server should only return those
@@ -10731,7 +10763,8 @@ Invalid or unregistered Format specified in FORMATETC
 
 166
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 OPC Specific Errors
 
@@ -10819,9 +10852,10 @@ for future OPC use. Codes from 8000 through FFFF can be vendor specific.
 
 167
 
-OPC Data Access Custom Interface Specification 2.05
 
-Appendix A - OPCError.h
+OPC Data Access Custom Interface Specification 2.05
+
+## 8. Appendix A - OPCError.h
 
 8
 /*++
@@ -10880,7 +10914,8 @@ Code Assignements:
 
 168
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 //
 // MessageId: OPC_E_INVALIDHANDLE
@@ -10941,7 +10976,8 @@ Code Assignements:
 
 169
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 //
 // MessageId: OPC_E_INVALIDFILTER
@@ -11001,7 +11037,8 @@ Code Assignements:
 
 170
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 //  A value passed to WRITE was accepted but the output was clamped.
 //
@@ -11049,11 +11086,12 @@ Code Assignements:
 
 171
 
-OPC Data Access Custom Interface Specification 2.05
 
-9
+OPC Data Access Custom Interface Specification 2.05
 
-Appendix B - Data Access IDL Specification
+
+
+## 9. Appendix B - Data Access IDL Specification
 
 The current files require MIDL compiler 3.00.15 or later and the WIN NT 4.0 release SDK.
 
@@ -11115,7 +11153,8 @@ typedef enum tagOPCEUTYPE {
 
 172
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     OPC_NOENUM = 0,
     OPC_ANALOG,
@@ -11177,7 +11216,8 @@ typedef struct tagOPCITEMSTATE{
 
 173
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     FILETIME    ftTimeStamp;
     WORD        wQuality;
@@ -11238,7 +11278,8 @@ typedef struct tagOPCITEMRESULT {
 
 174
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 // OPC Quality flags
 //
@@ -11299,7 +11340,8 @@ interface IOPCServer : IUnknown
 
 175
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     [in]                BOOL        bActive,
     [in]                DWORD       dwRequestedUpdateRate,
@@ -11361,7 +11403,8 @@ interface IOPCServerPublicGroups : IUnknown
 
 176
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     [in] BOOL      bForce
     );
@@ -11420,7 +11463,8 @@ interface IOPCGroupStateMgt : IUnknown
 
 177
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     [out]         DWORD     * pLCID,
     [out]         OPCHANDLE * phClientGroup,
@@ -11478,7 +11522,8 @@ interface IOPCSyncIO : IUnknown
 
 178
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     [in]                        DWORD           dwCount,
     [in, size_is(dwCount)]      OPCHANDLE     * phServer,
@@ -11538,7 +11583,8 @@ interface IOPCAsyncIO : IUnknown
 
 179
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
   uuid(39c13a54-011e-11d0-9675-0020afd8adb3),
   pointer_default(unique)
@@ -11599,7 +11645,8 @@ interface IOPCItemMgt: IUnknown
 
 180
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
   uuid(39c13a55-011e-11d0-9675-0020afd8adb3),
   pointer_default(unique)
@@ -11660,7 +11707,8 @@ HRESULT OnDataChange(
 
 181
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 );
 
@@ -11721,7 +11769,8 @@ interface IOPCAsyncIO2 : IUnknown
 
 182
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
   HRESULT GetEnable(
     [out]                       BOOL           *pbEnable
@@ -11780,7 +11829,8 @@ library OPCDA
 
 183
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
     interface IOPCServerPublicGroups ;
     interface IOPCBrowseServerAddressSpace;
@@ -11798,7 +11848,8 @@ library OPCDA
 
 184
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 10  Appendix D - OPCProps.h
 
@@ -11807,7 +11858,7 @@ the IOPCItemProperties Inteface discussion.
 
 /*++
 Module Name:
- OPCProps.h
+## Appendix D OPCProps.h
 Author:
 OPC Task Force
 
@@ -11859,7 +11910,8 @@ Property ID Code Assignements:
 
 185
 
-OPC Data Access Custom Interface Specification 2.05
+
+OPC Data Access Custom Interface Specification 2.05
 
 #define OPC_PROP_ALMLIMIT   305
 #define OPC_PROP_ALMDB      306

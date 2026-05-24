@@ -15,7 +15,8 @@ October 17, 2000
 
 1
 
-<!-- Extracted images from page 2 -->
+
+<!-- Extracted images from page 2 -->
 ![Extracted image 1 from page 2](opc-security-1.00-specification.images/page002-img01.png)
 <!-- /Extracted images from page 2 -->
 
@@ -72,7 +73,8 @@ Windows NT 4.0 SP5 or later
 
 2
 
-<!-- Extracted images from page 3 -->
+
+<!-- Extracted images from page 3 -->
 ![Extracted image 1 from page 3](opc-security-1.00-specification.images/page003-img01.png)
 <!-- /Extracted images from page 3 -->
 
@@ -132,7 +134,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 3
 
-<!-- Extracted images from page 4 -->
+
+<!-- Extracted images from page 4 -->
 ![Extracted image 1 from page 4](opc-security-1.00-specification.images/page004-img01.png)
 <!-- /Extracted images from page 4 -->
 
@@ -168,181 +171,76 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 4
 
-<!-- Extracted images from page 5 -->
+
+<!-- Extracted images from page 5 -->
 ![Extracted image 1 from page 5](opc-security-1.00-specification.images/page005-img01.png)
 <!-- /Extracted images from page 5 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-Table of Contents
+## Table of Contents
 
-1.
+- [1. Introduction](#1-introduction)
+  - [1.1 Background](#11-background)
+  - [1.2 Key Requirements](#12-key-requirements)
+  - [1.3 Purpose](#13-purpose)
+  - [1.4 Relationship to Other OPC Specifications](#14-relationship-to-other-opc-specifications)
+  - [1.5 Scope of This Specification](#15-scope-of-this-specification)
+    - [1.5.1 Security Aspects](#151-security-aspects)
+    - [1.5.2 Levels of Security](#152-levels-of-security)
+    - [1.5.3 Operating Systems](#153-operating-systems)
+  - [1.6 Prerequisites](#16-prerequisites)
+  - [1.7 Deliverables](#17-deliverables)
+- [2. Fundamental Concepts](#2-fundamental-concepts)
+  - [2.1 Security Reference Model](#21-security-reference-model)
+    - [2.1.1 Authorization vs. Authentication](#211-authorization-vs-authentication)
+  - [2.2 Application of the Model in This Specification](#22-application-of-the-model-in-this-specification)
+    - [2.2.1 Principals](#221-principals)
+    - [2.2.2 Access Certificates](#222-access-certificates)
+    - [2.2.3 Security Objects](#223-security-objects)
+    - [2.2.4 Access Control Lists](#224-access-control-lists)
+    - [2.2.5 Reference Monitor](#225-reference-monitor)
+    - [2.2.6 Channels](#226-channels)
+  - [2.3 Levels of Security](#23-levels-of-security)
+  - [2.4 Private Credential vs. NT Access Token](#24-private-credential-vs-nt-access-token)
+  - [2.5 Optional IOPCSecurityNT and IOPCSecurityPrivate Interfaces](#25-optional-iopcsecuritynt-and-iopcsecurityprivate-interfaces)
+  - [2.6 Backward Compatibility](#26-backward-compatibility)
+- [3. OPC Security Quick Reference](#3-opc-security-quick-reference)
+  - [3.1 “OPCServer” Object](#31-opcserver-object)
+    - [3.1.1 IOPCSecurityNT](#311-iopcsecuritynt)
+    - [3.1.2 IOPCSecurityPrivate](#312-iopcsecurityprivate)
+- [4. Custom Reference](#4-custom-reference)
+  - [4.1 Interface Issues](#41-interface-issues)
+  - [4.2 Overview](#42-overview)
+    - [4.2.1 Behavior of Servers Implementing Both OPC Security Interfaces](#421-behavior-of-servers-implementing-both-opc-security-interfaces)
+  - [4.3 IOPCSecurityNT](#43-iopcsecuritynt)
+    - [4.3.1 IOPCSecurityNT::IsAvailableNT](#431-iopcsecurityntisavailablent)
+    - [4.3.2 IOPCSecurityNT::QueryMinImpersonationLevel](#432-iopcsecurityntqueryminimpersonationlevel)
+    - [4.3.3 IOPCSecurityNT::ChangeUser](#433-iopcsecurityntchangeuser)
+    - [4.3.4 Use Scenario](#434-use-scenario)
+  - [4.4 IOPCSecurityPrivate](#44-iopcsecurityprivate)
+    - [4.4.1 IOPCSecurityPrivate::IsAvailablePriv](#441-iopcsecurityprivateisavailablepriv)
+    - [4.4.2 IOPCSecurityPrivate::Logon](#442-iopcsecurityprivatelogon)
+    - [4.4.3 IOPCSecurityPrivate::Logoff](#443-iopcsecurityprivatelogoff)
+    - [4.4.4 Use Scenario](#444-use-scenario)
+  - [4.5 NT Credential Approach](#45-nt-credential-approach)
+    - [4.5.1 Server Security](#451-server-security)
+    - [4.5.2 Client Security](#452-client-security)
+- [5. Installation](#5-installation)
+  - [5.1 Server Installation Issues](#51-server-installation-issues)
+  - [5.2 Client Installation](#52-client-installation)
+- [6. Appendix](#6-appendix)
+  - [6.1 IDL File](#61-idl-file)
+    - [6.1.1 OPC Security Custom Interface IDL Specification](#611-opc-security-custom-interface-idl-specification)
+  - [6.2 OpcErrSec.h](#62-opcerrsech)
+  - [6.3 Guidelines](#63-guidelines)
+    - [6.3.1 DCOM Security Setup and Settings](#631-dcom-security-setup-and-settings)
+    - [6.3.2 In-Process Server Considerations](#632-in-process-server-considerations)
+    - [6.3.3 Local/Remote Server Configuration Parameters](#633-localremote-server-configuration-parameters)
 
-INTRODUCTION .................................................................................................................................7
+## 1. Introduction
 
-1.1
-1.2
-1.3
-1.4
-1.5
-
-1.5.1
-1.5.2
-1.5.3
-
-1.6
-1.7
-
-BACKGROUND ..................................................................................................................................7
-KEY REQUIREMENTS ........................................................................................................................7
-PURPOSE...........................................................................................................................................7
-RELATIONSHIP TO OTHER OPC SPECIFICATIONS..............................................................................7
-SCOPE OF THIS SPECIFICATION.........................................................................................................7
-Security Aspects ......................................................................................................................7
-Levels of Security....................................................................................................................7
-Operating Systems ...................................................................................................................7
-PREREQUISITES ................................................................................................................................8
-DELIVERABLES.................................................................................................................................8
-
-2.  FUNDAMENTAL CONCEPTS ...........................................................................................................9
-
-2.1
-
-2.1.1
-
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-
-2.3
-2.4
-2.5
-2.6
-
-SECURITY REFERENCE MODEL.........................................................................................................9
-Authorization vs. Authentication...........................................................................................10
-APPLICATION OF THE MODEL IN THIS SPECIFICATION....................................................................10
-Principals ..............................................................................................................................10
-Access Certificates.................................................................................................................10
-Security Objects.....................................................................................................................10
-Access Control Lists ..............................................................................................................10
-Reference Monitor .................................................................................................................11
-Channels ................................................................................................................................11
-LEVELS OF SECURITY .....................................................................................................................11
-PRIVATE CREDENTIAL VS. NT ACCESS TOKEN ..............................................................................11
-OPTIONAL IOPCSECURITYNT AND IOPCSECURITYPRIVATE INTERFACES....................................12
-BACKWARD COMPATIBILITY..........................................................................................................12
-
-3.  OPC SECURITY QUICK REFERENCE .........................................................................................13
-
-3.1
-
-3.1.1
-3.1.2
-
-“OPCSERVER” OBJECT ..................................................................................................................13
-IOPCSecurityNT ...................................................................................................................13
-IOPCSecurityPrivate .............................................................................................................13
-
-4.  CUSTOM REFERENCE ....................................................................................................................14
-
-4.1
-4.2
-
-4.2.1
-
-4.3
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-
-4.4
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-
-4.5
-
-4.5.1
-4.5.2
-
-INTERFACE ISSUES..........................................................................................................................14
-OVERVIEW .....................................................................................................................................14
-Behavior of Servers Implementing Both OPC Security Interfaces........................................14
-IOPCSECURITYNT.........................................................................................................................15
-IOPCSecurityNT::IsAvailableNT..........................................................................................16
-IOPCSecurityNT::QueryMinImpersonationLevel.................................................................17
-IOPCSecurityNT::ChangeUser..............................................................................................18
-Use Scenario ..........................................................................................................................19
-IOPCSECURITYPRIVATE ................................................................................................................20
-IOPCSecurityPrivate::IsAvailablePriv ..................................................................................21
-IOPCSecurityPrivate::Logon.................................................................................................22
-IOPCSecurityPrivate::Logoff ................................................................................................23
-Use Scenario ..........................................................................................................................24
-NT CREDENTIAL APPROACH ..........................................................................................................25
-Server Security ......................................................................................................................25
-Client Security .......................................................................................................................26
-
-5.
-
-INSTALLATION ................................................................................................................................28
-
-5.1
-5.2
-
-SERVER INSTALLATION ISSUES.......................................................................................................28
-CLIENT INSTALLATION ...................................................................................................................28
-
-5
-
-<!-- Extracted images from page 6 -->
-![Extracted image 1 from page 6](opc-security-1.00-specification.images/page006-img01.png)
-<!-- /Extracted images from page 6 -->
-
-OPC Security Custom Interface (Version 1.0)
-6.  APPENDIX ..........................................................................................................................................29
-
-6.1
-
-6.1.1
-
-6.2
-6.3
-
-6.3.1
-6.3.2
-6.3.3
-6.3.4
-
-IDL FILE ........................................................................................................................................29
-OPC Security Custom Interface IDL Specification ...............................................................29
-OPCERRSEC.H ................................................................................................................................31
-GUIDELINES ...................................................................................................................................33
-DCOM Security Setup and Settings ......................................................................................33
-In-Process Server Considerations ..........................................................................................36
-Local/Remote Server Configuration Parameters ...................................................................37
-Windows 2000 and Windows NT Considerations.................................................................38
-
-6
-
-<!-- Extracted images from page 7 -->
-![Extracted image 1 from page 7](opc-security-1.00-specification.images/page007-img01.png)
-<!-- /Extracted images from page 7 -->
-
-OPC Security Custom Interface (Version 1.0)
-
-1.  Introduction
-
-1.1  Background
+### 1.1 Background
 
 OLE for Process Control has defined interfaces for Data Access Servers, Event Servers, and Historical
 Data Access Servers.  These servers provide information that is valuable to the enterprise and if
@@ -350,7 +248,7 @@ improperly updated, could have significant consequences to plant processes.  The
 to control client access to these servers in order to protect this sensitive information and to guard
 against unauthorized modification of process parameters.
 
-1.2  Key Requirements
+### 1.2 Key Requirements
 
 Security must be provided in a standard manner, consistent among implementations of OPC Servers by
 various vendors, to permit the implementation of portable client applications.
@@ -359,31 +257,31 @@ Security must be well integrated with Windows NT and be as transparent as possib
 application.  Ideally, security should “just be there” with no special actions by the client application
 required in order for security to be enforced.
 
-1.3  Purpose
+### 1.3 Purpose
 
 The purpose of this document is to specify how OPC Servers should implement security using
 operating system facilities.  In addition, usage guidelines are provided for the OPC Client
 implementation to interact with a security aware OPC Server.
 
-1.4  Relationship to Other OPC Specifications
+### 1.4 Relationship to Other OPC Specifications
 
 This specification is analogous to the OPC Common specification in that it applies to all of the defined
 OPC Servers.
 
-1.5  Scope of This Specification
+### 1.5 Scope of This Specification
 
-1.5.1  Security Aspects
+#### 1.5.1 Security Aspects
 
 This specification focuses on client identification, that is the exchanging of trusted credentials to be
 used for access authorization decisions by the OPC Server.  It does not address which objects are to be
 secured, but leaves this matter to the OPC Server implementers.
 
-1.5.2  Levels of Security
+#### 1.5.2 Levels of Security
 
 This specification permits multiple levels of security to maintain coexistence with legacy OPC
 applications and to provide enhanced security capabilities.
 
-1.5.3  Operating Systems
+#### 1.5.3 Operating Systems
 
 This specification applies to the following computer platforms:
 
@@ -401,7 +299,8 @@ limited security model.  Third party support is required for DCOM transport.
 
 7
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8](opc-security-1.00-specification.images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -411,7 +310,7 @@ Other Platforms – This specification may apply to other platforms (such as UNI
 
 availability of DCOM implementations on such platforms.
 
-1.6  Prerequisites
+### 1.6 Prerequisites
 
 Readers are assumed to be familiar with the applicable OPC Specifications; for example, OPC
 Common, OPC Data Access, OPC Alarms and Events, and OPC Historical Data Access.
@@ -439,22 +338,23 @@ Library at the following Web address: http://www.microsoft.com/com/resources/spe
 A white paper on third party DCOM implementations for Windows CE can be found at the following
 Web address: http://www.microsoft.com/industry/man/whitepapers/whitepapers.asp
 
-1.7  Deliverables
+### 1.7 Deliverables
 
 This document covers the analysis and design for a COM compliant custom interface.  A separate
 document describes a related OLE Automation interface.
 
 8
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9](opc-security-1.00-specification.images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-2.  Fundamental Concepts
+## 2. Fundamental Concepts
 
-2.1  Security Reference Model
+### 2.1 Security Reference Model
 
 To understand this specification, it is helpful to first examine a security reference model.  This model
 is intended to serve as a conceptual framework for the remainder of the specification. It is consistent
@@ -510,7 +410,8 @@ system is typically considered to be secure.  A channel that spans computer syst
 
 9
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10](opc-security-1.00-specification.images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -530,7 +431,7 @@ Access Certificate – A trusted credential associated with a Principal, which i
 Monitor as a basis for an access authorization decision.  An example of an access certificate is the
 NT Access Token associated with every NT process.
 
-2.1.1  Authorization vs. Authentication
+#### 2.1.1 Authorization vs. Authentication
 
 Authorization is the process of granting a Principal access to a security object.  The authorization
 decision is made by the Reference Monitor, based on a comparison of the Principal’s access certificate
@@ -540,16 +441,16 @@ Authentication is a property of the underlying communications channel, and refer
 Reference Monitor to be confident of the validity of the identity and credentials of a Principal
 requesting access to a security object.
 
-2.2  Application of the Model in This Specification
+### 2.2 Application of the Model in This Specification
 
-2.2.1  Principals
+#### 2.2.1 Principals
 
 The Principals covered in this specification are computer processes running on one of the client or
 server operating systems specified in Section 1.4.2.  Programs or applications are not Principals in their
 own right, but are assigned the access rights of the processes in which they are running.  In NT, all
 processes run under user accounts, which specify their access rights.
 
-2.2.2  Access Certificates
+#### 2.2.2 Access Certificates
 
 In this specification, the Access Certificate is either:
 
@@ -561,7 +462,7 @@ or
 
 See section 2.4 Private Credential vs. NT Access Token for further explanation.
 
-2.2.3  Security Objects
+#### 2.2.3 Security Objects
 
 This specification deals only with OPC Server applications and Client applications (in the case of call-
 back interfaces), and any vendor specific security objects which are implemented by the OPC Server.
@@ -570,19 +471,20 @@ and individual or sets of data items.  However, such security objects are vendor
 determination of which objects to secure is up to the OPC Server vendor, the manner in which they are
 secured must conform to the specification.
 
-2.2.4  Access Control Lists
+#### 2.2.4 Access Control Lists
 
 In this specification, Access Control Lists are the NT Access Control Lists, with the possible exception
 of OPC Security using private credentials discussed later.
 
 10
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11](opc-security-1.00-specification.images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 OPC Security Custom Interface (Version 1.0)
-2.2.5  Reference Monitor
+#### 2.2.5 Reference Monitor
 
 This specification deals with the following reference monitors:
 
@@ -593,12 +495,12 @@ This specification deals with the following reference monitors:
 their authorization decisions based on the NT Access Token or on a vendor specific private
 credentials.  The NT Access Token is the preferred approach.
 
-2.2.6  Channels
+#### 2.2.6 Channels
 
 This specification deals only with Channels supported by DCOM.   The channel security levels are
 those supported by DCOM, that is to say connect, call, packet, packet integrity, and packet privacy.
 
-2.3  Levels of Security
+### 2.3 Levels of Security
 
 An OPC Server may implement one of three levels of security:
 
@@ -616,7 +518,7 @@ OPC Security – The OPC Server serves as a reference monitor to control access 
 security objects that are exposed by the OPC Server.  An OPC Server may implement OPC
 Security in addition to DCOM Security, or implement OPC Security alone.
 
-2.4  Private Credential vs. NT Access Token
+### 2.4 Private Credential vs. NT Access Token
 
 Whenever possible an OPC Server which implements OPC Security should base its access
 authorization decisions upon the NT Access Token associated with the client application.  This
@@ -650,7 +552,8 @@ which do not have NT Access Tokens, may implement support for both types of acce
 
 11
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12](opc-security-1.00-specification.images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -659,13 +562,13 @@ OPC Security Custom Interface (Version 1.0)
 a client-by-client basis.  This approach provides a transparent security implementation for those clients
 with NT Access Tokens, while providing security for those clients without NT Access Tokens.
 
-2.5  Optional IOPCSecurityNT and IOPCSecurityPrivate Interfaces
+### 2.5 Optional IOPCSecurityNT and IOPCSecurityPrivate Interfaces
 
 OPC Servers that implement OPC Security must implement one or both of the IOPCSecurityNT or
 IOPCSecurityPrivate interfaces.  Existence of these interfaces allows client applications to determine if
 OPC Security is implemented, and if so, which types of access certificates are supported.
 
-2.6  Backward Compatibility
+### 2.6 Backward Compatibility
 
 OPC Servers that implement Disabled Security or DCOM Security are fully compatible with clients
 which are not security aware.
@@ -680,18 +583,19 @@ access when attempting to access security objects.
 
 12
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13](opc-security-1.00-specification.images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-3.  OPC Security Quick Reference
+## 3. OPC Security Quick Reference
 
 This section includes a quick reference for both Custom and Automation Interface methods. These
 interfaces, their parameters, and behavior are defined in more detail later in the reference sections.
 
-3.1  “OPCServer” Object
+### 3.1 “OPCServer” Object
 
 “OPCServer” may be one of the following:  OPC (Data Access) Server, OPC Event Server, or OPC
 HDA Server.  The intent is that these interfaces be added to the above server objects, similar to the
@@ -726,7 +630,7 @@ Object
 Note: As an example, this OPC Data Access 2.0 server shows the  relationship of the IOPCSecurity interface to the
 OPC server object
 
-3.1.1  IOPCSecurityNT
+#### 3.1.1 IOPCSecurityNT
 
 HRESULT
 HRESULT
@@ -736,7 +640,7 @@ IsAvailableNT([out] BOOL *pbAvailable);;
 QueryMinImpersonationLevel([out] DWORD *pdwMinImpLevel);
 ChangeUser(void);
 
-3.1.2  IOPCSecurityPrivate
+#### 3.1.2 IOPCSecurityPrivate
 
 HRESULT
 HRESULT
@@ -748,21 +652,22 @@ Logoff(void);
 
 13
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14](opc-security-1.00-specification.images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.  Custom Reference
+## 4. Custom Reference
 
-4.1  Interface Issues
+### 4.1 Interface Issues
 
 Please refer to the OPC Common Interface Issues section in the OPC Common specification for a
 description of issues which are common to all interfaces, and for some background information about
 how the designers of OPC expected these interfaces to be implemented and used.
 
-4.2  Overview
+### 4.2 Overview
 
 Every OPC Server (DA, A&E, HDA, etc.) implementing OPC Security must implement either one or
 both interfaces completely.
@@ -801,7 +706,7 @@ can be added to and managed by the OPC groups. These child objects and interface
 of the same session. A change in credentials not only affects the interfaces of the server object but
 of all OPC group objects also.
 
-4.2.1  Behavior of Servers Implementing Both OPC Security Interfaces
+#### 4.2.1 Behavior of Servers Implementing Both OPC Security Interfaces
 If both interfaces are currently enabled, by default the OPC Server will assume that the client is
 operating using NT credentials, and will continue to do so until the client explicitly invokes the
 IOPCSecurityPrivate::Logon method.  Once this has occurred, the OPC Server will make all
@@ -811,13 +716,14 @@ call to IOPCSecurityNT::ChangeUser will be invalid and will result in an error r
 
 14
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15](opc-security-1.00-specification.images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.3  IOPCSecurityNT
+### 4.3 IOPCSecurityNT
 
 This is an optional interface and will not  be supported by servers not implementing OPC Security. A
 client may not assume the presence of this interface on a server.
@@ -838,13 +744,14 @@ invocation of ChangeUser(), until the client makes a new call to that method.
 
 15
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16](opc-security-1.00-specification.images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.3.1  IOPCSecurityNT::IsAvailableNT
+#### 4.3.1 IOPCSecurityNT::IsAvailableNT
 HRESULT IsAvailableNT(
 
 [out] BOOL *pbAvailable
@@ -899,13 +806,14 @@ state change depending on which interface is currently being used.
 
 16
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17](opc-security-1.00-specification.images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.3.2  IOPCSecurityNT::QueryMinImpersonationLevel
+#### 4.3.2 IOPCSecurityNT::QueryMinImpersonationLevel
 HRESULT QueryMinImpersonationLevel(
 
 [out] DWORD *pdwMinImpLevel
@@ -969,13 +877,14 @@ See section 6.3.4.5 Impersonation Levels for additional information.
 
 17
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18](opc-security-1.00-specification.images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.3.3  IOPCSecurityNT::ChangeUser
+#### 4.3.3 IOPCSecurityNT::ChangeUser
 HRESULT ChangeUser();
 
 Description
@@ -1031,13 +940,14 @@ time of connection to the server.
 
 18
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19](opc-security-1.00-specification.images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.3.4  Use Scenario
+#### 4.3.4 Use Scenario
 
 The following interaction diagram shows a scenario in which a client accesses an OPC Data Access
 server to perform a synchronous read operation.  The server implements OPC Security using NT
@@ -1088,13 +998,14 @@ the caller privileges
 
 19
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20](opc-security-1.00-specification.images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.4  IOPCSecurityPrivate
+### 4.4 IOPCSecurityPrivate
 
 This is an optional interface and will not be supported by servers not implementing OPC Security
 using Private Credentials. A client may not assume the presence of this interface on a server.
@@ -1107,13 +1018,14 @@ set the bAvailable to FALSE to signal that private credentials are currently dis
 
 20
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21](opc-security-1.00-specification.images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.4.1  IOPCSecurityPrivate::IsAvailablePriv
+#### 4.4.1 IOPCSecurityPrivate::IsAvailablePriv
 HRESULT IsAvailablePriv(
 
 [out] BOOL *pbAvailable
@@ -1166,13 +1078,14 @@ state change depending on which interface is currently being used.
 
 21
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22](opc-security-1.00-specification.images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.4.2  IOPCSecurityPrivate::Logon
+#### 4.4.2 IOPCSecurityPrivate::Logon
 HRESULT Logon(
 
 [in, string] LPCWSTR szUserID,
@@ -1238,13 +1151,14 @@ credentials immediately.
 
 22
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23](opc-security-1.00-specification.images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.4.3  IOPCSecurityPrivate::Logoff
+#### 4.4.3 IOPCSecurityPrivate::Logoff
 HRESULT Logoff();
 
 Description
@@ -1276,13 +1190,14 @@ The operation failed.
 
 23
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24](opc-security-1.00-specification.images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.4.4  Use Scenario
+#### 4.4.4 Use Scenario
 
 The following interaction diagram shows a scenario in which a client accesses an OPC Data Access
 server to perform a synchronous read operation.  The server implements OPC Security using private
@@ -1328,18 +1243,19 @@ IOPCSecurityPrivate::Logoff
 
 24
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25](opc-security-1.00-specification.images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-4.5  NT Credential Approach
+### 4.5 NT Credential Approach
 
 The concepts and code snippets are part of the source code of the OPC security sample server as
 offered by the OPC foundation (see http://www.opcfoundation.org).
 
-4.5.1  Server Security
+#### 4.5.1 Server Security
 
 The mechanism of using NT credentials relies on the user credentials inherently sent along with COM
 calls. This implies minimal settings of DCOM/RPC authentication to allow proper identification of the
@@ -1395,7 +1311,8 @@ level was set by the client prior to the call.
 
 25
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26](opc-security-1.00-specification.images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1451,7 +1368,7 @@ fclose(hFile);
 // revert to previous caller context:
 ::SetThreadToken(NULL, NULL);
 
-4.5.2  Client Security
+#### 4.5.2 Client Security
 
 4.5.2.1  General Approach
 
@@ -1462,7 +1379,8 @@ for all methods in one COM interface and remains in effect until the proxy blank
 
 26
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27](opc-security-1.00-specification.images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -1525,15 +1443,16 @@ is expected to be extremely rare, no sample code has been implemented.
 
 27
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28](opc-security-1.00-specification.images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-5.  Installation
+## 5. Installation
 
-5.1  Server Installation Issues
+### 5.1 Server Installation Issues
 
 OPC Security does not need additional registry entries.   However, the security proxy DLL
 opcSec_PS.dll must be installed and registered for the server.
@@ -1541,7 +1460,7 @@ opcSec_PS.dll must be installed and registered for the server.
 The installation should be done as specified in section, 6.5, “Installing OPC Binaries” in the OPC
 Common Definitions and Interfaces document.
 
-5.2  Client Installation
+### 5.2 Client Installation
 
 The security proxy DLL opcSec_PS.dll must be installed and registered for the client.
 
@@ -1550,17 +1469,18 @@ Common Definitions and Interfaces document.
 
 28
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29](opc-security-1.00-specification.images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-6.  Appendix
+## 6. Appendix
 
-6.1  IDL File
+### 6.1 IDL File
 
-6.1.1  OPC Security Custom Interface IDL Specification
+#### 6.1.1 OPC Security Custom Interface IDL Specification
 
 The current files require MIDL compiler 3.00.15 or later and the WIN NT 4.0 release SDK.
 
@@ -1624,7 +1544,8 @@ credentials in proxy blanket")
 
 29
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30](opc-security-1.00-specification.images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -1698,13 +1619,14 @@ interface IOPCSecurityPrivate;
 
 30
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31](opc-security-1.00-specification.images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-6.2  OpcErrSec.h
+### 6.2 OpcErrSec.h
 
 /*++
 
@@ -1769,7 +1691,8 @@ Facility Code Assignments:
 
 31
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32](opc-security-1.00-specification.images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -1805,15 +1728,16 @@ secured data.
 
 32
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33](opc-security-1.00-specification.images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-6.3  Guidelines
+### 6.3 Guidelines
 
-6.3.1  DCOM Security Setup and Settings
+#### 6.3.1 DCOM Security Setup and Settings
 
 6.3.1.1  Recommended Security Setup
 
@@ -1891,7 +1815,8 @@ RPC_C_IMP_LEVEL_IDENTIFY, NULL, EOAC_NONE, NULL);
 
 33
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34](opc-security-1.00-specification.images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -1991,7 +1916,8 @@ referenced Web location.
 
 34
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35](opc-security-1.00-specification.images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2100,13 +2026,14 @@ DCOM95/98 supports only TCP connectivity.
 
 35
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36](opc-security-1.00-specification.images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-6.3.2  In-Process Server Considerations
+#### 6.3.2 In-Process Server Considerations
 
 6.3.2.1  Private Credentials
 
@@ -2140,13 +2067,14 @@ CoSetProxyBlanket()).
 
 36
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37](opc-security-1.00-specification.images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
 OPC Security Custom Interface (Version 1.0)
 
-6.3.3  Local/Remote Server Configuration Parameters
+#### 6.3.3 Local/Remote Server Configuration Parameters
 These parameters are not mandatory. This section is only a guideline.
 
 However, it is expected that most servers that implement the IOPCSecurityNT and/or
@@ -2203,7 +2131,8 @@ Security.
 
 37
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38](opc-security-1.00-specification.images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2272,7 +2201,8 @@ AccessCheck()
 
 38
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39](opc-security-1.00-specification.images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2338,7 +2268,8 @@ token is used. For all future calls, the identity set on the first call is used.
 
 39
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40](opc-security-1.00-specification.images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2409,7 +2340,8 @@ client. The client sets the impersonation level on the proxy it uses to communic
 
 40
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41](opc-security-1.00-specification.images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 

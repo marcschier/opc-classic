@@ -9,7 +9,8 @@ Final Release
 
 OCTOBER 2, 2002
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -65,7 +66,8 @@ This specification requires Windows 95 Windows NT 4.0 or later
 
 i
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -126,7 +128,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 ii
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -164,7 +167,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 iii
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -225,7 +229,8 @@ BrowseOPCAreas method - clarify S_FALSE return.
 
 iv
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -254,307 +259,142 @@ Alarms and Events applications.
 
 v
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
-Table of Contents
+## Table of Contents
 
-Final Release
+- [1. Introduction](#1-introduction)
+  - [1.1 Background](#11-background)
+  - [1.2 Purpose](#12-purpose)
+  - [1.3 Relationship to Other OPC Specifications](#13-relationship-to-other-opc-specifications)
+  - [1.4 Scope](#14-scope)
+    - [1.4.1 General](#141-general)
+    - [1.4.2 Multiple Levels of Capability](#142-multiple-levels-of-capability)
+      - [1.4.2.1 Types of Alarm and Event Servers](#1421-types-of-alarm-and-event-servers)
+      - [1.4.2.2 Types of Alarm and Event Clients](#1422-types-of-alarm-and-event-clients)
+      - [1.4.2.3 Client - Server Interactions](#1423-client-server-interactions)
+  - [1.5 References](#15-references)
+  - [1.6 Audience](#16-audience)
+  - [1.7 Deliverables](#17-deliverables)
+- [2. Fundamental Concepts](#2-fundamental-concepts)
+  - [2.1 Overview](#21-overview)
+  - [2.2 OPC Event Servers](#22-opc-event-servers)
+  - [2.3 Areas](#23-areas)
+  - [2.4 Conditions](#24-conditions)
+    - [2.4.1 General](#241-general)
+    - [2.4.2 Attributes of OPCConditions](#242-attributes-of-opcconditions)
+      - [2.4.2.1 Condition Quality](#2421-condition-quality)
+    - [2.4.3 Attributes of OPCSubConditions](#243-attributes-of-opcsubconditions)
+      - [2.4.3.1 Condition Definitions](#2431-condition-definitions)
+      - [2.4.3.2 Severity](#2432-severity)
+    - [2.4.4 Enabling and Disabling Conditions](#244-enabling-and-disabling-conditions)
+    - [2.4.5 Enabling and Disabling Areas](#245-enabling-and-disabling-areas)
+    - [2.4.6 Interfaces](#246-interfaces)
+    - [2.4.7 Condition States](#247-condition-states)
+  - [2.5 Events and Event Notifications](#25-events-and-event-notifications)
+    - [2.5.1 General](#251-general)
+    - [2.5.2 Event Notifications](#252-event-notifications)
+      - [2.5.2.1 Standard Attributes](#2521-standard-attributes)
+      - [2.5.2.2 Vendor-Specific Attributes](#2522-vendor-specific-attributes)
+    - [2.5.3 Event Categories](#253-event-categories)
+    - [2.5.4 Interfaces](#254-interfaces)
+  - [2.6 Subscriptions to Event Notifications](#26-subscriptions-to-event-notifications)
+    - [2.6.1 General](#261-general)
+    - [2.6.2 Properties of OPCEventSubscriptions](#262-properties-of-opceventsubscriptions)
+    - [2.6.3 Filters](#263-filters)
+    - [2.6.4 Interfaces](#264-interfaces)
+  - [2.7 Condition State Synchronization](#27-condition-state-synchronization)
+  - [2.8 Error Handling](#28-error-handling)
+- [3. Architectural Overview](#3-architectural-overview)
+  - [3.1 Relationship to OPC Data Access Server](#31-relationship-to-opc-data-access-server)
+  - [3.2 Overview of Objects and Interfaces](#32-overview-of-objects-and-interfaces)
+    - [3.2.1 General](#321-general)
+    - [3.2.2 OPCEventServer Object](#322-opceventserver-object)
+    - [3.2.3 OPCEventSubscription Object](#323-opceventsubscription-object)
+    - [3.2.4 OPCEventAreaBrowser Object (optional)](#324-opceventareabrowser-object-optional)
+- [4. OPC Event Server Quick Reference](#4-opc-event-server-quick-reference)
+  - [4.1 Alarms and Events Custom Interface](#41-alarms-and-events-custom-interface)
+    - [4.1.1 OPCEventServer Object](#411-opceventserver-object)
+    - [4.1.2 OPCEventAreaBrowser Object (optional)](#412-opceventareabrowser-object-optional)
+    - [4.1.3 OPCEventSubscription Object](#413-opceventsubscription-object)
+  - [4.2 Custom Interface - Client Side](#42-custom-interface-client-side)
+- [5. OPC Event Server Custom Interfaces](#5-opc-event-server-custom-interfaces)
+  - [5.1 Overview](#51-overview)
+  - [5.2 General Information](#52-general-information)
+  - [5.3 OPCEventServer Object](#53-opceventserver-object)
+    - [5.3.1 Overview](#531-overview)
+    - [5.3.2 IUnknown](#532-iunknown)
+    - [5.3.3 IOPCCommon](#533-iopccommon)
+    - [5.3.4 IOPCEventServer](#534-iopceventserver)
+      - [5.3.4.1 IOPCEventServer::GetStatus](#5341-iopceventservergetstatus)
+      - [5.3.4.2 IOPCEventServer:: CreateEventSubscription](#5342-iopceventserver-createeventsubscription)
+      - [5.3.4.3 IOPCEventServer::QueryAvailableFilters](#5343-iopceventserverqueryavailablefilters)
+      - [5.3.4.4 IOPCEventServer::QueryEventCategories](#5344-iopceventserverqueryeventcategories)
+      - [5.3.4.5 IOPCEventServer::QueryConditionNames](#5345-iopceventserverqueryconditionnames)
+      - [5.3.4.6 IOPCEventServer::QuerySubConditionNames](#5346-iopceventserverquerysubconditionnames)
+      - [5.3.4.7 IOPCEventServer::QuerySourceConditions](#5347-iopceventserverquerysourceconditions)
+      - [5.3.4.8 IOPCEventServer::QueryEventAttributes](#5348-iopceventserverqueryeventattributes)
+      - [5.3.4.9 IOPCEventServer::TranslateToItemIDs](#5349-iopceventservertranslatetoitemids)
+      - [5.3.4.10 IOPCEventServer::GetConditionState](#53410-iopceventservergetconditionstate)
+      - [5.3.4.11 IOPCEventServer::EnableConditionByArea](#53411-iopceventserverenableconditionbyarea)
+      - [5.3.4.12 IOPCEventServer::EnableConditionBySource](#53412-iopceventserverenableconditionbysource)
+      - [5.3.4.13 IOPCEventServer::DisableConditionByArea](#53413-iopceventserverdisableconditionbyarea)
+      - [5.3.4.14 IOPCEventServer::DisableConditionBySource](#53414-iopceventserverdisableconditionbysource)
+      - [5.3.4.15 IOPCEventServer::AckCondition](#53415-iopceventserverackcondition)
+      - [5.3.4.16 IOPCEventServer::CreateAreaBrowser](#53416-iopceventservercreateareabrowser)
+    - [5.3.5 IOPCEventServer2 (optional)](#535-iopceventserver2-optional)
+      - [5.3.5.1 Usage Examples](#5351-usage-examples)
+      - [5.3.5.2 IOPCEventServer2::EnableConditionByArea2](#5352-iopceventserver2enableconditionbyarea2)
+      - [5.3.5.3 IOPCEventServer2::EnableConditionBySource2](#5353-iopceventserver2enableconditionbysource2)
+      - [5.3.5.4 IOPCEventServer2::DisableConditionByArea2](#5354-iopceventserver2disableconditionbyarea2)
+      - [5.3.5.5 IOPCEventServer2::DisableConditionBySource2](#5355-iopceventserver2disableconditionbysource2)
+      - [5.3.5.6 IOPCEventServer2::GetEnableStateByArea](#5356-iopceventserver2getenablestatebyarea)
+      - [5.3.5.7 IOPCEventServer2::GetEnableStateBySource](#5357-iopceventserver2getenablestatebysource)
+    - [5.3.6 IConnectionPointContainer](#536-iconnectionpointcontainer)
+    - [5.3.7 IConnectionPoint](#537-iconnectionpoint)
+  - [5.4 OPCEventAreaBrowser Object (optional)](#54-opceventareabrowser-object-optional)
+    - [5.4.1 IOPCEventAreaBrowser](#541-iopceventareabrowser)
+      - [5.4.1.1 IOPCEventAreaBrowser::ChangeBrowsePosition](#5411-iopceventareabrowserchangebrowseposition)
+      - [5.4.1.2 IOPCEventAreaBrowser::BrowseOPCAreas](#5412-iopceventareabrowserbrowseopcareas)
+      - [5.4.1.3 IOPCEventAreaBrowser::GetQualifiedAreaName](#5413-iopceventareabrowsergetqualifiedareaname)
+      - [5.4.1.4 IOPCEventAreaBrowser::GetQualifiedSourceName](#5414-iopceventareabrowsergetqualifiedsourcename)
+  - [5.5 OPCEventSubscription Object](#55-opceventsubscription-object)
+    - [5.5.1 IOPCEventSubscriptionMgt](#551-iopceventsubscriptionmgt)
+      - [5.5.1.1 IOPCEventSubscriptionMgt::SetFilter](#5511-iopceventsubscriptionmgtsetfilter)
+      - [5.5.1.2 IOPCEventSubscriptionMgt::GetFilter](#5512-iopceventsubscriptionmgtgetfilter)
+      - [5.5.1.3 IOPCEventSubscriptionMgt::SelectReturnedAttributes](#5513-iopceventsubscriptionmgtselectreturnedattributes)
+      - [5.5.1.4 IOPCEventSubscriptionMgt::GetReturnedAttributes](#5514-iopceventsubscriptionmgtgetreturnedattributes)
+      - [5.5.1.5 IOPCEventSubscriptionMgt::Refresh](#5515-iopceventsubscriptionmgtrefresh)
+      - [5.5.1.6 IOPCEventSubscriptionMgt::CancelRefresh](#5516-iopceventsubscriptionmgtcancelrefresh)
+      - [5.5.1.7 IOPCEventSubscriptionMgt::GetState](#5517-iopceventsubscriptionmgtgetstate)
+      - [5.5.1.8 IOPCEventSubscriptionMgt::SetState](#5518-iopceventsubscriptionmgtsetstate)
+    - [5.5.2 IOPCEventSubscriptionMgt2 (optional)](#552-iopceventsubscriptionmgt2-optional)
+    - [5.5.3 IConnectionPointContainer](#553-iconnectionpointcontainer)
+  - [5.6 Client Side Interfaces](#56-client-side-interfaces)
+    - [5.6.1 IOPCEventSink](#561-iopceventsink)
+      - [5.6.1.1 IOPCEventSink::OnEvent](#5611-iopceventsinkonevent)
+    - [5.6.2 IOPCShutdown](#562-iopcshutdown)
+      - [5.6.2.1 IOPCShutdown::ShutdownRequest](#5621-iopcshutdownshutdownrequest)
+- [6. Alarms and Events Custom Interface](#6-alarms-and-events-custom-interface)
+  - [6.1 Common Topics](#61-common-topics)
+  - [6.2 Component Categories Registration](#62-component-categories-registration)
+    - [6.2.1 Server Registration](#621-server-registration)
+    - [6.2.2 Client Enumeration](#622-client-enumeration)
+- [7. Summary of OPC Error Codes](#7-summary-of-opc-error-codes)
+- [Appendix A Sample String Filter Function](#appendix-a-sample-string-filter-function)
+- [Appendix B Event Types, Event Categories, and Conditions](#appendix-b-event-types-event-categories-and-conditions)
+- [Appendix C Event Attributes](#appendix-c-event-attributes)
+- [Appendix D Event Server IDL Specification](#appendix-d-event-server-idl-specification)
+- [Appendix E OPCAEDEF.H](#appendix-e-opcaedefh)
+- [Appendix F OPCAE_ER.H](#appendix-f-opcaeerh)
 
-2.4.3
+## 1. Introduction
 
-2.4.2.1
-
-2.4.1
-2.4.2
-
-2.4.3.1
-2.4.3.2
-
-1.4.2.1
-1.4.2.2
-1.4.2.3
-
-1.
-1.1
-1.2
-1.3
-1.4
-
-INTRODUCTION................................................................................................................................. 1
-BACKGROUND ..................................................................................................................................... 1
-PURPOSE .............................................................................................................................................. 1
-RELATIONSHIP TO OTHER OPC SPECIFICATIONS................................................................................. 1
-SCOPE .................................................................................................................................................. 1
-General........................................................................................................................................ 1
-1.4.1
-1.4.2  Multiple Levels of Capability ..................................................................................................... 1
-Types of Alarm and Event Servers ......................................................................................................... 2
-Types of Alarm and Event Clients .......................................................................................................... 2
-Client – Server Interactions..................................................................................................................... 3
-1.5
-REFERENCES........................................................................................................................................ 3
-1.6  AUDIENCE............................................................................................................................................ 3
-1.7  DELIVERABLES .................................................................................................................................... 4
-2.  FUNDAMENTAL CONCEPTS .......................................................................................................... 5
-2.1  OVERVIEW........................................................................................................................................... 5
-2.2  OPC EVENT SERVERS.......................................................................................................................... 5
-2.3  AREAS ................................................................................................................................................. 5
-CONDITIONS ........................................................................................................................................ 6
-2.4
-General........................................................................................................................................ 6
-Attributes of OPCConditions ...................................................................................................... 7
-Condition Quality.................................................................................................................................... 8
-Attributes of OPCSubConditions................................................................................................ 8
-Condition Definitions.............................................................................................................................. 8
-Severity ................................................................................................................................................... 8
-Enabling and Disabling Conditions .......................................................................................... 10
-Enabling and Disabling Areas................................................................................................... 10
-Interfaces................................................................................................................................... 11
-Condition States ........................................................................................................................ 11
-EVENTS AND EVENT NOTIFICATIONS................................................................................................. 13
-General...................................................................................................................................... 13
-Event Notifications ................................................................................................................... 14
-2.5.2.1
-Standard Attributes ............................................................................................................................... 14
-2.5.2.2  Vendor-Specific Attributes ................................................................................................................... 16
-Event Categories ....................................................................................................................... 16
-Interfaces................................................................................................................................... 16
-SUBSCRIPTIONS TO EVENT NOTIFICATIONS ....................................................................................... 16
-General...................................................................................................................................... 16
-Properties of OPCEventSubscriptions ...................................................................................... 16
-Filters ........................................................................................................................................ 16
-Interfaces................................................................................................................................... 17
-CONDITION STATE SYNCHRONIZATION ............................................................................................. 17
-2.7
-2.8
-ERROR HANDLING ............................................................................................................................. 17
-3.  ARCHITECTURAL OVERVIEW.................................................................................................... 19
-3.1
-RELATIONSHIP TO OPC DATA ACCESS SERVER ................................................................................ 19
-3.2  OVERVIEW OF OBJECTS AND INTERFACES ......................................................................................... 19
-General...................................................................................................................................... 19
-OPCEventServer Object ........................................................................................................... 20
-OPCEventSubscription Object.................................................................................................. 21
-OPCEventAreaBrowser Object (optional) ................................................................................ 21
-4.  OPC EVENT SERVER QUICK REFERENCE .............................................................................. 23
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-2.6.1
-2.6.2
-2.6.3
-2.6.4
-
-2.4.4
-2.4.5
-2.4.6
-2.4.7
-
-2.5.3
-2.5.4
-
-2.5.1
-2.5.2
-
-2.5
-
-2.6
-
-vi
-
- Alarms and Events Custom Interface
-(Version 1.10)
-
-F O U N D A T I O N
-
-Final Release
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-5.3.1
-5.3.2
-5.3.3
-5.3.4
-
-5.3.4.1
-5.3.4.2
-5.3.4.3
-5.3.4.4
-5.3.4.5
-5.3.4.6
-5.3.4.7
-5.3.4.8
-5.3.4.9
-5.3.4.10
-5.3.4.11
-5.3.4.12
-5.3.4.13
-5.3.4.14
-5.3.4.15
-5.3.4.16
-
-CUSTOM INTERFACE – SERVER SIDE ................................................................................................. 23
-OPCEventServer Object ........................................................................................................... 24
-OPCEventAreaBrowser Object (optional) ................................................................................ 25
-OPCEventSubscription Object.................................................................................................. 25
-4.2
-CUSTOM INTERFACE – CLIENT SIDE .................................................................................................. 26
-5.  OPC EVENT SERVER CUSTOM INTERFACES ......................................................................... 27
-5.1  OVERVIEW......................................................................................................................................... 27
-5.2  GENERAL INFORMATION.................................................................................................................... 27
-5.3  OPCEVENTSERVER OBJECT .............................................................................................................. 29
-Overview................................................................................................................................... 29
-IUnknown ................................................................................................................................. 29
-IOPCCommon........................................................................................................................... 29
-IOPCEventServer...................................................................................................................... 30
-IOPCEventServer::GetStatus ................................................................................................................ 31
-IOPCEventServer:: CreateEventSubscription ....................................................................................... 33
-IOPCEventServer::QueryAvailableFilters ............................................................................................ 35
-IOPCEventServer::QueryEventCategories............................................................................................ 36
-IOPCEventServer::QueryConditionNames........................................................................................... 38
-IOPCEventServer::QuerySubConditionNames..................................................................................... 39
-IOPCEventServer::QuerySourceConditions ......................................................................................... 40
-IOPCEventServer::QueryEventAttributes............................................................................................. 41
-IOPCEventServer::TranslateToItemIDs ............................................................................................... 43
-IOPCEventServer::GetConditionState.............................................................................................. 45
-IOPCEventServer::EnableConditionByArea .................................................................................... 49
-IOPCEventServer::EnableConditionBySource................................................................................. 50
-IOPCEventServer::DisableConditionByArea ................................................................................... 51
-IOPCEventServer::DisableConditionBySource................................................................................ 52
-IOPCEventServer::AckCondition..................................................................................................... 53
-IOPCEventServer::CreateAreaBrowser............................................................................................ 55
-IOPCEventServer2 (optional) ................................................................................................... 56
-5.3.5.1  Usage Examples.................................................................................................................................... 56
-IOPCEventServer2::EnableConditionByArea2..................................................................................... 59
-5.3.5.2
-IOPCEventServer2::EnableConditionBySource2 ................................................................................. 61
-5.3.5.3
-IOPCEventServer2::DisableConditionByArea2 ................................................................................... 63
-5.3.5.4
-IOPCEventServer2::DisableConditionBySource2 ................................................................................ 65
-5.3.5.5
-IOPCEventServer2::GetEnableStateByArea......................................................................................... 67
-5.3.5.6
-IOPCEventServer2::GetEnableStateBySource ..................................................................................... 69
-5.3.5.7
-IConnectionPointContainer....................................................................................................... 71
-IConnectionPoint ...................................................................................................................... 72
-5.4  OPCEVENTAREABROWSER OBJECT (OPTIONAL) .............................................................................. 73
-IOPCEventAreaBrowser........................................................................................................... 73
-IOPCEventAreaBrowser::ChangeBrowsePosition................................................................................ 74
-IOPCEventAreaBrowser::BrowseOPCAreas........................................................................................ 75
-IOPCEventAreaBrowser::GetQualifiedAreaName ............................................................................... 76
-IOPCEventAreaBrowser::GetQualifiedSourceName............................................................................ 77
-5.5  OPCEVENTSUBSCRIPTION OBJECT.................................................................................................... 78
-IOPCEventSubscriptionMgt ..................................................................................................... 78
-IOPCEventSubscriptionMgt::SetFilter.................................................................................................. 79
-IOPCEventSubscriptionMgt::GetFilter ................................................................................................. 81
-IOPCEventSubscriptionMgt::SelectReturnedAttributes ....................................................................... 83
-IOPCEventSubscriptionMgt::GetReturnedAttributes ........................................................................... 84
-IOPCEventSubscriptionMgt::Refresh ................................................................................................... 85
-IOPCEventSubscriptionMgt::CancelRefresh ........................................................................................ 87
-IOPCEventSubscriptionMgt::GetState.................................................................................................. 88
-IOPCEventSubscriptionMgt::SetState .................................................................................................. 89
-IConnectionPointContainer....................................................................................................... 91
-IConnectionPoint ...................................................................................................................... 95
-
-5.5.1.1
-5.5.1.2
-5.5.1.3
-5.5.1.4
-5.5.1.5
-5.5.1.6
-5.5.1.7
-5.5.1.8
-
-5.4.1.1
-5.4.1.2
-5.4.1.3
-5.4.1.4
-
-5.3.6
-5.3.7
-
-5.5.2
-5.5.3
-
-5.4.1
-
-5.3.5
-
-5.5.1
-
-vii
-
- Alarms and Events Custom Interface
-(Version 1.10)
-
-F O U N D A T I O N
-
-Final Release
-
-5.6
-
-5.6.1
-
-5.6.2
-
-5.6.1.1
-
-CLIENT SIDE INTERFACES .................................................................................................................. 96
-IOPCEventSink......................................................................................................................... 96
-IOPCEventSink::OnEvent..................................................................................................................... 97
-IOPCShutdown ....................................................................................................................... 102
-IOPCShutdown::ShutdownRequest .................................................................................................... 103
-5.6.2.1
-INSTALLATION ISSUES ............................................................................................................... 104
-COMMON TOPICS ............................................................................................................................. 104
-COMPONENT CATEGORIES REGISTRATION....................................................................................... 104
-Server Registration.................................................................................................................. 104
-Client Enumeration ................................................................................................................. 105
-7.  SUMMARY OF OPC ERROR CODES ......................................................................................... 106
-
-6.
-6.1
-6.2
-
-6.2.1
-6.2.2
-
-APPENDIX A – SAMPLE STRING FILTER FUNCTION ................................................................. 108
-
-APPENDIX B – EVENT TYPES, EVENT CATEGORIES, AND CONDITIONS ............................ 112
-
-APPENDIX C – EVENT ATTRIBUTES................................................................................................ 113
-
-APPENDIX D – EVENT SERVER IDL SPECIFICATION................................................................. 114
-
-APPENDIX E – OPCAEDEF.H .............................................................................................................. 122
-
-APPENDIX F – OPCAE_ER.H............................................................................................................... 124
-
-viii
-
- Alarms and Events Custom Interface
-(Version 1.10)
-
-F O U N D A T I O N
-
-Final Release
-
-1.  Introduction
-
-1.1  Background
+### 1.1 Background
 
 Today with the level of automation that is being applied in manufacturing, operators are dealing with
 higher and higher amounts of information. Alarming and event subsystems have been used to indicate
@@ -578,28 +418,28 @@ specification.
 Manufacturers and consumers want to use off the shelf, open solutions from vendors that offer superior
 value that solves a specific need or problem.
 
-1.2  Purpose
+### 1.2 Purpose
 
 To identify interfaces used to pass alarm and event information between components which would be
 suitable to standardization. Additionally this document details the design of those interfaces in such a
 way as to compliment the existing OPC Data Access Interfaces.
 
-1.3  Relationship to Other OPC Specifications
+### 1.3 Relationship to Other OPC Specifications
 
 This specification complements but is separate from the OPC Data Access and the OPC Historical
 Data Access specifications.  It references the OPC Common specification, in that OPC Event Servers
 support the interfaces specified there.
 
-1.4  Scope
+### 1.4 Scope
 
-1.4.1  General
+#### 1.4.1 General
 
 The scope of this document is to provide a specification for a software “conduit” for alarm and event
 information to be broadcast from servers to clients. “Conduit” refers to the notion that this document is
 not intended to specify solutions for alarming problems, but rather provide an enabling technology that
 will permit multi-vendor solutions to operate in a heterogeneous computing environment.
 
-1.4.2  Multiple Levels of Capability
+#### 1.4.2 Multiple Levels of Capability
 
 The OPC Alarms and Event specification accommodates a variety of applications that need to share
 alarm and event information.  In particular, there are multiple levels of capability for handling alarm
@@ -607,14 +447,15 @@ and event functionality, from the simple to the sophisticated.
 
 1
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-1.4.2.1  Types of Alarm and Event Servers
+#### 1.4.2.1 Types of Alarm and Event Servers
 
 There are several types of OPC Alarm and Event Servers.  Some key types supported by this
 specification are:
@@ -639,7 +480,7 @@ Optional objects and interfaces are noted in the reference portion of this speci
 methods which may return E_NOTIMPL, or which may have varying levels of functionality are also
 noted.
 
-1.4.2.2  Types of Alarm and Event Clients
+#### 1.4.2.2 Types of Alarm and Event Clients
 
 Clients for OPC alarm and event servers are typically components that subscribe to and display,
 process, collect and/or log alarm and event information.  The clients of OPC alarms and events servers
@@ -659,14 +500,15 @@ event/alarm management subsystems
 
 2
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-1.4.2.3  Client – Server Interactions
+#### 1.4.2.3 Client - Server Interactions
 
 server
 
@@ -707,7 +549,7 @@ perhaps more organized information or a more advanced interface.  Unlike the Ala
 Management server, the Device and SPC Modules implement the simplest Alarm/Event server
 interface.
 
-1.5  References
+### 1.5 References
 
 •  OPC Data Access Custom Interface Standard, Version 2.0 (Release Candidate 1), OPC Task
 
@@ -717,7 +559,7 @@ force, January 8, 1998.
 
 from Microsoft’s FTP site), October 24, 1995.
 
-1.6  Audience
+### 1.6 Audience
 
 This document is intended to be used as reference material for developers of OPC compliant alarm
 clients and servers. It is assumed that the reader is familiar with Microsoft OLE/COM technology, the
@@ -725,30 +567,32 @@ needs of the process control industry and the OPC Data Access 2.0 specification.
 
 3
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-1.7  Deliverables
+### 1.7 Deliverables
 
 This document covers the analysis and design for a COM compliant custom interface.  A separate
 document describes a related OLE Automation interface.
 
 4
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-2.  Fundamental Concepts
+## 2. Fundamental Concepts
 
-2.1  Overview
+### 2.1 Overview
 
 This specification describes objects and interfaces which are implemented by OPC Event Servers, and
 which provide the mechanisms for OPC Clients to be notified of the occurrence of specified events and
@@ -775,7 +619,7 @@ events which are associated with conditions.  However, operator actions, system 
 changes, and system errors are examples of events which are not related to specific conditions.  OPC
 Clients may subscribe to be notified of the occurrence of specified events.
 
-2.2  OPC Event Servers
+### 2.2 OPC Event Servers
 
 Any COM object which implements the IOPCEventServer interface is an OPC Event  Server.
 
@@ -788,7 +632,7 @@ occurrences.
 
 •  Specify a client callback interface to be invoked if the OPC Event Server is shutting down.
 
-2.3  Areas
+### 2.3 Areas
 
 The expectation is that events and conditions available in the server are organized within one or more
 process areas.  An area is a grouping of plant equipment configured by the user, typically according to
@@ -804,16 +648,17 @@ Appendix B.
 
 5
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-2.4  Conditions
+### 2.4 Conditions
 
-2.4.1  General
+#### 2.4.1 General
 
 A condition is a named state of the OPC Event Server, or of one of its contained OPC Items (if it is
 also an OPC Data Access Server), which is of interest to its OPC Clients.  An alarm is merely a special
@@ -858,9 +703,10 @@ behaviors on a “black box” called an OPC Event Server, and says nothing abou
 might produce such behavior.  However, the OPCCondition is a useful model to help explain and clarify
 the various behaviors.
 
-6
 
- Alarms and Events Custom Interface
+
+
+## 6. Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -917,7 +763,7 @@ OPCConditions and OPCSubConditions are defined by the implementer of  the OPC Ev
 the mechanisms for defining OPCConditions and OPCSubConditions are outside the scope of this
 specification.
 
-2.4.2  Attributes of OPCConditions
+#### 2.4.2 Attributes of OPCConditions
 
 Each OPCCondition has the following attributes:
 
@@ -960,14 +806,15 @@ The comment string passed in by the client who last acknowledged this condition.
 
 7
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-2.4.2.1  Condition Quality
+#### 2.4.2.1 Condition Quality
 
 Since a condition is usually based on one or more OPCItems which have a Quality attribute, the
 condition also has an associated quality.  If the process value is “Uncertain”, the “LevelAlarm”
@@ -981,7 +828,7 @@ a special EventCategory to report bad quality attributes for values.
 Values for the Quality property conform to the OPC Quality Flags definition in the OPC Data Access
 server specification.
 
-2.4.3  Attributes of OPCSubConditions
+#### 2.4.3 Attributes of OPCSubConditions
 
 Each OPCSubCondition has the following attributes:
 
@@ -1006,7 +853,7 @@ Description  The text string to be included in any event notification generated 
 
 sub-condition.
 
-2.4.3.1  Condition Definitions
+#### 2.4.3.1 Condition Definitions
 
 Condition definitions are server specific.  Some examples are:
 
@@ -1026,7 +873,7 @@ OPC Event Server conditions are:
 •  Underlying system/device is down
 •  Etc.
 
-2.4.3.2  Severity
+#### 2.4.3.2 Severity
 
 The severity value is an indication of the urgency of the sub-condition. This is also commonly called
 ‘priority’, especially in relation to process alarms.  Values will range from 1 to 1000, with 1 being the
@@ -1036,7 +883,8 @@ could potentially result in severe financial loss or loss of life.
 
 8
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1161,7 +1009,8 @@ OPC Severity
 
 9
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1176,7 +1025,7 @@ into a different subset of the 1 – 1000 range (for example, 334 – 1000).
 The purpose of this approach is to allow clients to use severity values from multiple servers from
 different vendors in a consistent manner.
 
-2.4.4  Enabling and Disabling Conditions
+#### 2.4.4 Enabling and Disabling Conditions
 
 Clients may enable and disable conditions, and the resulting behavior is illustrated in the state diagram
 below.   Additional behaviors are noted below:
@@ -1198,7 +1047,7 @@ SubCondLastActive, CondLastActive, LastInactive, AcknowledgerID, and Comment.
 either be the time the condition is first discovered after enabling, or the time it became active
 (server-specific).
 
-2.4.5  Enabling and Disabling Areas
+#### 2.4.5 Enabling and Disabling Areas
 
 Clients may enable and disable areas. The resulting behavior as applies to an individual source within
 an enabled or disabled area is as follows:
@@ -1220,7 +1069,8 @@ the client is subscribing to events for all areas and sources in the model.
 
 10
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1275,13 +1125,13 @@ It is recommended that the event server define an initial enable state for both 
 however, the establishment of the initial enable state of sources and areas is beyond the scope of this
 specification.
 
-2.4.6  Interfaces
+#### 2.4.6 Interfaces
 
 None.  OPCConditions and OPCSubConditions are not COM objects.  They are defined by the
 implementer of the OPC Event Server, and their definition is outside the scope of this specification.
 Methods to support client access to conditions are defined in the IOPCEventServer interface.
 
-2.4.7  Condition States
+#### 2.4.7 Condition States
 
 Figure 2-2 shows an example state machine for an OPCCondition which requires acknowledgement.
 Note that the intent of this diagram is to convey the typical behavior of conditions, as viewed by a
@@ -1291,7 +1141,8 @@ Each state transition is an event.  Event notification messages are sent at each
 
 11
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1399,7 +1250,8 @@ automatically acknowledge itself when the condition becomes inactive.
 
 12
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1430,9 +1282,9 @@ variables as independent. Please note that if the server chooses to reset the ac
 client to re-acknowledge the condition, the client must use the original condition ActiveTime in the
 subsequent call to AckCondition.
 
-2.5  Events and Event Notifications
+### 2.5 Events and Event Notifications
 
-2.5.1  General
+#### 2.5.1 General
 
 An event is a detectable occurrence which is of significance to the OPC Event Server, the device it
 represents, and its OPC Clients.  An event has no direct representation within the OPC model.  Rather,
@@ -1466,14 +1318,15 @@ However, the OPCEventNotification is a useful model to help explain and clarify 
 
 13
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-2.5.2  Event Notifications
+#### 2.5.2 Event Notifications
 
 OPCEventNotifications are sent to subscribing clients using the Connection Point callback interface
 supplied by the OPC Client in the event subscription (see Subscriptions to Event Notifications below).
@@ -1520,7 +1373,7 @@ implementer)
 
 Figure 2-3.  OPCEventNotification Type Hierarchy
 
-2.5.2.1  Standard Attributes
+#### 2.5.2.1 Standard Attributes
 
 All OPCEventNotifications have standard attributes which are defined by this specification, and are
 included in the ONEVENTSTRUCT returned to clients with event notifications.  See the discussion of
@@ -1541,7 +1394,8 @@ tracking event such as the operator changing the set point value for FIC101.  Fo
 
 14
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1632,21 +1486,22 @@ event notifications generated by condition acknowledgments.
 
 15
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-2.5.2.2  Vendor-Specific Attributes
+#### 2.5.2.2 Vendor-Specific Attributes
 
 In addition to the standard attributes described above, implementers of OPC Event Servers may choose
 to provide additional attributes with event notifications.  In order to promote consistency among event
 server implementations, implementers are encouraged to select their attribute names from those listed
 in Appendix C where applicable.
 
-2.5.3  Event Categories
+#### 2.5.3 Event Categories
 
 EventCategories define groupings of events supported by an OPC Event server.  Examples of event
 categories might include “Process Events”, “System Events”, or “Batch Events”.  Event categories
@@ -1660,14 +1515,14 @@ Appendix B.
 The name of the event category is included in every event notification.  Event subscriptions may be
 filtered based on event category.
 
-2.5.4   Interfaces
+#### 2.5.4 Interfaces
 
 OPC Event Servers provide interfaces to allow OPC Clients to determine the types of events which the
 OPC Event Server supports, and to enter subscriptions to specified events.
 
-2.6  Subscriptions to Event Notifications
+### 2.6 Subscriptions to Event Notifications
 
-2.6.1  General
+#### 2.6.1 General
 
 In order to receive event notifications, OPC Clients must subscribe to them.  A subscription is entered
 with an OPC Event Server by requesting it to create an OPCEventSubscription object.  An OPC Client
@@ -1676,7 +1531,7 @@ may have one or more OPCEventSubscriptions active with a single OPC Event Server
 OPCEventSubscriptions are “connectable objects” in that they implement the DCOM Connection
 Point interfaces.  This is the mechanism used to send event notifications to OPC Clients.
 
-2.6.2  Properties of OPCEventSubscriptions
+#### 2.6.2 Properties of OPCEventSubscriptions
 OPCEventSubscriptions have the following property:
 
 Filter
@@ -1684,7 +1539,7 @@ Filter
 A structure containing criteria for selecting events of interest to the client (see Filters
 below).  A null Filter results in the OPC Client receiving all event notifications.
 
-2.6.3  Filters
+#### 2.6.3 Filters
 
 Events may be selected using the following criteria:
 
@@ -1700,7 +1555,8 @@ Events may be selected using the following criteria:
 
 16
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1727,13 +1583,13 @@ and AREA2 which are of high urgency (greater than or equal to 600).
 
 An OPCEventSubscription has only one filter.
 
-2.6.4  Interfaces
+#### 2.6.4 Interfaces
 
 OPCEventSubscriptions provide an interface to allow the OPC Client to specify the Filter.  In addition,
 they implement the standard DCOM Connection Point interfaces, to provide the mechanism for
 notifying OPC Clients of event occurrences.
 
-2.7  Condition State Synchronization
+### 2.7 Condition State Synchronization
 
 OPC Clients can obtain the current state of all conditions which are active, or which are inactive but
 unacknowledged, by requesting a “refresh” from each active OPCEventSubscription object.  The
@@ -1757,7 +1613,7 @@ Clients must explicitly call the Refresh() method in order to get refresh event 
 different than in the OPC DA interface where activating or adding an item to a group causes an
 implicit refresh.
 
-2.8  Error Handling
+### 2.8 Error Handling
 
 OPC Event Servers may report internal or source connection errors as standard events, which may be
 simple events or condition-related events.  Events for server errors belong to the
@@ -1770,7 +1626,8 @@ Internal buffer overflow
 
 17
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1788,25 +1645,26 @@ quality must result in event notifications to all subscribers.
 
 18
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-3.  Architectural Overview
+## 3. Architectural Overview
 
-3.1  Relationship to OPC Data Access Server
+### 3.1 Relationship to OPC Data Access Server
 
 Any COM object which supports the IOPCEventServer interface is an OPC Event  Server.  In many
 cases, an OPC Data Access Server will also expose an OPCEventServer object and will fill both the
 roles of data server and event server.  However, there may be other situations where it is advantageous
 to have a dedicated OPC Event Server, i.e. one which is not also an OPC Data Access Server object.
 
-3.2  Overview of Objects and Interfaces
+### 3.2 Overview of Objects and Interfaces
 
-3.2.1  General
+#### 3.2.1 General
 
 This specification defines the following COM objects, which are briefly covered in the following
 sections:   OPCEventServer, OPCEventSubscription, and OPCEventAreaBrowser.
@@ -1833,14 +1691,15 @@ Figure 3-1 -  Relationship of OPC Event Server Objects
 
 19
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-3.2.2  OPCEventServer Object
+#### 3.2.2 OPCEventServer Object
 
 IUnknown
 
@@ -1884,14 +1743,15 @@ impending shutdown.
 
 20
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-3.2.3  OPCEventSubscription Object
+#### 3.2.3 OPCEventSubscription Object
 
 IUnknown
 
@@ -1924,7 +1784,7 @@ subscription.
 The IConnectionPointContainer and IConnectionPoint interfaces are the standard DCOM interfaces for
 connectable objects, and are used to handle the callbacks for event notifications.
 
-3.2.4  OPCEventAreaBrowser Object (optional)
+#### 3.2.4 OPCEventAreaBrowser Object (optional)
 
 IUnknown
 
@@ -1937,7 +1797,8 @@ Figure 3-4 - OPC Event Area Browser Object
 
 21
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -1956,14 +1817,15 @@ This object is optional, and may not be exposed by simple event servers.
 
 22
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-4.  OPC Event Server Quick Reference
+## 4. OPC Event Server Quick Reference
 
 This section includes a quick reference for the methods in the Custom Interface.  These interfaces, their
 parameters, and behavior are defined in detail in  section 5.
@@ -1989,14 +1851,15 @@ OPCEventSubscription
 
 23
 
- Alarms and Events Custom Interface
+
+### 4.1 Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-4.1.1  OPCEventServer Object
+#### 4.1.1 OPCEventServer Object
 
 IOPCCommon
 
@@ -2105,14 +1968,15 @@ FindConnectionPoint ( riid, ppCP )
 
 24
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-4.1.2  OPCEventAreaBrowser Object (optional)
+#### 4.1.2 OPCEventAreaBrowser Object (optional)
 
 IOPCEventAreaBrowser
 
@@ -2126,7 +1990,7 @@ BrowseOPCAreas ( dwBrowseFilterType, szFilterCriteria, ppIEnumString )
 GetQualifiedAreaName ( szAreaName, pszQualifiedAreaName )
 GetQualifiedSourceName ( szSourceName, pszQualifiedSourceName )
 
-4.1.3  OPCEventSubscription Object
+#### 4.1.3 OPCEventSubscription Object
 
 IOPCEventSubscriptionMgt
 
@@ -2182,14 +2046,15 @@ Note2:  The functionality of this method may be restricted by simple event serve
 
 25
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-4.2  Custom Interface – Client Side
+### 4.2 Custom Interface - Client Side
 
 IOPCEventSink
 
@@ -2205,16 +2070,17 @@ ShutdownRequest ( szReason )
 
 26
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.  OPC Event Server Custom Interfaces
+## 5. OPC Event Server Custom Interfaces
 
-5.1  Overview
+### 5.1 Overview
 
 The OPC Event Server Custom Interface objects include the following:
 
@@ -2245,7 +2111,7 @@ Additional enumerators may be created when dealing with connection points (see t
 IOPCEventSubscriptionMgt interface).  However, they are created using standard COM interfaces
 defined for connectable objects.
 
-5.2  General Information
+### 5.2 General Information
 Ownership of memory
 
 Per the COM specification, clients must free all memory associated with ‘out’ or ‘in/out’ parameters.
@@ -2274,7 +2140,8 @@ pointers.  This indicates that the returned item is a pointer to an actual array
 
 27
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -2286,16 +2153,17 @@ as creation and access of the data by the server and client.
 
 28
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3  OPCEventServer Object
+### 5.3 OPCEventServer Object
 
-5.3.1  Overview
+#### 5.3.1 Overview
 
 The OPCEventServer object is the primary object that an OPC Event Server exposes.  The interfaces
 that this object provides include:
@@ -2316,13 +2184,13 @@ IOPCEventServer
 
 IConnectionPointContainer
 
-5.3.2  IUnknown
+#### 5.3.2 IUnknown
 
 The server must provide a standard IUnknown Interface.  Since this is a well defined interface it is not
 discussed in detail.  See the OLE Programmer’s reference for additional information.  This interface
 must be provided, and all  functions implemented as required by Microsoft..
 
-5.3.3  IOPCCommon
+#### 5.3.3 IOPCCommon
 
 Other OPC Servers such as Data Access share this interface design. It provides the ability to set  and
 query a LocaleID which would be in effect for the particular client/server session. That is, as with a
@@ -2357,14 +2225,15 @@ HRESULT SetClientName (
 
 29
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4  IOPCEventServer
+#### 5.3.4 IOPCEventServer
 
 This is the main interface to the alarm and event capabilities of an OPC Event Server.  This interface is
 used to create OPC Event Subscription objects, to create OPC Event Area Browser objects, to query
@@ -2373,14 +2242,15 @@ operations such as getting the status of the event server.
 
 30
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.1  IOPCEventServer::GetStatus
+#### 5.3.4.1 IOPCEventServer::GetStatus
 HRESULT GetStatus (
 
 [out] OPCEVENTSERVERSTATUS ** ppEventServerStatus
@@ -2461,7 +2331,8 @@ the server in the IOPCEventServer::GetStatus() call.
 
 31
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 Member
@@ -2541,14 +2412,15 @@ specific.
 
 32
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.2  IOPCEventServer:: CreateEventSubscription
+#### 5.3.4.2 IOPCEventServer:: CreateEventSubscription
 HRESULT CreateEventSubscription(
 
 [in] BOOL bActive,
@@ -2608,7 +2480,8 @@ OPC_S_INVALIDMAXSIZE.
 
 33
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -2697,14 +2570,15 @@ causes and implicit refresh by the server.
 
 34
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.3  IOPCEventServer::QueryAvailableFilters
+#### 5.3.4.3 IOPCEventServer::QueryAvailableFilters
 HRESULT QueryAvailableFilters(
 
 [out] DWORD * pdwFilterMask,
@@ -2782,14 +2656,15 @@ least allow as an option) a fresh Query every time a selection is to be presente
 
 35
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.4  IOPCEventServer::QueryEventCategories
+#### 5.3.4.4 IOPCEventServer::QueryEventCategories
 HRESULT QueryEventCategories(
 [in] DWORD dwEventType,
 [out] DWORD* pdwCount,
@@ -2865,7 +2740,8 @@ Comments
 
 36
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -2882,14 +2758,15 @@ least allow as an option) a fresh Query every time a selection is to be presente
 
 37
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.5  IOPCEventServer::QueryConditionNames
+#### 5.3.4.5 IOPCEventServer::QueryConditionNames
 HRESULT QueryConditionNames{
 [in] DWORD dwEventCategory,
 [out] DWORD* pdwCount,
@@ -2957,14 +2834,15 @@ least allow as an option) a fresh Query every time a selection is to be presente
 
 38
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.6  IOPCEventServer::QuerySubConditionNames
+#### 5.3.4.6 IOPCEventServer::QuerySubConditionNames
 HRESULT QuerySubConditionNames{
 [in] LPWSTR szConditionName,
 [out] DWORD* pdwCount,
@@ -3028,14 +2906,15 @@ a fresh Query every time a selection is to be presented to the end user.
 
 39
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.7  IOPCEventServer::QuerySourceConditions
+#### 5.3.4.7 IOPCEventServer::QuerySourceConditions
 HRESULT QuerySourceConditions{
 
 [in] LPWSTR szSource,
@@ -3102,14 +2981,15 @@ a fresh Query every time a selection is to be presented to the end user.
 
 40
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.8  IOPCEventServer::QueryEventAttributes
+#### 5.3.4.8 IOPCEventServer::QueryEventAttributes
 HRESULT QueryEventAttributes(
 
 [in] DWORD dwEventCategory,
@@ -3188,7 +3068,8 @@ notifications to be null.
 
 41
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -3209,14 +3090,15 @@ be presented to the end user for a Category.
 
 42
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.9  IOPCEventServer::TranslateToItemIDs
+#### 5.3.4.9 IOPCEventServer::TranslateToItemIDs
 HRESULT TranslateToItemIDs(
 [in] LPWSTR szSource,
 [in] DWORD dwEventCategory
@@ -3286,7 +3168,8 @@ method.
 
 43
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -3340,14 +3223,15 @@ which are not available.
 
 44
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.10  IOPCEventServer::GetConditionState
+#### 5.3.4.10 IOPCEventServer::GetConditionState
 HRESULT GetConditionState (
 [in]  LPWSTR szSource,
 [in]  LPWSTR szConditionName,
@@ -3399,7 +3283,8 @@ structure.
 
 45
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -3499,7 +3384,8 @@ A WORD bit mask of three bits specifying the new
 
 46
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -3598,7 +3484,8 @@ Contains a NULL Pointer if the condition has never
 
 47
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -3686,14 +3573,15 @@ the hierarchy of its containing areas are enabled.
 
 48
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.11  IOPCEventServer::EnableConditionByArea
+#### 5.3.4.11 IOPCEventServer::EnableConditionByArea
 HRESULT EnableConditionByArea(
 [in] DWORD dwNumAreas,
 [in, size_is(dwNumAreas)] LPWSTR* pszAreas
@@ -3761,14 +3649,15 @@ containing areas are enabled
 
 49
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.12  IOPCEventServer::EnableConditionBySource
+#### 5.3.4.12 IOPCEventServer::EnableConditionBySource
 HRESULT EnableConditionBySource(
 [in] DWORD dwNumSources,
 [in, size_is(dwNumSources)] LPWSTR* pszSources
@@ -3834,14 +3723,15 @@ containing areas are enabled
 
 50
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.13  IOPCEventServer::DisableConditionByArea
+#### 5.3.4.13 IOPCEventServer::DisableConditionByArea
 HRESULT DisableConditionByArea(
 [in] DWORD dwNumAreas,
 [in, size_is(dwNumAreas)] LPWSTR* pszAreas
@@ -3908,14 +3798,15 @@ containing areas is disabled.
 
 51
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.14  IOPCEventServer::DisableConditionBySource
+#### 5.3.4.14 IOPCEventServer::DisableConditionBySource
 HRESULT DisableConditionBySource(
 [in] DWORD dwNumSources,
 [in, size_is(dwNumSources)] LPWSTR* pszSources
@@ -3981,14 +3872,15 @@ containing areas is disabled.
 
 52
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.15  IOPCEventServer::AckCondition
+#### 5.3.4.15 IOPCEventServer::AckCondition
 HRESULT AckCondition(
 [in] DWORD dwCount
 [in, string] LPWSTR szAcknowledgerID,
@@ -4051,7 +3943,8 @@ IOPCEventSink::OnEvent callback.
 
 53
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4150,14 +4043,15 @@ IOPCEventSink::OnEvent callback to the AckCondition method without modification.
 
 54
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.4.16  IOPCEventServer::CreateAreaBrowser
+#### 5.3.4.16 IOPCEventServer::CreateAreaBrowser
 HRESULT CreateAreaBrowser(
 
 [in] REFIID riid,
@@ -4226,21 +4120,22 @@ The operation succeeded.
 
 55
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5  IOPCEventServer2 (optional)
+#### 5.3.5 IOPCEventServer2 (optional)
 
 This is an optional interface used to manage the enable state of conditions on an area or source basis. It
 extends the corresponding methods defined on IOPCEventServer such that an error return per
 requested source or area is supplied back to the caller. Methods are defined to allow the client the
 ability to query the current enable state of a list of areas or sources.
 
-5.3.5.1  Usage Examples
+#### 5.3.5.1 Usage Examples
 
 To further illustrate the usage of the enable state methods, let the following example area model serve
 as the starting conditions. Disabled objects are shown as highlighted.
@@ -4321,7 +4216,8 @@ S5
 
 56
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4389,7 +4285,8 @@ as shown below.
 
 57
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4439,14 +4336,15 @@ S5
 
 58
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.2  IOPCEventServer2::EnableConditionByArea2
+#### 5.3.5.2 IOPCEventServer2::EnableConditionByArea2
 HRESULT EnableConditionByArea2(
 [in] DWORD dwNumAreas,
 [in, string, size_is(dwNumAreas)] LPWSTR* pszAreas,
@@ -4533,7 +4431,8 @@ valid.
 
 59
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4564,14 +4463,15 @@ The caller must free the returned ppErrors array.
 
 60
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.3  IOPCEventServer2::EnableConditionBySource2
+#### 5.3.5.3 IOPCEventServer2::EnableConditionBySource2
 HRESULT EnableConditionBySource2(
 [in] DWORD dwNumSources,
 [in, string, size_is(dwNumSources)] LPWSTR* pszSources,
@@ -4657,7 +4557,8 @@ valid.
 
 61
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4687,14 +4588,15 @@ The caller must free the returned ppErrors array.
 
 62
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.4  IOPCEventServer2::DisableConditionByArea2
+#### 5.3.5.4 IOPCEventServer2::DisableConditionByArea2
 HRESULT DisableConditionByArea(
 [in] DWORD dwNumAreas,
 [in, string, size_is(dwNumAreas)] LPWSTR* pszAreas,
@@ -4780,7 +4682,8 @@ valid.
 
 63
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4811,14 +4714,15 @@ The caller must free the returned ppErrors array.
 
 64
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.5  IOPCEventServer2::DisableConditionBySource2
+#### 5.3.5.5 IOPCEventServer2::DisableConditionBySource2
 HRESULT DisableConditionBySource2(
 
 [in] DWORD dwNumSources,
@@ -4905,7 +4809,8 @@ valid.
 
 65
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -4935,14 +4840,15 @@ The caller must free the returned ppErrors array.
 
 66
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.6  IOPCEventServer2::GetEnableStateByArea
+#### 5.3.5.6 IOPCEventServer2::GetEnableStateByArea
 HRESULT GetEnableStateByArea(
 [in] DWORD dwNumAreas,
 [in, string, size_is(dwNumAreas)] LPWSTR* pszAreas,
@@ -4994,7 +4900,8 @@ passed into the method.
 
 67
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -5059,14 +4966,15 @@ The caller must free the returned pbEnabled and ppErrors arrays.
 
 68
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.5.7  IOPCEventServer2::GetEnableStateBySource
+#### 5.3.5.7 IOPCEventServer2::GetEnableStateBySource
 HRESULT GetEnableStateBySource(
 [in] DWORD dwNumSources,
 [in, string, size_is(dwNumSources)] LPWSTR* pszSources,
@@ -5119,7 +5027,8 @@ sources passed into the method.
 
 69
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -5184,14 +5093,15 @@ The caller must free the returned pbEnabled and ppErrors arrays.
 
 70
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.6  IConnectionPointContainer
+#### 5.3.6 IConnectionPointContainer
 
 The general principles of ConnectionPoints are not discussed here as they are covered very clearly in
 the Microsoft Documentation. The reader is assumed to be familiar with this technology.
@@ -5229,14 +5139,15 @@ allowed.
 
 71
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.3.7  IConnectionPoint
+#### 5.3.7 IConnectionPoint
 
 An IConnectionPoint for IOPCShutdown is returned from the Event Server’s
 ConnectionPointContainer.  Refer to the Microsoft documentation of this interface for additional
@@ -5244,14 +5155,15 @@ information on its methods, which included Advise and Unadvise.
 
 72
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.4    OPCEventAreaBrowser Object (optional)
+### 5.4 OPCEventAreaBrowser Object (optional)
 
 The OPCEventAreaBrowser is the object that an OPC Event server supplies to manage browsing the
 process area space of the server.  The interfaces that this object provides include:
@@ -5266,7 +5178,7 @@ IOPCEventAreaBrowser
 
 This object is optional, and may not be supported by simple event servers.
 
-5.4.1  IOPCEventAreaBrowser
+#### 5.4.1 IOPCEventAreaBrowser
 
 This interface provides a way for clients to browse the process area organization implemented by the
 server.  The expectation is that events and conditions available in the server are organized in one or
@@ -5309,14 +5221,15 @@ to move ‘down’.  This method can also move ‘up’ in which case the short 
 
 73
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.4.1.1  IOPCEventAreaBrowser::ChangeBrowsePosition
+#### 5.4.1.1 IOPCEventAreaBrowser::ChangeBrowsePosition
 HRESULT ChangeBrowsePosition(
       [in]  OPCAEBROWSEDIRECTION dwBrowseDirection,
       [in, string] LPCWSTR  szString
@@ -5372,14 +5285,15 @@ Moving ‘up’ from the ‘root’ shall return E_FAIL.
 
 74
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.4.1.2  IOPCEventAreaBrowser::BrowseOPCAreas
+#### 5.4.1.2 IOPCEventAreaBrowser::BrowseOPCAreas
 HRESULT BrowseOPCAreas(
       [in] OPCAEBROWSETYPE   dwBrowseFilterType,
       [in, string] LPCWSTR  szFilterCriteria,
@@ -5448,14 +5362,15 @@ enumerator the client has created. The client must release each enumerator when 
 
 75
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.4.1.3  IOPCEventAreaBrowser::GetQualifiedAreaName
+#### 5.4.1.3 IOPCEventAreaBrowser::GetQualifiedAreaName
 HRESULT GetQualifiedAreaName(
 [in] LPCWSTR szAreaName,
 [out , string] LPWSTR *pszQualifiedAreaName
@@ -5503,14 +5418,15 @@ area space tree.
 
 76
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.4.1.4  IOPCEventAreaBrowser::GetQualifiedSourceName
+#### 5.4.1.4 IOPCEventAreaBrowser::GetQualifiedSourceName
 HRESULT GetQualifiedSourceName(
 [in] LPCWSTR szSourceName,
 [out , string] LPWSTR *pszQualifiedSourceName
@@ -5559,14 +5475,15 @@ IOPCEventServer::EnableConditionBySource method.
 
 77
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5   OPCEventSubscription Object
+### 5.5 OPCEventSubscription Object
 
 The OPCEventSubscription object is the object that an OPC Event server delivers to manage a single
 event subscription.  It is created by invoking IOPCEventServer::CreateEventSubscription.  This object
@@ -5602,7 +5519,7 @@ event notifications are displayed or stored.
 
 The functionality provided by each of these interfaces is defined in this section.
 
-5.5.1  IOPCEventSubscriptionMgt
+#### 5.5.1 IOPCEventSubscriptionMgt
 
 This interface specifies how to manage a particular subscription to OPC event information.  It is used
 to specify criteria for selecting events of interest, to specify vendor-specific information to be returned
@@ -5610,14 +5527,15 @@ in event notifications, and to request a refresh of selected conditions.
 
 78
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.1  IOPCEventSubscriptionMgt::SetFilter
+#### 5.5.1.1 IOPCEventSubscriptionMgt::SetFilter
 HRESULT SetFilter(
 
 [in] DWORD  dwEventType,
@@ -5687,7 +5605,8 @@ Highest severity of interest (inclusive).
 
 79
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -5767,14 +5686,15 @@ severity.
 
 80
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.2  IOPCEventSubscriptionMgt::GetFilter
+#### 5.5.1.2 IOPCEventSubscriptionMgt::GetFilter
 HRESULT GetFilter(
 
 [out] DWORD* pdwEventType,
@@ -5855,7 +5775,8 @@ The operation succeeded.
 
 81
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -5868,14 +5789,15 @@ it does not return any filters which may have been requested in SetFilter, but w
 
 82
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.3  IOPCEventSubscriptionMgt::SelectReturnedAttributes
+#### 5.5.1.3 IOPCEventSubscriptionMgt::SelectReturnedAttributes
 HRESULT SelectReturnedAttributes(
 [in] DWORD dwEventCategory,
 [in] DWORD dwCount,
@@ -5939,14 +5861,15 @@ dwCount Attributes even if some of them are NULL.
 
 83
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.4  IOPCEventSubscriptionMgt::GetReturnedAttributes
+#### 5.5.1.4 IOPCEventSubscriptionMgt::GetReturnedAttributes
 HRESULT GetReturnedAttributes(
 [in] DWORD dwEventCategory,
 [out] DWORD * pdwCount,
@@ -5997,14 +5920,15 @@ The operation succeeded.
 
 84
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.5  IOPCEventSubscriptionMgt::Refresh
+#### 5.5.1.5 IOPCEventSubscriptionMgt::Refresh
 HRESULT Refresh(
 
 [in] DWORD dwConnection,
@@ -6075,7 +5999,8 @@ bLastRefresh parameter of IOPCEventSink::OnEvent).
 
 85
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6090,14 +6015,15 @@ discussion of the pbActive flag for the SetState method).
 
 86
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.6  IOPCEventSubscriptionMgt::CancelRefresh
+#### 5.5.1.6 IOPCEventSubscriptionMgt::CancelRefresh
 HRESULT CancelRefresh(
 
 [in] DWORD dwConnection,
@@ -6142,14 +6068,15 @@ Comments
 
 87
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.7  IOPCEventSubscriptionMgt::GetState
+#### 5.5.1.7 IOPCEventSubscriptionMgt::GetState
 HRESULT GetState(
 
 [out] BOOL * pbActive,
@@ -6205,14 +6132,15 @@ function is also useful for debugging.
 
 88
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.1.8  IOPCEventSubscriptionMgt::SetState
+#### 5.5.1.8 IOPCEventSubscriptionMgt::SetState
 HRESULT SetState(
 
 [unique, in] BOOL * pbActive,
@@ -6230,7 +6158,8 @@ can omit properties he does not want to change by passing a null pointer.
 
 89
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6321,14 +6250,15 @@ causes and implicit refresh by the server.
 
 90
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.2  IOPCEventSubscriptionMgt2 (optional)
+#### 5.5.2 IOPCEventSubscriptionMgt2 (optional)
 
 The optional IOPCEventSubscriptionMgt2 interface is used to set/get the keep-alive time for a
 subscription. When a subscription has a non-zero keep-alive time, the server will insure that the client
@@ -6340,7 +6270,8 @@ can be assured of the health of the server and subscription without resorting to
 
 91
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6413,7 +6344,8 @@ returned by IOPCEventServer::GetStatus().
 
 92
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6459,14 +6391,15 @@ The function was unsuccessful.
 
 93
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.5.3  IConnectionPointContainer
+#### 5.5.3 IConnectionPointContainer
 
 The general principles of ConnectionPoints are not discussed here as they are covered very clearly in
 the Microsoft Documentation. The reader is assumed to be familiar with this technology.
@@ -6510,7 +6443,8 @@ also allowed.
 
 94
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6533,16 +6467,17 @@ event stream must only contain the items defined within the specified event subs
 
 95
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.6  Client Side Interfaces
+### 5.6 Client Side Interfaces
 
-5.6.1  IOPCEventSink
+#### 5.6.1 IOPCEventSink
 
 In order to use connection points, the client must create an object which supports both the IUnknown
 and IOPCEventSink interfaces. The client would pass a pointer to the IUnknown interface (NOT the
@@ -6564,14 +6499,15 @@ such that it performs several of these operations in parallel.  In this case the
 
 96
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.6.1.1  IOPCEventSink::OnEvent
+#### 5.6.1.1 IOPCEventSink::OnEvent
 HRESULT OnEvent(
 
 [in] OPCHANDLE hClientSubscription,
@@ -6650,7 +6586,8 @@ szSource,
 
 97
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6756,7 +6693,8 @@ conditions.  For a single-state condition, this contains
 
 98
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6838,7 +6776,8 @@ ftActiveTime
 
 dwCookie
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6945,7 +6884,8 @@ OPC_CONDITION_ENABLED
 
 100
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -6964,14 +6904,15 @@ acknowledged.
 
 101
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.6.2  IOPCShutdown
+#### 5.6.2 IOPCShutdown
 
 In order to use this connection point, the client must create an object that supports both the IUnknown
 and IOPCShutdown Interface. The client would pass a pointer to the IUnknown interface (NOT the
@@ -6990,14 +6931,15 @@ object since any server can shut down independently of the others.
 
 102
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-5.6.2.1  IOPCShutdown::ShutdownRequest
+#### 5.6.2.1 IOPCShutdown::ShutdownRequest
 HRESULT ShutdownRequest (
 
 [in, string] LCPWSTR szReason
@@ -7031,7 +6973,8 @@ separate callbacks) for shutdown requests.
 
 103
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7045,14 +6988,14 @@ their server.  This will not be discussed further.  Other than the actual compon
 affecting OLE software is management of the Windows Registry and Component Catagories.  The
 issues here are (a) what entries need to be made and (b) how they can be made.
 
-6.1  Common Topics
+### 6.1 Common Topics
 
 Certain installation and registry topics are common to all of the OPC Servers.  These include self
 registration, automatic proxy/stub registration, and registry reference counting.  These topics are
 discussed in the OPC Common Specification and are not repeated here.  Instead, the server developer
 should refer to the OPC Common Specification for guidelines in these areas.
 
-6.2  Component Categories Registration
+### 6.2 Component Categories Registration
 
 During the registration process, each OPC Alarm and Events Server must register itself with the
 Component Categories Manager, a Microsoft supplied system COM object. OPC Alarm and Events
@@ -7064,7 +7007,7 @@ Note: At this time the Component Categories Manager stores its information in th
 however this will change in the near future.  Please use the Component Categories Manager
 API to access this information rather than using the registry directly.
 
-6.2.1  Server Registration
+#### 6.2.1 Server Registration
 
 To Register with the Component Categories Manager, a server should first register the OPC defined
 Category ID (CATID) and the OPC defined Category Description by calling ICatRegister::
@@ -7106,7 +7049,8 @@ Each server
 
 104
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7124,7 +7068,7 @@ UnRegisterCLSIDInCategory( CLSID_OPCEventServer, IID_OPCEventServerCATID );
 
 }
 
-6.2.2  Client Enumeration
+#### 6.2.2 Client Enumeration
 
 Editor’s Note: This section will change if the TSC adopts the proposed DCOM aware remote OPC
 
@@ -7169,14 +7113,15 @@ for( unsigned long i = 0; i < c; i++ )
 
 105
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-7.  Summary of OPC Error Codes
+## 7. Summary of OPC Error Codes
 
 We have attempted to minimize the number of unique errors by identifying common generic problems
 and defining error codes that can be reused in many contexts. An OPC server should only return those
@@ -7265,7 +7210,8 @@ MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
 
 106
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7280,14 +7226,15 @@ reserved for future OPC use. Codes from 8000 through FFFF can be vendor specific
 
 107
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix A – Sample String Filter Function
+## Appendix A Sample String Filter Function
 
 This function provides essentially the same functionality as the LIKE operator in Visual Basic.
 
@@ -7365,7 +7312,8 @@ exclamation point matches itself.
 
 108
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7434,7 +7382,8 @@ return bCaseSensitive ? c : toupper(c);
 
 109
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7567,7 +7516,8 @@ return FALSE;
 
 110
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -7670,14 +7620,15 @@ break;
 
 111
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix B – Event Types, Event Categories, and Conditions
+## Appendix B Event Types, Event Categories, and Conditions
 The following table shows recommended event categories for each event type, and recommended
 conditions corresponding to each event category.  It is recommended that OPC condition names
 leverage Foundation Fieldbus naming as appropriate.  As an example, the condition indicating a PV
@@ -7746,14 +7697,15 @@ Advanced Control
 
 112
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix C – Event Attributes
+## Appendix C Event Attributes
 
 The following are recommended attributes for the event categories listed in Appendix B.
 
@@ -7865,14 +7817,15 @@ NAME OF PARAMETER
 
 113
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix D – Event Server IDL Specification
+## Appendix D Event Server IDL Specification
 
 The current files require MIDL compiler 3.00.15 or later and the WIN NT 4.0 release SDK.
 
@@ -7934,7 +7887,8 @@ OPCAE_BROWSE_TO
 
 114
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8074,7 +8028,8 @@ szVendorInfo;
 
 115
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8166,7 +8121,8 @@ HRESULT QuerySubConditionNames(
 
 116
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8251,7 +8207,8 @@ HRESULT DisableConditionBySource(
 
 117
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8333,7 +8290,8 @@ HRESULT Refresh(
 
 118
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8421,7 +8379,8 @@ interface IOPCEventSink : IUnknown
 
 119
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8500,7 +8459,8 @@ HRESULT GetEnableStateBySource(
 
 120
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8555,14 +8515,15 @@ interface IOPCEventSubscriptionMgt2;
 
 121
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix E – OPCAEDEF.H
+## Appendix E OPCAEDEF.H
 
 /*++
 
@@ -8659,7 +8620,8 @@ OPC_QUALITY_SENSOR_CAL
 
 122
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8742,14 +8704,15 @@ OPC_CONDITION_EVENT )
 
 123
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
 
 Final Release
 
-Appendix F – OPCAE_ER.H
+## Appendix F OPCAE_ER.H
 
 /*++
 
@@ -8837,7 +8800,8 @@ R - is a reserved bit
 
 124
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N
@@ -8917,7 +8881,8 @@ Final Release
 
 125
 
- Alarms and Events Custom Interface
+
+ Alarms and Events Custom Interface
 (Version 1.10)
 
 F O U N D A T I O N

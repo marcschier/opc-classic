@@ -12,7 +12,8 @@ December 18, 2004
 
 1
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -69,7 +70,8 @@ an XML parser and a SOAP API of some sort.
 
 2
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -121,7 +123,8 @@ the OPC Materials, subject to the limited license granted to User under this Agr
 
 3
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -171,7 +174,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS..
 
 4
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -211,7 +215,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 5
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -252,7 +257,8 @@ SubscriptionPolledRefresh call after Subscribe.
 
 6
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -261,181 +267,79 @@ Released
 
 F O U N D A T I O N
 
-Table of Contents
+## Table of Contents
 
-2.6
-2.7
+- [1. Introduction](#1-introduction)
+  - [1.1 Background](#11-background)
+  - [1.2 Purpose](#12-purpose)
+  - [1.3 Relationship to Other OPC Specifications](#13-relationship-to-other-opc-specifications)
+  - [1.4 Deliverables](#14-deliverables)
+  - [1.5 Prerequisites](#15-prerequisites)
+  - [1.6 XML-DA Errata](#16-xml-da-errata)
+- [2. Fundamental Concepts](#2-fundamental-concepts)
+  - [2.1 SOAP](#21-soap)
+  - [2.2 Name Space](#22-name-space)
+  - [2.3 OPC-XML-DA Server Detection](#23-opc-xml-da-server-detection)
+  - [2.4 Locale IDs](#24-locale-ids)
+  - [2.5 Subscription architecture](#25-subscription-architecture)
+    - [2.5.1 Basic Polled Refresh Approach](#251-basic-polled-refresh-approach)
+    - [2.5.2 Advanced Polled Refresh Approach](#252-advanced-polled-refresh-approach)
+    - [2.5.3 Data Management Optimization](#253-data-management-optimization)
+    - [2.5.4 Buffered Data](#254-buffered-data)
+    - [2.5.5 Timestamps](#255-timestamps)
+  - [2.6 Faults and Result Codes](#26-faults-and-result-codes)
+  - [2.7 Data Types for Item Values](#27-data-types-for-item-values)
+    - [2.7.1 Simple](#271-simple)
+    - [2.7.2 Enumeration](#272-enumeration)
+    - [2.7.3 Array](#273-array)
+    - [2.7.4 Data Range and Precision](#274-data-range-and-precision)
+    - [2.7.5 Data Types and Localization](#275-data-types-and-localization)
+    - [2.7.6 Data Type Conversions](#276-data-type-conversions)
+  - [2.8 Security](#28-security)
+  - [2.9 Compliance](#29-compliance)
+- [3. OPC XML-DA Schema Reference](#3-opc-xml-da-schema-reference)
+  - [3.1 Base Schemas](#31-base-schemas)
+    - [3.1.1 Hierarchical Parameters](#311-hierarchical-parameters)
+    - [3.1.2 Null Parameters](#312-null-parameters)
+    - [3.1.3 RequestList](#313-requestlist)
+    - [3.1.4 RequestItem](#314-requestitem)
+    - [3.1.5 ItemValue](#315-itemvalue)
+    - [3.1.6 RequestOptions](#316-requestoptions)
+    - [3.1.7 ServerState](#317-serverstate)
+    - [3.1.8 ReplyBase](#318-replybase)
+    - [3.1.9 OPCError](#319-opcerror)
+    - [3.1.10 ItemProperty](#3110-itemproperty)
+  - [3.2 </Read>](#32-read)
+    - [3.2.1 GetStatus](#321-getstatus)
+    - [3.2.2 GetStatusResponse](#322-getstatusresponse)
+  - [3.3 </ReadResponse>](#33-readresponse)
+    - [3.3.1 Read](#331-read)
+    - [3.3.2 ReadResponse](#332-readresponse)
+  - [3.4 Write](#34-write)
+    - [3.4.1 Write](#341-write)
+    - [3.4.2 WriteResponse](#342-writeresponse)
+  - [3.5 Subscribe](#35-subscribe)
+    - [3.5.1 Subscribe](#351-subscribe)
+    - [3.5.2 SubscribeResponse](#352-subscriberesponse)
+  - [3.6 SubscriptionPolledRefresh](#36-subscriptionpolledrefresh)
+    - [3.6.1 SubscriptionPolledRefresh](#361-subscriptionpolledrefresh)
+    - [3.6.2 SubscriptionPolledRefreshResponse](#362-subscriptionpolledrefreshresponse)
+  - [3.7 SubscriptionCancel](#37-subscriptioncancel)
+    - [3.7.1 SubscriptionCancel](#371-subscriptioncancel)
+    - [3.7.2 SubscriptionCancelResponse](#372-subscriptioncancelresponse)
+  - [3.8 <GetPropertiesResponse](#38-getpropertiesresponse)
+    - [3.8.1 Browse](#381-browse)
+    - [3.8.2 BrowseResponse](#382-browseresponse)
+    - [3.9.1 GetProperties](#391-getproperties)
+    - [3.9.2 GetPropertiesResponse](#392-getpropertiesresponse)
+- [4. Transports](#4-transports)
+- [5. Appendix A - Patent Issues](#5-appendix-a-patent-issues)
+- [6. Appendix B - Formal Schemas (WSDL)](#6-appendix-b-formal-schemas-wsdl)
+- [7. F101](#7-f101)
 
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
+## 1. Introduction
 
-2.7.1
-2.7.2
-2.7.3
-2.7.4
-2.7.5
-2.7.6
-
-INTRODUCTION .................................................................................................................................9
-1.
-BACKGROUND ......................................................................................................................................9
-1.1
-PURPOSE...............................................................................................................................................9
-1.2
-RELATIONSHIP TO OTHER OPC SPECIFICATIONS .................................................................................9
-1.3
-DELIVERABLES.....................................................................................................................................9
-1.4
-PREREQUISITES ....................................................................................................................................9
-1.5
-1.6
-XML-DA ERRATA.............................................................................................................................10
-2.  FUNDAMENTAL CONCEPTS .........................................................................................................11
-SOAP.................................................................................................................................................11
-2.1
-NAME SPACE......................................................................................................................................11
-2.2
-OPC-XML-DA SERVER DETECTION .................................................................................................11
-2.3
-LOCALE IDS .......................................................................................................................................11
-2.4
-SUBSCRIPTION ARCHITECTURE ...........................................................................................................12
-2.5
-Basic Polled Refresh Approach .................................................................................................13
-Advanced Polled Refresh Approach..........................................................................................14
-Data Management Optimization................................................................................................16
-Buffered Data ............................................................................................................................18
-Timestamps................................................................................................................................20
-FAULTS AND RESULT CODES..............................................................................................................23
-DATA TYPES FOR ITEM VALUES.........................................................................................................25
-Simple........................................................................................................................................25
-Enumeration ..............................................................................................................................26
-Array..........................................................................................................................................26
-Data Range and Precision..........................................................................................................27
-Data Types and Localization .....................................................................................................28
-Data Type Conversions..............................................................................................................29
-SECURITY ...........................................................................................................................................29
-2.8
-2.9
-COMPLIANCE......................................................................................................................................30
-3.  OPC XML-DA SCHEMA REFERENCE .........................................................................................31
-BASE SCHEMAS ..................................................................................................................................31
-3.1
-Hierarchical Parameters.............................................................................................................31
-Null Parameters .........................................................................................................................32
-RequestList ................................................................................................................................33
-RequestItem...............................................................................................................................33
-ItemValue ..................................................................................................................................34
-RequestOptions..........................................................................................................................38
-ServerState.................................................................................................................................40
-ReplyBase..................................................................................................................................40
-OPCError...................................................................................................................................41
-ItemProperty ..............................................................................................................................42
-GETSTATUS........................................................................................................................................47
-GetStatus....................................................................................................................................47
-GetStatusResponse ....................................................................................................................48
-READ..................................................................................................................................................50
-Read...........................................................................................................................................50
-ReadResponse............................................................................................................................53
-3.4  WRITE ................................................................................................................................................56
-3.4.1  Write ..........................................................................................................................................56
-3.4.2  WriteResponse...........................................................................................................................59
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-3.1.8
-3.1.9
-3.1.10
-
-3.3.1
-3.3.2
-
-3.2.1
-3.2.2
-
-3.2
-
-3.3
-
-7
-
-OPC XML-DA Specification
-(Version 1.01)
-
-®
-
-Released
-
-F O U N D A T I O N
-
-3.5
-
-3.7
-
-3.6
-
-3.7.1
-3.7.2
-
-3.5.1
-3.5.2
-
-3.6.1
-3.6.2
-
-SUBSCRIBE .........................................................................................................................................61
-Subscribe ...................................................................................................................................61
-SubscribeResponse ....................................................................................................................64
-SUBSCRIPTIONPOLLEDREFRESH.........................................................................................................67
-SubscriptionPolledRefresh ........................................................................................................67
-SubscriptionPolledRefreshResponse .........................................................................................69
-SUBSCRIPTIONCANCEL.......................................................................................................................72
-SubscriptionCancel....................................................................................................................72
-SubscriptionCancelResponse.....................................................................................................73
-BROWSE .............................................................................................................................................74
-Browse.......................................................................................................................................74
-BrowseResponse........................................................................................................................77
-GETPROPERTIES .................................................................................................................................81
-GetProperties .............................................................................................................................81
-GetPropertiesResponse ..............................................................................................................83
-4.  TRANSPORTS ....................................................................................................................................85
-
-3.8.1
-3.8.2
-
-3.9.1
-3.9.2
-
-3.8
-
-3.9
-
-5.  APPENDIX A - PATENT ISSUES ....................................................................................................87
-
-6.  APPENDIX B - FORMAL SCHEMAS (WSDL)..............................................................................89
-
-8
-
-OPC XML-DA Specification
-(Version 1.01)
-
-®
-
-Released
-
-F O U N D A T I O N
-
-1.  Introduction
-
-1.1  Background
+### 1.1 Background
 
 The OPC Foundation has defined interfaces to Data Access Servers, Event Servers, Batch Servers, and
 History Data Access Servers.  These servers have information that is valuable to the enterprise, and is
@@ -447,7 +351,7 @@ technology that is more readily available across a wide range of platforms.  OPC
 (OPC XML-DA) is the OPC Foundation’s adoption of the XML set of technologies to facilitate the
 exchange of plant data across the internet, and upwards into the enterprise domain.
 
-1.2  Purpose
+### 1.2 Purpose
 
 The purpose of this document is to continue OPC’s goal of enabling and promoting interoperability of
 applications.  The XML-DA based interfaces will simplify sharing and exchange of OPC data amongst
@@ -464,7 +368,7 @@ The goal for this document is to provide:
 
 (cid:31)  Support for a Security approach
 
-1.3  Relationship to Other OPC Specifications
+### 1.3 Relationship to Other OPC Specifications
 
 This specification is analogous to an Automation Specification, which is a companion document to a
 Custom Specification.  The Custom Specification provides the base concepts and capabilities.  OPC
@@ -475,7 +379,7 @@ Specification.
 XML-DA servers may stand alone, or may be developed to wrap COM based 3.0, and even 2.0x
 servers.
 
-1.4  Deliverables
+### 1.4 Deliverables
 
 This document covers the analysis and design for an XML based interface to exchange Data Access
 2.0x and 3.0 type data.  This document will also minimally specify transport specific interoperability
@@ -484,7 +388,7 @@ requirements.
 Sample code, or reference implementations will supplement this document to help vendors understand
 and leverage this technology.
 
-1.5  Prerequisites
+### 1.5 Prerequisites
 
 Readers are expected to be familiar with the applicable OPC Specifications.
 
@@ -493,7 +397,8 @@ http://www.opcfoundation.org/
 
 9
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -515,7 +420,7 @@ Readers should be familiar with XML.
 Information regarding XML and various links to related sites, white papers, specs, etc, can be found at
 the following Web address: http://www.w3.org/XML/
 
-1.6  XML-DA Errata
+### 1.6 XML-DA Errata
 
 Any errors, omissions or corrections to this OPC XML-DA Specification will be posted to the
 OPCXML-DA Errata topic of the OPC foundation forums:
@@ -524,7 +429,8 @@ http://www.opcfoundation.org/forum/viewtopic.php?t=1113
 
 10
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -533,9 +439,9 @@ Released
 
 F O U N D A T I O N
 
-2.  Fundamental Concepts
+## 2. Fundamental Concepts
 
-2.1  SOAP
+### 2.1 SOAP
 
 OPC XML-DA is being developed in a manner that leverages concepts from Simple Object Access
 Protocol (SOAP) 1.1 found at http://www.w3.org/TR/SOAP/.
@@ -543,7 +449,7 @@ Protocol (SOAP) 1.1 found at http://www.w3.org/TR/SOAP/.
 OPC XML-DA is modeled in a manner which allows its structured information to be delivered in a
 SOAP message as a SOAP Body.
 
-2.2  Name Space
+### 2.2 Name Space
 
 The OPC XML-DA Specification is consistent with SOAP Notational Conventions.  The following is
 borrowed from the SOAP Spec for the reader’s convenience:
@@ -564,7 +470,7 @@ prefixes are samples only.”
 OPC XML-DA addresses OPC Items via ItemPath, and ItemName.  These concepts are described later
 in the document.
 
-2.3  OPC-XML-DA Server Detection
+### 2.3 OPC-XML-DA Server Detection
 
 Currently, OPC has not defined a mechanism to detect nodes with OPC-XML-DA Servers or to detect
 OPC-XML-DA Servers on a specific node. The Universal Description, Discovery and Integration
@@ -578,7 +484,7 @@ defined by RC 1788) allow for an optional port number, as a result, OPC-XML-DA w
 not required to use the standard HTTP Port 80 (provided the web server used supports configurable
 port numbers).
 
-2.4  Locale IDs
+### 2.4 Locale IDs
 
 Some data in the response of a server is subject to localization. These are:
 
@@ -595,7 +501,8 @@ requested in each call (“LocaleID” - see RequestOptions).
 
 11
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -696,14 +603,15 @@ returned by the server based on the RevisedLocaleID. In this case the client is 
 requests but with the understanding that localized strings will be returned in the language specified by
 the value of the RevisedLocaleID.
 
-2.5  Subscription architecture
+### 2.5 Subscription architecture
 
 The design of the OPC-XML-DA subscription employs a “polled-pull” style of subscription.  The
 client thus enters into a loose contract with the server.  The client application initiates the subscription
 
 12
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -722,7 +630,7 @@ and SubscriptionCancel.  Subscribe is used to initiate a subscription contract w
 SubscriptionPolledRefresh is called periodically to acquire the latest item value changes.
 SubscriptionCancel is used to terminate the subscription contract with the server.
 
-2.5.1  Basic Polled Refresh Approach
+#### 2.5.1 Basic Polled Refresh Approach
 
 The basic polled subscription interaction between client and server is outlined below in Figure 2.1. The
 client initiates the subscription and the server returns a subscription handle in response to the request.
@@ -788,7 +696,8 @@ client needs to determine the appropriate error response; reissue the same or a 
 
 13
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -840,7 +749,7 @@ S
 
 Figure 2.2 Error handling of polled subscriptions
 
-2.5.2  Advanced Polled Refresh Approach
+#### 2.5.2 Advanced Polled Refresh Approach
 
 An advanced client application may elect to use the more sophisticated polling approach in order to
 optimize the behavior of the server in its response to client requests for data and to more closely
@@ -862,7 +771,8 @@ waiting to the server. The client may issue a SubscriptionPolledRefresh call as 
 
 14
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -922,7 +832,8 @@ Figure 2.4 Response timing
 
 15
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -943,7 +854,7 @@ take into account the extended time period during which it will be waiting on th
 Either asynchronous subscription refresh calls should be made or a dedicated refresh polling thread
 should be used.
 
-2.5.3  Data Management Optimization
+#### 2.5.3 Data Management Optimization
 
 By subscribing to data items the client identifies to the server that it is interested in those specific data
 items.  By entering into this loose contract with the server via the Subscribe service the client may
@@ -996,7 +907,8 @@ rate in a buffer for return to the client at the next SubscriptionPolledRefresh 
 
 16
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1088,7 +1000,8 @@ should only expect values at the negotiated SamplingRate.
 
 17
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1148,7 +1061,7 @@ prior to the value being of interest to the client.  “Uninteresting” value c
 than the Deadband and are not maintained or saved by the server for return to the client in a
 SubscriptionPolledRefresh as described below.
 
-2.5.4  Buffered Data
+#### 2.5.4 Buffered Data
 
 As mentioned above, if EnableBuffering = True the server maintains a buffer of the changed values
 detected in between SubscriptionPolledRefresh requests in addition to the cached value for an item.
@@ -1161,7 +1074,8 @@ is ON the server may return the maximum number of values as determined by the as
 
 18
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1237,7 +1151,8 @@ Item 3, 00:03, (10), Buffer
 
 19
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1269,7 +1184,7 @@ buffered values.
 
 Refer to the OPC DA Custom Specification for additional details on this topic.
 
-2.5.5  Timestamps
+#### 2.5.5 Timestamps
 
 The servers will provide the most accurate timestamp to associate with a value(s).  The Timestamp
 should indicate the time that the value and quality was obtained by the device (if this is available) or
@@ -1295,7 +1210,8 @@ values.  The behavior of a Read is included as a comparison.
 
 20
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1322,12 +1238,12 @@ Time
 4
 5
 6
-7
+
 8
 9
 10
 
-F101
+## 7. F101
 2
 
 B101
@@ -1509,7 +1425,8 @@ Polled Refresh
 10, t9*
 5, t10
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1522,7 +1439,8 @@ F O U N D A T I O N
 
 22
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1531,7 +1449,7 @@ Released
 
 F O U N D A T I O N
 
-2.6  Faults and Result Codes
+### 2.6 Faults and Result Codes
 
 The OPC-XML-DA specification describes a set of behaviors that web services as exposed by the
 server must implement and that web based client applications use. When abnormal conditions arise, the
@@ -1593,7 +1511,8 @@ text for result codes from the web service with each transaction. The text appea
 
 23
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1643,7 +1562,8 @@ sections that describe those services.
 
 24
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1652,9 +1572,9 @@ Released
 
 F O U N D A T I O N
 
-2.7  Data Types for Item Values
+### 2.7 Data Types for Item Values
 
-2.7.1  Simple
+#### 2.7.1 Simple
 
 The supported data types are a subset of those defined in “XML Schema Part 2: Datatypes”
 http://www.w3.org/TR/xmlschema-2/, and are consistent with those provided by the OPC Data Access
@@ -1797,7 +1717,8 @@ equivalent
 
 25
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1833,7 +1754,7 @@ transmitted across the wire.
 Servers may support values of a type other than those specified above, but there may be compatibility
 issues with clients which do not understand those types.
 
-2.7.2  Enumeration
+#### 2.7.2 Enumeration
 
 “XML Schema Part 2: Datatypes” found at http://www.w3.org/TR/xmlschema-2/ defines
 enumerations, and SOAP directly adopts the defined mechanism.  Enumeration as defined is a data
@@ -1850,7 +1771,7 @@ be aware of whether the values are enumerated and if so, then euInfo would provi
 which represents the textual representation of the elements of the enumeration.  See the ItemProperty
 description in Section 3.1.10 for further details.
 
-2.7.3  Array
+#### 2.7.3 Array
 
 OPC defines the following arrays for a subset of the simple types listed above:
 
@@ -1884,7 +1805,8 @@ long
 
 26
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -1953,7 +1875,7 @@ following XML fragment illustrates how this type appears in an XML document.
   </anyType>
 </Value>
 
-2.7.4  Data Range and Precision
+#### 2.7.4 Data Range and Precision
 
 Most implementers of this specification will need to represent the data types required by this
 specification in a binary format that is appropriate for their development environment. This binary
@@ -1972,7 +1894,8 @@ its internal representation of the item’s data type. A server must implement t
 
 27
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2062,7 +1985,7 @@ Note that the precision property only applies to writes and reads using the cano
 item. XML-DA clients should be prepared for round off errors whenever one data type is converted to
 another.
 
-2.7.5  Data Types and Localization
+#### 2.7.5 Data Types and Localization
 
 An XML-DA server must support conversions from any supported scalar data type to a string.
 
@@ -2075,7 +1998,8 @@ request.
 
 28
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2092,7 +2016,7 @@ server. More specifically, it cannot know whether the server used a localized re
 XML Schema representation for a given string value. If a client wishes to use the value returned for
 any purpose other than display to the user then it should request the value in its canonical data type.
 
-2.7.6  Data Type Conversions
+#### 2.7.6 Data Type Conversions
 
 An XML-DA server must support all of the Data Type conversions defined for the OPC DA Custom
 Specification except as noted below.
@@ -2137,7 +2061,7 @@ QName Values
 
 An XML-DA Server is not required to support any data type conversions for the QName type.
 
-2.8  Security
+### 2.8 Security
 
 The assumption that OPC XML-DA makes is, that the transport will handle security, e.g., HTTPS
 
@@ -2147,7 +2071,8 @@ therefore be protected. Vendors and end-users must work together to ensure that 
 
 29
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2191,7 +2116,7 @@ exposed via OPC.
 
 Please refer to OPC Security Custom Interface Standard for additional insight into security concepts.
 
-2.9  Compliance
+### 2.9 Compliance
 
 OPC compliance tools have been developed to validate compliance of OPC Data Access (OPC-DA)
 servers and OPC Alarm & Events (OPC-AE) servers.  OPC compliance test suites have not been
@@ -2201,7 +2126,8 @@ will be available within 6 months of release of the XML-DA specification.
 
 30
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2210,7 +2136,7 @@ Released
 
 F O U N D A T I O N
 
-3.  OPC XML-DA Schema Reference
+## 3. OPC XML-DA Schema Reference
 
 This section includes a reference for the OPC XML-DA Services. The structure, parameters, and
 behavior of each are defined.
@@ -2243,7 +2169,7 @@ define the OPC XML-DA namespace and the XML schema namespace respectively.
 All attributes are optional unless explicitly specified as required. The description of the services will
 describe the expected behavior for attributes which are not included.
 
-3.1  Base Schemas
+### 3.1 Base Schemas
 
 OPC XML-DA defines base schemas which are contained by the other schemas to describe the
 messages to be transported.
@@ -2255,7 +2181,7 @@ The WSDL fragments shown in the document are to facilitate understanding of the 
 Implementers must use the published WSDL that accompanies this document when building web
 applications that comply with this specification.
 
-3.1.1  Hierarchical Parameters
+#### 3.1.1 Hierarchical Parameters
 
 The OPC XML-DA schemas are based on a hierarchical nature of some of the information.
 Information (attributes) may be specified at the Request, List, or Item level. Information specified at a
@@ -2268,7 +2194,8 @@ value, yet the List level value will be used for the other items in the request.
 
 31
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2277,7 +2204,7 @@ Released
 
 F O U N D A T I O N
 
-3.1.2  Null Parameters
+#### 3.1.2 Null Parameters
 
 The OPC XML-DA schemas accommodate clients and servers passing null parameters. This is the
 basis for supporting Hierarchical Parameters, and for providing responses which are subsets of the
@@ -2293,7 +2220,8 @@ all string attributes.
 
 32
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2302,7 +2230,7 @@ Released
 
 F O U N D A T I O N
 
-3.1.3  RequestList
+#### 3.1.3 RequestList
 
 Description
 
@@ -2356,7 +2284,7 @@ As described above, the RequestList attributes are applied hierarchically to req
 appear at the list level are the defaults for items that do not explicitly specify a value for the same
 attribute.
 
-3.1.4  RequestItem
+#### 3.1.4 RequestItem
 
 Description
 
@@ -2374,7 +2302,8 @@ read and subscribe requests. These attributes are described separately here for 
 
 33
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2405,7 +2334,7 @@ ClientItemHandle  A string that can be passed by the client and be returned alon
 data. If the Client includes the ClientItemHandle attribute, then Server
 must return it to the Client.
 
-3.1.5  ItemValue
+#### 3.1.5 ItemValue
 
 Description
 
@@ -2457,7 +2386,8 @@ type="s0:OPCQuality" />
 
 34
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2542,7 +2472,8 @@ wire.
 
 35
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2626,7 +2557,8 @@ The following table summarizes the interactions of quality, and the value relate
 
 36
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2707,7 +2639,8 @@ the returned value
 
 37
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2716,7 +2649,7 @@ Released
 
 F O U N D A T I O N
 
-3.1.6  RequestOptions
+#### 3.1.6 RequestOptions
 
 Description
 
@@ -2796,7 +2729,8 @@ Then E TIMEDOUT fault
 
 38
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2846,7 +2780,8 @@ Comments:
 
 39
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2855,7 +2790,7 @@ Released
 
 F O U N D A T I O N
 
-3.1.7  ServerState
+#### 3.1.7 ServerState
 
 Description
 
@@ -2874,7 +2809,7 @@ Version 3.0.
   </s:restriction>
 </s:simpleType>
 
-3.1.8  ReplyBase
+#### 3.1.8 ReplyBase
 
 Description
 
@@ -2928,7 +2863,8 @@ Comments:
 
 40
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -2937,7 +2873,7 @@ Released
 
 F O U N D A T I O N
 
-3.1.9  OPCError
+#### 3.1.9 OPCError
 
 Description
 
@@ -3027,7 +2963,8 @@ The property id is not valid for the item.
 
 41
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3100,7 +3037,7 @@ the error (RequestOptions.ReturnErrorText = FALSE).
 
 The server, if requested by the client, will return additional diagnostic information.
 
-3.1.10  ItemProperty
+#### 3.1.10 ItemProperty
 
 Description
 
@@ -3120,7 +3057,8 @@ Browse and GetProperties services.
 
 42
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3184,7 +3122,8 @@ IDs used in the DA specification map to the qualified names as follows:
 
 43
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3307,7 +3246,8 @@ numeric values (0, 1, 2, etc.)
 
 44
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3431,7 +3371,8 @@ state
 
 45
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3510,7 +3451,8 @@ specification for additional information.
 
 46
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3521,7 +3463,7 @@ F O U N D A T I O N
 
 3.2  GetStatus
 
-3.2.1  GetStatus
+#### 3.2.1 GetStatus
 
 Description
 
@@ -3575,7 +3517,8 @@ Example
 
 47
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3584,7 +3527,7 @@ Released
 
 F O U N D A T I O N
 
-3.2.2  GetStatusResponse
+#### 3.2.2 GetStatusResponse
 
 Description
 
@@ -3659,7 +3602,8 @@ This may be locale-specific.
 
 48
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3739,7 +3683,8 @@ xmlns="http://opcfoundation.org/webservices/XMLDA/1.0/">
 
 49
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3750,7 +3695,7 @@ F O U N D A T I O N
 
 3.3  Read
 
-3.3.1  Read
+#### 3.3.1 Read
 
 Description
 
@@ -3817,7 +3762,8 @@ nOccurs="0" maxOccurs="unbounded"
 
 50
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3904,11 +3850,12 @@ Example
       <Items ItemName="Simple Types/Int" />
       <Items ItemName="Simple Types/Float" />
     </ItemList>
-  </Read>
+### 3.2 </Read>
 
 51
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3921,7 +3868,8 @@ F O U N D A T I O N
 
 52
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -3930,7 +3878,7 @@ Released
 
 F O U N D A T I O N
 
-3.3.2  ReadResponse
+#### 3.3.2 ReadResponse
 
 Description
 
@@ -4015,7 +3963,8 @@ Comments:
 
 53
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4118,7 +4067,8 @@ Example
 
 54
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4129,12 +4079,13 @@ F O U N D A T I O N
 
       </Items>
     </RItemList>
-  </ReadResponse>
+### 3.3 </ReadResponse>
 </soap:Body>
 
 55
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4143,9 +4094,9 @@ Released
 
 F O U N D A T I O N
 
-3.4  Write
+### 3.4 Write
 
-3.4.1  Write
+#### 3.4.1 Write
 
 Description
 
@@ -4210,7 +4161,8 @@ Description
 
 56
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4288,7 +4240,8 @@ item level. A value specified for an item will override the value on list level.
 
 57
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4343,7 +4296,8 @@ Example:
 
 58
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4352,7 +4306,7 @@ Released
 
 F O U N D A T I O N
 
-3.4.2  WriteResponse
+#### 3.4.2 WriteResponse
 
 Description
 
@@ -4436,7 +4390,8 @@ See description in Section 3.1.9.
 
 59
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4528,7 +4483,8 @@ Example:
 
 60
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4537,12 +4493,12 @@ Released
 
 F O U N D A T I O N
 
-3.5  Subscribe
+### 3.5 Subscribe
 
 For a detailed description of the OPC-XML-DA Subscription mechanism see the section under
 Fundamental Concepts.
 
-3.5.1  Subscribe
+#### 3.5.1 Subscribe
 
 Description
 
@@ -4619,7 +4575,8 @@ For a detailed description of these options see the separate
 
 61
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4702,7 +4659,8 @@ See the section on Data Management Optimization in this
 
 62
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4757,7 +4715,8 @@ Example:
 
 63
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4766,7 +4725,7 @@ Released
 
 F O U N D A T I O N
 
-3.5.2  SubscribeResponse
+#### 3.5.2 SubscribeResponse
 
 Description
 
@@ -4848,7 +4807,8 @@ can support.
 
 64
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -4949,7 +4909,8 @@ See description in Section 3.1.9.
 
 65
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5022,7 +4983,8 @@ Example:
 
 66
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5031,12 +4993,12 @@ Released
 
 F O U N D A T I O N
 
-3.6   SubscriptionPolledRefresh
+### 3.6 SubscriptionPolledRefresh
 
 Refreshes the data items from the last SubscriptionPolledRefresh. For a detailed description of the
 OPC-XML-DA Subscription mechanism see the section under Fundamental Concepts.
 
-3.6.1  SubscriptionPolledRefresh
+#### 3.6.1 SubscriptionPolledRefresh
 
 Description
 
@@ -5104,7 +5066,8 @@ ignored.
 
 67
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5163,7 +5126,8 @@ Example:
 
 68
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5172,7 +5136,7 @@ Released
 
 F O U N D A T I O N
 
-3.6.2  SubscriptionPolledRefreshResponse
+#### 3.6.2 SubscriptionPolledRefreshResponse
 
 Description
 
@@ -5247,7 +5211,8 @@ original Subscribe even if some of the Items are
 
 69
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5334,7 +5299,8 @@ errors.
 
 70
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5401,7 +5367,8 @@ Example:
 
 71
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5410,9 +5377,9 @@ Released
 
 F O U N D A T I O N
 
-3.7  SubscriptionCancel
+### 3.7 SubscriptionCancel
 
-3.7.1  SubscriptionCancel
+#### 3.7.1 SubscriptionCancel
 
 Description
 
@@ -5462,7 +5429,8 @@ Example:
 
 72
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5471,7 +5439,7 @@ Released
 
 F O U N D A T I O N
 
-3.7.2  SubscriptionCancelResponse
+#### 3.7.2 SubscriptionCancelResponse
 
 Description
 
@@ -5526,7 +5494,8 @@ Example:
 
 73
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5537,7 +5506,7 @@ F O U N D A T I O N
 
 3.8  Browse
 
-3.8.1  Browse
+#### 3.8.1 Browse
 
 Description
 
@@ -5613,7 +5582,8 @@ value supplied in the initial request.
 
 74
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5701,7 +5671,8 @@ Comments:
 
 75
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5800,7 +5771,8 @@ Example:
 
 76
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5809,7 +5781,7 @@ Released
 
 F O U N D A T I O N
 
-3.8.2  BrowseResponse
+#### 3.8.2 BrowseResponse
 
 Description
 
@@ -5884,7 +5856,8 @@ than MaxItemsReturned.
 
 77
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -5986,7 +5959,8 @@ A folder/item icon with the expand (+) symbol
 
 78
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6084,7 +6058,8 @@ Example:
 
 79
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6106,7 +6081,8 @@ F O U N D A T I O N
 
 80
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6117,7 +6093,7 @@ F O U N D A T I O N
 
 3.9  GetProperties
 
-3.9.1  GetProperties
+#### 3.9.1 GetProperties
 
 Description
 
@@ -6190,7 +6166,8 @@ ItemPath in the ItemIdentifier.
 
 81
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6233,7 +6210,8 @@ Example:
 
 82
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6242,7 +6220,7 @@ Released
 
 F O U N D A T I O N
 
-3.9.2  GetPropertiesResponse
+#### 3.9.2 GetPropertiesResponse
 
 Description
 
@@ -6318,7 +6296,8 @@ See description in Section 3.1.9.
 
 83
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6379,7 +6358,7 @@ See description in Section 3.1.9.
 Example:
 
 <soap:Body>
-  <GetPropertiesResponse
+### 3.8 <GetPropertiesResponse
 xmlns="http://opcfoundation.org/webservices/XMLDA/1.0/">
     <GetPropertiesResult
       RcvTime="2003-05-27T07:29:33.1875000-07:00"
@@ -6399,7 +6378,8 @@ xmlns="http://opcfoundation.org/webservices/XMLDA/1.0/">
 
 84
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6408,7 +6388,7 @@ Released
 
 F O U N D A T I O N
 
-4.  Transports
+## 4. Transports
 
 The OPC-XML-DA specification defines a set of services by defining the request and response
 messages with the syntax defined by the SOAP specification. For purposes of compliance testing and
@@ -6420,7 +6400,9 @@ but use transport protocols other than HTTP (such as SMTP).
 
 85
 
-OPC XML-DA Specification
+
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6429,7 +6411,7 @@ Released
 
 F O U N D A T I O N
 
-5.  Appendix A - Patent Issues
+## 5. Appendix A - Patent Issues
 
 As of the time of publication, the OPC Foundation has been made aware of four
 
@@ -6489,7 +6471,8 @@ protocol can be used without necessarily infringing the '603 Patent or the '454 
 
 87
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 ®
@@ -6532,14 +6515,15 @@ disclaims any liability for any infringement by members or non-members.
 
 88
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
 
 Released
 
-6.  Appendix B - Formal Schemas (WSDL)
+## 6. Appendix B - Formal Schemas (WSDL)
 
 This section contains the complete WSDL for the OPC-XML-DA WebService.
 
@@ -6579,7 +6563,8 @@ targetNamespace="http://opcfoundation.org/webservices/XMLDA/1.0/">
 
 89
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6627,7 +6612,8 @@ type="s0:interfaceVersion" />
 
 90
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6675,7 +6661,8 @@ Released
 
 91
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6723,7 +6710,8 @@ Released
 
 92
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6771,7 +6759,8 @@ Released
 
 93
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6819,7 +6808,8 @@ Released
 
 94
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6867,7 +6857,8 @@ Released
 
 95
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6915,7 +6906,8 @@ Released
 
 96
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -6963,7 +6955,8 @@ Released
 
 97
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7011,7 +7004,8 @@ type="s0:SubscribePolledRefreshReplyItemList" />
 
 98
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7059,7 +7053,8 @@ Released
 
 99
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7107,7 +7102,8 @@ Released
 
 100
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7155,7 +7151,8 @@ Released
 
 101
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7203,7 +7200,8 @@ Released
 
 102
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7251,7 +7249,8 @@ style="document" />
 
 103
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7299,7 +7298,8 @@ style="document" />
 
 104
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N
@@ -7326,7 +7326,8 @@ style="document" />
 
 105
 
-OPC XML-DA Specification
+
+OPC XML-DA Specification
 (Version 1.01)
 
 F O U N D A T I O N

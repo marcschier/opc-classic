@@ -97,63 +97,40 @@ Added an overview section on properties. Properties are used in different OPC in
 Added an overview section on error codes.
 Added additional installation rules for OPC provided binaries.
 
-Table of Contents
-REVISION 1.1 HIGHLIGHTS	V
-1.	INTRODUCTION	1
-1.1	Readers Guide	1
-2.	OPC DESIGN FUNDAMENTALS	2
-2.1	Interface Definitions	2
-2.1.1	Required Interface Definition	2
-2.1.2	Optional Interface Definition	2
-2.1.3	Which interface should the client application use.	2
-2.2	UNICODE, NT and WIN95	2
-2.3	Threads and Multitasking	3
-3.	OPC COMMON INTERFACE ISSUES	4
-3.1	Common Interface Issues	4
-3.1.1	Custom vs. Automation Interface	4
-3.1.2	Required vs Optional Interface Definition	4
-3.1.3	Ownership of memory	4
-3.1.4	Null Strings and Null Pointers	4
-3.1.5	Returned Arrays	5
-3.1.6	Errors and return codes	5
-4.	PROPERTY OVERVIEW	6
-5.	SUMMARY OF OPC ERROR CODES	8
-6.	SHUTDOWN OF OPCSERVERS	10
-6.1	IConnectionPointContainer (on OPCServer)	10
-6.1.1	IConnectionPointContainer::EnumConnectionPoints	10
-6.1.2	IConnectionPointContainer:: FindConnectionPoint	11
-6.2	IOPCShutdown	11
-6.2.1	IOPCShutdown::ShutdownRequest	12
-7.	IOPCCOMMON	13
-7.1.1	IOPCCommon::SetLocaleID	13
-7.1.2	IOPCCommon::GetLocaleID	14
-7.1.3	IOPCCommon::QueryAvailableLocaleIDs	14
-7.1.4	IOPCCommon::GetErrorString	15
-7.1.5	IOPCCommon::SetClientName	16
-8.	INSTALLATION AND REGISTRATION ISSUES	17
-8.1	Component Categories	17
-8.1.1	Component Categories Registration	17
-8.2	Registry Entries for the Proxy/Stub DLL	18
-8.3	Creating the Registry Entries	18
-8.4	Version Convention	20
-8.5	Installing OPC Binaries	20
-8.5.1	Destination Directory	21
-8.5.2	Versioning	21
-8.5.3	Reference Counting	21
-9.	OPC SERVER BROWSER	22
-9.1	Overview	22
-9.2	Information for Users	22
-9.3	Security	22
-9.4	Information for Server Programmers	23
-9.5	Information for Client Programmers	23
-9.6	OPC Server Browser Interface	23
-9.6.1	IOPCServerList2	23
-9.6.2	IOPCServerList (old)	27
-10.	APPENDIX A – OPC COMMON IDL SPECIFICATION	30
-11.	APPENDIX B – SAMPLE STRING FILTER FUNCTION	33
+## Table of Contents
 
-Introduction
-Readers Guide 
+- [1. Introduction](#1-introduction)
+  - [1.1 Readers Guide](#11-readers-guide)
+- [2. OPC Design Fundamentals](#2-opc-design-fundamentals)
+  - [2.1 Interface Definitions](#21-interface-definitions)
+  - [2.2 UNICODE, NT and WIN95](#22-unicode-nt-and-win95)
+  - [2.3 Threads and Multitasking](#23-threads-and-multitasking)
+- [3. OPC Common Interface Issues](#3-opc-common-interface-issues)
+  - [3.1 Common Interface Issues](#31-common-interface-issues)
+- [4. Property Overview](#4-property-overview)
+- [5. Summary of OPC Error Codes](#5-summary-of-opc-error-codes)
+- [6. Shutdown of OPCServers](#6-shutdown-of-opcservers)
+  - [6.1 IConnectionPointContainer (on OPCServer)](#61-iconnectionpointcontainer-on-opcserver)
+  - [6.2 IOPCShutdown](#62-iopcshutdown)
+- [7. IOPCCommon](#7-iopccommon)
+- [8. Installation and Registration Issues](#8-installation-and-registration-issues)
+  - [8.1 Component Categories](#81-component-categories)
+  - [8.2 Registry Entries for the Proxy/Stub DLL](#82-registry-entries-for-the-proxystub-dll)
+  - [8.3 Creating the Registry Entries](#83-creating-the-registry-entries)
+  - [8.4 Version Convention](#84-version-convention)
+  - [8.5 Installing OPC Binaries](#85-installing-opc-binaries)
+- [9. OPC Server Browser](#9-opc-server-browser)
+  - [9.1 Overview](#91-overview)
+  - [9.2 Information for Users](#92-information-for-users)
+  - [9.3 Security](#93-security)
+  - [9.4 Information for Server Programmers](#94-information-for-server-programmers)
+  - [9.5 Information for Client Programmers](#95-information-for-client-programmers)
+  - [9.6 OPC Server Browser Interface](#96-opc-server-browser-interface)
+- [10. Appendix A - OPC Common IDL Specification](#10-appendix-a-opc-common-idl-specification)
+- [11. Appendix B - Sample String Filter Function](#11-appendix-b-sample-string-filter-function)
+
+## 1. Introduction
+### 1.1 Readers Guide
 This document contains common rules and design criteria and the specification of interfaces which are common for several topics.
 Specific interface specifications to develop OPC clients and/or OPC Servers (e.g., for DataAccess, Alarm&Event Handling or Historical DataAccess) are available as separate documents. 
 
@@ -166,9 +143,9 @@ Chapter 6 gives general information about OPC Server registration.
 Chapter 7 specifies the interface for OPC Server Browsing.
 Appendix A contains the IDL of the common interfaces.
 Finally, Appendix B specifies a sample string filter function. It defines the minimum filtering required on various methods of the OPC Server Interfaces.
-OPC Design Fundamentals
+## 2. OPC Design Fundamentals
 OPC is based on Microsoft’s OLE/COM technology.
-Interface Definitions
+### 2.1 Interface Definitions
 OPC specifications always contain two sets of interfaces; Custom Interfaces and Automation interfaces. This is shown in Figure 2-1.
 
 Figure 2-1 - The OPC Interfaces
@@ -181,11 +158,11 @@ OPC server developers may implement the functionality of the optional interfaces
 An optional interface is one that the server developer may elect to implement. When an OPC Server supports an optional interface, all functions within that optional interface must be implemented, even if the function just returns E_NOTIMPL. An OPC client that wishes to use the functionality of an optional interface will query the OPC server for the optional interface.  The client must be designed to not require that this optional interface exist.
 Which interface should the client application use.
 In general, client programs which are created using scripting languages will use the automation interface.  Client programs which are created in C++  will find it easiest to use the custom interface for maximum performance.
-UNICODE, NT and WIN95
+### 2.2 UNICODE, NT and WIN95
 All string parameters to the OPC Interfaces are UNICODE, because the native OLE APIs are all UNICODE.  Microsoft Visual Basic 4.0 and higher is UNICODE internally and, while it normally converts strings to ANSI when calling a DLL, it will pass strings directly as UNICODE where a corresponding TYPELIB indicates this should be done (as it will for OPC).
 At the time of this writing, MIDL 3.0 or later is required in order to correctly compile the IDL code and generate proxy/stub software. Microsoft Windows NT 4.0 (or later), or Windows 95 with DCOM support is required to properly handle the marshaling of OPC parameters.
 Note that in order to implement OPC servers which will run on both Microsoft Windows NT and Microsoft Windows 95 it is necessary for these servers to test the platform at runtime. In the case of Microsoft Windows 95, conversion of  any strings to be passed to Win32 from UNICODE to ANSI needs to be done.
-Threads and Multitasking
+### 2.3 Threads and Multitasking
 This specification does NOT require any particular threading model for the server.
 The topic of multiple threads and their relationship to OLE is important.  While these issues are also difficult to summarize, the performance gains for a medium to large scale server are worth the investment.
 For OPC Servers
@@ -196,8 +173,8 @@ For OPC Clients
 It is currently a requirement of COM that an object be accessed only by the thread that created it.  This applies both to the actual objects in the server and to any ‘proxy’ objects represented by a marshaling stub or handler.  Note that there are ways to partially relax this constraint (e.g. through the use of CoMarshallInterThreadInterfaceInStream()) however,this simply routes all method calls back through the thread that created the object and this involves considerable overhead.  In addition, no matter how many threads attempt to access the objects in parallel, they will all be gated by the operation of the dispatch loop in the thread owning the object which will tend to negate any performance improvement.
 Note the general OLE rule that code within asynchronous OLE methods (e.g. OnDataChange) cannot make synchronous or asynchronous OLE calls. 
 
-OPC Common Interface Issues
-Common Interface Issues 
+## 3. OPC Common Interface Issues
+### 3.1 Common Interface Issues
 This section describes issues which are common to all interfaces, and some background information about how the designers of OPC expected these interfaces to be implemented and used.
 Custom vs. Automation Interface
 OPC specifications always contain two sets of interfaces; Custom Interfaces and Automation Interfaces. It has been found that it is not possible to define a single (dual-automation) interface which is both highly efficient and provides the look-and-feel of typical automation servers, like Excel.
@@ -219,7 +196,7 @@ Errors and return codes
 The OPC specifications describe interfaces and corresponding behavior that an OPC server implements, and an OPC client application depends on.   A list of errors and return codes is contained in each specification.  For each method described a list of all possible OPC error codes as well as the most common OLE error codes is included. It is likely that clients will encounter additional error codes such as RPC and Security related codes in practice and they should be prepared to deal with them. 
 In all cases  ‘E’ error codes will indicate FAILED type errors and ‘S’ error codes will indicate at least partial success. 
 
-Property Overview
+## 4. Property Overview
 
 Properties (also refered to as attributes or parameters) are used in various OPC specifications. In DataAccess, for instance, they are associated with an ItemID, in AlarmEvent with Categories.
 The information in properties is thought to be optional. I.e. it should not be provided with every “Read” in DataAccess or with every event notification in Alarm&Event. Therefore special interfaces are provided by the various OPC specifications to query for supported properties and to read or select properties.
@@ -270,7 +247,7 @@ Vendor Specific Properties. ID codes for these properties must have values of 50
 
 The client should take care dealing with these vendor specific IDs - i.e. not make assumptions about them. Different vendors may not provide the same information for IDs of 5000 and above.
 
-Summary of OPC Error Codes
+## 5. Summary of OPC Error Codes
 We have attempted to minimize the number of unique errors by identifying common generic problems and defining error codes that can be reused in many contexts. An OPC server should only return those OPC errors that are listed for the various methods in this specification or are standard Microsoft errors. Note that OLE itself will frequently return errors (such as RPC errors) in addition to those listed in this specification.
 The most important thing for a client is to check FAILED for any error return. Other than that, (the statements above not withstanding) a robust, user-friendly client should assume that the server may return any error code and should call the GetErrorString function to provide user readable information about those errors.
 
@@ -345,11 +322,11 @@ For vendor-specific codes
 
 
 
-Shutdown of OPCServers
+## 6. Shutdown of OPCServers
 
 The shutdown capability allows an OPC Server to request that all clients disconnect from the server. It is provided for all types of OPC Servers (DataAccess, Alarm&Event, ...).
 The functionality is available via a Connection point on the Server object and a corresponding Client side IOPCShutdown interface. Clients should make use of this feature to support graceful shutdown.
-IConnectionPointContainer (on OPCServer)
+### 6.1 IConnectionPointContainer (on OPCServer)
 This interface provides access to the connection point for IOPCShutdown.
 The general principles of ConnectionPoints are not discussed here as they are covered very clearly in the Microsoft Documentation. The reader is assumed to be familiar with this technology.
 Likewise the details of the IEnumConnectionPoints, IConnectionPoint and IEnumConnections interfaces are well defined by Microsoft and are not discussed here.
@@ -412,7 +389,7 @@ For other codes see the OLE programmers reference
 Comments
 OPCServers must support IID_IOPCShutdown. Additional vendor specific callbacks are also allowed.
 
-IOPCShutdown
+### 6.2 IOPCShutdown
 In order to use this connection point, the client must create an object that supports both the IUnknown and IOPCShutdown Interface. The client would pass a pointer to the IUnknown interface (NOT the IOPCShutdown) to the Advise method of the proper IConnectionPoint in the server (as obtained from IConnectionPointContainer:: FindConnectionPoint or EnumConnectionPoints). The Server will call QueryInterface on the client object to obtain the IOPCShutdown interface. Note that the transaction must be performed in this way in order for the interface marshalling to work properly for Local or Remote servers.  
 The ShutdownRequest method on this Interface will be called when the server needs to shutdown. The client should release all connections and interfaces for this server.
 A client which is connected to multiple OPCServers (for example Data access and/or other servers such as Alarms and events servers from one or more vendors) should maintain separate shutdown callbacks for each object since any server can shut down independently of the others.
@@ -440,7 +417,7 @@ The client must always return S_OK.
 Comments
 The shutdown connection point is on a ‘per COM object’ basis. That is, it relates to the object created by CoCreate… If a client connects to multiple COM objects then it should monitor each one separately for shutdown requests.
 
-IOPCCommon 
+## 7. IOPCCommon
 This interface is used by all OPC Server types (DataAccess, Alarm&Event, Historical Data). It provides the ability to set  and query a LocaleID which would be in effect for the particular client/server session. That is, the actions of one client do not affect any other clients.
 As with other interfaces such as IUnknown, the instance of this interface for each server is unique. That is, an OPC Data Access server object and and OPC Alarms and Events server object might both provide an implementation of IOPCCommon. A client which is maintaining connections to both servers would, as with any other interface, use the interfaces on these two objects independently.
 IOPCCommon::SetLocaleID 
@@ -603,10 +580,10 @@ The operation succeeded.
 
 Comments
 
-Installation and Registration Issues
+## 8. Installation and Registration Issues
 This section describes all installation issues which are common to all OPC Servers (no matter which interfaces they implement). Specific installation and registration issues will be described in the interface-specific documents.
 It is assumed that the server vendor will provide a SETUP.EXE to install the needed components for their server.  This will not be discussed further.  Other than the actual components, the main issue affecting OLE software is management of the Windows Registry and Component Catagories.  The issues here are (a) what entries need to be made and (b) how they can be made.
-Component Categories
+### 8.1 Component Categories
 With the possibly huge amount of available components on a single computer system, their management becomes increasingly difficult. OPC Clients often need to enumerate the OPC Servers that they want to use in a certain context. In its first version, OPC specified a sub-key called OPC to tag the OPC Server entries in the registry. Clients have to browse for this subkey. This method is inefficient as it requires browsing all CLSID entries in the registry. Name collisions may occur. And finally, access to remote registries will be restricted in NT5.0.
 For all server specifications past DataAccess 1.0A, OPC uses Component Categories as a way to categorize OPC Servers by their implemented functionality. Clients can use the new interface IOPCServerList to obtain a list of servers with the required functionality. See the following chapter for the specification of this interface
 OPC defines “implemented categories” for each version of each OPC Interface specification. Each category is identified by a globally unique identifier (GUID), the CATID. CATIDs are specified in the registry section of each specification.
@@ -652,11 +629,11 @@ Client Enumeration
 Clients will use the Interface IOPCServerList2 to obtain a list of servers either locally or on a remote host. This interface basically provides the functionality of the Component Categories Manager. It has been defined by OPC, because access to the Component Categories Manager does not work for remote machines.
 See the following chapter for the specification of IOPCServerList2.
 
-Registry Entries for the Proxy/Stub DLL
+### 8.2 Registry Entries for the Proxy/Stub DLL
 The proxy/stub DLLs are used for marshalling interfaces to LOCAL or REMOTE servers. It is generated directly from the IDL code and should be the same for every OPC Server. In general the Proxy/Stub will use self registration. (Define REGISTER_PROXY_DLL during the build).  Since this is completely automatic and transparent it is not discussed further.
 Also note that a prebuilt and tested proxy/stub DLL will be provided at the OPC Foundation Web site making it unnecessary for vendors to rebuild this DLL.
 Although vendors are allowed to add their own interfaces to OPC objects (as with any COM object) they should NEVER modify the standard OPC IDL files or Proxy/Stub DLLs to include such interfaces. Such interfaces should ALWAYS be defined in a separate vendor specific IDL file and should be marshalled by a separate vendor specific Proxy/Stub DLL.
-Creating the Registry Entries
+### 8.3 Creating the Registry Entries
 COM defines a “self-registration” mechanism that enables you to encapsulate registry needs into a DLL or EXE, providing clients and servers an easy way to make sure that any given module is fully and accurately registered.  In addition, COM also includes “unregistration” so that a server can remove all of its registry entries when the DLL or EXE is removed from the file system, thereby keeping the registry clean from useless entries.
 When asked to self-register, a server must create all entries for every component that it supports, including any entries for type libraries.  When asked to “un-register” the server must remove those entries that it created in its self-registration.  
 For a DLL server, these requests are made through calls to the exported functions DllRegisterServer and DllUnregisterServer, which must exist in the DLL under these exact names.  Both functions take no arguments and return an HRESULT to indicate the result.  The two applicable error codes are SELFREG_E_CLASS (failure to register/unregister CLSID information) and SELFREG_E_TYPELIB (failure to register/unregister TypeLib information). 
@@ -696,7 +673,7 @@ HKEY_CLASSES_ROOT\MyVendor.ServerName.1\OPC\Vendor = My Vendor Name
 
 
 
-Version Convention
+### 8.4 Version Convention
 All OPC provided runtime files (DLLs and EXEs) will contain version information embedded in the file’s resource. By convention, the version number will use the following format:
 MM.mm.bb
 
@@ -737,7 +714,7 @@ BEGIN
 END
 
 The version information will be used to insure that during installation, an older version of a file will not overwrite a newer version.
-Installing OPC Binaries
+### 8.5 Installing OPC Binaries
 All OPC vendors will need to install the appropriate OPC Foundation provided components (proxy/stub DLLs, Automation wrappers etc.) to work with their components.
 Since multiple vendors will be installing identical OPC Foundation components, it is imperative that they all follow the following installation instructions exactly without deviation.
 By using the Setup provided by OPC, vendors can be sure that all listed requirements are fulfilled.
@@ -765,10 +742,10 @@ The following example shows a reference count of 5 for OPCPROXY.DLL, a reference
 
 Most installation utilities like InstallShield handle the installation of shared, version checked files easily.
 
-OPC Server Browser
-Overview
+## 9. OPC Server Browser
+### 9.1 Overview
 The OPC Foundation supplied Server Browser OPCENUM.EXE can reside on any machine, will access the local Component Categories Manger and provides a new interface IOPCServerList2 which can be marshaled and used by remote clients. This server has a published classid (see below) and can be installed once on any machine which hosts OPC servers. The client still needs to know the nodename of the target machine however he can now create this object remotely and use it's IOPCServerList2 interface to determine what types and brands of servers are available on that machine.
-Information for Users
+### 9.2 Information for Users
 The OPC Server Browser (OPCENUM.EXE) and the required proxy/stub (OPCCOMN_PS.DLL) can be obtained from the OPC Foundation Web Site. The EXE and DLL should be copied to the Windows SYSTEM directory (see the section “Installing OPC Binaries”, above).
 The EXE is installed by running
 	OPCENUM /RegServer
@@ -779,15 +756,15 @@ The DLL is installed by running
 No further user action is required. Doing the steps above will allow Client programs you have purchased which support this server browser capability to function properly.
 It is strongly recommended that OpcEnum be registered with the OpcEnum /Service command line. Under Windows NT and higher this will allow client applications the easiest access. Under Windows 9x this will cause OpcEnum to start automatically when the OS boots, before a user has logged on, thus allowing remote clients access through DCOM.
 The OPC Foundation – in addition  to the single files – also provides an installer (OpcEnumInst.exe).
-Security
+### 9.3 Security
 The OPC Server Browser is designed to allow access by any user regardless of the DCOM security setup. When OpcEnum registers, it sets the DCOM security settings to allow Everyone access and launch permissions and the Authentication level to None.
 When started OPCEnum loads DCOM security settings from the registry so that they can be changed later with dcomcnfg. If any security setting is already set in the registry during Registration, then that setting is not changed.
 The user can change security with DCOMcnfg. But if the user changes the settings to use the Default DCOM settings and OpcEnum is re-registered for any reason it will change the entries back.
-Information for Server Programmers
+### 9.4 Information for Server Programmers
 Note that the OPC Foundation provides the OPC Browser Object. OPC Servers should NOT implement this interface. OPC Servers should simply register themselves with the appropriate component category as described on the appropriate OPC Specification.
-Information for Client Programmers
+### 9.5 Information for Client Programmers
 Client programmers should create the OPC Server Browser Object on the target machine by passing its class id (CLSID_OPCServerList as defined in opc_cats.c) to CoCreateInstanceEx. They should obtain the OPCServerList2 interface (IID_IOPCServerList2 as defined in opccomn_i.c). They can then use this interface to obtain lists of the available servers for particular component categories. The OPC Component categories for the various OPC Server types are defined in opc_cats.c. The marshalling for this interface is included in the OPCComn_ps.dll.
-OPC Server Browser Interface
+### 9.6 OPC Server Browser Interface
 The interface to the OPC Server Browser is designed to be as simple as possible to use. It is similar to the standard ICatInformation but has been simplified and also modified so that it can work remotely. It provides just the minimum functionality required for this particular application. It provides the methods which are described in more detail later.
 Two versions of the interface are provided:
 IOPCServerList (old - only provided for compatibility with old clients)
@@ -1098,7 +1075,7 @@ The operation succeeded.
 
 
 
-Appendix A – OPC Common IDL Specification
+## 10. Appendix A - OPC Common IDL Specification
 The current files require MIDL compiler 3.00.15 or later and the WIN NT 4.0 release SDK.
 Use the command line MIDL /ms_ext /c_ext /app_config opcda.idl.
 The resulting  OPCCOMN.H  file should be included in all clients and servers.
@@ -1280,7 +1257,7 @@ library OPCCOMN
 };
 
 
-Appendix B – Sample String Filter Function
+## 11. Appendix B - Sample String Filter Function
 This function provides essentially the same functionality as the LIKE operator in Visual Basic.
 
 MatchPattern

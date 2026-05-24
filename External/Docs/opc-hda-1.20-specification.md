@@ -10,7 +10,8 @@ Released
 
 December 10, 2003
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -67,7 +68,8 @@ This specification requires Windows 95 / Windows NT 4.0 or later
 
 ii
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -137,7 +139,8 @@ library component, either individually or together.
 
 iii
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -168,7 +171,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 iv
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -207,7 +211,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 v
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -252,381 +257,190 @@ single pointer.
 
 vi
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
 F O U N D A T I O N
 
-Table of Contents
+## Table of Contents
 
-Released
+- [1. Introduction](#1-introduction)
+  - [1.1 Background](#11-background)
+  - [1.2 Purpose](#12-purpose)
+  - [1.3 Relationship to Other OPC Specifications](#13-relationship-to-other-opc-specifications)
+  - [1.4 Scope](#14-scope)
+    - [1.4.1 General](#141-general)
+    - [1.4.2 Multiple Levels of Capability](#142-multiple-levels-of-capability)
+    - [1.4.3 Types of Historian Servers](#143-types-of-historian-servers)
+  - [1.5 References](#15-references)
+  - [1.6 Audience](#16-audience)
+  - [1.7 Deliverables](#17-deliverables)
+  - [1.8 HDA Errata](#18-hda-errata)
+- [2. OPC-HDA Fundamentals](#2-opc-hda-fundamentals)
+  - [2.1 Overview](#21-overview)
+  - [2.2 Data Sources](#22-data-sources)
+  - [2.3 General Architecture and components](#23-general-architecture-and-components)
+  - [2.4 Overview of Object and Interfaces](#24-overview-of-object-and-interfaces)
+  - [2.5 Required Interface Definition](#25-required-interface-definition)
+  - [2.6 Optional Interface Definition](#26-optional-interface-definition)
+  - [2.7 Definitions](#27-definitions)
+  - [2.8 Bounding values and Time Domain](#28-bounding-values-and-time-domain)
+  - [2.9 Aggregates](#29-aggregates)
+    - [2.9.1 Common Characteristics](#291-common-characteristics)
+      - [2.9.1.1 Generating Intervals](#2911-generating-intervals)
+      - [2.9.1.2 Data Types](#2912-data-types)
+      - [2.9.1.3 Quality](#2913-quality)
+    - [2.9.2 Aggregate Specific characteristics](#292-aggregate-specific-characteristics)
+      - [2.9.2.1 Example aggregate data - Historian 1](#2921-example-aggregate-data-historian-1)
+      - [2.9.2.2 Example aggregate data - Historian 2](#2922-example-aggregate-data-historian-2)
+      - [2.9.2.3 Example Conditions](#2923-example-conditions)
+      - [2.9.2.4 INTERPOLATIVE](#2924-interpolative)
+      - [2.9.2.5 TIMEAVERAGE](#2925-timeaverage)
+      - [2.9.2.6 TOTAL](#2926-total)
+      - [2.9.2.7 AVERAGE](#2927-average)
+      - [2.9.2.8 COUNT](#2928-count)
+      - [2.9.2.9 STDEV](#2929-stdev)
+      - [2.9.2.10 VARIANCE](#29210-variance)
+      - [2.9.2.11 MINIMUM ACTUAL TIME](#29211-minimum-actual-time)
+      - [2.9.2.12 MINIMUM](#29212-minimum)
+      - [2.9.2.13 MAXIMUM ACTUAL TIME](#29213-maximum-actual-time)
+      - [2.9.2.14 MAXIMUM](#29214-maximum)
+      - [2.9.2.15 START](#29215-start)
+      - [2.9.2.16 END](#29216-end)
+      - [2.9.2.17 DELTA](#29217-delta)
+      - [2.9.2.18 REGSLOPE](#29218-regslope)
+      - [2.9.2.19 REGCONST](#29219-regconst)
+      - [2.9.2.20 REGDEV](#29220-regdev)
+      - [2.9.2.21 RANGE](#29221-range)
+      - [2.9.2.22 DURATION GOOD](#29222-duration-good)
+      - [2.9.2.23 DURATION BAD](#29223-duration-bad)
+      - [2.9.2.24 PERCENT GOOD](#29224-percent-good)
+      - [2.9.2.25 PERCENT BAD](#29225-percent-bad)
+      - [2.9.2.26 WORST QUALITY](#29226-worst-quality)
+      - [2.9.2.27 ANNOTATIONS](#29227-annotations)
+- [3. OPC-HDA Quick Reference](#3-opc-hda-quick-reference)
+  - [3.1 Custom Interface](#31-custom-interface)
+    - [3.1.1 IOPCCommon](#311-iopccommon)
+    - [3.1.2 IOPCHDA_Server](#312-iopchdaserver)
+    - [3.1.3 IOPCHDA_Browser](#313-iopchdabrowser)
+    - [3.1.4 IOPCHDA_SyncRead](#314-iopchdasyncread)
+    - [3.1.5 IOPCHDA_SyncUpdate (optional)](#315-iopchdasyncupdate-optional)
+    - [3.1.6 IOPCHDA_SyncAnnotations (optional)](#316-iopchdasyncannotations-optional)
+    - [3.1.7 IOPCHDA_AsyncRead (optional)](#317-iopchdaasyncread-optional)
+    - [3.1.8 IOPCHDA_AsyncUpdate (optional)](#318-iopchdaasyncupdate-optional)
+    - [3.1.9 IOPCHDA_AsyncAnnotations (optional)](#319-iopchdaasyncannotations-optional)
+    - [3.1.10 IOPCHDA_Playback (optional)](#3110-iopchdaplayback-optional)
+    - [3.1.11 IConnectionPointContainer (required if any Async interface is supported)](#3111-iconnectionpointcontainer-required-if-any-async-interface-is-supported)
+    - [3.1.12 IOPCHDA_DataCallback](#3112-iopchdadatacallback)
+- [4. OPC-HDA Custom Interface](#4-opc-hda-custom-interface)
+  - [4.1 Overview of the OPC HDA Custom Interface](#41-overview-of-the-opc-hda-custom-interface)
+  - [4.2 General Information](#42-general-information)
+    - [4.2.1 Ownership of memory](#421-ownership-of-memory)
+    - [4.2.2 Standard Interfaces](#422-standard-interfaces)
+    - [4.2.3 Null Strings and Null Pointers](#423-null-strings-and-null-pointers)
+    - [4.2.4 Returned Arrays](#424-returned-arrays)
+    - [4.2.5 Asynchronous vs. Synchronous Interfaces](#425-asynchronous-vs-synchronous-interfaces)
+    - [4.2.6 Errors and return codes](#426-errors-and-return-codes)
+    - [4.2.7 IUnknown](#427-iunknown)
+  - [4.3 IOPCHDA_SyncRead::ReadProcessed](#43-iopchdasyncreadreadprocessed)
+  - [4.4 IOPCHDA_SyncRead::ReadAtTime](#44-iopchdasyncreadreadattime)
+    - [4.4.1 IOPCHDA_Server](#441-iopchdaserver)
+      - [4.4.1.1 IOPCHDA_Server::GetItemAttributes](#4411-iopchdaservergetitemattributes)
+      - [4.4.1.2 IOPCHDA_Server::GetAggregates](#4412-iopchdaservergetaggregates)
+      - [4.4.1.3 IOPCHDA_Server::GetHistorianStatus](#4413-iopchdaservergethistorianstatus)
+      - [4.4.1.4 IOPCHDA_Server::GetItemHandles](#4414-iopchdaservergetitemhandles)
+      - [4.4.1.5 IOPCHDA_Server::ReleaseItemHandles](#4415-iopchdaserverreleaseitemhandles)
+      - [4.4.1.6 IOPCHDA_Server::ValidateItemIDs](#4416-iopchdaservervalidateitemids)
+      - [4.4.1.7 IOPCHDA_Server::CreateBrowse](#4417-iopchdaservercreatebrowse)
+    - [4.4.2 IOPCHDA_Browser](#442-iopchdabrowser)
+      - [4.4.2.1 IOPCHDA_Browser::GetEnum](#4421-iopchdabrowsergetenum)
+      - [4.4.2.2 IOPCHDA_Browser::ChangeBrowsePosition](#4422-iopchdabrowserchangebrowseposition)
+      - [4.4.2.3 IOPCHDA_Browser::GetItemID](#4423-iopchdabrowsergetitemid)
+      - [4.4.2.4 IOPCHDA_Browser::GetBranchPosition](#4424-iopchdabrowsergetbranchposition)
+    - [4.4.3 IOPCHDA_SyncRead](#443-iopchdasyncread)
+      - [4.4.3.1 IOPCHDA_SyncRead::ReadRaw](#4431-iopchdasyncreadreadraw)
+      - [4.4.3.4 IOPCHDA_SyncRead::ReadModified](#4434-iopchdasyncreadreadmodified)
+      - [4.4.3.5 IOPCHDA_SyncRead::ReadAttribute](#4435-iopchdasyncreadreadattribute)
+    - [4.4.4 IOPCHDA_SyncUpdate](#444-iopchdasyncupdate)
+      - [4.4.4.1 IOPCHDA_SyncUpdate::QueryCapabilities](#4441-iopchdasyncupdatequerycapabilities)
+      - [4.4.4.2 IOPCHDA_SyncUpdate::Insert](#4442-iopchdasyncupdateinsert)
+      - [4.4.4.3 IOPCHDA_ SyncUpdate::Replace](#4443-iopchda-syncupdatereplace)
+      - [4.4.4.4 IOPCHDA_ SyncUpdate::InsertReplace](#4444-iopchda-syncupdateinsertreplace)
+      - [4.4.4.5 IOPCHDA_ SyncUpdate::DeleteRaw](#4445-iopchda-syncupdatedeleteraw)
+      - [4.4.4.6 IOPCHDA_ SyncUpdate::DeleteAtTime](#4446-iopchda-syncupdatedeleteattime)
+    - [4.4.5 IOPCHDA_SyncAnnotations](#445-iopchdasyncannotations)
+      - [4.4.5.1 IOPCHDA_SyncAnnotations::QueryCapabilities](#4451-iopchdasyncannotationsquerycapabilities)
+      - [4.4.5.2 IOPCHDA_SyncAnnotations::Read](#4452-iopchdasyncannotationsread)
+      - [4.4.5.3 IOPCHDA_SyncAnnotations:: Insert](#4453-iopchdasyncannotations-insert)
+  - [4.5 Asynchronous Interfaces](#45-asynchronous-interfaces)
+    - [4.5.1 IOPCHDA_AsyncRead](#451-iopchdaasyncread)
+      - [4.5.1.1 IOPCHDA_AsyncRead::ReadRaw](#4511-iopchdaasyncreadreadraw)
+      - [4.5.1.2 IOPCHDA_AsyncRead::AdviseRaw](#4512-iopchdaasyncreadadviseraw)
+      - [4.5.1.3 IOPCHDA_AsyncRead::ReadProcessed](#4513-iopchdaasyncreadreadprocessed)
+      - [4.5.1.4 IOPCHDA_AsyncRead::AdviseProcessed](#4514-iopchdaasyncreadadviseprocessed)
+      - [4.5.1.5 IOPCHDA_AsyncRead::ReadAtTime](#4515-iopchdaasyncreadreadattime)
+      - [4.5.1.6 IOPCHDA_AsyncRead::ReadModified](#4516-iopchdaasyncreadreadmodified)
+      - [4.5.1.7 IOPCHDA_AsyncRead::ReadAttribute](#4517-iopchdaasyncreadreadattribute)
+      - [4.5.1.8 IOPCHDA_AsyncRead::Cancel](#4518-iopchdaasyncreadcancel)
+    - [4.5.2 IOPCHDA_AsyncUpdate](#452-iopchdaasyncupdate)
+      - [4.5.2.1 IOPCHDA_AsyncUpdate::QueryCapabilities](#4521-iopchdaasyncupdatequerycapabilities)
+      - [4.5.2.2 IOPCHDA_AsyncUpdate::Insert](#4522-iopchdaasyncupdateinsert)
+      - [4.5.2.3 IOPCHDA_AsyncUpdate::Replace](#4523-iopchdaasyncupdatereplace)
+      - [4.5.2.4 IOPCHDA_AsyncUpdate::InsertReplace](#4524-iopchdaasyncupdateinsertreplace)
+      - [4.5.2.5 IOPCHDA_AsyncUpdate::DeleteRaw](#4525-iopchdaasyncupdatedeleteraw)
+      - [4.5.2.6 IOPCHDA_AsyncUpdate::DeleteAtTime](#4526-iopchdaasyncupdatedeleteattime)
+      - [4.5.2.7 IOPCHDA_AsyncUpdate::Cancel](#4527-iopchdaasyncupdatecancel)
+    - [4.5.3 IOPCHDA_AsyncAnnotations](#453-iopchdaasyncannotations)
+      - [4.5.3.1 IOPCHDA_ AsyncAnnotations::QueryCapabilities](#4531-iopchda-asyncannotationsquerycapabilities)
+      - [4.5.3.2 IOPCHDA_AsyncAnnotations::Read](#4532-iopchdaasyncannotationsread)
+      - [4.5.3.3 IOPCHDA_AsyncAnnotations::Insert](#4533-iopchdaasyncannotationsinsert)
+      - [4.5.3.4 IOPCHDA_AsyncAnnotations::Cancel](#4534-iopchdaasyncannotationscancel)
+  - [4.6 IOPCHDA_DataCallback::OnPlayback](#46-iopchdadatacallbackonplayback)
+    - [4.6.1 IOPCHDA_Playback](#461-iopchdaplayback)
+      - [4.6.1.1 IOPCHDA_Playback::ReadRawWithUpdate](#4611-iopchdaplaybackreadrawwithupdate)
+      - [4.6.1.2 IOPCHDA_Playback::ReadProcessedWithUpdate](#4612-iopchdaplaybackreadprocessedwithupdate)
+      - [4.6.1.3 IOPCHDA_Playback::Cancel](#4613-iopchdaplaybackcancel)
+  - [4.7 IConnectionPointContainer Interface](#47-iconnectionpointcontainer-interface)
+    - [4.7.1 IConnectionPointContainer](#471-iconnectionpointcontainer)
+      - [4.7.1.1 IConnectionPointContainer::EnumConnectionPoints](#4711-iconnectionpointcontainerenumconnectionpoints)
+      - [4.7.1.2 IConnectionPointContainer::FindConnectionPoint](#4712-iconnectionpointcontainerfindconnectionpoint)
+  - [4.8 Client Interfaces](#48-client-interfaces)
+    - [4.8.1 IOPCHDA_DataCallback](#481-iopchdadatacallback)
+      - [4.8.1.1 IOPCHDA_DataCallback::OnDataChange](#4811-iopchdadatacallbackondatachange)
+      - [4.8.1.2 IOPCHDA_DataCallback::OnReadComplete](#4812-iopchdadatacallbackonreadcomplete)
+      - [4.8.1.3 IOPCHDA_DataCallback::OnReadModifiedComplete](#4813-iopchdadatacallbackonreadmodifiedcomplete)
+      - [4.8.1.4 IOPCHDA_DataCallback::OnReadAttributeComplete](#4814-iopchdadatacallbackonreadattributecomplete)
+      - [4.8.1.5 IOPCHDA_DataCallback::OnReadAnnotations](#4815-iopchdadatacallbackonreadannotations)
+      - [4.8.1.6 IOPCHDA_DataCallback::OnInsertAnnotations](#4816-iopchdadatacallbackoninsertannotations)
+      - [4.8.1.8 IOPCHDA_DataCallback::OnUpdateComplete](#4818-iopchdadatacallbackonupdatecomplete)
+      - [4.8.1.9 IOPCHDA_DataCallback::OnCancelComplete](#4819-iopchdadatacallbackoncancelcomplete)
+- [5. Description of Data Types, Parameters and Structures](#5-description-of-data-types-parameters-and-structures)
+  - [5.1 OPCHDA_QUALITY](#51-opchdaquality)
+  - [5.2 OPCHDA ITEM ATTRIBUTES](#52-opchda-item-attributes)
+  - [5.3 Structures and Masks](#53-structures-and-masks)
+    - [5.3.1 OPCHDA_ITEM](#531-opchdaitem)
+    - [5.3.2 OPCHDA_EDITTYPE](#532-opchdaedittype)
+    - [5.3.3 OPCHDA_AGGREGATE](#533-opchdaaggregate)
+    - [5.3.4 OPCHDA_TIME](#534-opchdatime)
+    - [5.3.5 OPCHDA_ATTRIBUTE](#535-opchdaattribute)
+    - [5.3.6 OPCHDA_MODIFIEDITEM](#536-opchdamodifieditem)
+    - [5.3.7 OPCHDA_ANNOTATION](#537-opchdaannotation)
+    - [5.3.8 OPCHDA_OPERATORCODES](#538-opchdaoperatorcodes)
+    - [5.3.9 OPCHDA_UPDATECAPABILITIES](#539-opchdaupdatecapabilities)
+    - [5.3.10 OPCHDA_ANNOTATIONCAPABILITIES](#5310-opchdaannotationcapabilities)
+    - [5.3.11 OPCHDA_BROWSETYPE](#5311-opchdabrowsetype)
+    - [5.3.12 OPCHDA_BROWSEDIRECTION](#5312-opchdabrowsedirection)
+    - [5.3.13 OPCHDA_SERVERSTATUS](#5313-opchdaserverstatus)
+- [6. Component Categories Registration](#6-component-categories-registration)
+  - [6.1 } OPCHDA_TIME;](#61-opchdatime)
+  - [6.2 Client Enumeration](#62-client-enumeration)
+- [7. OPC Historical Data Access](#7-opc-historical-data-access)
+- [8. Appendix B - Historical Data Access Error Codes](#8-appendix-b-historical-data-access-error-codes)
 
-1.
-
-2.9.1.
-
-INTRODUCTION .............................................................................................................................. 1
-1.1.  BACKGROUND ............................................................................................................................... 1
-PURPOSE........................................................................................................................................ 1
-1.2.
-1.3.  RELATIONSHIP TO OTHER OPC SPECIFICATIONS........................................................................... 1
-SCOPE............................................................................................................................................ 1
-1.4.
-1.4.1.
-General................................................................................................................................. 2
-1.4.2.  Multiple Levels of Capability ............................................................................................... 2
-Types of Historian Servers ................................................................................................... 2
-1.4.3.
-1.5.  REFERENCES.................................................................................................................................. 2
-1.6.  AUDIENCE ..................................................................................................................................... 2
-1.7.  DELIVERABLES.............................................................................................................................. 3
-1.8.  HDA ERRATA ............................................................................................................................... 3
-2.  OPC-HDA FUNDAMENTALS......................................................................................................... 4
-2.1.  OVERVIEW .................................................................................................................................... 4
-2.2.  DATA SOURCES ............................................................................................................................. 5
-2.3.  GENERAL ARCHITECTURE AND COMPONENTS ............................................................................... 6
-2.4.  OVERVIEW OF OBJECT AND INTERFACES....................................................................................... 7
-2.5.  REQUIRED INTERFACE DEFINITION................................................................................................ 9
-2.6.  OPTIONAL INTERFACE DEFINITION................................................................................................ 9
-2.7.  DEFINITIONS.................................................................................................................................. 9
-2.8.  BOUNDING VALUES AND TIME DOMAIN ...................................................................................... 10
-2.9.  AGGREGATES .............................................................................................................................. 11
-Common Characteristics.................................................................................................... 12
-2.9.1.1.  Generating Intervals........................................................................................................................ 12
-2.9.1.2.  Data Types...................................................................................................................................... 12
-2.9.1.3.  Quality ............................................................................................................................................ 13
-Aggregate Specific characteristics ..................................................................................... 13
-2.9.2.1.  Example aggregate data – Historian 1 ............................................................................................ 13
-2.9.2.2.  Example aggregate data – Historian 2 ............................................................................................ 14
-2.9.2.3.  Example Conditions........................................................................................................................ 15
-2.9.2.4.
-INTERPOLATIVE ......................................................................................................................... 15
-2.9.2.5.  TIMEAVERAGE............................................................................................................................ 17
-2.9.2.6.  TOTAL ........................................................................................................................................... 19
-2.9.2.7.  AVERAGE ..................................................................................................................................... 20
-2.9.2.8.  COUNT .......................................................................................................................................... 21
-2.9.2.9.  STDEV ........................................................................................................................................... 21
-2.9.2.10.  VARIANCE.................................................................................................................................... 21
-2.9.2.11.  MINIMUM ACTUAL TIME.......................................................................................................... 21
-2.9.2.12.  MINIMUM ..................................................................................................................................... 23
-2.9.2.13.  MAXIMUM ACTUAL TIME ........................................................................................................ 24
-2.9.2.14.  MAXIMUM.................................................................................................................................... 26
-2.9.2.15.  START............................................................................................................................................ 27
-2.9.2.16.  END ................................................................................................................................................ 28
-2.9.2.17.  DELTA ........................................................................................................................................... 29
-2.9.2.18.  REGSLOPE .................................................................................................................................... 29
-2.9.2.19.  REGCONST ................................................................................................................................... 29
-2.9.2.20.  REGDEV ........................................................................................................................................ 29
-2.9.2.21.  RANGE .......................................................................................................................................... 29
-2.9.2.22.  DURATION GOOD ....................................................................................................................... 29
-2.9.2.23.  DURATION BAD .......................................................................................................................... 31
-
-2.9.2.
-
-vii
-
-OPC Historical Data Access
-Specification
-(Version 1.20)
-
-F O U N D A T I O N
-
-Released
-
-3.1.1.
-3.1.2.
-3.1.3.
-3.1.4.
-3.1.5.
-3.1.6.
-3.1.7.
-3.1.8.
-3.1.9.
-3.1.10.
-3.1.11.
-3.1.12.
-
-2.9.2.24.  PERCENT GOOD .......................................................................................................................... 31
-2.9.2.25.  PERCENT BAD ............................................................................................................................. 32
-2.9.2.26.  WORST QUALITY........................................................................................................................ 32
-2.9.2.27.  ANNOTATIONS............................................................................................................................ 32
-3.  OPC-HDA QUICK REFERENCE ................................................................................................. 33
-3.1.  CUSTOM INTERFACE.................................................................................................................... 33
-IOPCCommon .................................................................................................................... 33
-IOPCHDA_Server .............................................................................................................. 33
-IOPCHDA_Browser........................................................................................................... 34
-IOPCHDA_SyncRead......................................................................................................... 34
-IOPCHDA_SyncUpdate (optional) .................................................................................... 35
-IOPCHDA_SyncAnnotations (optional)............................................................................. 35
-IOPCHDA_AsyncRead (optional)...................................................................................... 36
-IOPCHDA_AsyncUpdate (optional) .................................................................................. 37
-IOPCHDA_AsyncAnnotations (optional)........................................................................... 38
-IOPCHDA_Playback (optional)......................................................................................... 38
-IConnectionPointContainer (required if any Async interface is supported)...................... 39
-IOPCHDA_DataCallback .................................................................................................. 39
-4.  OPC-HDA CUSTOM INTERFACE .............................................................................................. 41
-4.1.  OVERVIEW OF THE OPC HDA CUSTOM INTERFACE ................................................................... 41
-4.2.  GENERAL INFORMATION ............................................................................................................. 41
-Ownership of memory ........................................................................................................ 41
-Standard Interfaces ............................................................................................................ 42
-Null Strings and Null Pointers ........................................................................................... 42
-Returned Arrays ................................................................................................................. 42
-Asynchronous vs. Synchronous Interfaces ......................................................................... 42
-Errors and return codes ..................................................................................................... 43
-IUnknown ........................................................................................................................... 43
-IOPCCOMMON............................................................................................................................ 43
-SYNCHRONOUS INTERFACES ....................................................................................................... 44
-IOPCHDA_Server .............................................................................................................. 44
-IOPCHDA_Server::GetItemAttributes ........................................................................................... 44
-IOPCHDA_Server::GetAggregates ................................................................................................ 45
-IOPCHDA_Server::GetHistorianStatus .......................................................................................... 46
-IOPCHDA_Server::GetItemHandles .............................................................................................. 47
-IOPCHDA_Server::ReleaseItemHandles........................................................................................ 48
-IOPCHDA_Server::ValidateItemIDs.............................................................................................. 48
-IOPCHDA_Server::CreateBrowse.................................................................................................. 49
-IOPCHDA_Browser........................................................................................................... 50
-IOPCHDA_Browser::GetEnum...................................................................................................... 50
-IOPCHDA_Browser::ChangeBrowsePosition................................................................................ 51
-IOPCHDA_Browser::GetItemID.................................................................................................... 52
-IOPCHDA_Browser::GetBranchPosition ....................................................................................... 52
-IOPCHDA_SyncRead......................................................................................................... 53
-IOPCHDA_SyncRead::ReadRaw................................................................................................... 53
-IOPCHDA_SyncRead::ReadProcessed .......................................................................................... 56
-IOPCHDA_SyncRead::ReadAtTime.............................................................................................. 58
-IOPCHDA_SyncRead::ReadModified ........................................................................................... 60
-IOPCHDA_SyncRead::ReadAttribute............................................................................................ 61
-IOPCHDA_SyncUpdate ..................................................................................................... 63
-IOPCHDA_SyncUpdate::QueryCapabilities .................................................................................. 63
-IOPCHDA_SyncUpdate::Insert ...................................................................................................... 64
-IOPCHDA_ SyncUpdate::Replace ................................................................................................. 65
-
-4.4.1.1.
-4.4.1.2.
-4.4.1.3.
-4.4.1.4.
-4.4.1.5.
-4.4.1.6.
-4.4.1.7.
-
-4.2.1.
-4.2.2.
-4.2.3.
-4.2.4.
-4.2.5.
-4.2.6.
-4.2.7.
-
-4.4.3.1.
-4.4.3.2.
-4.4.3.3.
-4.4.3.4.
-4.4.3.5.
-
-4.4.2.1.
-4.4.2.2.
-4.4.2.3.
-4.4.2.4.
-
-4.4.4.1.
-4.4.4.2.
-4.4.4.3.
-
-4.3.
-4.4.
-
-4.4.2.
-
-4.4.3.
-
-4.4.4.
-
-4.4.1.
-
-viii
-
-OPC Historical Data Access
-Specification
-(Version 1.20)
-
-F O U N D A T I O N
-
-Released
-
-4.4.5.
-
-4.5.1.
-
-4.5.3.
-
-4.5.2.
-
-4.4.5.1.
-4.4.5.2.
-4.4.5.3.
-
-4.4.4.4.
-4.4.4.5.
-4.4.4.6.
-
-4.5.2.1.
-4.5.2.2.
-4.5.2.3.
-4.5.2.4.
-4.5.2.5.
-4.5.2.6.
-4.5.2.7.
-
-4.5.1.1.
-4.5.1.2.
-4.5.1.3.
-4.5.1.4.
-4.5.1.5.
-4.5.1.6.
-4.5.1.7.
-4.5.1.8.
-
-IOPCHDA_ SyncUpdate::InsertReplace ........................................................................................ 67
-IOPCHDA_ SyncUpdate::DeleteRaw ............................................................................................ 68
-IOPCHDA_ SyncUpdate::DeleteAtTime ....................................................................................... 69
-IOPCHDA_SyncAnnotations.............................................................................................. 70
-IOPCHDA_SyncAnnotations::QueryCapabilities .......................................................................... 70
-IOPCHDA_SyncAnnotations::Read ............................................................................................... 71
-IOPCHDA_SyncAnnotations:: Insert ............................................................................................. 72
-4.5.  ASYNCHRONOUS INTERFACES ..................................................................................................... 73
-IOPCHDA_AsyncRead....................................................................................................... 74
-IOPCHDA_AsyncRead::ReadRaw................................................................................................. 74
-IOPCHDA_AsyncRead::AdviseRaw.............................................................................................. 75
-IOPCHDA_AsyncRead::ReadProcessed ........................................................................................ 77
-IOPCHDA_AsyncRead::AdviseProcessed ..................................................................................... 79
-IOPCHDA_AsyncRead::ReadAtTime............................................................................................ 81
-IOPCHDA_AsyncRead::ReadModified ......................................................................................... 82
-IOPCHDA_AsyncRead::ReadAttribute.......................................................................................... 84
-IOPCHDA_AsyncRead::Cancel ..................................................................................................... 85
-IOPCHDA_AsyncUpdate ................................................................................................... 86
-IOPCHDA_AsyncUpdate::QueryCapabilities ................................................................................ 86
-IOPCHDA_AsyncUpdate::Insert.................................................................................................... 87
-IOPCHDA_AsyncUpdate::Replace ................................................................................................ 88
-IOPCHDA_AsyncUpdate::InsertReplace ....................................................................................... 89
-IOPCHDA_AsyncUpdate::DeleteRaw ........................................................................................... 90
-IOPCHDA_AsyncUpdate::DeleteAtTime ...................................................................................... 91
-IOPCHDA_AsyncUpdate::Cancel.................................................................................................. 92
-IOPCHDA_AsyncAnnotations............................................................................................ 93
-IOPCHDA_ AsyncAnnotations::QueryCapabilities ....................................................................... 93
-IOPCHDA_AsyncAnnotations::Read............................................................................................. 94
-IOPCHDA_AsyncAnnotations::Insert ............................................................................................ 95
-IOPCHDA_AsyncAnnotations::Cancel .......................................................................................... 96
-PLAYBACK INTERFACE................................................................................................................ 97
-IOPCHDA_Playback.......................................................................................................... 97
-IOPCHDA_Playback::ReadRawWithUpdate ................................................................................. 97
-IOPCHDA_Playback::ReadProcessedWithUpdate......................................................................... 99
-IOPCHDA_Playback::Cancel....................................................................................................... 101
-ICONNECTIONPOINTCONTAINER INTERFACE ............................................................................ 101
-IConnectionPointContainer ............................................................................................. 101
-IConnectionPointContainer::EnumConnectionPoints................................................................... 101
-IConnectionPointContainer::FindConnectionPoint....................................................................... 102
-4.8.  CLIENT INTERFACES .................................................................................................................. 102
-IOPCHDA_DataCallback ................................................................................................ 103
-IOPCHDA_DataCallback::OnDataChange .................................................................................. 103
-IOPCHDA_DataCallback::OnReadComplete .............................................................................. 104
-IOPCHDA_DataCallback::OnReadModifiedComplete................................................................ 105
-IOPCHDA_DataCallback::OnReadAttributeComplete ................................................................ 106
-IOPCHDA_DataCallback::OnReadAnnotations........................................................................... 107
-IOPCHDA_DataCallback::OnInsertAnnotations.......................................................................... 108
-IOPCHDA_DataCallback::OnPlayback ....................................................................................... 109
-IOPCHDA_DataCallback::OnUpdateComplete ........................................................................... 110
-IOPCHDA_DataCallback::OnCancelComplete............................................................................ 111
-5.  DESCRIPTION OF DATA TYPES, PARAMETERS AND STRUCTURES .......................... 112
-5.1.  OPCHDA_QUALITY.............................................................................................................. 112
-5.2.  OPCHDA ITEM ATTRIBUTES.............................................................................................. 113
-STRUCTURES AND MASKS ......................................................................................................... 116
-5.3.
-OPCHDA_ITEM .............................................................................................................. 116
-
-4.8.1.1.
-4.8.1.2.
-4.8.1.3.
-4.8.1.4.
-4.8.1.5.
-4.8.1.6.
-4.8.1.7.
-4.8.1.8.
-4.8.1.9.
-
-4.5.3.1.
-4.5.3.2.
-4.5.3.3.
-4.5.3.4.
-
-4.6.1.1.
-4.6.1.2.
-4.6.1.3.
-
-4.7.1.1.
-4.7.1.2.
-
-4.8.1.
-
-5.3.1.
-
-4.7.1.
-
-4.6.1.
-
-4.7.
-
-4.6.
-
-ix
-
-OPC Historical Data Access
-Specification
-(Version 1.20)
-
-F O U N D A T I O N
-
-Released
-
-5.3.2.
-OPCHDA_EDITTYPE...................................................................................................... 117
-5.3.3.
-OPCHDA_AGGREGATE................................................................................................. 117
-5.3.4.
-OPCHDA_TIME .............................................................................................................. 118
-5.3.5.
-OPCHDA_ATTRIBUTE ................................................................................................... 120
-5.3.6.
-OPCHDA_MODIFIEDITEM........................................................................................... 120
-5.3.7.
-OPCHDA_ANNOTATION ............................................................................................... 121
-5.3.8.
-OPCHDA_OPERATORCODES....................................................................................... 121
-OPCHDA_UPDATECAPABILITIES ............................................................................... 122
-5.3.9.
-5.3.10.  OPCHDA_ANNOTATIONCAPABILITIES ...................................................................... 122
-5.3.11.  OPCHDA_BROWSETYPE............................................................................................... 122
-5.3.12.  OPCHDA_BROWSEDIRECTION ................................................................................... 123
-5.3.13.  OPCHDA_SERVERSTATUS............................................................................................ 124
-6.  COMPONENT CATEGORIES REGISTRATION .................................................................... 125
-6.1.
-SERVER REGISTRATION ............................................................................................................. 125
-6.2.  CLIENT ENUMERATION.............................................................................................................. 126
-7.  APPENDIX A – HISTORICAL DATA ACCESS IDL SPECIFICATION .............................. 128
-
-8.  APPENDIX B – HISTORICAL DATA ACCESS ERROR CODES ......................................... 144
-
-x
-
-OPC Historical Data Access
-Specification
-(Version 1.20)
-
-F O U N D A T I O N
-
-Released
-
-1.  Introduction
-1.1. Background
+## 1. Introduction
+### 1.1 Background
 Today with the level of automation that is being applied in manufacturing, people are dealing with
 more and more information.
 
@@ -645,7 +459,7 @@ specification.
 Manufacturers and consumers want to use off the shelf, open solutions from vendors that offer
 superior value that solve a specific need or problem.
 
-1.2. Purpose
+### 1.2 Purpose
 A growing number of custom applications are being developed in environments like Visual Basic
 (VB), Delphi, Power Builder, etc. OPC must take this trend into account. Microsoft understands this
 trend and designed OLE/COM to allow components (written in C and C++ by experts in a specific
@@ -663,7 +477,7 @@ This specification tries to identify interfaces used to pass historical informat
 which would be suitable to standardization. Additionally this document details the design of those
 interfaces in such a way as to complement the existing OPC Data Access Interfaces.
 
-1.3. Relationship to Other OPC Specifications
+### 1.3 Relationship to Other OPC Specifications
 There is a loose binding between this and other OPC specifications.  This OPC specification is not
 derived from, nor does it inherit interfaces from, another OPC specification.   Where identical
 interfaces are desired, they are replicated here.  Data types are assumed from the Data Access
@@ -671,7 +485,7 @@ specification. The interfaces in this document provide time series Historical da
 desired, a Data Access server and its interfaces should be used.  This specification does not deal with
 historical Alarm or relational type data.
 
-1.4. Scope
+### 1.4 Scope
 This document represents the initial release of the HDA specification. The scope of this release was
 purposely limited to defining interfaces to support the reading, writing, and editing of historical data
 between client applications and historical data servers. Additional functionality was deferred to future
@@ -679,11 +493,12 @@ releases of this specification.
 
 1
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
-1.4.1.  General
+#### 1.4.1 General
 
 F O U N D A T I O N
 
@@ -692,14 +507,14 @@ Released
 This document specifies the interfaces a historian is required to support to be classified an OPC
 Historian server.  It does not intend to define the underlining architecture of the historian.
 
-1.4.2.  Multiple Levels of Capability
+#### 1.4.2 Multiple Levels of Capability
 
 The OPC Historian specification accommodates a variety of applications that need to provide
 Historical data.  In particular, there are multiple levels of capability for handling historical
 functionality, from the simple to the sophisticated.  The simple historian may only support one or two
 of the interfaces.
 
-1.4.3.  Types of Historian Servers
+#### 1.4.3 Types of Historian Servers
 
 There are several types of Historian servers.  Some key types supported by this specification are:
 
@@ -716,7 +531,7 @@ These different servers are all covered under this specification by optional int
 does not support a group of functions, it is not required to implement the optional interface for
 that functional group.
 
-1.5. References
+### 1.5 References
 OLE for Process Control Standard – RELEASE UPDATE Version 1.0A, OPC Foundation, May 27,
 1997.
 
@@ -735,7 +550,7 @@ The OPC Alarms and Events Specification 1.0, OPC Foundation 1998
 
 The OPC Common Definition  and Interface Specification Version 1.0, OPC Foundation, 1998
 
-1.6. Audience
+### 1.6 Audience
 This document is intended to be used as reference material for developers of OPC compliant historical
 clients and servers. It is assumed that the reader is familiar with Microsoft OLE/COM technology, the
 needs of the process control industry and the OPC Data 2.0 specification.
@@ -746,7 +561,8 @@ expected to be fluent in the technology required for the specific component.
 
 2
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -754,7 +570,7 @@ F O U N D A T I O N
 
 Released
 
-1.7. Deliverables
+### 1.7 Deliverables
 The deliverables from the OPC Foundation with respect to the OPC Historical Specification 1.2
 include the Specification itself, OPC IDL files (included in this document as Appendices), an
 Automation Interface Wrapper, and the OPC Error header files (included in this document). As a
@@ -767,7 +583,7 @@ This OPC Historical specification contains design information for the following:
 
 OPC Components and Objects.
 
-1.8. HDA Errata
+### 1.8 HDA Errata
 Any errors, omissions or corrections to this OPC Historical Specification will be posted to the OPC
 HDA Errata topic of the OPC foundation forums:
 
@@ -775,7 +591,8 @@ http://www.opcfoundation.org/forum/viewtopic.php?p=1137
 
 3
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -783,9 +600,9 @@ F O U N D A T I O N
 
 Released
 
-2.  OPC-HDA Fundamentals
+## 2. OPC-HDA Fundamentals
 
-2.1. Overview
+### 2.1 Overview
 This specification describes the OPC COM Objects and their interfaces implemented by OPC
 Historical Servers.  An OPC Client can connect to OPC Historical Servers provided by one or more
 vendors. Different vendors may provide OPC Historian Servers. Vendor supplied code determines the
@@ -796,7 +613,8 @@ configurations:
 
 4
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -840,13 +658,14 @@ be able to function with any of the servers.  If another OPC server is required 
 server) for full functionality, the client should still be able to operate on Historical data without the
 other OPC server.
 
-2.2. Data Sources
+### 2.2 Data Sources
 The OPC Historical Data Server provides a way to access or communicate to a set of Historical data
 sources. The types of sources available are a function of the server implementation.
 
 5
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -889,7 +708,7 @@ top of an existing Proprietary Historical Data Server.  The clients that referen
 Data server may be simple trending packages that just want values over a given time frame or they
 may be complex reports that require data in multiple formats.
 
-2.3. General Architecture and components
+### 2.3 General Architecture and components
 An OPC client application communicates to an OPC Historical Data server through the specified OPC
 custom and automation interfaces.  OPC Historical Data servers must implement the custom interface,
 and optionally may implement the automation interface.
@@ -914,7 +733,8 @@ expected to provide to the client applications that use them.
 
 6
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -948,7 +768,7 @@ Historical Data Server
 The OPC automation interface may be implemented via a wrapper. A generic wrapper is provided by
 the OPC foundation.  This wrapper would provide the automation interface for any Custom interface.
 
-2.4. Overview of Object and Interfaces
+### 2.4 Overview of Object and Interfaces
 The OPC Historical Data server objects provide the ability to read data from a historical server and
 write data to a historical server. The types of historical data are server dependent. All COM objects are
 accessed through Interfaces. The client sees only the interfaces. Thus, the objects described here are
@@ -956,9 +776,10 @@ accessed through Interfaces. The client sees only the interfaces. Thus, the obje
 the server. The following figures are a summary of the OPC Objects and their interfaces.  Note that
 some of the interfaces are Optional (as indicated by [  ]).
 
-7
 
-OPC Historical Data Access
+
+
+## 7. OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1020,7 +841,8 @@ must implement the matching callback.
 
 8
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1050,13 +872,13 @@ The shutdown request is required to allow the OPC Historical Data Server to shut
 accessed by the HDA server, the client should free server provided memory (see Custom interface
 memory section) and terminate all connections.
 
-2.5. Required Interface Definition
+### 2.5 Required Interface Definition
 OPC Historical Data server developers must implement all methods of required interfaces, and must
 implement all functionality of required methods. An OPC Historical client communicates to an OPC
 Historical Data server by calling functions from the OPC required interfaces.  An OPC Historical Data
 server may return E_NOTIMPL for optional methods on required interfaces.
 
-2.6. Optional Interface Definition
+### 2.6 Optional Interface Definition
 OPC Historical Data server developers may implement the functionality of the optional interfaces.
 When an OPC Historical Data server supports an optional interface, all functions within that optional
 interface must be implemented, even if the function just returns E_NOTIMPL.  An OPC Historical
@@ -1064,7 +886,7 @@ client that wishes to use the functionality of an optional interface will query 
 server for the optional interface.  The client must be designed to not require that this optional interface
 exist.
 
-2.7. Definitions
+### 2.7 Definitions
 
 The following terms and concepts used in this specification are commonly used in Historians but can be
 defined by different vendors to have slightly different definitions.  Their definitions as used in this
@@ -1087,7 +909,8 @@ when requesting raw data over a time range.  If a raw data value exists at the e
 
 9
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1143,7 +966,7 @@ the server may not return E_INVALIDARG due to the timestamp being outside of the
 the server has data.  Servers are expected to handle out-of-bounds timestamps gracefully, and return
 the proper error codes and value to clients, such as OPC_S_NODATA or OPCHDA_NOBOUND.
 
-2.8. Bounding values and Time Domain
+### 2.8 Bounding values and Time Domain
 
 As stated above in the Fundamental Concepts, the time domain includes all values between the start
 and end time, and any value that falls exactly on the start time, but not any value that falls exactly on
@@ -1156,7 +979,8 @@ RAW data call is given by the following table.  In the table, FIRST stands for a
 
 10
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1338,7 +1162,7 @@ FIRST, 5:00, 5:02
 5:00, 5:02, 5:03, 5:05, 5:06
 5:00, 5:02, 5:03, 5:05, 5:06
 
-2.9. Aggregates
+### 2.9 Aggregates
 
 The purpose of this section is to detail the requirements and behaviour for HDA aggregates. The  intent is
 to standardise the HDA aggregates such that HDA clients can reliably predict the results of an aggregate
@@ -1354,7 +1178,8 @@ behavior of aggregates that are aggregate-specific.
 
 11
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1362,13 +1187,13 @@ F O U N D A T I O N
 
 Released
 
-2.9.1.  Common Characteristics
+#### 2.9.1 Common Characteristics
 
 This  sub section deals with aggregate characteristics and behavior that are common to all aggregates.
 
-2.9.1.1.
 
-Generating Intervals
+
+#### 2.9.1.1 Generating Intervals
 To read aggregates, OPC clients must specify three time parameters:
 
 -
@@ -1450,9 +1275,9 @@ In other words, the last interval contains the “rest”
 that remains in the range after taking away
 Range/Int intervals of size Int starting at Start.
 
-2.9.1.2.
 
-Data Types
+
+#### 2.9.1.2 Data Types
 
 All of the following aggregates will only work with numeric data types – i.e. integers or real/floating
 point numbers. Dates, strings, arrays, etc. are not supported.
@@ -1462,7 +1287,8 @@ However, in some cases  the OPC servers may have item types of  non-numeric type
 
 12
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1477,9 +1303,9 @@ If any item in an interval fails to be converted, it should not be used in the a
 the aggregate should have an uncertain/subnormal quality. If all items fail to be converted in an
 interval, the aggregate placeholder should return a quality of bad, OPCHDA_CONVERSION.
 
-2.9.1.3.
 
-Quality
+
+#### 2.9.1.3 Quality
 
 All aggregates should omit bad data values from the calculation. If any values are omitted, the
 aggregate quality should be uncertain/subnormal.
@@ -1489,11 +1315,11 @@ dependant as to whether or not these values are omitted from the aggregate call.
 documentation must clearly state how the server will treat uncertain values.  If uncertain values are
 used in the aggregate calculation, the quality should be uncertain/subnormal for those intervals.
 
-2.9.2.  Aggregate Specific characteristics
+#### 2.9.2 Aggregate Specific characteristics
 
-2.9.2.1.
 
-Example aggregate data – Historian 1
+
+#### 2.9.2.1 Example aggregate data - Historian 1
 
 For the purposes of examples consider a source historian with the following data:
 
@@ -1546,7 +1372,8 @@ No more entries, awaiting next scan.
 
 13
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24](opc-hda-1.20-specification.images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1558,9 +1385,9 @@ F O U N D A T I O N
 
 Released
 
-2.9.2.2.
 
-Example aggregate data – Historian 2
+
+#### 2.9.2.2 Example aggregate data - Historian 2
 
 The following data is also include in a separate column to illustrate non-periodic data
 Timestamp
@@ -1626,7 +1453,8 @@ No Data
 
 14
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25](opc-hda-1.20-specification.images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1638,10 +1466,10 @@ F O U N D A T I O N
 
 Released
 
-2.9.2.3.
+
 For the purposes of all examples,
 
-Example Conditions
+#### 2.9.2.3 Example Conditions
 
        Historian 1
 
@@ -1655,9 +1483,9 @@ Historian 2
 2.  Linear interpolation is used between data points.
 3.  Stepped extrapolation is used at end boundary conditions
 
-2.9.2.4.
 
-INTERPOLATIVE
+
+#### 2.9.2.4 INTERPOLATIVE
 
 In order for the interpolative aggregate to return meaningful data, there must be good values at the
 boundary conditions.  For the purposes of discussion we will use the terms good and non-good.  As
@@ -1671,7 +1499,8 @@ the requested time in order to perform straight line interpolation.
 
 15
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1848,7 +1677,8 @@ Value2 –Interpolated between
 values at 12:00:12 and
 12:01:23
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -1939,9 +1769,9 @@ and 12:00:25
 between values at 12:00:02
 and 12:00:25
 
-2.9.2.5.
 
-TIMEAVERAGE
+
+#### 2.9.2.5 TIMEAVERAGE
 
 The time weighted average aggregate uses interpolation as described in the interpolated section above to
 find the value of a point at the beginning and end of an interval. A straight line is drawn between each raw
@@ -1981,7 +1811,8 @@ Notes
 
 17
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2121,7 +1952,8 @@ Value  Quality
 
 18
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2254,9 +2086,9 @@ using bounds at :10 and :20
 Value2– Interpolate values at :15
 and :20 using bounds at :02 and :25
 
-2.9.2.6.
 
-TOTAL
+
+#### 2.9.2.6 TOTAL
 
 The total aggregate performs the following calculation for each interval:
 Total = time_weighted_avg * interval_length (sec)
@@ -2273,7 +2105,8 @@ The resulting units would be normalized to seconds, i.e. [time_weighted_avg Unit
 
 19
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2284,9 +2117,9 @@ Released
 All interval aggregates return timestamp of the start of the interval. Unless otherwise indicated, qualities
 are good, calculated
 
-2.9.2.7.
 
-AVERAGE
+
+#### 2.9.2.7 AVERAGE
 
 The average aggregate adds up the values of all good raw data in a given interval, and divides the sum by
 the number of good values. If any non-good values are ignored in the computation, the aggregate quality
@@ -2443,7 +2276,8 @@ No data in intervals
 Value 2- No data in interval
 No data in intervals
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31](opc-hda-1.20-specification.images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2455,9 +2289,9 @@ F O U N D A T I O N
 
 Released
 
-2.9.2.8.
 
-COUNT
+
+#### 2.9.2.8 COUNT
 
 This aggregate retrieves a count of all the raw values within an interval. If one or more raw values are non-
 good, they are not included in the count, and the aggregate quality is uncertain/subnormal.
@@ -2517,9 +2351,9 @@ quality
 
 * Some servers may opt to treat uncertain data as bad, thus the result would be 3.
 
-2.9.2.9.
 
-STDEV
+
+#### 2.9.2.9 STDEV
 
 The standard deviation aggregate uses the formula:
 
@@ -2530,14 +2364,14 @@ If any non-good values were ignored, the aggregate quality is uncertain/subnorma
 All interval aggregates return timestamp of the start of the interval. Unless otherwise indicated, qualities
 are good, calculated.
 
-2.9.2.10.
 
-VARIANCE
+
+#### 2.9.2.10 VARIANCE
 
 The variance aggregate retrieves the square of the standard deviation. Its behaviour is the same as the
 standard deviation aggregate. Unless otherwise indicated, qualities are good, calculated.
 
-2.9.2.11.  MINIMUM ACTUAL TIME
+#### 2.9.2.11 MINIMUM ACTUAL TIME
 
 The minimum actual time aggregate retrieves the minimum good raw value within the interval [s,e), and
 returns that value with the timestamp at which that value occurs. Note that if the same minimum exists at
@@ -2548,7 +2382,8 @@ with a timestamp of the start of the interval
 
 21
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2718,7 +2553,8 @@ Quality
 
 22
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2797,7 +2633,7 @@ Partial, Good
 
 Notes
 
-2.9.2.12.  MINIMUM
+#### 2.9.2.12 MINIMUM
 
 The minimum aggregate is the same as the minimum actual time, except the timestamp of the aggregate
 will always be the start of the interval for every interval.
@@ -2890,7 +2726,8 @@ interval.
 
 Notes
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -2988,7 +2825,7 @@ Notes
 
 Notes
 
-2.9.2.13.  MAXIMUM ACTUAL TIME
+#### 2.9.2.13 MAXIMUM ACTUAL TIME
 
 This is the same as the minimum actual time aggregate, except that the value is the maximum raw value
 within the interval [s,e). Note that if the same maximum exists at more than one timestamp, the oldest one
@@ -3074,7 +2911,8 @@ Notes
 
 24
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -3233,7 +3071,8 @@ Notes
 
 25
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -3247,7 +3086,7 @@ Jan-01-2002 12:00:28
 
 Partial, Good
 
-2.9.2.14.  MAXIMUM
+#### 2.9.2.14 MAXIMUM
 
 This aggregate is the same as the minimum, except the value is the maximum raw value within the interval
 [s,e).
@@ -3427,13 +3266,14 @@ Notes
 
 Notes
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
-2.9.2.15.
 
-START
+
+#### 2.9.2.15 START
 
 F O U N D A T I O N
 
@@ -3583,7 +3423,8 @@ No raw data in :05-:21 at :10
 
 27
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -3599,9 +3440,9 @@ Raw, Good
 
 First raw in :21-:35 at :25
 
-2.9.2.16.
 
-END
+
+#### 2.9.2.16 END
 
 The end aggregate retrieves the last raw value within the interval [s,e), and returns that value with the
 timestamp at which that value occurs.   If the value is non-good , than the quality of the aggregate will be
@@ -3733,7 +3574,8 @@ Start:  Jan-01-2002 12:00:05  End:  Jan-01-2002 12:00:35  Interval: 00:00:16
 
 28
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -3760,9 +3602,9 @@ Notes
 No raw data in :05-:21 at :10
 Last raw in :21-:35 at :28
 
-2.9.2.17.
 
-DELTA
+
+#### 2.9.2.17 DELTA
 
 The delta aggregate retrieves the difference between the earliest and latest good raw values in an interval.
 If the last value is less than the first value, the result will be negative. If the last value is the same as the
@@ -3773,9 +3615,9 @@ aggregate is uncertain/subnormal.
 All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
 qualities are good, calculated.
 
-2.9.2.18.
 
-REGSLOPE
+
+#### 2.9.2.18 REGSLOPE
 
 A regression line is simply a “line-of-best-fit” across the interval. The method used to determine this will
 be server dependent.
@@ -3784,19 +3626,9 @@ uncertain/subnormal.
 All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
 qualities are good, calculated.
 
-2.9.2.19.
 
-REGCONST
 
-The method used to determine this aggregate will be server dependent.
-If there are any non-good raw values in the interval, they are ignored, and the aggregate quality will be
-uncertain/subnormal.
-All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
-qualities are good, calculated.
-
-2.9.2.20.
-
-REGDEV
+#### 2.9.2.19 REGCONST
 
 The method used to determine this aggregate will be server dependent.
 If there are any non-good raw values in the interval, they are ignored, and the aggregate quality will be
@@ -3804,9 +3636,19 @@ uncertain/subnormal.
 All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
 qualities are good, calculated.
 
-2.9.2.21.
 
-RANGE
+
+#### 2.9.2.20 REGDEV
+
+The method used to determine this aggregate will be server dependent.
+If there are any non-good raw values in the interval, they are ignored, and the aggregate quality will be
+uncertain/subnormal.
+All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
+qualities are good, calculated.
+
+
+
+#### 2.9.2.21 RANGE
 
 The range aggregate finds the difference between the raw maximum and raw minimum values in the
 interval. If only one value exists in the interval, the range is zero. Note that the range is always zero or
@@ -3816,16 +3658,17 @@ uncertain/subnormal.
 All interval aggregates are returned with timestamp of the start of the interval. Unless otherwise indicated,
 qualities are good, calculated.
 
-2.9.2.22.
 
-DURATION GOOD
+
+#### 2.9.2.22 DURATION GOOD
 
 The duration good aggregate looks at the quality of a bounding value of the interval to determine what the
 quality is at the beginning of the interval. If no bounding value exists, the quality is assumed to be bad at
 
 29
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4027,7 +3870,8 @@ Good :02 to :05
 Value1-No bound, Bad from
 :05 to :10
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4073,9 +3917,9 @@ Value1-Uncertain from :12 to :17
 
 * Uncertain data should not be counted as good.
 
-2.9.2.23.
 
-DURATION BAD
+
+#### 2.9.2.23 DURATION BAD
 
 The duration bad aggregate looks at the quality of a bounding value of the interval to determine what the
 quality is at the beginning of the interval. If no bounding value exists, the quality is assumed to be bad at
@@ -4171,9 +4015,9 @@ Calculated, Good
 
 Jan-01-2002 12:01:00
 
-2.9.2.24.
 
-PERCENT GOOD
+
+#### 2.9.2.24 PERCENT GOOD
 
 This aggregate performs the following calculation:
 percent_good = duration_good / interval_length.
@@ -4186,7 +4030,8 @@ Notes
 
 Notes
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4207,9 +4052,9 @@ Each interval’s aggregate is returned with timestamp of the start of the inter
 calculated.
 The interval_length is the entire sample interval, regardless of quality.
 
-2.9.2.25.
 
-PERCENT BAD
+
+#### 2.9.2.25 PERCENT BAD
 
 This aggregate performs the following calculation:
 percent_bad = duration_bad / interval_length.
@@ -4227,7 +4072,7 @@ Each interval’s aggregate is returned with timestamp of the start of the inter
 calculated.
 The interval_length is the entire sample interval, regardless of quality.
 
-2.9.2.26.  WORST QUALITY
+#### 2.9.2.26 WORST QUALITY
 
 This aggregate returns the worst quality of the raw values in the interval. That is, bad qualities are worse
 than uncertain, which are worse than good. No distinction is made between the specific reasons for the
@@ -4235,15 +4080,16 @@ quality.
 This aggregate returns the worst OPC DA quality as the value of the aggregate.
 The timestamp is always  the start of the interval. The quality is always good, calculated.
 
-2.9.2.27.
 
-ANNOTATIONS
+
+#### 2.9.2.27 ANNOTATIONS
 
 This aggregate returns a count of all annotations.
 
 32
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4251,14 +4097,14 @@ F O U N D A T I O N
 
 Released
 
-3.  OPC-HDA Quick Reference
+## 3. OPC-HDA Quick Reference
 
-3.1. Custom Interface
+### 3.1 Custom Interface
 Note: This section does not show additional standard enumerators used by this interface.
 
-3.1.1.
 
-IOPCCommon
+
+#### 3.1.1 IOPCCommon
 
 HRESULT
 Description
@@ -4294,9 +4140,9 @@ Returns the error string for a server specific error code.
 SetClientName ( pszName)
 Allows the client to optionally register a client name with the server.
 
-3.1.2.
 
-IOPCHDA_Server
+
+#### 3.1.2 IOPCHDA_Server
 
 HRESULT
 
@@ -4332,7 +4178,8 @@ is optional and may be returned as a NULL pointer.
 
 33
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4366,9 +4213,9 @@ This function validates that specific HDA item IDs are known to the server.
 CreateBrowse(dwCount, pdwAttrID, pOperator, vFilter, pphBrowser, ppErrors)
 This function returns a pointer to an OPCHDA_BROWSER interface.
 
-3.1.3.
 
-IOPCHDA_Browser
+
+#### 3.1.3 IOPCHDA_Browser
 
 HRESULT
 Description
@@ -4396,9 +4243,9 @@ This function provides a way to get an item identification.
 GetBranchPosition (pszBranchPos)
 This function provides the current browse position in the hierarchy.
 
-3.1.4.
 
-IOPCHDA_SyncRead
+
+#### 3.1.4 IOPCHDA_SyncRead
 
 HRESULT
 
@@ -4438,7 +4285,8 @@ The purpose of this function is to read values from history that have been
 
 34
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4462,9 +4310,9 @@ This function reads the attribute values and timestamps from the history databas
 the specified time domain for an item.  If the current values for the attributes are
 desired, htStartTime should be set to "NOW" and htEndTime should be NULL.
 
-3.1.5.
 
-IOPCHDA_SyncUpdate (optional)
+
+#### 3.1.5 IOPCHDA_SyncUpdate (optional)
 
 HRESULT
 Description
@@ -4517,9 +4365,9 @@ This function deletes the values and qualities in the history database for the s
 timestamps for one or more items in a group.   This is an optional method on the
 interface.
 
-3.1.6.
 
-IOPCHDA_SyncAnnotations (optional)
+
+#### 3.1.6 IOPCHDA_SyncAnnotations (optional)
 
 HRESULT
 Description
@@ -4530,7 +4378,8 @@ method for all servers which support the OPCHDA SyncAnnotations interface.
 
 35
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4555,9 +4404,9 @@ Insert(dwNumItems, phServer, ftTimeStamps, ppAnnotationValues, ppErrors)
 This function inserts annotations into the history database. This is an optional method
 on the interface.
 
-3.1.7.
 
-IOPCHDA_AsyncRead (optional)
+
+#### 3.1.7 IOPCHDA_AsyncRead (optional)
 
 HRESULT
 
@@ -4626,7 +4475,8 @@ IOPCHDA_DataCallback::OnReadModifiedComplete method.  The purpose of this
 
 36
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4661,9 +4511,9 @@ Description
 HRESULT
 Description
 
-3.1.8.
 
-IOPCHDA_AsyncUpdate (optional)
+
+#### 3.1.8 IOPCHDA_AsyncUpdate (optional)
 
 HRESULT
 Description
@@ -4717,7 +4567,8 @@ This function deletes the values, qualities, and timestamps from the history dat
 
 37
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4749,9 +4600,9 @@ specific, but the server will respond via the client's
 IOPCHDA_DataCallback::OnCancelComplete method unless a FAILED error code is
 returned from the call.
 
-3.1.9.
 
-IOPCHDA_AsyncAnnotations (optional)
+
+#### 3.1.9 IOPCHDA_AsyncAnnotations (optional)
 
 HRESULT
 Description
@@ -4793,7 +4644,7 @@ specific, but the server shall respond via the client's
 IOPCHDA_DataCallback::OnCancelComplete method unless a FAILED error code is
 returned from the call.
 
-3.1.10.  IOPCHDA_Playback (optional)
+#### 3.1.10 IOPCHDA_Playback (optional)
 
 HRESULT
 
@@ -4806,7 +4657,8 @@ initial response it will periodically (at the ftUpdateInterval) respond with an 
 
 38
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4840,7 +4692,7 @@ This function cancels the outstanding operation.  The actual implementation is s
 specific, but the server will respond via the OPCHDA_CancelComplete callback
 unless a FAILED error code is returned from the call.
 
-3.1.11.  IConnectionPointContainer (required if any Async interface is supported)
+#### 3.1.11 IConnectionPointContainer (required if any Async interface is supported)
 
 HRESULT
 Description
@@ -4855,7 +4707,7 @@ Description
 FindConnectionPoint(riid, ppCP)
 Find a particular connection point between the OPCHDA server and the Client.
 
-3.1.12.  IOPCHDA_DataCallback
+#### 3.1.12 IOPCHDA_DataCallback
 
 HRESULT
 Description
@@ -4893,7 +4745,8 @@ OPCHDA_AsyncRead::ReadAttribute.
 
 39
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4943,7 +4796,8 @@ completion of Async Cancel.
 
 40
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -4951,9 +4805,9 @@ F O U N D A T I O N
 
 Released
 
-4.  OPC-HDA Custom Interface
+## 4. OPC-HDA Custom Interface
 
-4.1. Overview of the OPC HDA Custom Interface
+### 4.1 Overview of the OPC HDA Custom Interface
 The OPC HDA custom interface objects include the following custom objects:
 
 •  OPCHDAServer
@@ -5000,11 +4854,11 @@ Also you will note that in some cases lists of things are returned via enumerato
 simple lists of items. Our choice depends on the expected number of items returned. ‘Large’ lists are best
 returned through enumerators while ‘small’ lists are more easily and efficiently returned via explicit lists.
 
-4.2. General Information
+### 4.2 General Information
 This section provides general information about the OPC HDA interfaces, and some background
 information about how the designers of OPC expected these interfaces to be implemented and used.
 
-4.2.1.  Ownership of memory
+#### 4.2.1 Ownership of memory
 
 Per the COM specification, clients must free all memory associated with ‘out’ or ‘in/out’ parameters.
 This includes memory that is pointed to by elements within any structures.  This is very important for
@@ -5014,7 +4868,8 @@ for a client to create a subroutine that is used for freeing each type of struct
 
 41
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5052,7 +4907,7 @@ address of a pointer to it.  [The pointer variable can be allocated anywhere.]  
 "something*" via CoTaskMemFree and allocate a new "something" via CoTaskMemAlloc.  The server
 will place the address of the allocated memory into the parameter and return it to the client."
 
-4.2.2.  Standard Interfaces
+#### 4.2.2 Standard Interfaces
 
 Per the COM specification, all methods must be implemented on each required interface.
 
@@ -5060,7 +4915,7 @@ Per the COM specification, any optional interfaces that are supported must have 
 that interface implemented, even if the implementation is only a stub implementation returning
 E_NOTIMPL.
 
-4.2.3.  Null Strings and Null Pointers
+#### 4.2.3 Null Strings and Null Pointers
 
 Both of these terms are used below.  They are NOT the same thing.  A NULL Pointer is an invalid
 pointer (0) which will cause an exception if used.  A NULL String is a valid (non zero) pointer to a 1
@@ -5070,19 +4925,20 @@ the NULL will be lost. Also note that a NULL pointer cannot be passed for an [in
 to COM marshalling restrictions. In this case a pointer to a NULL string shall be passed to indicate an
 omitted parameter.
 
-4.2.4.  Returned Arrays
+#### 4.2.4 Returned Arrays
 
 You will note the syntax size_is(,dwCount) in the IDL used in combination with pointers to pointers.
 This indicates that the returned item is a pointer to an actual array of the indicated type, rather than a
 pointer to an array of pointers to items of the indicated type.  This simplifies marshaling , creation, and
 access of the data by the server and client.
 
-4.2.5.  Asynchronous vs. Synchronous Interfaces
+#### 4.2.5 Asynchronous vs. Synchronous Interfaces
 There are two ways for a client to obtain data from a server.
 
 42
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5105,7 +4961,7 @@ It can ‘subscribe’ to data using the Async methods, which is more complex bu
 This is the recommended behavior for interactive clients because it will minimize display lockups.
 The client would be free to process other interactions while waiting for the data to return.
 
-4.2.6.  Errors and return codes
+#### 4.2.6 Errors and return codes
 
 The OPC specification describes interfaces and corresponding behavior that an OPC HDA server
 implements, and an OPC client application depends on.   A list of OPC Specific errors and return
@@ -5133,9 +4989,9 @@ then there will be no callback.
 In general, a client should always check each "out" or "in/out" pointer for a NULL value before
 freeing it.
 
-4.2.7.
 
-IUnknown
+
+#### 4.2.7 IUnknown
 
 The server must provide a standard IUnknown Interface.  Since this is a well defined interface it is not
 discussed in detail.  See the OLE Programmer’s reference for additional information.  This interface
@@ -5156,7 +5012,8 @@ HRESULT SetLocaleID (
 
 43
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5190,15 +5047,15 @@ Synchronous operations require the client software to wait until the server has 
 returned the data.  Synchronous operations that may require significant time for the server to fulfill
 have corresponding asynchronous operations that may be cancelled.
 
-4.4.1.
 
-IOPCHDA_Server
+
+#### 4.4.1 IOPCHDA_Server
 
 This is an Required Interface
 
-4.4.1.1.
 
-IOPCHDA_Server::GetItemAttributes
+
+#### 4.4.1.1 IOPCHDA_Server::GetItemAttributes
 
 A Required Method
 
@@ -5227,7 +5084,8 @@ the server, the function shall return a count of 0 and NULL pointers.
 
 44
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5261,9 +5119,9 @@ Description
 The function was successful.
 The function was unsuccessful.
 
-4.4.1.2.
 
-IOPCHDA_Server::GetAggregates
+
+#### 4.4.1.2 IOPCHDA_Server::GetAggregates
 
 A Required Method
 
@@ -5313,7 +5171,8 @@ The function was unsuccessful.
 
 45
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5321,9 +5180,9 @@ F O U N D A T I O N
 
 Released
 
-4.4.1.3.
 
-IOPCHDA_Server::GetHistorianStatus
+
+#### 4.4.1.3 IOPCHDA_Server::GetHistorianStatus
 
 A Required Method
 
@@ -5406,7 +5265,8 @@ The function was unsuccessful.
 
 46
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5414,9 +5274,9 @@ F O U N D A T I O N
 
 Released
 
-4.4.1.4.
 
-IOPCHDA_Server::GetItemHandles
+
+#### 4.4.1.4 IOPCHDA_Server::GetItemHandles
 
 A Required Method
 
@@ -5488,7 +5348,8 @@ The association was unsuccessful.
 
 47
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5496,9 +5357,9 @@ F O U N D A T I O N
 
 Released
 
-4.4.1.5.
 
-IOPCHDA_Server::ReleaseItemHandles
+
+#### 4.4.1.5 IOPCHDA_Server::ReleaseItemHandles
 
 A Required Method
 
@@ -5551,9 +5412,9 @@ The operation was successful.
 The server handle does not exist.
 The release failed.
 
-4.4.1.6.
 
-IOPCHDA_Server::ValidateItemIDs
+
+#### 4.4.1.6 IOPCHDA_Server::ValidateItemIDs
 
 A Required Method
 
@@ -5582,7 +5443,8 @@ An array of  null terminated strings that uniquely
 
 48
 
-Released
+
+Released
 
 OPC Historical Data Access
 Specification
@@ -5624,9 +5486,9 @@ The item does not exist in the server address space.
 The item ID specification is syntactically incorrect.
 The validation was unsuccessful.
 
-4.4.1.7.
 
-IOPCHDA_Server::CreateBrowse
+
+#### 4.4.1.7 IOPCHDA_Server::CreateBrowse
 
 A Required Method
 
@@ -5668,7 +5530,8 @@ shall be used. To represent multiple characters the “*” shall be used.
 
 49
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5736,15 +5599,15 @@ A filter is defined by the three parameters pdwAttrID, pOperator and vFilter. Th
 true if the relationship of the value of the attribute to the filter value matches the filter operator.  If
 multiple filter expressions are given, they must all be true for the item to be included.
 
-4.4.2.
 
-IOPCHDA_Browser
+
+#### 4.4.2 IOPCHDA_Browser
 
 This is an Required Interface
 
-4.4.2.1.
 
-IOPCHDA_Browser::GetEnum
+
+#### 4.4.2.1 IOPCHDA_Browser::GetEnum
 
 A Required Method
 
@@ -5762,7 +5625,8 @@ may be server dependent. The members of the enum set will be determined by the p
 
 50
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5811,9 +5675,9 @@ ItemID and a handle.  Branches and leafs are mutually exclusive sets.  Leafs are
 branch is an Item if the client can get a fully qualified ItemID for it, and thus ask for and receive a
 server handle for it.
 
-4.4.2.2.
 
-IOPCHDA_Browser::ChangeBrowsePosition
+
+#### 4.4.2.2 IOPCHDA_Browser::ChangeBrowsePosition
 
 A Required Method
 
@@ -5849,7 +5713,8 @@ directly to a position. Note: this parameter is ignored
 
 51
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5872,9 +5737,9 @@ Description
 The function was successful.
 The function was unsuccessful.
 
-4.4.2.3.
 
-IOPCHDA_Browser::GetItemID
+
+#### 4.4.2.3 IOPCHDA_Browser::GetItemID
 
 A Required Method
 
@@ -5922,9 +5787,9 @@ This function returns the fully qualified ItemID for the OPCHDA_LEAF or OPCHDA_I
 Enum set obtained from the GetEnum method for the current browse position. This is an ID that can
 be passed to IOPCHDA_Server::GetItemHandles.
 
-4.4.2.4.
 
-IOPCHDA_Browser::GetBranchPosition
+
+#### 4.4.2.4 IOPCHDA_Browser::GetBranchPosition
 
 A Required Method
 
@@ -5941,7 +5806,8 @@ This function provides the current browse position in the hierarchy.
 
 52
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -5974,15 +5840,15 @@ Comments
 The fully qualified path obtained from this method can be used to set the browse position with the
 ChangeBrowsePosition method using the OPCHDA_BROWSE_DIRECT flag.
 
-4.4.3.
 
-IOPCHDA_SyncRead
+
+#### 4.4.3 IOPCHDA_SyncRead
 
 This is an Required Interface
 
-4.4.3.1.
 
-IOPCHDA_SyncRead::ReadRaw
+
+#### 4.4.3.1 IOPCHDA_SyncRead::ReadRaw
 
 A Required Method
 
@@ -6023,7 +5889,8 @@ the time structure is allocated and freed by the client.
 
 53
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6114,7 +5981,8 @@ OPCHDA_TIME (see section 5.3.4) is used to indicate htStartTime or htEndTime is 
 
 54
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6160,7 +6028,8 @@ returned to the client must be S_FALSE.
 
 55
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6170,7 +6039,7 @@ Released
 
 4.4.3.2.
 
-IOPCHDA_SyncRead::ReadProcessed
+### 4.3 IOPCHDA_SyncRead::ReadProcessed
 
 This method was changed between v1.0 and v1.1 of the standard, to pass the haAggregate as a
 DWORD rather than an ENUM, to allow vendors to specify their own aggregates.   Servers and
@@ -6240,7 +6109,8 @@ indicates that the contents of the corresponding
 
 56
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6325,7 +6195,8 @@ other timestamps with that value.
 
 57
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6363,7 +6234,7 @@ aggregate.
 
 4.4.3.3.
 
-IOPCHDA_SyncRead::ReadAtTime
+### 4.4 IOPCHDA_SyncRead::ReadAtTime
 
 An Optional Method
 
@@ -6397,7 +6268,8 @@ The number of items to be read.
 
 58
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6473,7 +6345,8 @@ OPCHDA_INTERPOLATED bit in the quality.
 
 59
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6481,9 +6354,9 @@ F O U N D A T I O N
 
 Released
 
-4.4.3.4.
 
-IOPCHDA_SyncRead::ReadModified
+
+#### 4.4.3.4 IOPCHDA_SyncRead::ReadModified
 
 An Optional Method
 
@@ -6547,7 +6420,8 @@ OPCHDA_MODIFIEDITEM struct is undefined.
 
 60
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6610,9 +6484,9 @@ timestamp can appear in the array more than once.  The order of the returned val
 timestamp should be from most recent to oldest modified value.  It is server dependent whether
 multiple modifications are kept or only the most recent.
 
-4.4.3.5.
 
-IOPCHDA_SyncRead::ReadAttribute
+
+#### 4.4.3.5 IOPCHDA_SyncRead::ReadAttribute
 
 A Required Method
 
@@ -6630,7 +6504,8 @@ HRESULT ReadAttribute (
 
 61
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6722,7 +6597,8 @@ ppError set to OPC_S_CURRENTVALUE.
 
 62
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6742,15 +6618,15 @@ assume that all data sent from the server will be that datatype.  The datatype o
 have changed over the life of the Item, and thus clients should be able to handle receiving data of a
 different datatype than that returned from this call.
 
-4.4.4.
 
-IOPCHDA_SyncUpdate
+
+#### 4.4.4 IOPCHDA_SyncUpdate
 
 This is an Optional Interface
 
-4.4.4.1.
 
-IOPCHDA_SyncUpdate::QueryCapabilities
+
+#### 4.4.4.1 IOPCHDA_SyncUpdate::QueryCapabilities
 
 This call uses an ENUM for the return parameter; this is incorrect for a bitmask
 value and precludes servers specifying more than one supported method.
@@ -6778,7 +6654,8 @@ The methods supported by the interface.
 
 63
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6800,9 +6677,9 @@ An invalid parameter was passed.
 This server does not support this function.
 The function was unsuccessful.
 
-4.4.4.2.
 
-IOPCHDA_SyncUpdate::Insert
+
+#### 4.4.4.2 IOPCHDA_SyncUpdate::Insert
 
 An Optional Method
 
@@ -6853,7 +6730,8 @@ succeeded.
 
 64
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -6902,9 +6780,9 @@ value for a number of different items at a single time, then ftTimeStamp array w
 time for each item.  To insert a stream of values, timestamps and qualities for a single item, set the size
 of the item array to the number of values  to be inserted and put the same ItemID in each element.
 
-4.4.4.3.
 
-IOPCHDA_ SyncUpdate::Replace
+
+#### 4.4.4.3 IOPCHDA_ SyncUpdate::Replace
 
 An Optional Method
 
@@ -6937,7 +6815,8 @@ The number of items to be replaced.
 
 65
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7009,7 +6888,8 @@ size of the item array to the number of values  to be replaced and put the same 
 
 66
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7017,9 +6897,9 @@ F O U N D A T I O N
 
 Released
 
-4.4.4.4.
 
-IOPCHDA_ SyncUpdate::InsertReplace
+
+#### 4.4.4.4 IOPCHDA_ SyncUpdate::InsertReplace
 
 An Optional Method
 
@@ -7088,7 +6968,8 @@ The function was unsuccessful.
 
 67
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7129,9 +7010,9 @@ say whether there was already a value at that timestamp.  If the HDA server can 
 new value replaces a value that was already there, it should use OPC_S_INSERTED or
 OPC_S_REPLACED to return that information.
 
-4.4.4.5.
 
-IOPCHDA_ SyncUpdate::DeleteRaw
+
+#### 4.4.4.5 IOPCHDA_ SyncUpdate::DeleteRaw
 
 An Optional Method
 
@@ -7167,7 +7048,8 @@ The end of the history period to be deleted. Note: the
 
 68
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7230,9 +7112,9 @@ Comments
 If no data is found in the time range for a particular item, a success status of S_FALSE is returned and
 the error code for that item is OPC_S_NODATA.
 
-4.4.4.6.
 
-IOPCHDA_ SyncUpdate::DeleteAtTime
+
+#### 4.4.4.6 IOPCHDA_ SyncUpdate::DeleteAtTime
 
 An Optional Method
 
@@ -7254,7 +7136,8 @@ is incorrect and cannot be correctly reproduced.
 
 69
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7314,15 +7197,15 @@ The handle is invalid.
 No values matching times given to delete.
 The item delete was unsuccessful.
 
-4.4.5.
 
-IOPCHDA_SyncAnnotations
+
+#### 4.4.5 IOPCHDA_SyncAnnotations
 
 This is an Optional Interface
 
-4.4.5.1.
 
-IOPCHDA_SyncAnnotations::QueryCapabilities
+
+#### 4.4.5.1 IOPCHDA_SyncAnnotations::QueryCapabilities
 
 This call uses an ENUM for the return parameter; this is incorrect for a bitmask
 value and precludes servers specifying more than one supported method.
@@ -7343,7 +7226,8 @@ servers which support the OPCHDA SyncAnnotations interface.
 
 70
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7369,9 +7253,9 @@ Description
 The function was successful.
 The function was unsuccessful.
 
-4.4.5.2.
 
-IOPCHDA_SyncAnnotations::Read
+
+#### 4.4.5.2 IOPCHDA_SyncAnnotations::Read
 
 A Required Method
 
@@ -7429,7 +7313,8 @@ corresponding Annotation structure is undefined.
 
 71
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7480,9 +7365,9 @@ translated to by the server.
 
 OPC_S_NODATA is returned only if no annotations exist over the time domain.
 
-4.4.5.3.
 
-IOPCHDA_SyncAnnotations:: Insert
+
+#### 4.4.5.3 IOPCHDA_SyncAnnotations:: Insert
 
 An Optional Method
 
@@ -7516,7 +7401,8 @@ to be inserted.
 
 72
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7568,7 +7454,7 @@ Insufficient rights for this operation.
 The handle is invalid.
 The item insert was unsuccessful.
 
-4.5. Asynchronous Interfaces
+### 4.5 Asynchronous Interfaces
 
 Asynchronous operations allow a client to send a request to a server without waiting for the server to
 fill the request and return the data.  Each operation has an associated transaction ID (created by the
@@ -7591,7 +7477,8 @@ wishes to do so.
 
 73
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7599,15 +7486,15 @@ F O U N D A T I O N
 
 Released
 
-4.5.1.
 
-IOPCHDA_AsyncRead
+
+#### 4.5.1 IOPCHDA_AsyncRead
 
 This is an Optional Interface
 
-4.5.1.1.
 
-IOPCHDA_AsyncRead::ReadRaw
+
+#### 4.5.1.1 IOPCHDA_AsyncRead::ReadRaw
 
 A Required Method
 
@@ -7674,7 +7561,8 @@ corresponding server handle was valid.
 
 74
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7736,9 +7624,9 @@ code was returned.
 See the discussion at IOPCHDA_SyncRead:ReadRaw for specifics of what a server should return to
 the client in various situations.
 
-4.5.1.2.
 
-IOPCHDA_AsyncRead::AdviseRaw
+
+#### 4.5.1.2 IOPCHDA_AsyncRead::AdviseRaw
 
 An Optional Method
 
@@ -7755,7 +7643,8 @@ HRESULT AdviseRaw(
 
 75
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7847,7 +7736,8 @@ already been collected has been sent, new data will be sent for every ftUpdateIn
 
 76
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -7866,9 +7756,9 @@ No annotations will be identified in an advise.
 See the discussion at IOPCHDA_SyncRead:ReadRaw for specifics of what a server should return to
 the client in various situations.
 
-4.5.1.3.
 
-IOPCHDA_AsyncRead::ReadProcessed
+
+#### 4.5.1.3 IOPCHDA_AsyncRead::ReadProcessed
 
 This method was changed between v1.0 and v1.1 of the standard, to pass the haAggregate as a
 DWORD rather than an ENUM, to allow vendors to specify their own aggregates.   Servers and
@@ -7926,7 +7816,8 @@ Interval between returned values.
 
 77
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8005,7 +7896,8 @@ return to the client in various situations.
 
 78
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8013,9 +7905,9 @@ F O U N D A T I O N
 
 Released
 
-4.5.1.4.
 
-IOPCHDA_AsyncRead::AdviseProcessed
+
+#### 4.5.1.4 IOPCHDA_AsyncRead::AdviseProcessed
 
 This method was changed between v1.0 and v1.1 of the standard, to pass the haAggregate as a
 DWORD rather than an ENUM, to allow vendors to specify their own aggregates.   Servers and
@@ -8081,7 +7973,8 @@ corresponding server handle was valid.
 
 79
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8149,7 +8042,8 @@ return to the client in various situations.
 
 80
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8157,9 +8051,9 @@ F O U N D A T I O N
 
 Released
 
-4.5.1.5.
 
-IOPCHDA_AsyncRead::ReadAtTime
+
+#### 4.5.1.5 IOPCHDA_AsyncRead::ReadAtTime
 
 An Optional Method
 
@@ -8228,7 +8122,8 @@ The function was unsuccessful.
 
 81
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8260,9 +8155,9 @@ If a value is found for the specified timestamp, the server will return OPCHDA_R
 If the value is interpolated from the surrounding values, the server will return
 OPCHDA_INTERPOLATED in the quality.
 
-4.5.1.6.
 
-IOPCHDA_AsyncRead::ReadModified
+
+#### 4.5.1.6 IOPCHDA_AsyncRead::ReadModified
 
 An Optional Method
 
@@ -8304,7 +8199,8 @@ The beginning of the history period to be read. Note:
 
 82
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8385,7 +8281,8 @@ request.
 
 83
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8393,9 +8290,9 @@ F O U N D A T I O N
 
 Released
 
-4.5.1.7.
 
-IOPCHDA_AsyncRead::ReadAttribute
+
+#### 4.5.1.7 IOPCHDA_AsyncRead::ReadAttribute
 
 A Required Method
 
@@ -8458,7 +8355,8 @@ corresponding dwAttributeID was valid.
 
 84
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8520,9 +8418,9 @@ assume that all data sent from the server will be that datatype.  The datatype o
 have changed over the life of the Item, and thus clients should be able to handle receiving data of a
 different datatype than that returned from this call.
 
-4.5.1.8.
 
-IOPCHDA_AsyncRead::Cancel
+
+#### 4.5.1.8 IOPCHDA_AsyncRead::Cancel
 
 A Required Method
 
@@ -8540,7 +8438,8 @@ callback to the client's IOPCHDA_DataCallback::OnCancelComplete method.
 
 85
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8572,15 +8471,15 @@ OPCHDA_CancelComplete ConnectionPoint.
 The function was unsuccessful. The CancelID does not
 match any outstanding operation on the server.
 
-4.5.2.
 
-IOPCHDA_AsyncUpdate
+
+#### 4.5.2 IOPCHDA_AsyncUpdate
 
 This is an Optional Interface
 
-4.5.2.1.
 
-IOPCHDA_AsyncUpdate::QueryCapabilities
+
+#### 4.5.2.1 IOPCHDA_AsyncUpdate::QueryCapabilities
 
 This call uses an ENUM for the return parameter; this is incorrect for a bitmask
 value and precludes servers specifying more than one supported method.
@@ -8618,15 +8517,16 @@ The function was unsuccessful.
 
 86
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
 F O U N D A T I O N
 
-4.5.2.2.
 
-IOPCHDA_AsyncUpdate::Insert
+
+#### 4.5.2.2 IOPCHDA_AsyncUpdate::Insert
 
 An Optional Method
 
@@ -8708,7 +8608,8 @@ The function was unsuccessful.
 
 87
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8728,9 +8629,9 @@ The item was inserted successfully.
 Insufficient rights for this operation.
 The handle is invalid.
 
-4.5.2.3.
 
-IOPCHDA_AsyncUpdate::Replace
+
+#### 4.5.2.3 IOPCHDA_AsyncUpdate::Replace
 
 An Optional Method
 
@@ -8792,7 +8693,8 @@ corresponding server handle was valid.
 
 88
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8830,9 +8732,9 @@ The item was replaced successfully.
 Insufficient rights for this operation.
 The handle is invalid.
 
-4.5.2.4.
 
-IOPCHDA_AsyncUpdate::InsertReplace
+
+#### 4.5.2.4 IOPCHDA_AsyncUpdate::InsertReplace
 
 An Optional Method
 
@@ -8884,7 +8786,8 @@ Array of the quality flags of the new values.  These are
 
 89
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -8940,9 +8843,9 @@ individual value is allowed when the HDA server is unable to say whether there w
 that timestamp.  If the HDA server can determine whether the new value replaces a value that was
 already there, it should use OPC_S_INSERTED or OPC_S_REPLACED to return that information.
 
-4.5.2.5.
 
-IOPCHDA_AsyncUpdate::DeleteRaw
+
+#### 4.5.2.5 IOPCHDA_AsyncUpdate::DeleteRaw
 
 An Optional Method
 
@@ -8969,7 +8872,8 @@ The results are returned via the client's IOPCHDA_DataCallback::OnUpdateComplete
 
 90
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9042,9 +8946,9 @@ The handle is invalid.
 
 Comment
 
-4.5.2.6.
 
-IOPCHDA_AsyncUpdate::DeleteAtTime
+
+#### 4.5.2.6 IOPCHDA_AsyncUpdate::DeleteAtTime
 
 An Optional Method
 
@@ -9063,7 +8967,8 @@ FILETIME ftTimeStamps,
 
 91
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9137,9 +9042,9 @@ The item was read successfully.
 Insufficient rights for this operation.
 The handle is invalid.
 
-4.5.2.7.
 
-IOPCHDA_AsyncUpdate::Cancel
+
+#### 4.5.2.7 IOPCHDA_AsyncUpdate::Cancel
 
 A Required Method
 
@@ -9155,7 +9060,8 @@ server shall respond via the client's IOPCHDA_DataCallback::OnCancelComplete met
 
 92
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9187,13 +9093,13 @@ OPCHDA_CancelComplete ConnectionPoint.
 The function was unsuccessful. The CancelID does not
 match any outstanding operation on the server.
 
-4.5.3.
 
-IOPCHDA_AsyncAnnotations
 
-4.5.3.1.
+#### 4.5.3 IOPCHDA_AsyncAnnotations
 
-IOPCHDA_ AsyncAnnotations::QueryCapabilities
+
+
+#### 4.5.3.1 IOPCHDA_ AsyncAnnotations::QueryCapabilities
 
 This call uses an ENUM for the return parameter; this is incorrect for a bitmask
 value and precludes servers specifying more than one supported method.
@@ -9236,7 +9142,8 @@ returning.
 
 93
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9244,9 +9151,9 @@ F O U N D A T I O N
 
 Released
 
-4.5.3.2.
 
-IOPCHDA_AsyncAnnotations::Read
+
+#### 4.5.3.2 IOPCHDA_AsyncAnnotations::Read
 
 A Required Method
 
@@ -9324,7 +9231,8 @@ The function was unsuccessful.
 
 94
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9359,9 +9267,9 @@ OPC_S_NODATA is returned only if no values are returned.
 
 The order of the data returned shall match the order of the ItemIDs in the request.
 
-4.5.3.3.
 
-IOPCHDA_AsyncAnnotations::Insert
+
+#### 4.5.3.3 IOPCHDA_AsyncAnnotations::Insert
 
 An Optional Method
 
@@ -9410,7 +9318,8 @@ be inserted.
 
 95
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9460,9 +9369,9 @@ An Invalid parameter was passed.
 Insufficient rights for this operation.
 The handle is invalid.
 
-4.5.3.4.
 
-IOPCHDA_AsyncAnnotations::Cancel
+
+#### 4.5.3.4 IOPCHDA_AsyncAnnotations::Cancel
 
 A Required Method
 
@@ -9502,7 +9411,8 @@ match any outstanding operation on the server.
 
 96
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9512,9 +9422,9 @@ Released
 
 4.6. Playback Interface
 
-4.6.1.
 
-IOPCHDA_Playback
+
+#### 4.6.1 IOPCHDA_Playback
 
 This is an Optional Interface
 
@@ -9526,9 +9436,9 @@ supply updates from stored data.  Typically the updates are sent at a rate that 
 time the data was stored.  For example, the request could be to send 10 minutes worth of data every
 minute.
 
-4.6.1.1.
 
-IOPCHDA_Playback::ReadRawWithUpdate
+
+#### 4.6.1.1 IOPCHDA_Playback::ReadRawWithUpdate
 
 A Required Method
 
@@ -9580,7 +9490,8 @@ structure is allocated and freed by the client.
 
 97
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9673,7 +9584,8 @@ Implementation of the operation is server dependent.
 
 98
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9681,9 +9593,9 @@ F O U N D A T I O N
 
 Released
 
-4.6.1.2.
 
-IOPCHDA_Playback::ReadProcessedWithUpdate
+
+#### 4.6.1.2 IOPCHDA_Playback::ReadProcessedWithUpdate
 
 This method was changed between v1.0 and v1.1 of the standard, to pass the haAggregate as a
 DWORD rather than an ENUM, to allow vendors to specify their own aggregates.   Servers and
@@ -9754,7 +9666,8 @@ Place to return a Server generated ID to be used in case
 
 99
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9834,15 +9747,16 @@ The order of the data returned will match the order of the ItemIDs in the reques
 
 100
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
 F O U N D A T I O N
 
-4.6.1.3.
 
-IOPCHDA_Playback::Cancel
+
+#### 4.6.1.3 IOPCHDA_Playback::Cancel
 
 A Required Method
 
@@ -9882,22 +9796,22 @@ OPCHDA_CancelComplete ConnectionPoint.
 The function was unsuccessful. The CancelID does not
 match any outstanding operation on the server.
 
-4.7. IConnectionPointContainer Interface
+### 4.7 IConnectionPointContainer Interface
 
 This is a Required Interface if the Async Interface is supported
 
-4.7.1.
 
-IConnectionPointContainer
+
+#### 4.7.1 IConnectionPointContainer
 
 The general principles of ConnectionPoints are not discussed here as they are covered very clearly in
 the Microsoft Documentation. The reader is assumed to be familiar with this technology. Likewise the
 details of the IEnumConnectionPoints, IConnectionPoint and IEnumConnections interfaces are well
 defined by Microsoft and are not discussed here.
 
-4.7.1.1.
 
-IConnectionPointContainer::EnumConnectionPoints
+
+#### 4.7.1.1 IConnectionPointContainer::EnumConnectionPoints
 
 HRESULT EnumConnectionPoints(
 
@@ -9919,7 +9833,8 @@ Where to save the pointer to the connection point
 
 101
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -9946,9 +9861,9 @@ Comments
 OPCHDA Servers must return an enumerator that includes IOPCHDA_DataCallback. Additional
 vendor specific callbacks are also allowed.
 
-4.7.1.2.
 
-IConnectionPointContainer::FindConnectionPoint
+
+#### 4.7.1.2 IConnectionPointContainer::FindConnectionPoint
 
 HRESULT FindConnectionPoint(
 
@@ -9996,14 +9911,15 @@ The function was successful.
 OPCHDA servers must support IID_IOPCHDA_DataCallback. Additional vendor specific callbacks
 are also allowed.
 
-4.8. Client Interfaces
+### 4.8 Client Interfaces
 In order to use connection points, the client must create an object which supports both the IUnknown
 interface and all callback interfaces which the client wishes to use. The client would pass a pointer to
 the IUnknown interface (NOT the callback interface) to the Advise method of the proper
 
 102
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10023,15 +9939,15 @@ the HRESULT returned from the call was not a FAILED code.  This is to allow serv
 useful information in the ppErrors array without requiring a callback that will not have any further
 useful information to deliver.
 
-4.8.1.
 
-IOPCHDA_DataCallback
+
+#### 4.8.1 IOPCHDA_DataCallback
 
 This is a Required Interface
 
-4.8.1.1.
 
-IOPCHDA_DataCallback::OnDataChange
+
+#### 4.8.1.1 IOPCHDA_DataCallback::OnDataChange
 
 This is a Required Method
 
@@ -10087,7 +10003,8 @@ The client must always return S_OK.
 
 103
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10122,9 +10039,9 @@ The item read was unsuccessful.
 
 Note that item values must be well defined regardless of the contents of the phrErrors field.
 
-4.8.1.2.
 
-IOPCHDA_DataCallback::OnReadComplete
+
+#### 4.8.1.2 IOPCHDA_DataCallback::OnReadComplete
 
 This is a Required Method
 
@@ -10189,7 +10106,8 @@ The returned data for this item is GOOD.
 
 104
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10225,9 +10143,9 @@ valid.
 
 Note that a given client handle or aggregate type or timestamp may appear multiple times in an array.
 
-4.8.1.3.
 
-IOPCHDA_DataCallback::OnReadModifiedComplete
+
+#### 4.8.1.3 IOPCHDA_DataCallback::OnReadModifiedComplete
 
 This is a Required Method
 
@@ -10276,7 +10194,8 @@ A list of HRESULTS for the items.
 
 105
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10316,9 +10235,9 @@ Note that item values must be well defined regardless of the contents of the phr
 
 Also note that a given client handle or timestamp may appear multiple times in an array.
 
-4.8.1.4.
 
-IOPCHDA_DataCallback::OnReadAttributeComplete
+
+#### 4.8.1.4 IOPCHDA_DataCallback::OnReadAttributeComplete
 
 This is a Required Method
 
@@ -10369,7 +10288,8 @@ The array of structures in which the attribute values are returned.
 
 106
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10407,9 +10327,9 @@ Comments
 
 Note that attribute values must be well defined regardless of the contents of the phrErrors field.
 
-4.8.1.5.
 
-IOPCHDA_DataCallback::OnReadAnnotations
+
+#### 4.8.1.5 IOPCHDA_DataCallback::OnReadAnnotations
 
 This is a Required Method
 
@@ -10458,7 +10378,8 @@ A list of HRESULTS for the items.
 
 107
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10497,9 +10418,9 @@ The item read was unsuccessful.
 
 Note that annotation values must be well defined regardless of the contents of the phrErrors field.
 
-4.8.1.6.
 
-IOPCHDA_DataCallback::OnInsertAnnotations
+
+#### 4.8.1.6 IOPCHDA_DataCallback::OnInsertAnnotations
 
 This is a Required Method
 
@@ -10558,7 +10479,8 @@ The client must always return S_OK
 
 108
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10588,7 +10510,7 @@ the returned list may be ‘sparse’ and also its order is not specified.
 
 4.8.1.7.
 
-IOPCHDA_DataCallback::OnPlayback
+### 4.6 IOPCHDA_DataCallback::OnPlayback
 
 This is a Required Method
 
@@ -10646,7 +10568,8 @@ The client must always return S_OK.
 
 109
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10677,9 +10600,9 @@ Comments
 Note that values, timestamps and qualities must all be well defined regardless of the contents of the
 phrErrors field.
 
-4.8.1.8.
 
-IOPCHDA_DataCallback::OnUpdateComplete
+
+#### 4.8.1.8 IOPCHDA_DataCallback::OnUpdateComplete
 
 This is a Required Method
 
@@ -10740,7 +10663,8 @@ The client must always return S_OK
 
 110
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10781,9 +10705,9 @@ which were requested.  This is necessary because the client may apply several up
 within one call, and the only way to know which updates did not succeed is by the order of the
 phrErrors array..
 
-4.8.1.9.
 
-IOPCHDA_DataCallback::OnCancelComplete
+
+#### 4.8.1.9 IOPCHDA_DataCallback::OnCancelComplete
 
 HRESULT OnCancelComplete(
 
@@ -10821,7 +10745,8 @@ receive this callback
 
 111
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10829,9 +10754,9 @@ F O U N D A T I O N
 
 Released
 
-5.  Description of Data Types, Parameters and Structures
+## 5. Description of Data Types, Parameters and Structures
 
-5.1. OPCHDA_QUALITY
+### 5.1 OPCHDA_QUALITY
 The values for OPCHDA_QUALITY were changed between v1.0 and v1.1 of the standard, to actually
 define 32 bits, with bits 15-0 zeroed.  This allows them to be used as bitmasks, as intended, against the
 actual 32-bit quality field.  Specifically, servers may return a quality that has information for both Data
@@ -10944,7 +10869,8 @@ value used in computing the aggregate was not GOOD, the quality returned shall b
 
 112
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -10955,7 +10881,7 @@ Released
 In the  case where interpolated data is requested, and there is an actual raw value for that timestamp, the
 server should return OPCHDA_RAW as the quality of that value.
 
-5.2. OPCHDA ITEM ATTRIBUTES
+### 5.2 OPCHDA ITEM ATTRIBUTES
 This indicates the attribute IDs for the history data.  The precise meaning of each attribute may be
 server specific.  Attributes not supported by the server shall return OPC_E_INVALIDATTRID in the
 error code for that attribute.  Additional attributes may be defined by vendors. Server specific
@@ -11043,7 +10969,8 @@ VT_BSTR
 
 113
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11144,7 +11071,8 @@ the item.
 
 114
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11236,7 +11164,8 @@ the specific meaning of this field.
 
 115
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11285,9 +11214,9 @@ VT_R8
 
 0x13
 
-5.3. Structures and Masks
+### 5.3 Structures and Masks
 
-5.3.1.  OPCHDA_ITEM
+#### 5.3.1 OPCHDA_ITEM
 
 This structure was changed between v1.0 of the standard and v1.1 of the standard.  Rather than passing
 the Aggregate as an ENUM, it must be passed as a DWORD, to allow vendors to use vendor-specific
@@ -11324,7 +11253,8 @@ The client provided handle for this item
 
 116
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11350,7 +11280,7 @@ NULL if timestamps were not requested in the call.
 The qualities of the data for this item.
 The values for the item.
 
-5.3.2.  OPCHDA_EDITTYPE
+#### 5.3.2 OPCHDA_EDITTYPE
 
 This indicates the way in which the history data is to be edited.
 
@@ -11374,7 +11304,7 @@ Insert or replace the data in history, depending on whether data
 already exists or not.
 Delete data from history.
 
-5.3.3.  OPCHDA_AGGREGATE
+#### 5.3.3 OPCHDA_AGGREGATE
 
 This indicates the aggregate to be used when retrieving processed history. The precise meaning of
 each aggregate may be server specific.  Aggregates not supported by the server shall return
@@ -11431,7 +11361,8 @@ Retrieve the value at the end of the resample interval. The time
 
 117
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11492,7 +11423,7 @@ The implementation of these standard aggregate types is as outlined in section 2
 vendors require custom functionality in the aggregates, those aggregates should be written as custom
 aggregates.
 
-5.3.4.  OPCHDA_TIME
+#### 5.3.4 OPCHDA_TIME
 
 typedef struct {
 bString;
@@ -11522,7 +11453,8 @@ for the relative time is:
 
 118
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11620,7 +11552,8 @@ Y
 
 119
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11654,7 +11587,7 @@ Offset from time in weeks.
 Offset from time in months.
 Offset from time in years.
 
-5.3.5.  OPCHDA_ATTRIBUTE
+#### 5.3.5 OPCHDA_ATTRIBUTE
 
 typedef struct {
 
@@ -11698,7 +11631,7 @@ value returned: as stated earlier, the first value returned shall be the value o
 time of the specified interval, and thus the timestamp for that value should be the start time of the
 interval.
 
-5.3.6.  OPCHDA_MODIFIEDITEM
+#### 5.3.6 OPCHDA_MODIFIEDITEM
 
 typedef struct {
 
@@ -11724,7 +11657,8 @@ dwCount;
 
 120
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11761,7 +11695,7 @@ The name of the user that made the modification. Support
 for this field is optional.  A NULL pointer shall be returned
 if it is not implemented.
 
-5.3.7.  OPCHDA_ANNOTATION
+#### 5.3.7 OPCHDA_ANNOTATION
 
 typedef struct {
 
@@ -11806,7 +11740,7 @@ The time the annotation was added. This will probably be
 different than the ftTimeStamp.
 The name of the user that added the annotation.
 
-5.3.8.  OPCHDA_OPERATORCODES
+#### 5.3.8 OPCHDA_OPERATORCODES
 
 typedef enum {OPCHDA_EQUAL =1,
 
@@ -11819,7 +11753,8 @@ OPCHDA_NOTEQUAL
 
 121
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11855,7 +11790,7 @@ to filter value.
 Attribute value is not equal to filter
 value.
 
-5.3.9.  OPCHDA_UPDATECAPABILITIES
+#### 5.3.9 OPCHDA_UPDATECAPABILITIES
 
 This uses an ENUM for the return parameter; this is incorrect for a bitmask value
 and precludes servers specifying more than one supported method.
@@ -11872,7 +11807,7 @@ OPCHDA_DELETERAWCAP= 0x08,
 OPCHDA_DELETEATTIMECAP= 0x10
 } OPCHDA_ UPDATECAPABILITIES
 
-5.3.10.  OPCHDA_ANNOTATIONCAPABILITIES
+#### 5.3.10 OPCHDA_ANNOTATIONCAPABILITIES
 
 This uses an ENUM for the return parameter; this is incorrect for a bitmask value
 and precludes servers specifying more than one supported method.
@@ -11886,7 +11821,7 @@ typedef enum {OPCHDA_READANNOTATIONCAP = 0x01,
 OPCHDA_INSERTANNOTATIONCAP = 0x02
 } OPCHDA_ ANNOTATIONCAPABILITIES
 
-5.3.11.  OPCHDA_BROWSETYPE
+#### 5.3.11 OPCHDA_BROWSETYPE
 
 typedef enum { OPCHDA_BRANCH =1,
 
@@ -11897,7 +11832,8 @@ OPCHDA_ITEMS
 
 122
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11947,7 +11883,7 @@ IOPCHDA_Server::GetItemHandles.  While servers are allowed to use the fully qual
 the short name, clients must assume that any name returned from GetEnum will need to be passed to
 GetItemID in order to obtain the fully qualified ItemID.
 
-5.3.12.  OPCHDA_BROWSEDIRECTION
+#### 5.3.12 OPCHDA_BROWSEDIRECTION
 
 typedef enum { OPCHDA_BROWSE_UP =1,
 
@@ -11978,7 +11914,8 @@ empty string, the browser shall move to the root.
 
 123
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -11986,7 +11923,7 @@ F O U N D A T I O N
 
 Released
 
-5.3.13.  OPCHDA_SERVERSTATUS
+#### 5.3.13 OPCHDA_SERVERSTATUS
 
 typedef enum { OPCHDA_UP =1,
 
@@ -12011,7 +11948,8 @@ szStatusString for further information.
 
 124
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12019,7 +11957,7 @@ F O U N D A T I O N
 
 Released
 
-6.  Component Categories Registration
+## 6. Component Categories Registration
 
 During the registration process, each OPC History Data Server must register itself with the Component
 Categories Manager, a Microsoft supplied system COM object. OPC History Data Clients will query
@@ -12083,7 +12021,8 @@ Version 1.0");
 
 125
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12138,7 +12077,7 @@ pCat->Release();
     } else MessageBox(NULL, "RegOPCDACat:CoCreateInstance Failed", NULL, MB_OK);
 }
 
-6.2. Client Enumeration
+### 6.2 Client Enumeration
 
 Editor’s Note: This section will change if the TSC adopts the proposed DCOM
 aware remote OPC browse server.
@@ -12171,7 +12110,8 @@ while (SUCCEEDED(hr = pEnumCLSID->Next(10, clsids, &c)))
 
 126
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12191,7 +12131,8 @@ Released
 
 127
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12262,7 +12203,8 @@ OPCHDA_INSERTCAP = 0x01,
 
 128
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12332,7 +12274,8 @@ hClient;
 
 129
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12407,7 +12350,7 @@ BOOL
 [string] LPWSTR  szTime;
 ftTime;
 FILETIME
-} OPCHDA_TIME;
+### 6.1 } OPCHDA_TIME;
 
 bString;
 
@@ -12464,7 +12407,8 @@ cpp_quote("#define    OPCHDA_SOURCE_NAME
 
 130
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12568,7 +12512,8 @@ szNode,
 
 131
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12669,7 +12614,8 @@ DWORD
 
 132
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12775,7 +12721,8 @@ HRESULT ReadRaw (
 
 133
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12856,7 +12803,8 @@ HRESULT
 
 134
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12924,7 +12872,8 @@ HRESULT DeleteAtTime (
 
 135
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -12997,7 +12946,8 @@ HRESULT ReadRaw (
 
 136
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13065,7 +13015,8 @@ HRESULT ReadModified (
 
 137
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13133,7 +13084,8 @@ HRESULT Replace (
 
 138
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13202,7 +13154,8 @@ HRESULT QueryCapabilities(
 
 139
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13278,7 +13231,8 @@ HRESULT ReadProcessedWithUpdate(
 
 140
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13376,7 +13330,8 @@ dwTransactionID,
 
 141
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13483,7 +13438,8 @@ tools
 
 142
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13512,7 +13468,8 @@ library OPCHDA
 
 143
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13520,7 +13477,7 @@ F O U N D A T I O N
 
 Released
 
-8.  Appendix B – Historical Data Access Error Codes
+## 8. Appendix B - Historical Data Access Error Codes
 
 /*++
 Module Name:
@@ -13583,7 +13540,8 @@ Code Assignments:
 
 144
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13648,7 +13606,8 @@ item attributes.
 
 145
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13712,7 +13671,8 @@ server's limit.
 
 146
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13778,7 +13738,8 @@ type.
 
 147
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13800,7 +13761,8 @@ Released
 
 148
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 
@@ -13810,7 +13772,8 @@ Released
 
 149
 
-OPC Historical Data Access
+
+OPC Historical Data Access
 Specification
 (Version 1.20)
 

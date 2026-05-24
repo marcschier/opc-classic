@@ -8,7 +8,8 @@ Version 2
 
 July 19, 2001
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Specification Type
 
@@ -57,7 +58,8 @@ NT 4.0 or later
 
 i
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 NON-EXCLUSIVE LICENSE AGREEMENT
 
@@ -113,7 +115,8 @@ AGREEMENT OR ANY USE OF THE OPC MATERIALS.
 
 ii
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 GENERAL PROVISIONS:
 
@@ -146,7 +149,8 @@ prior understanding or agreement (oral or written) relating to, the OPC Material
 
 iii
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Revision 2.0 Highlights
 
@@ -177,182 +181,83 @@ o  OPCBMasterRecipe
 
 iv
 
-OPC Batch Custom Interface Specification 2.0
 
-Table of Contents
+OPC Batch Custom Interface Specification 2.0
 
-3.2.3
+## Table of Contents
 
-3.2.2.1
+- [1. Introduction](#1-introduction)
+  - [1.1 Background](#11-background)
+  - [1.2 Purpose](#12-purpose)
+  - [1.3 References](#13-references)
+  - [1.4 Relationship to Other OPC Specifications](#14-relationship-to-other-opc-specifications)
+  - [1.5 Scope](#15-scope)
+  - [1.6 Types of Batch Servers](#16-types-of-batch-servers)
+  - [1.7 Audience](#17-audience)
+  - [1.8 Deliverables](#18-deliverables)
+- [2. Fundamental Concepts](#2-fundamental-concepts)
+  - [2.1 Overview](#21-overview)
+  - [2.2 Data Sources](#22-data-sources)
+  - [2.3 General Architecture and components](#23-general-architecture-and-components)
+  - [2.4 Overview of Object and Interfaces](#24-overview-of-object-and-interfaces)
+- [3. Architecture](#3-architecture)
+  - [3.1 Overview](#31-overview)
+  - [3.2 OPC Batch Namespace](#32-opc-batch-namespace)
+    - [3.2.1 Batch Namespace Models](#321-batch-namespace-models)
+    - [3.2.2 Browsing the OPC Batch Namespace](#322-browsing-the-opc-batch-namespace)
+      - [3.2.2.1 Client Browsing Examples](#3221-client-browsing-examples)
+    - [3.2.3 Parameters and Results](#323-parameters-and-results)
+      - [3.2.3.1 Discovery of Parameters and Results](#3231-discovery-of-parameters-and-results)
+      - [3.2.3.2 Anonymous Access of Parameters and Results](#3232-anonymous-access-of-parameters-and-results)
+      - [3.2.3.3 Parameter and Results Access Examples](#3233-parameter-and-results-access-examples)
+    - [3.2.4 Batch List](#324-batch-list)
+    - [3.2.5 Handling Dynamic Data](#325-handling-dynamic-data)
+    - [3.2.6 Use of Delimiter](#326-use-of-delimiter)
+  - [3.3 OPC Batch Properties](#33-opc-batch-properties)
+    - [3.3.1 Typical Use](#331-typical-use)
+    - [3.3.2 How ‘Property IDs’ relate to ItemIDs](#332-how-property-ids-relate-to-itemids)
+    - [3.3.3 Property List](#333-property-list)
+  - [3.4 Enumeration Concept](#34-enumeration-concept)
+  - [3.5 Compliance](#35-compliance)
+  - [3.6 OPC Data Access](#36-opc-data-access)
+  - [3.7 OPC Alarms and Events Specification](#37-opc-alarms-and-events-specification)
+  - [3.8 Typical Use](#38-typical-use)
+- [4. OPC Batch Server Custom Interface Quick Reference](#4-opc-batch-server-custom-interface-quick-reference)
+  - [4.1 OPC Batch Server Object](#41-opc-batch-server-object)
+- [5. OPC Batch Server Custom Interfaces](#5-opc-batch-server-custom-interfaces)
+  - [5.1 Overview](#51-overview)
+  - [5.2 OPCBatchServer Object](#52-opcbatchserver-object)
+    - [5.2.1 Overview](#521-overview)
+    - [5.2.2 IUnknown](#522-iunknown)
+    - [5.2.3 IOPCCommon](#523-iopccommon)
+    - [5.2.4 IOPCBatchServer](#524-iopcbatchserver)
+      - [5.2.4.1 IOPCBatchServer::GetDelimiter](#5241-iopcbatchservergetdelimiter)
+      - [5.2.4.2 IOPCBatchServer::CreateEnumerator](#5242-iopcbatchservercreateenumerator)
+    - [5.2.5 IOPCBatchServer2 (optional)](#525-iopcbatchserver2-optional)
+      - [5.2.5.1 IOPCBatchServer2::CreateFilteredEnumerator](#5251-iopcbatchserver2createfilteredenumerator)
+    - [5.2.6 IEnumOPCBatchSummary](#526-ienumopcbatchsummary)
+      - [5.2.6.1 IEnumOPCBatchSummary::Next](#5261-ienumopcbatchsummarynext)
+      - [5.2.6.2 IEnumOPCBatchSummary::Skip](#5262-ienumopcbatchsummaryskip)
+      - [5.2.6.3 IEnumOPCBatchSummary::Reset](#5263-ienumopcbatchsummaryreset)
+      - [5.2.6.4 IEnumOPCBatchSummary::Clone](#5264-ienumopcbatchsummaryclone)
+      - [5.2.6.5 IEnumOPCBatchSummary::Count](#5265-ienumopcbatchsummarycount)
+    - [5.2.7 IOPCEnumerationSets](#527-iopcenumerationsets)
+      - [5.2.7.1 IOPCEnumerationSets::QueryEnumerationSets](#5271-iopcenumerationsetsqueryenumerationsets)
+      - [5.2.7.2 IOPCEnumerationSets::QueryEnumeration](#5272-iopcenumerationsetsqueryenumeration)
+      - [5.2.7.3 IOPCEnumerationsSets::QueryEnumerationList](#5273-iopcenumerationssetsqueryenumerationlist)
+- [6. Description of Data Types, Parameters and Structures](#6-description-of-data-types-parameters-and-structures)
+  - [6.1 Structures and Masks](#61-structures-and-masks)
+    - [6.1.1 OPCBATCHSUMMARY](#611-opcbatchsummary)
+    - [6.1.2 OPCBATCHSUMMARYFILTER](#612-opcbatchsummaryfilter)
+- [7. OPCB_MASTER_RECIPE](#7-opcbmasterrecipe)
+- [9. Appendix A - OPC Batch Custom IDL Specification](#9-appendix-a-opc-batch-custom-idl-specification)
+- [Appendix B OpcBatchError.h](#appendix-b-opcbatcherrorh)
+- [Appendix C OPCBatchDef.h](#appendix-c-opcbatchdefh)
+- [Appendix D OPCBatchProps.h](#appendix-d-opcbatchpropsh)
 
-3.2.1
-3.2.2
+## 1. Introduction
 
-INTRODUCTION .................................................................................................................................7
-1
-BACKGROUND ......................................................................................................................................7
-1.1
-PURPOSE...............................................................................................................................................7
-1.2
-REFERENCES ........................................................................................................................................7
-1.3
-RELATIONSHIP TO OTHER OPC SPECIFICATIONS..................................................................................7
-1.4
-SCOPE...................................................................................................................................................8
-1.5
-TYPES OF BATCH SERVERS...................................................................................................................8
-1.6
-AUDIENCE ............................................................................................................................................9
-1.7
-1.8
-DELIVERABLES.....................................................................................................................................9
-2  FUNDAMENTAL CONCEPTS .........................................................................................................10
-OVERVIEW .........................................................................................................................................10
-2.1
-DATA SOURCES ..................................................................................................................................11
-2.2
-GENERAL ARCHITECTURE AND COMPONENTS ....................................................................................12
-2.3
-OVERVIEW OF OBJECT AND INTERFACES............................................................................................12
-2.4
-3  ARCHITECTURE ..............................................................................................................................14
-OVERVIEW .........................................................................................................................................14
-3.1
-OPC BATCH NAMESPACE...................................................................................................................18
-3.2
-Batch Namespace Models..........................................................................................................18
-Browsing the OPC Batch Namespace .......................................................................................20
-Client Browsing Examples ....................................................................................................................21
-Parameters and Results ..............................................................................................................24
-3.2.3.1  Discovery of Parameters and Results ....................................................................................................25
-3.2.3.2  Anonymous Access of Parameters and Results .....................................................................................28
-Parameter and Results Access Examples...............................................................................................30
-3.2.3.3
-Batch List...................................................................................................................................31
-Handling Dynamic Data ............................................................................................................32
-Use of Delimiter ........................................................................................................................33
-OPC BATCH PROPERTIES ...................................................................................................................34
-Typical Use................................................................................................................................34
-How ‘Property IDs’ relate to ItemIDs .......................................................................................34
-Property List ..............................................................................................................................34
-3.4
-ENUMERATION CONCEPT ...................................................................................................................45
-3.5
-COMPLIANCE......................................................................................................................................48
-3.6
-OPC DATA ACCESS............................................................................................................................48
-3.7
-OPC ALARMS AND EVENTS SPECIFICATION.......................................................................................48
-RESERVED NAME SUMMARY..............................................................................................................49
-3.8
-4  OPC BATCH SERVER CUSTOM INTERFACE QUICK REFERENCE....................................50
-OPC BATCH SERVER OBJECT.............................................................................................................51
-4.1
-5  OPC BATCH SERVER CUSTOM INTERFACES .........................................................................52
-OVERVIEW .........................................................................................................................................52
-5.1
-OPCBATCHSERVER OBJECT ..............................................................................................................53
-5.2
-Overview ...................................................................................................................................53
-IUnknown ..................................................................................................................................53
-IOPCCommon ...........................................................................................................................53
-IOPCBatchServer ......................................................................................................................54
-IOPCBatchServer::GetDelimiter ...........................................................................................................54
-IOPCBatchServer::CreateEnumerator ...................................................................................................54
-IOPCBatchServer2 (optional)....................................................................................................55
-IOPCBatchServer2::CreateFilteredEnumerator.....................................................................................55
-
-5.2.1
-5.2.2
-5.2.3
-5.2.4
-
-3.3.1
-3.3.2
-3.3.3
-
-3.2.4
-3.2.5
-3.2.6
-
-5.2.4.1
-5.2.4.2
-
-5.2.5.1
-
-5.2.5
-
-3.3
-
-v
-
-OPC Batch Custom Interface Specification 2.0
-
-5.2.6
-
-5.2.7
-
-5.2.6.1
-5.2.6.2
-5.2.6.3
-5.2.6.4
-5.2.6.5
-
-IEnumOPCBatchSummary........................................................................................................57
-IEnumOPCBatchSummary::Next..........................................................................................................57
-IEnumOPCBatchSummary::Skip ..........................................................................................................58
-IEnumOPCBatchSummary::Reset.........................................................................................................58
-IEnumOPCBatchSummary::Clone ........................................................................................................59
-IEnumOPCBatchSummary::Count........................................................................................................59
-IOPCEnumerationSets...............................................................................................................60
-IOPCEnumerationSets::QueryEnumerationSets....................................................................................60
-IOPCEnumerationSets::QueryEnumeration ..........................................................................................61
-IOPCEnumerationsSets::QueryEnumerationList...................................................................................62
-6  DESCRIPTION OF DATA TYPES, PARAMETERS AND STRUCTURES................................63
-STRUCTURES AND MASKS ..................................................................................................................63
-6.1
-OPCBATCHSUMMARY .........................................................................................................63
-OPCBATCHSUMMARYFILTER............................................................................................64
-INSTALLATION ISSUES..................................................................................................................66
-
-5.2.7.1
-5.2.7.2
-5.2.7.3
-
-6.1.1
-6.1.2
-
-7
-
-8
-
-SUMMARY OF OPC ERROR CODES............................................................................................67
-
-9  APPENDIX A – OPC BATCH CUSTOM IDL SPECIFICATION ................................................68
-
-10
-
-11
-
-12
-
-13
-
-APPENDIX B OPCBATCHERROR.H.........................................................................................72
-
-APPENDIX C – OPCBATCHDEF.H ............................................................................................73
-
-APPENDIX D - OPCBATCHPROPS.H........................................................................................76
-
-APPENDIX E – OPC ALARMS AND EVENTS BATCH SPECIFIC EVENT ATTRIBUTES78
-
-vi
-
-OPC Batch Custom Interface Specification 2.0
-
-1  Introduction
-
-1.1  Background
+### 1.1 Background
 
 As products are developed for the batch processing industry based on the IEC 61512-1 Batch Control – Part 1: Models
 and Terminology standard there is an increasing need to exchange data between these products and other systems.
@@ -380,13 +285,13 @@ interoperability with any other systems.
 Manufacturers and consumers want to use off the shelf, open solutions from vendors that offer superior value that solves
 a specific need or problem.
 
-1.2  Purpose
+### 1.2 Purpose
 
 To provide a means to pass batch related data between components which would be suitable to standardization.
 Additionally this document details the design of interfaces and namespaces in such a way as to complement the existing
 OPC Data Access Interfaces.
 
-1.3  References
+### 1.3 References
 
 •  OPC Data Access Custom Interface Specification, Version 2.04, OPC Foundation, September 5, 2000, .
 
@@ -404,7 +309,7 @@ IEC61512-1:1997, Batch control- Part 1:  Models and terminology.
 
 ISA-dS88.02-2000 draft 17, May 2000.
 
-1.4  Relationship to Other OPC Specifications
+### 1.4 Relationship to Other OPC Specifications
 
 This specification differs from other OPC specifications in that it declares a well-defined namespace that must be
 supported.  It is possible, and desirable, to declare a well-defined namespace in this case because of the existence of a
@@ -415,9 +320,10 @@ the optional interfaces.
 
 7
 
-OPC Batch Custom Interface Specification 2.0
 
-1.5  Scope
+OPC Batch Custom Interface Specification 2.0
+
+### 1.5 Scope
 
 The scope of the version 2.0 provides definitions for interfaces and namespaces for the following types of batch related
 data:
@@ -437,7 +343,7 @@ by clients from servers and optionally written by clients to servers. “Conduit
 not intended to specify solutions for batch control problems, but rather provide an enabling technology that will permit
 multi-vendor solutions to operate in a heterogeneous computing environment.
 
-1.6  Types of Batch Servers
+### 1.6 Types of Batch Servers
 
 It is expected that OPC batch servers will collaborate with execution engines for the recipe management, production
 information management, process management and unit supervision activities in batch processing as defined in the
@@ -477,15 +383,16 @@ Figure 1-1 Management Activity Model1
 
 8
 
-OPC Batch Custom Interface Specification 2.0
 
-1.7  Audience
+OPC Batch Custom Interface Specification 2.0
+
+### 1.7 Audience
 
 This document is intended to be used as reference material for developers of OPC compliant batch clients and servers. It
 is assumed that the reader is familiar with Microsoft OLE/COM technology, the needs of the process control industry
 and the OPC Data Access 2.0 specification.
 
-1.8  Deliverables
+### 1.8 Deliverables
 
 The deliverables from the OPC Foundation with respect to the OPC Batch Custom Interface Specification include the
 OPC specification itself, OPC batch custom IDL files (included in this document as Appendices) and the OPC batch
@@ -506,11 +413,12 @@ handling batch related  events that can be used as vendor specific attributes fo
 
 9
 
-OPC Batch Custom Interface Specification 2.0
 
-2  Fundamental Concepts
+OPC Batch Custom Interface Specification 2.0
 
-2.1  Overview
+## 2. Fundamental Concepts
+
+### 2.1 Overview
 
 This specification describes the OPC COM objects and their interfaces implemented by OPC batch servers.  An OPC
 Client can connect to OPC batch servers provided by one or more vendors. Different vendors may provide OPC batch
@@ -552,9 +460,10 @@ may be from the same or different vendors.
 
 10
 
-OPC Batch Custom Interface Specification 2.0
 
-2.2  Data Sources
+OPC Batch Custom Interface Specification 2.0
+
+### 2.2 Data Sources
 
 The OPC batch server provides a way to access or communicate to a set of batch data sources. The types of sources
 available are a function of the server implementation.
@@ -598,9 +507,10 @@ complex displays or reports that require data in multiple formats.
 
 11
 
-OPC Batch Custom Interface Specification 2.0
 
-2.3  General Architecture and components
+OPC Batch Custom Interface Specification 2.0
+
+### 2.3 General Architecture and components
 
 An OPC client application communicates to an OPC batch server through the specified OPC custom and automation
 interfaces.  OPC batch servers can implement both the custom interface and an automation interface.
@@ -650,14 +560,15 @@ Figure 2-4: Automation Interface Wrapper
 The OPC automation interface may be implemented via a wrapper. A generic wrapper will be provided by the OPC
 Foundation.
 
-2.4  Overview of Object and Interfaces
+### 2.4 Overview of Object and Interfaces
 
 The OPC batch server object provides the ability to read data from a batch server and to optionally write data to a batch
 server.  It is acceptable for an OPC batch server to provide a read-only namespace. All COM objects are accessed
 
 12
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 through interfaces. The client sees only the interfaces. Thus, the object described here is a ‘logical’ representation, which
 may not have anything to do with the actual internal implementation of the server. The following figure is a summary of
@@ -698,11 +609,12 @@ Figure 2-5- OPC Batch Server Object
 
 13
 
-OPC Batch Custom Interface Specification 2.0
 
-3  Architecture
+OPC Batch Custom Interface Specification 2.0
 
-3.1  Overview
+## 3. Architecture
+
+### 3.1 Overview
 
 This specification builds upon other standards.  Architecturally the most important are the OPC Data Access Custom
 Specification  and the IEC 61512-1, Batch control – Part 1: Models and Terminology, First Edition 1997-08 standard.
@@ -769,7 +681,8 @@ Figure 3-1 Physical model2
 
 14
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 The IEC 61512-1 Procedural control module shown in Figure 3-2 defines the control recipe procedural elements.  This
 model has been used to define the well-known item IDs inside a batch.
@@ -827,7 +740,8 @@ indication that no value exists will be returned.
 
 15
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 RECIPE
 
@@ -890,7 +804,8 @@ Figure 3-4 - Model Relationships
 
 16
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 The OPCBBatchModel is intended to be used to make data available for scheduled, active, and recently active batches.
 The actual definition of “scheduled”, “active” and “recently active” in this context are server specific as is the
@@ -914,11 +829,12 @@ related information with events.
 
 17
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2  OPC Batch Namespace
+OPC Batch Custom Interface Specification 2.0
 
-3.2.1  Batch Namespace Models
+### 3.2 OPC Batch Namespace
+
+#### 3.2.1 Batch Namespace Models
 
 The OPC batch namespace consists of a root and a series of well-known item IDs.  All OPC batch well-known item IDs
 start with the pre-fix “OPCB”.  "OPCB" is a reserved pre-fix and should not be used for vendor or user-defined item IDs.
@@ -977,7 +893,8 @@ OPCBBatchModelLevel (ID = 410) whose value identifies the model level based on t
 
 18
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 OPCBBatchModel hierarchy provides for expanding and collapsing the Procedure Model.  In this case users may expand
 the model by creating new recipe procedural elements (RPEs) such as a macro-operation, or omit levels, such as phases.
@@ -1100,7 +1017,8 @@ OPCBBatchIDList
 
 Figure 3-6 - Populated Namespace
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 used to identify an item.  An example of a returned value for the first batch in the OPCBBatchModel is:
 
@@ -1126,7 +1044,7 @@ OPCBPhysicalModel.Site X.Area 51.Building 19 1/2.Reactor 9
 This item ID would permit a client to directly access properties for Reactor 9.  Fully qualified item ID addressing may be
 used for any item in the OPC batch namespace.
 
-3.2.2  Browsing the OPC Batch Namespace
+#### 3.2.2 Browsing the OPC Batch Namespace
 
 The OPC batch namespace is hierarchical.  A client may browse the namespace to discover what data is available for it
 to access.  Browsing is performed using the IOPCBrowseServerAddressSpace interface, which is specified by the OPC
@@ -1171,7 +1089,8 @@ by this specification.
 
 20
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 From this point the client may call IOPCBrowseServerAddressSpace::ChangeBrowsePosition() to browse down to
 ‘OPCBPhysicalModel’ (for example).  From there, another call to
@@ -1200,7 +1119,7 @@ Building 21
 Building 21.Reactor 10
 Building 21.Tank B
 
-3.2.2.1  Client Browsing Examples
+#### 3.2.2.1 Client Browsing Examples
 
 Clients may initialize the browse position to the batch server <ROOT> or set browse position to a specific well-known
 position as in:
@@ -1231,7 +1150,8 @@ shows a sample list of fully qualified item IDs representing the properties of a
 
 21
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 [Batch Properties]
 
@@ -1305,7 +1225,8 @@ Parameters and
 
 22
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Using IOPCBrowseServerAddressSpace::GetItemID(), the qualified Item ID OPCBBatchModel.B1999-A43.React
 would be obtained.  This position also represents an item ID that potentially has a set of properties.  The client would call
@@ -1373,7 +1294,8 @@ below the batch level.  The corresponding ResultCount property serves the same p
 
 23
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 If a particular RPE level does not have any parameters (or results) associated with it, then the returned value for
 ParameterCount (or ResultCount) is zero (0). It is also permissible for a server browse interface NOT to return the
@@ -1383,7 +1305,7 @@ A client may use the ParameterCount (and ResultCount) property to determine how 
 (and results). If there are a few or dozens, a client may use one approach; if there are hundreds or thousands, a client may
 choose to take another approach or warn the user of possible performance considerations.
 
-3.2.3  Parameters and Results
+#### 3.2.3 Parameters and Results
 
 Parameters and results represent a class of information that may be associated with master recipes, batches and/or recipe
 procedural elements at any level in the OPCBMasterRecipe, OPCBBatchModel or OPCBBatchArchiveModel.
@@ -1461,7 +1383,8 @@ Another phase in the operation DoubleCharge.
 
 24
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
                 [RPE Properties]
                 {Parameters/OPCBResults}
@@ -1483,7 +1406,7 @@ Yet another Batch.
 Top of the batch archive model.
 IDs of batches this OPC batch server knows about at this time
 
-3.2.3.1  Discovery of Parameters and Results
+#### 3.2.3.1 Discovery of Parameters and Results
 
 One method for a client to determine the parameters associated with a batch or RPE is to discover them.  Browsing down
 the namespace using well-known item IDs does this.  The well-known item IDs are called OPCBParameters and
@@ -1547,7 +1470,8 @@ parameters and results.
 
 25
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Continuing the example from Table 3 and
 In the hierarchy directly below React are all of its properties, the well-known item IDs OPCBParameters and
@@ -1634,7 +1558,8 @@ OPC Batch Properties
 
 26
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Sample Parameter and Result Properties
 
@@ -1687,9 +1612,10 @@ OPCBBatchModel.B1999-A43.React.OPCBResults.Reaction_Duration.EnumerationSetID
 
 27
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2.3.2  Anonymous Access of Parameters and Results
+OPC Batch Custom Interface Specification 2.0
+
+#### 3.2.3.2 Anonymous Access of Parameters and Results
 
 Discovering each parameter and result item ID for an RPE may not always be desirable.  An alternative method for
 obtaining parameter and result data is to do so anonymously.  Anonymous access of parameters and results is a shorthand
@@ -1759,7 +1685,8 @@ A similar technique can be used for anonymously accessing results.
 
 28
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 This technique can be used to obtain any properties for all of the parameters and/or results for a batch or RPE without
 having to first discover all of the parameter IDs.
@@ -1782,9 +1709,10 @@ IOPCItemProperties::QueryAvailableProperties() ).
 
 29
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2.3.3  Parameter and Results Access Examples
+OPC Batch Custom Interface Specification 2.0
+
+#### 3.2.3.3 Parameter and Results Access Examples
 
 There are many possibilities for accessing parameter and result data.  The following examples illustrate only a couple of
 different approaches and are not intended to impose a particular design or implementation on client applications.  For the
@@ -1847,9 +1775,10 @@ OPCBBatchModel.B1999-A43.React.OPCBParameters.OPCBP29.Description
 
 30
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2.4  Batch List
+OPC Batch Custom Interface Specification 2.0
+
+#### 3.2.4 Batch List
 
 Interaction with a batch control system is often viewed through the context of what is currently executing, such as;
 
@@ -1896,9 +1825,10 @@ The OPCBBatchIDList is intended to provide summary data from the OPCBBatchModel 
 
 31
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2.5  Handling Dynamic Data
+OPC Batch Custom Interface Specification 2.0
+
+#### 3.2.5 Handling Dynamic Data
 
 Some batch data is inherently dynamic in the sense that it may appear and disappear when, for example, batches are
 added to or removed from the batch list.  In OPC Data Access terms, this means that item IDs may cease to be valid
@@ -1955,9 +1885,10 @@ from the server address space.  The server shall return OPC_E_UNKNOWNITEMID for 
 
 32
 
-OPC Batch Custom Interface Specification 2.0
 
-3.2.6  Use of Delimiter
+OPC Batch Custom Interface Specification 2.0
+
+#### 3.2.6 Use of Delimiter
 
 In order to construct a fully qualified item ID, a client application must know the delimiter the OPC batch server uses to
 indicate the various objects in the hierarchy.  Rather than define a specific delimiter (which may not be correct for all
@@ -1990,9 +1921,10 @@ fully qualified item IDs:
 
 33
 
-OPC Batch Custom Interface Specification 2.0
 
-3.3  OPC Batch Properties
+OPC Batch Custom Interface Specification 2.0
+
+### 3.3 OPC Batch Properties
 
 The OPC batch namespace is further described using item properties at all levels of the namespace.  The item properties
 are categorized as required or optional.  Vendors may add vendor specific properties in addition to the required and
@@ -2002,7 +1934,7 @@ The item properties are accessed using the IOPCItemProperties interface defined 
 Interface Version 2.0 specification.  In addition, property names have been defined for simplifying access to required and
 optional well-known properties.  This addition is required for OPC batch servers.
 
-3.3.1  Typical Use
+#### 3.3.1 Typical Use
 
 Typical client use of property IDs would be to use the IOPCItemProperties::QueryAvailableProperties() method on the
 Item ID to determine what required, optional and vendor specific properties the OPC batch server supports for that item.
@@ -2010,13 +1942,13 @@ Item ID to determine what required, optional and vendor specific properties the 
 The required properties shall be supported for all items.  Optional and vendor specific properties may be supported on an
 individual item basis and are discovered using IOPCItemProperties::QueryAvailableProperties.
 
-3.3.2  How ‘Property IDs’ relate to ItemIDs
+#### 3.3.2 How ‘Property IDs’ relate to ItemIDs
 
 To obtain the data associated with a supported property, the property name is simply appended to the Item ID of the
 physical or batch model entity to create a new Item ID.  For example, if Unit1 is the desired equipment and Name is the
 desired property, the associated new Item ID would be Unit1.Name.
 
-3.3.3  Property List
+#### 3.3.3 Property List
 
 The table below defines the OPC batch properties.  Properties are identified using server assigned DWORD ID codes
 based on the OPC Data Access Custom Interface Specification section 4.4.6.  In addition the OPC batch specification
@@ -2062,7 +1994,8 @@ All items in the OPCBMasterRecipeModel
 
 34
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 The properties for the OPCBParameters and OPCBResults collection items are a subset of all the properties in Table 11.
 The set of properties a server supports for the OPCBParameters and OPCBResults collection items must be the same as
@@ -2128,7 +2061,9 @@ S88.02 exchange tables.
 
 35
 
-OPC Batch Custom Interface Specification 2.0
+
+
+OPC Batch Custom Interface Specification 2.0
 
 Table 11- OPC Batch Properties
 
@@ -2294,7 +2229,8 @@ R
 
 37
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -2493,7 +2429,8 @@ O  O  O
 
 38
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -2713,7 +2650,8 @@ O
 
 39
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -2933,7 +2871,8 @@ by OPCB_ENUM_STATE.
 
 40
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -3106,7 +3045,8 @@ BXT_MRecipeElementParameter.ParamType.
 
 41
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -3269,7 +3209,8 @@ S88.02 reference: BXT_MrecipeStepEquip. PropertyValue.
 
 42
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -3426,7 +3367,8 @@ S88.02 reference: BXT_MrecipeElement.Status.
 
 43
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ID
 
@@ -3586,9 +3528,10 @@ O
 
 44
 
-OPC Batch Custom Interface Specification 2.0
 
-3.4  Enumeration Concept
+OPC Batch Custom Interface Specification 2.0
+
+### 3.4 Enumeration Concept
 
 OPC batch clients desire the ability to obtain state and other kinds of information from a batch server that will typically
 be implemented using enumerations.  While it is possible for the OPC batch server to return this information in textual
@@ -3609,7 +3552,7 @@ locality requested by the client, therefore the contents of the string are serve
 
 Enumerations are extensible.  Vendors may add enumerations to existing sets as well as add new enumeration sets.
 
-Typical Use
+### 3.8 Typical Use
 
 The typical use of this information will be to translate from an enumeration set and value to a string that associates with
 the specified value.  This translation may occur as needed during run-time as the client receives enumeration values or
@@ -3646,7 +3589,8 @@ There is no implied meaning attached to the ordering of the enumeration values.
 
 45
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 The enumeration set names and enumeration values are those provided in the OPC batch header files.  These strings are
 server specific and may vary between servers.  The set values and enumeration values are not server specific and should
@@ -3723,7 +3667,7 @@ OPCB_CAMPAIGN
 
 6
 
-7
+
 
 0
 
@@ -3745,7 +3689,7 @@ OPCB_CAMPAIGN
 
 9
 
-OPCB_MASTER_RECIPE
+## 7. OPCB_MASTER_RECIPE
 
 10
 
@@ -3791,7 +3735,8 @@ OPCB_STATE_STOPPING
 
 8
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 Enumeration Set Symbolic
 Name
@@ -3925,9 +3870,10 @@ The actual strings returned are server specific.
 
 47
 
-OPC Batch Custom Interface Specification 2.0
 
-3.5  Compliance
+OPC Batch Custom Interface Specification 2.0
+
+### 3.5 Compliance
 
 A fully compliant OPC batch server has the following characteristics:
 
@@ -3946,7 +3892,7 @@ interfaces,
 •  Supports the required properties in the OPCBPhysicalModel, OPCBMasterRecipeModel, OPCBBatchModel and
 OPCBBatchArchiveModel, and adheres to the identified conventions for identifying and accessing properties.
 
-3.6  OPC Data Access
+### 3.6 OPC Data Access
 
 The OPC Data Access specifications identify methods for reading and writing data.  As the OPC batch server is
 additionally an OPC Data Access server, these methods and interfaces must be supported as identified in the OPC Data
@@ -3970,7 +3916,7 @@ data (i.e., there is an acceptable default value that is meaningful), the accept
 Note that the IDataObject interface used by IOPCAsyncIO does not provide the ability to return error code information
 in the OnDataChange callback.
 
-3.7  OPC Alarms and Events Specification
+### 3.7 OPC Alarms and Events Specification
 
 The OPC Alarms and Events Specification (A&E) defines interfaces for exchanging information about alarms and events
 between components.  In order to provide a richer set of batch attributes with an event notification, a set of batch specific
@@ -3984,7 +3930,8 @@ Appendix E.
 
 48
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 3.8  Reserved Name Summary
 
@@ -4041,9 +3988,10 @@ always exist immediately under the root.  OPCBParameters and OPCBResults are opt
 
 49
 
-OPC Batch Custom Interface Specification 2.0
 
-4  OPC Batch Server Custom Interface Quick Reference
+OPC Batch Custom Interface Specification 2.0
+
+## 4. OPC Batch Server Custom Interface Quick Reference
 
 This section includes a quick reference for the methods in the Custom Interface.  These interfaces, their parameters, and
 behavior are defined in detail in section 5.
@@ -4082,9 +4030,10 @@ IEnumOPCItemAttributes
 
 50
 
-OPC Batch Custom Interface Specification 2.0
 
-4.1  OPC Batch Server Object
+OPC Batch Custom Interface Specification 2.0
+
+### 4.1 OPC Batch Server Object
 
 IOPCBatchServer
 
@@ -4142,11 +4091,12 @@ ppszEnumString)
 
 51
 
-OPC Batch Custom Interface Specification 2.0
 
-5  OPC Batch Server Custom Interfaces
+OPC Batch Custom Interface Specification 2.0
 
-5.1  Overview
+## 5. OPC Batch Server Custom Interfaces
+
+### 5.1 Overview
 
 The OPC Data Access 2.0 specification sections 4.1, 4.2 and 4.3 cover the following topics:
 
@@ -4161,11 +4111,12 @@ specification.  It is assumed that the reader is familiar with these sections in
 
 52
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2  OPCBatchServer Object
+OPC Batch Custom Interface Specification 2.0
 
-5.2.1  Overview
+### 5.2 OPCBatchServer Object
+
+#### 5.2.1 Overview
 
 The OPCBatchServer object is the primary object that an OPC batch server exposes.  The interfaces that this object
 provides include:
@@ -4190,13 +4141,13 @@ IOPCEnumerationSets
 
 IEnumOPCBatchSummary
 
-5.2.2  IUnknown
+#### 5.2.2 IUnknown
 
 The server must provide a standard IUnknown Interface.  Since this is a well-defined interface it is not discussed in
 detail.  See the OLE Programmer’s reference for additional information.  This interface must be provided, and all
 functions implemented as required by Microsoft.
 
-5.2.3  IOPCCommon
+#### 5.2.3 IOPCCommon
 
 Other OPC servers such as data access share this interface design.  It provides the ability to set and query a LocaleID that
 would be in effect for the particular client/server session. That is, the actions of one client do not affect any other clients.
@@ -4212,14 +4163,15 @@ IOPCCommon interface defined in the OPC Data Server Specification version 2.0.
 
 53
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.4  IOPCBatchServer
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.4 IOPCBatchServer
 
 This is the main interface to the batch data of an OPC batch server.  The OPC server is registered with the operating
 system as specified in the installation and registration chapter of this specification.
 
-5.2.4.1  IOPCBatchServer::GetDelimiter
+#### 5.2.4.1 IOPCBatchServer::GetDelimiter
 
 HRESULT GetDelimiter(
 
@@ -4268,7 +4220,7 @@ The operation succeeded.
 
 Client must free the returned string.
 
-5.2.4.2  IOPCBatchServer::CreateEnumerator
+#### 5.2.4.2 IOPCBatchServer::CreateEnumerator
 
 HRESULT CreateEnumerator(
 
@@ -4292,7 +4244,8 @@ IID_IEnumOPCBatchSummary.
 
 54
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ppUnk
 
@@ -4331,11 +4284,11 @@ Comments
 
 The client must release the returned interface pointer when it is done with it.
 
-5.2.5  IOPCBatchServer2 (optional)
+#### 5.2.5 IOPCBatchServer2 (optional)
 
 This interface provides a way for a client to obtain an enumerator of batches based on client defined criteria.
 
-5.2.5.1  IOPCBatchServer2::CreateFilteredEnumerator
+#### 5.2.5.1 IOPCBatchServer2::CreateFilteredEnumerator
 
 HRESULT CreateFilteredEnumerator(
 
@@ -4371,7 +4324,8 @@ below.
 
 55
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 szModel
 
@@ -4420,9 +4374,10 @@ The client must release the returned interface pointer when it is done with it.
 
 56
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.6    IEnumOPCBatchSummary
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.6 IEnumOPCBatchSummary
 
 The IEnumOPCBatchSummary interface provides means to easily and efficiently access the summary batch list data.
 
@@ -4440,7 +4395,7 @@ Subsequent snapshots may differ since the namespace contents can change at any t
 Since enumeration is a standard interface this is described only briefly.  See the Microsoft documentation concerning
 enumerators for a list and discussion of error codes.
 
-5.2.6.1  IEnumOPCBatchSummary::Next
+#### 5.2.6.1 IEnumOPCBatchSummary::Next
 
 HRESULT Next(
 
@@ -4476,9 +4431,10 @@ The client must free the returned OPCBATCHSUMMARY structures including the conta
 
 57
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.6.2  IEnumOPCBatchSummary::Skip
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.6.2 IEnumOPCBatchSummary::Skip
 
 HRESULT Skip(
 
@@ -4499,7 +4455,7 @@ Number of elements to skip
 
 Comments
 
-5.2.6.3  IEnumOPCBatchSummary::Reset
+#### 5.2.6.3 IEnumOPCBatchSummary::Reset
 
 HRESULT Reset(
 
@@ -4520,9 +4476,10 @@ Comments
 
 58
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.6.4  IEnumOPCBatchSummary::Clone
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.6.4 IEnumOPCBatchSummary::Clone
 
 HRESULT Clone(
 
@@ -4545,7 +4502,7 @@ Comments
 
 The client must release the returned interface pointer when it is done with it.
 
-5.2.6.5  IEnumOPCBatchSummary::Count
+#### 5.2.6.5 IEnumOPCBatchSummary::Count
 
 HRESULT Count(
 
@@ -4566,11 +4523,12 @@ Return the number of elements in the enumeration.
 
 59
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.7  IOPCEnumerationSets
+OPC Batch Custom Interface Specification 2.0
 
-5.2.7.1  IOPCEnumerationSets::QueryEnumerationSets
+#### 5.2.7 IOPCEnumerationSets
+
+#### 5.2.7.1 IOPCEnumerationSets::QueryEnumerationSets
 
 HRESULT QueryEnumerationSets(
 
@@ -4625,9 +4583,10 @@ Clients must free the returned arrays.
 
 60
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.7.2  IOPCEnumerationSets::QueryEnumeration
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.7.2 IOPCEnumerationSets::QueryEnumeration
 
 HRESULT QueryEnumeration(
 
@@ -4686,9 +4645,10 @@ If either the enumeration set or value is out of range, E_INVALIDARG is returned
 
 61
 
-OPC Batch Custom Interface Specification 2.0
 
-5.2.7.3  IOPCEnumerationsSets::QueryEnumerationList
+OPC Batch Custom Interface Specification 2.0
+
+#### 5.2.7.3 IOPCEnumerationsSets::QueryEnumerationList
 
 HRESULT QueryEnumerationList(
 
@@ -4753,13 +4713,14 @@ If the enumeration set is out of range, E_INVALIDARG is returned.
 
 62
 
-OPC Batch Custom Interface Specification 2.0
 
-6  Description of Data Types, Parameters and Structures
+OPC Batch Custom Interface Specification 2.0
 
-6.1  Structures and Masks
+## 6. Description of Data Types, Parameters and Structures
 
-6.1.1  OPCBATCHSUMMARY
+### 6.1 Structures and Masks
+
+#### 6.1.1 OPCBATCHSUMMARY
 
 typedef struct {
 
@@ -4838,9 +4799,10 @@ Time when the batch actually ended.
 
 63
 
-OPC Batch Custom Interface Specification 2.0
 
-6.1.2  OPCBATCHSUMMARYFILTER
+OPC Batch Custom Interface Specification 2.0
+
+#### 6.1.2 OPCBATCHSUMMARYFILTER
 
 typedef struct {
 
@@ -4935,7 +4897,8 @@ Include all batches whose Execution Mode matches the
 
 64
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 ftMinStartTime
 
@@ -4961,7 +4924,8 @@ this time
 
 65
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 7  Installation Issues
 
@@ -4999,7 +4963,8 @@ component category ID is:
 
 66
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 8  Summary of OPC Error Codes
 
@@ -5008,9 +4973,10 @@ Appendix B.
 
 67
 
-OPC Batch Custom Interface Specification 2.0
 
-9  Appendix A – OPC Batch Custom IDL Specification
+OPC Batch Custom Interface Specification 2.0
+
+## 9. Appendix A - OPC Batch Custom IDL Specification
 
 The current files require MIDL compiler 5.00 or later.
 
@@ -5068,7 +5034,8 @@ typedef struct tagOPCBATCHSUMMARYFILTER {
 
 68
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
            FILETIME ftMaxEndTime;
 } OPCBATCHSUMMARYFILTER;
@@ -5126,7 +5093,8 @@ interface IEnumOPCBatchSummary : IUnknown
 
 69
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
     [in]                ULONG   celt
     );
@@ -5186,7 +5154,8 @@ library OPC_BATCH
 
 70
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
   interface IEnumOPCBatchSummary;
   interface IOPCEnumerationSets;
@@ -5194,13 +5163,14 @@ library OPC_BATCH
 
 71
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 10  Appendix B OPCBatchError.h
 
 /*++
 Module Name:
- OpcBatchError.h
+## Appendix B OpcBatchError.h
 Author:
 OPC Batch Committee
 
@@ -5233,7 +5203,8 @@ Code Assignements:
 
 72
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 11 Appendix C – OPCBatchDef.h
 
@@ -5241,7 +5212,7 @@ Code Assignements:
 
   Module Name:
 
-  OPCBatchDef.h
+## Appendix C OPCBatchDef.h
 
   Abstract:
 
@@ -5291,7 +5262,8 @@ Code Assignements:
 
 73
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 #define OPCB_PHYS_UNIT        4
 #define OPCB_PHYS_EQUIPMENTMODULE 5
@@ -5351,7 +5323,8 @@ Code Assignements:
 
 74
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 #define OPCB_RE_USE_LINKED   1
 #define OPCB_RE_USE_EMBEDDED 2
@@ -5361,13 +5334,14 @@ Code Assignements:
 
 75
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 12  Appendix D - OPCBatchProps.h
 
 /*++
 Module Name:
- OPCBatchProps.h
+## Appendix D OPCBatchProps.h
 Author:
  OPC Batch Committee
 
@@ -5420,7 +5394,8 @@ Revision History:
 
 76
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 #define OPC_PROP_B_CONTROL_RECIPE_ID            433
 #define OPC_PROP_B_CONTROL_RECIPE_VERSION       434
@@ -5473,7 +5448,8 @@ Revision History:
 
 77
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 13  Appendix E – OPC Alarms and Events Batch Specific Event Attributes
 
@@ -5579,7 +5555,8 @@ enumeration set identified in the S88RecordSet attribute.
 
 78
 
-OPC Batch Custom Interface Specification 2.0
+
+OPC Batch Custom Interface Specification 2.0
 
 7
 
