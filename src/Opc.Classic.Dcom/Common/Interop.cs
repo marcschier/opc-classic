@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
-using System.Reflection;
 
 namespace Opc.Classic.Dcom.Common; 
 /// <summary>
@@ -105,7 +104,7 @@ public static class Interop {
     /// Helper to load
     /// </summary>
     private static void Internal_readProgIdsFromFile() {
-        _pathToDB = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        _pathToDB = AppContext.BaseDirectory;
         try {
             var inputStream = new FileStream(_pathToDB, FileMode.Create, FileAccess.Write);
             kMapOfProgIdsVsClsids.Load(inputStream);

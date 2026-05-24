@@ -23,8 +23,6 @@
     <NoWarn>$(NoWarn);IDE0290;IDE0300;IDE0301;IDE0305;IDE0028;IDE0090;IDE0270;IDE0066</NoWarn>
     <!-- Globally relaxed in this assembly (legacy code patterns; documented in .editorconfig per-directory) -->
     <NoWarn>$(NoWarn);CA1031;CA1062;CA2007;CA1305;CA1307;CA1304;CA1308;CA1310;CA1311;CA1416;CA1822;CA1834;CA1851;CA1854;CA1860;CA1861;CA2008;CA2249</NoWarn>
-    <!-- TODO M10-AOT-followup: replace Array.CreateInstance(Type,N) with VT_*-typed switch (Variant.cs/VariantBody.cs/ComArray.cs) and Assembly.Location with AppContext.BaseDirectory (Interop.cs:108) for true AOT cleanliness. Tracked under M10 followup. -->
-    <NoWarn>$(NoWarn);IL3000;IL3050</NoWarn>
   </PropertyGroup>
 
     <ItemGroup>

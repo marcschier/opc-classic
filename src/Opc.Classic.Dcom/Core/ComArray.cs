@@ -2,6 +2,7 @@
 
 using Opc.Classic.Dcom.Common;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
+using Opc.Classic.Dcom.Rpc.Core;
 using System;
 using System.Collections.Generic;
 using Opc.Classic.Dcom.Automation;
@@ -556,6 +557,90 @@ public sealed class ComArray {
         return retVal;
     }
 
+    private static Array CreateDecodeArray(Type elementType, int length, int dimension) {
+        if (dimension is < 1 or > 2) {
+            throw new NotSupportedException($"Array dimension {dimension} is not supported in DCOM array context.");
+        }
+
+        if (elementType == typeof(object)) {
+            return CreateDecodeArray<object>(length, dimension);
+        }
+        if (elementType == typeof(int)) {
+            return CreateDecodeArray<int>(length, dimension);
+        }
+        if (elementType == typeof(uint)) {
+            return CreateDecodeArray<uint>(length, dimension);
+        }
+        if (elementType == typeof(short)) {
+            return CreateDecodeArray<short>(length, dimension);
+        }
+        if (elementType == typeof(ushort)) {
+            return CreateDecodeArray<ushort>(length, dimension);
+        }
+        if (elementType == typeof(sbyte)) {
+            return CreateDecodeArray<sbyte>(length, dimension);
+        }
+        if (elementType == typeof(byte)) {
+            return CreateDecodeArray<byte>(length, dimension);
+        }
+        if (elementType == typeof(long)) {
+            return CreateDecodeArray<long>(length, dimension);
+        }
+        if (elementType == typeof(ulong)) {
+            return CreateDecodeArray<ulong>(length, dimension);
+        }
+        if (elementType == typeof(float)) {
+            return CreateDecodeArray<float>(length, dimension);
+        }
+        if (elementType == typeof(double)) {
+            return CreateDecodeArray<double>(length, dimension);
+        }
+        if (elementType == typeof(bool)) {
+            return CreateDecodeArray<bool>(length, dimension);
+        }
+        if (elementType == typeof(char)) {
+            return CreateDecodeArray<char>(length, dimension);
+        }
+        if (elementType == typeof(string)) {
+            return CreateDecodeArray<string>(length, dimension);
+        }
+        if (elementType == typeof(ComString)) {
+            return CreateDecodeArray<ComString>(length, dimension);
+        }
+        if (elementType == typeof(Variant)) {
+            return CreateDecodeArray<Variant>(length, dimension);
+        }
+        if (elementType == typeof(IComObject)) {
+            return CreateDecodeArray<IComObject>(length, dimension);
+        }
+        if (elementType == typeof(IDispatch)) {
+            return CreateDecodeArray<IDispatch>(length, dimension);
+        }
+        if (elementType == typeof(ComPointer)) {
+            return CreateDecodeArray<ComPointer>(length, dimension);
+        }
+        if (elementType == typeof(Struct)) {
+            return CreateDecodeArray<Struct>(length, dimension);
+        }
+        if (elementType == typeof(Union)) {
+            return CreateDecodeArray<Union>(length, dimension);
+        }
+        if (elementType == typeof(UUID)) {
+            return CreateDecodeArray<UUID>(length, dimension);
+        }
+        if (elementType == typeof(InterfacePointer)) {
+            return CreateDecodeArray<InterfacePointer>(length, dimension);
+        }
+        if (elementType == typeof(DualStringArray)) {
+            return CreateDecodeArray<DualStringArray>(length, dimension);
+        }
+
+        throw new NotSupportedException($"Type {elementType} is not supported in DCOM array context.");
+    }
+
+    private static Array CreateDecodeArray<T>(int length, int dimension) =>
+        dimension == 1 ? new T[length] : new T[length][];
+
     /// <summary>
     /// Recurse decoder
     /// </summary>
@@ -567,12 +652,7 @@ public sealed class ComArray {
     /// <returns></returns>
     private object RecurseDecode(ComArray retVal, NdrCodec ndr, Type arrayType,
         int dimension, CodecContext context) {
-        object array = null;
-        var c = arrayType;
-        for (var j = 0; j < dimension; j++) {
-            array = Array.CreateInstance(c, retVal.UpperBounds[retVal.UpperBounds.Length - j - 1]);
-            c = array.GetType();
-        }
+        object array = CreateDecodeArray(arrayType, retVal.UpperBounds[retVal.UpperBounds.Length - dimension], dimension);
 
         for (var i = 0; i < retVal.UpperBounds[retVal.UpperBounds.Length - dimension]; i++) {
             if (dimension == 1) {
@@ -581,7 +661,7 @@ public sealed class ComArray {
                 if (_template == null) {
                     var flags = context.Flag;
                     context.Flag |= InteropFlags.FLAG_REPRESENTATION_ARRAY;
-                    ((Array)array).SetValue(MarshalUnMarshalHelper.Deserialize(ndr, c.GetElementType() ?? c, context), i);
+                    ((Array)array).SetValue(MarshalUnMarshalHelper.Deserialize(ndr, arrayType, context), i);
                     context.Flag = flags;
                 }
                 else {

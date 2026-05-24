@@ -95,7 +95,7 @@ public sealed class Variant {
                 var oo = _outTypesMap.GetOrDefault(c);
                 if (oo != null) {
                     // we will always send a single dimension array.
-                    object x = Array.CreateInstance(c, 1);
+                    object x = CreateSupportedArray(c, 1);
                     ((Array)x).SetValue(oo, 0);
                     variant = new Variant(new ComArray(x, true), true);
                 }
@@ -215,6 +215,148 @@ public sealed class Variant {
     /// <returns></returns>
     internal static Type GetSupportedClass(VariantType type) =>
         _supportedTypes_classes.GetOrDefault(type);
+
+    internal static Array CreateSupportedArray(Type elementType, int length) {
+        ArgumentNullException.ThrowIfNull(elementType);
+
+        if (elementType == typeof(object)) {
+            return new object[length];
+        }
+        if (elementType == typeof(string)) {
+            return new string[length];
+        }
+        if (elementType == typeof(sbyte)) {
+            return new sbyte[length];
+        }
+        if (elementType == typeof(char)) {
+            return new char[length];
+        }
+        if (elementType == typeof(decimal)) {
+            return new decimal[length];
+        }
+        if (elementType == typeof(IDispatch)) {
+            return new IDispatch[length];
+        }
+        if (elementType == typeof(IComObject)) {
+            return new IComObject[length];
+        }
+
+        var variantType = GetSupportedType(elementType);
+        if (variantType == null) {
+            throw new NotSupportedException($"Type {elementType} is not supported in VARIANT array context.");
+        }
+
+        return CreateSupportedArray(variantType.Value, length);
+    }
+
+    internal static Array CreateSupportedJaggedArray(Type elementType, int firstLength, int secondLength) {
+        ArgumentNullException.ThrowIfNull(elementType);
+
+        if (elementType == typeof(object)) {
+            return CreateJaggedArray<object>(firstLength, secondLength);
+        }
+        if (elementType == typeof(string)) {
+            return CreateJaggedArray<string>(firstLength, secondLength);
+        }
+        if (elementType == typeof(sbyte)) {
+            return CreateJaggedArray<sbyte>(firstLength, secondLength);
+        }
+        if (elementType == typeof(char)) {
+            return CreateJaggedArray<char>(firstLength, secondLength);
+        }
+        if (elementType == typeof(decimal)) {
+            return CreateJaggedArray<decimal>(firstLength, secondLength);
+        }
+        if (elementType == typeof(IDispatch)) {
+            return CreateJaggedArray<IDispatch>(firstLength, secondLength);
+        }
+        if (elementType == typeof(IComObject)) {
+            return CreateJaggedArray<IComObject>(firstLength, secondLength);
+        }
+
+        var variantType = GetSupportedType(elementType);
+        if (variantType == null) {
+            throw new NotSupportedException($"Type {elementType} is not supported in VARIANT array context.");
+        }
+
+        return CreateSupportedJaggedArray(variantType.Value, firstLength, secondLength);
+    }
+
+    private static object[] CreateSupportedReferenceArray(Type elementType, int length) {
+        var array = CreateSupportedArray(elementType, length);
+        if (array is object[] objectArray) {
+            return objectArray;
+        }
+
+        throw new NotSupportedException($"Type {elementType} is not supported in object-backed VARIANT array context.");
+    }
+
+    private static Array CreateSupportedArray(VariantType variantType, int length) {
+        var vt = variantType & VariantType.VT_TYPEMASK;
+        return vt switch {
+            VariantType.VT_EMPTY => new Empty[length],
+            VariantType.VT_NULL => new Null[length],
+            VariantType.VT_I2 => new short[length],
+            VariantType.VT_I4 or VariantType.VT_INT => new int[length],
+            VariantType.VT_R4 => new float[length],
+            VariantType.VT_R8 => new double[length],
+            VariantType.VT_CY => new Currency[length],
+            VariantType.VT_DATE => new DateTime[length],
+            VariantType.VT_BSTR => new ComString[length],
+            VariantType.VT_DISPATCH => new IComObject[length],
+            VariantType.VT_ERROR => new Scode[length],
+            VariantType.VT_BOOL => new bool[length],
+            VariantType.VT_VARIANT => new Variant[length],
+            VariantType.VT_UNKNOWN => new IComObject[length],
+            VariantType.VT_DECIMAL => new decimal[length],
+            VariantType.VT_I1 => new char[length],
+            VariantType.VT_UI1 => new byte[length],
+            VariantType.VT_UI2 => new ushort[length],
+            VariantType.VT_UI4 or VariantType.VT_UINT => new uint[length],
+            VariantType.VT_I8 => new long[length],
+            VariantType.VT_UI8 => new ulong[length],
+            VariantType.VT_ARRAY => new ComArray[length],
+            _ => throw new NotSupportedException($"VT_* {vt} is not supported in VARIANT array context.")
+        };
+    }
+
+    private static Array CreateSupportedJaggedArray(VariantType variantType, int firstLength, int secondLength) {
+        var vt = variantType & VariantType.VT_TYPEMASK;
+        return vt switch {
+            VariantType.VT_EMPTY => CreateJaggedArray<Empty>(firstLength, secondLength),
+            VariantType.VT_NULL => CreateJaggedArray<Null>(firstLength, secondLength),
+            VariantType.VT_I2 => CreateJaggedArray<short>(firstLength, secondLength),
+            VariantType.VT_I4 or VariantType.VT_INT => CreateJaggedArray<int>(firstLength, secondLength),
+            VariantType.VT_R4 => CreateJaggedArray<float>(firstLength, secondLength),
+            VariantType.VT_R8 => CreateJaggedArray<double>(firstLength, secondLength),
+            VariantType.VT_CY => CreateJaggedArray<Currency>(firstLength, secondLength),
+            VariantType.VT_DATE => CreateJaggedArray<DateTime>(firstLength, secondLength),
+            VariantType.VT_BSTR => CreateJaggedArray<ComString>(firstLength, secondLength),
+            VariantType.VT_DISPATCH => CreateJaggedArray<IComObject>(firstLength, secondLength),
+            VariantType.VT_ERROR => CreateJaggedArray<Scode>(firstLength, secondLength),
+            VariantType.VT_BOOL => CreateJaggedArray<bool>(firstLength, secondLength),
+            VariantType.VT_VARIANT => CreateJaggedArray<Variant>(firstLength, secondLength),
+            VariantType.VT_UNKNOWN => CreateJaggedArray<IComObject>(firstLength, secondLength),
+            VariantType.VT_DECIMAL => CreateJaggedArray<decimal>(firstLength, secondLength),
+            VariantType.VT_I1 => CreateJaggedArray<char>(firstLength, secondLength),
+            VariantType.VT_UI1 => CreateJaggedArray<byte>(firstLength, secondLength),
+            VariantType.VT_UI2 => CreateJaggedArray<ushort>(firstLength, secondLength),
+            VariantType.VT_UI4 or VariantType.VT_UINT => CreateJaggedArray<uint>(firstLength, secondLength),
+            VariantType.VT_I8 => CreateJaggedArray<long>(firstLength, secondLength),
+            VariantType.VT_UI8 => CreateJaggedArray<ulong>(firstLength, secondLength),
+            VariantType.VT_ARRAY => CreateJaggedArray<ComArray>(firstLength, secondLength),
+            _ => throw new NotSupportedException($"VT_* {vt} is not supported in VARIANT array context.")
+        };
+    }
+
+    private static T[][] CreateJaggedArray<T>(int firstLength, int secondLength) {
+        var array = new T[firstLength][];
+        for (var i = 0; i < firstLength; i++) {
+            array[i] = new T[secondLength];
+        }
+
+        return array;
+    }
 
     /// <summary>
     /// Get supported type id
@@ -687,16 +829,16 @@ public sealed class Variant {
                 object subArray = obj2;
                 name = name.Substring(1);
                 var firstDim = ((object[])subArray).Length;
-                // TODO:      subArray = Array.get(subArray, 0);
-                var secondDim = ((object[])subArray).Length;
+                subArray = firstDim > 0 ? ((object[])subArray)[0] : null;
+                var secondDim = subArray is object[] subArrayValues ? subArrayValues.Length : 0;
+                c = subArray?.GetType().GetElementType() ?? typeof(object);
                 var k = 0;
-                newArrayObj = (object[])Array.CreateInstance(subArray.GetType().GetElementType(), array.NumElementsInAllDimensions);
+                newArrayObj = CreateSupportedReferenceArray(c, array.NumElementsInAllDimensions);
                 for (var i = 0; i < secondDim; i++) {
                     for (var j = 0; j < firstDim; j++) {
                         newArrayObj[k++] = obj2[j][i];
                     }
                 }
-                c = subArray.GetType().GetElementType();
                 is2Dim = true;
                 break;
             default:

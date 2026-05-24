@@ -150,7 +150,7 @@ internal sealed class VariantBody {
                 retVal = (ComArray)((ComPointer)_safeArrayStruct.GetMember(7)).Referent;
 
                 if (_is2Dimensional) {
-                    var obj3 = (object[])retVal.ArrayInstance; // these will all be variants
+                    var obj3 = (Array)retVal.ArrayInstance; // these will all be variants
                                                                // correct the array here, i.e reform the 2 dimensional array before returning back.
                     var safeArrayBound = (ComArray)_safeArrayStruct.GetMember(8);
 
@@ -160,8 +160,7 @@ internal sealed class VariantBody {
                     var firstDim = (int)safeArrayBound2[0].GetMember(0);
                     var secondDim = (int)safeArrayBound2[1].GetMember(0);
 
-                    object obj = System.Array.CreateInstance(_nestedArraysRealClass, new int[] { firstDim, secondDim });
-                    var obj2 = (object[][])obj;
+                    var obj2 = Variant.CreateSupportedJaggedArray(_nestedArraysRealClass, firstDim, secondDim);
                     var k = 0;
                     for (var i = 0; i < secondDim; i++) {
                         for (var j = 0; j < firstDim; j++) {
@@ -173,7 +172,7 @@ internal sealed class VariantBody {
                             //                        {
                             //                            obj2[j][i] = ((<see cref="Variant"/>[])obj3)[k++].getObject();
                             //                        }
-                            obj2[j][i] = obj3[k++];
+                            ((Array)obj2.GetValue(j)).SetValue(GetSafeArrayElementValue(obj3.GetValue(k++), _nestedArraysRealClass), i);
                         }
                     }
 
@@ -183,8 +182,8 @@ internal sealed class VariantBody {
                 else {
 
                     if (_nestedArraysRealClass != null) {
-                        var obj = (object[])retVal.ArrayInstance; // these will all be variants
-                        object obj2 = System.Array.CreateInstance(_nestedArraysRealClass, obj.Length);
+                        var obj = (Array)retVal.ArrayInstance; // these will all be variants
+                        var obj2 = Variant.CreateSupportedArray(_nestedArraysRealClass, obj.Length);
                         for (var i = 0; i < obj.Length; i++) {
                             //                        if (nestedArraysRealClass == <see cref="Variant"/>.class)
                             //                        {
@@ -196,7 +195,7 @@ internal sealed class VariantBody {
                             //                        }
 
                             // Array.set(obj2,i,obj[i]);
-                            ((object[])obj2)[i] = obj[i];
+                            obj2.SetValue(GetSafeArrayElementValue(obj.GetValue(i), _nestedArraysRealClass), i);
                         }
                         retVal = new ComArray(obj2);
                     }
@@ -1027,6 +1026,14 @@ internal sealed class VariantBody {
         }
 
         return retVal;
+    }
+
+    private static object GetSafeArrayElementValue(object value, Type elementType) {
+        if (elementType != typeof(Variant) && value is Variant variant) {
+            return variant.Object;
+        }
+
+        return value;
     }
 
     private readonly bool _is2Dimensional;
