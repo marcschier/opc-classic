@@ -1,3 +1,5 @@
+<!-- Errata notes: historical-dataaccess-1.20-errata.zip extracted to External/Docs/opc-hda-1.20-errata-notes.md; table-heavy errata retained verbatim because automatic in-place application was unreliable. -->
+
 F O U N D A T I O N
 
 OPC Historical Data Access Specification
