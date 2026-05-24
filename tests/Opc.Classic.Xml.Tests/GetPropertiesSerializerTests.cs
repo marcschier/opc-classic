@@ -92,7 +92,9 @@ public sealed class GetPropertiesSerializerTests
         await Assert.That(list.ItemName).IsEqualTo("Tag1");
         await Assert.That(list.Properties.Count).IsEqualTo(2);
         await Assert.That(list.Properties[0].Name).IsEqualTo("DataType");
-        await Assert.That(list.Properties[0].Value!.AsString()).IsEqualTo("xsd:double");
+        await Assert.That(list.Properties[0].Value!.RawText).IsEqualTo("xsd:double");
+        await Assert.That(list.Properties[0].Value!.AsQName()!.Name).IsEqualTo("double");
+        await Assert.That(list.Properties[0].Value!.AsQName()!.Namespace).IsEqualTo(XmlDaConstants.XsdNamespace);
         await Assert.That(list.Properties[1].Name).IsEqualTo("AccessRights");
         await Assert.That(list.Properties[1].Value!.AsInt32()).IsEqualTo(3);
     }

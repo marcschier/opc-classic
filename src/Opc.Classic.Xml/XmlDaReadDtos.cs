@@ -38,7 +38,11 @@ public sealed record XmlDaItemValueResult(
     XmlDaValue? Value,
     OpcQuality Quality,
     DateTimeOffset? Timestamp,
-    string? ResultId);
+    string? ResultId)
+{
+    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
+}
 
 /// <summary>An XML-DA <c>ReadResponse</c> payload.</summary>
 /// <param name="ServerState">Top-level <c>ReadResult.ServerState</c>.</param>

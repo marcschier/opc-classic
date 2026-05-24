@@ -67,35 +67,10 @@ public static class WriteSerializer
             xw.WriteAttributeString("ClientItemHandle", item.ClientItemHandle);
         }
 
-        xw.WriteStartElement("Value", XmlDaConstants.XmlDaNamespace);
-        string xsdName = MapTypeToXsdName(item.Value.Type);
-        if (xsdName.Length > 0)
-        {
-            xw.WriteAttributeString("type", XmlDaConstants.XsiNamespace, "xsd:" + xsdName);
-        }
-        xw.WriteString(item.Value.RawText);
-        xw.WriteEndElement();
+        XmlDaValueSerializer.WriteValueElement(xw, item.Value);
 
         xw.WriteEndElement();
     }
-
-    private static string MapTypeToXsdName(XmlDaValueType type) => type switch
-    {
-        XmlDaValueType.String => "string",
-        XmlDaValueType.Int8 => "byte",
-        XmlDaValueType.UInt8 => "unsignedByte",
-        XmlDaValueType.Int16 => "short",
-        XmlDaValueType.UInt16 => "unsignedShort",
-        XmlDaValueType.Int32 => "int",
-        XmlDaValueType.UInt32 => "unsignedInt",
-        XmlDaValueType.Int64 => "long",
-        XmlDaValueType.UInt64 => "unsignedLong",
-        XmlDaValueType.Single => "float",
-        XmlDaValueType.Double => "double",
-        XmlDaValueType.Boolean => "boolean",
-        XmlDaValueType.DateTime => "dateTime",
-        _ => string.Empty,
-    };
 
     /// <summary>
     /// Reads a SOAP-wrapped <c>WriteResponse</c> and returns the decoded

@@ -124,12 +124,47 @@ public sealed class SoapEnvelopeTests
             {
                 r.AdvanceToOperationResponse();
             }
-            catch (InvalidDataException)
+            catch (XmlDaSoapFaultException)
             {
                 threw = true;
             }
         }
         await Assert.That(threw).IsTrue();
+    }
+
+    [Test]
+    public async Task Reader_MapsXmlDaSoapFaultCode_ToTypedEnum()
+    {
+        const string fault = """
+            <?xml version="1.0"?>
+            <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                           xmlns:xmlDa="http://opcfoundation.org/webservices/XMLDA/1.0/">
+              <soap:Body>
+                <soap:Fault>
+                  <faultcode>xmlDa:E_SERVERSTATE</faultcode>
+                  <faultstring>Server suspended</faultstring>
+                </soap:Fault>
+              </soap:Body>
+            </soap:Envelope>
+            """;
+
+        XmlDaSoapFaultException? faultException = null;
+        using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(fault)))
+        using (var r = new SoapEnvelopeReader(ms))
+        {
+            try
+            {
+                r.AdvanceToOperationResponse();
+            }
+            catch (XmlDaSoapFaultException ex)
+            {
+                faultException = ex;
+            }
+        }
+
+        await Assert.That(faultException).IsNotNull();
+        await Assert.That(faultException!.ErrorCode).IsEqualTo(XmlDaErrorCode.ServerState);
+        await Assert.That(faultException.FaultString).IsEqualTo("Server suspended");
     }
 
     [Test]

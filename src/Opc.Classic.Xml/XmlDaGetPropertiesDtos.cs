@@ -35,7 +35,11 @@ public sealed record XmlDaPropertyValue(
     string Name,
     string? Description,
     XmlDaValue? Value,
-    string? ResultId);
+    string? ResultId)
+{
+    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
+}
 
 /// <summary>All properties available for one item.</summary>
 /// <param name="ItemName">The item these properties belong to.</param>
@@ -46,7 +50,11 @@ public sealed record XmlDaItemPropertyList(
     string ItemName,
     string ItemPath,
     IReadOnlyList<XmlDaPropertyValue> Properties,
-    string? ResultId);
+    string? ResultId)
+{
+    /// <summary>Type-safe interpretation of <see cref="ResultId"/>.</summary>
+    public XmlDaErrorCode ResultCode => XmlDaErrorCodes.ParseResultId(ResultId);
+}
 
 /// <summary>An XML-DA <c>GetPropertiesResponse</c> payload.</summary>
 public sealed record XmlDaGetPropertiesResponse(

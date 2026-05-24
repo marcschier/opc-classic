@@ -3,15 +3,13 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-#pragma warning disable CA1720 // Identifier contains type name — these enum members mirror xsd:* type names verbatim
+#pragma warning disable CA1720 // Identifier contains type name — these enum members mirror xsd:* and XML-DA ArrayOf* names verbatim
 
 namespace Opc.Classic.Xml;
 
 /// <summary>
 /// The XML-DA value-type discriminator written on the <c>xsi:type</c>
-/// attribute of a <c>&lt;Value&gt;</c> element. Covers the scalar set used
-/// in virtually all practical OPC XML-DA deployments; arrays, BSTR variants,
-/// and vendor-specific types are not yet supported.
+/// attribute of a <c>&lt;Value&gt;</c> element.
 /// </summary>
 public enum XmlDaValueType
 {
@@ -56,4 +54,52 @@ public enum XmlDaValueType
 
     /// <summary><c>xsd:dateTime</c> — UTC offset preserved as a <see cref="System.DateTimeOffset"/>.</summary>
     DateTime = 13,
+
+    /// <summary><c>xsd:decimal</c>.</summary>
+    Decimal = 14,
+
+    /// <summary><c>xsd:time</c>.</summary>
+    Time = 15,
+
+    /// <summary><c>xsd:date</c>.</summary>
+    Date = 16,
+
+    /// <summary><c>xsd:duration</c>.</summary>
+    Duration = 17,
+
+    /// <summary><c>xsd:QName</c>.</summary>
+    QName = 18,
+
+    /// <summary>XML-DA <c>ArrayOfByte</c> (signed 8-bit elements).</summary>
+    ArrayOfByte = 19,
+
+    /// <summary>XML-DA <c>ArrayOfShort</c>.</summary>
+    ArrayOfShort = 20,
+
+    /// <summary>XML-DA <c>ArrayOfInt</c>.</summary>
+    ArrayOfInt = 21,
+
+    /// <summary>XML-DA <c>ArrayOfLong</c>.</summary>
+    ArrayOfLong = 22,
+
+    /// <summary>XML-DA <c>ArrayOfFloat</c>.</summary>
+    ArrayOfFloat = 23,
+
+    /// <summary>XML-DA <c>ArrayOfDouble</c>.</summary>
+    ArrayOfDouble = 24,
+
+    /// <summary>XML-DA <c>ArrayOfString</c>.</summary>
+    ArrayOfString = 25,
+
+    /// <summary>XML-DA <c>ArrayOfBoolean</c>.</summary>
+    ArrayOfBoolean = 26,
+
+    /// <summary>Alias for XML-DA <c>ArrayOfBoolean</c>.</summary>
+    ArrayOfBool = ArrayOfBoolean,
+
+    /// <summary>XML-DA <c>ArrayOfDateTime</c>.</summary>
+    ArrayOfDateTime = 27,
+
+    /// <summary><c>xsd:base64Binary</c> byte array.</summary>
+    Base64Binary = 28,
 }

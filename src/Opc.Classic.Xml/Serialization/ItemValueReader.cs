@@ -73,31 +73,7 @@ internal static class ItemValueReader
         }
     }
 
-    private static XmlDaValue ReadValue(XmlReader r)
-    {
-        string xsiType = r.GetAttribute("type", XmlDaConstants.XsiNamespace) ?? string.Empty;
-        string content = r.ReadElementContentAsString();
-        return ParseValueByType(xsiType, content);
-    }
-
-    private static XmlDaValue ParseValueByType(string xsiType, string content)
-    {
-        int colon = xsiType.LastIndexOf(':');
-        string localType = colon >= 0 ? xsiType[(colon + 1)..] : xsiType;
-
-        return localType switch
-        {
-            "string" or "QName" => XmlDaValue.OfString(content),
-            "int" or "integer" => XmlDaValue.OfInt32(int.Parse(content, CultureInfo.InvariantCulture)),
-            "double" => XmlDaValue.OfDouble(double.Parse(content, CultureInfo.InvariantCulture)),
-            "boolean" => XmlDaValue.OfBoolean(
-                content.Equals("true", StringComparison.OrdinalIgnoreCase) ||
-                content.Equals("1", StringComparison.Ordinal)),
-            "dateTime" => XmlDaValue.OfDateTime(
-                DateTimeOffset.Parse(content, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)),
-            _ => XmlDaValue.Unknown(content),
-        };
-    }
+    private static XmlDaValue ReadValue(XmlReader r) => XmlDaValueSerializer.ReadValue(r);
 
     private static OpcQuality ReadQuality(XmlReader r)
     {

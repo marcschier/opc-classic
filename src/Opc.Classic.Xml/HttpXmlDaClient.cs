@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using Opc.Classic.Xml.Serialization;
 
 namespace Opc.Classic.Xml;
@@ -236,7 +237,6 @@ public sealed class HttpXmlDaClient : IXmlDaClient
         content.Headers.Add("SOAPAction", "\"" + soapAction + "\"");
 
         using var response = await _http.PostAsync(_endpoint, content, cancellationToken).ConfigureAwait(false);
-        response.EnsureSuccessStatusCode();
 
         Stream responseStream = await response.Content
             .ReadAsStreamAsync(cancellationToken)
@@ -244,7 +244,26 @@ public sealed class HttpXmlDaClient : IXmlDaClient
         await using (responseStream.ConfigureAwait(false))
         {
             using var reader = new SoapEnvelopeReader(responseStream);
-            return deserialize(reader);
+            try
+            {
+                T result = deserialize(reader);
+                response.EnsureSuccessStatusCode();
+                return result;
+            }
+            catch (XmlDaSoapFaultException)
+            {
+                throw;
+            }
+            catch (InvalidDataException) when (!response.IsSuccessStatusCode)
+            {
+                response.EnsureSuccessStatusCode();
+                throw;
+            }
+            catch (XmlException) when (!response.IsSuccessStatusCode)
+            {
+                response.EnsureSuccessStatusCode();
+                throw;
+            }
         }
     }
 }

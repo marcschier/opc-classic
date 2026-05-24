@@ -192,6 +192,41 @@ public sealed class HttpXmlDaClientTests
     }
 
     [Test]
+    public async Task GetStatusAsync_MapsSoapFaultOnHttpError_ToTypedEnum()
+    {
+        var handler = new CapturingHandler
+        {
+            StatusCode = HttpStatusCode.InternalServerError,
+            ResponseBody = """
+                <?xml version="1.0"?>
+                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+                               xmlns:xmlDa="http://opcfoundation.org/webservices/XMLDA/1.0/">
+                  <soap:Body>
+                    <soap:Fault>
+                      <faultcode>xmlDa:E_SERVERSTATE</faultcode>
+                      <faultstring>Server suspended</faultstring>
+                    </soap:Fault>
+                  </soap:Body>
+                </soap:Envelope>
+                """,
+        };
+        var client = BuildClient(handler);
+
+        XmlDaSoapFaultException? faultException = null;
+        try
+        {
+            await client.GetStatusAsync(new XmlDaRequestHeader(null, null));
+        }
+        catch (XmlDaSoapFaultException ex)
+        {
+            faultException = ex;
+        }
+
+        await Assert.That(faultException).IsNotNull();
+        await Assert.That(faultException!.ErrorCode).IsEqualTo(XmlDaErrorCode.ServerState);
+    }
+
+    [Test]
     public async Task GetStatusAsync_HonorsCancellation()
     {
         var handler = new CapturingHandler

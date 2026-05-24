@@ -187,7 +187,7 @@ public sealed class ReadSerializerTests
                   <ReadResult ServerState="running" />
                   <RItemList>
                     <Items ItemName="WeirdType">
-                      <Value xsi:type="xsd:base64Binary">ABCD</Value>
+                      <Value xsi:type="xsd:anyURI">urn:unsupported</Value>
                       <Quality QualityField="good" />
                     </Items>
                   </RItemList>
@@ -198,7 +198,7 @@ public sealed class ReadSerializerTests
         var resp = Deserialize(xml);
         var v = resp.Items[0].Value!;
         await Assert.That(v.Type).IsEqualTo(XmlDaValueType.Unknown);
-        await Assert.That(v.RawText).IsEqualTo("ABCD");
+        await Assert.That(v.RawText).IsEqualTo("urn:unsupported");
     }
 
     [Test]

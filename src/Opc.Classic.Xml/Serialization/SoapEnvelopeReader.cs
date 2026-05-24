@@ -91,10 +91,56 @@ public sealed class SoapEnvelopeReader : IDisposable
         if (string.Equals(_reader.NamespaceURI, XmlDaConstants.SoapEnvelopeNamespace, StringComparison.Ordinal)
             && string.Equals(_reader.LocalName, "Fault", StringComparison.Ordinal))
         {
-            throw new InvalidDataException("SOAP response carries a Fault payload.");
+            throw ReadFault();
         }
 
         return _reader.LocalName;
+    }
+
+    private XmlDaSoapFaultException ReadFault()
+    {
+        string faultCode = string.Empty;
+        string faultString = string.Empty;
+
+        if (!_reader.IsEmptyElement)
+        {
+            int faultDepth = _reader.Depth;
+            bool alreadyAdvanced = false;
+            while (true)
+            {
+                if (!alreadyAdvanced && !_reader.Read())
+                {
+                    break;
+                }
+                alreadyAdvanced = false;
+                if (_reader.Depth <= faultDepth)
+                {
+                    break;
+                }
+                if (_reader.NodeType != XmlNodeType.Element)
+                {
+                    continue;
+                }
+
+                if (string.Equals(_reader.LocalName, "faultcode", StringComparison.Ordinal))
+                {
+                    faultCode = _reader.ReadElementContentAsString();
+                    alreadyAdvanced = true;
+                }
+                else if (string.Equals(_reader.LocalName, "faultstring", StringComparison.Ordinal))
+                {
+                    faultString = _reader.ReadElementContentAsString();
+                    alreadyAdvanced = true;
+                }
+                else
+                {
+                    _reader.Skip();
+                    alreadyAdvanced = true;
+                }
+            }
+        }
+
+        return new XmlDaSoapFaultException(faultCode, faultString, XmlDaErrorCodes.Parse(faultCode));
     }
 
     /// <inheritdoc />
